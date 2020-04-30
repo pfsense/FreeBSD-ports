@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mikutter
-PORTVERSION=	3.9.5
+PORTVERSION=	4.0.4
 CATEGORIES=	net-im ruby
 MASTER_SITES=	https://mikutter.hachune.net/bin/ \
 		LOCAL/meta/${PORTNAME}
@@ -19,7 +19,7 @@ RUN_DEPENDS=	rubygem-gtk2>=3.3.1:x11-toolkits/rubygem-gtk2 \
 		rubygem-addressable>=2.6.0:www/rubygem-addressable \
 		rubygem-delayer>=1.0.0:devel/rubygem-delayer \
 		rubygem-delayer-deferred>=2.1.0:devel/rubygem-delayer-deferred \
-		rubygem-diva>=1.0.0:devel/rubygem-diva \
+		rubygem-diva>=1.0.1:devel/rubygem-diva \
 		rubygem-gettext>=3.2.6:devel/rubygem-gettext \
 		rubygem-gio2>=3.3.1:devel/rubygem-gio2 \
 		rubygem-httpclient>=2.8.3:www/rubygem-httpclient \
@@ -42,7 +42,7 @@ USE_RUBY=	yes
 NO_ARCH=	yes
 NO_BUILD=	yes
 
-WRKSRC=	${WRKDIR}/${PORTNAME}
+NO_WRKSUBDIR=	yes
 
 SHEBANG_FILES=	mikutter.rb \
 		core/miku/miku.rb
@@ -59,7 +59,9 @@ OPTIONS_DEFAULT=	${OPTIONS_DEFINE}
 NOTIFY_RUN_DEPENDS=	notify-send:devel/libnotify
 
 post-patch:
-	@${REINPLACE_CMD} -e "s|%%RUBY_SITELIBDIR%%|${RUBY_SITELIBDIR}|" \
+	@${REINPLACE_CMD} \
+		-e "s|%%RUBY_SITELIBDIR%%|${RUBY_SITELIBDIR}|" \
+		-e "s|%%RUBY_WITH_SUFFIX%%|${RUBY_WITH_SUFFIX}|" \
 		${WRKSRC}/mikutter.rb
 	@${RM} -r ${WRKSRC}/vendor
 

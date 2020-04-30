@@ -16,7 +16,7 @@ CONFIGURE_ARGS+=--enable-oss
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
-USES=		gmake iconv pkgconfig
+USES=		gmake gnome iconv pkgconfig
 USE_GNOME=	gtk30 intltool
 
 PORTDOCS=	AUTHORS ChangeLog README
@@ -31,10 +31,6 @@ SUB_FILES=	pkg-message
 
 DESKTOP_ENTRIES="GVolWheel" "${COMMENT}" "${PORTNAME}" \
 		"${PORTNAME}" "GTK;AudioVideo;Audio;Mixer;" true
-
-post-patch:
-	${REINPLACE_CMD} -e 's|linux/soundcard|sys/soundcard|g' \
-		${WRKSRC}/src/callbacks.c ${WRKSRC}/src/actions.c
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

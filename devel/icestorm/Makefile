@@ -3,10 +3,10 @@
 
 PORTNAME=	icestorm
 PORTVERSION=	g20190526
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 
-MAINTAINER=	jsorocil@gmail.com
+MAINTAINER=	manu@FreeBSD.org
 COMMENT=	IceStorm tools for Lattice iCE40 FPGAs
 
 LICENSE=	ISCL

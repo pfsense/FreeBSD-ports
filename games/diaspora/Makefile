@@ -33,12 +33,14 @@ LIB_DEPENDS=	libjansson.so:devel/jansson \
 		libvorbisfile.so:audio/libvorbis \
 		libtheora.so:multimedia/libtheora
 
-USES=		autoreconf compiler gl jpeg lua:51 openal pkgconfig sdl tar:lzma
+USES=		autoreconf compiler:c++11-lang gl jpeg lua:51 openal pkgconfig \
+		sdl tar:lzma
 USE_CXXSTD=	gnu++98
 USE_GL=		gl glu
 USE_SDL=	sdl
 GNU_CONFIGURE=	yes
-LLD_UNSAFE=	yes
+
+LDFLAGS_i386=	-Wl,-znotext
 
 WRKDIR_DIASPORA=${WRKDIR}/Diaspora_R1_Linux/Diaspora
 WRKSRC=		${WRKDIR_DIASPORA}/fs2_open

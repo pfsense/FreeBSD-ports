@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME?=	mariadb
-PORTVERSION=	10.1.41
-PORTREVISION=	1
-CATEGORIES=	databases ipv6
+PORTVERSION=	10.1.44
+PORTREVISION=	0
+CATEGORIES=	databases
 MASTER_SITES=	http://ftp.osuosl.org/pub/${SITESDIR}/ \
 		http://mirrors.supportex.net/${SITESDIR}/ \
 		http://mirror2.hs-esslingen.de/pub/Mirrors/${SITESDIR}/ \
@@ -13,6 +13,10 @@ MASTER_SITES=	http://ftp.osuosl.org/pub/${SITESDIR}/ \
 		http://mirror.layerjet.com/${SITESDIR}/ \
 		http://mirror.switch.ch/mirror/${SITESDIR}/
 PKGNAMESUFFIX?=	101-server
+
+DEPRECATED=		Port will be removed when 10.5 is added, please\
+			switch to a newer version
+EXPIRATION_DATE=	2020-07-01
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT?=	Multithreaded SQL database (server)
@@ -24,8 +28,7 @@ LICENSE_PERMS_PerconaFT=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 SUB_FILES=	pkg-message
 
-SLAVEDIRS=	databases/mariadb101-client
-USES=		bison:build cmake:insource,noninja compiler:c++11-lib cpe libedit ncurses \
+USES=		bison:build cmake:insource,noninja cpe libedit ncurses \
 		shebangfix ssl
 USE_LDCONFIG=	${PREFIX}/lib/mysql
 SHEBANG_FILES=	scripts/*.sh
@@ -111,8 +114,7 @@ CMAKE_ON+=	WITHOUT_SERVER
 GSSAPI_NONE_CMAKE_ON=	-DPLUGIN_AUTH_GSSAPI_CLIENT=NO
 .else
 # MySQL-Server part
-BROKEN_powerpc64=	Does not build: fatal error: sys/platform/ppc.h: No such file or directory
-USES+=		mysql:101m
+USES+=		gnome mysql:101m
 USE_GNOME=	libxml2
 USE_LDCONFIG+=	${PREFIX}/lib/mysql/plugin
 USE_RC_SUBR=	mysql-server
@@ -130,9 +132,13 @@ CONNECT_EXTRA_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 CONNECT_EXTRA_USES=	gnome
 CONNECT_EXTRA_USE=	gnome=libxml2
 GSSAPI_NONE_CMAKE_ON=	-DPLUGIN_AUTH_GSSAPI=NO
-LZ4_CMAKE_BOOL=		GRN_WITH_LZ4 WITH_INNODB_LZ4
+LZ4_BROKEN=		LZ4 compression broken in 10.1, use a newer release
+LZ4_CMAKE_ON=		-DGRN_WITH_LZ4=ON  -DWITH_INNODB_LZ4=ON
+LZ4_CMAKE_OFF=		-DGRN_WITH_LZ4=OFF -DWITH_INNODB_LZ4=OFF
 LZ4_LIB_DEPENDS=	liblz4.so:archivers/liblz4
-LZO_CMAKE_BOOL=		WITH_INNODB_LZO
+LZO_BROKEN=		LZO compression broken in 10.1, use a newer release
+LZO_CMAKE_ON=		-DWITH_INNODB_LZO=ON
+LZO_CMAKE_OFF=		-DWITH_INNODB_LZO=OFF
 LZO_LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 MAXKEY_EXTRA_PATCHES+=	${FILESDIR}/extra-patch-include_my__compare.h
 MROONGA_LIB_DEPENDS=	liblz4.so:archivers/liblz4
@@ -140,9 +146,10 @@ MROONGA_VARS=		LICENSE+=LGPL20 LICENSE_COMB=multi
 MSGPACK_LIB_DEPENDS=	libmsgpackc.so:devel/msgpack
 OQGRAPH_LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 			libJudy.so:devel/judy
-SNAPPY_CMAKE_BOOL=	WITH_INNODB_SNAPPY
+SNAPPY_BROKEN=		Snappy compression broken in 10.1, use a newer release
+SNAPPY_CMAKE_ON=	-DWITH_INNODB_SNAPPY=ON
+SNAPPY_CMAKE_OFF=	-DWITH_INNODB_SNAPPY=OFF
 SNAPPY_LIB_DEPENDS=	libsnappy.so:archivers/snappy
-TOKUDB_IMPLIES=		SNAPPY
 TOKUDB_PORTDOCS=	README.md
 TOKUDB_VARS=		LICENSE+=PerconaFT LICENSE_COMB=multi
 ZMQ_LIB_DEPENDS=	libzmq.so:net/libzmq4
@@ -154,6 +161,12 @@ ZMQ_LIB_DEPENDS=	libzmq.so:net/libzmq4
 SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
 .else
 SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
+.endif
+
+.if defined(PPC_ABI) && ${PPC_ABI} == ELFv2
+USES+=	compiler:gcc-c++11-lib
+.else
+USES+=	compiler:c++11-lib
 .endif
 
 .include <bsd.port.pre.mk>
@@ -170,6 +183,7 @@ post-patch:
 	@${REINPLACE_CMD} 's/*.1/${MAN1}/' ${WRKSRC}/man/CMakeLists.txt
 	@${REINPLACE_CMD} 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/mysys/my_default.c
 	@${REINPLACE_CMD} 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/scripts/mysql_config.sh
+	@${MV} ${WRKSRC}/storage/mroonga/version ${WRKSRC}/storage/mroonga/version_txt
 .if ${OPSYS} == DragonFly
 	${CP} ${WRKSRC}/cmake/os/FreeBSD.cmake \
 		${WRKSRC}/cmake/os/DragonFly.cmake

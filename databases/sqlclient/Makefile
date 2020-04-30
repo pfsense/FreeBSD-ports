@@ -7,7 +7,7 @@ CATEGORIES=	databases gnustep
 MASTER_SITES=	GNUSTEP/libs
 DISTNAME=	SQLClient-${PORTVERSION}
 
-MAINTAINER=	theraven@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight database abstraction layer
 
 LICENSE=	LGPL21
@@ -15,11 +15,10 @@ LICENSE=	LGPL21
 LIB_DEPENDS=	libPerformance.so:devel/performance \
 		libsqlite3.so:databases/sqlite3
 
-USES=		gnustep pgsql
+USES=		gnustep mysql pgsql
 USE_GNUSTEP=	base build
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	${GNUSTEP_LOCAL_LIBRARIES}
-USE_MYSQL=yes
 
 LDFLAGS+=	-pthread
 DEFAULT_LIBVERSION=	1.5

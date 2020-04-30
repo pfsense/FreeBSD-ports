@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	Net_Whois
-PORTVERSION=	1.0.5
+PORTVERSION=	1.0.6
 CATEGORIES=	net pear
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	Tool to query internet domain name services
 
 USES=		pear

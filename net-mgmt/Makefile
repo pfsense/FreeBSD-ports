@@ -19,11 +19,11 @@
     SUBDIR += bandwidthd
     SUBDIR += bgpq
     SUBDIR += bgpq3
+    SUBDIR += bgpq4
     SUBDIR += bgpuma
     SUBDIR += blackbox_exporter
     SUBDIR += bpft
     SUBDIR += braa
-    SUBDIR += bsnmp-jails
     SUBDIR += bsnmp-regex
     SUBDIR += bsnmp-ucd
     SUBDIR += bwm-ng
@@ -71,7 +71,6 @@
     SUBDIR += ettercap
     SUBDIR += fastnetmon
     SUBDIR += fetchconfig
-    SUBDIR += flow-extract
     SUBDIR += flow-tools
     SUBDIR += flowd
     SUBDIR += flowviewer
@@ -105,7 +104,6 @@
     SUBDIR += icmpquery
     SUBDIR += iftop
     SUBDIR += intel-snap
-    SUBDIR += iog
     SUBDIR += ipacctd
     SUBDIR += ipaudit
     SUBDIR += ipcad
@@ -120,7 +118,6 @@
     SUBDIR += kapacitor
     SUBDIR += kismet
     SUBDIR += klg
-    SUBDIR += lanmap
     SUBDIR += lg
     SUBDIR += librenms
     SUBDIR += librenms-agent
@@ -135,6 +132,7 @@
     SUBDIR += mrtg
     SUBDIR += mrtg-ping-probe
     SUBDIR += mtrace
+    SUBDIR += mysql-snmp
     SUBDIR += mysqld_exporter
     SUBDIR += nagcon
     SUBDIR += nagios
@@ -162,7 +160,6 @@
     SUBDIR += nagios-plugins
     SUBDIR += nagios-snmp-plugins
     SUBDIR += nagios-snmp-plugins-extras
-    SUBDIR += nagios-spamd-plugin
     SUBDIR += nagios4
     SUBDIR += nagiosgraph
     SUBDIR += nagiosql
@@ -174,10 +171,10 @@
     SUBDIR += nbtscan
     SUBDIR += ndoutils
     SUBDIR += ndpmon
-    SUBDIR += nefu
     SUBDIR += net-snmp
     SUBDIR += netbox
     SUBDIR += netdata
+    SUBDIR += netdata-go
     SUBDIR += netdisco
     SUBDIR += netdisco-mibs
     SUBDIR += netdot
@@ -216,7 +213,6 @@
     SUBDIR += ocsinventory-ocsreports
     SUBDIR += ocsinventory-server
     SUBDIR += omping
-    SUBDIR += onionlauncher
     SUBDIR += openbmp
     SUBDIR += openlldp
     SUBDIR += openvmps
@@ -285,16 +281,14 @@
     SUBDIR += pandorafms_agent
     SUBDIR += pandorafms_console
     SUBDIR += pandorafms_server
-    SUBDIR += pdagent-integrations
     SUBDIR += percona-monitoring-plugins
     SUBDIR += pftabled
-    SUBDIR += php71-snmp
     SUBDIR += php72-snmp
     SUBDIR += php73-snmp
     SUBDIR += php74-snmp
     SUBDIR += phpipam
     SUBDIR += phpweathermap
-    SUBDIR += pixilate
+    SUBDIR += ping_exporter
     SUBDIR += pktstat
     SUBDIR += pmacct
     SUBDIR += pnp
@@ -316,7 +310,6 @@
     SUBDIR += py-napalm-logs
     SUBDIR += py-ncclient
     SUBDIR += py-nxapi-plumbing
-    SUBDIR += py-pdagent
     SUBDIR += py-prometheus-client
     SUBDIR += py-pyIOSXR
     SUBDIR += py-pyang
@@ -366,7 +359,6 @@
     SUBDIR += sendip
     SUBDIR += sipcalc
     SUBDIR += sjitter
-    SUBDIR += slate
     SUBDIR += smokeping
     SUBDIR += snmp++
     SUBDIR += snmp4nagios
@@ -374,7 +366,6 @@
     SUBDIR += softflowd
     SUBDIR += spectools
     SUBDIR += ssgless
-    SUBDIR += statsd
     SUBDIR += statsite
     SUBDIR += subcalc
     SUBDIR += super_mediator
@@ -383,7 +374,6 @@
     SUBDIR += tcptrack
     SUBDIR += telegraf
     SUBDIR += thanos
-    SUBDIR += tornova
     SUBDIR += torrus
     SUBDIR += triton-guesttools
     SUBDIR += unbound_exporter
@@ -393,18 +383,12 @@
     SUBDIR += victorops-nagios
     SUBDIR += virt-viewer
     SUBDIR += wdiag
-    SUBDIR += weplab
     SUBDIR += whatmask
     SUBDIR += wifimgr
     SUBDIR += wmi-client
     SUBDIR += xymon-client
     SUBDIR += xymon-server
     SUBDIR += yaf
-    SUBDIR += zabbix22-agent
-    SUBDIR += zabbix22-frontend
-    SUBDIR += zabbix22-java
-    SUBDIR += zabbix22-proxy
-    SUBDIR += zabbix22-server
     SUBDIR += zabbix3-agent
     SUBDIR += zabbix3-frontend
     SUBDIR += zabbix3-java

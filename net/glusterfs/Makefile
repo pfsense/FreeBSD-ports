@@ -12,10 +12,13 @@ COMMENT=	GlusterFS distributed file system
 LICENSE=	GPLv2 LGPL3
 LICENSE_COMB=	dual
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
+
 LIB_DEPENDS=	libargp.so:devel/argp-standalone liburcu-bp.so:sysutils/liburcu
 
-USES=		bison gettext libtool pkgconfig python:2.7 readline shebangfix \
-		sqlite ssl
+USES=		bison gettext gnome libtool pkgconfig python:2.7 readline \
+		shebangfix sqlite ssl
 
 BROKEN_SSL=	libressl
 

@@ -7,7 +7,6 @@
     SUBDIR += aster
     SUBDIR += fortune-mod-zarathoustra
     SUBDIR += geonext
-    SUBDIR += gimp-help
     SUBDIR += homard
     SUBDIR += hunspell
     SUBDIR += hyphen
@@ -15,7 +14,7 @@
     SUBDIR += libreoffice
     SUBDIR += med
     SUBDIR += mythes
-    SUBDIR += trytond28_account_fr
+    SUBDIR += py-grammalecte-fr
     SUBDIR += verbiste
     SUBDIR += wordpress
 

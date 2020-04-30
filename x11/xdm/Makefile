@@ -2,7 +2,7 @@
 
 PORTNAME=	xdm
 PORTVERSION=	1.1.12
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
@@ -14,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USES=		cpe libtool xorg xorg-cat:app
 USE_LDCONFIG=	yes
 USE_XORG=	x11 xau xaw xdmcp xext xinerama xmu xpm xrender xt
+USE_RC_SUBR=	xdm
 CPE_PRODUCT=	x_display_manager
 CPE_VENDOR=	x
 

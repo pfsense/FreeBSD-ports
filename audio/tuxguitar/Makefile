@@ -35,8 +35,7 @@ CPE_VENDOR=	herac
 USE_JAVA=	yes
 USE_ANT=	yes
 USE_LDCONFIG=	yes
-JAVA_VERSION=	1.6+
-NOCCACHE=	yes
+NO_CCACHE=	yes
 
 BUILD_WRKSRC=	${WRKSRC}/TuxGuitar
 SF2_DIR=	${LOCALBASE}/share/sounds/sf2

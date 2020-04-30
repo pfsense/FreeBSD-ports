@@ -6,7 +6,7 @@ PORTVERSION=	1.79.20040608
 PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES?=	editors
-MASTER_SITES=	ftp://ftp.mk.bsdclub.org/pub/FreeBSD/distfiles/	\
+MASTER_SITES=	LOCAL/nyan \
 		http://people.allbsd.org/~hrs/FreeBSD/
 PKGNAMESUFFIX?=	-m17n
 DISTNAME=	nvi-1.79

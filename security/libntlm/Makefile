@@ -2,26 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	libntlm
-PORTVERSION=	1.5
+PORTVERSION=	1.6
 CATEGORIES=	security
-MASTER_SITES=	http://www.nongnu.org/libntlm/releases/
+MASTER_SITES=	https://www.nongnu.org/libntlm/releases/
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Library that implement Microsoft's NTLM authentication
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		pathfix pkgconfig libtool
+USES=		libtool pathfix pkgconfig
+
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-
-PORTDOCS=	AUTHORS ChangeLog NEWS README THANKS
-
-OPTIONS_DEFINE=	DOCS
-
-post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

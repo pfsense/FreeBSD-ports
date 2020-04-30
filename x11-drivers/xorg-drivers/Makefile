@@ -2,7 +2,7 @@
 
 PORTNAME=	xorg-drivers
 PORTVERSION=	7.7
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	x11@FreeBSD.org
@@ -13,18 +13,13 @@ INPUTDIR=	${LOCALBASE}/lib/xorg/modules/input
 
 USES=		metaport
 
-INPUT_DRIVERS=		acecad \
-			egalax \
+INPUT_DRIVERS=		egalax \
 			elographics \
 			evdev \
-			fpit \
-			hyperpen \
 			joystick \
 			keyboard \
 			libinput \
 			mouse \
-			mutouch \
-			penmount \
 			synaptics \
 			void \
 			wacom
@@ -58,6 +53,7 @@ VIDEO_DRIVERS=		apm \
 			voodoo
 
 OPTIONS_DEFAULT=	KEYBOARD \
+			LIBINPUT \
 			MOUSE \
 			SCFB
 

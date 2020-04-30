@@ -2,20 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	plastex
-PORTVERSION=	1.0.0
+PORTVERSION=	2.1
 CATEGORIES=	math python
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	plasTeX-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	LaTeX Document Processing Framework
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>=0:graphics/py-pillow@${PY_FLAVOR}
+LICENSE=	MIT
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	tiarno
+RUN_DEPENDS=	${PY_PILLOW}
 
-USES=		python
-USE_PYTHON=	distutils autoplist
+USES=		python:3.5+
+USE_PYTHON=	autoplist distutils
 USE_TEX=	base:run
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

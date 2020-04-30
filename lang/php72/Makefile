@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	php72
-DISTVERSION=	7.2.25
+DISTVERSION=	7.2.30
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
@@ -12,7 +12,7 @@ COMMENT=	PHP Scripting Language
 
 LICENSE=	PHP301
 
-USES+=		tar:xz cpe
+USES+=		cpe gnome tar:xz
 CPE_PRODUCT=	php
 NO_OPTIONS_SORT=yes
 

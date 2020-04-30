@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	libxlsxwriter
-PORTVERSION=	0.8.6
+PORTVERSION=	0.9.4
 DISTVERSIONPREFIX=	RELEASE_
 CATEGORIES=	math devel
 
@@ -15,7 +15,7 @@ GH_ACCOUNT=	jmcnamara
 MAKE_ARGS=	INSTALL_DIR=${STAGEDIR}${PREFIX}
 
 USE_LDCONFIG=	yes
-USES=		gmake
+USES=		compiler:c11 gmake
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libxlsxwriter.so.0

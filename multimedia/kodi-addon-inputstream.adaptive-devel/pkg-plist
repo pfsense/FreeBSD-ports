@@ -4,5 +4,4 @@ lib/kodi/addons/inputstream.adaptive/inputstream.adaptive.so.%%SOVERSION%%
 lib/kodi/addons/inputstream.adaptive/libssd_wv.so
 share/kodi/addons/inputstream.adaptive/addon.xml
 share/kodi/addons/inputstream.adaptive/changelog.txt
-share/kodi/addons/inputstream.adaptive/resources/language/resource.language.en_gb/strings.po
 share/kodi/addons/inputstream.adaptive/resources/settings.xml

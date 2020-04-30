@@ -4,7 +4,7 @@
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	freebsd@grem.de
+MAINTAINER=	grembo@FreeBSD.org
 COMMENT=	Ice (Internet Communications Engine) language mapping for Python
 
 LICENSE=	GPLv2
@@ -12,9 +12,7 @@ LICENSE=	GPLv2
 BUILD_DEPENDS=	mcpp:devel/mcpp
 LIB_DEPENDS=	libIce.so.${LIB_VRS}:devel/ice
 
-BROKEN_powerpc64=	fails to compile: gmake: Ice_BuiltinSequences_ice.py: Segmentation fault (core dumped)
-
-USES=		python shebangfix
+USES=		compiler:c++11-lang python shebangfix
 USE_PYTHON=	py3kplist
 SLAVE_PORT=	yes
 MASTERDIR=	${.CURDIR}/../ice

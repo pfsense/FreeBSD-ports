@@ -5,7 +5,7 @@ PORTNAME=	icons-human-azul
 PORTVERSION=	0.1
 PORTREVISION=	1
 CATEGORIES=	x11-themes
-MASTER_SITES=	http://www.gnome-look.org/CONTENT/content-files/
+MASTER_SITES=	http://vvelox.net/distfiles/
 DISTNAME=	37099-HumanAzul
 
 MAINTAINER=	pneumann@gmail.com

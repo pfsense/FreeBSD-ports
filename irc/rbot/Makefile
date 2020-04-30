@@ -7,7 +7,7 @@ PORTREVISION=	0
 PORTEPOCH=	1
 CATEGORIES=	irc ruby
 
-MAINTAINER=	bdrewery@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ruby IRC bot similar to infobot
 
 LICENSE=	GPLv2 MIT
@@ -28,6 +28,7 @@ LIB_DEPENDS=	libtokyocabinet.so:databases/tokyocabinet
 USE_RUBY=	yes
 USE_RUBY_SETUP=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX}
+NO_ARCH=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ruby-${PORTNAME}

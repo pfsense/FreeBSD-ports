@@ -2,7 +2,7 @@
 
 PORTNAME=	avldrums
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.5
+DISTVERSION=	0.4.1
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	lv2>0:audio/lv2
 
-USES=		gl gmake gnome pkgconfig
+USES=		gl gmake gnome pkgconfig xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	x42
 GH_PROJECT=	${PORTNAME}.lv2

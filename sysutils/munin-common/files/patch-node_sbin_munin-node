@@ -1,6 +1,9 @@
---- node/sbin/munin-node.orig	2014-11-24 21:46:24 UTC
+plugins run in taint mode because the uid is changed, so the path must not
+contain writable directories.
+
+--- node/sbin/munin-node.orig	2020-03-24 12:31:00 UTC
 +++ node/sbin/munin-node
-@@ -54,6 +54,10 @@ sub main
+@@ -53,6 +53,10 @@ sub main
          $ENV{$key} = $1;
      }
  

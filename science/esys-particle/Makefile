@@ -2,7 +2,7 @@
 
 PORTNAME=	esys-particle
 DISTVERSION=	2.3.5
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	science
 MASTER_SITES=	https://launchpad.net/${PORTNAME}/trunk/${DISTVERSION}/+download/
 DISTNAME=	ESyS-Particle-${DISTVERSION}
@@ -12,7 +12,7 @@ COMMENT=	Particle-based numerical modelling software
 
 LICENSE=	APACHE20
 
-BROKEN_FreeBSD_13=	The upstream doesn't answer bug reports: https://bugs.launchpad.net/esys-particle/+bug/1808617
+BROKEN=	The upstream doesn't answer bug reports: https://bugs.launchpad.net/esys-particle/+bug/1808617
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libmpi.so:net/mpich

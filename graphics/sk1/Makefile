@@ -3,6 +3,7 @@
 PORTNAME=	sk1
 DISTVERSION=	2.0
 DISTVERSIONSUFFIX=	rc3
+PORTREVISION=	2
 CATEGORIES=	graphics python
 MASTER_SITES=	https://downloads.sk1project.net/sk1/${DISTVERSIONFULL}/
 
@@ -12,11 +13,14 @@ COMMENT=	Professional quality illustration program
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/GPLv3.txt
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-08-15
+
 LIB_DEPENDS=	liblcms2.so:graphics/lcms2 \
 		libMagickCore-6.so:graphics/ImageMagick6
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>0:graphics/py-cairo@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>0:graphics/py-cairo@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR} \
+		${PY_PILLOW} \
 		${PYTHON_PKGNAMEPREFIX}pycups>0:print/py-pycups@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}reportlab>0:print/py-reportlab@${PY_FLAVOR}
 

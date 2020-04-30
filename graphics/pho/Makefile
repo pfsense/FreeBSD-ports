@@ -7,12 +7,12 @@ PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://shallowsky.com/software/pho/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Lightweight image viewer
 
 LICENSE=	GPLv2
 
-USES=		gmake pkgconfig
+USES=		gmake gnome pkgconfig
 USE_GNOME=	gtk20
 MAKE_ARGS=	INSTALLPREFIX="${STAGEDIR}${PREFIX}"
 ALL_TARGET=	${PORTNAME}

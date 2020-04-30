@@ -35,6 +35,7 @@
 %%WWWDIR%%/app/controllers/CControllerExportXml.php
 %%WWWDIR%%/app/controllers/CControllerFavouriteCreate.php
 %%WWWDIR%%/app/controllers/CControllerFavouriteDelete.php
+%%WWWDIR%%/app/controllers/CControllerHostMacrosList.php
 %%WWWDIR%%/app/controllers/CControllerMapView.php
 %%WWWDIR%%/app/controllers/CControllerMediatypeCreate.php
 %%WWWDIR%%/app/controllers/CControllerMediatypeDelete.php
@@ -135,6 +136,8 @@
 %%WWWDIR%%/app/views/administration.userprofile.edit.js.php
 %%WWWDIR%%/app/views/dashboard.properties.edit.php
 %%WWWDIR%%/app/views/dashboard.sharing.edit.php
+%%WWWDIR%%/app/views/hostmacros.list.html.php
+%%WWWDIR%%/app/views/hostmacros.list.php
 %%WWWDIR%%/app/views/layout.csv.php
 %%WWWDIR%%/app/views/layout.htmlpage.footer.php
 %%WWWDIR%%/app/views/layout.htmlpage.header.php
@@ -473,7 +476,7 @@
 %%WWWDIR%%/include/classes/import/converters/CArrayKeysImportConverter.php
 %%WWWDIR%%/include/classes/import/converters/CConstantImportConverter.php
 %%WWWDIR%%/include/classes/import/converters/CConverter.php
-%%WWWDIR%%/include/classes/import/converters/CDefaultValuesImportConverter.php
+%%WWWDIR%%/include/classes/import/converters/CDefaultImportConverter.php
 %%WWWDIR%%/include/classes/import/converters/CImportConverterFactory.php
 %%WWWDIR%%/include/classes/import/importers/CAbstractScreenImporter.php
 %%WWWDIR%%/include/classes/import/importers/CHostImporter.php
@@ -549,7 +552,7 @@
 %%WWWDIR%%/include/classes/parsers/CUserMacroParser.php
 %%WWWDIR%%/include/classes/parsers/CValidationRule.php
 %%WWWDIR%%/include/classes/parsers/results/CParserResult.php
-%%WWWDIR%%/include/classes/parsers/results/CTriggerExpressionParserResult.php
+%%WWWDIR%%/include/classes/parsers/results/CTriggerExprParserResult.php
 %%WWWDIR%%/include/classes/regexp/CGlobalRegexp.php
 %%WWWDIR%%/include/classes/routing/CUrl.php
 %%WWWDIR%%/include/classes/routing/CUrlFactory.php
@@ -734,7 +737,7 @@
 %%WWWDIR%%/include/views/administration.general.regularexpressions.edit.php
 %%WWWDIR%%/include/views/administration.general.regularexpressions.list.php
 %%WWWDIR%%/include/views/administration.general.trigger.options.edit.php
-%%WWWDIR%%/include/views/administration.general.triggerSeverity.edit.php
+%%WWWDIR%%/include/views/administration.general.trigseverity.edit.php
 %%WWWDIR%%/include/views/administration.general.valuemapping.edit.php
 %%WWWDIR%%/include/views/administration.general.valuemapping.list.php
 %%WWWDIR%%/include/views/administration.general.workingtime.edit.php
@@ -788,7 +791,6 @@
 %%WWWDIR%%/include/views/general.browserwarning.php
 %%WWWDIR%%/include/views/general.login.php
 %%WWWDIR%%/include/views/general.warning.php
-%%WWWDIR%%/include/views/hostmacros.php
 %%WWWDIR%%/include/views/inventory.host.list.php
 %%WWWDIR%%/include/views/inventory.host.view.php
 %%WWWDIR%%/include/views/js/adm.regexprs.edit.js.php
@@ -797,7 +799,7 @@
 %%WWWDIR%%/include/views/js/administration.general.iconmap.js.php
 %%WWWDIR%%/include/views/js/administration.general.macros.edit.js.php
 %%WWWDIR%%/include/views/js/administration.general.trigger.options.js.php
-%%WWWDIR%%/include/views/js/administration.general.triggerSeverity.js.php
+%%WWWDIR%%/include/views/js/administration.general.trigseverity.js.php
 %%WWWDIR%%/include/views/js/administration.general.valuemapping.edit.js.php
 %%WWWDIR%%/include/views/js/common.filter.trigger.js.php
 %%WWWDIR%%/include/views/js/common.init.js.php
@@ -828,7 +830,6 @@
 %%WWWDIR%%/include/views/js/configuration.triggers.edit.js.php
 %%WWWDIR%%/include/views/js/configuration.triggers.list.js.php
 %%WWWDIR%%/include/views/js/editabletable.js.php
-%%WWWDIR%%/include/views/js/hostmacros.js.php
 %%WWWDIR%%/include/views/js/item.preprocessing.js.php
 %%WWWDIR%%/include/views/js/monitoring.latest.js.php
 %%WWWDIR%%/include/views/js/monitoring.screen.edit.js.php
@@ -877,11 +878,12 @@
 %%WWWDIR%%/js/class.cverticalaccordion.js
 %%WWWDIR%%/js/class.cviewswitcher.js
 %%WWWDIR%%/js/class.localstorage.js
-%%WWWDIR%%/js/class.mapWidget.js
+%%WWWDIR%%/js/class.mapwidget.js
 %%WWWDIR%%/js/class.notification.collection.js
 %%WWWDIR%%/js/class.notification.js
 %%WWWDIR%%/js/class.notifications.audio.js
 %%WWWDIR%%/js/class.notifications.js
+%%WWWDIR%%/js/class.overlaycollection.js
 %%WWWDIR%%/js/class.pmaster.js
 %%WWWDIR%%/js/class.promise.js
 %%WWWDIR%%/js/class.rpc.js

@@ -76,8 +76,8 @@ LDFLAGS+=		-Wl,--as-needed
 BUNDLE_LIBS=	yes
 
 BUILD_DEPENDS+=	llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT} \
-				rust-cbindgen>=0.8.7:devel/rust-cbindgen \
-				${RUST_DEFAULT}>=1.35:lang/${RUST_DEFAULT} \
+				rust-cbindgen>=0.13.1:devel/rust-cbindgen \
+				${RUST_DEFAULT}>=1.41:lang/${RUST_DEFAULT} \
 				${LOCALBASE}/bin/python${PYTHON3_DEFAULT}:lang/python${PYTHON3_DEFAULT:S/.//g} \
 				node:www/node
 MOZ_EXPORT+=	${CONFIGURE_ENV} \
@@ -90,9 +90,6 @@ MOZ_MK_OPTIONS+=MOZ_OBJDIR="${BUILD_WRKSRC}"
 
 # Require newer Clang than what's in base system unless user opted out
 . if ${CC} == cc && ${CXX} == c++ && exists(/usr/lib/libc++.so)
-.if ${LLVM_DEFAULT:S,-devel,990,} >= 90 && ${ARCH} == i386
-LLVM_DEFAULT=	80
-.endif
 BUILD_DEPENDS+=	${LOCALBASE}/bin/clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 CPP=			${LOCALBASE}/bin/clang-cpp${LLVM_DEFAULT}
 CC=				${LOCALBASE}/bin/clang${LLVM_DEFAULT}
@@ -114,7 +111,7 @@ RUSTFLAGS+=	${CFLAGS:M-mcpu=*:S/-mcpu=/-C target-cpu=/}
 .endif
 
 # Standard depends
-_ALL_DEPENDS=	av1 event ffi graphite harfbuzz hunspell icu jpeg nspr nss png pixman sqlite vpx webp
+_ALL_DEPENDS=	av1 event ffi graphite harfbuzz icu jpeg nspr nss png pixman sqlite vpx webp
 
 .if exists(${FILESDIR}/patch-bug1559213)
 av1_LIB_DEPENDS=	libaom.so:multimedia/aom libdav1d.so:multimedia/dav1d
@@ -134,9 +131,6 @@ graphite_MOZ_OPTIONS=	--with-system-graphite2
 harfbuzz_LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 harfbuzz_MOZ_OPTIONS=	--with-system-harfbuzz
 .endif
-
-hunspell_LIB_DEPENDS=	libhunspell-1.7.so:textproc/hunspell
-hunspell_MOZ_OPTIONS=	--enable-system-hunspell
 
 icu_LIB_DEPENDS=		libicui18n.so:devel/icu
 icu_MOZ_OPTIONS=		--with-system-icu --with-intl-api
@@ -327,7 +321,6 @@ LDFLAGS+=	-B${LOCALBASE}/bin
 .elif ${ARCH:Mpowerpc*}
 . if ${ARCH} == "powerpc64"
 MOZ_EXPORT+=	UNAME_m="${ARCH}"
-CFLAGS+=	-mminimal-toc
 . endif
 .elif ${ARCH} == "sparc64"
 # Work around miscompilation/mislinkage of the sCanonicalVTable hacks.
@@ -379,6 +372,14 @@ gecko-post-patch:
 		-e 's|share/mozilla/extensions|lib/xpi|g' \
 		${MOZSRC}/xpcom/io/nsAppFileLocationProvider.cpp \
 		${MOZSRC}/toolkit/xre/nsXREDirProvider.cpp
+# Disable vendor checksums like lang/rust
+	@${REINPLACE_CMD} 's,"files":{[^}]*},"files":{},' \
+		${MOZSRC}/third_party/rust/*/.cargo-checksum.json
+
+pre-configure-script:
+# Check that the running kernel has COMPAT_FREEBSD11 required by lang/rust post-ino64
+	@${SETENV} CC="${CC}" OPSYS="${OPSYS}" OSVERSION="${OSVERSION}" WRKDIR="${WRKDIR}" \
+		${SH} ${SCRIPTSDIR}/rust-compat11-canary.sh
 
 post-install-script: gecko-create-plist
 

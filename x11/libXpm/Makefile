@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libXpm
-PORTVERSION=	3.5.12
-PORTREVISION=	2
+PORTVERSION=	3.5.13
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
@@ -11,7 +10,7 @@ COMMENT=	X Pixmap library
 
 LICENSE=	MIT
 
-XORG_CAT=	lib
+USES=		xorg xorg-cat:lib
 USE_XORG=	xorgproto x11 xext xt
 LDFLAGS+=	-L${LOCALBASE}/lib
 

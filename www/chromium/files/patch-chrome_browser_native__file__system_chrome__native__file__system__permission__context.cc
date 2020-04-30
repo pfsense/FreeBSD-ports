@@ -1,6 +1,6 @@
---- chrome/browser/native_file_system/chrome_native_file_system_permission_context.cc.orig	2019-10-21 19:06:22 UTC
+--- chrome/browser/native_file_system/chrome_native_file_system_permission_context.cc.orig	2020-03-16 18:40:29 UTC
 +++ chrome/browser/native_file_system/chrome_native_file_system_permission_context.cc
-@@ -225,7 +225,7 @@ const struct {
+@@ -144,7 +144,7 @@ const struct {
      {base::DIR_APP_DATA, nullptr, true},
      {base::DIR_HOME, FILE_PATH_LITERAL("Library"), true},
  #endif

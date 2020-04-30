@@ -14,12 +14,15 @@ COMMENT=	Simulates the life of a true AI
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/GPL.txt
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-08-15
+
 RUN_DEPENDS=	${PYGAME} \
 		${PYNUMPY}
 
 USE_GITHUB=	yes
 
-USES=		python:2.7
+USES=		python:2.7 sdl
 USE_PYTHON=	autoplist distutils
 USE_SDL=	image mixer
 PORTDOCS=	AUTHORS Changelog README.txt TODO

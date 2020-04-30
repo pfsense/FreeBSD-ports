@@ -113,37 +113,67 @@ class HtmlList
 	function acme_htmllist_drawcell($item, $itemvalue, $editable, $itemname, $counter) {
 		$result = "";
 		$itemnamenr = $this->tablename . $itemname . $counter;
-		$itemtype = $item['type'];
 		if ($editable) {
-			$itemtype = $item['type'];
-			if ($itemtype == "select") {
-				$result .= echo_html_select($itemnamenr, $item['items'], $itemvalue,"-none available-","html_listitem_change(\"{$this->tablename}\",\"{$itemname}\",\"{$counter}\",this);", "");
-			} elseif ($itemtype == "checkbox") {
-				$checked = $itemvalue=='yes' ? " checked" : "";
-				$result .= "<input onclick='html_listitem_change(\"{$this->tablename}\",\"{$itemname}\",\"{$counter}\",this);' name='$itemnamenr' id='$itemnamenr' type='checkbox'$checked value='yes' />";
-			} elseif ($itemtype == "textarea") {
-				$result .= "<textarea class='form-control nowrap' name='$itemnamenr' id='$itemnamenr' cols='{$item['size']}' rows='10' style='width:100%'>";
-				$result .= htmlspecialchars(base64_decode($itemvalue));
-				$result .= "</textarea>";
-			} elseif ($itemtype ==  "fixedtext") {
-				$result .= $item['text'];
-			} else {
-				$itemvalue = htmlspecialchars($itemvalue, ENT_QUOTES);
-				$result .= "<input class='form-control' name='$itemnamenr' id='$itemnamenr' type='text' value='{$itemvalue}' />";
+			switch ($item['type']) {
+				case 'select':
+					$result .= echo_html_select($itemnamenr,
+									$item['items'],
+									$itemvalue,
+									"-none available-",
+									"html_listitem_change(\"{$this->tablename}\",\"{$itemname}\",\"{$counter}\",this);",
+									"");
+					break;
+				case 'checkbox':
+					$checked = ($itemvalue == 'yes') ? " checked" : "";
+					$result .= "<input onclick='html_listitem_change(\"{$this->tablename}\",\"{$itemname}\",\"{$counter}\",this);' name='{$itemnamenr}' id='{$itemnamenr}' type='checkbox'{$checked} value='yes' />";
+					break;
+				case 'textarea':
+					$result .= "<textarea class=\"form-control nowrap\" name=\"{$itemnamenr}\" id=\"{$itemnamenr}\" cols=\"{$item['size']}\" rows=\"10\" style=\"width:100%\">";
+					$result .= htmlspecialchars(base64_decode($itemvalue));
+					$result .= "</textarea>";
+					break;
+				case 'fixedtext':
+					$result .= $item['text'];
+					break;
+				case 'password':
+					$itemvalue = htmlspecialchars($itemvalue, ENT_QUOTES);
+					$result .= "<input class=\"form-control\" name=\"{$itemnamenr}\" id=\"{$itemnamenr}\" type=\"password\" autocomplete=\"new-password\" value=\"{$itemvalue}\" />";
+					break;
+				default:
+					$itemvalue = htmlspecialchars($itemvalue, ENT_QUOTES);
+					$result .= "<input class=\"form-control\" name=\"{$itemnamenr}\" id=\"{$itemnamenr}\" type=\"text\" value=\"{$itemvalue}\" />";
+					break;
 			}
 		} else {
-			if ($itemtype == "select") {
-				$result .= $item['items'][$itemvalue]['name'];
-			} elseif ($itemtype == "checkbox") {
-				$result .= $itemvalue=='yes' ? gettext('yes') : gettext('no');
-			} elseif ($itemtype == "textarea") {
-				$result .= "<div style='overlow:scroll;max-height:120px;max-width:{$item['colwidth']};overflow-y: scroll;'>";
-				$result .= str_replace(" ","&nbsp;", str_replace("\n","<br/>", htmlspecialchars(base64_decode($itemvalue))));
-				$result .= '</div>';
-			} elseif ($itemtype ==  "fixedtext") {
-				$result .= $item['text'];
-			} else {
-				$result .= htmlspecialchars($itemvalue);
+			switch ($item['type']) {
+				case 'select':
+					$result .= $item['items'][$itemvalue]['name'];
+					break;
+				case 'checkbox':
+					$result .= ($itemvalue == 'yes') ? gettext('yes') : gettext('no');
+					break;
+				case 'textarea':
+					$result .= "<div style=\"overlow:scroll;max-height:120px;max-width:{$item['colwidth']};overflow-y: scroll;\">";
+					$result .= str_replace(" ","&nbsp;", str_replace("\n","<br/>", htmlspecialchars(base64_decode($itemvalue))));
+					$result .= '</div>';
+					break;
+				case 'fixedtext':
+					$result .= $item['text'];
+					break;
+				case 'password':
+					$result .= '********';
+					break;
+				default:
+					$result .= htmlspecialchars($itemvalue);
+					break;
+			}
+			if ((stripos($item['name'], 'key') !== false) ||
+			    (stripos($item['name'], 'secret') !== false) ||
+			    (stripos($item['name'], 'sha256') !== false) ||
+			    (stripos($item['name'], 'password') !== false) ||
+			    (stripos($item['name'], 'token') !== false)) {
+				$itemvalue = '********';
+				$result = '********';
 			}
 		}
 		return $result;
@@ -373,6 +403,10 @@ function acme_htmllist_js($tablename = "") {
 			result="<input name='" + tableId + field['name'] + rowId +
 			"' id='" + tableId + field['name'] + rowId +
 			"'><\/input> ";
+		} else if(field['type'] === 'password') {
+			result="<input name='" + tableId + field['name'] + rowId +
+			"' id='" + tableId + field['name'] + rowId +
+			"' type='password'\/> ";
 		} else if(field['type'] === 'textarea') {
 			result="<textarea class='form-control nowrap' cols='" + field['size'] + "' rows='15' style='width:100%' name='" + tableId + field['name'] + rowId +
 			"' id='" + tableId + field['name'] + rowId +

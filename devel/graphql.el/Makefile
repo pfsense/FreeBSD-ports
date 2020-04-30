@@ -2,7 +2,7 @@
 
 PORTNAME=	graphql.el
 DISTVERSION=	0.1.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
@@ -10,6 +10,9 @@ MAINTAINER=	yasu@utahime.org
 COMMENT=	Emacs lisp library for GraphQL web services
 
 LICENSE=	GPLv3+
+
+DEPRECATED=	No longer required by anything
+EXPIRATION_DATE=	2020-05-31
 
 USES=		emacs
 USE_GITHUB=	yes

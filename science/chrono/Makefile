@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	chrono
-DISTVERSION=	4.0.0-89
-DISTVERSIONSUFFIX=	-ge36b5a9ce
-PORTREVISION=	3
+DISTVERSION=	5.0.1
+PORTREVISION=	1
 CATEGORIES=	science devel
+PKGNAMESUFFIX=	-physics-simulation-engine
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++ library for multi-physics simulation
@@ -15,9 +15,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BROKEN_i386=	use of overloaded operator '[]' is ambiguous (with operand types 'chrono::quaternion' and 'int'): https://github.com/projectchrono/chrono/issues/158
 
 BUILD_DEPENDS=	openmpi>0:net/openmpi
-LIB_DEPENDS=	libomp.so:devel/openmp
 
-USES=		cmake compiler:c++14-lang fortran
+USES=		cmake compiler:c++14-lang eigen:3 fortran
 USE_GITHUB=	yes
 GH_ACCOUNT=	project${PORTNAME}
 USE_LDCONFIG=	yes

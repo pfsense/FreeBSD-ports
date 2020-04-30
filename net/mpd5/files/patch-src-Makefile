@@ -1,6 +1,6 @@
---- src/Makefile.orig	2016-01-06 22:42:06.000000000 +0700
-+++ src/Makefile	2018-11-25 13:48:31.977979000 +0700
-@@ -9,10 +9,20 @@
+--- src/Makefile.orig
++++ src/Makefile
+@@ -9,11 +9,12 @@
  
  PROG?=			mpd5
  PREFIX?=		/usr/local
@@ -8,21 +8,14 @@
  BINDIR?=		${PREFIX}/sbin
  VERSION=		5.8
 -NOMAN=
-+
-+.if defined(OSVERSION)
-+.if ${OSVERSION} > 1100100
-+MK_MAN=			no
-+.else
-+NO_MAN=
-+.endif
-+.else
-+MK_MAN=			no
- NO_MAN=
-+.endif
+-NO_MAN=
  
++MAN=
++
  BINOWN!=		/usr/bin/id -n -u
  BINGRP!=		/usr/bin/id -n -g
-@@ -60,9 +70,6 @@
+ 
+@@ -59,9 +60,6 @@
  USE_AUTH_PAM=		yes
  USE_AUTH_SYSTEM=	yes
  
@@ -32,7 +25,7 @@
  # Build without builtin web server.
  #NOWEB=			yes
  
-@@ -72,7 +79,7 @@
+@@ -71,7 +69,7 @@
  
  # Print wide protocol names instead of short names.
  # Comment this line, to save about 10 KB space
@@ -41,7 +34,7 @@
  
  # Reduce some internal structures size to save more memory
  # This is to limit amount of active sessions
-@@ -84,27 +91,27 @@
+@@ -83,27 +81,27 @@
  ## filter TCP accept connections
  LDADD+=		-lwrap
  DPADD+=		${LIBWRAP}
@@ -73,7 +66,7 @@
  .endif
  
  LDADD+=		-lnetgraph -lutil
-@@ -113,19 +120,12 @@
+@@ -112,19 +110,12 @@
  LDADD+=		-L/usr/lib -lradius
  DPADD+=		${LIBRADIUS}
  
@@ -97,7 +90,7 @@
  		-Wcast-align \
  		-Wchar-subscripts \
  		-Wformat \
-@@ -135,15 +135,14 @@
+@@ -134,15 +125,14 @@
  		-Wnested-externs \
  		-Wpointer-arith \
  		-Wwrite-strings \
@@ -116,7 +109,7 @@
  .endif
  
  # Standard sources
-@@ -155,14 +154,13 @@
+@@ -154,14 +144,13 @@
  		util.c vars.c eap.c msoft.c ippool.c
  
  .if defined ( NOWEB )
@@ -133,7 +126,7 @@
  PDPATH1=	contrib/libpdel/util:contrib/libpdel/structs
  PDPATH2=	contrib/libpdel/structs/type
  .if defined ( NOWEB )
-@@ -200,60 +198,59 @@
+@@ -199,60 +188,59 @@
  		string_fp.c \
  		timeout_fp.c
  .endif
@@ -209,7 +202,7 @@
  .endif
  .endif
  
-@@ -262,46 +259,46 @@
+@@ -261,46 +249,46 @@
  .if defined ( ECP_DES )
  SRCS+=		ecp_dese.c
  SRCS+=		ecp_dese_bis.c
@@ -267,7 +260,7 @@
  .endif
  
  # Add in required support files and libraries
-@@ -310,15 +307,12 @@
+@@ -309,15 +297,12 @@
  
  .if exists ( /usr/lib/libexecinfo.so )
  LDADD+=		-lexecinfo

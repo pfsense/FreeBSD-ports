@@ -3,14 +3,14 @@
 
 PORTNAME=	irc
 PORTVERSION=	2.11.2p3
-CATEGORIES=	irc ipv6
+CATEGORIES=	irc
 MASTER_SITES=	http://ftp.irc.org/ftp/irc/server/ \
 		ftp://ftp.archive.de.uu.net/pub/mirrors/ftp.irc.org/server/ \
 		ftp://ftp.nl.uu.net/pub/mirrors/ftp.irc.org/server/
 DISTNAME=	${PORTNAME}${PORTVERSION}
 EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The "Internet Relay Chat" Server
 
 CONFLICTS_INSTALL=	charybdis-[0-9]* ircd-hybrid-[0-9]* Nefarious-[0-9]* \

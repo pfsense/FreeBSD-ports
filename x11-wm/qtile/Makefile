@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	qtile
-PORTVERSION=	0.13.0
+PORTVERSION=	0.14.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	x11-wm
 
@@ -27,7 +27,7 @@ GH_ACCOUNT=	qtile
 
 USE_GNOME=	pygobject3
 
-USES=		python:3.4+
+USES=		gnome python:3.4+
 USE_PYTHON=	distutils autoplist noflavors
 NO_ARCH=	yes
 

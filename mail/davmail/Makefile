@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	davmail
-PORTVERSION=	5.3.1
+PORTVERSION=	5.4.0
 CATEGORIES=	mail java
 MASTER_SITES=	SF/davmail/davmail/${PORTVERSION}
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}-${REVISION}
@@ -18,10 +18,9 @@ DOS2UNIX_FILES=	build.xml
 NO_ARCH=	yes
 USE_ANT=	yes
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 ALL_TARGET=	release
-# 5.3.1
-REVISION=	3079
+# 5.4.0
+REVISION=	3135
 # port build number, same as on DISTNAME
 MAKE_ARGS=	-Drevision=${REVISION}
 MAKE_ENV+=	"ANT_OPTS=-Dfile.encoding=UTF-8"

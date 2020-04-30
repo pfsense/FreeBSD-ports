@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pslib
-PORTVERSION=	0.4.5
-PORTREVISION=	4
+PORTVERSION=	0.4.6
 CATEGORIES=	print
 MASTER_SITES=	SF
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -14,17 +13,18 @@ COMMENT=	C-library for generating multi page PostScript documents
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpng.so:graphics/png \
+LIB_DEPENDS=	libgif.so:graphics/giflib \
+		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
-USES=		gettext gmake jpeg libtool localbase pathfix pkgconfig
+USES=		gettext gmake gnome jpeg libtool localbase pathfix pkgconfig
 USE_GNOME=	intlhack
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 LIBS+=		-lintl
 INSTALL_TARGET=	install-strip
 
-EX_DISTNAME=		pslib-examples-0.0.10
+EX_DISTNAME=		pslib-examples-0.0.11
 EX_WRKSRC=		${WRKDIR}/${EX_DISTNAME}
 
 OPTIONS_DEFINE=		EXAMPLES MANPAGES NLS

@@ -8,7 +8,7 @@
  * zabbix-agent.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Danilo G. Baio
  * Copyright (c) 2013 Marcello Coutinho
  * All rights reserved.
@@ -90,7 +90,7 @@
 			<default_value>0.0.0.0</default_value>
 			<type>input</type>
 			<size>60</size>
-			<description>Listen IP for connections from the server. (Default: 0.0.0.0 - all interfaces)</description>
+			<description>Comma-separated list of IP addresses for connections from the server. (Default: 0.0.0.0 - all IPv4 interfaces)</description>
 		</field>
 		<field>
 			<fielddescr>Listen Port</fielddescr>

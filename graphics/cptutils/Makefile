@@ -30,10 +30,10 @@ OPTIONS_DEFINE=		DOCS TEST
 
 TEST_CONFIGURE_ENABLE=	tests
 TEST_BUILD_DEPENDS=	bash:shells/bash \
-			xml2:textproc/xml2 \
 			xml:textproc/xmlstarlet
 TEST_LIB_DEPENDS=	libcunit.so:devel/cunit
 TEST_TEST_TARGET=	test unit
+TEST_BROKEN=		depends on expired xml2
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

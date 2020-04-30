@@ -2,6 +2,7 @@
 
 PORTNAME=	omegaT
 DISTVERSION=	3.6.0
+PORTREVISION=	1
 CATEGORIES=	editors java x11
 MASTER_SITES=	SF/${PORTNAME:tl}/OmegaT%20-%20Standard/OmegaT%20${DISTVERSION}%20update%204/
 DISTNAME=	OmegaT_${DISTVERSION}_04_Source
@@ -9,6 +10,8 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Powerful translation memory application written in Java
+
+BROKEN=		unfetchable
 
 LICENSE=	GPLv2
 
@@ -22,7 +25,6 @@ kaptain_CMD=	${LOCALBASE}/bin/kaptain
 USE_ANT=	yes
 USE_JAVA=	yes
 JAVA_VENDOR=	openjdk
-JAVA_VERSION=	1.7+
 JAVA_BUILD=	yes
 JAVA_RUN=	yes
 NO_WRKSUBDIR=	yes

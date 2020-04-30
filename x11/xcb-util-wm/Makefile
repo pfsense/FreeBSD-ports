@@ -10,11 +10,11 @@ MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Framework for window manager implementation
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libxcb-util.so:x11/xcb-util
 
-XORG_CAT=	lib
-USES=		gmake
+USES=		gmake xorg xorg-cat:lib
 USE_XORG=	xcb
 
 post-patch:

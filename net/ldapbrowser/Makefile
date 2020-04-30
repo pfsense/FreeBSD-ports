@@ -18,9 +18,7 @@ COMMENT=	Java/Swing-based LDAP browser and editor
 RESTRICTED=	No reply from author regarding redistribution licensing
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
-NOMAN=		defined
 WRKSRC=		${WRKDIR}/${PORTNAME}
 REINPLACE_ARGS=	-i ''
 

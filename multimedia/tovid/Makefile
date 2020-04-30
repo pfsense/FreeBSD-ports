@@ -13,6 +13,9 @@ COMMENT=	Suite of tools for making DVD video disks
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
+
 BUILD_DEPENDS=	txt2tags:textproc/txt2tags
 LIB_DEPENDS=	libTix8.4.3.so:x11-toolkits/tix
 RUN_DEPENDS=	mplayer:multimedia/mplayer \
@@ -28,7 +31,7 @@ RUN_DEPENDS=	mplayer:multimedia/mplayer \
 		${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLAVOR} \
 		bash:shells/bash
 
-USES=		python:2.7 shebangfix
+USES=		gnome python:2.7 shebangfix
 SHEBANG_FILES= src/set_chapters src/titleset-wizard src/todiscgui src/tovid-stats
 USE_PYTHON=	autoplist distutils
 USE_GITHUB=	yes

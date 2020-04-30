@@ -2,7 +2,7 @@
 
 PROG_CXX=adb
 NOMAN= # DragonFly, NetBSD, OpenBSD
-NO_MAN= # FreeBSD
+MAN= # FreeBSD
 BINDIR?=/usr/bin
 FILESDIR?=${DOCDIR}/${PROG}
 
@@ -21,6 +21,7 @@ SRCS+= sysdeps_unix.cpp
 SRCS+= transport.cpp
 SRCS+= transport_local.cpp
 SRCS+= transport_usb.cpp
+SRCS+= types.cpp
 
 TEST_SRCS+= adb_io_test.cpp
 TEST_SRCS+= adb_listeners_test.cpp
@@ -61,6 +62,7 @@ SRCS+= network.cpp
 .PATH: ${.CURDIR}/../base
 SRCS+= chrono_utils.cpp
 SRCS+= file.cpp
+SRCS+= liblog_symbols.cpp
 SRCS+= logging.cpp
 SRCS+= parsenetaddress.cpp
 SRCS+= stringprintf.cpp
@@ -92,10 +94,17 @@ SRCS+= threads.cpp
 # DragonFly, NetBSD, OpenBSD
 CPPFLAGS.sockets.cpp+= -o ${.TARGET}
 
+# required by base
+.PATH: ${.CURDIR}/../liblog
+SRCS+= logger_write.cpp
+SRCS+= ../liblog/properties.cpp
+
 CPPFLAGS+= -DPLATFORM_TOOLS_VERSION="\"${VERSION:U0.0.0}\""
 CPPFLAGS+= -DADB_HOST=1
 CPPFLAGS+= -Doff64_t=off_t
 CPPFLAGS+= -Dlseek64=lseek
+CPPFLAGS+= -Dpread64=pread
+CPPFLAGS+= -Dpwrite64=pwrite
 CPPFLAGS+= -I${.CURDIR}
 CPPFLAGS+= -I${.CURDIR}/client
 CPPFLAGS+= -I${.CURDIR}/../include
@@ -112,8 +121,8 @@ CFLAGS+= ${CPPFLAGS}
 CXXFLAGS+= ${CPPFLAGS}
 .endif
 
-TEST_CPPFLAGS+= $$(${GTEST_CONFIG} --cppflags)
-TEST_CPPFLAGS+= $$(${GMOCK_CONFIG} --cppflags)
+TEST_CPPFLAGS+= $$(${PKG_CONFIG} gtest --cflags)
+TEST_CPPFLAGS+= $$(${PKG_CONFIG} gmock --cflags)
 .for f in ${TEST_SRCS}
 CPPFLAGS.${f}+= ${TEST_CPPFLAGS}
 .endfor
@@ -122,14 +131,12 @@ LDADD+= $$(${PKG_CONFIG} libcrypto --libs 2>/dev/null || echo -lcrypto)
 LDADD+= $$(${PKG_CONFIG} libusb-1.0 --libs 2>/dev/null || echo -lusb)
 LDADD+= \-lpthread
 DPADD+= ${LIBCRYPTO} ${LIBPTHREAD} ${LIBUSB}
-TEST_LDADD+= $$(${GTEST_CONFIG} --libs --ldflags)
-TEST_LDADD+= $$(${GMOCK_CONFIG} --libs --ldflags)
+TEST_LDADD+= $$(${PKG_CONFIG} gtest --libs)
+TEST_LDADD+= $$(${PKG_CONFIG} gmock --libs)
 
 TEST_OBJS+= ${TEST_SRCS:R:S/$/.o/}
 CLEANFILES+= ${PROG}_test ${TEST_OBJS}
 
-GTEST_CONFIG?= gtest-config
-GMOCK_CONFIG?= gmock-config
 PKG_CONFIG?= pkg-config
 
 beforeinstall:

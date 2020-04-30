@@ -10,6 +10,8 @@ MASTER_SITES=	http://useperl.ru/ipager/src/
 MAINTAINER=	lme@FreeBSD.org
 COMMENT=	X11 pager program
 
+BROKEN=		unfetchable
+
 LICENSE=	MIT
 
 LIB_DEPENDS=	libImlib2.so:graphics/imlib2
@@ -32,10 +34,6 @@ post-patch:
 	@${REINPLACE_CMD} -e '35,36d;89d;92,94d' \
 		-e "s/\([^-]pthread'\)/\1, 'X11'/" \
 		${WRKSRC}/SConstruct
-
-pre-build:
-	# scons is too stupid to create DESTDIR by itself
-	@${MKDIR} ${STAGEDIR}
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

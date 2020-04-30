@@ -3,13 +3,14 @@
 PORTNAME=	ipv6toolkit
 PORTVERSION=	2.0
 DISTVERSIONPREFIX=	v
-CATEGORIES=	security ipv6
+CATEGORIES=	security
 MASTER_SITES=	http://www.si6networks.com/tools/ipv6toolkit/
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Set of IPv6 security assessment tools
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
 USES=		shebangfix uidfix
 SHEBANG_FILES=	tools/blackhole6 tools/script6
@@ -28,11 +29,11 @@ post-extract:
 	@cd ${WRKSRC} && ${MKDIR} ${PROGDIRS} ${LIBDIRS}
 
 post-patch: apply-slist
-	${INSTALL_DATA} ${WRKDIR}/BSDMakefile ${WRKSRC}
-	for D in ${PROGDIRS}; do \
+	@${INSTALL_DATA} ${WRKDIR}/BSDMakefile ${WRKSRC}
+	@for D in ${PROGDIRS}; do \
 		${INSTALL_DATA} ${WRKDIR}/Makefile ${WRKSRC}/$$D; \
 	done
-	for D in ${LIBDIRS}; do \
+	@for D in ${LIBDIRS}; do \
 		${INSTALL_DATA} ${WRKDIR}/Makefile.lib ${WRKSRC}/$$D/Makefile; \
 	done
 

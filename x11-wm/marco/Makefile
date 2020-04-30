@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	marco
-PORTVERSION=	1.22.1
+PORTVERSION=	1.22.4
 CATEGORIES=	x11-wm mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -10,7 +10,7 @@ DIST_SUBDIR=	mate
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Window manager for the adult in you
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	itstool:textproc/itstool \
@@ -23,7 +23,8 @@ RUN_DEPENDS=	zenity>=3.0.0:x11/zenity
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake libtool localbase pathfix pkgconfig tar:xz
+USES=		gettext gmake gnome libtool localbase pathfix pkgconfig \
+		tar:xz xorg
 USE_XORG=	ice sm x11 xcomposite xcursor xdamage xext xfixes \
 		xinerama xrandr xrender
 USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool

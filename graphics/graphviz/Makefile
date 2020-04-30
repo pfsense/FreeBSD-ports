@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	graphviz
-PORTVERSION=	2.42.2
-PORTREVISION=	2
-MASTER_SITES=	https://gitlab.com/graphviz/graphviz/-/archive/${PORTVERSION}/
+PORTVERSION=	2.42.3
+PORTREVISION=	1
 CATEGORIES=	graphics tk
+MASTER_SITES=	https://www2.graphviz.org/Packages/stable/portable_source/
+
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Graph Visualization Software from AT&T and Bell Labs
 
@@ -78,12 +79,16 @@ GO_DESC=	Go bindings (swig)
 TK_DESC=	TK toolkit support
 NVTHREADS_DESC=	Link with threads (needed for nvidia)
 
+XPM_USES=	xorg
 XPM_USE=	XORG=xaw,xpm,xmu,xt,sm,ice,xext,x11,xau,xdmcp
 ICONV_USES=	iconv
 NLS_USES=	gettext
+PANGOCAIRO_USES=gnome xorg
 PANGOCAIRO_USE=	GNOME=pango,cairo XORG=xrender,x11,xau,xdmcp
+GTK2_USES=	gnome xorg
 GTK2_USE=	XORG=sm,ice,xext,xinerama,xi,xrandr,xcursor,xfixes GNOME=gtk20
 GNOMEUI_USE=	GNOME=libgnomeui
+SMYRNA_USES=	gnome gl
 SMYRNA_USE=	GNOME=libglade2,pangox-compat,gdkpixbuf2 GL=glut,glu,gl
 GHOSTSCRIPT_USES=ghostscript
 PERL_USES=	perl5
@@ -109,6 +114,7 @@ PHP_LIB_DEPENDS=	libpcre.so:devel/pcre \
 GHOSTSCRIPT_LIB_DEPENDS=	libgs.so:print/${_GS_PORT}
 
 XPM_CONFIGURE_WITH=		x
+XPM_CONFIGURE_ENV=		ac_cv_header_sys_inotify_h=no
 DIGCOLA_CONFIGURE_WITH=		digcola
 IPSEPCOLA_CONFIGURE_WITH=	ipsepcola
 IPSEPCOLA_IMPLIES=		DIGCOLA

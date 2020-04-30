@@ -15,8 +15,8 @@ COMMENT=	Apache Map/Reduce framework
 
 LICENSE=	APACHE20
 
-BROKEN_SSL=	openssl111
-BROKEN_SSL_REASON_openssl111=	variable has incomplete type 'HMAC_CTX' (aka 'hmac_ctx_st')
+BROKEN_SSL=	openssl
+BROKEN_SSL_REASON_openssl=	variable has incomplete type 'HMAC_CTX' (aka 'hmac_ctx_st')
 
 BUILD_DEPENDS=	gmake:devel/gmake \
 		gsed:textproc/gsed
@@ -27,7 +27,6 @@ CONFLICTS_INSTALL=	hadoop2-2*
 USES=		cpe libtool ssl:build
 CPE_VENDOR=	apache
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
 USE_ANT=	yes
 ONLY_FOR_ARCHS=	amd64 i386
 USE_LDCONFIG=	yes

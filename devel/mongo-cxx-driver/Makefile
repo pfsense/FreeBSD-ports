@@ -4,7 +4,7 @@
 PORTNAME=	mongo-cxx-driver
 PORTVERSION=	1.1.2
 DISTVERSIONPREFIX=legacy-
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	devel
 
 MAINTAINER=	numisemis@yahoo.com
@@ -13,8 +13,8 @@ COMMENT=	MongoDB Legacy C++ Driver
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/APACHE-2.0.txt
 
-BROKEN_SSL=	openssl111
-BROKEN_SSL_REASON_openssl111=	use of undeclared identifier 'BIO_s_file_internal'
+BROKEN_SSL=	openssl
+BROKEN_SSL_REASON_openssl=	use of undeclared identifier 'BIO_s_file_internal'
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs
 

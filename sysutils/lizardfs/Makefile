@@ -4,7 +4,7 @@
 PORTNAME=	lizardfs
 PORTVERSION=	3.12.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	10
 CATEGORIES=	sysutils
 
 MAINTAINER=	jhixson@FreeBSD.org
@@ -13,9 +13,12 @@ COMMENT=	Open Source Distribruted Filesystem
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_FreeBSD_13=	fails to build
+
 BUILD_DEPENDS=	a2x:textproc/asciidoc \
-	spdlog>=1.3.0:devel/spdlog
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs
+		spdlog>=1.4.2:devel/spdlog
+LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+		libfmt.so:devel/libfmt
 
 USES=	cmake compiler:c11 fuse python shebangfix
 USE_RC_SUBR=	mfscgiserv \
@@ -37,6 +40,8 @@ SHEBANG_FILES=	src/cgi/cgiserv.py.in \
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 
+CFLAGS+=	-DSPDLOG_FMT_EXTERNAL=1
+LDFLAGS+=	-L${LOCALBASE}/lib -lfmt
 CMAKE_BUILD_TYPE=	Release
 CMAKE_ARGS=	-DMAN_SUBDIR=man \
 	-DENABLE_WERROR=OFF \

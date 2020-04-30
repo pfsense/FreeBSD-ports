@@ -9,7 +9,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2014 Andrea Tuccia
- * Copyright (c) 2014-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2014-2020 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -87,6 +87,12 @@
 			<fielddescr>Silent</fielddescr>
 			<fieldname>silent</fieldname>
 			<description>Silent mode, do not transmit packets.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Set interface description</fielddescr>
+			<fieldname>infdescr</fieldname>
+			<description>Save received info in interface description.</description>
 			<type>checkbox</type>
 		</field>
 		<field>

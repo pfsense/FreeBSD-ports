@@ -3,7 +3,7 @@
 
 PORTNAME=	xmlcopyeditor
 PORTVERSION=	1.2.1.3
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	editors
 MASTER_SITES=	SF/xml-copy-editor/${PORTNAME}-linux/${PORTVERSION}
 
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libxerces-c.so.3:textproc/xerces-c3 \
 		libxml2.so:textproc/libxml2 \
 		libexpat.so:textproc/expat2
 
-USES=		compiler:c++11-lang dos2unix gettext gmake iconv libtool
+USES=		compiler:c++11-lang dos2unix gettext gmake gnome iconv libtool
 USE_WX=		2.8+
 WX_COMPS=	wx contrib
 WX_CONF_ARGS=	absolute

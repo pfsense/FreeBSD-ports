@@ -12,6 +12,8 @@ DISTFILES=		${DISTNAME}-sources.tar.gz \
 MAINTAINER=		nivit@FreeBSD.org
 COMMENT=		Tool for rapid development of small sites
 
+BROKEN=		unfetchable
+
 BROKEN_armv6=		fails to compile: build.xml: tools/ant/lib not found
 BROKEN_armv7=		fails to compile: build.xml: tools/ant/lib not found
 
@@ -25,8 +27,6 @@ IGNORE_FILES=		! -name *\.bak -and ! -name *\.bat \
 			-and ! -name index.html
 
 INSTALL_WRKSRC=		${WRKSRC}/build
-
-JAVA_VERSION=		1.6+
 
 NO_BUILD=		Yes
 

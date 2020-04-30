@@ -5,7 +5,7 @@
 			"* pfblockerng_feeds.json",
 			"*",
 			"* part of pfSense (https://www.pfsense.org)",
-			"* Copyright (c) 2016 Rubicon Communications, LLC (Netgate)",
+			"* Copyright (c) 2016-2020 Rubicon Communications, LLC (Netgate)",
 			"* Copyright (c) 2015-2019 BBcan177@gmail.com",
 			"* All rights reserved.",
 			"*",
@@ -368,7 +368,7 @@
 					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/MiningServerIPList.txt",
 					"register":	"https://pulsedive.com/feed/?fid=60",
 					"info":		"The final URL for this feed will be provided upon registration.",
-					"donate":	"https://amzn.to/2Ol2KKn",
+					"donate":	"https://bit.ly/2NU3STB",
 					"header":	"CoinBlocker"
 				},
 				{

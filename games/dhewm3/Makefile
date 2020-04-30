@@ -3,7 +3,7 @@
 
 PORTNAME=	dhewm3
 PORTVERSION=	1.5.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -21,7 +21,8 @@ GH_ACCOUNT=	dhewm
 
 USES=		cmake compiler:c++11-lang jpeg openal:al sdl
 USE_SDL=	sdl2
-LLD_UNSAFE=	yes
+
+LDFLAGS_i386=	-Wl,-znotext
 
 WRKSRC_SUBDIR=	neo
 

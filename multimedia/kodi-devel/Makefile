@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	kodi
-DISTVERSION=	19.0.a20190826
+DISTVERSION=	19.0.a20200318
 PORTREVISION=	1
 CATEGORIES=	multimedia
 PKGNAMESUFFIX=	-devel
@@ -11,7 +11,7 @@ COMMENT=	Award winning media center application
 
 LICENSE=	GPLv2+
 
-ONLY_FOR_ARCHS=	amd64 armv6 armv7 i386
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386
 
 BUILD_DEPENDS=	flatbuffers>=0:devel/flatbuffers \
 		rapidjson>=0:devel/rapidjson \
@@ -24,6 +24,7 @@ LIB_DEPENDS=	libass.so:multimedia/libass \
 		libcdio.so:sysutils/libcdio \
 		libcrossguid.so:devel/libcrossguid \
 		libcurl.so:ftp/curl \
+		libdrm.so:graphics/libdrm \
 		libdvdnav.so:multimedia/libdvdnav \
 		libdvdread.so:multimedia/libdvdread \
 		libexpat.so:textproc/expat2 \
@@ -50,13 +51,14 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 # Building libcpluff.a requires autoreconf and gmake.  Using ninja
 # leads to dependency problems where libcpluff.a is not yet finished
 # building when it's required.
-USES=		autoreconf:build cmake:noninja compiler:c++11-lang gettext \
+USES=		autoreconf:build cmake:noninja compiler:c++11-lang gettext gl \
 		gmake gnome iconv:wchar_t jpeg libtool pkgconfig python:3.5+ \
 		sqlite ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	xbmc
 GH_PROJECT=	xbmc
-GH_TAGNAME=	0bc5954818e6b55a98f551a540a4d3589b60297f
+GH_TAGNAME=	809e36a24c453c27cbfae05e08c2f2e3951c2e8f
+USE_GL=		egl gl glu
 USE_GNOME=	libxml2 libxslt
 USE_JAVA=	yes
 JAVA_BUILD=	yes
@@ -79,25 +81,23 @@ PLIST_SUB=		ARCH=${_KODIARCH_${ARCH}:U${ARCH}} \
 			OPSYS=${OPSYS:tl}
 PORTDATA=		*
 
-OPTIONS_DEFINE=		AVAHI CEC DBUS LIBBLURAY MYSQL NFS SMB SSE UPNP VAAPI \
-			VDPAU WEBSERVER
-OPTIONS_DEFAULT=	DBUS GBM LIBBLURAY UPNP VAAPI VDPAU WAYLAND WEBSERVER \
-			X11
-OPTIONS_DEFAULT_amd64=	SSE
-OPTIONS_GROUP=		SOUND
-OPTIONS_GROUP_SOUND=	PULSEAUDIO SNDIO
-OPTIONS_MULTI=		PLATFORM
-OPTIONS_MULTI_PLATFORM=	GBM RPI WAYLAND X11
-OPTIONS_EXCLUDE_amd64=	RPI
-OPTIONS_EXCLUDE_armv6=	SSE
-OPTIONS_EXCLUDE_armv7=	SSE
-OPTIONS_EXCLUDE_i386=	RPI
-OPTIONS_SUB=		yes
+OPTIONS_DEFINE=			AVAHI CEC DBUS LIBBLURAY MYSQL NFS SMB SSE UPNP \
+				VAAPI VDPAU WEBSERVER
+OPTIONS_DEFAULT=		AVAHI CEC DBUS GBM LIBBLURAY MYSQL NFS SMB \
+				SNDIO UPNP VAAPI VDPAU WAYLAND WEBSERVER X11
+OPTIONS_DEFAULT_amd64=		SSE
+OPTIONS_GROUP=			SOUND
+OPTIONS_GROUP_SOUND=		PULSEAUDIO SNDIO
+OPTIONS_MULTI=			PLATFORM
+OPTIONS_MULTI_PLATFORM=		GBM WAYLAND X11
+OPTIONS_EXCLUDE_aarch64=	SSE
+OPTIONS_EXCLUDE_armv6=		SSE
+OPTIONS_EXCLUDE_armv7=		SSE
+OPTIONS_SUB=			yes
 
 CEC_DESC=	CEC adapter support
 GBM_DESC=	GBM support (requires a kernel with evdev support)
 PLATFORM_DESC=	Platform
-RPI_DESC=	Raspberry Pi support
 
 AVAHI_LIB_DEPENDS=	libavahi-client.so:net/avahi-app
 AVAHI_CMAKE_BOOL=	ENABLE_AVAHI
@@ -127,17 +127,6 @@ NFS_CMAKE_BOOL=		ENABLE_NFS
 
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 PULSEAUDIO_CMAKE_BOOL=	ENABLE_PULSEAUDIO
-
-# For RPI, disable VAAPI in multimedia/ffmpeg too, so that mesa-libs
-# is *not* installed via libva in the build environment.  Both
-# mesa-libs and raspberrypi-userland conflict with each other.
-RPI_PREVENTS=		GBM VAAPI VDPAU WAYLAND X11
-RPI_LIB_DEPENDS_OFF=	libdrm.so:graphics/libdrm
-RPI_LIB_DEPENDS=	libbrcmEGL.so:misc/raspberrypi-userland
-RPI_USES_OFF=		gl
-RPI_USE_OFF=		GL=egl,gl,glu
-RPI_VARS=		KODI_PLATFORMS+=RBPI
-_KODI_RBPI_ARGS=	-DCORE_PLATFORM_NAME:STRING="rbpi"
 
 SMB_USES=	samba:lib
 SMB_CMAKE_BOOL=	ENABLE_SMBCLIENT
@@ -178,6 +167,7 @@ _KODI_WAYLAND_ARGS=	-DCORE_PLATFORM_NAME:STRING="wayland" \
 WEBSERVER_LIB_DEPENDS=	libmicrohttpd.so:www/libmicrohttpd
 WEBSERVER_CMAKE_BOOL=	ENABLE_MICROHTTPD
 
+X11_USES=	xorg
 X11_USE=	XORG=x11,xext,xrandr
 X11_VARS=	_KODI_PLATFORMS+=X11
 _KODI_X11_ARGS=	-DCORE_PLATFORM_NAME:STRING="x11"
@@ -191,10 +181,14 @@ post-patch:
 # (see CMAKE_ARGS).
 	@${REINPLACE_CMD} 's@KODI_DEPENDSBUILD@true@' \
 		${WRKSRC}/cmake/modules/FindLibDvd.cmake
-# Make sure freebsd.xml is in sync with linux.xml since the
-# upstream devs do not sync them
-	@${CP} ${WRKSRC}/system/settings/linux.xml \
-		${WRKSRC}/system/settings/freebsd.xml
+# Abort build if freebsd.xml and linux.xml differ again.  The
+# upstream devs forget to sync them.  When that happens it might
+# be time to file a PR again.
+	@cd ${WRKSRC}/system/settings && \
+		if ! /usr/bin/cmp -s freebsd.xml linux.xml; then \
+			${ECHO_MSG} "=> freebsd.xml out of sync with linux.xml again"; \
+			${FALSE}; \
+		fi
 # Make sure Kodi can find keyboard layouts from xkeyboard-config
 	@${REINPLACE_CMD} 's,/usr/share/X11/xkb/rules/,${LOCALBASE}/share/X11/xkb/rules/,g' \
 		${WRKSRC}/xbmc/platform/linux/input/LibInputSettings.cpp

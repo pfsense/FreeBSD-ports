@@ -11,7 +11,9 @@ DISTFILES=	xvattr_1.3.orig.tar.gz
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Getting and setting Xv attributes
 
-USES=		gnome pkgconfig
+BROKEN=		unfetchable
+
+USES=		gnome pkgconfig xorg
 USE_GNOME=	gtk20
 USE_XORG=	x11 xv
 

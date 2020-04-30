@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	gmsh
-DISTVERSION=	4.3.0
-PORTREVISION=	1
+DISTVERSION=	4.5.4
 CATEGORIES=	cad
-MASTER_SITES=	http://gmsh.info/src/
+MASTER_SITES=	LOCAL/wen \
+		http://gmsh.info/src/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
 DIST_SUBDIR=	gmsh
 
@@ -24,7 +24,8 @@ LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
 		libfreetype.so:print/freetype2
 RUN_DEPENDS=	getdp:science/getdp
 
-USES=		blaslapack compiler:c++11-lang cmake fortran gl jpeg tar:tgz
+USES=		blaslapack compiler:c++11-lang cmake fortran gl jpeg tar:tgz \
+		xorg
 USE_GL=		gl glu
 USE_XORG=	x11 xcursor xext xinerama xfixes xft xrender
 

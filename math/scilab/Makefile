@@ -3,7 +3,7 @@
 
 PORTNAME=	scilab
 PORTVERSION=	5.5.2
-PORTREVISION=	21
+PORTREVISION=	24
 CATEGORIES=	math cad java
 MASTER_SITES=	https://www.scilab.org/download/${PORTVERSION}/
 DISTFILES=	${DISTNAME}-src${EXTRACT_SUFX}
@@ -15,6 +15,8 @@ LICENSE=	GPLv2 BSD3CLAUSE
 LICENSE_COMB=	dual
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/COPYING-BSD
+
+BROKEN=		fails to build
 
 # A partial dependencies list can be found at:
 # http://wiki.scilab.org/Dependencies_of_Scilab_5.X
@@ -68,7 +70,7 @@ _GUI_DEPENDS+=	${JAVALIBDIR}/flexdock.jar:devel/flexdock \
 		foprep:math/jeuclid \
 		${JAVALIBDIR}/jhall.jar:java/javahelp \
 		${JAVALIBDIR}/jrosetta-api.jar:java/jrosetta \
-		${JAVALIBDIR}/commons-logging.jar:java/jakarta-commons-logging \
+		${JAVALIBDIR}/commons-logging.jar:java/apache-commons-logging \
 		${JAVALIBDIR}/jgraphx.jar:java/jgraphx \
 		${JAVALIBDIR}/jlatexmath.jar:math/jlatexmath \
 		${LOCALBASE}/share/java/ecj-4.5.jar:lang/gcc-ecj45
@@ -77,10 +79,10 @@ _GUI_DEPENDS+=	${LOCALBASE}/share/java/fop/build/fop.jar:textproc/fop \
 		${JAVALIBDIR}/jlatexmath-fop.jar:math/jlatexmath \
 		${LOCALBASE}/share/java/batik/lib/batik-all.jar:graphics/batik \
 		${JAVALIBDIR}/avalon-framework.jar:devel/avalon-framework \
-		${JAVALIBDIR}/commons-io.jar:devel/jakarta-commons-io \
+		${JAVALIBDIR}/commons-io.jar:devel/apache-commons-io \
 		${JAVALIBDIR}/xmlgraphics-commons.jar:graphics/xmlgraphics-commons
 # Code quality:
-_GUI_DEPENDS+=	${JAVALIBDIR}/commons-beanutils.jar:java/jakarta-commons-beanutils \
+_GUI_DEPENDS+=	${JAVALIBDIR}/commons-beanutils.jar:java/apache-commons-beanutils \
 		${JAVALIBDIR}/antlr.jar:devel/antlr \
 		${JAVALIBDIR}/junit4.jar:java/junit \
 		${LOCALBASE}/bin/splint:devel/splint
@@ -120,7 +122,7 @@ TK_CONFIGURE_ON=	--with-tk-library=${LOCALBASE}/lib \
 			--with-tk-include=${TK_INCLUDEDIR} \
 			--with-tcl-library=${LOCALBASE}/lib \
 			--with-tcl-include=${TCL_INCLUDEDIR}
-TK_USES=	tk
+TK_USES=	tk xorg
 TK_USE=		XORG=x11
 TK_RUN_DEPENDS=	${LOCALBASE}/lib/bwidget/init.tcl:x11-toolkits/bwidget
 

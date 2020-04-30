@@ -4,7 +4,7 @@
 PORTNAME=	jad
 PORTVERSION=	1.5.8c
 CATEGORIES=	java devel
-MASTER_SITES=	http://www.varaneckas.com/sites/default/files/jad/
+MASTER_SITES=	https://varaneckas.com/jad/
 DISTNAME=	jad158c.freebsd
 
 MAINTAINER=	ale@FreeBSD.org

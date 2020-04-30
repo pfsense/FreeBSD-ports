@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	watch
-DISTVERSION=	3.3.15
+DISTVERSION=	3.3.16
 CATEGORIES=	misc
 MASTER_SITES=	SF/procps-ng/Production \
 		LOCAL/ehaupt
@@ -25,6 +25,9 @@ OPTIONS_DEFAULT=UNICODE
 UNICODE_CONFIGURE_ENABLE=	watch8bit
 
 PLIST_FILES=	bin/${PKGBASE} man/man1/gnu-watch.1.gz
+
+post-patch:
+	${REINPLACE_CMD} 's/ncursesw/${NCURSES_IMPL}/g' ${WRKSRC}/configure.ac
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} \

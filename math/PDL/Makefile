@@ -17,15 +17,15 @@ LICENSE_COMB=	dual
 BROKEN_i386=	ld: error: can't create dynamic relocation R_386_32 against local symbol in readonly segment; recompile object files with -fPIC or pass '-Wl,-z,notext' to allow text relocations in the output
 .endif
 
-BUILD_DEPENDS=	p5-Astro-FITS-Header>=0:astro/p5-Astro-FITS-Header \
+BUILD_DEPENDS=	p5-Devel-CheckLib>=1.01:devel/p5-Devel-CheckLib \
+		${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Astro-FITS-Header>=0:astro/p5-Astro-FITS-Header \
 		p5-Convert-UU>=0:converters/p5-Convert-UU \
 		p5-File-Map>=0.57:devel/p5-File-Map \
 		p5-Inline>=0.68:devel/p5-Inline \
 		p5-Inline-C>=0.62:devel/p5-Inline-C \
 		p5-List-MoreUtils>=0:lang/p5-List-MoreUtils \
 		p5-Module-Compile>=0.23:devel/p5-Module-Compile
-RUN_DEPENDS:=	${BUILD_DEPENDS}
-BUILD_DEPENDS+=	p5-Devel-CheckLib>=1.01:devel/p5-Devel-CheckLib
 TEST_DEPENDS=	p5-Test-Deep>=0:devel/p5-Test-Deep \
 		p5-Test-Exception>=0:devel/p5-Test-Exception \
 		p5-Test-Warn>=0:devel/p5-Test-Warn
@@ -64,7 +64,8 @@ PGPLOT_BUILD_DEPENDS=	p5-PGPLOT>=0:graphics/p5-PGPLOT
 PLPLOT_LIB_DEPENDS=	libplplotd.so:math/plplot
 OPENGL_BUILD_DEPENDS=	p5-OpenGL>=0.65:graphics/p5-OpenGL
 OPENGL_RUN_DEPENDS:=	${OPENGL_BUILD_DEPENDS}
-OPENGL_USE=		gl=yes
+OPENGL_USES=		gl
+OPENGL_USE=		gl=glu
 GD_LIB_DEPENDS=		libgd.so:graphics/gd
 F77_BUILD_DEPENDS=	p5-ExtUtils-F77>=0:lang/p5-ExtUtils-F77
 FFTW_LIB_DEPENDS=	libfftw.so:math/fftw

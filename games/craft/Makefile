@@ -11,6 +11,9 @@ CATEGORIES=	games
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Simple Minecraft clone written in C using modern OpenGL
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-08-15
+
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
 USE_GITHUB=	yes
@@ -22,7 +25,7 @@ SERVER_DESC=		Install the craft server
 OPTIONS_DEFAULT=	SERVER
 OPTIONS_SUB=		yes
 
-USES=		cmake:insource compiler:c11
+USES=		cmake:insource compiler:c11 gl xorg
 USE_XORG=	x11 xi xrandr
 USE_GL=		gl glu
 

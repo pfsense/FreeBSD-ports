@@ -6,6 +6,7 @@
     SUBDIR += anope
     SUBDIR += atheme-services
     SUBDIR += bip
+    SUBDIR += birch
     SUBDIR += bitchx
     SUBDIR += bitlbee
     SUBDIR += bitlbee-discord
@@ -30,7 +31,6 @@
     SUBDIR += ezbounce
     SUBDIR += fisg
     SUBDIR += gruftistats
-    SUBDIR += gseen.mod
     SUBDIR += hexchat
     SUBDIR += hexchat-fish
     SUBDIR += hybserv
@@ -62,7 +62,6 @@
     SUBDIR += libircclient
     SUBDIR += lostirc
     SUBDIR += miau
-    SUBDIR += minbif
     SUBDIR += muh
     SUBDIR += nethirc
     SUBDIR += ngircd
@@ -96,8 +95,6 @@
     SUBDIR += py-fishcrypt
     SUBDIR += py-irc
     SUBDIR += py-limnoria
-    SUBDIR += py-supybot
-    SUBDIR += py-supybot-plugins
     SUBDIR += quassel
     SUBDIR += quassel-core
     SUBDIR += quirc

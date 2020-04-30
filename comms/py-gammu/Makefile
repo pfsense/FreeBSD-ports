@@ -14,9 +14,12 @@ COMMENT=	Python bindings for Gammu library
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-08-15
+
 LIB_DEPENDS=	libGammu.so:comms/gammu
 
-USES=		pkgconfig python:-2.7
+USES=		pkgconfig python:2.7
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

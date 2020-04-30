@@ -10,10 +10,12 @@ MASTER_SITES=	http://open.rhx.it/phamm/
 MAINTAINER=	gustavofukao@gmail.com
 COMMENT=	Front-end written in PHP to manage virtual service
 
+BROKEN=		unfetchable
+
 NO_BUILD=	yes
 USE_PHP=	gettext ldap openssl pcre session
 
-USES=		gettext shebangfix
+USES=		gettext php shebangfix
 SHEBANG_FILES=	po/update-all-mo.sh \
 		tools/*.sh tools/*.pl \
 		tools/ldap-schema-manage

@@ -3,7 +3,7 @@
  * pfblockerng_install.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -30,114 +30,121 @@ pfb_global();
 // Set 'Install flag' to skip sync process during installations.
 $g['pfblockerng_install'] = true;
 
-// Only download MaxMind Database if files do not exist
-$maxmind_verify = FALSE;
+// MaxMind Database is no longer pre-installed during package installation
+update_status("\nMaxMind GeoIP databases are not pre-installed during installation.\nTo utilize the MaxMind GeoIP functionalities, you will be required to register for a free MaxMind user account and access key. Review the IP tab: MaxMind Settings for more details.\n\n");
 
-if (!file_exists("{$pfb['geoipshare']}/{$pfb['extras'][0]['file']}") ||
-    !file_exists("{$pfb['geoipshare']}/GeoLite2-Country-Blocks-IPv4.csv") ||
-    !file_exists("{$pfb['ccdir']}/A1_ZW_rep_v4.txt") ||
-    !file_exists("{$pfb['dbdir']}/GeoIP_Locale")) {
+if (!file_exists('/usr/local/pkg/pfblockerng/pfblockerng_TopSpammers.xml')) {
 
-	update_status("\nDownloading MaxMind GeoIP databases. This may take a minute...\n");
+$xml = <<<EOF
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* ========================================================================== */
+/*
+	pfblockerng_TopSpammers.xml (placeholder file pending MaxMind License registration) 
 
-	// Remove Alexa from download process
-	$pfb['extras'] = array_slice($pfb['extras'], 0, 2) ?: array();
+	pfBlockerNG
+	Copyright (C) 2015-2019 BBcan177@gmail.com
+	All rights reserved.
 
-	foreach ($pfb['extras'] as $feed) {
+	Based upon pfblocker for pfSense
+	Copyright (C) 2011 Marcello Coutinho
+	All rights reserved.
+*/
+/* ========================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
 
-		$file_dwn = "{$pfb['geoipshare']}/{$feed['file_dwn']}";
-		if (($fhandle = @fopen("{$file_dwn}", 'w')) !== FALSE) {
-			if (empty($feed['file'])) {
-				$feed['file'] = 'GeoLite2-Country-CSV.zip';
-			}
-			update_status(" {$feed['file']}...");
-			if (!($ch = curl_init("{$feed['url']}"))) {
-				update_status(" Failed to create cURL resource.\n");
-				break;
-			}
 
-			curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 Chrome/43.0.2357.65 Safari/537.36');
-			curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1.3, TLSv1.2');
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
-			curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
-			curl_setopt($ch, CURLOPT_FILE, $fhandle);
-			curl_setopt($ch, CURLOPT_TIMEOUT, 600);
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
 
-			// Attempt 3 Downloads before failing.
-			for ($retries = 1; $retries <= 3; $retries++) {
-				if (curl_exec($ch)) {
-					break;	// Break on success
-				}
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
 
-				$curl_error = curl_errno($ch);
-				update_status(" cURL Error: {$curl_error}. ", 1);
-			}
 
-			$http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			if ($http_status == '200 OK') {
-				if (strpos($file_dwn, '.gz') !== FALSE) {
-					exec("/usr/bin/tar -xzf {$file_dwn} --strip=1 -C {$pfb['geoipshare']}");
-				} elseif (strpos($file_dwn, '.zip') !== FALSE) {
-					exec("/usr/bin/tar -xf {$file_dwn} --strip=1 -C {$pfb['geoipshare']}");
-				}
-				unlink_if_exists("{$file_dwn}");
-				update_status(" done.\n");
+	THIS SOFTWARE IS PROVIDED ``AS IS`` AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ========================================================================== */
+]]>
+	</copyright>
+	<name>pfblockerngtopspammers</name>
+	<title>Firewall/pfBlockerNG</title>
+	<menu>
+		<name>pfBlockerNG: TopSpammers</name>
+		<section>Firewall</section>
+		<url>pkg_edit.php?xml=pfblockerng_topspammers.xml</url>
+	</menu>
+	<donotsave>Do not Save</donotsave>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=pfblockerng.xml</url>
+		</tab>
+		<tab>
+			<text>Update</text>
+			<url>/pfblockerng/pfblockerng_update.php</url>
+		</tab>
+		<tab>
+			<text>Alerts</text>
+			<url>/pfblockerng/pfblockerng_alerts.php</url>
+		</tab>
+		<tab>
+			<text>Reputation</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml</url>
+		</tab>
+		<tab>
+			<text>IPv4</text>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml</url>
+		</tab>
+		<tab>
+			<text>IPv6</text>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml</url>
+		</tab>
+		<tab>
+			<text>DNSBL</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
+		</tab>
+		<tab>
+			<text>GeoIP</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml</url>
+		</tab>
+		<tab>
+			<text>Logs</text>
+			<url>/pfblockerng/pfblockerng_log.php</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml</url>
+		</tab>
+	</tabs>
+	<note>
+		<![CDATA[<span class="text-danger"><strong>
+		MaxMind now requires a free Registered account to download the MaxMind GeoIP Database!
+		Review the General Tab: MaxMind settings for more details.
+		<br /><br />After saving the new MaxMind License Key, a Force Update is required to download the MaxMind database.
+		<br /><br />Save button is disabled!
+		</strong></span>]]>
+	</note>
+</packagegui>
 
-				if ($feed['file'] == 'GeoLite2-Country-CSV.zip') {
-					$maxmind_verify = TRUE;
-				}
-			}
-			else {
-				update_status(" Failed!\n");
-			}
-		}
-		curl_close($ch);
-		@fclose($fhandle);
-	}
-
-	if (!$maxmind_verify) {
-		update_status("MaxMind download Failed! Fetching MaxMind archive from pfSense package repo...\n");
-		// Fetch archived MaxMind database
-		$url = 'https://packages.pfsense.org/packages/config/pfblockerng/countrycodes.tar.bz2';
-		$retval = '';
-		exec("/usr/bin/fetch -o /tmp/countrycodes.tar.bz2 {$url}", $output, $retval);
-		if ($retval == 0) {
-			// Uncompress archived GeoIP code file
-			$retval = '';
-			exec("/usr/bin/tar -jx -C {$pfb['ccdir']} -f /tmp/countrycodes.tar.bz2", $output, $retval);
-			if ($retval == 0) {
-				$maxmind_verify = TRUE;
-				update_status("Fetch done.\n");
-			} else {
-				update_status("Fetch Failed!\n");
-			}
-		}
-		else {
-			update_status(" Failed!\n");
-		}
-	}
-	else {
-		update_status("Downloading MaxMind GeoIP databases... done.\n");
-	}
-
-	// Proceed with conversion of MaxMind files on download success
-	if ($maxmind_verify) {
-		update_status("Converting MaxMind GeoIP databases for pfBlockerNG.\n This may take a few minutes...\n");
-		pfblockerng_uc_countries();
-		update_status("Creating pfBlockerNG Continent XML files...\n");
-		pfblockerng_get_countries();
-	}
-	else {
-		update_status("\n\nMaxMind update has Failed! Please fix connectivity and re-install package again!\n\n");
-	}
+EOF;
+	@file_put_contents('/usr/local/pkg/pfblockerng/pfblockerng_TopSpammers.xml', $xml, LOCK_EX);
 }
-else {
-	update_status("\nMaxMind GeoIP databases previously downloaded.\n");
-}
-
 
 if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'pfblockerng') !== FALSE) {
 	update_status("Restoring previous pfBlockerNG Widget settings...");

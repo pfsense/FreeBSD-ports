@@ -12,7 +12,6 @@
     SUBDIR += auto-cn-l10n
     SUBDIR += auto-tw-l10n
     SUBDIR += autoconvert
-    SUBDIR += bg5pdf
     SUBDIR += big5width
     SUBDIR += bitchx
     SUBDIR += brise
@@ -46,7 +45,6 @@
     SUBDIR += gcin
     SUBDIR += gcin-gtk3
     SUBDIR += gcin-qt5
-    SUBDIR += gimp-help-zh_CN
     SUBDIR += gydict
     SUBDIR += hc
     SUBDIR += ibus-array
@@ -80,6 +78,7 @@
     SUBDIR += p5-Lingua-ZH-HanDetect
     SUBDIR += p5-Lingua-ZH-Keywords
     SUBDIR += p5-Lingua-ZH-Numbers
+    SUBDIR += p5-Lingua-ZH-Romanize-Pinyin
     SUBDIR += p5-Lingua-ZH-Segment
     SUBDIR += p5-Lingua-ZH-Summarize
     SUBDIR += p5-Lingua-ZH-TaBE
@@ -102,6 +101,7 @@
     SUBDIR += sourcehanserif-sc-otf
     SUBDIR += sourcehanserif-tc-otf
     SUBDIR += sunpinyin
+    SUBDIR += taipeisanstc
     SUBDIR += tin
     SUBDIR += tintin++
     SUBDIR += ttf2pt1

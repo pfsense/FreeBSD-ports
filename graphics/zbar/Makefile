@@ -3,7 +3,7 @@
 
 PORTNAME=	zbar
 PORTVERSION=	0.10
-PORTREVISION=	18
+PORTREVISION=	19
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
@@ -17,15 +17,16 @@ USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-CONFIGURE_ARGS=	--with-jpeg=yes --with-qt=no
+CONFIGURE_ARGS=	--with-jpeg=yes --with-python=no --with-qt=no
 
-OPTIONS_DEFINE=	X11 V4L PYTHON GTK2 DOCS
+OPTIONS_DEFINE=	X11 V4L GTK2 DOCS
 OPTIONS_DEFAULT=X11 V7
 OPTIONS_RADIO=	IMAGEMAGICK
 OPTIONS_RADIO_IMAGEMAGICK=	V6 V7
 OPTIONS_SUB=	yes
 V4L_DESC=	Build zbarcam video scanner
 
+X11_USES=	xorg
 X11_USE=	XORG=ice,sm,x11,xau,xcb,xdmcp,xext,xv
 X11_CONFIGURE_ON=	--with-x=yes
 X11_CONFIGURE_OFF=	--with-x=no --without-xshm --without-xv
@@ -49,11 +50,7 @@ V4L_BUILD_DEPENDS=	v4l_compat>=1.0.20101027:multimedia/v4l_compat
 V4L_CONFIGURE_ON=	--enable-video=yes
 V4L_CONFIGURE_OFF=	--enable-video=no
 
-PYTHON_USE=		GNOME=pygtk2
-PYTHON_USES=		python:2.7
-PYTHON_CONFIGURE_ON=	--with-python=yes
-PYTHON_CONFIGURE_OFF=	--with-python=no
-
+GTK2_USES=	gnome
 GTK2_USE=	GNOME=gtk20
 GTK2_CONFIGURE_ON=	--with-gtk=yes
 GTK2_CONFIGURE_OFF=	--with-gtk=no

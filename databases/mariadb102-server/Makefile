@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME?=	mariadb
-PORTVERSION=	10.2.26
+PORTVERSION=	10.2.31
 PORTREVISION?=	0
-CATEGORIES=	databases ipv6
+CATEGORIES=	databases
 MASTER_SITES=	http://mirrors.supportex.net/${SITESDIR}/ \
 		http://mirror2.hs-esslingen.de/pub/Mirrors/${SITESDIR}/ \
 		http://gd.tuwien.ac.at/db/${SITESDIR}/ \
@@ -22,9 +22,12 @@ LICENSE_NAME_PerconaFT=	PerconaFT patents license
 LICENSE_FILE_PerconaFT=	${WRKSRC}/storage/tokudb/PerconaFT/PATENTS
 LICENSE_PERMS_PerconaFT=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+DEPRECATED=		Port will be removed when 10.5 is added, please\
+			switch to a newer version
+EXPIRATION_DATE=	2020-07-01
+
 SUB_FILES=	pkg-message
 
-SLAVEDIRS=	databases/mariadb102-client
 USES=		bison:build cmake compiler:c++11-lib cpe iconv:translit libedit ncurses shebangfix ssl
 USE_LDCONFIG=	${PREFIX}/lib/mysql
 SHEBANG_FILES=	scripts/*.sh
@@ -92,7 +95,6 @@ CMAKE_ARGS+=	-DINSTALL_DOCDIR="share/doc/mysql" \
 		-DOPENSSL_ROOT_DIR="${OPENSSLBASE}" \
 		-DOPENSSL_CRYPTO_LIBRARY="${OPENSSLBASE}/lib/libcrypto.so" \
 		-DOPENSSL_SSL_LIBRARY="${OPENSSLBASE}/lib/libssl.so" \
-		-DREMOTEIO_PLUGIN_TYPE="NO" \
 		-DCOMPILATION_COMMENT="FreeBSD Ports" \
 		-DCMAKE_PREFIX_PATH=${PREFIX}
 CMAKE_ON+=	WITH_LIBWRAP WITH_JEMALLOC WITHOUT_DOCS
@@ -140,22 +142,26 @@ CONNECT_EXTRA_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 CONNECT_EXTRA_USES=		gnome
 CONNECT_EXTRA_USE=		gnome=libxml2
 GSSAPI_NONE_CMAKE_ON+=	-DPLUGIN_AUTH_GSSAPI=NO
-LZ4_CMAKE_BOOL=		GRN_WITH_LZ4 WITH_INNODB_LZ4 WITH_ROCKSDB_LZ4
+LZ4_CMAKE_ON=		-DGRN_WITH_LZ4=ON  WITH_INNODB_LZ4=ON  -DWITH_ROCKSDB_LZ4=ON
+LZ4_CMAKE_OFF=		-DGRN_WITH_LZ4=OFF WITH_INNODB_LZ4=OFF -DWITH_ROCKSDB_LZ4=OFF
 LZ4_LIB_DEPENDS=	liblz4.so:archivers/liblz4
-LZO_CMAKE_BOOL=		WITH_INNODB_LZO
+LZO_CMAKE_ON=		-DWITH_INNODB_LZO=ON
+LZO_CMAKE_OFF=		-DWITH_INNODB_LZO=OFF
 LZO_LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 MROONGA_IMPLIES=	LZ4
 MSGPACK_LIB_DEPENDS=	libmsgpackc.so:devel/msgpack
 OQGRAPH_LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 			libJudy.so:devel/judy
 ROCKSDB_USES=		python
-SNAPPY_CMAKE_BOOL=	WITH_INNODB_SNAPPY WITH_ROCKSDB_snappy
+SNAPPY_CMAKE_ON=	-DWITH_INNODB_SNAPPY=ON  -DWITH_ROCKSDB_snappy=ON
+SNAPPY_CMAKE_OFF=	-DWITH_INNODB_SNAPPY=OFF -DWITH_ROCKSDB_snappy=OFF
 SNAPPY_LIB_DEPENDS=	libsnappy.so:archivers/snappy
 TOKUDB_IMPLIES=		SNAPPY
 TOKUDB_PORTDOCS=	README.md
 TOKUDB_VARS=		LICENSE+=PerconaFT LICENSE_COMB=multi
 ZMQ_LIB_DEPENDS=	libzmq.so:net/libzmq4
-ZSTD_CMAKE_BOOL=	WITH_ROCKSDB_ZSTD
+ZSTD_CMAKE_ON=		-DWITH_ROCKSDB_ZSTD=ON
+ZSTD_CMAKE_ON=		-DWITH_ROCKSDB_ZSTD=OFF
 ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
 .endif # ${PKGNAMESUFFIX:M*-client}
 
@@ -182,6 +188,7 @@ post-patch:
 	${REINPLACE_CMD} 's/*.1/${MAN1}/' ${WRKSRC}/man/CMakeLists.txt
 	${REINPLACE_CMD} 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/mysys/my_default.c
 	${REINPLACE_CMD} 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/scripts/mysql_config.sh
+	${MV} ${WRKSRC}/storage/mroonga/version ${WRKSRC}/storage/mroonga/version_txt
 .if ${OPSYS} == DragonFly
 	${CP} ${WRKSRC}/cmake/os/FreeBSD.cmake \
 		${WRKSRC}/cmake/os/DragonFly.cmake

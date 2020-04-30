@@ -1,13 +1,14 @@
-# Created by: Loïc BARTOLETTI <lbartoletti@tuxfamily.org>
+# Created by: Loïc BARTOLETTI <lbartoletti@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	postgis
 PORTVERSION=	2.4.8
+PORTREVISION=	2
 CATEGORIES=	databases geography
 MASTER_SITES=	https://download.osgeo.org/postgis/source/
 PKGNAMESUFFIX=	24
 
-MAINTAINER=	lbartoletti@tuxfamily.org
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Geographic objects support for PostgreSQL databases
 
 LICENSE=	GPLv2
@@ -40,7 +41,7 @@ TOPOLOGY_DESC=	Topology support
 SFCGAL_DESC=	Enable sfcgal
 ADDRSTD_DESC=	Enable address standardizer
 
-CONFLICTS_INSTALL=	postgis20 postgis21 postgis22 postgis23 postgis25
+CONFLICTS_INSTALL=	postgis20 postgis21 postgis22 postgis23 postgis25 postgis30
 
 LOADERGUI_CONFIGURE_WITH=	gui
 LOADERGUI_USE=			GNOME=gtk20

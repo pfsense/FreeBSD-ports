@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	qemu
-PORTVERSION=	4.1.0
+PORTVERSION=	4.2.0
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.qemu.org/
 PKGNAMESUFFIX=	-devel
@@ -21,7 +21,8 @@ LIB_DEPENDS=	libnettle.so:security/nettle \
 		libepoxy.so:graphics/libepoxy \
 		libpcre2-8.so:devel/pcre2
 
-USES=		bison cpe gmake gnome iconv:wchar_t perl5 pkgconfig python:build tar:xz xorg
+USES=		bison compiler:c11 cpe gmake gnome iconv:wchar_t perl5 \
+		pkgconfig python:build tar:xz xorg
 USE_GNOME=	cairo glib20 libxml2
 USE_PERL5=	build
 USE_XORG=	pixman

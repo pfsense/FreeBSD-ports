@@ -3,12 +3,12 @@
 
 PORTNAME=	codeblocks
 PORTVERSION=	17.12
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/Sources/${PORTVERSION}
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	lbartoletti@tuxfamily.org
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Open source, cross-platform, free C/C++ IDE
 
 LICENSE=	GPLv3 LGPL3
@@ -22,8 +22,8 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libtinyxml.so:textproc/tinyxml
 
 USES=		autoreconf compiler:c++11-lang desktop-file-utils \
-		fam:gamin gettext-runtime libtool localbase \
-		pathfix pkgconfig shared-mime-info tar:xz
+		fam:gamin gettext-runtime gnome libtool localbase \
+		pathfix pkgconfig shared-mime-info tar:xz xorg
 USE_WX=		2.8
 USE_GNOME=	gtk20 cairo
 USE_XORG=	x11

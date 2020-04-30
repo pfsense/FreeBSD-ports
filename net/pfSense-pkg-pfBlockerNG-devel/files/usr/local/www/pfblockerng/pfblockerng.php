@@ -3,7 +3,7 @@
  * pfblockerng.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -31,11 +31,17 @@
 if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' && $_REQUEST && $_REQUEST['pfb']) {
 
 	$query = htmlspecialchars($_REQUEST['pfb']);
-	$file = "/var/db/aliastables/{$query}.txt";
-	if (file_exists($file)) {
-		$return = file_get_contents($file);
-		print $return;
+	if (file_exists("/var/db/aliastables/{$query}_v4.txt")) {
+        	$type = '_v4';
+	} elseif (file_exists("/var/db/aliastables/{$query}_v6.txt")) {
+		$type = '_v6';
 	}
+	else {
+		return;
+	}
+
+	$return = @file_get_contents("/var/db/aliastables/{$query}{$type}.txt");
+	print $return;
 	exit;
 }
 
@@ -64,14 +70,14 @@ if (isset($argv[1])) {
 // Extras - MaxMind/TOP1M Download URLs/filenames/settings
 $pfb['extras']			= array();
 $pfb['extras'][0]		= array();
-$pfb['extras'][0]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz';
+$pfb['extras'][0]['url']	= 'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=_MAXMIND_KEY_&suffix=tar.gz';
 $pfb['extras'][0]['file_dwn']	= 'GeoLite2-Country.tar.gz';
 $pfb['extras'][0]['file']	= 'GeoLite2-Country.mmdb';
 $pfb['extras'][0]['folder']	= "{$pfb['geoipshare']}";
 $pfb['extras'][0]['type']	= 'geoip';
 
 $pfb['extras'][1]		= array();
-$pfb['extras'][1]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip';
+$pfb['extras'][1]['url']	= 'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country-CSV&license_key=_MAXMIND_KEY_&suffix=zip';
 $pfb['extras'][1]['file_dwn']	= 'GeoLite2-Country-CSV.zip';
 $pfb['extras'][1]['file']	= '';
 $pfb['extras'][1]['folder']	= "{$pfb['geoipshare']}";
@@ -147,11 +153,22 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 			// 'dcc' called via Cron job
 			if ($argv[1] == 'dcc') {
 
+				$logtype = 3;
+
 				// Only update on first Tuesday of each month (Delay till Thurs to allow for MaxMind late releases)
 				if (date('D') != 'Thu') {
 					exit;
 				}
 				$pfb['extras_update'] = TRUE;
+
+				// Skip TOP1M update, if disabled
+				if ($pfb['dnsbl_alexa'] != 'on') {
+					unset($pfb['extras'][2]);
+				}
+			}
+			else {
+				$logtype = 4;
+				unset($pfb['extras'][2]);
 			}
 
 			// If 'General Tab' skip MaxMind download setting if checked, only download binary updates for Reputation/Alerts page.
@@ -159,13 +176,8 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 				unset($pfb['extras'][1]);
 			}
 
-			// Skip TOP1M update, if disabled
-			if ($pfb['dnsbl_alexa'] != 'on') {
-				unset($pfb['extras'][2]);
-			}
-
 			// Proceed with conversion of MaxMind files on download success
-			if (empty($pfb['cc']) && pfblockerng_download_extras()) {
+			if (empty($pfb['cc']) && pfblockerng_download_extras(600, $logtype)) {
 				pfblockerng_uc_countries();
 				pfblockerng_get_countries();
 			}
@@ -173,11 +185,11 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 			break;
 		case 'bu':		// Update MaxMind binary database files only.
 			unset($pfb['extras'][1], $pfb['extras'][2]);
-			pfblockerng_download_extras();
+			pfblockerng_download_extras(600, 3);
 			break;
 		case 'al':		// Update TOP1M database only.
 			unset($pfb['extras'][0], $pfb['extras'][1]);
-			pfblockerng_download_extras();
+			pfblockerng_download_extras(600, 3);
 			break;
 		case 'bl':		// Update DNSBL Category database(s) only.
 		case 'bls':
@@ -193,7 +205,7 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 				return $pfb_return;
 			}
 			else {
-				pfblockerng_download_extras();
+				pfblockerng_download_extras(600, 3);
 			}
 			break;
 		case 'uc':		// Update MaxMind ISO files from local database files.
@@ -370,26 +382,43 @@ function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $for
 // Download Extras - MaxMind/TOP1M/Category feeds via cURL
 function pfblockerng_download_extras($timeout=600, $type='') {
 	global $pfb;
+	pfb_global();
 
 	$pfb_return	= '';
 	$pfb_error	= FALSE;
 
-	pfb_logger("\nDownload Process Starting [ NOW ]\n", 3);
+	$logtype = 3;
+	if ($type == 4) {
+		$logtype = 4;
+	}
+
+	pfb_logger("\nDownload Process Starting [ NOW ]\n", $logtype);
 	foreach ($pfb['extras'] as $feed) {
 
 		if (empty($feed)) {
 			continue;
 		}
 
+		if ($feed['type'] == 'geoip') {
+			if (empty($pfb['maxmind_key'])) {
+				$mmsg = 'MaxMind now requires a License Key! Review the IP tab: MaxMind settings for more information. Download failed!';
+				pfb_logger($mmsg, $logtype);
+				file_notice('pfBlockerNG MaxMind', $mmsg, 'pfBlockerNG', '/pfblockerng/pfblockerng_ip.php', 2);
+				$pfb_error = TRUE;
+				continue;
+			}
+			$feed['url'] = str_replace('_MAXMIND_KEY_', $pfb['maxmind_key'], $feed['url']);
+		}
+
 		$file_dwn		= "{$feed['folder']}/{$feed['file_dwn']}";
 		$feed['username']	= $feed['username'] ?: '';
 		$feed['password']	= $feed['password'] ?: '';
 
-		if (!pfb_download($feed['url'], $file_dwn, FALSE, "{$feed['folder']}/{$feed['file']}", '', 3, '', $timeout, $feed['type'], 
+		if (!pfb_download($feed['url'], $file_dwn, FALSE, "{$feed['folder']}/{$feed['file']}", '', $logtype, '', $timeout, $feed['type'], 
 		    $feed['username'], $feed['password'])) {
 
 			$log = "\nFailed to Download {$feed['file']}\n";
-			pfb_logger("{$log}", 3);
+			pfb_logger("{$log}", $logtype);
 
 			// On Extras update (MaxMind and TOP1M), if error found when downloading MaxMind Country database
 			// return error to update process
@@ -407,7 +436,7 @@ function pfblockerng_download_extras($timeout=600, $type='') {
 			}
 		}
 	}
-	pfb_logger("Download Process Ended [ NOW ]\n\n", 3);
+	pfb_logger("Download Process Ended [ NOW ]\n\n", $logtype);
 
 	if ($type == 'blacklist') {
 		print "{$pfb_return}";
@@ -1282,7 +1311,7 @@ $php_data = <<<EOF
  * pfblockerng_{$continent_en}.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -1499,6 +1528,13 @@ $section->addInput(new Form_StaticText(
 
 	. '&emsp;Use &emsp;<strong>CTRL+CLICK</strong>&emsp;to&emsp;<strong>select/unselect</strong>&emsp; the IPv4/6 Countries below as required.'
 ));
+
+// Maxmind License Key verification
+if (empty($pfb['maxmind_key'])) {
+        print_callout('<br /><br /><p><strong>'
+			. 'MaxMind now requires a License Key! Review the IP tab: MaxMind settings for more information.'
+			. '</strong></p><br />', 'danger', '');
+}
 
 EOF;
 $php_data .= <<<EOF
@@ -1796,7 +1832,7 @@ $php_rep = <<<'EOF'
  * pfblockerng_reputation.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *

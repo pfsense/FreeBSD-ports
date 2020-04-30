@@ -14,6 +14,8 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Enhanced OpenGL-only Quake II engine
 
+BROKEN=		unfetchable
+
 USES=		gmake tar:bzip2
 MAKE_ENV=	WITH_DATADIR=YES WITH_LIBDIR=YES WITH_XMMS=NO \
 		DATADIR="${Q2DIR}" LIBDIR="${LIBDIR}" BUILD_ARTS_SND=NO
@@ -63,12 +65,13 @@ PLIST_SUB+=	${mod}="@comment "
 .endfor
 
 .if ${PORT_OPTIONS:MGLX} || ${PORT_OPTIONS:MSDLGL}
-USES+=		jpeg
+USES+=		gl jpeg
 USE_GL=		glu
 LIB_DEPENDS+=	libpng.so:graphics/png
 .endif
 
 .if ${PORT_OPTIONS:MSDL} || ${PORT_OPTIONS:MSDLGL}
+USES+=		sdl
 USE_SDL=	sdl
 .endif
 

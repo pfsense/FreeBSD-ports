@@ -1,12 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	munch
-PORTVERSION=	2.4.0
+PORTVERSION=	2.5.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	lbartoletti@tuxfamily.org
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Python dict that provides attribute-style access (a la JavaScript)
 
 LICENSE=	MIT

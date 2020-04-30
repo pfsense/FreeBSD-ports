@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	mgba
-DISTVERSION=	0.7.0
-PORTREVISION=	2
+DISTVERSION=	0.7.3
 CATEGORIES=	emulators
 
 MAINTAINER=	greg@unrelenting.technology
@@ -17,7 +16,10 @@ LICENSE_FILE_MPL20=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libepoxy.so:graphics/libepoxy \
 		libpng.so:graphics/png
 
-USES=		cmake compiler:c++11-lang gl gnome localbase:ldflags pkgconfig sqlite:3
+USES=		cmake compiler:c++11-lang gl gnome localbase:ldflags pkgconfig \
+		sdl sqlite:3
+
+USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mgba-emu

@@ -3,7 +3,7 @@
  * squid.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2016 Marcello Coutinho
  * Copyright (c) 2006 Fernando Lemos
  * Copyright (c) 2012 Martin Fuchs
@@ -70,17 +70,38 @@ require_once('/usr/local/pkg/squid_antivirus.inc');
  */
 
 /* Handle base64 encoding and linebreaks in textarea configuration fields */
-function sq_text_area_decode($text) {
-	return preg_replace('/\r\n/', "\n", base64_decode($text));
+function sq_text_area_decode($text, $idn=false) {
+	$contents = preg_replace('/\r\n/', "\n", base64_decode($text));
+	if (function_exists('idn_to_ascii') && $idn) {
+		return implode("\n", array_map('idn_to_ascii', explode("\n", $contents)));
+	} else {
+		return $contents;
+	}
 }
 
 /* Get interface IP and netmask for Squid interfaces */
-function squid_get_real_interface_address($iface) {
+function squid_get_real_interface_address($iface, $proto = 'inet') {
 	if (!function_exists("get_interface_ip")) {
 		require_once("interfaces.inc");
 	}
 
-	return array(get_interface_ip($iface), gen_subnet_mask(get_interface_subnet($iface)));
+	$inf = array();
+	switch ($proto) {
+		case 'inet':
+			$inf[] = array(get_interface_ip($iface), gen_subnet_mask(get_interface_subnet($iface)));
+			break;
+		case 'inet6':
+			$inf[] = array(get_interface_ipv6($iface), get_interface_subnetv6($iface));
+			break;
+		case 'any':
+			$inf[] = array(get_interface_ip($iface), gen_subnet_mask(get_interface_subnet($iface)));
+			$inf[] = array(get_interface_ipv6($iface), get_interface_subnetv6($iface));
+			break;
+		default:
+			break;
+	}
+
+	return $inf;
 }
 
 /* Check whether ACL is valid */
@@ -748,6 +769,38 @@ function squid_validate_general($post, &$input_errors) {
 		}
 	}
 
+	if ($post['listenproto'] == 'inet') {
+		foreach ($post['active_interface'] as $a_int) {
+			if (get_interface_ip($a_int)) {
+				$int_proto_ok = true;
+				break;
+			}
+		}
+		if (!$int_proto_ok) {
+			$input_errors[] = "At least one interface with IPv4 address must be selected.";
+		}
+	} elseif ($post['listenproto'] == 'inet6') {
+		foreach ($post['active_interface'] as $a_int) {
+			if (get_interface_ipv6($a_int)) {
+				$int_proto_ok = true;
+				break;
+			}
+		}
+		if (!$int_proto_ok) {
+			$input_errors[] = "At least one interface with IPv6 address must be selected.";
+		}
+	} else {
+		foreach ($post['active_interface'] as $a_int) {
+			if (get_interface_ip($a_int) || get_interface_ipv6($a_int)) {
+				$int_proto_ok = true;
+				break;
+			}
+		}
+		if (!$int_proto_ok) {
+			$input_errors[] = "At least one interface with IPv4 or IPv6 address must be selected.";
+		}
+	}
+
 	$icp_port = trim($post['icp_port']);
 	if (!empty($icp_port) && !is_port($icp_port)) {
 		$input_errors[] = "You must enter a valid port number in the 'ICP port' field.";
@@ -788,6 +841,9 @@ function squid_validate_general($post, &$input_errors) {
 	unset($port, $webgui_port);
 
 	if ($post['transparent_proxy'] == 'on') {
+		if (preg_match("/(local|ldap|radius|ntlm)/", $config['installedpackages']['squidauth']['config'][0]['auth_method'])) {
+			$input_errors[] = "Transparent mode cannot be enabled while proxy authentication is enabled";
+		}
 		if (empty($post['transparent_active_interface'])) {
 			$input_errors[] = "You must select at least one interface under 'Transparent Proxy Interface(s)' when 'Transparent HTTP Proxy' is enabled.";
 		} else {
@@ -978,7 +1034,7 @@ function squid_validate_nac($post, &$input_errors) {
 	unset($allowed_subnets);
 
 	foreach (array('unrestricted_hosts', 'banned_hosts') as $hosts) {
-		if (preg_match_all("@([0-9.]+)(/[0-9.]+|)@", $_POST[$hosts], $matches)) {
+		if (preg_match_all("@([0-9a-fA-F.:]+)(/[0-9.]+|)@", $_POST[$hosts], $matches)) {
 			for ($x = 0; $x < count($matches[1]); $x++) {
 				if ($matches[2][$x] == "") {
 					if (!is_ipaddr($matches[1][$x])) {
@@ -986,7 +1042,7 @@ function squid_validate_nac($post, &$input_errors) {
 					}
 				} else {
 					if (!is_subnet($matches[0][$x])) {
-						$input_errors[] = "The subnet '{$matches[0][$x]}' is not a valid CIDR range.";
+						$input_errors[] = "The subnet '{$matches[0][$x]}' is not a valid CIDR range or IPv6 prefix.";
 					}
 				}
 			}
@@ -1092,10 +1148,15 @@ function squid_validate_auth($post, &$input_errors) {
 		switch ($auth_method) {
 			case 'ldap':
 				$user = trim($post['ldap_user']);
+				$ldaptype = trim($post['ldap_urltype']);
+				$ldapversion = trim($post['ldap_version']);
 				if (empty($user)) {
 					$input_errors[] = "'LDAP server user DN' is required.";
 				} elseif (!$user) {
 					$input_errors[] = "'LDAP server user DN' must be a valid DN.";
+				}
+				if ($ldaptype == 'starttls' && $ldapversion == '2') {
+					$input_errors[] = "'STARTTLS supported only by LDAP version 3.";
 				}
 				break;
 			case 'radius':
@@ -1135,12 +1196,19 @@ function squid_resync_general() {
 		$srv_cert = lookup_ca($settings["dca"]);
 		if ($srv_cert != false) {
 			if (base64_decode($srv_cert['prv'])) {
+				if (file_exists(SQUID_LOCALBASE . "/libexec/squid/security_file_certgen")) {
+					$squid4 = true;
+				}
 				// check if ssl_db was initilized by Squid
 				if (!file_exists(SQUID_SSL_DB . "/serial")) {
 					if (is_dir(SQUID_SSL_DB)) {
 						mwexec("/bin/rm -rf " . SQUID_SSL_DB);
 					}
-					mwexec(SQUID_LOCALBASE . "/libexec/squid/ssl_crtd -c -s " . SQUID_SSL_DB);
+					if ($squid4) {
+						mwexec(SQUID_LOCALBASE . "/libexec/squid/security_file_certgen -c -s " . SQUID_SSL_DB . " -M 4MB");
+					} else {
+						mwexec(SQUID_LOCALBASE . "/libexec/squid/ssl_crtd -c -s " . SQUID_SSL_DB);
+					}
 				}
 				// force squid user permission on /var/squid/lib/ssl_db/
 				squid_chown_recursive(SQUID_SSL_DB, SQUID_UID, SQUID_GID);
@@ -1178,16 +1246,26 @@ function squid_resync_general() {
 				file_put_contents($crt_pk, unixnewlines(base64_decode($srv_cert['prv']) . "\n" . base64_decode($srv_cert['crt'])));
 				$sslcrtd_children = ($settings['sslcrtd_children'] ? $settings['sslcrtd_children'] : 5);
 				$ssl_interception .= "ssl-bump generate-host-certificates=on dynamic_cert_mem_cache_size=" . ($sslcrtd_children*2) . "MB cert={$crt_pk} capath={$crt_capath} cipher={$sslproxy_cipher} {$sslproxy_dhparams} options={$sslproxy_options}\n";
-				$interception_checks = "sslcrtd_program " . SQUID_LOCALBASE . "/libexec/squid/ssl_crtd -s " . SQUID_SSL_DB . " -M 4MB -b 2048\n";
+				if ($squid4) {
+					$interception_checks = "sslcrtd_program " . SQUID_LOCALBASE . "/libexec/squid/security_file_certgen -s " . SQUID_SSL_DB . " -M 4MB -b 2048\n";
+					$interception_checks .= "tls_outgoing_options capath={$crt_capath}\n";
+					$interception_checks .= "tls_outgoing_options options={$sslproxy_options}\n";
+					$interception_checks .= "tls_outgoing_options cipher={$sslproxy_cipher}\n";
+					if (preg_match("/sslproxy_flags/", $settings["interception_checks"])) {
+						$interception_checks .= "tls_outgoing_options flags=DONT_VERIFY_PEER\n";
+					}
+				} else {
+					$interception_checks = "sslcrtd_program " . SQUID_LOCALBASE . "/libexec/squid/ssl_crtd -s " . SQUID_SSL_DB . " -M 4MB -b 2048\n";
+					$interception_checks .= "sslproxy_capath {$crt_capath}\n";
+					$interception_checks .= "sslproxy_options {$sslproxy_options}\n";
+					$interception_checks .= "sslproxy_cipher {$sslproxy_cipher}\n";
+					if (preg_match("/sslproxy_flags/", $settings["interception_checks"])) {
+						$interception_checks .= "sslproxy_flags DONT_VERIFY_PEER\n";
+					}
+				}
 				$interception_checks .= "sslcrtd_children {$sslcrtd_children}\n";
-				$interception_checks .= "sslproxy_capath {$crt_capath}\n";
-				$interception_checks .= "sslproxy_options {$sslproxy_options}\n";
-				$interception_checks .= "sslproxy_cipher {$sslproxy_cipher}\n";
 				if (preg_match("/sslproxy_cert_error/", $settings["interception_checks"])) {
 					$interception_checks .= "sslproxy_cert_error allow all\n";
-				}
-				if (preg_match("/sslproxy_flags/", $settings["interception_checks"])) {
-					$interception_checks .= "sslproxy_flags DONT_VERIFY_PEER\n";
 				}
 				if ($settings["interception_adapt"] != "") {
 					foreach (explode(",", $settings["interception_adapt"]) as $adapt) {
@@ -1209,12 +1287,20 @@ function squid_resync_general() {
 		$proxy_ifaces = array();
 	}
 
+	if (empty($settings['listenproto'])) {
+		$listenproto = 'inet';
+	} else {
+		$listenproto = $settings['listenproto'];
+	}
+
 	if ($settings['transparent_proxy'] == "on") {
 		$transparent_ifaces = explode(",", $settings['transparent_active_interface']);
 		foreach ($transparent_ifaces as $t_iface) {
-			$t_iface_ip = squid_get_real_interface_address($t_iface);
-			if ($t_iface_ip[0]) {
-				$real_ifaces[] = $t_iface_ip;
+			$t_ifaces_ips = squid_get_real_interface_address($t_iface, $listenproto);
+			foreach ($t_ifaces_ips as $t_iface_ip) {
+				if ($t_iface_ip[0]) {
+					$real_ifaces[] = $t_iface_ip;
+				}
 			}
 		}
 	} else {
@@ -1224,9 +1310,11 @@ function squid_resync_general() {
 	if ($settings['ssl_proxy'] == "on") {
 		$ssl_ifaces = explode(",", $settings['ssl_active_interface']);
 		foreach ($ssl_ifaces as $s_iface) {
-			$s_iface_ip = squid_get_real_interface_address($s_iface);
-			if ($s_iface_ip[0]) {
-				$real_ifaces[] = $s_iface_ip;
+			$s_ifaces_ips = squid_get_real_interface_address($s_iface, $listenproto);
+			foreach ($s_ifaces_ips as $s_iface_ip) {
+				if ($s_iface_ip[0]) {
+					$real_ifaces[] = $s_iface_ip;
+				}
 			}
 		}
 	} else {
@@ -1235,28 +1323,56 @@ function squid_resync_general() {
 
 	// check all proxy interfaces selected
 	foreach ($proxy_ifaces as $iface) {
-		$iface_ip = squid_get_real_interface_address($iface);
-		if ($iface_ip[0]) {
-			// do not add loopback twice when transparent proxy is enabled
-			if ($iface_ip[0] == "127.0.0.1" && $settings['transparent_proxy'] == "on") {
-				continue;
-			} else {
-				$real_ifaces[] = $iface_ip;
-				if (in_array($iface, $ssl_ifaces)) {
-					$conf .= "http_port {$iface_ip[0]}:{$port} {$ssl_interception}\n";
+		$ifaces_ips = squid_get_real_interface_address($iface, $listenproto);
+		foreach ($ifaces_ips as $iface_ip) {
+			if ($iface_ip[0]) {
+				// do not add loopback twice when transparent proxy is enabled
+				if ((($iface_ip[0] == "127.0.0.1") || ($iface_ip[0] == "::1")) && 
+				    $settings['transparent_proxy'] == "on") {
+					continue;
 				} else {
-					$conf .= "http_port {$iface_ip[0]}:{$port}\n";
+					$real_ifaces[] = $iface_ip;
+					if (is_ipaddrv4($iface_ip[0])) {
+						$listenip = "{$iface_ip[0]}";
+					} elseif ($settings['transparent_proxy'] == 'on') {
+						// do not add IPv6 interface twice when transparent proxy is enabled
+						continue;
+					} else {
+						$listenip = "[{$iface_ip[0]}]";
+					}
+					if (in_array($iface, $ssl_ifaces)) {
+						$conf .= "http_port {$listenip}:{$port} {$ssl_interception}\n";
+					} else {
+						$conf .= "http_port {$listenip}:{$port}\n";
+					}
 				}
 			}
 		}
 	}
 
-	if (($settings['transparent_proxy'] == 'on')) {
-		if ($settings['ssl_proxy'] == "on" && count($ssl_ifaces) > 0) {
-			$conf .= "http_port 127.0.0.1:{$port} intercept {$ssl_interception}\n";
-			$conf .= "https_port 127.0.0.1:{$ssl_port} intercept {$ssl_interception}\n";
-		} else {
-			$conf .= "http_port 127.0.0.1:{$port} intercept\n";
+	if ($settings['transparent_proxy'] == 'on') {
+		if ($listenproto != 'inet6') {
+			if ($settings['ssl_proxy'] == "on" && count($ssl_ifaces) > 0) {
+				$conf .= "http_port 127.0.0.1:{$port} intercept {$ssl_interception}\n";
+				$conf .= "https_port 127.0.0.1:{$ssl_port} intercept {$ssl_interception}\n";
+			} else {
+				$conf .= "http_port 127.0.0.1:{$port} intercept\n";
+			}
+		}
+		if ($listenproto != 'inet') {
+			foreach ($transparent_ifaces as $t_iface) {
+				$t_ifaces_ips = squid_get_real_interface_address($t_iface, $listenproto);
+				foreach ($t_ifaces_ips as $t_iface_ip) {
+					if (is_ipaddrv6($t_iface_ip[0])) {
+						if ($settings['ssl_proxy'] == "on" && count($ssl_ifaces) > 0) {
+							$conf .= "http_port [{$t_iface_ip[0]}]:{$port} intercept {$ssl_interception}\n";
+							$conf .= "https_port [{$t_iface_ip[0]}]:{$ssl_port} intercept {$ssl_interception}\n";
+						} else {
+							$conf .= "http_port [{$t_iface_ip[0]}]:{$port} intercept\n";
+						}
+					}
+				}
+			}
 		}
 	}
 	$icp_port = ($settings['icp_port'] ? $settings['icp_port'] : 0);
@@ -1346,14 +1462,21 @@ EOD;
 		$src = '';
 		foreach ($real_ifaces as $iface) {
 			list($ip, $mask) = $iface;
-			$ip = long2ip(ip2long($ip) & ip2long($mask));
-			$mask = 32 - log((ip2long($mask) ^ ip2long('255.255.255.255')) +1, 2);
-			if (!preg_match("@$ip/$mask@", $src)) {
-				// XXX: Do not add invalid subnets (Bug #4331, Bug #4526)
-				if (is_subnet("{$ip}/{$mask}")) {
-					$src .= " $ip/$mask";
-				} else {
-					log_error("[squid] 'Allow Users on Interface' ACL skipped for '{$ip}/{$mask}' since it is not a valid subnet.");
+			if (is_subnetv6("{$ip}/{$mask}")) {
+				$src6 = gen_subnetv6($ip, $mask) . "/" . $mask;
+				if (!preg_match("@$src6@", $src)) {
+					$src .= " " . $src6;
+				}
+			} else {
+				$ip = long2ip(ip2long($ip) & ip2long($mask));
+				$mask = 32 - log((ip2long($mask) ^ ip2long('255.255.255.255')) +1, 2);
+				if (!preg_match("@$ip/$mask@", $src)) {
+					// XXX: Do not add invalid subnets (Bug #4331, Bug #4526)
+					if (is_subnetv4("{$ip}/{$mask}")) {
+						$src .= " $ip/$mask";
+					} else {
+						log_error("[squid] 'Allow Users on Interface' ACL skipped for '{$ip}/{$mask}' since it is not a valid IPv4 subnet.");
+					}
 				}
 			}
 		}
@@ -1617,10 +1740,14 @@ EOD;
 	);
 
 	foreach ($options as $option => $directive) {
-		$contents = sq_text_area_decode($settings[$option]);
+		$contents = sq_text_area_decode($settings[$option], true);
 		if (!empty($contents)) {
 			file_put_contents(SQUID_ACLDIR . "/$option.acl", $contents);
 			$conf .= "acl $option $directive \"" . SQUID_ACLDIR . "/$option.acl\"\n";
+			if (($squidsettings['sslproxy_mitm_mode'] == "splicewhitelist") &&
+		            ($option == 'whitelist')) {
+				$conf .= "acl sslwhitelist ssl::server_name_regex -i \"" . SQUID_ACLDIR . "/$option.acl\"\n";
+			}
 			$valid_acls[] = $option;
 		} elseif (file_exists(SQUID_ACLDIR . "/$option.acl")) {
 			unlink(SQUID_ACLDIR . "/$option.acl");
@@ -1884,7 +2011,7 @@ function squid_resync_auth() {
 				// 'Splice Whitelist, Bump Otherwise' SSL/MIMT configuration (Default)
 				$conf .= "ssl_bump peek step1\n";
 				if (!empty($settingsnac['whitelist'])) {
-					$conf .= "ssl_bump splice whitelist\n";
+					$conf .= "ssl_bump splice sslwhitelist\n";
 				}
 				$conf .= "ssl_bump bump all\n";
 			}
@@ -1915,9 +2042,26 @@ function squid_resync_auth() {
 				$conf .= 'auth_param basic program ' . SQUID_LOCALBASE . '/libexec/squid/basic_ncsa_auth ' . SQUID_PASSWD . "\n";
 				break;
 			case 'ldap':
-				$port = ((isset($settings['auth_server_port']) && !empty($settings['auth_server_port'])) ? ":{$settings['auth_server_port']}" : '');
-				$password = (isset($settings['ldap_pass']) ? "-w {$settings['ldap_pass']}" : '');
-				$conf .= "auth_param basic program " . SQUID_LOCALBASE . "/libexec/squid/basic_ldap_auth -v {$settings['ldap_version']} -b {$settings['ldap_basedomain']} -D {$settings['ldap_user']} $password -f \"{$settings['ldap_filter']}\" -u {$settings['ldap_userattribute']} -P {$settings['auth_server']}$port\n";
+				$port = '';
+				$ldap_proto = 'ldap://';
+				$usetls = '';
+				if (isset($settings['auth_server_port']) && !empty($settings['auth_server_port'])) {
+					$port = ":{$settings['auth_server_port']}";
+				} else if ($settings['ldap_urltype'] == 'ssl') {
+					$port = ':636';
+				}
+				if ($settings['ldap_urltype'] == 'ssl') {
+					$ldap_proto = 'ldaps://';
+				} else if ($settings['ldap_urltype'] == 'starttls') {
+					$usetls = '-ZZ';
+				} 
+				$password = (isset($settings['ldap_pass']) ? "-w " . escapeshellarg($settings['ldap_pass']) : '');
+				$noreferrals = ($settings['ldap_noreferrals'] == 'on' ? "-R" : '');
+				$conf .= "auth_param basic program " . SQUID_LOCALBASE
+					. "/libexec/squid/basic_ldap_auth -v {$settings['ldap_version']} -b " . escapeshellarg($settings['ldap_basedomain'])
+					. " " . $noreferrals . " -D " . escapeshellarg($settings['ldap_user']) . " " . $password
+					. " -f " . escapeshellarg($settings['ldap_filter']) . " -u " . escapeshellarg($settings['ldap_userattribute'])
+					. " -P -H " . escapeshellarg($ldap_proto . $settings['auth_server'] . $port) . "\n";
 				break;
 			case 'radius':
 				$port = ((isset($settings['auth_server_port']) && !empty($settings['auth_server_port'])) ? "-p {$settings['auth_server_port']}" : '');
@@ -1953,7 +2097,7 @@ EOD;
 				// 'Splice Whitelist, Bump Otherwise' SSL/MIMT configuration (Default)
 				$conf .= "ssl_bump peek step1\n";
 				if (!empty($settingsnac['whitelist'])) {
-					$conf .= "ssl_bump splice whitelist\n";
+					$conf .= "ssl_bump splice sslwhitelist\n";
 				}
 				$conf .= "ssl_bump bump all\n";
 			}
@@ -2118,6 +2262,12 @@ function squid_generate_rules($type) {
 	// Define NAT ports - 80 and 443 if SSL filtering is enabled
 	$pf_nat_ports = ($squid_conf['ssl_proxy'] == "on" ? "{80,443}" : "80");
 
+	if (empty($squid_conf['listenproto'])) {
+		$listenproto = 'inet';
+	} else {
+		$listenproto = $squid_conf['listenproto'];
+	}
+
 	/*
 	 * When transparent proxy is enabled and we are doing NAT, use rdr pass to pass traffic
 	 * For PPPoE server, the $pppoe below is a pf macro, not a PHP variable, needs to be escaped.
@@ -2129,14 +2279,21 @@ function squid_generate_rules($type) {
 				break;
 			}
 			$rules .= "\n# Setup Squid proxy redirect\n";
-			/* Bypass Proxy for Private Address Destination - RFC1918 */
+			/* Bypass Proxy for Private Address Destination */
 			if ($squid_conf['private_subnet_proxy_off'] == 'on') {
 				foreach ($transparent_ifaces as $iface) {
 					$pf_transparent_rule_port = (in_array($iface, $ssl_ifaces) ? "{80,443}" : "80");
-					$rules .= "no rdr on $iface proto tcp from any to { 192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8 } port {$pf_transparent_rule_port}\n";
+					if ($listenproto != 'inet6') {
+						$rules .= "no rdr on $iface proto tcp from any to { 192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8 } port {$pf_transparent_rule_port}\n";
+					}
+					if ($listenproto != 'inet') {
+						$rules .= "no rdr on $iface proto tcp from any to { fc00::/7 } port {$pf_transparent_rule_port}\n";
+					}
 				}
 				/* Handle PPPOE case */
-				if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
+				if ((($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) ||
+				    (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) &&
+				    ($listenproto != 'inet6')) {
 					$rules .= "no rdr on \$pppoe proto tcp from any to { 192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8 } port {$pf_nat_ports}\n";
 				}
 			}
@@ -2159,7 +2316,9 @@ function squid_generate_rules($type) {
 					$rules .= "no rdr on $iface proto tcp from { $exempt_ip } to any port {$pf_transparent_rule_port}\n";
 				}
 				/* Handle PPPOE case */
-				if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
+				if ((($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) ||
+				    (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) &&
+				    ($listenproto != 'inet6')) {
 					$rules .= "no rdr on \$pppoe proto tcp from { $exempt_ip } to any port {$pf_nat_ports}\n";
 				}
 			}
@@ -2182,15 +2341,31 @@ function squid_generate_rules($type) {
 					$rules .= "no rdr on $iface proto tcp from any to { $exempt_dest } port {$pf_transparent_rule_port}\n";
 				}
 				/* Handle PPPOE case */
-				if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
+				if ((($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) ||
+				    (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) &&
+				    ($listenproto != 'inet6')) {
 					$rules .= "no rdr on \$pppoe proto tcp from any to { $exempt_dest } port {$pf_nat_ports}\n";
 				}
 			}
 			/* Transparent Proxy Interface(s) */
 			foreach ($transparent_ifaces as $t_iface) {
-				$rules .= "rdr pass on $t_iface proto tcp from any to !($t_iface) port 80 -> 127.0.0.1 port {$port}\n";
-				if (in_array($t_iface, $ssl_ifaces)) {
-					$rules .= "rdr pass on $t_iface proto tcp from any to !($t_iface) port 443 -> 127.0.0.1 port {$ssl_port}\n";
+				$t_ifaces_ips = squid_get_real_interface_address($t_iface, $listenproto);
+				foreach ($t_ifaces_ips as $t_iface_ip) {
+					if (is_ipaddrv4($t_iface_ip[0]) && ($listenproto != 'inet6')) {
+						$rules .= "rdr pass on $t_iface inet proto tcp from any to !($t_iface) " .
+						"port 80 -> 127.0.0.1 port {$port}\n";
+						if (in_array($t_iface, $ssl_ifaces)) {
+							$rules .= "rdr pass on $t_iface inet proto tcp from any to !($t_iface) " .
+							"port 443 -> 127.0.0.1 port {$ssl_port}\n";
+						}
+					} elseif (is_ipaddrv6($t_iface_ip[0]) && ($listenproto != 'inet')) {
+						$rules .= "rdr pass on $t_iface inet6 proto tcp from any to !($t_iface) " .
+						"port 80 -> {$t_iface_ip[0]} port {$port}\n";
+						if (in_array($t_iface, $ssl_ifaces)) {
+							$rules .= "rdr pass on $t_iface inet6 proto tcp from any to !($t_iface) " .
+							"port 443 -> {$t_iface_ip[0]} port {$ssl_port}\n";
+						}
+					}
 				}
 			}
 			/*
@@ -2198,7 +2373,9 @@ function squid_generate_rules($type) {
 			 * For PPPoE server, mpd uses a group of different _local_ interfaces
 			 * The rules below are needed so that the clients can be transparently proxied
 			 */
-			if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
+			if ((($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) ||
+			    (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) &&
+			    ($listenproto != 'inet6')) {
 				$rules .= "rdr pass on \$pppoe proto tcp from any to !127.0.0.1 port 80 -> 127.0.0.1 port {$port}\n";
 				if ($squid_conf['ssl_proxy'] == "on") {
 					$rules .= "rdr pass on \$pppoe proto tcp from any to !127.0.0.1 port 443 -> 127.0.0.1 port {$ssl_port}\n";
@@ -2433,20 +2610,30 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 /* Get a listing of CA entries which are valid for use with MITM/Splice.
  * They MUST have a private key present!
  */
-function squid_get_ca_or_certs($type) {
+function squid_get_ca_or_certs($type, $consumer = 'HTTPS', $noprv = false, $addnone = true) {
+	global $config;
 	$c_arr = array();
 	if (function_exists('cert_build_list')) {
-		$c_arr = cert_build_list($type, 'HTTPS', true, true);
-	} else {
-		global $config;
-		$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
-		if (isset($config[$type]) && is_array($config[$type])) {
+		$list_arr = cert_build_list($type, $consumer, true, false);
+	}
+	if (isset($config[$type]) && is_array($config[$type])) {
+		if (is_array($list_arr)) {
 			foreach ($config[$type] as $c) {
-				if (!empty($c['prv'])) {
+				if (in_array($c['refid'],array_column($list_arr, 'refid')) && 
+				 (!empty($c['prv']) || $noprv)) {
+					$c_arr[] = $c;
+				}
+			}
+		} else {
+			foreach ($config[$type] as $c) {
+				if (!empty($c['prv']) || $noprv) {
 					$c_arr[] = $c;
 				}
 			}
 		}
+	}
+	if ($addnone) {
+		$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
 	}
 	return $c_arr;
 }

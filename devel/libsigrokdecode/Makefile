@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libsigrokdecode
-PORTVERSION=	0.5.2
+PORTVERSION=	0.5.3
 CATEGORIES=	devel
 MASTER_SITES=	http://sigrok.org/download/source/libsigrokdecode/
 
@@ -12,7 +12,7 @@ COMMENT=	Framework for hardware logic analyzers, protocol decoders library
 LICENSE=	GPLv3
 
 GNU_CONFIGURE=	yes
-USES=		libtool pathfix pkgconfig python:3.4+
+USES=		gnome libtool pathfix pkgconfig python:3.4+
 USE_GNOME=	glib20
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes

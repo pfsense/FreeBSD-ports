@@ -12,7 +12,7 @@ COMMENT=	User-level file synchronization tool
 LICENSE=	GPLv3
 
 FLAVORS=	x11 nox11
-FLAVOR?=	${FLAVORS[1]}
+FLAVOR?=	${FLAVORS:[1]}
 
 nox11_PKGNAMESUFFIX= -nox11
 nox11_CONFLICTS_INSTALL=	unison
@@ -56,7 +56,7 @@ PLIST_SUB+=		X11="@comment "
 MAKE_ARGS=		UISTYLE=gtk2
 SUB_FILES=		${PORTNAME}.desktop
 USE_GNOME+=		atk cairo gdkpixbuf2 glib20 gtk20 pango
-USES+=			gettext-runtime
+USES+=			gettext-runtime gnome
 PLIST_SUB+=		X11=""
 .endif
 

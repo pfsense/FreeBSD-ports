@@ -8,7 +8,7 @@
  * freeradius.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * All rights reserved.
  *
@@ -172,7 +172,10 @@
 			<fieldname>varuserspasswordencryption</fieldname>
 			<description>
 				<![CDATA[
-				Select the password encryption for this user. Default: Cleartext-Password
+				Select the password encryption for this user.
+				If the (pre-hashed) options are used, the password should already be hashed by the expected hash function.
+				Note that not all authentication protocols are compatible with all types of hashed passwords.
+				Default: Cleartext-Password
 				]]>
 			</description>
 			<type>select</type>
@@ -180,6 +183,8 @@
 			<options>
 				<option><name>Cleartext-Password</name><value>Cleartext-Password</value></option>
 				<option><name>MD5-Password</name><value>MD5-Password</value></option>
+				<option><name>MD5-Password (pre-hashed)</name><value>MD5-Password-hashed</value></option>
+				<option><name>NT-Password (pre-hashed)</name><value>NT-Password-hashed</value></option>
 			</options>
 		</field>
 		<field>
@@ -318,7 +323,10 @@
 						if ($('#varusersauthmethod').val() != "googleauth") {
 							return;
 						}
-						var provider = encodeURIComponent("FreeRADIUS");
+						var provider = encodeURIComponent($('#description').val());
+						if (provider.length == 0) {
+							provider = encodeURIComponent("FreeRADIUS");
+						}
 						var user = encodeURIComponent($('#varusersusername').val());
 						var key = encodeURIComponent($('#varusersmotpinitsecret').val());
 						if ((user.length == 0) || (key.length == 0)) {
@@ -372,20 +380,16 @@
 			<type>input</type>
 		</field>
 		<field>
-			<name>Network Configuration</name>
+			<name>IPv4 Network Configuration</name>
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>IP Address</fielddescr>
+			<fielddescr>IPv4 Address</fielddescr>
 			<fieldname>varusersframedipaddress</fieldname>
 			<description>
 				<![CDATA[
 				<b>Framed-IP-Address</b> must be supported by NAS. <span class="text-info">Click Info for details.</span><br/>
-				<span class="text-danger">IMPORTANT:</span> You must enter an IP address here if you checked "RADIUS issued IP" on PPPoE VPN configuration.
-				<div class="infoblock">
-				If you want this user to be assigned a specific IP address from RADIUS, enter the IP address here.<br/>
-				Continuous IP address is available with "+" suffix (e.g. 192.168.1.5+). This can be useful for simultaneous connections.
-				</div>
+				<span class="text-danger">IMPORTANT:</span> You must enter an IPv4 address here if you checked "RADIUS issued IP" on PPPoE VPN configuration.
 				]]>
 			</description>
 			<type>input</type>
@@ -401,7 +405,7 @@
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>Gateway</fielddescr>
+			<fielddescr>IPv4 Gateway</fielddescr>
 			<fieldname>varusersframedroute</fieldname>
 			<description>
 				<![CDATA[
@@ -410,6 +414,37 @@
 				]]>
 			</description>
 			<type>input</type>
+		</field>
+		<field>
+			<name>IPv6 Network Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>IPv6 Address</fielddescr>
+			<fieldname>varusersframedip6address</fieldname>
+			<description>
+				<![CDATA[
+				When the IPv6 prefix part is empty it uses <b>Framed-IPv6-Address</b>. 
+				When the prefix part is filled in, it uses <b>Framed-IPv6-Prefix</b>.<br /> 
+			        <span class="text-info">Example: 2001:db8:abab::5 or 2001:db8:abab::/64</span>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>IPv6 Gateway</fielddescr>
+			<fieldname>varusersframedip6route</fieldname>
+			<description>
+				<![CDATA[
+				<b>Framed-IPv6-Route</b> must be supported by NAS.
+				<span class="text-info">Required format: Prefix Gateway Metric(s) (e.g. 2001:db8:0:16::/64 2001:db8::16:a0:20ff:fe99:a998 1)</span>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>VLAN Configuration</name>
+			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>VLAN ID</fielddescr>

@@ -14,13 +14,14 @@ COMMENT=	GTK-based git repository viewer (gtk2 version)
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to link: gitg-branch-actions.o(.text+0x46c): unresolvable R_PPC64_REL24 relocation against symbol gitg_revision_get_subject
+BROKEN_FreeBSD_11_powerpc64=	fails to link on powerpc64 elfv1: gitg-branch-actions.o(.text+0x46c): unresolvable R_PPC64_REL24 relocation against symbol gitg_revision_get_subject
+BROKEN_FreeBSD_12_powerpc64=	fails to link on powerpc64 elfv1: gitg-branch-actions.o(.text+0x46c): unresolvable R_PPC64_REL24 relocation against symbol gitg_revision_get_subject
 
 RUN_DEPENDS=	git:devel/git
 
 CONFLICTS=	gitg-[0-9]*
 
-USES=		tar:bzip2 gmake pkgconfig pathfix libtool
+USES=		gmake gnome libtool pathfix pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
 USE_GNOME=	gconf2 gtk20 gtksourceview2 intlhack
 INSTALL_TARGET=	install-strip

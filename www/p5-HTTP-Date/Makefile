@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	HTTP-Date
-PORTVERSION=	6.02
-PORTREVISION=	1
+PORTVERSION=	6.05
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,9 +13,19 @@ COMMENT=	Conversion routines for the HTTP protocol date formats
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-TimeDate>=0:devel/p5-TimeDate
+
 USES=		perl5
 USE_PERL5=	configure
 
 NO_ARCH=	yes
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PERL_LEVEL} < 503000
+BUILD_DEPENDS+=	p5-Time-Local>=1.28:devel/p5-Time-Local
+RUN_DEPENDS+=	p5-Time-Local>=1.28:devel/p5-Time-Local
+.endif
+
+.include <bsd.port.post.mk>

@@ -9,7 +9,7 @@ CATEGORIES=	games net
 MASTER_SITES=	http://www.bearnip.com/ftp/mud/ \
 		ftp://mud.stack.nl/pub/ldmud/
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modern version of the LPMud game driver
 
 BUILD_DEPENDS=	help2man:misc/help2man
@@ -36,7 +36,7 @@ OPTIONS_SINGLE_MUDLIB=	LPMUD DEMOLIB
 OPTIONS_SUB=	yes
 LPMUD_DESC=	Install default mudlib (LP-245)
 IPV6_CONFIGURE_ENABLE=	use-ipv6
-MYSQL_USE=		MYSQL=yes
+MYSQL_USES=		mysql
 MYSQL_CONFIGURE_ENABLE=	use-mysql
 PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_ENABLE=	use-pgsql

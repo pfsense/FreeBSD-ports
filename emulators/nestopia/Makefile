@@ -1,11 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	nestopia
-DISTVERSION=	1.49
-PORTREVISION=	2
+DISTVERSION=	1.50
 CATEGORIES=	emulators
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable NES/Famicom emulator
 
 LICENSE=	GPLv2
@@ -15,7 +14,7 @@ BUILD_DEPENDS=	autoconf-archive>=0:devel/autoconf-archive
 LIB_DEPENDS=	libao.so:audio/libao libepoxy.so:graphics/libepoxy
 
 USES=		autoreconf desktop-file-utils gl gnome libarchive \
-		localbase:ldflags pkgconfig
+		localbase:ldflags pkgconfig sdl
 USE_CXXSTD=	c++98
 USE_GITHUB=	yes
 GH_ACCOUNT=	rdanbrook

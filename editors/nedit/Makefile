@@ -4,7 +4,7 @@
 PORTNAME=	nedit
 PORTVERSION=	5.7
 CATEGORIES=	editors
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-source
+MASTER_SITES=	LOCAL/swills
 DISTFILES=	nedit-${PORTVERSION}-src.tar.gz \
 		nedit.app-defaults
 EXTRACT_ONLY=	nedit-${PORTVERSION}-src.tar.gz

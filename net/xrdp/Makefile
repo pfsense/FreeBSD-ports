@@ -3,7 +3,7 @@
 
 PORTNAME=	xrdp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.11
+DISTVERSION=	0.9.13
 PORTEPOCH=	1
 CATEGORIES=	net
 DIST_SUBDIR?=	${PORTNAME}
@@ -21,7 +21,8 @@ RUN_DEPENDS=	xterm:x11/xterm \
 		${LOCALBASE}/lib/xorg/modules/libxorgxrdp.so:x11-drivers/xorgxrdp \
 		${LOCALBASE}/lib/pulse-13.0/modules/module-xrdp-sink.so:audio/pulseaudio-module-xrdp
 
-USES=		autoreconf:build jpeg localbase libtool pkgconfig ssl
+USES=		autoreconf:build compiler:c11 jpeg localbase libtool pkgconfig \
+		ssl xorg
 USE_XORG=	ice pixman sm x11 xfixes xrandr
 USE_LDCONFIG=	${PREFIX}/lib/xrdp
 USE_GITHUB=	yes

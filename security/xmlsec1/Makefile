@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xmlsec1
-PORTVERSION=	1.2.25
+PORTVERSION=	1.2.29
 CATEGORIES=	security
 MASTER_SITES=	http://www.aleksey.com/xmlsec/download/ \
 		ftp://ftp.aleksey.com/pub/xmlsec/releases/ \
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 		libgpg-error.so:security/libgpg-error \
 		libltdl.so:devel/libltdl
 
-USES=		libtool localbase pathfix pkgconfig ssl gmake
+USES=		gmake gnome libtool localbase pathfix pkgconfig ssl
 USE_GNOME=	libxml2 libxslt
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
@@ -30,6 +30,7 @@ CONFIGURE_ARGS=	--with-openssl="${OPENSSLBASE}" \
 MAKE_ENV=	ABS_BUILDDIR=${WRKSRC} TMPFOLDER=${WRKSRC}
 INSTALL_TARGET=	install-strip
 PORTDOCS=	*
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 OPTIONS_DEFINE=	DOCS GNUTLS NSS
 OPTIONS_DEFAULT=	NSS

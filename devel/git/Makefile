@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	git
-DISTVERSION=	2.24.1
+DISTVERSION=	2.26.2
 CATEGORIES=	devel
 MASTER_SITES=	KERNEL_ORG/software/scm/git
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -17,6 +17,8 @@ COMMENT?=	Distributed source code management tool
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		autoreconf gmake iconv shebangfix ssl tar:xz
+
 CONFLICTS_INSTALL?=	git-gui-[0-9]* git-lite-[0-9]*
 
 USERS=		git_daemon
@@ -25,7 +27,6 @@ GROUPS=		git_daemon
 SUB_FILES=	pkg-message gitweb.conf
 
 GNU_CONFIGURE=	yes
-USES=		autoreconf gmake iconv shebangfix ssl tar:xz
 CPPFLAGS+=	-isystem${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 MAKE_ARGS+=	DEVELOPER=
@@ -42,7 +43,7 @@ SHEBANG_FILES=	*.perl */*.perl */*/*.perl */*.pl */*/*.pl */*/*/*.pl \
 		contrib/fast-import/import-zips.py \
 		contrib/remote-helpers/git-remote-bzr \
 		contrib/remote-helpers/git-remote-hg \
-		contrib/credential/netrc/git-credential-netrc \
+		contrib/credential/netrc/git-credential-netrc.perl \
 		contrib/buildsystems/generate contrib/contacts/git-contacts \
 		contrib/svn-fe/svnrdump_sim.py \
 		templates/hooks--fsmonitor-watchman.sample
@@ -58,12 +59,13 @@ OPTIONS_DEFAULT=	CONTRIB P4 CVS PERL GITWEB ICONV CURL SEND_EMAIL PCRE \
 			SUBTREE SVN
 OPTIONS_SUB=	yes
 
-GITWEB_DESC=	Install gitweb
 CONTRIB_DESC=	Install contributed scripts
+CURL_DESC=	Install curl support (provides HTTPS transport)
+CVS_DESC=	Enable CVS support
+GITWEB_DESC=	Install gitweb
+HTMLDOCS_DESC=	Install additional documentation
 P4_DESC=	Enable Perforce support
 PCRE2_DESC=	Use Perl Compatible Regular Expressions (v2)
-CVS_DESC=	Enable CVS support
-HTMLDOCS_DESC=	Install additional documentation
 SEND_EMAIL_DESC=Enable the git-send-email(1) script
 SUBTREE_DESC=	Install git-subtree
 
@@ -89,7 +91,6 @@ SEND_EMAIL_IMPLIES=	PERL
 SEND_EMAIL_RUN_DEPENDS=	p5-Authen-SASL>=0:security/p5-Authen-SASL \
 			p5-IO-Socket-SSL>=0:security/p5-IO-Socket-SSL
 
-ICONV_USES=		iconv
 ICONV_MAKE_ARGS_OFF=	NO_ICONV=1
 
 CURL_MAKE_ENV=		CURLDIR=${LOCALBASE}

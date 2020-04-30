@@ -8,7 +8,7 @@
  * traffic_totals.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Originally based upon pfBlocker by
@@ -30,12 +30,28 @@
 	]]>
 	</copyright>
 	<description>Traffic Totals Page</description>
-        <name>Traffic Totals</name>
+	<name>Traffic Totals</name>
 	<title>Status: Traffic Totals</title>
+	<include_file>/usr/local/pkg/status_traffic_totals.inc</include_file>
 	<menu>
 		<name>Traffic Totals</name>
-                <tooltiptext>Traffic totals per interface for different periods of time.</tooltiptext>
+		<tooltiptext>Traffic totals per interface for different periods of time.</tooltiptext>
 		<section>Status</section>
 		<url>/status_traffic_totals.php</url>
 	</menu>
+	<service>
+		<name>vnstatd</name>
+		<rcfile>vnstatd.sh</rcfile>
+		<executable>vnstatd</executable>
+		<description>Status Traffic Totals data collection daemon</description>
+	</service>
+	<custom_php_resync_config_command>
+		vnstat_sync();
+	</custom_php_resync_config_command>
+	<custom_php_install_command>
+		vnstat_install();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		vnstat_deinstall();
+	</custom_php_deinstall_command>
 </packagegui>

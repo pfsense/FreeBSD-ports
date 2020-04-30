@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	jd-gui
-PORTVERSION=	1.6.3
+PORTVERSION=	1.6.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	java devel
 MASTER_SITES=	https://github.com/java-decompiler/jd-gui/releases/download/v${PORTVERSION}/:jar
@@ -19,7 +19,6 @@ USES=		desktop-file-utils
 USE_GITHUB=	yes
 GH_ACCOUNT=	java-decompiler
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
 
 NO_ARCH=	yes
 NO_BUILD=	yes

@@ -12,9 +12,12 @@ COMMENT=	Python bindings for subversion
 
 LICENSE=	GPLv2
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
+
 BUILD_DEPENDS+=	svn:devel/subversion
 
-USES=		python:2.7
+USES=		compiler:c11 python:2.7
 USE_PYTHON=	distutils autoplist
 MAKE_ENV=	HOME=/dev/null
 INSTALL_TARGET=	install-strip

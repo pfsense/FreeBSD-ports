@@ -3,7 +3,7 @@
 
 PORTNAME=	freevo
 PORTVERSION=	1.9.0
-PORTREVISION=	20
+PORTREVISION=	21
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/Freevo%20releases/${PORTVERSION}
 
@@ -12,6 +12,9 @@ COMMENT=	Open source digital jukebox
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 RUN_DEPENDS=	mplayer:multimedia/mplayer \
 		mencoder:multimedia/mencoder \
@@ -23,7 +26,7 @@ RUN_DEPENDS=	mplayer:multimedia/mplayer \
 		${PYTHON_SITELIBDIR}/kaa/metadata/__init__.py:multimedia/py-kaa-metadata@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/BeautifulSoup.py:www/py-beautifulsoup32@${PY_FLAVOR} \
 		${PYGAME} \
-		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR} \
+		${PY_PILLOW} \
 		${PYTHON_SITELIBDIR}/Numeric/Numeric_headers/__init__.py:math/py-numeric@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}twisted>=0:devel/py-twisted@${PY_FLAVOR}
 

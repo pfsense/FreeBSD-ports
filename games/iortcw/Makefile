@@ -20,7 +20,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libopus.so:audio/opus \
 		libopusfile.so:audio/opusfile
 
-USES=		gl gmake jpeg openal pkgconfig sdl
+USES=		compiler:c++11-lang gl gmake jpeg openal pkgconfig sdl xorg
 USE_GITHUB=	yes
 USE_GL=		gl
 USE_SDL=	sdl2
@@ -29,8 +29,7 @@ WOLFDIR=	"libexec/${PORTNAME}"
 MAKE_ARGS=	BINDIR="${STAGEDIR}${PREFIX}/bin" \
 		COPYDIR="${STAGEDIR}${PREFIX}/${WOLFDIR}"
 
-# cf. PR 226980
-LLD_UNSAFE=	yes
+LDFLAGS_i386=	-Wl,-znotext
 
 PLIST_SUB=	ARCH="${ARCH}" \
 		WOLFDIR="${WOLFDIR}"

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	strongswan
-PORTVERSION=	5.8.2
+PORTVERSION=	5.8.4
 CATEGORIES=	security net-vpn
 MASTER_SITES=	http://download.strongswan.org/ \
 		http://download2.strongswan.org/
@@ -42,7 +42,7 @@ CONFIGURE_ARGS=	--enable-kernel-pfkey \
 
 OPTIONS_DEFINE=	CURL EAPAKA3GPP2 EAPDYNAMIC EAPRADIUS EAPSIMFILE GCM IKEV1 \
 		IPSECKEY KERNELLIBIPSEC LOADTESTER LDAP MEDIATION MYSQL PKI \
-		PKCS11 SCEP SMP SQLITE SWANCTL TESTVECTOR TPM UNBOUND UNITY \
+		PKCS11 PYTHON SCEP SMP SQLITE SWANCTL TESTVECTOR TPM UNBOUND UNITY \
 		VICI XAUTH
 OPTIONS_DEFINE_i386=	VIA
 OPTIONS_DEFAULT=	BUILTIN CURL IKEV1 PKI SWANCTL VICI
@@ -66,6 +66,7 @@ LOADTESTER_DESC=	Enable load testing plugin
 MEDIATION_DESC=		Enable IKEv2 Mediation Extension
 PKCS11_DESC=	Enable PKCS11 token support
 PKI_DESC=	Enable PKI tools
+PYTHON_DESC=	Python VICI protocol plugin
 SCEP_DESC=	Enable Simple Certificate Enrollment Protocol
 SMP_DESC=	Enable XML-based management protocol (DEPRECATED)
 SWANCTL_DESC=	Install swanctl (requires VICI)
@@ -100,6 +101,9 @@ MYSQL_CONFIGURE_ON=	--enable-mysql
 MYSQL_USES=		mysql
 PKCS11_CONFIGURE_ON=	--enable-pkcs11
 PKI_CONFIGURE_OFF=	--disable-pki
+PYTHON_IMPLIES=		VICI
+PYTHON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}vici>0:security/py-vici@${PY_FLAVOR}
+PYTHON_USES=		python
 SCEP_CONFIGURE_OFF=	--disable-scepclient
 SMP_CONFIGURE_ON=	--enable-smp
 SMP_LIB_DEPENDS=	libxml2.so:textproc/libxml2

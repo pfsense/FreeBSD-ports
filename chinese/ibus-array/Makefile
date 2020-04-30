@@ -10,12 +10,16 @@ COMMENT=	Array 30 input method for IBus
 
 LICENSE=	GPLv2
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
+
 BUILD_DEPENDS=	ibus-daemon:textproc/ibus
 RUN_DEPENDS=	ibus-daemon:textproc/ibus
 
 GNU_CONFIGURE=	yes
 
-USES=		autoreconf gettext gmake libtool pkgconfig python:2.7 sqlite
+USES=		autoreconf gettext gmake gnome libtool pkgconfig python:2.7 \
+		sqlite
 USE_GNOME+=	glib20
 
 USE_GITHUB=	yes

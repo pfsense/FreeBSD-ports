@@ -10,6 +10,8 @@ MASTER_SITES=	http://releases.compiz.org/${PORTVERSION}/
 MAINTAINER=	freebsd-ports@dan.me.uk
 COMMENT=	Plugins for Compiz Composite Window Manager
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
@@ -23,7 +25,7 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		gmake libtool:keepla pathfix pkgconfig tar:bzip2
+USES=		gl gmake gnome libtool:keepla pathfix pkgconfig tar:bzip2 xorg
 USE_GL=		yes
 USE_GNOME=	gconf2 intltool libxslt
 USE_XORG=	ice sm x11 xcomposite xdamage xext xfixes xinerama xorgproto xrandr

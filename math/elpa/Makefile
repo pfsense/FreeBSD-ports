@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	elpa
-DISTVERSION=	2019.05.001
+DISTVERSION=	2019.05.002
 PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	http://elpa.mpcdf.mpg.de/html/Releases/${DISTVERSION}/

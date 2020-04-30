@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	postfix
-DISTVERSION=	3.4.7
+DISTVERSION=	3.5.1
 PORTREVISION?=	0
 PORTEPOCH=	1
-CATEGORIES=	mail ipv6
+CATEGORIES=	mail
 MASTER_SITES=	ftp://ftp.porcupine.org/mirrors/postfix-release/ \
 		http://de.postfix.org/ftpmirror/ \
 		http://cdn.postfix.johnriley.me/mirrors/postfix-release/ \
@@ -24,11 +24,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_NAME_IPL10=	IBM PUBLIC LICENSE VERSION 1.0
 LICENSE_PERMS_IPL10=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-PORTSCOUT=	limit:^3\.3\.
+PORTSCOUT=	limit:^3\.5\.
 
-CONFLICTS_INSTALL?=	courier-0.* opensmtpd-[0-9]* \
-		sendmail-8.* sendmail+*-8.* smail-3.* zmailer-2.* \
-		postfix-2.* postfix-base-2.* postfix21?-* postfix-current-*
+CONFLICTS_INSTALL?=	courier-0.* opensmtpd-[0-9]* sendmail-8.* sendmail+*-8.* \
+		postfix-current-*
 
 USERS=		postfix
 GROUPS=		mail maildrop postfix
@@ -45,7 +44,7 @@ OPTIONS_DEFINE=	BDB BLACKLISTD CDB DOCS EAI INST_BASE LDAP LDAP_SASL \
 
 OPTIONS_RADIO=		RG1
 OPTIONS_RADIO_RG1=	SASLKRB5 SASLKMIT
-OPTIONS_DEFAULT?=	EAI PCRE TLS
+OPTIONS_DEFAULT?=	BLACKLISTD EAI PCRE TLS
 
 BDB_USES=		bdb
 BLACKLISTD_EXTRA_PATCHES=	${FILESDIR}/extra-patch-blacklistd
@@ -53,7 +52,7 @@ CDB_LIB_DEPENDS=	libcdb.so:databases/tinycdb
 EAI_LIB_DEPENDS=	libicuuc.so:devel/icu
 LDAP_USE=		OPENLDAP=yes
 LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
-MYSQL_USES=		mysql
+MYSQL_USES?=		mysql
 PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
 PGSQL_USES=		pgsql
 SASLKMIT_LIB_DEPENDS=	libkrb5.so:security/krb5
@@ -80,9 +79,10 @@ SASLKMIT_DESC=	If your SASL req. MIT Kerberos5, select this
 HTML1=	body_checks.5.html bounce.5.html postfix-power.png \
 	scache.8.html tlsmgr.8.html
 
-STRIP_LIBEXEC=	anvil bounce cleanup discard dnsblog error flush lmtp local master \
-		nqmgr oqmgr pickup pipe postscreen proxymap qmgr qmqpd scache showq \
-		smtp smtpd spawn tlsmgr tlsproxy trivial-rewrite verify virtual
+STRIP_LIBEXEC=	anvil bounce cleanup discard dnsblog error flush lmtp local \
+		master nqmgr oqmgr pickup pipe postlogd postscreen proxymap \
+		qmgr qmqpd scache showq smtp smtpd spawn tlsmgr tlsproxy \
+		trivial-rewrite verify virtual
 
 .if !defined(DEBUG)
 MAKEFILEFLAGS+=	DEBUG=

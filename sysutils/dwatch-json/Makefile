@@ -4,7 +4,7 @@ PORTNAME=	dwatch-json
 DISTVERSION=	0.4.1
 CATEGORIES=	sysutils
 
-MAINTAINER=	dteske@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	FreeBSD dwatch profiles to produce JSON logs
 
 LICENSE=	BSD2CLAUSE
@@ -19,12 +19,6 @@ NO_BUILD=	yes
 PORTDOCS=	README.md
 
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.options.mk>
-
-.if ${OSVERSION} >= 1200000 && ${OSVERSION} < 1200065
-IGNORE=		requires dwatch available in recent FreeBSD 11 or 12
-.endif
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/libexec/dwatch

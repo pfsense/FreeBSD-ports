@@ -10,7 +10,9 @@ MASTER_SITES=	http://www.winischhofer.net/sis/
 MAINTAINER=	bland@FreeBSD.org
 COMMENT=	Display Control Panel for XFree86/X.org SiS driver
 
-USES=		gmake pkgconfig
+BROKEN=		unfetchable
+
+USES=		gmake gnome pkgconfig xorg
 USE_XORG=	x11 ice xxf86vm xinerama xv xrandr xext sm
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes

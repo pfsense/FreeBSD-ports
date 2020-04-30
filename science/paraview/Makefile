@@ -3,7 +3,7 @@
 
 PORTNAME=	paraview
 DISTVERSION=	5.6.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	science graphics
 MASTER_SITES=	http://www.paraview.org/files/v${VERMAJORMINOR}/
 DISTNAME=	ParaView-v${PORTVERSION}
@@ -15,6 +15,9 @@ LICENSE=	ParaView_License_1.2
 LICENSE_NAME=	ParaView_License
 LICENSE_FILE=	${PATCH_WRKSRC}/License_v1.2.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/matplotlib/pyplot.py:math/py-matplotlib@${PY_FLAVOR}
 LIB_DEPENDS=	libhdf5.so:science/hdf5 \
@@ -32,7 +35,8 @@ LIB_DEPENDS=	libhdf5.so:science/hdf5 \
 RUN_DEPENDS=	bash:shells/bash	\
 		${PYTHON_SITELIBDIR}/matplotlib/pyplot.py:math/py-matplotlib@${PY_FLAVOR}
 
-USES=		alias cmake compiler:c11 gl jpeg localbase python:2.7 qt:5 shebangfix
+USES=		alias cmake compiler:c11 gl jpeg localbase python:2.7 qt:5 \
+		shebangfix xorg
 USE_QT=		core gui help network sql widgets x11extras xmlpatterns \
 		buildtools_build qmake_build
 USE_GL=		gl glu

@@ -3,7 +3,7 @@
 
 PORTNAME=	burrtools
 PORTVERSION=	0.6.3
-PORTREVISION=	17
+PORTREVISION=	18
 CATEGORIES=	games
 MASTER_SITES=	SF
 
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libpng.so:graphics/png \
 		libfltk.so:x11-toolkits/fltk
 
-USES=		gmake localbase lua:51
+USES=		gl gmake localbase lua:51
 USE_GL=		gl glu
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_lib_ICE_IceConnectionNumber="no" \

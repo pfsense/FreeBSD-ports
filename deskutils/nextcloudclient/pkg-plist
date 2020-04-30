@@ -12,10 +12,10 @@ include/nextcloudsync/mirall/syncfileitem.h
 include/nextcloudsync/mirall/syncresult.h
 lib/libnextcloudsync.so
 lib/libnextcloudsync.so.0
-lib/libnextcloudsync.so.2.5.3
+lib/libnextcloudsync.so.%%VERSION%%
 lib/nextcloud/libocsync.so
 lib/nextcloud/libocsync.so.0
-lib/nextcloud/libocsync.so.2.5.3
+lib/nextcloud/libocsync.so.%%VERSION%%
 share/applications/nextcloud.desktop
 share/caja-python/extensions/syncstate-Nextcloud.py
 share/icons/hicolor/1024x1024/apps/Nextcloud.png
@@ -37,7 +37,7 @@ share/icons/hicolor/16x16/apps/Nextcloud_sync.png
 share/icons/hicolor/16x16/apps/Nextcloud_sync_shared.png
 share/icons/hicolor/16x16/apps/Nextcloud_warn.png
 share/icons/hicolor/16x16/apps/Nextcloud_warn_shared.png
-share/icons/hicolor/22x22/apps/Nextcloud.png
+share/icons/hicolor/24x24/apps/Nextcloud.png
 share/icons/hicolor/256x256/apps/Nextcloud.png
 share/icons/hicolor/256x256/apps/Nextcloud_error.png
 share/icons/hicolor/256x256/apps/Nextcloud_error_shared.png
@@ -86,6 +86,7 @@ share/icons/hicolor/72x72/apps/Nextcloud_warn_shared.png
 share/nautilus-python/extensions/syncstate-Nextcloud.py
 share/nemo-python/extensions/syncstate-Nextcloud.py
 share/nextcloud/i18n/client_TW.qm
+share/nextcloud/i18n/client_af.qm
 share/nextcloud/i18n/client_bg.qm
 share/nextcloud/i18n/client_ca.qm
 share/nextcloud/i18n/client_cs.qm
@@ -113,11 +114,13 @@ share/nextcloud/i18n/client_fi.qm
 share/nextcloud/i18n/client_fr.qm
 share/nextcloud/i18n/client_gl.qm
 share/nextcloud/i18n/client_he.qm
+share/nextcloud/i18n/client_hr.qm
 share/nextcloud/i18n/client_hu.qm
 share/nextcloud/i18n/client_id.qm
 share/nextcloud/i18n/client_is.qm
 share/nextcloud/i18n/client_it.qm
 share/nextcloud/i18n/client_ja.qm
+share/nextcloud/i18n/client_ko.qm
 share/nextcloud/i18n/client_lt_LT.qm
 share/nextcloud/i18n/client_lv.qm
 share/nextcloud/i18n/client_nb_NO.qm
@@ -125,6 +128,7 @@ share/nextcloud/i18n/client_nl.qm
 share/nextcloud/i18n/client_pl.qm
 share/nextcloud/i18n/client_pt.qm
 share/nextcloud/i18n/client_pt_BR.qm
+share/nextcloud/i18n/client_ro.qm
 share/nextcloud/i18n/client_ru.qm
 share/nextcloud/i18n/client_sk.qm
 share/nextcloud/i18n/client_sl.qm

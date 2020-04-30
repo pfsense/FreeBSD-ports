@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	virtualbox-ose
-PORTVERSION=	5.2.32
-PORTREVISION=	1
+PORTVERSION=	5.2.34
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.oracle.com/virtualbox/${PORTVERSION}/
 PKGNAMESUFFIX=	-kmod
@@ -63,8 +62,7 @@ KMK_FLAGS=	HostDrivers-scripts vboxdrv-src VBoxNetFlt-src VBoxNetAdp-src
 .if ${PORT_OPTIONS:MDEBUG}
 KMK_FLAGS+=	BUILD_TYPE=debug
 KMK_BUILDTYPE=	debug
-EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-Config.kmk \
-		${PATCHDIR}/extrapatch-src-VBox-HostDrivers-Support-freebsd-Makefile
+EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-src-VBox-HostDrivers-Support-freebsd-Makefile
 MAKE_ARGS+=	DEBUG_FLAGS="-O1 -g"
 .endif
 

@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	inn
-PORTVERSION=	2.6.1
-CATEGORIES=	news ipv6
+PORTVERSION=	2.6.3
+PORTREVISION=	1
+CATEGORIES=	news
 MASTER_SITES=	ISC/${PORTNAME}
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	kbowling@FreeBSD.org
 COMMENT=	InterNetNews -- the Internet meets Netnews
 
 BUILD_DEPENDS=	p5-GD>=0:graphics/p5-GD \
@@ -22,7 +23,7 @@ CPE_VENDOR=	isc
 
 CONFLICTS?=	inn-stable-[0-9]* inn-current-[0-9]*
 
-OPTIONS_DEFINE=		BERKELEYDB GNUPG KERBEROS SASL KEYWORDS \
+OPTIONS_DEFINE=		BERKELEYDB GNUPG KERBEROS PYTHON SASL KEYWORDS \
 			LARGE_FILES OPENSSL SETGID_INEWS TAGGED_HASH \
 			UUCP_RNEWS DOCS EXAMPLES
 OPTIONS_DEFAULT=	BERKELEYDB GNUPG KEYWORDS OPENSSL LARGE_FILES \
@@ -30,6 +31,7 @@ OPTIONS_DEFAULT=	BERKELEYDB GNUPG KEYWORDS OPENSSL LARGE_FILES \
 OPTIONS_SUB=		yes
 
 KERBEROS_DESC=		Enable Kerberos v5 (for auth_krb5)
+PYTHON_DESC=		Enable support for embedded Python
 SASL_DESC=		Enable SASL (for imapfeed authentication)
 TAGGED_HASH_DESC=	Use tagged hash table for history
 LARGE_FILES_DESC=	Support for files larger than 2GB
@@ -58,11 +60,10 @@ CONFIGURE_ARGS+=	--mandir=${MANPREFIX}/man		\
 			--datarootdir=${INN_SHAREDIR}		\
 			--with-perl
 
-UUCP_RNEWS_CONFIGURE_ON=--enable-uucp-rnews
 UUCP_RNEWS_RUN_DEPENDS=	uucp:net/freebsd-uucp
 
-INNLIB_LONG=		4.0.0
-LIBVER_LONG=		3.0.1
+INNLIB_LONG=		6.0.0
+LIBVER_LONG=		3.0.3
 PLIST_SUB+=		LIBVER=${LIBVER_LONG:R:R} LIBVER_LONG=${LIBVER_LONG} \
 			INNLIB=${INNLIB_LONG:R:R} INNLIB_LONG=${INNLIB_LONG}
 
@@ -88,6 +89,10 @@ CONFIGURE_ENV+=		ac_cv_func_krb5_init_ets=yes
 CONFIGURE_ARGS+=	--without-krb5
 .endif
 
+.if ${PORT_OPTIONS:MKEYWORDS}
+CONFIGURE_ARGS+=	--enable-keywords
+.endif
+
 .if ${PORT_OPTIONS:MLARGE_FILES}
 CONFIGURE_ARGS+=	--enable-largefiles
 .    if ${PORT_OPTIONS:MTAGGED_HASH}
@@ -95,8 +100,9 @@ IGNORE=			cannot be compiled with both LARGE_FILES and TAGGED_HASH: please re-ru
 .    endif
 .endif
 
-.if ${PORT_OPTIONS:MKEYWORDS}
-CONFIGURE_ARGS+=	--enable-keywords
+.if ${PORT_OPTIONS:MPYTHON}
+USES+=			python
+CONFIGURE_ARGS+=	--with-python
 .endif
 
 .if ${PORT_OPTIONS:MSASL}

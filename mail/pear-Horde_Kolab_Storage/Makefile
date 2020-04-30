@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	Horde_Kolab_Storage
-DISTVERSION=	2.2.3
+DISTVERSION=	2.2.4
 CATEGORIES=	mail www pear
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde library for handling Kolab data stored on an IMAP server
 
-USES=	horde
+USES=		horde php
 USE_HORDE_RUN=	Horde_Cache \
 		Horde_Exception \
 		Horde_Kolab_Format \

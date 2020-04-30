@@ -11,13 +11,15 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 MAINTAINER=	mm@FreeBSD.org
 COMMENT=	Multi-User Conferencing component for Jabber
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libidn.so:dns/libidn
 
-USES=		pkgconfig shebangfix
+USES=		gnome pkgconfig shebangfix
 SHEBANG_FILES=	scripts/roommaker.pl scripts/roomname.pl
 USE_GNOME=	glib20
 USE_RC_SUBR=	${PORTNAME}
@@ -44,7 +46,7 @@ MAKE_JOBS_UNSAFE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=	yes
+USES+=		mysql
 CFLAGS+=	-DHAVE_MYSQL
 LIBS+=		`${LOCALBASE}/bin/mysql_config --libs`
 DOCFILES+=	README.sql mu-conference.sql

@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Telegraf
 PORTVERSION=	0.9
+PORTREVISION=	3
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,8 +14,6 @@ COMMENT=	pfSense package Telegraf
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	telegraf:net-mgmt/telegraf
-
-ONLY_FOR_ARCHS=	amd64 armv7
 
 NO_BUILD=	yes
 NO_MTREE=	yes

@@ -18,11 +18,12 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libvorbis.so:audio/libvorbis \
 		libogg.so:audio/libogg
 
-USES=		cmake jpeg openal:soft pkgconfig tar:bzip2
+USES=		cmake compiler:c++11-lang gl jpeg openal:soft pkgconfig sdl tar:bzip2 xorg
 USE_GL=		gl glu
 USE_SDL=	sdl
 USE_XORG=	sm
-LLD_UNSAFE=	yes
+
+LDFLAGS_i386=	-Wl,-znotext
 
 PORTDOCS=	README
 OPTIONS_DEFINE=	DOCS

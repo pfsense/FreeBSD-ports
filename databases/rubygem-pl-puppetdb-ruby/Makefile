@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pl-puppetdb-ruby
-PORTVERSION=	2.0.2
+PORTVERSION=	2.0.3
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 
@@ -15,5 +15,6 @@ RUN_DEPENDS=	rubygem-httparty>0:www/rubygem-httparty
 
 USE_RUBY=	yes
 USES=		gem
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

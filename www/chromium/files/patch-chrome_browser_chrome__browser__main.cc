@@ -1,6 +1,6 @@
---- chrome/browser/chrome_browser_main.cc.orig	2019-10-21 19:06:20 UTC
+--- chrome/browser/chrome_browser_main.cc.orig	2020-03-16 18:40:29 UTC
 +++ chrome/browser/chrome_browser_main.cc
-@@ -222,9 +222,9 @@
+@@ -224,9 +224,9 @@
  #include "components/arc/metrics/stability_metrics_manager.h"
  #endif  // defined(OS_CHROMEOS)
  
@@ -12,7 +12,7 @@
  
  #if defined(OS_LINUX)
  #include "components/crash/content/app/breakpad_linux.h"
-@@ -261,7 +261,7 @@
+@@ -265,7 +265,7 @@
  #endif  // defined(OS_WIN)
  
  #if defined(OS_WIN) || defined(OS_MACOSX) || \
@@ -21,7 +21,7 @@
  #include "chrome/browser/metrics/desktop_session_duration/desktop_session_duration_tracker.h"
  #include "chrome/browser/profiles/profile_activity_metrics_recorder.h"
  #endif
-@@ -1075,7 +1075,7 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
+@@ -1068,7 +1068,7 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
        AddFirstRunNewTabs(browser_creator_.get(), master_prefs_->new_tabs);
      }
  
@@ -30,7 +30,7 @@
      // Create directory for user-level Native Messaging manifest files. This
      // makes it less likely that the directory will be created by third-party
      // software with incorrect owner or permission. See crbug.com/725513 .
-@@ -1084,14 +1084,14 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
+@@ -1077,7 +1077,7 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
                                   &user_native_messaging_dir));
      if (!base::PathExists(user_native_messaging_dir))
        base::CreateDirectory(user_native_messaging_dir);
@@ -39,16 +39,7 @@
    }
  #endif  // !defined(OS_ANDROID) && !defined(OS_CHROMEOS)
  
--#if defined(OS_LINUX) || defined(OS_OPENBSD)
-+#if defined(OS_LINUX)
-   // Set the product channel for crash reports.
-   breakpad::SetChannelCrashKey(chrome::GetChannelName());
--#endif  // defined(OS_LINUX) || defined(OS_OPENBSD)
-+#endif  // defined(OS_LINUX)
- 
- #if defined(OS_MACOSX)
-   // Get the Keychain API to register for distributed notifications on the main
-@@ -1121,7 +1121,7 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
+@@ -1116,7 +1116,7 @@ int ChromeBrowserMainParts::PreCreateThreadsImpl() {
    }
  
  #if defined(OS_WIN) || defined(OS_MACOSX) || \
@@ -57,7 +48,7 @@
    metrics::DesktopSessionDurationTracker::Initialize();
    ProfileActivityMetricsRecorder::Initialize();
  #endif
-@@ -1280,6 +1280,7 @@ void ChromeBrowserMainParts::PostBrowserStart() {
+@@ -1269,6 +1269,7 @@ void ChromeBrowserMainParts::PostBrowserStart() {
        base::TimeDelta::FromMinutes(1));
  
  #if !defined(OS_ANDROID)
@@ -65,7 +56,7 @@
    if (base::FeatureList::IsEnabled(features::kWebUsb)) {
      web_usb_detector_.reset(new WebUsbDetector());
      base::PostTask(
-@@ -1288,6 +1289,7 @@ void ChromeBrowserMainParts::PostBrowserStart() {
+@@ -1277,6 +1278,7 @@ void ChromeBrowserMainParts::PostBrowserStart() {
          base::BindOnce(&WebUsbDetector::Initialize,
                         base::Unretained(web_usb_detector_.get())));
    }

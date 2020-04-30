@@ -3,7 +3,7 @@
  * pfblockerng_install.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -22,7 +22,6 @@
 
 require_once('pfsense-utils.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
-require_once('/usr/local/www/pfblockerng/pfblockerng.php');
 
 global $config, $g, $pfb;
 pfb_global();
@@ -30,117 +29,8 @@ pfb_global();
 // Set 'Install flag' to skip sync process during installations.
 $g['pfblockerng_install'] = TRUE;
 
-// Only download MaxMind Database if files do not exist
-$maxmind_verify = FALSE;
-
-if (!file_exists("{$pfb['geoipshare']}/{$pfb['extras'][0]['file']}") ||
-    !file_exists("{$pfb['geoipshare']}/GeoLite2-Country-Blocks-IPv4.csv") ||
-    !file_exists("{$pfb['dbdir']}/geoip.txt") ||
-    !file_exists("{$pfb['ccdir']}/Top_Spammers_v4.info")) {
-
-	update_status("\nDownloading MaxMind GeoIP databases. This may take a minute...\n");
-
-	// Remove Alexa and Blacklist category feeds from download process
-	$pfb['extras'] = array_slice($pfb['extras'], 0, 2) ?: array();
-
-	foreach ($pfb['extras'] as $feed) {
-
-		$file_dwn = "{$pfb['geoipshare']}/{$feed['file_dwn']}";
-		if (($fhandle = @fopen("{$file_dwn}", 'w')) !== FALSE) {
-			if (empty($feed['file'])) {
-				$feed['file'] = 'GeoLite2-Country-CSV.zip';
-			}
-			update_status(" {$feed['file']}...");
-			if (!($ch = curl_init("{$feed['url']}"))) {
-				update_status(" Failed to create cURL resource.\n");
-				break;
-			}
-
-			curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 Chrome/43.0.2357.65 Safari/537.36');
-			curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1.3, TLSv1.2');
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
-			curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
-			curl_setopt($ch, CURLOPT_FILE, $fhandle);
-			curl_setopt($ch, CURLOPT_TIMEOUT, 600);
-
-			// Attempt 3 Downloads before failing.
-			for ($retries = 1; $retries <= 3; $retries++) {
-				if (curl_exec($ch)) {
-					break;	// Break on success
-				}
-
-				$curl_error = curl_errno($ch);
-				update_status(" cURL Error: {$curl_error}. ", 1);
-			}
-
-			$http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			if ($http_status == '200 OK') {
-				if (strpos($file_dwn, '.gz') !== FALSE) {
-					exec("/usr/bin/tar -xzf {$file_dwn} --strip=1 -C {$pfb['geoipshare']}");
-				} elseif (strpos($file_dwn, '.zip') !== FALSE) {
-					exec("/usr/bin/tar -xf {$file_dwn} --strip=1 -C {$pfb['geoipshare']}");
-				}
-				unlink_if_exists("{$file_dwn}");
-				update_status(" done.\n");
-
-				if ($feed['file'] == 'GeoLite2-Country-CSV.zip') {
-					$maxmind_verify = TRUE;
-				}
-			}
-			else {
-				update_status(" Failed!\n");
-			}
-		}
-		curl_close($ch);
-		@fclose($fhandle);
-	}
-
-	if (!$maxmind_verify) {
-		update_status("MaxMind download Failed! Fetching MaxMind archive from pfSense package repo...\n");
-		// Fetch archived MaxMind database
-		$url = 'https://packages.pfsense.org/packages/config/pfblockerng/countrycodes.tar.bz2';
-		$retval = '';
-		exec("/usr/bin/fetch -o /tmp/countrycodes.tar.bz2 {$url}", $output, $retval);
-		if ($retval == 0) {
-			// Uncompress archived GeoIP code file
-			$retval = '';
-			exec("/usr/bin/tar -jx -C {$pfb['ccdir']} -f /tmp/countrycodes.tar.bz2", $output, $retval);
-			if ($retval == 0) {
-				$maxmind_verify = TRUE;
-				update_status("Fetch done.\n");
-			} else {
-				update_status("Fetch Failed!\n");
-			}
-		}
-		else {
-			update_status(" Failed!\n");
-		}
-	}
-	else {
-		update_status("Downloading MaxMind GeoIP databases... done.\n");
-	}
-
-	// Proceed with conversion of MaxMind files on download success
-	if ($maxmind_verify) {
-		update_status("Converting MaxMind GeoIP databases for pfBlockerNG.\n This may take a few minutes...\n");
-		pfblockerng_uc_countries();
-		update_status("Creating pfBlockerNG Continent PHP files...\n");
-		pfblockerng_get_countries();
-	}
-	else {
-		update_status("\n\nMaxMind update has Failed! Please fix connectivity and re-install package again!\n\n");
-	}
-}
-else {
-	update_status("\nMaxMind GeoIP databases previously downloaded.\n");
-	update_status("Re-creating pfBlockerNG Continent PHP files... ");
-	pfblockerng_get_countries();
-	update_status("done.\n");
-}
-
+// MaxMind Database is no longer pre-installed during package installation
+update_status("\nMaxMind GeoIP databases are not pre-installed during installation.\nTo utilize the MaxMind GeoIP functionalities, you will be required to register for a free MaxMind user account and access key. Review the IP tab: MaxMind Settings for more details.\n\n");
 
 if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'pfblockerng') !== FALSE) {
 	update_status("\nRestoring previous pfBlockerNG Widget settings...");
@@ -504,11 +394,13 @@ if (file_exists('/var/db/pfblockerng/dnsbl_info') &&
 							. " VALUES ( :group0, :group1, :group2, :group3 );\n";
 
 					$stmt = $db_handle->prepare($db_update);
-					$stmt->bindValue(':group0', $group[0], SQLITE3_TEXT);
-					$stmt->bindValue(':group1', $group[1], SQLITE3_TEXT);
-					$stmt->bindValue(':group2', $group[2], SQLITE3_TEXT);
-					$stmt->bindValue(':group3', $group[3], SQLITE3_INTEGER);
-					$stmt->execute();
+					if ($stmt) {
+						$stmt->bindValue(':group0', $group[0], SQLITE3_TEXT);
+						$stmt->bindValue(':group1', $group[1], SQLITE3_TEXT);
+						$stmt->bindValue(':group2', $group[2], SQLITE3_TEXT);
+						$stmt->bindValue(':group3', $group[3], SQLITE3_INTEGER);
+						$stmt->execute();
+					}
 				}
 			}
 		}

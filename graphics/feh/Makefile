@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	feh
-PORTVERSION=	3.2.1
+PORTVERSION=	3.3
 CATEGORIES=	graphics
 MASTER_SITES=	http://feh.finalrewind.org/ \
 		LOCAL/uqs
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libImlib2.so:graphics/imlib2 \
 		libpng.so:graphics/png
 
 USES=		compiler:c++11-lang cpe desktop-file-utils gmake localbase:ldflags \
-		tar:bzip2
+		tar:bzip2 xorg
 USE_XORG=	x11 xt xinerama
 USE_PERL5=	run
 CPE_VENDOR=	daniel_friesel

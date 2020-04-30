@@ -21,7 +21,6 @@ DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 
 USE_RC_SUBR=	helma
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 USE_ANT=	yes
 ALL_TARGET=	clean jar
 NO_ARCH=	yes
@@ -39,7 +38,7 @@ PLIST_SUB=	DBDIR="${DBDIR}" \
 
 OPTIONS_DEFINE=	MYSQL DOCS
 OPTIONS_SUB=	yes
-OPTIONS_DESC=	Install MySQL Connector for Java
+MYSQL_DESC=	Install MySQL Connector for Java
 
 MYSQL_RUN_DEPENDS=	${JAVALIBDIR}/mysql-connector-java.jar:databases/mysql-connector-java
 

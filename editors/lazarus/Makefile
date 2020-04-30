@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	lazarus
-PORTVERSION=	2.0.4
+PORTVERSION=	2.0.6
 PKGNAMESUFFIX?=  -gtk2
 PORTREVISION?=	1
 CATEGORIES=	editors devel
@@ -22,7 +22,7 @@ RUN_DEPENDS?=	${LOCALBASE}/bin/as:devel/binutils \
 
 ONLY_FOR_ARCHS=	i386 amd64
 
-USES=		desktop-file-utils fpc gettext gmake iconv shared-mime-info
+USES=		desktop-file-utils fpc gettext gmake iconv shared-mime-info xorg
 USE_FPC?=	chm cairo dblib fcl-base fcl-db fcl-fpcunit fcl-image fcl-json fcl-net \
 		fcl-registry fcl-res fcl-web fcl-xml fppkg gtk2 ibase iconvenc mysql \
 		numlib odbc opengl openssl oracle pasjpeg postgres regexpr rtl-extra \

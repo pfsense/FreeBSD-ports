@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	hpipm
-DISTVERSION=	0.1.0-80
-DISTVERSIONSUFFIX=	-g8679589
+DISTVERSION=	0.1.1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,4 +16,10 @@ USES=		cmake localbase
 USE_GITHUB=	yes
 GH_ACCOUNT=	giaf
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} != amd64 && ${ARCH} != i386
+CMAKE_ARGS+=	-DAVX:BOOL=OFF
+.endif
+
+.include <bsd.port.post.mk>

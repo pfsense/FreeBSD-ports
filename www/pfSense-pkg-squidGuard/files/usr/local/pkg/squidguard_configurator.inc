@@ -3,7 +3,7 @@
  * squidguard_configurator.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2006-2011 Serg Dvoriancev
  * All rights reserved.
  *
@@ -1601,7 +1601,7 @@ function is_dest_url($url)
     $fmt  = "[a-zA-Z0-9_-]";
 
     if (empty($url)) return false;
-    if (preg_match("/^(($fmt){1,}\.){1,}($fmt){2,}(\/(.[^\*][^ ])*)/i", $url)) return true;
+    if (preg_match("/^(($fmt){1,}\.){1,}($fmt){1,}(\/(.[^\*][^ ])*)/i", $url)) return true;
     return false;
 }
 # ------------------------------------------------------------------------------
@@ -1645,7 +1645,7 @@ function is_ipaddr_valid($val)
 # ------------------------------------------------------------------------------
 function is_domain_valid($domain)
 {
-    $dm_fmt = "([a-z0-9\-]{1,})";
+    $dm_fmt = "([a-z_0-9\-]{1,})";
     $dm_fmt = "/^(($dm_fmt{1,}\.){1,}$dm_fmt{2,})+$/i"; # example: (my.)(super.)(domain.)com
     return is_string($domain) && preg_match($dm_fmt, trim($domain));
 }

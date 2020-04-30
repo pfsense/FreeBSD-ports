@@ -1,8 +1,8 @@
 # $FreeBSD$
 
+PORTREVISION=	5
 CATEGORIES=	devel lang
 PKGNAMESUFFIX=	-fcl-pdf
-PORTREVISION=	3
 
 COMMENT=	Free Pascal pdf (FCL)
 

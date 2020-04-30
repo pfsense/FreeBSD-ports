@@ -1,4 +1,4 @@
---- base/trace_event/malloc_dump_provider.cc.orig	2019-04-30 22:22:28 UTC
+--- base/trace_event/malloc_dump_provider.cc.orig	2020-03-16 18:39:41 UTC
 +++ base/trace_event/malloc_dump_provider.cc
 @@ -17,6 +17,8 @@
  
@@ -18,4 +18,4 @@
 +  allocated_objects_size = 0;
  #else
    struct mallinfo info = mallinfo();
-   DCHECK_GE(info.arena + info.hblkhd, info.uordblks);
+   // In case of Android's jemalloc |arena| is 0 and the outer pages size is

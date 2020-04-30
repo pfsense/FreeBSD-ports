@@ -37,7 +37,7 @@ CMAKE_OFF=	AQUARIA_INTERNAL_FREETYPE \
 		AQUARIA_INTERNAL_TINYXML2 \
 		AQUARIA_INTERNAL_ZLIB
 LDFLAGS+=	-Wl,--as-needed # avoid overlinking (vorbis deps)
-LLD_UNSAFE=	yes # XXX ports/219089
+LDFLAGS_i386=	-Wl,-z,notext
 SUB_FILES=	pkg-message
 PLIST_FILES=	bin/aquaria
 PORTDATA=	*
@@ -49,7 +49,7 @@ DESKTOP_ENTRIES="${GH_PROJECT}" \
 		"Game;ArcadeGame;" \
 		""
 
-OPTIONS_DEFINE=	DEBUG SDL2
+OPTIONS_DEFINE=	SDL2
 OPTIONS_DEFAULT=SDL2
 
 SDL2_DESC=	Use SDL 2.x instead of SDL 1.2.x

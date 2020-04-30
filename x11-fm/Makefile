@@ -8,8 +8,6 @@
     SUBDIR += deforaos-browser
     SUBDIR += dolphin
     SUBDIR += doublecmd
-    SUBDIR += emelfm2
-    SUBDIR += ezfm
     SUBDIR += filerunner
     SUBDIR += fsv2
     SUBDIR += gentoo
@@ -27,20 +25,14 @@
     SUBDIR += qtfm
     SUBDIR += rodent
     SUBDIR += rox-filer
-    SUBDIR += rox-mime-editor
-    SUBDIR += rox-session
-    SUBDIR += sunflower
     SUBDIR += sushi
     SUBDIR += tdfsb
     SUBDIR += thunar
-    SUBDIR += thunar-vfs
     SUBDIR += twander
-    SUBDIR += ultracopier
     SUBDIR += wcmcommander
     SUBDIR += worker
     SUBDIR += xcruise
     SUBDIR += xdiskusage
     SUBDIR += xfe
-    SUBDIR += xplore
 
 .include <bsd.port.subdir.mk>

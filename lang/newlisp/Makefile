@@ -10,6 +10,8 @@ MASTER_SITES=	http://www.newlisp.org/downloads/
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	LISP like scripting language
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv3
 
 LIB_DEPENDS=	libffi.so:devel/libffi
@@ -52,7 +54,7 @@ MODULES+=	gsl
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=	yes
+USES+=		mysql
 MODULES+=	mysql
 .endif
 

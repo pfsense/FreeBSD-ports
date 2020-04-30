@@ -3,7 +3,7 @@
 
 PORTNAME=	cs
 PORTVERSION=	0.9.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc
 MASTER_SITES=	http://njhurst.com/programming/cross-stitch/
 
@@ -12,7 +12,7 @@ COMMENT=	Cross Stitch software
 
 LICENSE=	GPLv2+
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR}
+RUN_DEPENDS=	${PY_PILLOW}
 
 NO_BUILD=	yes
 

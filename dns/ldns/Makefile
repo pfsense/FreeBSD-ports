@@ -22,6 +22,7 @@ CPE_VENDOR=	nlnetlabs
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--disable-dane-ta-usage \
 			--with-ssl=${OPENSSLBASE}
+MAKE_JOBS_UNSAFE=	yes
 
 .if ! (defined(BUILD_PYLDNS) || defined(BUILD_P5PERL))
 OPTIONS_DEFINE=		DOXYGEN DRILL EXAMPLES
@@ -37,7 +38,7 @@ HTMLDOCS=		doc/html/*
 OPTIONS_DEFINE+=	DANETAUSAGE GOST RRTYPEAMTRELAY RRTYPEAVC RRTYPENINFO \
 			RRTYPERKEY RRTYPETA
 
-DANETAUSAGE_DESC=	Enable ta uasage, requires openssl >= 1.1.0
+DANETAUSAGE_DESC=	Enable ta usage, requires openssl >= 1.1.0
 GOST_DESC=		GOST signatures enabled, requires openssl >= 1.0.0
 RRTYPENINFO_DESC=	Enable draft RR type ninfo.
 RRTYPERKEY_DESC=	Enable draft RR type rkey.

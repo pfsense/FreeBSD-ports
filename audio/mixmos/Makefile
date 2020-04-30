@@ -10,7 +10,9 @@ MASTER_SITES=	TUCOWS
 MAINTAINER=	h.skuhra@gmail.com
 COMMENT=	GTK2 audio mixer
 
-USES=		pkgconfig
+BROKEN=		unfetchable
+
+USES=		gnome pkgconfig
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

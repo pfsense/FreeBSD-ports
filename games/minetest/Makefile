@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	minetest
-PORTVERSION=	5.0.1
+PORTVERSION=	5.1.1
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -18,9 +18,10 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	minetest
 
 USES=		cmake compiler:c11 iconv:wchar_t
-LLD_UNSAFE=	yes
 CMAKE_ARGS=	-DCUSTOM_MANDIR="${PREFIX}/man" \
 		-DCUSTOM_EXAMPLE_CONF_DIR="${PREFIX}/etc"
+
+LDFLAGS_i386=	-Wl,-znotext
 
 PORTDATA=	*
 PORTDOCS=	*
@@ -45,7 +46,7 @@ CLIENT_DESC=		Build client
 CLIENT_CMAKE_BOOL=	BUILD_CLIENT
 CLIENT_LIB_DEPENDS=	libpng.so:graphics/png \
 			libIrrlicht.so:x11-toolkits/irrlicht
-CLIENT_USES=		gl jpeg
+CLIENT_USES=		gl jpeg xorg
 CLIENT_USE=		GL=gl XORG=x11,xext,xxf86vm
 SERVER_DESC=		Build server
 SERVER_CMAKE_BOOL=	BUILD_SERVER

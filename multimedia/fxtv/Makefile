@@ -12,12 +12,15 @@ COMMENT=	X11-based TV display and capture application (for use with bt848 driver
 
 LICENSE=	BSD2CLAUSE
 
+.if !exists(/usr/include/dev/bktr/ioctl_bt848.h)
+IGNORE=		needs bktr(4) which is no longer available on your FreeBSD version
+.endif
 ONLY_FOR_ARCHS=	amd64 i386
 
 LIB_DEPENDS=	libtiff.so:graphics/tiff \
 		libXaw3d.so:x11-toolkits/Xaw3d
 
-USES=		gmake jpeg tar:tgz
+USES=		gmake jpeg tar:tgz xorg
 MAKE_ENV=	X11BASE=${LOCALBASE}
 USE_XORG=	ice sm x11 xaw xext xmu xt xpm xxf86vm xxf86dga
 MAKE_FLAGS=	-e

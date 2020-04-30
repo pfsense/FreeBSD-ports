@@ -3,7 +3,7 @@
 
 PORTNAME=	mle
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.2
+DISTVERSION=	1.4.3
 CATEGORIES=	editors
 
 MAINTAINER=	as@php.net
@@ -21,7 +21,7 @@ TEST_DEPENDS=	${LOCALBASE}/bin/gpaste:sysutils/coreutils \
 		bash:shells/bash \
 		gfind:misc/findutils
 
-USES=		gmake localbase:ldflags shebangfix
+USES=		compiler:c11 gmake localbase:ldflags shebangfix
 SHEBANG_FILES=	tests/func/*.sh tests/run.sh
 USE_GITHUB=	yes
 GH_ACCOUNT=	adsr

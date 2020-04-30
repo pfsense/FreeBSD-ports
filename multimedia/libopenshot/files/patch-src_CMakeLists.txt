@@ -1,19 +1,16 @@
---- src/CMakeLists.txt.orig	2019-05-08 19:16:50 UTC
+--- src/CMakeLists.txt.orig	2020-03-03 09:00:23 UTC
 +++ src/CMakeLists.txt
-@@ -45,6 +45,8 @@ IF (APPLE)
- 	SET(JUCE_PLATFORM_SPECIFIC_LIBRARIES "-framework Carbon -framework Cocoa -framework CoreFoundation -framework CoreAudio -framework CoreMidi -framework IOKit -framework AGL -framework AudioToolbox -framework QuartzCore -lobjc -framework Accelerate")
- ENDIF(APPLE)
+@@ -363,7 +363,13 @@ if (TARGET RESVG::resvg)
+   set(CMAKE_SWIG_FLAGS "-DUSE_RESVG=1")
+ endif()
  
 +find_library(EXECINFO_LIBRARY NAMES execinfo)
++if(NOT EXECINFO_LIBRARY)
++	message(FATAL_ERROR "${EXECINFO_LIBRARY}")
++endif(NOT EXECINFO_LIBRARY)
+ ###############  LINK LIBRARY  #################
++target_link_libraries(openshot PUBLIC ${EXECINFO_LIBRARY})
 +
- ################ IMAGE MAGICK ##################
- # Set the Quantum Depth that ImageMagick was built with (default to 16 bits)
- IF (MAGICKCORE_QUANTUM_DEPTH)
-@@ -312,6 +314,7 @@ SET ( REQUIRED_LIBRARIES
- 		${PROFILER}
- 		${JSONCPP_LIBRARY}
- 		${ZMQ_LIBRARIES}
-+		${EXECINFO_LIBRARY}
- 		)
- 
- IF (AVCODEC_FOUND)
+ # Link remaining dependency libraries
+ target_link_libraries(openshot PUBLIC
+ 	${LIBOPENSHOT_AUDIO_LIBRARIES}

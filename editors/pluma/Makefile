@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pluma
-PORTVERSION=	1.22.1
-PORTREVISION=	1
+PORTVERSION=	1.22.2
 CATEGORIES=	editors mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -22,8 +21,8 @@ RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes
 
 PORTSCOUT=	limitw:1,even
 
-USES=		compiler:c11 desktop-file-utils gmake libtool localbase \
-		pathfix pkgconfig python:3.3+ shebangfix tar:xz
+USES=		compiler:c11 desktop-file-utils gettext-tools gmake gnome libtool localbase \
+		pathfix pkgconfig python:3.3+ shebangfix tar:xz xorg
 USE_XORG=	ice sm x11
 USE_GNOME=	cairo gdkpixbuf2 gnomeprefix gtk30 gtksourceview3 \
 		gvfs intltool introspection libxml2

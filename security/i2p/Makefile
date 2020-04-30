@@ -13,7 +13,7 @@ MASTER_SITES=	SF/${PORTNAME:tl}/${PORTVERSION} \
 		https://googledrive.com/host/0B4jHEq5G7_EPWV9UeERwdGplZXc/${PORTVERSION}/
 DISTNAME=	i2psource_${PORTVERSION}
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Anonymizing network
 
 LICENSE=	EULA
@@ -36,7 +36,6 @@ USE_ANT=	yes
 USE_JAVA=	yes
 NO_ARCH=	yes
 JAVA_BUILD=	jdk
-JAVA_VERSION=	1.6+
 USE_LOCALE=	en_US.UTF-8
 ALL_TARGET=	updater tarball
 

@@ -3,11 +3,11 @@
 
 PORTNAME=	shared-mime-info
 PORTVERSION=	1.10
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc gnome
 MASTER_SITES=	https://people.freedesktop.org/~hadess/
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	MIME types database from the freedesktop.org project
 
 LICENSE=	GPLv2
@@ -26,6 +26,11 @@ MIMEDIRS=	${LOCALBASE}/share/mime \
 		${PREFIX}/share/mime
 MIMESUBDIRS=	application audio image inode message model multipart \
 		packages text video x-epoc x-content
+
+OPTIONS_DEFINE=	NLS
+OPTIONS_SUB=	yes
+
+NLS_CONFIGURE_ENABLE=	nls
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \

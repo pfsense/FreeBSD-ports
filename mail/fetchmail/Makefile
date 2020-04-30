@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME?=	fetchmail
-PORTVERSION=	6.4.1
-PORTREVISION=	1
-CATEGORIES=	mail ipv6
-MASTER_SITES=	SF/${PORTNAME}/branch_6.4/
+DISTVERSION=	6.4.4
+CATEGORIES=	mail
+# The next line is inherited by the fetchmailconf slave port,
+# do NOT replace fetchmail by ${PORTNAME}
+MASTER_SITES=	SF/fetchmail/branch_6.4/
 
 MAINTAINER=	chalpin@cs.wisc.edu
 COMMENT?=	Batch mail retrieval utility for IMAP/POP3/ETRN/ODMR
@@ -14,9 +15,9 @@ LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	dual
 
 .if empty(MASTERDIR)
-RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
+CA_BUNDLE_RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
-USES=		cpe gmake tar:xz ssl
+USES=		cpe gmake tar:lz ssl
 
 USERS=		${PORTNAME}
 GROUPS=		${USERS}
@@ -36,11 +37,13 @@ CONFIGURE_ARGS=	--enable-opie --enable-RPA --enable-SDPS \
 # for instance, libcom_err.so on GSSAPI_NONE builds:
 LDFLAGS+=	-L${LOCALBASE}/lib -Wl,--as-needed
 
-OPTIONS_DEFINE=	NLS DOCS
+OPTIONS_DEFINE=	CA_BUNDLE NLS DOCS
 OPTIONS_SINGLE=	GSSAPI
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT GSSAPI_NONE
-OPTIONS_DEFAULT=	GSSAPI_BASE
+OPTIONS_DEFAULT=	CA_BUNDLE GSSAPI_BASE
 OPTIONS_SUB=	yes
+
+CA_BUNDLE_DESC=		Install CA bundle for OpenSSL
 
 GSSAPI_BASE_USES=	gssapi
 GSSAPI_BASE_CONFIGURE_ON=	--with-gssapi=${GSSAPIBASEDIR} ${GSSAPI_CONFIGURE_ARGS}
@@ -69,7 +72,7 @@ PATCH_STRIP=	-p1
 
 .if empty(MASTERDIR)
 post-build:
-	${MAKE_CMD} -C ${WRKSRC} check
+	${MAKE_CMD} -C ${WRKSRC} check ; { r=$$? ; ( set -x ; ${CAT} "${WRKSRC}/test-suite.log" ) ; exit $$r ; }
 
 post-install:
 	${INSTALL} -d ${STAGEDIR}/var/run/fetchmail
@@ -83,4 +86,13 @@ post-install-DOCS-on:
 	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 .endif
-.include <bsd.port.mk>
+
+.include <bsd.port.pre.mk>
+
+.if ${ARCH:Mpowerpc*} && ${OSREL:R} < 13
+# as of 2019-10-02, powerpc's base compiler does not yield a working fetchmail.
+# https://svnweb.freebsd.org/ports?view=revision&revision=513614 -- pkubaj@
+USE_GCC=	yes
+.endif
+
+.include <bsd.port.post.mk>

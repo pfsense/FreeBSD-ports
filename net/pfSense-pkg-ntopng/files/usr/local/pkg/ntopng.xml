@@ -8,7 +8,7 @@
  * ntopng.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2014-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2014-2020 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -182,16 +182,16 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>GeoIP Data</fielddescr>
+			<fielddescr>GeoLite2 DB License Key</fielddescr>
+			<fieldname>maxmind_key</fieldname>
 			<description>
 				<![CDATA[
-				Additionally, GeoIP Data can provide location information about IP addresses.
-				<div class="infoblock blockopen">
-				This product includes GeoLite data created by MaxMind, available from <a href="http://www.maxmind.com" target="_blank">http://www.maxmind.com</a><br /></div><br />
-				<button class="btn btn-success btn-sm" name='Submit' id='update_geoip' type='submit' value='Update GeoIP Data'><i class="fa fa-refresh icon-embed-btn"></i>Update GeoIP Data</button>
+				Additionally, <b>GeoLite2 DB</b> can provide location information about IP addresses.<br />
+				To utilize the free MaxMind GeoLite2 GeoIP functionality, you must <a href="https://www.maxmind.com/en/geolite2/signup" target="_blank">register for a free MaxMind user account</a>.<br /></br />
+				<button class="btn btn-success btn-sm" name='Submit' id='update_geoip' type='submit' value='Update GeoLite2 DB'><i class="fa fa-refresh icon-embed-btn"></i>Update GeoLite2 DB</button>
 				]]>
 			</description>
-			<type>info</type>
+			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Delete ntopng Data</fielddescr>
@@ -210,7 +210,6 @@
 	</custom_php_resync_config_command>
 	<custom_php_install_command>
 		ntopng_php_install_command();
-		ntopng_update_geoip();
 	</custom_php_install_command>
 	<custom_php_deinstall_command>
 		ntopng_php_deinstall_command();

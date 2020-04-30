@@ -10,11 +10,13 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Library of the Dropbox API web endpoints
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	rubygem-json>=0:devel/rubygem-json
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

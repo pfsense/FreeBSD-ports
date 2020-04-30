@@ -3,7 +3,7 @@
 
 PORTNAME=	musescore
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.2.3
+DISTVERSION=	3.4.2
 CATEGORIES=	audio
 # DISTNAME=	MuseScore-${DISTVERSION}
 
@@ -21,9 +21,10 @@ LIB_DEPENDS=	libmp3lame.so:audio/lame \
 
 USES=		cmake compiler:c++11-lib desktop-file-utils \
 		pkgconfig qt:5 shared-mime-info
-USE_QT=		core declarative gui widgets opengl concurrent designer help network \
+USE_QT=		core declarative gui widgets opengl concurrent designer help \
+		location network quickcontrols2 \
 		scripttools svg sql printsupport testlib \
-		xml xmlpatterns \
+		webchannel xml xmlpatterns \
 		buildtools_build linguisttools_build qmake_build uitools_build
 
 USE_GITHUB=	yes
@@ -40,12 +41,14 @@ CMAKE_ARGS+=	-DUSE_SYSTEM_FREETYPE="ON" \
 		-DBUILD_PCH=OFF \
 		-DDOWNLOAD_SOUNDFONT=OFF
 
-# WebEngine is only available on i386/amd64; defaults to ON there.
+# WebEngine is only available on i386/amd64, amd ppc64 starting FreeBSD 13.0.
 # If enabled on arches that don't have WebEngine, the build breaks.
 OPTIONS_DEFINE=		ALSA JACK PORTAUDIO PULSEAUDIO WEBENGINE
 OPTIONS_DEFAULT=	PORTAUDIO
 OPTIONS_DEFAULT_amd64=	WEBENGINE
 OPTIONS_DEFAULT_i386=	WEBENGINE
+OPTIONS_DEFAULT_powerpc64=     ${OPTIONS_DEFAULT_powerpc64_${OSREL:R}}
+OPTIONS_DEFAULT_powerpc64_13=  WEBENGINE
 
 WEBENGINE_DESC=		Use WebEngine in the welcome panel
 

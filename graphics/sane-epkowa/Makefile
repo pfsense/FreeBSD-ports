@@ -43,7 +43,8 @@ PORTNAME=	epkowa
 PORTVERSION=	2.11.0
 PORTREVISION=	5
 CATEGORIES=	graphics
-MASTER_SITES=	http://lx1.avasys.jp/iscan/${PORTVERSION}/
+MASTER_SITES=	http://cschubert.com/distfiles/ \
+		LOCAL/cy
 DISTNAME=	iscan_${PORTVERSION}-1
 
 MAINTAINER=	cy@FreeBSD.org
@@ -69,7 +70,7 @@ USE_GNOME=	gtk20
 
 # The original uses gmake and ./configure
 # Also pass appropriate flags to configure to use FreeBSD locations.
-USES=		gmake pkgconfig
+USES=		gmake gnome pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--prefix=${PREFIX} LDFLAGS="-L${PREFIX}/lib -lgetline" CPPFLAGS=-I${PREFIX}/include
 

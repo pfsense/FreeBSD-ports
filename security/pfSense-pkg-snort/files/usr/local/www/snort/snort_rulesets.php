@@ -3,7 +3,7 @@
  * snort_rulesets.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya
  * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
@@ -55,6 +55,8 @@ if (isset($id) && $a_nat[$id]) {
 	$pconfig['ips_policy_enable'] = $a_nat[$id]['ips_policy_enable'] == 'on' ? 'on' : 'off';;
 	$pconfig['ips_policy'] = $a_nat[$id]['ips_policy'];
 	$pconfig['ips_policy_mode'] = $a_nat[$id]['ips_policy_mode'];
+} else {
+	$pconfig['autoflowbitrules'] = 'on';
 }
 
 $if_real = get_real_interface($pconfig['interface']);

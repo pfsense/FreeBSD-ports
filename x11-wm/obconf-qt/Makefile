@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	obconf-qt
-PORTVERSION=	0.14.0
-PORTREVISION=	1
+PORTVERSION=	0.14.1
 CATEGORIES=	x11-wm
 MASTER_SITES=	LXQT/${PORTNAME}
 
@@ -18,7 +17,7 @@ LIB_DEPENDS=	libobt.so:x11-wm/openbox \
 		libImlib2.so:graphics/imlib2
 
 USES=		cmake compiler:c++11-lang gettext-runtime localbase qt:5 \
-		gnome lxqt pkgconfig tar:xz
+		gnome lxqt pkgconfig tar:xz xorg
 
 USE_QT=		buildtools_build qmake_build core gui linguisttools \
 		widgets x11extras

@@ -4,7 +4,7 @@ PORTNAME=	rsocket-cpp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.10.0-942
 DISTVERSIONSUFFIX=	-g3d878b1e
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -32,6 +32,8 @@ USE_LDCONFIG=	yes
 
 CMAKE_ON=	BUILD_SHARED_LIBS
 CMAKE_OFF=	BUILD_TESTS BUILD_EXAMPLES
+
+PORTSCOUT=	limit:^[0-9\.]*$$
 
 post-install: # https://github.com/rsocket/rsocket-cpp/issues/890
 	@cd ${STAGEDIR}${LOCALBASE} && ${RM} -r include/rsocket/examples include/rsocket/test include/yarpl/cmake include/yarpl/perf include/yarpl/test

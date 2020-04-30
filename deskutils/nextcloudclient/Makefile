@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	nextcloudclient
-PORTVERSION=	0.0.0.20190705
-PORTREVISION=	3
+PORTVERSION=	2.6.4
+#PORTREVISION=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	deskutils
 
 MAINTAINER=	mr@FreeBSD.org
@@ -14,7 +15,7 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libinotify.so:devel/libinotify \
 		libqt5keychain.so:security/qtkeychain
 
-USES=		cmake:noninja compiler:c++11-lib gmake iconv \
+USES=		cmake:noninja compiler:c++11-lib gmake gnome iconv \
 		localbase:ldflags pkgconfig qt:5 sqlite ssl
 USE_QT=		buildtools_build concurrent core dbus declarative gui linguist_build location network \
 		printsupport qmake_build sql webchannel webengine webkit widgets xml
@@ -28,7 +29,6 @@ DEBUG=		yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	nextcloud
 GH_PROJECT=	desktop
-GH_TAGNAME=	c897564d28c04029f09dcce20078e9adb3b57518
 
 #OPTIONS_DEFINE=		DEBUG DOCS
 OPTIONS_DEFINE=		DEBUG # DOCS doesn't build currently
@@ -46,8 +46,8 @@ PLIST_SUB=	VERSION=${PORTVERSION}
 CMAKE_ARGS+=	-DCMAKE_BUILD_TYPE:STRING=Debug
 .endif
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200085 && !${SSL_DEFAULT:Mopenssl111}
-BROKEN=	nextcloudclient requires OpenSSL 1.1.0, add DEFAULT_VERSIONS+=ssl=openssl111 to /etc/make.conf
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200085 && !${SSL_DEFAULT:Mopenssl}
+BROKEN=	nextcloudclient requires OpenSSL 1.1.0, add DEFAULT_VERSIONS+=ssl=openssl to /etc/make.conf
 .endif
 
 post-patch:

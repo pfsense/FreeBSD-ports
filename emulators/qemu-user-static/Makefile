@@ -1,7 +1,6 @@
 # Created by: nox@FreeBSD.org
 # $FreeBSD$
 
-MAINTAINER=	sbruno@FreeBSD.org
 COMMENT=	QEMU CPU Emulator github bsd-user branch - static user targets
 PKGNAMESUFFIX=	-user-static
 
@@ -13,9 +12,6 @@ OPTIONS_EXCLUDE=SAMBA X11 GTK2 OPENGL GNUTLS SASL JPEG PNG CURL \
 		CDROM_DMA PCAP USBREDIR GNS3 DOCS
 MASTERDIR=	${.CURDIR}/../qemu-sbruno
 CONFIGURE_ARGS+=	--extra-cflags=-D_IFI_OQDROPS
-
-NOT_FOR_ARCHS=		powerpc64
-NOT_FOR_ARCHS_REASON=	error: Unhandled abi
 
 post-install:
 	@${RM} -r ${STAGEDIR}${PREFIX}/bin/qemu-ga

@@ -2,6 +2,8 @@
 @sample %%ETCDIR%%/fastcgi_params-dist %%ETCDIR%%/fastcgi_params
 %%ETCDIR%%/koi-utf
 %%ETCDIR%%/koi-win
+%%LINK%%include/ngx_link_func_module.h
+%%MODSECURITY%%%%ETCDIR%%/unicode.mapping
 %%NAXSI%%%%ETCDIR%%/naxsi_core.rules
 @sample %%ETCDIR%%/scgi_params-dist %%ETCDIR%%/scgi_params
 @sample %%ETCDIR%%/uwsgi_params-dist %%ETCDIR%%/uwsgi_params
@@ -23,6 +25,7 @@
 %%DSO%%%%FORMINPUT%%libexec/nginx/ngx_http_form_input_module.so
 %%DSO%%%%HEADERS_MORE%%libexec/nginx/ngx_http_headers_more_filter_module.so
 %%DSO%%%%HTTP_AUTH_DIGEST%%libexec/nginx/ngx_http_auth_digest_module.so
+%%DSO%%%%HTTP_AUTH_JWT%%libexec/nginx/ngx_http_auth_jwt_module.so
 %%DSO%%%%HTTP_AUTH_KRB5%%libexec/nginx/ngx_http_auth_spnego_module.so
 %%DSO%%%%HTTP_AUTH_LDAP%%libexec/nginx/ngx_http_auth_ldap_module.so
 %%DSO%%%%HTTP_AUTH_PAM%%libexec/nginx/ngx_http_auth_pam_module.so
@@ -62,6 +65,7 @@
 %%WWW%%www/nginx-dist/50x.html
 %%WWW%%@postexec chmod a-w %D/www/nginx-dist
 %%WWW%%@postunexec if [ -L %D/www/nginx ]; then rm -f %D/www/nginx; fi
+%%NJS%%sbin/njs
 sbin/nginx
 share/vim/vimfiles/ftdetect/nginx.vim
 share/vim/vimfiles/ftplugin/nginx.vim

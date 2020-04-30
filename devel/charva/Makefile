@@ -3,7 +3,7 @@
 
 PORTNAME=	charva
 PORTVERSION=	1.1.4
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	devel java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 DISTNAME=	${PORTNAME}
@@ -12,7 +12,7 @@ MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Java Windowing Toolkit for Text Terminals
 
 BUILD_DEPENDS=	gmake:devel/gmake
-RUN_DEPENDS=	${JAVALIBDIR}/commons-logging.jar:java/jakarta-commons-logging
+RUN_DEPENDS=	${JAVALIBDIR}/commons-logging.jar:java/apache-commons-logging
 
 BROKEN_armv6=		fails to compile: build.xml: compilation failed
 BROKEN_armv7=		fails to compile: build.xml: compilation failed
@@ -22,7 +22,6 @@ OPTIONS_DEFINE=	DOCS
 USES=		dos2unix zip
 DOS2UNIX_GLOB=	build.xml Makefile.freebsd.txt *.c *.java
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 USE_ANT=	yes
 ALL_TARGET=	clean makeDLL dist
 

@@ -23,6 +23,7 @@ SRCS+=	usb_libusb.cpp
 .PATH: ${.CURDIR}/../base
 SRCS+=	errors_unix.cpp
 SRCS+=	file.cpp
+SRCS+=	liblog_symbols.cpp
 SRCS+=	logging.cpp
 SRCS+=	mapped_file.cpp
 SRCS+=	parsenetaddress.cpp
@@ -57,17 +58,10 @@ SRCS+=	sockets_unix.cpp
 # DragonFly, NetBSD, OpenBSD
 CPPFLAGS.sockets.cpp+=	-o ${.TARGET}
 
-# required by base and libutils
-.PATH:	${.CURDIR}/../liblog
-SRCS+=	config_read.cpp
-SRCS+=	config_write.cpp
-SRCS+=	fake_log_device.cpp
-SRCS+=	fake_writer.cpp
-SRCS+=	logger_lock.cpp
-SRCS+=	logger_name.cpp
-SRCS+=	logger_write.cpp
-SRCS+=	logprint.cpp
-SRCS+=	stderr_write.cpp
+# required by base and zip_archive
+.PATH: ${.CURDIR}/../liblog
+SRCS+= logger_write.cpp
+SRCS+= ../liblog/properties.cpp
 
 # required by fastboot
 .PATH:	${.CURDIR}/../libsparse
@@ -87,17 +81,16 @@ CPPFLAGS+=	-Doff64_t=off_t
 CPPFLAGS+=	-Dftruncate64=ftruncate
 CPPFLAGS+=	-Dlseek64=lseek
 CPPFLAGS+=	-Dmmap64=mmap
-CPPFLAGS+=	-Dpread64=pread
-CPPFLAGS+=	-DFAKE_LOG_DEVICE=1
 CPPFLAGS+=	-I${.CURDIR}
 CPPFLAGS+=	-I${.CURDIR}/../include
-CPPFLAGS+=	-I${.CURDIR}/../mkbootimg/include/bootimg
+CPPFLAGS+=	-I${.CURDIR}/../avb
 CPPFLAGS+=	-I${.CURDIR}/../base/include
 CPPFLAGS+=	-I${.CURDIR}/../diagnose_usb/include
 CPPFLAGS+=	-I${.CURDIR}/../extras/ext4_utils/include
 CPPFLAGS+=	-I${.CURDIR}/../fs_mgr/liblp/include
 CPPFLAGS+=	-I${.CURDIR}/../libsparse/include
 CPPFLAGS+=	-I${.CURDIR}/../libziparchive/include
+CPPFLAGS+=	-I${.CURDIR}/../mkbootimg/include/bootimg
 CPPFLAGS+=	${CPPFLAGS.${.IMPSRC:T}}
 CPPFLAGS+=	$$(${PKG_CONFIG} libcrypto --cflags 2>/dev/null)
 CPPFLAGS+=	$$(${PKG_CONFIG} libusb-1.0 --cflags 2>/dev/null)

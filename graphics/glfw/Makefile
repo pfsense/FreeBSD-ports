@@ -2,18 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	glfw
-PORTVERSION=	3.3
-PORTREVISION=	1
+PORTVERSION=	3.3.2
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable framework for OpenGL development
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/README.md
 
-USES=		cmake:insource localbase zip
+USES=		cmake:insource gl localbase zip
 USE_GL=		glu
 USE_LDCONFIG=	yes
 
@@ -35,9 +34,10 @@ WAYLAND_LIB_DEPENDS=	libwayland-egl.so:graphics/wayland \
 WAYLAND_USES=		kde:5 pkgconfig
 WAYLAND_USE=		KDE=ecm
 
+X11_USES=		xorg
 X11_USE=		XORG=x11,xcursor,xi,xinerama,xrandr,xxf86vm
 
-PLIST_SUB=	VERSION="${PORTVERSION}" MAJVER="${PORTVERSION:C|\..*||}"
+PLIST_SUB=	VERSION=${PORTVERSION:R} MAJVER="${PORTVERSION:C|\..*||}"
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/docs/html/search

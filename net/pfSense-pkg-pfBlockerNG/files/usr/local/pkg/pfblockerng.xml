@@ -8,7 +8,7 @@
  * pfblockerng.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2016 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -267,33 +267,6 @@
 			</sethelp>
 		</field>
 		<field>
-			<fielddescr>MaxMind Localized Language</fielddescr>
-			<fieldname>maxmind_locale</fieldname>
-			<type>select</type>
-			<description><![CDATA[Select the localized name data from the Language options available.<br />
-				Changes to the Locale will be executed in the background, and will take a few minutes to complete.<br />
-				Upon completion, a pfSense Notice will be generated.]]>
-			</description>
-			<options>
-				<option><name>English</name><value>en</value></option>
-				<option><name>French</name><value>fr</value></option>
-				<option><name>Brazilian Portuguese</name><value>pt-BR</value></option>
-				<option><name>German</name><value>de</value></option>
-				<option><name>Japanese</name><value>ja</value></option>
-				<option><name>Simplified Chinese</name><value>zh-CN</value></option>
-				<option><name>Spanish</name><value>es</value></option>
-			</options>
-			<default_value>en</default_value>
-		</field>
-		<field>
-			<fielddescr>Disable MaxMind Updates</fielddescr>
-			<fieldname>database_cc</fieldname>
-			<type>checkbox</type>
-			<description>This will disable the MaxMind monthly GeoIP database Cron update.
-				This does not affect the MaxMind binary cron task.
-			</description>
-		</field>
-		<field>
 			<fielddescr>Download Failure Threshold</fielddescr>
 			<fieldname>skipfeed</fieldname>
 			<description><![CDATA[Default: <strong>No limit</strong><br />
@@ -330,6 +303,46 @@
 				<option><name>No Limit</name><value>nolimit</value></option>
 			</options>
 			<default_value>20000</default_value>
+		</field>
+		<field>
+			<name>MaxMind GeoIP Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>MaxMind License Key</fielddescr>
+			<fieldname>maxmind_key</fieldname>
+			<type>input</type>
+			<description><![CDATA[To utilize the MaxMind GeoIP functionality, you must first register for a free MaxMind user account.
+				Visit the following <a href="https://www.maxmind.com/en/geolite2/signup" target="_blank">Link to Register</a> 
+				for a free MaxMind user account. <strong>Utilize the GeoIP Update version 3.1.1 or newer registration option.</strong>]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>MaxMind Localized Language</fielddescr>
+			<fieldname>maxmind_locale</fieldname>
+			<type>select</type>
+			<description><![CDATA[Select the localized name data from the Language options available.<br />
+				Changes to the Locale will be executed in the background, and will take a few minutes to complete.<br />
+				Upon completion, a pfSense Notice will be generated.]]>
+			</description>
+			<options>
+				<option><name>English</name><value>en</value></option>
+				<option><name>French</name><value>fr</value></option>
+				<option><name>Brazilian Portuguese</name><value>pt-BR</value></option>
+				<option><name>German</name><value>de</value></option>
+				<option><name>Japanese</name><value>ja</value></option>
+				<option><name>Simplified Chinese</name><value>zh-CN</value></option>
+				<option><name>Spanish</name><value>es</value></option>
+			</options>
+			<default_value>en</default_value>
+		</field>
+		<field>
+			<fielddescr>Disable MaxMind CSV database Updates</fielddescr>
+			<fieldname>database_cc</fieldname>
+			<type>checkbox</type>
+			<description>This will disable the MaxMind monthly CSV GeoIP database Cron update.
+				This does not affect the MaxMind binary cron task that is used for other GeoIP functionality in the package.
+			</description>
 		</field>
 		<field>
 			<name><![CDATA[Interface/Rules Configuration]]></name>

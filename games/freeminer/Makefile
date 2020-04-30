@@ -18,10 +18,10 @@ LIB_DEPENDS=	libsqlite3.so:databases/sqlite3
 USE_GITHUB=	yes
 
 USES=		compiler:c++11-lib cmake
-LLD_UNSAFE=	yes
 CMAKE_ARGS=	-DCUSTOM_MANDIR="${PREFIX}/man" \
 		-DCUSTOM_EXAMPLE_CONF_DIR="${PREFIX}/etc" \
 		-DRUN_IN_PLACE=0
+LDFLAGS_i386=	-Wl,-znotext
 
 PORTDATA=	*
 PORTDOCS=	*
@@ -43,7 +43,7 @@ CLIENT_CMAKE_ON=	-DBUILD_CLIENT=1
 CLIENT_CMAKE_OFF=	-DBUILD_CLIENT=0
 CLIENT_LIB_DEPENDS=	libpng.so:graphics/png \
 			libIrrlicht.so:x11-toolkits/irrlicht
-CLIENT_USES=		jpeg
+CLIENT_USES=		gl jpeg xorg
 CLIENT_USE=		GL=gl XORG=x11
 SERVER_CMAKE_ON=	-DBUILD_SERVER=1
 SERVER_CMAKE_OFF=	-DBUILD_SERVER=0

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-softflowd
-PORTVERSION=	1.2.3
+PORTVERSION=	1.2.6
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -12,7 +12,7 @@ COMMENT=	pfSense package softflowd
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/softflowd:net-mgmt/softflowd
+RUN_DEPENDS=	softflowd>=1.0.0:net-mgmt/softflowd
 
 NO_BUILD=	yes
 NO_MTREE=	yes

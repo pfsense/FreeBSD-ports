@@ -2,7 +2,7 @@
 
 PORTNAME=		bowtie2
 DISTVERSIONPREFIX=	v
-DISTVERSION=		2.3.5.1
+DISTVERSION=		2.4.1
 PORTREVISION=		1
 CATEGORIES=		biology perl5 python
 
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 # Requires a 64-bit processor and depends on hard-coded SSE instructions
 # Experimental support for AARCH64 as of 2.3.5
-ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS=	aarch64 amd64
 LIB_DEPENDS=	libtbb.so:devel/tbb
 RUN_DEPENDS=	bash:shells/bash
 

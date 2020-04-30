@@ -269,7 +269,7 @@ LDAP_FILES=		${WRKSRC}/doc/README.ldap \
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=		yes
+USES+=		mysql
 
 .if defined(WITH_MYSQL_USER) || defined(WITH_MYSQL_READ_USER) || defined(WITH_MYSQL_UPDATE_USER)
 BROKEN_MYSQL_PARAMS=	true
@@ -297,7 +297,7 @@ BROKEN=		The WITH_APOP option is deprecated; set WITH_CLEAR_PASSWD instead, APOP
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-USES=	pgsql
+USES+=	pgsql
 .endif
 
 .if ${PORT_OPTIONS:MSQL_LOG_TRIM}

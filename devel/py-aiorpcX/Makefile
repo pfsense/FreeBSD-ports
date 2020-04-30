@@ -1,7 +1,7 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
 # $FreeBSD$
 
-# WARNING: Do not upgrade to 0.18.0, this breaks finance/electrum
+# WARNING: Do not upgrade to 0.18.4, this breaks finance/electrum
 
 PORTNAME=	aiorpcX
 PORTVERSION=	0.18.3
@@ -22,5 +22,8 @@ USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes
+
+# incompatible with finance/electrum
+PORTSCOUT=	skipv:0.18.4
 
 .include <bsd.port.mk>

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xfce4-clipman-plugin
-PORTVERSION=	1.4.3
-PORTREVISION=	2
+PORTVERSION=	1.6.0
 CATEGORIES=	x11 xfce
 MASTER_SITES=	XFCE/panel-plugins
 DIST_SUBDIR=	xfce4
@@ -13,8 +12,8 @@ COMMENT=	Clipboard manager for the Xfce panel
 
 LICENSE=	GPLv2
 
-USES=		gettext-tools gmake gnome libtool pkgconfig tar:bzip2 \
-		xfce xorg
+USES=		compiler:c11 gettext-tools gmake gnome libtool pkgconfig \
+		tar:bzip2 xfce xorg
 USE_GNOME=	cairo glib20 gtk30 intltool
 USE_XFCE=	panel
 USE_XORG=	ice sm x11 xorgproto xtst

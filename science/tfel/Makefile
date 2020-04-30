@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tfel
-PORTVERSION=	3.1.2
-PORTREVISION=	7
+PORTVERSION=	3.3.0
 CATEGORIES=	science
 MASTER_SITES=	SF/${PORTNAME}/
 PKGNAMESUFFIX=	-mfront
@@ -18,21 +17,20 @@ RUN_DEPENDS=	gnuplot:math/gnuplot
 
 USES=		cmake compiler:c++0x tar:bzip2
 
-OPTIONS_DEFINE=		DOCS PYTHON
-OPTIONS_DEFAULT=	PYTHON
+OPTIONS_DEFINE=		DOCS
+
 OPTIONS_SUB=		yes
 
-PYTHON_LIB_DEPENDS=	${PY_BOOST}
-PYTHON_USES=		localbase python:2.7
-PYTHON_CMAKE_ARGS=	`-Denable-python=ON -Denable-python-bindings=ON`
-PYTHON_CMAKE_ARGS+=	-Denable-broken-boost-python-module-visibility-handling
+#PYTHON_USES=		localbase python
+#PYTHON_BUILD_DEPENDS=	${LOCALBASE}/include/boost/python.hpp:devel/boost-libs
+#PYTHON_LIB_DEPENDS=	${PY_BOOST}
+#PYTHON_CMAKE_ON=	enable-python enable-python-bindings
 
-CMAKE_ARGS+=	-Denable-aster=ON
-CMAKE_ARGS+=	-Denable-calculix=ON
+CMAKE_ON=	enable-aster enable-calculix
 USE_LDCONFIG=	yes
 
 .ifdef PACKAGE_BUILDING
-CMAKE_ARGS+=	-Denable-portable-build=ON
+CMAKE_ON+=	enable-portable-build
 .endif
 
 TEST_TARGET=	check

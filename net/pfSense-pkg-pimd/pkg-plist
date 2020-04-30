@@ -1,0 +1,12 @@
+www/status_pimd.php
+pkg/pimd.inc
+pkg/pimd.xml
+pkg/pimd/pimd_interfaces.xml
+pkg/pimd/pimd_bsrcandidate.xml
+pkg/pimd/pimd_rpcandidate.xml
+pkg/pimd/pimd_rpaddress.xml
+pkg/pimd/inc/pimd_validation.inc
+pkg/shortcuts/pimd.sc.inc
+%%DATADIR%%/info.xml
+/etc/inc/priv/pimd.priv.inc
+@dir /etc/inc/priv

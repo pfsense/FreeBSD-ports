@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	vice
-PORTVERSION=	3.3
-PORTREVISION=	5
+PORTVERSION=	3.4
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/vice-emu/releases
 
@@ -12,9 +12,7 @@ COMMENT=	Emulator for Commodore C64, C128, VIC20, PET, and CBM-II
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	bdftopcf:x11-fonts/bdftopcf \
-		mkfontscale:x11-fonts/mkfontscale \
-		xa65:devel/xa65
+BUILD_DEPENDS=	xa65:devel/xa65
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libgif.so:graphics/giflib \
 		libportaudio.so:audio/portaudio \
@@ -31,13 +29,15 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 
 RESTRICTED=	ROMs are copyrighted by Commodore Business Machines
 USES=		compiler:c++11-lang pkgconfig makeinfo localbase:ldflags \
-		gmake iconv:wchar_t jpeg readline gettext
+		gmake iconv:wchar_t jpeg readline gettext xorg
 USE_XORG=	xpm ice sm xext xv xt x11 xmu xxf86vm
 USE_XORG+=	xrender xinerama xi xrandr xcursor xcomposite xdamage xfixes
 HAS_CONFIGURE=	yes
 MAKE_ENV+=	MAKEINFOFLAGS="--no-split"
 CONFIGURE_ARGS+=	--enable-ipv6 \
 			--enable-external-ffmpeg \
+			--enable-x64 \
+			--disable-realdevice \
 			--mandir="${PREFIX}/man" \
 			--infodir="${PREFIX}/${INFO_PATH}" \
 			--localedir="${LOCALBASE}/share/locale" \
@@ -62,8 +62,10 @@ SDLSOUND_DESC=	build with SDL2 sound system support
 
 GTK3UI_CONFIGURE_ENABLE=	native-gtk3ui
 GTK3UI_BUILD_DEPENDS=		${LOCALBASE}/bin/bash:shells/bash
+SDLUI2_USES=			sdl
 SDLUI2_USE=			SDL=sdl2
 SDLUI2_CONFIGURE_ENABLE=	sdlui2
+SDLSOUND_USES=			sdl
 SDLSOUND_USE=			SDL=sdl2
 SDLSOUND_CONFIGURE_ON=		--with-sdlsound
 ALSA_CONFIGURE_OFF=		--without-alsa
@@ -83,8 +85,9 @@ __pmlinks1!=	${ECHO_CMD} '${LMLINKS:S/    / /}' | ${AWK} \
 .endif
 
 .if ${PORT_OPTIONS:MGTK3UI}
+USES+=		gnome gl
 USE_GNOME+=	gtk30 vte3 cairo gdkpixbuf2 pango
-USE_GL+=	glu gl
+USE_GL+=	glu gl glew
 .endif
 
 .if ${PORT_OPTIONS:MDOCS}
@@ -97,11 +100,6 @@ pre-configure:
 .if ! ${PORT_OPTIONS:MDOCS}
 	${REINPLACE_CMD} -e 's| doc||' ${WRKSRC}/Makefile.in
 .endif
-
-pre-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/lib/vice/fonts
-	${INSTALL_DATA} ${WRKSRC}/data/fonts/vice-cbm.bdf \
-		${STAGEDIR}${PREFIX}/lib/vice/fonts/
 
 pre-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

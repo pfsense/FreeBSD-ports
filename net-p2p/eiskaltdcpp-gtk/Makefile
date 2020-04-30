@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	eiskaltdcpp
-PORTREVISION=	14
+PORTREVISION=	20
 CATEGORIES=	net-p2p
 PKGNAMESUFFIX=	-gtk
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	EiskaltDC++ Direct Connect client GTK GUI
+COMMENT=	EiskaltDC++ client GTK graphic interface
 
 LICENSE=	GPLv3
 
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libeiskaltdcpp.so:net-p2p/eiskaltdcpp-lib
 
 MASTERDIR=	${.CURDIR}/../eiskaltdcpp-lib
 
-USES=		cmake gettext compiler:c++11-lib desktop-file-utils ssl
+USES=		cmake compiler:c++11-lib desktop-file-utils gettext gnome ssl
 USE_GNOME=	pango glib20
 
 OPTIONS_DEFINE=	LIBNOTIFY FREE_SPACE

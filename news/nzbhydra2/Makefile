@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	nzbhydra2
-DISTVERSION=	2.6.2
+DISTVERSION=	2.7.2
 DISTVERSIONSUFFIX=	-linux
 CATEGORIES=	news java
 MASTER_SITES=	https://github.com/theotherp/${PORTNAME}/releases/download/v${DISTVERSION}/
@@ -11,6 +11,9 @@ COMMENT=	Usenet meta search
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 ONLY_FOR_ARCHS=	amd64
 
@@ -25,14 +28,14 @@ SUB_FILES=	nzbhydra2 nzbhydra2wrapper.py
 SUB_LIST=	PYTHON_CMD=${PYTHON_CMD} \
 		JAVA=${JAVA}
 
-JAVA_VERSION=	1.8 1.9 1.10 1.11
+JAVA_VERSION=	8+
 JAVA_VENDOR=	openjdk
 JAVA_RUN=	yes
 
 USERS=		nzbhydra2
 GROUPS=		nzbhydra2
 
-PLIST_FILES=	${DATADIR}/lib/core-2.6.2-exec.jar \
+PLIST_FILES=	${DATADIR}/lib/core-${DISTVERSION}-exec.jar \
 		${DATADIR}/nzbhydra2 \
 		${DATADIR}/nzbhydra2wrapper.py \
 		${DATADIR}/changelog.md \

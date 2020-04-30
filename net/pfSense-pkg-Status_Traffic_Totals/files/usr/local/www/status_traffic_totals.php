@@ -3,7 +3,7 @@
  * status_traffic_totals.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2008-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2008-2020 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * originally part of m0n0wall (http://m0n0.ch/wall)
@@ -25,93 +25,14 @@
 
 require("guiconfig.inc");
 require_once("ipsec.inc");
+require_once("status_traffic_totals.inc");
 
 /* TODOs */
 //fix broken table sort by blowing away and creating new (initializing) each time?
 //show current or unused databases somehow
 //update timestamp with last updated date
 //make Save as Defaults AJAX
-//remove package defaults on uninstall
 
-function vnstat_write_conf($startDay = "1") {
-
-	/* overwrite the conf file /usr/loca/etc/vnsat.conf */
-
-	$vnstat_conf_file = <<<EOF
-# vnStat 1.13 config file
-##
-
-# location of the database directory
-DatabaseDir "/var/db/vnstat"
-
-# on which day should months change
-MonthRotate $startDay
-
-# vnstati
-##
-
-# image colors
-CBackground     "FFFFFF"
-CEdge           "AEAEAE"
-CHeader         "606060"
-CHeaderTitle    "FFFFFF"
-CHeaderDate     "FFFFFF"
-CText           "000000"
-CLine           "B0B0B0"
-CLineL          "-"
-CRx             "92CF00"
-CTx             "606060"
-CRxD            "-"
-CTxD            "-"
-EOF;
-
-	$fd = fopen("/usr/local/etc/vnstat.conf", "w");
-	if (!$fd) {
-		log_error("Could not open /usr/local/etc/vnstat.conf for writing");
-		exit;
-	}
-	fwrite($fd, $vnstat_conf_file);
-	fclose($fd);
-
-}
-
-function vnstat_create_nic_dbs($portlist) {
-
-	//TODO code that allows you to just add new interfaces (check exsisting first and compare)
-
-	foreach($portlist as $interface => $details) {
-
-		unset($test);
-
-		exec('/usr/local/bin/vnstat -u -i ' . escapeshellarg($details['if']) . ' --nick "' . $details['descr'] . '" --create', $test);
-
-		//TODO check output array for errors
-		//print_r($test);
-
-	}
-
-}
-
-function vnstat_delete_nic_dbs($portlist) {
-
-	foreach($portlist as $interface => $details) {
-
-		unset($test);
-
-		exec('/usr/local/bin/vnstat -i ' . escapeshellarg($details['if']) . ' --delete --force', $test);
-
-		//TODO check output array for errors
-		//print_r($test);
-
-	}
-
-	// clean-up remnants of possible old interface db's no longer present in pfSense interface list..
-	$dbfiles = glob('/var/db/vnstat/*');
-	foreach($dbfiles as $db) {
-		$dbfile = basename($db);
-		exec('/usr/local/bin/vnstat -i ' . escapeshellarg($dbfile) . ' --delete --force');
-	}
-}
 
 /*
 //grab vnStat filenames
@@ -125,83 +46,35 @@ chdir($home);
 
 print_r($databases);
 */
+global $config;
+init_config_arr(array('installedpackages', 'traffictotals', 'config', 0));
+$vnscfg =& $config['installedpackages']['traffictotals']['config'][0];
 
-$ifdescrs = get_configured_interface_with_descr();
+$portlist = vnstat_portlist();
 
-$portlist = $config['interfaces'];
-
-if (ipsec_enabled()) {
-	$portlist['enc0']['if'] = "enc0";
-	$portlist['enc0']['descr'] = gettext("IPsec");
-}
-
-foreach (array('server', 'client') as $mode) {
-	if (is_array($config['openvpn']["openvpn-{$mode}"])) {
-		foreach ($config['openvpn']["openvpn-{$mode}"] as $id => $setting) {
-			if (!isset($setting['disable'])) {
-				$portlist['ovpn' . substr($mode, 0, 1) . $setting['vpnid']]['if'] = 'ovpn' . substr($mode, 0, 1) . $setting['vpnid'];
-				$portlist['ovpn' . substr($mode, 0, 1) . $setting['vpnid']]['descr'] = gettext("OpenVPN") . " " . $mode . ": ".htmlspecialchars($setting['description']);
-			}
-		}
-	}
-}
-
-foreach($portlist as $interface => $details) {
-
-	if($details['descr']) {
-		//do nothing
-	} elseif($ifdescrs[$interface]) {
-		$portlist[$interface]['descr'] = $ifdescrs[$interface];
+if (isset($_POST['enable']) && !empty($_POST['enable'])) {
+	if ($_POST['enable'] === 'true') {
+		$state = gettext('Enabled');
+		$vnscfg['enabled'] = true;
+	} elseif ($_POST['enable'] === 'false') {
+		$state = gettext('Disabled');
+		unset($vnscfg['enabled']);
 	} else {
-		$portlist[$interface]['descr'] = $interface;
+		// Bad data
+		exit;
 	}
-
-}
-
-if($_POST['enable']) {
-
-	//disable vnstat
-	if(($_POST['enable'] === 'false')) {
-
-		//remove cron job
-		install_cron_job("/usr/local/bin/vnstat -u", false);
-
-		//loop through interfaces and delete databases
-		vnstat_delete_nic_dbs($portlist);
-
-	} else { // enable vnstat
-
-		//overwrite vnstat conf
-		vnstat_write_conf($_POST['start-day']);
-
-		//make the directory for the nterface databases
-		safe_mkdir('/var/db/vnstat');
-
-		//setup cron job 
-		install_cron_job("/usr/local/bin/vnstat -u", true, "*/5"); //TODO different intervals (delete old cron and re-add?)
-
-		//loop through interfaces and create databases
-		vnstat_create_nic_dbs($portlist);
-
-	}
-
+	write_config(sprintf(gettext('%s Graphing for Status > Traffic Totals'), $state));
+	vnstat_sync();
+	// Give the service time to start/stop
+	sleep(5);
 }
 
 if ($_POST['reset']) {
-
-	//loop through interfaces and delete databases
-	vnstat_delete_nic_dbs($portlist);
-
-	//loop through interfaces and re-create databases
-	vnstat_create_nic_dbs($portlist);
-	
+	vnstat_reset();
 }
 
 //save new defaults
 if ($_POST['defaults']) {
-
-	vnstat_write_conf($_POST['start-day']);
-
 	//TODO clean inputs
 	$timePeriod = $_POST['time-period'];
 	$interfaces = json_encode($_POST['interfaces']);
@@ -210,35 +83,32 @@ if ($_POST['defaults']) {
 	$cumulative = $_POST['cumulative'];
 	$startDay = $_POST['start-day'];
 
-	$config['installedpackages']['traffictotals']['config'][0]['timeperiod'] = $timePeriod;
-	$config['installedpackages']['traffictotals']['config'][0]['interfaces'] = $interfaces;
-	$config['installedpackages']['traffictotals']['config'][0]['graphtype'] = $graphtype;
-	$config['installedpackages']['traffictotals']['config'][0]['invert'] = $invert;
-	$config['installedpackages']['traffictotals']['config'][0]['cumulative'] = $cumulative;
-	$config['installedpackages']['traffictotals']['config'][0]['startday'] = $startDay;
+	$vnscfg['timeperiod'] = $timePeriod;
+	$vnscfg['interfaces'] = $interfaces;
+	$vnscfg['graphtype'] = $graphtype;
+	$vnscfg['invert'] = $invert;
+	$vnscfg['cumulative'] = $cumulative;
+	$vnscfg['startday'] = $startDay;
 
 	write_config('Save default settings for Status > Traffic Totals');
+	vnstat_sync();
 	$savemsg = "The changes have been applied successfully.";
-
 }
 
-if(isset($config['installedpackages']['traffictotals']['config'][0]['startday'])) {
-
-	$ifArray = json_decode($config['installedpackages']['traffictotals']['config'][0]['interfaces']);
+if (isset($vnscfg['startday'])) {
+	$ifArray = json_decode($vnscfg['interfaces']);
 	$interfaces = "";
 
 	foreach($ifArray as $interface) {
 		$interfaces .= 'interfaces[]=' . $interface . '&';
 	}
 
-	$timePeriod = $config['installedpackages']['traffictotals']['config'][0]['timeperiod'];
-	$graphtype = $config['installedpackages']['traffictotals']['config'][0]['graphtype'];
-	$invert = $config['installedpackages']['traffictotals']['config'][0]['invert'];
-	$cumulative = $config['installedpackages']['traffictotals']['config'][0]['cumulative'];
-	$startDay = $config['installedpackages']['traffictotals']['config'][0]['startday'];
-
+	$timePeriod = $vnscfg['timeperiod'];
+	$graphtype = $vnscfg['graphtype'];
+	$invert = $vnscfg['invert'];
+	$cumulative = $vnscfg['cumulative'];
+	$startDay = $vnscfg['startday'];
 } else {
-
 	$interfaces = "";
 
 	foreach($portlist as $interface => $details) {
@@ -250,12 +120,12 @@ if(isset($config['installedpackages']['traffictotals']['config'][0]['startday'])
 	$invert = "true";
 	$cumulative = "false";
 	$startDay = 1;
-
 }
 
 $defaults = $interfaces . 'time-period=' . $timePeriod . '&graph-type=' . $graphtype . '&invert=' . $invert . '&cumulative=' . $cumulative . '&start-day=' . $startDay;
 
 $pgtitle = array(gettext("Status"), gettext("Traffic Totals"));
+$shortcut_section = "vnstat";
 
 include("head.inc");
 
@@ -295,14 +165,9 @@ display_top_tabs($tab_array);
 				</label>
 				<div class="col-sm-2">
 					<select class="form-control" id="interfaces" name="interfaces[]" multiple>
-						<?php
-
-						foreach($portlist as $interface => $details) {
-
-							echo '<option value="' . $details['if'] . '" selected>' . $details['descr'] . "</option>\n";
-						}
-
-						?>
+						<?php foreach($portlist as $interface => $details): ?>
+							<option value="<?= $details['if'] ?>" selected><?= htmlspecialchars($details['descr']) ?></option>;
+						<?php endforeach; ?>
 					</select>
 
 					<span class="help-block">Interface(s)</span>
@@ -353,7 +218,11 @@ display_top_tabs($tab_array);
 					<button class="btn btn-sm btn-primary" type="submit" value="true" name="defaults" id="defaults" style="display:none;"><i class="fa fa-save fa-lg"></i> Save As Defaults</button>
 				</div>
 				<div class="col-sm-2">
-						<button class="btn btn-sm btn-danger" type="submit" value="false" name="enable" id="enable" style="display:none;"><i class="fa fa-ban fa-lg"></i> Disable Graphing</button>
+<?php if (isset($vnscfg['enabled'])): ?>
+					<button class="btn btn-sm btn-danger" type="submit" value="false" name="enable" id="enable" style="display:none;"><i class="fa fa-ban fa-lg"></i> Disable Graphing</button>
+<?php else:?>
+					<button class="btn btn-sm btn-success" type="submit" value="true" name="enable" id="enable" style="display:none;"><i class="fa fa-check fa-lg"></i> Enable Graphing</button>
+<?php endif; ?>
 				</div>
 				<div class="col-sm-2">
 					<button class="btn btn-sm btn-danger" type="submit" value="true" name="reset" id="reset" style="display:none;"><i class="fa fa-trash fa-lg"></i> Reset Graphing Data</button>
@@ -437,7 +306,7 @@ events.push(function() {
 		});
 
 		allOptions.forEach(function(entry) {
-			
+
 			var currentOption = entry.split("=");
 
 			if(currentOption[0] === "interfaces[]") {
@@ -499,9 +368,9 @@ events.push(function() {
 
 				$("#traffic-totals-chart").hide();
 				$("#loading-msg").hide();
-				
+
 				//check if interface databases don't exist
-				if(errorMsg.substring(0,17) === "No database found" || errorMsg.substring(0,33) === "Unable to open database directory" ) {
+				if(errorMsg.substring(0,17) === "No database found" || errorMsg.substring(0,23) === "Unable to open database" || errorMsg.substring(0,23) === "Failed to open database" ) {
 
 					//flip enable graphing button
 					$( "#enable" ).val('true').html('<i class="fa fa-check fa-lg"></i> Enable Graphing').removeClass('btn-danger').addClass('btn-success');
@@ -509,13 +378,13 @@ events.push(function() {
 					errorMsg = "Graphing is not enabled, Enable Graphing in the Advanced Settings above.";
 
 				}
-				
+
 
 				$("#chart-error").show().html('<strong>Error</strong>: ' + errorMsg);
 
 				return console.warn(raw_json.error);
 			}
-				
+
 			var interfaces = $( "#interfaces" ).val();
 			var timePeriod = $( "li.active a:first" ).attr('href').substring(1);
 			var graphtype = $( "#graph-type" ).val();
@@ -545,7 +414,7 @@ events.push(function() {
 			var current_hour = current_date.getHours();
 
 			$.each(interfaces, function(index, interface) {
-				
+
 				var tx_series = [];
 				var rx_series = [];
 				var interface_index = 0;
@@ -559,13 +428,13 @@ events.push(function() {
 
 						$.each(raw_json.interfaces, function(index, value) {
 
-							if(value.id === interface) {
+							if(value.name === interface) {
 								interface_index = index;
 							}
 
 						});
 
-						$.each(raw_json.interfaces[interface_index].traffic.hours, function(hour_index, value) {
+						$.each(raw_json.interfaces[interface_index].traffic.hour, function(hour_index, value) {
 
 							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day, value.id);
 
@@ -595,7 +464,7 @@ events.push(function() {
 
 						current_utc = current_utc+(ClientUTCOffset*3600000);
 
-						for(var t = 0; t < tx_series.length; t++) {	
+						for(var t = 0; t < tx_series.length; t++) {
 
 							//TODO break if length === period interval?
 
@@ -630,13 +499,13 @@ events.push(function() {
 
 						$.each(raw_json.interfaces, function(index, value) {
 
-							if(value.id === interface) {
+							if(value.name === interface) {
 								interface_index = index;
 							}
 
 						});
 
-						$.each(raw_json.interfaces[interface_index].traffic.days, function(index, value) {
+						$.each(raw_json.interfaces[interface_index].traffic.day, function(index, value) {
 
 							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day);
 
@@ -670,7 +539,7 @@ events.push(function() {
 
 							//TODO break if length === period interval?
 
-							for(var t = 0; t < tx_series.length; t++) {	
+							for(var t = 0; t < tx_series.length; t++) {
 
 								if(tx_series[t][0]+tzOffset > (current_utc-(86400000*count)+tzOffset)) {
 
@@ -705,13 +574,13 @@ events.push(function() {
 
 						$.each(raw_json.interfaces, function(index, value) {
 
-							if(value.id === interface) {
+							if(value.name === interface) {
 								interface_index = index;
 							}
 
 						});
 
-						$.each(raw_json.interfaces[interface_index].traffic.months, function(index, value) {
+						$.each(raw_json.interfaces[interface_index].traffic.month, function(index, value) {
 
 							var date = Date.UTC(value.date.year, value.date.month-1);
 
@@ -778,16 +647,16 @@ events.push(function() {
 
 						$.each(raw_json.interfaces, function(index, value) {
 
-							if(value.id === interface) {
+							if(value.name === interface) {
 								interface_index = index;
 							}
 
 						});
 
-						$.each(raw_json.interfaces[interface_index].traffic.tops, function(index, value) {
+						$.each(raw_json.interfaces[interface_index].traffic.top, function(index, value) {
 
-							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day, value.time.hour, value.time.minutes);
-							
+							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day);
+
 							localStorage.setItem(value.id+1, date);
 
 							tx_series.push([value.id+1, value.tx]);
@@ -826,19 +695,19 @@ events.push(function() {
 
 						tx_series[index][1] = tx_series[index][1] + tx_previous;
 						rx_series[index][1] = rx_series[index][1] + rx_previous;
-						
+
 					});
 
 				}
-				
+
 				json[index*2] = {};
 
 				var ifNick = interface;
 
 				$.each(raw_json.interfaces, function(index, value) {
 
-					if(value.id === interface) {
-						ifNick = value.nick;
+					if(value.name === interface) {
+						ifNick = value.alias;
 					}
 
 				});
@@ -914,7 +783,12 @@ events.push(function() {
 				//TODO units changes based on period?
 				chart.yAxis1.tickFormat(function(d) {
 
-					var dUnit = 'K';
+					var dUnit = 'B';
+
+					if(d >= 1000 || d <= -1000) {
+						d = d / 1024;
+						dUnit = 'K';
+					}
 
 					if(d >= 1000 || d <= -1000) {
 						d = d / 1024;
@@ -986,12 +860,17 @@ events.push(function() {
 
 					for ( var v = 0; v < data.series.length; v++ ){
 
-						var unit = 'KiB';
+						var unit = 'B';
 
 						if ( ($("#invert").val() === "true" && data.series[v].key.includes('(rx)')) &&  ($("#graph-type").val() != "area" && $("#graph-type").val() != "stacked")) {
 							var trueValue = 0 - data.series[v].value;
 						} else {
 							var trueValue = data.series[v].value;
+						}
+
+						if(trueValue >= 1000) {
+							trueValue = trueValue / 1024;
+							unit = 'KiB';
 						}
 
 						if(trueValue >= 1000) {
@@ -1038,7 +917,7 @@ events.push(function() {
 		.fail(function(error) {
 			$("#traffic-totals-chart").hide();
 			$("#chart-error").show().html('<strong>Error</strong>: ' + error);
-			
+
 			console.warn(error);
 		});
 
@@ -1098,9 +977,14 @@ events.push(function() {
 					}
 
 					var total = tx + rx;
-					var txUnit = 'KiB';
-					var rxUnit = 'KiB';
-					var totalUnit = 'KiB';
+					var txUnit = 'B';
+					var rxUnit = 'B';
+					var totalUnit = 'B';
+
+					if(tx >= 1000) {
+						tx = tx / 1024;
+						txUnit = 'KiB';
+					}
 
 					if(tx >= 1000) {
 						tx = tx / 1024;
@@ -1115,6 +999,11 @@ events.push(function() {
 					if(tx >= 1000) {
 						tx = tx / 1024;
 						txUnit = 'TiB';
+					}
+
+					if(rx >= 1000) {
+						rx = rx / 1024;
+						rxUnit = 'KiB';
 					}
 
 					if(rx >= 1000) {
@@ -1134,6 +1023,11 @@ events.push(function() {
 
 					if(total >= 1000) {
 						total = total / 1024;
+						totalUnit = 'KiB';
+					}
+
+					if(total >= 1000) {
+						total = total / 1024;
 						totalUnit = 'MiB';
 					}
 
@@ -1148,7 +1042,7 @@ events.push(function() {
 					}
 
 					body += '<td>' + tx.toFixed(2) + ' ' + txUnit + '</td><td>' + rx.toFixed(2) + ' ' + rxUnit + '</td><td>' + ratio.toFixed(2) + '</td><td>' + total.toFixed(2) + ' ' + totalUnit + '</td>';
-					
+
 				}
 
 				body += '</tr>';
@@ -1211,9 +1105,14 @@ events.push(function() {
 					}
 
 					var total = tx + rx;
-					var txUnit = 'KiB';
-					var rxUnit = 'KiB';
-					var totalUnit = 'KiB';
+					var txUnit = 'B';
+					var rxUnit = 'B';
+					var totalUnit = 'B';
+
+					if(tx >= 1000) {
+						tx = tx / 1024;
+						txUnit = 'KiB';
+					}
 
 					if(tx >= 1000) {
 						tx = tx / 1024;
@@ -1232,6 +1131,11 @@ events.push(function() {
 
 					if(rx >= 1000) {
 						rx = rx / 1024;
+						rxUnit = 'KiB';
+					}
+
+					if(rx >= 1000) {
+						rx = rx / 1024;
 						rxUnit = 'MiB';
 					}
 
@@ -1243,6 +1147,11 @@ events.push(function() {
 					if(rx >= 1000) {
 						rx = rx / 1024;
 						rxUnit = 'TiB';
+					}
+
+					if(total >= 1000) {
+						total = total / 1024;
+						totalUnit = 'KiB';
 					}
 
 					if(total >= 1000) {

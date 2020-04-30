@@ -1,12 +1,12 @@
 #!/usr/bin/env sh
 
-VER=2.8.4
+VER=2.8.6
 
 PROJECT_NAME="acme.sh"
 
 PROJECT_ENTRY="acme.sh"
 
-PROJECT="https://github.com/Neilpang/$PROJECT_NAME"
+PROJECT="https://github.com/acmesh-official/$PROJECT_NAME"
 
 DEFAULT_INSTALL_HOME="$HOME/.$PROJECT_NAME"
 
@@ -49,8 +49,6 @@ VTYPE_ALPN="tls-alpn-01"
 LOCAL_ANY_ADDRESS="0.0.0.0"
 
 DEFAULT_RENEW=60
-
-DEFAULT_DNS_SLEEP=120
 
 NO_VALUE="no"
 
@@ -128,19 +126,21 @@ NOTIFY_MODE_CERT=1
 
 NOTIFY_MODE_DEFAULT=$NOTIFY_MODE_BULK
 
-_DEBUG_WIKI="https://github.com/Neilpang/acme.sh/wiki/How-to-debug-acme.sh"
+_DEBUG_WIKI="https://github.com/acmesh-official/acme.sh/wiki/How-to-debug-acme.sh"
 
-_PREPARE_LINK="https://github.com/Neilpang/acme.sh/wiki/Install-preparations"
+_PREPARE_LINK="https://github.com/acmesh-official/acme.sh/wiki/Install-preparations"
 
-_STATELESS_WIKI="https://github.com/Neilpang/acme.sh/wiki/Stateless-Mode"
+_STATELESS_WIKI="https://github.com/acmesh-official/acme.sh/wiki/Stateless-Mode"
 
-_DNS_ALIAS_WIKI="https://github.com/Neilpang/acme.sh/wiki/DNS-alias-mode"
+_DNS_ALIAS_WIKI="https://github.com/acmesh-official/acme.sh/wiki/DNS-alias-mode"
 
-_DNS_MANUAL_WIKI="https://github.com/Neilpang/acme.sh/wiki/dns-manual-mode"
+_DNS_MANUAL_WIKI="https://github.com/acmesh-official/acme.sh/wiki/dns-manual-mode"
 
-_NOTIFY_WIKI="https://github.com/Neilpang/acme.sh/wiki/notify"
+_NOTIFY_WIKI="https://github.com/acmesh-official/acme.sh/wiki/notify"
 
-_SUDO_WIKI="https://github.com/Neilpang/acme.sh/wiki/sudo"
+_SUDO_WIKI="https://github.com/acmesh-official/acme.sh/wiki/sudo"
+
+_REVOKE_WIKI="https://github.com/acmesh-official/acme.sh/wiki/revokecert"
 
 _DNS_MANUAL_ERR="The dns manual mode can not renew automatically, you must issue it again manually. You'd better use the other modes instead."
 
@@ -209,7 +209,7 @@ _dlg_versions() {
 
   echo "socat:"
   if _exists "socat"; then
-    socat -h 2>&1
+    socat -V 2>&1
   else
     _debug "socat doesn't exists."
   fi
@@ -270,31 +270,31 @@ _usage() {
 __debug_bash_helper() {
   # At this point only do for --debug 3
   if [ "${DEBUG:-$DEBUG_LEVEL_NONE}" -lt "$DEBUG_LEVEL_3" ]; then
-    echo ""
     return
   fi
   # Return extra debug info when running with bash, otherwise return empty
   # string.
   if [ -z "${BASH_VERSION}" ]; then
-    echo ""
     return
   fi
   # We are a bash shell at this point, return the filename, function name, and
   # line number as a string
   _dbh_saveIFS=$IFS
   IFS=" "
-  # Must use eval or syntax error happens under dash
+  # Must use eval or syntax error happens under dash. The eval should use
+  # single quotes as older versions of busybox had a bug with double quotes and
+  # eval.
   # Use 'caller 1' as we want one level up the stack as we should be called
   # by one of the _debug* functions
-  eval "_dbh_called=($(caller 1))"
+  eval '_dbh_called=($(caller 1))'
   IFS=$_dbh_saveIFS
-  _dbh_file=${_dbh_called[2]}
+  eval '_dbh_file=${_dbh_called[2]}'
   if [ -n "${_script_home}" ]; then
     # Trim off the _script_home directory name
-    _dbh_file=${_dbh_file#$_script_home/}
+    eval '_dbh_file=${_dbh_file#$_script_home/}'
   fi
-  _dbh_function=${_dbh_called[1]}
-  _dbh_lineno=${_dbh_called[0]}
+  eval '_dbh_function=${_dbh_called[1]}'
+  eval '_dbh_lineno=${_dbh_called[0]}'
   printf "%-40s " "$_dbh_file:${_dbh_function}:${_dbh_lineno}"
 }
 
@@ -850,6 +850,14 @@ _json_encode() {
   echo "$_j_str" | _hex_dump | _lower_case | sed 's/0a/5c 6e/g' | tr -d ' ' | _h2b | tr -d "\r\n"
 }
 
+#from: http:\/\/  to http://
+_json_decode() {
+  _j_str="$(sed 's#\\/#/#g')"
+  _debug3 "_json_decode"
+  _debug3 "_j_str" "$_j_str"
+  echo "$_j_str"
+}
+
 #options file
 _sed_i() {
   options="$1"
@@ -1168,9 +1176,8 @@ _createcsr() {
     _info "Multi domain" "$alt"
     printf -- "\nsubjectAltName=$alt" >>"$csrconf"
   fi
-  if [ "$Le_OCSP_Staple" ] || [ "$Le_OCSP_Stable" ]; then
+  if [ "$Le_OCSP_Staple" = "1" ]; then
     _savedomainconf Le_OCSP_Staple "$Le_OCSP_Staple"
-    _cleardomainconf Le_OCSP_Stable
     printf -- "\nbasicConstraints = CA:FALSE\n1.3.6.1.5.5.7.1.24=DER:30:03:02:01:05" >>"$csrconf"
   fi
 
@@ -2032,7 +2039,7 @@ _send_signed_request() {
     _debug code "$code"
 
     _debug2 original "$response"
-    if echo "$responseHeaders" | grep -i "Content-Type: application/json" >/dev/null 2>&1; then
+    if echo "$responseHeaders" | grep -i "Content-Type: *application/json" >/dev/null 2>&1; then
       response="$(echo "$response" | _normalizeJson)"
     fi
     _debug2 response "$response"
@@ -2053,8 +2060,10 @@ _send_signed_request() {
         continue
       fi
     fi
-    break
+    return 0
   done
+  _info "Giving up sending to CA server after $MAX_REQUEST_RETRY_TIMES retries."
+  return 1
 
 }
 
@@ -2177,7 +2186,7 @@ _getdeployconf() {
     return 0 # do nothing
   fi
   _saved=$(_readdomainconf "SAVED_$_rac_key")
-  eval "export $_rac_key=$_saved"
+  eval "export $_rac_key=\"$_saved\""
 }
 
 #_saveaccountconf  key  value  base64encode
@@ -2426,7 +2435,7 @@ __initHome() {
   if [ -z "$ACCOUNT_CONF_PATH" ]; then
     ACCOUNT_CONF_PATH="$_DEFAULT_ACCOUNT_CONF_PATH"
   fi
-
+  _debug3 ACCOUNT_CONF_PATH "$ACCOUNT_CONF_PATH"
   DEFAULT_LOG_FILE="$LE_CONFIG_HOME/$PROJECT_NAME.log"
 
   DEFAULT_CA_HOME="$LE_CONFIG_HOME/ca"
@@ -3407,7 +3416,7 @@ _on_issue_success() {
     fi
   fi
 
-  if _hasfield "$Le_Webroot" "$W_DNS"; then
+  if _hasfield "$Le_Webroot" "$W_DNS" && [ -z "$FORCE_DNS_MANUAL" ]; then
     _err "$_DNS_MANUAL_WARN"
   fi
 
@@ -3459,13 +3468,13 @@ _regAccount() {
   if [ "$ACME_VERSION" = "2" ]; then
     regjson='{"termsOfServiceAgreed": true}'
     if [ "$ACCOUNT_EMAIL" ]; then
-      regjson='{"contact": ["mailto: '$ACCOUNT_EMAIL'"], "termsOfServiceAgreed": true}'
+      regjson='{"contact": ["mailto:'$ACCOUNT_EMAIL'"], "termsOfServiceAgreed": true}'
     fi
   else
     _reg_res="$ACME_NEW_ACCOUNT_RES"
     regjson='{"resource": "'$_reg_res'", "terms-of-service-agreed": true, "agreement": "'$ACME_AGREEMENT'"}'
     if [ "$ACCOUNT_EMAIL" ]; then
-      regjson='{"resource": "'$_reg_res'", "contact": ["mailto: '$ACCOUNT_EMAIL'"], "terms-of-service-agreed": true, "agreement": "'$ACME_AGREEMENT'"}'
+      regjson='{"resource": "'$_reg_res'", "contact": ["mailto:'$ACCOUNT_EMAIL'"], "terms-of-service-agreed": true, "agreement": "'$ACME_AGREEMENT'"}'
     fi
   fi
 
@@ -3487,7 +3496,7 @@ _regAccount() {
   fi
 
   _debug2 responseHeaders "$responseHeaders"
-  _accUri="$(echo "$responseHeaders" | grep -i "^Location:" | _head_n 1 | cut -d ' ' -f 2 | tr -d "\r\n")"
+  _accUri="$(echo "$responseHeaders" | grep -i "^Location:" | _head_n 1 | cut -d ':' -f 2- | tr -d "\r\n ")"
   _debug "_accUri" "$_accUri"
   if [ -z "$_accUri" ]; then
     _err "Can not find account id url."
@@ -3545,7 +3554,9 @@ updateaccount() {
 
   if [ "$ACME_VERSION" = "2" ]; then
     if [ "$ACCOUNT_EMAIL" ]; then
-      updjson='{"contact": ["mailto: '$ACCOUNT_EMAIL'"]}'
+      updjson='{"contact": ["mailto:'$ACCOUNT_EMAIL'"]}'
+    else
+      updjson='{"contact": []}'
     fi
   else
     # ACMEv1: Updates happen the same way a registration is done.
@@ -3558,6 +3569,7 @@ updateaccount() {
   _send_signed_request "$_accUri" "$updjson"
 
   if [ "$code" = '200' ]; then
+    echo "$response" >"$ACCOUNT_JSON_PATH"
     _info "account update success for $_accUri."
   else
     _info "Error. The account was not updated."
@@ -3861,9 +3873,11 @@ _check_dns_entries() {
       _sleep 10
     else
       _info "All success, let's return"
-      break
+      return 0
     fi
   done
+  _info "Timed out waiting for DNS."
+  return 1
 
 }
 
@@ -4049,7 +4063,7 @@ issue() {
         _on_issue_err "$_post_hook"
         return 1
       fi
-      Le_LinkOrder="$(echo "$responseHeaders" | grep -i '^Location.*$' | _tail_n 1 | tr -d "\r\n" | cut -d " " -f 2)"
+      Le_LinkOrder="$(echo "$responseHeaders" | grep -i '^Location.*$' | _tail_n 1 | tr -d "\r\n " | cut -d ":" -f 2-)"
       _debug Le_LinkOrder "$Le_LinkOrder"
       Le_OrderFinalize="$(echo "$response" | _egrep_o '"finalize" *: *"[^"]*"' | cut -d '"' -f 4)"
       _debug Le_OrderFinalize "$Le_OrderFinalize"
@@ -4063,7 +4077,7 @@ issue() {
       #for dns manual mode
       _savedomainconf "Le_OrderFinalize" "$Le_OrderFinalize"
 
-      _authorizations_seg="$(echo "$response" | _egrep_o '"authorizations" *: *\[[^\]*\]' | cut -d '[' -f 2 | tr -d ']' | tr -d '"')"
+      _authorizations_seg="$(echo "$response" | _json_decode | _egrep_o '"authorizations" *: *\[[^\[]*\]' | cut -d '[' -f 2 | tr -d ']' | tr -d '"')"
       _debug2 _authorizations_seg "$_authorizations_seg"
       if [ -z "$_authorizations_seg" ]; then
         _err "_authorizations_seg not found."
@@ -4129,7 +4143,7 @@ $_authorizations_map"
 
       if [ "$ACME_VERSION" = "2" ]; then
         _idn_d="$(_idn "$d")"
-        _candindates="$(echo "$_authorizations_map" | grep "^$_idn_d,")"
+        _candindates="$(echo "$_authorizations_map" | grep -i "^$_idn_d,")"
         _debug2 _candindates "$_candindates"
         if [ "$(echo "$_candindates" | wc -l)" -gt 1 ]; then
           for _can in $_candindates; do
@@ -4162,45 +4176,59 @@ $_authorizations_map"
 
       entry="$(echo "$response" | _egrep_o '[^\{]*"type":"'$vtype'"[^\}]*')"
       _debug entry "$entry"
+      keyauthorization=""
       if [ -z "$entry" ]; then
-        _err "Error, can not get domain token entry $d"
-        _supported_vtypes="$(echo "$response" | _egrep_o "\"challenges\":\[[^]]*]" | tr '{' "\n" | grep type | cut -d '"' -f 4 | tr "\n" ' ')"
-        if [ "$_supported_vtypes" ]; then
-          _err "The supported validation types are: $_supported_vtypes, but you specified: $vtype"
+        if ! _startswith "$d" '*.'; then
+          _debug "Not a wildcard domain, lets check whether the validation is already valid."
+          if echo "$response" | grep '"status":"valid"' >/dev/null 2>&1; then
+            _debug "$d is already valid."
+            keyauthorization="$STATE_VERIFIED"
+            _debug keyauthorization "$keyauthorization"
+          fi
         fi
-        _clearup
-        _on_issue_err "$_post_hook"
-        return 1
+        if [ -z "$keyauthorization" ]; then
+          _err "Error, can not get domain token entry $d for $vtype"
+          _supported_vtypes="$(echo "$response" | _egrep_o "\"challenges\":\[[^]]*]" | tr '{' "\n" | grep type | cut -d '"' -f 4 | tr "\n" ' ')"
+          if [ "$_supported_vtypes" ]; then
+            _err "The supported validation types are: $_supported_vtypes, but you specified: $vtype"
+          fi
+          _clearup
+          _on_issue_err "$_post_hook"
+          return 1
+        fi
       fi
-      token="$(echo "$entry" | _egrep_o '"token":"[^"]*' | cut -d : -f 2 | tr -d '"')"
-      _debug token "$token"
 
-      if [ -z "$token" ]; then
-        _err "Error, can not get domain token $entry"
-        _clearup
-        _on_issue_err "$_post_hook"
-        return 1
-      fi
-      if [ "$ACME_VERSION" = "2" ]; then
-        uri="$(echo "$entry" | _egrep_o '"url":"[^"]*' | cut -d '"' -f 4 | _head_n 1)"
-      else
-        uri="$(echo "$entry" | _egrep_o '"uri":"[^"]*' | cut -d '"' -f 4)"
-      fi
-      _debug uri "$uri"
+      if [ -z "$keyauthorization" ]; then
+        token="$(echo "$entry" | _egrep_o '"token":"[^"]*' | cut -d : -f 2 | tr -d '"')"
+        _debug token "$token"
 
-      if [ -z "$uri" ]; then
-        _err "Error, can not get domain uri. $entry"
-        _clearup
-        _on_issue_err "$_post_hook"
-        return 1
-      fi
-      keyauthorization="$token.$thumbprint"
-      _debug keyauthorization "$keyauthorization"
+        if [ -z "$token" ]; then
+          _err "Error, can not get domain token $entry"
+          _clearup
+          _on_issue_err "$_post_hook"
+          return 1
+        fi
+        if [ "$ACME_VERSION" = "2" ]; then
+          uri="$(echo "$entry" | _egrep_o '"url":"[^"]*' | cut -d '"' -f 4 | _head_n 1)"
+        else
+          uri="$(echo "$entry" | _egrep_o '"uri":"[^"]*' | cut -d '"' -f 4)"
+        fi
+        _debug uri "$uri"
 
-      if printf "%s" "$response" | grep '"status":"valid"' >/dev/null 2>&1; then
-        _debug "$d is already verified."
-        keyauthorization="$STATE_VERIFIED"
+        if [ -z "$uri" ]; then
+          _err "Error, can not get domain uri. $entry"
+          _clearup
+          _on_issue_err "$_post_hook"
+          return 1
+        fi
+        keyauthorization="$token.$thumbprint"
         _debug keyauthorization "$keyauthorization"
+
+        if printf "%s" "$response" | grep '"status":"valid"' >/dev/null 2>&1; then
+          _debug "$d is already verified."
+          keyauthorization="$STATE_VERIFIED"
+          _debug keyauthorization "$keyauthorization"
+        fi
       fi
 
       dvlist="$d$sep$keyauthorization$sep$uri$sep$vtype$sep$_currentRoot"
@@ -4587,13 +4615,13 @@ $_authorizations_map"
       return 1
     fi
     if [ -z "$Le_LinkOrder" ]; then
-      Le_LinkOrder="$(echo "$responseHeaders" | grep -i '^Location.*$' | _tail_n 1 | tr -d "\r\n" | cut -d " " -f 2)"
+      Le_LinkOrder="$(echo "$responseHeaders" | grep -i '^Location.*$' | _tail_n 1 | tr -d "\r\n" | cut -d ":" -f 2-)"
     fi
 
     _savedomainconf "Le_LinkOrder" "$Le_LinkOrder"
 
     _link_cert_retry=0
-    _MAX_CERT_RETRY=5
+    _MAX_CERT_RETRY=30
     while [ "$_link_cert_retry" -lt "$_MAX_CERT_RETRY" ]; do
       if _contains "$response" "\"status\":\"valid\""; then
         _debug "Order status is valid."
@@ -5499,6 +5527,7 @@ uninstallcronjob() {
 
 }
 
+#domain  isECC  revokeReason
 revoke() {
   Le_Domain="$1"
   if [ -z "$Le_Domain" ]; then
@@ -5507,7 +5536,10 @@ revoke() {
   fi
 
   _isEcc="$2"
-
+  _reason="$3"
+  if [ -z "$_reason" ]; then
+    _reason="0"
+  fi
   _initpath "$Le_Domain" "$_isEcc"
   if [ ! -f "$DOMAIN_CONF" ]; then
     _err "$Le_Domain is not a issued domain, skip."
@@ -5529,7 +5561,7 @@ revoke() {
   _initAPI
 
   if [ "$ACME_VERSION" = "2" ]; then
-    data="{\"certificate\": \"$cert\"}"
+    data="{\"certificate\": \"$cert\",\"reason\":$_reason}"
   else
     data="{\"resource\": \"revoke-cert\", \"certificate\": \"$cert\"}"
   fi
@@ -5638,7 +5670,7 @@ _deactivate() {
       return 1
     fi
 
-    authzUri="$(echo "$responseHeaders" | grep "^Location:" | _head_n 1 | cut -d ' ' -f 2 | tr -d "\r\n")"
+    authzUri="$(echo "$responseHeaders" | grep "^Location:" | _head_n 1 | cut -d ':' -f 2- | tr -d "\r\n")"
     _debug "authzUri" "$authzUri"
     if [ "$code" ] && [ ! "$code" = '201' ]; then
       _err "new-authz error: $response"
@@ -6268,17 +6300,17 @@ Parameters:
   --force, -f                       Used to force to install or force to renew a cert immediately.
   --staging, --test                 Use staging server, just for test.
   --debug                           Output debug info.
-  --output-insecure                 Output all the sensitive messages. By default all the credentials/sensitive messages are hidden from the output/debug/log for secure.
+  --output-insecure                 Output all the sensitive messages. By default all the credentials/sensitive messages are hidden from the output/debug/log for security.
   --webroot, -w  /path/to/webroot   Specifies the web root folder for web root mode.
   --standalone                      Use standalone mode.
   --alpn                            Use standalone alpn mode.
   --stateless                       Use stateless mode, see: $_STATELESS_WIKI
   --apache                          Use apache mode.
   --dns [dns_cf|dns_dp|dns_cx|/path/to/api/file]   Use dns mode or dns api.
-  --dnssleep  [$DEFAULT_DNS_SLEEP]                  The time in seconds to wait for all the txt records to take effect in dns api mode. Default $DEFAULT_DNS_SLEEP seconds.
+  --dnssleep   300                  The time in seconds to wait for all the txt records to take effect in dns api mode. It's not necessary to use this by default, $PROJECT_NAME polls dns status automatically.
 
-  --keylength, -k [2048]            Specifies the domain key length: 2048, 3072, 4096, 8192 or ec-256, ec-384.
-  --accountkeylength, -ak [2048]    Specifies the account key length.
+  --keylength, -k [2048]            Specifies the domain key length: 2048, 3072, 4096, 8192 or ec-256, ec-384, ec-521.
+  --accountkeylength, -ak [2048]    Specifies the account key length: 2048, 3072, 4096
   --log    [/path/to/logfile]       Specifies the log file. The default is: \"$DEFAULT_LOG_FILE\" if you don't give a file path here.
   --log-level 1|2                   Specifies the log level, default is 1.
   --syslog [0|3|6|7]                Syslog level, 0: disable syslog, 3: error, 6: info, 7: debug.
@@ -6292,7 +6324,7 @@ Parameters:
 
   --reloadcmd \"service nginx reload\" After issue/renew, it's used to reload the server.
 
-  --server SERVER                   ACME Directory Resource URI. (default: https://acme-v01.api.letsencrypt.org/directory)
+  --server SERVER                   ACME Directory Resource URI. (default: $DEFAULT_CA)
   --accountconf                     Specifies a customized account config file.
   --home                            Specifies the home dir for $PROJECT_NAME.
   --cert-home                       Specifies the home dir to save all the certs, only valid for '--install' command.
@@ -6338,6 +6370,7 @@ Parameters:
                                      0: Bulk mode. Send all the domain's notifications in one message(mail).
                                      1: Cert mode. Send a message for every single cert.
   --notify-hook   [hookname]        Set the notify hook
+  --revoke-reason [0-10]            The reason for '--revoke' command. See: $_REVOKE_WIKI
 
 "
 }
@@ -6369,6 +6402,8 @@ _installOnline() {
     chmod +x $PROJECT_ENTRY
     if ./$PROJECT_ENTRY install "$_nocron" "" "$_noprofile"; then
       _info "Install success!"
+      _initpath
+      _saveaccountconf "UPGRADE_HASH" "$(_getUpgradeHash)"
     fi
 
     cd ..
@@ -6378,9 +6413,27 @@ _installOnline() {
   )
 }
 
+_getRepoHash() {
+  _hash_path=$1
+  shift
+  _hash_url="https://api.github.com/repos/acmesh-official/$PROJECT_NAME/git/refs/$_hash_path"
+  _get $_hash_url | tr -d "\r\n" | tr '{},' '\n' | grep '"sha":' | cut -d '"' -f 4
+}
+
+_getUpgradeHash() {
+  _b="$BRANCH"
+  if [ -z "$_b" ]; then
+    _b="master"
+  fi
+  _hash=$(_getRepoHash "heads/$_b")
+  if [ -z "$_hash" ]; then _hash=$(_getRepoHash "tags/$_b"); fi
+  echo $_hash
+}
+
 upgrade() {
   if (
     _initpath
+    [ -z "$FORCE" ] && [ "$(_getUpgradeHash)" = "$(_readaccountconf "UPGRADE_HASH")" ] && _info "Already uptodate!" && exit 0
     export LE_WORKING_DIR
     cd "$LE_WORKING_DIR"
     _installOnline "nocron" "noprofile"
@@ -6493,6 +6546,7 @@ _process() {
   _notify_hook=""
   _notify_level=""
   _notify_mode=""
+  _revoke_reason=""
   while [ ${#} -gt 0 ]; do
     case "${1}" in
 
@@ -6965,6 +7019,14 @@ _process() {
         _notify_mode="$_nmode"
         shift
         ;;
+      --revoke-reason)
+        _revoke_reason="$2"
+        if _startswith "$_revoke_reason" "-"; then
+          _err "'$_revoke_reason' is not a integer for '$1'"
+          return 1
+        fi
+        shift
+        ;;
       *)
         _err "Unknown parameter : $1"
         return 1
@@ -7052,7 +7114,7 @@ _process() {
       renewAll "$_stopRenewOnError"
       ;;
     revoke)
-      revoke "$_domain" "$_ecc"
+      revoke "$_domain" "$_ecc" "$_revoke_reason"
       ;;
     remove)
       remove "$_domain" "$_ecc"

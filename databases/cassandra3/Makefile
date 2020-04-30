@@ -1,21 +1,23 @@
 # $FreeBSD$
 
 PORTNAME=	cassandra
-DISTVERSION=	3.11.4
-PORTREVISION=	1
+DISTVERSION=	3.11.6
 CATEGORIES=	databases java
 MASTER_SITES=	APACHE/cassandra/${PORTVERSION}:apache \
 		LOCAL/yuri:repo
 PKGNAMESUFFIX=	3
 DISTNAME=	apache-${PORTNAME}-${PORTVERSION}-src
 DISTFILES=	${DISTNAME}.tar.gz:apache \
-		apache-${PORTNAME}-${PORTVERSION}-repo.tar.gz:repo
+		apache-${PORTNAME}-3.11.4-repo.tar.gz:repo
 
 MAINTAINER=	language.devel@gmail.com
 COMMENT=	Highly scalable distributed database
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 RUN_DEPENDS=	snappyjava>=0:archivers/snappy-java
 

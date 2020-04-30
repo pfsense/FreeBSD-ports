@@ -6,6 +6,7 @@ share/dbus-1/system.d/org.kde.kcontrol.kcmsddm.conf
 share/knsrcfiles/sddmtheme.knsrc
 share/kservices5/kcm_sddm.desktop
 share/locale/ar/LC_MESSAGES/kcm_sddm.mo
+share/locale/ast/LC_MESSAGES/kcm_sddm.mo
 share/locale/bs/LC_MESSAGES/kcm_sddm.mo
 share/locale/ca/LC_MESSAGES/kcm_sddm.mo
 share/locale/ca@valencia/LC_MESSAGES/kcm_sddm.mo

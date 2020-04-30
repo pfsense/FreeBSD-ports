@@ -15,7 +15,7 @@ LICENSE=	ZLIB
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2
 
-USES=		gmake iconv libtool pathfix pkgconfig
+USES=		gmake iconv libtool pathfix pkgconfig sdl xorg
 USE_SDL=	sdl
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
@@ -26,7 +26,8 @@ USE_LDCONFIG=	yes
 OPTIONS_DEFINE=		OPENGL
 OPTIONS_DEFAULT=	OPENGL
 
-OPENGL_USE=	GL=yes
+OPENGL_USES=	gl
+OPENGL_USE=	GL=glu
 
 post-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/.libs/glfont ${STAGEDIR}${PREFIX}/bin

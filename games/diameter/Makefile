@@ -10,13 +10,17 @@ MASTER_SITES=	SF/game${PORTNAME}/game${PORTNAME}/${PORTNAME}-0.4.0
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Arcade-style game with elements of economy and adventure
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-08-15
+
 BROKEN_armv6=		fails to compile: res/3dsloader.cpp:77:15: comparison between pointer and integer ('char *' and 'int')
 BROKEN_armv7=		fails to compile: res/3dsloader.cpp:77:15: comparison between pointer and integer ('char *' and 'int')
 
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libguichan.so:devel/guichan
 
-USES=		compiler:c++11-lang dos2unix tar:bzip2 gmake pkgconfig python:2.7
+USES=		compiler:c++11-lang dos2unix gl gmake pkgconfig python:2.7 sdl \
+		tar:bzip2 
 DOS2UNIX_FILES=	src/res/3dsloader.cpp
 GNU_CONFIGURE=	yes
 USE_GL=		gl glu

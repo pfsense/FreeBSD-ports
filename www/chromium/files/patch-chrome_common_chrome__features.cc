@@ -1,8 +1,8 @@
---- chrome/common/chrome_features.cc.orig	2019-10-21 19:06:25 UTC
+--- chrome/common/chrome_features.cc.orig	2020-03-16 18:40:30 UTC
 +++ chrome/common/chrome_features.cc
-@@ -84,13 +84,13 @@ const base::Feature kAutoFetchOnNetErrorPage{"AutoFetc
-                                              base::FEATURE_DISABLED_BY_DEFAULT};
- #endif  // defined(OS_ANDROID)
+@@ -86,13 +86,13 @@ const base::Feature kAsyncDns {
+ #endif
+ };
  
 -#if defined(OS_WIN) || defined(OS_LINUX)
 +#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_BSD)
@@ -14,14 +14,5 @@
 -#endif  // defined(OS_WIN) || defined(OS_LINUX)
 +#endif  // defined(OS_WIN) || defined(OS_LINUX) || defined(OS_BSD)
  
- // Enables or disables whether permission prompts are automatically blocked
- // after the user has explicitly dismissed them too many times.
-@@ -140,7 +140,7 @@ const base::Feature kThirdPartyModulesBlocking{
-     "ThirdPartyModulesBlocking", base::FEATURE_DISABLED_BY_DEFAULT};
- #endif
- 
--#if (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_MACOSX)
-+#if (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_MACOSX) || defined(OS_BSD)
- // Enables the dual certificate verification trial feature.
- // https://crbug.com/649026
- const base::Feature kCertDualVerificationTrialFeature{
+ // Once the user declines a notification permission prompt in a WebContents,
+ // automatically dismiss subsequent prompts in the same WebContents, from any

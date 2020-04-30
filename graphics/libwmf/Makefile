@@ -7,7 +7,7 @@ PORTREVISION=	15
 CATEGORIES=	graphics
 MASTER_SITES=	SF/wvware/${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	phascolarctos@protonmail.ch
+MAINTAINER=	salvadore@FreeBSD.org
 COMMENT=	Tools and library for converting Microsoft WMF (windows metafile)
 
 LICENSE=	GPLv2+
@@ -34,6 +34,7 @@ OPTIONS_DEFINE=	X11 DOCS
 OPTIONS_DEFAULT=X11
 OPTIONS_SUB=	yes
 
+X11_USES=	xorg
 X11_USE=	XORG=x11
 X11_CONFIGURE_OFF=--with-x=no
 

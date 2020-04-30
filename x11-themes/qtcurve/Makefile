@@ -24,6 +24,9 @@ KF5_RUN_DEPENDS=	kf5-style-qtcurve>=${PORTVERSION}:x11-themes/qtcurve-kf5
 QT5_RUN_DEPENDS=	qt5-style-qtcurve>=${PORTVERSION}:x11-themes/qtcurve-qt5
 
 .else # !defined(QTCURVE_SLAVE)
+PATCH_SITES=	https://github.com/KDE/${PORTNAME}/commit/
+PATCHFILES=	ee2228ea2f18ac5da9b434ee6089381df815aa94.patch:-p1
+
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
@@ -31,7 +34,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	KDE
 GH_TAGNAME=	a1ec5f8
 
-USES=		compiler:c++11-lib cmake:insource pkgconfig
+USES=		compiler:c++11-lib cmake:insource pkgconfig xorg
 USE_XORG=	x11 xcb
 
 .for i in gtk2 kf5 qt5
@@ -62,6 +65,7 @@ LIB_DEPENDS+=	libqtcurve-utils.so:x11-themes/qtcurve-utils
 .if ${QTCURVE_SLAVE} == "gtk2"
 PKGNAMEPREFIX=	gtk2-
 PKGNAMESUFFIX=	-theme
+USES+=		gnome
 USE_GNOME=	cairo gdkpixbuf2 gtk20 pango
 USE_LDCONFIG=	yes
 

@@ -13,7 +13,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libsndfile.so:audio/libsndfile
 
-USES=		tar:bzip2 gmake compiler:c++11-lang pkgconfig iconv
+USES=		tar:bzip2 compiler:c++11-lang gmake pkgconfig iconv sdl gnome
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-ffmpeg
 

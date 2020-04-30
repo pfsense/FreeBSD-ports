@@ -14,13 +14,13 @@ RUN_DEPENDS=	ck-list-sessions:sysutils/consolekit2\
 		dbus-send:devel/dbus
 
 USES=		cmake compiler:c++11-lib cpe gettext kde:5 pkgconfig \
-		qt:5 shebangfix tar:xz
+		qt:5 shebangfix tar:xz xorg
 USE_KDE=	auth codecs config configwidgets coreaddons crash ecm \
 		emoticons globalaccel i18n idletime init itemmodels kcmutils \
 		kdeclarative kdelibs4support notifications package \
 		plasma-framework sonnet textwidgets wayland widgetsaddons \
 		windowsystem xmlgui
-USE_QT=		core dbus declarative gui network testlib widgets x11extras xml \
+USE_QT=		core dbus declarative gui network qdbus testlib widgets x11extras xml \
 		buildtools_build qmake_build
 USE_XORG=	ice sm x11 xcb xcursor xext xi
 

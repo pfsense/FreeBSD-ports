@@ -31,6 +31,9 @@ COMPONENT=	${PORTNAME:tl:C/^lib//:C/mesa-//}
 
 BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:devel/libpthread-stubs
 LIB_DEPENDS+=	libexpat.so:textproc/expat2
+.if ${COMPONENT} != clover
+USES+=		xorg
+.endif
 .if ${COMPONENT} != osmesa
 LIB_DEPENDS+=	libdrm.so:graphics/libdrm
 .endif
@@ -74,7 +77,9 @@ INSTALL_TARGET=	install-strip
 
 .include <bsd.port.pre.mk>
 
-.if ${LLVM_DEFAULT:S,-devel,990,} >= 90
+.if ${ARCH} == powerpc64
+LLVM_DEFAULT=	90
+.elif ${LLVM_DEFAULT:S,-devel,990,} >= 90
 LLVM_DEFAULT=	80
 .endif
 

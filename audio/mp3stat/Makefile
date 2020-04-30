@@ -5,7 +5,7 @@ PORTNAME=	mp3stat
 PORTVERSION=	2.6.01
 PORTREVISION=	12
 CATEGORIES=	audio
-MASTER_SITES=	http://BSDforge.com/projects/source/audio/mp3stat/
+MASTER_SITES=	https://BSDforge.com/projects/source/audio/mp3stat/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Read information about an MP3's, or OGG's bitstream
@@ -13,7 +13,7 @@ COMMENT=	Read information about an MP3's, or OGG's bitstream
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		dos2unix gmake localbase pkgconfig
+USES=		dos2unix gmake gnome localbase pkgconfig
 DOS2UNIX_FILES=	ui/console/cli.cpp
 USE_GNOME=	gtk20
 

@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	fs-uae-launcher
-PORTVERSION=	2.8.4
-PORTREVISION=	2
+PORTVERSION=	3.0.2
 CATEGORIES=	emulators
-MASTER_SITES=	http://fs-uae.net/fs-uae/stable/${PORTVERSION}/
+MASTER_SITES=	https://fs-uae.net/stable/${PORTVERSION}/
 
 MAINTAINER=	ndowens@yahoo.com
 COMMENT=	GUI launcher for the FS-UAE Amiga emulator
@@ -13,9 +12,11 @@ COMMENT=	GUI launcher for the FS-UAE Amiga emulator
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-lhafile>0:archivers/py-python-lhafile@${PY_FLAVOR}
 
-USES=		gettext gmake pathfix python:3.4+ pyqt:5
+USES=		gettext gmake gnome pathfix pyqt:5 python:3.4+
 
 USE_PYTHON=	distutils autoplist noflavors
 USE_PYQT=	core sip gui widgets opengl

@@ -5,13 +5,13 @@ PORTNAME=	xfishtank
 PORTVERSION=	2.2
 PORTREVISION=	2
 CATEGORIES=	x11
-MASTER_SITES=	ftp://ftp.uni-koeln.de/windows/xcontrib/
+MASTER_SITES=	http://cyber.dabamos.de/pub/distfiles/
 
-MAINTAINER=	jacs@gnome.co.uk
+MAINTAINER=	kidon@posteo.de
 COMMENT=	Make fish swim in the background of your screen
 
 PLIST_FILES=	bin/xfishtank
-USES=		imake
+USES=		imake xorg
 USE_XORG=	x11 xext
 WRKSRC=		${WRKDIR}/xfishtank2.0
 

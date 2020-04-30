@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	serd
-PORTVERSION=	0.30.0
+PORTVERSION=	0.30.2
 CATEGORIES=	devel
 MASTER_SITES=	http://download.drobilla.net/
 
@@ -19,8 +19,6 @@ USE_LDCONFIG=	yes
 PLIST_SUB=	VERSION=${PORTVERSION}
 
 post-install:
-	@${MV} ${STAGEDIR}${PREFIX}/share/man/man1 ${STAGEDIR}${PREFIX}/man/
-	@${RMDIR} ${STAGEDIR}${PREFIX}/share/man
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/serdi
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so
 

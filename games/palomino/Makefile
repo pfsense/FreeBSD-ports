@@ -3,7 +3,7 @@
 
 PORTNAME=	palomino
 PORTVERSION=	20131231
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	SF/palomino-sim
 DISTFILES=	${PORTNAME}_src_${PORTVERSION}.txz \
@@ -18,7 +18,7 @@ COMMENT=	Action flight simulation computer program using OSG
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE_GNU_GPL_2.txt
 
-LIB_DEPENDS=	libosg.so:graphics/osg
+LIB_DEPENDS=	libosg.so:graphics/osg34
 
 USES=		alias compiler:c++11-lang cmake:insource,noninja gl lua:51 tar:xz
 USE_CXXSTD=	gnu++98
@@ -44,6 +44,7 @@ PLIB_DESC=		Enable sound support through plib
 PLIB_BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib
 GUI_DESC=		Enable FLTK GUI
 GUI_LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
+SDL_USES=		sdl
 SDL_USE=		SDL=sdl,mixer
 
 post-patch:

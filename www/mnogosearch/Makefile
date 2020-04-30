@@ -4,8 +4,7 @@
 PORTNAME=	mnogosearch
 PORTVERSION=	3.4.1
 CATEGORIES=	www databases
-MASTER_SITES=	http://www.mnogosearch.org/Download/ \
-		http://www.bayofrum.net/dist/${PORTNAME}/
+MASTER_SITES=	http://www.mnogosearch.org/Download/
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Full featured SQL-based hypertext search engine
@@ -71,7 +70,7 @@ CONFIGURE_ARGS+=	--disable-syslog
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=	yes
+USES+=		mysql
 CONFIGURE_ARGS+=	--with-mysql=${LOCALBASE}
 .endif
 

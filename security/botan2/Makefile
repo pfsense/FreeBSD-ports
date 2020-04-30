@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	botan
-DISTVERSION=	2.12.1
+DISTVERSION=	2.13.0
 CATEGORIES=	security
 MASTER_SITES=	http://botan.randombit.net/releases/
 PKGNAMESUFFIX=	2
@@ -36,7 +36,8 @@ LDFLAGS+=		-pthread
 DOCSDIR=	${LOCALBASE}/share/doc/${PORTNAME}-${PORTVERSION}
 
 _SHLIBVER=	${DISTVERSION:S/./ /g:[2]}
-PLIST_SUB=	SHLIBVER=${_SHLIBVER}
+_SHLIBVERPATCH=	${DISTVERSION:S/./ /g:[3]}
+PLIST_SUB=	SHLIBVER=${_SHLIBVER} SHLIBVERPATCH=${_SHLIBVERPATCH}
 PORTDOCS=	*
 
 OPTIONS_DEFINE=		DOCS PYTHON SQLITE3 SSL
@@ -58,6 +59,8 @@ SSL_CONFIGURE_WITH=	openssl
 
 .if ${ARCH} == aarch64
 CONFIGURE_ARGS+=	--cc-abi="-march=armv8-a+crypto"
+.elif ${ARCH} == powerpc64
+CONFIGURE_ARGS+=	--cpu="ppc64"
 .endif
 
 .if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200000
@@ -75,6 +78,6 @@ post-patch:
 		${WRKSRC}/src/build-data/cc/clang.txt
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/botan ${STAGEDIR}${PREFIX}/lib/libbotan-2.so.${_SHLIBVER}.${_SHLIBVER}.1
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/botan ${STAGEDIR}${PREFIX}/lib/libbotan-2.so.${_SHLIBVER}.${_SHLIBVER}.${_SHLIBVERPATCH}
 
 .include <bsd.port.mk>

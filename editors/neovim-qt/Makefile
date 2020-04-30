@@ -2,8 +2,7 @@
 
 PORTNAME=	neovim-qt
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.12
-PORTREVISION=	1
+DISTVERSION=	0.2.15
 CATEGORIES=	editors
 
 MAINTAINER=	chuck@tuffli.net
@@ -19,7 +18,7 @@ RUN_DEPENDS=	neovim>=0:editors/neovim
 USES=		cmake compiler:c++11-lang desktop-file-utils qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	equalsraf
-USE_QT=		core gui testlib network widgets buildtools_build qmake_build
+USE_QT=		core gui network testlib widgets buildtools_build qmake_build
 
 CMAKE_ON=	USE_SYSTEM_MSGPACK
 CMAKE_OFF=	ENABLE_TESTS

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gnome-autoar
-PORTVERSION=	0.2.3
+PORTVERSION=	0.2.4
 CATEGORIES=	archivers
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	valac:lang/vala
 
-USES=		gettext-runtime gmake libarchive libtool pkgconfig tar:xz
+USES=		gettext-runtime gmake gnome libarchive libtool pkgconfig tar:xz
 USE_GNOME=	cairo gdkpixbuf2 gtk30 introspection:build
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

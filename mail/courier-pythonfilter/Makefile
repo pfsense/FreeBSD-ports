@@ -10,6 +10,9 @@ MASTER_SITES=	http://phantom.dragonsdawn.net/~gordon/courier-patches/courier-pyt
 MAINTAINER=	bsd@dino.sk
 COMMENT=	Framework for courier filter development in python
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
+
 BUILD_DEPENDS=	courier-config:mail/courier
 
 USES=		python:2.7
@@ -43,7 +46,7 @@ WHITELIST_RELAY_DESC=	whitelist_relayclients module
 WHITELIST_AUTH_DESC=	whitelist_auth module
 WHITELIST_BLOCK_DESC=	whitelist_block module
 WHITELIST_DNSWL_DESC=	whitelist_dnswl module
-WHITELIST_SP_DESC=	whitelist_spf module
+WHITELIST_SPF_DESC=	whitelist_spf module
 DELIVEREDTO_DESC=	deliveredto module
 PRIVATEADDR_DESC=	privateaddr module
 SPFCHECK_DESC=	spfcheck module

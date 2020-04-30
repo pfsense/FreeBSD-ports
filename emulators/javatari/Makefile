@@ -3,8 +3,9 @@
 
 PORTNAME=	javatari
 PORTVERSION=	4.1
+PORTREVISION=	1
 CATEGORIES=	emulators java
-MASTER_SITES=	http://javatari.org/java/files/
+MASTER_SITES=	http://javatari.org/old/java/files/
 DISTNAME=	${PORTNAME}${PORTVERSION:S/.//}
 EXTRACT_SUFX=	.jar
 EXTRACT_ONLY=
@@ -17,7 +18,6 @@ LICENSE=	AGPLv3
 EXTRACT_DEPENDS=	${UNZIP_CMD}:archivers/unzip
 
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
 NO_BUILD=	yes
 PLIST_FILES=	%%JAVAJARDIR%%/${DISTNAME}${EXTRACT_SUFX} \
 		bin/javatari

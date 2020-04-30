@@ -11,7 +11,9 @@ DISTNAME=	${PORTNAME}.${PORTVERSION:S/b/beta/}
 MAINTAINER=	sec@42.org
 COMMENT=	Pseudoserver to support mobile X11 clients
 
-USES=		imake
+BROKEN=		unfetchable
+
+USES=		imake xorg
 USE_XORG=	x11
 
 WRKSRC=		${WRKDIR}/${PORTNAME}

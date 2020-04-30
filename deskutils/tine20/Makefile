@@ -4,12 +4,15 @@
 PORTNAME=	tine20
 PORTVERSION=	0.0.2018.08.6
 DISTVERSIONSUFFIX=	2018.08.6
+PORTREVISION=	1
 CATEGORIES=	deskutils www
 MASTER_SITES=	http://packages.tine20.org/source/${DISTVERSIONSUFFIX}/
 DISTNAME=	${PORTNAME}-allinone_${DISTVERSIONSUFFIX}
 
 MAINTAINER=	udo.rader@bestsolution.at
 COMMENT=	Professional Open Source Groupware and CRM
+
+BROKEN=		unfetchable
 
 RUN_DEPENDS=	${LOCALBASE}/share/pear/Date.php:devel/pear-Date@${PHP_FLAVOR}
 

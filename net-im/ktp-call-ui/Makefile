@@ -2,7 +2,6 @@
 
 PORTNAME=	ktp-call-ui
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	net-im kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -12,6 +11,9 @@ LICENSE=	GPLv2+ LGPL21+
 LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
 LICENSE_FILE_LGPL21+ =	${WRKSRC}/COPYING.LIB
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 LIB_DEPENDS=	libKTpCommonInternals.so:net-im/ktp-common-internals \
 		libQt5GStreamer-1.0.so:multimedia/gstreamer1-qt \

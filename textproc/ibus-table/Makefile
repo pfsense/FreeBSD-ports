@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ibus-table
-DISTVERSION=	1.9.21
+DISTVERSION=	1.9.25
 CATEGORIES=	textproc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -21,7 +21,6 @@ USES=		autoreconf gmake pkgconfig python:3.4+
 GNU_CONFIGURE=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	kaio
-USE_GNOME=	pygtk2
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes

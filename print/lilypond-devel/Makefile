@@ -13,6 +13,9 @@ COMMENT=	GNU music typesetter
 
 LICENSE=	GPLv3
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
+
 BUILD_DEPENDS=	pdftexi2dvi:print/texinfo \
 		t1ascii:print/t1utils \
 		bash:shells/bash \
@@ -45,8 +48,8 @@ INFO=		internals \
 		lilypond-web \
 		music-glossary
 
-USES=		bison:build gettext ghostscript gmake pkgconfig perl5 \
-		compiler:gcc-c++11-lib python:2.7
+USES=		bison:build compiler:gcc-c++11-lib gettext ghostscript gmake \
+		gnome perl5 pkgconfig python:2.7
 USE_CXXSTD=	c++11
 USE_TEX=	latex texmf
 USE_PERL5=	build

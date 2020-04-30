@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	babl
-PORTVERSION=	0.1.66
-PORTREVISION=	1
+PORTVERSION=	0.1.74
 CATEGORIES=	x11
 MASTER_SITES=	GIMP
 
@@ -15,21 +14,23 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	liblcms2.so:graphics/lcms2
 
-USES=		compiler:c11 gmake libtool pathfix pkgconfig tar:bzip2
+USES=		compiler:c11 gnome libtool localbase meson pathfix pkgconfig tar:xz
 
 USE_LDCONFIG=	yes
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
+USE_GNOME=	introspection:build
 
 OPTIONS_DEFINE=	SIMD
 OPTIONS_DEFAULT=SIMD
 
-SIMD_CONFIGURE_OFF=	--disable-mmx --disable-sse --disable-sse2 \
-		--disable-sse3 --disable-sse4_1 --disable-f16c \
-		--disable-altivec
+SIMD_MESON_OFF=	-Denable-mmx=false -Denable-sse=false \
+		-Denable-sse2=false -Denable-sse3=false \
+		-Denable-sse4_1=false -Denable-avx2=false \
+		-Denable-f16c=false
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|x86_64|amd64|g' \
-		${WRKSRC}/configure
+.include <bsd.port.pre.mk>
 
-.include <bsd.port.mk>
+.if ${ARCH} == powerpc64
+USE_GCC=	yes
+.endif
+
+.include <bsd.port.post.mk>

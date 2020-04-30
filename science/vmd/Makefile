@@ -13,7 +13,7 @@ DISTFILES=	${VMD_DIST} \
 		${TACHYON_DIST}:tachyon \
 		${STRIDE_DIST}:stride
 
-MAINTAINER=	dbn@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Molecular visualization program
 
 LICENSE=	VMD BSD3CLAUSE STRIDE
@@ -39,7 +39,7 @@ LICENSE_PERMS_STRIDE=	dist-mirror pkg-mirror auto-accept
 LICENSE_NAME_STRIDE=	Stride Copyright Notice
 LICENSE_DISTFILES_STRIDE=${STRIDE_DIST}
 
-USES=		gl gmake perl5 python shebangfix sqlite tcl tk
+USES=		gl gmake perl5 python shebangfix sqlite tcl tk xorg
 SHEBANG_FILES=	${WRKDIR}/plugins/topotools/*.tcl
 USE_PERL5=	build
 USE_GL=		gl glu

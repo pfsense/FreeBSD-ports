@@ -4,8 +4,8 @@
 # Please update update atril-lite also
 
 PORTNAME=	atril
-PORTVERSION=	1.22.1
-PORTREVISION=	7
+PORTVERSION=	1.22.3
+PORTREVISION=	3
 CATEGORIES=	graphics print mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -28,7 +28,7 @@ PORTSCOUT=	limitw:1,even
 SLAVEPORT?=	no
 
 USES=		compiler:c11 desktop-file-utils gettext gmake gnome libarchive \
-		libtool mate pathfix pkgconfig tar:xz
+		libtool mate pathfix pkgconfig tar:xz xorg
 USE_MATE=	icontheme
 USE_XORG=	ice sm x11
 USE_GNOME=	cairo gtk30 intlhack libxml2

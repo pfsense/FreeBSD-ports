@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	golly
-PORTVERSION=	3.2
-PORTREVISION=	5
+PORTVERSION=	3.3
 DISTVERSIONSUFFIX=	-src
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -12,7 +12,7 @@ COMMENT=	Conway's Game of Life and other cellular automata
 
 LICENSE=	GPLv2+
 
-USES=		compiler:c++11-lib python:2.7
+USES=		autoreconf compiler:c++11-lib gl localbase xorg
 USE_GL=		gl glu
 USE_WX=		3.0+
 
@@ -23,8 +23,6 @@ GNU_CONFIGURE=	yes
 # to fail; objdump is never actually used.
 CONFIGURE_ARGS=	ac_cv_prog_OBJDUMP=/usr/bin/false \
 		--with-wx-config=${WX_CONFIG:T}
-CXXFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 DESKTOP_ENTRIES=	"Golly" \
 			"${COMMENT}" \
@@ -32,7 +30,9 @@ DESKTOP_ENTRIES=	"Golly" \
 			"${PREFIX}/bin/golly" \
 			"Education;" \
 			""
+
 WRKSRC_SUBDIR=	gui-wx/configure
+PATCH_WRKSRC=	${WRKSRC}/../..
 
 OPTIONS_DEFINE=	DOCS
 

@@ -10,6 +10,8 @@ MASTER_SITES=	http://www.dirvish.org/
 MAINTAINER=	tarkhil@over.ru
 COMMENT=	Network backup system based off of rsync
 
+BROKEN=		unfetchable
+
 RUN_DEPENDS=	p5-Time-modules>=0:devel/p5-Time-modules \
 		p5-Time-Period>=0:devel/p5-Time-Period \
 		rsync:net/rsync
@@ -25,7 +27,7 @@ NO_WRKSUBDIR=	yes
 
 EXECUTABLES=	dirvish   dirvish-expire   dirvish-locate   dirvish-runall
 
-do-patch:
+post-patch:
 	@${SED} -e 's:%%CONFDIR%%:${PREFIX}/etc/dirvish:' -e 's:%%PERL%%:${PERL}:' \
 		${FILESDIR}/header.pl > ${WRKDIR}/header.pl
 .for _E in ${EXECUTABLES}

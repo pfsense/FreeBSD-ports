@@ -9,6 +9,8 @@ MASTER_SITES=	http://pkg-isocodes.alioth.debian.org/downloads/
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	Interaction library for iso-codes
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv3
 
 BUILD_DEPENDS=	valac:lang/vala
@@ -16,7 +18,7 @@ LIB_DEPENDS=	libgee-0.8.so:devel/libgee
 RUN_DEPENDS=	iso-codes>=0:misc/iso-codes
 
 GNU_CONFIGURE=	yes
-USES=		gettext gmake libtool pathfix pkgconfig tar:xz
+USES=		gettext gmake gnome libtool pathfix pkgconfig tar:xz
 USE_GNOME=	glib20 introspection:build libxml2
 INSTALL_TARGET=	install-strip
 

@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	databases lang
 PKGNAMESUFFIX=	-gdbm
 

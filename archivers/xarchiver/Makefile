@@ -3,7 +3,6 @@
 
 PORTNAME=	xarchiver
 PORTVERSION=	0.5.4.7
-DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	archivers
 
 MAINTAINER=	danilo@FreeBSD.org
@@ -19,10 +18,11 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		zip:archivers/zip \
 		zipinfo:archivers/unzip
 
+USES=		desktop-file-utils gmake gnome pkgconfig
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	ib
 
-USES=		desktop-file-utils gmake pkgconfig
 USE_GNOME=	cairo glib20 intltool
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes

@@ -1,13 +1,20 @@
---- gpu/ipc/service/gpu_watchdog_thread.h.orig	2019-10-21 19:06:35 UTC
+--- gpu/ipc/service/gpu_watchdog_thread.h.orig	2020-03-16 18:40:32 UTC
 +++ gpu/ipc/service/gpu_watchdog_thread.h
-@@ -234,8 +234,10 @@ class GPU_IPC_SERVICE_EXPORT GpuWatchdogThreadImplV1
-   XDisplay* display_;
-   gfx::AcceleratedWidget window_;
-   XAtom atom_;
-+#if !defined(OS_BSD)
-   FILE* tty_file_;
-   int host_tty_;
-+#endif
+@@ -207,7 +207,7 @@ class GPU_IPC_SERVICE_EXPORT GpuWatchdogThreadImplV1
+   base::ThreadTicks GetWatchedThreadTime();
  #endif
  
-   base::WeakPtrFactory<GpuWatchdogThreadImplV1> weak_factory_{this};
+-#if defined(USE_X11)
++#if defined(USE_X11) && !defined(OS_BSD)
+   void UpdateActiveTTY();
+ #endif
+ 
+@@ -265,7 +265,7 @@ class GPU_IPC_SERVICE_EXPORT GpuWatchdogThreadImplV1
+   // whether GpuWatchdogThreadEvent::kGpuWatchdogStart has been recorded.
+   bool is_watchdog_start_histogram_recorded = false;
+ 
+-#if defined(USE_X11)
++#if defined(USE_X11) && !defined(OS_BSD)
+   FILE* tty_file_;
+   int host_tty_;
+   int active_tty_ = -1;

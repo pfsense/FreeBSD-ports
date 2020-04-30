@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	qtum
-PORTVERSION=	0.18.1
+PORTVERSION=	0.19.0
 DISTVERSIONPREFIX=	mainnet-ignition-v
 CATEGORIES=	net-p2p finance
 
@@ -43,7 +43,7 @@ CONFIGURE_ARGS=	--disable-man \
 USE_QT=		buildtools core dbus gui linguisttools network testlib widgets
 USE_GITHUB=	yes
 GH_TUPLE=	qtumproject:qtum:${DISTVERSIONPREFIX}${PORTVERSION} \
-		qtumproject:cpp-eth-qtum:ac506e6120fc05d3d823d4:cppeth1/src/cpp-ethereum \
+		qtumproject:cpp-eth-qtum:7147199113d4d71c132c1f:cppeth1/src/cpp-ethereum \
 		chfast:ethash:67a3216a5494834f7c221df93b079dac4:cppeth2/src/cpp-ethereum/ethash \
 		ethereum:evmc:bf7064dca5cbbda4def8c2548d0d7a040:cppeth3/src/cpp-ethereum/evmc
 
@@ -56,9 +56,9 @@ GH_TUPLE=	qtumproject:qtum:${DISTVERSIONPREFIX}${PORTVERSION} \
 # setting some related environment variables.
 .if ${SSL_DEFAULT} == base
 CONFIGURE_ENV+=	CRYPTO_CFLAGS="-I${OPENSSLINC}" \
-		CRYPTO_LIBS="-L${OPENSSLLIB} -lcrypto" \
+		CRYPTO_LIBS="-lcrypto" \
 		SSL_CFLAGS="-I${OPENSSLINC}" \
-		SSL_LIBS="-L${OPENSSLLIB} -lssl"
+		SSL_LIBS="-lssl"
 .endif
 
 .if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200000
@@ -67,7 +67,7 @@ CONFIGURE_ENV+=	CRYPTO_CFLAGS="-I${OPENSSLINC}" \
 # symbol' can not be used when making a shared object; recompile with -fPIC
 CONFIGURE_ENV+=	CPPFLAGS="-I${LOCALBASE}/include -fPIC -DPIC"
 post-patch:
-	${SED} -i '' -e 's/AC_SUBST(PIE_FLAGS)//' ${WRKSRC}/configure.ac
+	${REINPLACE_CMD} -e 's/AC_SUBST(PIE_FLAGS)//' ${WRKSRC}/configure.ac
 .else
 CONFIGURE_ENV+=	CPPFLAGS="-I${LOCALBASE}/include"
 .endif

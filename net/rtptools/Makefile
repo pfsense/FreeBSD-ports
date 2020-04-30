@@ -4,21 +4,19 @@
 PORTNAME=	rtptools
 DISTVERSION=	1.22
 CATEGORIES=	net mbone
-MASTER_SITES=	http://www.cs.columbia.edu/IRT/software/rtptools/download/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	se@FreeBSD.org
 COMMENT=	Set of tools to record, playback, and monitor RTPv2 data streams
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN=		unfetchable
-DEPRECATED=	Unfetchable, unmaintained
-EXPIRATION_DATE=	2019-10-16
-
-USES=		dos2unix
-DOS2UNIX_GLOB=	*.c
+USES=		autoreconf
 GNU_CONFIGURE=	yes
+USE_GITHUB=	yes
+GH_ACCOUNT=	irtlab
+
+PORTSCOUT=	limit:^\d.*
 
 .for f in multidump multiplay rtpdump rtpplay rtpsend rtptrans
 PLIST_FILES+=	bin/${f}

@@ -1,0 +1,46 @@
+# Created by: Anton Yudin <toha@toha.org.ua>
+# $FreeBSD$
+
+PORTNAME=	commons-pool
+PORTVERSION=	2.8.0
+CATEGORIES=	java devel
+MASTER_SITES=	APACHE_COMMONS_BINARIES
+PKGNAMEPREFIX=	apache-
+DISTNAME=	${PORTNAME}2-${PORTVERSION}-bin
+
+MAINTAINER=	ale@FreeBSD.org
+COMMENT=	Apache Commons Object-pooling API
+
+LICENSE=	APACHE20
+
+OPTIONS_DEFINE=	DOCS
+
+USE_JAVA=	yes
+JAVA_VERSION=	8+
+NO_BUILD=	yes
+NO_ARCH=	yes
+
+WRKSRC=		${WRKDIR}/${PORTNAME}2-${PORTVERSION}
+
+JARFILE=	${PORTNAME}2-${PORTVERSION}.jar
+DOCFILES=	LICENSE.txt \
+		NOTICE.txt \
+		RELEASE-NOTES.txt
+
+PORTDOCS=	*
+PLIST_FILES=	${JAVAJARDIR}/${PORTNAME}.jar \
+		${JAVAJARDIR}/${JARFILE}
+
+.include <bsd.port.options.mk>
+
+do-install:
+	${INSTALL_DATA} ${WRKSRC}/${JARFILE} ${STAGEDIR}${JAVAJARDIR}
+	${LN} -sf ${JARFILE} ${STAGEDIR}${JAVAJARDIR}/${PORTNAME}.jar
+.if ${PORT_OPTIONS:MDOCS}
+	cd ${WRKSRC} && ${COPYTREE_SHARE} apidocs ${STAGEDIR}${DOCSDIR}
+.for FILE in ${DOCFILES}
+	${INSTALL_MAN} ${WRKSRC}/${FILE} ${STAGEDIR}${DOCSDIR}
+.endfor
+.endif
+
+.include <bsd.port.mk>

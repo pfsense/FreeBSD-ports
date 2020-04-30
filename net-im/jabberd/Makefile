@@ -3,7 +3,7 @@
 
 PORTNAME=	jabberd
 PORTVERSION=	2.7.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net-im
 MASTER_SITES=	https://github.com/jabberd2/jabberd2/releases/download/${PORTNAME}-${DISTVERSION}/ \
 		LOCAL/matthew/${PORTNAME}
@@ -14,7 +14,7 @@ COMMENT=	Online presence and instant messaging server
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
-		libgsasl.so:security/gsasl \
+		libgsasl.so:security/libgsasl \
 		libidn.so:dns/libidn \
 		libudns.so:dns/udns
 
@@ -75,7 +75,7 @@ PGSQL_CONFIGURE_ENABLE=	pgsql
 SQLITE_CONFIGURE_ENABLE=sqlite
 SQLITE_LIB_DEPENDS=	libsqlite3.so:databases/sqlite3
 
-MYSQL_USE=		MYSQL=yes
+MYSQL_USES=		mysql
 MYSQL_CONFIGURE_ENABLE=	mysql
 
 BDB_USES=		bdb

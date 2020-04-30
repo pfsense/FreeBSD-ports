@@ -4,7 +4,7 @@
 
 PORTNAME=	ekiga
 PORTVERSION=	4.0.1
-PORTREVISION=	28
+PORTREVISION=	29
 CATEGORIES=	net-im
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -23,8 +23,8 @@ LIB_DEPENDS=	libopal.so:net/opal \
 RUN_DEPENDS=	gnome-icon-theme>=3.0.0:misc/gnome-icon-theme
 
 GNU_CONFIGURE=	yes
-USES=		compiler:c++11-lang cpe gettext gmake libtool localbase \
-		pathfix pkgconfig tar:xz
+USES=		compiler:c++11-lang cpe gettext gmake gnome libtool localbase \
+		pathfix pkgconfig tar:xz xorg
 USE_XORG=	xv
 USE_GNOME=	gtk20 intlhack libxml2
 INSTALLS_ICONS=	yes

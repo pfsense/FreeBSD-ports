@@ -3,7 +3,7 @@
  * frr_zebra.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2020 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -54,7 +54,9 @@ function frr_get_routemap_list($exitaction = false, $yesno = false) {
 	 * for those, offer a "yes" or "no" choice. */
 	if ($yesno) {
 		$list[] = array("name" => "No", "value" => "no");
-		$list[] = array("name" => "Yes", "value" => "yes");
+		$list[] = array("name" => "IPv4", "value" => "ipv4");
+		$list[] = array("name" => "IPv6", "value" => "ipv6");
+		$list[] = array("name" => "IPv4+IPv6", "value" => "yes");
 	} else {
 		$list[] = array("name" => "None", "value" => "none");
 	}
@@ -690,4 +692,21 @@ function frr_generate_config_zebra() {
 	if (!empty($staticdconffile) && ($staticdconffile != $frr_auto_config_warning)) {
 		file_put_contents("{$frr_config_base}/staticd.conf", $staticdconffile);
 	}
+}
+
+/* The following function checks for the presence of and writes the contents of "/var/etc/frr/$module.conf" into the $module . "running" field within the config.xml file  */
+function write_frr_running_config() {
+	global $config, $frr_config_base;
+	$modules = array('zebra', 'staticd', 'bgpd', 'ospfd', 'ospf6d');
+
+	foreach ($modules as $module) {
+		$moduleRunningFile = "{$frr_config_base}/{$module}.conf";
+		if (file_exists($moduleRunningFile) && (filesize($moduleRunningFile) > 0)) {
+			$moduleRunning = fopen("$moduleRunningFile", "r");
+			$config['installedpackages']['frrglobalraw']['config'][0][$module . "running"] = base64_encode(fread($moduleRunning, filesize($moduleRunningFile)));
+		} else {
+			$config['installedpackages']['frrglobalraw']['config'][0][$module . "running"] = base64_encode("# file {$module}.conf does not exist or is empty.");
+		}
+	}
+	write_config(gettext("FRR: Wrote running configuration to pfSense config file."), false, true);
 }

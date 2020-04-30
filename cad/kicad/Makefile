@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	kicad
-PORTVERSION=	5.1.4
-PORTREVISION=	1
+PORTVERSION=	5.1.5
+PORTREVISION=	3
 PORTEPOCH=	2
 CATEGORIES=	cad
 
@@ -27,8 +27,9 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	KiCad
 GH_PROJECT=	kicad-source-mirror
 
-USES=		cmake:noninja compiler:c++11-lib desktop-file-utils gl gnome	\
-		pkgconfig python:2.7 shared-mime-info shebangfix ssl tar:xz
+USES=		cmake:noninja compiler:c++11-lib desktop-file-utils gl \
+		gnome pkgconfig python:3.5+ shared-mime-info shebangfix ssl \
+		tar:xz xorg
 SHEBANG_FILES=	pcbnew/python/plugins/touch_slider_wizard.py
 
 USE_XORG=	ice x11 xext
@@ -43,7 +44,8 @@ CMAKE_ARGS=	-DwxWidgets_CONFIG_EXECUTABLE=${WX_CONFIG}	\
 		-DwxWidgets_wxrc_EXECUTABLE=${WXRC_CMD}		\
 		-DKICAD_SCRIPTING=ON 				\
 		-DKICAD_SCRIPTING_MODULES=ON			\
-		-DKICAD_SCRIPTING_WXPYTHON_PHOENIX=OFF		\
+		-DKICAD_SCRIPTING_PYTHON3=ON			\
+		-DKICAD_SCRIPTING_WXPYTHON_PHOENIX=ON		\
 		-DKICAD_USE_OCE=OFF				\
 		-DKICAD_USE_OCC=ON				\
 		-DOCC_INCLUDE_DIR=${LOCALBASE}/include/OpenCASCADE

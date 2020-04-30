@@ -8,11 +8,12 @@ CATEGORIES=	x11-toolkits devel graphics
 MASTER_SITES=	SF/${PORTNAME}gui/V%20GUI/${PORTVERSION}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		${DISTNAME}a-patch${EXTRACT_SUFX}
+PKGNAMESUFFIX=	gui
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ GUI development framework for X11 and Microsoft Windows
 
-USES=		compiler dos2unix gmake
+USES=		compiler dos2unix gmake xorg
 USE_XORG=	x11 xt xmu xaw
 MAKE_ENV=	INSTALLDIR=${PREFIX} HOMEV=${WRKSRC}
 # Build ignores CXXFLAGS
@@ -24,6 +25,7 @@ WRKSRC=		${WRKDIR}/home/vgui
 OPTIONS_DEFINE=	OPENGL # DOCS (commented out, see below)
 OPTIONS_DEFAULT=	OPENGL
 
+OPENGL_USES=	gl
 OPENGL_USE=	GL=glu
 
 post-patch:

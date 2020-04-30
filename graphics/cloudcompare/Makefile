@@ -3,14 +3,17 @@
 PORTNAME=	cloudcompare
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.10.3
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	graphics
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	3D point cloud processing software
 
 LICENSE=	GPLv2+ LGPL20+
 LICENSE_COMB=	multi
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 BROKEN_aarch64=		fails to compile: mmintrin.h:47:5: use of undeclared identifier '__builtin_ia32_emms'; did you mean '__builtin_isless'?
 
@@ -48,7 +51,7 @@ PDAL_LIB_DEPENDS=	libpdal_base.so:math/pdal
 SHAPELIB_CMAKE_BOOL=	OPTION_USE_SHAPE_LIB
 SHAPELIB_LIB_DEPENDS=	libshp.so:devel/shapelib
 
-PLUGINS_USES=		eigen:3 gl jpeg python:2.7
+PLUGINS_USES=		eigen:3 gl jpeg python:2.7 xorg
 PLUGINS_CMAKE_BOOL=	INSTALL_QANIMATION_PLUGIN INSTALL_QBLUR_PLUGIN INSTALL_QBROOM_PLUGIN INSTALL_QCOMPASS_PLUGIN \
 			INSTALL_QCSF_PLUGIN INSTALL_QCSV_MATRIX_IO_PLUGIN INSTALL_QDUMMY_PLUGIN INSTALL_QEDL_PLUGIN INSTALL_QFACETS_PLUGIN \
 			INSTALL_QHPR_PLUGIN INSTALL_QM3C2_PLUGIN \
@@ -67,8 +70,6 @@ PLUGINS_LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 			libtiff.so:graphics/tiff \
 			libvtkDomainsChemistry-6.2.so:math/vtk6
 PLUGINS_IMPLIES=	SHAPELIB
-
-CXXFLAGS_powerpc64=	-DNO_WARN_X86_INTRINSICS -mvsx
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,%%PREFIX%%,${PREFIX},1' ${WRKSRC}/snap/gui/ccViewer.desktop ${WRKSRC}/snap/gui/cloudcompare.desktop

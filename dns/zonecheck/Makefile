@@ -4,12 +4,14 @@
 PORTNAME=	zonecheck
 PORTVERSION=	3.0.5
 PORTEPOCH=	1
-CATEGORIES=	dns ipv6 ruby
+CATEGORIES=	dns ruby
 MASTER_SITES=	http://www.zonecheck.fr/download/ \
 		ftp://ftp.nic.fr/pub/mirror/zonecheck/src/
 
 MAINTAINER=	jmohacsi@bsd.hu
 COMMENT=	Perform consistency checks on DNS zones
+
+BROKEN=		unfetchable
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/GPL

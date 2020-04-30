@@ -3,9 +3,10 @@
 
 PORTNAME=	LiveUser
 PORTVERSION=	0.16.14
+PORTREVISION=	1
 CATEGORIES=	security www pear
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	PEAR user authentication and permission management framework
 
 BUILD_DEPENDS=	${PEARDIR}/Event/Dispatcher.php:devel/pear-Event_Dispatcher@${PHP_FLAVOR}
@@ -14,7 +15,7 @@ RUN_DEPENDS=	${PEARDIR}/Event/Dispatcher.php:devel/pear-Event_Dispatcher@${PHP_F
 PORTSCOUT=	skipv:0.61
 
 USES=		pear
-OPTIONS_DEFINE=	PEAD_DB PEAR_MDB PEAR_MDB2 PEAR_LOG PEAR_XML_TREE PEAR_CRYPT_RC4
+OPTIONS_DEFINE=	PEAR_DB PEAR_MDB PEAR_MDB2 PEAR_LOG PEAR_XML_TREE PEAR_CRYPT_RC4
 
 PEAR_DB_DESC=	PEAR::DB support
 PEAR_MDB_DESC=	PEAR::MDB support

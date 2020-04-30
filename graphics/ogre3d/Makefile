@@ -23,7 +23,7 @@ LIB_DEPENDS=	libzzip.so:devel/zziplib \
 CONFLICTS=	ogre3d19-[0-9]*
 
 USE_LDCONFIG=	yes
-USES=		cmake pkgconfig compiler:c++11-lib sdl
+USES=		cmake pkgconfig compiler:c++11-lib sdl xorg
 USE_SDL=	sdl2
 USE_XORG=	x11 xaw xext xrandr xt
 
@@ -61,7 +61,7 @@ OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr \
 OPENGL_CMAKE_BOOL=	OGRE_BUILD_RENDERSYSTEM_GL3PLUS \
 			OGRE_BUILD_RENDERSYSTEM_GL \
 			OGRE_BUILD_RENDERSYSTEM_GLES2
-OPENGL_USES=		gl
+OPENGL_USES=		gl xorg
 OPENGL_USE=		XORG=sm,ice GL=gl,glu
 
 PROFILE_CMAKE_BOOL=	OGRE_PROFILING

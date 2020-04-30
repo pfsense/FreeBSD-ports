@@ -2,7 +2,7 @@
 
 PORTNAME=	xf86-input-synaptics
 PORTVERSION=	1.9.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	x11@FreeBSD.org
@@ -11,9 +11,8 @@ COMMENT=	X.Org synaptics input driver
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		pathfix
+USES=		pathfix xorg xorg-cat:driver
 USE_XORG=	x11 xtst
-XORG_CAT=	driver
 
 OPTIONS_DEFINE=	EVDEV
 EVDEV_DESC=	Use evdev for input events (requires kernel support)

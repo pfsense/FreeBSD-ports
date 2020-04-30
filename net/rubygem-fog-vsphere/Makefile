@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	fog-vsphere
-PORTVERSION=	3.2.1
+PORTVERSION=	3.2.3
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
@@ -13,7 +13,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 RUN_DEPENDS=	rubygem-fog-core>=0:devel/rubygem-fog-core \
-		rubygem-rbvmomi>=1.9:net/rubygem-rbvmomi
+		rubygem-rbvmomi>=1.9<3:net/rubygem-rbvmomi
 
 USES=		gem
 USE_RUBY=	yes

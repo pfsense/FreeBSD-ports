@@ -16,12 +16,11 @@ LICENSE_FILE=	${WRKSRC}/../doc/GPL
 
 WRKSRC=		${WRKDIR}/${DISTNAME:C/\.src$//}/src
 
-USES=		compiler:c++14-lang gettext-tools gettext-runtime gmake \
+USES=		compiler:c++14-lang gettext-runtime gettext-tools gmake gnome \
 		localbase pkgconfig zip:infozip
 
 USE_CXXSTD=	c++14
 USE_GNOME=	gdkpixbuf2 gtkmm30
-LLD_UNSAFE=	yes
 MAKE_ENV=	OS="${OPSYS}" DATADIR="${DATADIR}" DOCSDIR="${DOCSDIR}"
 
 OPTIONS_DEFINE=		DOCS NETWORK OPENAL
@@ -35,6 +34,8 @@ OPENAL_USES=		openal:al,alut
 OPENAL_MAKE_ENV=	INCLUDE_SOUND_ALUT="$$(pkg-config --cflags freealut)" \
 			LIBS_SOUND_ALUT="$$(pkg-config --libs freealut)" \
 			USE_SOUND=true USE_SOUND_ALUT=true
+OPENAL_LDFLAGS=		${_OPENAL_LDFLAGS_${ARCH}}
+_OPENAL_LDFLAGS_i386=	-Wl,-znotext
 
 post-patch:
 	@${REINPLACE_CMD} -e \

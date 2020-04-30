@@ -10,7 +10,7 @@ MASTER_SITES=	http://vvelox.net/src/shell-include/
 MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Include system for shell scripts
 
-USES=		perl5
+BROKEN=		unfetchable
 
 USES=		perl5 tar:tgz
 USE_PERL5=	build

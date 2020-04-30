@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		bison pkgconfig scons
+USES=		bison gnome pkgconfig scons sdl
 USE_GNOME=	gtk20 libxml2
 USE_SDL=	sdl
 
@@ -28,7 +28,7 @@ post-patch:
 		's|%%CFLAGS%%|${CFLAGS}| ; \
 		 s|%%CC%%|${CC}|' ${WRKSRC}/src/SConscript
 	@${REINPLACE_CMD} -E \
-		"s|('/usr/local')|\1,PathOption.PathAccept|" ${WRKSRC}/SConstruct
+		"s|('/usr/local')|\1,PathVariable.PathAccept|" ${WRKSRC}/SConstruct
 	@${REINPLACE_CMD} -e \
 		's|<stdint.h>|<inttypes.h>|g' ${WRKSRC}/src/*.[cly]
 

@@ -34,13 +34,13 @@
 %%T%%/lib/tomcat-api.jar
 %%T%%/lib/tomcat-coyote.jar
 %%T%%/lib/tomcat-dbcp.jar
-%%T%%/lib/tomcat-i18n-de.jar
-%%T%%/lib/tomcat-i18n-es.jar
-%%T%%/lib/tomcat-i18n-fr.jar
-%%T%%/lib/tomcat-i18n-ja.jar
-%%T%%/lib/tomcat-i18n-ko.jar
-%%T%%/lib/tomcat-i18n-ru.jar
-%%T%%/lib/tomcat-i18n-zh-CN.jar
+%%NLS%%%%T%%/lib/tomcat-i18n-de.jar
+%%NLS%%%%T%%/lib/tomcat-i18n-es.jar
+%%NLS%%%%T%%/lib/tomcat-i18n-fr.jar
+%%NLS%%%%T%%/lib/tomcat-i18n-ja.jar
+%%NLS%%%%T%%/lib/tomcat-i18n-ko.jar
+%%NLS%%%%T%%/lib/tomcat-i18n-ru.jar
+%%NLS%%%%T%%/lib/tomcat-i18n-zh-CN.jar
 %%T%%/lib/tomcat-jdbc.jar
 %%T%%/lib/tomcat-jni.jar
 %%T%%/lib/tomcat-util-scan.jar
@@ -60,11 +60,11 @@
 @sample %%T%%/conf/catalina.properties.sample
 @sample %%T%%/conf/context.xml.sample
 @sample %%T%%/conf/jaspic-providers.xml.sample
-@sample %%T%%/conf/jaspic-providers.xsd.sample
+%%T%%/conf/jaspic-providers.xsd
 @sample %%T%%/conf/logging.properties.sample
 @sample %%T%%/conf/server.xml.sample
 @sample %%T%%/conf/tomcat-users.xml.sample
-@sample %%T%%/conf/tomcat-users.xsd.sample
+%%T%%/conf/tomcat-users.xsd
 @sample %%T%%/conf/web.xml.sample
 %%T%%/temp/safeToDelete.tmp
 %%DOCS%%%%T%%/webapps/docs/BUILDING.txt
@@ -72,6 +72,7 @@
 %%DOCS%%%%T%%/webapps/docs/RUNNING.txt
 %%DOCS%%%%T%%/webapps/docs/WEB-INF/web.xml
 %%DOCS%%%%T%%/webapps/docs/aio.html
+%%DOCS%%%%T%%/webapps/docs/annotationapi/index.html
 %%DOCS%%%%T%%/webapps/docs/api/index.html
 %%DOCS%%%%T%%/webapps/docs/appdev/build.xml.txt
 %%DOCS%%%%T%%/webapps/docs/appdev/deployment.html

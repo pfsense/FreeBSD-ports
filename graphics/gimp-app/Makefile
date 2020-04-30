@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME?=	gimp-app
-PORTVERSION=	2.10.12
-PORTREVISION=	4
+PORTVERSION=	2.10.18
+PORTREVISION=	1
 PORTEPOCH?=	1
 CATEGORIES?=	graphics gnome
 MASTER_SITES=	GIMP/gimp/v${PORTVERSION:R}
@@ -44,7 +44,7 @@ LIB_DEPENDS_i386=	libunwind.so:devel/libunwind
 
 GNU_CONFIGURE=	yes
 USES+=		compiler:c++14-lang cpe gettext gmake gnome jpeg libtool \
-		localbase pkgconfig shebangfix tar:bzip2
+		localbase pkgconfig shebangfix tar:bzip2 xorg
 USE_XORG=	ice sm x11 xcursor xext xfixes xmu xpm xt
 USE_GNOME+=	cairo gtk20 intltool librsvg2
 USE_LDCONFIG=	yes
@@ -55,6 +55,7 @@ TEST_TARGET=	check
 TEST_ENV=	XAUTHORITY=${HOME}/.Xauthority
 .endif
 CONFIGURE_ARGS?=--with-html-dir=${PREFIX}/share/doc/gimp \
+		--with-bug-report-url="https://bugs.freebsd.org/" \
 		--disable-gtk-doc \
 		--without-linux-input \
 		--with-print \
@@ -69,7 +70,7 @@ CONFIGURE_ARGS?=--with-html-dir=${PREFIX}/share/doc/gimp \
 		--without-webkit \
 		--enable-default-binary
 CONFIGURE_ENV=	GIMP_THREAD_LIBS=-lpthread
-LIBS+=		-lexecinfo
+LIBS+=		-lexecinfo -lm
 CPE_PRODUCT=	gimp
 CPE_VENDOR=	gnu
 
@@ -116,7 +117,7 @@ LIBMNG_CONFIGURE_WITH=	libmng
 
 OPENEXR_CONFIGURE_WITH=	openexr
 OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr \
-			libIex-2_3.so:graphics/ilmbase
+			libIex.so:graphics/ilmbase
 
 OPENJPEG_DESC=		Enhanced JPEG (jpeg2000) graphics support
 OPENJPEG_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg

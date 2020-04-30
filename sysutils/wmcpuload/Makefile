@@ -10,7 +10,9 @@ MASTER_SITES=	http://seiichisato.jp/dockapps/src/
 MAINTAINER=	xride@FreeBSD.org
 COMMENT=	"lcd" dockapp for windowmaker, which displays the current cpuload
 
-USES=		tar:bzip2
+BROKEN=		unfetchable
+
+USES=		tar:bzip2 xorg
 USE_XORG=	xpm
 GNU_CONFIGURE=	yes
 

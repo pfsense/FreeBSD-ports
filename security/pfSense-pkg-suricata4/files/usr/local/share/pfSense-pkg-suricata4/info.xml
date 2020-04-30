@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>suricata4</name>
+		<website>http://suricata-ids.org/</website>
+		<descr><![CDATA[High Performance Network IDS, IPS and Security Monitoring engine by OISF.]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>suricata.xml</configurationfile>
+	</package>
+</pfsensepkgs>

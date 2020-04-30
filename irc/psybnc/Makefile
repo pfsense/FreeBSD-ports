@@ -4,12 +4,14 @@
 PORTNAME=	psybnc
 DISTVERSION=	2.3.2-9
 PORTREVISION=	2
-CATEGORIES=	irc ipv6
+CATEGORIES=	irc
 MASTER_SITES=	http://www.psybnc.at/download/beta/
 DISTNAME=	psyBNC-${DISTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Powerful IRC bouncer
+
+BROKEN=		unfetchable
 
 LICENSE=	GPLv1+ # though COPYING is GPLv2
 

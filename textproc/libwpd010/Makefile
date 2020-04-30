@@ -3,7 +3,7 @@
 
 PORTNAME=	libwpd
 PORTVERSION=	0.10.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 PKGNAMESUFFIX=	010
@@ -19,7 +19,7 @@ LICENSE_FILE_MPL20=	${WRKSRC}/COPYING.MPL
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/spirit/include/qi.hpp:devel/boost-libs
 LIB_DEPENDS=	librevenge-0.0.so:textproc/librevenge
 
-USES=		compiler:c++11-lang libtool pathfix pkgconfig tar:bzip2
+USES=		compiler:c++11-lang gnome libtool pathfix pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
 USE_GNOME=	libgsf
 USE_LDCONFIG=	yes

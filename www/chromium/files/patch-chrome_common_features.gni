@@ -1,6 +1,6 @@
---- chrome/common/features.gni.orig	2019-10-21 19:06:26 UTC
+--- chrome/common/features.gni.orig	2020-03-16 18:40:30 UTC
 +++ chrome/common/features.gni
-@@ -42,9 +42,9 @@ declare_args() {
+@@ -49,9 +49,9 @@ declare_args() {
                                  (is_desktop_linux && use_dbus) || is_chromeos
  
    enable_one_click_signin =

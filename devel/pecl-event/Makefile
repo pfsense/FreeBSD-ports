@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	event
-PORTVERSION=	2.5.3
-PORTREVISION=	1
+PORTVERSION=	2.5.4
 CATEGORIES=	devel
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	Provides interface to libevent library
 
 LICENSE=	PHP301

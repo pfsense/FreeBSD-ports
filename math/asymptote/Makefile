@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	asymptote
-PORTVERSION=	2.44
-PORTREVISION=	8
+PORTVERSION=	2.56
+PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
@@ -19,10 +19,10 @@ ONLY_FOR_ARCHS=	amd64 i386
 LIB_DEPENDS=	libsigsegv.so:devel/libsigsegv
 RUN_DEPENDS=	animate:graphics/ImageMagick6 \
 		gv:print/gv \
-		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLAVOR} \
+		${PY_PILLOW}
 
-USES=		compiler:c++14-lang gettext-runtime ghostscript gmake ncurses perl5 python \
+USES=		compiler:c++14-lang gettext-runtime ghostscript gl gmake ncurses perl5 python \
 		shebangfix tar:tgz
 SHEBANG_FILES=	GUI/*.py
 USE_GL=		gl glu glut

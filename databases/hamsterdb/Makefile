@@ -3,12 +3,14 @@
 
 PORTNAME=	hamsterdb
 PORTVERSION=	2.1.11
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	databases
 MASTER_SITES=	http://files.hamsterdb.com/dl/
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Lightweight Embedded Database Engine
+
+BROKEN=		unfetchable
 
 LICENSE=	APACHE20
 

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	etr
-PORTVERSION=	0.7.5
-PORTREVISION=	2
+PORTVERSION=	0.8.0
 CATEGORIES=	games
 MASTER_SITES=	SF/extremetuxracer/releases/${PORTVERSION}
 PKGNAMESUFFIX=	acer
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libsfml-system.so:devel/sfml
 
-USES=		compiler:c++11-lang pkgconfig tar:xz
+USES=		compiler:c++11-lang gl pkgconfig tar:xz xorg
 USE_GL=		gl glu
 GNU_CONFIGURE=	yes
 

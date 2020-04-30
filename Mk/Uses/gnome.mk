@@ -74,15 +74,15 @@ _USE_GNOME_ALL= intlhack intltool introspection \
 # GNOME 2 components
 _USE_GNOME_ALL+= atk cairo \
 		gdkpixbuf2 gconf2 glib20 \
-		gnomedocutils gnomesharp20 \
+		gnomesharp20 \
 		gnomevfs2 gtk-update-icon-cache gtk20 gtkhtml3 \
 		gtksharp20 gtksourceview2 gvfs libartlgpl2 libbonobo \
 		libbonoboui libglade2 libgnome \
-		libgnomecanvas libgnomekbd libgnomeprint libgnomeprintui \
+		libgnomecanvas libgnomekbd \
 		libgnomeui libgsf libgtkhtml libidl librsvg2 libwnck \
 		libxml2 libxslt \
-		orbit2 pango pangox-compat pygnome2 pygobject pygtk2 \
-		pygtksourceview vte
+		orbit2 pango pangox-compat pygobject pygtk2 \
+		vte
 
 # GNOME 3 components
 _USE_GNOME_ALL+=dconf evolutiondataserver3 gnomecontrolcenter3 gnomedesktop3 \
@@ -104,7 +104,7 @@ USE_LOCALE?=	en_US.UTF-8
 GNOME_MAKEFILEIN?=	Makefile.in
 SCROLLKEEPER_DIR=	/var/db/rarian
 
-referencehack_PRE_PATCH=	${FIND} ${WRKSRC} -name "Makefile.in" -type f | ${XARGS} ${REINPLACE_CMD} -e \
+referencehack_PRE_PATCH=	${FIND} ${WRKSRC} -name "Makefile.in" -type f | ${XARGS} ${FRAMEWORK_REINPLACE_CMD} -e \
 				"s|test \"\$$\$$installfiles\" = '\$$(srcdir)/html/\*'|:|"
 
 GNOME_HTML_DIR?=	${PREFIX}/share/doc
@@ -238,12 +238,6 @@ libgnomecanvas_USE_GNOME_IMPL=	libglade2 libartlgpl2
 
 libartlgpl2_LIB_DEPENDS=	libart_lgpl_2.so:graphics/libart_lgpl
 
-libgnomeprint_LIB_DEPENDS=	libgnomeprint-2-2.so:print/libgnomeprint
-libgnomeprint_USE_GNOME_IMPL=	libbonobo libartlgpl2 gtk20
-
-libgnomeprintui_LIB_DEPENDS=	libgnomeprintui-2-2.so:x11-toolkits/libgnomeprintui
-libgnomeprintui_USE_GNOME_IMPL=	libgnomeprint libgnomecanvas
-
 libgnome_LIB_DEPENDS=	libgnome-2.so:x11/libgnome
 libgnome_USE_GNOME_IMPL=gnomevfs2 libbonobo
 
@@ -313,18 +307,14 @@ pygtk2_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/pygtk-2.0.pc:x11-toolkits/p
 pygtk2_RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/pygtk-2.0.pc:x11-toolkits/py-gtk2
 pygtk2_USE_GNOME_IMPL=	libglade2 pygobject
 
-pygnome2_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gnome-python-2.0.pc:x11-toolkits/py-gnome2
-pygnome2_RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gnome-python-2.0.pc:x11-toolkits/py-gnome2
-pygnome2_USE_GNOME_IMPL=libgnomeui pygtk2
-
 intltool_BUILD_DEPENDS=	${LOCALBASE}/bin/intltool-extract:textproc/intltool
 
-intlhack_PRE_PATCH=	${FIND} ${WRKSRC} -name "intltool-merge.in" | ${XARGS} ${REINPLACE_CMD} \
+intlhack_PRE_PATCH=	${FIND} ${WRKSRC} -name "intltool-merge.in" | ${XARGS} ${FRAMEWORK_REINPLACE_CMD} \
 			's|mkdir $$lang or|mkdir $$lang, 0777 or| ; \
 			 s|^push @INC, "/.*|push @INC, "${LOCALBASE}/share/intltool";| ; \
 			 s|/usr/bin/iconv|${ICONV_CMD}|g ; \
 			 s|unpack *[(]'"'"'U\*'"'"'|unpack ('"'"'C*'"'"'|' ; \
-			${FIND} ${WRKSRC} -name configure | ${XARGS} ${REINPLACE_CMD} \
+			${FIND} ${WRKSRC} -name configure | ${XARGS} ${FRAMEWORK_REINPLACE_CMD} \
 			's/DATADIRNAME=lib/DATADIRNAME=share/'
 intlhack_USE_GNOME_IMPL=intltool
 
@@ -341,10 +331,6 @@ gnomemenus3_BUILD_DEPENDS=	gnome-menus>=3.2.0:x11/gnome-menus
 gnomemenus3_RUN_DEPENDS=	gnome-menus>=3.2.0:x11/gnome-menus
 gnomemenus3_USE_GNOME_IMPL=	glib20
 
-gnomedocutils_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gnome-doc-utils.pc:textproc/gnome-doc-utils
-gnomedocutils_RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gnome-doc-utils.pc:textproc/gnome-doc-utils
-gnomedocutils_USE_GNOME_IMPL=	libxslt
-
 gtksharp10_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gtk-sharp.pc:x11-toolkits/gtk-sharp10
 gtksharp10_RUN_DEPENDS=		${LOCALBASE}/libdata/pkgconfig/gtk-sharp.pc:x11-toolkits/gtk-sharp10
 gtksharp10_USE_GNOME_IMPL=	gtk20
@@ -359,10 +345,6 @@ gnomesharp20_USE_GNOME_IMPL=	gnomevfs2 gtkhtml3 gtksharp20 librsvg2 vte
 
 libgnomekbd_LIB_DEPENDS=	libgnomekbd.so:x11/libgnomekbd
 libgnomekbd_USE_GNOME_IMPL=	gtk30 libxml2
-
-pygtksourceview_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/pygtksourceview-2.0.pc:x11-toolkits/py-gtksourceview
-pygtksourceview_RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/pygtksourceview-2.0.pc:x11-toolkits/py-gtksourceview
-pygtksourceview_USE_GNOME_IMPL=	gtksourceview2 pygtk2
 
 gvfs_BUILD_DEPENDS=	gvfs>=0:devel/gvfs
 gvfs_RUN_DEPENDS=	gvfs>=0:devel/gvfs

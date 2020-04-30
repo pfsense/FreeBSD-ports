@@ -4,13 +4,16 @@
 PORTNAME=	xorp
 PORTVERSION=	1.8.5
 DISTVERSIONPREFIX=	${PORTNAME}-
-PORTREVISION=	12
+PORTREVISION=	14
 CATEGORIES=	net
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	EXtensible Open Router Platform
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 LIB_DEPENDS=	libboost_regex.so:devel/boost-libs \
 		libpcap.so.1:net/libpcap	# avoid base libpcap
@@ -42,7 +45,7 @@ ORIGIN_MAKE_ARGS_OFF=	origin=false
 SHARED_DESC=	Build with shared libraries
 SHARED_MAKE_ARGS=	shared=true
 SHARED_MAKE_ARGS_OFF=	shared=false
-SHARED_USE_ON=	LDCONFIG=${PREFIX}/lib/xorp/lib
+SHARED_USE=	LDCONFIG=${PREFIX}/lib/xorp/lib
 STRIP_MAKE_ARGS=	strip=true
 STRIP_MAKE_ARGS_OFF=	strip=false
 TCP_RPC_DESC=	Use TCP as RPC transport (defaults to AF_LOCAL)

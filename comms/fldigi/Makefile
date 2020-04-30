@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	fldigi
-PORTVERSION=	4.1.08
-PORTREVISION=	1
+PORTVERSION=	4.1.09
 CATEGORIES=	comms hamradio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}
 
@@ -22,7 +21,8 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs\
 		libsndfile.so:audio/libsndfile \
 		libsamplerate.so:audio/libsamplerate
 
-USES=		autoreconf compiler:c++11-lib jpeg gmake perl5 pkgconfig shebangfix
+USES=		autoreconf compiler:c++11-lib jpeg gmake perl5 pkgconfig \
+		shebangfix xorg
 
 USE_CXXSTD=	gnu++0x
 GNU_CONFIGURE=	yes

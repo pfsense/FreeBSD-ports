@@ -2,8 +2,8 @@
 
 PORTNAME=	bareos
 DISTVERSIONPREFIX=	Release/
-DISTVERSION=	18.2.6
-PORTREVISION?=	1
+DISTVERSION=	19.2.6
+PORTREVISION?=	0
 CATEGORIES?=	sysutils
 PKGNAMEPREFIX?=	#
 PKGNAMESUFFIX?=	-server
@@ -14,12 +14,12 @@ COMMENT?=	Backup archiving recovery open sourced (server)
 LICENSE=	AGPLv3 LGPL3
 LICENSE_COMB=	multi
 
-CONFLICTS?=	bacula17*-server-* bareos16-server-*
+CONFLICTS?=	bacula18*-server bacula17*-server-* bareos16-server-*
 
 LIB_DEPENDS+=	liblzo2.so:archivers/lzo2 \
 		libjansson.so:devel/jansson
 
-USES+=		cmake:insource compiler:c++11-lang pkgconfig readline:port \
+USES+=		cmake compiler:c++11-lang localbase pkgconfig readline:port \
 		shebangfix
 USE_GITHUB=	yes
 
@@ -45,11 +45,16 @@ NDMP_DESC=		Enable build of NDMP support
 SCSICRYPTO_DESC=	Build LTO AME crypto plugin
 
 .if ${PKGNAMESUFFIX} == "-server"
+OPTIONS_GROUP=  BACKENDS
+OPTIONS_GROUP_BACKENDS= GFAPI RADOS
 OPTIONS_DEFINE=		MTX PYTHON NDMP NLS SCSICRYPTO
 OPTIONS_DEFAULT+=	PGSQL SCSICRYPTO
 OPTIONS_SINGLE_DATABASE=	SQLITE3 MYSQL PGSQL
 OPTIONS_SINGLE+=		DATABASE
+BACKENDS_DESC= 		Storage backends
 DATABASE_DESC=		Database support
+GFAPI_DESC=	GFAPI backend support
+RADOS_DESC=	RADOS backend support
 
 NDMP_CMAKE_ON=	-Dndmp=ON
 NDMP_CMAKE_OFF=	-Dndmp=OFF
@@ -66,7 +71,7 @@ SCSICRYPTO_CMAKE_ON=	-Dscsi-crypto=ON
 SCSICRYPTO_CMAKE_OFF=	-Dscsi-crypto=OFF
 
 .if ${PKGNAMESUFFIX} == "-client" || ${PKGNAMESUFFIX} == "-server"  #Till end of the file
-PYTHON_USES=		python:2.7
+PYTHON_USES=		python
 PYTHON_CMAKE_ON=	-Dpython=ON
 PYTHON_CMAKE_OFF=	-Dpython=OFF
 PYTHON_PLUGIN=		yes
@@ -104,7 +109,7 @@ CMAKE_ARGS+=	-Dtcp-wrappers=ON \
 		-Dsbin-perm=755 \
 		-Ddb_user=bareos \
 		-Dbaseport=9101 \
-		-Dpiddir=/var/run/bareos \
+		-Dpiddir=/var/run/bareos
 
 .if defined(WITH_CLIENT_ONLY)
 LMDB_CMAKE_ON=	-Dlmdb=ON
@@ -140,6 +145,10 @@ SUB_LIST=	BAREOS_USER=${BAREOS_USER} \
 
 NLS_USES=		gettext
 NLS_CMAKE_ON=		-Dnls=ON
+GFAPI_CMAKE_ON=		-Dgfapi=ON
+GFAPI_LIB_DEPENDS=	libglusterfs.so:net/glusterfs
+RADOS_CMAKE_ON=		-Drados=ON
+RADOS_LIB_DEPENDS=	librados.so:net/ceph14
 
 # Client only or full server version
 .if defined(WITH_CLIENT_ONLY)
@@ -157,7 +166,7 @@ CMAKE_ARGS+=	-Dbuild-dird=ON \
 # Server default database
 
 MYSQL_CMAKE_ON=		-Dmysql=ON
-MYSQL_USE=	MYSQL=yes
+MYSQL_USES=	mysql
 SQLITE3_CMAKE_ON=	-Dsqlite3=ON
 SQLITE3_LIB_DEPENDS=	libsqlite3.so:databases/sqlite3
 PGSQL_CMAKE_ON=		-Dpostgresql=ON
@@ -192,9 +201,9 @@ MP1+=	bsmtp.1 bregex.1 bwild.1 bareos-tray-monitor.1
 MAKE_ENV+=	MAN8="${MP8}" MAN1="${MP1}"
 
 post-patch:
-	@${REINPLACE_CMD}  '21d' ${WRKSRC}/CMakeLists.txt
+	@${REINPLACE_CMD}  '69,72d' ${WRKSRC}/CMakeLists.txt
 .if ${PKGNAMESUFFIX} == "-server"
-	@${REINPLACE_CMD}  '25d' ${WRKSRC}/core/src/plugins/CMakeLists.txt
+	@${REINPLACE_CMD}  '24d' ${WRKSRC}/core/src/plugins/CMakeLists.txt
 .endif
 
 post-extract:

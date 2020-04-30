@@ -3,8 +3,8 @@
 # Observium version can be found by looking at ${WRKSRC}/includes/definitions/version.inc.php
 
 PORTNAME=	observium
-PORTVERSION=	0.18.9.1
-PORTREVISION=	1
+PORTVERSION=	0.19.8
+PORTREVISION=	0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://www.observium.org/
 DISTNAME=	${PORTNAME}-community-latest

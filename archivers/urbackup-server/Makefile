@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	urbackup-server
-DISTVERSION=	2.3.8
+DISTVERSION=	2.4.11
 PORTREVISION=	1
 CATEGORIES=	archivers
 MASTER_SITES=	https://hndl.urbackup.org/Server/${DISTVERSION}/
@@ -60,6 +60,6 @@ post-install:
 	${INSTALL_DATA} ${FILESDIR}/urbackupsrv.conf-newsyslog \
 		${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d/urbackupsrv.conf
 
-	${INSTALL_MAN} ${WRKSRC}/docs/urbackupsrv.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/docs/urbackupsrv.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

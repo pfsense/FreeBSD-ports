@@ -13,7 +13,8 @@ COMMENT=	Quantum chemistry in Python
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_aarch64=		fails to compile: Src/PyQuante/contracted_gto.c:2063:46: error: no member named 'd_type' in 'PyMethodDescrObject'
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-08-15
 
 RUN_DEPENDS=	${PYNUMPY}
 

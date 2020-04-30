@@ -15,7 +15,7 @@ Ruby_Include_MAINTAINER=	ruby@FreeBSD.org
 # [variables that a user may define]
 #
 # RUBY_VER		- (See below)
-# RUBY_DEFAULT_VER	- Set to (e.g.) "2.4" if you want to refer to "ruby24"
+# RUBY_DEFAULT_VER	- Set to (e.g.) "2.5" if you want to refer to "ruby25"
 #			  just as "ruby".
 # RUBY_ARCH		- (See below)
 #
@@ -54,22 +54,16 @@ Ruby_Include_MAINTAINER=	ruby@FreeBSD.org
 #
 # RUBY_PKGNAMEPREFIX	- Common PKGNAMEPREFIX for ruby ports
 #			  (default: ruby${RUBY_SUFFIX}-)
-# RUBY_RELVERSION	- Full version of ruby without preview/beta suffix in
+# RUBY_VERSION		- Full version of ruby without preview/beta suffix in
 #			  the form of `x.y.z' (see below for current value).
-# RUBY_RELVERSION_CODE	- Integer version of RUBY_RELVERSION in the form of
+# RUBY_VERSION_CODE	- Integer version of RUBY_VERSION in the form of 
 #			  `xyz'.
-# RUBY_VERSION		- Composite version of RUBY_RELVERSION and
-#			  RUBY_PATCHLEVEL in the form of `x.y.z.p'.
-#			  (default: ${RUBY_RELVERSION}.${RUBY_PATCHLEVEL})
-# RUBY_VERSION_CODE	- Composite integer version of RUBY_VERSION in the form
-#			  of `xyzp'.
 # RUBY_PORTVERSION	- PORTVERSION for the standard ruby ports (ruby,
 #			  ruby-gdbm, etc.).
 # RUBY_PORTREVISION	- PORTREVISION for the standard ruby ports.
 # RUBY_PORTEPOCH	- PORTEPOCH for the standard ruby ports.
 # RUBY_DISTNAME		- DISTNAME for the standard ruby ports, i.e. the
 #			  basename of the ruby distribution tarball.
-# RUBY_DISTVERSION	- The version number part of RUBY_DISTNAME.
 # RUBY_PATCHFILES	- PATCHFILES for the standard ruby ports, i.e. the
 #			  basename of the ruby distribution tarball.
 # RUBY_WRKSRC		- WRKSRC for the ruby port.
@@ -150,35 +144,32 @@ RUBY?=			${LOCALBASE}/bin/${RUBY_NAME}
 .if defined(RUBY_VER)
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-. if ${RUBY_VER} == 2.4
-#
-# Ruby 2.4
-#
-RUBY_RELVERSION=	2.4.9
-RUBY_PORTREVISION=	0
-RUBY_PORTEPOCH=		1
-RUBY_PATCHLEVEL=	0
-RUBY24=			""	# PLIST_SUB helpers
-
-. elif ${RUBY_VER} == 2.5
+. if ${RUBY_VER} == 2.5
 #
 # Ruby 2.5
 #
-RUBY_RELVERSION=	2.5.7
+RUBY_VERSION=		2.5.7
 RUBY_PORTREVISION=	0
 RUBY_PORTEPOCH=		1
-RUBY_PATCHLEVEL=	0
 RUBY25=			""	# PLIST_SUB helpers
 
 . elif ${RUBY_VER} == 2.6
 #
 # Ruby 2.6
 #
-RUBY_RELVERSION=	2.6.5
+RUBY_VERSION=		2.6.5
 RUBY_PORTREVISION=	0
 RUBY_PORTEPOCH=		1
-RUBY_PATCHLEVEL=	0
 RUBY26=			""	# PLIST_SUB helpers
+
+. elif ${RUBY_VER} == 2.7
+#
+# Ruby 2.7
+#
+RUBY_VERSION=		2.7.0
+RUBY_PORTREVISION=	2
+RUBY_PORTEPOCH=		1
+RUBY27=			""	# PLIST_SUB helpers
 
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
@@ -186,7 +177,7 @@ RUBY26=			""	# PLIST_SUB helpers
 #
 # Other versions
 #
-IGNORE=	Only ruby 2.4, 2.5 and 2.6 are supported
+IGNORE=	Only ruby 2.5, 2.6 and 2.7 are supported
 _INVALID_RUBY_VER=	1
 . endif
 .endif # defined(RUBY_VER)
@@ -196,6 +187,7 @@ _INVALID_RUBY_VER=	1
 RUBY24?=		"@comment "
 RUBY25?=		"@comment "
 RUBY26?=		"@comment "
+RUBY27?=		"@comment "
 
 .if defined(BROKEN_RUBY${RUBY_VER:R}${RUBY_VER:E})
 .if ${BROKEN_RUBY${RUBY_VER:R}${RUBY_VER:E}} == "yes"
@@ -205,15 +197,7 @@ BROKEN=			${BROKEN_RUBY${RUBY_VER:R}${RUBY_VER:E}}
 .endif
 .endif
 
-.if ${RUBY_PATCHLEVEL} == 0
-RUBY_VERSION?=		${RUBY_RELVERSION}
-RUBY_DISTVERSION?=	${RUBY_RELVERSION}
-.else
-RUBY_VERSION?=		${RUBY_RELVERSION}.${RUBY_PATCHLEVEL}
-RUBY_DISTVERSION?=	${RUBY_RELVERSION}-p${RUBY_PATCHLEVEL}
-.endif
-
-RUBY_WRKSRC=		${WRKDIR}/ruby-${RUBY_DISTVERSION}
+RUBY_WRKSRC=		${WRKDIR}/ruby-${RUBY_VERSION}
 
 RUBY_CONFIGURE_ARGS+=	--with-rubyhdrdir="${PREFIX}/include/ruby-${RUBY_VER}/" \
 			--with-rubylibprefix="${PREFIX}/lib/ruby" \
@@ -236,10 +220,9 @@ _RUBY_VENDORDIR?=	${_RUBY_SYSLIBDIR}/ruby/vendor_ruby
 
 RUBY_DEFAULT_SUFFIX?=	${RUBY_DEFAULT_VER:S/.//}
 
-RUBY_DISTVERSION?=	${RUBY_VERSION}
 RUBY_PORTVERSION?=	${RUBY_VERSION}
 MASTER_SITE_SUBDIR_RUBY?=	${RUBY_VER}
-RUBY_DISTNAME?=		ruby-${RUBY_DISTVERSION}
+RUBY_DISTNAME?=		ruby-${RUBY_VERSION}
 
 RUBY_WRKSRC?=		${WRKDIR}/${RUBY_DISTNAME}
 
@@ -312,7 +295,8 @@ PLIST_SUB+=		${PLIST_RUBY_DIRS:C,DIR="(${LOCALBASE}|${PREFIX})/,DIR=",} \
 			RUBY_DEFAULT_SUFFIX="${RUBY_DEFAULT_SUFFIX}" \
 			RUBY24=${RUBY24} \
 			RUBY25=${RUBY25} \
-			RUBY26=${RUBY26}
+			RUBY26=${RUBY26} \
+			RUBY27=${RUBY27}
 
 .if defined(USE_RUBY_RDOC)
 MAKE_ENV+=	RUBY_RDOC=${RUBY_RDOC}

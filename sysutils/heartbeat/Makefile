@@ -16,6 +16,9 @@ COMMENT=	Subsystem for High-Availability Clustering
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
+
 LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libgnutls.so:security/gnutls \
 		libnet.so:net/libnet \
@@ -23,8 +26,8 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libxml2.so:textproc/libxml2
 BUILD_DEPENDS=	bison:devel/bison
 
-USES=		autoreconf cpe gettext gmake libtool perl5 pkgconfig python:2.7 tar:bzip2 \
-		shebangfix
+USES=		autoreconf cpe gettext gmake gnome libtool perl5 pkgconfig \
+		python:2.7 shebangfix tar:bzip2
 SHEBANG_FILES=	ldirectord/ldirectord.in \
 		lib/plugins/stonith/external/ibmrsa-telnet \
 		lib/plugins/stonith/external/vmware \

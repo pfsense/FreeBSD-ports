@@ -3,7 +3,7 @@
 
 PORTNAME=	aqualung
 PORTVERSION=	1.0
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -30,7 +30,7 @@ LIB_DEPENDS=	libFLAC.so:audio/flac \
 		libcdio_paranoia.so:sysutils/libcdio-paranoia \
 		liblrdf.so:textproc/liblrdf
 
-USES=		compiler:c++11-lang gettext localbase lua pkgconfig
+USES=		compiler:c++11-lang gettext gnome localbase lua pkgconfig
 USE_GNOME=	gtk20 libxml2 libxslt
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-ifp=no

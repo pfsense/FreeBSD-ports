@@ -28,7 +28,7 @@ LIB_DEPENDS=	libalfont.so:x11-fonts/alfont \
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-src-build${SVN_REV}
 
-USES=		cmake dos2unix localbase openal:soft
+USES=		cmake compiler:c++11-lang dos2unix gnome localbase openal:soft
 DOS2UNIX_GLOB=	*.bg *.brk *.grp  *.inc *.lev *.lng  *.obj *.qst *.spr *.txt
 
 PORTDOCS=	readme.html
@@ -40,7 +40,8 @@ SUB_FILES=	${PORTNAME}
 DESKTOP_ENTRIES="Open Surge" "" "${PORTNAME}" \
 		"${PORTNAME}" "Game;ArcadeGame;" ""
 INSTALLS_ICONS=	yes
-LLD_UNSAFE=	yes
+
+LDFLAGS_i386=	-Wl,-znotext
 
 SVN_REV=	765
 MODS_VER=	20140321

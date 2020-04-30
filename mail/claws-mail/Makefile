@@ -3,7 +3,7 @@
 
 PORTNAME=	claws-mail
 PORTREVISION=	0
-CATEGORIES=	mail news ipv6
+CATEGORIES=	mail news
 
 COMMENT=	Lightweight and featureful GTK+ based e-mail and news client
 
@@ -21,8 +21,8 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libnettle.so:security/nettle
 RUN_DEPENDS=	mime-support>0:misc/mime-support
 
-USES=		autoreconf gettext-tools compiler:c++11-lang cpe desktop-file-utils gettext gnome pathfix \
-		python:3.6 shebangfix ssl
+USES=		autoreconf gettext-tools compiler:c++11-lang cpe desktop-file-utils gettext gnome pathfix pkgconfig \
+		python:3.6 shebangfix ssl xorg
 USE_XORG=	ice sm
 USE_GNOME=	cairo gtk20 librsvg2
 SHEBANG_FILES=	tools/*.pl tools/*.py tools/tb2claws-mail

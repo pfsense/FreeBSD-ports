@@ -2,9 +2,20 @@
 
 PORTNAME=	media-driver
 DISTVERSIONPREFIX=	intel-media-
-DISTVERSION=	19.3.1
+DISTVERSION=	20.1.1
 CATEGORIES=	multimedia
 PKGNAMEPREFIX=	libva-intel-
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	f337957afed6.patch:-p1 # https://github.com/intel/media-driver/pull/819
+PATCHFILES+=	1c790ebf5006.patch:-p1 # https://github.com/intel/media-driver/pull/819
+PATCHFILES+=	63d607335723.patch:-p1 # https://github.com/intel/media-driver/pull/819
+PATCHFILES+=	ad51a4ed50d1.patch:-p1 # https://github.com/intel/media-driver/pull/819
+PATCHFILES+=	ffc5e189592b.patch:-p1 # https://github.com/intel/media-driver/pull/819
+PATCHFILES+=	783fb8d1c8a9.patch:-p1 # https://github.com/intel/media-driver/pull/819
+PATCHFILES+=	a5e441477420.patch:-p1 # https://github.com/intel/media-driver/pull/819
+PATCHFILES+=	199db8d44462.patch:-p1 # https://github.com/intel/media-driver/pull/819
+PATCHFILES+=	718ae1db9724.patch:-p1 # https://github.com/intel/media-driver/pull/819
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	VAAPI driver for Intel HD 5000 (Gen8) or newer
@@ -17,7 +28,7 @@ ONLY_FOR_ARCHS=	amd64 i386
 ONLY_FOR_ARCHS_REASON=	Only Intel GPUs on x86 are supported
 
 BUILD_DEPENDS=	gmmlib>=19.3.1:multimedia/gmmlib \
-		libva>=2.5.0:multimedia/libva
+		libva>=2.6.1_1:multimedia/libva
 LIB_DEPENDS=	libpciaccess.so:devel/libpciaccess \
 		libigdgmm.so:multimedia/gmmlib \
 		libva.so:multimedia/libva
@@ -42,15 +53,8 @@ TEST_TEST_TARGET=	RunULT
 X11_LIB_DEPENDS=	libva-x11.so:multimedia/libva
 
 post-patch:
-	@${REINPLACE_CMD} -e '/-D__linux__/d' \
+	@${REINPLACE_CMD} 's/$${GIT_COMMIT}/${DISTVERSIONFULL}/' \
 		${WRKSRC}/media_driver/cmake/linux/media_compile_flags_linux.cmake
-	@if [ ${CHOSEN_COMPILER_TYPE} != gcc ]; then \
-		${REINPLACE_CMD} -i .gcc.bak '/-fno-tree-pre/d' \
-			${WRKSRC}/media_driver/cmake/linux/media_compile_flags_linux.cmake; \
-	fi
-# Silence -Wmacro-redefined
-	@${REINPLACE_CMD} -e '/__fastcall/d' \
-		${WRKSRC}/media_driver/linux/common/cm/cm_mem_os.h
 
 post-patch-X11-off:
 	@${REINPLACE_CMD} -i .nox11 '/find_package.*X11/d' \

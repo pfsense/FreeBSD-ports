@@ -18,7 +18,8 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libpng.so:graphics/png \
 		libspectrum.so:emulators/libspectrum
 
-USES=		compiler:c++11-lang gettext gmake gnome localbase perl5 pkgconfig
+USES=		compiler:c++11-lang gettext gmake gnome localbase perl5 \
+		pkgconfig xorg
 USE_PERL5=	build
 USE_GNOME=	cairo libxml2 glib20
 USE_XORG=	x11
@@ -43,6 +44,7 @@ GTK2_CONFIGURE_ON=	--with-gtk
 GTK3_USE=		GNOME=gtk30
 GTK3_CONFIGURE_ON=	--with-gtk
 GTK3_CONFIGURE_ENABLE=	gtk3
+SDL_USES=		sdl
 SDL_USE=		SDL=sdl
 SDL_CONFIGURE_WITH=	sdl
 SDL_CONFIGURE_ON=	--without-gtk

@@ -19,4 +19,8 @@ USE_QT=		concurrent core dbus declarative gui network widgets xml \
 
 OPTIONS_DEFINE=	DOCS
 
+post-patch:
+	${REINPLACE_CMD} '/CUPS_DATADIR/s|/usr/share/cups|${LOCALBASE}/share/cups|' \
+               ${PATCH_WRKSRC}/libkcups/KCupsRequest.cpp
+
 .include <bsd.port.mk>

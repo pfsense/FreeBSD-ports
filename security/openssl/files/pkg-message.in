@@ -1,7 +1,8 @@
 [
 { type: install
   message: <<EOM
-Edit %%PREFIX%%/openssl/openssl.cnf to fit your needs.
+Copy %%PREFIX%%/openssl/openssl.cnf.sample to %%PREFIX%%/openssl/openssl.cnf
+and edit it to fit your needs.
 EOM
 }
 ]

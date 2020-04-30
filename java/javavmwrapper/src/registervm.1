@@ -1,6 +1,6 @@
 .\"
 .\" Copyright (C) 2005 Greg Lewis. All rights reserved.
-.\" 
+.\"
 .\" Redistribution and use in source and binary forms, with or without
 .\" modification, are permitted provided that the following conditions
 .\" are met:
@@ -10,7 +10,7 @@
 .\" 2. Redistributions in binary form must reproduce the above copyright
 .\"    notice, this list of conditions and the following disclaimer in the
 .\"    documentation and/or other materials provided with the distribution.
-.\" 
+.\"
 .\" THIS SOFTWARE IS PROVIDED BY AUTHOR AND CONTRIBUTORS ``AS IS'' AND
 .\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 .\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -25,7 +25,7 @@
 .\"
 .\" $FreeBSD$
 .\"
-.Dd February 24, 2005
+.Dd November 12, 2019
 .Os
 .Dt REGISTERVM 1
 .Sh NAME
@@ -58,12 +58,12 @@ The location of the Java VM wrapper configuration file.
 .El
 .Sh EXAMPLES
 .Bl -tag -width indent
-.It %%PREFIX%%/bin/registervm %%LOCALBASE%%/jdk1.6.0/bin/java
-Register %%LOCALBASE%%/jdk1.6.0/bin/java as a possible choice of
+.It %%PREFIX%%/bin/registervm %%LOCALBASE%%/openjdk11/bin/java
+Register %%LOCALBASE%%/openjdk11/bin/java as a possible choice of
 Java VM for
 .Nm javavm .
-.It %%PREFIX%%/bin/unregistervm %%LOCALBASE%%/jdk1.6.0/bin/java
-Remove %%LOCALBASE%%/jdk1.6.0/bin/java as a possible choice of
+.It %%PREFIX%%/bin/unregistervm %%LOCALBASE%%/openjdk11/bin/java
+Remove %%LOCALBASE%%/openjdk11/bin/java as a possible choice of
 Java VM for
 .Nm javavm .
 .El

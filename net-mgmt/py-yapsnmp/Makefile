@@ -14,11 +14,12 @@ COMMENT=	Python SNMP module based on net-snmp
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN=		use of undeclared identifier 'USM_LENGTH_OID_TRANSFORM'
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-08-15
 
 LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
 
-USES=		gmake libtool python:2.7
+USES=		gmake libtool python:2.7 ssl
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include -I${PYTHON_INCLUDEDIR}
 LDFLAGS+=	-L${LOCALBASE}/lib

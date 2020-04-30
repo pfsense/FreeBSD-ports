@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME?=	mariadb
-PORTVERSION=	5.5.66
+PORTVERSION=	5.5.67
 PORTREVISION?=	0
 CATEGORIES=	databases
 MASTER_SITES=	http://ftp.osuosl.org/pub/mariadb/${PORTNAME}-${PORTVERSION}/source/ \
@@ -19,6 +19,9 @@ MAINTAINER=	brnrd@FreeBSD.org
 COMMENT?=	Multithreaded SQL database (server)
 
 LICENSE=	GPLv2
+
+DEPRECATED=		Upstream end-of-life 2020-04-11, switch to a newer version
+EXPIRATION_DATE=	2020-04-11
 
 SUB_FILES=	pkg-message
 
@@ -65,7 +68,7 @@ FASTMTX_CMAKE_ON=	-DWITH_FAST_MUTEXES=1
 .if !defined(CLIENT_ONLY)
 # MySQL-Server part
 USES+=		mysql:55m
-USE_LDCONFIG|=	${PREFIX}/lib/mysql/plugin
+USE_LDCONFIG+=	${PREFIX}/lib/mysql/plugin
 
 CONFLICTS_INSTALL=	mariadb5[0-46-9]-server-* \
 			mariadb1*-server-* \

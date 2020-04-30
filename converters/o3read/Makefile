@@ -7,7 +7,7 @@ CATEGORIES=	converters
 MASTER_SITES=	http://siag.nu/pub/o3read/ \
 		GENTOO
 
-MAINTAINER=	samm@os2.kiev.ua
+MAINTAINER=	samm@FreeBSD.org
 COMMENT=	Standalone converter for the OpenOffice.org writer and scalc formats
 
 LICENSE=	GPLv2+

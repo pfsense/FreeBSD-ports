@@ -17,4 +17,6 @@ USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 BUILD_WRKSRC=	${WRKSRC}/src/assistant
 INSTALL_WRKSRC=	${WRKSRC}/src/assistant
 
+QT_BINARIES=	yes
+
 .include <bsd.port.mk>

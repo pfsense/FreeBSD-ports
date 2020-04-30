@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	gatk
-DISTVERSION=	4.1.2.0-43
-DISTVERSIONSUFFIX=	-g1f31a805b
+DISTVERSION=	4.1.5.0
 CATEGORIES=	biology java
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -24,10 +23,12 @@ SUB_LIST=	PORTVERSION=${PORTVERSION} JAVA=${JAVA}
 
 NO_ARCH=	yes
 
-DEPS_CACHE_DIR=	/tmp # should be ${WRKDIR}, but workaround for the gradle bug that dependency cache is not relocable: https://github.com/gradle/gradle/issues/1338
+DEPS_CACHE_DIR=	${WRKDIR}
 
 PLIST_FILES=	bin/${PORTNAME} \
 		${JAVAJARDIR}/GenomeAnalysisTK-${PORTVERSION}.jar
+
+# TODO additionally fetch git-lfs files: https://github.com/broadinstitute/gatk/issues/6395
 
 # to rebuild the deps archive:
 #   1. set DEV_UPDATE_MODE=yes

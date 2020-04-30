@@ -1,12 +1,15 @@
 # $FreeBSD$
 
 PORTNAME=	setuptools
-PORTVERSION=	41.2.0
+PORTVERSION=	44.0.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DIST_SUBDIR=	python
 
+# note: before committing to this port, contact portmgr to arrange for an
+# experimental ports run.  Untested commits may be backed out at portmgr's
+# discretion.
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Python packages installer
 

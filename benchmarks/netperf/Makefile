@@ -4,7 +4,7 @@
 PORTNAME=	netperf
 PORTVERSION=	2.7.1.p20170921
 PORTREVISION=	1
-CATEGORIES=	benchmarks ipv6
+CATEGORIES=	benchmarks
 
 MAINTAINER=	marius@FreeBSD.org
 COMMENT=	Network performance benchmarking package
@@ -19,7 +19,6 @@ OPTIONS_DEFAULT=	${OPTIONS_DEFINE}
 
 EXS_DESC=	Enable ICSC async socket support
 HISTOGRAM_DESC=	Enable histogram output
-INFO_DESC=	Enable installation of info documentation
 OMNI_DESC=	Enable OMNI tests (disable for aio(4) support)
 SCTP_DESC=	Enable SCTP support
 SOCKETS_DESC=	Enable Unix Domain socket support

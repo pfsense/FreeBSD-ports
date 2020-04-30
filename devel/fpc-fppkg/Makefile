@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	devel lang
 PKGNAMESUFFIX=	-fppkg
 

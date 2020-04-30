@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	recursor
-DISTVERSION=	4.2.0
-CATEGORIES=	dns ipv6
+DISTVERSION=	4.2.1
+CATEGORIES=	dns
 MASTER_SITES=	http://downloads.powerdns.com/releases/
 PKGNAMEPREFIX=	powerdns-
 DISTNAME=	pdns-${PORTNAME}-${DISTVERSION}
@@ -40,7 +40,7 @@ OPTIONS_DEFAULT=	SETUID
 LUAJIT_DESC=	Use LuaJIT instead of Lua
 SETUID_DESC=	Run as pdns_recursor user
 
-LUAJIT_LIB_DEPENDS=	libluajit-5.1.so.2:lang/luajit
+LUAJIT_LIB_DEPENDS=	libluajit-5.1.so.2:lang/luajit-openresty
 LUAJIT_USES_OFF=	lua
 LUAJIT_CONFIGURE_ON=	--with-lua=luajit
 
@@ -50,7 +50,7 @@ SETUID_VARS=		GROUPS=pdns \
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200085 && ${SSL_DEFAULT} != openssl111
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200085 && ${SSL_DEFAULT} != openssl
 CONFIGURE_ARGS+=	--enable-libdecaf \
 			--enable-libsodium
 LIB_DEPENDS+=		libdecaf.so:security/libdecaf \

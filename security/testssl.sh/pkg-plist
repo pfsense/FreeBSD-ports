@@ -9,6 +9,7 @@ man/man1/testssl.1.gz
 %%DATADIR%%/etc/ca_hashes.txt
 %%DATADIR%%/etc/cipher-mapping.txt
 %%DATADIR%%/etc/client-simulation.txt
+%%DATADIR%%/etc/client-simulation.wiresharked.md
 %%DATADIR%%/etc/client-simulation.wiresharked.txt
 %%DATADIR%%/etc/common-primes.txt
 %%DATADIR%%/etc/curves.txt
@@ -18,6 +19,8 @@ man/man1/testssl.1.gz
 %%DATADIR%%/utils/checkcert.sh
 %%DATADIR%%/utils/create_ca_hashes.sh
 %%DATADIR%%/utils/curves.bash
+%%DATADIR%%/utils/docker-debian10.tls13only.start.sh
+%%DATADIR%%/utils/docker-nginx.tls13-earlydata.start.sh
 %%DATADIR%%/utils/generate_static_cipher_lists.sh
 %%DATADIR%%/utils/gmap2testssl.sh
 %%DATADIR%%/utils/heartbleed.bash

@@ -2,29 +2,36 @@
 # $FreeBSD$
 
 PORTNAME=	pwsafe
-PORTVERSION=	0.2.0
-PORTREVISION=	4
+DISTVERSION=	0.2.0-155
+DISTVERSIONSUFFIX=	-g1dbcfd0
 CATEGORIES=	sysutils
-MASTER_SITES=	http://nsd.dyndns.org/pwsafe/releases/
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	m.ne@gmx.net
 COMMENT=	Cmdline program that manages encrypted password databases
 
 LICENSE=	GPLv2
 
-OPTIONS_DEFINE=	SETUID X11
-SETUID_DESC=	Install setuid pwsafe binary
+USES=		autoreconf gmake ncurses readline ssl
+USE_GITHUB=	yes
+GH_ACCOUNT=	nsd20463
+GH_PROJECT=	pwsafe
+GH_TAGNAME=	1dbcfd0
 
-USES=		gmake ncurses readline ssl
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	ac_cv_header_curses_h=yes
 
-PLIST_FILES=	bin/pwsafe man/man1/pwsafe.1.gz
+PLIST_FILES=	bin/pwsafe \
+		man/man1/pwsafe.1.gz
+
+OPTIONS_DEFINE=	SETUID X11
+
+SETUID_DESC=	Install setuid pwsafe binary
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MX11}
 CONFIGURE_ARGS=	--with-x
+USES+=		xorg
 USE_XORG=	ice sm x11 xmu
 .else
 CONFIGURE_ARGS=	ac_cv_have_x="have_x=no" \

@@ -13,6 +13,7 @@
     SUBDIR += bind9-devel
     SUBDIR += bind911
     SUBDIR += bind914
+    SUBDIR += bind916
     SUBDIR += bindgraph
     SUBDIR += bundy
     SUBDIR += c-ares
@@ -69,7 +70,6 @@
     SUBDIR += dsp
     SUBDIR += dynip
     SUBDIR += erlang-idna
-    SUBDIR += ez-ipupdate
     SUBDIR += fastresolve
     SUBDIR += firedns
     SUBDIR += flamethrower
@@ -103,7 +103,6 @@
     SUBDIR += libidn2
     SUBDIR += libnspsl
     SUBDIR += libpsl
-    SUBDIR += linux-c6-libasyncns
     SUBDIR += linux-c7-libasyncns
     SUBDIR += mDNSResponder_nss
     SUBDIR += maradns
@@ -111,6 +110,7 @@
     SUBDIR += mydns
     SUBDIR += mydns-ng
     SUBDIR += namesilo_ddns
+    SUBDIR += nextdns
     SUBDIR += noip
     SUBDIR += nsd
     SUBDIR += nsec3walker
@@ -196,6 +196,7 @@
     SUBDIR += py-namebench
     SUBDIR += py-ns1-python
     SUBDIR += py-publicsuffix
+    SUBDIR += py-publicsuffix2
     SUBDIR += py-publicsuffixlist
     SUBDIR += py-py3dns
     SUBDIR += py-pybonjour

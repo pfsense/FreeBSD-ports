@@ -2,9 +2,12 @@
 # $FreeBSD$
 
 PKGNAMESUFFIX=		-queue-python
-PORTREVISION=		3
+PORTREVISION=		0
 
 COMMENT=		Python queue support for OpenSMTPD
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 PLIST_FILES=		libexec/opensmtpd/queue-python
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	mpqc
 PORTVERSION=	2.3.1
-PORTREVISION=	44
+PORTREVISION=	45
 CATEGORIES=	science parallel
 MASTER_SITES=	SF
 
@@ -12,8 +12,6 @@ COMMENT=	Massively Parallel Quantum Chemistry Program
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN_aarch64=		fails to compile: lapack.h:2:10: 'chemistry/qc/mbptr12/f77sym.h' file not found
 
 BUILD_DEPENDS=	dot:graphics/graphviz
 LIB_DEPENDS=	libint.so:science/libint

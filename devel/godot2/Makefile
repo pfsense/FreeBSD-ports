@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	godot
-PORTVERSION=	2.1.5
+DISTVERSION=	2.1.6
 DISTVERSIONSUFFIX=	-stable
-PORTREVISION=	3
 CATEGORIES=	devel games
 PKGNAMESUFFIX?=	2
 
@@ -24,7 +23,7 @@ RUN_DEPENDS=	xdg-user-dir:devel/xdg-user-dirs \
 		xdg-open:devel/xdg-utils \
 		xmessage:x11/xmessage
 
-USES=		compiler:c++11-lib pkgconfig scons ssl
+USES=		compiler:c++11-lib gl pkgconfig scons ssl xorg
 USE_XORG=	x11 xcursor xi xinerama xrandr
 USE_GL=		gl glu
 
@@ -37,6 +36,10 @@ MAKE_ARGS_clang=	use_llvm=yes
 CXXFLAGS+=		-DGLEW_NO_GLU -DRTAUDIO_ENABLED
 CXXFLAGS_i386=		${CXXFLAGS_i386_${CHOSEN_COMPILER_TYPE}}
 CXXFLAGS_i386_gcc=	-march=i586
+CXXFLAGS_aarch64=	-DNO_THREADS
+CXXFLAGS_sparc64=	-DNO_THREADS
+CXXFLAGS_mips=		-DNO_THREADS
+CXXFLAGS_mips64=	-DNO_THREADS
 LDFLAGS+=		-lspeex -lmpcdec
 
 OPTIONS_DEFINE=		EXAMPLES TOOLS
@@ -74,6 +77,14 @@ EXAMPLESDIR=		${PREFIX}/share/examples/godot2
 .MAKEFLAGS:	WITH="${OPTIONS_DEFINE}" OPTIONS_EXCLUDE=
 .endif
 
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} != aarch64 && ${ARCH} != amd64 && ${ARCH} != i386 && ${ARCH} != armv6 && ${ARCH} != armv7
+# use system libvpx on archs that break with built-in
+LIB_DEPENDS+=	libvpx.so:multimedia/libvpx
+MAKE_ARGS+=	builtin_libvpx=False
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|custom_build|${OPSYS}_Ports_build|' \
 		${WRKSRC}/methods.py
@@ -97,4 +108,4 @@ do-install-TOOLS-on:
 	${INSTALL_DATA} ${WRKSRC}/icon.svg \
 		${STAGEDIR}${PREFIX}/share/pixmaps/${GODOTFILE}.svg
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

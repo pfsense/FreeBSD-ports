@@ -1,6 +1,15 @@
---- third_party/blink/renderer/platform/fonts/font_cache.h.orig	2019-10-21 19:06:44 UTC
+--- third_party/blink/renderer/platform/fonts/font_cache.h.orig	2020-02-03 21:52:52 UTC
 +++ third_party/blink/renderer/platform/fonts/font_cache.h
-@@ -158,7 +158,7 @@ class PLATFORM_EXPORT FontCache {
+@@ -58,7 +58,7 @@
+ #include "third_party/skia/include/core/SkFontMgr.h"
+ #include "third_party/skia/include/core/SkRefCnt.h"
+ 
+-#if defined(OS_LINUX)
++#if defined(OS_LINUX) || defined(OS_BSD)
+ #include "ui/gfx/font_fallback_linux.h"
+ #endif
+ 
+@@ -166,7 +166,7 @@ class PLATFORM_EXPORT FontCache {
    sk_sp<SkFontMgr> FontManager() { return font_manager_; }
    static void SetFontManager(sk_sp<SkFontMgr>);
  
@@ -9,19 +18,15 @@
    // These are needed for calling QueryRenderStyleForStrike, since
    // gfx::GetFontRenderParams makes distinctions based on DSF.
    static float DeviceScaleFactor() { return device_scale_factor_; }
-@@ -233,7 +233,7 @@ class PLATFORM_EXPORT FontCache {
+@@ -241,11 +241,11 @@ class PLATFORM_EXPORT FontCache {
        const FontDescription&);
  #endif  // defined(OS_ANDROID)
  
 -#if defined(OS_LINUX)
 +#if defined(OS_LINUX) || defined(OS_BSD)
-   struct PlatformFallbackFont {
-     String name;
-     std::string filename;
-@@ -245,7 +245,7 @@ class PLATFORM_EXPORT FontCache {
-   static void GetFontForCharacter(UChar32,
+   static bool GetFontForCharacter(UChar32,
                                    const char* preferred_locale,
-                                   PlatformFallbackFont*);
+                                   gfx::FallbackFontData*);
 -#endif  // defined(OS_LINUX)
 +#endif  // defined(OS_LINUX) || defined(OS_BSD)
  
@@ -42,8 +47,8 @@
  
    scoped_refptr<SimpleFontData> FallbackOnStandardFontStyle(
        const FontDescription&,
-@@ -355,7 +355,7 @@ class PLATFORM_EXPORT FontCache {
-   mojom::blink::DWriteFontProxyPtr service_;
+@@ -356,7 +356,7 @@ class PLATFORM_EXPORT FontCache {
+   std::unique_ptr<FallbackFamilyStyleCache> fallback_params_cache_;
  #endif  // defined(OS_WIN)
  
 -#if defined(OS_LINUX) || defined(OS_CHROMEOS)

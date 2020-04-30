@@ -4,7 +4,7 @@ PORTNAME=	amarok
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.9.70
 PKGVERSIONSUFFIX=	-g${GH_TAGNAME}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio kde
 
 MAINTAINER=	kde@FreeBSD.org
@@ -17,13 +17,12 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libfftw3.so:math/fftw3 \
 		liblastfm5.so:audio/liblastfm-qt5 \
 		libqjson-qt5.so:devel/qjson \
-		libqca-qt5.so:devel/qca \
 		libtag.so:audio/taglib \
 		libtag-extras.so:audio/taglib-extras \
 		liblz4.so:archivers/liblz4
 
 USES=		cmake compiler:c++11-lang desktop-file-utils \
-		kde:5 mysql:client,embedded pkgconfig qt:5 shebangfix ssl
+		kde:5 mysql:client,embedded pkgconfig qca qt:5 shebangfix ssl xorg
 
 USE_QT=		core concurrent declarative dbus gui location network phonon4 \
 		quickcontrols2 script scripttools sql svg webchannel \
@@ -40,6 +39,8 @@ USE_KDE=	archive auth attica bookmarks codecs config configwidgets \
 USE_XORG=	ice sm x11 xext
 USE_LDCONFIG=	yes
 
+CONFIGURE_ENV=	MYSQL_DIR=${LOCALBASE}
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	kde
 GH_TAGNAME=	0aa6ae0c77
@@ -55,6 +56,8 @@ OPTIONS_DEFINE=		IPOD MP3TUNES MTP QTWEBENGINE
 OPTIONS_DEFAULT=	IPOD MP3TUNES MTP
 OPTIONS_DEFAULT_amd64=	QTWEBENGINE
 OPTIONS_DEFAULT_i386=	QTWEBENGINE
+OPTIONS_DEFAULT_powerpc64=	${OPTIONS_DEFAULT_powerpc64_${OSREL:R}}
+OPTIONS_DEFAULT_powerpc64_13=	QTWEBENGINE
 OPTIONS_SUB=		yes
 
 IPOD_DESC=		Apple iPod support
@@ -83,8 +86,6 @@ QTWEBENGINE_USE=	qt=webengine
 QTWEBENGINE_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_Qt5WebEngine
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' \
-		${WRKSRC}/cmake/modules/FindMySQL.cmake
 	@${REINPLACE_CMD} -e 's|/usr/include|${LOCALBASE}/include|' \
 		${WRKSRC}/cmake/modules/FindLoudmouth.cmake
 

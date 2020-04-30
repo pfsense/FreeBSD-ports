@@ -1,11 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	quark
-DISTVERSION=	g20180403
+DISTVERSION=	g20190923
+PORTREVISION=	1
 CATEGORIES=	www
-MASTER_SITES=	https://git.suckless.org/quark/snapshot/
+# XXX: See PR 244457 for details why this is not LOCAL/0mp.
+MASTER_SITES=	https://people.freebsd.org/~0mp/distfiles/
 PKGNAMESUFFIX=	-server
-DISTNAME=	quark-ba38b0969f542e6e7d3f01ba500189a81ca32355
+DISTNAME=	${PORTNAME}${PKGNAMESUFFIX}-${DISTVERSIONFULL}
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Small and simple HTTP GET/HEAD-only web server for static content
@@ -15,10 +17,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 CONFLICTS_INSTALL=	quark
 
-MAKE_ARGS=	CC=${CC} MANPREFIX=${PREFIX}/man
+MAKE_ARGS=	MANPREFIX=${PREFIX}/share/man
 
 PLIST_FILES=	bin/quark \
-		man/man1/quark.1.gz
+		share/man/man1/quark.1.gz
 
 .include <bsd.port.options.mk>
 
@@ -26,6 +28,8 @@ PLIST_FILES=	bin/quark \
 .if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200002
 CFLAGS+=	-D_WITH_DPRINTF
 .endif
+
+_COMMIT_HASH=	3c7049e9063edebbd1934178f263f9f3c9b8ddf5
 
 pre-everything::
 	@${ECHO_MSG} "You can build quark with your own config.h using the QUARK_CONF knob:"
@@ -39,5 +43,14 @@ post-patch:
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/quark
+
+_regenerate-distfile:
+	${RM} -r -- ${PKGNAME}
+	git clone -n https://git.suckless.org/quark ${PKGNAME}
+	git -C ${PKGNAME} checkout ${_COMMIT_HASH}
+	${RM} -r -- ${PKGNAME}/.git
+	${TAR} -czf ${PKGNAME}.tar.gz ${PKGNAME}
+	scp ${PKGNAME}.tar.gz 0mp@freefall.freebsd.org:~/public_html/distfiles
+	${RM} -r -- ${PKGNAME} ${PKGNAME}.tar.gz
 
 .include <bsd.port.mk>

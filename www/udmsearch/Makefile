@@ -11,6 +11,8 @@ MASTER_SITES=	http://www.mnogosearch.org/Download/ \
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Full featured SQL-based hypertext search engine
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
@@ -23,7 +25,7 @@ USES=		libtool
 OPTIONS_DEFINE=		MYSQL PGSQL DOCS
 OPTIONS_DEFAULT=	MYSQL
 
-MYSQL_USE=	MYSQL=YES
+MYSQL_USES=	mysql
 MYSQL_CONFIGURE_ON+=	--with-mysql=${LOCALBASE}
 PGSQL_USES=	pgsql
 PGSQL_CONFIGURE_ON+=	--with-pgsql=${LOCALBASE}/pgsql

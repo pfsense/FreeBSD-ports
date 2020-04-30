@@ -11,6 +11,8 @@ MASTER_SITES=	http://www.newsrssticker.com/src/ \
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	News RSS Ticker
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv3
 
 GNU_CONFIGURE=	yes
@@ -21,7 +23,7 @@ REINPLACE_ARGS=	-e 's,%%DATADIR%%,${DATADIR},1' -e 's,%%PREFIX%%,${PREFIX},1' -i
 
 DOS2UNIX_GLOB=	tickr.h
 USE_GNOME=	gtk20 libxml2
-USES=		desktop-file-utils dos2unix pkgconfig libtool
+USES=		desktop-file-utils dos2unix gnome libtool pkgconfig
 
 post-patch:
 	${REINPLACE_CMD} ${WRKSRC}/${PORTNAME}.desktop ${WRKSRC}/src/tickr/tickr.h

@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	so-synth
-DISTVERSIONPREFIX=	debian/
-DISTVERSION=	1.4-1
+DISTVERSIONPREFIX=	upstream/
+DISTVERSION=	1.5
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	lv2>0:audio/lv2
 
-USES=		gmake localbase
+USES=		compiler:c++11-lang gmake localbase pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	jeremysalwen
 GH_PROJECT=	So-synth-LV2

@@ -4,22 +4,26 @@
 PORTNAME=	eiskaltdcpp
 PORTVERSION=	2.2.10
 DISTVERSIONPREFIX=	v
-PORTREVISION=	19
+PORTREVISION?=	20
 CATEGORIES=	net-p2p
 PKGNAMESUFFIX?=	-lib
 
-MAINTAINER=	fjoe@FreeBSD.org
-COMMENT=	Direct Connect client shared library
+MAINTAINER?=	fjoe@FreeBSD.org
+COMMENT?=	EiskaltDC++ shared library and header files
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+GENTOO_PATCHES_PREFIX=	${FILESDIR}/gentoo/${PORTNAME}-${PORTVERSION}
+EXTRA_PATCHES=	${GENTOO_PATCHES_PREFIX}-ipv6_upnp.patch:-p1 \
+		${GENTOO_PATCHES_PREFIX}-miniupnpc1.patch:-p1 \
+		${GENTOO_PATCHES_PREFIX}-miniupnpc2.patch:-p1 \
+		${GENTOO_PATCHES_PREFIX}-openssl-1.1.patch:-p1 \
+		${GENTOO_PATCHES_PREFIX}-tray-close.patch:-p1
+
 USE_GITHUB=	yes
 
 .if !defined (MASTERDIR)
-BROKEN_FreeBSD_12=	error: member access into incomplete type 'dh_st'
-BROKEN_FreeBSD_13=	error: member access into incomplete type 'dh_st'
-
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs
 
 USES=		cmake gettext compiler:c++11-lib ssl

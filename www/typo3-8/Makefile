@@ -24,7 +24,7 @@ WRKSRC=		${WRKDIR}/${TYPO3SRC}
 
 PORT_V_MAJOR=	8
 PORT_V_MINOR=	7
-PORT_V_PATCH=	27
+PORT_V_PATCH=	32
 
 TYPO3WWW=	www
 TYPO3SRC=	${PORTNAME}_src-${PORTVERSION}
@@ -51,7 +51,7 @@ CURL_USE=	PHP=curl
 GD_USE=		PHP=gd
 GMP_USE=	PHP=gmp
 MBSTRING_USE=	PHP=mbstring
-MYSQL_USE=	MYSQL=server
+MYSQL_USES=	mysql:server
 ZLIB_USE=	PHP=zlib
 
 .include <bsd.port.options.mk>

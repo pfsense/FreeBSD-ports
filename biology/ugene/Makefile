@@ -14,6 +14,8 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	h2+fbsdports@fsfe.org
 COMMENT=	Free, open-source, cross-platform bioinformatics toolkit
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
@@ -21,7 +23,7 @@ RUN_DEPENDS=	bash:shells/bash
 
 BROKEN_aarch64=	Fails to build: invokes x86 asm
 
-USES=		desktop-file-utils qmake qt:5 shared-mime-info
+USES=		desktop-file-utils gl qmake qt:5 shared-mime-info xorg
 USE_GL=		gl glu
 USE_QT=		buildtools_build linguisttools_build \
 		core gui network opengl printsupport script scripttools \

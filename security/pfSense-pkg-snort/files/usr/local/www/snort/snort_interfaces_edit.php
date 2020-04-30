@@ -3,7 +3,7 @@
  * snort_interfaces_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008-2009 Robert Zelaya
  * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
@@ -458,6 +458,8 @@ if ($_POST['save'] && !$input_errors) {
 			$natent['ssh_preproc_enable_srvoverflow'] = 'on';
 			$natent['ssh_preproc_enable_ssh1crc32'] = 'on';
 			$natent['ssh_preproc_enable_protomismatch'] = 'on';
+
+			$natent['autoflowbitrules'] = 'on';
 
 			$a_rule[] = $natent;
 		}

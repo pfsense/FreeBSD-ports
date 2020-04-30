@@ -5,7 +5,8 @@ PORTNAME=	vlock
 PORTVERSION=	2.2.3
 PORTREVISION=	3
 CATEGORIES=	security
-MASTER_SITES=	http://cthulhu.c3d2.de/~toidinamai/vlock/archive/
+MASTER_SITES=	http://cthulhu.c3d2.de/~toidinamai/vlock/archive/ \
+		LOCAL/martymac
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Locks a terminal

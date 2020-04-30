@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	tome4
-DISTVERSION?=	1.5.10
-PORTREVISION?=	1
+DISTVERSION?=	1.6.5
+PORTREVISION?=	0
 CATEGORIES=	games
 MASTER_SITES=	https://te4.org/dl/t-engine/ \
 		SF/lifanov-ports-distfiles/${PORTNAME}/:icons
@@ -20,20 +20,21 @@ BUILD_DEPENDS=	premake4:devel/premake4
 LIB_DEPENDS=	libvorbisfile.so:audio/libvorbis \
 		libpng.so:graphics/png
 
-USES=		gl gmake openal:al sdl tar:bzip2 xorg
+USES=		compiler:c++11-lang gl gmake openal:al sdl tar:bzip2 xorg
 USE_SDL=	image2 sdl2 ttf2
 USE_GL=		gl glu
 USE_CSTD=	gnu89
 SUB_FILES=	tome4
 
-LLD_UNSAFE=	yes
+MAKE_JOBS_UNSAFE=	yes
 
 DESKTOP_ENTRIES="ToME 4" "" "${PORTNAME}" \
 		"${PORTNAME}" "Game;RolePlaying;" ""
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 WRKSRC=		${WRKDIR}/t-engine4-src-${DISTVERSION}
-MAKE_ARGS+=	config=release verbose=yes ARCH="" CC=${CC}
+MAKE_ARGS+=	config=release verbose=yes ARCH="" CC=${CC} CXX=${CXX}
+LDFLAGS_i386=	-Wl,-znotext
 
 .include <bsd.port.pre.mk>
 

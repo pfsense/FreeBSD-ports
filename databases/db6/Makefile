@@ -54,7 +54,11 @@ L10N_CONFIGURE_ENABLE=	localization
 SQL_CONFIGURE_ENABLE=	sql sql_codegen
 SQL_VARS=		DBLIBS+=libdb_sql
 JAVA_USE=		java
-JAVA_VARS=		DBLIBS+=libdb_java JAVA_VERSION=1.6+
+# db6 is only compatible with openjdk 7 or 8,
+# openjdk 11 or newer and cause IllegalArgument
+# exceptions during build even if the version check
+# in dist/configure is disabled or fixed:
+JAVA_VARS=		DBLIBS+=libdb_java JAVA_VERSION="7 8"
 JAVA_CONFIGURE_ENABLE=	java
 JAVA_CPPFLAGS=		-I"${JAVA_HOME}/include"
 JAVA_CONFIGURE_ENV=	JAVAC="${JAVAC}" JAR="${JAR}" JAVA="${JAVA}"

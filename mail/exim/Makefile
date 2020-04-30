@@ -3,21 +3,24 @@
 
 PORTNAME=	exim
 PORTVERSION?=	${EXIM_VERSION}
-CATEGORIES=	mail ipv6
+PORTREVISION?=	3
+CATEGORIES=	mail
 MASTER_SITES=	EXIM:exim
 MASTER_SITE_SUBDIR=	/exim4/:exim \
+			/exim4/fixes/:exim \
 			/exim4/old/:exim
 DISTNAME=	${PORTNAME}-${EXIM_VERSION}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:exim
 DIST_SUBDIR=	exim
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	vsevolod@FreeBSD.org
+MAINTAINER=	fluffy@FreeBSD.org
 COMMENT?=	High performance MTA for Unix systems on the Internet
 
 LICENSE=	GPLv2
 
 USES=		compiler cpe tar:bzip2 perl5
+USE_CSTD=	c99
 USE_PERL5=	run
 
 # Exim build system is job unsafe atm
@@ -46,12 +49,13 @@ AUTH_SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 BDB_USES=	bdb
 DMARC_LIB_DEPENDS=	libopendmarc.so:mail/opendmarc
 EMBEDDED_PERL_USE=	perl5=run,build
-EXIMON_USE=	xorg=x11,xaw,xt
+EXIMON_USES=	xorg
+EXIMON_USE=	xorg=x11,xaw,xext,xmu,xt
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 ICONV_USES=	iconv:lib,build
 INTERNATIONAL_LIB_DEPENDS=	libidn.so:dns/libidn
 LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
-MYSQL_USE=	mysql=yes
+MYSQL_USES=	mysql
 OPENLDAP_USE=	openldap=yes
 PGSQL_USES=	pgsql
 REDIS_LIB_DEPENDS=	libhiredis.so:databases/hiredis
@@ -95,11 +99,14 @@ IGNORE=	you cannot enable DANE without DNSSEC support or without TLS support
 MASTER_SITES+=	http://marc.merlins.org/linux/exim/files/:sa_exim \
 		SF/sa-exim/sa-exim/${SA_EXIM_VERSION}:sa_exim
 DISTFILES+=	sa-exim-${SA_EXIM_VERSION}.tar.gz:sa_exim
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-Local-sa-exim.c
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-Local-sa-exim.conf
 .endif
 
-EXIM_VERSION=	4.92.3
-SA_EXIM_VERSION=4.2
+EXIM_VERSION=	4.93.0.4
+SA_EXIM_VERSION=4.2.1
 EXIM_INSTALL_ARG+=	"-no_chown" "-no_symlink"
+EXTRA_PATCHES+=	`${FIND} ${PATCHDIR} -name '74_*.patch'|${SORT} -h`
 
 .if !defined(EXIMON_ONLY)
 PLIST_SUB+=	EXIM=""
@@ -212,8 +219,8 @@ SEDLIST+=	-e 's,^\# (EXPERIMENTAL_CERTNAMES=),\1,'
 SEDLIST+=	-e 's,^\# (EXPERIMENTAL_DSN=),\1,'
 .endif
 
-.if ${PORT_OPTIONS:MDANE}
-SEDLIST+=	-e 's,^\# (SUPPORT_DANE=),\1,'
+.if !${PORT_OPTIONS:MDANE}
+SEDLIST+=	-e 's,^(SUPPORT_DANE=),\#\1,'
 .endif
 
 .if ${PORT_OPTIONS:MARC}
@@ -249,7 +256,7 @@ SEDLIST+=	-e 's,^\# (DISABLE_DNSSEC=),\1,'
 
 .if ${PORT_OPTIONS:MDMARC}
 SEDLIST+= -e 's,XX_DMARC_LIBS_XX,-L${LOCALBASE}/lib -lopendmarc,' \
-		-e 's,^\# (EXPERIMENTAL_DMARC=),\1,'
+		-e 's,^\# (SUPPORT_DMARC=),\1,'
 .else
 SEDLIST+= -e 's,XX_DMARC_LIBS_XX,,'
 .endif
@@ -267,14 +274,16 @@ SEDLIST+=	-e 's,^\# (EXIM_MONITOR=),\1,'
 .endif
 
 .if ${PORT_OPTIONS:MTLS}
-SEDLIST+=	-e 's,^\# (SUPPORT_TLS=),\1,'
 .if ! ${PORT_OPTIONS:MGNUTLS}
 USES+=		ssl
+SEDLIST+=	-e 's,^\# (USE_OPENSSL=),\1,'
 SEDLIST+=	-e 's,^\# (TLS_LIBS=.*-lssl[[:space:]]),\1,'
 .else
 SEDLIST+=	-e 's,^\# (USE_GNUTLS=),\1,'
 SEDLIST+=	-e 's,^\# (TLS_LIBS=.*-lgnutls[[:space:]]),\1,'
 .endif
+.else # TLS support
+SEDLIST+=	-e 's,^\# (DISABLE_TLS=),\1,'
 .endif
 
 .if ${PORT_OPTIONS:MEMBEDDED_PERL}
@@ -381,9 +390,9 @@ SEDLIST+=	-e 's,XX_RADIUS_LIBS_XX,-lradius,' \
 		-e 's,^\# (RADIUS_CONFIG_FILE=).*,\1/etc/radius.conf,' \
 		-e 's,^\# (RADIUS_LIB_TYPE=).*,\1RADLIB,'
 .elif ${WITH_RADIUS_TYPE:tl} == radiusclient
-LIB_DEPENDS+=	libradiusclient-ng.so:net/radiusclient
-SEDLIST+=	-e 's,XX_RADIUS_LIBS_XX,-L${LOCALBASE:S/,/\\,/g}/lib -lradiusclient-ng,' \
-		-e 's,^\# (RADIUS_CONFIG_FILE=).*,\1${LOCALBASE:S/,/\\,/g}/etc/radiusclient-ng/radiusclient.conf,' \
+LIB_DEPENDS+=	libfreeradius-client.so:net/freeradius-client
+SEDLIST+=	-e 's,XX_RADIUS_LIBS_XX,-L${LOCALBASE:S/,/\\,/g}/lib -lfreeradius-client,' \
+		-e 's,^\# (RADIUS_CONFIG_FILE=).*,\1${LOCALBASE:S/,/\\,/g}/etc/radiusclient/radiusclient.conf,' \
 		-e 's,^\# (RADIUS_LIB_TYPE=).*,\1RADIUSCLIENTNEW,'
 .else
 IGNORE=		the variable WITH_RADIUS_TYPE must be either RADLIB or RADIUSCLIENT
@@ -401,7 +410,7 @@ SEDLIST+=	-e 's,XX_PGSQL_[^ ]*_XX,,'
 .endif
 
 .if ! ${PORT_OPTIONS:MPGSQL} && ! ${PORT_OPTIONS:MMYSQL} && !defined(LDAP_LIB_TYPE) && \
-    ! ${PORT_OPTIONS:MBDB}
+    ! ${PORT_OPTIONS:MBDB} && ! ${PORT_OPTIONS:MLMDB}
 SEDLIST+=	-e 's,^(LOOKUP_LIBS=),\# \1,' \
 		-e 's,^(LOOKUP_INCLUDE=),\# \1,'
 .endif
@@ -547,6 +556,8 @@ pre-everything::
 post-extract:
 .if ${PORT_OPTIONS:MSA_EXIM}
 	@cd ${WRKDIR} && ${TAR} ${EXTRACT_BEFORE_ARGS} ${_DISTDIR}/sa-exim-${SA_EXIM_VERSION}.tar.gz ${EXTRACT_AFTER_ARGS}
+	@@${CP} ${WRKDIR}/sa-exim-${SA_EXIM_VERSION}/sa-exim.c ${WRKSRC}/Local
+	@@${CP} ${WRKDIR}/sa-exim-${SA_EXIM_VERSION}/sa-exim.conf ${WRKSRC}/Local
 .endif
 
 do-configure:
@@ -568,14 +579,13 @@ do-configure:
 		${WRKSRC}/OS/Makefile-Default
 	@${REINPLACE_CMD} -E -e 's/^(LOCAL_SCAN_SOURCE=).*/\1Local\/sa-exim.c/' \
 		${WRKSRC}/OS/Makefile-Default
-	@${CP} ${WRKDIR}/sa-exim-${SA_EXIM_VERSION}/sa-exim.c ${WRKSRC}/Local
 	@{ \
 	    ${ECHO_CMD} "char *version=\"${SA_EXIM_VERSION}\";"; \
 	    ${ECHO_CMD} "#define SPAMC_LOCATION		\"${LOCALBASE}/bin/spamc\""; \
 	    ${ECHO_CMD} "#define SPAMASSASSIN_CONF	\"${PREFIX}/etc/exim/sa-exim.conf\""; \
 	} > ${WRKSRC}/Local/sa-exim.h
 	@${REINPLACE_CMD} -e 's,/usr/bin/spamc,${LOCALBASE}/bin/spamc,' \
-	    ${WRKDIR}/sa-exim-${SA_EXIM_VERSION}/sa-exim.conf
+	    ${WRKSRC}/Local/sa-exim.conf
 .endif
 	@${REINPLACE_CMD} -E -e 's/XX_STRIPCMD_XX/${STRIP_CMD:S,/,\/,g}/' \
 		${WRKSRC}/OS/Makefile-FreeBSD
@@ -617,7 +627,7 @@ post-install:
 .endfor
 .endif
 .if ${PORT_OPTIONS:MSA_EXIM}
-	${INSTALL_DATA} ${WRKDIR}/sa-exim-${SA_EXIM_VERSION}/sa-exim.conf \
+	${INSTALL_DATA} ${WRKSRC}/Local/sa-exim.conf \
 		${STAGEDIR}${PREFIX}/etc/exim/sa-exim.conf.sample
 .endif
 

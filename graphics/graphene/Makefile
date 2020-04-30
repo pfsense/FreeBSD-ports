@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	graphene
-PORTVERSION=	1.8.2
-PORTREVISION=	1
+PORTVERSION=	1.10.0
 CATEGORIES=	graphics devel
 MASTER_SITES=	GNOME
 
@@ -11,7 +10,7 @@ COMMENT=	Optimizations for speeding up vector operations
 
 LICENSE=	MIT
 
-USES=		gnome meson pkgconfig python:3.4+ shebangfix tar:xz
+USES=		compiler:c11 gnome meson pkgconfig python:3.4+ shebangfix tar:xz
 USE_GNOME=	glib20 pygobject3
 USE_LDCONFIG=	yes
 

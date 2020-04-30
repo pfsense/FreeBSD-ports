@@ -18,7 +18,7 @@
 
 PORTNAME=	webengine
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	3
+PORTREVISION=	2
 CATEGORIES=	www
 PKGNAMEPREFIX=	qt5-
 
@@ -49,7 +49,7 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libwebp.so:graphics/webp
 
 DISTINFO_FILE=	${.CURDIR}/distinfo
-QT5_VERSION=	5.12.2
+QT5_VERSION=	5.13.2
 
 OPTIONS_SINGLE=		AUDIO
 OPTIONS_SINGLE_AUDIO=	ALSA PULSEAUDIO SNDIO
@@ -74,7 +74,7 @@ SNDIO_VARS_OFF=		QMAKE_CONFIGURE_ARGS+=-no-sndio
 # whether webenginewidgets is available, which fails when qmake processes all
 # .pro files at once.
 USES=		gl gnome gperf jpeg python:2.7,build pkgconfig \
-		qmake:norecursive,outsource qt-dist:5,webengine shebangfix
+		qmake:norecursive,outsource qt-dist:5,webengine shebangfix xorg
 USE_GL=		gl
 USE_GNOME=	glib20 libxml2 libxslt
 USE_QT=		core declarative designer gui location network webchannel \
@@ -111,6 +111,16 @@ MAKE_ENV+=	CC="${CC}" CXX="${CXX}"			\
 		CPLUS_INCLUDE_PATH=${LOCALBASE}/include	\
 		${CONFIGURE_ENV}
 
+QT_BINARIES=	yes
+
+.include <bsd.port.pre.mk>
+
+.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+PLIST_SUB+=	BE="" LE="@comment "
+.else
+PLIST_SUB+=	BE="@comment " LE=""
+.endif
+
 post-extract:
 # Install FreeBSD's freebsd.pri file.
 	${CP} ${FILESDIR}/freebsd.pri ${WRKSRC}/src/core/config/freebsd.pri
@@ -121,6 +131,12 @@ post-extract-SNDIO-on:
 		${WRKSRC}/src/3rdparty/chromium/media/audio/sndio
 	@${CP} ${FILESDIR}/audio_manager_openbsd.* \
 		${WRKSRC}/src/3rdparty/chromium/media/audio/openbsd
+
+.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+post-patch:
+	@${REINPLACE_CMD} -e 's/icudtl.dat/icudtb.dat/' \
+		${WRKSRC}/src/core/core_module.pro
+.endif
 
 pre-configure:
 # Link in ${PYTHON_CMD} to ${CONFIGURE_WRKSRC}/bin -- the scripts hardcode 'python'
@@ -133,4 +149,4 @@ pre-configure:
 # Rerun syncqt.pl -- otherwise the resulting package misses some forwarding headers.
 	cd ${WRKSRC} && ${QT_BINDIR}/syncqt.pl -version ${QT5_VERSION}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

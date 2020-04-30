@@ -3,7 +3,7 @@
 
 PORTNAME=	vtk
 PORTVERSION=	6.2.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	math graphics
 MASTER_SITES=	http://www.vtk.org/files/release/${VTK_SHORT_VER}/
 PKGNAMESUFFIX=	6
@@ -23,12 +23,10 @@ LIB_DEPENDS=	libtiff.so:graphics/tiff \
 # TODO
 # * VTK Groups
 
-CONFLICTS=	vtk5 vtk8
-USES=		alias cmake jpeg localbase
+CONFLICTS=	vtk8
+USES=		alias cmake jpeg localbase xorg
 USE_LDCONFIG=	${PREFIX}/lib/vtk-${VTK_SHORT_VER}
 USE_XORG=	xt sm ice x11 xext
-CXXFLAGS_powerpc64=	-mminimal-toc
-
 VTK_SHORT_VER=	${PORTVERSION:R}
 PLIST_SUB+=	VER2=${VTK_SHORT_VER}
 
@@ -47,9 +45,11 @@ OPTIONS_SUB=	yes
 #VTK_GROUPS=	Imaging MPI Qt Rendering StandAlone Views
 VTK_GROUPS=	MPI
 VTK_WRAPS=	JAVA TCLTK PYTHON
-OPTIONS_GROUP=	Groups Wrapping
-OPTIONS_GROUP_Groups=${VTK_GROUPS}
-OPTIONS_GROUP_Wrapping=${VTK_WRAPS}
+OPTIONS_GROUP=	GROUPS WRAPPING
+OPTIONS_GROUP_GROUPS=${VTK_GROUPS}
+OPTIONS_GROUP_WRAPPING=${VTK_WRAPS}
+GROUPS_DESC=	Groups
+WRAPPING_DESC=	Wrapping
 .for g in ${VTK_GROUPS}
 $g_DESC=	Build the $g group
 .endfor
@@ -103,6 +103,7 @@ CMAKE_ARGS+=	-DVTK_OPENGL_HAS_OSMESA:BOOL=ON \
 PLIST_SUB+=	X11="@comment " \
 		OSMESA=""
 .else
+USES+=		gl
 USE_GL=		gl glu
 PLIST_SUB+=	X11="" \
 		OSMESA="@comment "
@@ -207,4 +208,10 @@ USE_PERL5+=	build
 CMAKE_ARGS+=	-DBUILD_DOCUMENTATION:BOOL=OFF
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if defined(PPC_ABI) && ${PPC_ABI} == ELFv1
+CXXFLAGS+=	-mminimal-toc
+.endif
+
+.include <bsd.port.post.mk>

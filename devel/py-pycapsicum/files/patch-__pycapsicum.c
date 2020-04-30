@@ -1,4 +1,6 @@
---- _pycapsicum.c.orig	2019-09-01 13:05:23 UTC
+https://github.com/stillson/pycapsicum2/pull/3
+
+--- _pycapsicum.c.orig	2020-03-22 05:41:16 UTC
 +++ _pycapsicum.c
 @@ -32,11 +32,7 @@
  #include <fcntl.h>

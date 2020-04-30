@@ -3,7 +3,7 @@
  * pfblockerng_ip.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -42,6 +42,7 @@ $pconfig['ip_placeholder']	= $pfb['iconfig']['ip_placeholder']			?: '127.1.7.7';
 $pconfig['maxmind_locale']	= $pfb['iconfig']['maxmind_locale']			?: 'en';
 $pconfig['asn_reporting']	= $pfb['iconfig']['asn_reporting']			?: 'disabled';
 $pconfig['database_cc']		= $pfb['iconfig']['database_cc']			?: '';
+$pconfig['maxmind_key']		= $pfb['iconfig']['maxmind_key']			?: '';
 $pconfig['inbound_interface']	= explode(',', $pfb['iconfig']['inbound_interface'])	?: array();
 $pconfig['inbound_deny_action']	= $pfb['iconfig']['inbound_deny_action']		?: 'block';
 $pconfig['outbound_interface']	= explode(',', $pfb['iconfig']['outbound_interface'])	?: array();
@@ -95,6 +96,10 @@ if ($_POST) {
 			}
 		}
 
+		if (!empty($_POST['maxmind_key']) && !ctype_alnum($_POST['maxmind_key'])) {
+			$input_errors[] = 'MaxMind License key Invalid';
+		}
+
 		$v4suppression = explode("\r\n", $_POST['v4suppression']);
 		if (!empty($v4suppression)) {
 			foreach ($v4suppression as $line) {
@@ -123,6 +128,7 @@ if ($_POST) {
 		$pfb['iconfig']['ip_placeholder']	= $_POST['ip_placeholder']				?: '127.1.7.7';
 		$pfb['iconfig']['maxmind_locale']	= $_POST['maxmind_locale']				?: '';
 		$pfb['iconfig']['database_cc']		= $_POST['database_cc']					?: '';
+		$pfb['iconfig']['maxmind_key']		= pfb_filter($_POST['maxmind_key'], 1)			?: '';
 		$pfb['iconfig']['asn_reporting']	= $_POST['asn_reporting']				?: 'disabled';
 		$pfb['iconfig']['inbound_interface']	= implode(',', (array)$_POST['inbound_interface'])	?: '';
 		$pfb['iconfig']['inbound_deny_action']	= $_POST['inbound_deny_action']				?: '';
@@ -227,11 +233,11 @@ $section->addInput(new Form_Checkbox(
 
 $section->addInput(new Form_Checkbox(
 	'enable_log',
-	'Global Logging',
+	'Force Global IP Logging',
 	'Enable',
 	$pconfig['enable_log'] === 'on' ? true:false,
 	'on'
-))->setHelp('Firewall Rule logging - Enable Global logging to [ Status: System Logs: FIREWALL Log ].<br />'
+))->setHelp('The global logging option is only used to force logging for all IP Aliases, and not to disable the logging of all IP Aliases.<br />'
 		. 'This overrides any logging settings in the GeoIP/IPv4/v6 tabs.'
 );
 
@@ -247,6 +253,29 @@ $section->addInput(new Form_Input(
 );
 
 $section->addInput(new Form_Select(
+	'asn_reporting',
+	'ASN Reporting',
+	$pconfig['asn_reporting'],
+	[	'disabled' => 'Disabled', '24hour' => 'Enabled - ASN entries cached for 24 hours', '12hour' => 'Enabled - ASN entries cached for 12 hours',
+		'4hour' => 'Enabled - ASN entries cached for 4 hours', '1hour' => 'Enabled - ASN entries cached for 1 hour' ]
+))->setHelp('Query for the ASN (BGPview.io API) for each block/reject/permit/match IP entry. ASN values are cached as per the defined selection.')
+  ->setAttribute('style', 'width: auto');
+
+$form->add($section);
+$section = new Form_Section('MaxMind GeoIP configuration');
+
+$section->addInput(new Form_Input(
+	'maxmind_key',
+	gettext('MaxMind License Key'),
+	'text',
+	$pconfig['maxmind_key'],
+	['placeholder' => 'Enter the MaxMind License Key']
+))->setHelp('To utilize the MaxMind GeoIP functionality, you must first register for a free MaxMind user account. Visit the following '
+	. '<a href="https://www.maxmind.com/en/geolite2/signup" target="_blank">Link to Register</a> for a free MaxMind user account. '
+	. '<strong>Utilize the GeoIP Update version 3.1.1 or newer registration option.</strong>')
+  ->setAttribute('autocomplete', 'off');
+
+$section->addInput(new Form_Select(
 	'maxmind_locale',
 	'MaxMind Localized Language',
 	$pconfig['maxmind_locale'],
@@ -259,20 +288,11 @@ $section->addInput(new Form_Select(
 
 $section->addInput(new Form_Checkbox(
 	'database_cc',
-	'MaxMind Updates',
-	'Check to disable MaxMind updates',
+	'MaxMind CSV Updates',
+	'Check to disable MaxMind CSV updates',
 	$pconfig['database_cc'] === 'on' ? true:false,
 	'on'
-))->setHelp('This will disable the MaxMind monthly GeoIP database cron update. This does not affect the MaxMind binary cron update.');
-
-$section->addInput(new Form_Select(
-	'asn_reporting',
-	'ASN Reporting',
-	$pconfig['asn_reporting'],
-	[	'disabled' => 'Disabled', '24hour' => 'Enabled - ASN entries cached for 24 hours', '12hour' => 'Enabled - ASN entries cached for 12 hours',
-		'4hour' => 'Enabled - ASN entries cached for 4 hours', '1hour' => 'Enabled - ASN entries cached for 1 hour' ]
-))->setHelp('Query for the ASN (BGPview.io API) for each block/reject/permit/match IP entry. ASN values are cached as per the defined selection.')
-  ->setAttribute('style', 'width: auto');
+))->setHelp('This will disable the MaxMind monthly CSV GeoIP database cron update. This does not affect the MaxMind binary cron update that is used for other GeoIP funcionality in the package.');
 
 // Create page anchor for IP Suppression List
 $section->addInput(new Form_StaticText(

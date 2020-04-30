@@ -2,14 +2,15 @@
 # $FreeBSD$
 
 ######################################################################
-# Anytime PORTVERSION changes please bump PORTREVISION of            #
-# mail/dovecot-pigeonhole. See ports/146029 for an explanation.      #
+# Anytime PORTVERSION changes please bump PORTREVISION of:           #
+# - mail/dovecot-pigeonhole. See ports/146029 for an explanation.    #
+# - mail/dovecot-fts-xapian.                                         #
 ######################################################################
 
 PORTNAME=	dovecot
-PORTVERSION=	2.3.7.2
-PORTREVISION=	1
-CATEGORIES=	mail ipv6
+PORTVERSION=	2.3.10
+PORTREVISION=	2
+CATEGORIES=	mail
 MASTER_SITES=	https://dovecot.org/releases/2.3/
 
 MAINTAINER=	ler@FreeBSD.org
@@ -34,8 +35,6 @@ INSTALL_TARGET=	install-strip
 USERS=		dovecot dovenull
 GROUPS=		${USERS}
 
-CONFLICTS_INSTALL=	dovecot22
-
 OPTIONS_DEFINE=	LIBSODIUM LIBWRAP LUA LZ4 VPOPMAIL DOCS EXAMPLES
 OPTIONS_DEFAULT=GSSAPI_NONE LIBWRAP
 OPTIONS_SUB=	yes
@@ -57,7 +56,7 @@ FTS_DESC=	Full text search plugins
 ICU_DESC=	Use libicu for FTS unicode normalization
 LUCENE_DESC=	CLucene FTS support
 SOLR_DESC=	Solr FTS support
-TEXTCAT_DESC=	Libtextcat FTS support
+TEXTCAT_DESC=	Libexttextcat FTS support
 
 GSSAPI_NONE_DESC=	Build without GSSAPI support
 GSSAPI_BASE_DESC=	Use GSSAPI from base
@@ -100,7 +99,7 @@ SQLITE_CONFIGURE_WITH=	sqlite
 ICU_CONFIGURE_WITH=	icu
 ICU_LIB_DEPENDS=	libicui18n.so:devel/icu
 
-LUCENE_CONFIGURE_WITH=	lucene
+LUCENE_CONFIGURE_WITH=	lucene stemmer
 LUCENE_LIB_DEPENDS=	libclucene-core.so:textproc/clucene
 
 SOLR_CONFIGURE_WITH=	solr
@@ -108,7 +107,7 @@ SOLR_LIB_DEPENDS=	libcurl.so:ftp/curl \
 			libexpat.so:textproc/expat2
 
 TEXTCAT_CONFIGURE_WITH=	textcat
-TEXTCAT_LIB_DEPENDS=	libtextcat.so:textproc/libtextcat
+TEXTCAT_LIB_DEPENDS=	libexttextcat-2.0.so:textproc/libexttextcat
 
 # GSSAPI
 GSSAPI_NONE_CONFIGURE_ON=	--without-gssapi

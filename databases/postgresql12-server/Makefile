@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME?=	postgresql
-DISTVERSION?=	12rc1
+DISTVERSION?=	12.2
 # PORTREVISION must be ?= otherwise, all slave ports get this PORTREVISION and
 # not their own.  Probably best to keep it at ?=0 when reset here too.
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES?=	databases
 MASTER_SITES=	PGSQL/source/v${DISTVERSION}
 PKGNAMESUFFIX?= ${PORTVERSION:R}${COMPONENT}
@@ -92,8 +92,10 @@ TZDATA_DESC=	Use internal timezone database
 XML_DESC=	Build with XML data type
 
 .if ${DISTVERSION:C/([0-9]*).*/\1/} >= 11
-OPTIONS_DEFINE+=LLVM
-LLVM_DESC=	Build with support for JIT-compiling expressions
+OPTIONS_DEFINE+=	LLVM
+LLVM_DESC=		Build with support for JIT-compiling expressions
+OPTIONS_DEFAULT+=	${OPTIONS_DEFAULT_${CHOSEN_COMPILER_TYPE}}
+OPTIONS_DEFAULT_clang=	LLVM
 .endif
 
 .if ${DISTVERSION:C/([0-9]*).*/\1/} < 10
@@ -110,7 +112,7 @@ USES+=		pkgconfig
 # (requires dump/restore if modified.)
 OPTIONS_DEFINE+=	INTDATE
 INTDATE_DESC=		Builds with 64-bit date/time type
-OPTIONS_DEFAULT+=	TZDATA INTDATE
+OPTIONS_DEFAULT+=	INTDATE
 .endif
 
 .if !defined(SLAVE_ONLY)
@@ -172,6 +174,8 @@ SUB_LIST+=		PG_GROUP=${PG_GROUP} \
 
 .if ${ARCH} == "i386"
 USES+=		compiler:gcc-c++11-lib
+.else
+USES+=		compiler
 .endif
 
 .if ${DISTVERSION:C/([0-9]*).*/\1/} >= 11
@@ -218,9 +222,11 @@ CONFIGURE_ARGS+=--with-gssapi
 # so configure's -lgssapi_krb5 won't go.
 LDFLAGS+=	-lgssapi
 LDFLAGS_SL+=	-lgssapi
+PLIST_SUB+=	GSSAPI=""
 .endif
 .else
 CONFIGURE_ARGS+=--without-gssapi
+PLIST_SUB+=	GSSAPI="@comment "
 .endif
 
 .  if ${PORT_OPTIONS:MMIT_KRB5}
@@ -237,6 +243,12 @@ LIB_DEPENDS+=	libkrb5.so.3:security/krb5
 
 .  if ${PORT_OPTIONS:MHEIMDAL_KRB5}
 CONFIGURE_ARGS+=--with-krb5
+.  endif
+
+.  if ${PORT_OPTIONS:MSSL}
+PLIST_SUB+=	SSL=""
+.  else
+PLIST_SUB+=	SSL="@comment "
 .  endif
 
 .endif # !SLAVE_ONLY

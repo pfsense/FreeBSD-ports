@@ -3,7 +3,7 @@
  * squidguard_log.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2006-2011 Serg Dvoriancev
  * All rights reserved.
  *
@@ -130,8 +130,8 @@ function squidguard_prepfor_JS($cont) {
 	$cont = str_replace("\n", "\\n", $cont);
 	$cont = str_replace("\r", "\\r", $cont);
 	$cont = str_replace("\t", "\\t", $cont);
-	$cont = str_replace("\"", "\'",  $cont);
 	$cont = str_replace("'", "\'",  $cont);
+	$cont = str_replace("\"", "\'",  $cont);
 	return $cont;
 }
 

@@ -2,17 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	generate
-PORTVERSION=	2.6
-PORTREVISION=	1
+PORTVERSION=	2.8
 CATEGORIES=	devel python
-MASTER_SITES=	ftp://ftp.druid.net/pub/distrib/
+MASTER_SITES=	http://druid.net/darcy/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTNAME=	generate-${PORTVERSION}
 
 MAINTAINER=	darcy@druid.net
 COMMENT=	Python module to implement generate
 
-USES=		gmake python tar:tgz
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-08-15
+
+USES=		python:2.7 tar:tgz
 USE_PYTHON=	distutils autoplist
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/generate.so
 
 .include <bsd.port.mk>

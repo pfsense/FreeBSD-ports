@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	worker
-PORTVERSION=	4.1.0
+PORTVERSION=	4.3.0
 CATEGORIES=	x11-fm
 MASTER_SITES=	http://www.boomerangsworld.de/cms/worker/downloads/
 
@@ -35,7 +35,7 @@ HAL_LIB_DEPENDS=	libhal-storage.so:sysutils/hal \
 			libdbus-glib-1.so:devel/dbus-glib \
 			libdbus-1.so:devel/dbus
 HAL_USE=	gnome=glib20 xorg=sm,ice
-HAL_USES=	gettext-runtime
+HAL_USES=	gettext-runtime gnome
 
 INOTIFY_LIB_DEPENDS=	libinotify.so:devel/libinotify
 

@@ -20,6 +20,8 @@ PLIST_FILES=	${QT_BINDIR}/qtdiag
 # we do not really have to depend on.
 WRKSRC_SUBDIR=	src/${PORTNAME}
 
+QT_BINARIES=	yes
+
 post-patch:
 	${CP} ${WRKSRC}/../../.qmake.conf ${WRKSRC}
 

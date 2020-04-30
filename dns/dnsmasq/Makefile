@@ -3,9 +3,9 @@
 
 PORTNAME=	dnsmasq
 DISTVERSION=	2.80
-PORTREVISION=	4	# leave this in even if 0 to avoid PORTEPOCH bumps
+PORTREVISION=	5	# leave this in even if 0 to avoid PORTEPOCH bumps
 PORTEPOCH=	1
-CATEGORIES=	dns ipv6
+CATEGORIES=	dns
 MASTER_SITES=	http://www.thekelleys.org.uk/dnsmasq/ \
 		LOCAL/mandree/
 
@@ -90,9 +90,6 @@ USE_RC_SUBR=	dnsmasq
 .include <bsd.port.pre.mk>
 
 LDFLAGS+=	-L${LOCALBASE}/lib ${_intllibs} ${ICONV_LIB}
-
-post-patch:
-	${REINPLACE_CMD} -e 's/lua5\.1/lua-${LUA_VER}/' ${WRKSRC}/Makefile
 
 pre-configure: pretty-print-config
 .if ${PORT_OPTIONS:MIDN}

@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME?=	lighttpd
-PORTVERSION=	1.4.54
+PORTVERSION=	1.4.55
 CATEGORIES?=	www
 MASTER_SITES?=	https://download.lighttpd.net/lighttpd/releases-1.4.x/
 
-MAINTAINER=	pkubaj@anongoth.pl
+MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT?=	Secure, fast, compliant, and flexible Web Server
 
 .if !defined(_BUILDING_LIGHTTPD_MODULE)
@@ -88,6 +88,7 @@ SPAWNFCGI_RUN_DEPENDS=	spawn-fcgi:www/spawn-fcgi
 VALGRIND_BUILD_DEPENDS=	valgrind:devel/valgrind
 VALGRIND_RUN_DEPENDS=	valgrind:devel/valgrind
 VALGRIND_CONFIGURE_WITH=valgrind
+WEBDAV_USES=		gnome
 WEBDAV_USE=		GNOME=libxml2
 WEBDAV_LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
 			libsqlite3.so:databases/sqlite3

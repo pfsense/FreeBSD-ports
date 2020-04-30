@@ -5,7 +5,7 @@ PORTNAME=	unison
 PORTVERSION=	2.32.52
 PORTREVISION=	10
 CATEGORIES=	net
-MASTER_SITES=	http://www.cis.upenn.edu/~bcpierce/unison/download/releases/${DISTNAME}/
+MASTER_SITES=	https://www.cis.upenn.edu/~bcpierce/unison/download/releases/${DISTNAME}/
 DISTFILES=	${EXTRACT_ONLY} ${EXTRA_DOCS}
 DIST_SUBDIR=	${DISTNAME}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
@@ -17,7 +17,7 @@ COMMENT=	User-level file synchronization tool
 LICENSE=	GPLv3
 
 FLAVORS=	x11 nox11
-FLAVOR?=	${FLAVORS[1]}
+FLAVOR?=	${FLAVORS:[1]}
 
 VERSIONSUFFIX=	232
 
@@ -54,7 +54,7 @@ PLIST_SUB+=		X11="@comment "
 MAKE_ARGS+=		UISTYLE=gtk2
 SUB_FILES=		${PORTNAME}.desktop
 USE_GNOME+=		atk cairo gdkpixbuf2 glib20 gtk20 pango
-USES+=			gettext-runtime
+USES+=			gettext-runtime gnome
 PLIST_SUB+=		X11=""
 .endif
 

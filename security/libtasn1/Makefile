@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libtasn1
-PORTVERSION=	4.14
+PORTVERSION=	4.15.0
 CATEGORIES=	security
 MASTER_SITES=	GNU \
 		GNUPG/gnutls/${PORTNAME}
@@ -14,13 +14,16 @@ LICENSE=	LGPL21+ GPLv3
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cpe pkgconfig pathfix gmake libtool
+USES=		cpe libtool pathfix pkgconfig
+USE_CSTD=	c99
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 CPE_VENDOR=	gnu
 
 OPTIONS_DEFINE=	DOCS
+
+TEST_TARGET=	check
 
 DOCS=		AUTHORS NEWS README.md THANKS doc/TODO \
 		doc/libtasn1.html doc/libtasn1.pdf doc/libtasn1.ps

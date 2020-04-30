@@ -5,19 +5,20 @@ PORTNAME=	xevil
 PORTVERSION=	2.02.r2
 PORTREVISION=	2
 CATEGORIES=	games
-MASTER_SITES=	http://www.xevil.com/download/stable/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	http://www.xevil.com/download/stable/
 DISTNAME=	${PORTNAME}src${PORTVERSION:S/.r/r/}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast-action, networked, anti-social, kill-everything game
+
+BROKEN=		unfetchable
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/gpl.txt
 
 NO_WRKSUBDIR=	yes
 
-USES=		dos2unix zip
+USES=		dos2unix xorg zip
 USE_XORG=	xpm
 DOS2UNIX_GLOB=	*.cpp *.h config.mk makefile
 MAKEFILE=	makefile

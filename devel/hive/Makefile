@@ -13,6 +13,8 @@ DIST_SUBDIR=	hadoop
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Framework for data warehousing on top of Hadoop
 
+BROKEN=		unfetchable
+
 LICENSE=	APACHE20
 
 BUILD_DEPENDS=	${LOCALBASE}/share/java/maven3/bin/mvn:devel/maven3 \
@@ -23,7 +25,6 @@ RUN_DEPENDS=	bash:shells/bash \
 USES=		cpe
 CPE_VENDOR=	apache
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
 WRKSRC=		${WRKDIR}/apache-${PORTNAME}-${PORTVERSION}-src
 
 HIVE_USER=	hive

@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	PyFR
-DISTVERSION=	1.8.0
-PORTREVISION=	5
+DISTVERSION=	1.9.0
+PORTREVISION=	1
 CATEGORIES=	science python
 MASTER_SITES=	http://www.pyfr.org/download/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,9 +12,6 @@ COMMENT=	Framework for solving advection-diffusion type problems
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-DEPRECATED=	Depends on expiring devel/openmp
-EXPIRATION_DATE=	2019-12-31
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}appdirs>=1.4.0:devel/py-appdirs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}gimmik>=2.0:math/py-gimmik@${PY_FLAVOR} \
@@ -36,8 +33,7 @@ PARALLEL_DESC=		Parallelization backends to install
 
 OPENCL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyopencl>0:devel/py-pyopencl@${PY_FLAVOR} \
 			clblas>0:math/clblas
-OPENMP_RUN_DEPENDS=	openmp>0:devel/openmp \
-			libxsmm>0:math/libxsmm
+OPENMP_RUN_DEPENDS=	libxsmm>0:math/libxsmm
 
 pre-build: # patch in pre-build to make the patch less error-prone (it has %%LOCALBASE%%)
 	@${REINPLACE_CMD} 's|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/pyfr/backends/openmp/compiler.py

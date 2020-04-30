@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	caja
-PORTVERSION=	1.22.1
-PORTREVISION=	1
+PORTVERSION=	1.22.3
 CATEGORIES=	x11-fm mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -24,7 +23,7 @@ LIB_DEPENDS=	libexif.so:graphics/libexif \
 PORTSCOUT=	limitw:1,even
 
 USES=		compiler:c11 desktop-file-utils gettext gmake gnome libtool \
-		localbase mate pathfix pkgconfig shared-mime-info tar:xz
+		localbase mate pathfix pkgconfig shared-mime-info tar:xz xorg
 USE_MATE=	desktop icontheme:run
 USE_XORG=	ice sm x11
 USE_GNOME=	cairo gtk30 gnomeprefix intltool introspection:build libxml2

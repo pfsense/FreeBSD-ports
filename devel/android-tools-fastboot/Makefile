@@ -2,8 +2,8 @@
 
 PORTNAME=	android-tools-fastboot
 DISTVERSIONPREFIX=	platform-tools-
-DISTVERSION?=	29.0.4
-PORTREVISION?=	0
+DISTVERSION?=	29.0.6
+PORTREVISION?=	1
 CATEGORIES=	devel sysutils
 MASTER_SITES=	https://salsa.debian.org/android-tools-team/android-tools/raw/706e754/debian/:manpage
 DISTFILES=	fastboot.1:manpage
@@ -17,6 +17,7 @@ LICENSE_COMB=	multi
 
 USE_GITHUB=	yes
 GH_TUPLE=	aosp-mirror:platform_system_core:${DISTVERSIONFULL} \
+		jbeich:platform_external_avb:${DISTVERSIONFULL}:avb/avb \
 		jbeich:platform_system_extras:${DISTVERSIONFULL}:extras/extras \
 		jbeich:platform_system_tools_mkbootimg:${DISTVERSIONFULL}:mkbootimg/mkbootimg
 
@@ -29,9 +30,9 @@ MAKEFILE?=	${.CURDIR}/files/Makefile
 MAKE_ENV=	BINDIR="${PREFIX}/bin" EXTRADIR="${FILESDIR}" \
 		FILESDIR="${DOCSDIR}" \
 		VERSION="${DISTVERSION}${DISTVERSIONSUFFIX}" \
-		MANDIR="${PREFIX}/man/man"
+		MANDIR="${PREFIX}/share/man/man"
 PLIST_FILES=	bin/fastboot \
-		man/man1/fastboot.1.gz
+		share/man/man1/fastboot.1.gz
 PORTDOCS=	*
 SUB_FILES=	pkg-message
 

@@ -2,14 +2,13 @@
 
 PORTNAME=	sumo
 DISTVERSION=	1.2.0
+PORTREVISION=	1
 CATEGORIES=	cad
 MASTER_SITES=	http://www.dlr.de/ts/en/Portaldata/16/Resources/projekte/sumo/
 DISTFILES=	${PORTNAME}-src-${DISTVERSIONFULL}${EXTRACT_SUFX}
 
 MAINTAINER=	enriquefynn@gmail.com
 COMMENT=	Traffic simulation suite for road vehicles, public transportation, etc
-
-BROKEN_powerpc64=	fails to configure: xerces-lib not found in /usr/local/lib
 
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libFOX-1.6.so:x11-toolkits/fox16 \
@@ -20,7 +19,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libtiff.so:graphics/tiff \
 		libxerces-c.so:textproc/xerces-c3
 
-USES=		cmake jpeg python shebangfix zip
+USES=		compiler:c++11-lang cmake gl jpeg python shebangfix zip xorg
 SHEBANG_FILES=	tools/*.py tools/*/*.py \
 		tools/*/*/*.py tools/*/*/*/*.py \
 		tools/*/*/*/*/*/*.py \

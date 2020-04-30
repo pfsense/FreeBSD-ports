@@ -2,10 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	scummvm
-PORTVERSION=	2.0.0
-PORTREVISION=	3
+PORTVERSION=	2.1.1
 CATEGORIES=	games emulators
 MASTER_SITES=	http://www.scummvm.org/frs/scummvm/${PORTVERSION}/
+
+PATCH_SITES=	https://github.com/scummvm/scummvm/commit/
+PATCHFILES=	8593a9e1e4e8dd1f5dfac9b1304a417df9a742e6.patch:-p1 \
+		68758a879e0c8ecc0d40962516d4e808aa4e15e5.patch:-p1
 
 MAINTAINER=	lme@FreeBSD.org
 COMMENT=	Interpreter for several adventure games
@@ -13,36 +16,39 @@ COMMENT=	Interpreter for several adventure games
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libtheoradec.so:multimedia/libtheora \
-		libfaad.so:audio/faad \
+LIB_DEPENDS=	libfaad.so:audio/faad \
+		libfreetype.so:print/freetype2 \
 		libmpeg2.so:multimedia/libmpeg2 \
-		libfreetype.so:print/freetype2
+		libtheoradec.so:multimedia/libtheora
 
-USES=		gmake jpeg tar:xz
+USES=		gmake gnome iconv jpeg sdl tar:xz
 HAS_CONFIGURE=	yes
 USE_SDL=	sdl2
 INSTALLS_ICONS=	yes
 
-CONFIGURE_ARGS=	--with-sdl-prefix=${LOCALBASE} \
-		--with-jpeg-prefix=${LOCALBASE} \
-		--disable-alsa \
-		--with-zlib-prefix=/usr \
+CONFIGURE_ARGS=	--disable-alsa \
 		--disable-debug \
 		--disable-nasm \
 		--disable-tremor \
-		--enable-verbose-build
+		--enable-verbose-build \
+		--with-jpeg-prefix=${LOCALBASE} \
+		--with-sdl-prefix=${LOCALBASE} \
+		--with-zlib-prefix=/usr
 
 LDFLAGS+=	-lpthread
 
-OPTIONS_DEFINE=	VORBIS MP3 PNG FLAC FLUIDSYNTH MT32EMU DOCS SNDIO
+OPTIONS_DEFINE=		DOCS FLAC FLUIDSYNTH MP3 MT32EMU PNG SNDIO VORBIS
+OPTIONS_DEFAULT=	MP3 MT32EMU PNG VORBIS
+OPTIONS_SUB=		yes
+
 MT32EMU_DESC=	MT-32 emulator
-OPTIONS_DEFAULT=	VORBIS MP3 PNG MT32EMU
 
 VORBIS_LIB_DEPENDS=	libogg.so:audio/libogg \
 			libvorbis.so:audio/libvorbis
 VORBIS_CONFIGURE_ON=	--with-ogg-prefix=${LOCALBASE} \
 			--with-vorbis-prefix=${LOCALBASE}
-VORBIS_CONFIGURE_OFF=	--disable-vorbis
+VORBIS_CONFIGURE_OFF=	--disable-vorbis \
+			--disable-ogg
 
 MP3_LIB_DEPENDS=	libmad.so:audio/libmad
 MP3_CONFIGURE_ON=	--with-mad-prefix=${LOCALBASE}

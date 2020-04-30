@@ -3,6 +3,7 @@
 
 PORTNAME=	impressive
 PORTVERSION=	0.12.1
+PORTREVISION=	4
 CATEGORIES=	graphics python
 MASTER_SITES=	SF/${PORTNAME}/Impressive/${PORTVERSION}/
 DISTNAME=	Impressive-${PORTVERSION}
@@ -13,9 +14,12 @@ COMMENT=	Stylish way of giving presentations
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/license.txt
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
+
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}PyOpenGL>=0:graphics/py-PyOpenGL@${PY_FLAVOR} \
 		${PYGAME} \
-		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR}
+		${PY_PILLOW}
 
 USES=		python:2.7 sdl shebangfix
 USE_SDL=	sdl

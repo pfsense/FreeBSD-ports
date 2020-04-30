@@ -43,7 +43,7 @@ PEAR_DIR?=	${LOCALBASE}/share/pear
 PLIST_SUB+=	USERS="${USERS}" GROUPS="${GROUPS}" WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 
 OPTIONS_DEFINE=	APACHE LIGHTTPD WEBHOST MYSQL MYSQLSERVER PGSQL PGSQLSERVER DOVECOT2 \
-		POSTFIX PFA CLAMAV SPAMASSASSIN BDB ALTERMIME CRYPT \
+		POSTFIX PFA CLAMAV SPAMASSASSIN BDB CRYPT \
 		IPCOUNTRY DOMAINKEYS SPF DKIM FILE RAR UNRAR ARJ UNARJ LHA ARC NOMARCH CAB \
 		RPM ZOO UNZOO LZOP P7ZIP TNEF DOCS
 
@@ -64,7 +64,6 @@ PFA_DESC=		Use Postfixadmin
 CLAMAV_DESC=		Use ClamAV anti-virus
 SPAMASSASSIN_DESC=	Use SpamAssassin
 BDB_DESC=		Use BerkeleyDB
-ALTERMIME_DESC=		Use AlterMime
 CRYPT_DESC=		Encryption support
 IPCOUNTRY_DESC=		SpamAssassin IP Country plugin
 DOMAINKEYS_DESC=	SpamAssassin DomainKey plugin
@@ -106,6 +105,7 @@ USES+=		apache:run,2.2+
 .endif
 
 .if ${PORT_OPTIONS:MWEBHOST}
+USES+=		php
 USE_PHP=	bcmath ctype dom gettext hash iconv imap json mbstring \
 		mcrypt pdo pdo_sqlite posix session simplexml sockets \
 		sqlite3 tokenizer xml wddx xmlreader xmlwriter xmlrpc
@@ -136,7 +136,7 @@ PLIST_SUB+=	WEBHOST="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=	yes
+USES+=		mysql
 .endif
 .if ${PORT_OPTIONS:MMYSQL} && ${PORT_OPTIONS:MWEBHOST}
 USE_PHP+=	mysqli
@@ -158,7 +158,7 @@ RUN_DEPENDS+=	p5-DBD-mysql>=0:databases/p5-DBD-mysql
 .endif
 
 .if ${PORT_OPTIONS:MMYSQLSERVER}
-USE_MYSQL=	server
+USES+=		mysql:server
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
@@ -192,10 +192,6 @@ RUN_DEPENDS+=	spamassassin>=0:mail/spamassassin
 
 .if ${PORT_OPTIONS:MBDB}
 RUN_DEPENDS+=	p5-BerkeleyDB>=0:databases/p5-BerkeleyDB
-.endif
-
-.if ${PORT_OPTIONS:MALTERMIME}
-RUN_DEPENDS+=	altermime:mail/altermime
 .endif
 
 .if ${PORT_OPTIONS:MCRYPT}

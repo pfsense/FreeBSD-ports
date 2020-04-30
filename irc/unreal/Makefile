@@ -3,7 +3,7 @@
 
 PORTNAME=	Unreal
 PORTVERSION=	3.2.10.7
-CATEGORIES=	irc ipv6
+CATEGORIES=	irc
 MASTER_SITES=	http://www.unrealircd.com/downloads/
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
@@ -79,7 +79,7 @@ PREFIXAQ_CONFIGURE_ENABLE=	prefixaq
 SQLMOD=		${PORTNAME}/SQLMod.tar.gz
 
 .if exists(${DISTDIR}/${SQLMOD})
-USE_MYSQL=	yes
+USES+=		mysql
 WITH_SQLMOD=	yes
 MAKE_ARGS=	all custommodule MODULEFILE=m_sqlmod
 PLIST_SUB+=	SQLMOD=""

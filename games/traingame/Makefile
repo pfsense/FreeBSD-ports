@@ -3,7 +3,7 @@
 
 PORTNAME=	traingame
 PORTVERSION=	0.3
-PORTREVISION=	21
+PORTREVISION=	22
 CATEGORIES=	games
 
 MAINTAINER=	ports@FreeBSD.org
@@ -20,7 +20,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	nickg
 GH_TAGNAME=	cb6513e
 
-USES=		cmake:insource compiler:c++11-lib dos2unix pkgconfig
+USES=		cmake:insource compiler:c++11-lib dos2unix gl gnome pkgconfig \
+		sdl
 DOS2UNIX_GLOB=	*.mtl *.obj
 USE_CXXSTD=	c++11
 USE_SDL=	sdl image

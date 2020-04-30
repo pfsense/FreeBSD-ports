@@ -2,7 +2,7 @@
 
 PORTNAME=	svt-hevc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.1
+DISTVERSION=	1.4.3
 CATEGORIES=	multimedia
 PKGNAMEPREFIX=	gstreamer1-plugins-
 
@@ -14,7 +14,7 @@ LICENSE_FILE=	${_LICENSE_STORE}/LGPL21
 
 LIB_DEPENDS=	libSvtHevcEnc.so:multimedia/svt-hevc
 
-USES=		meson pkgconfig
+USES=		gnome meson pkgconfig
 USE_GITHUB=	yes
 USE_GNOME=	glib20
 USE_GSTREAMER1=	yes

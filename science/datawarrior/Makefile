@@ -9,8 +9,13 @@ DISTNAME=	datawarrior${DISTVERSION:S/.//g}Source
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Chemistry-aware multi-purpose data visualization and analysis program
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/gpl.txt
+
+DEPRECATED=	depends on expiring java/openjfx8-devel
+EXPIRATION_DATE=	2020-11-30
 
 BUILD_DEPENDS=	openjfx8-devel>0:java/openjfx8-devel
 RUN_DEPENDS=	openjfx8-devel>0:java/openjfx8-devel

@@ -3,7 +3,7 @@
  * pfblockerng.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -41,22 +41,25 @@ global $config, $g, $pfb;
 // Extras - MaxMind/Alexa Download URLs/filenames/settings
 $pfb['extras']			= array();
 $pfb['extras'][0]		= array();
-$pfb['extras'][0]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.tar.gz';
+$pfb['extras'][0]['url']	= 'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=_MAXMIND_KEY_&suffix=tar.gz';
 $pfb['extras'][0]['file_dwn']	= 'GeoLite2-Country.tar.gz';
 $pfb['extras'][0]['file']	= 'GeoLite2-Country.mmdb';
 $pfb['extras'][0]['folder']	= "{$pfb['geoipshare']}";
+$pfb['extras'][0]['type']	= 'geoip';
 
 $pfb['extras'][1]		= array();
-$pfb['extras'][1]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip';
+$pfb['extras'][1]['url']	= 'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country-CSV&license_key=_MAXMIND_KEY_&suffix=zip';
 $pfb['extras'][1]['file_dwn']	= 'GeoLite2-Country-CSV.zip';
 $pfb['extras'][1]['file']	= '';
 $pfb['extras'][1]['folder']	= "{$pfb['geoipshare']}";
+$pfb['extras'][1]['type']	= 'geoip';
 
 $pfb['extras'][2]		= array();
 $pfb['extras'][2]['url']	= 'https://s3.amazonaws.com/alexa-static/top-1m.csv.zip';
 $pfb['extras'][2]['file_dwn']	= 'top-1m.csv.zip';
 $pfb['extras'][2]['file']	= 'top-1m.csv';
 $pfb['extras'][2]['folder']	= "{$pfb['dbdir']}";
+$pfb['extras'][2]['type']	= 'top1m';
 
 // Call include file and collect updated Global settings
 if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', 'bu', 'uc', 'gc', 'al', 'cron', 'ugc'))) {
@@ -82,11 +85,22 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 			// 'dcc' called via Cron job
 			if ($argv[1] == 'dcc') {
 
-				// Only update on first Tuesday of each month
-				if (date('D') != 'Tue') {
+				$logtype = 3;
+
+				// Only update on first Tuesday of each month (Delay till Thurs to allow for MaxMind late releases)
+				if (date('D') != 'Thu') {
 					exit;
 				}
 				$pfb['extras_update'] = TRUE;
+
+				// Skip TOP1M update, if disabled
+				if ($pfb['dnsbl_alexa'] != 'on') {
+					unset($pfb['extras'][2]);
+				}
+			}
+			else {
+				$logtype = 4;
+				unset($pfb['extras'][2]);
 			}
 
 			// If 'General Tab' skip MaxMind download setting if checked, only download binary updates for Reputation/Alerts page.
@@ -94,13 +108,8 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 				unset($pfb['extras'][1]);
 			}
 
-			// Skip Alexa update, if disabled
-			if ($pfb['dnsbl_alexa'] != 'on') {
-				unset($pfb['extras'][2]);
-			}
-
 			// Proceed with conversion of MaxMind files on download success
-			if (empty($pfb['cc']) && pfblockerng_download_extras()) {
+			if (empty($pfb['cc']) && pfblockerng_download_extras(600, $logtype)) {
 				pfblockerng_uc_countries();
 				pfblockerng_get_countries();
 			}
@@ -108,11 +117,11 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 			break;
 		case 'bu':		// Update MaxMind binary database files only.
 			unset($pfb['extras'][1], $pfb['extras'][2]);
-			pfblockerng_download_extras();
+			pfblockerng_download_extras(600, 3);
 			break;
 		case 'al':		// Update Alexa database only.
 			unset($pfb['extras'][0], $pfb['extras'][1]);
-			pfblockerng_download_extras();
+			pfblockerng_download_extras(600, 3);
 			break;
 		case 'uc':		// Update MaxMind ISO files from local database files.
 			pfblockerng_uc_countries();
@@ -274,16 +283,38 @@ function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $for
 
 
 // Download Extras - MaxMind/Alexa feeds via cURL
-function pfblockerng_download_extras($timeout=600) {
+function pfblockerng_download_extras($timeout=600, $type='') {
 	global $pfb;
+	pfb_global();
 	$pfberror = FALSE;
 
-	pfb_logger("\nDownload Process Starting [ NOW ]\n", 3);
+	$logtype = 3;
+	if ($type == 4) {
+		$logtype = 4;
+	}
+
+	pfb_logger("\nDownload Process Starting [ NOW ]\n", $logtype);
 	foreach ($pfb['extras'] as $feed) {
+
+		if (empty($feed)) {
+			continue;
+		}
+
+		if ($feed['type'] == 'geoip') {
+			if (empty($pfb['maxmind_key'])) {
+				$mmsg = 'MaxMind now requires a License Key! Review the General tab: MaxMind settings for more information. Download failed!';
+				pfb_logger($mmsg, $logtype);
+				file_notice('pfBlockerNG MaxMind', $mmsg, 'pfBlockerNG', '/pfblockerng/pfblockerng_ip.php', 2);
+				$pfberror = TRUE;
+				continue;
+			}
+			$feed['url'] = str_replace('_MAXMIND_KEY_', $pfb['maxmind_key'], $feed['url']);
+		}
+
 		$file_dwn = "{$feed['folder']}/{$feed['file_dwn']}";
-		if (!pfb_download($feed['url'], $file_dwn, FALSE, "{$feed['folder']}/{$feed['file']}", '', 3, '', $timeout)) {
+		if (!pfb_download($feed['url'], $file_dwn, FALSE, "{$feed['folder']}/{$feed['file']}", '', $logtype, '', $timeout)) {
 			$log = "\nFailed to Download {$feed['file']}\n";
-			pfb_logger("{$log}", 3);
+			pfb_logger("{$log}", $logtype);
 
 			// On Extras update (MaxMind and Alexa), if error found when downloading MaxMind Country database
 			// return error to update process
@@ -292,8 +323,7 @@ function pfblockerng_download_extras($timeout=600) {
 			}
 		}
 	}
-	pfb_logger("Download Process Ended [ NOW ]\n\n", 3);
-
+	pfb_logger("Download Process Ended [ NOW ]\n\n", $logtype);
 	if ($pfberror) {
 		return FALSE;
 	} else {
@@ -1016,7 +1046,12 @@ $xml = <<<EOF
 		</field>
 		<field>
 			<fielddescr>NOTES</fielddescr>
-			<description><![CDATA[Click here for IMPORTANT info on:&emsp;
+			<description><![CDATA[
+				<span class="text-danger"><strong>
+				MaxMind now requires a Free Registered account to download the MaxMind GeoIP Database!
+				Review the General Tab: MaxMind settings for more details.</strong></span><br /><br />
+
+				Click here for IMPORTANT info on:&emsp;
 				<a target="_blank" href="https://dev.maxmind.com/geoip/geoip2/whats-new-in-geoip2/">
 				<span class="text-danger"><strong>What's new in GeoIP2</strong></span></a><br /><br /> 
 

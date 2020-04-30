@@ -15,6 +15,8 @@ USE_QT=		core xml buildtools_build declarative_build
 BUILD_WRKSRC=	${WRKSRC}/src/linguist
 INSTALL_WRKSRC=	${WRKSRC}/src/linguist
 
+QT_BINARIES=	yes
+
 post-patch:
 	@${REINPLACE_CMD} -e '/SUBDIRS.*linguist/ d' \
 		${WRKSRC}/src/linguist/linguist.pro

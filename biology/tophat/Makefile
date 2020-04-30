@@ -2,6 +2,7 @@
 
 PORTNAME=	tophat
 DISTVERSION=	2.1.1
+PORTREVISION=	1
 CATEGORIES=	biology python
 MASTER_SITES=	http://ccb.jhu.edu/software/tophat/downloads/
 
@@ -10,6 +11,9 @@ COMMENT=	Fast splice junction mapper for RNA-Seq reads
 
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 LIB_DEPENDS=	libboost_iostreams.so:devel/boost-libs
 RUN_DEPENDS=	bowtie2:biology/bowtie2

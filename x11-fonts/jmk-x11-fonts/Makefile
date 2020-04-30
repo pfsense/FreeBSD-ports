@@ -4,7 +4,7 @@ PORTNAME=	jmk-x11-fonts
 PORTVERSION=	3.0
 PORTREVISION=	6
 CATEGORIES=	x11-fonts
-MASTER_SITES=	http://www.jmknoble.net/fonts/
+MASTER_SITES=	http://nikolas.us.to/jmkfonts/
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Jim Knoble's font package for X

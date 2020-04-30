@@ -16,9 +16,12 @@ PATCHFILES=	glewpy-${PORTVERSION}-generatedsources.diff.bz2
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Advanced OpenGL extensions to Python
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-08-15
+
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyrex>=0.9.6.2:devel/pyrex@${PY_FLAVOR}
 
-USES=		python:2.7
+USES=		gl python:2.7
 USE_GL=		glew
 USE_PYTHON=	distutils
 

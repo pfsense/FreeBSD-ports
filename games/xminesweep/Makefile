@@ -14,7 +14,9 @@ DISTNAME=	${PORTNAME}${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	X11 minesweeper game
 
-USES=		imake tar:Z
+BROKEN=		unfetchable
+
+USES=		imake tar:Z xorg
 USE_XORG=	x11 xext xmu xaw xt xpm sm ice
 PLIST_FILES=	bin/xminesweep man/man1/xminesweep.1.gz
 

@@ -20,6 +20,7 @@ USES=		compiler:c++11-lib libtool localbase tar:bzip2
 INSTALL_TARGET=	install-strip
 
 .ifndef SERVER_ONLY
+USES+=		gl sdl xorg
 USE_GL=		gl glu
 USE_SDL=	sdl
 USE_XORG=	x11 xext xxf86vm sm ice

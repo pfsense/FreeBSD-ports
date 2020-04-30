@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	mednafen
-PORTVERSION=	1.22.1
-PORTREVISION=	1
+PORTVERSION=	1.22.2
 PORTEPOCH=	1
 CATEGORIES=	emulators games
 MASTER_SITES=	https://mednafen.github.io/releases/files/
@@ -30,7 +29,7 @@ SUB_FILES=	pkg-message
 CONFIGURE_ARGS+=--disable-alsa --disable-alsatest \
 		--with-sdl-prefix=${LOCALBASE}
 
-USES=		compiler:c++11-lib cpe iconv pkgconfig:build tar:xz
+USES=		cpe gl iconv pkgconfig:build sdl tar:xz
 CPE_VENDOR=	david_shadoff
 
 OPTIONS_DEFINE=	NLS DOCS JACK
@@ -72,6 +71,18 @@ PSX_CONFIGURE_ENABLE=psx
 SMS_CONFIGURE_ENABLE=sms
 SWAN_CONFIGURE_ENABLE=wswan
 VB_CONFIGURE_ENABLE=vb
+
+.include <bsd.port.options.mk>
+
+.if defined(PPC_ABI) && ${PPC_ABI} == ELFv2
+USES+=		compiler:gcc-c++11-lib
+.else
+USES+=		compiler:c++11-lib
+.endif
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|versionsort|alphasort|g' \
+		${WRKSRC}/src/drivers/Joystick_Linux.cpp
 
 pre-configure:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \

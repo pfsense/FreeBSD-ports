@@ -1,4 +1,4 @@
---- ui/base/ui_base_features.h.orig	2019-10-21 19:07:28 UTC
+--- ui/base/ui_base_features.h.orig	2020-03-16 18:40:43 UTC
 +++ ui/base/ui_base_features.h
 @@ -61,10 +61,10 @@ COMPONENT_EXPORT(UI_BASE_FEATURES)
  extern const base::Feature kEnableAutomaticUiAdjustmentsForTouch;

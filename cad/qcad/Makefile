@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	qcad
-PORTVERSION=	3.22.0.12
-PORTREVISION=	1
-DISTVERSIONPREFIX=	v
+PORTVERSION=	3.24.2.0
 #PORTREVISION=
+DISTVERSIONPREFIX=	v
 CATEGORIES=	cad
 DIST_SUBDIR=	${PORTNAME}
 
@@ -23,7 +22,7 @@ BUILD_DEPENDS=	bash:shells/bash	\
 
 MAKE_JOBS_UNSAFE=yes
 
-USES=		compiler:c++11-lang gmake qmake qt:5
+USES=		compiler:c++11-lang gl gmake qmake qt:5
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 USE_QT=		buildtools qmake_build \

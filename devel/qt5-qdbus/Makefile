@@ -15,4 +15,6 @@ USE_QT=		core dbus xml buildtools_build
 BUILD_WRKSRC=	${WRKSRC}/src/${PORTNAME}/${PORTNAME}
 INSTALL_WRKSRC=	${BUILD_WRKSRC}
 
+QT_BINARIES=	yes
+
 .include <bsd.port.mk>

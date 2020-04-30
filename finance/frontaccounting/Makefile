@@ -32,10 +32,14 @@ LIGHTTPD_RUN_DEPENDS=	lighttpd:www/lighttpd
 LIGHTTPD_USES=		php:web
 NGINX_RUN_DEPENDS=	nginx:www/nginx
 NGINX_USES=		php:web
-MYSQL_SERVER_USE=	MYSQL=server
+MYSQL_SERVER_USES=	mysql:server
 NLS_USES=		gettext
 
 .include <bsd.port.options.mk>
+
+.if !${PORT_OPTIONS:MAPACHE} && !${PORT_OPTIONS:MLIGHTTPD} && !{PORT_OPTIONS:MNGINX}
+USES+=		php
+.endif
 
 .if !${PORT_OPTIONS:MDOCS}
 PORTDOCSARGS=	'-not -path "./doc*"'

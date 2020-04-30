@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	ioping
-PORTVERSION=	1.1
+PORTVERSION=	1.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simple disk I/0 latency measuring tool
 
 LICENSE=	GPLv3+

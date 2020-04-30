@@ -11,6 +11,8 @@ MAINTAINER=	f.unglaub@googlemail.com
 COMMENT=	Daemon notifying the user about devd(8) events \
 		with libnotify
 
+BROKEN=		unfetchable
+
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 

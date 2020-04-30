@@ -8,7 +8,7 @@
  * freeradiusauthorizedmacs.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * All rights reserved.
  *
@@ -144,7 +144,7 @@
 			<description>
 				<![CDATA[
 				Enter the MAC address. Leave empty if you want to use custom options instead of MAC address.<br/>
-				<span class="text-info">Required format: <code>0a-1b-2c-4d-5f-fa</code></span>
+				<span class="text-info">Required format: <code>0a-1b-2c-4d-5f-fa</code> or <code>0a:1b:2c:4d:5f:fa</code></span>
 				]]>
 			</description>
 			<type>input</type>
@@ -186,20 +186,16 @@
 			<type>input</type>
 		</field>
 		<field>
-			<name>Network Configuration</name>
+			<name>IPv4 Network Configuration</name>
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>IP Address</fielddescr>
+			<fielddescr>IPv4 Address</fielddescr>
 			<fieldname>varmacsframedipaddress</fieldname>
 			<description>
 				<![CDATA[
 				<b>Framed-IP-Address</b> must be supported by NAS. <span class="text-info">Click Info for details.</span><br/>
-				<span class="text-danger">IMPORTANT:</span> You must enter an IP address here if you checked "RADIUS issued IP" on PPPoE VPN configuration.
-				<div class="infoblock">
-				If you want this MAC address to be assigned a specific IP address from RADIUS, enter the IP address here.<br/>
-				Continuous IP address is available with "+" suffix (e.g. 192.168.1.5+). This can be useful for simultaneous connections.
-				</div>
+				<span class="text-danger">IMPORTANT:</span> You must enter an IPv4 address here if you checked "RADIUS issued IP" on PPPoE VPN configuration.
 				]]>
 			</description>
 			<type>input</type>
@@ -215,7 +211,7 @@
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>Gateway</fielddescr>
+			<fielddescr>IPv4 Gateway</fielddescr>
 			<fieldname>varmacsframedroute</fieldname>
 			<description>
 				<![CDATA[
@@ -224,6 +220,37 @@
 				]]>
 			</description>
 			<type>input</type>
+		</field>
+		<field>
+			<name>IPv6 Network Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>IPv6 Address</fielddescr>
+			<fieldname>varmacsframedip6address</fieldname>
+			<description>
+				<![CDATA[
+				When the IPv6 prefix part is empty it uses <b>Framed-IPv6-Address</b>. 
+				When the prefix part is filled in, it uses <b>Framed-IPv6-Prefix</b>.<br />
+			        <span class="text-info">Example: 2001:db8:abab::5 or 2001:db8:abab::/64</span>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>IPv6 Gateway</fielddescr>
+			<fieldname>varmacsframedip6route</fieldname>
+			<description>
+				<![CDATA[
+				<b>Framed-IPv6-Route</b> must be supported by NAS.
+				<span class="text-info">Required format: Prefix Gateway Metric(s) (e.g. 2001:db8:0:16::/64 2001:db8::16:a0:20ff:fe99:a998 1)</span>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>VLAN Configuration</name>
+			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>VLAN ID</fielddescr>

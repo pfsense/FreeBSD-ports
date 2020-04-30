@@ -9,10 +9,13 @@ CATEGORIES=	lang
 MASTER_SITES=	https://01.org/sites/default/files/
 
 MAINTAINER=	x11@FreeBSD.org
-COMMENT=	OpenCL library for Intel GPUs
+COMMENT=	Legacy OpenCL implementation for Intel HD (Gen7 to Gen9.5)
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Deprecated upstream, use lang/intel-compute-runtime
+EXPIRATION_DATE=	2020-04-02
 
 BUILD_DEPENDS=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT} \
 		opencl>=0:devel/opencl
@@ -23,7 +26,7 @@ RUN_DEPENDS=	opencl>=0:devel/opencl \
 
 WRKSRC=		${WRKDIR}/Beignet-${DISTVERSION}-Source
 
-USES=		cmake ncurses pkgconfig shebangfix
+USES=		cmake gl ncurses pkgconfig shebangfix xorg
 USE_XORG=	sm ice x11 xext xfixes
 USE_GL=		gl egl
 USE_LDCONFIG=	${LOCALBASE}/lib/${PORTNAME}

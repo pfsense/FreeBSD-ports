@@ -3,8 +3,8 @@
  * suricata_migrate_config.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2019 Rubicon Communications, LLC (Netgate)
- * Copyright (C) 2019 Bill Meeks
+ * Copyright (c) 2019-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (C) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -99,10 +99,12 @@ if (empty($config['installedpackages']['suricata']['config'][0]['sid_list_migrat
 }
 
 /**********************************************************/
-/* Create new Auto GeoIP update setting if not set        */
+/* Default Auto GeoLite2 DB update setting to "off" due   */
+/* to recent MaxMind changes to the GeoLite2 database     */
+/* download permissions.                                  */
 /**********************************************************/
-if (empty($config['installedpackages']['suricata']['config'][0]['autogeoipupdate'])) {
-	$config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] = "on";
+if (empty($config['installedpackages']['suricata']['config'][0]['autogeoipupdate']) || empty($config['installedpackages']['suricata']['config'][0]['maxmind_geoipdb_key'])) {
+	$config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] = "off";
 	$updated_cfg = true;
 }
 
@@ -133,6 +135,19 @@ if (isset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_s
 }
 if (isset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_time'])) {
 	unset($config['installedpackages']['suricata']['config'][0]['last_rule_upd_time']);
+	$updated_cfg = true;
+}
+
+/**********************************************************/
+/* Randomize the Rules Update Start Time minutes field    */
+/* per request of Snort.org team to minimize impact of    */
+/* large numbers of pfSense users hitting Snort.org at    */
+/* the same minute past the hour for rules updates.       */
+/**********************************************************/
+if (empty($config['installedpackages']['suricata']['config'][0]['autoruleupdatetime']) || 
+	$config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'] == '00:05' || 
+	strlen($config['installedpackages']['suricata']['config'][0]['autoruleupdatetime']) < 5) {
+	$config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'] = "00:" . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT);
 	$updated_cfg = true;
 }
 
@@ -388,6 +403,20 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 	}    
 	if (!isset($pconfig['eve_log_drop'])) {
 		$pconfig['eve_log_drop'] = "on";
+		$updated_cfg = true;
+	}
+
+	if (!isset($pconfig['eve_log_http_extended_headers'])) {
+		$pconfig['eve_log_http_extended_headers'] = "accept, accept-charset, accept-datetime, accept-encoding, accept-language, accept-range, age, allow, authorization, cache-control, ";
+		$pconfig['eve_log_http_extended_headers'] .= "connection, content-encoding, content-language, content-length, content-location, content-md5, content-range, content-type, cookie, ";
+		$pconfig['eve_log_http_extended_headers'] .= "date, dnt, etags, from, last-modified, link, location, max-forwards, origin, pragma, proxy-authenticate, proxy-authorization, range, ";
+		$pconfig['eve_log_http_extended_headers'] .= "referrer, refresh, retry-after, server, set-cookie, te, trailer, transfer-encoding, upgrade, vary, via, warning, www-authenticate, ";
+		$pconfig['eve_log_http_extended_headers'] .= "x-authenticated-user, x-flash-version, x-forwarded-proto, x-requested-with";
+		$updated_cfg = true;
+	}
+
+	if (!isset($pconfig['eve_log_smtp_extended_fields'])) {
+		$pconfig['eve_log_smtp_extended_fields'] = "received, x-mailer, x-originating-ip, relays, reply-to, bcc";
 		$updated_cfg = true;
 	}
 

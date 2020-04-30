@@ -2,24 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	tcptrace
-PORTVERSION=	6.6.7
-CATEGORIES=	net ipv6
-MASTER_SITES=	http://www.tcptrace.org/download/
+PORTVERSION=	6.6.8
+CATEGORIES=	net
+#MASTER_SITES=	http://www.tcptrace.org/download/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	se@FreeBSD.org
 COMMENT=	TCP dump file analysis tool
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN=		unfetchable
-DEPRECATED=	Unfetchable, unmaintained
-EXPIRATION_DATE=	2019-10-16
-
+USES=		bison
 GNU_CONFIGURE=	yes
 ALL_TARGET=	tcptrace
+USE_GITHUB=	yes
+GH_ACCOUNT=	blitz
+GH_TAGNAME=	508f73a
 
-PLIST_FILES=	bin/${PORTNAME} \
+PLIST_FILES=	bin/tcptrace \
 		bin/xpl2gpl \
 		man/man1/tcptrace.1.gz
 

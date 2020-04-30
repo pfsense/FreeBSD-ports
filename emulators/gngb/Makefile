@@ -13,7 +13,7 @@ COMMENT=	GameBoy(tm) emulator
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake localbase
+USES=		gmake localbase sdl
 USE_CSTD=	gnu89
 USE_SDL=	sdl
 GNU_CONFIGURE=	yes
@@ -23,6 +23,7 @@ PLIST_FILES=	bin/gngb \
 
 OPTIONS_DEFINE=	OPENGL
 
+OPENGL_USES=		gl
 OPENGL_USE=		GL=gl
 OPENGL_CONFIGURE_ENABLE=gl
 

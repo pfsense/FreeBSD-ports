@@ -22,7 +22,6 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	michaelrsweet
 
 HAS_CONFIGURE=	yes
-MAKE_ARGS=	mandir="${MANDIRS}"
 
 OPTIONS_DEFINE=		HTMLDOCGUI GNUTLS
 OPTIONS_DEFAULT=	GNUTLS
@@ -31,6 +30,7 @@ HTMLDOCGUI_DESC=	Build GUI front-end
 HTMLDOCGUI_CONFIGURE_WITH=	gui=yes
 HTMLDOCGUI_LIB_DEPENDS=		libfltk.so:x11-toolkits/fltk \
 				libfontconfig.so:x11-fonts/fontconfig
+HTMLDOCGUI_USES=		xorg
 HTMLDOCGUI_USE=			XORG=x11,xrender,xcursor,xfixes \
 				xext,xft,xinerama jpeg
 GNUTLS_CONFIGURE_ENABLE=	gnutls

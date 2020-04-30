@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	e2guardian
-PORTVERSION=	5.3.2
-PORTREVISION=	1
+PORTVERSION=	5.3.4
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	www
 
 MAINTAINER=	marcellocoutinho@gmail.com
@@ -74,10 +74,7 @@ PLIST_SUB+=	SCANNERS=""
 PLIST_SUB+=	SCANNERS="@comment "
 .endif
 
-SUB_FILES=	pkg-message pkg-install
-
-pre-configure:
-	@cd ${WRKSRC} && ${SH} ${WRKSRC}/autogen.sh
+SUB_FILES=	pkg-message
 
 post-install:
 	@${FIND} ${STAGEDIR}${ETCDIR} -type f \
@@ -89,11 +86,16 @@ post-install:
 		${STAGEDIR}${ETCDIR}/lists/authplugins/portgroups.sample
 	@${MV} ${STAGEDIR}${ETCDIR}/lists/bannedrooms/default \
 		${STAGEDIR}${ETCDIR}/lists/bannedrooms/default.sample
-	@${MV} ${STAGEDIR}${ETCDIR}/lists/bannedsitelistwithbypass \
-		${STAGEDIR}${ETCDIR}/lists/bannedsitelistwithbypass.sample
+	@${MV} ${STAGEDIR}${ETCDIR}/lists/domainsnobypass \
+		${STAGEDIR}${ETCDIR}/lists/domainsnobypass.sample
+	@${MV} ${STAGEDIR}${ETCDIR}/lists/ipnobypass \
+		${STAGEDIR}${ETCDIR}/lists/ipnobypass.sample
+	@${MV} ${STAGEDIR}${ETCDIR}/lists/urlnobypass \
+		${STAGEDIR}${ETCDIR}/lists/urlnobypass.sample
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/lists/contentscanners
 	@${MV} ${STAGEDIR}${ETCDIR}/lists/exceptionvirusextensionlist.sample \
 		${STAGEDIR}${ETCDIR}/lists/contentscanners/
 	@${MV} ${STAGEDIR}${ETCDIR}/lists/exceptionvirussiteiplist.sample \
 		${STAGEDIR}${ETCDIR}/lists/contentscanners/
+
 .include <bsd.port.mk>

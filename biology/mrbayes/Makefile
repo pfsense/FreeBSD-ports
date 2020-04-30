@@ -2,28 +2,47 @@
 # $FreeBSD$
 
 PORTNAME=	mrbayes
-PORTVERSION=	3.1.2
-PORTREVISION=	3
+DISTVERSIONPREFIX=	v
+DISTVERSION=	3.2.7
 CATEGORIES=	biology
-MASTER_SITES=	SF
 
-MAINTAINER=	mzaki@m.u-tokyo.ac.jp
+MAINTAINER=	mzaki@e-mail.ne.jp
 COMMENT=	Bayesian inference of phylogeny
 
-OPTIONS_DEFINE=	EXAMPLES
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake readline:port
+USES=		readline:port
+USE_GITHUB=	yes
+GH_ACCOUNT=	NBISweden
+GH_PROJECT=	MrBayes
 
-PLIST_FILES=	bin/mb
+GNU_CONFIGURE=	yes
 
-PORTEXAMPLES=	adh.nex anolis.nex avian_ovomucoids.nex bglobin.nex \
-		cynmix.nex kim.nex primates.nex replicase.nex
+OPTIONS_DEFINE=		DOCS EXAMPLES
+OPTIONS_DEFINE_amd64=	AVX FMA SSE
+OPTIONS_DEFINE_i386=	AVX FMA SSE
 
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/mb ${STAGEDIR}${PREFIX}/bin/
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-.for file in ${PORTEXAMPLES}
-	${INSTALL_DATA} ${WRKSRC}/${file} ${STAGEDIR}${EXAMPLESDIR}
-.endfor
+OPTIONS_DEFAULT_amd64=	SSE
+
+OPTIONS_RADIO=		MPI
+OPTIONS_RADIO_MPI=	MPICH OPENMPI
+
+OPTIONS_EXCLUDE_i386=	OPENMPI
+
+AVX_DESC=	Use AVX optimized routines
+FMA_DESC=	Use FMA optimized routines
+
+AVX_IMPLIES=		SSE
+AVX_CONFIGURE_OFF=	--disable-avx
+FMA_IMPLIES=		AVX SSE
+FMA_CONFIGURE_OFF=	--disable-fma
+MPICH_LIB_DEPENDS=	libmpich.so:net/mpich
+MPICH_CONFIGURE_ON=	--with-mpi
+MPICH_CONFIGURE_ENV=	CC="${LOCALBASE}/bin/mpicc"
+OPENMPI_LIB_DEPENDS=	libmpi.so:net/openmpi
+OPENMPI_CONFIGURE_ON=	--with-mpi
+OPENMPI_CONFIGURE_ENV=	CC="${LOCALBASE}/mpi/openmpi/bin/mpicc"
+SSE_CONFIGURE_OFF=	--disable-sse
 
 .include <bsd.port.mk>

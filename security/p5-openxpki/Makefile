@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	openxpki
-PORTVERSION=	2.2.3
+PORTVERSION=	3.2.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	security perl5
 PKGNAMEPREFIX=	p5-
 
@@ -13,11 +14,8 @@ COMMENT=	Perl based trustcenter for PKI: universal server building block
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_SSL=	openssl111
-
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	bash:shells/bash \
-		openca-tools-forked>=1.4.0:security/openca-tools-forked \
 		p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
 		p5-CGI>=4.21:www/p5-CGI \
 		p5-CGI-Fast>=2.10:www/p5-CGI-Fast \
@@ -29,6 +27,7 @@ RUN_DEPENDS=	bash:shells/bash \
 		p5-Config-Std>=0:devel/p5-Config-Std \
 		p5-Connector>=0:devel/p5-Connector \
 		p5-Crypt-CBC>=0:security/p5-Crypt-CBC \
+		p5-Crypt-LibSCEP>=0.6:security/p5-Crypt-LibSCEP \
 		p5-Crypt-OpenSSL-AES>=0:security/p5-Crypt-OpenSSL-AES \
 		p5-Crypt-PKCS10>=1.3:security/p5-Crypt-PKCS10 \
 		p5-Crypt-SMIME>=0:security/p5-Crypt-SMIME \
@@ -86,13 +85,18 @@ CONFLICTS=	p5-openxpki-client-[0-9]* \
 
 USES=		gmake perl5 ssl
 USE_GITHUB=	yes
+GH_PROJECT=	openxpki-config:conf
+conf_VERSION=	3.2
+GH_TAGNAME=	${DISTVERSIONPREFIX}${conf_VERSION}:conf
+
 USE_PERL5=	configure
 USE_RC_SUBR=	openxpki
 SUB_FILES=	pkg-message
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
-WRKSRC_SUBDIR=	core/server
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+WRKSRC_SUBDIR=	core/server/
 
 USERS=		openxpki
 GROUPS=		openxpki
@@ -102,6 +106,9 @@ OPTIONS_DEFINE=	GRAPHVIZ DOCS EXAMPLES
 GRAPHVIZ_DESC=	With graphical visualization of workflows?
 GRAPHVIZ_RUN_DEPENDS=	dot:graphics/graphviz \
 			imgsize:graphics/p5-Image-Size
+
+post-extract:
+	@${MV} ${WRKSRC_conf}/* ${WRKSRC}/../../config/
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|..ENV{PERL} .vergen --format version.|"${PORTVERSION}"|g' ${WRKSRC}/Makefile.PL
@@ -118,10 +125,6 @@ post-patch:
 	@${MKDIR} ${WRKSRC}/t/var/log/openxpki
 
 .include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT:Mlibressl*}
-IGNORE=	this version of OpenXPKI is not fully functional with LibreSSL library, use OpenSSL instead
-.endif
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/OpenXPKI/OpenXPKI.so

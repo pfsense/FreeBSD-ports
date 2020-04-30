@@ -11,13 +11,15 @@ DISTNAME=	MurrineThemePack
 MAINTAINER=	pneumann@gmail.com
 COMMENT=	Murrine theme pack
 
+BROKEN=		unfetchable
+
 BUILD_DEPENDS=	${LOCALBASE}/lib/gtk-2.0/${GTK2_VERSION}/engines/libmurrine.so:x11-themes/gtk-murrine-engine
 RUN_DEPENDS=	${LOCALBASE}/lib/gtk-2.0/${GTK2_VERSION}/engines/libmurrine.so:x11-themes/gtk-murrine-engine
 
 GTKRC_DIR=	${DISTNAME}/gtk-2.0
 USE_GNOME=	gtk20
 NO_BUILD=	yes
-USES=		tar:bzip2
+USES=		gnome tar:bzip2
 
 do-install:
 	@(for theme in MurrinaCandy MurrinaCappuccino MurrinaEalm MurrinaNeoGraphite; do \

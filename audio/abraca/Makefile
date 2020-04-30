@@ -13,13 +13,16 @@ COMMENT=	GTK2 client for the XMMS2 music player
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.GPL
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
+
 BUILD_DEPENDS=	${LOCALBASE}/bin/valac:lang/vala
 LIB_DEPENDS=	libxmmsclient.so:audio/xmms2 \
 		libgee-0.8.so:devel/libgee
 RUN_DEPENDS=	gnome-themes-extra>=3.0.0:x11-themes/gnome-themes-extra \
 		gnome-icon-theme>=0:misc/gnome-icon-theme
 
-USES=		pkgconfig waf tar:bzip2
+USES=		gnome pkgconfig python:2.7,build tar:bzip2 waf
 USE_GNOME=	gtk30 intltool
 
 MAKE_ARGS=	MANDIR=${MANPREFIX}/man

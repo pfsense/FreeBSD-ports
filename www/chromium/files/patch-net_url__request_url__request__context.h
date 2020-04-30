@@ -1,6 +1,6 @@
---- net/url_request/url_request_context.h.orig	2019-10-30 16:20:11 UTC
+--- net/url_request/url_request_context.h.orig	2020-03-16 18:40:33 UTC
 +++ net/url_request/url_request_context.h
-@@ -90,7 +90,7 @@ class NET_EXPORT URLRequestContext
+@@ -82,7 +82,7 @@ class NET_EXPORT URLRequestContext
    // session.
    const HttpNetworkSession::Context* GetNetworkSessionContext() const;
  

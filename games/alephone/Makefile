@@ -3,7 +3,7 @@
 
 PORTNAME=	alephone
 PORTVERSION=	20150620
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	games
 MASTER_SITES=	SF/marathon/Aleph%20One/2015-06-20
 DISTNAME=	AlephOne-${PORTVERSION}
@@ -13,7 +13,7 @@ COMMENT=	The open source version of Bungie's Marathon game
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/function.hpp:devel/boost-libs
 
-USES=		compiler:c++11-lang gmake localbase pkgconfig tar:bzip2
+USES=		compiler:c++11-lang gl gmake localbase pkgconfig sdl tar:bzip2 
 USE_CXXSTD=	gnu++98
 USE_SDL=	image net sdl ttf
 USE_GL=		yes
@@ -25,7 +25,7 @@ PORTDOCS=	*
 DATADIR=	${PREFIX}/share/AlephOne
 
 OPTIONS_DEFINE=	MAD FFMPEG OGG SPEEX SMPEG ZZIP PNG CURL SNDFILE DOCS
-OPTIONS_DEFAULT=MAD FFMPEG OGG SPEEX SMPEG ZZIP PNG CURL SNDFILE
+OPTIONS_DEFAULT=MAD OGG SPEEX SMPEG ZZIP PNG CURL SNDFILE
 
 FFMPEG_DESC=	Use ffmpeg for film export and playback
 SMPEG_DESC=	Use SMPEG for movie playback
@@ -33,8 +33,9 @@ ZZIP_DESC=	Enable zziplib support
 
 MAD_LIB_DEPENDS=	libmad.so:audio/libmad
 MAD_CONFIGURE_WITH=	mad
-FMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
-FMPEG_CONFIGURE_WITH=	ffmpeg
+FFMPEG_BROKEN=		fails to build with FFMPEG=on
+FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
+FFMPEG_CONFIGURE_WITH=	ffmpeg
 OGG_LIB_DEPENDS=	libvorbisfile.so:audio/libvorbis
 OGG_CONFIGURE_WITH=	vorbis
 SPEEX_LIB_DEPENDS=	libspeex.so:audio/speex

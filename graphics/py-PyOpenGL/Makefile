@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	PyOpenGL
-PORTVERSION=	3.1.0
-PORTREVISION=	4
+PORTVERSION=	3.1.5
 CATEGORIES=	graphics python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,14 +12,15 @@ MAINTAINER=	python@FreeBSD.org
 COMMENT=	OpenGL (and related library) interface for Python
 
 BUILD_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow@${PY_FLAVOR}
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+		${PY_PILLOW}
+RUN_DEPENDS=	${PYNUMPY} \
+		${PY_PILLOW}
 
 OPTIONS_DEFINE=	TKINTER
 OPTIONS_DEFAULT=	TKINTER
 TKINTER_DESC=	Build with tkinter for X support
 
-USES=		dos2unix python
+USES=		dos2unix gl python
 USE_GL=		glut
 USE_PYTHON=	distutils autoplist
 

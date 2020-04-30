@@ -2,33 +2,36 @@
 # $FreeBSD$
 
 PORTNAME=	translate-toolkit
-PORTVERSION=	2.3.1
+PORTVERSION=	2.4.0
 CATEGORIES=	textproc
 MASTER_SITES=	CHEESESHOP
 
-MAINTAINER=	jpaetzel@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Converts between many translation formats
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}vobject>=0:deskutils/py-vobject@${PY_FLAVOR} \
-		msghack:devel/gettext-msghack \
-		${PYTHON_PKGNAMEPREFIX}iniparse>=0:devel/py-iniparse@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}python-Levenshtein>=0:devel/py-python-Levenshtein@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}lxml>=0:devel/py-lxml@${PY_FLAVOR} \
-		iso-codes>=1.3:misc/iso-codes \
-		bash:shells/bash \
-		${PYTHON_PKGNAMEPREFIX}utidylib>=0:www/py-utidylib@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}backports.csv>=1.0.0:devel/py-backports.csv@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}phply>=1.2.5:devel/py-phply@${PY_FLAVOR}
-RUN_DEPENDS:=	${BUILD_DEPENDS}
-# Can use psyco (on i386)
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
-NO_ARCH=	yes
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	bash:shells/bash \
+		iso-codes>=1.3:misc/iso-codes \
+		msghack:devel/gettext-msghack \
+		${PYTHON_PKGNAMEPREFIX}backports.csv>=1.0.0:devel/py-backports.csv@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}iniparse>=0:devel/py-iniparse@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}lxml>=0:devel/py-lxml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}phply>=1.2.5:devel/py-phply@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-Levenshtein>=0:devel/py-python-Levenshtein@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}utidylib>=0:www/py-utidylib@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}vobject>=0:deskutils/py-vobject@${PY_FLAVOR}
+
 USES=		gettext python:2.7
 USE_PYTHON=	autoplist distutils
+
+NO_ARCH=	yes
 
 # list of manual pages to generate
 GEN_MAN=	csv2po.1 csv2tbx.1 dtd2po.1 html2po.1 ical2po.1 idml2po.1 \
@@ -59,7 +62,7 @@ post-install:
 	cd ${WRKDIR}/manpages && ${INSTALL_MAN} ${i} ${STAGEDIR}${PREFIX}/man/man1
 .endfor
 
-list-man1:	build
+list-man1: build
 	@cd ${WRKSRC}/build/scripts-* && ${GREP} -l "${PYTHON_CMD}" * | \
 		${EGREP} -v '(build_tmdb|pocount|poterminology|tmserver)' | \
 		${TR} "\n" " "

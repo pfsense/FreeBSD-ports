@@ -17,7 +17,9 @@ PATCH_DIST_STRIP=	-p1
 MAINTAINER=	xride@FreeBSD.org
 COMMENT=	Print text directly to X11 root window
 
-USES=		imake
+BROKEN=		unfetchable
+
+USES=		imake xorg
 USE_XORG=	x11 xext
 MAKE_ARGS=	CC="${CC}"
 

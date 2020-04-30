@@ -3,7 +3,7 @@
 
 PORTNAME=	pdnmesh
 PORTVERSION=	0.2.2
-PORTREVISION=	17
+PORTREVISION=	18
 CATEGORIES=	cad
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-source/${PORTVERSION}
 
@@ -31,7 +31,7 @@ ATLAS_USES_OFF=		blaslapack
 ATLAS_CONFIGURE_OFF=--with-blas=blas --with-lapack=lapack
 
 post-patch:
-	@${REINPLACE_CMD}-e \
+	@${REINPLACE_CMD} -e \
 		'/^SUBDIRS/s|doc|| ; \
 		 s|^pkgdata_DATA|#pkgdata_DATA|' ${WRKSRC}/Makefile.in
 

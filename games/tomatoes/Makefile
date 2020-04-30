@@ -12,12 +12,14 @@ DISTFILES=	${PORTNAME}-linux-src-${PORTVERSION}${EXTRACT_SUFX} \
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Tomato-smashing, Q-Bert style
 
+BROKEN=		unfetchable
+
 LICENSE=	ZLIB
 
 DATAVERSION=	1.5
 DATA_WRKSRC=	${WRKDIR}/tomatoes-${DATAVERSION}
 
-USES=		tar:bzip2 gmake
+USES=		gl gmake sdl tar:bzip2
 USE_SDL=	mixer image
 USE_GL=		gl glu
 MAKEFILE=	makefile

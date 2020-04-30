@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dbus
-PORTVERSION=	1.2.8
+DISTVERSION=	1.2.16
 PORTREVISION?=	0
 CATEGORIES=	devel gnome python
 MASTER_SITES=	http://dbus.freedesktop.org/releases/dbus-python/
@@ -10,7 +10,7 @@ PKGNAMEPREFIX?=	py
 PKGNAMESUFFIX?=	-common
 DISTNAME=	dbus-python-${PORTVERSION}
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT?=	Common files for the Python bindings for the D-BUS messaging system
 
 BUILD_DEPENDS=	dbus-glib>=0:devel/dbus-glib
@@ -25,7 +25,7 @@ CONFIGURE_ARGS=	--docdir=${DOCSDIR} \
 INSTALL_TARGET=	install-strip
 
 .if ${SLAVE_PORT} == no
-USES+=		python:2.7,build
+USES+=		python:build
 
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}

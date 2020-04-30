@@ -39,11 +39,13 @@ share/ECM/find-modules/rules_engine.py
 share/ECM/find-modules/run-sip.py
 share/ECM/find-modules/sip_generator.py
 share/ECM/kde-modules/KDECMakeSettings.cmake
+share/ECM/kde-modules/KDEClangFormat.cmake
 share/ECM/kde-modules/KDECompilerSettings.cmake
 share/ECM/kde-modules/KDEFrameworkCompilerSettings.cmake
 share/ECM/kde-modules/KDEInstallDirs.cmake
 share/ECM/kde-modules/KDEPackageAppTemplates.cmake
 share/ECM/kde-modules/appstreamtest.cmake
+share/ECM/kde-modules/clang-format.cmake
 share/ECM/kde-modules/prefix.sh.cmake
 share/ECM/modules/ECMAddAppIcon.cmake
 share/ECM/modules/ECMAddQch.cmake
@@ -54,6 +56,7 @@ share/ECM/modules/ECMCreateQmFromPoFiles.cmake
 share/ECM/modules/ECMEnableSanitizers.cmake
 share/ECM/modules/ECMFindModuleHelpers.cmake
 share/ECM/modules/ECMFindQMLModule.cmake.in
+share/ECM/modules/ECMGenerateExportHeader.cmake
 share/ECM/modules/ECMGenerateHeaders.cmake
 share/ECM/modules/ECMGeneratePkgConfigFile.cmake
 share/ECM/modules/ECMGeneratePriFile.cmake
@@ -74,6 +77,7 @@ share/ECM/modules/ECMQtDeclareLoggingCategory.h.in
 share/ECM/modules/ECMQueryQmake.cmake
 share/ECM/modules/ECMSetupQtPluginMacroNames.cmake
 share/ECM/modules/ECMSetupVersion.cmake
+share/ECM/modules/ECMSourceVersionControl.cmake
 share/ECM/modules/ECMUninstallTarget.cmake
 share/ECM/modules/ECMUseFindModules.cmake
 share/ECM/modules/ECMVersionHeader.h.in
@@ -83,6 +87,7 @@ share/ECM/test-modules/test_execute_and_compare.cmake
 share/ECM/toolchain/Android.cmake
 share/ECM/toolchain/ECMAndroidDeployQt.cmake
 share/ECM/toolchain/deployment-file.json.in
+share/ECM/toolchain/deployment-file-qt514.json.in
 share/ECM/toolchain/hasMainSymbol.cmake
 share/ECM/toolchain/specifydependencies.cmake
 %%HELP%%%%DOCSDIR%%/ExtraCMakeModules.qch
@@ -112,6 +117,7 @@ share/ECM/toolchain/specifydependencies.cmake
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/find-module/FindXCB.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/index.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/kde-module/KDECMakeSettings.rst.txt
+%%PORTDOCS%%%%DOCSDIR%%/html/_sources/kde-module/KDEClangFormat.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/kde-module/KDECompilerSettings.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/kde-module/KDEFrameworkCompilerSettings.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/kde-module/KDEInstallDirs.rst.txt
@@ -130,6 +136,7 @@ share/ECM/toolchain/specifydependencies.cmake
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/module/ECMCreateQmFromPoFiles.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/module/ECMEnableSanitizers.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/module/ECMFindModuleHelpers.rst.txt
+%%PORTDOCS%%%%DOCSDIR%%/html/_sources/module/ECMGenerateExportHeader.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/module/ECMGenerateHeaders.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/module/ECMGeneratePkgConfigFile.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/module/ECMGeneratePriFile.rst.txt
@@ -144,6 +151,7 @@ share/ECM/toolchain/specifydependencies.cmake
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/module/ECMQtDeclareLoggingCategory.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/module/ECMSetupQtPluginMacroNames.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/module/ECMSetupVersion.rst.txt
+%%PORTDOCS%%%%DOCSDIR%%/html/_sources/module/ECMSourceVersionControl.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/module/ECMUninstallTarget.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/module/ECMUseFindModules.rst.txt
 %%PORTDOCS%%%%DOCSDIR%%/html/_sources/module/ECMWinResolveSymlinks.rst.txt
@@ -199,6 +207,7 @@ share/ECM/toolchain/specifydependencies.cmake
 %%PORTDOCS%%%%DOCSDIR%%/html/genindex.html
 %%PORTDOCS%%%%DOCSDIR%%/html/index.html
 %%PORTDOCS%%%%DOCSDIR%%/html/kde-module/KDECMakeSettings.html
+%%PORTDOCS%%%%DOCSDIR%%/html/kde-module/KDEClangFormat.html
 %%PORTDOCS%%%%DOCSDIR%%/html/kde-module/KDECompilerSettings.html
 %%PORTDOCS%%%%DOCSDIR%%/html/kde-module/KDEFrameworkCompilerSettings.html
 %%PORTDOCS%%%%DOCSDIR%%/html/kde-module/KDEInstallDirs.html
@@ -217,6 +226,7 @@ share/ECM/toolchain/specifydependencies.cmake
 %%PORTDOCS%%%%DOCSDIR%%/html/module/ECMCreateQmFromPoFiles.html
 %%PORTDOCS%%%%DOCSDIR%%/html/module/ECMEnableSanitizers.html
 %%PORTDOCS%%%%DOCSDIR%%/html/module/ECMFindModuleHelpers.html
+%%PORTDOCS%%%%DOCSDIR%%/html/module/ECMGenerateExportHeader.html
 %%PORTDOCS%%%%DOCSDIR%%/html/module/ECMGenerateHeaders.html
 %%PORTDOCS%%%%DOCSDIR%%/html/module/ECMGeneratePkgConfigFile.html
 %%PORTDOCS%%%%DOCSDIR%%/html/module/ECMGeneratePriFile.html
@@ -231,6 +241,7 @@ share/ECM/toolchain/specifydependencies.cmake
 %%PORTDOCS%%%%DOCSDIR%%/html/module/ECMQtDeclareLoggingCategory.html
 %%PORTDOCS%%%%DOCSDIR%%/html/module/ECMSetupQtPluginMacroNames.html
 %%PORTDOCS%%%%DOCSDIR%%/html/module/ECMSetupVersion.html
+%%PORTDOCS%%%%DOCSDIR%%/html/module/ECMSourceVersionControl.html
 %%PORTDOCS%%%%DOCSDIR%%/html/module/ECMUninstallTarget.html
 %%PORTDOCS%%%%DOCSDIR%%/html/module/ECMUseFindModules.html
 %%PORTDOCS%%%%DOCSDIR%%/html/module/ECMWinResolveSymlinks.html

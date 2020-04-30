@@ -14,6 +14,9 @@ COMMENT=	Apache Portability Library
 
 LICENSE=	APACHE20
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
+
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
 NO_PACKAGE=	Developer only package
@@ -58,7 +61,7 @@ IPV6_CONFIGURE_ENABLE=	ipv6
 MYSQL_CFLAGS=		-I${LOCALBASE}/include -I${LOCALBASE}/include/mysql -DHAVE_MYSQL_H
 MYSQL_CONFIGURE_WITH=	mysql=${LOCALBASE}
 MYSQL_LIBS=		-L${LOCALBASE}/lib/mysql
-MYSQL_USE=		MYSQL=yes
+MYSQL_USES=		mysql
 NDBM_CONFIGURE_WITH=	ndbm=/usr
 PGSQL_CONFIGURE_ENV=	ac_cv_path_PGSQL_CONFIG=""
 PGSQL_CONFIGURE_WITH=	pgsql=${LOCALBASE}

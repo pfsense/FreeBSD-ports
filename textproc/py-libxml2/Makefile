@@ -4,7 +4,7 @@
 CATEGORIES=	textproc gnome python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Python interface for XML parser library for GNOME
 
 MASTERDIR=	${.CURDIR}/../libxml2
@@ -14,7 +14,7 @@ DESCR=		${.CURDIR}/pkg-descr
 PLIST=		${.CURDIR}/pkg-plist
 
 USE_GNOME=	libxml2
-USES=		python gettext-runtime
+USES=		gettext-runtime gnome python
 USE_PYTHON=	autoplist distutils
 
 CPPFLAGS+=	`${PYTHON_CMD}-config --cflags`

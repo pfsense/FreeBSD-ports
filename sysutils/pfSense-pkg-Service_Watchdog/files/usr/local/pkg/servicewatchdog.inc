@@ -3,7 +3,7 @@
  * servicewatchdog.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2013-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2020 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -102,7 +102,7 @@ function servicewatchdog_check_services() {
 			$error_message = "Service Watchdog detected service {$svc['name']} stopped. Restarting {$svc['name']} ({$descr})";
 			log_error($error_message);
 			if (isset($svc['notify'])) {
-				notify_via_smtp($error_message);
+				notify_all_remote($error_message);
 			}
 			service_control_start($svc['name'], $svc);
 		}

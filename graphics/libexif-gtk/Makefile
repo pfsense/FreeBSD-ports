@@ -7,7 +7,7 @@ PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	SF/libexif/${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	marius@nuenneri.ch
+MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	GTK+ widgets to display/edit EXIF tags
 
 LICENSE=	LGPL21
@@ -15,7 +15,7 @@ LICENSE=	LGPL21
 LIB_DEPENDS=	libexif.so:graphics/libexif
 
 GNU_CONFIGURE=	yes
-USES=		libtool pkgconfig
+USES=		gnome libtool pkgconfig
 USE_GNOME=	gtk20
 USE_LDCONFIG=	yes
 

@@ -155,6 +155,10 @@ function lldpd_sync_config() {
 		}
 	}
 
+	if ($lldpd_config['agentx'] == 'yes') {
+		$cmd .= ' -x';
+	}
+
 	/* Write the rc script */
 	$start = "	$cmd";
 	$stop = "	/usr/bin/killall -q lldpd";

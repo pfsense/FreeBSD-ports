@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lumberjack
-PORTVERSION=	1.0.13
+PORTVERSION=	1.2.4
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -12,8 +12,9 @@ COMMENT=	Simple, powerful, and fast logging utility
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT_LICENSE
 
-NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -30,7 +30,6 @@
     SUBDIR += file-roller
     SUBDIR += fpc-bzip2
     SUBDIR += fpc-unzip
-    SUBDIR += freetar
     SUBDIR += gcab
     SUBDIR += gcpio
     SUBDIR += gnome-autoar
@@ -39,9 +38,7 @@
     SUBDIR += gzip
     SUBDIR += gzrecover
     SUBDIR += ha
-    SUBDIR += hffzip
     SUBDIR += hlextract
-    SUBDIR += hpack.non-usa.only
     SUBDIR += innoextract
     SUBDIR += javatar
     SUBDIR += jzlib
@@ -55,6 +52,7 @@
     SUBDIR += lha
     SUBDIR += lha-ac
     SUBDIR += lhasa
+    SUBDIR += lib1541img
     SUBDIR += libarc
     SUBDIR += libarchive
     SUBDIR += libcabinet
@@ -64,7 +62,6 @@
     SUBDIR += liblz4
     SUBDIR += liblzxcomp
     SUBDIR += libmspack
-    SUBDIR += liborange
     SUBDIR += libpar2
     SUBDIR += librtfcomp
     SUBDIR += libunrar
@@ -151,10 +148,6 @@
     SUBDIR += php-lz4
     SUBDIR += php-snappy
     SUBDIR += php-zstd
-    SUBDIR += php71-bz2
-    SUBDIR += php71-phar
-    SUBDIR += php71-zip
-    SUBDIR += php71-zlib
     SUBDIR += php72-bz2
     SUBDIR += php72-phar
     SUBDIR += php72-zip
@@ -181,7 +174,6 @@
     SUBDIR += py-brotlipy
     SUBDIR += py-bup
     SUBDIR += py-bz2file
-    SUBDIR += py-czipfile
     SUBDIR += py-libarchive-c
     SUBDIR += py-librtfcomp
     SUBDIR += py-lz4
@@ -202,7 +194,6 @@
     SUBDIR += qpress
     SUBDIR += quazip
     SUBDIR += rar
-    SUBDIR += rox-archive
     SUBDIR += rpm2cpio
     SUBDIR += rpm4
     SUBDIR += rubygem-archive-tar-minitar
@@ -214,8 +205,9 @@
     SUBDIR += rubygem-minitar-cli
     SUBDIR += rubygem-ruby-xz
     SUBDIR += rubygem-rubyzip
-    SUBDIR += rubygem-rubyzip12
+    SUBDIR += rubygem-rubyzip13
     SUBDIR += rubygem-rubyzip2
+    SUBDIR += rubygem-rubyzip20
     SUBDIR += rubygem-snappy
     SUBDIR += rvm
     SUBDIR += rzip
@@ -224,7 +216,6 @@
     SUBDIR += snappy
     SUBDIR += snappy-java
     SUBDIR += snzip
-    SUBDIR += squeeze
     SUBDIR += squsq
     SUBDIR += star
     SUBDIR += stuffit
@@ -238,6 +229,7 @@
     SUBDIR += unalz
     SUBDIR += unarchiver
     SUBDIR += unarj
+    SUBDIR += unarr
     SUBDIR += undms
     SUBDIR += unfoo
     SUBDIR += unlzx
@@ -246,12 +238,12 @@
     SUBDIR += unrar
     SUBDIR += unrar-iconv
     SUBDIR += unshield
-    SUBDIR += untar
     SUBDIR += unzip
     SUBDIR += unzoo
     SUBDIR += upx
     SUBDIR += urbackup-client
     SUBDIR += urbackup-server
+    SUBDIR += v1541commander
     SUBDIR += xar
     SUBDIR += xarchive
     SUBDIR += xarchiver

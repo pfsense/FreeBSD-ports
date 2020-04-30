@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	hugin
-PORTVERSION=	2019.0.0
-PORTREVISION=	3
+PORTVERSION=	2019.2.0
+PORTREVISION=	0
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}
 
@@ -28,8 +28,8 @@ RUN_DEPENDS=	enblend>=4.1.4:graphics/enblend \
 
 BROKEN_i386=	Fails to build: ld: error: src/hugin_base/libhuginbase.so.0.0: undefined reference to __atomic_load
 
-USES=		cmake compiler:c++11-lib desktop-file-utils \
-		gettext jpeg pkgconfig shared-mime-info shebangfix tar:bzip2
+USES=		cmake compiler:c++11-lib desktop-file-utils gettext gl gnome \
+		jpeg pkgconfig shared-mime-info shebangfix tar:bzip2
 CMAKE_ARGS=	-DwxWidgets_CONFIG_EXECUTABLE=${WX_CONFIG}
 USE_WX=		3.0+
 USE_GL=		glew glut
@@ -50,7 +50,7 @@ AUTOPANOSIFTC_DESC=	Install graphics/autopano-sift-c
 AUTOPANOSIFTC_RUN_DEPENDS=	autopano:graphics/autopano-sift-c
 
 PYTHON_DESC=		Python Scripting Interface
-PYTHON_USES=		python:2.7
+PYTHON_USES=		python
 PYTHON_BUILD_DEPENDS=	swig3.0:devel/swig30
 PYTHON_BINARY_ALIAS=	swig=swig3.0
 PYTHON_CMAKE_ON=	-DBUILD_HSI=ON

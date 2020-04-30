@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	groovy
-DISTVERSION=	2.4.17
+DISTVERSION=	2.4.19
 CATEGORIES=	lang java
 MASTER_SITES=	http://dl.bintray.com/groovy/maven/
 DISTFILES=	apache-groovy-binary-${PORTVERSION}${EXTRACT_SUFX}
@@ -14,8 +14,6 @@ LICENSE=	APACHE20
 
 USES=		zip
 USE_JAVA=	yes
-
-JAVA_VERSION=	1.7+
 
 NO_ARCH=	yes
 NO_BUILD=	yes

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	GraphicsMagick
-PORTVERSION=	1.3.33
+PORTVERSION=	1.3.35
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	SF \
@@ -66,6 +66,7 @@ WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
 WMF_CONFIGURE_WITH=	wmf
 X11_CONFIGURE_OFF=	ac_cv_lib_ICE_IceConnectionNumber=no
 X11_CONFIGURE_WITH=	x
+X11_USES=		xorg
 X11_USE=		XORG=ice,sm,x11,xext
 XML_CONFIGURE_WITH=	xml
 XML_USE=		GNOME=libxml2

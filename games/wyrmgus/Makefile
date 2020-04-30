@@ -4,7 +4,7 @@
 PORTNAME=	wyrmgus
 PORTVERSION=	3.5.4
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -23,7 +23,7 @@ USE_GITHUB=     yes
 GH_ACCOUNT=     Andrettin
 GH_PROJECT=     Wyrmgus
 
-USES=		compiler:c++11-lib cmake lua:51 pkgconfig sqlite
+USES=		cmake compiler:c++11-lib lua:51 pkgconfig sdl sqlite
 USE_SDL=	sdl
 CMAKE_ARGS=	-DGAMEDIR:STRING="bin" \
 		-DTOLUA++_APP:STRING="tolua++-${LUA_VER}" \

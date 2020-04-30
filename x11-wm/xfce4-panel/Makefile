@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xfce4-panel
-PORTVERSION=	4.14.1
+PORTVERSION=	4.14.3
 CATEGORIES=	x11-wm xfce
 MASTER_SITES=	XFCE
 DIST_SUBDIR=	xfce4
@@ -50,6 +50,6 @@ NLS_USES=		gettext-runtime
 
 VAPI_BUILD_DEPENDS=	vapigen:lang/vala
 VAPI_CONFIGURE_ENABLE=	vala
-VAPA_IMPLIES=		GIR
+VAPI_IMPLIES=		GIR
 
 .include <bsd.port.mk>

@@ -5,8 +5,8 @@ PORTNAME=	pipsecd
 PORTVERSION=	19991014
 PORTREVISION=	5
 CATEGORIES=	net security
-MASTER_SITES=	http://perso.telecom-paristech.fr/~beyssac/pipsec/ \
-		http://www.komquats.com/distfiles/
+MASTER_SITES=	http://www.komquats.com/distfiles/ \
+		LOCAL/cy
 DISTNAME=	pipsec-19991014
 
 MAINTAINER=	cy@FreeBSD.org

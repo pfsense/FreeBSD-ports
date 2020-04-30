@@ -2,8 +2,7 @@
 
 PORTNAME=	mlt
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.16.0
-PORTREVISION?=	2
+DISTVERSION=	6.20.0
 CATEGORIES?=	multimedia
 
 MAINTAINER=	kde@FreeBSD.org
@@ -38,7 +37,7 @@ USE_GL=		gl
 USE_GNOME=	libxml2
 USE_SDL=	image2
 USE_XORG=	x11
-USES+=		gl iconv pathfix
+USES+=		gl iconv pathfix sdl xorg
 PATHFIX_MAKEFILEIN=	Makefile
 CONFIGURE_ARGS+=--disable-qt --swig-languages=none
 USE_LDCONFIG=	yes
@@ -50,7 +49,7 @@ PORTEXAMPLES=	demo
 
 OPTIONS_DEFINE=	DOCS EXAMPLES FFMPEG FREI0R GTK2 JACK OPENGL \
 		SAMPLERATE SOX SWFDEC VIDSTAB # OPENCV VDPAU
-OPTIONS_DEFAULT=FFMPEG FREI0R GTK2 OPENGL SAMPLERATE SOX SWFDEC VIDSTAB
+OPTIONS_DEFAULT=FFMPEG FREI0R GTK2 OPENGL SAMPLERATE SOX VIDSTAB
 OPTIONS_SUB=	yes
 
 GTK2_DESC=	Images and text rendering via GTK+ 2
@@ -103,6 +102,8 @@ VIDSTAB_LIB_DEPENDS=	libvidstab.so:multimedia/vid.stab
 VIDSTAB_CONFIGURE_ENABLE=vid.stab
 
 pre-configure:
+	# Remove sdl1 support
+	${RM} -r ${WRKSRC}/src/modules/sdl
 	@${REINPLACE_CMD} -e 's,/usr/local,${LOCALBASE},' \
 		${WRKSRC}/src/modules/avformat/vdpau.c \
 		${WRKSRC}/src/modules/frei0r/factory.c \

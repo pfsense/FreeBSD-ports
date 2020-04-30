@@ -82,6 +82,7 @@ CONFIGURE_ARGS+=-no-pthread
 
 .if ${PORT_OPTIONS:MX11}
 PLIST_SUB+=	X11=""
+USES+=		xorg
 USE_XORG=	x11
 CONFLICTS+=	ocaml-nox11-[0-9]*
 CONFIGURE_ARGS+=-x11include ${LOCALBASE}/include -x11lib ${LOCALBASE}/lib
@@ -98,6 +99,11 @@ CONFIGURE_ARGS+=-no-graph
 PLIST_SUB+=	PROF="@comment "
 .else
 PLIST_SUB+=	PROF=""
+.endif
+
+.if defined(PPC_ABI) && ${PPC_ABI} == ELFv2
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-asmcomp_power_arch.ml
+USE_GCC=	yes
 .endif
 
 post-extract:

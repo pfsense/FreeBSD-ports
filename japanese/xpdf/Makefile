@@ -2,16 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	xpdf
-PORTVERSION=	3.03
-PORTREVISION=	3
+PORTVERSION=	4.02
 CATEGORIES=	japanese
-MASTER_SITES=	ftp://ftp.foolabs.com/pub/xpdf/
+MASTER_SITES=	https://xpdfreader-dl.s3.amazonaws.com/
 PKGNAMESUFFIX=	-jafont
 DISTNAME=	xpdf-japanese
 DIST_SUBDIR=	${DISTNAME}-${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Japanese font support for xpdf
+
+LICENSE=	GPLv2
 
 RUN_DEPENDS=	xpdf:graphics/xpdf \
 		${ADOBECMAPDIR}/ai0/CMap/Identity-H:print/adobe-cmaps \

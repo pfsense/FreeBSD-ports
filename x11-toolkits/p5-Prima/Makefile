@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Prima
-PORTVERSION=	1.56
+PORTVERSION=	1.57
 CATEGORIES=	x11-toolkits graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libgif.so:graphics/giflib \
 		libtiff.so:graphics/tiff \
 		libwebp.so:graphics/webp
 
-USES=		jpeg perl5 pkgconfig
+USES=		jpeg perl5 pkgconfig xorg
 USE_PERL5=	configure
 USE_XORG=	x11 xcursor xext xpm xrender xrandr
 

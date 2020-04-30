@@ -4,7 +4,7 @@ PORTNAME=	rlvm
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	0.14-67
 DISTVERSIONSUFFIX=	-g9350209
-PORTREVISION=	21
+PORTREVISION=	22
 CATEGORIES=	games
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -16,7 +16,8 @@ COMMENT=	RealLive virtual machine clone
 LICENSE=	GPLv2 GPLv3 MIT
 LICENSE_COMB=	multi
 
-BROKEN_powerpc64=	fails to link: gcn_platform.cc: undefined reference to gcn::Exception::Exception
+BROKEN_FreeBSD_11_powerpc64=	fails to link on powerpc64 elfv1: gcn_platform.cc: undefined reference to gcn::Exception::Exception
+BROKEN_FreeBSD_12_powerpc64=	fails to link on powerpc64 elfv1: gcn_platform.cc: undefined reference to gcn::Exception::Exception
 
 BUILD_DEPENDS=	${LOCALBASE}/include/utf8.h:devel/utf8cpp
 LIB_DEPENDS=	libvorbisfile.so:audio/libvorbis \
@@ -27,7 +28,7 @@ RUN_DEPENDS=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf:x11-fonts/dejavu
 USE_GITHUB=	yes
 GH_ACCOUNT=	eglaysher
 
-USES=		compiler:c++11-lib pkgconfig scons
+USES=		compiler:c++11-lib gl gnome pkgconfig scons sdl
 USE_GL=		glew glu
 USE_GNOME=	gtk20
 USE_SDL=	image mixer ttf
@@ -47,18 +48,17 @@ OPTIONS_SUB=	yes
 
 JAPANESE_FONT_DESC=msgothic.ttc alternatives with verified metrics (unless --font)
 KOCHI_DESC=	kochi-gothic-subst.ttf from japanese/font-kochi
-KOCHI_RUN_DEPENDS=${LOCALBASE}/share/fonts/TTF/kochi-gothic-subst.ttf:japanese/font-kochi
+KOCHI_RUN_DEPENDS=${LOCALBASE}/share/fonts/kochi/kochi-gothic-subst.ttf:japanese/font-kochi
 MONA_DESC=	mona.ttf from japanese/font-mona-ttf
-MONA_RUN_DEPENDS=${LOCALBASE}/share/fonts/TTF/mona.ttf:japanese/font-mona-ttf
+MONA_RUN_DEPENDS=${LOCALBASE}/share/fonts/mona-ttf/mona.ttf:japanese/font-mona-ttf
 SAZANAMI_DESC=	sazanami-gothic.ttf from japanese/font-sazanami
-SAZANAMI_RUN_DEPENDS=${LOCALBASE}/share/fonts/TTF/sazanami-gothic.ttf:japanese/font-sazanami
+SAZANAMI_RUN_DEPENDS=${LOCALBASE}/share/fonts/sazanami/sazanami-gothic.ttf:japanese/font-sazanami
 
 DEBUG_MAKE_ARGS_OFF=--release
 NLS_USES=	gettext
 NLS_EXTRA_PATCHES_OFF=${FILESDIR}/extra-patch-disable-nls
 TEST_USES=	lua:51
 TEST_BUILD_DEPENDS=googletest>=1.7.0:devel/googletest \
-		googlemock>=1.7.0:devel/googlemock \
 		luabind>0:devel/luabind
 TEST_EXTRA_PATCHES_OFF=${FILESDIR}/extra-patch-disable-test
 
@@ -81,7 +81,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/build/${PORTNAME} \
 		${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/debian/${PORTNAME}.6 \
-		${STAGEDIR}${MAN6PREFIX}/man/man6
+		${STAGEDIR}${PREFIX}/share/man/man6
 	${INSTALL_DATA} ${WRKSRC}/src/platforms/gtk/${PORTNAME}.desktop \
 		${STAGEDIR}${DESKTOPDIR}
 	@(cd ${WRKSRC}/resources && for f in */${PORTNAME}.png; do \

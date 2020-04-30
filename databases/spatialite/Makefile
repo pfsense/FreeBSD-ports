@@ -8,7 +8,7 @@ CATEGORIES=	databases geography
 MASTER_SITES=	http://www.gaia-gis.it/gaia-sins/libspatialite-sources/
 DISTNAME=	lib${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	lbartoletti@tuxfamily.org
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Spatial Extensions for SQLite
 
 LICENSE=	MPL11 LGPL20 GPLv2
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libgeos_c.so:graphics/geos \
 		libfreexl.so:textproc/freexl
 
 GNU_CONFIGURE=	yes
-USES=		gmake iconv pathfix pkgconfig libtool sqlite
+USES=		gmake gnome iconv libtool pathfix pkgconfig sqlite
 USE_GNOME=	libxml2
 
 CFLAGS+=	-I${WRKSRC}/src/headers -I${LOCALBASE}/include

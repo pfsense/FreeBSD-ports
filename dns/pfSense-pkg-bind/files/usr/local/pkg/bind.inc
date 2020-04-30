@@ -3,7 +3,7 @@
  * bind.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Juliano Oliveira
  * Copyright (c) 2013 Adriano Brancher
  * Copyright (c) 2013 Marcello Coutinho
@@ -450,7 +450,9 @@ EOD;
 					case 'slave':
 						$bind_conf .= "\t\tmasters { $zoneipslave; };\n";
 						$bind_conf .= "\t\tallow-query { $zoneallowquery; };\n";
-						$bind_conf .= "\t\tallow-transfer { $zoneallowtransfer; };\n";
+						if (!preg_match('/allow-transfer/', $zonecustom)) {
+							$bind_conf .= "\t\tallow-transfer { $zoneallowtransfer; };\n";
+						}
 						break;
 					case 'forward':
 						$bind_conf .= "\t\tforward only;\n";
@@ -743,6 +745,13 @@ EOD;
 			exec("/sbin/devfs -m {$bind_dev_dir} rule add path {$dev_dir} unhide", $dout);
 		}
 		exec("/sbin/devfs -m {$bind_dev_dir} rule applyset", $dout);
+	}
+	// Handle /usr/local/lib/named for chroot
+	$bind_plugin_dir = CHROOT_LOCALBASE . BIND_LOCALBASE . "/lib/named";
+	rmdir_recursive($bind_plugin_dir);
+	safe_mkdir($bind_plugin_dir, 0755);
+	foreach (glob(BIND_LOCALBASE . "/lib/named/*.so") as $bind_plugin) {
+		copy($bind_plugin, CHROOT_LOCALBASE . $bind_plugin);
 	}
 	// http://www.unixwiz.net/techtips/bind9-chroot.html
 	file_put_contents(CHROOT_LOCALBASE . '/etc/namedb/named.conf', $bind_conf);

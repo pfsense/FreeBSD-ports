@@ -3,7 +3,7 @@
 
 PORTNAME=	oss
 DISTVERSION=	4.2-build2019
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	http://www.opensound.com/developer/sources/stable/bsd/
 DISTNAME=	${PORTNAME}-v${DISTVERSION}-src-bsd
@@ -64,6 +64,12 @@ post-patch:
 	${FIND} ${PATCH_WRKSRC} -name configure -or \
 	    -name make.local -or -name soundoff -or -name soundon | \
 	    ${XARGS} ${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g'
+
+pre-build:
+	${MAKE_CMD} -C ${BUILD_WRKSRC}/kernel/OS/FreeBSD \
+		-f /usr/share/mk/bsd.kmod.mk \
+		KMOD=osscore SRCS=os_freebsd.c \
+		device_if.h bus_if.h pci_if.h
 
 do-install:
 	${INSTALL_PROGRAM} ${PROTO_BINDIR}/* ${STAGEDIR}${PREFIX}/bin/

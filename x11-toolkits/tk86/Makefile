@@ -25,7 +25,6 @@ OPTIONS_DEFAULT=TKMAN THREADS
 OPTIONS_SUB=	yes
 TKMAN_DESC=	Install Tk function manpages
 DEMOS_DESC=	Install demos
-XSS_DESC=	XScrnSaver support
 
 WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION}/unix
 
@@ -33,7 +32,7 @@ ALL_TARGET=	all
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	test
 
-USES+=		tcl:${SHORT_TK_VER},tea
+USES+=		tcl:${SHORT_TK_VER},tea xorg
 USE_LDCONFIG=	yes
 USE_XORG=	x11 xext xft xrender xscrnsaver
 CONFIGURE_ARGS=	--enable-xss \
@@ -46,9 +45,9 @@ CONFIGURE_ENV=	PORTSDIR=${PORTSDIR}
 CFLAGS+=	-I${TCL_INCLUDEDIR} \
 		-I${LOCALBASE}/include
 
-TK_VERSION=	8.6.9
+TK_VERSION=	8.6.10
 TK_VER=		${TK_VERSION:R}
-TK_RC=		# Nothin
+TK_RC=		# Nothing
 SHORT_TK_VER=	${TK_VER:S/.//}
 MAN_SUFFIX=	${PKGBASE}
 

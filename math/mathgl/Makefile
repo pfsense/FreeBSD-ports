@@ -2,6 +2,7 @@
 
 PORTNAME=	mathgl
 DISTVERSION=	2.4.4
+PORTREVISION=	1
 CATEGORIES=	math graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}%20${PORTVERSION}/
 
@@ -11,6 +12,9 @@ COMMENT=	Library for high-quality scientific data visualization
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-08-15
+
 LIB_DEPENDS=	libgif.so:graphics/giflib \
 		libgsl.so:math/gsl \
 		libhdf5.so:science/hdf5 \
@@ -19,7 +23,8 @@ LIB_DEPENDS=	libgif.so:graphics/giflib \
 		libpng.so:graphics/png \
 		libsz.so:science/szip
 
-USES=		cmake compiler:c++11-lang gettext-runtime gl jpeg python:2.7
+USES=		cmake compiler:c++11-lang gettext-runtime gl jpeg python:2.7 \
+		xorg
 USE_GL=		gl glu glut
 USE_XORG=	xi xmu
 USE_LDCONFIG=	yes

@@ -3,7 +3,7 @@
 
 PORTNAME=	pgadmin3
 PORTVERSION=	1.22.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	databases
 MASTER_SITES=	PGSQL/pgadmin/pgadmin3/v${PORTVERSION}/src
 DIST_SUBDIR=	postgresql
@@ -15,7 +15,7 @@ LICENSE=	PostgreSQL
 
 BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
 
-USES=		compiler:c++11-lib gettext gmake pgsql:9.0+ ssl
+USES=		compiler:c++11-lib gettext gmake gnome pgsql:9.0+ ssl
 USE_GNOME=	libxml2 libxslt
 USE_WX=		3.0
 USE_CXXSTD=	c++11

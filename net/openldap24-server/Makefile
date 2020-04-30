@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=		openldap
-DISTVERSION=		2.4.48
+DISTVERSION=		2.4.50
 PORTREVISION=		${OPENLDAP_PORTREVISION}
 CATEGORIES=		net databases
 MASTER_SITES=		ftp://ftp.OpenLDAP.org/pub/OpenLDAP/%SUBDIR%/ \
+			http://repository.linagora.org/OpenLDAP/openldap-release/ \
 			ftp://gd.tuwien.ac.at/infosys/network/OpenLDAP/%SUBDIR%/ \
 			ftp://ftp.ntua.gr/mirror/OpenLDAP/%SUBDIR%/ \
 			ftp://ftp.u-aizu.ac.jp/pub/net/openldap/%SUBDIR%/ \
@@ -67,7 +68,7 @@ BROKEN=			incompatible OpenLDAP version: ${WANT_OPENLDAP_VER}
 PORTREVISION_CLIENT=	0
 PORTREVISION_SERVER=	0
 OPENLDAP_SHLIB_MAJOR=	2
-OPENLDAP_SHLIB_MINOR=	10.11
+OPENLDAP_SHLIB_MINOR=	10.13
 OPENLDAP_MAJOR=		${DISTVERSION:R}
 
 OPTIONS_DEFINE=		DEBUG FETCH GSSAPI
@@ -85,6 +86,7 @@ OPTIONS_DEFINE+=	DEREF DYNGROUP DYNLIST MEMBEROF PPOLICY PROXYCACHE
 OPTIONS_DEFINE+=	REFINT RETCODE RWM SEQMOD SSSVLV SYNCPROV TRANSLUCENT
 OPTIONS_DEFINE+=	UNIQUE VALSORT SMBPWD SHA2 DYNAMIC_BACKENDS SASL
 OPTIONS_DEFINE+=	LMPASSWD
+OPTIONS_DEFINE+=	PBKDF2
 OPTIONS_DEFINE+=	OUTLOOK
 OPTIONS_DEFINE+=	LASTBIND
 OPTIONS_DEFINE+=	KQUEUE
@@ -130,6 +132,7 @@ VALSORT_DESC=		With Value Sorting overlay
 SMBPWD_DESC=		With Samba Password hashes overlay
 SHA2_DESC=		With SHA2 Password hashes overlay
 LMPASSWD_DESC=		With LM hash password support (DEPRECATED)
+PBKDF2_DESC=		With PBKDF2 hash password support
 DYNAMIC_BACKENDS_DESC=	Build dynamic backends
 OUTLOOK_DESC=		Force caseIgnoreOrderingMatch on name attribute (experimental)
 LASTBIND_DESC=		With lastbind overlay
@@ -467,6 +470,12 @@ PLIST_SUB+=		SHA2=""
 PLIST_SUB+=		SHA2="@comment "
 .endif
 
+.if ${PORT_OPTIONS:MPBKDF2}
+PLIST_SUB+=		PBKDF2=""
+.else
+PLIST_SUB+=		PBKDF2="@comment "
+.endif
+
 .if ${PORT_OPTIONS:MLASTBIND}
 PLIST_SUB+=		LASTBIND=""
 .else
@@ -580,6 +589,12 @@ post-build:
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} \
 		${MAKE_ARGS} prefix="${PREFIX}" all)
 .endif
+.if ${PORT_OPTIONS:MPBKDF2}
+	@(cd ${BUILD_WRKSRC}/contrib/slapd-modules/passwd/pbkdf2 && \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} \
+		${MAKE_ARGS} prefix="${PREFIX}" all)
+.endif
+
 .if ${PORT_OPTIONS:MLASTBIND}
 	@(cd ${BUILD_WRKSRC}/contrib/slapd-modules/lastbind && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} \
@@ -621,13 +636,20 @@ post-install:
 		${MAKE_ARGS} prefix="${PREFIX}" install)
 	${RM} ${STAGEDIR}${PREFIX}/libexec/openldap/pw-sha2.a
 .endif
+.if ${PORT_OPTIONS:MPBKDF2}
+	(cd ${WRKSRC}/contrib/slapd-modules/passwd/pbkdf2 && \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} \
+		${MAKE_ARGS} prefix="${PREFIX}" install)
+	${RM} ${STAGEDIR}${PREFIX}/libexec/openldap/pw-pbkdf2.a
+.endif
+
 .if ${PORT_OPTIONS:MLASTBIND}
 	(cd ${WRKSRC}/contrib/slapd-modules/lastbind && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} \
 		${MAKE_ARGS} prefix="${PREFIX}" install)
 	${RM} ${STAGEDIR}${PREFIX}/libexec/openldap/lastbind.a
 .endif
-.if ${PORT_OPTIONS:MDYNAMIC_BACKENDS} || ${PORT_OPTIONS:MSMBPWD} || ${PORT_OPTIONS:MSHA2}
+.if ${PORT_OPTIONS:MDYNAMIC_BACKENDS} || ${PORT_OPTIONS:MSMBPWD} || ${PORT_OPTIONS:MSHA2} || ${PORT_OPTIONS:MPBKDF2}
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/openldap/*.so
 .endif
 .if ${PORT_OPTIONS:MDYNAMIC_BACKENDS} || ${PORT_OPTIONS:MSLAPI}

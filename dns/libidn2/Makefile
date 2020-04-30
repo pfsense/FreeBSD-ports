@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	libidn2
-PORTVERSION=	2.2.0
+PORTVERSION=	2.3.0
+PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	GNU/libidn
 
@@ -14,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libunistring.so:devel/libunistring
 
-USES=		charsetfix gmake iconv libtool localbase pathfix
+USES=		charsetfix iconv libtool localbase pathfix
 
 CONFIGURE_ARGS=	--disable-nls \
 		--with-libunistring-prefix=${LOCALBASE} \
@@ -27,5 +28,8 @@ INFO=		libidn2
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^TMPDIR = /d' ${WRKSRC}/Makefile.in
+
+post-configure:
+	@${REINPLACE_CMD} -e '/HAVE_SYMVER_ALIAS_SUPPORT/d' ${WRKSRC}/config.h
 
 .include <bsd.port.mk>

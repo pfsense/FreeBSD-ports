@@ -8,12 +8,12 @@ PORTEPOCH=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/lgames/${PORTNAME}
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tetris clone but a good one with bunch of cool features
 
 USE_SDL=	mixer sdl
 GNU_CONFIGURE=	yes
-USES=		gmake localbase
+USES=		gmake localbase sdl
 CONFIGURE_ARGS=	--localstatedir=/var/games
 
 OPTIONS_DEFINE=	NLS

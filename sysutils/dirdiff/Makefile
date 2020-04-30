@@ -5,7 +5,7 @@ PORTNAME=	dirdiff
 PORTVERSION=	2.1
 PORTREVISION=	4
 CATEGORIES=	sysutils tcl tk
-MASTER_SITES=	ftp://ftp.samba.org/pub/paulus/
+MASTER_SITES=	https://ftp.samba.org/pub/paulus/
 
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	Graphical diff tool

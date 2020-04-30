@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=		talloc
-PORTVERSION=		2.2.0
+PORTVERSION=		2.3.0
 PORTREVISION=		0
 CATEGORIES=		devel
 MASTER_SITES=		SAMBA
@@ -47,7 +47,7 @@ PLIST_FILES+=		include/talloc.h \
 			${PKGCONFIGDIR}/talloc.pc
 
 .if defined(NO_PYTHON)
-USES+=			python:2.7+,build,test
+USES+=			python:build,test
 CONFIGURE_ARGS+=	--disable-python
 .else
 USES+=			python:3.4+

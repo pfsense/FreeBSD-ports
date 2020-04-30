@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lightdm-gtk-greeter
-PORTVERSION=	2.0.6
+PORTVERSION=	2.0.7
 CATEGORIES=	x11
 MASTER_SITES=	https://launchpad.net/${PORTNAME}/${PORTVERSION:R}/${PORTVERSION}/+download/
 
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	liblightdm-gobject-1.so:x11/lightdm
 
-USES=		gettext gmake gnome localbase pkgconfig xfce
+USES=		gettext gmake gnome localbase pkgconfig xfce xorg
 USE_CSTD=	c99
 USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool
 USE_XFCE=	libexo

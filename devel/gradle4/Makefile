@@ -13,9 +13,11 @@ COMMENT=	Project automation tool
 
 LICENSE=	APACHE20
 
+DEPRECATED=	only needed for expiring biology/igv and java/openjfx8-devel
+EXPIRATION_DATE=	2020-11-30
+
 USES=		zip
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
 
 DATADIR=	${PREFIX}/share/${PORTNAME}${PKGNAMESUFFIX}
 NO_ARCH=	yes

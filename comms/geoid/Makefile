@@ -12,6 +12,8 @@ EXTRACT_SUFX=	.src.tar.gz
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Geodetic computer for amateur radio use
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv2+ NONE  # only one src file contains license
 LICENSE_COMB=	multi
 
@@ -19,7 +21,7 @@ LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libpng.so:graphics/png
 
-USES=		gmake jpeg
+USES=		gmake jpeg xorg
 USE_XORG=	x11 xcursor xext xfixes xft xinerama xrender
 MAKEFILE=	makefile
 

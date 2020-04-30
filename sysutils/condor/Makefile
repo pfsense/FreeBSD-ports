@@ -6,7 +6,7 @@
 
 PORTNAME=	condor
 DISTVERSION=	8.4.12
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	sysutils net
 MASTER_SITES=	http://www.acadix.biz/Ports/distfiles/
 DISTNAME=	condor_src-${PORTVERSION}-all-all
@@ -16,6 +16,9 @@ COMMENT=	High-throughput computing on distributively owned resources
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE-2.0.txt
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 LIB_DEPENDS=	libkrb5support.so:security/krb5 \
 		libpcre.so:devel/pcre \

@@ -2,7 +2,7 @@
 
 PORTNAME=	lsp-plugins
 DISTVERSIONPREFIX=	${PORTNAME}-
-DISTVERSION=	1.1.10
+DISTVERSION=	1.1.15
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -12,13 +12,13 @@ COMMENT=	Collection of free LV2 plugins
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-ONLY_FOR_ARCHS=	amd64 armv7 i386
+ONLY_FOR_ARCHS=	amd64 armv7 i386 powerpc64
 ONLY_FOR_ARCHS_REASON=	assembly only for these architectures
 
 BUILD_DEPENDS=	lv2>0:audio/lv2
 LIB_DEPENDS=	libsndfile.so:audio/libsndfile
 
-USES=		gmake gl gnome iconv:wchar_t pkgconfig
+USES=		compiler:c11 gmake gl gnome iconv:wchar_t pkgconfig xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	sadko4u
 USE_GCC=	any # clang breaks: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=232911
@@ -27,7 +27,7 @@ USE_XORG=	x11
 USE_GL=		gl
 
 BINARY_ALIAS=	g++=${CXX}
-MAKE_ARGS=	BUILD_MODULES='lv2'
+MAKE_ARGS=	BUILD_MODULES='lv2' ETC_PATH=${PREFIX}/etc
 
 OPTIONS_DEFINE=		JACK
 OPTIONS_DEFAULT=	JACK
@@ -42,5 +42,11 @@ post-patch:
 		's|exp10(|pow(10.,|'
 	@${GREP} -lR "<alloca\.h>" ${WRKSRC} | ${XARGS} ${REINPLACE_CMD} -e \
 		's|<alloca\.h>|<stdlib.h>|'
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lv2/lsp-plugins.lv2/lsp-*.so
+
+post-install-JACK-on:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/lsp-* ${STAGEDIR}${PREFIX}/lib/lsp-plugins/lsp-*.so
 
 .include <bsd.port.mk>

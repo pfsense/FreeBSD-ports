@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	wxmaxima
-PORTVERSION=	19.09.0
+PORTVERSION=	20.03.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	Version-
 CATEGORIES=	math
 
-MAINTAINER=	phascolarctos@protonmail.ch
+MAINTAINER=	salvadore@FreeBSD.org
 COMMENT=	WxWidgets GUI for the computer algebra system maxima
 
 LICENSE=	GPLv2
@@ -22,6 +23,8 @@ GH_ACCOUNT=	wxMaxima-Developers
 PLIST_SUB=	DESKTOPDIR=${DESKTOPDIR:S,${PREFIX}/,,}
 WX_COMPS=	wx
 WX_CONF_ARGS=	absolute
+
+PORTDATA=	COPYING README README.md
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes

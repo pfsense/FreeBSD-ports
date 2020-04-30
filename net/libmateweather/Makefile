@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libmateweather
-PORTVERSION=	1.22.0
+PORTVERSION=	1.22.1
 CATEGORIES=	net mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake libtool localbase pathfix pkgconfig tar:xz
+USES=		gettext gmake gnome libtool localbase pathfix pkgconfig tar:xz
 USE_GNOME=	cairo gnomeprefix gtk30 intltool libxml2
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes

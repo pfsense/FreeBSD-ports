@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	batik
-PORTVERSION=	1.11
+PORTVERSION=	1.12
 CATEGORIES=	graphics java
 MASTER_SITES=	APACHE/xmlgraphics/${PORTNAME}/binaries
 DISTNAME=	${PORTNAME}-bin-${PORTVERSION}
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 CPE_VENDOR=	apache
 
 USES=		cpe
-USE_JAVA=	1.7+
+USE_JAVA=	yes
 
 NO_ARCH=	yes
 NO_BUILD=	yes

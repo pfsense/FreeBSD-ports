@@ -10,11 +10,14 @@ MASTER_SITES=	http://telepathy.freedesktop.org/releases/telepathy-haze/
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Libpurple connection manager for telepathy
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-08-15
+
 LIB_DEPENDS=	libpurple.so:net-im/libpurple \
 		libidn.so:dns/libidn \
 		libtelepathy-glib.so:net-im/telepathy-glib
 
-USES=		gmake pathfix pkgconfig python:2.7,build
+USES=		gmake gnome pathfix pkgconfig python:2.7,build
 USE_GNOME=	libxslt:build
 CPPFLAGS+=	-I${LOCALBASE}/include
 GNU_CONFIGURE=	yes

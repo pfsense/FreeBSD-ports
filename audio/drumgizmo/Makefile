@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	drumgizmo
-PORTVERSION=	0.9.17
-PORTREVISION=	1
+PORTVERSION=	0.9.18.1
 CATEGORIES=	audio
 MASTER_SITES=	http://www.drumgizmo.org/releases/${PORTNAME}-${PORTVERSION}/
 
@@ -21,7 +20,7 @@ LIB_DEPENDS=	libsmf.so:audio/libsmf \
 		libexpat.so:textproc/expat2
 
 GNU_CONFIGURE=	yes
-USES=		compiler:c++11-lang gettext-runtime gnome libtool pkgconfig
+USES=		compiler:c++11-lang gettext-runtime gnome libtool pkgconfig xorg
 USE_GNOME=	glib20
 USE_XORG=	x11 xext
 

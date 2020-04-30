@@ -11,7 +11,8 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S/.//}
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	File splitter, GTK and CLI versions
 
-USE_GNOME=	#
+BROKEN=		unfetchable
+
 USES=		gmake pkgconfig
 
 MAKE_ARGS=	CC="${CC}"
@@ -25,6 +26,7 @@ LANG_EN_DESC=	language support
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MGTK2}
+USES+=		gnome
 USE_GNOME+=	gtk20
 .endif
 

@@ -18,11 +18,14 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	candy@kgc.co.jp
 COMMENT=	Cat chasing a mouse all over the screen
 
+BROKEN=		unfetchable
+
 BUILD_DEPENDS=	nkf:japanese/nkf
 
 CONFLICTS=	oneko-1.*
 
 GNU_CONFIGURE=	yes
+USES=		xorg
 USE_XORG=	x11 xpm xmu
 WRKSRC=		${WRKDIR}/${PORTNAME}
 INSTALL_TARGET=	install install.man

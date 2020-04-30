@@ -5,14 +5,14 @@ PORTNAME=	wmblob
 PORTVERSION=	1.0.4
 PORTREVISION=	1
 CATEGORIES=	x11 windowmaker
-MASTER_SITES=	http://BSDforge.com/projects/source/x11/wmblob/
+MASTER_SITES=	https://BSDforge.com/projects/source/x11/wmblob/
 
 MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Shows moving blobs
 
+USES=		gnome pkgconfig tar:xz xorg
 USE_XORG=	xpm
 USE_GNOME=	gtk20
-USES=		pkgconfig tar:xz
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/wmblob man/man1/wmblob.1.gz

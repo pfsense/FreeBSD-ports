@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	grep
-PORTVERSION=	3.3
+PORTVERSION=	3.4
 CATEGORIES=	textproc
 MASTER_SITES=	GNU
 PKGNAMEPREFIX=	gnu
 
-MAINTAINER=	johans@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	GNU version of popular pattern matching utility
 
 LICENSE=	GPLv3+

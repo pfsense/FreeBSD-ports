@@ -10,6 +10,7 @@
     SUBDIR += adwaita-qt
     SUBDIR += arc-gruvbox-theme
     SUBDIR += audacious-skins
+    SUBDIR += classiclooks
     SUBDIR += claws-mail-themes
     SUBDIR += clearlooks
     SUBDIR += clearlooks-metacity
@@ -25,12 +26,8 @@
     SUBDIR += cursor-crystal-theme
     SUBDIR += cursor-dmz-aa-theme
     SUBDIR += cursor-dmz-theme
-    SUBDIR += cursor-ecliz
-    SUBDIR += cursor-grounation-theme
     SUBDIR += cursor-jimmac-theme
-    SUBDIR += cursor-neutral-theme
     SUBDIR += cursor-neutral-white-theme
-    SUBDIR += cursor-polar-theme
     SUBDIR += e16-themes
     SUBDIR += emerald-themes
     SUBDIR += fluxbox-tenr-styles-pack
@@ -46,6 +43,7 @@
     SUBDIR += gnome-icons-dropline-nou
     SUBDIR += gnome-icons-elementary
     SUBDIR += gnome-icons-faenza
+    SUBDIR += gnome-icons-gartoon-redux
     SUBDIR += gnome-icons-gentoo-test
     SUBDIR += gnome-icons-gion
     SUBDIR += gnome-icons-iris
@@ -76,8 +74,6 @@
     SUBDIR += gtk-digital-cream-theme
     SUBDIR += gtk-digital-harmony-theme
     SUBDIR += gtk-engines2
-    SUBDIR += gtk-envy-theme
-    SUBDIR += gtk-equinox-engine
     SUBDIR += gtk-gray-theme
     SUBDIR += gtk-lila-theme
     SUBDIR += gtk-lila-theme-extras
@@ -90,7 +86,6 @@
     SUBDIR += gtk-murrine-themes
     SUBDIR += gtk-nodoka-engine
     SUBDIR += gtk-oxygen-engine
-    SUBDIR += gtk-qnxtheme
     SUBDIR += gtk-xfce-engine
     SUBDIR += gtk3-oxygen-engine
     SUBDIR += gtk3-unico-engine
@@ -103,7 +98,6 @@
     SUBDIR += kde-icons-gartoon-blue-svg
     SUBDIR += kde-icons-gartoon-svg
     SUBDIR += kde-icons-graphite-rade8
-    SUBDIR += kde-icons-kool-gorilla
     SUBDIR += kde-icons-lime-rade8
     SUBDIR += kde-icons-lush
     SUBDIR += kde-icons-noia
@@ -141,7 +135,6 @@
     SUBDIR += openbox-arc-theme
     SUBDIR += openbox-themes
     SUBDIR += papirus-icon-theme
-    SUBDIR += plank-theme-moka
     SUBDIR += plasma5-breeze
     SUBDIR += plasma5-breeze-gtk
     SUBDIR += plasma5-kde-gtk-config
@@ -164,7 +157,6 @@
     SUBDIR += ubuntulooks
     SUBDIR += wallpapers-freebsd-kde
     SUBDIR += xcursor-themes
-    SUBDIR += xfce-evolution
     SUBDIR += xfce-icons-elementary
 
 .include <bsd.port.subdir.mk>

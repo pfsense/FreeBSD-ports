@@ -39,6 +39,7 @@ bin/dh_installpam
 bin/dh_installppp
 bin/dh_installsystemd
 bin/dh_installsystemduser
+bin/dh_installtmpfiles
 bin/dh_installudev
 bin/dh_installwm
 bin/dh_installxfonts
@@ -104,6 +105,8 @@ bin/prerm-systemd
 bin/prerm-systemd-restart
 bin/prerm-usrlocal
 bin/prerm-wm
+%%SITE_PERL%%/DH/AddonAPI.pm
+%%SITE_PERL%%/DH/SequenceState.pm
 %%SITE_PERL%%/Debian/Debhelper/Buildsystem.pm
 %%SITE_PERL%%/Debian/Debhelper/Buildsystem/ant.pm
 %%SITE_PERL%%/Debian/Debhelper/Buildsystem/autoconf.pm
@@ -125,5 +128,6 @@ bin/prerm-wm
 %%SITE_PERL%%/Debian/Debhelper/Sequence/elf_tools.pm
 %%SITE_PERL%%/Debian/Debhelper/Sequence/installinitramfs.pm
 %%SITE_PERL%%/Debian/Debhelper/Sequence/python_support.pm
+%%SITE_PERL%%/Debian/Debhelper/Sequence/root_sequence.pm
 %%SITE_PERL%%/Debian/Debhelper/Sequence/systemd.pm
 %%SITE_PERL%%/Debian/Debhelper/SequencerUtil.pm

@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	dma
-PORTVERSION=	0.12
+PORTVERSION=	0.13
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
-CATEGORIES=	mail ipv6
+CATEGORIES=	mail
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	DragonFly Mail Agent, a small MTA for local/outbound mail
@@ -26,7 +26,7 @@ CFLAGS+=	-I${OPENSSLINC} \
 LDFLAGS+=	-L${OPENSSLLIB}
 
 MAKE_ENV=	__MAKE_CONF=/dev/null SRCCONF=/dev/null NO_WERROR=defined \
-		MANDIR=${MANDIRS}/man
+		MANDIR=${PREFIX}/share/man/man
 
 USE_RC_SUBR=	dma_flushq
 SUB_FILES=	pkg-message
@@ -37,12 +37,14 @@ CONFFILES+=	dma.conf auth.conf
 # 11.x has dma imported into base and /var/spool/dma added to mtree
 PLIST_SUB+=	VARDIR="@comment "
 
+PORTSCOUT=	limit:^[0-9\.]*$$
+
 post-patch:
 	@${REINPLACE_CMD} -e 's,/etc/dma,${PREFIX}/etc/dma,g' \
 		${WRKSRC}/dma.8
 	@${REINPLACE_CMD} -e 's, /etc/dma, ${PREFIX}/etc/dma,g' \
 		${WRKSRC}/dma.conf
-	@${REINPLACE_CMD} -e '/^MK_MAN/d' -e 's/^NOMAN/NO_MAN/' \
+	@${REINPLACE_CMD} -e '/^MK_MAN/d' -e 's/^NOMAN.*/MAN=/' \
 		${WRKSRC}/bsd/dma-mbox-create/Makefile
 
 post-install:

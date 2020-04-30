@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	range-v3
-DISTVERSION=	0.3.6
+DISTVERSION=	0.10.0
 CATEGORIES=	devel
 
 MAINTAINER=	henry.hu.sh@gmail.com
@@ -10,20 +10,22 @@ COMMENT=	Experimental range library for C++11/14/17
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		cmake
+USES=		cmake compiler:c++11-lang
 USE_GITHUB=	yes
 GH_ACCOUNT=	ericniebler
-NO_BUILD=	yes
 NO_ARCH=	yes
 
-do-install: # workaround: delete when https://github.com/ericniebler/range-v3/issues/781 is fixed, otherwise cmake builds test executables during install
-	cd ${WRKSRC}/include && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/include/
-	@${RM} ${STAGEDIR}${PREFIX}/include/module.modulemap
+OPTIONS_DEFINE=	TESTS EXAMPLES
+OPTIONS_DEFAULT=
 
-do-test: # tests fail on 10: undefined reference to `operator delete(void*, unsigned int)' (c++14 destructor is missing)
-	@cd ${CONFIGURE_WRKSRC} && \
-		${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS} ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} && \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} test
+# See issue 1321, 1441, etc.
+TESTS_DESC=	Build tests (fail with clang 9.0)
+EXAMPLES_DESC=	Build examples
+
+TESTS_CMAKE_BOOL=	RANGE_V3_TESTS
+EXAMPLES_CMAKE_BOOL=	RANGE_V3_EXAMPLES
+
+post-install:
+	@${RM} ${STAGEDIR}${PREFIX}/include/module.modulemap
 
 .include <bsd.port.mk>

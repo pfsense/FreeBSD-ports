@@ -3,7 +3,7 @@
  * pfblockerng_alerts.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -38,7 +38,13 @@ global $g, $pfb, $rule_list, $pfb_localsub;
 pfb_global();
 
 // Application paths
-$pathgeoip = "/usr/local/bin/mmdblookup -f {$pfb['geoipshare']}/GeoLite2-Country.mmdb -i";
+if (file_exists('/usr/local/bin/mmdblookup') && file_exists("{$pfb['geoipshare']}/GeoLite2-Country.mmdb")) {
+	$pathgeoip = "/usr/local/bin/mmdblookup -f {$pfb['geoipshare']}/GeoLite2-Country.mmdb -i";
+} else {
+	$pathgeoip = '';
+}
+
+
 
 // Define file locations
 $filter_logfile = "{$g['varlog_path']}/filter.log";
@@ -1350,9 +1356,14 @@ if (!empty($fields_array[$type]) && !empty($rule_list) && $type != 'DNSBL') {
 			}
 
 			// Determine Country code of host
-			$country = exec("{$pathgeoip} {$host} country iso_code | grep -v '^$' | cut -d '\"' -f2 2>&1");
-			if (empty($country)) {
-				$country = 'Unknown';
+			if (!empty($pathgeoip)) {
+				$country = exec("{$pathgeoip} {$host} country iso_code | grep -v '^$' | cut -d '\"' -f2 2>&1");
+				if (empty($country)) {
+					$country = 'Unk';
+				}
+			}
+			else {
+				$country = 'Unk';
 			}
 
 			// Find the header which alerted this host

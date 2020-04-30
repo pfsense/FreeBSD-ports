@@ -2,7 +2,7 @@
 
 PORTNAME=	0ad
 PORTVERSION=	0.0.23b
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	http://releases.wildfiregames.com/ \
 		SF/zero-ad/releases
@@ -11,6 +11,9 @@ DISTFILES=	${PORTNAME}-${PORTVERSION}-alpha-unix-build.tar.xz \
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Real-time strategy (RTS) game of ancient warfare
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-08-15
 
 BUILD_DEPENDS=	zip:archivers/zip \
 		cmake:devel/cmake
@@ -27,8 +30,8 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libtiff.so:graphics/tiff \
 		libsodium.so:security/libsodium
 
-USES=		compiler:c++11-lib desktop-file-utils dos2unix gl gmake gnome iconv \
-		jpeg openal:al pkgconfig python:2.7,build sdl tar:xz
+USES=		compiler:c++11-lib desktop-file-utils dos2unix gl gmake gnome \
+		iconv jpeg openal:al pkgconfig python:2.7,build sdl tar:xz xorg
 USE_GNOME=	libxml2
 USE_GL=		gl
 USE_SDL=	sdl2

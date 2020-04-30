@@ -8,7 +8,7 @@
  * freeradiussettings.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2014-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2014-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * All rights reserved.
  *
@@ -167,6 +167,18 @@
 				<option><name>Disable</name><value>no</value></option>
 				<option><name>Enable</name><value>yes</value></option>
 			</options>
+		</field>
+		<field>
+			<fielddescr>Save settings after deletion</fielddescr>
+			<fieldname>keep_settings</fieldname>
+			<description>If enabled, the settings will be preserved across package reinstalls.</description>
+			<sethelp>
+				<![CDATA[
+				<strong><span class="text-danger">Important:</span> If disabled, all settings will be wiped on package uninstall/reinstall/upgrade.</strong>
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+			<default_value>on</default_value>
 		</field>
 		<field>
 			<name>Logging Configuration</name>

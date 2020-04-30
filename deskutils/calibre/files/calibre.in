@@ -31,6 +31,8 @@
 
 . /etc/rc.subr
 
+export PATH=$PATH:%%LOCALBASE%%/sbin:%%LOCALBASE%%/bin
+
 name=calibre
 rcvar=calibre_enable
 
@@ -44,7 +46,7 @@ load_rc_config $name
 
 pidfile=/var/run/${name}/${name}.pid
 command=%%PREFIX%%/bin/calibre-server
-command_interpreter=%%LOCALBASE%%/bin/python2.7
+command_interpreter=%%LOCALBASE%%/bin/%%PYTHON_VERSION%%
 required_dirs=${calibre_library}
 
 start_precmd=calibre_prestart

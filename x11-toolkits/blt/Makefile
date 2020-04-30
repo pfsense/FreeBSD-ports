@@ -3,25 +3,26 @@
 
 PORTNAME=	blt
 PORTVERSION=	2.5.3
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	x11-toolkits tk
 MASTER_SITES=	SF/wize
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	doconnor@gsoft.com.au
 COMMENT=	Extension to the Tk toolkit
 
 LICENSE=	MIT
 
 WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION:R}
 
-USES=		gmake jpeg shebangfix tk:tea zip
+USES=		gmake jpeg shebangfix tk:tea xorg zip
+USE_XORG+=	x11
 SHEBANG_FILES=	demos/scripts/xcolors.tcl
 SHEBANG_LANG=	bltwish
 bltwish_OLD_CMD=../bltwish
 bltwish_CMD=	${PREFIX}/bin/bltwish # installed by this port, so not LOCALBASE
 USE_LDCONFIG=	yes
-CFLAGS+=	-I${TCL_INCLUDEDIR}/generic \
+CFLAGS+=	-fPIC -I${TCL_INCLUDEDIR}/generic \
 		-I${TK_INCLUDEDIR}/generic \
 		-I${TK_INCLUDEDIR}/unix
 MAKE_JOBS_UNSAFE=yes

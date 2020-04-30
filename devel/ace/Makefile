@@ -17,6 +17,7 @@ LICENSE_NAME=	ACE
 LICENSE_FILE=	${WRKSRC}/COPYING
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+BROKEN=		fails to build
 BROKEN_powerpc=		Does not compile on ${ARCH}
 BROKEN_sparc64=		Does not compile on ${ARCH}
 
@@ -48,6 +49,7 @@ TK_MAKE_ENV=		tk=1
 TRIO_DESC=		Trio portable string functions
 TRIO_BUILD_DEPENDS=	trio>=0:devel/trio
 TRIO_MAKE_ENV=		trio=1
+X11_USES=		xorg
 X11_USE=		XORG=xt
 X11_MAKE_ENV=		xt=1
 

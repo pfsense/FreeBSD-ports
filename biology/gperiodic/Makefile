@@ -5,7 +5,7 @@
 PORTNAME=	gperiodic
 PORTVERSION=	3.0.3
 CATEGORIES=	biology
-MASTER_SITES=	https://sourceforge.net/projects/gperiodic/files/
+MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Displays a periodic table of the elements
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/gpl.txt
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig\
 		libfreetype.so:print/freetype2
 
-USES=		pkgconfig
+USES=		gnome pkgconfig
 USE_GNOME=	cairo gdkpixbuf2 gtk20
 
 PORTDOCS=	AUTHORS ChangeLog README

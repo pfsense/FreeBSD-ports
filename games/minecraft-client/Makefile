@@ -3,7 +3,7 @@
 
 PORTNAME=	minecraft-client
 PORTVERSION=	1.7.9
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games java
 MASTER_SITES=	https://s3.amazonaws.com/Minecraft.Download/launcher/:minecraft \
 		https://media-mcw.cursecdn.com/c/c5/:icon
@@ -14,6 +14,8 @@ EXTRACT_ONLY=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Client for the block building game
+
+BROKEN=		unfetchable
 
 RUN_DEPENDS=	${JAVALIBDIR}/lwjgl/lwjgl.jar:games/lwjgl \
 		xrandr:x11/xrandr

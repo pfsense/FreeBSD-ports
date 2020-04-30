@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	raphf
-PORTVERSION=	2.0.0
+PORTVERSION=	2.0.1
 PORTREVISION=	1
 CATEGORIES=	devel
 
@@ -12,10 +12,10 @@ COMMENT=	Resource and persistent handles factory
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USES=		gmake php:pecl
+
 PORTSCOUT=	limit:^2.*
 
-USES=		gmake php:pecl
 CONFLICTS=	pecl-raphf-1*
-IGNORE_WITH_PHP=	74
 
 .include <bsd.port.mk>

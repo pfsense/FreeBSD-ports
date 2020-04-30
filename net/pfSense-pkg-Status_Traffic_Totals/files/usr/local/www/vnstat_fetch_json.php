@@ -3,7 +3,7 @@
  * vnstat_fetch_json.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2008-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2008-2020 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * originally part of m0n0wall (http://m0n0.ch/wall)
@@ -26,30 +26,16 @@
 header('Content-Type: application/json');
 
 require_once('auth_check.inc');
+require_once("status_traffic_totals.inc");
 
-$json_string = '';
-$fd = popen("vnstat --json", "r");
-
-$error = str_replace("\n", ' ', fgets($fd));
-$json_string = $error;
-
-while (!feof($fd)) {
-	$json_string .= fgets($fd);
-
-	if(substr($json_string, 0, 5) === "Error") {
-		$error = str_replace("\n", ' ', substr($json_string, 7));
-		die('{ "error" : "' . trim(htmlspecialchars($error)) . '" }');
+try {
+	$json_string = vnstat_read();
+	$json_obj = json_decode($json_string, true);
+	if (empty($json_obj)) {
+		throw new Exception(gettext('Unable to parse database'));
 	}
-}
-
-pclose($fd);
-
-//TODO prep json here instead of client-side
-
-$json_obj = json_decode($json_string, true);
-
-if(empty($json_obj)) {
-	die('{ "error" : "'.trim(htmlspecialchars($error)).'" }');
+} catch (Exception $e) {
+	die('{ "error" : "'.trim(htmlspecialchars($e->getMessage())).'" }');
 }
 
 echo json_encode($json_obj,JSON_PRETTY_PRINT|JSON_PARTIAL_OUTPUT_ON_ERROR|JSON_NUMERIC_CHECK);

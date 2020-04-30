@@ -11,14 +11,13 @@ LICENSE=	BSD2CLAUSE
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
-BROKEN_powerpc64=	fails to build: btrie.c: '__SIZEOF_POINTER__' undeclared here
 NOT_FOR_ARCHS=		mips sparc64
 NOT_FOR_ARCHS_REASON=	fails to compile: error: Unsupported word size
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	vstakhov
 
-USES=		cmake bison pkgconfig ssl
+USES=		compiler:c11 cmake pkgconfig bison ssl gnome
 USE_GNOME=	glib20
 
 USERS=		_rmilter

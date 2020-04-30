@@ -20,7 +20,7 @@ LIB_DEPENDS=	liba52.so:audio/liba52 \
 		libavutil.so:multimedia/ffmpeg
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		compiler:c++11-lang desktop-file-utils pkgconfig \
+USES=		compiler:c++11-lang desktop-file-utils gl pkgconfig \
 		qmake:outsource qt:5 shared-mime-info
 
 USE_QT=		core gui widgets xml buildtools_build linguisttools_build
@@ -37,6 +37,8 @@ CXXFLAGS+=	-I${LOCALBASE}/include \
 
 QMAKE_SOURCE_PATH=${WRKSRC}/src
 QMAKE_ARGS=	LRELEASE="${LRELEASE}"
+
+PORTSCOUT=	limit:^[^-]*$$
 
 post-build:
 		@${SED} -e 's;@prefix@;${PREFIX};' \

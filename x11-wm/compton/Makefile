@@ -14,11 +14,13 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	xprop:x11/xprop \
 		xwininfo:x11/xwininfo
 
+CONFLICTS_INSTALL=	picom # bin/compton
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	chjj
 GH_TAGNAME=	b7f43ee
 
-USES=		gmake pkgconfig
+USES=		gmake pkgconfig xorg
 USE_XORG=	x11 xcomposite xdamage xext xfixes xrandr xrender
 
 MAKE_ARGS=	COMPTON_VERSION=git-${PORTVERSION}-${GH_TAGNAME} \
@@ -43,6 +45,7 @@ PCRE_MAKE_ARGS_OFF=	NO_REGEX_PCRE=yes
 DRM_LIB_DEPENDS=	libdrm.so:graphics/libdrm
 DRM_MAKE_ARGS_OFF=	NO_VSYNC_DRM=yes
 
+OPENGL_USES=		gl
 OPENGL_USE=		GL=gl
 OPENGL_MAKE_ARGS_OFF=	NO_VSYNC_OPENGL=yes
 

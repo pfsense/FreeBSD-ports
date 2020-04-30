@@ -4,7 +4,7 @@
 
 PORTNAME=	gthumb
 PORTVERSION=	3.6.1
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -22,14 +22,13 @@ LIB_DEPENDS=	libclutter-1.0.so:graphics/clutter \
 		libjson-glib-1.0.so:devel/json-glib \
 		liblcms2.so:graphics/lcms2 \
 		liboauth.so:net/liboauth \
-		libomp.so:devel/openmp \
 		libpng.so:graphics/png \
 		libsoup-2.4.so:devel/libsoup \
 		libtiff.so:graphics/tiff
 RUN_DEPENDS=	gsettings-desktop-schemas>0:devel/gsettings-desktop-schemas
 
-USES=		bison compiler:c++11-lib desktop-file-utils gettext gmake \
-		jpeg libtool localbase pathfix pkgconfig tar:xz
+USES=		bison compiler:c++11-lib desktop-file-utils gettext gl gmake \
+		gnome jpeg libtool localbase pathfix pkgconfig tar:xz xorg
 USE_GL=		egl
 USE_GNOME=	cairo gtk30 intltool librsvg2
 USE_XORG=	x11 xcomposite xdamage xext xfixes xrandr xi

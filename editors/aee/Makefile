@@ -5,7 +5,7 @@ PORTNAME=	aee
 PORTVERSION=	2.2.21
 PORTREVISION=	2
 CATEGORIES=	editors
-MASTER_SITES=	http://www.users.uswest.net/~hmahon/sources/
+MASTER_SITES=	https://BSDforge.com/projects/source/editors/aee/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Easy editor with both curses and X11 interfaces
@@ -13,7 +13,7 @@ COMMENT=	Easy editor with both curses and X11 interfaces
 LICENSE=	ART10
 
 USES=		ncurses
-PLIST_FILES=	bin/aee bin/rae man/man1/aee.1.gz %%DATADIR%%/help.ae
+PLIST_FILES=	bin/aee bin/rae man/man1/aee.1.gz ${DATADIR}/help.ae
 ALL_TARGET=	main
 
 MAKE_JOBS_UNSAFE=	yes
@@ -21,6 +21,7 @@ MAKE_JOBS_UNSAFE=	yes
 OPTIONS_DEFINE=	XAE
 
 XAE_DESC=		Build X11 version 'xae'
+XAE_USES=		xorg
 XAE_USE=		XORG=x11
 XAE_PLIST_FILES=	bin/xae bin/rxae
 XAE_ALL_TARGET=		xae

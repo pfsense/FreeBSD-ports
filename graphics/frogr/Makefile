@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	frogr
-PORTVERSION=	1.5
-PORTREVISION=	1
+PORTVERSION=	1.6
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 
@@ -19,7 +18,8 @@ LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
 		libjson-glib-1.0.so:devel/json-glib \
 		libgcrypt.so:security/libgcrypt
 
-USES=		compiler:c++11-lang meson ninja tar:xz pkgconfig gettext-runtime gettext-tools
+USES=		compiler:c++11-lang gettext-runtime gettext-tools gnome meson \
+		ninja pkgconfig tar:xz
 USE_GNOME=	libxml2 glib20 gtk30
 
 CFLAGS+=	-I${LOCALBASE}/include

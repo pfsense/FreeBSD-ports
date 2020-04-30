@@ -12,12 +12,12 @@ COMMENT=	FlightGear scenery, textures, and aircraft models
 
 LICENSE=	GPLv2
 
-BROKEN_aarch64=		Fails to install: runaway process
 BROKEN_mips64=		Fails to install: runaway process
 
 USES=		tar:bzip2
 
 NO_BUILD=	yes
+NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/fgdata
 DATADIR=	${PREFIX}/share/flightgear
 

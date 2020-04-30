@@ -11,7 +11,9 @@ DISTNAME=	xipmsg-${PORTVERSION:E}
 MAINTAINER=	candy@kgc.co.jp
 COMMENT=	Popup style message communication tool for X11
 
-USES=		imake
+BROKEN=		unfetchable
+
+USES=		imake xorg
 USE_XORG=	ice sm x11 xaw xext xmu xpm xt
 
 post-patch:

@@ -9,13 +9,14 @@ MASTER_SITES=	SF/lxde/LXMusic%20%28music%20player%29/LXMusic%20${PORTVERSION:R}.
 MAINTAINER=	ericbsd@FreeBSD.org
 COMMENT=	LXDE music player based on xmms2
 
-LICENSE=	MIT GPLv2
+LICENSE=	MIT GPLv2+
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libxmmsclient.so:audio/xmms2 \
 		libnotify.so:devel/libnotify
 
-USES=		gettext-tools gmake desktop-file-utils localbase \
+USES=		desktop-file-utils gettext-tools gmake gnome localbase \
 		pkgconfig tar:xz
 USE_GNOME=	gtk20 intltool
 GNU_CONFIGURE=	yes

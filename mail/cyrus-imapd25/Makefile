@@ -1,12 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	cyrus-imapd
-PORTVERSION=	2.5.13
+PORTVERSION=	2.5.15
 #PORTREVISION=	0
-CATEGORIES=	mail ipv6
-MASTER_SITES=	https://github.com/cyrusimap/cyrus-imapd/releases/download/${PORTNAME}-${PORTVERSION}/ \
-		https://www.cyrusimap.org/releases/ \
-		ftp://ftp.cyrusimap.org/cyrus-imapd/
+CATEGORIES=	mail
+MASTER_SITES=	https://www.cyrusimap.org/releases/ \
+		https://github.com/cyrusimap/cyrus-imapd/releases/download/${PORTNAME}-${PORTVERSION}/
 PKGNAMESUFFIX=	25
 
 MAINTAINER=	ume@FreeBSD.org
@@ -62,7 +61,7 @@ HTTP_DESC=		Enable HTTP (beta quality)
 HTTP_CONFIGURE_ENABLE=	http
 HTTP_LIB_DEPENDS=	libjansson.so:devel/jansson \
 			libical.so:devel/libical
-HTTP_USES=		pkgconfig
+HTTP_USES=		gnome pkgconfig
 HTTP_USE=		GNOME=libxml2
 IDLED_DESC=		Enable IMAP idled support
 IDLED_CONFIGURE_ENABLE=	idled

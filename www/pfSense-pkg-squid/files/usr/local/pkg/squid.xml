@@ -8,7 +8,7 @@
  * squid.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012-2014 Marcello Coutinho
  * All rights reserved.
  *
@@ -130,6 +130,19 @@
 			</sethelp>
 			<type>checkbox</type>
 			<default_value>on</default_value>
+		</field>
+		<field>
+			<fielddescr>Listen IP Version</fielddescr>
+			<fieldname>listenproto</fieldname>
+			<description>Select the IP version Squid will use to select addresses for accepting client connections.</description>
+			<type>select</type>
+			<options>
+				<option><name>IPv4</name><value>inet</value></option>
+				<option><name>IPv6</name><value>inet6</value></option>
+				<option><name>IPv4+IPv6</name><value>any</value></option>
+			</options>
+			<size>1</size>
+			<default_value>inet</default_value>
 		</field>
 		<field>
 			<fielddescr>Proxy Interface(s)</fielddescr>
@@ -266,10 +279,10 @@
 		<field>
 			<fielddescr>Bypass Proxy for Private Address Destination</fielddescr>
 			<fieldname>private_subnet_proxy_off</fieldname>
-			<description>Do not forward traffic to Private Address Space (RFC 1918) destinations.</description>
+			<description>Do not forward traffic to Private Address Space (RFC 1918 and IPv6 ULA) destinations.</description>
 			<sethelp>
 				<![CDATA[
-				Destinations in Private Address Space (<a href="https://tools.ietf.org/html/rfc1918" target="_blank">RFC 1918</a>) are passed directly through the firewall, not through the proxy server.
+				Destinations in Private Address Space (<a href="https://tools.ietf.org/html/rfc1918" target="_blank">RFC 1918</a> and <a href="https://tools.ietf.org/html/rfc4193" target="_blank">IPv6 ULA</a>) are passed directly through the firewall, not through the proxy server.
 				]]>
 			</sethelp>
 			<type>checkbox</type>

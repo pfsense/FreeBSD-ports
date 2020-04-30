@@ -14,6 +14,8 @@ USE_QT=		core widgets
 
 WRKSRC_SUBDIR=	src/${PORTNAME}
 
+QT_BINARIES=	yes
+
 # qev is not connected to qttool's build system, so we cannot just run qmake qt-dist:5,tools
 # and set {BUILD,INSTALL}_WRKSRC.
 # Instead, we run qmake qt-dist:5,tools from src/${PORTNAME} but need to copy .qmake qt-dist:5,tools.conf to

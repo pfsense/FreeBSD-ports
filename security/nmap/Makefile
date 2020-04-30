@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	nmap
-DISTVERSION=	7.70
+DISTVERSION=	7.80
 PORTREVISION=	0
-CATEGORIES=	security ipv6
+CATEGORIES=	security
 MASTER_SITES=	https://nmap.org/dist/ \
 		LOCAL/ohauer
 
@@ -55,6 +55,15 @@ CONFIGURE_ARGS+=--without-localdirs \
 # XXX limit results if we do a grep in the sources!
 post-extract:
 	@${RM} -r ${WRKSRC}/mswin32
+
+.if exists(/usr/lib/libibverbs.a)
+# Link with libibverbs is needed by static libpcap
+post-patch-PCAP-on:
+	@${REINPLACE_CMD} -E -e "s|(PCAP_LIBS=['\"].*)(['\"])$$|\1 -libverbs\2|" \
+		${WRKSRC}/configure \
+		${WRKSRC}/nping/configure \
+		${WRKSRC}/ncat/configure
+.endif
 
 post-configure:
 	@${REINPLACE_CMD} -e "s|^DESTDIR *=|& ${DESTDIR}|" ${WRKSRC}/Makefile

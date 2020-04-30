@@ -64,9 +64,9 @@ MASTER_SITES_QSCI2=	RIVERBANK/QScintilla/${PORTVERSION} \
 			SF/pyqt/QScintilla2/QScintilla-${PORTVERSION} \
 			GENTOO
 
-SIP_VERSION=		4.19.17
-QSCI2_VERSION=		2.11.1
-PYQT5_VERSION=		5.12.2
+SIP_VERSION=		4.19.19
+QSCI2_VERSION=		2.11.2
+PYQT5_VERSION=		5.13.1
 
 SIP_DISTNAME=		sip-${SIP_VERSION}
 PYQT5_DISTNAME=		PyQt5_gpl-${PYQT5_VERSION}
@@ -81,7 +81,8 @@ _USE_PYQT_ALL=		core dbus dbussupport demo designer designerplugin \
 			sql svg test webkit xml xmlpatterns sip
 # List of components only in pyqt5
 _USE_PYQT5_ONLY=	multimediawidgets printsupport qml quickwidgets \
-			serialport webchannel webengine webkitwidgets widgets
+			serialport webchannel webengine webkitwidgets \
+			websockets widgets
 
 # Unversioned variables for the rest of the file
 PYQT_VERSION=		${PYQT${_PYQT_VERSION}_VERSION}
@@ -118,6 +119,7 @@ py-test_PATH=		${PYQT_PY_RELNAME}-test>=${PYQT_VERSION}
 py-webchannel_PATH=	${PYQT_PY_RELNAME}-webchannel>=${PYQT_VERSION}
 py-webengine_PATH=	${PYQT_PY_RELNAME}-webengine>=5.12.1
 py-webkit_PATH=		${PYQT_PY_RELNAME}-webkit>=${PYQT_VERSION}
+py-websockets_PATH=	${PYQT_PY_RELNAME}-websockets>=${PYQT_VERSION}
 py-xml_PATH=		${PYQT_PY_RELNAME}-xml>=${PYQT_VERSION}
 py-xmlpatterns_PATH=	${PYQT_PY_RELNAME}-xmlpatterns>=${PYQT_VERSION}
 
@@ -155,6 +157,7 @@ py-test_PORT=		devel/${PYQT_RELNAME}-test
 py-webchannel_PORT=	www/${PYQT_RELNAME}-webchannel
 py-webengine_PORT=	www/${PYQT_RELNAME}-webengine
 py-webkit_PORT=		www/${PYQT_RELNAME}-webkit
+py-websockets_PORT=	www/${PYQT_RELNAME}-websockets
 py-xml_PORT=		textproc/${PYQT_RELNAME}-xml
 py-xmlpatterns_PORT=	textproc/${PYQT_RELNAME}-xmlpatterns
 
@@ -184,6 +187,7 @@ py-phonon_DESC=		Python bindings for Phonon module
 py-qscintilla2_DESC=	Python bindings for QScintilla2
 py-script_DESC=		Python bindings for QtScript module
 py-scripttools_DESC=	Python bindings for QtScriptTools module
+py-sip_DESC=		Python bindings generator for C and C++ libraries
 py-sql_DESC=		Python bindings for QtSql module
 py-svg_DESC=		Python bindings for QtSvg module
 py-test_DESC=		Python bindings for QtTest module
@@ -217,7 +221,7 @@ _QMLDIR_REL=		${QT_QMLDIR_REL}/${_VERSION_SUBDIR_REL}
 PYQT_APIDIR=		${PREFIX}/${_APIDIR_REL}
 PYQT_DOCDIR=		${PREFIX}/${_DOCDIR_REL}
 PYQT_EXAMPLEDIR=	${PREFIX}/${_EXAMPLEDIR_REL}
-PYQT_SIPDIR=		${PREFIX}/${_SIPDIR_REL}
+PYQT_SIPDIR?=		${PREFIX}/${_SIPDIR_REL}
 PYQT_DESIGNERDIR=	${PREFIX}/${_DESIGNERDIR_REL}
 PYQT_QMLDIR=		${PREFIX}/${_QMLDIR_REL}
 

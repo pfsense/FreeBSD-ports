@@ -8,7 +8,7 @@
  * softflowd.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2013-2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2020 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -79,6 +79,13 @@
 			<required/>
 		</field>
 		<field>
+			<fielddescr>Sample</fielddescr>
+			<fieldname>sample</fieldname>
+			<description>Specify periodical sampling rate (denominator). Empty or 0 disables sampling.</description>
+			<default_value>0</default_value>
+			<type>input</type>
+		</field>
+		<field>
 			<fielddescr>Max Flows</fielddescr>
 			<fieldname>maxflows</fieldname>
 			<description>
@@ -106,11 +113,13 @@
 			<description>Select the desired version of the NetFlow protocol (10 means IPFIX).</description>
 			<type>select</type>
 			<options>
+				<option><name>PSAMP</name><value>psamp</value></option>
 				<option><name>10</name><value>10</value></option>
 				<option><name>9</name><value>9</value></option>
 				<option><name>5</name><value>5</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
+			<default_value>10</default_value>
 			<required/>
 		</field>
 		<field>
@@ -122,7 +131,8 @@
 				<div class="infoblock">
 				The track_level value may be one of:<br/>
 				<dl class="dl-horizontal responsive">
-					<dt>vlan</dt><dd>Track everything in the flow.</dd>
+					<dt>ether</dt><dd>Same as "full" plus the VLAN ID of the Ethernet frame and the source and destination MAC addresses.</dd>
+					<dt>vlan</dt><dd>Same as "full" plus the VLAN ID of the Ethernet frame.</dd>
 					<dt>full</dt><dd>Track protocol, source and destination addresses and source and destination ports, the default.</dd>
 					<dt>proto</dt><dd>Track protocol and source and destination addresses.</dd>
 					<dt>ip</dt><dd>Only track source and destination addresses.</dd>
@@ -135,10 +145,33 @@
 			</description>
 			<type>select</type>
 			<options>
+				<option><name>MAC Address</name><value>ether</value></option>
 				<option><name>VLAN</name><value>vlan</value></option>
 				<option><name>Full</name><value>full</value></option>
 				<option><name>Proto</name><value>proto</value></option>
 				<option><name>IP</name><value>ip</value></option>
+			</options>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Flow Timestamp Precision</fielddescr>
+			<fieldname>flowtimestamp</fieldname>
+			<description>
+				<![CDATA[
+				Specify the timestamp precision of reported flows. <span class="text-info">Click Info for details.</span>
+				<div class="infoblock">
+				Select the timestamp precision of the flow start and end times. The "None" value causes all flows to be timestamped
+				with the system boot time, obscuring the actual start and end time of the flows.
+				</div>
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>Seconds</name><value>sec</value></option>
+				<option><name>Milliseconds</name><value>milli</value></option>
+				<option><name>Microseconds</name><value>micro</value></option>
+				<option><name>Nanoseconds</name><value>nano</value></option>
+				<option><name>None</name><value>omit</value></option>
 			</options>
 			<required/>
 		</field>

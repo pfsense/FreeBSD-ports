@@ -3,7 +3,7 @@
 
 PORTNAME=	opendnssec
 PORTVERSION=	1.4.14
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	dns
 MASTER_SITES=	http://dist.opendnssec.org/source/
 
@@ -12,6 +12,9 @@ COMMENT=	Tool suite for maintaining DNSSEC
 
 LICENSE=	BSD3CLAUSE
 
+DEPRECATED=	EOLed by upstream
+EXPIRATION_DATE=	2020-10-09
+
 BUILD_DEPENDS=	ldns>=1.6.16:dns/ldns
 LIB_DEPENDS=	libldns.so:dns/ldns
 
@@ -19,7 +22,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir="${PREFIX}/var"
 USE_RC_SUBR=	opendnssec
 USE_GNOME=	libxml2
-USES=		compiler:c11 perl5 ssl
+USES=		compiler:c11 gnome perl5 ssl
 USE_LDCONFIG=	yes
 
 CONFLICTS=	opendnssec-1.[0-3]* opendnssec2-[0-9]*
@@ -63,8 +66,8 @@ SCRIPTDATA=	database_create.sqlite3 migrate_keyshare_sqlite3.pl \
 .endif
 
 .if ${PORT_OPTIONS:MSOFTHSM}
-CONFIGURE_ARGS+=	--with-pkcs11-softhsm=${LOCALBASE}/lib/softhsm/libsofthsm.so
-RUN_DEPENDS+=	softhsm>=1.2.0:security/softhsm
+CONFIGURE_ARGS+=	--with-pkcs11-softhsm=${LOCALBASE}/lib/softhsm/libsofthsm2.so
+RUN_DEPENDS+=	softhsm2>=2.5.0:security/softhsm2
 .endif
 
 SCRIPTDATA+=	convert_database.pl

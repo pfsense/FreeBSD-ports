@@ -7,7 +7,7 @@
     SUBDIR += CGdic-fpw
     SUBDIR += FreeWnn-lib
     SUBDIR += FreeWnn-server
-    SUBDIR += VTPSfont
+    SUBDIR += R-cran-zipangu
     SUBDIR += Wnn6-lib
     SUBDIR += Wnn7-lib
     SUBDIR += a2ps
@@ -17,7 +17,6 @@
     SUBDIR += alias-fonts
     SUBDIR += another-htmllint
     SUBDIR += anthy
-    SUBDIR += asterisk-sounds
     SUBDIR += awffull
     SUBDIR += bible_names-fpw
     SUBDIR += boiled-mozc
@@ -47,7 +46,6 @@
     SUBDIR += ebview-gtk2
     SUBDIR += edict
     SUBDIR += edict-fpw
-    SUBDIR += edict-utf-8
     SUBDIR += edyvalue
     SUBDIR += eijiro-fpw
     SUBDIR += epwutil
@@ -69,6 +67,7 @@
     SUBDIR += font-elisa8
     SUBDIR += font-genjyuugothic
     SUBDIR += font-genshingothic
+    SUBDIR += font-hackgen
     SUBDIR += font-ipa
     SUBDIR += font-ipa-uigothic
     SUBDIR += font-ipaex
@@ -110,7 +109,6 @@
     SUBDIR += gawk
     SUBDIR += gd
     SUBDIR += gedy
-    SUBDIR += gimp-help
     SUBDIR += groff
     SUBDIR += gskk
     SUBDIR += gsuica
@@ -132,7 +130,6 @@
     SUBDIR += jstrings
     SUBDIR += jvim3
     SUBDIR += kakasi
-    SUBDIR += kana-no-quiz
     SUBDIR += kanjipad
     SUBDIR += kasumi
     SUBDIR += kbanner
@@ -143,7 +140,6 @@
     SUBDIR += kiten
     SUBDIR += kon2-14dot
     SUBDIR += kon2-16dot
-    SUBDIR += kpcal
     SUBDIR += kterm
     SUBDIR += latex-jlisting
     SUBDIR += leafrogue
@@ -174,7 +170,6 @@
     SUBDIR += mozc-el
     SUBDIR += mozc-server
     SUBDIR += mozc-tool
-    SUBDIR += multiskkserv
     SUBDIR += mutt-devel
     SUBDIR += mypaedia-fpw-package
     SUBDIR += namazu
@@ -205,6 +200,7 @@
     SUBDIR += p5-Lingua-JA-Moji
     SUBDIR += p5-Lingua-JA-Numbers
     SUBDIR += p5-Lingua-JA-Regular-Unicode
+    SUBDIR += p5-Lingua-JA-Romanize-Japanese
     SUBDIR += p5-Lingua-JA-Summarize-Extract
     SUBDIR += p5-MeCab
     SUBDIR += p5-Number-Phone-JP
@@ -220,6 +216,7 @@
     SUBDIR += plain2
     SUBDIR += plan
     SUBDIR += prn
+    SUBDIR += py-jaconv
     SUBDIR += py-mecab
     SUBDIR += py-tegaki
     SUBDIR += py-tegaki-gtk
@@ -252,7 +249,6 @@
     SUBDIR += skk-jisyo
     SUBDIR += skk-jisyo-cdb
     SUBDIR += skk-tools
-    SUBDIR += skkfep
     SUBDIR += skkinput
     SUBDIR += skkinput3
     SUBDIR += skkserv
@@ -265,7 +261,6 @@
     SUBDIR += suicavalue
     SUBDIR += t2ps
     SUBDIR += tdiary
-    SUBDIR += tegaki-recognize
     SUBDIR += tegaki-zinnia-japanese
     SUBDIR += tex-ptex
     SUBDIR += tgif
@@ -293,7 +288,6 @@
     SUBDIR += xshodou
     SUBDIR += xtr
     SUBDIR += xv
-    SUBDIR += yasou-fpw
     SUBDIR += yc.el
     SUBDIR += zinnia
     SUBDIR += zinnia-tomoe

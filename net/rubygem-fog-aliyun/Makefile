@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	fog-aliyun
-PORTVERSION=	0.3.5
+PORTVERSION=	0.3.7
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
@@ -14,8 +14,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	rubygem-fog-core>=0:devel/rubygem-fog-core \
 		rubygem-fog-json>=0:devel/rubygem-fog-json \
-		rubygem-ipaddress>=0.8:net/rubygem-ipaddress \
-		rubygem-xml-simple>=1.1:textproc/rubygem-xml-simple
+		rubygem-ipaddress>=0.8<1:net/rubygem-ipaddress \
+		rubygem-xml-simple>=1.1<2:textproc/rubygem-xml-simple
 
 USES=		gem
 USE_RUBY=	yes

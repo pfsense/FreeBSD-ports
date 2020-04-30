@@ -16,6 +16,11 @@ LICENSE_NAME_DejaVu=	Bitstream Vera and Arev fonts license
 LICENSE_FILE_DejaVu=	${WRKSRC}/renpy/common/DejaVuSans.txt
 LICENSE_PERMS_DejaVu=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+# Extend expiration if lang/python27 is also extended
+# https://github.com/renpy/renpy/issues/2003
+DEPRECATED?=	Uses deprecated version of python
+EXPIRATION_DATE?=	2020-12-31
+
 BUILD_DEPENDS?=	${PYTHON_PKGNAMEPREFIX}game_sdl2>0:devel/py-game_sdl2@${PY_FLAVOR}
 LIB_DEPENDS=	libfribidi.so:converters/fribidi \
 		libpng.so:graphics/png \
@@ -28,7 +33,7 @@ CONFLICTS_INSTALL?=	${PORTNAME}6-*
 # Upstream tends to reroll distfiles before moving under /release/
 PORTSCOUT?=	site:http://www.renpy.org/dl/release/
 
-USES=		python:2.7 shebangfix tar:bz2
+USES=		gl python:2.7 sdl shebangfix tar:bz2
 USE_GL=		glew
 USE_PYTHON=	autoplist distutils cython
 USE_SDL?=	sdl2

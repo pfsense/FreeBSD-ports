@@ -13,6 +13,9 @@ COMMENT=	Python bindings for the compizconfig library
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
+
 BUILD_DEPENDS=	\
 	${LOCALBASE}/libdata/pkgconfig/compiz.pc:x11-wm/compiz \
 	${LOCALBASE}/libdata/pkgconfig/libcompizconfig.pc:x11-wm/libcompizconfig \
@@ -21,7 +24,7 @@ LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 GNU_CONFIGURE=	yes
-USES=		gmake libtool pathfix pkgconfig python:2.7 tar:bzip2
+USES=		gmake gnome libtool pathfix pkgconfig python:2.7 tar:bzip2 xorg
 USE_GNOME=	glib20 libxml2 libxslt
 USE_PYTHON=	flavors
 USE_XORG=	ice sm x11 xcomposite xdamage xext xfixes xinerama xrandr

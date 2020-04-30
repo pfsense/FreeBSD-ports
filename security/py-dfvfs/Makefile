@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dfvfs
-PORTVERSION=	20190609
+PORTVERSION=	20200211
 CATEGORIES=	security devel python
 MASTER_SITES=	https://github.com/log2timeline/dfvfs/releases/download/${PORTVERSION}/ \
 		LOCAL/antoine
@@ -20,6 +20,7 @@ RUN_DEPENDS=	libbde>=a:devel/libbde \
 		libfsntfs>=e:devel/libfsntfs \
 		libfvde>=0:sysutils/libfvde \
 		libfwnt>=e:devel/libfwnt \
+		libluksde>=e:devel/libluksde \
 		libqcow>=a:devel/libqcow \
 		libsigscan>=e:devel/libsigscan \
 		libsmdev>=a:devel/libsmdev \
@@ -28,33 +29,25 @@ RUN_DEPENDS=	libbde>=a:devel/libbde \
 		libvmdk>=e:devel/libvmdk \
 		libvshadow>=0:devel/libvshadow \
 		libvslvm>=e:devel/libvslvm \
+		${PYTHON_PKGNAMEPREFIX}cryptography>=0:security/py-cryptography@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dfdatetime>=0:security/py-dfdatetime@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dtfabric>=0:devel/py-dtfabric@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pycrypto>=0:security/py-pycrypto@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}idna>=0:dns/py-idna@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytsk>=0:sysutils/py-pytsk@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR} \
+		ca_root_nss>=0:security/ca_root_nss
 
-USES=		python
+USES=		python:3.5+
 USE_LOCALE=	en_US.UTF-8
 USE_PYTHON=	distutils autoplist concurrent
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3300
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}backports.lzma>=0:archivers/py-backports.lzma@${PY_FLAVOR}
-TEST_ENV=	${MAKE_ENV} PYTHONHTTPSVERIFY=0
-.else
-TEST_DEPENDS+=	ca_root_nss>=0:security/ca_root_nss
-.endif
-
 post-patch:
 	${REINPLACE_CMD} "s,share/doc/dfvfs,${DOCSDIR_REL}," ${WRKSRC}/setup.py
 
 do-test:
-	@${TOUCH} ${TEST_WRKSRC}/utils/__init__.py
 	@(cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} run_tests.py)
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

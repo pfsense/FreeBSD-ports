@@ -2,8 +2,7 @@
 
 PORTNAME=	photoflare
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.9
-PORTREVISION=	1
+DISTVERSION=	1.6.3
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -20,6 +19,6 @@ USE_QT=		core gui network printsupport widgets buildtools_build linguisttools_bu
 USE_GL=		gl
 
 CXXFLAGS+=	`pkg-config --cflags GraphicsMagick++`
-LDFLAGS+=	`pkg-config --libs GraphicsMagick++`
+LDFLAGS+=	`pkg-config --libs GraphicsMagick++` -lomp
 
 .include <bsd.port.mk>

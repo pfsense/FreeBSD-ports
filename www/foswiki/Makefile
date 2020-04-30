@@ -7,7 +7,7 @@ CATEGORIES=	www
 MASTER_SITES=	SF
 DISTNAME=	Foswiki-${PORTVERSION}
 
-MAINTAINER=	portmaster@bsdforge.com
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Free and open source enterprise wiki
 
 LICENSE=	GPLv2
@@ -64,7 +64,7 @@ post-patch:
 	@cd ${WRKSRC} && \
 		${REINPLACE_CMD} -i "" \
 		-e "s|^#[[:space:]]*\(.*\)/home/httpd/foswiki|\1${WWWDIR}|g" \
-		-e "s|^#[[:space:]]*\(.*\)\(\= \'/foswiki/\)|\1\2|g" \
+		-e "s|^#[[:space:]]*\(.*\)\(= '/foswiki/\)|\1\2|g" \
 		-e "s|/bin/grep|/usr/bin/grep|g" \
 		lib/Foswiki.spec
 	@cd ${WRKSRC} && \

@@ -2,7 +2,7 @@
 
 PORTNAME=	colmap
 DISTVERSION=	3.5
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	graphics
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -27,7 +27,8 @@ LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
 		libfreeimage.so:graphics/freeimage \
 		libceres.so:math/ceres-solver
 
-USES=		cmake compiler:${OPENMP}c++11-lib eigen:3 localbase qt:5 sqlite
+USES=		cmake compiler:${OPENMP}c++11-lib eigen:3 gl localbase qt:5 \
+		sqlite
 USE_GITHUB=	yes
 USE_GL=		gl glew
 USE_QT=		qmake_build buildtools_build core gui opengl_build widgets
@@ -52,7 +53,7 @@ OPENMP_USES=		compiler:openmp
 OPENMP_CMAKE_BOOL=	OPENMP_ENABLED
 .if ${MACHINE_ARCH} == i386 || !exists(/usr/include/omp.h)
 # XXX base/230888 via #pragma omp atomic
-# XXX ports/199603 + ports/210337
+# XXX ports/199603: LLVM openmp in base doesn't support aarch64, armv6, armv7 yet
 OPENMP_VARS=		OPENMP=gcc-
 .endif
 

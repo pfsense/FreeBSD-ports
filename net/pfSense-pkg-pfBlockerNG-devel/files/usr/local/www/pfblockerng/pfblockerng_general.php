@@ -3,7 +3,7 @@
  * pfblockerng_general.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2019 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -232,8 +232,8 @@ $section->addInput(new Form_StaticText(
 	'
 <div>
 <div style="width: 75%; height: 180px; float: left;">
-	<strong>pfBlockerNG</strong> created in 2015 by:
-	<a target="_blank" href="https://forum.pfsense.org/index.php?action=profile;u=238481">BBcan177</a><br />
+	<strong>pfBlockerNG</strong> is created, designed, developed, supported and maintained by:
+	<a target="_blank" href="https://forum.netgate.com/user/bbcan177">BBcan177</a><br />
 
 	<ul class="list-inline" style="margin-top: 4px; margin-bottom: -2px; border-style: outset; border-bottom-color: #8B181B; border-right-color: #8B181B; border-width: 2px;">
 		<li class="list-inline-item"><a target="_blank" href="http://pfblockerng.com">

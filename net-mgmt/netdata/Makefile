@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	netdata
-PORTVERSION=	1.17.1
-DISTVERSIONPREFIX=v
+PORTVERSION=	1.20.0
+PORTREVISION=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	mmokhi@FreeBSD.org
@@ -14,12 +15,13 @@ LICENSE=	GPLv3
 LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid
 
 RUN_DEPENDS=	bash:shells/bash \
-		curl:ftp/curl
+		curl:ftp/curl \
+		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}urllib3>0:net/py-urllib3@${PY_FLAVOR}
 
 USES=		autoreconf cpe pathfix pkgconfig:both python shebangfix ssl
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	firehol
 
 SHEBANG_GLOB=	*
 
@@ -27,10 +29,9 @@ NETDATA_CACHE=	/var/cache/${PORTNAME}
 NETDATA_LOG=	/var/log/${PORTNAME}
 NETDATA_PERST=	/var/db/${PORTNAME}
 
-USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-D_WANT_VMMETER -I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
+CONFIGURE_ARGS=	--disable-unit-tests
+CPPFLAGS+=	-D_WANT_VMMETER
 INSTALL_TARGET=	install-strip
 
 SUB_LIST=	NETDATA_CACHE=${NETDATA_CACHE} \
@@ -47,27 +48,39 @@ SUB_FILES=	${PORTNAME}.conf.sample
 USERS=		netdata
 GROUPS=		netdata
 
-OPTIONS_DEFINE=	CUPS DBENGINE FREEIPMI JSON
-OPTIONS_SUB=	YES
+OPTIONS_DEFINE=		CUPS DBENGINE FREEIPMI JSON LTO
+OPTIONS_SUB=		YES
 OPTIONS_DEFAULT=	DBENGINE JSON
+OPTIONS_DEFAULT_FreeBSD_12=	LTO
+OPTIONS_DEFAULT_FreeBSD_13=	LTO
+OPTIONS_DEFAULT+=	${OPTIONS_DEFAULT_${OPSYS}_${OSREL:R}}
 
-CUPS_DESC=	Enable support for cups
+CUPS_DESC=		Enable support for cups
 CUPS_CONFIGURE_ENABLE=	plugin-cups
 CUPS_LIB_DEPENDS=	libcups.so:print/cups
 
-DBENGINE_DESC=	Enable support for database engine
+DBENGINE_DESC=			Enable support for database engine
 DBENGINE_CONFIGURE_ENABLE=	dbengine
-DBENGINE_LIB_DEPENDS=	libuv.so:devel/libuv \
-			liblz4.so:archivers/liblz4 \
-			libJudy.so:devel/judy
+DBENGINE_LIB_DEPENDS=		libJudy.so:devel/judy \
+				liblz4.so:archivers/liblz4 \
+				libuv.so:devel/libuv
 
-FREEIPMI_DESC=	Enable support for freeipmi
+FREEIPMI_DESC=			Enable support for freeipmi
 FREEIPMI_CONFIGURE_ENABLE=	plugin-freeipmi
-FREEIPMI_LIB_DEPENDS=	libfreeipmi.so:sysutils/freeipmi
+FREEIPMI_LIB_DEPENDS=		libfreeipmi.so:sysutils/freeipmi
 
-JSON_DESC=	Enable support for json
+JSON_DESC=		Enable support for json
 JSON_CONFIGURE_ENABLE=	jsonc
 JSON_LIB_DEPENDS=	libjson-c.so:devel/json-c
+
+LTO_DESC=		Use Link-Time Optimization
+LTO_CONFIGURE_ENABLE=	lto
+LTO_USES=		compiler:c11
+
+.include <bsd.port.options.mk>
+.if ${PORT_OPTIONS:MLTO} && ${OPSYS}_${OSREL:R} == FreeBSD_11
+BROKEN=		Link-Time Optimization breaks compilation on FreeBSD 11
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%NETDATA_CACHE%%|${NETDATA_CACHE}|g' \
@@ -78,6 +91,8 @@ post-patch:
 	    ${PATCH_WRKSRC}/configure.ac
 	@${REINPLACE_CMD} -e 's|%%ETCDIR%%|${ETCDIR}|g' \
 	    ${PATCH_WRKSRC}/configure.ac
+	@${REINPLACE_CMD} -e 's|%%PYTHON%%|${PYTHON_CMD}|g' \
+	    ${PATCH_WRKSRC}/collectors/python.d.plugin/python.d.plugin.in
 
 post-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR}

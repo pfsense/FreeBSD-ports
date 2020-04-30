@@ -25,13 +25,16 @@ GH_TAGNAME=	c36c421
 GH_TUPLE=	omf2097:libShadowDive:b2c34a6:shadow \
 		kode54:dumb:238f23c:libdumb
 
-USES=		cmake:insource compiler:c++11-lang gettext openal
+USES=		cmake:insource compiler:c++11-lang gettext openal sdl
 USE_SDL=	sdl2
-LLD_UNSAFE=	yes
+
+LDFLAGS_i386=	-Wl,-znotext
 
 DESKTOP_ENTRIES="OpenOMF" "" \
 		"${PREFIX}/share/openomf/openomf_icon.png " \
 		"openomf" "Game;ArcadeGame;" false
+
+.include <bsd.port.options.mk>
 
 post-extract:
 	${RMDIR} ${WRKSRC}/external/libShadowDive
@@ -43,8 +46,10 @@ post-extract:
 post-patch:
 	${REINPLACE_CMD} -e 's,%%PREFIX%%,"${PREFIX}",g' \
 		${WRKSRC}/src/resources/pathmanager.c
+.if ${ARCH} != i386
 	${REINPLACE_CMD} -e 's,-msse ,,' \
 		${WRKSRC}/external/dumb/dumb/cmake/CMakeLists.txt
+.endif
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/openomf ${STAGEDIR}${PREFIX}/bin

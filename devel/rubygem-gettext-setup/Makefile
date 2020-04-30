@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gettext-setup
-PORTVERSION=	0.31
+PORTVERSION=	0.34
+PORTREVISION=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -11,7 +12,7 @@ COMMENT=	Set up i18n for Ruby projects
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	rubygem-fast_gettext1>=1.1.0:devel/rubygem-fast_gettext1 \
+RUN_DEPENDS=	rubygem-fast_gettext1>=1.1<2:devel/rubygem-fast_gettext1 \
 		rubygem-gettext>=3.0.2:devel/rubygem-gettext \
 		rubygem-locale>=0:devel/rubygem-locale
 

@@ -8,7 +8,7 @@
  * iperf.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2019 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -129,6 +129,12 @@
 			<description>Enter the UDP bandwidth to send at in bits/sec. (Default is 1Mbit/sec.)</description>
 			<type>input</type>
 		</field>
+		<field>
+			<fielddescr>Verbose output</fielddescr>
+			<fieldname>verbose</fieldname>
+			<description>Show more detailed output.</description>
+			<type>checkbox</type>
+		</field>
 	</fields>
 	<custom_add_php_command>
 	<![CDATA[
@@ -154,6 +160,9 @@
 		}
 		if ($_POST['port'] != "") {
 			$iperf_options .= " -p " . escapeshellarg($_POST['port']);
+		}
+		if ($_POST['verbose'] != "") {
+			$iperf_options .= " -V ";
 		}
 		$iperf_options .= " -c " . escapeshellarg($_POST['hostname']);
 		system("/usr/local/bin/iperf3" . $iperf_options);

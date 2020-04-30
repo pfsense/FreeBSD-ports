@@ -10,18 +10,19 @@ MASTER_SITES=	SF/makehuman/MakeHuman%20Source/MakeHuman_091
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GUI widget library for MakeHuman
 
+BROKEN=		unfetchable
+
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libanimorph.so:graphics/animorph \
 		libpng.so:graphics/png
 
 GNU_CONFIGURE=	yes
-USES=		pkgconfig gmake libtool
+USES=		pkgconfig gl gmake libtool xorg
 USE_LDCONFIG=	yes
 USE_XORG=	xi xmu ice sm
 USE_GL=		glut
 INSTALL_TARGET=	install-strip
-USE_GCC=	any # otherwise graphics/makehuman won't link
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

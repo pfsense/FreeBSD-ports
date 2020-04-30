@@ -3,7 +3,7 @@
 
 PORTNAME=	PETSc
 DISTVERSION=	3.10.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	science devel
 MASTER_SITES=	http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/
 DISTNAME=	${PORTNAME:tl}-${DISTVERSION}
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libmpich.so:net/mpich
 
-USES=		blaslapack fortran gmake python:2.7 shebangfix
+USES=		blaslapack fortran gmake python:2.7 shebangfix xorg
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-shared-libraries=1 \
 		--with-mpi-dir=${LOCALBASE} \

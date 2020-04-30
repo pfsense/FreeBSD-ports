@@ -1,4 +1,8 @@
 bin/wf-background
 bin/wf-dock
 bin/wf-panel
-share/wayfire/icons/wayfire.png
+%%DATADIR%%/icons/wayfire.png
+%%DATADIR%%/metadata/wf-shell/background.xml
+%%DATADIR%%/metadata/wf-shell/dock.xml
+%%DATADIR%%/metadata/wf-shell/panel.xml
+%%DATADIR%%/wallpaper.jpg

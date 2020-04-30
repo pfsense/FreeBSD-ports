@@ -2,8 +2,8 @@
 
 PORTNAME=	edbrowse
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.7.4
-PORTREVISION=	4
+DISTVERSION=	3.7.6
+PORTREVISION=	3
 CATEGORIES=	www editors
 
 MAINTAINER=	alfix86@gmail.com
@@ -13,7 +13,6 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libcurl.so:ftp/curl \
-		libtidy.so:www/tidy-lib \
 		libtidy5.so:www/tidy-html5 \
 		libduktape.so:lang/duktape-lib
 
@@ -30,6 +29,9 @@ PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 
+post-patch:
+	@${REINPLACE_CMD} -e 's|set(TIDY_NAMES tidy)|set(TIDY_NAMES tidy5)|g' ${WRKSRC}/CMakeModules/FindTidy.cmake
+
 do-install:
 	${INSTALL_MAN} ${WRKSRC}/doc/man-edbrowse-freebsd.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/${PORTNAME}.1
 	${INSTALL_PROGRAM} ${WRKSRC}/edbrowse ${STAGEDIR}${PREFIX}/bin
@@ -40,7 +42,7 @@ post-install-DOCS-on:
 	${INSTALL_DATA} ${WRKSRC}/COPYING ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/doc && \
-		${FIND} . \( -name setup.ebrc -or -name "man-edbrowse*" \) -delete  && \
+		${FIND} . \( -name article.wikipedia -or -name "man-edbrowse*" \) -delete  && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>
