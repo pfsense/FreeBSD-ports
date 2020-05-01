@@ -178,6 +178,18 @@
 			<type>input</type>
 		</field>
 		<field>
+			<fielddescr>Ignore IPsec Restart</fielddescr>
+			<fieldname>ignoreipsecrestart</fieldname>
+			<description>
+				<![CDATA[
+					Ignore IPsec restart events.
+					When unchecked, IPsec VTI interfaces will be reset in FRR when IPsec restarts.
+					This reset can prevent routes from becoming inactive in the routing table after interface events.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
 			<name>Route Handling</name>
 			<type>listtopic</type>
 		</field>

@@ -163,6 +163,12 @@ function frr_plugin_carp($pluginparams) {
  * interface in FRR status so routing will work again.
  */
 function frr_ipsec_reload() {
+	global $config;
+	init_config_arr(array('installedpackages', 'frr', 'config', 0));
+	if (!empty($config['installedpackages']['frr']['config'][0]['ignoreipsecrestart'])) {
+		return;
+	}
+
 	require_once('interfaces.inc');
 	$vti_ifs = array_keys(interface_ipsec_vti_list_all());
 	foreach ($vti_ifs as $vif) {
