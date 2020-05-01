@@ -1,6 +1,10 @@
 /etc/inc/priv/pfblockerng.priv.inc
 pkg/pfblockerng.xml
 pkg/pfblockerng/dnsbl_tld
+pkg/pfblockerng/pfb_dnsbl.firefoxdoh.conf
+pkg/pfblockerng/pfb_dnsbl.safesearch.conf
+pkg/pfblockerng/pfb_dnsbl.youtube_restrict.conf
+pkg/pfblockerng/pfb_dnsbl.youtube_restrictmoderate.conf
 pkg/pfblockerng/pfblockerng.inc
 pkg/pfblockerng/pfblockerng.sh
 pkg/pfblockerng/pfblockerng_extra.inc
@@ -20,6 +24,7 @@ www/pfblockerng/pfblockerng_feeds.php
 www/pfblockerng/pfblockerng_general.php
 www/pfblockerng/pfblockerng_ip.php
 www/pfblockerng/pfblockerng_log.php
+www/pfblockerng/pfblockerng_safesearch.php
 www/pfblockerng/pfblockerng_sync.php
 www/pfblockerng/pfblockerng_threats.php
 www/pfblockerng/pfblockerng_update.php
