@@ -664,7 +664,7 @@ print($form);
 <?= print_info_box(gettext("If a client is missing from the list it is likely due to a CA mismatch between the OpenVPN server instance and the client certificate, the client certificate does not exist on this firewall, or a user certificate is not associated with a user when local database authentication is enabled." .
 "<br />" .
 "<br />" .
-"OpenVPN 2.4.8 requires Windows 7 or later" .
+"OpenVPN 2.4.8+ requires Windows 7 or later" .
 "<br />" .
 "The &quot;win6&quot; Windows installers include the tap-windows6 driver which requires Windows Vista or later. " .
 "<br />" .
