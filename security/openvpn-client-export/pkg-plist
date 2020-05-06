@@ -1,8 +1,8 @@
 share/openvpn/client-export/template/7zsd_All.sfx
 share/openvpn/client-export/template/config-import
 share/openvpn/client-export/template/config-standard
-share/openvpn/client-export/template/openvpn-install-2.4.8-I602-Win10.exe
-share/openvpn/client-export/template/openvpn-install-2.4.8-I602-Win7.exe
+share/openvpn/client-export/template/openvpn-install-2.4.9-I601-Win10.exe
+share/openvpn/client-export/template/openvpn-install-2.4.9-I601-Win7.exe
 share/openvpn/client-export/template/openvpn-install-2.3.18-I002-i686.exe
 share/openvpn/client-export/template/openvpn-install-2.3.18-I002-x86_64.exe
 share/openvpn/client-export/template/openvpn-install-2.3.18-I602-i686.exe
