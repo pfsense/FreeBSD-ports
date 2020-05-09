@@ -101,8 +101,9 @@ function freeradius_deinstall_command() {
 				unset($config['installedpackages'][$unin]);
 			}
 		}
+		rmdir_recursive(FREERADIUS_RADDB, false);
+		write_config("[freeRADIUS] Package uninstalled.");
 	}
-	write_config("[freeRADIUS] Package uninstalled.");
 }
 
 function freeradius_chown_recursive($dir, $user = "root", $group = "wheel") {
