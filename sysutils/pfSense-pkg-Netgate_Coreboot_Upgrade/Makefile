@@ -56,6 +56,7 @@ post-extract:
 	${REINPLACE_CMD} -e "s,%%COREBOOT_PLCCB_ROM%%,${COREBOOT_PLCCB_ROM},g" \
 		${WRKSRC}/adi_smbios_util/config.h
 	${LN} -sf ${WRKSRC_coreboot} ${WRKSRC}/coreboot
+	${PATCH} -p0 -d ${WRKSRC_coreboot} < ${FILESDIR}/fix-build-clang10
 
 do-build:
 	${CC} ${CFLAGS} -o ${WRKSRC}/adi_flash_util \
