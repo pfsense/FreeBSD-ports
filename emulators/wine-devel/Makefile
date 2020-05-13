@@ -3,6 +3,7 @@
 
 PORTNAME=	wine
 DISTVERSION=	5.5
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/Source \
@@ -24,7 +25,7 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
 LIB_DEPENDS=	libFAudio.so:audio/faudio \
 		libxml2.so:textproc/libxml2
 
-USES=		bison desktop-file-utils gmake localbase shebangfix tar:xz
+USES=		bison desktop-file-utils gmake localbase pkgconfig shebangfix tar:xz
 
 CONFLICTS_INSTALL=	wine-[0-9]* i386-wine-[0-9]* i386-wine-devel-[0-9]*
 
@@ -35,6 +36,7 @@ CONFIGURE_ARGS+=--verbose \
 		--without-alsa --without-capi --without-dbus \
 		--without-gettext --without-gettextpo \
 		--without-gphoto --without-gsm --without-gstreamer \
+		--without-inotify \
 		--without-krb5 \
 		--without-opencl \
 		--without-osmesa \
@@ -43,7 +45,8 @@ CONFIGURE_ARGS+=--verbose \
 		--without-sane \
 		--without-sdl \
 		--without-tiff \
-		--without-udev
+		--without-udev \
+		--without-unwind
 CONFIGURE_ENV=	CPPBIN="${CPP}" FLEX="${LOCALBASE}/bin/flex"
 WINELIBDIR?=	${PREFIX}/lib
 .if !defined(USE_LDCONFIG32)
@@ -112,7 +115,6 @@ V4L_BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 V4L_LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
 
 VKD3D_CONFIGURE_WITH=	vkd3d
-VKD3D_USES=		pkgconfig
 VKD3D_LIB_DEPENDS=	libvkd3d.so:graphics/vkd3d
 
 VULKAN_CONFIGURE_WITH=	vulkan
