@@ -1,6 +1,14 @@
 --- external/libfetch/common.c.orig	2020-02-21 14:18:42 UTC
 +++ external/libfetch/common.c
-@@ -63,6 +63,11 @@ __FBSDID("$FreeBSD: head/lib/libfetch/common.c 347050 
+@@ -53,6 +53,7 @@ __FBSDID("$FreeBSD: head/lib/libfetch/common.c 347050 
+ 
+ #ifdef WITH_SSL
+ #include <openssl/x509v3.h>
++#include <openssl/engine.h>
+ #endif
+ 
+ #include "bsd_compat.h"
+@@ -63,6 +64,11 @@ __FBSDID("$FreeBSD: head/lib/libfetch/common.c 347050 
  #define INFTIM (-1)
  #endif
  
@@ -12,7 +20,7 @@
  /*** Local data **************************************************************/
  
  /*
-@@ -923,15 +928,33 @@ fetch_ssl(conn_t *conn, const struct url *URL, int ver
+@@ -923,15 +929,33 @@ fetch_ssl(conn_t *conn, const struct url *URL, int ver
  #ifdef WITH_SSL
  	int ret, ssl_err;
  	X509_NAME *name;
