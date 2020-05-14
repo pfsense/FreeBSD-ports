@@ -22,7 +22,7 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libexpat.so:textproc/expat2 \
 		libgd.so:${GD_PORT}
 
-USES=		cpe pathfix shebangfix gmake bison groff pkgconfig \
+USES=		cpe pathfix shebangfix gmake bison pkgconfig \
 		libtool:keepla autoreconf localbase:ldflags jpeg \
 		compiler:c++11-lang tcl:build
 
