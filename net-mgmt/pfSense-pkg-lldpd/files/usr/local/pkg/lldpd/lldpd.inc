@@ -120,11 +120,24 @@ function lldpd_sync_config() {
 	
 	/* Interface list */
 	$interfaces = array();
-	foreach (explode(',', $lldpd_config['interfaces']) as $i) {
-		foreach (get_parent_physical_interface($i) as $p) {
-			$interfaces[$p] = $p;
+	$int_switch = array();
+	if (file_exists("/etc/inc/switch.inc")) {
+		require_once('switch.inc');
+		if (!empty(switch_get_devices())) {
+			$int_switch = switch_get_uplink_ports();
 		}
 	}
+	foreach (explode(',', $lldpd_config['interfaces']) as $i) {
+		foreach (get_parent_physical_interface($i) as $p) {
+			if (!empty($int_switch) && in_array($p, $int_switch)) {
+				$int = get_real_interface($i);
+				$interfaces[$int] = $int;
+			} else {
+				$interfaces[$p] = $p;
+			}
+		}
+	}
+	$interfaces = array_unique($interfaces);
 	if (count($interfaces)) {
 		$cmd .= ' -I ' . escapeshellarg(implode(',', $interfaces));
 	}
@@ -134,7 +147,11 @@ function lldpd_sync_config() {
 		$cmd .= ' -r';
 	} else {
 		/* Chassis interface */
-		$chassis = implode(',', get_parent_physical_interface($lldpd_config['chassis']));
+		$chassis_int = get_parent_physical_interface($lldpd_config['chassis']);
+		if (!empty($int_switch) && empty(array_diff($int_switch, $chassis_int))) {
+			$chassis_int = array(get_real_interface($lldpd_config['chassis']));
+		}
+		$chassis = implode(',', $chassis_int);
 		if (isset($chassis)) {
 			$cmd .= ' -C ' . escapeshellarg($chassis);
 		}
