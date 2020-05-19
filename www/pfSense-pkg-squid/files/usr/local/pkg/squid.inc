@@ -2061,7 +2061,7 @@ function squid_resync_auth() {
 					. "/libexec/squid/basic_ldap_auth -v {$settings['ldap_version']} -b " . escapeshellarg($settings['ldap_basedomain'])
 					. " " . $noreferrals . " -D " . escapeshellarg($settings['ldap_user']) . " " . $password
 					. " -f " . escapeshellarg($settings['ldap_filter']) . " -u " . escapeshellarg($settings['ldap_userattribute'])
-					. " -P -H " . escapeshellarg($ldap_proto . $settings['auth_server'] . $port) . "\n";
+					. " " . $usetls . " -P -H " . escapeshellarg($ldap_proto . $settings['auth_server'] . $port) . "\n";
 				break;
 			case 'radius':
 				$port = ((isset($settings['auth_server_port']) && !empty($settings['auth_server_port'])) ? "-p {$settings['auth_server_port']}" : '');
