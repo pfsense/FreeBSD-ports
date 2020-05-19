@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	rust
-PORTVERSION?=	1.42.0
-PORTREVISION?=	1
+PORTVERSION?=	1.43.1
+PORTREVISION?=	0
 CATEGORIES=	lang
 MASTER_SITES=	https://static.rust-lang.org/dist/:src \
 		LOCAL/tobik/rust:bootstrap \
@@ -14,7 +14,6 @@ DISTFILES?=	${NIGHTLY_DATE:D${NIGHTLY_DATE}/}${DISTNAME}${EXTRACT_SUFX}:src \
 		${_RUST_STD_BOOTSTRAP}${BOOTSTRAPS_SUFFIX}${EXTRACT_SUFX}:bootstrap \
 		${_CARGO_BOOTSTRAP}${BOOTSTRAPS_SUFFIX}${EXTRACT_SUFX}:bootstrap
 DIST_SUBDIR?=	rust
-EXTRACT_ONLY?=	${DISTFILES:N*\:bootstrap:C/:.*//}
 
 MAINTAINER=	rust@FreeBSD.org
 COMMENT=	Language with a focus on memory safety and concurrency
@@ -28,7 +27,8 @@ IGNORE_FreeBSD_11_powerpc64=	is missing a bootstrap for FreeBSD 11.x powerpc64
 ONLY_FOR_ARCHS?=	aarch64 amd64 armv6 armv7 i386 powerpc64
 ONLY_FOR_ARCHS_REASON?=	requires prebuilt bootstrap compiler
 
-BUILD_DEPENDS=	cmake:devel/cmake
+BUILD_DEPENDS=	cmake:devel/cmake \
+		libgit2>=1.0.0:devel/libgit2
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libgit2.so:devel/libgit2 \
 		libssh2.so:security/libssh2
@@ -51,16 +51,17 @@ GDB_DESC=	Install ports gdb (necessary for debugging rust programs)
 SOURCES_DESC=	Install source files
 WASM_DESC=	Build the WebAssembly target (wasm32-unknown-unknown)
 
-DOCS_VARS_OFF=		_RUST_BUILD_DOCS=false
 DOCS_VARS=		_RUST_BUILD_DOCS=true
+DOCS_VARS_OFF=		_RUST_BUILD_DOCS=false
 GDB_RUN_DEPENDS=	${LOCALBASE}/bin/gdb:devel/gdb
+WASM_VARS=		_RUST_BUILD_WASM=true \
+			_RUST_TARGETS+=wasm32-unknown-unknown
 WASM_VARS_OFF=		_RUST_BUILD_WASM=false
-WASM_VARS=		_RUST_BUILD_WASM=true
 
 # See WRKSRC/src/stage0.txt for the date and version values.
-BOOTSTRAPS_DATE?=		2020-02-29
-RUST_BOOTSTRAP_VERSION?=	1.41.1
-CARGO_BOOTSTRAP_VERSION?=	0.42.0
+BOOTSTRAPS_DATE?=		2020-03-12
+RUST_BOOTSTRAP_VERSION?=	1.42.0
+CARGO_BOOTSTRAP_VERSION?=	0.43.0
 
 BOOTSTRAPS_SUFFIX?=		${BOOTSTRAPS_SUFFIX_${ARCH}}
 BOOTSTRAPS_SUFFIX_powerpc64?=	-${PPC_ABI:tl}
@@ -71,6 +72,7 @@ CARGO_VENDOR_DIR?=		${WRKSRC}/vendor
 _RUST_ARCH_amd64=	x86_64
 _RUST_ARCH_i386=	i686
 _RUST_TARGET=		${_RUST_ARCH_${ARCH}:U${ARCH}}-unknown-${OPSYS:tl}
+_RUST_TARGETS=		${_RUST_TARGET}
 
 _RUSTC_BOOTSTRAP=	${BOOTSTRAPS_DATE_${ARCH}:U${BOOTSTRAPS_DATE}}/rustc-${RUST_BOOTSTRAP_VERSION_${ARCH}:U${RUST_BOOTSTRAP_VERSION}}-${_RUST_TARGET}
 _RUST_STD_BOOTSTRAP=	${BOOTSTRAPS_DATE_${ARCH}:U${BOOTSTRAPS_DATE}}/rust-std-${RUST_BOOTSTRAP_VERSION_${ARCH}:U${RUST_BOOTSTRAP_VERSION}}-${_RUST_TARGET}
@@ -97,29 +99,11 @@ IGNORE=	fails to run due to a bug in rtld, update to 12-STABLE r342847 or 13-CUR
 IGNORE=	fails to build with qemu-user-static
 .endif
 
-post-extract:
-	@${MKDIR} ${WRKSRC}/build/cache/${BOOTSTRAPS_DATE_${ARCH}:U${BOOTSTRAPS_DATE}}
-	${LN} -sf ${DISTDIR}/${DIST_SUBDIR}/${_RUSTC_BOOTSTRAP}${BOOTSTRAPS_SUFFIX}${EXTRACT_SUFX} \
-		${WRKSRC}/build/cache/${_RUSTC_BOOTSTRAP}${EXTRACT_SUFX}
-	${LN} -sf ${DISTDIR}/${DIST_SUBDIR}/${_RUST_STD_BOOTSTRAP}${BOOTSTRAPS_SUFFIX}${EXTRACT_SUFX} \
-		${WRKSRC}/build/cache/${_RUST_STD_BOOTSTRAP}${EXTRACT_SUFX}
-	${LN} -sf ${DISTDIR}/${DIST_SUBDIR}/${_CARGO_BOOTSTRAP}${BOOTSTRAPS_SUFFIX}${EXTRACT_SUFX} \
-		${WRKSRC}/build/cache/${_CARGO_BOOTSTRAP}${EXTRACT_SUFX}
-
 post-patch:
 	@${REINPLACE_CMD} 's,gdb,${LOCALBASE}/bin/gdb,' ${WRKSRC}/src/etc/rust-gdb
-	@${ECHO_MSG} "Canonical bootstrap date and version before patching:"
-	@${GREP} -E '^(date|rustc|cargo)' ${WRKSRC}/src/stage0.txt
-# If we override the versions and date of the bootstraps (for instance
-# on aarch64 where we provide our own bootstraps), we need to update
-# places where they are recorded.
-	@${REINPLACE_CMD} -e 's,^date:.*,date: ${BOOTSTRAPS_DATE_${ARCH}:U${BOOTSTRAPS_DATE}},' \
-		-e 's,^rustc:.*,rustc: ${RUST_BOOTSTRAP_VERSION_${ARCH}:U${RUST_BOOTSTRAP_VERSION}},' \
-		-e '/^rustfmt:/d' \
-		-e 's,^cargo:.*,cargo: ${CARGO_BOOTSTRAP_VERSION_${ARCH}:U${CARGO_BOOTSTRAP_VERSION}},' \
-		${WRKSRC}/src/stage0.txt
-	@${ECHO_MSG} "Bootstrap date and version after patching:"
-	@${GREP} -E '^(date|rustc|cargo)' ${WRKSRC}/src/stage0.txt
+.if defined(NIGHTLY_DATE)
+	@${REINPLACE_CMD} '/^rustfmt:/d' ${WRKSRC}/src/stage0.txt
+.endif
 .if ${ARCH} == powerpc64
 # Starting with 13.0 powerpc64 is ELFv2 while 12.0 is ELFv1.  Pass the correct LLVM target triple.
 	@${REINPLACE_CMD} 's,powerpc64-unknown-freebsd,powerpc64-unknown-freebsd${OSREL},' \
@@ -138,15 +122,23 @@ do-configure:
 # Check that the running kernel has COMPAT_FREEBSD11 required by lang/rust post-ino64
 	@${SETENV} CC="${CC}" OPSYS="${OPSYS}" OSVERSION="${OSVERSION}" WRKDIR="${WRKDIR}" \
 		${SH} ${SCRIPTSDIR}/rust-compat11-canary.sh
+.for _component in cargo rust-std rustc
+	@cd ${WRKDIR}/${_component}-*-${OPSYS:tl} && \
+		${SH} install.sh --disable-ldconfig --prefix=${WRKDIR}/bootstrap \
+		--verbose
+.endfor
 	@${ECHO_CMD} '[build]' > ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'vendor=true' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'extended=true' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'python="${PYTHON_CMD}"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'docs=${_RUST_BUILD_DOCS}' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'verbose=2' >> ${WRKSRC}/config.toml
-.if ${PORT_OPTIONS:MWASM}
-	@${ECHO_CMD} 'target=["${_RUST_TARGET}","wasm32-unknown-unknown"]' >> ${WRKSRC}/config.toml
+.if defined(NIGHTLY_DATE)
+	@${ECHO_CMD} 'profiler=true' >> ${WRKSRC}/config.toml
 .endif
+	@${ECHO_CMD} 'target=[${_RUST_TARGETS:@.target.@"${.target.}"@:ts,}]' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'cargo="${WRKDIR}/bootstrap/bin/cargo"' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'rustc="${WRKDIR}/bootstrap/bin/rustc"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} '[install]' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'prefix="${PREFIX}"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'sysconfdir="${PREFIX}/etc"' >> ${WRKSRC}/config.toml
@@ -161,17 +153,22 @@ do-configure:
 .else
 	@${ECHO_CMD} 'ccache=false' >> ${WRKSRC}/config.toml
 .endif
-	@${ECHO_CMD} '[target.${_RUST_TARGET}]' >> ${WRKSRC}/config.toml
-	@${ECHO_CMD} 'cc="${CC}"' >> ${WRKSRC}/config.toml
-	@${ECHO_CMD} 'cxx="${CXX}"' >> ${WRKSRC}/config.toml
 .if ${ARCH} == armv6
 # fails to link with base ld.bfd: rustc_codegen_llvm.e2557spx-cgu.11:(.text._ZN89_$LT$rustc_target..abi..call..CastTarget$u20$as$u20$rustc_codegen_llvm..abi..LlvmType$GT$9llvm_type17h1296210ab461fc57E+0x54): relocation truncated to fit: R_ARM_CALL against symbol `__aeabi_uldivmod' defined in .text.__aeabi_uldivmod section in /tmp/rustcdnGbao/libcompiler_builtins-ee65b414e4115a8f.rlib(compiler_builtins-ee65b414e4115a8f.compiler_builtins.ay8p39ey-cgu.13.rcgu.o)
 	@${PRINTF} '#!/bin/sh\nexec ${CC} -fuse-ld=lld "$$@"' > ${WRKDIR}/cc-wrapper
 	@${CHMOD} +x ${WRKDIR}/cc-wrapper
+.endif
+.for _target in ${_RUST_TARGETS}
+	@${ECHO_CMD} '[target.${_target}]' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'ar="${AR}"' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'cc="${CC}"' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'cxx="${CXX}"' >> ${WRKSRC}/config.toml
+.if ${ARCH} == armv6
 	@${ECHO_CMD} 'linker="${WRKDIR}/cc-wrapper"' >> ${WRKSRC}/config.toml
 .else
 	@${ECHO_CMD} 'linker="${CC}"' >> ${WRKSRC}/config.toml
 .endif
+.endfor
 	@${ECHO_CMD} '[dist]' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'src-tarball=false' >> ${WRKSRC}/config.toml
 	@${REINPLACE_CMD} 's,%CC%,${CC},g' \
