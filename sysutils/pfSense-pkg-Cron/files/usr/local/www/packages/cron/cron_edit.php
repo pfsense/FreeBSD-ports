@@ -35,6 +35,12 @@ if (isset($_POST['id'])) {
 	$id = $_POST['id'];
 }
 
+$dup = false;
+if (isset($_GET['dup']) && is_numericint($_GET['dup'])) {
+	$id = $_GET['dup'];
+	$dup = true;
+}
+
 if ($_GET['act'] == "del") {
 	if ($_GET['type'] == 'php') {
 		if ($a_cron[$_GET['id']]) {
@@ -72,7 +78,7 @@ if ($_POST) {
 		$ent['who'] = $_POST['who'];
 		$ent['command'] = $_POST['command'];
 
-		if (isset($id) && $a_cron[$id]) {
+		if (isset($id) && $a_cron[$id] && !$dup) {
 			// update
 			$a_cron[$id] = $ent;
 		} else {

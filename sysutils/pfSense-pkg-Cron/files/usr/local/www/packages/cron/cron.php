@@ -90,6 +90,7 @@ display_top_tabs($tab_array);
 						<td><?=$ent['command']?></td>
 						<td>
 							<a href="cron_edit.php?id=<?=$i?>"><i class="fa fa-pencil" alt="edit"></i></a>
+							<a href="cron_edit.php?dup=<?=$i?>"><i class="fa fa-clone" alt="copy"></i></a>
 							<a href="cron_edit.php?type=php&amp;act=del&amp;id=<?=$i?>"><i class="fa fa-trash" alt="delete"></i></a>
 						</td>
 					</tr>
