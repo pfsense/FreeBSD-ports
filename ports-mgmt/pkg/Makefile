@@ -82,12 +82,6 @@ PKG_DEPENDS=
 PKG_BIN=	${WRKSRC}/src/pkg-static
 .endif
 
-REAL_OSMAJOR!=	/usr/bin/uname -r | /usr/bin/cut -d\. -f1
-
-post-patch:
-	@${REINPLACE_CMD} -e "/#define.*OSMAJOR.*__FreeBSD__/ s/__FreeBSD__/${REAL_OSMAJOR}/" \
-		${WRKSRC}/libpkg/pkg.h.in
-
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/NEWS ${STAGEDIR}${DOCSDIR}/NEWS
