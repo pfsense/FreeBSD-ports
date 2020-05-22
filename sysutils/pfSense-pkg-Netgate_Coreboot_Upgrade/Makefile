@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Netgate_Coreboot_Upgrade
-PORTVERSION=	0.27
-PORTREVISION=	1
+PORTVERSION=	0.28
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 
@@ -13,7 +12,7 @@ LICENSE=	APACHE20
 
 BUILD_DEPENDS=	e2fsprogs-libuuid>=0:misc/e2fsprogs-libuuid \
 		gmake:devel/gmake
-RUN_DEPENDS=	flashrom:sysutils/flashrom \
+RUN_DEPENDS=	flashrom>=1.1:sysutils/flashrom \
 		e2fsprogs-libuuid>=0:misc/e2fsprogs-libuuid
 
 NO_MTREE=	yes
