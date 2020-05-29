@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+		<![CDATA[
+		/* $Id$ */
+		/* ====================================================================================== */
+		/*
+		* zeek_script.xml
+		* part of pfSense (https://www.pfSense.org/)
+		* Copyright (c) 2018-2020 Prosper Doko
+		* Copyright (c) 2020 Mark Overholser
+		* All rights reserved.
+		*
+		* Licensed under the Apache License, Version 2.0 (the "License");
+		* you may not use this file except in compliance with the License.
+		* You may obtain a copy of the License at
+		*
+		* http://www.apache.org/licenses/LICENSE-2.0
+		*
+		* Unless required by applicable law or agreed to in writing, software
+		* distributed under the License is distributed on an "AS IS" BASIS,
+		* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		* See the License for the specific language governing permissions and
+		* limitations under the License.
+		*/
+		/* ====================================================================================== */
+		]]>
+	</copyright>
+	<name>Zeekscript</name>
+	<title>Zeek NSM: Scripts Mgmt</title>
+	<include_file>/usr/local/pkg/zeek.inc</include_file>
+	<delete_string>A Zeek script has been deleted.</delete_string>
+	<addedit_string>A Zeek script has been created/modified.</addedit_string>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=zeek.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>ZeekControl Config</text>
+			<url>/pkg_edit.php?xml=zeek_zeekctl.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Zeek Cluster</text>
+			<url>/pkg_edit.php?xml=zeek_cluster.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Zeek Scripts</text>
+			<url>/pkg.php?xml=zeek_script.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Log Mgmt</text>
+			<url>/pkg_edit.php?xml=zeek_log.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Real Time Inspection</text>
+			<url>/zeek_alerts.php</url>
+		</tab>
+		<tab>
+			<text>XMLRPC Sync</text>
+			<url>/pkg_edit.php?xml=zeek_sync.xml</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Script Name</fielddescr>
+			<fieldname>scriptname</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<name>General Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Script Name</fielddescr>
+			<fieldname>scriptname</fieldname>
+			<description>Enter the name of script here.</description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>Zeek Script Path</fielddescr>
+			<fieldname>zeekscriptpath</fieldname>
+			<description>
+				<![CDATA[
+				Enter absolute path to the Zeek script (e.g.: "/usr/local/www/detect_ddos.zeek" or "/tmp/detect_ddos.zeek")<br/>
+				<strong>Note: Ensure the script exists and that the path is correct.</strong>
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+			<description>Enter script description here.</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+		zeek_validate_script($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_delete_php_command>
+		zeek_script_resync();
+	</custom_delete_php_command>
+	<custom_php_resync_config_command>
+		zeek_script_resync();
+	</custom_php_resync_config_command>
+</packagegui>
