@@ -59,6 +59,11 @@
 		<executable>c-icap</executable>
 		<description>ICAP Inteface for Squid and ClamAV integration</description>
 	</service>
+	<plugins>
+		<item>
+			<type>plugin_carp</type>
+		</item>
+	</plugins>
 	<tabs>
 		<tab>
 			<text>General</text>
@@ -145,6 +150,25 @@
 			<default_value>inet</default_value>
 		</field>
 		<field>
+			<fielddescr>CARP Status VIP</fielddescr>
+			<fieldname>carpstatusvid</fieldname>
+			<description>
+				<![CDATA[
+				Used to determine the HA MASTER/BACKUP status. Squid will be stopped when the
+				chosen VIP is in BACKUP status, and started in MASTER status.<br />
+				<strong><span class="text-danger">Important:</span> Don't forget to generate
+				Local Cache on the secondary node and configure
+				<a href="/pkg_edit.php?xml=squid_sync.xml">XMLRPC Sync</a> for the settings
+				syncronization.</strong>
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_carp_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<default_value>none</default_value>
+		</field>
+		<field>
 			<fielddescr>Proxy Interface(s)</fielddescr>
 			<fieldname>active_interface</fieldname>
 			<description>
@@ -153,7 +177,10 @@
 				<span class="text-info">Use CTRL + click to select multiple interfaces.</span>
 				]]>
 			</description>
-			<type>interfaces_selection</type>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_interface_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
 			<default_value>lan</default_value>
 			<multiple/>
 		</field>
@@ -182,7 +209,6 @@
 			<type>input</type>
 			<size>5</size>
 		</field>
-
 		<field>
 			<fielddescr>Allow Users on Interface</fielddescr>
 			<fieldname>allow_interface</fieldname>
@@ -217,7 +243,6 @@
 				This option is very useful if you have problems accessing HTTPS sites.
 				]]>
 			</sethelp>
-
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -271,9 +296,11 @@
 				<span class="text-info">Use CTRL + click to select multiple interfaces.</span>
 				]]>
 			</description>
-			<type>interfaces_selection</type>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_interface_list(false)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
 			<default_value>lan</default_value>
-			<hideinterfaceregex>loopback</hideinterfaceregex>
 			<multiple/>
 		</field>
 		<field>
@@ -371,9 +398,11 @@
 				<span class="text-info">Use CTRL + click to select multiple interfaces.</span>
 				]]>
 			</description>
-			<type>interfaces_selection</type>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_interface_list(false)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
 			<default_value>lan</default_value>
-			<hideinterfaceregex>loopback</hideinterfaceregex>
 			<multiple/>
 		</field>
 		<field>
