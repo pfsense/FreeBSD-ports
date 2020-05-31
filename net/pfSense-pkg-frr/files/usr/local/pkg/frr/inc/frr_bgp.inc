@@ -609,15 +609,12 @@ function frr_bgp_generate_neighbors() {
 			$tconf .= "\n";
 		}
 
-		if (frr_validate_intrange($neighbor['bfd_multiplier'], 2, 255)) {
-			$nconf .= "  neighbor {$neighbor['peer']} bfd {$neighbor['bfd_multiplier']}";
-			if (frr_validate_intrange($neighbor['bfd_minrx'], 50, 60000)) {
-				$nconf .= " {$neighbor['bfd_minrx']}";
-				if (frr_validate_intrange($neighbor['bfd_mintx'], 50, 60000)) {
-					$nconf .= " {$neighbor['bfd_mintx']}";
-				}
+		if (!empty($neighbor['bfdenable'])) {
+			$bfd_peer = !empty($neighbor['bfd_peer']) && $neighbor['bfd_peer'] <> 'default' ? $neighbor['bfd_peer'] : $bfd_peer = $neighbor['peer'];
+			$nconf .= "  neighbor {$bfd_peer} bfd\n";
+			if(!empty($neighbor['bfd_check_control_plane_failure'])) {
+				$nconf .= "  neighbor {$bfd_peer} bfd check-control-plane-failure\n";
 			}
-			$nconf .= "\n";
 		}
 
 		if (in_array($neighbor['capability'], array('dynamic', 'extended-nexthop', 'orf'))) {

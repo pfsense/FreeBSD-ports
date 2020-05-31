@@ -225,6 +225,10 @@ function frr_generate_config_ospf_interfaces() {
 			}
 		}
 
+		if (!empty($conf['bfdenable'])) {
+			$conffile .= "  ip ospf bfd\n";
+		}
+
 		if (!empty($conf['mtuignore'])) {
 			$conffile .= "  ip ospf mtu-ignore\n";
 		}

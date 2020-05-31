@@ -440,3 +440,39 @@ function frr_bgp_validate_group() {
 function frr_bfd_validate_input() {
 	global $config, $input_errors;
 }
+
+function frr_bfd_peer_validate_input() {
+	global $config, $input_errors;
+
+	if (!empty($_POST['detectmultiplier'])) {
+		if (!is_numeric($_POST['detectmultiplier'])) {
+			$input_errors[] = "Detect multiplier must be a number.";
+		}
+		/*detect-multiplier (2-255)*/
+		frr_validate_intrange_input("Detect multiplier", $_POST['receiveinterval'], 2, 255);
+	}
+
+	if (!empty($_POST['receiveinterval'])) {
+		if (!is_numeric($_POST['receiveinterval'])) {
+			$input_errors[] = "Receive interval must be a number.";
+		}
+		/*receive-interval (10-60000)*/
+		frr_validate_intrange_input("Receive interval", $_POST['receiveinterval'], 10, 60000);
+	}
+
+	if (!empty($_POST['transmitinterval'])) {
+		if (!is_numeric($_POST['transmitinterval'])) {
+			$input_errors[] = "Transmit interval must be a number.";
+		}
+		/*transmit-interval (10-60000)*/
+		frr_validate_intrange_input("Transmit interval", $_POST['transmitinterval'], 10, 60000);
+	}
+
+	if (!empty($_POST['echointerval'])) {
+		if (!is_numeric($_POST['echointerval'])) {
+			$input_errors[] = "Echo interval must be a number.";
+		}
+		/*echo-interval (10-60000)*/
+		frr_validate_intrange_input("Echo interval", $_POST['echointerval'], 10, 60000);
+	}
+}
