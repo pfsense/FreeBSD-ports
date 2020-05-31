@@ -421,9 +421,12 @@ function frr_ospf6_validate_input() {
 	}
 }
 
-
 function frr_bgp_validate_input() {
 	global $config, $g, $input_errors;
+
+	if (!empty($_POST['enable']) && empty($_POST['asnum'])) {
+		$input_errors[] = "AS must be provided if BGP is enabled.";
+	}
 
 	if (!empty($_POST['asnum']) && !is_numeric($_POST['asnum'])) {
 		$input_errors[] = "AS must be entered as a number only.";
@@ -445,13 +448,16 @@ function frr_bgp_validate_input() {
 function frr_bgp_advanced_validate_input() {
 	global $config, $input_errors;
 }
+
 function frr_bgp_neighbors_validate_input() {
 	global $config, $input_errors;
 }
+
 function frr_bgp_aspaths_validate_input() {
 	global $config, $input_errors, $pkg;
 	frr_sort_rows_by_seq();
 }
+
 function frr_bgp_communities_validate_input() {
 	global $config, $input_errors, $pkg;
 	frr_sort_rows_by_seq();
