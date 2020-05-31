@@ -114,7 +114,7 @@
 			<description>
 				<![CDATA[
 				Route maps can match or set various values for use by routing daemons, especially BGP.
-				<br/><br/>
+				<br />
 				Order is important. Use the sequence field to reorder entries after saving.
 				]]>
 			</description>

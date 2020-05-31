@@ -93,7 +93,7 @@
 			<description>
 				<![CDATA[
 				The name of a peer group, or IP address of a neighbor.
-				<br/><br/>
+				<br />
 				Enter a text name to define a Peer Group. Enter an IP Address to define a Peer.
 				]]>
 			</description>
@@ -554,7 +554,7 @@
 			<description>
 				<![CDATA[
 				The maximum hop count to allow for BGP neighbors (1-254)
-				<br/><br/>
+				<br />
 				Leave blank to disable
 				]]>
 			</description>
@@ -572,7 +572,7 @@
 			<description>
 				<![CDATA[
 				The maximum hop count to allow for EBGP neighbors not on directly connected networks (1-255)
-				<br/><br/>
+				<br />
 				Leave blank to disable
 				]]>
 			</description>

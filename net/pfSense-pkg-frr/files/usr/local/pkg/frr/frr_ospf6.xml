@@ -180,7 +180,7 @@
 			<description>
 				<![CDATA[
 				The options in this section control how routes are redistributed into OSPF6 from other sources.
-				<br/><br/>
+				<br />
 				The route map controls can filter the routes so that specific networks will be prevented from distribution.
 				]]>
 			</description>

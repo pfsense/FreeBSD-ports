@@ -168,7 +168,7 @@
 				When attached to more than one area, this router will act as an Area Border Router (ABR).
 				An ABR can choose to advertise a summary route instead of individual interface routes.
 				The entries in this list will be advertised to neighbors, and any networks contained inside the defined prefixes will not be advertised individually.
-				<br/><br/>
+				<br />
 				Only <strong>one</strong> of the options for each prefix may be activated.
 				]]>
 			</description>

@@ -106,9 +106,9 @@
 			<description>
 				<![CDATA[
 				Prefix List entries determine parts of networks which can be allowed or denied in specific contexts used in routing daemons.
-				<br/><br/>
+				<br />
 				Order is important. Use the sequence field to reorder entries after saving. The networks may be a network or "any".
-				<br/><br/>
+				<br />
 				The Minimum and Maximum Prefix Length boxes may be left blank, or have one, the other, or both defined.
 				]]>
 			</description>
