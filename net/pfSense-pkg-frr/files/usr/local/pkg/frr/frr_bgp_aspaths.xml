@@ -106,9 +106,9 @@
 			<description>
 				<![CDATA[
 				AS Path entries determine if networks are allowed or denied in specific contexts used in BGP route maps.
-				<br/><br/>
+				<br />
 				Order is important. Use the sequence field to reorder entries after saving.
-				<br/><br/>
+				<br />
 				The regular expression will match on the AS number and is surrounded by underscores (e.g. "_65534_"). Use "^" to match any.
 				]]>
 			</description>

@@ -214,9 +214,9 @@
 			<description>
 				<![CDATA[
 				Networks marked <b>Do Not Accept</b> will be prevented from having exact-matching routes accepted from routing protocols
-				<br/><br/>
+				<br />
 				Networks marked <b>Null Route</b> will never be routed, and traffic destined for these networks will be dropped.
-				<br/><br/>
+				<br />
 				Networks with a selected <b>Static Route Target</b> will have a route entered into the FRR/Zebra static route table, which
 				can be used by other protocols for route redistribution. The <b>Null Route</b> option takes precedence and will cause this
 				option to be ignored. These routes are also added to the operating system routing table.
