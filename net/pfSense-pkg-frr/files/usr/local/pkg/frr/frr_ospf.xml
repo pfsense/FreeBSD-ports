@@ -31,16 +31,16 @@
 	<aftersaveredirect>pkg_edit.php?xml=frr/frr_ospf.xml</aftersaveredirect>
 	<tabs>
 		<tab>
-			<text>OSPF Settings</text>
+			<text>OSPF</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
 			<active/>
 		</tab>
 		<tab>
-			<text>OSPF Interfaces</text>
+			<text>Interfaces</text>
 			<url>pkg.php?xml=frr/frr_ospf_interfaces.xml</url>
 		</tab>
 		<tab>
-			<text>OSPF Areas</text>
+			<text>Areas</text>
 			<url>pkg.php?xml=frr/frr_ospf_areas.xml</url>
 		</tab>
 		<tab>
@@ -127,7 +127,7 @@
 		</field>
 		<field>
 			<fielddescr>Default Area</fielddescr>
-			<fieldname>area</fieldname>
+			<fieldname>defaultarea</fieldname>
 			<description>
 				<![CDATA[
 				Default OSPF area for this instance of OSPF.
@@ -136,11 +136,10 @@
 				]]>
 			</description>
 			<type>input</type>
-			<required/>
 		</field>
 		<field>
 			<fielddescr>Default Area Type</fielddescr>
-			<fieldname>areatype</fieldname>
+			<fieldname>defaultareatype</fieldname>
 			<description>Defines how the default area behaves</description>
 			<type>select</type>
 			<default_value>none</default_value>

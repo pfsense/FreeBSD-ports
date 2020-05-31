@@ -31,15 +31,15 @@
 	<aftersaveredirect>pkg.php?xml=frr/frr_ospf_areas.xml</aftersaveredirect>
 	<tabs>
 		<tab>
-			<text>OSPF Settings</text>
+			<text>OSPF</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
 		</tab>
 		<tab>
-			<text>OSPF Interfaces</text>
+			<text>Interfaces</text>
 			<url>pkg.php?xml=frr/frr_ospf_interfaces.xml</url>
 		</tab>
 		<tab>
-			<text>OSPF Areas</text>
+			<text>Areas</text>
 			<url>pkg.php?xml=frr/frr_ospf_areas.xml</url>
 			<active/>
 		</tab>

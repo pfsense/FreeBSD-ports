@@ -31,16 +31,16 @@
 	<aftersaveredirect>pkg.php?xml=frr/frr_ospf_interfaces.xml</aftersaveredirect>
 	<tabs>
 		<tab>
-			<text>OSPF Settings</text>
+			<text>OSPF</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
 		</tab>
 		<tab>
-			<text>OSPF Interfaces</text>
+			<text>Interfaces</text>
 			<url>pkg.php?xml=frr/frr_ospf_interfaces.xml</url>
 			<active/>
 		</tab>
 		<tab>
-			<text>OSPF Areas</text>
+			<text>Areas</text>
 			<url>pkg.php?xml=frr/frr_ospf_areas.xml</url>
 		</tab>
 		<tab>
@@ -74,7 +74,7 @@
 			<fieldname>descr</fieldname>
 		</columnitem>
 		<columnitem>
-			<fielddescr>Cost</fielddescr>
+			<fielddescr>Metric</fielddescr>
 			<fieldname>metric</fieldname>
 		</columnitem>
 		<columnitem>
@@ -139,9 +139,9 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Cost</fielddescr>
+			<fielddescr>Metric</fielddescr>
 			<fieldname>metric</fieldname>
-			<description>Cost (Metric) for this OSPF interface (leave blank for default).</description>
+			<description>Metric (Cost) for this OSPF interface (leave blank for default).</description>
 			<type>input</type>
 		</field>
 		<field>

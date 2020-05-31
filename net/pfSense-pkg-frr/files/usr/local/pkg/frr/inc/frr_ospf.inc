@@ -33,8 +33,8 @@ function frr_generate_config_ospf_areas() {
 	if (!isset($auto_areas[$ospfd_conf['area']]) || !is_array($auto_areas[$ospfd_conf['area']])) {
 		$auto_areas[$ospfd_conf['area']] = array();
 	}
-	$auto_areas[$ospfd_conf['area']]['area'] = $ospfd_conf['area'];
-	$auto_areas[$ospfd_conf['area']]['type'] = $ospfd_conf['areatype'];
+	$auto_areas[$ospfd_conf['area']]['area'] = $ospfd_conf['defaultarea'];
+	$auto_areas[$ospfd_conf['area']]['type'] = $ospfd_conf['defaultareatype'];
 
 	/* Automatic Areas: Interfaces with Authentication */
 	init_config_arr(array('installedpackages', 'frrospfdinterfaces', 'config'));
@@ -239,7 +239,7 @@ function frr_generate_config_ospf_interfaces() {
 		if (empty($interface_ip)) {
 			continue;
 		}
-		$area = empty($conf['interfacearea']) ? $ospfd_conf['area'] : $conf['interfacearea'];
+		$area = (strlen($conf['interfacearea']) > 0) ? $conf['interfacearea'] : $ospfd_conf['defaultarea'];
 		$conffile .= "  ip ospf area {$area}\n";
 	}
 	return $conffile;
@@ -322,7 +322,7 @@ function frr_generate_config_ospf() {
 				if (empty($redistr['routevalue'])) {
 					continue;
 				}
-				$area = ($redistr['routearea'] == "") ? $ospfd_conf['area'] : $redistr['routearea'];
+				$area = ($redistr['routearea'] == "") ? $ospfd_conf['defaultarea'] : $redistr['routearea'];
 				$redist .= "  network {$redistr['routevalue']} area {$area}\n";
 			}
 		}
