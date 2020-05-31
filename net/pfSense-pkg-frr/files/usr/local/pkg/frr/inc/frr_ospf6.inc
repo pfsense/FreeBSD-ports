@@ -99,6 +99,9 @@ function frr_generate_config_ospf6() {
 				if (!empty($conf['mtuignore'])) {
 					$conffile .= "  ipv6 ospf6 mtu-ignore\n";
 				}
+				if (!empty($conf['bfdenable'])) {
+					$conffile .= "  ipv6 ospf6 bfd\n";
+				}
 				list($interface_ip, $interface_subnet, $subnet) = frr_get_interfaceinfo($conf['interface'], true);
 				$interface_area = (strlen($conf['interfacearea']) > 0) ? $conf['interfacearea'] : $ospf6d_conf['area'];
 				if (is_subnetv6("{$subnet}/{$interface_subnet}")) {

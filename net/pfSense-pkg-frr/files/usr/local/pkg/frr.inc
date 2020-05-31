@@ -44,14 +44,15 @@ $frr_auto_config_warning = <<<EOF
 # The contents of this file will be overwritten without warning!  #
 ###################################################################
 
+
 EOF;
 
 require_once("frr/inc/frr_validation.inc");
 require_once("frr/inc/frr_zebra.inc");
+require_once("frr/inc/frr_bfd.inc");
 require_once("frr/inc/frr_bgp.inc");
 require_once("frr/inc/frr_ospf.inc");
 require_once("frr/inc/frr_ospf6.inc");
-require_once("frr/inc/frr_bfd.inc");
 
 /* Build a list of only CARP VIPs, formatted for use in a selection list */
 function frr_get_carp_list() {
@@ -74,7 +75,7 @@ function frr_get_interfaces($includedefault = true, $includevips = true, $includ
 	 * OSPF interface selections can't use 'default'.
 	 */
 	if ($includedefault) {
-		$interfaces['default'] = "default";
+		$interfaces['default'] = "Default";
 	} else {
 		$interfaces = array();
 	}

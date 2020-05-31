@@ -48,17 +48,17 @@
 			<url>pkg_edit.php?xml=frr.xml</url>
 		</tab>
 		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
 			<text>[BGP]</text>
 			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
 		</tab>
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
-		</tab>
-		<tab>
-			<text>[BFD]</text>
-			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
-		</tab>
+		</tab>		
 		<tab>
 			<text>Status</text>
 			<url>/status_frr.php</url>
@@ -236,6 +236,22 @@
 				Overrides the Hello Interval and Dead Interval and instead sends this number of Hello messages per second.
 			</description>
 			<type>input</type>
+		</field>
+
+		<field>
+			<name>BFD</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>BFD Enable</fielddescr>
+			<fieldname>bfdenable</fieldname>
+			<description>
+				<![CDATA[
+				Listen for BFD events on peers created on the interface.
+				Every time a new neighbor is found a BFD peer is created to monitor the link status for fast convergence.
+				]]>
+			</description>
+			<type>checkbox</type>
 		</field>
 	</fields>
 	<custom_php_resync_config_command>
