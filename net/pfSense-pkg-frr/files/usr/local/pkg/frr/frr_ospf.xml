@@ -110,6 +110,12 @@
 			</description>
 			<type>input</type>
 		</field>
+		<field>
+			<fielddescr>Enable SNMP AgentX</fielddescr>
+			<fieldname>enablesnmpagentx</fieldname>
+			<description>Enable agentx support for accessing FRR Zebra data via SNMP with the net-snmp package.</description>
+			<type>checkbox</type>
+		</field>
 
 		<field>
 			<name>Default Area</name>

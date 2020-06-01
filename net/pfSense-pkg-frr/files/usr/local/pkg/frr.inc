@@ -274,6 +274,16 @@ function frr_generate_config_rcfile() {
 		return null;
 	}
 
+	/* Get FRR daemon modules to append to daemon commands */
+	$zebradmodules = '';
+	$bgpdmodules = '';
+	$ospfdmodules = '';
+	$ospf6dmodules = '';
+	if ($config['installedpackages']['frr']['config'][0]['enablesnmpagentx']) { $zebradmodules .= '-M snmp'; }
+	if ($config['installedpackages']['frrbgp']['config'][0]['enablesnmpagentx']) { $bgpdmodules .= '-M snmp'; }
+	if ($config['installedpackages']['frrospfd']['config'][0]['enablesnmpagentx']) { $ospfdmodules .= '-M snmp'; }
+	if ($config['installedpackages']['frrospf6d']['config'][0]['enablesnmpagentx']) { $ospf6dmodules .= '-M snmp'; }
+
 	/* Setup a CARP VIP status check, if needed, so the service won't start
 	 * unless this node is in a MASTER state */
 	$carp_ip_status_check = "";
@@ -369,11 +379,11 @@ if /bin/pgrep -q bfdd; then
 	/usr/bin/killall -9 bfdd 2>/dev/null
 fi
 {$carp_ip_status_check}
-[ -s {$frr_config_base}/zebra.conf ] && /usr/local/sbin/zebra -d -f {$frr_config_base}/zebra.conf
+[ -s {$frr_config_base}/zebra.conf ] && /usr/local/sbin/zebra -d -f {$frr_config_base}/zebra.conf {$zebradmodules}
 [ -s {$frr_config_base}/staticd.conf ] && /usr/local/sbin/staticd -d -f {$frr_config_base}/staticd.conf
-[ -s {$frr_config_base}/ospfd.conf ] && /usr/local/sbin/ospfd -d -f {$frr_config_base}/ospfd.conf
-[ -s {$frr_config_base}/ospf6d.conf ] && /usr/local/sbin/ospf6d -d -f {$frr_config_base}/ospf6d.conf
-[ -s {$frr_config_base}/bgpd.conf ] && /usr/local/sbin/bgpd -d -f {$frr_config_base}/bgpd.conf
+[ -s {$frr_config_base}/ospfd.conf ] && /usr/local/sbin/ospfd -d -f {$frr_config_base}/ospfd.conf {$ospfdmodules}
+[ -s {$frr_config_base}/ospf6d.conf ] && /usr/local/sbin/ospf6d -d -f {$frr_config_base}/ospf6d.conf {$ospf6dmodules}
+[ -s {$frr_config_base}/bgpd.conf ] && /usr/local/sbin/bgpd -d -f {$frr_config_base}/bgpd.conf {$bgpdmodules}
 [ -s {$frr_config_base}/bfdd.conf ] && /usr/local/sbin/bfdd -d -f {$frr_config_base}/bfdd.conf
 [ -s {$frr_config_base}/frr_md5pw_add.conf ] && /sbin/setkey -f {$frr_config_base}/frr_md5pw_add.conf
 
