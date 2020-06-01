@@ -307,6 +307,10 @@ function frr_generate_config_ospf() {
 		if ($frr_conf['logging']) {
 			$conffile .= "log syslog\n";
 		}
+		/* SNMP AgentX Support*/
+		if ($ospfd_conf['enablesnmpagentx']) {
+			$conffile .= "agentx\n";
+		}
 
 		/* Interface Settings */
 		$passive_interfaces = array();

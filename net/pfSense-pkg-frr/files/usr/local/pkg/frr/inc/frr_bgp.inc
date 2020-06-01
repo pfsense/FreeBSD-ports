@@ -825,6 +825,10 @@ function frr_generate_config_bgp() {
 		if ($frr_conf['logging']) {
 			$bgpdconffile .= "log syslog\n";
 		}
+		/* SNMP AgentX Support*/
+		if ($frr_bgp_conf['enablesnmpagentx']) {
+			$bgpdconffile .= "agentx\n";
+		}
 
 		/* BGP Router Config */
 		$bgpdconffile .= frr_bgp_generate_router();

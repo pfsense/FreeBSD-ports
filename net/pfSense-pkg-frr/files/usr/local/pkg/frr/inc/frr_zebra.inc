@@ -657,6 +657,10 @@ function frr_generate_config_zebra() {
 		if ($frr_conf['logging']) {
 			$zebraconffile .= "log syslog\n";
 		}
+		/* SNMP AgentX Support*/
+		if ($frr_conf['enablesnmpagentx']) {
+			$zebraconffile .= "agentx\n";
+		}
 
 		/* Access Lists */
 		$zebraconffile .= frr_zebra_generate_accesslists();
