@@ -162,6 +162,17 @@ if (is_array($config['installedpackages']['snortglobal']['rule']) && count($conf
 }
 
 /**********************************************************/
+/* Clear IP addresses we placed in <snort2c> pf table if  */
+/* that option is enabled on GLOBAL SETTINGS tab or if    */
+/* the package and its configuration are being removed.   */
+/**********************************************************/
+if (($config['installedpackages']['snortglobal']['clearblocks'] != 'off') ||
+    ($config['installedpackages']['snortglobal']['forcekeepsettings'] != 'on')) {
+	syslog(LOG_NOTICE, gettext("[Snort] Flushing <snort2c> firewall table to remove addresses blocked by Snort..."));
+	mwexec("/sbin/pfctl -t snort2c -T flush");
+}
+
+/**********************************************************/
 /* Keep this as a last step because it is the total       */
 /* removal of the configuration settings when the user    */
 /* has elected to not retain the package configuration.   */
@@ -171,8 +182,6 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] != 'on') {
 	unset($config['installedpackages']['snortglobal']);
 	unset($config['installedpackages']['snortsync']);
 	unlink_if_exists("{$snort_rules_upd_log}");
-	log_error(gettext("[Snort] Flushing <snort2c> firewall table to remove addresses blocked by Snort..."));
-	mwexec("/sbin/pfctl -t snort2c -T flush");
 	rmdir_recursive("{$snortlogdir}");
 	rmdir_recursive("{$g['vardb_path']}/snort");
 	write_config("Removing Snort configuration");
