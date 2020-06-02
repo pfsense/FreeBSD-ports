@@ -93,6 +93,11 @@ function snort_check_dir_size_limit($snortloglimitsize) {
 			foreach ($files as $file)
 				unlink_if_exists($file);
 
+			// Cleanup any packet capture logs
+			$files = glob("{$snort_log_dir}/snort.log.*");
+			foreach ($files as $file)
+				unlink_if_exists($file);
+
 			// This is needed if snort is run as snort user
 			mwexec('/bin/chmod 660 {$snort_log_dir}/*', true);
 
@@ -227,7 +232,7 @@ if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 			}
 			unset($rotated_files);
 			if ($prune_count > 0)
-				log_error(gettext("[Snort] Alert pcap file cleanup job removed {$prune_count} pcap file(s) from {$snort_log_dir}/..."));
+				log_error(gettext("[Snort] Alert tcpdump packet capture file cleanup job removed {$prune_count} tcpdump packet capture file(s) from {$snort_log_dir}/..."));
 		}
 
 		// Prune any aged-out Barnyard2 archived logs if any exist

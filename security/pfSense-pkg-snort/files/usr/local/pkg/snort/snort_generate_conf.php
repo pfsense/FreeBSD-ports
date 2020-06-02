@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2019 Bill Meeks
+ * Copyright (c) 2013-2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -140,6 +140,17 @@ if ($snortcfg['blockoffenders7'] == "on") {
 	/* write Pass List */
 	@file_put_contents("{$snortcfgdir}/{$snortcfg['whitelistname']}", implode("\n", $spoink_wlist));
 	$spoink_type = "output alert_pf: {$snortcfgdir}/{$snortcfg['whitelistname']},snort2c,{$snortcfg['blockoffendersip']},{$pfkill}";
+}
+
+/* define tcpdump log type */
+if ($snortcfg['enable_pkt_caps'] == "on") {
+	$tcpdump_type = "output log_tcpdump: " . SNORTLOGDIR . "/snort_{$if_real}{$snort_uuid}/snort.log";
+	if ( !empty($snortcfg['tcpdump_file_size'])) {
+		$tcpdump_type .= " " . $snortcfg['tcpdump_file_size'] . "M";
+	}
+}
+else {
+	$tcpdump_type = "";
 }
 
 /* define selected suppress file */
