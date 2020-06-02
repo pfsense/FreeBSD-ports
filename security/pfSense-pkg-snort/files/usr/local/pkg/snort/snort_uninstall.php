@@ -127,28 +127,29 @@ if ($config['installedpackages']['snortglobal']['clearlogs'] == 'on') {
 /* Remove files and directories that pkg will not because */
 /* we changed or created them post-install.               */
 /**********************************************************/
-log_error(gettext("[Snort] Removing package files..."));
-if (is_dir("{$snortdir}/appid")) {
-	rmdir_recursive("{$snortdir}/appid");
-}
-if (is_dir("{$snortdir}/rules")) {
-	rmdir_recursive("{$snortdir}/rules");
-}
-if (is_dir("{$snortdir}/signatures")) {
-	rmdir_recursive("{$snortdir}/signatures");
-}
-if (is_dir("{$snortdir}/preproc_rules")) {
-	rmdir_recursive("{$snortdir}/preproc_rules");
+syslog(LOG_NOTICE, gettext("[Snort] Removing GUI package-modified files..."));
+if (is_dir(SNORT_APPID_ODP_PATH)) {
+	rmdir_recursive(SNORT_APPID_ODP_PATH);
 }
 if (is_dir("/usr/local/lib/snort_dynamicrules")) {
 	rmdir_recursive("/usr/local/lib/snort_dynamicrules");
 }
-unlink_if_exists("{$snortdir}/*.md5");
-unlink_if_exists("{$snortdir}/*.conf");
-unlink_if_exists("{$snortdir}/*.map");
-unlink_if_exists("{$snortdir}/*.config");
-unlink_if_exists("{$snortdir}/attribute_table.dtd");
-unlink_if_exists("{$snortdir}/rulesupd_status");
+if (is_dir(SNORTDIR . "/signatures")) {
+	rmdir_recursive(SNORTDIR . "/signatures");
+}
+unlink_if_exists(SNORTDIR . "/*.md5");
+unlink_if_exists(SNORTDIR . "/rules/*.txt");
+unlink_if_exists(SNORTDIR . "/classification.config");
+unlink_if_exists(SNORTDIR . "/reference.config");
+unlink_if_exists(SNORTDIR . "/unicode.map");
+unlink_if_exists(SNORTDIR . "/rulesupd_status");
+unlink_if_exists(SNORTDIR . "/preproc_rules/*.rules");
+unlink_if_exists(SNORTDIR . "/rules/" . VRT_FILE_PREFIX . "*.rules");
+unlink_if_exists(SNORTDIR . "/rules/" . ET_OPEN_FILE_PREFIX . "*.rules");
+unlink_if_exists(SNORTDIR . "/rules/" . ET_PRO_FILE_PREFIX . "*.rules");
+unlink_if_exists(SNORTDIR . "/rules/" . GPL_FILE_PREFIX . "*.rules");
+unlink_if_exists(SNORTDIR . "/rules/" . "appid.rules");
+unlink_if_exists(SNORT_APPID_RULES_PATH . OPENAPPID_FILE_PREFIX . "*.rules");
 
 if (is_array($config['installedpackages']['snortglobal']['rule']) && count($config['installedpackages']['snortglobal']['rule']) > 0) {
 	foreach ($config['installedpackages']['snortglobal']['rule'] as $snortcfg) {
