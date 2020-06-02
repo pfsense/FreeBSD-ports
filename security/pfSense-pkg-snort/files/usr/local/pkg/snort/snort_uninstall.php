@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2019 Bill Meeks
+ * Copyright (c) 2013-2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +41,6 @@ $snortlibdir = SNORT_PBI_BASEDIR . "lib";
 $snortlogdir = SNORTLOGDIR;
 $rcdir = RCFILEPREFIX;
 $snort_rules_upd_log = SNORT_RULES_UPD_LOGFILE;
-$mounted_rw = FALSE;
 
 log_error(gettext("[Snort] Snort package uninstall in progress..."));
 
@@ -125,14 +124,6 @@ if ($config['installedpackages']['snortglobal']['clearlogs'] == 'on') {
 }
 
 /**********************************************************/
-/* If not already, set Snort conf partition to read-write */
-/* so we can make changes there                           */
-/**********************************************************/
-if (!is_subsystem_dirty('mount')) {
-	$mounted_rw = TRUE;
-}
-
-/**********************************************************/
 /* Remove files and directories that pkg will not because */
 /* we changed or created them post-install.               */
 /**********************************************************/
@@ -190,11 +181,5 @@ else {
 	log_error(gettext("[Snort] Package files removed but all Snort configuration info has been retained."));
 }
 
-/**********************************************************/
-/* We're finished with conf partition mods, return to     */
-/* read-only if we changed it.                            */
-/**********************************************************/
-if ($mounted_rw == TRUE) {
-}
 return true;
 ?>
