@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2019 Bill Meeks
+ * Copyright (c) 2013-2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -140,6 +140,17 @@ if ($snortcfg['blockoffenders7'] == "on" && $snortcfg['ips_mode'] == "ips_mode_l
 	if ($snortcfg['blockoffenderskill'] == "on") {
 		$spoink_type .= ",kill";
 	}
+}
+
+/* define tcpdump log type */
+if ($snortcfg['enable_pkt_caps'] == "on") {
+	$tcpdump_type = "output log_tcpdump: " . SNORTLOGDIR . "/snort_{$if_real}{$snort_uuid}/snort.log";
+	if ( !empty($snortcfg['tcpdump_file_size'])) {
+		$tcpdump_type .= " " . $snortcfg['tcpdump_file_size'] . "M";
+	}
+}
+else {
+	$tcpdump_type = "";
 }
 
 /* define selected suppress file */
