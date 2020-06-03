@@ -148,6 +148,31 @@
 			</options>
 		</field>
 		<field>
+			<name>Service options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Rewrite process children</fielddescr>
+			<fieldname>rewrite_children</fieldname>
+			<description>Maximum number of SquidGuard redirector processes that Squid may spawn. Using too few of these helper processes (a.k.a. "helpers") creates request queues. Using too many helpers wastes your system resources. (Default: 16)</description>
+			<default_value>16</default_value>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Rewrite process children startup</fielddescr>
+			<fieldname>rewrite_children_startup</fieldname>
+			<description>Sets a minimum of how many SquidGuard processes are to be spawned when Squid starts or reconfigures. (Default: 8)</description>
+			<default_value>8</default_value>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Rewrite process children idle</fielddescr>
+			<fieldname>rewrite_children_idle</fieldname>
+			<description>Sets a minimum of how many SquidGuard processes Squid is to try and keep available at all times. (Default: 4)</description>
+			<default_value>4</default_value>
+			<type>input</type>
+		</field>
+		<field>
 			<name>Logging options</name>
 			<type>listtopic</type>
 		</field>
