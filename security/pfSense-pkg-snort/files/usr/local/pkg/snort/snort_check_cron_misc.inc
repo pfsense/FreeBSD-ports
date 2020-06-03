@@ -92,7 +92,12 @@ function snort_check_dir_size_limit($snortloglimitsize) {
 			foreach ($files as $file)
 				unlink_if_exists($file);
 
-			// Cleanup any AppID stats logs
+			// Cleanup any rotated AppID alerts logs
+			$files = glob("{$snort_log_dir}/appid.alerts.*");
+			foreach ($files as $file)
+				unlink_if_exists($file);
+
+			// Cleanup any rotated AppID stats logs
 			$files = glob("{$snort_log_dir}/app-stats.log.*");
 			foreach ($files as $file)
 				unlink_if_exists($file);
@@ -220,7 +225,7 @@ if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 			}
 			unset($rotated_files);
 			if ($prune_count > 0)
-				log_error(gettext("[Snort] Alerts log file cleanup job removed {$prune_count} rotated alert log file(s) from {$snort_log_dir}/..."));
+				syslog(LOG_NOTICE, gettext("[Snort] Alerts log file cleanup job removed {$prune_count} rotated alert log file(s) from {$snort_log_dir}/..."));
 		}
 
 		// Prune aged-out event packet capture files if any exist
@@ -276,7 +281,23 @@ if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 				syslog(LOG_NOTICE, gettext("[Snort] perfmon stats logs cleanup job removed {$prune_count} file(s) from {$snort_log_dir}/..."));
 		}
 
-		// Prune any aged-out AppID stats logs if any exist
+		// Prune any aged-out rotated AppID alerts logs if any exist
+		if ($value['appid_alerts_log_retention'] > 0) {
+			$now = time();
+			$files = glob("{$snort_log_dir}/appid.alerts.*");
+			$prune_count = 0;
+			foreach ($files as $f) {
+				if (($now - filemtime($f)) > ($value['appid_alerts_log_retention'] * 3600)) {
+					$prune_count++;
+					unlink_if_exists($f);
+				}
+			}
+			unset($files);
+			if ($prune_count > 0)
+				syslog(LOG_NOTICE, gettext("[Snort] AppID alerts logs cleanup job removed {$prune_count} appid.alerts file(s) from {$snort_log_dir}/..."));
+		}
+
+		// Prune any aged-out rotated AppID stats logs if any exist
 		if ($value['appid_stats_log_retention'] > 0) {
 			$now = time();
 			$files = glob("{$snort_log_dir}/app-stats.log.*");
