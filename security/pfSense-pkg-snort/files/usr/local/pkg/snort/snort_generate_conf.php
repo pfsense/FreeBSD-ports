@@ -153,6 +153,20 @@ else {
 	$tcpdump_type = "";
 }
 
+/* define unified2 binary log for OpenAppID alert events */
+if ($snortcfg['appid_preproc'] == "on") {
+	$appid_type = "output alert_unified2: filename appid.alerts, appid_event_types, nostamp";
+	if (!empty($snortcfg['appid_alerts_log_limit_size'])) {
+		$appid_type .= ", limit " . $snortcfg['appid_alerts_log_limit_size'];
+	}
+	else {
+		$appid_type .= ", limit 500K";
+	}
+}
+else {
+	$appid_type = "";
+}
+
 /* define selected suppress file */
 $suppress_file_name = "";
 $suppress = snort_find_list($snortcfg['suppresslistname'], 'suppress');
