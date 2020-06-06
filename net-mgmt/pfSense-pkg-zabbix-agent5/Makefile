@@ -2,17 +2,17 @@
 
 MASTERDIR=	${.CURDIR}/../pfSense-pkg-zabbix-agent
 
-PORTNAME=	pfSense-pkg-zabbix-agent44
+PORTNAME=	pfSense-pkg-zabbix-agent5
 
 CONFLICTS=	pfSense-pkg-zabbix-agent \
 		pfSense-pkg-zabbix-agent4 \
 		pfSense-pkg-zabbix-agent42 \
-		pfSense-pkg-zabbix-agent5
+		pfSense-pkg-zabbix-agent42
 
-RUN_DEPENDS=	zabbix_agentd:net-mgmt/zabbix44-agent
+RUN_DEPENDS=	zabbix_agentd:net-mgmt/zabbix5-agent
 
-ZABBIXINTERNALNAME=	zabbix-agent44
-ZABBIXTITLE=	Zabbix Agent 4.4
-ZABBIXVERSION=	44
+ZABBIXINTERNALNAME=	zabbix-agent5
+ZABBIXTITLE=	Zabbix Agent 5.0
+ZABBIXVERSION=	50
 
 .include "${MASTERDIR}/Makefile"
