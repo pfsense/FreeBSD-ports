@@ -48,12 +48,12 @@ function frr_get_bfd_source_addresses($includedefault = true) {
 	if ($includedefault) { $addresses[] = array('name' => 'Default', 'value' => 'default'); }
 	if (is_array($interfaces)) {
 		foreach ($interfaces as $interface) {
-			if (strlen(frr_get_interfaceinfo($interface['value'])[0] > 0)) {
+			if (strlen(frr_get_interfaceinfo($interface['value'])[0]) > 0) {
 				list($interface_ip, $interface_subnet, $subnet) = frr_get_interfaceinfo($interface['value']);
 				$addresses[] = array("name" => "{$interface['name']} - IPv4 - {$interface_ip}", "value" => $interface_ip);
 			}
 
-			if (strlen(frr_get_interfaceinfo($interface['value'], $ipv6 = true)[0] > 0)) {
+			if (strlen(frr_get_interfaceinfo($interface['value'], $ipv6 = true)[0]) > 0) {
 				list($interface_ip6, $interface_subnet6, $subnet6) = frr_get_interfaceinfo($interface['value'], $ipv6 = true);
 				$addresses[] = array("name" => "{$interface['name']} - IPv6 - {$interface_ip6}", "value" => $interface_ip6);
 			}
