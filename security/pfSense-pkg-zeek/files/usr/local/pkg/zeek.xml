@@ -106,7 +106,7 @@
 			<description>
 				<![CDATA[
 				Set the right interface this zeek instance will monitor to.<br/>
-				<strong><span class="errmsg">Hint:</span> In most cases, you'll want to use WAN here.</strong>
+				<strong><span class="errmsg">Hint:</span> In most cases, a WAN interface will be used.</strong>
 				]]>
 			</description>
 			<type>interfaces_selection</type>

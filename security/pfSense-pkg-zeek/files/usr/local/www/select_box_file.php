@@ -1,34 +1,36 @@
 <?php
 //list_by_ext: returns an array containing an alphabetic list of files in the specified directory ($path) with a file extension that matches $extension
 
-function list_by_ext($extension, $path){
+function list_by_ext($extension, $path) {
   $list = array();
-  $dir_handle = @opendir($path) or die("Unable to open $path"); //attempt to open path
-  while($file = readdir($dir_handle)){ //loop through all the files in the path
-    if($file == "." || $file == ".."){continue;} //ignore these
-    $filename = explode(".",$file); //seperate filename from extenstion
+  $dir_handle = @opendir($path) or die("Unable to open {$path}");
+
+  while ($file = readdir($dir_handle)) {
+    if ($file == "." || $file == "..") {
+      continue;
+    }
+    $filename = explode(".",$file);
     $cnt = count($filename); $cnt--; $ext = $filename[$cnt];
-    if(strtolower($ext) == strtolower($extension)){ //if the extension of the file matches the extension we are looking for...
-      array_push($list, $file); //...then stick it onto the end of the list array
+    if (strtolower($ext) == strtolower($extension)) {
+      array_push($list, $file);
     }
   }
-  if($list[0]){ //...if matches were found...
-    return $list; //...return the array
-  } else {//otherwise...
+
+  if ($list[0]) { 
+    return $list; 
+  } else {
     return false;
   }
 }
 
-if($_POST['x'])
-{
+if ($_POST['x']) {
   $x = $_POST['x'];
   $current = list_by_ext("log","/usr/local/logs/current");
   $number = count($current);
   if ($x==1 || $number>$x) {
     foreach ($current as $value) {
-      echo '<option value="'.$value.'">'.$value.'</option>';
+      echo "<option value={$value}>{$value}</option>";
     }
   }
 }
-
 ?>

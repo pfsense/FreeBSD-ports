@@ -128,7 +128,7 @@
 	<custom_php_validation_command>
 		<![CDATA[
 		if (!empty($_POST) && zeek_enabled()) {
-		log_error("Zeek standalone mode is enable. You must disable Zeek standalone mode under Services - Zeek NSM - General Settings.");
+		log_error("Zeek standalone mode is enable. Disable first Zeek standalone mode under Services - Zeek NSM - General Settings.");
 		}
 		zeek_validate_cluster($_POST, $input_errors);
 		]]>

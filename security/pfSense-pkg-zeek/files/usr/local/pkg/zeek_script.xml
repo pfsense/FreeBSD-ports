@@ -91,7 +91,7 @@
 			<fieldname>zeekscriptpath</fieldname>
 			<description>
 				<![CDATA[
-				Enter your Zeek script's absolute path (e.g.: "/usr/local/www/detect_ddos.zeek" or "/tmp/detect_ddos.zeek")<br/>
+				Enter Zeek script's absolute path (e.g.: "/usr/local/www/detect_ddos.zeek" or "/tmp/detect_ddos.zeek")<br/>
 				<strong>Note: Be sure that the path is correct.</strong>
 				]]>
 			</description>
@@ -102,7 +102,7 @@
 		<field>
 			<fielddescr>Description</fielddescr>
 			<fieldname>description</fieldname>
-			<description>You may enter your script description here.</description>
+			<description>Enter script description here.</description>
 			<type>input</type>
 			<size>60</size>
 		</field>

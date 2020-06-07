@@ -28,8 +28,7 @@ if ($_POST) {
 	$program = strtolower($_POST['program']);
 	$logfile = $_POST['logfile'];
 
-	switch ($program) {
-		case 'zeek':
+	if ($program == "zeek") {
 		// Define log file
 		$log = '/usr/local/spool/zeek/'.$logfile;
 		$loghead = fetch_head($log);
@@ -47,20 +46,20 @@ if ($_POST) {
 		$logarr = fetch_log($log);
 		// Print lines
 		foreach ($logarr as $logent) {
-			if(!is_numeric($logent[0]))
-			continue;
+			if(!is_numeric($logent[0])) {
+				continue;
+			}
 			// Split line by space delimiter
 			$logline = preg_split("/[\t,]/", $logent);
 			$logline[0] = date("d.m.Y H:i:s", $logline[0]);
 
 			echo "<tr>";
 			foreach ($logline as $value) {
-				echo "<td class=\"col-md-4\">".$value."</td>\t";
+				echo "<td class=\"col-md-4\">{$value}</td>\t";
 			}
 			echo "</tr>\n";
 			echo "<tr><td></td></tr>";
 		}
-		break;
 	}
 }
 
@@ -87,13 +86,12 @@ function fetch_log($log) {
 function show_tds($tds) {
 	echo "<tr>";
 	$index = 0;
-	foreach ($tds as $td){
-		if ($index != 0){
-			echo "<th class=\"col-md-4\">" .$td. "</th>";
+	foreach ($tds as $td) {
+		if ($index != 0) {
+			echo "<th class=\"col-md-4\">{$td}</th>";
 		}
 		$index = $index + 1 ;
 	}
 	echo "</tr>";
 }
-
 ?>

@@ -60,7 +60,7 @@ display_top_tabs($tab_array);
 								</select>
 								<br/>
 								<span class="vexpl">
-									<?=gettext("Choose which log you want to view")?>
+									<?=gettext("Choose log file to view")?>
 								</span>
 							</td>
 						</tr>
@@ -107,7 +107,7 @@ display_top_tabs($tab_array);
 <?php include("foot.inc"); ?>
 <!-- Function to call programs logs -->
 <script type="text/javascript">
-//<![CDATA[
+
 $( "#logfile" ).change(function() {
 	showLog('zeekView', 'zeek_alert_data.php', 'zeek');
 });
@@ -118,8 +118,7 @@ function updateSelect() {
 		type: "POST",
 		url: "select_box_file.php",
 		data: x,
-		success: function(html)
-		{
+		success: function(html) {
 			if (html) {
 				$("#logfile").html(html);
 			}
@@ -137,20 +136,20 @@ function showLog(content, url, program) {
 				program: program,
 				content: content
 			},
-			success: function(ret){
+			success: function(ret) {
 				$('#' + content).html(ret);
 			}
 		});
-	}
+}
 
-	function updateAllLogs() {
-		updateSelect();
-		showLog('zeekView', 'zeek_alert_data.php', 'zeek');
-		setTimeout(updateAllLogs, 10000);
-	}
+function updateAllLogs() {
+	updateSelect();
+	showLog('zeekView', 'zeek_alert_data.php', 'zeek');
+	setTimeout(updateAllLogs, 10000);
+}
 
-	events.push(function() {
-		updateAllLogs();
-	});
-	//]]>
+events.push(function() {
+	updateAllLogs();
+});
+
 </script>
