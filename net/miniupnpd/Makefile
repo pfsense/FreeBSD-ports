@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	miniupnpd
-PORTVERSION=	2.1.20190210
+DISTVERSION=	2.2.0-RC1
 PORTEPOCH=	1
 CATEGORIES=	net
 MASTER_SITES=	http://miniupnp.tuxfamily.org/files/ \
@@ -14,6 +14,7 @@ COMMENT=	UPnP IGD implementation which uses pf/ipf
 LICENSE=	BSD3CLAUSE
 
 USES=		cpe ssl
+HAS_CONFIGURE=	yes
 CPE_VENDOR=	miniupnp_project
 PLIST_FILES=	etc/miniupnpd.conf.sample sbin/miniupnpd \
 		man/man8/miniupnpd.8.gz
@@ -30,21 +31,15 @@ UPNP_IGDV2_DESC=	Build an IGDv2 instead of an IGDv1
 UPNP_STRICT_DESC=	More strict UPnP specification compliance
 LEASEFILE_DESC=	Enable lease file
 
-PF_FILTER_RULES_EXTRA_PATCHES=	${PATCHDIR}/pf_enable_filter_rules.patch
-CHECK_PORTINUSE_EXTRA_PATCHES=	${PATCHDIR}/enable_check_portinuse.patch
-IPV6_EXTRA_PATCHES=	${PATCHDIR}/enable_ipv6.patch
-UPNP_IGDV2_EXTRA_PATCHES=	${PATCHDIR}/enable_igdv2.patch
-UPNP_STRICT_EXTRA_PATCHES=	${PATCHDIR}/enable_upnp_strict.patch
-LEASEFILE_EXTRA_PATCHES=	${PATCHDIR}/enable_leasefile.patch
-
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200000
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-portinuse.c
-.endif
+PF_FILTER_RULES_CONFIGURE_ON=	--firewall=pf
+CHECK_PORTINUSE_CONFIGURE_ON=	--portinuse
+IPV6_CONFIGURE_ON=		--ipv6
+UPNP_IGDV2_CONFIGURE_ON=	--igd2
+UPNP_STRICT_CONFIGURE_ON=	--strict
+LEASEFILE_CONFIGURE_ON=		--leasefile
 
 post-patch:
 	${REINPLACE_CMD} -e 's|\(-lssl -lcrypto\)|$$(LDFLAGS) \1|g' \
-	${WRKSRC}/Makefile
-	
+		${WRKSRC}/Makefile.bsd
+
 .include <bsd.port.mk>
