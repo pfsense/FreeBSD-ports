@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2019 Bill Meeks
+ * Copyright (c) 2013-2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +41,6 @@ $snortlibdir = SNORT_PBI_BASEDIR . "lib";
 $snortlogdir = SNORTLOGDIR;
 $rcdir = RCFILEPREFIX;
 $snort_rules_upd_log = SNORT_RULES_UPD_LOGFILE;
-$mounted_rw = FALSE;
 
 log_error(gettext("[Snort] Snort package uninstall in progress..."));
 
@@ -125,39 +124,32 @@ if ($config['installedpackages']['snortglobal']['clearlogs'] == 'on') {
 }
 
 /**********************************************************/
-/* If not already, set Snort conf partition to read-write */
-/* so we can make changes there                           */
-/**********************************************************/
-if (!is_subsystem_dirty('mount')) {
-	$mounted_rw = TRUE;
-}
-
-/**********************************************************/
 /* Remove files and directories that pkg will not because */
 /* we changed or created them post-install.               */
 /**********************************************************/
-log_error(gettext("[Snort] Removing package files..."));
-if (is_dir("{$snortdir}/appid")) {
-	rmdir_recursive("{$snortdir}/appid");
-}
-if (is_dir("{$snortdir}/rules")) {
-	rmdir_recursive("{$snortdir}/rules");
-}
-if (is_dir("{$snortdir}/signatures")) {
-	rmdir_recursive("{$snortdir}/signatures");
-}
-if (is_dir("{$snortdir}/preproc_rules")) {
-	rmdir_recursive("{$snortdir}/preproc_rules");
+syslog(LOG_NOTICE, gettext("[Snort] Removing GUI package-modified files..."));
+if (is_dir(SNORT_APPID_ODP_PATH)) {
+	rmdir_recursive(SNORT_APPID_ODP_PATH);
 }
 if (is_dir("/usr/local/lib/snort_dynamicrules")) {
 	rmdir_recursive("/usr/local/lib/snort_dynamicrules");
 }
-unlink_if_exists("{$snortdir}/*.md5");
-unlink_if_exists("{$snortdir}/*.conf");
-unlink_if_exists("{$snortdir}/*.map");
-unlink_if_exists("{$snortdir}/*.config");
-unlink_if_exists("{$snortdir}/attribute_table.dtd");
-unlink_if_exists("{$snortdir}/rulesupd_status");
+if (is_dir(SNORTDIR . "/signatures")) {
+	rmdir_recursive(SNORTDIR . "/signatures");
+}
+unlink_if_exists(SNORTDIR . "/*.md5");
+unlink_if_exists(SNORTDIR . "/rules/*.txt");
+unlink_if_exists(SNORTDIR . "/classification.config");
+unlink_if_exists(SNORTDIR . "/reference.config");
+unlink_if_exists(SNORTDIR . "/unicode.map");
+unlink_if_exists(SNORTDIR . "/rulesupd_status");
+unlink_if_exists(SNORTDIR . "/preproc_rules/*.rules");
+unlink_if_exists(SNORTDIR . "/rules/" . VRT_FILE_PREFIX . "*.rules");
+unlink_if_exists(SNORTDIR . "/rules/" . ET_OPEN_FILE_PREFIX . "*.rules");
+unlink_if_exists(SNORTDIR . "/rules/" . ET_PRO_FILE_PREFIX . "*.rules");
+unlink_if_exists(SNORTDIR . "/rules/" . GPL_FILE_PREFIX . "*.rules");
+unlink_if_exists(SNORTDIR . "/rules/" . "appid.rules");
+unlink_if_exists(SNORT_APPID_RULES_PATH . OPENAPPID_FILE_PREFIX . "*.rules");
 
 if (is_array($config['installedpackages']['snortglobal']['rule']) && count($config['installedpackages']['snortglobal']['rule']) > 0) {
 	foreach ($config['installedpackages']['snortglobal']['rule'] as $snortcfg) {
@@ -170,6 +162,17 @@ if (is_array($config['installedpackages']['snortglobal']['rule']) && count($conf
 }
 
 /**********************************************************/
+/* Clear IP addresses we placed in <snort2c> pf table if  */
+/* that option is enabled on GLOBAL SETTINGS tab or if    */
+/* the package and its configuration are being removed.   */
+/**********************************************************/
+if (($config['installedpackages']['snortglobal']['clearblocks'] != 'off') ||
+    ($config['installedpackages']['snortglobal']['forcekeepsettings'] != 'on')) {
+	syslog(LOG_NOTICE, gettext("[Snort] Flushing <snort2c> firewall table to remove addresses blocked by Snort..."));
+	mwexec("/sbin/pfctl -t snort2c -T flush");
+}
+
+/**********************************************************/
 /* Keep this as a last step because it is the total       */
 /* removal of the configuration settings when the user    */
 /* has elected to not retain the package configuration.   */
@@ -179,8 +182,6 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] != 'on') {
 	unset($config['installedpackages']['snortglobal']);
 	unset($config['installedpackages']['snortsync']);
 	unlink_if_exists("{$snort_rules_upd_log}");
-	log_error(gettext("[Snort] Flushing <snort2c> firewall table to remove addresses blocked by Snort..."));
-	mwexec("/sbin/pfctl -t snort2c -T flush");
 	rmdir_recursive("{$snortlogdir}");
 	rmdir_recursive("{$g['vardb_path']}/snort");
 	write_config("Removing Snort configuration");
@@ -190,11 +191,5 @@ else {
 	log_error(gettext("[Snort] Package files removed but all Snort configuration info has been retained."));
 }
 
-/**********************************************************/
-/* We're finished with conf partition mods, return to     */
-/* read-only if we changed it.                            */
-/**********************************************************/
-if ($mounted_rw == TRUE) {
-}
 return true;
 ?>
