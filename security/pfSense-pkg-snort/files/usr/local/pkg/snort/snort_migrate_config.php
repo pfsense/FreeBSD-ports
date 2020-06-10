@@ -81,6 +81,8 @@ if (empty($config['installedpackages']['snortglobal']['enable_log_mgmt'])) {
 	$config['installedpackages']['snortglobal']['enable_log_mgmt'] = "on";
 	$config['installedpackages']['snortglobal']['alert_log_limit_size'] = "500";
 	$config['installedpackages']['snortglobal']['alert_log_retention'] = "336";
+	$config['installedpackages']['snortglobal']['appid_alerts_log_retention'] = "336";
+	$config['installedpackages']['snortglobal']['appid_alerts_log_limit_size'] = "500";
 	$config['installedpackages']['snortglobal']['appid_stats_log_limit_size'] = "1000";
 	$config['installedpackages']['snortglobal']['appid_stats_log_retention'] = "168";
 	$config['installedpackages']['snortglobal']['event_pkts_log_limit_size'] = "0";
@@ -91,10 +93,22 @@ if (empty($config['installedpackages']['snortglobal']['enable_log_mgmt'])) {
 	$config['installedpackages']['snortglobal']['stats_log_retention'] = "168";
 	$updated_cfg = true;
 }
-if (empty($config['installedpackages']['snortglobal']['appid_stats_log_limit_size']))
+if (empty($config['installedpackages']['snortglobal']['appid_stats_log_limit_size'])) {
 	$config['installedpackages']['snortglobal']['appid_stats_log_limit_size'] = "1000";
-if (empty($config['installedpackages']['snortglobal']['appid_stats_log_retention']))
+	$updated_cfg = true;
+}
+if (empty($config['installedpackages']['snortglobal']['appid_stats_log_retention'])) {
 	$config['installedpackages']['snortglobal']['appid_stats_log_retention'] = "168";
+	$updated_cfg = true;
+}
+if (empty($config['installedpackages']['snortglobal']['appid_alerts_log_limit_size'])) {
+	$config['installedpackages']['snortglobal']['appid_alerts_log_limit_size'] = "500";
+	$updated_cfg = true;
+}
+if (empty($config['installedpackages']['snortglobal']['appid_alerts_log_retention'])) {
+	$config['installedpackages']['snortglobal']['appid_alerts_log_retention'] = "336";
+	$updated_cfg = true;
+}
 
 /**********************************************************/
 /* Create new VERBOSE_LOGGING setting if not set          */

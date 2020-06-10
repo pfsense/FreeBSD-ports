@@ -419,10 +419,41 @@ function squid_restart_services() {
 		return;
 	}
 
+	if (is_array($config['installedpackages']['squid']['config'])) {
+		$squid_config = $config['installedpackages']['squid']['config'][0];
+	} else {
+		return null;
+	}
+
 	if (squid_enabled()) {
 		/* kill any running proxy alarm scripts */
 		squid_stop_monitor();
 
+		/* Start/Restart Squid, if a CARP VIP is set, check its status and act
+		* appropriately. */
+		if (isset($squid_config['carpstatusvid']) && $squid_config['carpstatusvid'] != "none") {
+			$status = get_carp_interface_status($squid_config['carpstatusvid']);
+			switch (strtoupper($status)) {
+				// Stop the service if the VIP is in BACKUP or INIT state.
+				case "BACKUP":
+				case "INIT":
+					if (is_service_running('squid')) {
+						log_error("[squid] Stopping service... (CARP BACKUP/INIT)");
+						stop_service("squid");
+					} else {
+						log_error("[squid] Do not start service... (CARP BACKUP/INIT)");
+					}
+					return;
+					break;
+				case "MASTER":
+					/* Stopping the service on other node may take some time 
+					(shutdown_lifetime 3 seconds) */
+					sleep(4);
+					break;
+				default:
+					break;
+			}
+		}
 		if (!is_service_running('squid')) {
 			log_error("[squid] Starting service...");
 			mwexec(SQUID_BASE . "/sbin/squid -f " . SQUID_CONFFILE);
@@ -438,7 +469,6 @@ function squid_restart_services() {
 		}
 		/* restart proxy alarm scripts */
 		squid_start_monitor();
-
 	} else {
 		/* Squid is disabled - kill any running proxy alarm scripts and stop Squid services */
 		squid_stop_monitor();
@@ -1215,7 +1245,7 @@ function squid_resync_general() {
 				// cert, key, version, cipher, options, clientca, cafile, capath, crlfile, tls-dh, sslflags, sslcontext
 				$crt_pk = SQUID_CONFBASE . "/serverkey.pem";
 				$crt_capath = SQUID_LOCALBASE . "/share/certs/";
-				$sslproxy_options = "NO_SSLv2,NO_SSLv3";
+				$sslproxy_options = "NO_SSLv3";
 				/* XXX: Bug #4453, Bug #6592, Feature #6593, Bug #6563
 				 * http://wiki.squid-cache.org/ConfigExamples/Intercept/SslBumpExplicit#Modern_DH.2FEDH_ciphers_usage
 				 */
@@ -2636,4 +2666,66 @@ function squid_get_ca_or_certs($type, $consumer = 'HTTPS', $noprv = false, $addn
 		$c_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
 	}
 	return $c_arr;
+}
+
+function squid_get_interface_list($loopback=true) {
+	$ifaces = array();
+	$carplist = get_configured_vip_list();
+	foreach ($carplist as $vid => $vaddr) {
+		$vip = get_configured_vip($vid);
+		$ifaces[] = array("name" => "$vaddr ({$vip['descr']})", "value" => $vid);
+	}
+	foreach (get_configured_interface_with_descr() as $value => $name) {
+		$ifaces[] = array("name" => $name, "value" => $value);
+	}
+	if ($loopback) {
+		$ifaces[] = array("name" => "loopback", "value" => "lo0");
+	}
+	return ($ifaces);
+}
+
+/* Build a list of only CARP VIPs, formatted for use in a selection list */
+function squid_get_carp_list() {
+	$list = array();
+	$list[] = array("name" => "none", "value" => "none");
+	$carplist = get_configured_vip_list();
+	foreach ($carplist as $vid => $vaddr) {
+		$vip = get_configured_vip($vid);
+		$list[] = array("name" => "$vaddr ({$vip['descr']})", "value" => $vid);
+	}
+	return ($list);
+}
+
+function squid_plugin_carp($pluginparams) {
+	global $config;
+	/* If squid is not configured, then stop */
+	if (is_array($config['installedpackages']['squid']['config'])) {
+		$squid_config = $config['installedpackages']['squid']['config'][0];
+	} else {
+		return null;
+	}
+	/* If there is no properly configured CARP status check IP, then stop */
+	if (!isset($squid_config['carpstatusvid']) || $squid_config['carpstatusvid'] == "none") {
+		return null;
+	}
+	/* Locate the VIP and match it against the configured check address */
+	list($vhid, $iface) = explode("@", trim($pluginparams['interface']));
+	$friendly = convert_real_interface_to_friendly_interface_name($iface);
+	$vip = get_configured_vip($squid_config['carpstatusvid']);
+	if (($vip['vhid'] != $vhid) || ($vip['interface'] != $friendly)) {
+		/* This is not the VIP we're looking for, move along. */
+		return null;
+	}
+	/* Start or stop the service as needed based on the CARP transition. */
+	if ($pluginparams['event'] == "rc.carpmaster") {
+		log_error("[squid] Starting service...");
+		/* Stopping the service on other node may take some time 
+		(shutdown_lifetime 3 seconds) */
+		sleep(4);
+		start_service("squid");
+	} elseif (($pluginparams['event'] == "rc.carpbackup") && is_service_running('squid')) {
+		log_error("[squid] Stopping service... (CARP BACKUP/INIT)");
+		squid_stop_monitor();
+		stop_service("squid");
+	}
 }

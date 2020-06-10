@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2011-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008-2009 Robert Zelaya
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -167,6 +167,10 @@ elseif (isset($id) && !isset($a_rule[$id])) {
 }
 
 // Set defaults for empty key parameters
+if (empty($pconfig['enable_pkt_caps']))
+	$pconfig['enable_pkt_caps'] = "off";
+if (empty($pconfig['tcpdump_file_size']))
+	$pconfig['tcpdump_file_size'] = "128";
 if (empty($pconfig['blockoffendersip']))
 	$pconfig['blockoffendersip'] = "both";
 if (empty($pconfig['blockoffenderskill']))
@@ -281,6 +285,8 @@ if ($_POST['save'] && !$input_errors) {
 		if ($_POST['performance']) $natent['performance'] = $_POST['performance']; else  unset($natent['performance']);
 		if ($_POST['snaplen'] && is_numeric($_POST['snaplen'])) $natent['snaplen'] = $_POST['snaplen'];
 		if ($_POST['ips_mode']) $natent['ips_mode'] = $_POST['ips_mode']; else unset($natent['ips_mode']);
+		if ($_POST['enable_pkt_caps'] == "on") $natent['enable_pkt_caps'] = 'on'; else $natent['enable_pkt_caps'] = 'off';
+		if ($_POST['tcpdump_file_size'] && is_numeric($_POST['tcpdump_file_size'])) $natent['tcpdump_file_size'] = $_POST['tcpdump_file_size'];
 		if ($_POST['blockoffenders7'] == "on") $natent['blockoffenders7'] = 'on'; else $natent['blockoffenders7'] = 'off';
 		if ($_POST['blockoffenderskill'] == "on") $natent['blockoffenderskill'] = 'on'; else $natent['blockoffenderskill'] = 'off';
 		if ($_POST['blockoffendersip']) $natent['blockoffendersip'] = $_POST['blockoffendersip']; else unset($natent['blockoffendersip']);
@@ -596,6 +602,19 @@ $section->addInput(new Form_Select(
 	array(  'log_emerg' => gettext('LOG_EMERG'), 'log_crit' => gettext('LOG_CRIT'), 'log_alert' => gettext('LOG_ALERT'), 'log_err' => gettext('LOG_ERR'), 
 		'log_warning' => gettext('LOG_WARNING'), 'log_notice' => gettext('LOG_NOTICE'), 'log_info' => gettext('LOG_INFO'), 'log_debug' => gettext('LOG_DEBUG') )
 ))->setHelp('Select system log Priority (Level) to use for reporting. Default is LOG_ALERT.');
+$section->addInput(new Form_Checkbox(
+	'enable_pkt_caps',
+	'Enable Packet Captures',
+	'Checking this option will automatically capture packets that generate a Snort alert into a tcpdump compatible file',
+	$pconfig['enable_pkt_caps'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Input(
+	'tcpdump_file_size',
+	'Packet Capture File Size',
+	'number',
+	$pconfig['tcpdump_file_size']
+))->setHelp('Enter a value in megabytes for the packet capture file size limit. Default is 128 megabytes. When the limit is reached, the current packet capture file in directory ' . SNORTLOGDIR . '/snort_' . get_real_interface($pconfig['interface']) . $pconfig['uuid'] . ' is rotated and a new file opened.');
 
 $form->add($section);
 
@@ -888,11 +907,18 @@ events.push(function(){
 		hideSelect('alertsystemlog_priority', hide);
 	}
 
+	function toggle_enable_pkt_caps() {
+		var hide = ! $('#enable_pkt_caps').prop('checked');
+		hideInput('tcpdump_file_size', hide);
+	}
+
 	function enable_change() {
 		var hide = ! $('#enable').prop('checked');
 		disableInput('alertsystemlog', hide);
 		disableInput('alertsystemlog_facility', hide);
 		disableInput('alertsystemlog_priority', hide);
+		disableInput('enable_pkt_caps', hide);
+		disableInput('tcpdump_file_size', hide);
 		disableInput('blockoffenders7', hide);
 		disableInput('ips_mode', hide);
 		disableInput('blockoffenderskill', hide);
@@ -970,6 +996,11 @@ events.push(function(){
 		enable_blockoffenders();
 	});
 
+	// When 'enable_pkt_caps' is clicked, disable/enable associated form controls
+	$('#enable_pkt_caps').click(function() {
+		toggle_enable_pkt_caps();
+	});
+
 	$('#ips_mode').on('change', function() {
 		if ($('#ips_mode').val() == 'ips_mode_inline') {
 			hideCheckbox('blockoffenderskill', true);
@@ -989,6 +1020,7 @@ events.push(function(){
 	enable_change();
 	enable_blockoffenders();
 	toggle_system_log();
+	toggle_enable_pkt_caps();
 });
 //]]>
 </script>

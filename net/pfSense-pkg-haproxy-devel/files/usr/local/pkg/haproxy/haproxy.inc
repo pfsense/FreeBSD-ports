@@ -457,11 +457,19 @@ function haproxy_expand_alias_array($address_or_alias) {
 		$alias = $aliastable[$item];
 		if ($alias_type == "url") {
 			$items = array_merge($items, explode(' ',$alias));
-		} else
-		if ($alias_type == "network") {
+		} elseif ($alias_type == "urltable") {
+			$urltable = alias_expand_urltable($item);
+			if (!empty($urltable)) {
+				$urltable_arr = array();
+				$urlfile_as_arr = file($urltable);
+				foreach ($urlfile_as_arr as $line) {
+					$urltable_arr[] = rtrim($line);
+				}
+				$items = array_merge($items, $urltable_arr);
+			}
+		} elseif ($alias_type == "network") {
 			$items = array_merge($items, explode(' ',$alias));
-		} else
-		if ($alias_type == "host") {
+		} elseif ($alias_type == "host") {
 			$items = array_merge($items, explode(' ',$alias));
 		} else {
 			$result[] = $item;

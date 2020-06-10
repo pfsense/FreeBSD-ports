@@ -307,6 +307,10 @@ function netsnmp_resync() {
 	}
 	if (!empty($nhisettings['sysdescr'])) {
 		$snmpd_config .= "sysDescr {$nhisettings['sysdescr']}\n";
+	} else {
+		$snmpd_config .= "sysDescr {$g['product_name']} {$config['system']['hostname']}.{$config['system']['domain']}" .
+						 " {$g['product_version_string']} {$g['platform']} " . php_uname("s") .
+						 " " . php_uname("r") . " " . php_uname("m") . "\n";
 	}
 
 	if (!empty($nhisettings['interface_fadeout'])) {

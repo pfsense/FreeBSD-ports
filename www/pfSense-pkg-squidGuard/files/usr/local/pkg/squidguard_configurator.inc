@@ -94,7 +94,6 @@ define('REDIRECTOR_OPTIONS_REM',   '# squidGuard options');
 define('REDIRECT_CHILDREN_OPT',    'url_rewrite_children');
 define('REDIRECTOR_PROGRAM_OPT',   'url_rewrite_program');
 define('REDIRECT_BYPASS_OPT',      'url_rewrite_bypass');
-define('REDIRECTOR_PROCESS_COUNT', '16 startup=8 idle=4 concurrency=0');
 
 # ------------------------------------------------------------------------------
 # squidguard config options
@@ -249,8 +248,10 @@ define('F_LDAPBINDPASS',        'ldapbindpass');
 define('F_LDAPVERSION',         'ldapversion');
 define('F_STRIPNTDOMAIN',       'stripntdomain');
 define('F_STRIPREALM',          'striprealm');
+define('F_REWRITE_CH',		'rewrite_children');
+define('F_REWRITE_CH_STARTUP',	'rewrite_children_startup');
+define('F_REWRITE_CH_IDLE',	'rewrite_children_idle');
 define('F_BINPATH',             'binpath');
-define('F_PROCCESSCOUNT',       'process_count');
 define('F_SQUIDCONFIGFILE',     'squid_configfile');
 define('F_ENABLED',             'enabled');
 define('F_SGCONF_XML',          'sgxml_file');
@@ -335,7 +336,6 @@ function sg_init($init = '')
         $squidguard_config[F_WORKDIR]         = SQUIDGUARD_WORKDIR;
         $squidguard_config[F_BINPATH]         = SQUIDGUARD_BINPATH;
         $squidguard_config[F_SQUIDCONFIGFILE] = SQUID_CONFIGFILE;
-        $squidguard_config[F_PROCCESSCOUNT]   = REDIRECTOR_PROCESS_COUNT;
 
     } else {
         # copy config from $init
@@ -434,15 +434,18 @@ function squid_reconfigure($remove_only = '')
 
     # add new options - if squidGuard enabled
     if (empty($remove_only) && ($squidguard_config[F_ENABLED] === 'on')) {
-        $redirector_path = $squidguard_config[F_BINPATH] . '/squidGuard';
-        $redirector_conf = $squidguard_config[F_WORKDIR] . SQUIDGUARD_CONFIGFILE;
+	$redirector_path = $squidguard_config[F_BINPATH] . '/squidGuard';
+	$redirector_conf = $squidguard_config[F_WORKDIR] . SQUIDGUARD_CONFIGFILE;
+	$rewrite_children = (is_numeric($squidguard_config[F_REWRITE_CH])) ? $squidguard_config[F_REWRITE_CH] : '16'; 
+	$rewrite_children_startup = (is_numeric($squidguard_config[F_REWRITE_CH_STARTUP])) ? $squidguard_config[F_REWRITE_CH_STARTUP] : '8'; 
+	$rewrite_children_idle = (is_numeric($squidguard_config[F_REWRITE_CH_IDLE])) ? $squidguard_config[F_REWRITE_CH_IDLE] : '4'; 
 
-        $conf = array();
-        $conf[] = REDIRECTOR_PROGRAM_OPT . " $redirector_path -c $redirector_conf";
-        $conf[] = REDIRECT_BYPASS_OPT    . " off";
-        $conf[] = REDIRECT_CHILDREN_OPT  . " " . REDIRECTOR_PROCESS_COUNT;
+	$conf = array();
+	$conf[] = REDIRECTOR_PROGRAM_OPT . " $redirector_path -c $redirector_conf";
+	$conf[] = REDIRECT_BYPASS_OPT    . " off";
+	$conf[] = REDIRECT_CHILDREN_OPT  . " " . $rewrite_children . " startup=" . $rewrite_children_startup . " idle=" . $rewrite_children_idle . " concurrency=0";
 
-        sg_addlog("squid_reconfigure", "Add new redirector options to Squid config.", SQUIDGUARD_INFO);
+	sg_addlog("squid_reconfigure", "Add new redirector options to Squid config.", SQUIDGUARD_INFO);
     }
 
     # update config

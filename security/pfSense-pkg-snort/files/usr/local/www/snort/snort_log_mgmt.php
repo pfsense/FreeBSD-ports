@@ -50,6 +50,8 @@ else {
 	$pconfig['event_pkts_log_retention'] = $config['installedpackages']['snortglobal']['event_pkts_log_retention'];
 	$pconfig['appid_stats_log_limit_size'] = $config['installedpackages']['snortglobal']['appid_stats_log_limit_size'];
 	$pconfig['appid_stats_log_retention'] = $config['installedpackages']['snortglobal']['appid_stats_log_retention'];
+	$pconfig['appid_alerts_log_retention'] = $config['installedpackages']['snortglobal']['appid_alerts_log_retention'];
+	$pconfig['appid_alerts_log_limit_size'] = $config['installedpackages']['snortglobal']['appid_alerts_log_limit_size'];
 }
 // Load up some arrays with selection values (we use these later).
 // The keys in the $retentions array are the retention period
@@ -81,6 +83,8 @@ if (!isset($pconfig['event_pkts_log_retention']))
 	$pconfig['event_pkts_log_retention'] = "336";
 if (!isset($pconfig['appid_stats_log_retention']))
 	$pconfig['appid_stats_log_retention'] = "168";
+if (!isset($pconfig['appid_alerts_log_retention']))
+	$pconfig['appid_alerts_log_retention'] = "336";
 
 // Set default log file size limits
 if (!isset($pconfig['alert_log_limit_size']))
@@ -91,6 +95,8 @@ if (!isset($pconfig['sid_changes_log_limit_size']))
 	$pconfig['sid_changes_log_limit_size'] = "250";
 if (!isset($pconfig['appid_stats_log_limit_size']))
 	$pconfig['appid_stats_log_limit_size'] = "1000";
+if (!isset($pconfig['appid_alerts_log_limit_size']))
+	$pconfig['appid_alerts_log_limit_size'] = "500";
 
 if (isset($_POST['ResetAll'])) {
 
@@ -100,12 +106,14 @@ if (isset($_POST['ResetAll'])) {
 	$pconfig['sid_changes_log_retention'] = "336";
 	$pconfig['event_pkts_log_retention'] = "336";
 	$pconfig['appid_stats_log_retention'] = "168";
+	$pconfig['appid_alerts_log_retention'] = "336";
 
 	$pconfig['alert_log_limit_size'] = "500";
 	$pconfig['stats_log_limit_size'] = "500";
 	$pconfig['sid_changes_log_limit_size'] = "250";
 	$pconfig['event_pkts_log_limit_size'] = "0";
 	$pconfig['appid_stats_log_limit_size'] = "1000";
+	$pconfig['appid_alerts_log_limit_size'] = "500";
 
 	/* Log a message at the top of the page to inform the user */
 	$savemsg = gettext("All log management settings on this page have been reset to their defaults.  Click APPLY if you wish to keep these new settings.");
@@ -147,6 +155,8 @@ if (isset($_POST['save']) || isset($_POST['apply'])) {
 		$config['installedpackages']['snortglobal']['event_pkts_log_retention'] = $_POST['event_pkts_log_retention'];
 		$config['installedpackages']['snortglobal']['appid_stats_log_limit_size'] = $_POST['appid_stats_log_limit_size'];
 		$config['installedpackages']['snortglobal']['appid_stats_log_retention'] = $_POST['appid_stats_log_retention'];
+		$config['installedpackages']['snortglobal']['appid_alerts_log_limit_size'] = $_POST['appid_alerts_log_limit_size'];
+		$config['installedpackages']['snortglobal']['appid_alerts_log_retention'] = $_POST['appid_alerts_log_retention'];
 
 		write_config("Snort pkg: saved updated configuration for LOGS MGMT.");
 		sync_snort_package_config();
@@ -260,6 +270,26 @@ print ($section);
 							</select>
 						</td>
 						<td><?=gettext("Snort alerts and event details");?></td>
+					</tr>
+					<tr>
+						<td>appid-alerts</td>
+						<td><select name="appid_alerts_log_limit_size" class="form-control" id="appid_alerts_log_limit_size">
+							<?php foreach ($log_sizes as $k => $l): ?>
+								<option value="<?=$k;?>"
+								<?php if ($k == $pconfig['appid_alerts_log_limit_size']) echo " selected"; ?>>
+									<?=htmlspecialchars($l);?></option>
+							<?php endforeach; ?>
+							</select>
+						</td>
+						<td><select name="appid_alerts_log_retention" class="form-control" id="appid_alerts_log_retention">
+							<?php foreach ($retentions as $k => $p): ?>
+								<option value="<?=$k;?>"
+								<?php if ($k == $pconfig['appid_alerts_log_retention']) echo " selected"; ?>>
+									<?=htmlspecialchars($p);?></option>
+							<?php endforeach; ?>
+							</select>
+						</td>
+						<td><?=gettext("Application ID Alerts");?></td>
 					</tr>
 					<tr>
 						<td>app-stats</td>
