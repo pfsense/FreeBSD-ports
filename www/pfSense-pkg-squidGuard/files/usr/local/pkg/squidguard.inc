@@ -1048,6 +1048,11 @@ function convert_pfxml_to_sgxml() {
     $sgxml[F_ACLS]             = convert_pfxml_to_sgxml_acl($config);
     $sgxml[F_DEFAULT]          = convert_pfxml_to_sgxml_default($config);
 
+    # url_rewrite_children options
+    $sgxml[F_REWRITE_CH]		= $pfxml['rewrite_children'];
+    $sgxml[F_REWRITE_CH_STARTUP]	= $pfxml['rewrite_children_startup'];
+    $sgxml[F_REWRITE_CH_IDLE]		= $pfxml['rewrite_children_idle'];
+
     # log
     $sgxml[F_ENABLELOG]    = $pfxml['enable_log']    == 'on' ? 'on' : 'off';
     $sgxml[F_ENABLEGUILOG] = $pfxml['enable_guilog'] == 'on' ? 'on' : 'off';
