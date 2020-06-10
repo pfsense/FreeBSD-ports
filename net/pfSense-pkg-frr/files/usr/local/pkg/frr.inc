@@ -30,6 +30,9 @@ define('PKG_FRR_CONFIG_BASE', '/var/etc/frr');
 global $frr_config_base;
 $frr_config_base = PKG_FRR_CONFIG_BASE;
 
+global $frr_modules;
+$frr_modules = array('zebra', 'staticd', 'bgpd', 'ospfd', 'ospf6d');
+
 global $frr_well_known_communities;
 $frr_well_known_communities = array("internet", "no-export", "no-advertise", "local-as");
 
@@ -261,7 +264,7 @@ function frr_cidr_to_wildcard_bits($cidr) {
 
 /* Create the rc.d service control script for FRR */
 function frr_generate_config_rcfile() {
-	global $config, $frr_config_base;
+	global $config, $frr_config_base, $frr_modules;
 	/* If frr is not configured, then stop */
 	if (is_array($config['installedpackages']['frr']['config'])) {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
@@ -371,12 +374,13 @@ EOF;
 	);
 
 	/* Ensure files have correct ownership and permissions */
-	mwexec("/bin/chmod a+rx /usr/local/etc/rc.d/frr.sh");
-	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/ospfd.conf");
-	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/ospf6d.conf");
-	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/zebra.conf");
-	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/staticd.conf");
-	mwexec("/bin/chmod u+rw,go-rw {$frr_config_base}/bgpd.conf");
+	chmod("/usr/local/etc/rc.d/frr.sh", 0555);
+	foreach ($frr_modules as $module) {
+		$moduleRunningFile = "{$frr_config_base}/{$module}.conf";
+		if (file_exists($moduleRunningFile) && (filesize($moduleRunningFile) > 0)) {
+			chmod($moduleRunningFile, 0600);
+		}
+	}
 
 	/* Start/Restart FRR, if a CARP VIP is set, check its status and act
 	 * appropriately. */
