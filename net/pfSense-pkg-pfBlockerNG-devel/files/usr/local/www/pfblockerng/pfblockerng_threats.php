@@ -294,6 +294,11 @@ $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblo
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://yandex.com/safety/?url=<?=$domain;?>">
+						<?=gettext("Yandex Safe Browsing");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://toolbar.netcraft.com/site_report?url=<?=$domain;?>">
 						<?=gettext("Netcraft Site Report");?></a></td>
 				</tr>
