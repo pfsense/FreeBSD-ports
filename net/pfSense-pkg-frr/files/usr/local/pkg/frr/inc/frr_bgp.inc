@@ -728,7 +728,7 @@ function frr_bgp_generate_aspaths() {
 		frr_array_seq_sort($asp['row']);
 		foreach ($asp['row'] as $line) {
 
-			$aspconf .= "ip as-path access-list {$asp['name']} {$line['action']} {$line['regex']}\n";
+			$aspconf .= "bgp as-path access-list {$asp['name']} {$line['action']} {$line['regex']}\n";
 		}
 	}
 	return $aspconf;
