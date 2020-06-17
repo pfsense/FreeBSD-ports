@@ -397,7 +397,7 @@ pkg_update() {
 		# Make fetch to work with thoth
 		local _fetch_env=""
 		local _fetch_args=""
-		if [ "${arch}" = "aarch64" ]; then
+		if [ "$(uname -p)" = "aarch64" ]; then
 			_fetch_env="env OPENSSL_CONF=/etc/thoth/openssl.cnf"
 			_fetch_args="--cert=/etc/thoth/device.pem"
 			_fetch_args="${_fetch_args} --key=/etc/thoth/key.pem"
