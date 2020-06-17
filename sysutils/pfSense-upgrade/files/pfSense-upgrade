@@ -252,18 +252,16 @@ abi_setup() {
 	local _freebsd_version=$(uname -r)
 	local _pkg_repo_conf="/usr/local/etc/pkg/repos/${product}.conf"
 
-	local _arch=$(uname -p)
-
-	CUR_ABI="FreeBSD:${_freebsd_version%%.*}:${_arch}"
+	CUR_ABI="FreeBSD:${_freebsd_version%%.*}:${arch}"
 	CUR_ALTABI="freebsd:${_freebsd_version%%.*}"
 
-	if [ "${_arch}" = "armv6" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:${_arch}:32:el:eabi:hardfp"
-	elif [ "${_arch}" = "armv7" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:${_arch}:32:el:eabi:softfp"
-	elif [ "${_arch}" = "aarch64" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:${_arch}:64"
-	elif [ "${_arch}" = "i386" ]; then
+	if [ "${arch}" = "armv6" ]; then
+		CUR_ALTABI="${CUR_ALTABI}:${arch}:32:el:eabi:hardfp"
+	elif [ "${arch}" = "armv7" ]; then
+		CUR_ALTABI="${CUR_ALTABI}:${arch}:32:el:eabi:softfp"
+	elif [ "${arch}" = "aarch64" ]; then
+		CUR_ALTABI="${CUR_ALTABI}:${arch}:64"
+	elif [ "${arch}" = "i386" ]; then
 		CUR_ALTABI="${CUR_ALTABI}:x86:32"
 	else
 		CUR_ALTABI="${CUR_ALTABI}:x86:64"
@@ -292,7 +290,7 @@ abi_setup() {
 	echo "ALTABI=${ALTABI}" >> /usr/local/etc/pkg.conf
 
 	# XXX Replace it by a function that detect thoth hardware
-	if [ "${_arch}" = "aarch64" ]; then
+	if [ "${arch}" = "aarch64" ]; then
 		cat << EOF >> /usr/local/etc/pkg.conf
 PKG_ENV {
 	OPENSSL_CONF=/etc/thoth/openssl.cnf
@@ -354,6 +352,8 @@ pkg_update() {
 	local _mute="off"
 	local _do_not_bootstrap="${3}"
 
+	local _pkg_binary="/usr/sbin/pkg"
+
 	[ "${1}" = "force" ] \
 	    && _force=" -f"
 
@@ -378,12 +378,30 @@ pkg_update() {
 		# force to bootstrap pkg on local system
 		local _ver=$(_pkg query %v pkg)
 		local _cmp=$(_pkg version -t ${_ver} "1.13")
+		if [ "${_cmp}" != "<" ]; then
+			return
+		fi
+
+		# Make fetch to work with thoth
+		local _fetch_env=""
+		local _fetch_args=""
+		if [ "${arch}" = "aarch64" ]; then
+			_fetch_env="env OPENSSL_CONF=/etc/thoth/openssl.cnf"
+			_fetch_args="--cert=/etc/thoth/device.pem"
+			_fetch_args="${_fetch_args} --key=/etc/thoth/key.pem"
+			_fetch_args="${_fetch_args} --ca-cert=/etc/thoth/ca.pem"
+			_pkg_binary="/usr/local/sbin/pkg-static"
+		fi
 
 		local _url=$(get_pkg_repo_url)
-		if [ $? -eq 0 -a "${_cmp}" = "<" ] \
-		    && fetch -o /dev/null ${_url}/meta.conf >/dev/null 2>&1
-		then
-			_exec "/usr/sbin/pkg bootstrap -f" \
+		if [ $? -ne 0 ]; then
+			return
+		fi
+
+		${_fetch_env} fetch ${_fetch_args} -o /dev/null \
+		    ${_url}/meta.conf >/dev/null 2>&1
+		if [ $? -eq 0 ]; then
+			_exec "${_pkg_binary} bootstrap -f" \
 			    "Bootstrap pkg due to meta version change"
 			pkg_update "${force}" "${_mute}" _do_not_bootstrap
 		fi
@@ -401,18 +419,6 @@ pkg_upgrade_repo() {
 	fi
 
 	local _repo_pkg="${product}-repo"
-
-	# Deprecated pa
-	if is_pkg_installed ${product}-repo-devel; then
-		_exec "pkg-static set -A 1 ${product}-repo-devel" \
-		    "Scheduling package ${product}-repo-devel for removal"
-		_exec "pkg-static install${dont_update} ${_repo_pkg}" \
-		    "Installing ${_repo_pkg}" mute
-		_exec "pkg-static delete ${product}-repo-devel" \
-		    "Removing ${product}-repo-devel" mute ignore_result
-		validate_repo_conf
-		pkg_update force
-	fi
 
 	case "$(compare_pkg_version ${_repo_pkg})" in
 		"<")
@@ -488,7 +494,6 @@ pkg_upgrade() {
 	export kernel_pkg=$(_pkg query %n $(_pkg info \
 	    ${product}-kernel-\* | grep -v -- -debug-))
 
-	local _arch=$(uname -p)
 	local _model=$(/bin/kenv -q smbios.system.product 2>/dev/null)
 
 	SYSTEM=""

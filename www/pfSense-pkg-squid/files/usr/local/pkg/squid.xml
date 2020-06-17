@@ -57,7 +57,7 @@
 		<name>c-icap</name>
 		<rcfile>c-icap.sh</rcfile>
 		<executable>c-icap</executable>
-		<description>ICAP Inteface for Squid and ClamAV integration</description>
+		<description>ICAP Interface for Squid and ClamAV integration</description>
 	</service>
 	<plugins>
 		<item>
