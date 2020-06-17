@@ -404,18 +404,6 @@ pkg_upgrade_repo() {
 
 	local _repo_pkg="${product}-repo"
 
-	# Deprecated pa
-	if is_pkg_installed ${product}-repo-devel; then
-		_exec "pkg-static set -A 1 ${product}-repo-devel" \
-		    "Scheduling package ${product}-repo-devel for removal"
-		_exec "pkg-static install${dont_update} ${_repo_pkg}" \
-		    "Installing ${_repo_pkg}" mute
-		_exec "pkg-static delete ${product}-repo-devel" \
-		    "Removing ${product}-repo-devel" mute ignore_result
-		validate_repo_conf
-		pkg_update force
-	fi
-
 	case "$(compare_pkg_version ${_repo_pkg})" in
 		"<")
 			local _force=""
