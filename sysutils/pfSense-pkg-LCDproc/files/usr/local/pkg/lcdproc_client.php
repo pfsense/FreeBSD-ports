@@ -451,7 +451,7 @@ function cmenu_enabled() {
 
 function outputled_carp() {
 	/* Returns the status of CARP for the box.
-	Assumes ALL CARP status are the same for all the intefaces.
+	Assumes ALL CARP status are the same for all the interfaces.
 		-1 = CARP Disabled
 		0  = CARP on Backup
 		1  = CARP on Master */
