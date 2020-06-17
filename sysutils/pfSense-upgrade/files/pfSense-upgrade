@@ -252,18 +252,16 @@ abi_setup() {
 	local _freebsd_version=$(uname -r)
 	local _pkg_repo_conf="/usr/local/etc/pkg/repos/${product}.conf"
 
-	local _arch=$(uname -p)
-
-	CUR_ABI="FreeBSD:${_freebsd_version%%.*}:${_arch}"
+	CUR_ABI="FreeBSD:${_freebsd_version%%.*}:${arch}"
 	CUR_ALTABI="freebsd:${_freebsd_version%%.*}"
 
-	if [ "${_arch}" = "armv6" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:${_arch}:32:el:eabi:hardfp"
-	elif [ "${_arch}" = "armv7" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:${_arch}:32:el:eabi:softfp"
-	elif [ "${_arch}" = "aarch64" ]; then
-		CUR_ALTABI="${CUR_ALTABI}:${_arch}:64"
-	elif [ "${_arch}" = "i386" ]; then
+	if [ "${arch}" = "armv6" ]; then
+		CUR_ALTABI="${CUR_ALTABI}:${arch}:32:el:eabi:hardfp"
+	elif [ "${arch}" = "armv7" ]; then
+		CUR_ALTABI="${CUR_ALTABI}:${arch}:32:el:eabi:softfp"
+	elif [ "${arch}" = "aarch64" ]; then
+		CUR_ALTABI="${CUR_ALTABI}:${arch}:64"
+	elif [ "${arch}" = "i386" ]; then
 		CUR_ALTABI="${CUR_ALTABI}:x86:32"
 	else
 		CUR_ALTABI="${CUR_ALTABI}:x86:64"
@@ -292,7 +290,7 @@ abi_setup() {
 	echo "ALTABI=${ALTABI}" >> /usr/local/etc/pkg.conf
 
 	# XXX Replace it by a function that detect thoth hardware
-	if [ "${_arch}" = "aarch64" ]; then
+	if [ "${arch}" = "aarch64" ]; then
 		cat << EOF >> /usr/local/etc/pkg.conf
 PKG_ENV {
 	OPENSSL_CONF=/etc/thoth/openssl.cnf
@@ -488,7 +486,6 @@ pkg_upgrade() {
 	export kernel_pkg=$(_pkg query %n $(_pkg info \
 	    ${product}-kernel-\* | grep -v -- -debug-))
 
-	local _arch=$(uname -p)
 	local _model=$(/bin/kenv -q smbios.system.product 2>/dev/null)
 
 	SYSTEM=""
