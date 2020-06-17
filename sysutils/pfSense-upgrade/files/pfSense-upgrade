@@ -364,6 +364,8 @@ pkg_update() {
 	local _mute="off"
 	local _do_not_bootstrap="${3}"
 
+	local _pkg_binary="/usr/sbin/pkg"
+
 	[ "${1}" = "force" ] \
 	    && _force=" -f"
 
@@ -388,12 +390,30 @@ pkg_update() {
 		# force to bootstrap pkg on local system
 		local _ver=$(_pkg query %v pkg)
 		local _cmp=$(_pkg version -t ${_ver} "1.13")
+		if [ "${_cmp}" != "<" ]; then
+			return
+		fi
+
+		# Make fetch to work with thoth
+		local _fetch_env=""
+		local _fetch_args=""
+		if [ "${arch}" = "aarch64" ]; then
+			_fetch_env="env OPENSSL_CONF=/etc/thoth/openssl.cnf"
+			_fetch_args="--cert=/etc/thoth/device.pem"
+			_fetch_args="${_fetch_args} --key=/etc/thoth/key.pem"
+			_fetch_args="${_fetch_args} --ca-cert=/etc/thoth/ca.pem"
+			_pkg_binary="/usr/local/sbin/pkg-static"
+		fi
 
 		local _url=$(get_pkg_repo_url)
-		if [ $? -eq 0 -a "${_cmp}" = "<" ] \
-		    && fetch -o /dev/null ${_url}/meta.conf >/dev/null 2>&1
-		then
-			_exec "/usr/sbin/pkg bootstrap -f" \
+		if [ $? -ne 0 ]; then
+			return
+		fi
+
+		${_fetch_env} fetch ${_fetch_args} -o /dev/null \
+		    ${_url}/meta.conf >/dev/null 2>&1
+		if [ $? -eq 0 ]; then
+			_exec "${_pkg_binary} bootstrap -f" \
 			    "Bootstrap pkg due to meta version change"
 			pkg_update "${force}" "${_mute}" _do_not_bootstrap
 		fi
