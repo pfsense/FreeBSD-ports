@@ -73,7 +73,15 @@ require_once('/usr/local/pkg/squid_antivirus.inc');
 function sq_text_area_decode($text, $idn=false) {
 	$contents = preg_replace('/\r\n/', "\n", base64_decode($text));
 	if (function_exists('idn_to_ascii') && $idn) {
-		return implode("\n", array_map('idn_to_ascii', explode("\n", $contents)));
+		$contents_idn = array();
+		foreach (explode("\n", $contents) as $entry) {
+			if (is_domain($entry)) {
+				$contents_idn[] = idn_to_ascii($entry);
+			} else {
+				$contents_idn[] = $entry;
+			}
+		}
+		return implode("\n", $contents_idn);
 	} else {
 		return $contents;
 	}

@@ -11,6 +11,7 @@ pkg/frr/frr_bgp_communities.xml
 pkg/frr/inc/frr_ospf6.inc
 pkg/frr/inc/frr_ospf.inc
 pkg/frr/inc/frr_bgp.inc
+pkg/frr/inc/frr_bfd.inc
 pkg/frr/inc/frr_validation.inc
 pkg/frr/inc/frr_zebra.inc
 pkg/frr/frr_global_raw.xml
@@ -20,6 +21,7 @@ pkg/frr/frr_ospf.xml
 pkg/frr/frr_bgp_advanced.xml
 pkg/frr/frr_global_prefixes.xml
 pkg/frr/frr_bgp.xml
+pkg/frr/frr_bfd.xml
 bin/frrctl
 %%DATADIR%%/info.xml
 /etc/inc/priv/frr.priv.inc
