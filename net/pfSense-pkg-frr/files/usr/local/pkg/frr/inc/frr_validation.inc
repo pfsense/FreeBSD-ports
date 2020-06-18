@@ -436,3 +436,7 @@ function frr_bgp_validate_group() {
 		$input_errors[] = "A name is required.";
 	}
 }
+
+function frr_bfd_validate_input() {
+	global $config, $input_errors;
+}

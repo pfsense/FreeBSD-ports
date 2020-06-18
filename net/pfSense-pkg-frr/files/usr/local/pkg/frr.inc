@@ -31,7 +31,7 @@ global $frr_config_base;
 $frr_config_base = PKG_FRR_CONFIG_BASE;
 
 global $frr_modules;
-$frr_modules = array('zebra', 'staticd', 'bgpd', 'ospfd', 'ospf6d');
+$frr_modules = array('zebra', 'staticd', 'bgpd', 'ospfd', 'ospf6d', 'bfdd');
 
 global $frr_well_known_communities;
 $frr_well_known_communities = array("internet", "no-export", "no-advertise", "local-as");
@@ -51,6 +51,7 @@ require_once("frr/inc/frr_zebra.inc");
 require_once("frr/inc/frr_bgp.inc");
 require_once("frr/inc/frr_ospf.inc");
 require_once("frr/inc/frr_ospf6.inc");
+require_once("frr/inc/frr_bfd.inc");
 
 /* Build a list of only CARP VIPs, formatted for use in a selection list */
 function frr_get_carp_list() {
@@ -310,6 +311,10 @@ if [ -e /var/run/frr/bgpd.pid ]; then
 	/bin/pkill -F /var/run/frr/bgpd.pid
 	/bin/rm -f /var/run/frr/bgpd.pid
 fi
+if [ -e /var/run/frr/bfdd.pid ]; then
+	/bin/pkill -F /var/run/frr/bfdd.pid
+	/bin/rm -f /var/run/frr/bfdd.pid
+fi
 EOF;
 	/* When starting, cleanup first, then fix permissions and make sure no
 	 * other instances are running before starting back up. */
@@ -321,6 +326,7 @@ EOF;
 /bin/rm -f /var/run/frr/ospfd.pid
 /bin/rm -f /var/run/frr/ospf6d.pid
 /bin/rm -f /var/run/frr/bgpd.pid
+/bin/rm -f /var/run/frr/bfdd.pid
 
 if [ -s {$frr_config_base}/frr_md5pw_del.conf ]; then
 	/sbin/setkey -f {$frr_config_base}/frr_md5pw_del.conf
@@ -356,12 +362,18 @@ if /bin/pgrep -q bgpd; then
 	sleep 1
 	/usr/bin/killall -9 bgpd 2>/dev/null
 fi
+if /bin/pgrep -q bfdd; then
+	/usr/bin/killall bfdd
+	sleep 1
+	/usr/bin/killall -9 bfdd 2>/dev/null
+fi
 {$carp_ip_status_check}
 [ -s {$frr_config_base}/zebra.conf ] && /usr/local/sbin/zebra -d -f {$frr_config_base}/zebra.conf
 [ -s {$frr_config_base}/staticd.conf ] && /usr/local/sbin/staticd -d -f {$frr_config_base}/staticd.conf
 [ -s {$frr_config_base}/ospfd.conf ] && /usr/local/sbin/ospfd -d -f {$frr_config_base}/ospfd.conf
 [ -s {$frr_config_base}/ospf6d.conf ] && /usr/local/sbin/ospf6d -d -f {$frr_config_base}/ospf6d.conf
 [ -s {$frr_config_base}/bgpd.conf ] && /usr/local/sbin/bgpd -d -f {$frr_config_base}/bgpd.conf
+[ -s {$frr_config_base}/bfdd.conf ] && /usr/local/sbin/bfdd -d -f {$frr_config_base}/bfdd.conf
 [ -s {$frr_config_base}/frr_md5pw_add.conf ] && /sbin/setkey -f {$frr_config_base}/frr_md5pw_add.conf
 
 EOF;
@@ -531,6 +543,9 @@ function frr_generate_config() {
 
 	/* OSPF6 Configuration */
 	frr_generate_config_ospf6();
+
+	/* BFD Configuration */
+	frr_generate_config_bfd();
 
 	/* Create the rc.d service control script */
 	frr_generate_config_rcfile();
