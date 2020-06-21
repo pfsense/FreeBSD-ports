@@ -289,13 +289,13 @@ EOF;
 
 	if [ ! -d /var/log/zabbix-agent ]; then
 		/bin/mkdir -p /var/log/zabbix-agent
-		/usr/sbin/chmod 755 /var/log/zabbix-agent
+		/bin/chmod 755 /var/log/zabbix-agent
 	fi
 	/usr/sbin/chown -R zabbix:zabbix /var/log/zabbix-agent
 
 	if [ ! -d /var/run/zabbix-agent ]; then
 		/bin/mkdir -p /var/run/zabbix-agent
-		/usr/sbin/chmod 755 /var/run/zabbix-agent
+		/bin/chmod 755 /var/run/zabbix-agent
 	fi
 	/usr/sbin/chown -R zabbix:zabbix /var/run/zabbix-agent
 
