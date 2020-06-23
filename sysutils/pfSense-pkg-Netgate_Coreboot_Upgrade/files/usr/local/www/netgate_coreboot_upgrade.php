@@ -54,7 +54,7 @@ if (is_netgate_hw()) {
 	}
 } else {
 	$input_errors[] = gettext(
-	    "This function is only available for Netgate Inc. hardware");
+	    "This function is not available for this hardware model");
 }
 
 $show_log = false;
