@@ -63,6 +63,19 @@
 			<type>listtopic</type>
 		</field>
 		<field>
+			<fielddescr>Listen IP Version</fielddescr>
+			<fieldname>reverse_listenproto</fieldname>
+			<description>Select the IP version Squid Reverse Proxy will use to bind to.</description>
+			<type>select</type>
+			<options>
+				<option><name>IPv4</name><value>inet</value></option>
+				<option><name>IPv6</name><value>inet6</value></option>
+				<option><name>IPv4+IPv6</name><value>any</value></option>
+			</options>
+			<size>1</size>
+			<default_value>inet</default_value>
+		</field>
+		<field>
 			<fielddescr>Reverse Proxy Interface(s)</fielddescr>
 			<fieldname>reverse_interface</fieldname>
 			<description>
@@ -78,7 +91,10 @@
 				</div>
 				]]>
 			</description>
-			<type>interfaces_selection</type>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_interface_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
 			<default_value>wan</default_value>
 			<multiple/>
 		</field>
@@ -241,7 +257,7 @@
 			<fieldname>reverse_ssl_clientca</fieldname>
 			<description>Choose the CA used to issue client authentication certificates.</description>
 			<type>select_source</type>
-			<source><![CDATA[squid_get_ca_or_certs('ca')]]></source>
+			<source><![CDATA[squid_get_ca_or_certs('ca', 'HTTPS', true)]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 			<show_disable_value>none</show_disable_value>
