@@ -106,7 +106,7 @@
 		</field>
 
 		<field>
-			<fielddescr>Router IP</fielddescr>
+			<fielddescr>Router ID</fielddescr>
 			<fieldname>routerid</fieldname>
 			<description>Set the router ID to the given IP address, which must be local to the machine.</description>
 			<type>input</type>
