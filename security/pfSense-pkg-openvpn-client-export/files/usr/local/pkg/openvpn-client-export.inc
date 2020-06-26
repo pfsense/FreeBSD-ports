@@ -204,11 +204,11 @@ EOF;
 
 	if ($legacy == 0) {
 		if ($settings['ncp_enable'] == "disabled") {
-			$conf .= "ncp-disable\n";
+			$conf .= "ncp-disable{$nl}";
 		} else {
 			/* If the ncp-ciphers list is empty, don't specify a list so OpenVPN's default will be used. */
 			if (!empty($settings['ncp-ciphers'])) {
-				$conf .= "ncp-ciphers " . str_replace(',', ':', $settings['ncp-ciphers']) . "\n";
+				$conf .= "ncp-ciphers " . str_replace(',', ':', $settings['ncp-ciphers']) . "{$nl}";
 			}
 		}
 	}
