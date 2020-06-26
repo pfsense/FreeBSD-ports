@@ -1,9 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pkg
-DISTVERSION=	1.13.2
+DISTVERSION=	1.14.5
 _PKG_VERSION=	${DISTVERSION}
-PORTREVISION=	1
 CATEGORIES=	ports-mgmt
 #MASTER_SITES=	\
 #		http://files.etoilebsd.net/${PORTNAME}/ \
@@ -18,14 +17,14 @@ LICENSE=	BSD2CLAUSE
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
 
-USE_LDCONFIG=	${PREFIX}/lib /usr/lib/engines
+USE_LDCONFIG=	${PREFIX}/lib/compat/pkg /usr/lib/engines
 HAS_CONFIGURE=	yes
 PORTDOCS=	NEWS
 PORTSCOUT=	ignore:1
 CONFIGURE_ARGS=	--mandir=${PREFIX}/man --prefix="${PREFIX}"
 CONFIGURE_ENV=	CC_FOR_BUILD="${CC}"
 
-# Use a submake as 'deinstall install' needs to reevaluate PKG_CMD
+# Use a submake as 'deinstall install' needs to reevaluate PKG_REGISTER
 # so that pkg-static is used from the wrkdir
 USE_SUBMAKE=	yes
 CFLAGS+=	-Wno-error
@@ -72,6 +71,13 @@ pre-everything::
 .endif
 .endif
 
+.if !exists(/usr/libdata/pkgconfig/liblzma.pc)
+LIBLZMA_LIBS=	-llzma
+.else
+LIBLZMA_PC!=	${EGREP} ^Libs /usr/libdata/pkgconfig/liblzma.pc
+LIBLZMA_LIBS=	${LIBLZMA_PC:M-l*}
+.endif
+
 #define PKG_DEPENDS to nothing to avoid infinite loop looking for pkg :)
 PKG_DEPENDS=
 .undef INSTALLS_DEPENDS
@@ -81,6 +87,13 @@ PKG_DEPENDS=
 .if !defined(CROSS_TOOLCHAIN)
 PKG_BIN=	${WRKSRC}/src/pkg-static
 .endif
+
+post-patch:
+	${REINPLACE_CMD} -e "s|-llzma|${LIBLZMA_LIBS}|g" ${WRKSRC}/auto.def \
+		${WRKSRC}/src/Makefile.autosetup ${WRKSRC}/tests/Makefile.autosetup
+
+post-install:
+	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/compat/pkg
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
