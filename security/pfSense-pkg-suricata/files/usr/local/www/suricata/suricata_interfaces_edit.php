@@ -696,7 +696,7 @@ $section->addInput(new Form_Checkbox(
 	'Suricata will send Alerts from this interface to the firewall\'s system log.',
 	$pconfig['alertsystemlog'] == 'on' ? true:false,
 	'on'
-));
+))->setHelp('NOTE:  the FreeBSD syslog daemon will automatically truncate exported messages to 480 bytes max.');
 
 $section->addInput(new Form_Select(
 	'alertsystemlog_facility',
