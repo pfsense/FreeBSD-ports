@@ -366,6 +366,15 @@ if ($config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 
 			suricata_check_filestore_limit_size("{$suricata_log_dir}/filestore", $config['installedpackages']['suricata']['config'][0]['file_store_limit_size']);
 		}
 
+		// If a user-customized file store directory is set, check it, too
+		if (isset($value['file_store_logdir'])) {
+			if (is_dir($value['file_store_logdir']) && 
+			    $config['installedpackages']['suricata']['config'][0]['file_store_limit_size'] > 0 && 
+			    (intval(suricata_folderSize($value['file_store_logdir'])/1000000) >= $config['installedpackages']['suricata']['config'][0]['file_store_limit_size'])) {
+				suricata_check_filestore_limit_size($value['file_store_logdir'], $config['installedpackages']['suricata']['config'][0]['file_store_limit_size']);
+			}
+		}
+
 		// Prune aged-out TLS Certs Store files if any exist
 		if (is_dir("{$suricata_log_dir}/certs") &&
 		    $config['installedpackages']['suricata']['config'][0]['tls_certs_store_retention'] > 0) {
