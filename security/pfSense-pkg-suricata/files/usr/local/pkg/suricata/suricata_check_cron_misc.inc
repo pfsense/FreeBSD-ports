@@ -350,23 +350,6 @@ if ($config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 
 			suricata_check_rotate_log("{$suricata_log_dir}/{$k}", $p['limit']*1024, $p['retention']);
 		}
 
-		// Prune any aged-out Barnyard2 archived logs if any exist
-		if (is_dir("{$suricata_log_dir}/barnyard2/archive") &&
-		    $config['installedpackages']['suricata']['config'][0]['u2_archive_log_retention'] > 0) {
-			$now = time();
-			$files = glob("{$suricata_log_dir}/barnyard2/archive/unified2.alert.*");
-			$prune_count = 0;
-			foreach ($files as $f) {
-				if (($now - filemtime($f)) > ($config['installedpackages']['suricata']['config'][0]['u2_archive_log_retention'] * 3600)) {
-					$prune_count++;
-					unlink_if_exists($f);
-				}
-			}
-			if ($prune_count > 0)
-				syslog(LOG_NOTICE, gettext("[Suricata] Barnyard2 archived logs cleanup job removed {$prune_count} file(s) from {$suricata_log_dir}/barnyard2/archive/..."));
-			unset($files);
-		}
-
 		// Prune aged-out File Store captured files if any exist
 		if (is_dir("{$suricata_log_dir}/filestore") &&
 		    $config['installedpackages']['suricata']['config'][0]['file_store_retention'] > 0) {

@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,6 +50,8 @@ unlink_if_exists("{$g['varrun_path']}/suricata*.lck");
 
 /* Make sure all active Barnyard2 processes are terminated */
 /* Log a message only if a running process is detected     */
+/* Even though Barnyard2 is deprecated, this code remains  */
+/* to ensure no active Barnyard2 process remains.          */
 if (is_service_running("barnyard2"))
 	syslog(LOG_NOTICE, gettext("[Suricata] Stopping Barnyard2 on all configured interfaces..."));
 killbyname("barnyard2");
