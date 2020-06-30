@@ -310,22 +310,6 @@ if (!empty($suricatacfg['max_pcap_log_files']))
 else
 	$pcap_log_max_files = "1000";
 
-// Unified2 Alert Log Settings
-if ($suricatacfg['barnyard_enable'] == 'on')
-	$barnyard2_enabled = "yes";
-else
-	$barnyard2_enabled = "no";
-
-if (isset($config['installedpackages']['suricata']['config'][0]['unified2_log_limit']))
-	$unified2_log_limit = "{$config['installedpackages']['suricata']['config'][0]['unified2_log_limit']}mb";
-else
-	$unified2_log_limit = "32mb";
-
-if (isset($suricatacfg['barnyard_sensor_id']))
-	$unified2_sensor_id = $suricatacfg['barnyard_sensor_id'];
-else
-	$unified2_sensor_id = "0";
-
 // Unified2 X-Forwarded-For logging options
 if ($suricatacfg['barnyard_xff_logging'] == 'on') {
 	$unified2_xff_output = "xff:";

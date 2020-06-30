@@ -34,7 +34,6 @@ www/suricata/suricata_list_view.php
 www/suricata/suricata_app_parsers.php
 www/suricata/suricata_libhtp_policy_engine.php
 www/suricata/suricata_define_vars.php
-www/suricata/suricata_barnyard.php
 www/suricata/suricata_ip_list_mgmt.php
 www/suricata/suricata_ip_reputation.php
 www/suricata/suricata_iprep_list_browser.php

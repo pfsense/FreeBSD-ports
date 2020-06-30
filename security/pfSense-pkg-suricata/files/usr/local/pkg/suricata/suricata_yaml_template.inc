@@ -57,14 +57,6 @@ outputs:
       append: yes
       filetype: regular
 
-  # alert output for use with Barnyard2
-  - unified2-alert:
-      enabled: {$barnyard2_enabled}
-      filename: unified2.alert
-      limit: {$unified2_log_limit}
-      sensor-id: {$unified2_sensor_id}
-      {$unified2_xff_output}
-
   - http-log:
       enabled: {$http_log_enabled}
       filename: http.log
