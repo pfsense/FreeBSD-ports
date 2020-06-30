@@ -3626,7 +3626,7 @@ EOE;
 ######## Start of main suricata.sh
 
 rc_start() {
-	### Make sure libraries path cache is up2sdate
+	### Make sure libraries path cache is up2date
 	/etc/rc.d/ldconfig start
 
 	### Lock out other start signals until we are done
