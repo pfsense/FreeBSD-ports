@@ -700,6 +700,20 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 	}
 
 	/**********************************************************/
+	/* Migrate old performance stats logging option to new    */
+	/* control parameter.                                     */
+	/**********************************************************/
+	if (!isset($pconfig['enable_stats_collection'])) {
+		$updated_cfg = true;
+		if ($pconfig['enable_stats_log'] == "on") {
+			$pconfig['enable_stats_collection'] = "on";
+		}
+		else {
+			$pconfig['enable_stats_collection'] = "off";
+		}
+	}
+
+	/**********************************************************/
 	/* Remove deprecated Barnyard2 configuration parameters   */
 	/* from this interface if any are present.                */
 	/**********************************************************/

@@ -32,11 +32,11 @@ default-log-dir: {$suricatalogdir}suricata_{$if_real}{$suricata_uuid}
 
 # global stats configuration
 stats:
-  enabled: {$stats_log_enabled}
+  enabled: {$stats_collection_enabled}
   interval: {$stats_upd_interval}
-  #decoder-events: true
+  decoder-events: true
   decoder-events-prefix: "decoder.event"
-  #stream-events: false
+  stream-events: false
 
 # Configure the type of alert (and other) logging.
 outputs:
@@ -81,12 +81,12 @@ outputs:
       certs-log-dir: certs
 
   - stats:
-      enabled: yes
+      enabled: {$stats_log_enabled}
       filename: stats.log
       append: {$stats_log_append}
       totals: yes
       threads: no
-      #null-values: yes
+      null-values: yes
 
   - syslog:
       enabled: {$alert_syslog}
@@ -130,6 +130,14 @@ outputs:
         deployment: {$eve_xff_deployment}
         header: {$eve_xff_header}
       types: {$eve_out_types}
+
+  - eve-log:
+      enabled: {$enable_telegraf_eve}
+      filetype: unix_stream
+      filename: {$telegraf_eve_sockname}
+      types:
+        - stats:
+            threads: yes
 
 # Magic file. The extension .mgc is added to the value here.
 magic-file: /usr/share/misc/magic
