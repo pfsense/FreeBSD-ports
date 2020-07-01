@@ -40,6 +40,10 @@
 */
 /* Code in this file is based on contributions by John Volpe. */
 
+/* Unbound synchronization via unbound-control
+	by Alexander Berkes <office@metasoft.at>
+*/
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/event.h>
@@ -80,8 +84,7 @@ static char *HOSTS = NULL;
 static char *domain_suffix = NULL;
 static int hostssize = 0;
 static int foreground = 0;
-static int unbound = 0;
-static char *unbound_conf = NULL;
+static int bulk_remove = 0;
 
 static int fexist(char *);
 static int fsize(char *);
@@ -93,10 +96,18 @@ static time_t convert_time(struct tm);
 static int load_dhcp(FILE *, char *, char *, time_t);
 
 static int write_status(void);
-static int write_unbound_conf(void);
+static int write_unbound_diff(void);
 static void cleanup(void);
-static void signal_process(char *);
 static void handle_signal(int);
+
+static int exec_and_cb(char *cmd, int (*callback)(FILE *fp));
+static int print_cb(FILE *fp);
+static int bulk_cb(FILE *fp);
+static int del_cb(FILE *fp);
+static char* reverse_ip(char* ip);
+static int sync_unbound(void);
+static void log_kqueue_errno(void);
+static void log_kevent_errno(void);
 
 /* Check if file exists */
 static int
@@ -487,40 +498,67 @@ write_status()
 	}
 	close(fd);
 
-	if (unbound)
-		return write_unbound_conf();
-
 	return (0);
 }
 
-static int
-write_unbound_conf()
+static char* 
+reverse_ip(char* ip)
+{
+	in_addr_t addr;
+	size_t size = sizeof(char) * INET_ADDRSTRLEN;
+	char* reversed_ip = malloc(size);
+	/* Get the textual address into binary format */
+	inet_pton(AF_INET, ip, &addr);
+
+	/* Reverse the bytes in the binary address */
+	addr =
+		((addr & 0xff000000) >> 24) |
+		((addr & 0x00ff0000) >>  8) |
+		((addr & 0x0000ff00) <<  8) |
+		((addr & 0x000000ff) << 24);
+
+	/* And lastly get a textual representation back again */
+	inet_ntop(AF_INET, &addr, reversed_ip, size);
+	return (reversed_ip);
+}
+
+static int 
+write_unbound_diff()
 {
 	struct isc_lease *lease;
-	int fd;
+	FILE* fp;
 
-	fd = open(unbound_conf, O_WRONLY | O_TRUNC | O_CREAT | O_FSYNC);
-	if (fd < 0)
-		return 1;
+	fp = popen("sort > /tmp/dhcpleases.sort && \
+					/usr/local/sbin/unbound-control -c /var/unbound/unbound.conf view_list_local_data dhcpleases | \
+					sed '/^$/d' | \
+					awk '{print $1\" \"$4\" \"$5}' | \
+					sort | \
+					diff /tmp/dhcpleases.sort - > /tmp/dhcpleases.diff && rm /tmp/dhcpleases.sort", "w");
+	
+	if (fp == NULL) {
+   	syslog(LOG_ERR, "Failed to write unbound dhcpleases diff: %m\n");
+    	return (1);
+  	}
 
-	/* put a blank line just to be on safe side */
-	dprintf(fd, "\n# dhcpleases automatically entered\n");
 	LIST_FOREACH(lease, &leases, next) {
 		if (!lease->fqdn)
 			continue;
+		
+		char *addr = inet_ntoa(lease->addr);
+		char* reversed_ip = reverse_ip(addr);
+
 		if (foreground) {
-			printf("local-data: \"%s IN A %s\"\n", lease->fqdn,
-			    inet_ntoa(lease->addr));
-			printf("local-data-ptr: \"%s %s\"\n",
-			    inet_ntoa(lease->addr), lease->fqdn);
+			printf("%s. A %s\n", lease->fqdn, addr);
+			printf("%s.in-addr.arpa. PTR %s.\n", reversed_ip, lease->fqdn);
 		} else {
-			dprintf(fd, "local-data: \"%s IN A %s\"\n", lease->fqdn,
-			    inet_ntoa(lease->addr));
-			dprintf(fd, "local-data-ptr: \"%s %s\"\n",
-			    inet_ntoa(lease->addr), lease->fqdn);
+			fprintf(fp, "%s. A %s\n", lease->fqdn, addr);
+			fprintf(fp, "%s.in-addr.arpa. PTR %s.\n", reversed_ip, lease->fqdn);
 		}
+
+		free(reversed_ip);
 	}
-	close(fd);
+
+	pclose(fp);
 
 	return (0);
 }
@@ -569,56 +607,6 @@ cleanup()
 }
 
 static void
-signal_process(char *pidfile)
-{
-	FILE *fd;
-	int size = 0;
-	char *pid = NULL, *pc;
-	int c, pidno;
-
-	if (pidfile == NULL)
-		return;
-	size = fsize(pidfile);
-	if (size < 0)
-		goto error;
-
-	fd = fopen(pidfile, "r");
-	if (fd == NULL)
-		goto error;
-
-	pid = calloc(1, size + 1);
-	if (pid == NULL) {
-		fclose(fd);
-		goto error;
-	}
-	pc = pid;
-	while ((c = getc(fd)) != EOF) {
-		if (c == '\n')
-			break;
-		*pc++ = c;
-	}
-	fclose(fd);
-
-	pidno = atoi(pid);
-	free(pid);
-
-	if (pidno <= 1) {
-		syslog(LOG_ERR, "Invalid PID for dns daemon(%u)", pidno);
-		return;
-	}
-	syslog(LOG_INFO, "Sending HUP signal to dns daemon(%u)", pidno);
-	if (kill((pid_t)pidno, SIGHUP) < 0)
-		goto error;
-
-	return;
-error:
-	syslog(LOG_ERR,
-	    "Could not deliver signal HUP to process because its pidfile (%s) does not exist, %m.",
-	    pidfile);
-	return;
-}
-
-static void
 handle_signal(int sig)
 {
 	int size;
@@ -642,22 +630,195 @@ handle_signal(int sig)
 	}
 }
 
+static int 
+exec_and_cb(char *cmd, int (*callback)(FILE *fp))
+{
+	FILE *fp = popen(cmd, "r");
+
+	if (fp == NULL) {
+   	syslog(LOG_ERR, "Failed to run command: %s Reason: %m\n", cmd);
+    	return (1);
+  	}
+
+	callback(fp);
+	pclose(fp);
+	return (0);
+}
+
+static int 
+print_cb(FILE *fp)
+{
+	char buf[256];
+
+	while (fgets(buf, sizeof(buf), fp) != NULL) {
+		if(foreground) printf("%s", buf);
+	}
+
+	return (0);
+}
+
+static int 
+bulk_cb(FILE *fp)
+{
+	char buf[256];
+
+	while (fgets(buf, sizeof(buf), fp) != NULL) {
+		syslog(LOG_ERR, "%s", buf);
+	}
+
+	return (0);
+}
+
+static int 
+delete_cb(FILE *fp)
+{
+	char buf[512];
+	int deleted = 0;
+	char *del_cmd = malloc(512);
+
+	while (fgets(buf, sizeof(buf), fp) != NULL) {	
+		snprintf(del_cmd, 512, "/usr/local/sbin/unbound-control -c /var/unbound/unbound.conf view_local_data_remove dhcpleases %s", buf);
+		if(exec_and_cb(del_cmd, print_cb) == 0){
+			deleted++;
+		}
+	}
+
+	free(del_cmd);
+	syslog(LOG_ERR, "deleted %d datas\n", deleted);
+	return (0);
+}
+
+static int
+sync_unbound()
+{
+	int error = 0;
+	syslog(LOG_ERR, "start sync with unbound");
+	
+	// remove obsolete leases
+	if(!bulk_remove){
+		error = exec_and_cb("grep \">\" /tmp/dhcpleases.diff | \
+						awk '{print $2}'", 
+						delete_cb) != 0;
+	}
+	else {
+		error = exec_and_cb("grep \">\" /tmp/dhcpleases.diff | \
+						awk '{print $2}' | \
+						/usr/local/sbin/unbound-control -c /var/unbound/unbound.conf \
+							view_local_datas_remove dhcpleases", 
+						bulk_cb) != 0;
+	}
+
+	if(!error &&
+		// add missing leases
+		exec_and_cb("grep \"<\" /tmp/dhcpleases.diff | \
+						awk '{print $2\" \"$3\" \"$4}' | \
+						/usr/local/sbin/unbound-control -c /var/unbound/unbound.conf \
+							view_local_datas dhcpleases", 
+						bulk_cb) == 0){
+		syslog(LOG_ERR, "sync done.");
+		return (0);
+	}
+	else {
+		syslog(LOG_ERR, "sync failed.");
+		return (1);
+	}
+}
+
+static void
+log_kqueue_errno(){
+	char *msg;
+
+	switch(errno){
+		case ENOMEM:
+			msg = "The kernel failed to allocate enough memory for \
+					the kernel queue.";
+		case EMFILE: 
+			msg = "The per-process descriptor table is full.";
+		case ENFILE:
+			msg = "The system file table is full.";
+		default:
+			msg = "unknown";
+	}
+
+	syslog(LOG_ERR, "kqueue error: %s", msg);
+}
+
+static void
+log_kevent_errno(){
+	char *msg;
+
+	switch(errno){
+		case EACCES:
+			msg = "The process does not have permission to register a filter.";
+		break;
+		case EFAULT:
+			msg = "There was an error reading or writing the kevent structure.";
+		break;
+		case EBADF:
+			msg = "The specified descriptor is invalid.";
+		break;
+		case EINTR:
+			msg = "A signal was delivered before the timeout expired and \
+					before any events were placed on the kqueue for return.";
+		break;
+		case EINVAL:
+			msg = "The specified time limit or filter is invalid.";
+		break;
+		case ENOENT:
+			msg = "The event could not be found to be modified or deleted.";
+		break;
+		case ENOMEM:
+			msg = "No memory was available to register the event or, \
+					in the special case of a timer, the maximum number \
+					of timers has been exceeded.  This maximum is configurable \
+					via the kern.kq_calloutmax sysctl.";
+		break;
+		case ESRCH:
+			msg = "The specified process to attach to does not exist.";
+		break;
+		default:
+			msg = "unknown";
+	}
+
+	syslog(LOG_ERR, "kevent error: %s", msg);
+}
+
+void
+usage(char * name){
+	char *usage = 
+"\n\
+Usage:	%s [Options]\n\n\
+Options:\n\
+-c <command>               run <command> on lease changes instead of usual behaviour\n\
+-d <domain suffix>	   domain suffix appended to hostnames (default: local)\n\
+-f	                   run in foreground\n\
+-h <hosts file>            system hosts file (usually /etc/hosts) (mandatory if started in background)\n\
+-l <dhcp leases file>      dhcp leases file (mandatory)\n\
+-u <unbound pid nr.>       unbound pid number (mandatory if started in background)\n\
+-b                         use bulk delete operations to delete dns entries\n\
+                           for unbound-control versions supporting command: view_local_datas_remove\n\n";
+	asprintf(&usage, usage, name);
+	printf("%s", usage);
+}
+
 int
 main(int argc, char **argv)
 {
-	char *command, *domain_sufix, *leasefile, *pidfile;
+	char *command, *domain_sufix, *leasefile;
 	FILE *fp;
-	struct kevent evlist;    /* events we want to monitor */
-	struct kevent chlist;    /* events that were triggered */
+	struct kevent *ke = malloc(sizeof(struct kevent) * 2); /* monitored/triggered events */
 	struct sigaction sa;
 	time_t	now;
-	int kq, nev, leasefd, pidf, ch;
+	int kq, leasefd, pidf, ch;
+	int unbound_pid;
+	char *ptr;
 
 	command = NULL;
 	domain_sufix = NULL;
 	leasefile = NULL;
-	pidfile = NULL;
-	while ((ch = getopt(argc, argv, "c:d:fp:h:l:u:")) != -1) {
+	unbound_pid = 0;
+	
+	while ((ch = getopt(argc, argv, "c:d:fh:l:u:b")) != -1) {
 		switch (ch) {
 		case 'c':
 			command = optarg;
@@ -668,9 +829,6 @@ main(int argc, char **argv)
 		case 'f':
 			foreground = 1;
 			break;
-		case 'p':
-			pidfile = optarg;
-			break;
 		case 'h':
 			HOSTS = optarg;
 			break;
@@ -678,48 +836,58 @@ main(int argc, char **argv)
 			leasefile = optarg;
 			break;
 		case 'u':
-			unbound_conf = optarg;
-			unbound = 1;
+			unbound_pid = strtol(optarg, &ptr, 10);
+			if(unbound_pid <= 0 || strlen(ptr) != 0){
+				syslog(LOG_ERR, "Wrong unbound pid: %s", optarg);
+				printf("Wrong unbound pid: %s\n", optarg);
+				exit(1);
+			}
+			break;
+		case 'b':
+			bulk_remove = 1;
 			break;
 		default:
-			/* XXX: usage */
-			printf("Wrong number of arguments given.\n");
+			usage(argv[0]);
 			exit(2);
-			/* NOTREACHED */
 		}
 	}
 	argc -= optind;
 	argv += optind;
 
 	if (leasefile == NULL) {
-		syslog(LOG_ERR, "lease file is mandatory as parameter");
-		printf("lease file is mandatory as parameter\n");
+		syslog(LOG_ERR, "Lease file is mandatory as parameter.");
+		printf("Lease file is mandatory as parameter.\n");
+		usage(argv[0]);
 		exit(1);
 	}
 	if (!fexist(leasefile)) {
 		syslog(LOG_ERR,
-		    "lease file needs to exist before starting dhcpleases");
+		    "Lease file needs to exist before starting dhcpleases.");
 		printf(
-		    "lease file needs to exist before starting dhcpleases\n");
+		    "Lease file needs to exist before starting dhcpleases.\n");
 		exit(1);
 	}
 	if (domain_suffix == NULL) {
 		syslog(LOG_ERR,
-		    "a domain suffix is not passed as argument using 'local' as suffix");
+		    "A domain suffix is not passed as argument using 'local' as suffix.");
+		printf(
+		    "A domain suffix is not passed as argument using 'local' as suffix.\n");
 		domain_suffix = "local";
 	}
 
-	if (pidfile == NULL && !foreground) {
-		syslog(LOG_ERR, "pidfile argument not passed it is mandatory");
-		printf("pidfile argument not passed it is mandatory\n");
+	if (unbound_pid <= 0 && !foreground) {
+		syslog(LOG_ERR, "Unbound pid argument not passed. It is mandatory if run in background.");
+		printf("Unbound pid argument not passed. It is mandatory if run in background.\n");
+		usage(argv[0]);
 		exit(1);
 	}
 
 	if (!foreground) {
 		if (HOSTS == NULL) {
 			syslog(LOG_ERR,
-			    "You need to specify the hosts file path.");
-			printf("You need to specify the hosts file path.\n");
+			    "You need to specify the hosts file path. It is mandatory if run in background.");
+			printf("You need to specify the hosts file path. It is mandatory if run in background.\n");
+			usage(argv[0]);
 			exit(8);
 		}
 		if (!fexist(HOSTS)) {
@@ -740,14 +908,14 @@ main(int argc, char **argv)
 		closefrom(3);
 
 		if (daemon(0, 0) < 0) {
-			perror("Could not daemonize");
-			syslog(LOG_ERR, "Could not daemonize");
+			perror("Could not daemonize.");
+			syslog(LOG_ERR, "Could not daemonize.");
 			exit(4);
 		}
 
 		pidf = open(PIDFILE, O_RDWR | O_CREAT | O_FSYNC);
 		if (pidf < 0)
-			syslog(LOG_ERR, "could not write pid file, %m");
+			syslog(LOG_ERR, "Could not write pid file, %m.");
 		else {
 			ftruncate(pidf, 0);
 			dprintf(pidf, "%u\n", getpid());
@@ -761,71 +929,100 @@ main(int argc, char **argv)
 		sa.sa_flags = SA_SIGINFO|SA_RESTART;
 		sigemptyset(&sa.sa_mask);
 		if (sigaction(SIGHUP, &sa, NULL) < 0) {
-			syslog(LOG_ERR, "unable to set signal handler, %m");
+			syslog(LOG_ERR, "Unable to set signal handler, %m.");
 			exit(9);
 		}
 		if (sigaction(SIGTERM, &sa, NULL) < 0) {
-			syslog(LOG_ERR, "unable to set signal handler, %m");
+			syslog(LOG_ERR, "Unable to set signal handler, %m.");
 			exit(10);
 		}
 
 		/* Create a new kernel event queue */
-		if ((kq = kqueue()) == -1)
+		if ((kq = kqueue()) == -1){
+			log_kqueue_errno();
 			exit(1);
+		}
 	}
 
 reopen:
 	leasefd = open(leasefile, O_RDONLY);
 	if (leasefd < 0) {
-		perror("Could not get descriptor");
-		syslog(LOG_ERR, "Could not get descriptor");
+		perror("Could not get descriptor.");
+		syslog(LOG_ERR, "Could not get descriptor.");
 		exit(6);
 	}
 
 	fp = fdopen(leasefd, "r");
 	if (fp == NULL) {
-		perror("could not open leases file");
-		syslog(LOG_ERR, "could not open leases file");
+		perror("Could not open leases file.");
+		syslog(LOG_ERR, "Could not open leases file.");
 		exit(5);
 	}
 
 	now = time(NULL);
 	if (command == NULL) {
 		load_dhcp(fp, leasefile, domain_sufix, now);
-
 		write_status();
 
-		cleanup();
+		if (unbound_pid){
+			write_unbound_diff();
+			
+			if(!foreground){
+				sync_unbound();
+			}
+		}
 
-		if (!foreground)
-			signal_process(pidfile);
+		cleanup();
 	}
 
 	if (!foreground) {
 		/* Initialise kevent structure */
-		EV_SET(&chlist, leasefd, EVFILT_VNODE,
-		    EV_ADD | EV_CLEAR | EV_ENABLE,
-		    NOTE_WRITE | NOTE_ATTRIB | NOTE_DELETE | NOTE_RENAME |
-			NOTE_LINK,
-		    0, NULL);
+		int ec = 0;
+
+		if(unbound_pid){
+			EV_SET(
+				ke, 
+				unbound_pid, 
+				EVFILT_PROC, 
+				EV_ADD, 
+				NOTE_EXIT, 
+				0, 
+				NULL
+			);
+			ec++;
+		}
+
+		EV_SET(
+			ke+ec, 
+			leasefd, 
+			EVFILT_VNODE,
+		   EV_ADD | EV_CLEAR | EV_ENABLE,
+			NOTE_WRITE | NOTE_EXTEND | NOTE_DELETE | NOTE_RENAME | NOTE_LINK,
+		   0, 
+			NULL
+		);
+		ec++;		
+		
+		/* Register for the event(s) */
+    	if(kevent(kq, ke, ec, NULL, 0, NULL) < 0)
+        log_kevent_errno();
+
 		/* Loop forever */
 		for (;;) {
-			nev = kevent(kq, &chlist, 1, &evlist, 1, NULL);
-			if (nev == -1) {
-				syslog(LOG_ERR, "kqueue error: unknown");
-				fclose(fp);
-				goto reopen;
-			} else if (nev > 0) {
-				if (evlist.flags & EV_ERROR) {
-					syslog(LOG_ERR, "EV_ERROR: %s\n",
-					    strerror(evlist.data));
-					fclose(fp);
-					goto reopen;
-				}
-				if ((evlist.fflags & NOTE_DELETE) ||
-				    (evlist.fflags & NOTE_RENAME)) {
-					fclose(fp);
-					goto reopen;
+			memset(ke, 0x00, sizeof(struct kevent));
+			if(kevent(kq, NULL, 0, ke, 1, NULL) < 0)
+            log_kevent_errno();
+			
+			if (ke->flags & EV_ERROR) {
+				syslog(LOG_ERR, "EV_ERROR: %s\n",
+						strerror(ke->data));
+				break;
+			}
+
+			if(ke->filter == EVFILT_VNODE) {	
+				if ((ke->fflags & NOTE_DELETE) ||
+				    (ke->fflags & NOTE_RENAME)) {
+					break;
 				}
 				now = time(NULL);
 				if (command != NULL)
@@ -836,12 +1033,23 @@ reopen:
 
 					write_status();
 
-					cleanup();
+					if(unbound_pid) {
+						write_unbound_diff();
+						sync_unbound();
+					}
 
-					signal_process(pidfile);
+					cleanup();
 				}
 			}
+			else if(ke->filter == EVFILT_PROC){
+				syslog(LOG_ERR, "Exiting, because unbound process exited.");
+				exit(11);
+			}
 		}
+
+		fclose(fp);
+		close(leasefd);
+		goto reopen;
 	}
 
 	fclose(fp);
