@@ -122,6 +122,8 @@ if (empty($pconfig['mpm_algo']))
 	$pconfig['mpm_algo'] = "auto";
 if (empty($pconfig['sgh_mpm_context']))
 	$pconfig['sgh_mpm_context'] = "auto";
+if (empty($pconfig['enable_stats_collection']))
+	$pconfig['enable_stats_collection'] = "off";
 if (empty($pconfig['enable_http_log']))
 	$pconfig['enable_http_log'] = "on";
 if (empty($pconfig['append_http_log']))
@@ -205,7 +207,6 @@ if (empty($pconfig['eve_log_stats_threads']))
 if (empty($pconfig['eve_log_drop'])) {
 	$pconfig['eve_log_drop'] = "on";
 }
-
 if (empty($pconfig['eve_log_http_extended']))
 	$pconfig['eve_log_http_extended'] = $pconfig['http_log_extended'];
 if (empty($pconfig['eve_log_tls_extended']))
@@ -214,18 +215,14 @@ if (empty($pconfig['eve_log_dhcp_extended']))
 	$pconfig['eve_log_dhcp_extended'] = "off";
 if (empty($pconfig['eve_log_smtp_extended']))
 	$pconfig['eve_log_smtp_extended'] = $pconfig['smtp_log_extended'];
-
 if (empty($pconfig['eve_log_http_extended_headers']))
 	$pconfig['eve_log_http_extended_headers'] = "accept, accept-charset, accept-datetime, accept-encoding, accept-language, accept-range, age, allow, authorization, cache-control, connection, content-encoding, content-language, content-length, content-location, content-md5, content-range, content-type, cookie, date, dnt, etags, from, last-modified, link, location, max-forwards, origin, pragma, proxy-authenticate, proxy-authorization, range, referrer, refresh, retry-after, server, set-cookie, te, trailer, transfer-encoding, upgrade, vary, via, warning, www-authenticate, x-authenticated-user, x-flash-version, x-forwarded-proto, x-requested-with";
-
 if (empty($pconfig['eve_log_smtp_extended_fields']))
 	$pconfig['eve_log_smtp_extended_fields'] = "received, x-mailer, x-originating-ip, relays, reply-to, bcc";
-
 if (empty($pconfig['eve_log_files_magic']))
 	$pconfig['eve_log_files_magic'] = "off";
 if (empty($pconfig['eve_log_files_hash']))
 	$pconfig['eve_log_files_hash'] = "none";
-
 if (empty($pconfig['eve_redis_server']))
 	$pconfig['eve_redis_server'] = "127.0.0.1";
 if (empty($pconfig['eve_redis_port']))
@@ -234,12 +231,10 @@ if (empty($pconfig['eve_redis_mode']))
 	$pconfig['eve_redis_mode'] = "list";
 if (empty($pconfig['eve_redis_key']))
 	$pconfig['eve_redis_key'] = "suricata";
-
 if (empty($pconfig['intf_promisc_mode']))
 	$pconfig['intf_promisc_mode'] = "on";
 if (empty($pconfig['intf_snaplen']))
 	$pconfig['intf_snaplen'] = "1518";
-
 if (empty($pconfig['file_store_logdir']))
 	$pconfig['file_store_logdir'] = base64_encode("{$suricatalogdir}suricata_{$if_real}{$a_rule[$id]['uuid']}/filestore");
 
@@ -338,6 +333,9 @@ if (isset($_POST["save"]) && !$input_errors) {
 	if (!empty($_POST['eve_redis_key']) && !preg_match('/^[A-Za-z0-9]+$/',$_POST['eve_redis_key']))
 		$input_errors[] = gettext("The value for 'EVE REDIS Key' must be alphanumeric.");
 
+	if ($_POST['enable_telegraf_stats'] == "on" && empty($_POST['suricata_telegraf_unix_socket_name']))
+		$input_errors[] = gettext("You must specify the Unix Socket name when enabling Telegraf stats output!");
+
 	// if no errors write to suricata.yaml
 	if (!$input_errors) {
 		$natent = $a_rule[$id];
@@ -348,9 +346,12 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['descr']) $natent['descr'] =  htmlspecialchars($_POST['descr']); else $natent['descr'] = strtoupper($natent['interface']);
 		if ($_POST['max_pcap_log_size']) $natent['max_pcap_log_size'] = $_POST['max_pcap_log_size']; else unset($natent['max_pcap_log_size']);
 		if ($_POST['max_pcap_log_files']) $natent['max_pcap_log_files'] = $_POST['max_pcap_log_files']; else unset($natent['max_pcap_log_files']);
+		if ($_POST['enable_stats_collection'] == "on") { $natent['enable_stats_collection'] = 'on'; }else{ $natent['enable_stats_collection'] = 'off'; }
 		if ($_POST['enable_stats_log'] == "on") { $natent['enable_stats_log'] = 'on'; }else{ $natent['enable_stats_log'] = 'off'; }
 		if ($_POST['append_stats_log'] == "on") { $natent['append_stats_log'] = 'on'; }else{ $natent['append_stats_log'] = 'off'; }
 		if ($_POST['stats_upd_interval'] >= 1) $natent['stats_upd_interval'] = $_POST['stats_upd_interval']; else $natent['stats_upd_interval'] = "10";
+		if ($_POST['enable_telegraf_stats'] == "on") $natent['enable_telegraf_stats'] = 'on'; else $natent['enable_telegraf_stats'] = 'off';
+		if ($_POST['suricata_telegraf_unix_socket_name']) $natent['suricata_telegraf_unix_socket_name'] =  base64_encode($_POST['suricata_telegraf_unix_socket_name']);
 		if ($_POST['enable_http_log'] == "on") { $natent['enable_http_log'] = 'on'; }else{ $natent['enable_http_log'] = 'off'; }
 		if ($_POST['append_http_log'] == "on") { $natent['append_http_log'] = 'on'; }else{ $natent['append_http_log'] = 'off'; }
 		if ($_POST['enable_tls_log'] == "on") { $natent['enable_tls_log'] = 'on'; }else{ $natent['enable_tls_log'] = 'off'; }
@@ -715,10 +716,10 @@ $section->addInput(new Form_Select(
 ))->setHelp('Select system log Priority (Level) to use for reporting. Default is NOTICE.');
 
 $section->addInput(new Form_Checkbox(
-	'enable_stats_log',
-	'Enable Stats Log',
-	'Suricata will periodically log statistics for the interface. Default is Not Checked.',
-	$pconfig['enable_stats_log'] == 'on' ? true:false,
+	'enable_stats_collection',
+	'Enable Stats Collection',
+	'Suricata will periodically gather performance statistics for this interface. Default is Not Checked.',
+	$pconfig['enable_stats_collection'] == 'on' ? true:false,
 	'on'
 ));
 
@@ -727,15 +728,38 @@ $section->addInput(new Form_Input(
 	'Stats Update Interval',
 	'text',
 	$pconfig['stats_upd_interval']
-))->setHelp('Enter the update interval in seconds for collection and logging of statistics. Default is 10.');
+))->setHelp('Enter the update interval in seconds for collection of performance statistics. Default is 10 seconds.');
+
+$section->addInput(new Form_Checkbox(
+	'enable_stats_log',
+	'Enable Stats Log',
+	'Suricata will periodically log statistics for this interface to a CSV text log file. Default is Not Checked.',
+	$pconfig['enable_stats_log'] == 'on' ? true:false,
+	'on'
+));
 
 $section->addInput(new Form_Checkbox(
 	'append_stats_log',
 	'Append Stats Log',
-	'Suricata will append-to instead of clearing statistics log file when restarting. Default is Not Checked.',
+	'Suricata will append-to instead of clearing the stats log file when restarting. Default is Not Checked.',
 	$pconfig['append_stats_log'] == 'on' ? true:false,
 	'on'
 ));
+
+$section->addInput(new Form_Checkbox(
+	'enable_telegraf_stats',
+	'Enable Telegraf Stats',
+	'Suricata will periodically log statistics for this interface to Telegraf via a Unix socket. Default is Not Checked.',
+	$pconfig['enable_telegraf_stats'] == 'on' ? true:false,
+	'on'
+));
+
+$section->addInput(new Form_Input(
+	'suricata_telegraf_unix_socket_name',
+	'Telegraf Unix Socket',
+	'text',
+	base64_decode($pconfig['suricata_telegraf_unix_socket_name'])
+))->setHelp('Enter the full Unix socket name configured in Telegraf. This value must match exactly what is configured in the Telegraf input.suricata plugin! Note that Suricata will not create this socket. It must be created by Telegraf.');
 
 $section->addInput(new Form_Checkbox(
 	'enable_http_log',
@@ -1581,13 +1605,35 @@ events.push(function(){
 		hideSelect('alertsystemlog_priority', hide);
 	}
 
-	function toggle_stats_log() {
-		var hide = ! $('#enable_stats_log').prop('checked');
+	function toggle_enable_stats() {
+		var hide = ! $('#enable_stats_collection').prop('checked');
 		hideInput('stats_upd_interval', hide);
-		hideCheckbox('append_stats_log', hide);
-		disableInput('eve_log_stats',hide);
-		var hide_stats_eve = ! ($('#enable_stats_log').prop('checked') && $('#eve_log_stats').prop('checked'));
-		hideClass('eve_log_stats_details',hide_stats_eve);
+		toggle_stats_log();
+		toggle_telegraf_stats();
+		toggle_eve_log_stats();
+		hideCheckbox('enable_telegraf_stats', hide);
+		hideCheckbox('enable_stats_log', hide);
+		disableInput('eve_log_stats', hide);
+	}
+
+	function toggle_stats_log() {
+		if ($('#enable_stats_collection').prop('checked')) {
+			var hide = ! $('#enable_stats_log').prop('checked');
+			hideCheckbox('append_stats_log', hide);
+		}
+		else {
+			hideCheckbox('append_stats_log', true);
+		}
+	}
+
+	function toggle_telegraf_stats() {
+		if ($('#enable_stats_collection').prop('checked')) {
+			var hide = ! $('#enable_telegraf_stats').prop('checked');
+			hideInput('suricata_telegraf_unix_socket_name', hide);
+		}
+		else {
+			hideInput('suricata_telegraf_unix_socket_name', true);
+		}
 	}
 
 	function toggle_http_log() {
@@ -1653,7 +1699,7 @@ events.push(function(){
 	}
 
 	function toggle_eve_log_stats() {
-		var hide = ! ($('#eve_log_stats').prop('checked') && $('#enable_eve_log').prop('checked') && $('#enable_stats_log').prop('checked'));
+		var hide = ! ($('#eve_log_stats').prop('checked') && $('#enable_eve_log').prop('checked') && $('#enable_stats_collection').prop('checked'));
 		hideClass('eve_log_stats_details',hide);
 	}
 
@@ -1728,9 +1774,12 @@ events.push(function(){
 		disableInput('passlistname', disable);
 		disableInput('btnPasslist', disable);
 		disableInput('configpassthru', disable);
+		disableInput('enable_stats_collection', disable);
 		disableInput('enable_stats_log', disable);
 		disableInput('stats_upd_interval', disable);
 		disableInput('append_stats_log', disable);
+		disableInput('enable_telegraf_stats', disable);
+		disableInput('suricata_telegraf_unix_socket_name', disable);
 		disableInput('enable_http_log', disable);
 		disableInput('append_http_log', disable);
 		disableInput('http_log_extended', disable);
@@ -1794,7 +1843,7 @@ events.push(function(){
 		var disable_smtp = ! $('#eve_log_smtp').prop('checked');
 		disableInput('eve_log_smtp_extended',disable||disable_smtp);
 
-		var disable_stats = ! $('#enable_stats_log').prop('checked');
+		var disable_stats = ! $('#enable_stats_collection').prop('checked');
 		disableInput('eve_log_stats',disable||disable_stats);
 
 		disableInput('eve_log_stats_totals',disable);
@@ -1857,8 +1906,16 @@ events.push(function(){
 		toggle_system_log();
 	});
 
+	$('#enable_stats_collection').click(function() {
+		toggle_enable_stats();
+	});
+
 	$('#enable_stats_log').click(function() {
 		toggle_stats_log();
+	});
+
+	$('#enable_telegraf_stats').click(function() {
+		toggle_telegraf_stats();
 	});
 
 	$('#enable_http_log').click(function() {
@@ -1966,7 +2023,7 @@ events.push(function(){
 	enable_change();
 	enable_blockoffenders();
 	toggle_system_log();
-	toggle_stats_log();
+	toggle_enable_stats();
 	toggle_http_log();
 	toggle_tls_log();
 	toggle_enable_file_store();
@@ -1977,7 +2034,6 @@ events.push(function(){
 	toggle_eve_syslog();
 	toggle_eve_log_alerts();
 	toggle_eve_log_alerts_xff();
-	toggle_eve_log_stats();
 	toggle_eve_log_http();
 	toggle_eve_log_smtp();
 	toggle_eve_log_tls();
