@@ -159,7 +159,7 @@ function suricata_restart_all_interfaces() {
 	suricata_start_all_interfaces(TRUE);
 }
 
-function suricata_reload_config($suricatacfg, $signal="USR2") {
+function suricata_reload_config($suricatacfg, $signal="SIGUSR2") {
 
 	/**************************************************************/
 	/* This function sends the passed SIGNAL to the Suricata      */
@@ -169,11 +169,10 @@ function suricata_reload_config($suricatacfg, $signal="USR2") {
 	/* as a background process and returns control immediately    */
 	/* to the caller.                                             */
 	/*                                                            */
-	/*  $signal = USR2 (default) parses and reloads config.       */
+	/*  $signal = SIGUSR2 (default) parses and reloads config.    */
 	/**************************************************************/
 	global $g;
 
-	$suricatadir = SURICATADIR;
 	$suricata_uuid = $suricatacfg['uuid'];
 	$if_real = get_real_interface($suricatacfg['interface']);
 
@@ -186,12 +185,32 @@ function suricata_reload_config($suricatacfg, $signal="USR2") {
 	}
 
 	/******************************************************/
-	/* Only send the SIGUSR2 if Suricata is running and   */
+	/* Only send the SIGNAL if Suricata is running and    */
 	/* we can find a valid PID for the process.           */
 	/******************************************************/
 	if (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid")) {
-		syslog(LOG_NOTICE, "[Suricata] Suricata LIVE RULE RELOAD initiated for {$suricatacfg['descr']} ({$if_real})...");
+
+		// Send the SIGNAL to the Suricata process
 		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
+
+		// Log what we did
+		switch ($signal) {
+			case SIGHUP:
+				syslog(LOG_NOTICE, "[Suricata] Suricata LOGS ROTATION initiated for {$suricatacfg['descr']} ({$if_real})...");
+				break;
+
+			case SIGUSR2:
+				syslog(LOG_NOTICE, "[Suricata] Suricata LIVE RULE RELOAD initiated for {$suricatacfg['descr']} ({$if_real})...");
+				break;
+
+			case SIGTERM:
+			case SIGINT:
+				syslog(LOG_NOTICE, "[Suricata] Suricata SHUTDOWN initiated for {$suricatacfg['descr']} ({$if_real})...");
+				break;
+
+			default:
+				syslog(LOG_NOTICE, "[Suricata] Suricata signalled with {$signal} for {$suricatacfg['descr']} ({$if_real})...");
+		}
 	}
 }
 
@@ -979,42 +998,6 @@ function suricata_load_suppress_sigs($suricatacfg, $track_by=false) {
 	}
 	unset($alist);
 	return $suppress;
-}
-
-function suricata_post_delete_logs($suricata_uuid = 0) {
-
-	/***********************************************/
-	/* This function cleans up related log files   */
-	/* for the passed instance.  These include     */
-	/* pcap logs.                                  */
-	/***********************************************/
-
-	global $config, $g;
-
-	// do nothing if no Suricata interfaces active
-	if (!is_array($config['installedpackages']['suricata']['rule'])) {
-		return;
-	}
-
-	foreach ($config['installedpackages']['suricata']['rule'] as $value) {
-		if ($value['uuid'] != $suricata_uuid) {
-			continue;
-		}
-		$if_real = get_real_interface($value['interface']);
-		$suricata_log_dir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}";
-
-		if ($if_real != '') {
-
-			/* Clean-up packet capture files if any exist */
-			$filelist = glob("{$suricata_log_dir}/log.pcap.*");
-			// Keep most recent file
-			unset($filelist[count($filelist) - 1]);
-			foreach ($filelist as $file) {
-				unlink_if_exists($file);
-			}
-			unset($filelist);
-		}
-	}
 }
 
 /* This returns size of passed directory or file in 1024-byte blocks */
