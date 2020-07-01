@@ -189,6 +189,8 @@ function suricata_check_filestore_limit_size($store_path, $store_limit) {
 	 *                                                         *
 	 * On Entry: $store_path   -> full pathname to check       *
 	 *           $store_limit  -> size limit in MB             *
+	 *                                                         *
+	 * On Exit:  returns number of removed files               *
 	 ***********************************************************/
 
 	$removed = 0;
@@ -237,6 +239,8 @@ function suricata_check_prune_filestore_files($store_path, $retention = 0) {
 	 *           $retention  -> retention period in hours   *
 	 *                          for captured files. Zero    *
 	 *                          means never remove.         *
+	 *                                                      *
+	 * On Exit:  returns number of pruned files             *
 	 ********************************************************/
 
 	$prune_count = 0;
@@ -285,18 +289,23 @@ function suricata_check_rotate_log($log_file, $log_limit, $retention) {
 	 *           $retention -> retention period in hours    *
 	 *                         for rotated logs. Zero       *
 	 *                         means never remove.          *
+	 *                                                      *
+	 * On Exit:  returns number of rotated files            *
 	 ********************************************************/
+
+	$rotated_count = 0;
 
 	// Check the current log to see if it needs rotating.
 	// If it does, rotate it and put the current time
 	// on the end of the filename as UNIX timestamp.
 	if (!file_exists($log_file))
-		return;
+		return $rotated_count;
 	if (($log_limit > 0) && (filesize($log_file) >= $log_limit)) {
 		$newfile = $log_file . "." . date('Y_md_Hi');
 		try {
 			rename($log_file, $newfile);
 			touch($log_file);
+			$rotated_count++;
 		} catch (Exception $e) {
 			syslog(LOG_ERR, "[Suricata] ERROR: Failed to rotate file '{$log_file}' -- error was {$e->getMessage()}");
 		}
@@ -315,6 +324,8 @@ function suricata_check_rotate_log($log_file, $log_limit, $retention) {
 		}
 		unset($rotated_files);
 	}
+
+	return $rotated_count;
 }
 
 /*************************
@@ -360,8 +371,15 @@ if ($config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 
 			continue;
 		}
 		$suricata_log_dir = SURICATALOGDIR . "suricata_{$if_real}{$value['uuid']}";
+		$rotated = 0;
 		foreach ($logs as $k => $p) {
-			suricata_check_rotate_log("{$suricata_log_dir}/{$k}", $p['limit']*1024, $p['retention']);
+			$rotated += suricata_check_rotate_log("{$suricata_log_dir}/{$k}", $p['limit']*1024, $p['retention']);
+		}
+		if ($rotated > 0) {
+			// Send the running Suricata instance on this interface a SIGHUP signal
+			// so it will re-open the log files we rotated and truncated.
+			suricata_reload_config($value, "SIGHUP");
+			syslog(LOG_NOTICE, gettext("[Suricata] Logs Mgmt job rotated {$rotated} file(s) in '{$suricata_log_dir}/' ..."));
 		}
 
 		// Prune aged-out File Store captured files if any exist
@@ -424,10 +442,6 @@ if ($config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 
 				syslog(LOG_NOTICE, gettext("[Suricata] Packet Capture log cleanup job removed {$prune_count} file(s) from {$suricata_log_dir}/..."));
 			unset($files, $remove_files);
 		}
-
-		// Send the running Suricata instance on this interface a SIGHUP signal
-		// so it will re-open the log files we rotated and truncated.
-		suricata_reload_config($value, "SIGHUP");
 	}
 }
 
