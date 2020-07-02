@@ -152,6 +152,7 @@ if ($mobile_p1['authentication_method'] == 'eap-tls') {
 			$tls_client_list[$crt['refid']] = $crt['descr'];
 		}
 	}
+	asort($tls_client_list, SORT_NATURAL | SORT_FLAG_CASE);
 	$section->addInput(new Form_Select(
 		'user_certref',
 		'TLS User Certificate',

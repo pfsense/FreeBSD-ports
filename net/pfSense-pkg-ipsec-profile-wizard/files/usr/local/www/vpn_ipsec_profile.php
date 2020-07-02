@@ -55,6 +55,7 @@ if (empty($mobile_p1)) {
 }
 
 $valid_users = iep_get_valid_users();
+asort($valid_users, SORT_NATURAL | SORT_FLAG_CASE);
 
 if ($_POST) {
 	if (($_POST['server_address'] == 'Custom Hostname') &&
