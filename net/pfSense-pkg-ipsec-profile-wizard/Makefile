@@ -34,6 +34,8 @@ do-install:
 		${STAGEDIR}/etc/inc/priv/
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/ipsec-profile.xml \
 		${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/ipsec-profile.inc \
+		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/vpn_ipsec_profile.php \
 		${STAGEDIR}${PREFIX}/www/
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/vpn_ipsec_export_win.php \
