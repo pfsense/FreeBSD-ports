@@ -178,11 +178,11 @@ global $apple_supported_map;
 $apple_supported_map = array(
 	'enc' => array(
 		'3des' => 'DES3',
-		'aes-128' => 'AES128',
-		'aes-192' => 'AES192',
-		'aes-256' => 'AES256',
-		'aes128gcm' => 'GCMAES128',
-		'aes256gcm' => 'GCMAES256'
+		'aes-128' => 'AES-128',
+		'aes-192' => 'AES-192',
+		'aes-256' => 'AES-256',
+		'aes128gcm' => 'AES-128-GCM',
+		'aes256gcm' => 'AES-256-GCM'
 	),
 	'hash' => array(
 		'sha1' => 'SHA1-96',
