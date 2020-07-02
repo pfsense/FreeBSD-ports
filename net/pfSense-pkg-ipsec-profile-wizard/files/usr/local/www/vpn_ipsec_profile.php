@@ -207,7 +207,7 @@ print($form);
 print_info_box(
 '<p>' . gettext('This page generates an IPsec VPN Profile compatible with Apple products.') . ' ' .
 gettext('Import the resulting profile into the client device or workstation.') .
-'<p>' . sprintf(gettext('Visit the %1$sApple Configurator Site%2$s for details about the creating and using profiles.'),
+'<p>' . sprintf(gettext('Visit the %1$sApple Configurator Site%2$s for details about creating and using profiles.'),
 	'<a href="https://support.apple.com/apple-configurator">', '</a>') . ' ' .
 '<p>' . sprintf(gettext('See the %1$sApple Configuration Profile Reference Documentation%2$s for details about the contents of profiles.'),
 	'<a href="https://developer.apple.com/business/documentation/Configuration-Profile-Reference.pdf">', '</a>')
