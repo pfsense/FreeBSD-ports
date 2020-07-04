@@ -1370,10 +1370,31 @@ function & get_certificate($name) {
 			echo "\n{$cert['prv']}";
 			$desc = "Acme: Add new certificate & key.";
 			write_config($desc);
-		} elseif (   $certificate['keylength'] == 'custom'
-				  && $cert['prv'] != $certificate['keypaste']) {
+		} elseif (($certificate['keylength'] == 'custom') && ($cert['prv'] != $certificate['keypaste'])) {
 			echo "\n getCertificatePSK updating custom key";
 			$cert['prv'] = $certificate['keypaste']; // (already base64-encoded)
+		} elseif ($certificate['keylength'] != 'custom') {
+			$res_key = openssl_pkey_get_private(base64_decode($cert['prv']));
+			$key_details = openssl_pkey_get_details($res_key);
+			if ($key_details['type'] == OPENSSL_KEYTYPE_RSA) {
+				$keybits = $key_details['bits'];
+			} else {
+				$keybits = $key_details['ec']['curve_name'];
+			}
+			if (is_numeric($certificate['keylength'])) {
+				$newkeybits = $certificate['keylength'];
+			} else {
+				if ($certificate['keylength'] == 'ec-256') {
+					$newkeybits = 'prime256v1';
+				} else {
+					$newkeybits = 'secp384r1';
+				}
+			}
+			if ($keybits != $newkeybits) {
+				echo "\n getCertificatePSK updating key";
+				$privatekey = generateDomainKey($certificatename, $ca, $domain, $certificate['keylength']);
+				$cert['prv'] = base64_encode($privatekey);
+			}
 		}
 
 		return base64_decode($cert['prv']);
