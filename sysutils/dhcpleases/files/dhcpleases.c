@@ -2,7 +2,7 @@
  * dhcpleases.c
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2010 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2010-2020 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -100,31 +100,31 @@ static void handle_signal(int);
 
 /* Check if file exists */
 static int
-fexist(char * filename)
+fexist(char *filename)
 {
-	struct stat buf;
+	struct stat st;
 
-	if (( stat (filename, &buf)) < 0)
+	if (stat(filename, &st) < 0)
 		return (0);
 
-	if (! S_ISREG(buf.st_mode))
+	if (!S_ISREG(st.st_mode))
 		return (0);
 
-	return(1);
+	return (1);
 }
 
 static int
-fsize(char * filename)
+fsize(char *filename)
 {
-	struct stat buf;
+	struct stat st;
 
-	if (( stat (filename, &buf)) < 0)
+	if (stat(filename, &st) < 0)
 		return (-1);
 
-	if (! S_ISREG(buf.st_mode))
+	if (!S_ISREG(st.st_mode))
 		return (-1);
 
-	return(buf.st_size);
+	return (st.st_size);
 }
 
 /*
@@ -199,12 +199,12 @@ hostname_isequal(char *a, char *b)
 }
 
 static int
-next_token (char *token, int buffsize, FILE * fp)
+next_token(char *token, int buffsize, FILE *fp)
 {
 	int c, count = 0, quotes = 0;
 	char *cp = token;
 
-	while((c = getc(fp)) != EOF) {
+	while ((c = getc(fp)) != EOF) {
 		if (c == '#')
 			do {
 				c = getc(fp);
@@ -213,17 +213,17 @@ next_token (char *token, int buffsize, FILE * fp)
 		if (c == '"')
 			quotes = (quotes == 0 ? 1 : 0);
 		if ((c == ' ' && quotes == 0) || c == '\t' || c == '\n' ||
-		    c == ';') {
-			if (count)
+		    (c == ';' && quotes == 0)) {
+			if (count > 0)
 				break;
-		} else if ((c != '"') && (count<buffsize-1)) {
+		} else if ((c != '"') && (count < buffsize - 1)) {
 			*cp++ = c;
 			count++;
 		}
 	}
 	*cp = 0;
 #if DEBUG
-	printf("|TOEN: %s, %d\n", token, count);
+	printf("|TOKEN: %s, %d\n", token, count);
 #endif
 	return count ? 1 : 0;
 }
@@ -280,7 +280,6 @@ load_dhcp(FILE *fp, char *leasefile, char *domain_sufix, time_t now)
 	struct isc_lease *lease, *tmp;
 
 	rewind(fp);
-	LIST_INIT(&leases);
 
 	while ((next_token(token, MAXTOK, fp))) {
 		if (strcmp(token, "lease") != 0) {
@@ -297,9 +296,6 @@ load_dhcp(FILE *fp, char *leasefile, char *domain_sufix, time_t now)
 
 		if (next_token(token, MAXTOK, fp) && *token == '{') {
 			while (next_token(token, MAXTOK, fp) && *token != '}') {
-#if DEBUG
-				printf("token: %s\n", token);
-#endif
 				if ((strcmp(token, "client-hostname") == 0) ||
 				    (strcmp(token, "hostname") == 0)) {
 					if (!next_token(hostname, MAXDNAME,
@@ -572,14 +568,14 @@ static void
 signal_process(char *pidfile)
 {
 	FILE *fd;
-	int size = 0;
-	char *pid = NULL, *pc;
+	int size;
+	char *pid, *pc;
 	int c, pidno;
 
 	if (pidfile == NULL)
 		return;
 	size = fsize(pidfile);
-	if (size < 0)
+	if (size < 0 || size > 16)
 		goto error;
 
 	fd = fopen(pidfile, "r");
@@ -591,11 +587,9 @@ signal_process(char *pidfile)
 		fclose(fd);
 		goto error;
 	}
-	pc = pid;
-	while ((c = getc(fd)) != EOF) {
-		if (c == '\n')
-			break;
-		*pc++ = c;
+	if (fread(pid, size, 1, fd) != 1) {
+		fclose(fd);
+		goto error;
 	}
 	fclose(fd);
 
@@ -608,12 +602,13 @@ signal_process(char *pidfile)
 	}
 	syslog(LOG_INFO, "Sending HUP signal to dns daemon(%u)", pidno);
 	if (kill((pid_t)pidno, SIGHUP) < 0)
-		goto error;
+		syslog(LOG_ERR,
+		    "Could not deliver signal HUP to process %d: %m.", pidno);
 
 	return;
 error:
 	syslog(LOG_ERR,
-	    "Could not deliver signal HUP to process because its pidfile (%s) does not exist, %m.",
+	    "Could not deliver signal HUP to process because its pidfile (%s) cannot be read, %m.",
 	    pidfile);
 	return;
 }
@@ -626,9 +621,7 @@ handle_signal(int sig)
 	switch(sig) {
 		case SIGHUP:
 			size = fsize(HOSTS);
-			if (hostssize < 0)
-				break; /* XXX: exit?! */
-			else
+			if (size > 0 && size < hostssize)
 				hostssize = size;
 			break;
 		case SIGTERM:
@@ -746,13 +739,13 @@ main(int argc, char **argv)
 		}
 
 		pidf = open(PIDFILE, O_RDWR | O_CREAT | O_FSYNC);
-		if (pidf < 0)
+		if (pidf < 0) {
 			syslog(LOG_ERR, "could not write pid file, %m");
-		else {
-			ftruncate(pidf, 0);
-			dprintf(pidf, "%u\n", getpid());
-			close(pidf);
+			exit(1);
 		}
+		ftruncate(pidf, 0);
+		dprintf(pidf, "%u\n", getpid());
+		close(pidf);
 
 		/*
 		 * Catch SIGHUP in order to reread configuration file.
@@ -773,6 +766,8 @@ main(int argc, char **argv)
 		if ((kq = kqueue()) == -1)
 			exit(1);
 	}
+
+	LIST_INIT(&leases);
 
 reopen:
 	leasefd = open(leasefile, O_RDONLY);
@@ -812,7 +807,9 @@ reopen:
 		for (;;) {
 			nev = kevent(kq, &chlist, 1, &evlist, 1, NULL);
 			if (nev == -1) {
-				syslog(LOG_ERR, "kqueue error: unknown");
+				if (errno == EINTR)
+					continue;
+				syslog(LOG_ERR, "kevent error: unknown (%d)", errno);
 				fclose(fp);
 				goto reopen;
 			} else if (nev > 0) {
