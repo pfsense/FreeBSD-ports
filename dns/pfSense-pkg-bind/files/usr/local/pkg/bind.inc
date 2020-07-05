@@ -722,8 +722,10 @@ EOD;
 	file_put_contents(CHROOT_LOCALBASE . '/etc/namedb/rndc.conf', $rndc_file);
 
 	if (!file_exists(CHROOT_LOCALBASE . "/etc/namedb/named.root")) {
-		// dig +tcp @a.root-servers.net > CHROOT_LOCALBASE."/etc/namedb/named.root"
 		$named_root = file_get_contents("http://www.internic.net/domain/named.root");
+		if (empty($named_root)) {
+			$named_root = file_get_contents("/usr/local/etc/namedb/named.root");
+		}
 		file_put_contents(CHROOT_LOCALBASE . "/etc/namedb/named.root", $named_root, LOCK_EX);
 	}
 	if (!file_exists(CHROOT_LOCALBASE."/etc/localtime")) {
