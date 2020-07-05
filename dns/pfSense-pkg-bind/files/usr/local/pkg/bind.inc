@@ -595,7 +595,7 @@ EOD;
 						// Check DNSSEC keys creation for master zones
 						if ($zone['dnssec'] == "on") {
 							$zone_found = 0;
-							foreach (glob(CHROOT_LOCALBASE . "/etc/namedb/keys/*{$zonename}*key", GLOB_NOSORT) as $filename) {
+							foreach (glob(CHROOT_LOCALBASE . "/etc/namedb/keys/K{$zonename}*key", GLOB_NOSORT) as $filename) {
 								$zone_found++;
 							}
 							if ($zone_found == 0) {
@@ -635,7 +635,7 @@ EOD;
 							}
 							// Get DS keys
 							$dsfromkey = "/usr/local/sbin/dnssec-dsfromkey";
-							foreach (glob(CHROOT_LOCALBASE."/etc/namedb/keys/*{$zonename}*key", GLOB_NOSORT) as $filename) {
+							foreach (glob(CHROOT_LOCALBASE."/etc/namedb/keys/K{$zonename}*key", GLOB_NOSORT) as $filename) {
 								$zone_key = file_get_contents($filename);
 								if (preg_match("/IN DNSKEY 257 /", $zone_key) && file_exists($dsfromkey)) {
 									exec("$dsfromkey $filename", $dsset);
@@ -647,7 +647,7 @@ EOD;
 							// Save DNSSEC keys to xml
 							if ($zone['backupkeys'] == "on") {
 								$dnssec_keys = 0;
-								foreach (glob(CHROOT_LOCALBASE . "/etc/namedb/keys/*{$zonename}*", GLOB_NOSORT) as $filename) {
+								foreach (glob(CHROOT_LOCALBASE . "/etc/namedb/keys/K{$zonename}*", GLOB_NOSORT) as $filename) {
 									$file_found = 0;
 									if (is_array($config['installedpackages']['dnsseckeys']) && is_array($config['installedpackages']['dnsseckeys']['config'])) {
 										foreach ($config['installedpackages']['dnsseckeys']['config'] as $filer) {
