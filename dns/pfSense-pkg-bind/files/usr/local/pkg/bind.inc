@@ -114,7 +114,7 @@ function bind_sync() {
 	$bind = $config['installedpackages']['bind']['config'][0];
 	// Create rndc
 	$rndc_confgen = "/usr/local/sbin/rndc-confgen";
-	$rndc_port = $bind['controlport'] == "" ? "953" : $bind['controlport'];
+	$rndc_port = $bind['controlport'] == "" ? "8953" : $bind['controlport'];
 	$rndc_confgen_opts = "-p " . escapeshellarg($rndc_port);
 	if (!file_exists(BIND_LOCALBASE."/etc/rndc-confgen.pfsense") && file_exists($rndc_confgen)) {
 		exec("$rndc_confgen $rndc_confgen_opts ", $rndc_conf);
