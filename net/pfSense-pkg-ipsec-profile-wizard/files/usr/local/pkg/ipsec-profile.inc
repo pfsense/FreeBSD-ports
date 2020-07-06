@@ -446,7 +446,7 @@ function iex_check_p1($type, $p1, $convert=false) {
 	$conv_dh = iex_convert_value($p1['dhgroup'], $map_dh);
 	if ($conv_dh) {
 		if ($type == 'apple') {
-			$options .= iep_key_data_str("DiffieHellmanGroup", "integer", $conv_dh, 5);
+			$options .= iep_key_data_str("DiffieHellmanGroup", "integer", $conv_dh, SASCOPE);
 		} else {
 			$options .= " {$win_supported_map['p1']['dh']['param']} {$conv_dh}";
 		}
@@ -574,6 +574,12 @@ function iex_check_p2($type, $p2, $convert=false) {
 	} else {
 		$p2errors[] = sprintf(gettext("Phase 2 PFS Group unsupported by this client. Supported values are (%s)"),
 				implode(', ', array_keys($map_dh)));
+	}
+
+	if (($p2['lifetime'] >= 600) &&
+	    ($p2['lifetime'] <= 86400)) {
+		$ipsecLifetime = (int)$p2['lifetime'] / 60;
+		$options .= iep_key_data_str("LifeTimeInMinutes", "integer", $ipsecLifetime, SASCOPE);
 	}
 
 	/* If converting, return option string. Otherwise, return error list. */
@@ -1202,7 +1208,7 @@ function iep_key_data_str($keyName, $keyType, $keyValue, $indentLevel) {
  *   mobile IPsec VPN on a client.
  ******/
 function iep_generate_vpn($profId, $payloadUuid, $certUuid, $vpn_name = "", $server_address = "") {
-	global $mobile_p1, $user, $ike, $authMethod, $extendedAuth, $setCertUuid, $auth_type, $ike_id, $auth_data;
+	global $mobile_p1, $mobile_p2, $user, $ike, $authMethod, $extendedAuth, $setCertUuid, $auth_type, $ike_id, $auth_data;
 
 	$ike = iep_get_vpn_type($mobile_p1['iketype']);
 	$ikeDict = iep_generate_ike($profId, $certUuid, $server_address);
@@ -1291,7 +1297,7 @@ function iep_generate_ikev1() {
  *   VPN.
  ******/
 function iep_generate_ikev2($realAddr) {
-	global $config, $mobile_p1, $ike, $authMethod, $extendedAuth, $setCertUuid, $auth_type, $ike_id, $auth_data;
+	global $config, $mobile_p1, $mobile_p2, $ike, $authMethod, $extendedAuth, $setCertUuid, $auth_type, $ike_id, $auth_data;
 	/*
 	 * https://wiki.strongswan.org/projects/strongswan/wiki/AppleIKEv2Profile
 	 * set AuthenticationMethod, ExtendedAuthEnabled, PayloadCertifcateUUID
@@ -1342,17 +1348,19 @@ function iep_generate_ikev2($realAddr) {
 		(int)$extendedAuth, IKESCOPE);
 
 	$ikeSADict = iex_parameter_convert('apple', array(1));
-	$ikeSADict .= iep_key_data_str("LifeTimeInMinutes", "integer",
-		$mobile_p1['lifetime']/60, 5);
+	/* On 2.4.x, IKE lifetime is in 'lifetime'
+	 * On 2.5.x, it is 'over_time' plus the larger of 'rekey_time' or 'reauth_time'
+	 */
+	$p1life = (int)$mobile_p1['over_time'] + max((int)$mobile_p1['lifetime'], (int)$mobile_p1['rekey_time'], (int)$mobile_p1['reauth_time']);
+	if (($p1life >= 600) &&
+	    ($p1life <= 86400)) {
+		$ikeSADict .= iep_key_data_str("LifeTimeInMinutes", "integer", ($p1life / 60), SASCOPE);
+	}
 
 	$ikeDict .= iep_key_data_str("IKESecurityAssociationParameters",
 		"dict", $ikeSADict, IKESCOPE);
 
-	$ipsecLifetime = $raPhase2['lifetime'] / 60;
-
 	$childSADict = iex_parameter_convert('apple', array(2));
-	$childSADict .= iep_key_data_str("LifeTimeInMinutes", "integer",
-		$ipsecLifetime, SASCOPE);
 
 	$ikeDict .= iep_key_data_str("ChildSecurityAssociationParameters",
 		"dict", $childSADict, IKESCOPE);
@@ -1458,7 +1466,7 @@ function iep_get_auth_info() {
  *   profile key/value format.
  ******/
 function iep_generate_ike($profId, $certUuid, $server_address = "") {
-	global $mobile_p1;
+	global $mobile_p1, $mobile_p2;
 
 	list($realAddr, $pubAddr) = iep_get_addresses($mobile_p1['interface']);
 	if (!empty($server_address)) {
@@ -1735,7 +1743,7 @@ function iep_get_profile_id() {
  *   key/value format.
  ******/
 function iep_generate_payload($vpn_name, $server_address, $user = null) {
-	global $mobile_p1;
+	global $mobile_p1, $mobile_p2;
 
 	$uuids = iep_get_uuids();
 	$profId = iep_get_profile_id();
@@ -1805,7 +1813,7 @@ function iep_generate_payload($vpn_name, $server_address, $user = null) {
  *   Returns a string containing a complete Apple compatible VPN profile.
  ******/
 function iep_generate_profile($vpn_name, $server_address, $user = null) {
-	global $mobile_p1;
+	global $mobile_p1, $mobile_p2;
 
 	$payloadTxt = iep_generate_payload($vpn_name, $server_address, $user);
 
