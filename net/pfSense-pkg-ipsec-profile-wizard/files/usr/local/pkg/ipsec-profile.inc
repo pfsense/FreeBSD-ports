@@ -50,7 +50,7 @@ define('CERTSCOPE', 3);
 define('IKESCOPE', 4);
 define('SASCOPE', 5);
 
-global $config, $mobileconfig, $a_phase1, $a_phase2, $a_cert, $a_mobilekey, $certLineChars;
+global $config, $mobileconfig, $a_phase1, $a_phase2, $a_cert, $a_mobilekey, $certLineChars, $enablepfs;
 
 init_config_arr(array('ipsec', 'client'));
 init_config_arr(array('ipsec', 'phase1'));
@@ -66,6 +66,7 @@ $a_cert = &$config['cert'];
 $a_user = &$config['system']['user'];
 $a_mobilekey = &$config['ipsec']['mobilekey'];
 $certLineChars = 52;
+$enablepfs = false;
 
 global $mobile_p1, $mobile_p2;
 /* Locate Mobile Phase 1 */
@@ -268,7 +269,7 @@ function iex_server_list($auto=false) {
  *   check.
  ******/
 function iex_parameter_check($type) {
-	global $mobile_p1, $mobile_p2, $apple_supported_map, $win_supported_map;
+	global $mobile_p1, $mobile_p2, $apple_supported_map, $win_supported_map, $enablepfs;
 	$errors = array();
 	$p1errors = array();
 	$p1_ok = false;
@@ -314,7 +315,7 @@ function iex_parameter_check($type) {
  *   configuration.
  ******/
 function iex_parameter_convert($type, $phases = array(1, 2)) {
-	global $mobile_p1, $mobile_p2, $win_supported_map, $apple_supported_map;
+	global $mobile_p1, $mobile_p2, $win_supported_map, $apple_supported_map, $enablepfs;
 	$options = "";
 
 	if ($type == 'apple') {
@@ -478,7 +479,7 @@ function iex_check_p1($type, $p1, $convert=false) {
  *   parameters and values.
  ******/
 function iex_check_p2($type, $p2, $convert=false) {
-	global $mobileconfig, $apple_supported_map, $win_supported_map;
+	global $mobileconfig, $apple_supported_map, $win_supported_map, $enablepfs;
 	$p2errors = array();
 	$options = "";
 
@@ -567,7 +568,6 @@ function iex_check_p2($type, $p2, $convert=false) {
 			if ($enablepfs) {
 				$options .= iep_key_data_str("DiffieHellmanGroup", "integer", $conv_dh, SASCOPE);
 			}
-			$options .= iep_key_data_str("EnablePFS", "boolean", $enablepfs, SASCOPE);
 		} else {
 			$options .= " {$win_supported_map['p2']['dh']['param']} {$conv_dh}";
 		}
@@ -1190,8 +1190,7 @@ function iep_key_data_str($keyName, $keyType, $keyValue, $indentLevel) {
 
 /****f* iep_generate_vpn
  * NAME
- *   iep_generate_vpn - 
- *                      
+ *   iep_generate_vpn - Generate Payload data for the VPN dict
  * INPUTS
  *   $profId        : String, Internal ID of the VPN profile
  *   $payloadUuid   : String, UUID associated with this payload
@@ -1466,7 +1465,7 @@ function iep_generate_ike($profId, $certUuid, $server_address = "") {
 		$pubAddr = $server_address;
 	}
 
-	global $user, $ike, $authMethod, $extendedAuth, $setCertUuid, $auth_type, $ike_id, $auth_data;
+	global $user, $ike, $authMethod, $extendedAuth, $setCertUuid, $auth_type, $ike_id, $auth_data, $enablepfs;
 
 	/* If no peerid data is explicitly set, the client will send it's
 	 * IP address as the identifier. When using certificate authentication
@@ -1483,6 +1482,7 @@ function iep_generate_ike($profId, $certUuid, $server_address = "") {
 		$ikeDict = iep_generate_ikev1();
 	} else {
 		$ikeDict = iep_generate_ikev2($realAddr);
+		$ikeDict .= iep_key_data_str("EnablePFS", "boolean", $enablepfs, IKESCOPE);
 	}
 
 	$ikeDict .= iep_key_data_str("AuthenticationMethod", "string", $authMethod,
@@ -1750,7 +1750,7 @@ function iep_generate_payload($vpn_name, $server_address, $user = null) {
 	}
 
 	$vpnDict = iep_generate_vpn($profId, $uuids[IPSECIDX],
-		$uuids[PKCS12IDX], $userentry, $vpn_name, $server_address);
+		$uuids[PKCS12IDX], $vpn_name, $server_address);
 	$caDict  = iep_generate_ca_config($mobile_p1['certref'], $profId,
 		$uuids[CAIDX]);
 
@@ -1811,8 +1811,7 @@ function iep_generate_profile($vpn_name, $server_address, $user = null) {
 
 	$profileTxt =
 '<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/
-PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 ';
 	$profileTxt .= iep_key_data_str(null, "dict", $payloadTxt, BODYSCOPE);
