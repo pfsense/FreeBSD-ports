@@ -66,7 +66,7 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 		syslog(LOG_NOTICE, gettext("[Suricata] Log directory size exceeds configured limit of " . number_format($suricataloglimitsize) . " MB set on Global Settings tab. Starting cleanup of Suricata logs."));
 
 		// Initialize an array of the log files we want to prune
-		$logs = array ( "alerts.log", "block.log", "dns.log", "eve.json", "http.log", "files-json.log", "sid_changes.log", "stats.log", "tls.log" );
+		$logs = array ( "alerts.log", "block.log", "dns.log", "eve.json", "http.log", "sid_changes.log", "stats.log", "tls.log" );
 
 		// Clean-up the rotated logs for each configured Suricata instance
 		foreach ($config['installedpackages']['suricata']['rule'] as $value) {
@@ -349,8 +349,6 @@ $logs['block.log']['limit'] = $config['installedpackages']['suricata']['config']
 $logs['block.log']['retention'] = $config['installedpackages']['suricata']['config'][0]['block_log_retention'];
 $logs['eve.json']['limit'] = $config['installedpackages']['suricata']['config'][0]['eve_log_limit_size'];
 $logs['eve.json']['retention'] = $config['installedpackages']['suricata']['config'][0]['eve_log_retention'];
-$logs['files-json.log']['limit'] = $config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size'];
-$logs['files-json.log']['retention'] = $config['installedpackages']['suricata']['config'][0]['files_json_log_retention'];
 $logs['http.log']['limit'] = $config['installedpackages']['suricata']['config'][0]['http_log_limit_size'];
 $logs['http.log']['retention'] = $config['installedpackages']['suricata']['config'][0]['http_log_retention'];
 $logs['sid_changes.log']['limit'] = $config['installedpackages']['suricata']['config'][0]['sid_changes_log_limit_size'];

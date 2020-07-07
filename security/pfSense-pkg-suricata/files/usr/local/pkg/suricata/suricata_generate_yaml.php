@@ -279,31 +279,8 @@ if ($suricatacfg['tls_log_extended'] == 'on')
 else
 	$tls_log_extended = "no";
 
-if ($suricatacfg['enable_json_file_log'] == 'on')
-	$json_log_enabled = "yes";
-else
-	$json_log_enabled = "no";
-
-if ($suricatacfg['append_json_file_log'] == 'on')
-	$json_log_append = "yes";
-else
-	$json_log_append = "no";
-
-if ($suricatacfg['enable_tracked_files_magic'] == 'on')
-	$json_log_magic = "yes";
-else
-	$json_log_magic = "no";
-
-if ($suricatacfg['tracked_files_hash'] != 'none')
-	$json_log_hash = "force-hash: [{$suricatacfg['tracked_files_hash']}]";
-else
-	$json_log_hash = "#force-hash: [md5]";
-	
 if ($suricatacfg['enable_file_store'] == 'on') {
 	$file_store_enabled = "yes";
-	if (!file_exists("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/file.waldo"))
-		@file_put_contents("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/file.waldo", "");
-	$file_store_waldo = "waldo: file.waldo";
 	if (!empty($suricatacfg['file_store_logdir'])) {
 		$file_store_logdir = base64_decode($suricatacfg['file_store_logdir']);
 	}
@@ -313,7 +290,6 @@ if ($suricatacfg['enable_file_store'] == 'on') {
 }
 else {
 	$file_store_enabled = "no";
-	$file_store_waldo = "#waldo: file.waldo";
 	$file_store_logdir = "filestore";
 }
 

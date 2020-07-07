@@ -181,15 +181,6 @@ if (!isset($config['installedpackages']['suricata']['config'][0]['eve_log_limit_
 	$updated_cfg = true;
 }
 
-if (!isset($config['installedpackages']['suricata']['config'][0]['files_json_log_retention']) && $config['installedpackages']['suricata']['config'][0]['files_json_log_retention'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['files_json_log_retention'] = "168";
-	$updated_cfg = true;
-}
-if (!isset($config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size']) && $config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size'] = "1000";
-	$updated_cfg = true;
-}
-
 if (!isset($config['installedpackages']['suricata']['config'][0]['http_log_retention']) && $config['installedpackages']['suricata']['config'][0]['http_log_retention'] != '0') {
 	$config['installedpackages']['suricata']['config'][0]['http_log_retention'] = "168";
 	$updated_cfg = true;
@@ -224,6 +215,18 @@ if (!isset($config['installedpackages']['suricata']['config'][0]['file_store_ret
 
 if (!isset($config['installedpackages']['suricata']['config'][0]['tls_certs_store_retention']) && $config['installedpackages']['suricata']['config'][0]['tls_certs_store_retention'] != '0') {
 	$config['installedpackages']['suricata']['config'][0]['tls_certs_store_retention'] = "168";
+	$updated_cfg = true;
+}
+
+/**********************************************************/
+/* Remove deprecated file-log settings from LOGS MGMT     */
+/**********************************************************/
+if (isset($config['installedpackages']['suricata']['config'][0]['files_json_log_retention'])) {
+	unset($config['installedpackages']['suricata']['config'][0]['files_json_log_retention']);
+	$updated_cfg = true;
+}
+if (isset($config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size'])) {
+	unset($config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size']);
 	$updated_cfg = true;
 }
 
@@ -711,6 +714,27 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 		else {
 			$pconfig['enable_stats_collection'] = "off";
 		}
+	}
+
+	/**********************************************************/
+	/* Remove deprecated file-log configuration parameters.   */
+	/* This functionality has been migrated into EVE logging. */
+	/**********************************************************/
+	if (isset($pconfig['enable_json_file_log'])) {
+		unset($pconfig['enable_json_file_log']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['append_json_file_log'])) {
+		unset($pconfig['append_json_file_log']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['enable_tracked_files_magic'])) {
+		unset($pconfig['enable_tracked_files_magic']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['tracked_files_hash'])) {
+		unset($pconfig['tracked_files_hash']);
+		$updated_cfg = true;
 	}
 
 	/**********************************************************/
