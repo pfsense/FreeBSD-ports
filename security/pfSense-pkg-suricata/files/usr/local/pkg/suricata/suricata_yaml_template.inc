@@ -380,6 +380,12 @@ app-layer:
       enabled: {$ssh_parser}
     tftp:
       enabled: {$tftp_parser}
+    rdp:
+      enabled: {$rdp_parser}
+    sip:
+      enabled: {$sip_parser}
+    snmp:
+      enabled: {$snmp_parser}
 
 ###########################################################################
 # Configure libhtp.
