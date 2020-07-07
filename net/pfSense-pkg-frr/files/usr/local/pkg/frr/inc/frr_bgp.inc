@@ -610,7 +610,11 @@ function frr_bgp_generate_neighbors() {
 		}
 
 		if (!empty($neighbor['bfdenable'])) {
-			$bfd_peer = !empty($neighbor['bfd_peer']) && $neighbor['bfd_peer'] <> 'default' ? $neighbor['bfd_peer'] : $bfd_peer = $neighbor['peer'];
+			if (!empty($neighbor['bfd_peer']) && ($neighbor['bfd_peer'] <> 'default')) {
+				$bfd_peer = $neighbor['bfd_peer'];
+			} else {
+				$bfd_peer = $neighbor['peer'];
+			}			
 			$nconf .= "  neighbor {$bfd_peer} bfd\n";
 			if(!empty($neighbor['bfd_check_control_plane_failure'])) {
 				$nconf .= "  neighbor {$bfd_peer} bfd check-control-plane-failure\n";

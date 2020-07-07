@@ -42,7 +42,7 @@
 		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>
-		</tab>		
+		</tab>
 		<tab>
 			<text>[BGP]</text>
 			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>

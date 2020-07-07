@@ -276,14 +276,10 @@ function frr_generate_config_rcfile() {
 	}
 
 	/* Get FRR daemon modules to append to daemon commands */
-	$zebradmodules = '';
-	$bgpdmodules = '';
-	$ospfdmodules = '';
-	$ospf6dmodules = '';
-	if ($config['installedpackages']['frr']['config'][0]['enablesnmpagentx']) { $zebradmodules .= '-M snmp'; }
-	if ($config['installedpackages']['frrbgp']['config'][0]['enablesnmpagentx']) { $bgpdmodules .= '-M snmp'; }
-	if ($config['installedpackages']['frrospfd']['config'][0]['enablesnmpagentx']) { $ospfdmodules .= '-M snmp'; }
-	if ($config['installedpackages']['frrospf6d']['config'][0]['enablesnmpagentx']) { $ospf6dmodules .= '-M snmp'; }
+	$zebradmodules = ($config['installedpackages']['frr']['config'][0]['enablesnmpagentx']) ? '-M snmp' : '';
+	$bgpdmodules = ($config['installedpackages']['frrbgp']['config'][0]['enablesnmpagentx']) ? '-M snmp' : '';
+	$ospfdmodules = ($config['installedpackages']['frrospfd']['config'][0]['enablesnmpagentx']) ? '-M snmp' : '';
+	$ospf6dmodules = ($config['installedpackages']['frrospf6d']['config'][0]['enablesnmpagentx']) ? '-M snmp' : '';
 
 	/* Setup a CARP VIP status check, if needed, so the service won't start
 	 * unless this node is in a MASTER state */

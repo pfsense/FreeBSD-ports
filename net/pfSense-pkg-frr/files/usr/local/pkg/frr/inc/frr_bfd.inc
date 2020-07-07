@@ -24,11 +24,15 @@ function frr_get_bfd_peers($includedefault = true) {
 	global $config;
 	$peers = array();
 
-	if ($includedefault) { $peers[] = array('name' => 'Default', 'value' => 'default'); }
+	if ($includedefault) {
+		$peers[] = array('name' => 'Default', 'value' => 'default');
+	}	
 	if (is_array($config['installedpackages']['frrbfdpeers']['config'])) {
 		foreach ($config['installedpackages']['frrbfdpeers']['config'] as $peer) {
 			$peer_name = $peer['peer'];
-			if (!empty(peer['descr'])) { $peer_name .= " - {$peer['descr']}"; }
+			if (!empty(peer['descr'])) {
+				$peer_name .= " - {$peer['descr']}";
+			}
 			$peers[] = array("name" => "{$peer['peer']}", "value" => $peer['peer']);
 			/* If the peer has a label configured, make it available to select also. */
 			if (!empty($peer['label'])) {
@@ -45,7 +49,9 @@ function frr_get_bfd_source_addresses($includedefault = true) {
 	$addresses = array();
 	$interfaces = frr_get_interfaces();
 
-	if ($includedefault) { $addresses[] = array('name' => 'Default', 'value' => 'default'); }
+	if ($includedefault) {
+		$addresses[] = array('name' => 'Default', 'value' => 'default');
+	}
 	if (is_array($interfaces)) {
 		foreach ($interfaces as $interface) {
 			if (strlen(frr_get_interfaceinfo($interface['value'])[0]) > 0) {
