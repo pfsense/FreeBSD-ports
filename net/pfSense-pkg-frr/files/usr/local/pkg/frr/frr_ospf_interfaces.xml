@@ -248,7 +248,7 @@
 			<description>
 				<![CDATA[
 				Listen for BFD events on peers created on the interface.
-				Every time a new neighbor is found a BFD peer is created to monitor the link status for fast convergence.
+				When OSPF finds a new neighbor, it creates a BFD peer to monitor the link status for fast convergence.
 				]]>
 			</description>
 			<type>checkbox</type>

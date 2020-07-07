@@ -383,12 +383,11 @@
 			<fielddescr></fielddescr>
 			<description>
 				<![CDATA[
-				<b>BFD Enable</b> : Listen for BFD events registered on the same target as this BGP neighbor.
-				When BFD peer goes down it immediately asks BGP to shutdown the connection with its neighbor and, when it goes back up, notify BGP to try to connect to it.
-				<br></br>
-				<b>BFD Check Control Plane Failure</b>: Allow to write CBIT independence in BFD outgoing packets. Also allow to read both C-BIT value of BFD and lookup BGP peer status.
-				This command is useful when a BFD down event is caught, while the BGP peer requested that local BGP keeps the remote BGP entries as staled if such issue is detected.
-				This is the case when graceful restart is enabled, and it is wished to ignore the BD event while waiting for the remote router to restart
+				<b>BFD Enable</b>: Listen for BFD events registered on the same target as this BGP neighbor.
+				<br />
+				<b>BFD Check Control Plane Failure</b>: Allow FRR to write CBIT independence in outgoing BFD packets. Also allow FRR to read both the CBIT value of BFD and lookup BGP peer status.
+				This option allows BFD to ignore down events during a graceful restart of the remote peer if graceful restarts are enabled in BGP.
+				When enabled, if BFD catches a down event it first checks if the BGP peer has requested that local the BGP daemon keep the remote BGP entries marked as stale. In that case it can safely ignore the event to allow the restart to happen gracefully (RFC 4724).
 				]]>
 			</description>
 			<type>info</type>

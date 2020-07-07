@@ -115,8 +115,8 @@
 			<fieldname>multihop</fieldname>
 			<description>
 				<![CDATA[
-				 Tell the BFD daemon that we should expect packets with TTL less than 254 (because it will take more than one hop) and to listen on the multihop port (4784).
-				 When using multi-hop mode echo-mode will not work (see RFC 5883 section 3).
+				 Expect packets with TTL less than 254 due to more than one hop between peer addresses and listen on the multihop port 4784.
+				 When using multi-hop mode echo-mode will not work, see RFC 5883 section 3.
 				]]>
 			</description>
 			<type>checkbox</type>
@@ -127,7 +127,7 @@
 			<description>
 				<![CDATA[
 				Enables or disables the peer.
-				When the peer is disabled an ‘administrative down’ message is sent to the remote peer.
+				When the peer is disabled an "administrative down" message is sent to the remote peer.
 				]]>
 			</description>
 			<type>checkbox</type>
@@ -140,7 +140,7 @@
 		<field>
 			<fielddescr>Interface</fielddescr>
 			<fieldname>interface</fieldname>
-			<description>Select which interface we should use</description>
+			<description>Select the interface which BFD will use as a packet source</description>
 			<type>select_source</type>
 			<source><![CDATA[frr_get_interfaces()]]></source>
 			<source_name>name</source_name>
@@ -151,7 +151,7 @@
 			<fieldname>local_address</fieldname>
 			<description>
 				<![CDATA[
-				Provide a local address that we should bind our peer listener to and the address we should use to send the packets.<br />
+				Provide a local address to bind the BFD peer listener to for participating in a BFD session.<br />
 				This option is mandatory for IPv6.
 				]]>
 			</description>
@@ -185,7 +185,7 @@
 			<fieldname>receiveinterval</fieldname>
 			<description>
 				<![CDATA[
-				Configures the minimum interval that this system is capable of receiving control packets. 
+				Configures the minimum interval at which this system is capable of receiving control packets.
 				<br />
 				The default value is 300 milliseconds.
 				]]>
@@ -196,14 +196,14 @@
 		<field>
 			<fielddescr>Transmit Interval</fielddescr>
 			<fieldname>transmitinterval</fieldname>
-			<description>The minimum transmission interval (less jitter) that this system wants to use to send BFD control packets.</description>
+			<description>The minimum transmission interval for the system to use to send BFD control packets.</description>
 			<type>input</type>
 			<size>20</size>
 		</field>
 		<field>
 			<fielddescr>Echo Interval</fielddescr>
 			<fieldname>echointerval</fieldname>
-			<description>Configures the minimal echo receive transmission interval that this system is capable of handling.</description>
+			<description>The minimal echo receive interval that the system is capable of handling.</description>
 			<type>input</type>
 			<size>20</size>
 		</field>
@@ -214,9 +214,9 @@
 				<![CDATA[
 				Enables or disables the echo transmission mode. This mode is disabled by default.
 				<br />
-				It is recommended that the transmission interval of control packets to be increased after enabling echo-mode to reduce bandwidth usage. For example: transmission-interval 2000.
+				FRR documentation recommendeds that the transmission interval of control packets to be increased after enabling echo-mode to reduce bandwidth usage. For example: transmission-interval 2000.
 				<br />
-    			Echo mode is not supported on multi-hop setups (see RFC 5883 section 3).
+				Echo mode is not supported on multi-hop setups, see RFC 5883 section 3.
 				]]>
 			</description>
 			<type>checkbox</type>
