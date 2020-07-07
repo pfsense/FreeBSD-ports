@@ -41,8 +41,6 @@ $pconfig['alert_log_limit_size'] = $config['installedpackages']['suricata']['con
 $pconfig['alert_log_retention'] = $config['installedpackages']['suricata']['config'][0]['alert_log_retention'];
 $pconfig['block_log_limit_size'] = $config['installedpackages']['suricata']['config'][0]['block_log_limit_size'];
 $pconfig['block_log_retention'] = $config['installedpackages']['suricata']['config'][0]['block_log_retention'];
-$pconfig['files_json_log_limit_size'] = $config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size'];
-$pconfig['files_json_log_retention'] = $config['installedpackages']['suricata']['config'][0]['files_json_log_retention'];
 $pconfig['http_log_limit_size'] = $config['installedpackages']['suricata']['config'][0]['http_log_limit_size'];
 $pconfig['http_log_retention'] = $config['installedpackages']['suricata']['config'][0]['http_log_retention'];
 $pconfig['stats_log_limit_size'] = $config['installedpackages']['suricata']['config'][0]['stats_log_limit_size'];
@@ -83,8 +81,6 @@ if (!isset($pconfig['alert_log_retention']))
 	$pconfig['alert_log_retention'] = "336";
 if (!isset($pconfig['block_log_retention']))
 	$pconfig['block_log_retention'] = "336";
-if (!isset($pconfig['files_json_log_retention']))
-	$pconfig['files_json_log_retention'] = "168";
 if (!isset($pconfig['http_log_retention']))
 	$pconfig['http_log_retention'] = "168";
 if (!isset($pconfig['stats_log_retention']))
@@ -105,8 +101,6 @@ if (!isset($pconfig['alert_log_limit_size']))
 	$pconfig['alert_log_limit_size'] = "500";
 if (!isset($pconfig['block_log_limit_size']))
 	$pconfig['block_log_limit_size'] = "500";
-if (!isset($pconfig['files_json_log_limit_size']))
-	$pconfig['files_json_log_limit_size'] = "1000";
 if (!isset($pconfig['http_log_limit_size']))
 	$pconfig['http_log_limit_size'] = "1000";
 if (!isset($pconfig['stats_log_limit_size']))
@@ -125,7 +119,6 @@ if (isset($_POST['ResetAll'])) {
 	// Reset all settings to their defaults
 	$pconfig['alert_log_retention'] = "336";
 	$pconfig['block_log_retention'] = "336";
-	$pconfig['files_json_log_retention'] = "168";
 	$pconfig['http_log_retention'] = "168";
 	$pconfig['stats_log_retention'] = "168";
 	$pconfig['tls_log_retention'] = "336";
@@ -136,7 +129,6 @@ if (isset($_POST['ResetAll'])) {
 
 	$pconfig['alert_log_limit_size'] = "500";
 	$pconfig['block_log_limit_size'] = "500";
-	$pconfig['files_json_log_limit_size'] = "1000";
 	$pconfig['http_log_limit_size'] = "1000";
 	$pconfig['stats_log_limit_size'] = "500";
 	$pconfig['tls_log_limit_size'] = "500";
@@ -178,8 +170,6 @@ if (isset($_POST['save']) || isset($_POST['apply'])) {
 		$config['installedpackages']['suricata']['config'][0]['alert_log_retention'] = $_POST['alert_log_retention'];
 		$config['installedpackages']['suricata']['config'][0]['block_log_limit_size'] = $_POST['block_log_limit_size'];
 		$config['installedpackages']['suricata']['config'][0]['block_log_retention'] = $_POST['block_log_retention'];
-		$config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size'] = $_POST['files_json_log_limit_size'];
-		$config['installedpackages']['suricata']['config'][0]['files_json_log_retention'] = $_POST['files_json_log_retention'];
 		$config['installedpackages']['suricata']['config'][0]['http_log_limit_size'] = $_POST['http_log_limit_size'];
 		$config['installedpackages']['suricata']['config'][0]['http_log_retention'] = $_POST['http_log_retention'];
 		$config['installedpackages']['suricata']['config'][0]['stats_log_limit_size'] = $_POST['stats_log_limit_size'];
@@ -319,22 +309,6 @@ $group->add(new Form_Select(
 $group->setHelp('Eve-JSON (JavaScript Object Notation) data');
 $section->add($group);
 
-$group = new Form_Group('files-json');
-$group->add(new Form_Select(
-	'files_json_log_limit_size',
-	'Max Size',
-	$pconfig['files_json_log_limit_size'],
-	$log_sizes
-))->setHelp('Max Size. Default is 1 MB.');
-$group->add(new Form_Select(
-	'files_json_log_retention',
-	'Retention',
-	$pconfig['files_json_log_retention'],
-	$retentions
-))->setHelp('Retention. Default is 7 DAYS.');
-$group->setHelp('Captured files info in JSON format');
-$section->add($group);
-
 $group = new Form_Group('http');
 $group->add(new Form_Select(
 	'http_log_limit_size',
@@ -442,8 +416,6 @@ events.push(function(){
 		disableInput('alert_log_retention', hide);
 		disableInput('block_log_limit_size', hide);
 		disableInput('block_log_retention', hide);
-		disableInput('files_json_log_limit_size', hide);
-		disableInput('files_json_log_retention', hide);
 		disableInput('http_log_limit_size', hide);
 		disableInput('http_log_retention', hide);
 		disableInput('stats_log_limit_size', hide);

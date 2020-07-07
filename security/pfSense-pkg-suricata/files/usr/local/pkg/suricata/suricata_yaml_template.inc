@@ -103,18 +103,8 @@ outputs:
   - file-store:
       version: 2
       enabled: {$file_store_enabled}
+      length: 0
       dir: {$file_store_logdir}
-      force-magic: {$json_log_magic}
-      {$json_log_hash}
-      {$file_store_waldo}
-
-  - file-log:
-      enabled: {$json_log_enabled}
-      filename: files-json.log
-      append: {$json_log_append}
-      filetype: regular
-      force-magic: {$json_log_magic}
-      {$json_log_hash}
 
   - eve-log:
       enabled: {$enable_eve_log}

@@ -134,8 +134,6 @@ if (empty($pconfig['tls_log_extended']))
 	$pconfig['tls_log_extended'] = "on";
 if (empty($pconfig['stats_upd_interval']))
 	$pconfig['stats_upd_interval'] = "10";
-if (empty($pconfig['append_json_file_log']))
-	$pconfig['append_json_file_log'] = "on";
 if (empty($pconfig['max_pcap_log_size']))
 	$pconfig['max_pcap_log_size'] = "32";
 if (empty($pconfig['max_pcap_log_files']))
@@ -359,10 +357,6 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['http_log_extended'] == "on") { $natent['http_log_extended'] = 'on'; }else{ $natent['http_log_extended'] = 'off'; }
 		if ($_POST['tls_log_extended'] == "on") { $natent['tls_log_extended'] = 'on'; }else{ $natent['tls_log_extended'] = 'off'; }
 		if ($_POST['enable_pcap_log'] == "on") { $natent['enable_pcap_log'] = 'on'; }else{ $natent['enable_pcap_log'] = 'off'; }
-		if ($_POST['enable_json_file_log'] == "on") { $natent['enable_json_file_log'] = 'on'; }else{ $natent['enable_json_file_log'] = 'off'; }
-		if ($_POST['append_json_file_log'] == "on") { $natent['append_json_file_log'] = 'on'; }else{ $natent['append_json_file_log'] = 'off'; }
-		if ($_POST['enable_tracked_files_magic'] == "on") { $natent['enable_tracked_files_magic'] = 'on'; }else{ $natent['enable_tracked_files_magic'] = 'off'; }
-		if ($_POST['tracked_files_hash']) $natent['tracked_files_hash'] = $_POST['tracked_files_hash'];
 		if ($_POST['enable_file_store'] == "on") { $natent['enable_file_store'] = 'on'; }else{ $natent['enable_file_store'] = 'off'; }
 		if ($_POST['file_store_logdir']) $natent['file_store_logdir'] = base64_encode($_POST['file_store_logdir']);
 		if ($_POST['enable_eve_log'] == "on") { $natent['enable_eve_log'] = 'on'; }else{ $natent['enable_eve_log'] = 'off'; }
@@ -808,40 +802,9 @@ $section->addInput(new Form_Checkbox(
 ));
 
 $section->addInput(new Form_Checkbox(
-	'enable_json_file_log',
-	'Enable Tracked-Files Log',
-	'Suricata will log tracked files in JavaScript Object Notation (JSON) format. Default is Not Checked.',
-	$pconfig['enable_json_file_log'] == 'on' ? true:false,
-	'on'
-));
-
-$section->addInput(new Form_Checkbox(
-	'append_json_file_log',
-	'Append Tracked-Files Log',
-	'Suricata will append-to instead of clearing Tracked Files log file when restarting. Default is Checked.',
-	$pconfig['append_json_file_log'] == 'on' ? true:false,
-	'on'
-));
-
-$section->addInput(new Form_Checkbox(
-	'enable_tracked_files_magic',
-	'Enable Logging Magic for Tracked-Files',
-	'Suricata will force logging magic on all logged Tracked Files. Default is Not Checked.',
-	$pconfig['enable_tracked_files_magic'] == 'on' ? true:false,
-	'on'
-));
-
-$section->addInput(new Form_Select(
-	'tracked_files_hash',
-	'Tracked-Files Checksum',
-	$pconfig['tracked_files_hash'],
-	array("none" => "None", "md5" => "MD5", "sha1" => "SHA1", "sha256" => "SHA256")
-))->setHelp('Suricata will generate checksums for all logged Tracked Files using the chosen algorithm. Default is None.');
-
-$section->addInput(new Form_Checkbox(
 	'enable_file_store',
 	'Enable File-Store',
-	'Suricata will extract and store files from application layer streams. Default is Not Checked. Warning: This will consume a significant amount of disk space on a busy network when enabled.',
+	'Suricata will extract and store files from application layer streams. Default is Not Checked. WARNING: Enabling file-store will consume a significant amount of disk space on a busy network!',
 	$pconfig['enable_file_store'] == 'on' ? true:false,
 	'on'
 ));
@@ -1653,13 +1616,6 @@ events.push(function(){
 		hideInput('file_store_logdir', hide);
 	}
 
-	function toggle_json_file_log() {
-		var hide = ! $('#enable_json_file_log').prop('checked');
-		hideCheckbox('append_json_file_log', hide);
-		hideCheckbox('enable_tracked_files_magic', hide);
-		hideSelect('tracked_files_hash', hide);
-	}
-
 	function toggle_pcap_log() {
 		var hide = ! $('#enable_pcap_log').prop('checked');
 		hideInput('max_pcap_log_size', hide);
@@ -1786,10 +1742,6 @@ events.push(function(){
 		disableInput('enable_tls_log', disable);
 		disableInput('enable_tls_store', disable);
 		disableInput('tls_log_extended', disable);
-		disableInput('enable_json_file_log', disable);
-		disableInput('append_json_file_log', disable);
-		disableInput('enable_tracked_files_magic', disable);
-		disableInput('tracked_files_hash', disable);
 		disableInput('enable_file_store', disable);
 		disableInput('file_store_logdir', disable);
 		disableInput('enable_pcap_log', disable);
@@ -1928,10 +1880,6 @@ events.push(function(){
 
 	$('#enable_file_store').click(function() {
 		toggle_enable_file_store();
-	});
-
-	$('#enable_json_file_log').click(function() {
-		toggle_json_file_log();
 	});
 
 	$('#enable_pcap_log').click(function() {
