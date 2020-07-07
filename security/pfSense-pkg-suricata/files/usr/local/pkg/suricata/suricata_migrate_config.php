@@ -636,6 +636,18 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 		$pconfig['msn_parser'] = "detection-only";
 		$updated_cfg = true;
 	}
+	if (empty($pconfig['snmp_parser'])) {
+		$pconfig['snmp_parser'] = "yes";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['rdp_parser'])) {
+		$pconfig['rdp_parser'] = "yes";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['sip_parser'])) {
+		$pconfig['sip_parser'] = "yes";
+		$updated_cfg = true;
+	}
 
 	/**********************************************************/
 	/* Create interface IP Reputation settings if not set     */

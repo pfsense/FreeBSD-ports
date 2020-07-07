@@ -396,6 +396,36 @@ if (($suricatacfg['eve_log_alerts'] == 'on')) {
 	$eve_out_types .= "\n            tagged-packets: yes       # enable logging of tagged packets for rules using the 'tag' keyword";
 }
 
+if (($suricatacfg['eve_log_anomaly'] == 'on')) {
+	$eve_out_types .= "\n        - anomaly:";
+	$eve_out_types .= "\n            enabled: yes";
+	$eve_out_types .= "\n            types:";
+	if ($suricatacfg['eve_log_anomaly_type_decode'] == 'on') {
+		$eve_out_types .= "\n              decode: yes";
+	}
+	else {
+		$eve_out_types .= "\n              decode: no";
+	}
+	if ($suricatacfg['eve_log_anomaly_type_stream'] == 'on') {
+		$eve_out_types .= "\n              stream: yes";
+	}
+	else {
+		$eve_out_types .= "\n              stream: no";
+	}
+	if ($suricatacfg['eve_log_anomaly_type_applayer'] == 'on') {
+		$eve_out_types .= "\n              applayer: yes";
+	}
+	else {
+		$eve_out_types .= "\n              applayer: no";
+	}
+	if ($suricatacfg['eve_log_anomaly_packethdr'] == 'on') {
+		$eve_out_types .= "\n            packethdr: yes";
+	}
+	else {
+		$eve_out_types .= "\n            packethdr: no";
+	}
+}
+
 if ($suricatacfg['eve_log_http'] == 'on') {
 	$eve_out_types .= "\n        - http:";
 	if ($suricatacfg['eve_log_http_extended'] == 'on') {
@@ -420,6 +450,8 @@ if ($suricatacfg['eve_log_tls'] == 'on') {
 		$eve_out_types .= "\n            extended: yes";
 	else
 		$eve_out_types .= "\n            extended: no";
+	if($suricatacfg['eve_log_tls_extended_fields'] != "")
+		$eve_out_types .= "\n            custom: [".$suricatacfg['eve_log_tls_extended_fields']."]";
 }
 
 if ($suricatacfg['eve_log_dhcp'] == 'on') {
@@ -437,7 +469,7 @@ if ($suricatacfg['eve_log_files'] == 'on') {
 	else
 		$eve_out_types .= "\n            force-magic: no";
 	if ($suricatacfg['eve_log_files_hash'] != 'none') {
-		$eve_out_types .= "\n            force-hash: [{$suricatacfg['eve_log_files_hash']}]";
+		$eve_out_types .= "\n            force-hash: {$suricatacfg['eve_log_files_hash']}";
 	}
 }
 
@@ -463,6 +495,18 @@ if ($suricatacfg['eve_log_ikev2'] == 'on') {
 
 if ($suricatacfg['eve_log_tftp'] == 'on') {
 	$eve_out_types .= "\n        - tftp";
+}
+
+if ($suricatacfg['eve_log_rdp'] == 'on') {
+	$eve_out_types .= "\n        - rdp";
+}
+
+if ($suricatacfg['eve_log_sip'] == 'on') {
+	$eve_out_types .= "\n        - sip";
+}
+
+if ($suricatacfg['eve_log_snmp'] == 'on') {
+	$eve_out_types .= "\n        - snmp";
 }
 
 if ($suricatacfg['eve_log_smtp'] == 'on') {
@@ -950,6 +994,30 @@ if (!empty($suricatacfg['tls_encrypt_handling'])) {
 }
 else {
 	$tls_encrypt_handling = "default";
+}
+
+ /* RDP Parser */
+if (!empty($suricatacfg['rdp_parser'])) {
+	$rdp_parser = $suricatacfg['rdp_parser'];
+}
+else {
+	$rdp_parser = "yes";
+}
+
+/* SIP Parser */
+if (!empty($suricatacfg['sip_parser'])) {
+	$sip_parser = $suricatacfg['sip_parser'];
+}
+else {
+	$sip_parser = "yes";
+}
+
+/* SNMP Parser */
+if (!empty($suricatacfg['snmp_parser'])) {
+	$snmp_parser = $suricatacfg['snmp_parser'];
+}
+else {
+	$snmp_parser = "yes";
 }
 
 /* Configure the IP REP section */
