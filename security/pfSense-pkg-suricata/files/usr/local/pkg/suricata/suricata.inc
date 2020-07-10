@@ -2435,7 +2435,7 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 			break;
 
 		default:
-			syslog(LOG_WARN, gettext("[Suricata] WARNING - unknown action '{$action}' supplied to suricata_modify_sid_state() function...no SIDs modified."));
+			syslog(LOG_WARNING, gettext("[Suricata] WARNING - unknown action '{$action}' supplied to suricata_modify_sid_state() function...no SIDs modified."));
 			return $sids;
 	}
 
@@ -3052,7 +3052,7 @@ function suricata_auto_sid_mgmt(&$rule_map, $suricatacfg, $log_results = FALSE) 
 				break;
 
 			default:
-				syslog(LOG_WARN, gettext("[Suricata] WARNING: Unrecognized 'sid_state_order' value.  Skipping auto SID mgmt step for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
+				syslog(LOG_WARNING, gettext("[Suricata] WARNING: Unrecognized 'sid_state_order' value.  Skipping auto SID mgmt step for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 				if ($log_results == TRUE) {
 					error_log(gettext("WARNING: unrecognized 'sid_state_order' value.  Skipping auto SID mgmt step for ") . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']). ".\n", 3, $log_file);
 				}
@@ -3528,7 +3528,7 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 
 	// Log a warning if the interface has no rules defined or enabled
 	if ($no_rules_defined) {
-		syslog(LOG_WARN, gettext("[Suricata] WARNING: - no text rules selected for: " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . " ..."));
+		syslog(LOG_WARNING, gettext("[Suricata] WARNING: - no text rules selected for: " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . " ..."));
 	}
 
 	// Build a new sid-msg.map file from the enabled
