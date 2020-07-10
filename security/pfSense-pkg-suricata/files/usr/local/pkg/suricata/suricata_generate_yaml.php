@@ -735,13 +735,13 @@ else {
 					elseif (is_ipaddrv4($addr) || is_subnetv4($addr))
 						$engine .= "{$addr}, ";
 					else
-						syslog(LOG_WARN, "[suricata] WARNING: invalid IP address value '{$addr}' in Alias {$v['bind_to']} will be ignored.");
+						syslog(LOG_WARNING, "[suricata] WARNING: invalid IP address value '{$addr}' in Alias {$v['bind_to']} will be ignored.");
 				}
 				$engine = trim($engine, ' ,');
 				$engine .= "]";
 			}
 			else {
-				syslog(LOG_WARN, "[suricata] WARNING: unable to resolve IP List Alias '{$v['bind_to']}' for Host OS Policy '{$v['name']}' ... ignoring this entry.");
+				syslog(LOG_WARNING, "[suricata] WARNING: unable to resolve IP List Alias '{$v['bind_to']}' for Host OS Policy '{$v['name']}' ... ignoring this entry.");
 				continue;
 			}
 		}
@@ -781,7 +781,7 @@ else {
 					elseif (is_ipaddrv4($addr) || is_subnetv4($addr))
 						$engine .= "{$addr}, ";
 					else {
-						syslog(LOG_WARN, "[suricata] WARNING: invalid IP address value '{$addr}' in Alias {$v['bind_to']} will be ignored.");
+						syslog(LOG_WARNING, "[suricata] WARNING: invalid IP address value '{$addr}' in Alias {$v['bind_to']} will be ignored.");
 						continue;
 					}
 				}
@@ -796,7 +796,7 @@ else {
 				$http_hosts_policy .= "   {$engine}\n";
 			}
 			else {
-				syslog(LOG_WARN, "[suricata] WARNING: unable to resolve IP List Alias '{$v['bind_to']}' for Host OS Policy '{$v['name']}' ... ignoring this entry.");
+				syslog(LOG_WARNING, "[suricata] WARNING: unable to resolve IP List Alias '{$v['bind_to']}' for Host OS Policy '{$v['name']}' ... ignoring this entry.");
 				continue;
 			}
 		}
