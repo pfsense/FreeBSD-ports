@@ -1183,6 +1183,10 @@ function squid_validate_auth($post, &$input_errors) {
 			$input_errors[] = "'Authentication server port' must contain a valid port number.";
 		}
 
+		if (!empty($port['max_user_ip']) && !is_numeric($port['max_user_ip'])) {
+			$input_errors[] = "'Authentication Max User IP' must be numeric or empty.";
+		}
+
 		switch ($auth_method) {
 			case 'ldap':
 				$user = trim($post['ldap_user']);
@@ -2120,6 +2124,16 @@ acl password proxy_auth REQUIRED
 
 EOD;
 		}
+
+		// Authentication TTL
+		$conf .= "authenticate_ip_ttl $auth_ttl minute\n";
+
+		// Authentication Max User IP
+		if (is_numeric($settings['max_user_ip'])) {
+			$conf .= "acl maxip max_user_ip -s {$settings['max_user_ip']}\n";
+			$conf .= "http_access deny maxip\n";
+		}
+
 		// Custom User Options after authentication definition
 		$conf .= "# Custom options after auth\n" . sq_text_area_decode($settingsconfig['custom_options2_squid3']) . "\n\n";
 		// SSL interception ACL options with authentication
@@ -2166,6 +2180,7 @@ EOD;
 		foreach ($password as $acl) {
 			$conf .= "http_access allow password $acl\n";
 		}
+
 	}
 
 	$conf .= "# Default block all to be sure\n";
