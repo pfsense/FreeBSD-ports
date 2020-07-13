@@ -548,10 +548,17 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 }
 
 if ($_POST['clear']) {
-	suricata_post_delete_logs($suricata_uuid);
-	$fd = @fopen("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/alerts.log", "w+");
-	if ($fd)
+
+	// Truncate the active alerts.log file
+	$fd = @fopen("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/alerts.log", "r+");
+	if ($fd !== FALSE) {
+		ftruncate($fd, 0);
 		fclose($fd);
+	}
+
+	// Signal the Suricata instance that logs have been rotated
+	suricata_reload_config($a_instance[$instanceid], "SIGHUP");
+
 	/* XXX: This is needed if suricata is run as suricata user */
 	mwexec('/bin/chmod 660 {$suricatalogdir}*', true);
 	header("Location: /suricata/suricata_alerts.php?instance={$instanceid}");
