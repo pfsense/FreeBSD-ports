@@ -52,7 +52,11 @@ if(is_process_running("suricata")) {
 	// Delete any leftover suricata PID files in /var/run
 	unlink_if_exists("{$g['varrun_path']}/suricata_*.pid");
 }
-// Hard kill any running Barnyard2 processes
+/******************************************************************/
+/* Hard kill any running Barnyard2 processes. Barnyard2 is        */
+/* deprecated, but this code is left to ensure no active          */
+/* Barnyard2 process remains.                                     */
+/******************************************************************/
 if(is_process_running("barnyard")) {
 	killbyname("barnyard2");
 	sleep(2);
@@ -231,11 +235,6 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 		// Now write out the conf file using $suricata_conf_text contents
 		@file_put_contents("{$suricatacfgdir}/suricata.yaml", $suricata_conf_text);
 		unset($suricata_conf_text);
-
-		// create barnyard2.conf file for interface
-		if ($suricatacfg['barnyard_enable'] == 'on')
-			suricata_generate_barnyard2_conf($suricatacfg, $if_real);
-
 		update_status(gettext(" done.") . "\n");
 	}
 
