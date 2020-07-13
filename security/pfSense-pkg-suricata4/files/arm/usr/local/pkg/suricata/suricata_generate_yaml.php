@@ -212,15 +212,42 @@ if (!empty($suricatacfg['alertsystemlog_priority']))
 else
 	$alert_syslog_priority = "Info";
 
-if ($suricatacfg['enable_stats_log'] == 'on')
-	$stats_log_enabled = "yes";
+/****************************************/
+/* Begin stats collection configuration */
+/****************************************/
+if ($suricatacfg['enable_stats_collection'] == 'on')
+	$stats_collection_enabled = "yes";
 else
-	$stats_log_enabled = "no";
+	$stats_collection_enabled = "no";
+
+if ($suricatacfg['enable_stats_collection'] == 'on' && $suricatacfg['enable_telegraf_stats'] == 'on' && !empty(base64_decode($suricatacfg['suricata_telegraf_unix_socket_name']))) {
+	$enable_telegraf_eve = "yes";
+	$telegraf_eve_sockname = base64_decode($suricatacfg['suricata_telegraf_unix_socket_name']);
+}
+else {
+	$enable_telegraf_eve = "no";
+	$telegraf_eve_sockname = "";
+}
 
 if (!empty($suricatacfg['stats_upd_interval']))
 	$stats_upd_interval = $suricatacfg['stats_upd_interval'];
 else
 	$stats_upd_interval = "10";
+
+if ($suricatacfg['append_stats_log'] == 'on')
+	$stats_log_append = "yes";
+else
+	$stats_log_append = "no";
+
+if ($suricatacfg['enable_stats_collection'] == 'on' && $suricatacfg['enable_stats_log'] == 'on') {
+	$stats_log_enabled = "yes";
+}
+else {
+	$stats_log_enabled = "no";
+}
+/****************************************/
+/* End stats collection configuration   */
+/****************************************/
 
 if ($suricatacfg['enable_dns_log'] == 'on')
 	$dns_log_enabled = "yes";
@@ -231,11 +258,6 @@ if ($suricatacfg['append_dns_log'] == 'on')
 	$dns_log_append = "yes";
 else
 	$dns_log_append = "no";
-
-if ($suricatacfg['append_stats_log'] == 'on')
-	$stats_log_append = "yes";
-else
-	$stats_log_append = "no";
 
 if ($suricatacfg['enable_http_log'] == 'on')
 	$http_log_enabled = "yes";
