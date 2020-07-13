@@ -990,12 +990,18 @@ suricata_prepare_rule_files($suricatacfg, $suricatacfgdir);
 
 // Check and configure only non-empty rules files for the interface
 $rules_files = "";
-if (filesize("{$suricatacfgdir}/rules/".SURICATA_ENFORCING_RULES_FILENAME) > 0)
-	$rules_files .= SURICATA_ENFORCING_RULES_FILENAME;
-if (filesize("{$suricatacfgdir}/rules/".FLOWBITS_FILENAME) > 0)
-	$rules_files .= "\n - " . FLOWBITS_FILENAME;
-if (filesize("{$suricatacfgdir}/rules/custom.rules") > 0)
-	$rules_files .= "\n - custom.rules";
+if (file_exists("{$suricatacfgdir}/rules/".SURICATA_ENFORCING_RULES_FILENAME)) {
+	if (filesize("{$suricatacfgdir}/rules/".SURICATA_ENFORCING_RULES_FILENAME) > 0)
+		$rules_files .= SURICATA_ENFORCING_RULES_FILENAME;
+}
+if (file_exists("{$suricatacfgdir}/rules/".FLOWBITS_FILENAME)) {
+	if (filesize("{$suricatacfgdir}/rules/".FLOWBITS_FILENAME) > 0)
+		$rules_files .= "\n - " . FLOWBITS_FILENAME;
+}
+if (file_exists("{$suricatacfgdir}/rules/custom.rules")) {
+	if (filesize("{$suricatacfgdir}/rules/custom.rules") > 0)
+		$rules_files .= "\n - custom.rules";
+}
 $rules_files = ltrim($rules_files, '\n -');
 
 // Add the general logging settings to the configuration (non-interface specific)
