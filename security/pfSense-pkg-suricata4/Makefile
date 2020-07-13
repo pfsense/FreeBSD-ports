@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-suricata4
-PORTVERSION=	4.1.7
-PORTREVISION=	4
+PORTVERSION=	4.1.8
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,9 +12,7 @@ COMMENT=	pfSense package suricata4
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	suricata4>=4.1.7:security/suricata4 \
-		barnyard2:security/barnyard2
-
+RUN_DEPENDS=	suricata4>=4.1.8:security/suricata4
 NO_BUILD=	yes
 NO_MTREE=	yes
 
@@ -108,8 +105,6 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_libhtp_policy_engine.php \
 		${STAGEDIR}${PREFIX}/www/suricata
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_define_vars.php \
-		${STAGEDIR}${PREFIX}/www/suricata
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_barnyard.php \
 		${STAGEDIR}${PREFIX}/www/suricata
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_ip_list_mgmt.php \
 		${STAGEDIR}${PREFIX}/www/suricata
