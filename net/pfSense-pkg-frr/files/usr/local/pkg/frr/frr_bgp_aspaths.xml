@@ -56,16 +56,16 @@
 			<url>pkg_edit.php?xml=frr.xml</url>
 		</tab>
 		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
 			<text>[OSPF]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
 		</tab>
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
-		</tab>
-		<tab>
-			<text>[BFD]</text>
-			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
 		</tab>
 		<tab>
 			<text>Status</text>
@@ -106,9 +106,9 @@
 			<description>
 				<![CDATA[
 				AS Path entries determine if networks are allowed or denied in specific contexts used in BGP route maps.
-				<br/><br/>
+				<br />
 				Order is important. Use the sequence field to reorder entries after saving.
-				<br/><br/>
+				<br />
 				The regular expression will match on the AS number and is surrounded by underscores (e.g. "_65534_"). Use "^" to match any.
 				]]>
 			</description>

@@ -590,7 +590,7 @@ function frr_zebra_generate_staticroutes() {
 /* Generate a convenience list of accept filters */
 function frr_zebra_generate_acceptfilters() {
 	global $config, $frr_config_base;
-	$noaccept = "\n# Accept Filters\n";
+
 	/* Check OSPF Interfaces for automatic accept filters */
 	if (is_array($config['installedpackages']['frrospfdinterfaces']['config'])) {
 		foreach ($config['installedpackages']['frrospfdinterfaces']['config'] as $conf) {
@@ -599,6 +599,7 @@ function frr_zebra_generate_acceptfilters() {
 				continue;
 			}
 			if (!empty($conf['acceptfilter']) && is_ipaddrv4($subnet) && is_numericint($interface_subnet)) {
+				$noaccept = $noaccept ?: "\n# Accept Filters\n";
 				$noaccept .= "ip prefix-list ACCEPTFILTER deny {$subnet}/{$interface_subnet}\n";
 				$noaccept .= "ip prefix-list ACCEPTFILTER deny {$interface_ip}/32\n";
 			}
@@ -609,6 +610,7 @@ function frr_zebra_generate_acceptfilters() {
 	if (is_array($config['installedpackages']['frr']['config'][0]['row'])) {
 		foreach ($config['installedpackages']['frr']['config'][0]['row'] as $redistr) {
 			if (isset($redistr['acceptfilter'])) {
+				$noaccept = $noaccept ?: "\n# Accept Filters\n";
 				$noaccept .= "ip prefix-list ACCEPTFILTER deny {$redistr['routevalue']}\n";
 			}
 		}
@@ -654,6 +656,10 @@ function frr_generate_config_zebra() {
 		/* Logging Options */
 		if ($frr_conf['logging']) {
 			$zebraconffile .= "log syslog\n";
+		}
+		/* SNMP AgentX Support*/
+		if ($frr_conf['enablesnmpagentx']) {
+			$zebraconffile .= "agentx\n";
 		}
 
 		/* Access Lists */

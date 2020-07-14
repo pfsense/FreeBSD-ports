@@ -52,6 +52,10 @@
 			<url>pkg_edit.php?xml=frr/frr_global_raw.xml</url>
 		</tab>
 		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
 			<text>[BGP]</text>
 			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
 		</tab>
@@ -62,10 +66,6 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
-		</tab>
-		<tab>
-			<text>[BFD]</text>
-			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
 		</tab>
 		<tab>
 			<text>Status</text>
@@ -106,9 +106,9 @@
 			<description>
 				<![CDATA[
 				Prefix List entries determine parts of networks which can be allowed or denied in specific contexts used in routing daemons.
-				<br/><br/>
+				<br />
 				Order is important. Use the sequence field to reorder entries after saving. The networks may be a network or "any".
-				<br/><br/>
+				<br />
 				The Minimum and Maximum Prefix Length boxes may be left blank, or have one, the other, or both defined.
 				]]>
 			</description>

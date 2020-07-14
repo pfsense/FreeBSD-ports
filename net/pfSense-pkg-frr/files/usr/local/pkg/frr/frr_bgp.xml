@@ -56,17 +56,17 @@
 			<url>pkg_edit.php?xml=frr.xml</url>
 		</tab>
 		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
 			<text>[OSPF]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
 		</tab>
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
-		</tab>
-		<tab>
-			<text>[BFD]</text>
-			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
-		</tab>
+		</tab>		
 		<tab>
 			<text>Status</text>
 			<url>/status_frr.php?protocol=bgp</url>
@@ -139,6 +139,12 @@
 			<fielddescr>Disable Default IPv4 Unicast</fielddescr>
 			<fieldname>nodefipv4unicast</fieldname>
 			<description>If checked, BGP will not assume IPv4 unicast by default.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Enable SNMP AgentX</fielddescr>
+			<fieldname>enablesnmpagentx</fieldname>
+			<description>Enable agentx support for accessing FRR Zebra data via SNMP with the net-snmp package.</description>
 			<type>checkbox</type>
 		</field>
 

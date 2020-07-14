@@ -31,21 +31,25 @@
 	<aftersaveredirect>pkg_edit.php?xml=frr/frr_ospf.xml</aftersaveredirect>
 	<tabs>
 		<tab>
-			<text>OSPF Settings</text>
+			<text>OSPF</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
 			<active/>
 		</tab>
 		<tab>
-			<text>OSPF Interfaces</text>
+			<text>Interfaces</text>
 			<url>pkg.php?xml=frr/frr_ospf_interfaces.xml</url>
 		</tab>
 		<tab>
-			<text>OSPF Areas</text>
+			<text>Areas</text>
 			<url>pkg.php?xml=frr/frr_ospf_areas.xml</url>
 		</tab>
 		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
 		</tab>
 		<tab>
 			<text>[BGP]</text>
@@ -54,11 +58,7 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
-		</tab>
-		<tab>
-			<text>[BFD]</text>
-			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
-		</tab>
+		</tab>		
 		<tab>
 			<text>Status</text>
 			<url>/status_frr.php?protocol=ospf</url>
@@ -110,6 +110,12 @@
 			</description>
 			<type>input</type>
 		</field>
+		<field>
+			<fielddescr>Enable SNMP AgentX</fielddescr>
+			<fieldname>enablesnmpagentx</fieldname>
+			<description>Enable agentx support for accessing FRR Zebra data via SNMP with the net-snmp package.</description>
+			<type>checkbox</type>
+		</field>
 
 		<field>
 			<name>Default Area</name>
@@ -127,7 +133,7 @@
 		</field>
 		<field>
 			<fielddescr>Default Area</fielddescr>
-			<fieldname>area</fieldname>
+			<fieldname>defaultarea</fieldname>
 			<description>
 				<![CDATA[
 				Default OSPF area for this instance of OSPF.
@@ -136,11 +142,10 @@
 				]]>
 			</description>
 			<type>input</type>
-			<required/>
 		</field>
 		<field>
 			<fielddescr>Default Area Type</fielddescr>
-			<fieldname>areatype</fieldname>
+			<fieldname>defaultareatype</fieldname>
 			<description>Defines how the default area behaves</description>
 			<type>select</type>
 			<default_value>none</default_value>
@@ -164,14 +169,14 @@
 				<strong>DEPRECATED</strong>:
 				Define <a href="/pkg.php?xml=frr/frr_ospf_areas.xml">areas</a> and use areas on <a href="/pkg.php?xml=frr/frr_ospf_interfaces.xml">interfaces</a> instead.
 				Use route-maps and distribute lists to limit distributed networks.
-				<br/><br/>
+				<br />
 				The networks listed below define valid connected networks to redistribute to OSPF neighbors.<br/>
 				The exact networks specified will not be distributed, but instead determine which interfaces will be active in OSPF.<br/>
 				To advertise an interface network without activating it for OSPF, define it on the Interfaces tab and mark it as a Passive Interface.<br/>
 				Interfaces must have link and be up or their networks will not be advertised.
-				<br/><br/>
+				<br />
 				These rules take precedence over any redistribute options specified above.
-				<br/><br/>
+				<br />
 				<strong>Networks listed here will conflict with overlapping interface networks and may prevent ospfd from starting.</strong>
 				]]>
 			</description>
@@ -206,7 +211,7 @@
 			<description>
 				<![CDATA[
 				The options in this section control how routes are redistributed into OSPF from other sources.
-				<br/><br/>
+				<br />
 				The route map and distribute list controls can filter the routes so that specific networks will be prevented from distribution.
 				]]>
 			</description>
