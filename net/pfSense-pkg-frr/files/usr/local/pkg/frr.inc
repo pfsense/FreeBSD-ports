@@ -170,7 +170,8 @@ function frr_plugin_carp($pluginparams) {
 function frr_ipsec_reload() {
 	global $config;
 	init_config_arr(array('installedpackages', 'frr', 'config', 0));
-	if (!empty($config['installedpackages']['frr']['config'][0]['ignoreipsecrestart'])) {
+	if (!empty($config['installedpackages']['frr']['config'][0]['ignoreipsecrestart']) ||
+	    empty($config['installedpackages']['frr']['config'][0]['enable']) || !is_process_running('zebra')) {
 		return;
 	}
 

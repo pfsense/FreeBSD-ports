@@ -181,15 +181,6 @@ if (!isset($config['installedpackages']['suricata']['config'][0]['eve_log_limit_
 	$updated_cfg = true;
 }
 
-if (!isset($config['installedpackages']['suricata']['config'][0]['files_json_log_retention']) && $config['installedpackages']['suricata']['config'][0]['files_json_log_retention'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['files_json_log_retention'] = "168";
-	$updated_cfg = true;
-}
-if (!isset($config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size']) && $config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size'] = "1000";
-	$updated_cfg = true;
-}
-
 if (!isset($config['installedpackages']['suricata']['config'][0]['http_log_retention']) && $config['installedpackages']['suricata']['config'][0]['http_log_retention'] != '0') {
 	$config['installedpackages']['suricata']['config'][0]['http_log_retention'] = "168";
 	$updated_cfg = true;
@@ -227,8 +218,15 @@ if (!isset($config['installedpackages']['suricata']['config'][0]['tls_certs_stor
 	$updated_cfg = true;
 }
 
-if (!isset($config['installedpackages']['suricata']['config'][0]['u2_archive_log_retention']) && $config['installedpackages']['suricata']['config'][0]['u2_archive_log_retention'] != '0') {
-	$config['installedpackages']['suricata']['config'][0]['u2_archive_log_retention'] = "168";
+/**********************************************************/
+/* Remove deprecated file-log settings from LOGS MGMT     */
+/**********************************************************/
+if (isset($config['installedpackages']['suricata']['config'][0]['files_json_log_retention'])) {
+	unset($config['installedpackages']['suricata']['config'][0]['files_json_log_retention']);
+	$updated_cfg = true;
+}
+if (isset($config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size'])) {
+	unset($config['installedpackages']['suricata']['config'][0]['files_json_log_limit_size']);
 	$updated_cfg = true;
 }
 
@@ -519,11 +517,6 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 		$updated_cfg = true;
 	}
 
-	if (isset($pconfig['u2_archive_log_retention'])) {
-		unset($pconfig['u2_archive_log_retention']);
-		$updated_cfg = true;
-	}
-
 	/************************************************************/
 	/* Create new DNS App-Layer parser settings if not set      */
 	/************************************************************/
@@ -643,6 +636,18 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 		$pconfig['msn_parser'] = "detection-only";
 		$updated_cfg = true;
 	}
+	if (empty($pconfig['snmp_parser'])) {
+		$pconfig['snmp_parser'] = "yes";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['rdp_parser'])) {
+		$pconfig['rdp_parser'] = "yes";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['sip_parser'])) {
+		$pconfig['sip_parser'] = "yes";
+		$updated_cfg = true;
+	}
 
 	/**********************************************************/
 	/* Create interface IP Reputation settings if not set     */
@@ -661,26 +666,6 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 	}
 	if (empty($pconfig['host_prealloc'])) {
 		$pconfig['host_prealloc'] = "1000";
-		$updated_cfg = true;
-	}
-
-	/**********************************************************/
-	/* Create interface Unified2 XFF log settings if not set  */
-	/**********************************************************/
-	if (!isset($pconfig['barnyard_xff_logging'])) {
-		$pconfig['barnyard_xff_logging'] = "off";
-		$updated_cfg = true;
-	}
-	if (!isset($pconfig['barnyard_xff_mode'])) {
-		$pconfig['barnyard_xff_mode'] = "extra-data";
-		$updated_cfg = true;
-	}
-	if (!isset($pconfig['barnyard_xff_deployment'])) {
-		$pconfig['barnyard_xff_deployment'] = "reverse";
-		$updated_cfg = true;
-	}
-	if (empty($pconfig['barnyard_xff_header'])) {
-		$pconfig['barnyard_xff_header'] = "X-Forwarded-For";
 		$updated_cfg = true;
 	}
 
@@ -728,6 +713,173 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 		$pconfig['intf_snaplen'] = "1518";
 		$updated_cfg = true;
 	}
+
+	/**********************************************************/
+	/* Migrate old performance stats logging option to new    */
+	/* control parameter.                                     */
+	/**********************************************************/
+	if (!isset($pconfig['enable_stats_collection'])) {
+		$updated_cfg = true;
+		if ($pconfig['enable_stats_log'] == "on") {
+			$pconfig['enable_stats_collection'] = "on";
+		}
+		else {
+			$pconfig['enable_stats_collection'] = "off";
+		}
+	}
+
+	/**********************************************************/
+	/* Remove deprecated file-log configuration parameters.   */
+	/* This functionality has been migrated into EVE logging. */
+	/**********************************************************/
+	if (isset($pconfig['enable_json_file_log'])) {
+		unset($pconfig['enable_json_file_log']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['append_json_file_log'])) {
+		unset($pconfig['append_json_file_log']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['enable_tracked_files_magic'])) {
+		unset($pconfig['enable_tracked_files_magic']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['tracked_files_hash'])) {
+		unset($pconfig['tracked_files_hash']);
+		$updated_cfg = true;
+	}
+
+	/**********************************************************/
+	/* Remove deprecated Barnyard2 configuration parameters   */
+	/* from this interface if any are present.                */
+	/**********************************************************/
+	if (isset($pconfig['barnyard_enable'])) {
+		unset($pconfig['barnyard_enable']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_dump_payload'])) {
+		unset($pconfig['barnyard_dump_payload']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_mysql_enable'])) {
+		unset($pconfig['barnyard_mysql_enable']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_enable'])) {
+		unset($pconfig['barnyard_syslog_enable']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_local'])) {
+		unset($pconfig['barnyard_syslog_local']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_rhost'])) {
+		unset($pconfig['barnyard_syslog_rhost']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_dport'])) {
+		unset($pconfig['barnyard_syslog_dport']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_proto'])) {
+		unset($pconfig['barnyard_syslog_proto']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_opmode'])) {
+		unset($pconfig['barnyard_syslog_opmode']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_facility'])) {
+		unset($pconfig['barnyard_syslog_facility']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_priority'])) {
+		unset($pconfig['barnyard_syslog_priority']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_disable_sig_ref_tbl'])) {
+		unset($pconfig['barnyard_disable_sig_ref_tbl']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_sensor_id'])) {
+		unset($pconfig['barnyard_sensor_id']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_sensor_name'])) {
+		unset($pconfig['barnyard_sensor_name']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_dbhost'])) {
+		unset($pconfig['barnyard_dbhost']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_dbname'])) {
+		unset($pconfig['barnyard_dbname']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_dbuser'])) {
+		unset($pconfig['barnyard_dbuser']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_bro_ids_enable'])) {
+		unset($pconfig['barnyard_bro_ids_enable']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_bro_ids_rhost'])) {
+		unset($pconfig['barnyard_bro_ids_rhost']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_bro_ids_dport'])) {
+		unset($pconfig['barnyard_bro_ids_dport']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnconfigpassthru'])) {
+		unset($pconfig['barnconfigpassthru']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_dbpwd'])) {
+		unset($pconfig['barnyard_dbpwd']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_show_year'])) {
+		unset($pconfig['barnyard_show_year']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_archive_enable'])) {
+		unset($pconfig['barnyard_archive_enable']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_obfuscate_ip'])) {
+		unset($pconfig['barnyard_obfuscate_ip']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_xff_logging'])) {
+		unset($pconfig['barnyard_xff_logging']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_xff_mode'])) {
+		unset($pconfig['barnyard_xff_mode']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_xff_deployment'])) {
+		unset($pconfig['barnyard_xff_deployment']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_xff_header'])) {
+		unset($pconfig['barnyard_xff_header']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['unified2_log_limit'])) {
+		unset($pconfig['unified2_log_limit']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['u2_archive_log_retention'])) {
+		unset($pconfig['u2_archive_log_retention']);
+		$updated_cfg = true;
+	}
+	/**********************************************************/
+	/* End Barnyard2 parameter removal                        */
+	/**********************************************************/
 
 	// Save the new configuration data into the $config array pointer
 	$r = $pconfig;

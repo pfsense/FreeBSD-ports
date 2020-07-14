@@ -142,6 +142,22 @@
 			<default_value>5</default_value>
 		</field>
 		<field>
+			<fielddescr>Authentication Max User IP Addresses</fielddescr>
+			<fieldname>max_user_ip</fieldname>
+			<description>
+				<![CDATA[
+				Enforces a limit to the number of unique IP addresses from which a single user can login.<br/>
+				Attempts to login from additional IP addresses are denied until the Authentication TTL has expired<br/>
+				<span class="text-info">Default: none</span>
+				<div class="infoblock">
+				<span class="text-info">Note:</span> Acceleration mode or multiple child proxies in a mesh or farm may cause clients to appear as though they are using multiple IP addresses. A limit of 1 may cause problems for users in these cases.
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+		</field>
+		<field>
 			<fielddescr>Require Authentication for Unrestricted IPs</fielddescr>
 			<fieldname>unrestricted_auth</fieldname>
 			<description>If enabled, even 'Unrestricted IPs' configured on the ACLs tab are required to authenticate to use the proxy.</description>

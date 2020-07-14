@@ -212,10 +212,22 @@ if (!empty($suricatacfg['alertsystemlog_priority']))
 else
 	$alert_syslog_priority = "Info";
 
-if ($suricatacfg['enable_stats_log'] == 'on')
-	$stats_log_enabled = "yes";
+/****************************************/
+/* Begin stats collection configuration */
+/****************************************/
+if ($suricatacfg['enable_stats_collection'] == 'on')
+	$stats_collection_enabled = "yes";
 else
-	$stats_log_enabled = "no";
+	$stats_collection_enabled = "no";
+
+if ($suricatacfg['enable_stats_collection'] == 'on' && $suricatacfg['enable_telegraf_stats'] == 'on' && !empty(base64_decode($suricatacfg['suricata_telegraf_unix_socket_name']))) {
+	$enable_telegraf_eve = "yes";
+	$telegraf_eve_sockname = base64_decode($suricatacfg['suricata_telegraf_unix_socket_name']);
+}
+else {
+	$enable_telegraf_eve = "no";
+	$telegraf_eve_sockname = "";
+}
 
 if (!empty($suricatacfg['stats_upd_interval']))
 	$stats_upd_interval = $suricatacfg['stats_upd_interval'];
@@ -226,6 +238,16 @@ if ($suricatacfg['append_stats_log'] == 'on')
 	$stats_log_append = "yes";
 else
 	$stats_log_append = "no";
+
+if ($suricatacfg['enable_stats_collection'] == 'on' && $suricatacfg['enable_stats_log'] == 'on') {
+	$stats_log_enabled = "yes";
+}
+else {
+	$stats_log_enabled = "no";
+}
+/****************************************/
+/* End stats collection configuration   */
+/****************************************/
 
 if ($suricatacfg['enable_http_log'] == 'on')
 	$http_log_enabled = "yes";
@@ -257,31 +279,8 @@ if ($suricatacfg['tls_log_extended'] == 'on')
 else
 	$tls_log_extended = "no";
 
-if ($suricatacfg['enable_json_file_log'] == 'on')
-	$json_log_enabled = "yes";
-else
-	$json_log_enabled = "no";
-
-if ($suricatacfg['append_json_file_log'] == 'on')
-	$json_log_append = "yes";
-else
-	$json_log_append = "no";
-
-if ($suricatacfg['enable_tracked_files_magic'] == 'on')
-	$json_log_magic = "yes";
-else
-	$json_log_magic = "no";
-
-if ($suricatacfg['tracked_files_hash'] != 'none')
-	$json_log_hash = "force-hash: [{$suricatacfg['tracked_files_hash']}]";
-else
-	$json_log_hash = "#force-hash: [md5]";
-	
 if ($suricatacfg['enable_file_store'] == 'on') {
 	$file_store_enabled = "yes";
-	if (!file_exists("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/file.waldo"))
-		@file_put_contents("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/file.waldo", "");
-	$file_store_waldo = "waldo: file.waldo";
 	if (!empty($suricatacfg['file_store_logdir'])) {
 		$file_store_logdir = base64_decode($suricatacfg['file_store_logdir']);
 	}
@@ -291,7 +290,6 @@ if ($suricatacfg['enable_file_store'] == 'on') {
 }
 else {
 	$file_store_enabled = "no";
-	$file_store_waldo = "#waldo: file.waldo";
 	$file_store_logdir = "filestore";
 }
 
@@ -309,22 +307,6 @@ if (!empty($suricatacfg['max_pcap_log_files']))
 	$pcap_log_max_files = $suricatacfg['max_pcap_log_files'];
 else
 	$pcap_log_max_files = "1000";
-
-// Unified2 Alert Log Settings
-if ($suricatacfg['barnyard_enable'] == 'on')
-	$barnyard2_enabled = "yes";
-else
-	$barnyard2_enabled = "no";
-
-if (isset($config['installedpackages']['suricata']['config'][0]['unified2_log_limit']))
-	$unified2_log_limit = "{$config['installedpackages']['suricata']['config'][0]['unified2_log_limit']}mb";
-else
-	$unified2_log_limit = "32mb";
-
-if (isset($suricatacfg['barnyard_sensor_id']))
-	$unified2_sensor_id = $suricatacfg['barnyard_sensor_id'];
-else
-	$unified2_sensor_id = "0";
 
 // Unified2 X-Forwarded-For logging options
 if ($suricatacfg['barnyard_xff_logging'] == 'on') {
@@ -414,6 +396,36 @@ if (($suricatacfg['eve_log_alerts'] == 'on')) {
 	$eve_out_types .= "\n            tagged-packets: yes       # enable logging of tagged packets for rules using the 'tag' keyword";
 }
 
+if (($suricatacfg['eve_log_anomaly'] == 'on')) {
+	$eve_out_types .= "\n        - anomaly:";
+	$eve_out_types .= "\n            enabled: yes";
+	$eve_out_types .= "\n            types:";
+	if ($suricatacfg['eve_log_anomaly_type_decode'] == 'on') {
+		$eve_out_types .= "\n              decode: yes";
+	}
+	else {
+		$eve_out_types .= "\n              decode: no";
+	}
+	if ($suricatacfg['eve_log_anomaly_type_stream'] == 'on') {
+		$eve_out_types .= "\n              stream: yes";
+	}
+	else {
+		$eve_out_types .= "\n              stream: no";
+	}
+	if ($suricatacfg['eve_log_anomaly_type_applayer'] == 'on') {
+		$eve_out_types .= "\n              applayer: yes";
+	}
+	else {
+		$eve_out_types .= "\n              applayer: no";
+	}
+	if ($suricatacfg['eve_log_anomaly_packethdr'] == 'on') {
+		$eve_out_types .= "\n            packethdr: yes";
+	}
+	else {
+		$eve_out_types .= "\n            packethdr: no";
+	}
+}
+
 if ($suricatacfg['eve_log_http'] == 'on') {
 	$eve_out_types .= "\n        - http:";
 	if ($suricatacfg['eve_log_http_extended'] == 'on') {
@@ -438,6 +450,8 @@ if ($suricatacfg['eve_log_tls'] == 'on') {
 		$eve_out_types .= "\n            extended: yes";
 	else
 		$eve_out_types .= "\n            extended: no";
+	if($suricatacfg['eve_log_tls_extended_fields'] != "")
+		$eve_out_types .= "\n            custom: [".$suricatacfg['eve_log_tls_extended_fields']."]";
 }
 
 if ($suricatacfg['eve_log_dhcp'] == 'on') {
@@ -455,7 +469,7 @@ if ($suricatacfg['eve_log_files'] == 'on') {
 	else
 		$eve_out_types .= "\n            force-magic: no";
 	if ($suricatacfg['eve_log_files_hash'] != 'none') {
-		$eve_out_types .= "\n            force-hash: [{$suricatacfg['eve_log_files_hash']}]";
+		$eve_out_types .= "\n            force-hash: {$suricatacfg['eve_log_files_hash']}";
 	}
 }
 
@@ -481,6 +495,18 @@ if ($suricatacfg['eve_log_ikev2'] == 'on') {
 
 if ($suricatacfg['eve_log_tftp'] == 'on') {
 	$eve_out_types .= "\n        - tftp";
+}
+
+if ($suricatacfg['eve_log_rdp'] == 'on') {
+	$eve_out_types .= "\n        - rdp";
+}
+
+if ($suricatacfg['eve_log_sip'] == 'on') {
+	$eve_out_types .= "\n        - sip";
+}
+
+if ($suricatacfg['eve_log_snmp'] == 'on') {
+	$eve_out_types .= "\n        - snmp";
 }
 
 if ($suricatacfg['eve_log_smtp'] == 'on') {
@@ -709,13 +735,13 @@ else {
 					elseif (is_ipaddrv4($addr) || is_subnetv4($addr))
 						$engine .= "{$addr}, ";
 					else
-						syslog(LOG_WARN, "[suricata] WARNING: invalid IP address value '{$addr}' in Alias {$v['bind_to']} will be ignored.");
+						syslog(LOG_WARNING, "[suricata] WARNING: invalid IP address value '{$addr}' in Alias {$v['bind_to']} will be ignored.");
 				}
 				$engine = trim($engine, ' ,');
 				$engine .= "]";
 			}
 			else {
-				syslog(LOG_WARN, "[suricata] WARNING: unable to resolve IP List Alias '{$v['bind_to']}' for Host OS Policy '{$v['name']}' ... ignoring this entry.");
+				syslog(LOG_WARNING, "[suricata] WARNING: unable to resolve IP List Alias '{$v['bind_to']}' for Host OS Policy '{$v['name']}' ... ignoring this entry.");
 				continue;
 			}
 		}
@@ -755,7 +781,7 @@ else {
 					elseif (is_ipaddrv4($addr) || is_subnetv4($addr))
 						$engine .= "{$addr}, ";
 					else {
-						syslog(LOG_WARN, "[suricata] WARNING: invalid IP address value '{$addr}' in Alias {$v['bind_to']} will be ignored.");
+						syslog(LOG_WARNING, "[suricata] WARNING: invalid IP address value '{$addr}' in Alias {$v['bind_to']} will be ignored.");
 						continue;
 					}
 				}
@@ -770,7 +796,7 @@ else {
 				$http_hosts_policy .= "   {$engine}\n";
 			}
 			else {
-				syslog(LOG_WARN, "[suricata] WARNING: unable to resolve IP List Alias '{$v['bind_to']}' for Host OS Policy '{$v['name']}' ... ignoring this entry.");
+				syslog(LOG_WARNING, "[suricata] WARNING: unable to resolve IP List Alias '{$v['bind_to']}' for Host OS Policy '{$v['name']}' ... ignoring this entry.");
 				continue;
 			}
 		}
@@ -970,6 +996,30 @@ else {
 	$tls_encrypt_handling = "default";
 }
 
+ /* RDP Parser */
+if (!empty($suricatacfg['rdp_parser'])) {
+	$rdp_parser = $suricatacfg['rdp_parser'];
+}
+else {
+	$rdp_parser = "yes";
+}
+
+/* SIP Parser */
+if (!empty($suricatacfg['sip_parser'])) {
+	$sip_parser = $suricatacfg['sip_parser'];
+}
+else {
+	$sip_parser = "yes";
+}
+
+/* SNMP Parser */
+if (!empty($suricatacfg['snmp_parser'])) {
+	$snmp_parser = $suricatacfg['snmp_parser'];
+}
+else {
+	$snmp_parser = "yes";
+}
+
 /* Configure the IP REP section */
 $iprep_path = rtrim(SURICATA_IPREP_PATH, '/');
 $iprep_config = "# IP Reputation\n";
@@ -1006,12 +1056,18 @@ suricata_prepare_rule_files($suricatacfg, $suricatacfgdir);
 
 // Check and configure only non-empty rules files for the interface
 $rules_files = "";
-if (filesize("{$suricatacfgdir}/rules/".SURICATA_ENFORCING_RULES_FILENAME) > 0)
-	$rules_files .= SURICATA_ENFORCING_RULES_FILENAME;
-if (filesize("{$suricatacfgdir}/rules/".FLOWBITS_FILENAME) > 0)
-	$rules_files .= "\n - " . FLOWBITS_FILENAME;
-if (filesize("{$suricatacfgdir}/rules/custom.rules") > 0)
-	$rules_files .= "\n - custom.rules";
+if (file_exists("{$suricatacfgdir}/rules/".SURICATA_ENFORCING_RULES_FILENAME)) {
+	if (filesize("{$suricatacfgdir}/rules/".SURICATA_ENFORCING_RULES_FILENAME) > 0)
+		$rules_files .= SURICATA_ENFORCING_RULES_FILENAME;
+}
+if (file_exists("{$suricatacfgdir}/rules/".FLOWBITS_FILENAME)) {
+	if (filesize("{$suricatacfgdir}/rules/".FLOWBITS_FILENAME) > 0)
+		$rules_files .= "\n - " . FLOWBITS_FILENAME;
+}
+if (file_exists("{$suricatacfgdir}/rules/custom.rules")) {
+	if (filesize("{$suricatacfgdir}/rules/custom.rules") > 0)
+		$rules_files .= "\n - custom.rules";
+}
 $rules_files = ltrim($rules_files, '\n -');
 
 // Add the general logging settings to the configuration (non-interface specific)

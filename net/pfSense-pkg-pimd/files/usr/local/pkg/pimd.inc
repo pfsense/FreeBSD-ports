@@ -396,24 +396,28 @@ function pimd_generate_config() {
 	safe_mkdir(PKG_PIMD_CONFIG_BASE);
 	unlink_if_exists("{$pimd_config_base}/pimd.conf");
 
-	$conffile = $pimd_auto_config_warning;
+	init_config_arr(array('installedpackages', 'pimd', 'config', 0));
+	if (!empty($config['installedpackages']['pimd']['config'][0]) &&
+	    ($config['installedpackages']['pimd']['config'][0]['enable'] == 'on')) {
+		$conffile = $pimd_auto_config_warning;
 
-	/* General Settings */
-	$conffile .= pimd_generate_config_general();
+		/* General Settings */
+		$conffile .= pimd_generate_config_general();
 
-	/* Interfaces */
-	$conffile .= pimd_generate_config_interfaces();
+		/* Interfaces */
+		$conffile .= pimd_generate_config_interfaces();
 
-	/* BSR Candidates */
-	$conffile .= pimd_generate_config_bsrcandidate();
+		/* BSR Candidates */
+		$conffile .= pimd_generate_config_bsrcandidate();
 
-	/* RP Candidates */
-	$conffile .= pimd_generate_config_rpcandidate();
+		/* RP Candidates */
+		$conffile .= pimd_generate_config_rpcandidate();
 
-	/* RP Addresses */
-	$conffile .= pimd_generate_config_rpaddress();
+		/* RP Addresses */
+		$conffile .= pimd_generate_config_rpaddress();
 
-	file_put_contents("{$pimd_config_base}/pimd.conf", $conffile);
+		file_put_contents("{$pimd_config_base}/pimd.conf", $conffile);
+	}
 
 	pimd_generate_rcfile();
 }
