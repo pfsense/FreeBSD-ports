@@ -291,6 +291,12 @@
 			<enablefields>bind_forwarder_ips</enablefields>
 		</field>
 		<field>
+			<fielddescr>DNSSEC Validation</fielddescr>
+			<fieldname>bind_dnssec_validation</fieldname>
+			<description>Enable DNSSEC validation when BIND is acting as a recursive resolver.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
 			<fielddescr>Forwarder IPs</fielddescr>
 			<fieldname>bind_forwarder_ips</fieldname>
 			<description>

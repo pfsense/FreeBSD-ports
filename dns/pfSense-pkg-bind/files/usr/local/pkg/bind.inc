@@ -155,6 +155,7 @@ function bind_sync() {
 		$bindzone = array();
 	}
 	$bind_enable = $bind['enable_bind'];
+	$bind_dnssec_validation = $bind['bind_dnssec_validation'];
 	$bind_forwarder = $bind['bind_forwarder'];
 	$forwarder_ips = $bind['bind_forwarder_ips'];
 	$ram_limit = $bind['bind_ram_limit'] ? $bind['bind_ram_limit'] : "256M";
@@ -177,6 +178,12 @@ options {
 	max-cache-size {$ram_limit};
 
 EOD;
+
+	if ($bind_dnssec_validation == 'on') {
+		$bind_conf .= "\tdnssec-validation yes;\n";
+	}
+	$bind_conf .= "\n";
+
 	// Check response rate limit option
 	//https://kb.isc.org/article/AA-01000/0/A-Quick-Introduction-to-Response-Rate-Limiting.html
 	//http://ss.vix.su/~vjs/rl-arm.html
@@ -683,7 +690,7 @@ EOD;
 				}
 			}
 		}
-		if (!$custom_root_zone) {
+		if (!$custom_root_zone && ($bind_forwarder != 'on')) {
 			$bind_conf .= "\tzone \".\" {\n";
 			$bind_conf .= "\t\ttype hint;\n";
 			$bind_conf .= "\t\tfile \"/etc/namedb/named.root\";\n";
