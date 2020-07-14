@@ -27,7 +27,6 @@ $priv_list['page-services-snort']['name'] = "WebCfg - Services: Snort package.";
 $priv_list['page-services-snort']['descr'] = "Allow access to Snort package gui";
 $priv_list['page-services-snort']['match'] = array();
 $priv_list['page-services-snort']['match'][] = "snort/snort_alerts.php*";
-$priv_list['page-services-snort']['match'][] = "snort/snort_barnyard.php*";
 $priv_list['page-services-snort']['match'][] = "snort/snort_blocked.php*";
 $priv_list['page-services-snort']['match'][] = "snort/snort_check_for_rule_updates.php*";
 $priv_list['page-services-snort']['match'][] = "snort/snort_define_servers.php*";

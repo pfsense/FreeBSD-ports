@@ -113,19 +113,23 @@ if ($snortcfg['alertsystemlog'] == "on") {
 
 /* define snortunifiedlog */
 $snortunifiedlog_type = "";
-if ($snortcfg['barnyard_enable'] == "on") {
+if ($snortcfg['unified2_logging_enable'] == "on") {
+	// Configure unified2 log size limit if one is set,
+	// else default to 500K.
 	if (isset($snortcfg['unified2_log_limit']))
-		$u2_log_limit = "limit {$snortcfg['unified2_log_limit']}";
+		$u2_log_limit = "limit {$snortcfg['unified2_log_limit']}K";
 	else
-		$u2_log_limit = "limit 128K";
+		$u2_log_limit = "limit 500K";
 
-	$snortunifiedlog_type = "output unified2: filename snort_{$snort_uuid}_{$if_real}.u2, {$u2_log_limit}";
-	if ($snortcfg['barnyard_log_vlan_events'] == 'on')
+	$snortunifiedlog_type = "output unified2: filename snort_{$snort_uuid}_{$if_real}.u2, {$u2_log_limit}, nostamp";
+
+	// Log VLAN and MPLS events when enabled
+	if ($snortcfg['unified2_log_vlan_events'] == 'on')
 		$snortunifiedlog_type .= ", vlan_event_types";
-	if ($snortcfg['barnyard_log_mpls_events'] == 'on')
+	if ($snortcfg['unified2_log_mpls_events'] == 'on')
 		$snortunifiedlog_type .= ", mpls_event_types";
 
-	// If AppID detector is enabled, add it to unified2 logging
+	// If AppID detector is enabled, add it to the unified2 logging
 	if ($snortcfg['appid_preproc'] == 'on' )
 		$snortunifiedlog_type .= ", appid_event_types";
 }

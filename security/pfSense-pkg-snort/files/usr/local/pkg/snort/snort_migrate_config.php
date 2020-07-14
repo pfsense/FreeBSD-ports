@@ -499,41 +499,6 @@ foreach ($config['installedpackages']['snortglobal']['rule'] as &$rule) {
 		}
 	}
 
-	// Migrate any Barnyard2 settings to the new advanced fields.
-	// Parse the old DB connect string and find the "host", "user",
-	// "dbname" and "password" values and save them in the new
-	// MySQL field names in the config file.
-	if (!empty($rule['barnyard_mysql'])) {
-		if (preg_match_all('/(dbname|host|user|password)\s*\=\s*([^\s]*)/i', $rule['barnyard_mysql'], $matches)) {
-			foreach ($matches[1] as $k => $p) {
-				if (strcasecmp($p, 'dbname') == 0)
-					$rule['barnyard_dbname'] = $matches[2][$k];
-				elseif (strcasecmp($p, 'host') == 0)
-					$rule['barnyard_dbhost'] = $matches[2][$k];
-				elseif (strcasecmp($p, 'user') == 0)
-					$rule['barnyard_dbuser'] = $matches[2][$k];
-				elseif (strcasecmp($p, 'password') == 0)
-					$rule['barnyard_dbpwd'] = base64_encode($matches[2][$k]);
-			}
-			$rule['barnyard_mysql_enable'] = 'on';
-			unset($rule['barnyard_mysql']);
-		}
-		// Since Barnyard2 was enabled, configure the new archived log settings
-		$rule['u2_archived_log_retention'] = '168';
-		$rule['barnyard_archive_enable'] = 'on';
-		$rule['unified2_log_limit'] = '32M';
-		$updated_cfg = true;
-	}
-
-	// This setting is deprecated and replaced
-	// by 'barnyard_enable' since any Barnyard2
-	// chaining requires unified2 logging.
-	if (isset($rule['snortunifiedlog'])) {
-		unset($rule['snortunifiedlog']);
-		$rule['barnyard_enable'] = 'on';
-		$updated_cfg = true;
-	}
-
 	// Migrate new POP3 preprocessor parameter settings
 	if (empty($rule['pop_memcap'])) {
 		$rule['pop_memcap'] = "838860";
@@ -628,20 +593,6 @@ foreach ($config['installedpackages']['snortglobal']['rule'] as &$rule) {
 		$updated_cfg = true;
 	}
 
-	// Migrate any BY2 limit for unified2 logs to new format
-	if (!empty($rule['unified2_log_limit']) && 
-	    !preg_match('/^\d+[g|k|m|G|K|M]/', $rule['unified2_log_limit'])) {
-		$rule['unified2_log_limit'] .= "M";
-		$updated_cfg = true;
-	}
-
-	// Set new BY2 syslog parameter to default if it is empty
-	// and Barnyard2 is enabled.
-	if ($rule['barnyard_enable'] == 'on' && empty($rule['barnyard_syslog_payload_encoding'])) {
-		$rule['barnyard_syslog_payload_encoding'] = 'hex';
-		$updated_cfg = true;
-	}
-
 	// Default any unconfigured AppID preprocessor settings
 	if (empty($rule['appid_preproc'])) {
 		$rule['appid_preproc'] = 'off';
@@ -731,6 +682,162 @@ foreach ($config['installedpackages']['snortglobal']['rule'] as &$rule) {
 		$rule['ips_mode'] = 'ips_mode_legacy';
 		$updated_cfg = true;
 	}
+
+	/**********************************************************/
+	/* Migrate any enabled Unified logging from Barnyard2 to  */
+	/* the new snort_xxxx.u2 log interface logging.           */
+	/**********************************************************/
+	if (!isset($pconfig['unified2_logging_enable'])) {
+		// Continue U2 logging if Barnyard2 was enabled
+		if (isset($pconfig['barnyard_enable']) && $pconfig['barnyard_enable'] == 'on') {
+			$pconfig['unified2_logging_enable'] = 'on';
+		}
+		else {
+			$pconfig['unified2_logging_enable'] = 'off';
+		}
+
+		// Check if VLAN or MPLS events logging is enabled
+		if (isset($pconfig['barnyard_log_vlan_events']) && $pconfig['barnyard_log_vlan_events'] == 'on') {
+			$pconfig['unified2_log_vlan_events'] = 'on';
+		}
+		else {
+			$pconfig['unified2_log_vlan_events'] = 'off';
+		}
+		if (isset($pconfig['barnyard_log_mpls_events']) && $pconfig['barnyard_log_mpls_events'] == 'on') {
+			$pconfig['unified2_log_mpls_events'] = 'on';
+		}
+		else {
+			$pconfig['unified2_log_mpls_events'] = 'off';
+		}
+
+		if (!isset($pconfig['unified2_log_limit'])) {
+			$pconfig['unified2_log_limit'] = '500';
+		}
+		if (!isset($pconfig['u2_archived_log_retention'])) {
+			$pconfig['u2_archived_log_retention'] = '336';
+		}
+		$updated_cfg = true;
+	}
+
+	/**********************************************************/
+	/* Remove deprecated Barnyard2 configuration parameters   */
+	/* from this interface if any are present.                */
+	/**********************************************************/
+	if (isset($pconfig['barnyard_enable'])) {
+		unset($pconfig['barnyard_enable']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_show_year'])) {
+		unset($pconfig['barnyard_show_year']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_archive_enable'])) {
+		unset($pconfig['barnyard_archive_enable']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_dump_payload'])) {
+		unset($pconfig['barnyard_dump_payload']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_obfuscate_ip'])) {
+		unset($pconfig['barnyard_obfuscate_ip']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_log_vlan_events'])) {
+		unset($pconfig['barnyard_log_vlan_events']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_log_mpls_events'])) {
+		unset($pconfig['barnyard_log_mpls_events']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_mysql_enable'])) {
+		unset($pconfig['barnyard_mysql_enable']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_enable'])) {
+		unset($pconfig['barnyard_syslog_enable']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_local'])) {
+		unset($pconfig['']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_local'])) {
+		unset($pconfig['']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_bro_ids_enable'])) {
+		unset($pconfig['barnyard_bro_ids_enable']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_disable_sig_ref_tbl'])) {
+		unset($pconfig['barnyard_disable_sig_ref_tbl']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_opmode'])) {
+		unset($pconfig['barnyard_syslog_opmode']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_payload_encoding'])) {
+		unset($pconfig['barnyard_syslog_payload_encoding']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_proto'])) {
+		unset($pconfig['barnyard_syslog_proto']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_sensor_name'])) {
+		unset($pconfig['barnyard_sensor_name']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_dbhost'])) {
+		unset($pconfig['barnyard_dbhost']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_dbname'])) {
+		unset($pconfig['barnyard_dbname']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_dbuser'])) {
+		unset($pconfig['barnyard_dbuser']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_dbpwd'])) {
+		unset($pconfig['barnyard_dbpwd']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_rhost'])) {
+		unset($pconfig['barnyard_syslog_rhost']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_dport'])) {
+		unset($pconfig['barnyard_syslog_dport']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_facility'])) {
+		unset($pconfig['barnyard_syslog_facility']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_syslog_priority'])) {
+		unset($pconfig['barnyard_syslog_priority']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_bro_ids_rhost'])) {
+		unset($pconfig['barnyard_bro_ids_rhost']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnyard_bro_ids_dport'])) {
+		unset($pconfig['barnyard_bro_ids_dport']);
+		$updated_cfg = true;
+	}
+	if (isset($pconfig['barnconfigpassthru'])) {
+		unset($pconfig['barnconfigpassthru']);
+		$updated_cfg = true;
+	}
+	/**********************************************************/
+	/* End Barnyard2 parameter removal                        */
+	/**********************************************************/
 }
 // Release reference to config array
 unset($rule);

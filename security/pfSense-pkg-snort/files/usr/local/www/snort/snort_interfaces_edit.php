@@ -247,7 +247,6 @@ if ($_POST['save'] && !$input_errors) {
 	if ($_POST['enable'] != 'on') {
 		$a_rule[$id]['enable'] = $_POST['enable'] ? 'on' : 'off';
 		touch("{$g['varrun_path']}/snort_{$a_rule[$id]['uuid']}.disabled");
-		touch("{$g['varrun_path']}/barnyard2_{$a_rule[$id]['uuid']}.disabled");
 		snort_stop($a_rule[$id], get_real_interface($a_rule[$id]['interface']));
 		write_config("Snort pkg: modified interface configuration for {$a_rule[$id]['interface']}.");
 		$rebuild_rules = false;
@@ -287,6 +286,9 @@ if ($_POST['save'] && !$input_errors) {
 		if ($_POST['ips_mode']) $natent['ips_mode'] = $_POST['ips_mode']; else unset($natent['ips_mode']);
 		if ($_POST['enable_pkt_caps'] == "on") $natent['enable_pkt_caps'] = 'on'; else $natent['enable_pkt_caps'] = 'off';
 		if ($_POST['tcpdump_file_size'] && is_numeric($_POST['tcpdump_file_size'])) $natent['tcpdump_file_size'] = $_POST['tcpdump_file_size'];
+		if ($_POST['unified2_logging_enable'] == "on") $natent['unified2_logging_enable'] = 'on'; else $natent['unified2_logging_enable'] = 'off';
+		if ($_POST['unified2_log_vlan_events'] == "on") $natent['unified2_log_vlan_events'] = 'on'; else $natent['unified2_log_vlan_events'] = 'off';
+		if ($_POST['unified2_log_mpls_events'] == "on") $natent['unified2_log_mpls_events'] = 'on'; else $natent['unified2_log_mpls_events'] = 'off';
 		if ($_POST['blockoffenders7'] == "on") $natent['blockoffenders7'] = 'on'; else $natent['blockoffenders7'] = 'off';
 		if ($_POST['blockoffenderskill'] == "on") $natent['blockoffenderskill'] = 'on'; else $natent['blockoffenderskill'] = 'off';
 		if ($_POST['blockoffendersip']) $natent['blockoffendersip'] = $_POST['blockoffendersip']; else unset($natent['blockoffendersip']);
@@ -615,6 +617,27 @@ $section->addInput(new Form_Input(
 	'number',
 	$pconfig['tcpdump_file_size']
 ))->setHelp('Enter a value in megabytes for the packet capture file size limit. Default is 128 megabytes. When the limit is reached, the current packet capture file in directory ' . SNORTLOGDIR . '/snort_' . get_real_interface($pconfig['interface']) . $pconfig['uuid'] . ' is rotated and a new file opened.');
+$section->addInput(new Form_Checkbox(
+	'unified2_logging_enable',
+	'Enable Unified2 Logging',
+	'Checking this option will cause Snort to simultaneously log alerts to a unified2 binary format log file in the logging subdirectory for this interface. Default is Not Checked.',
+	$pconfig['unified2_logging_enable'] == 'on' ? true:false,
+	'on'
+))->setHelp(' Log size and retention limits for the Unified2 log should be configured on the LOG MGMT tab when this option is enabled.');
+$section->addInput(new Form_Checkbox(
+	'unified2_log_vlan_events',
+	'Log U2 VLAN Events',
+	'Checking this option will cause Snort to log VLAN events to the unified2 binary format log for this interface. Default is Not Checked.',
+	$pconfig['unified2_log_vlan_events'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'unified2_log_mpls_events',
+	'Log U2 MPLS Events',
+	'Checking this option will cause Snort to log MPLS events to the unified2 binary format log for this interface. Default is Not Checked.',
+	$pconfig['unified2_log_mpls_events'] == 'on' ? true:false,
+	'on'
+));
 
 $form->add($section);
 
@@ -876,7 +899,6 @@ $tab_array = array();
 	$tab_array[] = array($menu_iface . gettext("Rules"), false, "/snort/snort_rules.php?id={$id}");
 	$tab_array[] = array($menu_iface . gettext("Variables"), false, "/snort/snort_define_servers.php?id={$id}");
 	$tab_array[] = array($menu_iface . gettext("Preprocs"), false, "/snort/snort_preprocessors.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/snort/snort_barnyard.php?id={$id}");
 	$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/snort/snort_ip_reputation.php?id={$id}");
 	$tab_array[] = array($menu_iface . gettext("Logs"), false, "/snort/snort_interface_logs.php?id={$id}");
 display_top_tabs($tab_array, true, 'nav nav-tabs');
@@ -912,6 +934,12 @@ events.push(function(){
 		hideInput('tcpdump_file_size', hide);
 	}
 
+	function toggle_unified2_events_logging() {
+		var hide = ! $('#unified2_logging_enable').prop('checked');
+		hideCheckbox('unified2_log_vlan_events', hide);
+		hideCheckbox('unified2_log_mpls_events', hide);
+	}
+
 	function enable_change() {
 		var hide = ! $('#enable').prop('checked');
 		disableInput('alertsystemlog', hide);
@@ -919,6 +947,9 @@ events.push(function(){
 		disableInput('alertsystemlog_priority', hide);
 		disableInput('enable_pkt_caps', hide);
 		disableInput('tcpdump_file_size', hide);
+		disableInput('unified2_logging_enable', hide);
+		disableInput('unified2_log_vlan_events', hide);
+		disableInput('unified2_log_mpls_events', hide);
 		disableInput('blockoffenders7', hide);
 		disableInput('ips_mode', hide);
 		disableInput('blockoffenderskill', hide);
@@ -991,6 +1022,11 @@ events.push(function(){
 		toggle_system_log();
 	});
 
+	// When 'unified2_logging_enable' is clicked, disable/enable associated form controls
+	$('#unified2_logging_enable').click(function() {
+		toggle_unified2_events_logging();
+	});
+
 	// When 'blockoffenders7' is clicked, disable/enable associated form controls
 	$('#blockoffenders7').click(function() {
 		enable_blockoffenders();
@@ -1020,6 +1056,7 @@ events.push(function(){
 	enable_change();
 	enable_blockoffenders();
 	toggle_system_log();
+	toggle_unified2_events_logging();
 	toggle_enable_pkt_caps();
 });
 //]]>
