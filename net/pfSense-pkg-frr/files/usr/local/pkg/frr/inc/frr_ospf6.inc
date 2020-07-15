@@ -58,6 +58,10 @@ function frr_generate_config_ospf6() {
 		if ($frr_conf['logging']) {
 			$conffile .= "log syslog\n";
 		}
+		/* SNMP AgentX Support*/
+		if ($ospf6d_conf['enablesnmpagentx']) {
+			$conffile .= "agentx\n";
+		}
 
 		/* Interface Settings */
 		$passive_interfaces = array();
@@ -99,12 +103,14 @@ function frr_generate_config_ospf6() {
 				if (!empty($conf['mtuignore'])) {
 					$conffile .= "  ipv6 ospf6 mtu-ignore\n";
 				}
+				if (!empty($conf['bfdenable'])) {
+					$conffile .= "  ipv6 ospf6 bfd\n";
+				}
 				list($interface_ip, $interface_subnet, $subnet) = frr_get_interfaceinfo($conf['interface'], true);
-				$interface_area = (strlen($conf['interfacearea']) > 0) ? $conf['interfacearea'] : $ospf6d_conf['area'];
+				$interface_area = (strlen($conf['interfacearea']) > 0) ? $conf['interfacearea'] : $ospf6d_conf['defaultarea'];
 				if (is_subnetv6("{$subnet}/{$interface_subnet}")) {
 					$cost = (is_numeric($conf['metric']) && ($conf['metric'] >= 0)) ? $conf['metric'] : 1;
 					$router_interface_areas .= "  area {$interface_area} range {$subnet}/{$interface_subnet} cost {$cost}\n";
-					$router_interface_areas .= "  area {$interface_area} export-list dnr6-list\n";
 				}
 				$router_interface_areas .= "  interface {$realif} area {$interface_area}\n";
 			}
@@ -125,7 +131,7 @@ function frr_generate_config_ospf6() {
 		}
 		/* OSPF6 Settings */
 		$conffile .= "\nrouter ospf6\n";
-		/* If the router ID is defined in BGP, use that, otherwise try to use
+		/* If the router ID is defined, use that, otherwise try to use
 		 * the global router ID, if one is set. */
 		if (is_ipaddrv4($ospf6d_conf['routerid'])) {
 			$conffile .= "  ospf6 router-id {$ospf6d_conf['routerid']}\n";
@@ -135,7 +141,7 @@ function frr_generate_config_ospf6() {
 
 		$conffile .= $router_interface_areas;
 
-		$stub_start = "  area {$ospf6d_conf['area']} ";
+		$stub_start = "  area {$ospf6d_conf['defaultarea']} ";
 		switch($ospf6d_conf['updatefib']) {
 			case "on":
 			case "stub":
@@ -153,7 +159,7 @@ function frr_generate_config_ospf6() {
 		if (!empty($stub_start)) {
 			$conffile .= "{$stub_start}\n";
 		}
-		if ($ospf6d_conf['logging'] && $ospf6d_conf['adjacencylog']) {
+		if ($frr_conf['logging'] && $ospf6d_conf['adjacencylog']) {
 			$conffile .= "  log-adjacency-changes detail\n";
 		}
 
@@ -199,35 +205,23 @@ function frr_generate_config_ospf6() {
 
 		/* exportlist */
 		if (!empty($ospf6d_conf['exportlist']) && ($ospf6d_conf['exportlist'] != "none")) {
-			$conffile .= "  area {$ospf6d_conf['area']} export-list {$ospf6d_conf['exportlist']}\n";
+			$conffile .= "  area {$ospf6d_conf['defaultarea']} export-list {$ospf6d_conf['exportlist']}\n";
 		}
 
 		/* importlist */
 		if (!empty($ospf6d_conf['importlist']) && ($ospf6d_conf['importlist'] != "none")) {
-			$conffile .= "  area {$ospf6d_conf['area']} import-list {$ospf6d_conf['importlist']}\n";
+			$conffile .= "  area {$ospf6d_conf['defaultarea']} import-list {$ospf6d_conf['importlist']}\n";
 		}
 
 		/* filterlist_out */
 		if (!empty($ospf6d_conf['filterlist_out']) && ($ospf6d_conf['filterlist_out'] != "none")) {
-			$conffile .= "  area {$ospf6d_conf['area']} filter-list prefix {$ospf6d_conf['filterlist_out']} out\n";
+			$conffile .= "  area {$ospf6d_conf['defaultarea']} filter-list prefix {$ospf6d_conf['filterlist_out']} out\n";
 		}
 
 		/* filterlist_in */
 		if (!empty($ospf6d_conf['filterlist_in']) && ($ospf6d_conf['filterlist_in'] != "none")) {
-			$conffile .= "  area {$ospf6d_conf['area']} filter-list prefix {$ospf6d_conf['filterlist_in']} in\n";
+			$conffile .= "  area {$ospf6d_conf['defaultarea']} filter-list prefix {$ospf6d_conf['filterlist_in']} in\n";
 		}
-
-		/* Setup a "do not redistribute" list in a couple different ways:
-		 * 1: Add networks to a distribute-list so they won't go to other protocols
-		 * 2: Add networks to a route-map which is used to filter redistribution
-		 */
-		if (!empty($noredist)) {
-			$conffile .= $noredist;
-		}
-		$conffile .= "ipv6 prefix-list dnr6-list permit any\n";
-		$conffile .= "route-map DNR6 permit 10\n";
-		$conffile .= "  match ipv6 address prefix-list dnr6-list\n";
-
 	}
 	safe_mkdir($frr_config_base);
 	file_put_contents("{$frr_config_base}/ospf6d.conf", $conffile);

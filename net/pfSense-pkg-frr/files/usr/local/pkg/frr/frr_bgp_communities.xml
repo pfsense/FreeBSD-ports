@@ -56,17 +56,17 @@
 			<url>pkg_edit.php?xml=frr.xml</url>
 		</tab>
 		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
 			<text>[OSPF]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
 		</tab>
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
-		</tab>
-		<tab>
-			<text>[BFD]</text>
-			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
-		</tab>
+		</tab>		
 		<tab>
 			<text>Status</text>
 			<url>/status_frr.php</url>
@@ -89,7 +89,7 @@
 			<description>
 				<![CDATA[
 				The name of this BGP Community.
-				<br/><br/>
+				<br />
 				Use 1-99 for a standard community list (AS:VAL pairs),
 				100-500 for an expanded community list (Regular Expression Matching),
 				or enter a text name combined with the selected type.
@@ -122,10 +122,10 @@
 			<description>
 				<![CDATA[
 				BGP Communities determine AS membership and priority values in BGP-specific contexts such as route-maps.
-				<br/><br/>
+				<br />
 				This is a space-separated list of communities in AS:VAL format, or a well-known community:
 				internet, no-export, no-advertise, or local-as.
-				<br/><br/>
+				<br />
 				Expanded Community List entries specify an ordered list using a regular expression.
 				]]>
 			</description>

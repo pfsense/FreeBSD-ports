@@ -52,6 +52,10 @@
 			<active/>
 		</tab>
 		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
 			<text>[BGP]</text>
 			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
 		</tab>
@@ -62,11 +66,7 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
-		</tab>
-		<tab>
-			<text>[BFD]</text>
-			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
-		</tab>
+		</tab>		
 		<tab>
 			<text>Status</text>
 			<url>/status_frr.php</url>
@@ -116,6 +116,28 @@
 				</rowhelperfield>
 			</rowhelper>
 		</field>
+
+		<field>
+			<name>RAW Configuration Management</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				<p>
+				<button onclick='onCopyClick(zebra, zebrarunning); onCopyClick(staticd, staticdrunning);
+					onCopyClick(bgpd, bgpdrunning); onCopyClick(ospfd, ospfdrunning); 
+					onCopyClick(ospf6d, ospf6drunning); onCopyClick(bfdd, bfddrunning);
+					return false'>Copy All Running to Saved</button>
+				</p>
+				<p><b>Clicking "Update Running" will fill RUNNING fields with current configuration.</p>
+				<p><button class="btn btn-success btn-sm" name='update_running' id='update_running' type='submit' value='Update Running'><i class="fa fa-refresh icon-embed-btn"></i>Update Running</button></p>
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+
 		<field>
 			<name>RAW Configuration Files</name>
 			<type>listtopic</type>
@@ -382,15 +404,6 @@
 				When finished copying, click "Save" at the bottom of the form.<br />
 				</b>
 				<button onclick='onCopyClick(ospf6d, ospf6drunning); return false'>Copy OSPF6d Running to Saved</button>
-				</p>
-				<p>
-				<button onclick='onCopyClick(zebra, zebrarunning); onCopyClick(staticd, staticdrunning);
-					onCopyClick(bgpd, bgpdrunning); onCopyClick(ospfd, ospfdrunning); 
-					onCopyClick(ospf6d, ospf6drunning); onCopyClick(bfdd, bfddrunning);
-					return false'>Copy All Running to Saved</button>
-				</p>
-				<p><b>Clicking "Update RUNNING" will fill RUNNING fields with current configuration.</b></p><p>
-				<button class="btn btn-success btn-sm" name='update_running' id='update_running' type='submit' value='Update RUNNING'><i class="fa fa-refresh icon-embed-btn"></i>Update RUNNING</button>
 				</p>
 				]]>
 			</description>

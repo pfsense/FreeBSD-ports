@@ -31,15 +31,15 @@
 	<aftersaveredirect>pkg.php?xml=frr/frr_ospf_areas.xml</aftersaveredirect>
 	<tabs>
 		<tab>
-			<text>OSPF Settings</text>
+			<text>OSPF</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
 		</tab>
 		<tab>
-			<text>OSPF Interfaces</text>
+			<text>Interfaces</text>
 			<url>pkg.php?xml=frr/frr_ospf_interfaces.xml</url>
 		</tab>
 		<tab>
-			<text>OSPF Areas</text>
+			<text>Areas</text>
 			<url>pkg.php?xml=frr/frr_ospf_areas.xml</url>
 			<active/>
 		</tab>
@@ -48,17 +48,17 @@
 			<url>pkg_edit.php?xml=frr.xml</url>
 		</tab>
 		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
 			<text>[BGP]</text>
 			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
 		</tab>
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
-		</tab>
-		<tab>
-			<text>[BFD]</text>
-			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
-		</tab>
+		</tab>		
 		<tab>
 			<text>Status</text>
 			<url>/status_frr.php</url>
@@ -168,7 +168,7 @@
 				When attached to more than one area, this router will act as an Area Border Router (ABR).
 				An ABR can choose to advertise a summary route instead of individual interface routes.
 				The entries in this list will be advertised to neighbors, and any networks contained inside the defined prefixes will not be advertised individually.
-				<br/><br/>
+				<br />
 				Only <strong>one</strong> of the options for each prefix may be activated.
 				]]>
 			</description>

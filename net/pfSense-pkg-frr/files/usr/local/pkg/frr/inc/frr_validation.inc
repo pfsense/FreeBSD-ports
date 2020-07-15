@@ -277,8 +277,11 @@ function frr_ospf_interfaces_validate_input() {
 		}
 	}
 	frr_validate_intrange_input("Cost", $_POST['metric'], 1, 65535);
-	if (!empty($_POST['interfacearea']) && !is_ipaddr($_POST['interfacearea'])) {
-		$input_errors[] = "Area must be a valid ip_address.";
+	if ((strlen($_POST['interfacearea']) > 0) && !(is_ipaddr($_POST['interfacearea']) || ctype_digit($_POST['interfacearea']))) {
+		$input_errors[] = "Area must be a valid IP address or integer number.";
+	}
+	if ((strlen($_POST['interfacearea']) == 0) && strlen(($config['installedpackages']['frrospfd']['config'][0]['defaultarea']) == 0)) {
+		$input_errors[] = "Area must either be set on the interface or a default area set for the OSPF instance.";
 	}
 	if (!empty($_POST['networktype']) && !in_array($_POST['networktype'], array('broadcast', 'non-broadcast', 'point-to-multipoint', 'point-to-point'))) {
 		$input_errors[] = "Invalid interface type.";
@@ -317,15 +320,25 @@ function frr_ospf_interfaces_validate_input() {
 function frr_ospf_validate_input() {
 	global $config, $input_errors;
 
-	if (!$config['installedpackages']['frrospfdinterfaces']['config']) {
-		$input_errors[] = "Please select an interface to use for FRR OSPFd.";
-	}
-
 	if (!empty($_POST['routerid']) && !is_ipaddr($_POST['routerid'])) {
 		$input_errors[] = "Router ID must be an address.";
 	}
-	if (!is_ipaddr($_POST['area'])) {
-		$input_errors[] = "Area must be a valid ip_address.";
+
+	if (strlen($_POST['defaultarea']) > 0) {
+		if (!(is_ipaddr($_POST['defaultarea']) || ctype_digit($_POST['defaultarea']))) {
+			$input_errors[] = "Default Area must be a valid IP address or integer number.";
+		}
+	} else {
+		if (is_array($config['installedpackages']['frrospfdinterfaces'])) {
+			$interfaces_no_area = array();
+			foreach ($config['installedpackages']['frrospfdinterfaces']['config'] as $interface) {
+				if (strlen($interface['interfacearea']) == 0) { $interfaces_no_area[] = $interface['interface']; }
+			}
+			if (!empty($interfaces_no_area)) {
+				$interfaces_no_area = implode(" ", $interfaces_no_area);
+				$input_errors[] = "Default Area cannot be cleared as there are interfaces configured without specifically defined areas: {$interfaces_no_area}";
+			}
+		}
 	}
 
 	/* spfholdtime 0-60000 */
@@ -366,11 +379,18 @@ function frr_ospf_validate_input() {
 	frr_validate_intrange_input("Max Metric Seconds at Shutdown", $_POST['max_metric_shutdown'], 5, 86400);
 	/* writemultiplier (1-100) */
 	frr_validate_intrange_input("Write Multiplier", $_POST['writemultiplier'], 1, 100);
-
 }
 
 function frr_ospf6_interfaces_validate_input() {
 	global $config, $g, $input_errors;
+
+	if ((strlen($_POST['interfacearea']) > 0) && !($_POST['interfacearea'] == '0.0.0.0' || $_POST['interfacearea'] == '0')) {
+		$input_errors[] = "Area must be 0 or 0.0.0.0, FRR currently only supports the backbone area.";
+	}
+
+	if ((strlen($_POST['interfacearea']) == 0) && (strlen($config['installedpackages']['frrospf6d']['config'][0]['defaultarea']) == 0)) {
+		$input_errors[] = "Area must either be set on the interface or a default given for the OSPFv3 instance.";
+	}
 }
 
 function frr_ospf6_validate_input() {
@@ -380,18 +400,33 @@ function frr_ospf6_validate_input() {
 		$input_errors[] = "Router ID must be an IP address.";
 	}
 
-	if (empty($_POST['routerid'])) {
-
-		if (!is_array($config['installedpackages']['frr']['config']) ||
-		    empty($config['installedpackages']['frr']['config'][0]['routerid'])) {
-			$input_errors[] = "Router ID is required because the global Router ID is not set.";
+	if (strlen($_POST['defaultarea']) > 0) {
+		if (!(is_ipaddr($_POST['defaultarea']) || ctype_digit($_POST['defaultarea']))) {
+			$input_errors[] = "Default Area must be a valid IP address or integer number.";
+		}
+		if (!($_POST['defaultarea'] == '0.0.0.0' || $_POST['defaultarea'] == '0')) {
+			$input_errors[] = "Area must be 0 or 0.0.0.0, FRR OSPFv3 currently only supports the backbone area.";
+		}
+	} else {
+		if (is_array($config['installedpackages']['frrospfd6interfaces'])) {
+			$interfaces_no_area = array();
+			foreach ($config['installedpackages']['frrospfd6interfaces']['config'] as $interface) {
+				if (strlen($interface['interfacearea']) == 0) { $interfaces_no_area[] = $interface['interface']; }
+			}
+			if (!empty($interfaces_no_area)) {
+				$interfaces_no_area = implode(" ", $interfaces_no_area);
+				$input_errors[] = "Default Area cannot be cleared as there are interfaces configured without specifically defined areas: {$interfaces_no_area}";
+			}
 		}
 	}
 }
 
-
 function frr_bgp_validate_input() {
 	global $config, $g, $input_errors;
+
+	if (!empty($_POST['enable']) && empty($_POST['asnum'])) {
+		$input_errors[] = "AS must be provided if BGP is enabled.";
+	}
 
 	if (!empty($_POST['asnum']) && !is_numeric($_POST['asnum'])) {
 		$input_errors[] = "AS must be entered as a number only.";
@@ -413,13 +448,16 @@ function frr_bgp_validate_input() {
 function frr_bgp_advanced_validate_input() {
 	global $config, $input_errors;
 }
+
 function frr_bgp_neighbors_validate_input() {
 	global $config, $input_errors;
 }
+
 function frr_bgp_aspaths_validate_input() {
 	global $config, $input_errors, $pkg;
 	frr_sort_rows_by_seq();
 }
+
 function frr_bgp_communities_validate_input() {
 	global $config, $input_errors, $pkg;
 	frr_sort_rows_by_seq();
@@ -439,4 +477,40 @@ function frr_bgp_validate_group() {
 
 function frr_bfd_validate_input() {
 	global $config, $input_errors;
+}
+
+function frr_bfd_peer_validate_input() {
+	global $config, $input_errors;
+
+	if (!empty($_POST['detectmultiplier'])) {
+		if (!is_numeric($_POST['detectmultiplier'])) {
+			$input_errors[] = "Detect multiplier must be a number.";
+		}
+		/*detect-multiplier (2-255)*/
+		frr_validate_intrange_input("Detect multiplier", $_POST['receiveinterval'], 2, 255);
+	}
+
+	if (!empty($_POST['receiveinterval'])) {
+		if (!is_numeric($_POST['receiveinterval'])) {
+			$input_errors[] = "Receive interval must be a number.";
+		}
+		/*receive-interval (10-60000)*/
+		frr_validate_intrange_input("Receive interval", $_POST['receiveinterval'], 10, 60000);
+	}
+
+	if (!empty($_POST['transmitinterval'])) {
+		if (!is_numeric($_POST['transmitinterval'])) {
+			$input_errors[] = "Transmit interval must be a number.";
+		}
+		/*transmit-interval (10-60000)*/
+		frr_validate_intrange_input("Transmit interval", $_POST['transmitinterval'], 10, 60000);
+	}
+
+	if (!empty($_POST['echointerval'])) {
+		if (!is_numeric($_POST['echointerval'])) {
+			$input_errors[] = "Echo interval must be a number.";
+		}
+		/*echo-interval (10-60000)*/
+		frr_validate_intrange_input("Echo interval", $_POST['echointerval'], 10, 60000);
+	}
 }

@@ -22,6 +22,7 @@ pkg/frr/frr_bgp_advanced.xml
 pkg/frr/frr_global_prefixes.xml
 pkg/frr/frr_bgp.xml
 pkg/frr/frr_bfd.xml
+pkg/frr/frr_bfd_peers.xml
 bin/frrctl
 %%DATADIR%%/info.xml
 /etc/inc/priv/frr.priv.inc

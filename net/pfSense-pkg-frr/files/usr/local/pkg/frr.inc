@@ -44,14 +44,15 @@ $frr_auto_config_warning = <<<EOF
 # The contents of this file will be overwritten without warning!  #
 ###################################################################
 
+
 EOF;
 
 require_once("frr/inc/frr_validation.inc");
 require_once("frr/inc/frr_zebra.inc");
+require_once("frr/inc/frr_bfd.inc");
 require_once("frr/inc/frr_bgp.inc");
 require_once("frr/inc/frr_ospf.inc");
 require_once("frr/inc/frr_ospf6.inc");
-require_once("frr/inc/frr_bfd.inc");
 
 /* Build a list of only CARP VIPs, formatted for use in a selection list */
 function frr_get_carp_list() {
@@ -74,7 +75,7 @@ function frr_get_interfaces($includedefault = true, $includevips = true, $includ
 	 * OSPF interface selections can't use 'default'.
 	 */
 	if ($includedefault) {
-		$interfaces['default'] = "default";
+		$interfaces['default'] = "Default";
 	} else {
 		$interfaces = array();
 	}
@@ -274,6 +275,12 @@ function frr_generate_config_rcfile() {
 		return null;
 	}
 
+	/* Get FRR daemon modules to append to daemon commands */
+	$zebradmodules = ($config['installedpackages']['frr']['config'][0]['enablesnmpagentx']) ? '-M snmp' : '';
+	$bgpdmodules = ($config['installedpackages']['frrbgp']['config'][0]['enablesnmpagentx']) ? '-M snmp' : '';
+	$ospfdmodules = ($config['installedpackages']['frrospfd']['config'][0]['enablesnmpagentx']) ? '-M snmp' : '';
+	$ospf6dmodules = ($config['installedpackages']['frrospf6d']['config'][0]['enablesnmpagentx']) ? '-M snmp' : '';
+
 	/* Setup a CARP VIP status check, if needed, so the service won't start
 	 * unless this node is in a MASTER state */
 	$carp_ip_status_check = "";
@@ -369,11 +376,11 @@ if /bin/pgrep -q bfdd; then
 	/usr/bin/killall -9 bfdd 2>/dev/null
 fi
 {$carp_ip_status_check}
-[ -s {$frr_config_base}/zebra.conf ] && /usr/local/sbin/zebra -d -f {$frr_config_base}/zebra.conf
+[ -s {$frr_config_base}/zebra.conf ] && /usr/local/sbin/zebra -d -f {$frr_config_base}/zebra.conf {$zebradmodules}
 [ -s {$frr_config_base}/staticd.conf ] && /usr/local/sbin/staticd -d -f {$frr_config_base}/staticd.conf
-[ -s {$frr_config_base}/ospfd.conf ] && /usr/local/sbin/ospfd -d -f {$frr_config_base}/ospfd.conf
-[ -s {$frr_config_base}/ospf6d.conf ] && /usr/local/sbin/ospf6d -d -f {$frr_config_base}/ospf6d.conf
-[ -s {$frr_config_base}/bgpd.conf ] && /usr/local/sbin/bgpd -d -f {$frr_config_base}/bgpd.conf
+[ -s {$frr_config_base}/ospfd.conf ] && /usr/local/sbin/ospfd -d -f {$frr_config_base}/ospfd.conf {$ospfdmodules}
+[ -s {$frr_config_base}/ospf6d.conf ] && /usr/local/sbin/ospf6d -d -f {$frr_config_base}/ospf6d.conf {$ospf6dmodules}
+[ -s {$frr_config_base}/bgpd.conf ] && /usr/local/sbin/bgpd -d -f {$frr_config_base}/bgpd.conf {$bgpdmodules}
 [ -s {$frr_config_base}/bfdd.conf ] && /usr/local/sbin/bfdd -d -f {$frr_config_base}/bfdd.conf
 [ -s {$frr_config_base}/frr_md5pw_add.conf ] && /sbin/setkey -f {$frr_config_base}/frr_md5pw_add.conf
 

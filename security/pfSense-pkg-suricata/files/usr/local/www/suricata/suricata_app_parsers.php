@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -274,6 +274,9 @@ elseif ($_POST['ResetAll']) {
 	$pconfig['tftp_parser'] = "yes";
 	$pconfig['ntp_parser'] = "yes";
 	$pconfig['dhcp_parser'] = "yes";
+	$pconfig['rdp_parser'] = "yes";
+	$pconfig['sip_parser'] = "yes";
+	$pconfig['snmp_parser'] = "yes";
 
 	/* Log a message at the top of the page to inform the user */
 	$savemsg = gettext("All flow and stream settings on this page have been reset to their defaults.  Click APPLY if you wish to keep these new settings.");
@@ -462,6 +465,9 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		$natent['tftp_parser'] = $_POST['tftp_parser'];
 		$natent['ntp_parser'] = $_POST['ntp_parser'];
 		$natent['dhcp_parser'] = $_POST['dhcp_parser'];
+		$natent['rdp_parser'] = $_POST['rdp_parser'];
+		$natent['sip_parser'] = $_POST['sip_parser'];
+		$natent['snmp_parser'] = $_POST['snmp_parser'];
 
 		/**************************************************/
 		/* If we have a valid rule ID, save configuration */
@@ -525,7 +531,6 @@ $tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_
 $tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("App Parsers"), true, "/suricata/suricata_app_parsers.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
 display_top_tabs($tab_array, true);
 ?>
@@ -683,8 +688,8 @@ if ($importalias) {
 		    'processing this flow as much as possible; and "Full" keeps tracking and inspection as normal including unmodified content keyword signatures.  For best performance, select "Bypass".');
 	$section->addInput(new Form_Checkbox(
 		'tls_ja3_fingerprint',
-		'JA3 Fingerprint',
-		'Suricata will generate JA3 fingerprint from client hello. Default is Not Checked.',
+		'JA3/JA3S Fingerprint',
+		'Suricata will generate JA3/JA3S fingerprint from client hello. Default is Not Checked.',
 		$pconfig['tls_ja3_fingerprint'] == 'on' ? true:false,
 		'on'
 	));
@@ -763,6 +768,25 @@ if ($importalias) {
 		$pconfig['tftp_parser'],
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for TFTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'rdp_parser',
+		'RDP Parser',
+		$pconfig['rdp_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for RDP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'sip_parser',
+		'SIP Parser',
+		$pconfig['sip_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for SIP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'snmp_parser',
+		'SNMP Parser',
+		$pconfig['snmp_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for SNMP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+
 	print($section);
 
 ?>

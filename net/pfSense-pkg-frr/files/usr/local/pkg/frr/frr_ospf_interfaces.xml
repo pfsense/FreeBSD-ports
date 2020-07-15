@@ -31,21 +31,25 @@
 	<aftersaveredirect>pkg.php?xml=frr/frr_ospf_interfaces.xml</aftersaveredirect>
 	<tabs>
 		<tab>
-			<text>OSPF Settings</text>
+			<text>OSPF</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
 		</tab>
 		<tab>
-			<text>OSPF Interfaces</text>
+			<text>Interfaces</text>
 			<url>pkg.php?xml=frr/frr_ospf_interfaces.xml</url>
 			<active/>
 		</tab>
 		<tab>
-			<text>OSPF Areas</text>
+			<text>Areas</text>
 			<url>pkg.php?xml=frr/frr_ospf_areas.xml</url>
 		</tab>
 		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
 		</tab>
 		<tab>
 			<text>[BGP]</text>
@@ -54,11 +58,7 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
-		</tab>
-		<tab>
-			<text>[BFD]</text>
-			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
-		</tab>
+		</tab>		
 		<tab>
 			<text>Status</text>
 			<url>/status_frr.php</url>
@@ -74,7 +74,7 @@
 			<fieldname>descr</fieldname>
 		</columnitem>
 		<columnitem>
-			<fielddescr>Cost</fielddescr>
+			<fielddescr>Metric</fielddescr>
 			<fieldname>metric</fieldname>
 		</columnitem>
 		<columnitem>
@@ -139,9 +139,9 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Cost</fielddescr>
+			<fielddescr>Metric</fielddescr>
 			<fieldname>metric</fieldname>
-			<description>Cost (Metric) for this OSPF interface (leave blank for default).</description>
+			<description>Metric (Cost) for this OSPF interface (leave blank for default).</description>
 			<type>input</type>
 		</field>
 		<field>
@@ -236,6 +236,22 @@
 				Overrides the Hello Interval and Dead Interval and instead sends this number of Hello messages per second.
 			</description>
 			<type>input</type>
+		</field>
+
+		<field>
+			<name>BFD</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>BFD Enable</fielddescr>
+			<fieldname>bfdenable</fieldname>
+			<description>
+				<![CDATA[
+				Listen for BFD events on peers created on the interface.
+				When OSPF finds a new neighbor, it creates a BFD peer to monitor the link status for fast convergence.
+				]]>
+			</description>
+			<type>checkbox</type>
 		</field>
 	</fields>
 	<custom_php_resync_config_command>

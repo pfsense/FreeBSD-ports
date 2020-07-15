@@ -36,6 +36,10 @@
 			<active/>
 		</tab>
 		<tab>
+			<text>Peers</text>
+			<url>pkg.php?xml=frr/frr_bfd_peers.xml</url>
+		</tab>	
+		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>
 		</tab>
@@ -58,7 +62,7 @@
 	</tabs>
 	<fields>
 		<field>
-			<name>BFD Options</name>
+			<name>BFD</name>
 			<type>listtopic</type>
 		</field>
 		<field>
@@ -66,58 +70,6 @@
 			<fieldname>enable</fieldname>
 			<description>Enable BFD Daemon</description>
 			<type>checkbox</type>
-		</field>
-		<field>
-			<name>Peer Configurations</name>
-			<type>listtopic</type>
-		</field>
-		<field>
-			<fielddescr></fielddescr>
-			<description>
-				<![CDATA[
-				<b>Detect Multiplier</b> : the detection multiplier to determine packet loss.
-				<br/><br/>
-				<b>Receive Interval</b> : the minimum interval that this system is capable of receiving control packets.
-				<br/><br/>
-				<b>Transmit Interval</b> : the minimum transmission interval (less jitter) that this system wants to use to send BFD
-				control packets.
-				<br/><br/>
-				<b>shutdown</b> : Enables or disables the peer.
-				]]>
-			</description>
-			<type>info</type>
-		</field>
-		<field>
-			<fielddescr>Peers</fielddescr>
-			<fieldname>none</fieldname>
-			<type>rowhelper</type>
-			<rowhelper>
-				<rowhelperfield>
-					<fielddescr>Peer IP</fielddescr>
-					<fieldname>peerip</fieldname>
-					<type>input</type>
-				</rowhelperfield>
-				<rowhelperfield>
-					<fielddescr>Detect Multiplier (2-255)</fielddescr>
-					<fieldname>detectmultiplier</fieldname>
-					<type>input</type>
-				</rowhelperfield>
-				<rowhelperfield>
-					<fielddescr>Receive Interval (10-60000)</fielddescr>
-					<fieldname>receiveinterval</fieldname>
-					<type>input</type>
-				</rowhelperfield>
-				<rowhelperfield>
-					<fielddescr>Transmit Interval (10-60000)</fielddescr>
-					<fieldname>transmitinterval</fieldname>
-					<type>input</type>
-				</rowhelperfield>
-				<rowhelperfield>
-					<fielddescr>Shutdown</fielddescr>
-					<fieldname>shutdown</fieldname>
-					<type>checkbox</type>
-				</rowhelperfield>
-			</rowhelper>
 		</field>
 	</fields>
 	<custom_php_resync_config_command>

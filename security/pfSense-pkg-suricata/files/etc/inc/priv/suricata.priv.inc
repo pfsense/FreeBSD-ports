@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2018-2020 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,6 @@ $priv_list['page-services-suricata']['name'] = "WebCfg - Services: suricata pack
 $priv_list['page-services-suricata']['descr'] = "Allow access to suricata package gui";
 $priv_list['page-services-suricata']['match'] = array();
 $priv_list['page-services-suricata']['match'][] = "suricata/suricata_alerts.php*";
-$priv_list['page-services-suricata']['match'][] = "suricata/suricata_barnyard.php*";
 $priv_list['page-services-suricata']['match'][] = "suricata/suricata_blocked.php*";
 $priv_list['page-services-suricata']['match'][] = "suricata/suricata_check_for_rule_updates.php*";
 $priv_list['page-services-suricata']['match'][] = "suricata/suricata_define_vars.php*";

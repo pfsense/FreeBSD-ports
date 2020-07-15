@@ -36,6 +36,12 @@
 		<url>/pkg_edit.php?xml=frr.xml</url>
 	</menu>
 	<menu>
+		<name>FRR BFD</name>
+		<section>Services</section>
+		<configfile>frr.xml</configfile>
+		<url>/pkg_edit.php?xml=frr/frr_bfd.xml</url>
+	</menu>
+	<menu>
 		<name>FRR BGP</name>
 		<section>Services</section>
 		<configfile>frr.xml</configfile>
@@ -52,13 +58,7 @@
 		<section>Services</section>
 		<configfile>frr.xml</configfile>
 		<url>/pkg_edit.php?xml=frr/frr_ospf6.xml</url>
-	</menu>
-	<menu>
-		<name>FRR BFD</name>
-		<section>Services</section>
-		<configfile>frr.xml</configfile>
-		<url>/pkg_edit.php?xml=frr/frr_bfd.xml</url>
-	</menu>
+	</menu>	
 	<menu>
 		<name>FRR</name>
 		<section>Status</section>
@@ -88,6 +88,10 @@
 			<url>pkg_edit.php?xml=frr/frr_global_raw.xml</url>
 		</tab>
 		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
 			<text>[BGP]</text>
 			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
 		</tab>
@@ -98,11 +102,7 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
-		</tab>
-		<tab>
-			<text>[BFD]</text>
-			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
-		</tab>
+		</tab>		
 		<tab>
 			<text>Status</text>
 			<url>/status_frr.php</url>
@@ -121,6 +121,12 @@
 		<description>FRR static route daemon</description>
 	</service>
 	<service>
+		<name>FRR bfdd</name>
+		<rcfile>frr.sh</rcfile>
+		<executable>bfdd</executable>
+		<description>FRR BFD daemon</description>
+	</service>
+	<service>
 		<name>FRR bgpd</name>
 		<rcfile>frr.sh</rcfile>
 		<executable>bgpd</executable>
@@ -137,13 +143,7 @@
 		<rcfile>frr.sh</rcfile>
 		<executable>ospf6d</executable>
 		<description>FRR OSPF6 routing daemon</description>
-	</service>
-	<service>
-		<name>FRR bfdd</name>
-		<rcfile>frr.sh</rcfile>
-		<executable>bfdd</executable>
-		<description>FRR BFD daemon</description>
-	</service>
+	</service>	
 	<plugins>
 		<item>
 			<type>plugin_carp</type>
@@ -206,6 +206,13 @@
 			<type>checkbox</type>
 		</field>
 		<field>
+			<fielddescr>Enable SNMP AgentX</fielddescr>
+			<fieldname>enablesnmpagentx</fieldname>
+			<description>Enable agentx support for accessing FRR Zebra data via SNMP with the net-snmp package.</description>
+			<type>checkbox</type>
+		</field>
+
+		<field>
 			<name>Route Handling</name>
 			<type>listtopic</type>
 		</field>
@@ -214,9 +221,9 @@
 			<description>
 				<![CDATA[
 				Networks marked <b>Do Not Accept</b> will be prevented from having exact-matching routes accepted from routing protocols
-				<br/><br/>
+				<br />
 				Networks marked <b>Null Route</b> will never be routed, and traffic destined for these networks will be dropped.
-				<br/><br/>
+				<br />
 				Networks with a selected <b>Static Route Target</b> will have a route entered into the FRR/Zebra static route table, which
 				can be used by other protocols for route redistribution. The <b>Null Route</b> option takes precedence and will cause this
 				option to be ignored. These routes are also added to the operating system routing table.
@@ -258,7 +265,6 @@
 					<source_name>name</source_name>
 					<source_value>value</source_value>
 				</rowhelperfield>
-
 			</rowhelper>
 		</field>
 	</fields>

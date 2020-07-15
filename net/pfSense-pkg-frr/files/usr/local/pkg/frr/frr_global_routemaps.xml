@@ -52,6 +52,10 @@
 			<url>pkg_edit.php?xml=frr/frr_global_raw.xml</url>
 		</tab>
 		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
 			<text>[BGP]</text>
 			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
 		</tab>
@@ -62,11 +66,7 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
-		</tab>
-		<tab>
-			<text>[BFD]</text>
-			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
-		</tab>
+		</tab>		
 		<tab>
 			<text>Status</text>
 			<url>/status_frr.php</url>
@@ -114,7 +114,7 @@
 			<description>
 				<![CDATA[
 				Route maps can match or set various values for use by routing daemons, especially BGP.
-				<br/><br/>
+				<br />
 				Order is important. Use the sequence field to reorder entries after saving.
 				]]>
 			</description>

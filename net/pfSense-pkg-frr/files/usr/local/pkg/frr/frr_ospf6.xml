@@ -31,17 +31,21 @@
 	<aftersaveredirect>pkg_edit.php?xml=frr/frr_ospf6.xml</aftersaveredirect>
 	<tabs>
 		<tab>
-			<text>OSPF6 Settings</text>
+			<text>OSPF6</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
 			<active/>
 		</tab>
 		<tab>
-			<text>OSPF6 Interfaces</text>
+			<text>Interfaces</text>
 			<url>pkg.php?xml=frr/frr_ospf6_interfaces.xml</url>
 		</tab>
 		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
 		</tab>
 		<tab>
 			<text>[BGP]</text>
@@ -50,10 +54,6 @@
 		<tab>
 			<text>[OSPF]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
-		</tab>
-		<tab>
-			<text>[BFD]</text>
-			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
 		</tab>
 		<tab>
 			<text>Status</text>
@@ -83,20 +83,6 @@
 				]]>
 			</description>
 			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>Area</fielddescr>
-			<fieldname>area</fieldname>
-			<description>
-				<![CDATA[
-				OSPF6d area for this instance of OSPF.<br />
-				For more information on Areas see <a href='http://en.wikipedia.org/wiki/Open_Shortest_Path_First#Area_types'>wikipedia</a>.
-				<br/><br/>
-				NOTE: FRR itself only currently supports a single area for OSPF6.
-				]]>
-			</description>
-			<type>input</type>
-			<required/>
 		</field>
 		<field>
 			<fielddescr>Disable FIB updates (Routing table)</fielddescr>
@@ -129,6 +115,36 @@
 				The default value is 1; valid range is 1-10 seconds.
 				]]>
 			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Enable SNMP AgentX</fielddescr>
+			<fieldname>enablesnmpagentx</fieldname>
+			<description>Enable agentx support for accessing FRR OSPF6 data via SNMP with the net-snmp package.</description>
+			<type>checkbox</type>
+		</field>
+
+		<field>
+			<name>Default Area</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				<b>NOTE: Currently, FRR has not implemented support for OSPFv3 areas other than the backbone.</b><br/>
+				For more information see the <a href='https://docs.frrouting.org/en/stable-7.2/ospf6d.html#ospf6-area'>FRR docs</a>.
+				<br/><br/>
+
+				Settings for the default area, if not overriden.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Area</fielddescr>
+			<fieldname>defaultarea</fieldname>
+			<description>Default area for this instance of OSPFv3. 	Used when an area is required but not defined elsewhere.</description>
 			<type>input</type>
 		</field>
 
@@ -180,7 +196,7 @@
 			<description>
 				<![CDATA[
 				The options in this section control how routes are redistributed into OSPF6 from other sources.
-				<br/><br/>
+				<br />
 				The route map controls can filter the routes so that specific networks will be prevented from distribution.
 				]]>
 			</description>
