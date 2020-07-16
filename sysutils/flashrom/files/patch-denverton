@@ -1,4 +1,4 @@
---- chipset_enable.c.orig	2019-03-04 15:46:25 UTC
+--- chipset_enable.c.orig	2020-02-09 06:00:51 UTC
 +++ chipset_enable.c
 @@ -31,6 +31,7 @@
  #include <unistd.h>
@@ -8,7 +8,7 @@
  #include "flash.h"
  #include "programmer.h"
  #include "hwaccess.h"
-@@ -846,7 +847,11 @@ static int enable_flash_pch100_or_c620(struct pci_dev 
+@@ -896,7 +897,11 @@ static int enable_flash_pch100_or_c620(
  		msg_perr("Can't allocate PCI accessor.\n");
  		return ret;
  	}
@@ -20,27 +20,27 @@
  	pci_init(pci_acc);
  	register_shutdown(enable_flash_pch100_shutdown, pci_acc);
  
-@@ -1932,6 +1937,7 @@ const struct penable chipset_enables[] = {
- 	{0x8086, 0xa153, NT,  "Intel", "QM175",				enable_flash_pch100},
- 	{0x8086, 0xa154, NT,  "Intel", "CM238",				enable_flash_pch100},
- 	{0x8086, 0xa155, NT,  "Intel", "QMU185",			enable_flash_pch100},
-+	{0x8086, 0x19e0, NT,  "Intel", "Denverton SoC",			enable_flash_c620},
- 	{0x8086, 0xa1c1, NT,  "Intel", "C621 Series Chipset (QS/PRQ)",	enable_flash_c620},
- 	{0x8086, 0xa1c2, NT,  "Intel", "C622 Series Chipset (QS/PRQ)",	enable_flash_c620},
- 	{0x8086, 0xa1c3, NT,  "Intel", "C624 Series Chipset (QS/PRQ)",	enable_flash_c620},
---- flashchips.h.orig	2018-11-01 16:37:32 UTC
+@@ -2015,6 +2020,7 @@ const struct penable chipset_enables[] = {
+ 	{0x8086, 0xa153, B_S,    NT,  "Intel", "QM175",				enable_flash_pch100},
+ 	{0x8086, 0xa154, B_S,    NT,  "Intel", "CM238",				enable_flash_pch100},
+ 	{0x8086, 0xa155, B_S,    NT,  "Intel", "QMU185",			enable_flash_pch100},
++	{0x8086, 0x19e0, B_S,    NT,  "Intel", "Denverton SoC",			enable_flash_c620},
+ 	{0x8086, 0xa1c1, B_S,    NT,  "Intel", "C621 Series Chipset (QS/PRQ)",	enable_flash_c620},
+ 	{0x8086, 0xa1c2, B_S,    NT,  "Intel", "C622 Series Chipset (QS/PRQ)",	enable_flash_c620},
+ 	{0x8086, 0xa1c3, B_S,    NT,  "Intel", "C624 Series Chipset (QS/PRQ)",	enable_flash_c620},
+--- flashchips.h.orig	2020-01-20 13:02:48 UTC
 +++ flashchips.h
-@@ -931,6 +931,7 @@
+@@ -938,6 +938,7 @@
  #define WINBOND_NEX_W25Q32_W	0x6016	/* W25Q32DW; W25Q32FV in QPI mode */
  #define WINBOND_NEX_W25Q64_W	0x6017	/* W25Q64DW; W25Q64FV in QPI mode */
  #define WINBOND_NEX_W25Q128_W	0x6018	/* W25Q128FW; W25Q128FV in QPI mode */
 +#define WINBOND_NEX_W25Q256_W	0x6019	/* W25Q256FW; Not supported W25Q256FV in QPI mode */
  #define WINBOND_NEX_W25Q128_V_M	0x7018	/* W25Q128JVSM */
  #define WINBOND_NEX_W25Q256JV_M	0x7019	/* W25Q256JV_M (QE=0) */
- 
---- flashrom.c.orig	2019-04-02 16:55:43 UTC
+ #define WINBOND_NEX_W25Q128_DTR	0x8018	/* W25Q128JW_DTR */
+--- flashrom.c.orig	2019-12-31 17:25:41 UTC
 +++ flashrom.c
-@@ -1164,7 +1164,22 @@ void unmap_flash(struct flashctx *flash)
+@@ -1051,7 +1051,22 @@ void unmap_flash(struct flashctx *flash)
  	}
  
  	if (flash->virtual_memory != (chipaddr)ERROR_PTR) {
@@ -64,7 +64,7 @@
  		flash->physical_memory = 0;
  		flash->virtual_memory = (chipaddr)ERROR_PTR;
  	}
-@@ -1182,8 +1197,21 @@ int map_flash(struct flashctx *flash)
+@@ -1069,8 +1084,21 @@ int map_flash(struct flashctx *flash)
  	if (flash->chip->total_size == 0)
  		return 0;
  
@@ -87,9 +87,9 @@
  	void *addr = programmer_map_flash_region(flash->chip->name, base, size);
  	if (addr == ERROR_PTR) {
  		msg_perr("Could not map flash chip %s at 0x%0*" PRIxPTR ".\n",
---- ichspi.c.orig	2019-02-11 23:50:12 UTC
+--- ichspi.c.orig	2019-09-24 18:49:09 UTC
 +++ ichspi.c
-@@ -161,6 +161,7 @@
+@@ -164,6 +164,7 @@
  #define SSFC_SCF		(0x7 << SSFC_SCF_OFF)
  #define SSFC_SCF_20MHZ		0x00000000
  #define SSFC_SCF_33MHZ		0x01000000
@@ -97,7 +97,7 @@
  						/* 19-23: reserved */
  #define SSFC_RESERVED_MASK	0xf8008100
  
-@@ -835,7 +836,7 @@ static int ich7_run_opcode(OPCODE op, uint32_t offset,
+@@ -852,7 +853,7 @@ static int ich7_run_opcode(OPCODE op, uint32_t offset,
  		programmer_delay(10);
  	}
  	if (!timeout) {
@@ -106,7 +106,7 @@
  		return 1;
  	}
  
-@@ -952,7 +953,7 @@ static int ich9_run_opcode(OPCODE op, uint32_t offset,
+@@ -969,7 +970,7 @@ static int ich9_run_opcode(OPCODE op, uint32_t offset,
  		programmer_delay(10);
  	}
  	if (!timeout) {
@@ -115,7 +115,7 @@
  		return 1;
  	}
  
-@@ -973,8 +974,13 @@ static int ich9_run_opcode(OPCODE op, uint32_t offset,
+@@ -990,8 +991,13 @@ static int ich9_run_opcode(OPCODE op, uint32_t offset,
  	temp32 |= (SSFS_FDONE | SSFS_FCERR);
  	REGWRITE32(swseq_data.reg_ssfsc, temp32);
  
@@ -131,14 +131,3 @@
  
  	/* Set data byte count (DBC) and data cycle bit (DS) */
  	if (datalength != 0) {
---- programmer.h.orig	2019-04-02 16:55:43 UTC
-+++ programmer.h
-@@ -709,7 +709,7 @@ enum ich_chipset {
- 	CHIPSET_9_SERIES_WILDCAT_POINT,
- 	CHIPSET_9_SERIES_WILDCAT_POINT_LP,
- 	CHIPSET_100_SERIES_SUNRISE_POINT, /* also 6th/7th gen Core i/o (LP) variants */
--	CHIPSET_C620_SERIES_LEWISBURG,
-+	CHIPSET_C620_SERIES_LEWISBURG,  /* Denverton */
- };
- 
- /* ichspi.c */
