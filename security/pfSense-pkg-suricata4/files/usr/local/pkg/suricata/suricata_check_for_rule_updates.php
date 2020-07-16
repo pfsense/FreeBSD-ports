@@ -429,7 +429,7 @@ if ($emergingthreats == 'on') {
 if ($snortdownload == 'on') {
 	$snort_custom_url = $config['installedpackages']['suricata']['config'][0]['enable_snort_custom_url'] == 'on' ? TRUE : FALSE;
 	if (empty($snort_filename)) {
-		syslog(LOG_WARN, gettext("WARNING: No snortrules-snapshot filename has been set on Snort pkg GLOBAL SETTINGS tab.  Snort rules cannot be updated."));
+		syslog(LOG_WARNING, gettext("WARNING: No snortrules-snapshot filename has been set on Snort pkg GLOBAL SETTINGS tab.  Snort rules cannot be updated."));
 		error_log(gettext("\tWARNING-- No snortrules-snapshot filename set on GLOBAL SETTINGS tab. Snort rules cannot be updated!\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		$snortdownload = 'off';
 	}

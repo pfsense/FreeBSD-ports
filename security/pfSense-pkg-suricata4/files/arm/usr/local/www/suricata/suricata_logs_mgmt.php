@@ -49,8 +49,6 @@ $pconfig['stats_log_limit_size'] = $config['installedpackages']['suricata']['con
 $pconfig['stats_log_retention'] = $config['installedpackages']['suricata']['config'][0]['stats_log_retention'];
 $pconfig['tls_log_limit_size'] = $config['installedpackages']['suricata']['config'][0]['tls_log_limit_size'];
 $pconfig['tls_log_retention'] = $config['installedpackages']['suricata']['config'][0]['tls_log_retention'];
-$pconfig['unified2_log_limit'] = $config['installedpackages']['suricata']['config'][0]['unified2_log_limit'];
-$pconfig['u2_archive_log_retention'] = $config['installedpackages']['suricata']['config'][0]['u2_archive_log_retention'];
 $pconfig['file_store_retention'] = $config['installedpackages']['suricata']['config'][0]['file_store_retention'];
 $pconfig['file_store_limit_size'] = $config['installedpackages']['suricata']['config'][0]['file_store_limit_size'];
 $pconfig['tls_certs_store_retention'] = $config['installedpackages']['suricata']['config'][0]['tls_certs_store_retention'];
@@ -97,8 +95,6 @@ if (!isset($pconfig['stats_log_retention']))
 	$pconfig['stats_log_retention'] = "168";
 if (!isset($pconfig['tls_log_retention']))
 	$pconfig['tls_log_retention'] = "336";
-if (!isset($pconfig['u2_archive_log_retention']))
-	$pconfig['u2_archive_log_retention'] = "168";
 if (!isset($pconfig['file_store_retention']))
 	$pconfig['file_store_retention'] = "168";
 if (!isset($pconfig['tls_certs_store_retention']))
@@ -123,8 +119,6 @@ if (!isset($pconfig['stats_log_limit_size']))
 	$pconfig['stats_log_limit_size'] = "500";
 if (!isset($pconfig['tls_log_limit_size']))
 	$pconfig['tls_log_limit_size'] = "500";
-if (!isset($pconfig['unified2_log_limit']))
-	$pconfig['unified2_log_limit'] = "32";
 if (!isset($pconfig['eve_log_limit_size']))
 	$pconfig['eve_log_limit_size'] = "5000";
 if (!isset($pconfig['sid_changes_log_limit_size']))
@@ -142,7 +136,6 @@ if (isset($_POST['ResetAll'])) {
 	$pconfig['dns_log_retention'] = "168";
 	$pconfig['stats_log_retention'] = "168";
 	$pconfig['tls_log_retention'] = "336";
-	$pconfig['u2_archive_log_retention'] = "168";
 	$pconfig['file_store_retention'] = "168";
 	$pconfig['tls_certs_store_retention'] = "168";
 	$pconfig['eve_log_retention'] = "168";
@@ -155,7 +148,6 @@ if (isset($_POST['ResetAll'])) {
 	$pconfig['dns_log_limit_size'] = "750";
 	$pconfig['stats_log_limit_size'] = "500";
 	$pconfig['tls_log_limit_size'] = "500";
-	$pconfig['unified2_log_limit'] = "32";
 	$pconfig['eve_log_limit_size'] = "5000";
 	$pconfig['sid_changes_log_limit_size'] = "250";
 	$pconfig['file_store_limit_size'] = intval($pconfig['suricataloglimitsize'] * 0.60);
@@ -185,10 +177,6 @@ if (isset($_POST['save']) || isset($_POST['apply'])) {
 			$input_errors[] = gettext("The 'Log Directory Size Limit' must be an integer value greater than zero.");
 	}
 
-	// Validate unified2 log file limit
-	if (!is_numericint($_POST['unified2_log_limit']) || $_POST['unified2_log_limit'] < 1)
-			$input_errors[] = gettext("The value for 'Unified2 Log Limit' must be an integer value greater than zero.");
-
 	if (!$input_errors) {
 		$config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] = $_POST['enable_log_mgmt'] ? 'on' :'off';
 		$config['installedpackages']['suricata']['config'][0]['clearlogs'] = $_POST['clearlogs'] ? 'on' : 'off';
@@ -206,8 +194,6 @@ if (isset($_POST['save']) || isset($_POST['apply'])) {
 		$config['installedpackages']['suricata']['config'][0]['stats_log_retention'] = $_POST['stats_log_retention'];
 		$config['installedpackages']['suricata']['config'][0]['tls_log_limit_size'] = $_POST['tls_log_limit_size'];
 		$config['installedpackages']['suricata']['config'][0]['tls_log_retention'] = $_POST['tls_log_retention'];
-		$config['installedpackages']['suricata']['config'][0]['unified2_log_limit'] = $_POST['unified2_log_limit'];
-		$config['installedpackages']['suricata']['config'][0]['u2_archive_log_retention'] = $_POST['u2_archive_log_retention'];
 		$config['installedpackages']['suricata']['config'][0]['file_store_retention'] = $_POST['file_store_retention'];
 		$config['installedpackages']['suricata']['config'][0]['file_store_limit_size'] = $_POST['file_store_limit_size'];
 		$config['installedpackages']['suricata']['config'][0]['tls_certs_store_retention'] = $_POST['tls_certs_store_retention'];
@@ -445,18 +431,6 @@ $section->addInput(new Form_StaticText(
 ));
 
 $section->addInput(new Form_Input(
-	'unified2_log_limit',
-	'Unified2 Log Limit',
-	'text',
-	$pconfig['unified2_log_limit']
-))->setHelp('Log file size limit in megabytes (MB). Default is 32 MB. This sets the maximum size for a unified2 log file before it is rotated and a new one created.');
-$section->addInput(new Form_Select(
-	'u2_archive_log_retention',
-	'Unified2 Archived Log Retention Period',
-	$pconfig['u2_archive_log_retention'],
-	$retentions
-))->setHelp('Choose retention period for archived Barnyard2 binary log files. Default is 7 days. When file capture and store is enabled, Suricata captures downloaded files from HTTP sessions and stores them, along with metadata, for later analysis. This setting determines how long files remain in the File Store folder before they are automatically deleted.');
-$section->addInput(new Form_Input(
 	'file_store_limit_size',
 	'Captured Files Storage Limit',
 	'text',
@@ -502,8 +476,6 @@ events.push(function(){
 		disableInput('stats_log_retention', hide);
 		disableInput('tls_log_limit_size', hide);
 		disableInput('tls_log_retention', hide);
-		disableInput('unified2_log_limit', hide);
-		disableInput('u2_archive_log_retention', hide);
 		disableInput('dns_log_retention', hide);
 		disableInput('dns_log_limit_size', hide);
 		disableInput('eve_log_retention', hide);
