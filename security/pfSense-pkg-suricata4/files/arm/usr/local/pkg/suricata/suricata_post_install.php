@@ -242,10 +242,6 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 		@file_put_contents("{$suricatacfgdir}/suricata.yaml", $suricata_conf_text);
 		unset($suricata_conf_text);
 
-		// create barnyard2.conf file for interface
-		if ($suricatacfg['barnyard_enable'] == 'on')
-			suricata_generate_barnyard2_conf($suricatacfg, $if_real);
-
 		update_status(gettext(" done.") . "\n");
 	}
 

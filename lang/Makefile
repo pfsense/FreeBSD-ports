@@ -7,7 +7,6 @@
     SUBDIR += J
     SUBDIR += abcl
     SUBDIR += adacontrol
-    SUBDIR += afnix
     SUBDIR += alchemist.el
     SUBDIR += algol68g
     SUBDIR += angelscript
@@ -18,7 +17,6 @@
     SUBDIR += awka
     SUBDIR += bas2tap
     SUBDIR += basic256
-    SUBDIR += beignet
     SUBDIR += bf2c
     SUBDIR += bsh
     SUBDIR += bwbasic
@@ -53,7 +51,6 @@
     SUBDIR += duktape
     SUBDIR += duktape-lib
     SUBDIR += ecl
-    SUBDIR += elan
     SUBDIR += elixir
     SUBDIR += elixir-mode.el
     SUBDIR += elk
@@ -94,7 +91,9 @@
     SUBDIR += gawk
     SUBDIR += gcc
     SUBDIR += gcc-ecj45
+    SUBDIR += gcc10
     SUBDIR += gcc10-devel
+    SUBDIR += gcc11-devel
     SUBDIR += gcc48
     SUBDIR += gcc6-aux
     SUBDIR += gcc7
@@ -106,10 +105,8 @@
     SUBDIR += ghc
     SUBDIR += gjs
     SUBDIR += gnat_util
-    SUBDIR += gnatcross-aarch64
     SUBDIR += gnatcross-binutils-aarch64
     SUBDIR += gnatcross-sysroot-aarch64
-    SUBDIR += gnatdroid-armv7
     SUBDIR += gnatdroid-binutils
     SUBDIR += gnatdroid-binutils-x86
     SUBDIR += gnatdroid-sysroot
@@ -126,17 +123,14 @@
     SUBDIR += guile
     SUBDIR += guile1
     SUBDIR += guile2
+    SUBDIR += halide
     SUBDIR += harbour
     SUBDIR += haskell-mode.el
     SUBDIR += hla
-    SUBDIR += hope
     SUBDIR += hs-brainfuck
     SUBDIR += hs-unlambda
     SUBDIR += huc
-    SUBDIR += hugs
     SUBDIR += icc
-    SUBDIR += ici
-    SUBDIR += icon
     SUBDIR += intel-compute-runtime
     SUBDIR += intercal
     SUBDIR += io
@@ -202,7 +196,6 @@
     SUBDIR += neko
     SUBDIR += nesasm
     SUBDIR += newlisp
-    SUBDIR += newlisp-devel
     SUBDIR += nhc98
     SUBDIR += nickle
     SUBDIR += nim
@@ -215,11 +208,9 @@
     SUBDIR += ocaml-autoconf
     SUBDIR += ocaml-camlidl
     SUBDIR += ocaml-nox11
-    SUBDIR += ohugs
     SUBDIR += onyx
     SUBDIR += oo2c
     SUBDIR += opencoarrays
-    SUBDIR += opendylan
     SUBDIR += ott
     SUBDIR += owl-lisp
     SUBDIR += p5-Data-JavaScript
@@ -256,13 +247,12 @@
     SUBDIR += pbasic
     SUBDIR += pcc
     SUBDIR += perl5-devel
-    SUBDIR += perl5.26
     SUBDIR += perl5.28
     SUBDIR += perl5.30
+    SUBDIR += perl5.32
     SUBDIR += petite-chez
     SUBDIR += pfe
     SUBDIR += pharo
-    SUBDIR += phc
     SUBDIR += php-mode.el
     SUBDIR += php72
     SUBDIR += php72-extensions
@@ -278,6 +268,7 @@
     SUBDIR += ptoc
     SUBDIR += purescript
     SUBDIR += py-hy
+    SUBDIR += py-lupa
     SUBDIR += py-mx-base
     SUBDIR += py-qt5-qml
     SUBDIR += py-textX
@@ -325,8 +316,10 @@
     SUBDIR += scala-docs
     SUBDIR += scheme48
     SUBDIR += scm
+    SUBDIR += sdcc
     SUBDIR += see
     SUBDIR += seed7
+    SUBDIR += silq
     SUBDIR += siod
     SUBDIR += sisc
     SUBDIR += sketchy
@@ -346,7 +339,6 @@
     SUBDIR += spl
     SUBDIR += squeak
     SUBDIR += squirrel
-    SUBDIR += starlogo
     SUBDIR += swi-pl
     SUBDIR += tcbasic
     SUBDIR += tcc
@@ -369,8 +361,6 @@
     SUBDIR += visualworks
     SUBDIR += voc
     SUBDIR += yabasic
-    SUBDIR += yap
-    SUBDIR += yap-devel
     SUBDIR += yorick
     SUBDIR += ypsilon
     SUBDIR += zig

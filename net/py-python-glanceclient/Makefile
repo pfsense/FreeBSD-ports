@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	python-glanceclient
-PORTVERSION=	2.17.0
+PORTVERSION=	3.2.0
 CATEGORIES=	net python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -25,7 +25,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}keystoneauth1>=3.6.2:devel/py-keystoneauth1@
 		${PYTHON_PKGNAMEPREFIX}warlock>=1.2.0<2:devel/py-warlock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wrapt>=1.7.0:devel/py-wrapt@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

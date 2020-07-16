@@ -17,13 +17,13 @@ NOT_FOR_ARCHS=	sparc64
 NOT_FOR_ARCHS_REASON_sparc64=	Does not install on sparc64
 
 BUILD_DEPENDS=	help2man:misc/help2man \
-		${LUA_MODLIBDIR}/lfs.so:devel/luafilesystem-51
+		${LUA_MODLIBDIR}/lfs.so:devel/luafilesystem@${LUA_FLAVOR}
 LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \
 		libsoup-2.4.so:devel/libsoup \
 		libfreetype.so:print/freetype2 \
 		libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
 		libfontconfig.so:x11-fonts/fontconfig
-RUN_DEPENDS=	${LUA_PKGNAMEPREFIX}luafilesystem>=0:devel/luafilesystem-51
+RUN_DEPENDS=	${LUA_PKGNAMEPREFIX}luafilesystem>=0:devel/luafilesystem@${LUA_FLAVOR}
 
 USES=		compiler:c++11-lang desktop-file-utils gettext-runtime gmake \
 		gnome lua:51 pkgconfig sqlite
@@ -35,6 +35,8 @@ LUAJIT_DESC=	Use the Just-In-Time compiler for lua
 LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
 LUAJIT_MAKE_ARGS=	USE_LUAJIT=1
 LUAJIT_MAKE_ARGS_OFF=	USE_LUAJIT=0
+
+CONFLICTS_INSTALL=	luakit-devel
 
 post-extract:
 	@${REINPLACE_CMD} -e \

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	librenms
-PORTVERSION=	1.61
-PORTREVISION=	1
+PORTVERSION=	1.63
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	LOCAL/dvl:vendor
@@ -14,12 +14,12 @@ COMMENT=	Autodiscovering PHP/MySQL/SNMP based network monitoring
 
 LICENSE=	GPLv3
 
-USES=		python${PY_MYSQL} shebangfix
+USES=		shebangfix
 
 # RELEASE_TIMESTAMP is used for a patch inside the vendor code
 # it represents the release date via: git show --pretty='%H|%ct' -s 1.42.01
 # It sits here so you remember to update it with each release
-RELEASE_TIMESTAMP=	1583121812
+RELEASE_TIMESTAMP=	1588045962
 
 # perhaps we also need python-memcache python-mysqldb
 RUN_DEPENDS+=	rrdtool:databases/rrdtool \
@@ -37,18 +37,24 @@ USE_PHP=	ctype curl dom fileinfo filter gd hash json ldap mbstring \
 USE_GITHUB=	yes
 GH_ACCOUNT=	librenms
 
+USE_RC_SUBR=	librenms
+
 USERS=		www
-WWW_USER=	www
 
 NO_BUILD=	yes
 
-OPTIONS_DEFINE=	FPING IPMITOOL LIBVIRT MYSQLD NAGPLUGINS NMAP PYPOLLER WMIC DOCS EXAMPLES X11
+OPTIONS_DEFINE=	FPING IPMITOOL LIBVIRT MYSQLD NAGPLUGINS NMAP WMIC DOCS EXAMPLES X11
 OPTIONS_DEFAULT=	 FPING IPMITOOL LIBVIRT NAGPLUGINS NMAP PYPOLLER WMIC
+
+OPTIONS_SINGLE=	POLLERSYSTEM
+OPTIONS_SINGLE_POLLERSYSTEM=	PYPOLLER PYSERVICE #conflicting python versions
+
 FPING_DESC=	Enable fping support ping monitoring
 IPMITOOL_DESC=	Enable support for monitoring hardware IPMI
 MYSQLD_DESC=	Use local MySQL server
 WMIC_DESC=	Enable support for WMI polling
-PYPOLLER_DESC=	Enable Python Poller Wrapper
+PYPOLLER_DESC=	Support for polling using cron entries
+PYSERVICE_DESC=	Support for polling using a daemon
 
 FPING_RUN_DEPENDS=	fping:net/fping
 IPMITOOL_RUN_DEPENDS=	ipmitool:sysutils/ipmitool
@@ -56,7 +62,10 @@ LIBVIRT_RUN_DEPENDS=	virsh:devel/libvirt
 NAGPLUGINS_RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:net-mgmt/nagios-plugins
 NMAP_RUN_DEPENDS=	nmap:security/nmap
 PYPOLLER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=1.2.3:databases/py-MySQLdb@${PY_FLAVOR}
-PYPOLLER_VARS=	PY_MYSQL=:2.7
+PYPOLLER_USES=		python:2.7
+PYSERVICE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}python-dotenv>0:www/py-python-dotenv@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}pymysql>0:databases/py-pymysql@${PY_FLAVOR}
+PYSERVICE_USES=		python:3.6+
 X11_RUN_DEPENDS=	Magick-config:graphics/ImageMagick6 \
 			mtr:net/mtr
 X11_RUN_DEPENDS_OFF=	Magick-config:graphics/ImageMagick6-nox11 \
@@ -92,7 +101,8 @@ SHEBANG_FILES=	scripts/auth_test.php scripts/deploy-docs.sh scripts/github-remov
 		../${PORTNAME}-vendor-${PORTVERSION}/tecnickcom/tcpdf/tools/tcpdf_addfont.php
 
 SUB_FILES+=	pkg-message
-SUB_LIST+=	PHP="${PHPBASE}/bin/php" PYTHON=${PYTHON_CMD}
+SUB_LIST+=	PHP="${PHPBASE}/bin/php" PYTHON=${PYTHON_CMD} \
+		USER="${WWWOWN}" GROUP="${WWWGRP}" WWWDIR="${WWWDIR}"
 
 ROOT_FILES=	addhost.php adduser.php alerts.php artisan billing-calculate.php \
 		build-base.php build.sql check-services.php composer.json \
@@ -108,6 +118,7 @@ ROOT_DIRS=	LibreNMS app bootstrap config contrib database doc html includes lice
 
 # these are directories which require a generic @DIR entry in pkg-plist
 OTHER_DIRS=	html/js/lang \
+		resources/views/overview/custom \
 		storage/app/public \
 		storage/debugbar \
 		storage/framework/cache/data \
@@ -124,7 +135,8 @@ OTHER_DIRS=	html/js/lang \
 		vendor/laravel/laravel/storage/framework/sessions \
 		vendor/laravel/laravel/storage/framework/testing \
 		vendor/laravel/laravel/storage/framework/views \
-		vendor/laravel/laravel/storage/logs
+		vendor/laravel/laravel/storage/logs \
+		vendor/php-amqplib/php-amqplib/docs
 
 DOCS=		AUTHORS.md CHANGELOG.md CONTRIBUTING.md LICENSE.txt README.md
 PORTDOCS=	*
@@ -133,7 +145,7 @@ NO_ARCH=	yes
 
 post-patch:
 	@${REINPLACE_CMD}    's|%%PORTNAME%%|${PORTNAME}|g'                   ${WRKSRC}/config.php.default
-	@${REINPLACE_CMD}    's|%%WWW_USER%%|${WWW_USER}|g'                   ${WRKSRC}/config.php.default
+	@${REINPLACE_CMD}    's|%%WWW_USER%%|${WWWOWN}|g'                     ${WRKSRC}/config.php.default
 	@${REINPLACE_CMD}    's|%%LOCALBASE%%|${LOCALBASE}|g'                 ${WRKSRC}/poller-wrapper.py ${WRKSRC}/poller.php
 	@${REINPLACE_CMD}    's|%%PORTVERSION%%|${PORTVERSION}|g'             ${WRKSRC}/includes/common.php
 	@${REINPLACE_CMD}    's|%%RELEASE_TIMESTAMP%%|${RELEASE_TIMESTAMP}|g' ${WRKSRC}/includes/common.php
@@ -166,6 +178,7 @@ do-install:
 # these values should be outside the www tree now
 	${MKDIR} ${STAGEDIR}/var/log/${PORTNAME}
 	${MKDIR} ${STAGEDIR}/var/db/${PORTNAME}
+	${MKDIR} ${STAGEDIR}/var/run/${PORTNAME}
 
 do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}/${DOCSDIR}
@@ -192,14 +205,13 @@ post-install:
 
 	@${ECHO_CMD} "@dir(www,www,0775) ${WWWDIR}/logs" >> ${TMPPLIST}
 	@${ECHO_CMD} "@dir(www,www,0775) ${WWWDIR}/bootstrap/cache" >> ${TMPPLIST}
-#	@${ECHO_CMD} "@(www,www,0775) ${WWWDIR}/daily.sh" >> ${TMPPLIST}
-#	@${ECHO_CMD} "@(www,www,0775) ${WWWDIR}/lnms" >> ${TMPPLIST}
 	@${ECHO_CMD} "@dir(www,www,0775) ${WWWDIR}/storage" >> ${TMPPLIST}
 	@${ECHO_CMD} "@dir(www,www,0775) ${WWWDIR}/storage/framework/cache" >> ${TMPPLIST}
 	@${ECHO_CMD} "@dir(www,www,0775) ${WWWDIR}/storage/framework/sessions" >> ${TMPPLIST}
 	@${ECHO_CMD} "@dir(www,www,0775) ${WWWDIR}/storage/framework/views" >> ${TMPPLIST}
 	@${ECHO_CMD} "@dir(www,www,0775) /var/log/${PORTNAME}" >> ${TMPPLIST}
 	@${ECHO_CMD} "@dir(www,www,0775) /var/db/${PORTNAME}" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(www,www,0775) /var/run/${PORTNAME}" >> ${TMPPLIST}
 .for f in ${OTHER_DIRS}
 	@${ECHO_CMD} "@dir(root,www,0775) ${WWWDIR}/${f}" >> ${TMPPLIST}
 .endfor

@@ -4634,7 +4634,6 @@ net/kphone||2013-07-26|Has expired: Depends on Qt 3.x
 net/krdesktop||2013-07-26|Has expired: Depends on Qt 3.x
 net/lanbrowsing||2013-07-26|Has expired: Depends on Qt 3.x
 net/pppload||2013-07-26|Has expired: Depends on Qt 3.x
-net/smb4k||2013-07-26|Has expired: Depends on Qt 3.x
 net/twinkle||2013-07-26|Has expired: Depends on Qt 3.x
 net-im/eva||2013-07-26|Has expired: Depends on Qt 3.x
 net-im/kmerlin||2013-07-26|Has expired: Depends on Qt 3.x
@@ -4766,7 +4765,6 @@ textproc/xaira||2013-08-27|Has expired: Broken for more than 6 months
 graphics/f90gl||2013-08-27|Has expired: Broken for more than 6 months
 multimedia/linux-gspca-kmod||2013-08-27|Has expired: Broken for more than 6 months
 math/dislin||2013-08-27|Has expired: Broken for more than 6 months
-irc/smuxi||2013-08-27|Has expired: Broken for more than 6 months
 java/icedtea6-stubs||2013-08-27|Has expired: Broken for more than 6 months
 math/octave-forge-es||2013-08-27|Has expired: Broken for more than 6 months
 math/octave-forge-java||2013-08-27|Has expired: Broken for more than 6 months
@@ -5851,7 +5849,6 @@ editors/axe||2014-04-11|Has expired: Unmaintained since 2000
 www/cgic||2014-04-11|Has expired: Unmaintained since 2000
 devel/orbitcpp||2014-04-11|Unused anymore, not libc++ friendly
 graphics/sodipodi|graphics/inkscape|2014-04-11|Sodipodi did not survive the Inkscape fork
-devel/g-wrap||2014-04-11|Unused, not stage friendly
 net/pvm++||2014-04-13|Has expired: Unmaintained since 2001
 devel/ixlib||2014-04-13|Has expired: Unmaintained since 2001
 mail/althea||2014-04-13|Has expired: Unmaintained since 2001
@@ -6797,7 +6794,6 @@ www/harvest||2014-09-01|Not staged
 www/htmlobject||2014-09-01|Not staged
 www/lusca-head||2014-09-01|Not staged
 www/mod_auth_form||2014-09-01|Not staged
-www/mod_auth_mellon||2014-09-01|Not staged
 www/mod_ftp||2014-09-01|Not staged
 www/mod_log_dbd||2014-09-01|Not staged
 www/moodle24||2014-09-01|Not staged
@@ -7499,7 +7495,6 @@ deskutils/ontv||2015-06-10|Has expired: Broken since update to gnome3
 deskutils/timer-applet||2015-06-10|Has expired: Broken since update to gnome3
 editors/scribes||2015-06-10|Has expired: Broken since update to gnome3
 games/gweled||2015-06-10|Has expired: Broken since update to gnome3
-games/py-pychess||2015-06-10|Has expired: Broken since update to gnome3
 graphics/gqview||2015-06-10|Has expired: Unmaintained upstream, preferences dialog broken, use graphics/geeqie fork
 lang/gcc47-aux||2015-06-10|Has expired: GCC 4.7 branch closed June 2014, move to lang/gcc-aux
 multimedia/arista||2015-06-10|Has expired: Broken since update to gnome3
@@ -7976,7 +7971,6 @@ www/cakephp21||2016-01-25|Has expired: PHP 5.4 EOL reached
 www/cakephp22||2016-01-25|Has expired: PHP 5.4 EOL reached
 www/cakephp23||2016-01-25|Has expired: PHP 5.4 EOL reached
 www/fluxcms||2016-01-25|Has expired: PHP 5.4 EOL reached
-www/fusionpbx||2016-01-25|Has expired: PHP 5.4 EOL reached
 www/jawstats||2016-01-25|Has expired: PHP 5.4 EOL reached
 www/ojs2||2016-01-25|Has expired: PHP 5.4 EOL reached
 www/webcalendar||2016-01-25|Has expired: PHP 5.4 EOL reached
@@ -8831,7 +8825,6 @@ mail/rubygem-mail25|mail/rubygem-mail|2017-01-07|Has expired: Use mail/rubygem-m
 security/dradis||2017-01-07|Has expired: Depends on deprecated www/rubygem-rails
 textproc/rubygem-sass-rails||2017-01-07|Has expired: Depends on deprecated www/rubygem-railties
 www/rubygem-rails||2017-01-07|Has expired: Upstream support ended
-www/rubygem-activeresource||2017-01-07|Has expired: Upstream support ended
 www/rubygem-responders-rails3||2017-01-07|Has expired: Depends on deprecated www/rubygem-railties
 www/rubygem-jquery-ui-rails||2017-01-07|Has expired: Depends on deprecated www/rubygem-railties
 www/rubygem-haml-rails||2017-01-07|Has expired: Depends on deprecated www/rubygem-actionpack
@@ -9129,7 +9122,6 @@ security/py-crits||2017-04-19|Has expired: Does not build with py-django18 see p
 www/py-cactus||2017-04-19|Removed, depends on expired Django version
 devel/py-django16-tastypie-mongoengine|devel/py-django-tastypie-mongoengine|2017-04-19|Removed, uses expired Django version
 devel/freeocl|lang/pocl|2017-04-19|Has expired: Unfetchable for more than six months (google code has gone away); use lang/pocl instead
-net/librsync|net/librsync2|2017-04-28|Unmaintained, CVE-2014-8242, use net/librsync2 instead
 devel/stormlib-ghost++||2017-04-30|Has expired: Unfetchable for more than six months (google code has gone away)
 devel/py-coil||2017-04-30|Has expired: Unfetchable for more than six months (google code has gone away)
 devel/py-cmdln||2017-04-30|Has expired: Unfetchable for more than six months (google code has gone away)
@@ -9518,7 +9510,6 @@ audio/tclmidi||2017-11-11|Has expired: Broken for more than 6 months
 security/samba-virusfilter||2017-11-11|Has expired: Broken for more than 6 months
 textproc/ocaml-pxp||2017-11-11|Has expired: Broken for more than 6 months
 audio/sooperlooper||2017-11-11|Has expired: Broken for more than 6 months
-devel/dwarves||2017-11-11|Has expired: Broken for more than 6 months
 devel/cl-cffi-sbcl||2017-11-11|Has expired: Broken for more than 6 months
 devel/pinba_engine||2017-11-11|Has expired: Broken for more than 6 months
 devel/py-event||2017-11-11|Has expired: Broken for more than 6 months
@@ -9769,7 +9760,6 @@ audio/hydrogen-devel|audio/hydrogen|2018-01-17|Out of date: use audio/hydrogen f
 graphics/py-rabbyt||2018-01-19|Has expired: Development ceased, no longer used in the ports
 deskutils/py-spice-gtk|deskutils/spice-gtk|2018-01-20|Old style Python bindings dropped, no difference from the master port
 lang/py-clojure|lang/py-clojure_py|2018-01-26|Rename to match PyPI naming
-www/tomcat-devel|www/tomcat9|2018-01-26|Apache Tomcat 9.0.4 is the first stable release of the 9.0.x series
 devel/rubygem-toml|textproc/rubygem-toml|2018-01-27|Move to a better category
 emulators/raine||2018-01-28|Has expired: Broken for more than 6 months
 mail/libmapi||2018-01-28|Has expired: Broken for more than 6 months
@@ -9811,8 +9801,6 @@ devel/beautifyphp||2018-01-29|only works for PHP4 which is gone long ago
 devel/clanlib22|devel/clanlib|2018-01-29|No users in the ports tree, newer version available
 devel/php-xdebug|devel/pecl-xdebug|2018-01-30|Moved to pecl
 astro/py-pyfits|astro/py-astropy|2018-01-31|Has expired: Use astro/py-astropy instead
-devel/py-gitdb|devel/py-gitdb2|2018-01-31|Has expired: Use devel/py-gitdb2 instead
-devel/py-smmap|devel/py-smmap2|2018-01-31|Has expired: Use devel/py-smmap2 instead
 devel/rubygem-moneta06|devel/rubygem-moneta|2018-01-31|Has expired: Use devel/rubygem-moneta instead
 lang/ruby22|lang/ruby24|2018-01-31|Has expired: Upgrade to newer version (e.g. lang/ruby24)
 net/tcptraceroute-devel|net/tcptraceroute|2018-01-31|Has expired: Use net/tcptraceroute instead
@@ -10060,6 +10048,7 @@ textproc/elasticsearch-plugin-migration||2018-04-09|ElasticSearch 1.x End of Lif
 textproc/elasticsearch-plugin-sql||2018-04-09|ElasticSearch 1.x End of Life
 textproc/elasticsearch-river-rabbitmq||2018-04-09|ElasticSearch 1.x End of Life
 devel/libkgapi|devel/libkgapi-kde4|2018-04-11|Make room for KDE updates
+devel/py-boto3|www/py-boto3|2018-04-12|Remove duplicate port (see r467174)
 finance/libalkimia|finance/alkimia-qt4|2018-04-13|Project renamed
 security/py-zxcvbn-python|security/py-zxcvbn|2018-04-13|Renamed upstream
 devel/py-libusb115|devel/py-libusb1|2018-04-14|Unused and unmaintained upstream
@@ -10187,7 +10176,6 @@ audio/deforaos-mixer||2018-06-07|Has expired: Broken for more than 6 months
 audio/gkrellmss2||2018-06-07|Has expired: Broken for more than 6 months
 audio/abcmidi||2018-06-07|Has expired: Broken for more than 6 months
 benchmarks/netpipe||2018-06-07|Has expired: Broken for more than 6 months
-biology/plink||2018-06-07|Has expired: Broken for more than 6 months
 science/orthanc||2018-06-07|Has expired: Broken for more than 3 months
 science/orthanc-dicomweb||2018-06-07|Removed, depends on expired science/orthanc
 science/orthanc-postgresql||2018-06-07|Removed, depends on expired science/orthanc
@@ -10542,7 +10530,6 @@ devel/rubygem-sidekiq-limit_fetch||2018-11-01|Obsolete by www/gitlab-ce 11.4.x u
 textproc/rubygem-github-markup16|textproc/rubygem-github-markup|2018-11-01|Obsolete by www/gitlab-ce 11.4.x upgrade, please use textproc/rubygem-github-markup
 www/rubygem-dropzonejs-rails07|www/rubygem-dropzonejs-rails|2018-11-01|Obsolete by www/gitlab-ce 11.4.x upgrade, please use www/rubygem-dropzonejs-rails
 audio/icecast2|audio/icecast|2018-11-03|Use upstream naming
-security/openssl-devel|security/openssl111|2018-11-04|Use security/openssl111 instead
 irc/netwalker-ircc||2018-11-04|Has expired: Upstream gone, very old code base, use modern irc client instead
 x11-toolkits/qt5-quick|x11-toolkits/qt5-declarative|2018-11-04|Remove unnecessary split
 lang/qt5-qml|x11-toolkits/qt5-declarative|2018-11-04|Remove unnecessary split
@@ -11788,7 +11775,6 @@ games/jag||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 games/kardsgt||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 games/kcheckers||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 games/openpref||2019-03-16|Has expired: Qt4 has been EOL since december 2015
-games/pokerth||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 games/qgo||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 games/qtads||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 games/quackle||2019-03-16|Has expired: Qt4 has been EOL since december 2015
@@ -12147,7 +12133,6 @@ net/frr4|net/frr7|2019-04-16|Has expired: Upstream no longer maintained
 mail/pop3proxy||2019-04-17|Has expired: no upstream and does not properly initiate SSL/TLS connections
 devel/go-gocode||2019-04-17|Has expired: Unmaintained upstream and has issues with Go >= 1.10
 audio/raop_play|audio/pulseaudio|2019-04-17|Has expired: Abandonware. Use module-raop-sink from audio/pulseaudio instead
-www/squid-devel||2019-04-18|Removed: devel version no longer necessary
 devel/py-sdl2|devel/py-pysdl2|2019-04-20|Rename to match upstream naming
 www/rubygem-select2-rails3|www/rubygem-select2-rails|2019-04-23|Has expired: Use www/rubygem-select2-rails instead
 www/rubygem-jquery-atwho-rails13|www/rubygem-jquery-atwho-rails|2019-04-23|Has expired: Use www/rubygem-jquery-atwho-rails instead
@@ -13085,7 +13070,6 @@ audio/maplay||2019-10-16|Has expired: Unfetchable, unmaintained
 audio/mbox||2019-10-16|Has expired: Unfetchable, unmaintained
 audio/nuvolaplayer||2019-10-16|Has expired: Unfetchable, unmaintained
 audio/vagalume||2019-10-16|Has expired: Unfetchable, unmaintained
-audio/wmsmixer||2019-10-16|Has expired: Unfetchable, unmaintained
 audio/xmms2-scrobbler||2019-10-16|Has expired: Unfetchable, unmaintained
 benchmarks/filebench||2019-10-16|Has expired: Unfetchable, unmaintained
 biology/chemeq||2019-10-16|Has expired: Unfetchable, unmaintained
@@ -13670,7 +13654,6 @@ security/linux-c6-pam||2019-12-31|Has expired: Superseded by CentOS 7
 sysutils/eventlog||2019-12-31|Has expired: No longer supported by Balabit
 sysutils/linux-c6-lttng-ust|sysutils/linux-c7-lttng-ust|2019-12-31|Has expired: Superseded by CentOS 7
 sysutils/linux-c6-userspace-rcu|sysutils/linux-c7-userspace-rcu|2019-12-31|Has expired: Superseded by CentOS 7
-sysutils/mkdesktop||2019-12-31|Has expired: defunct, will be deleted soon
 sysutils/syslog-ng311|sysutils/syslog-ng|2019-12-31|Has expired: No longer supported by Balabit
 sysutils/syslog-ng315|sysutils/syslog-ng|2019-12-31|Has expired: No longer supported by Balabit
 sysutils/syslog-ng317|sysutils/syslog-ng|2019-12-31|Has expired: No longer supported by Balabit
@@ -13884,7 +13867,6 @@ graphics/pysvg||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 irc/py-supybot-plugins||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 japanese/kana-no-quiz||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 lang/py-prolog||2020-01-27|Has expired: Unmaintained, uses EOLed python27
-lang/sdcc||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 mail/archivemail||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 mail/mailfmt||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 mail/py-libgmail||2020-01-27|Has expired: Unmaintained, uses EOLed python27
@@ -13980,7 +13962,6 @@ www/py-meld||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 www/py-mt||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 www/py-rhodecode||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 www/qooxdoo||2020-01-27|Has expired: Unmaintained, uses EOLed python27
-www/varnish-libvmod-maxminddb||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 x11/metisse||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 x11/ooxcb||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 x11-toolkits/diorite||2020-01-27|Has expired: Unmaintained, uses EOLed python27
@@ -14340,7 +14321,6 @@ graphics/py-chart||2020-02-22|Has expired: Broken, uses EOLed python27
 japanese/tegaki-recognize||2020-02-22|Has expired: Broken, uses EOLed python27
 mail/py-zope.sendmail||2020-02-22|Has expired: Old, uses EOLed python27
 mail/pysieved||2020-02-22|Has expired: Broken, uses EOLed python27
-math/ogdf||2020-02-22|Has expired: Broken, uses EOLed python27
 math/py-viper||2020-02-22|Has expired: Broken, uses EOLed python27
 misc/fbless||2020-02-22|Has expired: Broken, uses EOLed python27
 misc/pylize||2020-02-22|Has expired: Broken, uses EOLed python27
@@ -14419,7 +14399,6 @@ graphics/driconf||2020-03-01|Has expired: Old, uses EOLed python27
 graphics/gimp-help||2020-03-01|Has expired: Broken
 graphics/nathive||2020-03-01|Has expired: Old, uses EOLed python27
 graphics/py-goocanvas||2020-03-01|Has expired: Old, uses EOLed python27
-graphics/py-mcomix||2020-03-01|Has expired: Old, uses EOLed python27
 graphics/uniconvw||2020-03-01|Has expired: Old, uses EOLed python27
 japanese/gimp-help||2020-03-01|Has expired: Broken
 java/jakarta-regexp||2020-03-01|Has expired: EOL: As of 2011-04-17, the Regexp project is retired
@@ -14444,7 +14423,6 @@ russian/gimp-help||2020-03-01|Has expired: Broken
 security/hotssh||2020-03-01|Has expired: Old, uses EOLed python27
 security/zenmap||2020-03-01|Has expired: Old, uses EOLed python27
 x11/py-xdot06|x11/py-xdot|2020-03-01|Has expired: Old, uses EOLed python27
-x11/terminator||2020-03-01|Has expired: Old, uses EOLed python27
 x11-fm/sunflower||2020-03-01|Has expired: Old, uses EOLed python27
 x11-toolkits/hippo-canvas||2020-03-01|Has expired: Old, uses EOLed python27
 x11-toolkits/py-kiwi-gtk||2020-03-01|Has expired: Old, uses EOLed python27
@@ -14487,12 +14465,10 @@ devel/py-Products.LDAPUserFolder||2020-03-20|Has expired: Old, uses EOLed python
 devel/py-zLOG||2020-03-20|Has expired: Old, uses EOLed python27
 textproc/py-ltxml||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 x11-toolkits/flowcanvas||2020-03-20|Has expired: Unmaintained, uses EOLed python27
-audio/raul||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 audio/py-vorbis||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 databases/py-cdb||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 devel/py-libplist||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 devel/py-mwlib||2020-03-20|Has expired: Unmaintained, uses EOLed python27
-emulators/openmsx||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 graphics/py-soya3d||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 irc/py-supybot||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 net-mgmt/py-pdagent||2020-03-20|Has expired: Unmaintained, uses EOLed python27
@@ -14501,7 +14477,7 @@ x11/rxvt|x11/rxvt-unicode|2020-03-20|Has expired: Abandonware: stable release 2.
 x11-wm/clementine-wm||2020-03-20|Removed, unmaintained and depends on expired x11/rxvt
 net/kdsoap|www/kdsoap|2020-03-21|Already existed in the tree
 security/openssh-portable@x509||2020-03-23|Has expired: X509 long broken without known users
-devel/py-antlr4-python2-runtime|devel/antlr4-python3-runtime|2020-03-25|Has expired: Uses EoL python27, please use devel/antlr4-python3-runtime instead
+devel/py-antlr4-python2-runtime|devel/py-antlr4-python3-runtime|2020-03-25|Has expired: Uses EoL python27, please use devel/antlr4-python3-runtime instead
 devel/sonarqube|devel/sonarqube-community|2020-03-26|Moved to make it clear that this is the community-edition
 devel/sonar-ant-task|devel/sonarqube-ant-task|2020-03-26|Moved due to name change upstream
 devel/rubygem-slack-notifier1|devel/rubygem-slack-notifier|2020-03-30|Obsolete, please use devel/rubygem-slack-notifier instead
@@ -14521,5 +14497,655 @@ databases/mongodb34-tools|databases/mongodb36-tools|2020-03-31|Removed, part of 
 databases/py-pypuppetdb03|databases/py-pypuppetdb|2020-04-01|Has expired: Use databases/py-pypuppetdb instead
 www/py-puppetboard02|www/py-puppetboard|2020-04-01|Has expired: Use www/py-puppetboard instead
 www/py-puppetboard03|www/py-puppetboard|2020-04-01|Has expired: Use www/py-puppetboard instead
-dns/dnsperf||2020-05-15|Removed, depends on expired dns/bind914, not compatible with dns/bind916
-dns/bind914|dns/bind916|2020-05-15|Has expired: End of life, please migrate to a newer version of BIND9
+net/librsync2|net/librsync|2020-04-02|Remove PKGNAMESUFFIX 3 years after librsync removal
+lang/beignet|lang/intel-compute-runtime|2020-04-02|Has expired: Deprecated upstream, use lang/intel-compute-runtime
+devel/rubygem-cucumber-tag_expressions|devel/rubygem-cucumber-tag-expressions|2020-04-04|Renamed by upstream
+math/mkl-dnn|math/onednn|2020-04-04|Project renamed
+devel/p5-Glib2|devel/p5-Glib|2020-04-07|Rename to match our p5- port naming
+devel/jucipp|editors/jucipp|2020-04-07|Remove duplicate
+www/py-django_polymorphic|www/py-django-polymorphic|2020-04-11|Match canonical/registered (PyPI/CHEESESHOP) name
+dns/dnsmasq-devel|dns/dnsmasq|2020-04-12|dnsmasq is newer than dnsmasq-devel
+databases/mariadb55-server|databases/mariadb102-server|2020-04-12|Has expired: Upstream end-of-life 2020-04-11, switch to a newer version
+databases/mariadb55-client|databases/mariadb102-client|2020-04-12|Has expired: Upstream end-of-life 2020-04-11, switch to a newer version
+devel/aws-c-commons|devel/aws-c-common|2020-04-12|Renamed to the correct name
+textproc/itstool22|textproc/itstool|2020-04-14|Has expired: Uses deprecated version of python, use textproc/itstool instead
+science/ncnn|misc/ncnn|2020-04-14|Move to misc/ because ncnn isn't related to science
+archivers/lua51-zlib|archivers/lua-zlib@lua51|2020-04-14|Switched to use flavors
+audio/lua51-mpd|audio/lua-mpd@lua51|2020-04-14|Switched to use flavors
+converters/lua51-iconv|converters/lua-iconv@lua51|2020-04-14|Switched to use flavors
+devel/lua51-bitop|devel/lua-bitop@lua51|2020-04-14|Switched to use flavors
+devel/lua51-cjson|devel/lua-cjson@lua51|2020-04-14|Switched to use flavors
+devel/lua51-libevent|devel/lua-libevent@lua51|2020-04-14|Switched to use flavors
+devel/luafilesystem-51|devel/luafilesystem@lua51|2020-04-14|Switched to use flavors
+net/lualdap-51|net/lualdap@lua51|2020-04-14|Switched to use flavors
+net/luasocket-51|net/luasocket@lua51|2020-04-14|Switched to use flavors
+net/luasocket-53|net/luasocket@lua53|2020-04-14|Switched to use flavors
+security/luasec-51|security/luasec@lua51|2020-04-14|Switched to use flavors
+textproc/luaexpat-51|textproc/luaexpat@lua51|2020-04-14|Switched to use flavors
+devel/libevdevPlus|devel/libevdevplus|2020-04-18|lowercase
+devel/libuIntputPlus|devel/libuinputplus|2020-04-18|lowercase
+net/pjsip-extsrtp||2020-04-18|Remove slave port not used anymore
+www/py-django-caching-app-plugins||2020-04-18|Doesn't work with Django 1.9+ and Python 3, no longer maintained
+net/openmpi2||2020-04-19|Removed, deprecated by upstream
+www/py-ddgr|www/ddgr|2020-04-19|Duplicate port
+sysutils/py-halite||2020-04-19|Hasexpired: Uses deprecated version of python
+security/suricata5|security/suricata|2020-04-20|Has expired: security/suricata is already at version 5
+finance/py-ebaysdk-python|finance/py-ebaysdk|2020-04-21|Renamed to match Pypy package
+emulators/qemu30|emulators/qemu31|2020-04-21|Has expired: No longer maintained by upstream
+editors/nano-devel||2020-04-23|Removed: Obsolete now, use editors/nano instead
+devel/py-liblarch||2020-04-25|Removed: uses deprecated version of python; no consumers left
+sysutils/DTraceToolkit|sysutils/dtrace-toolkit|2020-04-26|Renamed to match the package name
+devel/k8048|devel/pickle|2020-04-28|Project renamed
+net-mgmt/bgpq|net-mgmt/bgpq3|2020-04-30|Has expired: Use net-mgmt/bgpq3 or net-mgmt/bgpq4
+net/boringtun||2020-04-30|Has expired: Status of the project and motivation is unclear
+dns/dnsperf||2020-04-30|Removed, depends on expired dns/bind914, not compatible with dns/bind916
+dns/bind914|dns/bind916|2020-04-30|Has expired: End of life, please migrate to a newer version of BIND9
+net/py-pcap|net/py-pypcap|2020-05-01|Has expired: Broken with python3 please consider using net/py-pypcap
+x11-drivers/xf86-video-tseng||2020-05-01|Has expired: broken
+x11-drivers/xf86-video-s3virge||2020-05-01|Has expired: broken
+net/py-smart_open|net/py-smart-open|2020-05-02|Rename to match upstream naming
+net-im/pidgin-rocketchat|net-im/purple-rocketchat|2020-05-05|Generalized into a libpurple plugin
+audio/festvox-czech||2020-05-05|Has expired: Broken for more than 6 months
+audio/gkrellmvolume2||2020-05-05|Has expired: Broken for more than 6 months
+audio/mixmos||2020-05-05|Has expired: Broken for more than 6 months
+audio/mma||2020-05-05|Has expired: Broken for more than 6 months
+audio/pd-cyclone||2020-05-05|Has expired: Broken for more than 6 months
+audio/shorten||2020-05-05|Has expired: Broken for more than 6 months
+audio/taglib-sharp||2020-05-05|Has expired: Broken for more than 6 months
+audio/xhippo||2020-05-05|Has expired: Broken for more than 6 months
+biology/consed||2020-05-05|Has expired: Broken for more than 6 months
+biology/plinkseq||2020-05-05|Has expired: Broken for more than 6 months
+biology/seqtools||2020-05-05|Has expired: Broken for more than 6 months
+biology/t_coffee||2020-05-05|Has expired: Broken for more than 6 months
+comms/ath3k-firmware||2020-05-05|Has expired: Broken for more than 6 months
+comms/geoid||2020-05-05|Has expired: Broken for more than 6 months
+comms/jerm||2020-05-05|Has expired: Broken for more than 6 months
+comms/yaac||2020-05-05|Has expired: Broken for more than 6 months
+converters/dumpasn1||2020-05-05|Has expired: Broken for more than 6 months
+databases/elixir-exredis||2020-05-05|Has expired: Broken for more than 6 months
+databases/hamsterdb||2020-05-05|Has expired: Broken for more than 6 months
+databases/memcacheq||2020-05-05|Has expired: Broken for more than 6 months
+databases/mysql++1||2020-05-05|Has expired: Broken for more than 6 months
+databases/mysql++3||2020-05-05|Has expired: Broken for more than 6 months
+databases/mysql2odbc||2020-05-05|Has expired: Broken for more than 6 months
+databases/mysqlidxchk||2020-05-05|Has expired: Broken for more than 6 months
+databases/p5-DBIx-Ease||2020-05-05|Has expired: Broken for more than 6 months
+databases/p5-DMOZ-ParseRDF||2020-05-05|Has expired: Broken for more than 6 months
+databases/pear-DoctrineORM||2020-05-05|Has expired: Broken for more than 6 months
+databases/pear-MDB2_Driver_mysql||2020-05-05|Has expired: Broken for more than 6 months
+databases/pear-Structures_DataGrid_DataSource_DBQuery||2020-05-05|Has expired: Broken for more than 6 months
+databases/pear-Structures_DataGrid_DataSource_DBTable||2020-05-05|Has expired: Broken for more than 6 months
+databases/pear-Structures_DataGrid_DataSource_DataObject||2020-05-05|Has expired: Broken for more than 6 months
+databases/pear-Structures_DataGrid_DataSource_MDB2||2020-05-05|Has expired: Broken for more than 6 months
+databases/pgagent||2020-05-05|Has expired: Broken for more than 6 months
+databases/useracc||2020-05-05|Has expired: Broken for more than 6 months
+deskutils/devd-notifier||2020-05-05|Has expired: Broken for more than 6 months
+deskutils/sugarcrm||2020-05-05|Has expired: Broken for more than 6 months
+deskutils/tine20||2020-05-05|Has expired: Broken for more than 6 months
+deskutils/tomboy-plugin-latex||2020-05-05|Has expired: Broken for more than 6 months
+deskutils/tomboy-plugin-todo||2020-05-05|Has expired: Broken for more than 6 months
+deskutils/wyrd||2020-05-05|Has expired: Broken for more than 6 months
+deskutils/xrolo||2020-05-05|Has expired: 64-bit unsupported
+devel/autodist||2020-05-05|Has expired: Broken for more than 6 months
+devel/bouml-doc||2020-05-05|Has expired: Broken for more than 6 months
+devel/cobf||2020-05-05|Has expired: Broken for more than 6 months
+devel/djgpp-crx||2020-05-05|Has expired: Broken for more than 6 months
+devel/elfrc||2020-05-05|Has expired: Broken for more than 6 months
+devel/gogland-eap||2020-05-05|Has expired: Broken for more than 6 months
+devel/hive||2020-05-05|Has expired: Broken for more than 6 months
+devel/hs-bytestring-nums||2020-05-05|Has expired: No releases since 2012
+devel/iz||2020-05-05|Has expired: Broken for more than 6 months
+devel/jfrog-cli||2020-05-05|Has expired: Broken for more than 6 months
+devel/libcfg||2020-05-05|Has expired: Broken for more than 6 months
+devel/libdispatch||2020-05-05|Has expired: Broken for more than 6 months
+devel/libjson++||2020-05-05|Has expired: Broken for more than 6 months
+devel/libmonetra||2020-05-05|Has expired: Broken for more than 6 months
+devel/libol||2020-05-05|Has expired: Broken for more than 6 months
+devel/libserver||2020-05-05|Has expired: Broken for more than 6 months
+devel/lua-MessagePack||2020-05-05|Has expired: Broken for more than 6 months
+devel/mercurialeclipse||2020-05-05|Has expired: Broken for more than 6 months
+devel/mime||2020-05-05|Has expired: Broken for more than 6 months
+devel/motor||2020-05-05|Has expired: Broken for more than 6 months
+devel/mq4cpp||2020-05-05|Has expired: Broken for more than 6 months
+devel/myrepos||2020-05-05|Has expired: Broken for more than 6 months
+devel/oozie||2020-05-05|Has expired: Broken for more than 6 months
+devel/p5-Cdk||2020-05-05|Has expired: Broken for more than 6 months
+devel/p5-Data-Average||2020-05-05|Has expired: Broken for more than 6 months
+devel/p5-Range-String||2020-05-05|Has expired: Broken for more than 6 months
+devel/p5-Shape||2020-05-05|Has expired: Broken for more than 6 months
+devel/pear-PHP_CodeBrowser||2020-05-05|Has expired: Broken for more than 6 months
+devel/pear-PHP_Depend||2020-05-05|Has expired: Broken for more than 6 months
+devel/pear-PHP_PMD||2020-05-05|Has expired: Broken for more than 6 months
+devel/pear-TheSeer_phpDox||2020-05-05|Has expired: Broken for more than 6 months
+devel/picp||2020-05-05|Has expired: Broken for more than 6 months
+devel/pig||2020-05-05|Has expired: Broken for more than 6 months
+devel/pty||2020-05-05|Has expired: Broken for more than 6 months
+devel/py-libiocage||2020-05-05|Has expired: Broken for more than 6 months
+devel/py-lock_file||2020-05-05|Has expired: Broken for more than 6 months
+devel/py-pyev||2020-05-05|Has expired: Broken for more than 6 months
+devel/rpm-spec-mode.el||2020-05-05|Has expired: Broken for more than 6 months
+devel/simple_components||2020-05-05|Has expired: Broken for more than 6 months
+devel/tcloo||2020-05-05|Has expired: Tcl/Tk 8.5 is nearing EOL, please consider porting to Tcl/Tk 8.6
+devel/tkmerge||2020-05-05|Has expired: Broken for more than 6 months
+devel/toh||2020-05-05|Has expired: Broken for more than 6 months
+devel/visualparadigm||2020-05-05|Has expired: Broken for more than 6 months
+dns/autotrust||2020-05-05|Has expired: Broken for more than 6 months
+dns/gdnsd||2020-05-05|Has expired: Broken for more than 6 months
+dns/p5-Stanford-DNSserver||2020-05-05|Has expired: Broken for more than 6 months
+dns/zonecheck||2020-05-05|Has expired: Broken for more than 6 months
+editors/omegaT||2020-05-05|Has expired: Broken for more than 6 months
+finance/cbb||2020-05-05|Has expired: Broken for more than 6 months
+ftp/llnlxdir||2020-05-05|Has expired: Broken for more than 6 months
+ftp/llnlxftp||2020-05-05|Has expired: Broken for more than 6 months
+games/adom||2020-05-05|Has expired: Broken for more than 6 months
+games/bsdrain||2020-05-05|Has expired: Broken for more than 6 months
+games/bunnysay||2020-05-05|Has expired: Broken for more than 6 months
+games/castlevox||2020-05-05|Has expired: Broken for more than 6 months
+games/gnarr||2020-05-05|Has expired: Broken for more than 6 months
+games/hohlin||2020-05-05|Has expired: Broken for more than 6 months
+games/hoichess||2020-05-05|Has expired: Broken for more than 6 months
+games/kajaani-kombat||2020-05-05|Has expired: Broken for more than 6 months
+games/linux-enemyterritory-jaymod-21||2020-05-05|Has expired: Broken for more than 6 months
+games/linux-enemyterritory-omni-bot||2020-05-05|Has expired: Broken for more than 6 months
+games/linux-enemyterritory-omni-bot-0660||2020-05-05|Has expired: Broken for more than 6 months
+games/nadar||2020-05-05|Has expired: Broken for more than 6 months
+games/oneko||2020-05-05|Has expired: Broken for more than 6 months
+games/seahaven||2020-05-05|Has expired: Broken for more than 6 months
+games/sudoku_solver||2020-05-05|Has expired: Broken for more than 6 months
+games/tetrons||2020-05-05|Has expired: Broken for more than 6 months
+games/xpenguins||2020-05-05|Has expired: Broken for more than 6 months
+games/xvmahjongg||2020-05-05|Has expired: 64-bit unsupported
+games/xvmines||2020-05-05|Has expired: 64-bit unsupported
+graphics/EZWGL||2020-05-05|Has expired: Broken for more than 6 months
+graphics/kix-kmod||2020-05-05|Has expired: Broken for more than 6 months
+graphics/mhgui||2020-05-05|Has expired: Broken for more than 6 months
+graphics/mmrecover||2020-05-05|Has expired: Broken for more than 6 months
+hungarian/hu-phone||2020-05-05|Has expired: Broken for more than 6 months
+hungarian/hu-zipcodes||2020-05-05|Has expired: Broken for more than 6 months
+irc/charybdis||2020-05-05|Has expired: Broken for more than 6 months
+irc/fisg||2020-05-05|Has expired: Broken for more than 6 months
+irc/ircd-ru||2020-05-05|Has expired: Broken for more than 6 months
+irc/ircservices||2020-05-05|Has expired: Broken for more than 6 months
+irc/nethirc||2020-05-05|Has expired: Broken for more than 6 months
+irc/ratbox-services||2020-05-05|Has expired: Broken for more than 6 months
+irc/roxirc||2020-05-05|Has expired: Broken for more than 6 months
+japanese/jstrings||2020-05-05|Has expired: Broken for more than 6 months
+japanese/mg||2020-05-05|Has expired: Broken for more than 6 months
+japanese/ming||2020-05-05|Has expired: Broken for more than 6 months
+japanese/t2ps||2020-05-05|Has expired: Broken for more than 6 months
+java/castor||2020-05-05|Has expired: Broken for more than 6 months
+java/eclipse-windowbuilder||2020-05-05|Has expired: Broken for more than 6 months
+java/jdbcpool||2020-05-05|Has expired: Broken for more than 6 months
+java/jomp||2020-05-05|Has expired: Broken for more than 6 months
+java/langspec||2020-05-05|Has expired: Broken for more than 6 months
+java/xdoclet||2020-05-05|Has expired: Broken for more than 6 months
+korean/xpdf||2020-05-05|Has expired: Broken for more than 6 months
+lang/afnix||2020-05-05|Has expired: Broken for more than 6 months
+lang/elan||2020-05-05|Has expired: Broken for more than 6 months
+lang/gnatcross-aarch64||2020-05-05|Has expired: Broken for more than 6 months
+lang/hope||2020-05-05|Has expired: Broken for more than 6 months
+lang/hugs||2020-05-05|Has expired: Broken for more than 6 months
+lang/ici||2020-05-05|Has expired: Broken for more than 6 months
+lang/icon||2020-05-05|Has expired: Broken for more than 6 months
+lang/newlisp-devel||2020-05-05|Has expired: Broken for more than 6 months
+lang/ohugs||2020-05-05|Has expired: Broken for more than 6 months
+lang/opendylan||2020-05-05|Has expired: Broken for more than 6 months
+lang/phc||2020-05-05|Has expired: Broken for more than 6 months
+lang/starlogo||2020-05-05|Has expired: Broken for more than 6 months
+lang/yap||2020-05-05|Has expired: Broken for more than 6 months
+lang/yap-devel||2020-05-05|Has expired: Broken for more than 6 months
+mail/chk4mail||2020-05-05|Has expired: Broken for more than 6 months
+mail/librfc822||2020-05-05|Has expired: Broken for more than 6 months
+mail/mailmgr||2020-05-05|Has expired: Broken for more than 6 months
+mail/mreport||2020-05-05|Has expired: Broken for more than 6 months
+mail/msgconvert||2020-05-05|Has expired: Broken for more than 6 months
+mail/nullpop||2020-05-05|Has expired: Broken for more than 6 months
+mail/p5-Mail-MailStats||2020-05-05|Has expired: Broken for more than 6 months
+mail/poppassd||2020-05-05|Has expired: Broken for more than 6 months
+mail/prayer||2020-05-05|Has expired: Broken for more than 6 months
+mail/py-cyruslib||2020-05-05|Has expired: Broken for more than 6 months
+mail/qmail-auditor||2020-05-05|Has expired: Broken for more than 6 months
+mail/qmailmrtg7||2020-05-05|Has expired: Broken for more than 6 months
+mail/qmqtool||2020-05-05|Has expired: Broken for more than 6 months
+mail/relaydb||2020-05-05|Has expired: Broken for more than 6 months
+mail/rftp||2020-05-05|Has expired: Broken for more than 6 months
+mail/smtp-gated||2020-05-05|Has expired: Broken for more than 6 months
+mail/spamoracle||2020-05-05|Has expired: Broken for more than 6 months
+math/calctool||2020-05-05|Has expired: 64-bit unsupported
+math/diehard||2020-05-05|Has expired: Broken for more than 6 months
+math/e||2020-05-05|Has expired: Broken for more than 6 months
+math/entropy||2020-05-05|Has expired: Broken for more than 6 months
+math/liblbfgs||2020-05-05|Has expired: Broken for more than 6 months
+math/libtsnnls||2020-05-05|Has expired: Broken for more than 6 months
+math/ltl||2020-05-05|Has expired: Broken for more than 6 months
+math/naturalmath||2020-05-05|Has expired: Broken for more than 6 months
+math/proofgeneral||2020-05-05|Has expired: Broken for more than 6 months
+math/py-basemap-data||2020-05-05|Has expired: Broken for more than 6 months
+math/py-igakit||2020-05-05|Has expired: Broken for more than 6 months
+math/py-rapi||2020-05-05|Has expired: Broken for more than 6 months
+math/sfst||2020-05-05|Has expired: Broken for more than 6 months
+math/truthtable||2020-05-05|Has expired: Broken for more than 6 months
+math/wingz3||2020-05-05|Has expired: Broken for more than 6 months
+math/x12arima||2020-05-05|Has expired: Broken for more than 6 months
+math/xppaut||2020-05-05|Has expired: Broken for more than 6 months
+misc/achievo||2020-05-05|Has expired: Broken for more than 6 months
+misc/auto-multiple-choice||2020-05-05|Has expired: Broken for more than 6 months
+misc/display||2020-05-05|Has expired: Broken for more than 6 months
+misc/esniper||2020-05-05|Has expired: Broken for more than 6 months
+misc/free42-skins||2020-05-05|Has expired: Broken for more than 6 months
+misc/libisocodes||2020-05-05|Has expired: Broken for more than 6 months
+misc/loop||2020-05-05|Has expired: Broken for more than 6 months
+misc/p5-Norge||2020-05-05|Has expired: Broken for more than 6 months
+misc/pantry||2020-05-05|Has expired: Broken for more than 6 months
+misc/phraze||2020-05-05|Has expired: Broken for more than 6 months
+misc/podsleuth||2020-05-05|Has expired: Broken for more than 6 months
+misc/py-osd||2020-05-05|Has expired: Broken for more than 6 months
+misc/spamcalc||2020-05-05|Has expired: Broken for more than 6 months
+misc/us-zipcodes||2020-05-05|Has expired: Broken for more than 6 months
+misc/xtypo||2020-05-05|Has expired: Broken for more than 6 months
+misc/yaunc||2020-05-05|Has expired: Broken for more than 6 months
+multimedia/clipgrab||2020-05-05|Has expired: Broken for more than 6 months
+multimedia/libsmacker||2020-05-05|Has expired: Broken for more than 6 months
+multimedia/lxdvdrip||2020-05-05|Has expired: Broken for more than 6 months
+multimedia/mjpg-streamer||2020-05-05|Has expired: Broken for more than 6 months
+multimedia/vcdpad||2020-05-05|Has expired: Broken for more than 6 months
+net/erlang-xmlrpc||2020-05-05|Has expired: Broken for more than 6 months
+net/etrace||2020-05-05|Has expired: Broken for more than 6 months
+net/fonulator||2020-05-05|Has expired: Broken for more than 6 months
+net/gkrellmwireless2||2020-05-05|Has expired: Broken for more than 6 months
+net/howl||2020-05-05|Has expired: Broken for more than 6 months
+net/libp0f||2020-05-05|Has expired: Broken for more than 6 months
+net/libsocket++||2020-05-05|Has expired: Broken for more than 6 months
+net/ltm||2020-05-05|Has expired: Broken for more than 6 months
+net/lvwimax||2020-05-05|Has expired: Broken for more than 6 months
+net/mono-zeroconf||2020-05-05|Has expired: Broken for more than 6 months
+net/nph||2020-05-05|Has expired: Broken for more than 6 months
+net/p5-Net-RawSock||2020-05-05|Has expired: Broken for more than 6 months
+net/passlogd||2020-05-05|Has expired: Broken for more than 6 months
+net/phamm||2020-05-05|Has expired: Broken for more than 6 months
+net/pim6-tools||2020-05-05|Has expired: Broken for more than 6 months
+net/pim6dd||2020-05-05|Has expired: Broken for more than 6 months
+net/pim6sd||2020-05-05|Has expired: Broken for more than 6 months
+net/proxy-connect||2020-05-05|Has expired: Broken for more than 6 months
+net/rtpbreak||2020-05-05|Has expired: Broken for more than 6 months
+net/s3ql||2020-05-05|Has expired: Broken for more than 6 months
+net/scnc||2020-05-05|Has expired: Broken for more than 6 months
+net/sip_scenario||2020-05-05|Has expired: Broken for more than 6 months
+net/slurm||2020-05-05|Has expired: Broken for more than 6 months
+net/ssmping||2020-05-05|Has expired: Broken for more than 6 months
+net/tcpdstat||2020-05-05|Has expired: Broken for more than 6 months
+net/uplog||2020-05-05|Has expired: Broken for more than 6 months
+net/vblade||2020-05-05|Has expired: Broken for more than 6 months
+net/wizd||2020-05-05|Has expired: Broken for more than 6 months
+net/wmnetload||2020-05-05|Has expired: Broken for more than 6 months
+net/wmnetmon||2020-05-05|Has expired: Broken for more than 6 months
+net/wmpiki||2020-05-05|Has expired: Broken for more than 6 months
+net/xipmsg||2020-05-05|Has expired: Broken for more than 6 months
+net-im/chattahoochie||2020-05-05|Has expired: Broken for more than 6 months
+net-im/jitsi||2020-05-05|Has expired: Broken for more than 6 months
+net-im/mu-conference||2020-05-05|Has expired: Broken for more than 6 months
+net-im/p5-Jabber-Connection||2020-05-05|Has expired: Broken for more than 6 months
+net-im/p5-Net-ICQ2000||2020-05-05|Has expired: Broken for more than 6 months
+net-im/pidgin-guifications||2020-05-05|Has expired: Broken for more than 6 months
+net-im/pidgin-osd||2020-05-05|Has expired: Broken for more than 6 months
+net-im/yoono||2020-05-05|Has expired: Broken for more than 6 months
+net-mgmt/arpalert||2020-05-05|Has expired: Broken for more than 6 months
+net-mgmt/nagios-check_memcached_paranoid||2020-05-05|Has expired: Broken for more than 6 months
+net-mgmt/netwox||2020-05-05|Has expired: Broken for more than 6 months
+net-mgmt/nstreams||2020-05-05|Has expired: Broken for more than 6 months
+net-mgmt/p5-GRNOC-Config||2020-05-05|Has expired: Broken for more than 6 months
+net-mgmt/p5-GRNOC-TL1||2020-05-05|Has expired: Broken for more than 6 months
+net-mgmt/scli||2020-05-05|Has expired: Broken for more than 6 months
+net-mgmt/snmp++||2020-05-05|Has expired: Broken for more than 6 months
+net-mgmt/victorops-nagios||2020-05-05|Has expired: Broken for more than 6 months
+net-p2p/libpdtp||2020-05-05|Has expired: Broken for more than 6 months
+net-p2p/squall||2020-05-05|Has expired: Broken for more than 6 months
+news/crashmail||2020-05-05|Has expired: Broken for more than 6 months
+news/sn||2020-05-05|Has expired: Broken for more than 6 months
+news/xrn||2020-05-05|Has expired: Broken for more than 6 months
+ports-mgmt/managepkg||2020-05-05|Has expired: Broken for more than 6 months
+portuguese/irpf-pt_BR||2020-05-05|Has expired: Broken for more than 6 months
+print/foxitreader||2020-05-05|Has expired: Broken for more than 6 months
+print/pdfcube||2020-05-05|Has expired: Broken for more than 6 months
+print/pmw||2020-05-05|Has expired: Broken for more than 6 months
+print/rprint||2020-05-05|Has expired: Broken for more than 6 months
+russian/p5-cyrillic||2020-05-05|Has expired: Broken for more than 6 months
+russian/tidyup-mail||2020-05-05|Has expired: Broken for more than 6 months
+science/atom||2020-05-05|Has expired: Broken for more than 6 months
+science/esys-particle||2020-05-05|Has expired: Broken for more than 6 months
+science/openmx||2020-05-05|Has expired: Broken for more than 6 months
+science/p5-Geo-ReadGRIB||2020-05-05|Has expired: Broken for more than 6 months
+science/py-tensorflow-estimator||2020-05-05|Has expired: Broken for more than 6 months
+security/firewalk||2020-05-05|Has expired: Broken for more than 6 months
+security/hmap||2020-05-05|Has expired: Broken for more than 6 months
+security/ipfcount||2020-05-05|Has expired: Broken for more than 6 months
+security/libbf||2020-05-05|Has expired: Broken for more than 6 months
+security/log2timeline||2020-05-05|Has expired: Broken for more than 6 months
+security/opencdk||2020-05-05|Has expired: Broken for more than 6 months
+security/pad||2020-05-05|Has expired: Broken for more than 6 months
+security/pam_fprint||2020-05-05|Has expired: Broken for more than 6 months
+security/pam_per_user||2020-05-05|Has expired: Broken for more than 6 months
+security/razorback-dispatcher||2020-05-05|Has expired: Broken for more than 6 months
+security/ruby-camellia||2020-05-05|Has expired: Broken for more than 6 months
+security/scanhill||2020-05-05|Has expired: Broken for more than 6 months
+security/sinfp||2020-05-05|Has expired: Broken for more than 6 months
+security/ssh_askpass_gtk2||2020-05-05|Has expired: Broken for more than 6 months
+security/subweb||2020-05-05|Has expired: Broken for more than 6 months
+security/unssh||2020-05-05|Has expired: Broken for more than 6 months
+security/xspy||2020-05-05|Has expired: Broken for more than 6 months
+shells/osh||2020-05-05|Has expired: Broken for more than 6 months
+shells/shell-include||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/abgx360gui||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/autojump||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/backupchecker||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/cdf||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/cdls||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/circonus-agent||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/cloop-utils||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/confman||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/detach||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/disktool||2020-05-05|Has expired: 64-bit unsupported
+sysutils/downtime||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/fusefs-fusexmp_fh||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/fusefs-gunzip||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/goss||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/gpte||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/hidesvn||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/hoz||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/intel-qcu||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/iogen||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/jailctl||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/jx||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/linux-crashplan||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/mkfile||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/mpiexec||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/nfsping||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/phantom||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/ptools||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/realsync||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/rmonitor||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/roottail||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/sb16config||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/sbase||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/setquota||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/sortu||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/stmpclean||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/tmate-slave||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/tss||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/vstrip||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/watchdog||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/wmbsdbatt||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/wmcpuload||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/wmcube||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/wtail||2020-05-05|Has expired: Broken for more than 6 months
+textproc/csv2latex||2020-05-05|Has expired: Broken for more than 6 months
+textproc/da-hyphen||2020-05-05|Has expired: Broken for more than 6 months
+textproc/glark||2020-05-05|Has expired: Broken for more than 6 months
+textproc/html2tex||2020-05-05|Has expired: Broken for more than 6 months
+textproc/htmlsection||2020-05-05|Has expired: Broken for more than 6 months
+textproc/kenlm||2020-05-05|Has expired: Broken for more than 6 months
+textproc/libguess||2020-05-05|Has expired: Broken for more than 6 months
+textproc/libxml++26-reference||2020-05-05|Has expired: Broken for more than 6 months
+textproc/no-hunspell||2020-05-05|Has expired: Broken for more than 6 months
+textproc/p5-MARC||2020-05-05|Has expired: Broken for more than 6 months
+textproc/p5-texcount||2020-05-05|Has expired: Broken for more than 6 months
+textproc/pcrs||2020-05-05|Has expired: Broken for more than 6 months
+textproc/pear-Structures_DataGrid_DataSource_RSS||2020-05-05|Has expired: Broken for more than 6 months
+textproc/pear-Structures_DataGrid_DataSource_XML||2020-05-05|Has expired: Broken for more than 6 months
+textproc/permute||2020-05-05|Has expired: Broken for more than 6 months
+textproc/pocketreader||2020-05-05|Has expired: Broken for more than 6 months
+textproc/py-sgrep||2020-05-05|Has expired: Broken for more than 6 months
+textproc/rss2html||2020-05-05|Has expired: Broken for more than 6 months
+textproc/ruby-xmlparser||2020-05-05|Has expired: Broken for more than 6 months
+textproc/sv-hyphen||2020-05-05|Has expired: Broken for more than 6 months
+textproc/tclExpat||2020-05-05|Has expired: Broken for more than 6 months
+textproc/tex2im||2020-05-05|Has expired: Broken for more than 6 months
+textproc/topic||2020-05-05|Has expired: Broken for more than 6 months
+textproc/uz-hunspell||2020-05-05|Has expired: Broken for more than 6 months
+textproc/xmlprpr||2020-05-05|Has expired: Broken for more than 6 months
+www/ach||2020-05-05|Has expired: Broken for more than 6 months
+www/apache-forrest||2020-05-05|Has expired: Broken for more than 6 months
+www/apercu||2020-05-05|Has expired: Broken for more than 6 months
+www/cblog||2020-05-05|Has expired: Broken for more than 6 months
+www/drood||2020-05-05|Has expired: Broken for more than 6 months
+www/drraw||2020-05-05|Has expired: Broken for more than 6 months
+www/flood||2020-05-05|Has expired: Broken for more than 6 months
+www/grafana2||2020-05-05|Has expired: Broken for more than 6 months
+www/imgsizer||2020-05-05|Has expired: Broken for more than 6 months
+www/jdresolve||2020-05-05|Has expired: Broken for more than 6 months
+www/linkcheck||2020-05-05|Has expired: Broken for more than 6 months
+www/madsonic-standalone||2020-05-05|Has expired: Broken for more than 6 months
+www/mod_auth_external2||2020-05-05|Has expired: Broken for more than 6 months
+www/mod_chroot||2020-05-05|Has expired: Broken for more than 6 months
+www/mod_cvs2||2020-05-05|Has expired: Broken for more than 6 months
+www/mod_domaintree||2020-05-05|Has expired: Broken for more than 6 months
+www/mod_encoding||2020-05-05|Has expired: Broken for more than 6 months
+www/mod_flickr||2020-05-05|Has expired: Broken for more than 6 months
+www/mod_gzip2||2020-05-05|Has expired: Broken for more than 6 months
+www/mod_layout22||2020-05-05|Has expired: Broken for more than 6 months
+www/mod_proctitle||2020-05-05|Has expired: Broken for more than 6 months
+www/mod_tsa||2020-05-05|Has expired: Broken for more than 6 months
+www/mod_vhs||2020-05-05|Has expired: Broken for more than 6 months
+www/p5-AnyEvent-Mojo||2020-05-05|Has expired: Broken for more than 6 months
+www/p5-Apache-Gallery||2020-05-05|Has expired: Broken for more than 6 months
+www/p5-WWW-Google-Video||2020-05-05|Has expired: Broken for more than 6 months
+www/p5-WWW-Shorten-KUSO||2020-05-05|Has expired: Broken for more than 6 months
+www/p5-WWW-Shorten-isgd||2020-05-05|Has expired: Broken for more than 6 months
+www/photo_gallery||2020-05-05|Has expired: Broken for more than 6 months
+www/pwebstats||2020-05-05|Has expired: Broken for more than 6 months
+www/py-django-profiles||2020-05-05|Has expired: Broken for more than 6 months
+www/red5||2020-05-05|Has expired: Broken for more than 6 months
+www/redmine-sidebar_hide||2020-05-05|Has expired: Broken for more than 6 months
+www/rssowl||2020-05-05|Has expired: Broken for more than 6 months
+www/skytemplate||2020-05-05|Has expired: Broken for more than 6 months
+www/surfraw||2020-05-05|Has expired: Broken for more than 6 months
+www/sws||2020-05-05|Has expired: Broken for more than 6 months
+www/tickr||2020-05-05|Has expired: Broken for more than 6 months
+www/tinytinyhttpd||2020-05-05|Has expired: Broken for more than 6 months
+www/udmsearch||2020-05-05|Has expired: Broken for more than 6 months
+www/vee||2020-05-05|Has expired: Broken for more than 6 months
+www/webreport||2020-05-05|Has expired: Broken for more than 6 months
+www/webstats||2020-05-05|Has expired: Broken for more than 6 months
+www/www6to4||2020-05-05|Has expired: Broken for more than 6 months
+x11/deskpaint||2020-05-05|Has expired: Broken for more than 6 months
+x11/dmenu2||2020-05-05|Has expired: Broken for more than 6 months
+x11/gcb||2020-05-05|Has expired: Broken for more than 6 months
+x11/gpctool||2020-05-05|Has expired: Broken for more than 6 months
+x11/ipager||2020-05-05|Has expired: Broken for more than 6 months
+x11/keylaunch||2020-05-05|Has expired: Broken for more than 6 months
+x11/props||2020-05-05|Has expired: 64-bit unsupported
+x11/roxbg||2020-05-05|Has expired: Broken for more than 6 months
+x11/sisctrl||2020-05-05|Has expired: Broken for more than 6 months
+x11/wdm||2020-05-05|Has expired: Broken for more than 6 months
+x11/xaniroc||2020-05-05|Has expired: Broken for more than 6 months
+x11/xmove||2020-05-05|Has expired: Broken for more than 6 months
+x11/xnodecor||2020-05-05|Has expired: Broken for more than 6 months
+x11/xvattr||2020-05-05|Has expired: Broken for more than 6 months
+x11-clocks/tktz||2020-05-05|Has expired: Broken for more than 6 months
+x11-clocks/xtimer||2020-05-05|Has expired: Broken for more than 6 months
+x11-themes/gnome-icons-dropline-neu||2020-05-05|Has expired: Broken for more than 6 months
+x11-themes/gnome-icons-dropline-nou||2020-05-05|Has expired: Broken for more than 6 months
+x11-themes/gnome-icons-gion||2020-05-05|Has expired: Broken for more than 6 months
+x11-themes/gnome-icons-jini||2020-05-05|Has expired: Broken for more than 6 months
+x11-themes/gtk-aurora-engine||2020-05-05|Has expired: Broken for more than 6 months
+x11-themes/gtk-blueprint-engine||2020-05-05|Has expired: Broken for more than 6 months
+x11-themes/gtk-murrina-fancy-clearlooks||2020-05-05|Has expired: Broken for more than 6 months
+x11-themes/gtk-murrina-lightblue||2020-05-05|Has expired: Broken for more than 6 months
+x11-themes/gtk-murrine-themes||2020-05-05|Has expired: Broken for more than 6 months
+x11-themes/murrine-configurator||2020-05-05|Has expired: Broken for more than 6 months
+x11-themes/nimbus||2020-05-05|Has expired: Broken for more than 6 months
+x11-themes/openbox-themes||2020-05-05|Has expired: Broken for more than 6 months
+x11-themes/rezlooks||2020-05-05|Has expired: Broken for more than 6 months
+x11-themes/ubuntulooks||2020-05-05|Has expired: Broken for more than 6 months
+x11-toolkits/slingshot||2020-05-05|Has expired: 64-bit unsupported
+x11-toolkits/xview-clients||2020-05-05|Has expired: 64-bit unsupported
+x11-wm/fluxconf||2020-05-05|Has expired: Broken for more than 6 months
+x11-wm/ion||2020-05-05|Has expired: Broken for more than 6 months
+x11-wm/matwm2||2020-05-05|Has expired: Broken for more than 6 months
+x11-wm/nickleby||2020-05-05|Has expired: Broken for more than 6 months
+x11-wm/olvwm||2020-05-05|Has expired: 64-bit unsupported
+x11-wm/ratmenu||2020-05-05|Has expired: Broken for more than 6 months
+sysutils/livecd||2020-05-05|Has expired: Broken for more than 6 months
+deskutils/osynctool||2020-05-06|Abandonware, website disappeared
+devel/libopensync||2020-05-06|Abandonware, website disappeared
+deskutils/libopensync-plugin-vformat-devel||2020-05-06|Abandonware, website disappeared
+devel/py-ipykernel|devel/py-ipykernel5|2020-05-07|Has expired: Old version, use devel/py-ipykernel5 instead
+sysutils/rundeck|sysutils/rundeck2|2020-05-07|Rename to avoid confusion with sysutils/rundeck3
+math/darknet|misc/darknet|2020-05-07|DarkNet is a machine learning project, not a math project
+www/rubygem-activeresource5|www/rubygem-activeresource|2020-05-08|Remove PKGNAMESUFFIX 3 years and 4 months after rubygem-activeresource removal
+finance/bitcoinnodestats||2020-05-12|Has expired: No longer maintained and not compatible with Django 2.2+
+devel/rubygem-webpacker-rails5|devel/rubygem-webpacker4-rails5|2020-05-12|Rename when rubygem-webpacker is 5.x now
+devel/rubygem-webpacker-rails50|devel/rubygem-webpacker4-rails50|2020-05-12|Rename when rubygem-webpacker is 5.x now
+net-p2p/parity-ethereum|net-p2p/openethereum|2020-05-13|Renamed upstream for transition to a DAO ownership and maintainer model
+net-im/linux-telegram-desktop|net-im/telegram-desktop|2020-05-13|Has expired: Broken for more than 6 months, use native version
+devel/libphutil||2020-05-15|Has expired: Upstream merged functionality into downstream projects.
+print/frescobaldi|print/py-frescobaldi|2020-05-16|Renamed to comply with Python Ports Policy
+sysutils/rdiff-backup|sysutils/py-rdiff-backup@py37|2020-05-16|Renamed comply with Python Ports Policy and flavored
+www/py-django-happenings|www/py-django-happenings-update|2020-05-17|Has expired: Doesn't work with Django 2.2+, please use www/py-django-happenings-update instead
+devel/py-django-tastypie-mongoengine||2020-05-17|Has expired: Not necessary anymore, and project unmaintained
+sysutils/py-cpuinfo|sysutils/py-py-cpuinfo|2020-05-18|Rename to match PyPI name
+devel/py-jupyterlab_server|devel/py-jupyterlab-server|2020-05-19|Rename to match upstream naming
+math/py-onnx|misc/py-onnx|2020-05-23|Move to misc category because it's not related to math
+misc/onnx|misc/py-onnx|2020-05-23|Remove duplicate
+net/get_iplayer|multimedia/get_iplayer|2020-05-24|Move to a proper category
+lang/gnatdroid-armv7||2020-05-24|Has expired: Broken for more than 6 months
+devel/breakpad||2020-05-24|Has expired: Broken for more than 6 months
+x11/xcolorsel||2020-05-24|Has expired: Broken for more than 6 months
+textproc/simplexml||2020-05-24|Has expired: Unfetchable, an alternative upstream suggested in bug#235252 only contains the MS C-sharp project which is unbuildable on FreeBSD
+www/py-django-annotations||2020-05-26|Has expired: No longer maintained, not compatible with Django 2.0+
+www/py-django-registration-defaults||2020-05-26|Has expired: No longer maintained, not compatible with newer versions of www/py-django-registration
+devel/py-django-rq-dashboard|devel/py-django-rq|2020-05-26|Has expired: No longer maintained, not compatible with Django 2.0+, please use devel/py-django-rq instead
+www/py-django_openstack_auth||2020-05-26|Has expired: No longer maintained, code was merged into 13.x release of www/py-horizon
+math/hs-semigroups||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+net/hs-network||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/hs-extensible-exceptions||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/hs-random||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/hs-old-time||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/hs-data-default-instances-old-locale||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/hs-data-default-class||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/hs-data-default-instances-base||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/hs-data-default-instances-dlist||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/hs-setlocale||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/hs-data-default||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/hs-hashable||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/hs-transformers-compat||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/hs-dlist||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/hs-unordered-containers||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/hs-mtl||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/hs-old-locale||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/hs-utf8-string||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/hs-data-default-instances-containers||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+x11-wm/hs-xmonad-contrib||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+x11/hs-X11||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+x11/hs-X11-xft||2020-05-26|Deprecated: Haskell libraries get pushed out of the ports tree
+devel/rubygem-peek-redis-rails5|devel/rubygem-peek-redis-rails52|2020-05-29|Obsolete: Please use devel/rubygem-peek-redis-rails52 instead
+devel/rubygem-peek-rblineprof-rails5|devel/rubygem-peek-rblineprof-rails52|2020-05-29|Obsolete, please use devel/rubygem-peek-rblineprof-rails52 instead
+www/moodle36|www/moodle37|2020-05-30|Has expired: EOLed upstream
+sysutils/ansible24|sysutils/ansible|2020-05-31|Has expired: Upstream support ended. Consider upgrading to sysutils/ansible
+sysutils/ansible26|sysutils/ansible|2020-05-31|Has expired: Upstream support ended. Consider upgrading to sysutils/ansible
+sysutils/ansible25|sysutils/ansible|2020-05-31|Has expired: Upstream support ended. Consider upgrading to sysutils/ansible
+www/py-requests-futures097|www/py-requests-futures|2020-05-31|Has expired: Use www/py-requests-futures instead
+sysutils/ansible23|sysutils/ansible|2020-05-31|Has expired: Upstream support ended. Consider upgrading to sysutils/ansible
+devel/graphql.el||2020-05-31|Has expired: No longer required by anything
+lang/perl5.26|lang/perl5.28|2020-05-31|Has expired: Support ends three years after .0 release, please upgrade to a more recent version of Perl
+www/py-beautifulsoup460|www/py-beautifulsoup448|2020-05-31|Has expired: Use www/py-beautifulsoup448 instead
+databases/db48|databases/db5|2020-06-02|Has expired. Use databases/db5 instead
+security/bro||2020-06-02|Has expired: Please migrate to security/zeek
+www/py-djangotoolbox||2020-06-03|Has expired: No longer maintained, not compatible with Django 1.11+
+www/py-dojango||2020-06-03|Has expired: No longer maintained, not compatible with Django 2.2+
+www/py-django-json-rpc||2020-06-03|Has expired: No longer maintained, not compatible with Django 2.0+
+www/mediawiki132|www/mediawiki133|2020-06-03|Has expired: EOLed upstream
+devel/cargo-tree|lang/rust|2020-06-04|Integrated into cargo
+databases/rubygem-peek-mysql2-rails5||2020-06-05|Removed: not required by gitlab-ce anymore
+audio/workman||2020-06-05|Has expired: Depends on expired x11-toolkits/xview
+x11-toolkits/xview||2020-06-05|Has expired: 64-bit unsupported
+math/p5-Algorithm-KMeans||2020-06-05|Has expired: Depends on expired math/p5-Math-GSL
+math/p5-Math-GSL||2020-06-05|Has expired: Broken for more than 6 months
+net/openbsc||2020-06-05|Has expired: Depends on expired devel/libosmo-netif
+devel/libosmo-netif||2020-06-05|Has expired: Broken for more than 6 months
+audio/xvmixer||2020-06-05|Has expired: Depends on expired x11-toolkits/xview
+devel/libosmo-sccp||2020-06-05|Has expired: Depends on expired devel/libosmo-netif
+audio/p5-Audio||2020-06-05|Has expired: Depends on expired math/p5-Math-GSL
+databases/rubygem-peek-pg-rails5||2020-06-05|Removed: not required by gitlab-ce anymore
+devel/rubygem-peek-gc-rails5|devel/rubygem-peek-gc-rails52|2020-06-05|Removed: please use devel/rubygem-peek-gc-rails52 instead
+devel/rubygem-peek-rails5|devel/rubygem-peek-rails60|2020-06-05|Removed: please use devel/rubygem-peek-rails60 instead
+net/freerdp1|net/freerdp|2020-06-06|Has expired: Superseded by the freerdp port/package
+irc/psybnc||2020-06-06|Has expired: Broken for more than 6 months
+www/py-dj22-djangoql|www/py-djangoql|2020-06-06|Renamed to match the naming of other Django ports since Django 2.2 became default
+sysutils/beats|sysutils/beats6|2020-06-07|Renamed to match the naming of other ELK ports
+security/pam_pseudo||2020-06-07|Has expired: Broken for more than 6 months
+multimedia/din|audio/din|2020-06-09|Moved to a better category
+www/py-dj22-django_csp|www/py-django-csp|2020-06-10|Renamed to match upstream naming and to be in sync with other Django ports since Django 2.2 became default
+www/py-dj22-django-jquery-js|www/py-django-jquery-js|2020-06-11|Renamed to match the naming of other Django ports since Django 2.2 became default
+www/py-dj22-django-formset-js-improved|www/py-django-formset-js-improved|2020-06-11|Renamed to match the naming of other Django ports since Django 2.2 became default
+mail/claws-mail-archiver|mail/claws-mail-archive|2020-06-11|Renamed to align port name to plugin name
+mail/claws-mail-attach_warner|mail/claws-mail-attachwarner|2020-06-11|Renamed to align port name to plugin name
+mail/claws-mail-spamreport|mail/claws-mail-spam_report|2020-06-11|Renamed to align port name to plugin name
+mail/claws-mail-tnef|mail/claws-mail-tnef_parse|2020-06-11|Renamed to align port name to plugin name
+x11-themes/numix-theme|x11-themes/numix-gtk-theme|2020-06-15|Renamed to match upstream naming
+www/py-djangorestframework36|www/py-djangorestframework|2020-06-15|Has expired: Not compatible with Django 2.0+, please use www/py-djangorestframework instead
+www/py-flask-restplus|www/py-flask-restx|2020-06-17|No longer maintained upstream, use www/py-flask-restx instead
+devel/swig30|devel/swig|2020-06-17|Remove PKGNAMESUFFIX since it is the only version in ports tree
+net-mgmt/zabbix42-java|net-mgmt/zabbix44-java|2020-06-21|Has expired: End of Life
+net-mgmt/zabbix42-server|net-mgmt/zabbix44-server|2020-06-21|Has expired: End of Life
+sysutils/duplicity07|sysutils/duplicity|2020-06-21|Has expired: Uses deprecated version of Python
+net-mgmt/zabbix42-proxy|net-mgmt/zabbix44-proxy|2020-06-21|Has expired: End of Life
+net-mgmt/zabbix42-agent|net-mgmt/zabbix44-agent|2020-06-21|Has expired: End of Life
+net-mgmt/zabbix42-frontend|net-mgmt/zabbix44-frontend|2020-06-21|Has expired: End of Life
+x11/swappy|graphics/swappy|2020-06-25|Moved to a better category
+www/redmine|www/redmine4|2020-06-25|Has expired: EOLed upstream
+www/redmine-a_common_libs|www/redmine4|2020-06-25|Removed, build-time extension of www/redmine
+www/redmine-basecamp|www/redmine4|2020-06-25|Removed, build-time extension of www/redmine
+www/redmine-default_assign|www/redmine4|2020-06-25|Removed, build-time extension of www/redmine
+www/redmine-graphs|www/redmine4|2020-06-25|Removed, build-time extension of www/redmine
+www/redmine-http-auth|www/redmine4|2020-06-25|Removed, build-time extension of www/redmine
+www/redmine-issue_templates|www/redmine4|2020-06-25|Removed, build-time extension of www/redmine
+www/redmine-knowledgebase|www/redmine4|2020-06-25|Removed, build-time extension of www/redmine
+www/redmine-ldap_sync|www/redmine4|2020-06-25|Removed, build-time extension of www/redmine
+www/redmine-qa_contact|www/redmine4|2020-06-25|Removed, build-time extension of www/redmine
+www/redmine-redcarpet_formatter|www/redmine4|2020-06-25|Removed, build-time extension of www/redmine
+www/redmine-single_auth|www/redmine4|2020-06-25|Removed, build-time extension of www/redmine
+www/redmine-wiki_notes|www/redmine4|2020-06-25|Removed, build-time extension of www/redmine
+devel/p5-IO-stringy|devel/p5-IO-Stringy|2020-06-26|New development starts as IO-Stringy
+devel/looks|devel/jgoodies-looks|2020-06-26|Renamed to match upstream
+comms/py-serial|comms/py-pyserial|2020-06-27|Rename to match upstream naming
+devel/py-usb|devel/py-pyusb|2020-06-27|Rename to match upstream naming
+math/py-igraph|math/py-python-igraph|2020-06-27|Rename to match upstream naming
+net/bnxt-kmod||2020-06-28|Has expired: Unsupported on all supported FreeBSD versions
+databases/p5-Search-Xapian10|databases/p5-Search-Xapian|2020-06-30|Has expired: Depend on unsupported xapian-core. Use databases/p5-Search-Xapian instead
+databases/xapian-core10|databases/xapian-core|2020-06-30|Has expired: Unsupported by upstream. Use databases/xapian-core instead
+devel/py-dj22-django-rq|www/py-django-rq|2020-06-30|Has expired: Obsolete, please use www/py-django-rq instead
+devel/rubygem-cucumber-expressions|devel/rubygem-cucumber-cucumber-expressions|2020-06-30|Has expired: Use devel/rubygem-cucumber-cucumber-expressions instead
+devel/rubygem-cucumber-expressions6|devel/rubygem-cucumber-cucumber-expressions|2020-06-30|Has expired: Use devel/rubygem-cucumber-cucumber-expressions instead
+devel/rubygem-cucumber-tag_expressions1|devel/rubygem-cucumber-tag_expressions|2020-06-30|Has expired: Use devel/rubygem-cucumber-tag_expressions instead
+print/xpp||2020-06-30|Has expired: Last update as 2004-12-09, unsupported by upstream
+textproc/rubygem-gherkin|textproc/rubygem-cucumber-gherkin|2020-06-30|Has expired: Use textproc/rubygem-cucumber-gherkin instead
+www/p5-Catalyst-Model-Xapian10|www/p5-Catalyst-Model-Xapian|2020-06-30|Has expired: Depend on unsupported xapian-core. Use www/p5-Catalyst-Model-Xapian instead
+www/py-dj22-django-auth-ldap|www/py-django-auth-ldap|2020-06-30|Has expired: Obsolete, please use www/py-django-auth-ldap instead
+www/py-dj22-django-cacheops|www/py-django-cacheops|2020-06-30|Has expired: Obsolete, please use www/py-django-cacheops instead
+www/py-dj22-django-cors-headers|www/py-django-cors-headers|2020-06-30|Has expired: Obsolete, please use www/py-django-cors-headers instead
+www/py-dj22-django-crispy-forms|www/py-django-crispy-forms|2020-06-30|Has expired: Obsolete, please use www/py-django-crispy-forms instead
+www/py-dj22-django-debug-toolbar|www/py-django-debug-toolbar|2020-06-30|Has expired: Obsolete, please use www/py-django-debug-toolbar instead
+www/py-dj22-django-extensions|www/py-django-extensions|2020-06-30|Has expired: Obsolete, please use www/py-django-extensions instead
+www/py-dj22-django-filter|www/py-django-filter|2020-06-30|Has expired: Obsolete, please use www/py-django-filter instead
+www/py-dj22-django-js-asset|www/py-django-js-asset|2020-06-30|Has expired: Obsolete, please use www/py-django-js-asset instead
+www/py-dj22-django-model-utils|www/py-django-model-utils|2020-06-30|Has expired: Obsolete, please use www/py-django-model-utils instead
+www/py-dj22-django-mptt|www/py-django-mptt|2020-06-30|Has expired: Obsolete, please use www/py-django-mptt instead
+www/py-dj22-django-prometheus|www/py-django-prometheus|2020-06-30|Has expired: Obsolete, please use www/py-django-prometheus instead
+www/py-dj22-django-redis|www/py-django-redis|2020-06-30|Has expired: Obsolete, please use www/py-django-redis instead
+www/py-dj22-django-tables2|www/py-django-tables2|2020-06-30|Has expired: Obsolete, please use www/py-django-tables2 instead
+www/py-dj22-django-taggit|www/py-django-taggit|2020-06-30|Has expired: Obsolete after r534835, use www/py-django-taggit instead
+www/py-dj22-django-taggit-serializer|www/py-django-taggit-serializer|2020-06-30|Has expired: Obsolete, please use www/py-django-taggit-serializer instead
+www/py-dj22-django-timezone-field|www/py-django-timezone-field|2020-06-30|Has expired: Obsolete, please use www/py-django-timezone-field instead
+www/py-dj22-django-treebeard|www/py-django-treebeard|2020-06-30|Has expired: Obsolete after r532093, use www/py-django-treebeard instead
+www/py-dj22-djangorestframework|www/py-djangorestframework|2020-06-30|Has expired: Obsolete, please use www/py-djangorestframework instead
+www/py-dj22-drf-yasg|www/py-drf-yasg|2020-06-30|Has expired: Obsolete, please use www/py-drf-yasg instead
+www/py-dj22-jsonfield|www/py-jsonfield|2020-06-30|Has expired: Obsolete, please use www/py-jsonfield instead
+www/py-dj22-jsonfield2|www/py-jsonfield2|2020-06-30|Has expired: Obsolete, please use www/py-jsonfield2 instead
+www/py-dj22-swapper|www/py-swapper|2020-06-30|Has expired: Obsolete, please use www/py-swapper instead
+www/rubygem-heroics00|www/rubygem-heroics|2020-06-30|Has expired: Use www/rubygem-heroics instead
+www/typo3-8|www/typo3-9|2020-06-30|Has expired: Upstream support ended in April 2020
+databases/mariadb101-client|databases/mariadb103-client|2020-07-01|Has expired: Port will be removed when 10.5 is added, please switch to a newer version
+databases/mariadb101-server|databases/mariadb103-server|2020-07-01|Has expired: Port will be removed when 10.5 is added, please switch to a newer version
+databases/mariadb102-server|databases/mariadb103-server|2020-07-01|Has expired: Port will be removed when 10.5 is added, please switch to a newer version
+databases/mariadb102-client|databases/mariadb103-client|2020-07-01|Has expired: Port will be removed when 10.5 is added, please switch to a newer version

@@ -100,7 +100,7 @@ COMPILER_RT_IMPLIES=	CLANG
 COMPILER_RT_PLIST_FILES=${_COMPILER_RT_LIBS:S|^|${_CRTLIBDIR}/|} \
 			${_COMPILER_RT_BLACKLISTS:S|^|${_CRTBLDIR}/|}
 DOCS_PORTDOCS=		llvm
-DOCS_BUILD_DEPENDS=	sphinx-build-${PYTHON_VER}:textproc/py-sphinx@${PY_FLAVOR} \
+DOCS_BUILD_DEPENDS=	${PY_SPHINX} \
 			${PYTHON_PKGNAMEPREFIX}recommonmark>=0.0.20180530:textproc/py-recommonmark@${PY_FLAVOR}
 DOCS_CMAKE_ON=		-DLLVM_ENABLE_SPHINX=ON \
 			-DSPHINX_EXECUTABLE=${LOCALBASE}/bin/sphinx-build-${PYTHON_VER} \
@@ -111,7 +111,7 @@ EXTRAS_DESC=		Extra clang tools
 EXTRAS_IMPLIES=		CLANG
 LIT_DESC=		Install lit and FileCheck test tools
 LLD_DESC=		Install lld, the LLVM linker
-LLDB_BUILD_DEPENDS=	swig3.0:devel/swig30
+LLDB_BUILD_DEPENDS=	swig:devel/swig
 LLDB_DESC=		Install lldb, the LLVM debugger
 LLDB_IMPLIES=		CLANG
 LLDB_PORTDOCS=		lldb
@@ -370,6 +370,10 @@ post-patch-CLANG-on:
 	    ${PATCH_WRKSRC}/clang/tools/clang-format/clang-format.py \
 	    ${PATCH_WRKSRC}/clang/tools/clang-format/clang-format-sublime.py \
 	    ${PATCH_WRKSRC}/clang/tools/clang-format/git-clang-format
+
+post-patch-LLD-on:
+		${REINPLACE_CMD} -e "s|'indexsidebar.html'|['indexsidebar.html']|" \
+			${PATCH_WRKSRC}/lld/docs/conf.py
 
 post-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/llvm-wrapper.sh \

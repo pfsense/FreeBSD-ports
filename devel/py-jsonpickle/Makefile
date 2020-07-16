@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	jsonpickle
-DISTVERSION=	1.3
+DISTVERSION=	1.4.1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,10 +10,18 @@ MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Python library for serializing any arbitrary object graph into JSON
 
 LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>=0:devel/py-setuptools_scm@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 3800
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>0:devel/py-importlib-metadata@${PY_FLAVOR}
+.endif
+
+.include <bsd.port.post.mk>

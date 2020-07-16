@@ -60,7 +60,7 @@ SPGLIB_LIB_DEPENDS=	libsymspg.so:science/spglib
 
 VTK_DESC=		Enable libraries that use VTK
 VTK_CMAKE_BOOL=		USE_VTK
-VTK_LIB_DEPENDS=	libvtksys-8.1.so.1:math/vtk8
+VTK_LIB_DEPENDS=	libvtksys-8.2.so:math/vtk8
 VTK_IMPLIES=		QT5
 VTK_BROKEN=		Needs https://github.com/psavery/genXrdPattern, etc
 

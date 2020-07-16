@@ -1,11 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	xorgproto
-PORTVERSION=	2019.2
+PORTVERSION=	2020.1
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
-COMMENT=	xorg protocol headers
+COMMENT=	X Window System unified protocol definitions
 
 USES=		xorg-cat:proto
 

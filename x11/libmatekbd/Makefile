@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libmatekbd
-PORTVERSION=	1.22.0
+PORTVERSION=	1.24.0
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -10,7 +10,7 @@ DIST_SUBDIR=	mate
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	MATE keyboard shared library
 
-LICENSE=	LGPL21
+LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libxklavier.so:x11/libxklavier

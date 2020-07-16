@@ -1,6 +1,6 @@
---- src/main-process/atom-window.js.orig	2019-10-21 17:33:40 UTC
+--- src/main-process/atom-window.js.orig	2020-06-10 09:38:09 UTC
 +++ src/main-process/atom-window.js
-@@ -53,7 +53,7 @@ module.exports = class AtomWindow extends EventEmitter
+@@ -55,7 +55,7 @@ module.exports = class AtomWindow extends EventEmitter
  
      // Don't set icon on Windows so the exe's ico will be used as window and
      // taskbar's icon. See https://github.com/atom/atom/issues/4811 for more.

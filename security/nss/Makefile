@@ -62,7 +62,7 @@ BINS=		${DIST}/${OPSYS}${OSREL}_DBG.OBJ
 
 .if ${ARCH} == powerpc64 || ${ARCH} == powerpc
 EXTRA_PATCHES=	${FILESDIR}/${ARCH}${PPC_ABI:tl}-lib_freebl_scripts_gen.sh
-USE_GCC=	yes
+USES+=		compiler:c++11-lang # -mcrypto -mvsx
 .if ! ${PORT_OPTIONS:MVSX}
 MAKE_ENV+=	NSS_DISABLE_ALTIVEC=1
 .endif

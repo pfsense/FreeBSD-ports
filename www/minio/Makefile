@@ -3,6 +3,7 @@
 PORTNAME=	minio
 PORTVERSION=	${GH_TAGNAME:S/RELEASE.//:S/Z//:S/T/-/:S/-/./g}
 CATEGORIES=	www
+DIST_SUBDIR=	minio
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Amazon S3 compatible object storage server
@@ -12,22 +13,21 @@ LICENSE=	APACHE20
 USES=		compiler go:modules
 
 USE_GITHUB=	yes
-GHTAG=		RELEASE.2020-03-25T07-03-04Z
-COMMIT_ID=	ef6304c5c2f0e962c4f75cf83aae6ac7b1073b5f
+GHTAG=		RELEASE.2020-05-16T01-33-21Z
+COMMIT_ID=	9cac385aecdb49ada08e30faf225f8743f1a5189
 GH_TUPLE=	${PORTNAME}:${PORTNAME}:${GHTAG}:DEFAULT \
 		Azure:azure-pipeline-go:v0.2.1:azure_azure_pipeline_go/vendor/github.com/Azure/azure-pipeline-go \
 		Azure:azure-storage-blob-go:v0.8.0:azure_azure_storage_blob_go/vendor/github.com/Azure/azure-storage-blob-go \
 		Shopify:sarama:v1.24.1:shopify_sarama/vendor/github.com/Shopify/sarama \
 		StackExchange:wmi:cbe66965904d:stackexchange_wmi/vendor/github.com/StackExchange/wmi \
 		alecthomas:participle:v0.2.1:alecthomas_participle/vendor/github.com/alecthomas/participle \
-		aliyun:aliyun-oss-go-sdk:86c17b95fcd5:aliyun_aliyun_oss_go_sdk/vendor/github.com/aliyun/aliyun-oss-go-sdk \
 		apache:thrift:v0.13.0:apache_thrift/vendor/git.apache.org/thrift.git \
 		aws:aws-sdk-go:v1.20.21:aws_aws_sdk_go/vendor/github.com/aws/aws-sdk-go \
 		bcicen:jstream:16c1f8af81c2:bcicen_jstream/vendor/github.com/bcicen/jstream \
 		beevik:ntp:v0.2.0:beevik_ntp/vendor/github.com/beevik/ntp \
 		beorn7:perks:3a771d992973:beorn7_perks/vendor/github.com/beorn7/perks \
 		census-instrumentation:opencensus-go:v0.21.0:census_instrumentation_opencensus_go/vendor/go.opencensus.io \
-		cespare:xxhash:v2.1.1:cespare_xxhash/vendor/github.com/cespare/xxhash/v2 \
+		cespare:xxhash:v2.1.1:cespare_xxhash_v2/vendor/github.com/cespare/xxhash/v2 \
 		cheggaaa:pb:v1.0.28:cheggaaa_pb/vendor/github.com/cheggaaa/pb \
 		coredns:coredns:v1.4.0:coredns_coredns/vendor/github.com/coredns/coredns \
 		coreos:etcd:v3.3.12:coreos_etcd/vendor/github.com/coreos/etcd \
@@ -51,17 +51,19 @@ GH_TUPLE=	${PORTNAME}:${PORTNAME}:${GHTAG}:DEFAULT \
 		gogo:protobuf:v1.2.1:gogo_protobuf/vendor/github.com/gogo/protobuf \
 		golang:appengine:v1.6.0:golang_appengine/vendor/google.golang.org/appengine \
 		golang:crypto:497ca9f6d64f:golang_crypto/vendor/golang.org/x/crypto \
-		golang:net:aa69164e4478:golang_net/vendor/golang.org/x/net \
+		golang:net:d3edc9973b7e:golang_net/vendor/golang.org/x/net \
 		golang:oauth2:9f3314589c9a:golang_oauth2/vendor/golang.org/x/oauth2 \
 		golang:protobuf:v1.3.2:golang_protobuf/vendor/github.com/golang/protobuf \
 		golang:snappy:v0.0.1:golang_snappy/vendor/github.com/golang/snappy \
-		golang:sys:0a153f010e69:golang_sys/vendor/golang.org/x/sys \
+		golang:sys:85ca7c5b95cd:golang_sys/vendor/golang.org/x/sys \
 		golang:text:v0.3.2:golang_text/vendor/golang.org/x/text \
 		golang:time:9d24e82272b4:golang_time/vendor/golang.org/x/time \
-		golang:tools:31e00f45c22e:golang_tools/vendor/golang.org/x/tools \
+		golang:tools:0c9eba77bc32:golang_tools/vendor/golang.org/x/tools \
+		golang:xerrors:9bdfabe68543:golang_xerrors/vendor/golang.org/x/xerrors \
 		gomodule:redigo:v2.0.0:gomodule_redigo/vendor/github.com/gomodule/redigo \
 		google:go-genproto:d00d292a067c:google_go_genproto/vendor/google.golang.org/genproto \
-		googleapis:gax-go:v2.0.4:googleapis_gax_go/vendor/github.com/googleapis/gax-go \
+		google:uuid:v1.1.1:google_uuid/vendor/github.com/google/uuid \
+		googleapis:gax-go:v2.0.4:googleapis_gax_go_v2/vendor/github.com/googleapis/gax-go \
 		googleapis:google-api-go-client:v0.5.0:googleapis_google_api_go_client/vendor/google.golang.org/api \
 		googleapis:google-cloud-go:v0.39.0:googleapis_google_cloud_go/vendor/cloud.google.com/go \
 		gorilla:handlers:v1.4.0:gorilla_handlers/vendor/github.com/gorilla/handlers \
@@ -77,8 +79,8 @@ GH_TUPLE=	${PORTNAME}:${PORTNAME}:${GHTAG}:DEFAULT \
 		hashicorp:go-uuid:v1.0.1:hashicorp_go_uuid/vendor/github.com/hashicorp/go-uuid \
 		hashicorp:golang-lru:v0.5.1:hashicorp_golang_lru/vendor/github.com/hashicorp/golang-lru \
 		hashicorp:hcl:v1.0.0:hashicorp_hcl/vendor/github.com/hashicorp/hcl \
-		hashicorp:vault:api/v1.0.4:hashicorp_vault_api/vendor/github.com/hashicorp/vault_api \
-		hashicorp:vault:sdk/v0.1.13:hashicorp_vault_sdk/vendor/github.com/hashicorp/vault_sdk \
+		hashicorp:vault:api/v1.0.4:hashicorp_vault_api/vendor/github.com/hashicorp/vault \
+		hashicorp:vault:sdk/v0.1.13:hashicorp_vault_sdk \
 		inconshreveable:go-update:8152e7eb6ccf:inconshreveable_go_update/vendor/github.com/inconshreveable/go-update \
 		jcmturner:aescts:v1.0.1:jcmturner_aescts/vendor/gopkg.in/jcmturner/aescts.v1 \
 		jcmturner:dnsutils:v1.0.1:jcmturner_dnsutils/vendor/gopkg.in/jcmturner/dnsutils.v1 \
@@ -89,12 +91,11 @@ GH_TUPLE=	${PORTNAME}:${PORTNAME}:${GHTAG}:DEFAULT \
 		jmespath:go-jmespath:c2b33e8439af:jmespath_go_jmespath/vendor/github.com/jmespath/go-jmespath \
 		json-iterator:go:v1.1.9:json_iterator_go/vendor/github.com/json-iterator/go \
 		klauspost:compress:v1.10.3:klauspost_compress/vendor/github.com/klauspost/compress \
-		klauspost:cpuid:v1.2.2:klauspost_cpuid/vendor/github.com/klauspost/cpuid \
+		klauspost:cpuid:v1.2.4:klauspost_cpuid/vendor/github.com/klauspost/cpuid \
 		klauspost:pgzip:v1.2.1:klauspost_pgzip/vendor/github.com/klauspost/pgzip \
 		klauspost:readahead:v1.3.1:klauspost_readahead/vendor/github.com/klauspost/readahead \
-		klauspost:reedsolomon:v1.9.3:klauspost_reedsolomon/vendor/github.com/klauspost/reedsolomon \
+		klauspost:reedsolomon:v1.9.7:klauspost_reedsolomon/vendor/github.com/klauspost/reedsolomon \
 		konsorten:go-windows-terminal-sequences:v1.0.1:konsorten_go_windows_terminal_sequences/vendor/github.com/konsorten/go-windows-terminal-sequences \
-		kurin:blazer:cf2f27cc0be3:kurin_blazer/vendor/github.com/kurin/blazer \
 		lib:pq:v1.1.1:lib_pq/vendor/github.com/lib/pq \
 		mailru:easyjson:03f2033d19d5:mailru_easyjson/vendor/github.com/mailru/easyjson \
 		mattn:go-colorable:v0.1.1:mattn_go_colorable/vendor/github.com/mattn/go-colorable \
@@ -104,12 +105,12 @@ GH_TUPLE=	${PORTNAME}:${PORTNAME}:${GHTAG}:DEFAULT \
 		matttproud:golang_protobuf_extensions:v1.0.1:matttproud_golang_protobuf_extensions/vendor/github.com/matttproud/golang_protobuf_extensions \
 		miekg:dns:v1.1.8:miekg_dns/vendor/github.com/miekg/dns \
 		minio:cli:v1.22.0:minio_cli/vendor/github.com/minio/cli \
-		minio:gokrb5:v7.2.5:minio_gokrb5/vendor/github.com/minio/gokrb5/v7 \
-		minio:hdfs:v3.0.1:minio_hdfs/vendor/github.com/minio/hdfs/v3 \
+		minio:gokrb5:v7.2.5:minio_gokrb5_v7/vendor/github.com/minio/gokrb5/v7 \
+		minio:hdfs:v3.0.1:minio_hdfs_v3/vendor/github.com/minio/hdfs/v3 \
 		minio:highwayhash:v1.0.0:minio_highwayhash/vendor/github.com/minio/highwayhash \
 		minio:lsync:v1.0.1:minio_lsync/vendor/github.com/minio/lsync \
-		minio:minio-go:097caa7760c7:minio_minio_go/vendor/github.com/minio/minio-go/v6 \
-		minio:parquet-go:a1e49702e174:minio_parquet_go/vendor/github.com/minio/parquet-go \
+		minio:minio-go:89eebdef2af0:minio_minio_go_v6/vendor/github.com/minio/minio-go/v6 \
+		minio:parquet-go:838cfa8aae61:minio_parquet_go/vendor/github.com/minio/parquet-go \
 		minio:sha256-simd:v0.1.1:minio_sha256_simd/vendor/github.com/minio/sha256-simd \
 		minio:simdjson-go:b17fe061ea37:minio_simdjson_go/vendor/github.com/minio/simdjson-go \
 		minio:sio:v0.2.0:minio_sio/vendor/github.com/minio/sio \
@@ -118,8 +119,9 @@ GH_TUPLE=	${PORTNAME}:${PORTNAME}:${GHTAG}:DEFAULT \
 		mmcloughlin:avo:6df701fe672f:mmcloughlin_avo/vendor/github.com/mmcloughlin/avo \
 		modern-go:concurrent:bacd9c7ef1dd:modern_go_concurrent/vendor/github.com/modern-go/concurrent \
 		modern-go:reflect2:v1.0.1:modern_go_reflect2/vendor/github.com/modern-go/reflect2 \
+		montanaflynn:stats:v0.5.0:montanaflynn_stats/vendor/github.com/montanaflynn/stats \
 		nats-io:jwt:v0.3.2:nats_io_jwt/vendor/github.com/nats-io/jwt \
-		nats-io:nats-server:v2.1.2:nats_io_nats_server/vendor/github.com/nats-io/nats-server/v2 \
+		nats-io:nats-server:v2.1.2:nats_io_nats_server_v2/vendor/github.com/nats-io/nats-server/v2 \
 		nats-io:nats.go:v1.9.1:nats_io_nats_go/vendor/github.com/nats-io/nats.go \
 		nats-io:nkeys:v0.1.3:nats_io_nkeys/vendor/github.com/nats-io/nkeys \
 		nats-io:nuid:v1.0.1:nats_io_nuid/vendor/github.com/nats-io/nuid \
@@ -139,9 +141,9 @@ GH_TUPLE=	${PORTNAME}:${PORTNAME}:${GHTAG}:DEFAULT \
 		rs:cors:v1.6.0:rs_cors/vendor/github.com/rs/cors \
 		ryanuber:go-glob:v1.0.0:ryanuber_go_glob/vendor/github.com/ryanuber/go-glob \
 		secure-io:sio-go:v0.3.0:secure_io_sio_go/vendor/github.com/secure-io/sio-go \
-		shirou:gopsutil:v2.18.12:shirou_gopsutil/vendor/github.com/shirou/gopsutil \
-		sirupsen:logrus:v1.4.2:sirupsen_logrus/vendor/github.com/sirupsen/logrus \
-		skyrings:skyring-common:d1c0bb1cbd5e:skyrings_skyring_common/vendor/github.com/skyrings/skyring-common \
+		shirou:gopsutil:53cec6b37e6a:shirou_gopsutil/vendor/github.com/shirou/gopsutil \
+		sirupsen:logrus:v1.5.0:sirupsen_logrus/vendor/github.com/sirupsen/logrus \
+		spaolacci:murmur3:v1.1.0:spaolacci_murmur3/vendor/github.com/spaolacci/murmur3 \
 		square:go-jose:v2.3.1:square_go_jose/vendor/gopkg.in/square/go-jose.v2 \
 		streadway:amqp:75d898a42a94:streadway_amqp/vendor/github.com/streadway/amqp \
 		tidwall:gjson:v1.3.5:tidwall_gjson/vendor/github.com/tidwall/gjson \
@@ -149,8 +151,9 @@ GH_TUPLE=	${PORTNAME}:${PORTNAME}:${GHTAG}:DEFAULT \
 		tidwall:pretty:v1.0.0:tidwall_pretty/vendor/github.com/tidwall/pretty \
 		tidwall:sjson:v1.0.4:tidwall_sjson/vendor/github.com/tidwall/sjson \
 		tinylib:msgp:v1.1.1:tinylib_msgp/vendor/github.com/tinylib/msgp \
-		uber-go:atomic:v1.3.2:uber_go_atomic/vendor/go.uber.org/atomic \
 		valyala:tcplisten:ceec8f93295a:valyala_tcplisten/vendor/github.com/valyala/tcplisten \
+		willf:bitset:v1.1.10:willf_bitset/vendor/github.com/willf/bitset \
+		willf:bloom:v2.0.3:willf_bloom/vendor/github.com/willf/bloom \
 		xdg:scram:7eeb5667e42c:xdg_scram/vendor/github.com/xdg/scram \
 		xdg:stringprep:v1.0.0:xdg_stringprep/vendor/github.com/xdg/stringprep
 
@@ -170,8 +173,7 @@ SUB_LIST=	GROUP="${GROUPS}" \
 		USER="${USERS}"
 
 post-extract:
-	@${MKDIR} ${WRKSRC}/vendor/github.com/hashicorp/vault
-	@${MV} ${WRKSRC}/vendor/github.com/hashicorp/vault_api/api ${WRKSRC}/vendor/github.com/hashicorp/vault/api
-	@${MV} ${WRKSRC}/vendor/github.com/hashicorp/vault_sdk/sdk ${WRKSRC}/vendor/github.com/hashicorp/vault/sdk
+	@${RM} -r ${WRKSRC}/vendor/github.com/hashicorp/vault/sdk
+	@${RLN} ${WRKSRC_hashicorp_vault_sdk}/sdk ${WRKSRC}/vendor/github.com/hashicorp/vault/sdk
 
 .include <bsd.port.mk>

@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	fdupes
-PORTVERSION=	2.0.0
-PORTREVISION=	1
+PORTVERSION=	2.1.0
+DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	ehaupt@FreeBSD.org
-COMMENT=	Fdupes is a program for identifying or deleting duplicate files
+COMMENT=	Program for identifying or deleting duplicate files
 
 LICENSE=	MIT
 

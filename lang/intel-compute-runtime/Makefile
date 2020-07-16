@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	compute-runtime
-DISTVERSION=	20.12.16259
-PORTREVISION=	2
+DISTVERSION=	20.25.17111
 CATEGORIES=	lang
 PKGNAMEPREFIX=	intel-
 
@@ -23,14 +22,25 @@ USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_ACCOUNT=	intel
 CMAKE_ON=	SKIP_UNIT_TESTS
-CMAKE_OFF=	BUILD_WITH_L0
 CMAKE_ARGS=	-DNEO_OCL_DRIVER_VERSION:STRING="${DISTVERSIONFULL}"
-PLIST_FILES=	etc/OpenCL/vendors/intel.icd \
-		bin/ocloc \
-		lib/intel-opencl/libigdrcl.so
+PLIST_FILES=	bin/ocloc \
+		etc/OpenCL/vendors/intel.icd \
+		include/ocloc_api.h \
+		lib/intel-opencl/libigdrcl.so \
+		lib/libocloc.so \
+		${NULL}
 
 OPTIONS_DEFINE=	VAAPI
 OPTIONS_DEFAULT=VAAPI
+OPTIONS_DEFINE_amd64=	L0
+OPTIONS_DEFAULT_amd64=	L0
+
+L0_DESC=		oneAPI Level Zero support
+L0_BUILD_DEPENDS=	level-zero>0:devel/level-zero
+L0_CMAKE_BOOL=		BUILD_WITH_L0
+L0_CMAKE_ON=		-DNEO_VERSION_BUILD:STRING="0"
+L0_PLIST_FILES=		lib/libze_intel_gpu.so.0.8 \
+			lib/libze_intel_gpu.so.0.8.0
 
 VAAPI_BUILD_DEPENDS=	${LOCALBASE}/include/va/va.h:multimedia/libva
 VAAPI_CMAKE_BOOL_OFF=	DISABLE_LIBVA

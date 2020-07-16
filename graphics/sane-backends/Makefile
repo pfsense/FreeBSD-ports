@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	sane-backends
-PORTVERSION=	1.0.29
+PORTVERSION=	1.0.30
 CATEGORIES=	graphics
-MASTER_SITES=	https://gitlab.com/sane-project/backends/uploads/54f858b20a364fc35d820df935a86478/
+MASTER_SITES=	https://gitlab.com/sane-project/backends/uploads/c3dd60c9e054b5dee1e7b01a7edc98b0/
 
 MAINTAINER=	tobik@FreeBSD.org
-COMMENT=	API for access to scanners, digitals camera, frame grabbers etc
+COMMENT=	API for accessing scanners, digital cameras, frame grabbers, etc
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

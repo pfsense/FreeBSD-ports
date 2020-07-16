@@ -2,11 +2,14 @@
 
 PORTNAME=	wpa_supplicant
 PORTVERSION=	2.9
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	security net
 MASTER_SITES=	https://w1.fi/releases/
 
-PATCH_SITES=	https://w1.fi/security/2018-1/:2018_1
+PATCH_SITES=	https://w1.fi/security/2020-1/
+PATCHFILES=	0001-WPS-UPnP-Do-not-allow-event-subscriptions-with-URLs-.patch:-p1 \
+		0002-WPS-UPnP-Fix-event-message-generation-using-a-long-U.patch:-p1 \
+		0003-WPS-UPnP-Handle-HTTP-initiation-failures-for-events-.patch:-p1
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Supplicant (client) for WPA/802.1x protocols
@@ -39,14 +42,15 @@ OPTIONS_DEFINE=		WPS WPS_ER WPS_NOREG WPS_NFC WPS_UPNP PKCS12 SMARTCARD \
 			HT_OVERRIDES VHT_OVERRIDES TLSV12 IEEE80211W \
 			IEEE80211R DEBUG_FILE DEBUG_SYSLOG PRIVSEP \
 			DELAYED_MIC IEEE80211N IEEE80211AC INTERWORKING \
-			IEEE8021X_EAPOL \
-			HS20 NO_ROAMING P2P TDLS DBUS DOCS
+			IEEE8021X_EAPOL EAPOL_TEST \
+			HS20 NO_ROAMING P2P TDLS DBUS MATCH DOCS
 OPTIONS_DEFAULT=	BSD WIRED NDIS \
 			TLS PEAP TTLS MD5 MSCHAPV2 GTC LEAP OTP PSK \
 			WPS PKCS12 SMARTCARD IEEE80211R DEBUG_SYSLOG \
-			INTERWORKING HS20 DBUS IEEE80211R IEEE80211W \
+			INTERWORKING HS20 DBUS MATCH IEEE80211R IEEE80211W \
 			IEEE8021X_EAPOL WPS_ER WPS_NFC WPS_UPNP NDIS \
 			FAST PWD PAX SAKE GPSK TNC IKEV2 EKE
+OPTIONS_SUB=
 
 WPS_DESC=		Wi-Fi Protected Setup
 WPS_ER_DESC=		Enable WPS External Registrar
@@ -63,6 +67,7 @@ IEEE80211N_DESC=	High Throughput, AP mode (IEEE 802.11n)
 IEEE80211R_DESC=	Fast BSS Transition (IEEE 802.11r-2008)
 IEEE80211W_DESC=	Management Frame Protection (IEEE 802.11w)
 IEEE8021X_EAPOL_DESC=	EAP over LAN support
+EAPOL_TEST_DESC=	Development testing
 DEBUG_FILE_DESC=	Support for writing debug log to a file
 DEBUG_SYSLOG_DESC=	Send debug messages to syslog instead of stdout
 PRIVSEP_DESC=		Privilege separation
@@ -72,6 +77,7 @@ HS20_DESC=		Hotspot 2.0
 NO_ROAMING_DESC=	Disable roaming
 P2P_DESC=		Peer-to-Peer support
 TDLS_DESC=		Tunneled Direct Link Setup
+MATCH_DESC=		Interface match mode
 
 DRV_DESC=		Driver options
 BSD_DESC=		BSD net80211 interface
@@ -148,7 +154,7 @@ post-patch:
 .endif
 .for simple in WPS WPS_ER WPS_NFC WPS_UPNP PKCS12 SMARTCARD HT_OVERRIDES \
 	VHT_OVERRIDES TLSV12 IEEE80211AC IEEE80211N IEEE80211R IEEE80211W \
-	IEEE8021X_EAPOL \
+	IEEE8021X_EAPOL EAPOL_TEST \
 	INTERWORKING DEBUG_FILE DEBUG_SYSLOG HS20 NO_ROAMING PRIVSEP P2P TDLS
 .  if ${PORT_OPTIONS:M${simple}}
 	@${ECHO_CMD} CONFIG_${simple}=y >> ${CFG}
@@ -174,17 +180,26 @@ post-patch:
 	@${ECHO_CMD} CONFIG_CTRL_IFACE_DBUS_NEW=y >> ${CFG}
 	@${ECHO_CMD} CONFIG_CTRL_IFACE_DBUS_INTRO=y >> ${CFG}
 .endif
+.if ${PORT_OPTIONS:MMATCH}
+	@${ECHO_CMD} CONFIG_MATCH_IFACE=y >> ${CFG}
+.endif
 	@${ECHO_CMD} CONFIG_OS=unix >> ${CFG}
 	@${ECHO_CMD} CONFIG_CTRL_IFACE=unix >> ${CFG}
 	@${ECHO_CMD} CONFIG_BACKEND=file >> ${CFG}
 	@${ECHO_CMD} CONFIG_L2_PACKET=freebsd >> ${CFG}
 	@${ECHO_CMD} CONFIG_TLS=openssl >> ${CFG}
 
+post-build-EAPOL_TEST-on:
+	cd ${BUILD_WRKSRC} && ${GMAKE} eapol_test
+
 do-install:
 	(cd ${BUILD_WRKSRC} && ${INSTALL_PROGRAM} wpa_supplicant wpa_cli \
 		wpa_passphrase ${STAGEDIR}${PREFIX}/sbin)
 	${INSTALL_DATA} ${BUILD_WRKSRC}/wpa_supplicant.conf \
 		${STAGEDIR}${PREFIX}/etc/wpa_supplicant.conf.sample
+
+do-install-EAPOL_TEST-on:
+	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/eapol_test ${STAGEDIR}${PREFIX}/sbin
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -1,14 +1,17 @@
 # $FreeBSD$
 
 PORTNAME=	calligra
-DISTVERSION=	3.1.0
-PORTREVISION=	34
+DISTVERSION=	3.2.1
+PORTREVISION=	1
 CATEGORIES=	editors kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}
 DIST_SUBDIR=	KDE/${PORTNAME}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE office suite
+
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libImath.so:graphics/ilmbase \
 		libKPropertyCore3.so:x11-toolkits/kproperty \
@@ -66,6 +69,6 @@ CMAKE_ON=	RELEASE_BUILD
 # Performance increase according to README.PACKAGERS
 CMAKE_ARGS+=	-DCMAKE_CXX_FLAGS="-DKDE_NO_DEBUG_OUTPUT"
 
-PLIST_SUB+=	SHLIB_VER=16.0.0
+PLIST_SUB+=	SHLIB_VER=17.0.0
 
 .include <bsd.port.mk>

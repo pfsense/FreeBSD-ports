@@ -171,6 +171,7 @@
     SUBDIR += py-easygui
     SUBDIR += py-fltk
     SUBDIR += py-gtk2
+    SUBDIR += py-qt5-chart
     SUBDIR += py-qt5-gui
     SUBDIR += py-qt5-quick
     SUBDIR += py-qt5-quickwidgets
@@ -218,7 +219,6 @@
     SUBDIR += sdl_pango
     SUBDIR += shared-desktop-ontologies
     SUBDIR += skinlf
-    SUBDIR += slingshot
     SUBDIR += soqt
     SUBDIR += swt
     SUBDIR += tepl
@@ -252,7 +252,5 @@
     SUBDIR += xbae
     SUBDIR += xforms
     SUBDIR += xmhtml
-    SUBDIR += xview
-    SUBDIR += xview-clients
 
 .include <bsd.port.subdir.mk>

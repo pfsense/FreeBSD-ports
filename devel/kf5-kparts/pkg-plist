@@ -19,6 +19,7 @@ include/KF5/KParts/KParts/OpenUrlEvent
 include/KF5/KParts/KParts/Part
 include/KF5/KParts/KParts/PartActivateEvent
 include/KF5/KParts/KParts/PartBase
+include/KF5/KParts/KParts/PartLoader
 include/KF5/KParts/KParts/PartManager
 include/KF5/KParts/KParts/PartSelectEvent
 include/KF5/KParts/KParts/Plugin
@@ -52,6 +53,7 @@ include/KF5/KParts/kparts/openurlevent.h
 include/KF5/KParts/kparts/part.h
 include/KF5/KParts/kparts/partactivateevent.h
 include/KF5/KParts/kparts/partbase.h
+include/KF5/KParts/kparts/partloader.h
 include/KF5/KParts/kparts/partmanager.h
 include/KF5/KParts/kparts/partselectevent.h
 include/KF5/KParts/kparts/plugin.h
@@ -79,6 +81,7 @@ share/kservicetypes5/krwp.desktop
 share/locale/af/LC_MESSAGES/kparts5.mo
 share/locale/ar/LC_MESSAGES/kparts5.mo
 share/locale/as/LC_MESSAGES/kparts5.mo
+share/locale/az/LC_MESSAGES/kparts5.mo
 share/locale/be/LC_MESSAGES/kparts5.mo
 share/locale/be@latin/LC_MESSAGES/kparts5.mo
 share/locale/bg/LC_MESSAGES/kparts5.mo
@@ -175,3 +178,4 @@ share/locale/xh/LC_MESSAGES/kparts5.mo
 share/locale/zh_CN/LC_MESSAGES/kparts5.mo
 share/locale/zh_HK/LC_MESSAGES/kparts5.mo
 share/locale/zh_TW/LC_MESSAGES/kparts5.mo
+share/qlogging-categories5/kparts.categories

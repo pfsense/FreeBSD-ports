@@ -6,11 +6,12 @@
 # german/eric6, russian/eric6, devel/es-eric6
 
 PORTNAME=	eric6
-PORTVERSION=	19.04
+PORTVERSION=	20.6
+PORTREVISION?=	0
 MASTER_SITES=	SF/eric-ide/${PORTNAME}/stable/${PORTVERSION}
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	Full featured Python and Ruby editor and IDE based on Qt
 
 LICENSE=	GPLv3
@@ -18,4 +19,5 @@ LICENSE=	GPLv3
 DESCR=		${.CURDIR}/../../devel/eric6/pkg-descr
 MAKE_ENV+=	"HOME=${WRKDIR}"
 
+NO_ARCH=	yes
 NO_BUILD=	yes

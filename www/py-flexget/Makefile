@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	flexget
-PORTVERSION=	2.21.35
+DISTVERSIONPREFIX=	v
+PORTVERSION=	3.1.65
 PORTEPOCH=	1
 CATEGORIES=	www python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,20 +14,19 @@ COMMENT=	Program to automate downloading from different sources
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlalchemy12>0:databases/py-sqlalchemy12@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlalchemy13>=1.3.10:databases/py-sqlalchemy13@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=2.10:devel/py-Jinja2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}rebulk>=0.9.0:devel/py-rebulk@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}rebulk>=2.0.0:devel/py-rebulk@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}rpyc>0:devel/py-RPyC@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}apscheduler>=3.2.0:devel/py-apscheduler@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dateutil>0:devel/py-dateutil@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}future>=0.15.2:devel/py-future@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jsonschema>=2.0:devel/py-jsonschema@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}path.py>=10.6:devel/py-path.py@${PY_FLAVOR} \
-		${PY_PATHLIB} \
-		${PYTHON_PKGNAMEPREFIX}pyparsing>=2.0.3:devel/py-pyparsing@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}loguru>=0.4.1:devel/py-loguru@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}more-itertools>0:devel/py-more-itertools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyparsing>=2.4.7:devel/py-pyparsing@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>=4.2:devel/py-yaml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}progressbar>=2.5:misc/py-progressbar@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}guessit<3.0.0:multimedia/py-guessit@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}guessit>=3.0.3:multimedia/py-guessit@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pynzb>0:news/py-pynzb@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}zxcvbn>0:security/py-zxcvbn@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}plumbum>=1.2:sysutils/py-plumbum@${PY_FLAVOR} \
@@ -41,7 +41,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlalchemy12>0:databases/py-sqlalchemy12@${P
 		${PYTHON_PKGNAMEPREFIX}Flask-Cors>=2.1.2:www/py-flask-cors@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Flask-Login>=0.4.0:www/py-flask-login@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Flask-RESTful>=0.3.3:www/py-flask-restful@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}flask-restplus>=0.10.1:www/py-flask-restplus@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}flask-restx>=0.2.0:www/py-flask-restx@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}html5lib>=0.11:www/py-html5lib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.20.0:www/py-requests@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=3.3:devel/py-pytest@${PY_FLAVOR} \
@@ -52,7 +52,7 @@ USE_GITHUB=	yes
 GH_PROJECT=	Flexget
 
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 post-extract:
@@ -62,10 +62,4 @@ post-extract:
 do-test:
 	@(cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} -m pytest)
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3300
-TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

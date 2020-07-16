@@ -11,13 +11,15 @@ COMMENT=	Cross-desktop libraries and common resources
 
 LICENSE=	LGPL3
 
+PORTSCOUT=	limit:^[0-9.]+$$	# ignore master.mint* tags
+
 BUILD_DEPENDS=	vapigen:lang/vala
 LIB_DEPENDS=	libgnomekbdui.so:x11/libgnomekbd
 
 USES=		gettext gnome meson pkgconfig python:build shebangfix xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	linuxmint
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf2 gtk30 introspection:build
 USE_LDCONFIG=	yes
 USE_XORG=	x11
 GLIB_SCHEMAS=	org.x.apps.gschema.xml

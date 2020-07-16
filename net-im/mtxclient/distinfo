@@ -1,5 +1,3 @@
-TIMESTAMP = 1559832672
-SHA256 (Nheko-Reborn-mtxclient-v0.2.1_GH0.tar.gz) = 859217f3ed8fbe5479a6cf77dc15f164c76e593f588990c2acce3fe13c9f845a
-SIZE (Nheko-Reborn-mtxclient-v0.2.1_GH0.tar.gz) = 478840
-SHA256 (cdbf06f341e9.patch) = a47d051af377b24c06e4802c491548a6957ca428d923d8f14f9d55cf92f21195
-SIZE (cdbf06f341e9.patch) = 626
+TIMESTAMP = 1592215303
+SHA256 (Nheko-Reborn-mtxclient-v0.3.1_GH0.tar.gz) = e4899cc4ce87397de2aef865e94ea2cdb8d9cb86253727e7d90532b925ecc770
+SIZE (Nheko-Reborn-mtxclient-v0.3.1_GH0.tar.gz) = 511985

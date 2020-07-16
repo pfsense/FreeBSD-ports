@@ -14,10 +14,12 @@ MAINTAINER=	cy@FreeBSD.org
 COMMENT=	The Network Time Protocol Distribution
 
 FORBIDDEN=	See http://support.ntp.org/bin/view/Main/SecurityNotice#March_2020_ntp_4_2_8p14_NTP_Rele
+DEPRECATED=	Current devel branch of ntp is no longer published
+EXPIRATION_DATE=	2020-08-31
 
 LIB_DEPENDS=	libevent.so:devel/libevent
 
-CONFLICTS=	ntp-[0-9].* openntpd-*
+CONFLICTS=	ntp ntpsec openntpd
 
 USES=		cpe pathfix shebangfix libedit libtool localbase:ldflags \
 		pkgconfig gettext-runtime

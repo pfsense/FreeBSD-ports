@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gtksourceview
-PORTVERSION=	3.24.8
-PORTREVISION=	3
+PORTVERSION=	3.24.11
 CATEGORIES=	x11-toolkits gnome
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	3
@@ -11,6 +10,9 @@ DIST_SUBDIR=	gnome3
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Text widget that adds syntax highlighting to the GtkTextView widget
+
+LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		compiler:c11 tar:xz
 

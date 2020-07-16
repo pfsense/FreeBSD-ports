@@ -2,7 +2,7 @@
 
 PORTNAME=	texlive
 PORTVERSION=	20150521
-PORTREVISION=	47
+PORTREVISION=	52
 CATEGORIES=	print
 MASTER_SITES=	TEX_CTAN/systems/texlive/Source/
 PKGNAMESUFFIX=	-base
@@ -26,7 +26,7 @@ LIB_DEPENDS=	libicuio.so:devel/icu \
 		libpoppler.so:graphics/poppler \
 		libpotrace.so:graphics/libpotrace
 
-CONFLICTS_INSTALL=	texlive-texmf-201[234]*
+CONFLICTS_INSTALL=	ps2eps texlive-texmf-201[234]*
 
 USE_TEX=	web2c kpathsea ptexenc tlmgr texhash-bootstrap
 USES=		compiler:c++11-lib ghostscript pkgconfig perl5 \

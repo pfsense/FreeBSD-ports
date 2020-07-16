@@ -5,11 +5,11 @@ PORTNAME=	clickhouse
 PORTVERSION=	19.11.5.28
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	-stable
-PORTREVISION=	6
+PORTREVISION=	10
 CATEGORIES=	databases
 
 MAINTAINER=	proler@gmail.com
-COMMENT=	ClickHouse is a column-oriented database management system
+COMMENT=	Column-oriented database management system
 
 LICENSE=	APACHE20
 

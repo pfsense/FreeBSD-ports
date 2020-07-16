@@ -1,12 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	gitlab-mail_room
-PORTVERSION=	0.0.3
+PORTVERSION=	0.0.6
 CATEGORIES=	mail rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	mfechner@FreeBSD.org
-COMMENT=	This mail_room will proxy email (gmail) from IMAP to a delivery method
+COMMENT=	Proxy email (gmail) from IMAP to a delivery method
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

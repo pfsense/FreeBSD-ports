@@ -2,20 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	rabbitmq
-DISTVERSION=	3.8.1
+DISTVERSION=	3.8.3
 PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/rabbitmq/rabbitmq-server/releases/download/v${PORTVERSION}/
 DISTNAME=	${PORTNAME}-server-${PORTVERSION}
 
 MAINTAINER=	erlang@FreeBSD.org
-COMMENT=	RabbitMQ is an implementation of AMQP
+COMMENT=	Erlang implementation of AMQP
 
 LICENSE=	MPL11
 LICENSE_FILE=	${WRKSRC}/LICENSE-MPL-RabbitMQ
 
 BUILD_DEPENDS=	erlang-runtime21>=21.3:lang/erlang-runtime21 \
-		elixir>=1.9:lang/elixir \
+		elixir>=1.10:lang/elixir \
 		${PYTHON_PKGNAMEPREFIX}simplejson>=2.0:devel/py-simplejson@${PY_FLAVOR} \
 		xmlto:textproc/xmlto \
 		zip:archivers/zip \

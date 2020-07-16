@@ -1,12 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	zstd
-DISTVERSION=	0.7.5
+DISTVERSION=	0.8.0
 CATEGORIES=	archivers
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	pave@FreeBSD.org
-COMMENT=	This is the zstd extension for PHP
+COMMENT=	Zstandard extension for PHP
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	awgg
-PORTVERSION=	0.5.1
-PORTREVISION=	6
+PORTVERSION=	0.6.0
 CATEGORIES=	net-p2p
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 
@@ -21,13 +20,13 @@ gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt5
 qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2
 
 USES=		fpc gnome lazarus:flavors xorg
-USE_FPC=	chm fcl-base fcl-db fcl-image fcl-json fcl-registry fcl-xml \
-		pasjpeg regexpr rtl-extra rtl-objpas x11
+USE_FPC=	chm fcl-base fcl-db fcl-image fcl-json fcl-net fcl-registry \
+		fcl-web fcl-xml openssl pasjpeg regexpr rtl-extra rtl-objpas x11
 USE_XORG=	x11
 USE_GITHUB=	yes
 GH_ACCOUNT=	Nenirey
 GH_PROJECT=	AWGG
-GH_TAGNAME=	28d009f
+GH_TAGNAME=	5dc1329
 
 DESKTOP_ENTRIES="AWGG" \
 		"Advanced wget GUI" \

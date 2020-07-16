@@ -81,6 +81,7 @@ BUILD_DEPENDS+=	llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT} \
 				${RUST_DEFAULT}>=1.41:lang/${RUST_DEFAULT} \
 				${LOCALBASE}/bin/python${PYTHON3_DEFAULT}:lang/python${PYTHON3_DEFAULT:S/.//g} \
 				node:www/node
+LIB_DEPENDS+=	libdrm.so:graphics/libdrm
 MOZ_EXPORT+=	${CONFIGURE_ENV} \
 				LLVM_CONFIG=llvm-config${LLVM_DEFAULT} \
 				PERL="${PERL}" \
@@ -309,6 +310,7 @@ CFLAGS+=	-B${LOCALBASE}/bin
 LDFLAGS+=	-B${LOCALBASE}/bin
 . endif
 .elif ${ARCH:Mpowerpc*}
+BUILD_DEPENDS+=	as:devel/binutils
 . if ${ARCH} == "powerpc64"
 MOZ_EXPORT+=	UNAME_m="${ARCH}"
 . endif

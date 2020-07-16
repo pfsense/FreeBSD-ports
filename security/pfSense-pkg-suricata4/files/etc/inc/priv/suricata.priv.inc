@@ -27,7 +27,6 @@ $priv_list['page-services-suricata']['name'] = "WebCfg - Services: suricata pack
 $priv_list['page-services-suricata']['descr'] = "Allow access to suricata package gui";
 $priv_list['page-services-suricata']['match'] = array();
 $priv_list['page-services-suricata']['match'][] = "suricata/suricata_alerts.php*";
-$priv_list['page-services-suricata']['match'][] = "suricata/suricata_barnyard.php*";
 $priv_list['page-services-suricata']['match'][] = "suricata/suricata_blocked.php*";
 $priv_list['page-services-suricata']['match'][] = "suricata/suricata_check_for_rule_updates.php*";
 $priv_list['page-services-suricata']['match'][] = "suricata/suricata_define_vars.php*";

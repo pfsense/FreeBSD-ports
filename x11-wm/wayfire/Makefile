@@ -2,6 +2,7 @@
 
 PORTNAME=	wayfire
 DISTVERSION=	0.4.0
+PORTREVISION=	1
 CATEGORIES=	x11-wm
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/

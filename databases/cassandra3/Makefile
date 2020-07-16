@@ -2,6 +2,7 @@
 
 PORTNAME=	cassandra
 DISTVERSION=	3.11.6
+PORTREVISION=	1
 CATEGORIES=	databases java
 MASTER_SITES=	APACHE/cassandra/${PORTVERSION}:apache \
 		LOCAL/yuri:repo
@@ -25,6 +26,8 @@ USES=		python:2.7
 USE_JAVA=	yes
 USE_ANT=	yes
 USE_RC_SUBR=	cassandra
+
+CONFLICTS=	cassandra4
 
 JAVA_VERSION=	1.8
 JAVA_VENDOR=	openjdk
@@ -68,7 +71,7 @@ OPTIONS_SUB=		yes
 SIGAR_DESC=		Use SIGAR to collect system information
 SIGAR_RUN_DEPENDS=	java-sigar>=1.6.4:java/sigar
 
-DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx@${PY_FLAVOR} \
+DOCS_BUILD_DEPENDS=	${PY_SPHINX} \
 			${PYTHON_PKGNAMEPREFIX}sphinx_rtd_theme>0:textproc/py-sphinx_rtd_theme@${PY_FLAVOR}
 
 PORTDOCS=		*
@@ -86,11 +89,11 @@ post-build:
 .for f in ${SCRIPT_FILES}
 	@${REINPLACE_CMD} -e 's|/usr/share/cassandra|${DATADIR}/bin|' ${DIST_DIR}/bin/${f}
 .endfor
-	@${REINPLACE_CMD} -e 's|\`dirname "\$$\0"\`/..|${DATADIR}|' ${DIST_DIR}/bin/cassandra.in.sh
-	@${REINPLACE_CMD} -e 's|\$$\CASSANDRA_HOME/lib/sigar-bin|${JAVAJARDIR}|' ${DIST_DIR}/bin/cassandra.in.sh
-	@${REINPLACE_CMD} -e 's|\$$\CASSANDRA_HOME/lib/sigar-bin|${JAVAJARDIR}|' ${DIST_DIR}/conf/cassandra-env.sh
-	@${REINPLACE_CMD} -e 's|\$$\CASSANDRA_HOME/conf|${ETCDIR}|' ${DIST_DIR}/bin/cassandra.in.sh
-	@${REINPLACE_CMD} -e 's|\$$\CASSANDRA_HOME/conf|${ETCDIR}|' ${DIST_DIR}/conf/cassandra-env.sh
+	@${REINPLACE_CMD} -e 's|`dirname "$$0"`/..|${DATADIR}|' ${DIST_DIR}/bin/cassandra.in.sh
+	@${REINPLACE_CMD} -e 's|$$CASSANDRA_HOME/lib/sigar-bin|${JAVAJARDIR}|' ${DIST_DIR}/bin/cassandra.in.sh
+	@${REINPLACE_CMD} -e 's|$$CASSANDRA_HOME/lib/sigar-bin|${JAVAJARDIR}|' ${DIST_DIR}/conf/cassandra-env.sh
+	@${REINPLACE_CMD} -e 's|$$CASSANDRA_HOME/conf|${ETCDIR}|' ${DIST_DIR}/bin/cassandra.in.sh
+	@${REINPLACE_CMD} -e 's|$$CASSANDRA_HOME/conf|${ETCDIR}|' ${DIST_DIR}/conf/cassandra-env.sh
 .for f in ${CONFIG_FILES}
 	@${MV} ${DIST_DIR}/conf/${f} ${DIST_DIR}/conf/${f}.sample
 .endfor

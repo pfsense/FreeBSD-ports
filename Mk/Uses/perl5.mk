@@ -44,12 +44,12 @@ USE_PERL5?=	run build
 
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-.    if ${PERL5_DEFAULT} == 5.26
-.include "${PORTSDIR}/lang/perl5.26/version.mk"
-.    elif ${PERL5_DEFAULT} == 5.28
+.    if ${PERL5_DEFAULT} == 5.28
 .include "${PORTSDIR}/lang/perl5.28/version.mk"
 .    elif ${PERL5_DEFAULT} == 5.30
 .include "${PORTSDIR}/lang/perl5.30/version.mk"
+.    elif ${PERL5_DEFAULT} == 5.32
+.include "${PORTSDIR}/lang/perl5.32/version.mk"
 .    elif ${PERL5_DEFAULT} == devel
 .include "${PORTSDIR}/lang/perl5-devel/version.mk"
 # Force PERL_PORT here in case two identical PERL_VERSION.
@@ -83,12 +83,12 @@ PERL_ARCH?=	mach
 # perl5_default file, or up there in the default versions selection.
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-.  if   ${PERL_LEVEL} >= 503000
+.  if   ${PERL_LEVEL} >= 503200
+PERL_PORT?=	perl5.32
+.  elif ${PERL_LEVEL} >= 503000
 PERL_PORT?=	perl5.30
-.  elif   ${PERL_LEVEL} >= 502800
+.  else # ${PERL_LEVEL} < 503000
 PERL_PORT?=	perl5.28
-.  else # ${PERL_LEVEL} < 502800
-PERL_PORT?=	perl5.26
 .  endif
 
 SITE_PERL_REL?=	lib/perl5/site_perl

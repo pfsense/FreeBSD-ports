@@ -2,9 +2,7 @@
 
 PORTNAME=	rsocket-cpp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.10.0-942
-DISTVERSIONSUFFIX=	-g3d878b1e
-PORTREVISION=	5
+DISTVERSION=	2020.06.29.00
 CATEGORIES=	net
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,6 +11,7 @@ COMMENT=	C++ implementation of RSocket
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	libfmt>0:devel/libfmt
 LIB_DEPENDS=	libboost_atomic.so:devel/boost-libs \
 		libdouble-conversion.so:devel/double-conversion \
 		libevent.so:devel/libevent \
@@ -31,7 +30,7 @@ GH_ACCOUNT=	rsocket
 USE_LDCONFIG=	yes
 
 CMAKE_ON=	BUILD_SHARED_LIBS
-CMAKE_OFF=	BUILD_TESTS BUILD_EXAMPLES
+CMAKE_OFF=	BUILD_BENCHMARKS BUILD_EXAMPLES BUILD_TESTS BUILD_EXAMPLES
 
 PORTSCOUT=	limit:^[0-9\.]*$$
 

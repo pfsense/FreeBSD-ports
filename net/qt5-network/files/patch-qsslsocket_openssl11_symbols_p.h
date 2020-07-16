@@ -1,6 +1,6 @@
 --- src/network/ssl/qsslsocket_openssl11_symbols_p.h.orig	2019-10-01 07:47:24 UTC
 +++ src/network/ssl/qsslsocket_openssl11_symbols_p.h
-@@ -77,19 +77,48 @@
+@@ -77,20 +77,49 @@
  
  const unsigned char * q_ASN1_STRING_get0_data(const ASN1_STRING *x);
  
@@ -17,13 +17,13 @@
  Q_AUTOTEST_EXPORT BIO *q_BIO_new(const BIO_METHOD *a);
  Q_AUTOTEST_EXPORT const BIO_METHOD *q_BIO_s_mem();
  
--int q_DSA_bits(DSA *a);
 +#ifdef LIBRESSL_VERSION_NUMBER
 +#define q_DSA_bits(dsa) q_BN_num_bits((dsa)->p)
 +#else
-+ int q_DSA_bits(DSA *a);
+ int q_DSA_bits(DSA *a);
 +#endif
  int q_EVP_CIPHER_CTX_reset(EVP_CIPHER_CTX *c);
+ Q_AUTOTEST_EXPORT int q_EVP_PKEY_up_ref(EVP_PKEY *a);
  int q_EVP_PKEY_base_id(EVP_PKEY *a);
  int q_RSA_bits(RSA *a);
 +#ifdef LIBRESSL_VERSION_NUMBER
@@ -50,7 +50,7 @@
  int q_SSL_session_reused(SSL *a);
  unsigned long q_SSL_CTX_set_options(SSL_CTX *ctx, unsigned long op);
  int q_OPENSSL_init_ssl(uint64_t opts, const OPENSSL_INIT_SETTINGS *settings);
-@@ -110,12 +139,15 @@ STACK_OF(X509) *q_X509_STORE_CTX_get0_chain(X509_STORE
+@@ -113,12 +142,15 @@
  void q_DH_get0_pqg(const DH *dh, const BIGNUM **p, const BIGNUM **q, const BIGNUM **g);
  int q_DH_bits(DH *dh);
  

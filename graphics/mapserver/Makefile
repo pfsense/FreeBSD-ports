@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=		mapserver
-PORTVERSION=		7.4.3
+PORTVERSION=		7.6.0
+PORTREVISION=	1
 CATEGORIES=		graphics www geography
 MASTER_SITES=		https://download.osgeo.org/mapserver/
 
@@ -47,8 +48,7 @@ WCS_DESC=		WCS Server support
 
 .if ${PORT_OPTIONS:MPYTHON}
 USES+=			python:2.7
-BUILD_DEPENDS+=		swig3.0:devel/swig30
-BINARY_ALIAS=		swig=swig3.0
+BUILD_DEPENDS+=		swig:devel/swig
 CMAKE_ARGS+=		-DWITH_PYTHON=yes
 PLIST_SUB+=		PYTHON=""
 MAP_EGG=		MapScript-${PORTVERSION}-${PYTHON_VERSION:S/thon//}
@@ -156,10 +156,9 @@ PLIST_SUB+=		PHP="@comment "
 
 .if ${PORT_OPTIONS:MPERL}
 USES+=		perl5
-BUILD_DEPENDS=	swig3.0:devel/swig30
+BUILD_DEPENDS=	swig:devel/swig
 CMAKE_ARGS+=	-DWITH_PERL=1
 PLIST_SUB+=	PERL=""
-BINARY_ALIAS=	swig=swig3.0
 .else
 CMAKE_ARGS+=	-DWITH_PERL=0
 PLIST_SUB+=	PERL="@comment "

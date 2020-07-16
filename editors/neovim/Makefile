@@ -12,8 +12,8 @@ COMMENT=	Next-generation Vim
 LICENSE=	APACHE20
 
 BUILD_DEPENDS=	gperf:devel/gperf \
-		${LUA_MODLIBDIR}/bit.so:devel/lua-bitop \
-		${LUA_MODLIBDIR}/lpeg.so:devel/lua-lpeg
+		${LUA_MODLIBDIR}/bit.so:devel/lua-bitop@${LUA_FLAVOR} \
+		${LUA_MODLIBDIR}/lpeg.so:devel/lua-lpeg@${LUA_FLAVOR}
 LIB_DEPENDS=	libluv.so:devel/luv \
 		libmsgpackc.so:devel/msgpack \
 		libtermkey.so:devel/libtermkey \
@@ -56,6 +56,12 @@ NLS_CMAKE_BOOL=	ENABLE_LIBINTL
 NLS_USES=	gettext
 PYNVIM_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pynvim>=0.3.0:editors/py-pynvim@${PY_FLAVOR}
 PYNVIM_USES=		python:run
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc64
+USES+=		compiler:gcc-c++11-lib
+.endif
 
 post-patch:
 	${REINPLACE_CMD} -e \

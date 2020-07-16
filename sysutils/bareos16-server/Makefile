@@ -1,12 +1,12 @@
 # $FreeBSD$
 
-PORTNAME=	bareos16
+PORTNAME=	bareos
 DISTVERSIONPREFIX=	Release/
-DISTVERSION=	16.2.9
+DISTVERSION=	16.2.10
 PORTREVISION?=	0
 CATEGORIES?=	sysutils
 PKGNAMEPREFIX?=	#
-PKGNAMESUFFIX?=	-server
+PKGNAMESUFFIX?=	16-server
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT?=	Backup archiving recovery open sourced (server)
@@ -19,8 +19,6 @@ LIB_DEPENDS+=	liblzo2.so:archivers/lzo2 \
 
 USES+=		libtool:keepla pkgconfig readline:port shebangfix
 USE_GITHUB=	yes
-GH_ACCOUNT=	${PORTNAME:S/16//}
-GH_PROJECT=	${PORTNAME:S/16//}
 
 CONFLICTS?=	bacula*-server-* bareos-server-*
 
@@ -37,8 +35,6 @@ SHEBANG_FILES=	${WRKSRC}/src/cats/make_catalog_backup.pl.in
 CPPFLAGS+=	-I${LOCALBASE}/readline -I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-ETCDIR=		${PREFIX}/etc/${PORTNAME:S/16//}
-
 OPTIONS_DEFAULT=	OPENSSL
 OPTIONS_SINGLE=		CRYPTO
 OPTIONS_SINGLE_CRYPTO=	OPENSSL GNUTLS
@@ -48,7 +44,7 @@ MTX_DESC=		Install mtx for control of autochanger devices
 NDMP_DESC=		Enable build of NDMP support
 SCSICRYPTO_DESC=	Build LTO AME crypto plugin
 
-.if ${PKGNAMESUFFIX} == "-server"
+.if ${PKGNAMESUFFIX} == "16-server"
 OPTIONS_DEFINE=		MTX PYTHON NDMP NLS SCSICRYPTO
 OPTIONS_DEFAULT+=	PGSQL SCSICRYPTO
 OPTIONS_SINGLE_DATABASE=	SQLITE3 MYSQL PGSQL
@@ -69,7 +65,7 @@ OPENSSL_CONFIGURE_OFF=	--with-openssl="no"
 SCSICRYPTO_CONFIGURE_ON=	--enable-scsi-crypto=yes
 SCSICRYPTO_CONFIGURE_OFF=	--enable-scsi-crypto=no
 
-.if ${PKGNAMESUFFIX} == "-client" || ${PKGNAMESUFFIX} == "-server"  #Till end of the file
+.if ${PKGNAMESUFFIX} == "16-client" || ${PKGNAMESUFFIX} == "16-server"  #Till end of the file
 PYTHON_USES=		  python
 PYTHON_CONFIGURE_ON=	--with-python=yes
 PYTHON_CONFIGURE_OFF=	--with-python=no
@@ -236,5 +232,5 @@ post-install:
 .endif
 .else
 .include "${MASTERDIR}/Makefile.common"
-.endif # -client and -server are defined
+.endif # 16-client and 16-server are defined
 .include <bsd.port.mk>

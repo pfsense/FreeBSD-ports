@@ -3,7 +3,7 @@
 PORTNAME=	kyua
 PORTVERSION=	0.13
 PORTEPOCH=	3
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/jmmv/kyua/releases/download/${PORTNAME}-${PORTVERSION}/ \
 		LOCAL/jmmv
@@ -23,6 +23,7 @@ USES=		lua pkgconfig
 
 TESTS_USER=	tests
 USERS=		${TESTS_USER}
+GROUPS=		tests
 SUB_FILES=	kyua.conf
 SUB_LIST=	TESTS_USER=${TESTS_USER}
 

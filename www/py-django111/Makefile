@@ -19,6 +19,8 @@ COMMENT=	High-level Python Web Framework
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=	Django 1.11 is End-of-Life since April 2020. Switch to Django 2.2+ as soon as possible.
+
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytz>0:devel/py-pytz@${PY_FLAVOR}
 
 NO_ARCH=	yes
@@ -43,7 +45,7 @@ HTMLDOCS_DESC=	Install HTML documentation (requires Sphinx)
 
 PLIST_FILES=	man/man1/django-admin.1.gz
 
-HTMLDOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx@${PY_FLAVOR}
+HTMLDOCS_BUILD_DEPENDS=	${PY_SPHINX}
 HTMLDOCS_IMPLIES=	DOCS
 PGSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psycopg2>0:databases/py-psycopg2@${PY_FLAVOR}
 MYSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=1.2.2:databases/py-MySQLdb@${PY_FLAVOR}

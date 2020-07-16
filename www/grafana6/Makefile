@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	grafana
-PORTVERSION=	6.6.2
+PORTVERSION=	6.7.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES+=	https://dl.grafana.com/oss/release/:public
@@ -15,7 +15,7 @@ COMMENT=	Dashboard and graph editor for multiple data stores
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS=	aarch64 amd64 i386
 
 USES=		go:modules
 USE_RC_SUBR=	grafana

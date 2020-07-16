@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	eclipse
-PORTVERSION=	4.15
+PORTVERSION=	4.16
 CATEGORIES=	java devel
 
 # Update to eclipse.platform.releng.aggregator.git git-tag on git.eclipse.org
-ECLIPSE_TAG=	R4_15
-ECLIPSE_TSTAMP=	20200318-1047
+ECLIPSE_TAG=	R4_16
+ECLIPSE_TSTAMP=	20200617-1404
 
 ECLIPSE_SUFX=	${ECLIPSE_TAG}.tar.xz
 ECLIPSE_MODULES=jdt/eclipse.jdt \
@@ -45,14 +45,15 @@ DISTFILES+=	${M:C/.*\///}-${ECLIPSE_SUFX}:${M:C/[\.\/]//g}
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	jonc@chen.org.nz
-COMMENT=	Eclipse IDE 2020-03
+COMMENT=	Eclipse IDE 2020-06
 
 LICENSE=	EPL
 
 ONLY_FOR_ARCHS=	amd64 powerpc64
 
 BUILD_DEPENDS=	git:devel/git-lite \
-		${LOCALBASE}/share/java/maven/bin/mvn:devel/maven
+		${LOCALBASE}/share/java/maven/bin/mvn:devel/maven \
+		zip:archivers/zip
 LIB_DEPENDS=	libsecret-1.so:security/libsecret \
 		libwebkit2gtk-4.0.so:www/webkit2-gtk3
 USES=		compiler:c++11-lang gmake pkgconfig gnome
@@ -73,7 +74,6 @@ DESKTOP_ENTRIES="Eclipse" \
 
 SUB_FILES=	${PORTNAME}
 
-#LOCAL_P2=	file://${WRKDIR}/${GH_PROJECT}-${PORTVERSION}/${PORTVERSION}
 MAVEN_ENV=	MAVEN_OPTS=-Xmx1024m CC=${CC} JAVA_HOME=${JAVA_HOME}
 MAVEN_REPO=	-Dmaven.repo.local=${WRKDIR}/${GH_PROJECT}-${PORTVERSION}
 MAVEN_ECLIPSE=	-Dnative=gtk.freebsd.${ARCH} -DforceContextQualifier=v${ECLIPSE_TSTAMP}

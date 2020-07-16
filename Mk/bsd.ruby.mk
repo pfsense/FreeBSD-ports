@@ -148,7 +148,7 @@ RUBY?=			${LOCALBASE}/bin/${RUBY_NAME}
 #
 # Ruby 2.5
 #
-RUBY_VERSION=		2.5.7
+RUBY_VERSION=		2.5.8
 RUBY_PORTREVISION=	0
 RUBY_PORTEPOCH=		1
 RUBY25=			""	# PLIST_SUB helpers
@@ -157,7 +157,7 @@ RUBY25=			""	# PLIST_SUB helpers
 #
 # Ruby 2.6
 #
-RUBY_VERSION=		2.6.5
+RUBY_VERSION=		2.6.6
 RUBY_PORTREVISION=	0
 RUBY_PORTEPOCH=		1
 RUBY26=			""	# PLIST_SUB helpers
@@ -166,8 +166,8 @@ RUBY26=			""	# PLIST_SUB helpers
 #
 # Ruby 2.7
 #
-RUBY_VERSION=		2.7.0
-RUBY_PORTREVISION=	2
+RUBY_VERSION=		2.7.1
+RUBY_PORTREVISION=	0
 RUBY_PORTEPOCH=		1
 RUBY27=			""	# PLIST_SUB helpers
 
@@ -248,7 +248,11 @@ RUBY_CONFIGURE_ARGS+=	--program-suffix="${RUBY_SUFFIX}"
 RUBY_MODNAME?=		${PORTNAME}
 
 # Commands
+.if ${RUBY_VER} < 2.7
 RUBY_RDOC?=		${LOCALBASE}/bin/rdoc${RUBY_VER:S/.//}
+.else
+RUBY_RDOC?=		${LOCALBASE}/bin/rdoc
+.endif
 
 # Ports
 RUBY_BASE_PORT?=	lang/ruby${RUBY_VER:S/.//}

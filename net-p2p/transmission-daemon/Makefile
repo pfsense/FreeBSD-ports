@@ -1,7 +1,7 @@
 # $FreeBSD$
 
-PORTREVISION=	3
 PKGNAMESUFFIX=	-daemon
+PORTREVISION=	2
 
 USES=		ssl
 NLS_USES=	gettext-runtime:run

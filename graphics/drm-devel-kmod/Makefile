@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	drm-devel-kmod
-PORTVERSION=	5.0.g20200320
+PORTVERSION=	5.3.g20200612
 CATEGORIES=	graphics kld
 
 MAINTAINER=	x11@FreeBSD.org
@@ -26,13 +26,13 @@ OPTIONS_DEFINE=	DEBUG
 USES=		kmod uidfix compiler:c++11-lang
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	FreeBSDDesktop
-GH_PROJECT=	kms-drm
-GH_TAGNAME=	2ccbcda
+GH_ACCOUNT=	freebsd
+GH_PROJECT=	drm-kmod
+GH_TAGNAME=	drm_v5.3_1
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300055
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300097
 IGNORE=		not supported on older CURRENT, no kernel support
 .endif
 .if ${OPSYS} != FreeBSD

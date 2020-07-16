@@ -4,7 +4,7 @@
 PORTNAME=	mozc
 PORTVERSION=	2.23.2815.102.00
 DISTVERSIONPREFIX=	v
-PORTREVISION?=	6
+PORTREVISION?=	7
 CATEGORIES=	japanese
 
 MAINTAINER=	hrs@FreeBSD.org
@@ -17,8 +17,9 @@ LIB_DEPENDS=	libprotobuf.so:devel/protobuf \
 		libzinnia.so:japanese/zinnia
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
+BROKEN_FreeBSD_12_powerpc64=	fails to install: gyp: Call to 'which clang' returned exit status 1 while in client/client.gyp
+BROKEN_FreeBSD_13_powerpc64=	fails to build: ERROR: ninja -v -C out_linux/Release mozc_server: Error code 1
 BROKEN_powerpc=		fails to compile: segfault
-BROKEN_powerpc64=	fails to install: gyp: Call to 'which clang' returned exit status 1 while in client/client.gyp
 BROKEN_sparc64=		fails to compile: segfault
 
 USE_GITHUB=	yes

@@ -164,7 +164,7 @@ opendnssec:*:215:215::0:0:Opendnssec Pseudo User:/nonexistent:/usr/sbin/nologin
 nsd:*:216:216::0:0:NSD DNS Server:/nonexistent:/usr/sbin/nologin
 anvil:*:217:217::0:0:anvil certificate dropper:/var/db/anvil:/bin/sh
 zap:*:218:218::0:0:zap user:/usr/local/zap:/bin/sh
-sddm:*:219:219::0:0:SDDM Display Manager user:/usr/local/etc/sddm/home:/usr/sbin/nologin
+sddm:*:219:219::0:0:SDDM Display Manager user:/var/lib/sddm:/usr/sbin/nologin
 bs:*:220:220::0:0:Big Sister:/usr/local/bigsister:/bin/sh
 opensips:*:221:221::0:0:OpenSIPS user:/nonexistent:/usr/sbin/nologin
 rtpproxy:*:222:222::0:0:& user:/nonexistent:/sbin/nologin
@@ -196,26 +196,26 @@ fcron:*:247:247::0:0:fcron pseudo-user:/nonexistent:/usr/sbin/nologin
 signal-cli:*:248:248::0:0:Signal CLI:/nonexistent:/usr/sbin/nologin
 sonarqube:*:249:249::0:0:SonarQube Server:/nonexistent:/usr/sbin/nologin
 sems:*:250:250::0:0:SIP Express Media Server:/nonexistent:/usr/sbin/nologin
-# free: 251
-# free: 252
+irrd:*:251:251::0:0:irrd Daemon:/nonexistent:/usr/sbin/nologin
+gonic:*:252:252::0:0:Music streaming server:/nonexistent:/usr/sbin/nologin
 _adsuck:*:253:253::0:0:Adsuck ad blocking user:/nonexistent:/usr/sbin/nologin
 imds:*:254:254::0:0:Instance Metadata Service filter:/nonexistent:/usr/sbin/nologin
 _i2pd:*:255:255::0:0:I2P daemon:/var/db/i2pd:/usr/sbin/nologin
 _tor:*:256:256::0:0:Tor anonymizing router:/var/db/tor:/usr/sbin/nologin
 _smtpd:*:257:257::0:0:OpenSMTPD:/var/empty:/usr/sbin/nologin
 _smtpq:*:258:258::0:0:OpenSMTPD queue user:/var/empty:/usr/sbin/nologin
-# free: 259
+spiped:*:259:259::0:0:spiped user:/nonexistent:/usr/sbin/nologin
 meta1s:*:260:260::0:0:MeTA1 SMTPS:/nonexistent:/usr/sbin/nologin
 meta1q:*:261:261::0:0:MeTA1 QMGR:/nonexistent:/usr/sbin/nologin
 meta1c:*:262:262::0:0:MeTA1 SMTPC:/nonexistent:/usr/sbin/nologin
 meta1m:*:263:263::0:0:MeTA1 misc:/nonexistent:/usr/sbin/nologin
 meta1:*:264:264::0:0:MeTA1 other:/nonexistent:/usr/sbin/nologin
-# free: 265
-# free: 266
-# free: 267
+sshout:*:265:265::0:0:Secure Shout Host Oriented Unified Talk:/var/db/sshout:/usr/local/libexec/sshoutd
+step:*:266:266::0:0:Step CA:/nonexistent:/usr/sbin/nologin
+odoo:*:267:267::0:0:Odoo ERP:/nonexistent:/usr/sbin/nologin
 # free: 268
 # free: 269
-# free: 270
+_rpki-client:*:270:270::0:0:rpki-client user:/nonexistent:/usr/sbin/nologin
 # free: 271
 # free: 272
 # free: 273
@@ -717,7 +717,7 @@ c-lightning:*:735:735::0:0:c-lightning Daemon:/var/db/c-lightning:/usr/sbin/nolo
 # free: 769
 postgres:*:770:770::0:0:PostgreSQL Daemon:/var/db/postgres:/bin/sh
 cockroach:*:771:771::0:0:CockroachDB Daemon:/var/db/cockroach:/usr/sbin/nologin
-# free: 772
+postgrest:*:772:772::0:0:PostgREST Daemon:/nonexistent:/usr/sbin/nologin
 # free: 773
 # free: 774
 # free: 775
@@ -753,7 +753,7 @@ clickhouse:*:800:800::0:0:ClickHouse Daemon:/var/db/clickhouse:/usr/sbin/nologin
 # free: 805
 # free: 806
 # free: 807
-# free: 808
+clixon:*:808:808::0:0:Clixon Daemon:/nonexistent:/usr/sbin/nologin
 # free: 809
 # free: 810
 # free: 811
@@ -819,13 +819,13 @@ ebusd:*:854:854::0:0:eBUS Daemon user:/nonexistent:/usr/sbin/nologin
 archiva:*:871:871::0:0:Apache Archiva Daemon:/nonexistent:/usr/sbin/nologin
 bitmark:*:872:872::0:0:Bitmark Property System:/var/lib/bitmarkd:/usr/sbin/nologin
 bitmark-recorder:*:873:873::0:0:Bitmark Property Recorder:/var/lib/recorderd:/usr/sbin/nologin
-# free: 874
+librespeed:*:874:874::0:0:LibreSpeed user:/nonexistent:/usr/sbin/nologin
 # free: 875
 # free: 876
 # free: 877
 # free: 878
 # free: 879
-# free: 880
+pyspf-milter:*:880:880::0:0:pyspf-milter:/nonexistent:/usr/sbin/nologin
 ultimaker:*:881:881::0:0:Ultimaker user:/nonexistent:/usr/sbin/nologin
 midpoint:*:882:882::0:0:midPoint user:/var/db/midpoint:/usr/sbin/nologin
 ipfs-go:*:883:883::0:0:ipfs-go user:/var/db/ipfs-go:/bin/sh
@@ -922,7 +922,7 @@ boinc:*:973:973::0:0:BOINC user:/var/db/boinc:/bin/sh
 radicale:*:974:974::0:0:Radicale daemon:/nonexistent:/usr/sbin/nologin
 unifi:*:975:975::0:0:Unifi Wireless Controller:/nonexistent:/usr/sbin/nologin
 minetest:*:976:976::0:0:& server:/nonexistent:/usr/sbin/nologin
-tests:*:977:65534::0:0:Unprivileged user for tests:/nonexistent:/usr/sbin/nologin
+tests:*:977:977::0:0:Unprivileged user for tests:/nonexistent:/usr/sbin/nologin
 _dnscrypt-proxy:*:978:978::0:0:dnscrypt-proxy user:/var/empty:/usr/sbin/nologin
 ums:*:979:979::0:0:Universal Media Server:/nonexistent:/usr/sbin/nologin
 hbase:*:980:980::0:0:HBase user:/nonexistent:/usr/sbin/nologin

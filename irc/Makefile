@@ -16,7 +16,6 @@
     SUBDIR += bnc
     SUBDIR += bopm
     SUBDIR += cgiirc
-    SUBDIR += charybdis
     SUBDIR += ctrlproxy
     SUBDIR += cwirc
     SUBDIR += dancer
@@ -29,7 +28,6 @@
     SUBDIR += epic5
     SUBDIR += evangeline
     SUBDIR += ezbounce
-    SUBDIR += fisg
     SUBDIR += gruftistats
     SUBDIR += hexchat
     SUBDIR += hexchat-fish
@@ -45,9 +43,7 @@
     SUBDIR += ircd-hybrid
     SUBDIR += ircd-ratbox
     SUBDIR += ircd-ratbox-devel
-    SUBDIR += ircd-ru
     SUBDIR += ircproxy
-    SUBDIR += ircservices
     SUBDIR += iroffer-dinoex
     SUBDIR += irssi
     SUBDIR += irssi-dcc_send_limiter
@@ -57,13 +53,13 @@
     SUBDIR += irssi-xmpp
     SUBDIR += irssistats
     SUBDIR += keitairc2
+    SUBDIR += komanda-cli
     SUBDIR += konversation
     SUBDIR += kvirc
     SUBDIR += libircclient
     SUBDIR += lostirc
     SUBDIR += miau
     SUBDIR += muh
-    SUBDIR += nethirc
     SUBDIR += ngircd
     SUBDIR += ninja
     SUBDIR += onis
@@ -91,7 +87,6 @@
     SUBDIR += pircbot
     SUBDIR += pisg
     SUBDIR += polari
-    SUBDIR += psybnc
     SUBDIR += py-fishcrypt
     SUBDIR += py-irc
     SUBDIR += py-limnoria
@@ -99,10 +94,8 @@
     SUBDIR += quassel-core
     SUBDIR += quirc
     SUBDIR += ratbox-respond
-    SUBDIR += ratbox-services
     SUBDIR += rbot
     SUBDIR += riece
-    SUBDIR += roxirc
     SUBDIR += rubygem-cinch
     SUBDIR += rubygem-cogbot
     SUBDIR += rubygem-lita-irc
@@ -112,6 +105,8 @@
     SUBDIR += simpleirc
     SUBDIR += sirc
     SUBDIR += smartirc4net
+    SUBDIR += smuxi
+    SUBDIR += srain
     SUBDIR += srvx
     SUBDIR += thales
     SUBDIR += tircproxy

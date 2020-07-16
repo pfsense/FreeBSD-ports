@@ -1,11 +1,12 @@
---- kiofusevfs.cpp.orig	2020-02-04 12:37:00 UTC
+--- kiofusevfs.cpp.orig	2020-06-05 16:51:15 UTC
 +++ kiofusevfs.cpp
-@@ -43,6 +43,8 @@
- #include "debug.h"
- #include "kiofusevfs.h"
- 
-+#include <boost/cerrno.hpp>
-+
- // Flags that don't exist on FreeBSD; since these are used as
- // bit(masks), setting them to 0 effectively means they're always unset.
- #ifndef O_NOATIME
+@@ -2320,7 +2320,9 @@ int KIOFuseVFS::kioErrorToFuseError(const int kioError
+ 		case KIO::ERR_CANNOT_RENAME_PARTIAL        : return EIO;
+ 		case KIO::ERR_NEED_PASSWD                  : return EACCES;
+ 		case KIO::ERR_CANNOT_SYMLINK               : return EIO;
++#ifdef ENODATA
+ 		case KIO::ERR_NO_CONTENT                   : return ENODATA;
++#endif
+ 		case KIO::ERR_DISK_FULL                    : return ENOSPC;
+ 		case KIO::ERR_IDENTICAL_FILES              : return EEXIST;
+ 		case KIO::ERR_SLAVE_DEFINED                : return EIO;

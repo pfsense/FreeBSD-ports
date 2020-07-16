@@ -2,14 +2,12 @@
 # $FreeBSD$
 
 PORTNAME?=	v4l-utils
-PORTREVISION=	0
 
 COMMENT=	Video4Linux utilities
 
-MASTERDIR=	${.CURDIR}/../../multimedia/libv4l
+MASTERDIR=	${.CURDIR}/../libv4l
 DESCR=		${.CURDIR}/pkg-descr
 PLIST=		${.CURDIR}/pkg-plist
-LIBV4L_SLAVE=   utils
 
 INSTALL_WRKSRC=	${WRKSRC}/utils
 

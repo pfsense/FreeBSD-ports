@@ -5,12 +5,11 @@ DISTVERSION=	1.14.0
 PORTREVISION=	1
 DISTVERSIONSUFFIX=	-source
 CATEGORIES=	misc
-MASTER_SITES=	SF/crosti/crosti%20${DISTVERSION}/
+#MASTER_SITES=	SF/crosti/crosti%20${DISTVERSION}/ # size mismatch: expected 671143, actual 661721
+MASTER_SITES=	https://managedway.dl.sourceforge.net/project/crosti/crosti%201.14.0/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Convert custom image to cross stitch design, edit stitch designs
-
-BROKEN=		unfetchable
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/gpl.txt

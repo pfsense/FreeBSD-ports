@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	qcad
-PORTVERSION=	3.24.2.0
+PORTVERSION=	3.24.3.8
 #PORTREVISION=
 DISTVERSIONPREFIX=	v
 CATEGORIES=	cad
@@ -12,10 +12,6 @@ MAINTAINER=	mr@FreeBSD.org
 COMMENT=	Professional CAD system
 
 LICENSE=	GPLv3
-
-.if ${/usr/bin/ld:L:tA} == /usr/bin/ld.lld
-BROKEN_i386=	ld: error: relocation R_386_PC32 cannot be used against symbol ON_GetPointListBoundingBox
-.endif
 
 BUILD_DEPENDS=	bash:shells/bash	\
 		${LOCALBASE}/lib/libopenNURBS.a:graphics/opennurbs
@@ -54,8 +50,12 @@ OPTIONS_DEFINE=	EXAMPLES
 
 CFLAGS_i386= -fPIC
 CXXFLAGS_i386= -fPIC
+LDFLAGS_i386= -Wl,-z,notext
 
 pre-configure:
+	${MKDIR} ${WRKSRC}/src/3rdparty/qt-labs-qtscriptgenerator-${_QT_VERSION}
+	${CP} ${WRKSRC}/src/3rdparty/qt-labs-qtscriptgenerator-5.13.2/qt-labs-qtscriptgenerator-5.13.2.pro \
+           ${WRKSRC}/src/3rdparty/qt-labs-qtscriptgenerator-${_QT_VERSION}/qt-labs-qtscriptgenerator-${_QT_VERSION}.pro
 	${REINPLACE_CMD} -e "s|%%DATADIR%%|${DATADIR}|"	\
 		${WRKSRC}/src/core/RS.cpp
 	${REINPLACE_CMD} -e "s|%%DATADIR%%|${DATADIR}|"	\

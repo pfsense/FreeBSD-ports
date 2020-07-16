@@ -2,30 +2,39 @@
 # $FreeBSD$
 
 PORTNAME=	d-feet
-PORTVERSION=	0.3.11
-PORTREVISION=	2
+PORTVERSION=	0.3.15
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
 
-MAINTAINER=	thinker@codemud.net
-COMMENT=	D-Bus python introspection debugger
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	D-Bus Python introspection debugger
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	itstool:textproc/itstool
 
-NO_ARCH=	yes
-USES=		gettext gmake gnome perl5 pkgconfig python tar:xz
-USE_GNOME=	gtk30 pygobject3 intlhack introspection:build libxml2:build libwnck3
-USE_PYTHON=	py3kplist
-GNU_CONFIGURE=	yes
-USE_PERL5=	build
+USES=		gettext gnome meson pkgconfig python:3.5+ tar:xz
+USE_GNOME=	gtk30 intlhack libwnck3 pygobject3 introspection:build \
+		libxml2:build
+GLIB_SCHEMAS=	org.gnome.dfeet.gschema.xml
 INSTALLS_ICONS=	yes
+USE_PYTHON=	py3kplist
 
-GLIB_SCHEMAS=	org.gnome.d-feet.gschema.xml
+MESON_ARGS=	-Dtests=false
 
-# testsuite needs bin/pep8
-CONFIGURE_ARGS+=--disable-tests
+NO_ARCH=	yes
+
+post-patch:
+	@${REINPLACE_CMD} \
+		-e 's|%%PYTHON_CMD%%|${PYTHON_CMD}|' \
+		-e 's|%%PYTHON_VERSION%%|${PYTHON_VERSION}|' \
+		${WRKSRC}/meson.build
+
+post-install:
+.for locale in cs de el es hu pl pt_BR sv
+	${RLN} ${STAGEDIR}${PREFIX}/share/help/C/d-feet/figures/icon.png \
+		${STAGEDIR}${PREFIX}/share/help/${locale}/d-feet/figures/icon.png
+.endfor
 
 .include <bsd.port.mk>

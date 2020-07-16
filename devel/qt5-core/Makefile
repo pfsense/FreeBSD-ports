@@ -2,7 +2,7 @@
 
 PORTNAME=	core
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt5-
 
@@ -10,7 +10,8 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt core non-graphical module
 
 LIB_DEPENDS=	libicui18n.so:devel/icu \
-		libpcre2-posix.so:devel/pcre2
+		libpcre2-posix.so:devel/pcre2 \
+		libzstd.so:archivers/zstd
 
 USES=		compiler:c++11-lang gnome qmake:no_env qt-dist:5,base
 USE_GNOME=	glib20
@@ -35,7 +36,7 @@ QT_BINARIES=	yes
 QT_DEFINES=	GLIB
 QT_CONFIG=	glib icu
 
-MORE_WRKSRCS=	src/tools/bootstrap src/tools/qfloat16-tables src/corelib src/tools/qlalr
+MORE_WRKSRCS=	src/tools/bootstrap src/corelib src/tools/qlalr
 
 .include <bsd.port.pre.mk>
 # FreeBSD base gained /etc/os-release in r354922, which

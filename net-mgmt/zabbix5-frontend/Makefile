@@ -12,8 +12,8 @@ NO_ARCH=	yes
 PATCHDIR=
 PLIST=		${PKGDIR}/pkg-plist.frontend
 
-USE_PHP=	bcmath ctype dom fileinfo filter gd gettext json ldap mbstring pcre \
-		session simplexml snmp sockets xml xmlreader xmlwriter
+USE_PHP=	bcmath ctype dom fileinfo filter gd gettext hash json ldap mbstring \
+		pcre session simplexml snmp sockets xml xmlreader xmlwriter
 USES+=		php:web
 
 OPTIONS_DEFINE=		MYSQLI PGSQL ORACLE

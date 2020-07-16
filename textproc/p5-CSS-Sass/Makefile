@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	CSS-Sass
-PORTVERSION=	3.6.0
-PORTREVISION=	1
+PORTVERSION=	3.6.3
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -13,6 +12,8 @@ COMMENT=	Compile .scss and .sass files using LibSass
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_FreeBSD_12_powerpc64=	fails to build: /usr/local/bin/ld: cannot find -lc++
 
 BUILD_DEPENDS=	p5-ExtUtils-CppGuess>=0.14:devel/p5-ExtUtils-CppGuess \
 		${RUN_DEPENDS}
@@ -25,6 +26,8 @@ TEST_DEPENDS=	p5-File-chdir>=0.01:devel/p5-File-chdir \
 
 USES=		compiler:c++11-lang gmake perl5
 USE_PERL5=	configure
+
+MAKE_JOBS_UNSAFE=	yes
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/CSS/Sass/Sass.so

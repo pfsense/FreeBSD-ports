@@ -1,0 +1,17 @@
+TIMESTAMP = 1592945200
+SHA256 (votca-votca-v1.6.1_GH0.tar.gz) = 614e7f3de93c445ab9e76519679cfd1ecbcb686a49474785a084a9cc0e031620
+SIZE (votca-votca-v1.6.1_GH0.tar.gz) = 22457
+SHA256 (votca-tools-232b1300228f0ead9d1b28059b216b0dc3628e13_GH0.tar.gz) = d2280100ce61a59dd2c2fb3461c2c61f66a0f384d912b4a6873be0de2d57eaaa
+SIZE (votca-tools-232b1300228f0ead9d1b28059b216b0dc3628e13_GH0.tar.gz) = 113466
+SHA256 (votca-csg-8fc39bd2afdfc28da1d453e00df7ca69a6b29778_GH0.tar.gz) = 2e3586f413992c8f62f462714624e028290f78a05b442bff3e30aa24c970e718
+SIZE (votca-csg-8fc39bd2afdfc28da1d453e00df7ca69a6b29778_GH0.tar.gz) = 477043
+SHA256 (votca-csgapps-cc763698019343dce934bcfe7442cfad7e2b50e8_GH0.tar.gz) = 3e733c0cb53372dbac952291d7f3b67b168cd7d117ac027c3a8d9584e67521bf
+SIZE (votca-csgapps-cc763698019343dce934bcfe7442cfad7e2b50e8_GH0.tar.gz) = 19371
+SHA256 (votca-xtp-760fc1f32fca869c1ca2760c03f26e554ca1e1a6_GH0.tar.gz) = b525a54a37bc23b3a75276e82f839cd37e8fc90e3bbb9b9e3a4352344ef993a4
+SIZE (votca-xtp-760fc1f32fca869c1ca2760c03f26e554ca1e1a6_GH0.tar.gz) = 1457441
+SHA256 (votca-csg-tutorials-8b4ca1d8c932d747aad2aaa611db906745117f8b_GH0.tar.gz) = b55e28b29c2b40b7be6f24b5947752fde317816fcada3a4fe3ef93e878ddb676
+SIZE (votca-csg-tutorials-8b4ca1d8c932d747aad2aaa611db906745117f8b_GH0.tar.gz) = 5948169
+SHA256 (votca-csg-manual-5bd9339bc5a986071dbdacaf69698c1559b22972_GH0.tar.gz) = afda3f203994b61e3cb5214f12cf6880b11ab851697a466cc14202030670a415
+SIZE (votca-csg-manual-5bd9339bc5a986071dbdacaf69698c1559b22972_GH0.tar.gz) = 3573861
+SHA256 (votca-xtp-tutorials-8c8255b0a830ed9d8a61855554afab430a667a8e_GH0.tar.gz) = 9fb4a56bca401acce2c696cdd395897fd90d2be29da31df2ad60fd1f3159dc6d
+SIZE (votca-xtp-tutorials-8c8255b0a830ed9d8a61855554afab430a667a8e_GH0.tar.gz) = 46198394

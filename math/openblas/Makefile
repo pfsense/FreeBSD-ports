@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	openblas
-PORTVERSION=	0.3.7
 DISTVERSIONPREFIX=	v
+DISTVERSION=	0.3.9
 PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	math
@@ -12,8 +12,9 @@ DISTFILES=	large.tgz:lapack_tmg \
 		timing.tgz:lapack_tmg
 DIST_SUBDIR=	openblas
 
-PATCH_SITES=	https://github.com/xianyi/OpenBLAS/commit/
-PATCHFILES=	3e67017ac8f0246f5fc14572ca663fb0968d1046.patch:-p1
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	ee2e758278b5d82b7242f505ea694f082ef65879.patch:-p1 # fixes the regression: https://github.com/xianyi/OpenBLAS/pull/2512
+PATCHFILES+=	3eda3d34c3d9bfabb29e1d8a69860932334a815d.patch:-p1 # fixes build on powerpc (PPCG4)
 
 MAINTAINER=	phd_kimberlite@yahoo.co.jp
 COMMENT=	Optimized BLAS library based on GotoBLAS2
@@ -40,10 +41,13 @@ TEST_TARGET=	tests
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 
 OPTIONS_DEFINE=			DYNAMIC_ARCH INTERFACE64 OPENMP
+OPTIONS_DEFAULT=		OPENMP
 OPTIONS_DEFINE_i386=		AVX AVX2
 OPTIONS_DEFINE_amd64=		AVX AVX2
 OPTIONS_DEFINE_powerpc64=	POWER6
 OPTIONS_EXCLUDE_powerpc64=	OPENMP
+OPTIONS_EXCLUDE_powerpc=	OPENMP
+OPTIONS_SUB=	yes
 
 .if defined(BATCH) || defined(PACKAGE_BUILDING)
 OPTIONS_DEFAULT_i386=	DYNAMIC_ARCH
@@ -68,16 +72,15 @@ TARGET_CPU_ARCH=	PPC970
 .  endif
 .endif
 
+.if ${ARCH} == powerpc
+USE_GCC=		yes
+TARGET_CPU_ARCH=	PPCG4
+.endif
+
 MAXTHREADS?=	64
 
 .if ! ${PORT_OPTIONS:MDYNAMIC_ARCH} && ( ${ARCH} == "amd64" || ${ARCH} == "i386" )
 MANUAL_PACKAGE_BUILD=	Optimizes for the build machine.
-.endif
-
-.if ${PORT_OPTIONS:MDYNAMIC_ARCH}
-PLIST_SUB+=	DYNARCH=""
-.else
-PLIST_SUB+=	DYNARCH="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MOPENMP}

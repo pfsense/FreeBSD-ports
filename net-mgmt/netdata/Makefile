@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	netdata
-PORTVERSION=	1.20.0
-PORTREVISION=	2
+PORTVERSION=	1.23.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-mgmt
 
@@ -12,16 +11,17 @@ COMMENT=	Scalable distributed realtime performance and health monitoring
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
-		libuv.so:devel/libuv \
-		libjson-c.so:devel/json-c
+LIB_DEPENDS=	libjson-c.so:devel/json-c \
+		libuuid.so:misc/e2fsprogs-libuuid \
+		libuv.so:devel/libuv
 
 RUN_DEPENDS=	bash:shells/bash \
 		curl:ftp/curl \
 		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}urllib3>0:net/py-urllib3@${PY_FLAVOR}
 
-USES=		autoreconf cpe pathfix pkgconfig:both python shebangfix ssl
+USES=		autoreconf cpe gmake pathfix pkgconfig:both python shebangfix \
+		ssl
 
 USE_GITHUB=	yes
 
@@ -50,12 +50,17 @@ SUB_FILES=	${PORTNAME}.conf.sample
 USERS=		netdata
 GROUPS=		netdata
 
-OPTIONS_DEFINE=		CUPS DBENGINE FREEIPMI LTO
+OPTIONS_DEFINE=		CLOUD CUPS DBENGINE FREEIPMI GOPLUGIN LTO
 OPTIONS_SUB=		YES
 OPTIONS_DEFAULT=	DBENGINE
 OPTIONS_DEFAULT_FreeBSD_12=	LTO
 OPTIONS_DEFAULT_FreeBSD_13=	LTO
 OPTIONS_DEFAULT+=	${OPTIONS_DEFAULT_${OPSYS}_${OSREL:R}}
+
+CLOUD_DESC=		Enable cloud functionality
+CLOUD_CONFIGURE_OFF=	--disable-cloud
+CLOUD_EXTRA_PATCHES_OFF=	${FILESDIR}/extra-patch-web_gui_index.html \
+			${FILESDIR}/extra-patch-web_gui_main.js
 
 CUPS_DESC=		Enable support for cups
 CUPS_CONFIGURE_ENABLE=	plugin-cups
@@ -69,6 +74,9 @@ DBENGINE_LIB_DEPENDS=		libJudy.so:devel/judy \
 FREEIPMI_DESC=			Enable support for freeipmi
 FREEIPMI_CONFIGURE_ENABLE=	plugin-freeipmi
 FREEIPMI_LIB_DEPENDS=		libfreeipmi.so:sysutils/freeipmi
+
+GOPLUGIN_DESC=		Enable the go collector plugin
+GOPLUGIN_RUN_DEPENDS=	${LOCALBASE}/libexec/netdata/plugins.d/god.plugin:net-mgmt/netdata-go
 
 LTO_DESC=		Use Link-Time Optimization
 LTO_CONFIGURE_ENABLE=	lto
@@ -97,9 +105,9 @@ post-install:
 	${MKDIR} ${STAGEDIR}${NETDATA_CACHE}
 	${MKDIR} ${STAGEDIR}${NETDATA_LOG}
 	${MKDIR} ${STAGEDIR}${NETDATA_PERST}
-	(for file in ${STAGEDIR}${LOCALBASE}/lib/${PORTNAME}/conf.d/*.conf \
+	(for fi in ${STAGEDIR}${LOCALBASE}/lib/${PORTNAME}/conf.d/*.conf \
 			${STAGEDIR}${LOCALBASE}/lib/${PORTNAME}/conf.d/*/*.conf; do \
-		${MV} $$file $$file".sample"; \
+		${MV} $$fi $$fi".sample"; \
 	done)
 
 .include <bsd.port.mk>

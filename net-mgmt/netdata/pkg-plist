@@ -9,7 +9,8 @@
 @sample(netdata,netdata,0640) lib/netdata/conf.d/charts.d/nut.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/charts.d/opensips.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/charts.d/sensors.conf.sample
-@sample(netdata,netdata,0640) lib/netdata/conf.d/ebpf_process.conf.sample
+@sample(netdata,netdata,0640) lib/netdata/conf.d/ebpf.conf.sample
+@sample(netdata,netdata,0640) lib/netdata/conf.d/exporting.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/fping.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/adaptec_raid.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/am2320.conf.sample
@@ -28,10 +29,12 @@
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/cpu.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/dbengine.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/disks.conf.sample
+@sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/dns_query.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/dnsmasq_dhcp.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/dockerd.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/elasticsearch.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/entropy.conf.sample
+@sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/exporting.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/fping.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/fronius.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/gearman.conf.sample
@@ -63,6 +66,7 @@
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/portcheck.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/postgres.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/processes.conf.sample
+@sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/pulsar.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/qos.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/ram.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/redis.conf.sample
@@ -82,8 +86,10 @@
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/unbound.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/varnish.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/vcsa.conf.sample
+@sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/vernemq.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/vsphere.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/web_log.conf.sample
+@sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/whoisquery.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/wmi.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/x509check.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health.d/zfs.conf.sample
@@ -91,7 +97,6 @@
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health_alarm_notify.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/health_email_recipients.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/ioping.conf.sample
-@sample(netdata,netdata,0640) lib/netdata/conf.d/mongodb.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/node.d.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/python.d.conf.sample
 @sample(netdata,netdata,0640) lib/netdata/conf.d/python.d/adaptec_raid.conf.sample
@@ -388,6 +393,7 @@ sbin/netdatacli
 %%DATADIR%%/web/lib/pako-1.0.6.min.js
 %%DATADIR%%/web/lib/perfect-scrollbar-0.6.15.min.js
 %%DATADIR%%/web/lib/tableExport-1.6.0.min.js
+%%DATADIR%%/web/old/index.html
 %%DATADIR%%/web/main.css
 %%DATADIR%%/web/main.js
 %%DATADIR%%/web/netdata-swagger.json

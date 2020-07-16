@@ -54,16 +54,16 @@ _KDE_RELNAME=		KDE${_KDE_VERSION}
 
 # === VERSIONS OF THE DIFFERENT COMPONENTS =====================================
 # Current KDE desktop.
-KDE_PLASMA_VERSION?=		5.18.4.1
+KDE_PLASMA_VERSION?=		5.19.2
 KDE_PLASMA_BRANCH?=		stable
 
 # Current KDE frameworks.
-KDE_FRAMEWORKS_VERSION?=	5.68.0
+KDE_FRAMEWORKS_VERSION?=	5.71.0
 KDE_FRAMEWORKS_BRANCH?= 	stable
 
 # Current KDE applications.
-KDE_APPLICATIONS_VERSION?=	19.12.3
-KDE_APPLICATIONS_SHLIB_VER?=	5.13.3
+KDE_APPLICATIONS_VERSION?=	20.04.2
+KDE_APPLICATIONS_SHLIB_VER?=	5.14.2
 KDE_APPLICATIONS_BRANCH?=	stable
 # Upstream moves old software to Attic/. Specify the newest applications release there.
 # Only the major version is used for the comparison.
@@ -123,14 +123,14 @@ DIST_SUBDIR?=		KDE/applications/${KDE_APPLICATIONS_VERSION}
 .      elif ${_KDE_CATEGORY:Mkde-plasma}
 PORTVERSION?=		${KDE_PLASMA_VERSION}
 PKGNAMEPREFIX?=		plasma5-
-MASTER_SITES?=		KDE/${KDE_PLASMA_BRANCH}/plasma/${KDE_PLASMA_VERSION:R}
+MASTER_SITES?=		KDE/${KDE_PLASMA_BRANCH}/plasma/${KDE_PLASMA_VERSION}
 DIST_SUBDIR?=		KDE/plasma/${KDE_PLASMA_VERSION}
 .      elif ${_KDE_CATEGORY:Mkde-frameworks}
 PORTVERSION?=		${KDE_FRAMEWORKS_VERSION}
 PKGNAMEPREFIX?=		kf5-
 # This is a slight duplication of _USE_FRAMEWORKS_PORTING -- it maybe would be
 # better to rely on ${_USE_FRAMEWORKS_PORTING:S/^/k/g}
-_PORTINGAIDS=		kjs kjsembed kdelibs4support kdesignerplugin kdewebkit khtml kmediaplayer kross
+_PORTINGAIDS=		kjs kjsembed kdelibs4support kdesignerplugin kdewebkit khtml kmediaplayer kross kxmlrpcclient
 .        if ${_PORTINGAIDS:M*${PORTNAME}*}
 MASTER_SITES?=		KDE/${KDE_FRAMEWORKS_BRANCH}/frameworks/${KDE_FRAMEWORKS_VERSION:R}/portingAids
 .        else
@@ -194,7 +194,7 @@ _USE_FRAMEWORKS_TIER2=	auth completion crash doctools \
 _USE_FRAMEWORKS_TIER3=	activities activities-stats baloo5 bookmarks configwidgets \
 			designerplugin emoticons globalaccel guiaddons \
 			iconthemes init kcmutils kdeclarative \
-			kded kdesu kdewebkit kio newstuff notifyconfig parts \
+			kded kdesu kdewebkit kio kwayland-server newstuff notifyconfig parts \
 			people plasma-framework purpose runner service texteditor \
 			textwidgets wallet xmlgui xmlrpcclient
 
@@ -393,6 +393,12 @@ kde-kquickcharts_PATH=		${QT_QMLDIR}/org/kde/quickcharts/controls/libchartscontr
 kde-kross_PORT=			lang/kf5-kross
 kde-kross_LIB=			libKF5KrossCore.so
 
+kde-kwayland-protocols_PORT=	x11/plasma-kwayland-protocols
+kde-kwayland-protocols_LIB=	${KDE_PREFIX}/lib/cmake/PlasmaWaylandProtocols/PlasmaWaylandProtocolsConfig.cmake
+
+kde-kwayland-server_PORT=	x11/plasma5-kwayland-server
+kde-kwayland-server_LIB=	libKWaylandServer.so
+
 kde-mediaplayer_PORT=		multimedia/kf5-kmediaplayer
 kde-mediaplayer_LIB=		libKF5MediaPlayer.so.5
 
@@ -523,7 +529,7 @@ kde-kgamma5_PORT=		x11/plasma5-kgamma5
 kde-kgamma5_PATH=		${QT_PLUGINDIR}/kcm_kgamma.so
 
 kde-kmenuedit_PORT=		sysutils/plasma5-kmenuedit
-kde-kmenuedit_LIB=		libkdeinit5_kmenuedit.so
+kde-kmenuedit_PATH=		${KDE_PREFIX}/bin/kmenuedit
 
 kde-kscreen_PORT=		x11/plasma5-kscreen
 kde-kscreen_PATH=		${KDE_PREFIX}/bin/kscreen-console
@@ -669,7 +675,7 @@ kde-kontactinterface_PORT=	net/kontactinterface
 kde-kontactinterface_LIB=	libKF5KontactInterface.so
 
 kde-kpimdav_PORT=		net/kdav
-kde-kpimdav_LIB=		libKPimKDAV.so
+kde-kpimdav_LIB=		libKF5DAV.so
 
 kde-kpkpass_PORT=		security/kpkpass
 kde-kpkpass_LIB=		libKPimPkPass.so

@@ -3,21 +3,24 @@
 
 PORTNAME=	rfc
 PORTVERSION=	3.2.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	misc
-MASTER_SITES=	http://www.dewn.com/rfc/
+MASTER_SITES=	https://BSDforge.com/projects/source/misc/rfc/
 
-MAINTAINER=	scf@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Perl script to search for RFC's
 
-BROKEN=		unfetchable
+LICENSE=	BSD2CLAUSE
 
 RUN_DEPENDS=	w3m:www/w3m
 
-NO_BUILD=	yes
-USES=	perl5 shebangfix
+USES=		perl5 shebangfix
 USE_PERL5=	run
+
 SHEBANG_FILES=	${PORTNAME}-${PORTVERSION}
+
+NO_ARCH=	yes
+NO_BUILD=	yes
 
 PLIST_FILES=	bin/rfc man/man1/rfc.1.gz
 

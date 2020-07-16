@@ -85,7 +85,7 @@ COMPILER_RT_DESC=	Sanitizer libraries
 COMPILER_RT_DISTFILES=	compiler-rt-${DISTVERSION}.src${EXTRACT_SUFX}
 COMPILER_RT_PLIST_FILES=${_COMPILER_RT_LIBS:S|^|${_CRTLIBDIR}/|} \
 			${_COMPILER_RT_BLACKLISTS:S|^|${_CRTBLDIR}/|}
-DOCS_BUILD_DEPENDS=	sphinx-build-${PYTHON_VER}:textproc/py-sphinx@${PY_FLAVOR} \
+DOCS_BUILD_DEPENDS=	${PY_SPHINX} \
 			${PYTHON_PKGNAMEPREFIX}recommonmark>=0.0.20180530:textproc/py-recommonmark@${PY_FLAVOR}
 DOCS_CONFLICTS_BUILD=	commonmark-cmark-*
 DOCS_PORTDOCS=		llvm
@@ -106,7 +106,7 @@ LIT_VARS=		_USES_PYTHON=python:3.6+
 LLD_DESC=		Install lld, the LLVM linker
 LLD_DISTFILES=		lld-${DISTVERSION}.src${EXTRACT_SUFX}
 LLD_EXTRA_PATCHES=	${PATCHDIR}/lld
-LLDB_BUILD_DEPENDS=	swig3.0:devel/swig30 \
+LLDB_BUILD_DEPENDS=	swig:devel/swig \
 			${PY_ENUM34}
 LLDB_DESC=		Install lldb, the LLVM debugger
 LLDB_DISTFILES=		lldb-${DISTVERSION}.src${EXTRACT_SUFX}
@@ -401,6 +401,10 @@ post-extract-LLDB-on:
 
 post-extract-OPENMP-on:
 	${MV} ${WRKSRC_openmp} ${PATCH_WRKSRC}/projects/openmp
+
+post-patch-LLD-on:
+	${REINPLACE_CMD} -e "s|'indexsidebar.html'|['indexsidebar.html']|" \
+		${PATCH_WRKSRC}/tools/lld/docs/conf.py
 
 post-patch:
 	${REINPLACE_CMD} -e 's|import lit|import lit${LLVM_SUFFIX}|' \

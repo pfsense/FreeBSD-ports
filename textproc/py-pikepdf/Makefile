@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pikepdf
-DISTVERSION=	1.10.0
+DISTVERSION=	1.17.0
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,10 +16,12 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pybind11>=2.4.3<3:devel/py-pybind11@${PY_F
 		${PYTHON_PKGNAMEPREFIX}setuptools_scm>0:devel/py-setuptools_scm@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}setuptools_scm_git_archive>0:devel/py-setuptools_scm_git_archive@${PY_FLAVOR}
 LIB_DEPENDS=	libqpdf.so:print/qpdf
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=4.0:devel/py-lxml@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=4.0:devel/py-lxml@${PY_FLAVOR} \
+		${PY_PILLOW}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}attrs>=19.1.0:devel/py-attrs@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}hypothesis>=4.24,<5:devel/py-hypothesis@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytest>=4.4.0,<5:devel/py-pytest@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}hypothesis>=4.24<6:devel/py-hypothesis@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}psutil>=5:sysutils/py-psutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pytest>=4.4.0<5.3.5:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-helpers-namespace>=2019.1.8:devel/py-pytest-helpers-namespace@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-timeout>=1.3.3:devel/py-pytest-timeout@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-xdist>=1.28,<2:devel/py-pytest-xdist@${PY_FLAVOR} \
@@ -28,6 +30,13 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}attrs>=19.1.0:devel/py-attrs@${PY_FLAVOR} \
 
 USES=		compiler:c++14-lang python:3.5+
 USE_PYTHON=	distutils autoplist
+
+OPTIONS_DEFINE=	JBIG2
+OPTIONS_DEFAULT=	JBIG2
+
+JBIG2_DESC=	Support for extracting JBIG2 images
+
+JBIG2_RUN_DEPENDS=	jbig2dec:graphics/jbig2dec
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/pikepdf/_qpdf.so

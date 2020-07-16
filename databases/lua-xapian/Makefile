@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xapian
-PORTVERSION=	1.4.15
+PORTVERSION=	1.4.16
 DISTVERSIONPREFIX=	bindings-
 CATEGORIES=	databases
 MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION}/ \
@@ -18,13 +18,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	xapian-core>=${PORTVERSION}:databases/xapian-core
 LIB_DEPENDS=	libxapian.so:databases/xapian-core
 
-CONFLICTS_INSTALL=	xapian-bindings12
+USES=		compiler:c++11-lang libtool lua:module tar:xz
 
-OPTIONS_DEFINE=	DOCS
-
-PORTSCOUT=	limitw:1,even
-
-USES=		compiler:c++11-lang libtool lua tar:xz
+DOCSDIR=	${LUA_DOCSDIR}
 
 CONFIGURE_ARGS=	--datarootdir=${DATADIR} \
 		--docdir=${DOCSDIR} \
@@ -46,6 +42,12 @@ INSTALL_TARGET=	install-strip
 USE_CXXSTD=	c++11
 
 PORTDOCS=	*
+
+CONFLICTS_INSTALL=	xapian-bindings12
+
+PORTSCOUT=	limitw:1,even
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-lstdc++||g' ${WRKSRC}/configure

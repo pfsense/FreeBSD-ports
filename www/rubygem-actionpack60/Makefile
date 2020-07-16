@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	actionpack
-PORTVERSION=	6.0.2.2
+PORTVERSION=	6.0.3.2
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	60
@@ -12,8 +12,6 @@ COMMENT=	Action Controller and Action View of Rails MVC Framework
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
-
-BROKEN_RUBY24=	yes
 
 RUN_DEPENDS=	rubygem-actionview60>=${PORTVERSION}:devel/rubygem-actionview60 \
 		rubygem-activesupport60>=${PORTVERSION}:devel/rubygem-activesupport60 \

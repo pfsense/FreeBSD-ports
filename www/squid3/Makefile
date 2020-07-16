@@ -2,7 +2,7 @@
 
 PORTNAME=	squid
 PORTVERSION=	3.5.28
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	http://www.squid-cache.org/Versions/v3/${PORTVERSION:R}/ \
 		http://www2.us.squid-cache.org/Versions/v3/${PORTVERSION:R}/ \
@@ -26,7 +26,7 @@ COMMENT=	HTTP Caching Proxy
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	squid*-4.*
+CONFLICTS=	squid-* squid-devel-*
 
 BROKEN_powerpc64=	Does not build: error: unrecognizable insn
 

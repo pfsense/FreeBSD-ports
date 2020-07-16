@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	coccigrep
-PORTVERSION=	1.17
-PORTREVISION=	1
+PORTVERSION=	1.20
 DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc
 
@@ -14,11 +13,11 @@ LICENSE=	GPLv3
 
 RUN_DEPENDS=	spatch:devel/coccinelle
 
+USES=		python:3.5+
+USE_PYTHON=	distutils autoplist concurrent optsuffix
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	regit
-
-USES=		python
-USE_PYTHON=	distutils autoplist concurrent optsuffix
 
 PLIST_FILES=	man/man1/coccigrep.1.gz \
 		${DATADIR_REL}/cocci-grep.el \

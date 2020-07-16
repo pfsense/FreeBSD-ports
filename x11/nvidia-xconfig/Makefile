@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	nvidia-xconfig
-PORTVERSION=	440.64
+PORTVERSION=	440.100
 CATEGORIES=	x11
 
-MAINTAINER=	bland@FreeBSD.org
+MAINTAINER=	x11@FreeBSD.org
 COMMENT=	Tool to manipulate X configuration files for the NVidia driver
 
 LICENSE=	GPLv2

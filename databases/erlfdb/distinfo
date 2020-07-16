@@ -1,3 +1,3 @@
-TIMESTAMP = 1579559156
-SHA256 (cloudant-labs-couchdb-erlfdb-0.0.0-c89b2d6_GH0.tar.gz) = e81a9e686060f9c0e638e623e3c2d5efd9451be9b6c54948745d83a6998e1dbd
-SIZE (cloudant-labs-couchdb-erlfdb-0.0.0-c89b2d6_GH0.tar.gz) = 68922
+TIMESTAMP = 1591868599
+SHA256 (apache-couchdb-erlfdb-v1.2.2_GH0.tar.gz) = 9a927c5d5cb3136ce531098ca1e32fc9e0ac79377a4e2a1f9fb0416f95eea9a9
+SIZE (apache-couchdb-erlfdb-v1.2.2_GH0.tar.gz) = 69994

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	storj
-PORTVERSION=	0.35.3
+PORTVERSION=	1.6.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 
@@ -11,17 +11,14 @@ COMMENT=	Decentralized cloud object storage
 
 LICENSE=	AGPLv3
 
-PORTSCOUT=	skipv:1.0.0	# 1.0.0 is identical to 0.35.3
-
 USES=		go:modules
 USE_GITHUB=	yes
 
 .include "${.CURDIR}/Makefile.deps"
 
-STORJ_CMDS=	certificates identity inspector linksharing \
-		s3-benchmark satellite segment-reaper statreceiver \
-		storagenode storagenode-updater storj-sim uplink \
-		versioncontrol
+STORJ_CMDS=	certificates identity inspector satellite segment-reaper \
+		storagenode storagenode-updater storj-admin storj-sim \
+		uplink versioncontrol
 
 GO_TARGET=	${STORJ_CMDS:S,^,./cmd/,}
 

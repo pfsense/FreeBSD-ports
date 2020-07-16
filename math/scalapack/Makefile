@@ -2,24 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	scalapack
-PORTVERSION=	2.0.2
-PORTREVISION=	19
+PORTVERSION=	2.1.0
+DISTVERSIONPREFIX=	v
 CATEGORIES=	math
-MASTER_SITES=	NL
-DISTFILES=	scalapack-${PORTVERSION}.tgz manpages.tgz
-DIST_SUBDIR=	scalapack
-EXTRACT_ONLY=	scalapack-${PORTVERSION}.tgz manpages.tgz
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	The ScaLAPACK Scalable LAPACK library
+COMMENT=	ScaLAPACK Scalable LAPACK library
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 CONFLICTS=	elmer-mathlibs-1*
 
-USE_LDCONFIG=	yes
+USE_GITHUB=	yes
+GH_ACCOUNT=	Reference-ScaLAPACK
+
 USES=		cmake:insource fortran pathfix
+
+USE_LDCONFIG=	yes
 CMAKE_ARGS_ST=	-DBUILD_STATIC_LIBS:BOOL=ON
 CMAKE_ARGS_SH=	-DBUILD_SHARED_LIBS:BOOL=ON
 CMAKE_ARGS=	${CMAKE_ARGS_ST}
@@ -32,40 +32,37 @@ EXAMPLESDIR=	${PREFIX}/share/examples/${PORTNAME:tu}
 SUB_FILES=	pkg-message
 PLIST_SUB=	SVERSION=${SVERSION} PORTVERSION=${PORTVERSION}
 
-OPTIONS_DEFINE=	DOCS EXAMPLES
+OPTIONS_DEFINE=		EXAMPLES
+OPTIONS_RADIO=		LA MPI
+OPTIONS_RADIO_LA=	ATLAS BLAS
+LA_DESC=		Linear Algebra library support
+BLAS_DESC=		LAPACK blass implementation
+OPTIONS_RADIO_MPI=	MPICH OPENMPI
+OPTIONS_DEFAULT=	BLAS EXAMPLES MPICH
+
+ATLAS_USES=	blaslapack:atlas
+BLAS_USES=	blaslapack:openblas
+
+OPENMPI_BUILD_DEPENDS=	openmpi>0:net/openmpi
+OPENMPI_RUN_DEPENDS=	openmpi>0:net/openmpi
+OPENMPI_CMAKE_ON=	-DMPI_BASE_DIR=${LOCALBASE}/mpi/openmpi
+OPENMPI_LDFLAGS=	-L${LOCALBASE}/mpi/openmpi/lib -Wl,-rpath,${LOCALBASE}/mpi/openmpi/lib -lmpi
+
+MPICH_BUILD_DEPENDS=	${LOCALBASE}/bin/mpicc:net/mpich
+MPICH_RUN_DEPENDS=	${LOCALBASE}/bin/mpicc:net/mpich
+MPICH_CMAKE_ON=		-DMPI_BASE_DIR=${LOCALBASE}
 
 .include <bsd.port.pre.mk>
 
-.if ${PORT_OPTIONS:MDOCS}
-DISTFILES+=	scalapack_install.ps scalapackqref.ps  \
-		lawn100.ps pblasqref.ps manual.ps design.ps \
-		pumma_refmanual.ps trans.ps
-.endif
+BLAS=		${BLASLIB}
+LAPACK=		${LAPACKLIB}
 
-.if exists(${LOCALBASE}/lib/libatlas.so) && !defined(WITH_BLAS)
-WITH_ATLAS=		yes
-.endif
-.if defined(WITH_ATLAS)
-LIB_DEPENDS+=	libatlas.so:math/atlas
-BLAS=		-lf77blas
-LAPACK=		-lalapack -lcblas
+.if ${PORT_OPTIONS:MOPENMPI}
+MPIF77=	${LOCALBASE}/mpi/openmpi/bin/mpif77
+MPICC=	${LOCALBASE}/mpi/openmpi/bin/mpicc
 .else
-LIB_DEPENDS+=	libblas.so:math/blas
-LIB_DEPENDS+=	liblapack.so:math/lapack
-BLAS=		-lblas
-LAPACK=		-llapack
-.endif
-
-.if exists(${LOCALBASE}/mpi/openmpi/bin/mpirun)
-WITH_OPENMPI=	yes
-.endif
-
-.if defined(WITH_OPENMPI)
-BUILD_DEPENDS+=	${LOCALBASE}/mpi/openmpi/lib/libmpi.so:net/openmpi
-RUN_DEPENDS+=	${LOCALBASE}/mpi/openmpi/bin/mpirun:net/openmpi
-.else
-BUILD_DEPENDS+=	${LOCALBASE}/bin/mpicc:net/mpich
-RUN_DEPENDS+=	${LOCALBASE}/bin/mpirun:net/mpich
+MPIF77=	${LOCALBASE}/bin/mpif77
+MPICC=	${LOCALBASE}/bin/mpicc
 .endif
 
 .if ${ARCH} == "sparc64" || ${ARCH} == "amd64"
@@ -92,13 +89,6 @@ CFLAGS+=	-O3 -ffast-math -finline-functions -fomit-frame-pointer -funroll-loops 
 .endif
 
 NOOPT=	-O0
-.if defined(WITH_OPENMPI)
-MPIF77=	${LOCALBASE}/mpi/openmpi/bin/mpif77
-MPICC=	${LOCALBASE}/mpi/openmpi/bin/mpicc
-.else
-MPIF77=	${LOCALBASE}/bin/mpif77
-MPICC=	${LOCALBASE}/bin/mpicc
-.endif
 
 # USES=fortran already forces FC to a supported fortran compiler;
 # assume mpicc points to a compatible compiler and force that, too.
@@ -123,7 +113,6 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/lib/libscalapack.a ${STAGEDIR}${PREFIX}/lib
 	${MV} ${STAGEDIR}${PREFIX}/lib/libscalapack.so ${STAGEDIR}${PREFIX}/lib/libscalapack.so.${SVERSION}
 	${LN} -sf libscalapack.so.${SVERSION} ${STAGEDIR}${PREFIX}/lib/libscalapack.so
-	${INSTALL_MAN}  ${WRKDIR}/MANPAGES/man/manl/*.l ${STAGEDIR}${PREFIX}/man/manl
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/SCALAPACK/TESTING
 	(cd ${WRKSRC}/TESTING/ ;\
 	${INSTALL_PROGRAM} x* ${STAGEDIR}${PREFIX}/share/SCALAPACK/TESTING ;\
@@ -136,17 +125,6 @@ post-install:
 	${INSTALL_DATA} ${FILESDIR}/example1.cc ${STAGEDIR}${PREFIX}/share/examples/SCALAPACK
 	${INSTALL_DATA} ${FILESDIR}/example1.f  ${STAGEDIR}${PREFIX}/share/examples/SCALAPACK
 .endif
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${CAT} ${DISTDIR}/${DIST_SUBDIR}/design.ps    | ${GZIP_CMD} > ${STAGEDIR}${DOCSDIR}/design.ps.gz
-	${CAT} ${DISTDIR}/${DIST_SUBDIR}/lawn100.ps   | ${GZIP_CMD} > ${STAGEDIR}${DOCSDIR}/lawn100.ps.gz
-	${CAT} ${DISTDIR}/${DIST_SUBDIR}/manual.ps    | ${GZIP_CMD} > ${STAGEDIR}${DOCSDIR}/manual.ps.gz
-	${CAT} ${DISTDIR}/${DIST_SUBDIR}/pblasqref.ps | ${GZIP_CMD} > ${STAGEDIR}${DOCSDIR}/pblasqref.ps.gz
-	${CAT} ${DISTDIR}/${DIST_SUBDIR}/pumma_refmanual.ps | ${GZIP_CMD} > ${STAGEDIR}${DOCSDIR}/pumma_refmanual.ps.gz
-	${CAT} ${DISTDIR}/${DIST_SUBDIR}/scalapack_install.ps | ${GZIP_CMD} > ${STAGEDIR}${DOCSDIR}/scalapack_install.ps.gz
-	${CAT} ${DISTDIR}/${DIST_SUBDIR}/scalapackqref.ps | ${GZIP_CMD} > ${STAGEDIR}${DOCSDIR}/scalapackqref.ps.gz
-	${CAT} ${DISTDIR}/${DIST_SUBDIR}/trans.ps | ${GZIP_CMD} > ${STAGEDIR}${DOCSDIR}/trans.ps.gz
-.endif
 
 .if defined(MAINTAINER_MODE)
 do-test:
@@ -155,9 +133,7 @@ do-test:
 	${CHMOD} go-r ${HOME}/.mpd.conf
 	@${ECHO_MSG} "${HOME}/.mpd.conf has been generated - please change the secret word!"
 . endif
-	${LOCALBASE}/bin/mpd &
-	(sleep 5 && cd ${BUILD_WRKSRC}/TESTING && ${MAKE_CMD} test)
-	${LOCALBASE}/bin/mpdallexit
+	(cd ${BUILD_WRKSRC}/TESTING && ${MAKE_CMD} test)
 
 .endif
 

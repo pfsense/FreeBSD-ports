@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME?=	wireshark
-PORTVERSION=	3.2.2
+PORTVERSION=	3.2.4
 PORTREVISION?=	0
 CATEGORIES=	net
 MASTER_SITES=	http://www.wireshark.org/download/src/ \
@@ -84,7 +84,7 @@ CISCODUMP_DESC=		Build ciscodump extcap tool
 GUI_USES=		qt:5
 GUI_USE=	qt=core,gui,multimedia,widgets,printsupport,svg,buildtools_build,linguisttools_build,qmake_build
 
-LUA_USES=		lua:5[1-2]
+LUA_USES=		lua:51-52
 GSSAPI_BASE_USES=		gssapi
 GSSAPI_HEIMDAL_USES=	gssapi:heimdal
 GSSAPI_MIT_USES=		gssapi:mit

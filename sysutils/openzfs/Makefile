@@ -1,11 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	openzfs
-PORTVERSION=	2020031600
+PORTVERSION=	2020061900
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
-MAINTAINER=	kmoore@FreeBSD.org
+MAINTAINER=	freqlabs@FreeBSD.org
 COMMENT=	OpenZFS userland for FreeBSD
 
 LICENSE=	CDDL
@@ -26,9 +26,9 @@ TESTS_DESC=	Install the ZFS Test Suite
 OPTIONS_SUB=	yes
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	zfsonfreebsd
-GH_PROJECT=	ZoF
-GH_TAGNAME=	152cc960a
+GH_ACCOUNT=	openzfs
+GH_PROJECT=	zfs
+GH_TAGNAME=	1c08fa8b5
 
 .include <bsd.port.pre.mk>
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	emacs
 DISTVERSION=	26.3
-PORTREVISION=	3
+PORTREVISION=	5
 PORTEPOCH=	3
 CATEGORIES=	editors
 MASTER_SITES=	GNU
@@ -158,7 +158,6 @@ GIF_LIB_DEPENDS=		libgif.so:graphics/giflib
 GIF_CONFIGURE_WITH=		gif
 GNUTLS_LIB_DEPENDS=		libgnutls.so:security/gnutls
 GNUTLS_CONFIGURE_WITH=		gnutls
-GSETTINGS_IMPLIES=		DBUS
 GSETTINGS_USE=			GNOME=glib20
 GSETTINGS_CONFIGURE_WITH=	gsettings
 GTK2_LIB_DEPENDS=		libfontconfig.so:x11-fonts/fontconfig \
@@ -176,7 +175,7 @@ LCMS2_CONFIGURE_WITH=		lcms2
 M17N_IMPLIES=			XFT
 M17N_LIB_DEPENDS=		libm17n.so:devel/m17n-lib
 M17N_CONFIGURE_WITH=		m17n-flt
-MAGICK_LIB_DEPENDS=		libMagickCore-6.so:graphics/ImageMagick6
+MAGICK_LIB_DEPENDS=		libMagickCore-7.so:graphics/ImageMagick7
 MAGICK_CONFIGURE_WITH=		imagemagick
 MAILUTILS_LIB_DEPENDS=		libmailutils.so:mail/mailutils
 MAILUTILS_CONFIGURE_WITH=	mailutils

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	nethack36
-PORTVERSION=	3.6.4
+PORTVERSION=	3.6.6
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	https://nethack.org/download/${PORTVERSION}/
 DISTNAME=	${TRUEPORTNAME}-${PORTVERSION:S/.//g}-src
@@ -44,7 +45,7 @@ GRAPHICS=	X11_GRAPHICS
 GRAPHICS=	# none
 .endif
 .endif
-CFLAGS+=	-DNOMAIL
+CFLAGS+=	-DNOMAIL -DCURSES_GRAPHICS
 
 OPTIONS_DEFINE=	DOCS
 
@@ -61,7 +62,7 @@ post-patch:
 		's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/include/config.h
 	@${REINPLACE_CMD} -e \
 		's|<malloc.h>|<stdlib.h>|g' ${WRKSRC}/win/Qt/qt_win.cpp
-.for f in include/config.h sys/unix/Makefile.doc sys/unix/Makefile.src sys/unix/Makefile.top
+.for f in sys/unix/Makefile.doc sys/unix/Makefile.src sys/unix/Makefile.top
 	@${REINPLACE_CMD} -e 's|%%HACKNAME%%|${HACKNAME}|g' \
 		-e 's|%%HACKDIR%%|${PREFIX}/${HACKDIR}|g' \
 		-e 's|%%HACKEXT%%|${HACKEXT}|g' \

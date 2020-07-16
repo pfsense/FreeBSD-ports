@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	happy
-PORTVERSION=	1.19.11
+PORTVERSION=	1.19.12
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org
-COMMENT=	Happy is a parser generator for Haskell
+COMMENT=	Parser generator for Haskell
 
 LICENSE=	BSD3CLAUSE
 

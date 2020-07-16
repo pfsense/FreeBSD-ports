@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	groonga
-PORTVERSION=	10.0.0
+PORTVERSION=	10.0.3
 CATEGORIES=	textproc
 MASTER_SITES=	http://packages.groonga.org/source/groonga/
 

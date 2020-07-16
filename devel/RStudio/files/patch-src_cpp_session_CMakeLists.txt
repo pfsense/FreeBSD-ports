@@ -1,6 +1,6 @@
---- src/cpp/session/CMakeLists.txt.orig	2020-01-23 23:30:24 UTC
+--- src/cpp/session/CMakeLists.txt.orig	2020-05-18 18:11:10 UTC
 +++ src/cpp/session/CMakeLists.txt
-@@ -25,32 +25,32 @@ endif()
+@@ -25,9 +25,9 @@ endif()
  if(NOT EXISTS "${RSTUDIO_DEPENDENCIES_DIR}/common/mathjax-27")
    message(FATAL_ERROR "Mathjax 2.7 not found (re-run install-dependencies script to install)")
  endif()
@@ -12,18 +12,9 @@
 +#endif()
  
  # verify embedded packages are available
--foreach(PKG ${RSTUDIO_EMBEDDED_PACKAGES})
--   file(GLOB PKG_FILES "${RSTUDIO_DEPENDENCIES_DIR}/common/${PKG}*.tar.gz")
--   if(NOT PKG_FILES)
--      message(FATAL_ERROR "${PKG} package not found (re-run install-dependencies script to install)")
--   endif()
--endforeach()
-+#foreach(PKG ${RSTUDIO_EMBEDDED_PACKAGES})
-+#   file(GLOB PKG_FILES "${RSTUDIO_DEPENDENCIES_DIR}/common/${PKG}*.tar.gz")
-+#   if(NOT PKG_FILES)
-+#      message(FATAL_ERROR "${PKG} package not found (re-run install-dependencies script to install)")
-+#   endif()
-+#endforeach()
+ foreach(PKG ${RSTUDIO_EMBEDDED_PACKAGES})
+@@ -38,19 +38,19 @@ foreach(PKG ${RSTUDIO_EMBEDDED_PACKAGES})
+ endforeach()
  
  # verify libclang is installed (Windows only)
 -if(WIN32)
@@ -54,7 +45,7 @@
  # include files
  file(GLOB_RECURSE SESSION_HEADER_FILES "*.h*")
  
-@@ -390,6 +390,9 @@ endif()
+@@ -391,6 +391,9 @@ endif()
  # define executable
  add_stripped_executable(rsession ${SESSION_SOURCE_FILES} ${SESSION_HEADER_FILES})
  
@@ -64,7 +55,7 @@
  # skip libR RPATH at development time
  if(RSTUDIO_DEVELOPMENT OR RSTUDIO_RUN_IN_PLACE)
     set_target_properties(rsession PROPERTIES SKIP_BUILD_RPATH TRUE)
-@@ -518,11 +521,11 @@ if (NOT RSTUDIO_SESSION_WIN32)
+@@ -519,11 +522,11 @@ if (NOT RSTUDIO_SESSION_WIN32)
     # install pandoc
     set(PANDOC_VERSION "2.7.3" CACHE INTERNAL "Pandoc version")
  
@@ -81,3 +72,34 @@
  
     # install embedded packages
     foreach(PKG ${RSTUDIO_EMBEDDED_PACKAGES})
+@@ -558,18 +561,18 @@ if (NOT RSTUDIO_SESSION_WIN32)
+            DESTINATION ${RSTUDIO_INSTALL_SUPPORTING}/resources)
+ 
+    # install libclang
+-   if(WIN32)
+-      file(GLOB LIBCLANG_32_FILES "${LIBCLANG_DIR}/x86/*")
+-      install(PROGRAMS ${LIBCLANG_32_FILES}
+-              DESTINATION  ${RSTUDIO_INSTALL_BIN}/rsclang/x86)
+-      file(GLOB LIBCLANG_64_FILES "${LIBCLANG_DIR}/x86_64/*")
+-      install(PROGRAMS ${LIBCLANG_64_FILES}
+-              DESTINATION  ${RSTUDIO_INSTALL_BIN}/rsclang/x86_64)
+-
+-      # install libclang builtin-headers
+-      install(DIRECTORY "${RSTUDIO_DEPENDENCIES_DIR}/common/libclang/builtin-headers"
+-              DESTINATION "${RSTUDIO_INSTALL_SUPPORTING}/resources/libclang")
+-   endif()
++#   if(WIN32)
++#      file(GLOB LIBCLANG_32_FILES "${LIBCLANG_DIR}/x86/*")
++#      install(PROGRAMS ${LIBCLANG_32_FILES}
++#              DESTINATION  ${RSTUDIO_INSTALL_BIN}/rsclang/x86)
++#      file(GLOB LIBCLANG_64_FILES "${LIBCLANG_DIR}/x86_64/*")
++#      install(PROGRAMS ${LIBCLANG_64_FILES}
++#              DESTINATION  ${RSTUDIO_INSTALL_BIN}/rsclang/x86_64)
++#
++#      # install libclang builtin-headers
++#      install(DIRECTORY "${RSTUDIO_DEPENDENCIES_DIR}/common/libclang/builtin-headers"
++#              DESTINATION "${RSTUDIO_INSTALL_SUPPORTING}/resources/libclang")
++#   endif()
+ 
+    # install winpty on windows
+    if(WIN32)

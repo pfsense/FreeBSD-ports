@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	mate-applets
-PORTVERSION=	1.22.2
+PORTVERSION=	1.24.0
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -25,13 +25,12 @@ LIB_DEPENDS=	libgtop-2.0.so:devel/libgtop \
 PORTSCOUT=	limitw:1,even
 
 USES=		compiler:c11 gettext gmake gnome libtool localbase mate \
-		pkgconfig python:2.7 tar:xz xorg
+		pkgconfig tar:xz xorg
 USE_CSTD=	c11
 
 USE_MATE=	libmateweather panel
 USE_XORG=	ice sm x11
-USE_GNOME=	cairo gtk30 gtksourceview3 intltool libwnck3 libxml2 \
-		pygobject3
+USE_GNOME=	cairo gtk30 gtksourceview3 intltool libwnck3 libxml2
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes

@@ -45,7 +45,7 @@ DISTFILES+=	${CARGO_DIST_SUBDIR}/${_crate}.tar.gz:cargo_${_crate:C/[^a-zA-Z0-9_]
 
 CARGO_BUILDDEP?=	yes
 .if ${CARGO_BUILDDEP:tl} == "yes"
-BUILD_DEPENDS+=	${RUST_DEFAULT}>=1.43.0:lang/${RUST_DEFAULT}
+BUILD_DEPENDS+=	${RUST_DEFAULT}>=1.44.0:lang/${RUST_DEFAULT}
 .endif
 
 # Location of cargo binary (default to lang/rust's Cargo binary)
@@ -185,6 +185,10 @@ DEV_WARNING+=	"CARGO_CRATES=openssl-0.10.3 or older do not support OpenSSL 1.1.1
 .  endif
 . endif
 .undef _openssl_VER
+.endif
+
+.if ${CARGO_CRATES:Mopenssl-src-[0-9]*}
+DEV_WARNING+=	"Please make sure this port uses the system OpenSSL and consider removing CARGO_CRATES=${CARGO_CRATES:Mopenssl-src-[0-9]*} (a vendored copy of OpenSSL) from the build, e.g., by patching Cargo.toml appropriately."
 .endif
 
 .if ${CARGO_CRATES:Mopenssl-sys-[0-9]*}

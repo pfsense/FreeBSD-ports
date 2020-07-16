@@ -3,7 +3,7 @@
 
 PORTNAME=	vlc
 DISTVERSION=	3.0.11
-PORTREVISION=	0
+PORTREVISION=	1
 PORTEPOCH=	4
 CATEGORIES=	multimedia audio net www
 MASTER_SITES=	http://download.videolan.org/pub/videolan/${PORTNAME}/${DISTVERSION:S/a$//}/ \
@@ -21,7 +21,8 @@ LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 		libfreetype.so:print/freetype2 \
 		libidn.so:dns/libidn \
 		libmatroska.so:multimedia/libmatroska
-BUILD_DEPENDS=	ffmpeg>=3.4.1,1:multimedia/ffmpeg \
+BUILD_DEPENDS=	gsed:textproc/gsed \
+		ffmpeg>=3.4.1,1:multimedia/ffmpeg \
 		yasm:devel/yasm
 RUN_DEPENDS=	ffmpeg>=3.4.1,1:multimedia/ffmpeg
 
@@ -39,6 +40,7 @@ USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 
 GNU_CONFIGURE=	yes
+BINARY_ALIAS=	sed=${LOCALBASE}/bin/gsed
 CONFIGURE_ARGS=	--enable-avcodec --enable-avformat --enable-dvbpsi \
 		--enable-fontconfig --enable-freetype --enable-libgcrypt \
 		--enable-libxml2 --enable-oss --enable-postproc \
@@ -70,8 +72,8 @@ OPTIONS_DEFINE=	A52 AALIB AOM ASS AVAHI CACA CHROMECAST DAV1D DBUS DCA DOCS DVDR
 		TWOLAME UPNP V4L VAAPI VCD VDPAU VPX VORBIS WAYLAND X11 X264 X265 ZVBI
 OPTIONS_DEFINE_powerpc=	ALTIVEC
 OPTIONS_DEFINE_powerpc64=	ALTIVEC
-OPTIONS_DEFAULT=A52 AVAHI DAV1D DBUS DCA DVDREAD DVDNAV FAAD FLAC GNUTLS JPEG \
-		LIVEMEDIA LUA MAD MPEG2 OGG OPTIMIZED_CFLAGS \
+OPTIONS_DEFAULT=AVAHI DAV1D DBUS DVDREAD DVDNAV GNUTLS JPEG \
+		LIVEMEDIA LUA OGG OPTIMIZED_CFLAGS \
 		OPUS PNG QT5 SAMPLERATE STREAM SPEEX TAGLIB THEORA TWOLAME \
 		V4L VAAPI VCD VDPAU VORBIS WAYLAND X11
 OPTIONS_DEFAULT_powerpc=	ALTIVEC

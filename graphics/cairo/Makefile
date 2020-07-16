@@ -42,13 +42,13 @@ OPTIONS_SLAVE=	${ARCH:tu}
 OPTIONS_SUB=	yes
 
 X11_USES=	xorg
-X11_USE=	xorg=x11,xext,xrender
+X11_USE=	xorg=x11,xext,xorgproto,xrender
 X11_CONFIGURE_ENABLE=xlib
+X11_CONFIGURE_OFF=--disable-glx
 
-OPENGL_USES=	gl xorg
-OPENGL_USE=	gl=gl,egl xorg=xorgproto:both
+OPENGL_USES=	gl
+OPENGL_USE=	gl=egl
 OPENGL_CONFIGURE_ENABLE=gl egl
-OPENGL_IMPLIES=	X11
 
 GLIB_DESC=	Enable GObject Functions Feature
 GLIB_USES=	gettext-runtime

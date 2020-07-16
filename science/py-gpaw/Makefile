@@ -2,7 +2,7 @@
 
 PORTNAME=	gpaw
 DISTVERSION=	1.5.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,6 +12,8 @@ COMMENT=	DFT and beyond within the projector-augmented wave method in chemistry
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	${PYNUMPY}
 LIB_DEPENDS=	libmpich.so:net/mpich \

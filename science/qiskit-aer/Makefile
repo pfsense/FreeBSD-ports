@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	qiskit-aer
-DISTVERSION=	0.4.1
+DISTVERSION=	0.5.2
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,10 +12,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BROKEN_i386=	undefined reference to `__atomic_load'
 
-BUILD_DEPENDS=	spdlog>0:devel/spdlog
 LIB_DEPENDS=	libfmt.so:devel/libfmt \
-		libopenblas.so:math/openblas
-RUN_DEPENDS=	spdlog>0:devel/spdlog
+		libopenblas.so:math/openblas \
+		libspdlog.so:devel/spdlog
 
 USES=		cmake compiler:c++11-lang
 USE_GITHUB=	yes

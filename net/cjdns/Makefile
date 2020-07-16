@@ -3,7 +3,7 @@
 
 PORTNAME=	cjdns
 DISTVERSIONPREFIX=	cjdns-v
-DISTVERSION=	20.5
+DISTVERSION=	20.7
 CATEGORIES=	net security
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,13 +12,12 @@ COMMENT=	Routing engine designed for security, scalability, speed
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-DEPRECATED=	Uses deprecated version of python
-EXPIRATION_DATE=	2020-08-15
+BROKEN_powerpc64=	fails to install: cjdns-cjdns-v20.3/cjdroute: No such file or directory
 
 BUILD_DEPENDS=	node:www/node \
 		bash:shells/bash
 
-USES=		gmake python:2.7
+USES=		gmake python
 USE_GITHUB=	yes
 GH_ACCOUNT=	cjdelisle
 USE_RC_SUBR=	cjdns

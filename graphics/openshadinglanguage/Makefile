@@ -3,13 +3,15 @@
 
 PORTNAME=	openshadinglanguage
 DISTVERSIONPREFIX=	Release-
-DISTVERSION=	1.10.9
+DISTVERSION=	1.10.10
 CATEGORIES=	graphics devel
 
 MAINTAINER=	FreeBSD@Shaneware.biz
 COMMENT=	Advanced shading language for production GI renderers
 
 LICENSE=	BSD3CLAUSE
+
+BROKEN_FreeBSD_12_powerpc64=	fails to compile: llvm_ops.cpp:101:10: fatal error: 'iostream' file not found
 
 BUILD_DEPENDS=	llvm-config${LLVM_VER}:devel/llvm${LLVM_VER}
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
@@ -39,8 +41,12 @@ CMAKE_ARGS+=	-DLLVM_CONFIG:STRING="${LOCALBASE}/bin/llvm-config${LLVM_VER}" \
 # This flag fixes linking with clang 9.0 ??
 CXXFLAGS+=	-DNDEBUG
 
-OPTIONS_DEFINE=		OSLTOY
+OPTIONS_DEFINE=		MATERIALX OSLTOY
 OPTIONS_SUB=		yes
+
+MATERIALX_DESC=		Install material library
+MATERIALX_CMAKE_BOOL=	OSL_BUILD_MATERIALX
+
 OSLTOY_DESC=		Interactive shader edit and visualize tool
 OSLTOY_CMAKE_BOOL=	USE_QT
 OSLTOY_USES=		qt:5

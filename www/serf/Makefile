@@ -3,9 +3,12 @@
 
 PORTNAME=	serf
 PORTVERSION=	1.3.9
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	www
 MASTER_SITES=	APACHE/serf
+
+PATCHFILES=	py3-compat:-p1
+PATCH_SITES=	https://salsa.debian.org/jamessan/serf/-/raw/f6a5256b2de696c2527524d9b1a695ec5aaa17b0/debian/patches/
 
 MAINTAINER=	lev@FreeBSD.org
 COMMENT=	Serf HTTP client library
@@ -42,8 +45,8 @@ TEST_TARGET=	check  # some tests fail
 .if ${PORT_OPTIONS:MGSSAPI_BASE}
 SCONS_ARGS+=	GSSAPI="/usr"
 .endif
-.if ${PORT_OPTIONS:MGSSAPI_MIT} || ${PORT_OPTIONS:MGSAPI_HEIMDAL}
-SCONS_ARGS+=    GSSAPI="${LOCALBASE}"
+.if ${PORT_OPTIONS:MGSSAPI_MIT} || ${PORT_OPTIONS:MGSSAPI_HEIMDAL}
+SCONS_ARGS+=	GSSAPI="${LOCALBASE}"
 .endif
 
 post-patch:

@@ -36,6 +36,7 @@
     SUBDIR += ecrire
     SUBDIR += edith
     SUBDIR += editorconfig-core-c
+    SUBDIR += elementary-code
     SUBDIR += emacs
     SUBDIR += emacs-devel
     SUBDIR += encryptpad
@@ -194,7 +195,6 @@
     SUBDIR += mousepad
     SUBDIR += mp
     SUBDIR += nano
-    SUBDIR += nano-devel
     SUBDIR += ne
     SUBDIR += nedit
     SUBDIR += neovim
@@ -202,7 +202,6 @@
     SUBDIR += nvi-devel
     SUBDIR += nvi-m17n
     SUBDIR += o
-    SUBDIR += omegaT
     SUBDIR += openoffice-4
     SUBDIR += openoffice-devel
     SUBDIR += p5-Proc-InvokeEditor

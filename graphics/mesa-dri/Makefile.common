@@ -14,7 +14,7 @@
 MESAVERSION=	${MESABASEVERSION}${MESASUBVERSION:C/^(.)/.\1/}
 MESADISTVERSION=${MESABASEVERSION}${MESASUBVERSION:C/^(.)/-\1/}
 
-MESABASEVERSION=	18.3.2
+MESABASEVERSION=	19.0.8
 # if there is a subversion, don't include the '-' between 7.11-rc2.
 MESASUBVERSION=
 
@@ -29,7 +29,8 @@ MAINTAINER=	x11@FreeBSD.org
 
 COMPONENT=	${PORTNAME:tl:C/^lib//:C/mesa-//}
 
-BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:devel/libpthread-stubs
+BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:devel/libpthread-stubs \
+		${PYTHON_PKGNAMEPREFIX}mako>0:textproc/py-mako@${PY_FLAVOR}
 LIB_DEPENDS+=	libexpat.so:textproc/expat2
 .if ${COMPONENT} != clover
 USES+=		xorg
@@ -47,10 +48,17 @@ LIB_DEPENDS+=	libunwind.so:devel/libunwind
 LIB_DEPENDS+=	libelf.so:devel/libelf
 .endif
 
-USES+=		compiler:c++11-lib bison gettext-tools gmake libtool \
-		localbase pathfix pkgconfig python:2.7,build shebangfix tar:xz
+USES+=		compiler:c++11-lib bison meson pathfix pkgconfig \
+		python:3.6+,build shebangfix tar:xz
+
 USE_LDCONFIG=	yes
-GNU_CONFIGURE=	yes
+
+.if ${/usr/bin/ld:L:tA} != /usr/bin/ld.lld
+# --build-id isn't supported by old GNU ld.bfd in base
+# Also ld.bfd have problems that seems related to --as-needed
+USE_BINUTILS=		yes
+LDFLAGS+=		-B${LOCALBASE}/bin
+.endif
 
 # only have one port to check with portscout.
 .if ${PORTNAME} != mesa-dri
@@ -83,26 +91,20 @@ LLVM_DEFAULT=	90
 LLVM_DEFAULT=	80
 .endif
 
-.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH:Marm*} || ${ARCH} == i386 || ${ARCH:Mmips*} || ${ARCH:Mpowerpc*}
+BINARY_ALIAS+=	python3=${PYTHON_VERSION}
+
+.if ${ARCH} == sparc64
+MESON_ARGS+=	-Dllvm=false
+.else
 BUILD_DEPENDS+=	llvm${LLVM_DEFAULT}>=3.9.0_4:devel/llvm${LLVM_DEFAULT}
 .if ${COMPONENT} != libs
 RUN_DEPENDS+=	llvm${LLVM_DEFAULT}>=3.9.0_4:devel/llvm${LLVM_DEFAULT}
 .endif
-CONFIGURE_ENV+=	LLVM_CONFIG=${LOCALBASE}/bin/llvm-config${LLVM_DEFAULT}
+MESON_ARGS+=	--native-file="${WRKSRC}/llvm.ini"
 LDFLAGS+=	-Wl,-rpath=${LOCALBASE}/llvm${LLVM_DEFAULT}/lib
-CONFIGURE_ARGS+=	--enable-llvm
-.else
-CONFIGURE_ARGS+=	--disable-llvm
+MESON_ARGS+=	-Dllvm=true
 .endif
 
-# There are issues that need to be fixed to use TLS model "initial-exec"
-# So stick with "global-dynamic"'s model for now. kan@ is working on a
-# patch for rtld. We might want to backport global-dynamic or
-# pthread_setspecific which it uses now by default. But since this
-# configure switch is going away ...
-# https://lists.freebsd.org/pipermail/freebsd-arch/2016-February/017699.html
-CONFIGURE_ARGS+=	--disable-glx-tls
-
 # we don't care about GLes v1
-CONFIGURE_ARGS+=	--disable-gles1
+MESON_ARGS+=	-Dgles1=false
 

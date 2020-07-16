@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	survey
-DISTVERSION=	3.37
+DISTVERSION=	4.0
+PORTREVISION=	1
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -14,7 +15,7 @@ LICENSE_COMB=	dual
 
 CRAN_DEPENDS=	R-cran-minqa>=1.1.15:math/R-cran-minqa \
 		R-cran-numDeriv>=0:math/R-cran-numDeriv \
-		R-cran-mitools>=0:math/R-cran-mitools
+		R-cran-mitools>=2.4:math/R-cran-mitools
 BUILD_DEPENDS=	${CRAN_DEPENDS}
 RUN_DEPENDS=	${CRAN_DEPENDS}
 

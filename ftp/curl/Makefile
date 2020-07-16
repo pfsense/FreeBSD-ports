@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	curl
-PORTVERSION=	7.69.1
+PORTVERSION=	7.71.0
 CATEGORIES=	ftp net www
 MASTER_SITES=	https://curl.haxx.se/download/ \
 		LOCAL/sunpoet
@@ -56,13 +56,10 @@ INSTALL_TARGET=	install-strip
 TEST_TARGET=	test
 USE_LDCONFIG=	yes
 
-PORTDOCS=	*
-PORTEXAMPLES=	*
-
 CPE_VENDOR=	haxx
 
 DOCS=		BUGS FAQ FEATURES INSTALL KNOWN_BUGS MAIL-ETIQUETTE RESOURCES \
-		THANKS TODO TheArtOfHttpScripting VERSIONS
+		THANKS TODO TheArtOfHttpScripting options-in-versions
 
 SHEBANG_FILES=	*/*.pl
 
@@ -162,17 +159,10 @@ post-install:
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/ ${STAGEDIR}${DOCSDIR}/libcurl/
 	cd ${WRKSRC}/docs/ && ${INSTALL_DATA} ${DOCS} *.md ${STAGEDIR}${DOCSDIR}/
-	cd ${WRKSRC}/docs/libcurl/ && ${INSTALL_DATA} ABI *.m4 ${STAGEDIR}${DOCSDIR}/libcurl/
+	cd ${WRKSRC}/docs/libcurl/ && ${INSTALL_DATA} ABI.md libcurl.m4 *.pl symbols-in-versions ${STAGEDIR}${DOCSDIR}/libcurl/
 
 post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/
 	cd ${WRKSRC}/docs/examples/ && ${INSTALL_DATA} README Makefile.example makefile* *.c *.cpp ${STAGEDIR}${EXAMPLESDIR}/
-
-pre-test-PROXY-off:
-	@${ECHO_MSG} "******************************************"
-	@${ECHO_MSG} "* You have disabled curl proxy support.  *"
-	@${ECHO_MSG} "* Some tests SHALL FAIL!                 *"
-	@${ECHO_MSG} "* This is being addressed.               *"
-	@${ECHO_MSG} "******************************************"
 
 .include <bsd.port.post.mk>

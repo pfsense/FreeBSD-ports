@@ -63,16 +63,6 @@ function suricata_is_running($suricata_uuid, $if_real, $type = 'suricata') {
 	return isvalidpid("{$g['varrun_path']}/{$type}_{$if_real}{$suricata_uuid}.pid");
 }
 
-function suricata_barnyard_stop($suricatacfg, $if_real) {
-	global $g;
-
-	$suricata_uuid = $suricatacfg['uuid'];
-	if (isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}{$suricata_uuid}.pid")) {
-		syslog(LOG_NOTICE, "[Suricata] Barnyard2 STOP for {$suricatacfg['descr']}({$if_real})...");
-		killbypid("{$g['varrun_path']}/barnyard2_{$if_real}{$suricata_uuid}.pid");
-	}
-}
-
 function suricata_stop($suricatacfg, $if_real) {
 	global $g;
 
@@ -89,23 +79,6 @@ function suricata_stop($suricatacfg, $if_real) {
 	}
 	// Make sure the PID file is actually deleted so Suricata will restart without error
 	unlink_if_exists("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
-
-	// Stop Barnyard2 on the interface if running
-	suricata_barnyard_stop($suricatacfg, $if_real);
-}
-
-function suricata_barnyard_start($suricatacfg, $if_real) {
-	global $g;
-
-	$suricata_uuid = $suricatacfg['uuid'];
-	$suricatadir = SURICATADIR . "suricata_{$suricata_uuid}_{$if_real}";
-	$suricatalogdir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}";
-	$suricatabindir = SURICATA_PBI_BINDIR;
-
-	if ($suricatacfg['barnyard_enable'] == 'on' && $if_real <> "") {
-		syslog(LOG_NOTICE, "[Suricata] Barnyard2 START for {$suricatacfg['descr']}({$if_real})...");
-		mwexec_bg("{$suricatabindir}barnyard2 -r {$suricata_uuid} -f unified2.alert --pid-path {$g['varrun_path']} --nolock-pidfile -c {$suricatadir}/barnyard2.conf -d {$suricatalogdir} -D -q");
-	}
 }
 
 function suricata_start($suricatacfg, $if_real) {
@@ -125,9 +98,6 @@ function suricata_start($suricatacfg, $if_real) {
 	} else {
 		return;
 	}
-
-	// Start Barnyard2 if enabled on the interface
-	suricata_barnyard_start($suricatacfg, $if_real);
 }
 
 function suricata_start_all_interfaces($background=FALSE) {
@@ -189,7 +159,7 @@ function suricata_restart_all_interfaces() {
 	suricata_start_all_interfaces(TRUE);
 }
 
-function suricata_reload_config($suricatacfg, $signal="USR2") {
+function suricata_reload_config($suricatacfg, $signal="SIGUSR2") {
 
 	/**************************************************************/
 	/* This function sends the passed SIGNAL to the Suricata      */
@@ -199,11 +169,10 @@ function suricata_reload_config($suricatacfg, $signal="USR2") {
 	/* as a background process and returns control immediately    */
 	/* to the caller.                                             */
 	/*                                                            */
-	/*  $signal = USR2 (default) parses and reloads config.       */
+	/*  $signal = SIGUSR2 (default) parses and reloads config.    */
 	/**************************************************************/
 	global $g;
 
-	$suricatadir = SURICATADIR;
 	$suricata_uuid = $suricatacfg['uuid'];
 	$if_real = get_real_interface($suricatacfg['interface']);
 
@@ -216,40 +185,32 @@ function suricata_reload_config($suricatacfg, $signal="USR2") {
 	}
 
 	/******************************************************/
-	/* Only send the SIGUSR2 if Suricata is running and   */
+	/* Only send the SIGNAL if Suricata is running and    */
 	/* we can find a valid PID for the process.           */
 	/******************************************************/
 	if (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid")) {
-		syslog(LOG_NOTICE, "[Suricata] Suricata LIVE RULE RELOAD initiated for {$suricatacfg['descr']} ({$if_real})...");
+
+		// Send the SIGNAL to the Suricata process
 		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
-	}
-}
 
-function suricata_barnyard_reload_config($suricatacfg, $signal="HUP") {
+		// Log what we did
+		switch ($signal) {
+			case SIGHUP:
+				syslog(LOG_NOTICE, "[Suricata] Suricata LOGS ROTATION initiated for {$suricatacfg['descr']} ({$if_real})...");
+				break;
 
-	/**************************************************************/
-	/* This function sends the passed SIGNAL to the Barnyard2     */
-	/* instance on the passed interface to cause Barnyard to      */
-	/* reload and parse the running configuration without         */
-	/* impacting packet processing.  It also executes the reload  */
-	/* as a background process and returns control immediately    */
-	/* to the caller.                                             */
-	/*                                                            */
-	/*  $signal = HUP (default) parses and reloads config.        */
-	/**************************************************************/
-	global $g;
+			case SIGUSR2:
+				syslog(LOG_NOTICE, "[Suricata] Suricata LIVE RULE RELOAD initiated for {$suricatacfg['descr']} ({$if_real})...");
+				break;
 
-	$suricatadir = SURICATADIR;
-	$suricata_uuid = $suricatacfg['uuid'];
-	$if_real = get_real_interface($suricatacfg['interface']);
+			case SIGTERM:
+			case SIGINT:
+				syslog(LOG_NOTICE, "[Suricata] Suricata SHUTDOWN initiated for {$suricatacfg['descr']} ({$if_real})...");
+				break;
 
-	/******************************************************/
-	/* Only send the SIGHUP if Barnyard2 is running and   */
-	/* we can find a valid PID for the process.           */
-	/******************************************************/
-	if (isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}{$suricata_uuid}.pid")) {
-		syslog(LOG_NOTICE, "[Suricata] Barnyard2 CONFIG RELOAD initiated for {$suricatacfg['descr']} ({$if_real})...");
-		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/barnyard2_{$if_real}{$suricata_uuid}.pid");
+			default:
+				syslog(LOG_NOTICE, "[Suricata] Suricata signalled with {$signal} for {$suricatacfg['descr']} ({$if_real})...");
+		}
 	}
 }
 
@@ -898,11 +859,6 @@ function sync_suricata_package_config() {
 
 		// create a suricata.yaml file for interface
 		suricata_generate_yaml($value);
-
-		// create barnyard2.conf file for interface
-		if ($value['barnyard_enable'] == 'on') {
-			suricata_generate_barnyard2_conf($value, get_real_interface($value['interface']));
-		}
 	}
 
 	// create suricata bootup file suricata.sh
@@ -1044,55 +1000,6 @@ function suricata_load_suppress_sigs($suricatacfg, $track_by=false) {
 	return $suppress;
 }
 
-function suricata_post_delete_logs($suricata_uuid = 0) {
-
-	/***********************************************/
-	/* This function cleans up related log files   */
-	/* for the passed instance.  These include     */
-	/* Barnyard2 unified2 logs and pcap logs.      */
-	/***********************************************/
-
-	global $config, $g;
-
-	// do nothing if no Suricata interfaces active
-	if (!is_array($config['installedpackages']['suricata']['rule'])) {
-		return;
-	}
-
-	foreach ($config['installedpackages']['suricata']['rule'] as $value) {
-		if ($value['uuid'] != $suricata_uuid) {
-			continue;
-		}
-		$if_real = get_real_interface($value['interface']);
-		$suricata_log_dir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}";
-
-		if ($if_real != '') {
-			/* Clean-up Barnyard2 files if any exist */
-			$filelist = glob("{$suricata_log_dir}/unified2.alert.*");
-			// Keep most recent file
-			unset($filelist[count($filelist) - 1]);
-			foreach ($filelist as $file) {
-				unlink_if_exists($file);
-			}
-
-			/* Clean-up Barnyard2 archived files if any exist */
-			$filelist = glob("{$suricata_log_dir}/barnyard2/archive/unified2.alert.*");
-			foreach ($filelist as $file) {
-				unlink_if_exists($file);
-			}
-
-			/* Clean-up packet capture files if any exist */
-			$filelist = glob("{$suricata_log_dir}/log.pcap.*");
-			// Keep most recent file
-			unset($filelist[count($filelist) - 1]);
-			foreach ($filelist as $file) {
-				unlink_if_exists($file);
-			}
-			unset($filelist);
-		}
-	}
-}
-
 /* This returns size of passed directory or file in 1024-byte blocks */
 function suricata_Getdirsize($node) {
 	if(!is_readable($node)) {
@@ -1108,7 +1015,7 @@ function suricata_build_sid_msg_map($rules_path, $sid_file) {
 	/*************************************************************/
 	/* This function reads all the rules file in the passed      */
 	/* $rules_path variable and produces a properly formatted    */
-	/* sid-msg.map v2 file for use by Suricata and barnyard2.    */
+	/* sid-msg.map v2 file for use by Suricata.                  */
 	/*                                                           */
 	/* This function produces the new v2 format sid-msg.map      */
 	/* with the field layout as follows:                         */
@@ -2435,7 +2342,7 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 			break;
 
 		default:
-			syslog(LOG_WARN, gettext("[Suricata] WARNING - unknown action '{$action}' supplied to suricata_modify_sid_state() function...no SIDs modified."));
+			syslog(LOG_WARNING, gettext("[Suricata] WARNING - unknown action '{$action}' supplied to suricata_modify_sid_state() function...no SIDs modified."));
 			return $sids;
 	}
 
@@ -3052,7 +2959,7 @@ function suricata_auto_sid_mgmt(&$rule_map, $suricatacfg, $log_results = FALSE) 
 				break;
 
 			default:
-				syslog(LOG_WARN, gettext("[Suricata] WARNING: Unrecognized 'sid_state_order' value.  Skipping auto SID mgmt step for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
+				syslog(LOG_WARNING, gettext("[Suricata] WARNING: Unrecognized 'sid_state_order' value.  Skipping auto SID mgmt step for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 				if ($log_results == TRUE) {
 					error_log(gettext("WARNING: unrecognized 'sid_state_order' value.  Skipping auto SID mgmt step for ") . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']). ".\n", 3, $log_file);
 				}
@@ -3528,7 +3435,7 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 
 	// Log a warning if the interface has no rules defined or enabled
 	if ($no_rules_defined) {
-		syslog(LOG_WARN, gettext("[Suricata] WARNING: - no text rules selected for: " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . " ..."));
+		syslog(LOG_WARNING, gettext("[Suricata] WARNING: - no text rules selected for: " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . " ..."));
 	}
 
 	// Build a new sid-msg.map file from the enabled
@@ -3636,57 +3543,6 @@ function suricata_create_rc() {
 		$suricata_uuid = $value['uuid'];
 		$run_mode = $value['ips_mode'] == 'ips_mode_inline' && $value['blockoffenders'] == 'on' ? '--netmap' : '-i ' . $if_real;
 
-		$start_barnyard = <<<EOE
-
-	if [ ! -f {$g['varrun_path']}/barnyard2_{$if_real}{$suricata_uuid}.pid ]; then
-		pid=`/bin/pgrep -fn "barnyard2 -r {$suricata_uuid} "`
-	else
-		pid=`/bin/pgrep -F {$g['varrun_path']}/barnyard2_{$if_real}{$suricata_uuid}.pid`
-	fi
-
-	if [ -z \$pid ]; then
-		/usr/bin/logger -p daemon.info -i -t SuricataStartup "Barnyard2 START for {$value['descr']}({$suricata_uuid}_{$if_real})..."
-		{$suricatabindir}/barnyard2 -r {$suricata_uuid} -f unified2.alert --pid-path {$g['varrun_path']} --nolock-pidfile -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/barnyard2.conf -d {$suricatalogdir}suricata_{$if_real}{$suricata_uuid} -D -q > /dev/null 2>&1
-	fi
-EOE;
-		$stop_barnyard2 = <<<EOE
-
-	if [ -f {$g['varrun_path']}/barnyard2_{$if_real}{$suricata_uuid}.pid ]; then
-		/usr/bin/logger -p daemon.info -i -t SuricataStartup "Barnyard2 STOP for {$value['descr']}({$suricata_uuid}_{$if_real})..."
-		pid=`/bin/pgrep -F {$g['varrun_path']}/barnyard2_{$if_real}{$suricata_uuid}.pid`
-                /bin/pkill -TERM -F {$g['varrun_path']}/barnyard2_{$if_real}{$suricata_uuid}.pid
-		time=0 timeout=30
-		while /bin/kill -TERM \$pid 2>/dev/null; do
-			sleep 1
-			time=\$((time+1))
-			if [ \$time -gt \$timeout ]; then
-				break
-			fi
-		done
-		if [ -f {$g['varrun_path']}/barnyard2_{$if_real}{$suricata_uuid}.pid ]; then
-			/bin/rm {$g['varrun_path']}/barnyard2_{$if_real}{$suricata_uuid}.pid
-		fi
-	else
-		pid=`/bin/pgrep -fn "barnyard2 -r {$suricata_uuid} "`
-		if [ ! -z \$pid ]; then
-			/bin/pkill -TERM -fn "barnyard2 -r {$suricata_uuid} "
-			time=0 timeout=30
-			while /bin/kill -TERM \$pid 2>/dev/null; do
-				sleep 1
-				time=\$((time+1))
-				if [ \$time -gt \$timeout ]; then
-					break
-				fi
-			done
-		fi
-        fi
-EOE;
-		if ($value['barnyard_enable'] == 'on') {
-			$start_barnyard2 = $start_barnyard;
-		} else {
-			$start_barnyard2 = $stop_barnyard2;
-		}
-
 		$start_suricata_iface_start[] = <<<EOE
 
 	## Start suricata on {$value['descr']} ({$if_real}) ##
@@ -3703,7 +3559,6 @@ EOE;
 	fi
 
 	sleep 1
-	{$start_barnyard2}
 EOE;
 
 		$start_suricata_iface_stop[] = <<<EOE
@@ -3740,7 +3595,6 @@ EOE;
 	fi
 
 	sleep 1
-	{$stop_barnyard2}
 EOE;
 	}
 
@@ -3795,123 +3649,6 @@ EOD;
 	@file_put_contents("{$rcdir}suricata.sh", $suricata_sh_text);
 	@chmod("{$rcdir}suricata.sh", 0755);
 	unset($suricata_sh_text);
-}
-
-function suricata_generate_barnyard2_conf($suricatacfg, $if_real) {
-	global $config, $g;
-
-	$suricata_uuid = $suricatacfg['uuid'];
-	$suricatadir = SURICATADIR . "suricata_{$suricata_uuid}_{$if_real}";
-	$suricatalogdir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}";
-
-	// Create required directories for barnyard2 if missing
-	if (!is_dir("{$suricatalogdir}/barnyard2"))
-		safe_mkdir("{$suricatalogdir}/barnyard2");
-	if (!is_dir("{$suricatalogdir}/barnyard2/archive"))
-		safe_mkdir("{$suricatalogdir}/barnyard2/archive");
-
-	// Create the barnyard2 waldo file if missing
-	if (!file_exists("{$suricatalogdir}/barnyard2/{$suricata_uuid}_{$if_real}.waldo")) {
-		@touch("{$suricatalogdir}/barnyard2/{$suricata_uuid}_{$if_real}.waldo");
-		mwexec("/bin/chmod 770 {$suricatalogdir}/barnyard2/{$suricata_uuid}_{$if_real}.waldo", true);
-	}
-
-	// If there is no gen-msg.map file present, create an
-	// empty one so Barnyard2 will at least start.
-	if (!file_exists("{$suricatadir}/gen-msg.map"))
-		@file_put_contents("{$suricatadir}/gen-msg.map", "");
-
-	if (!empty($suricatacfg['barnyard_sensor_name'])) {
-		$suricatabarnyardlog_hostname_info_chk = $suricatacfg['barnyard_sensor_name'];
-	} else {
-		$suricatabarnyardlog_hostname_info_chk = php_uname("n");
-	}
-
-	// Set general config parameters
-	$gen_configs = "config quiet\nconfig daemon\nconfig decode_data_link\nconfig alert_with_interface_name\nconfig event_cache_size: 4096";
-	if ($suricatacfg['barnyard_show_year'] == 'on') {
-		$gen_configs .= "\nconfig show_year";
-	}
-	if ($suricatacfg['barnyard_obfuscate_ip'] == 'on') {
-		$gen_configs .= "\nconfig obfuscate";
-	}
-	if ($suricatacfg['barnyard_dump_payload'] == 'on') {
-		$gen_configs .= "\nconfig dump_payload";
-	}
-	if ($suricatacfg['barnyard_archive_enable'] == 'on') {
-		$gen_configs .= "\nconfig archivedir:          {$suricatalogdir}/barnyard2/archive";
-	}
-
-	// Set output plugins
-	$suricatabarnyardlog_output_plugins = "";
-	if ($suricatacfg['barnyard_mysql_enable'] == 'on') {
-		$by2_dbpwd = base64_decode($suricatacfg['barnyard_dbpwd']);
-		$suricatabarnyardlog_output_plugins .= "# database: log to a MySQL DB\noutput database: alert, mysql, ";
-		$suricatabarnyardlog_output_plugins .= "user={$suricatacfg['barnyard_dbuser']} password={$by2_dbpwd} ";
-		$suricatabarnyardlog_output_plugins .= "dbname={$suricatacfg['barnyard_dbname']} host={$suricatacfg['barnyard_dbhost']}";
-		if (isset($suricatacfg['barnyard_sensor_name']) && strlen($suricatacfg['barnyard_sensor_name']) > 0) {
-			$suricatabarnyardlog_output_plugins .= " sensor_name={$suricatacfg['barnyard_sensor_name']}";
-		}
-		if ($suricatacfg['barnyard_disable_sig_ref_tbl'] == 'on') {
-			$suricatabarnyardlog_output_plugins .= " disable_signature_reference_table";
-		}
-		$suricatabarnyardlog_output_plugins .= "\n\n";
-	}
-	if ($suricatacfg['barnyard_syslog_enable'] == 'on') {
-		$suricatabarnyardlog_output_plugins .= "# syslog_full: log to a syslog receiver\n";
-		$suricatabarnyardlog_output_plugins .= "output alert_syslog_full: sensor_name {$suricatabarnyardlog_hostname_info_chk}, ";
-		if ($suricatacfg['barnyard_syslog_local'] == 'on') {
-			$suricatabarnyardlog_output_plugins .= "local, log_facility {$suricatacfg['barnyard_syslog_facility']}, log_priority {$suricatacfg['barnyard_syslog_priority']}\n\n";
-		} else {
-			$suricatabarnyardlog_output_plugins .= "server {$suricatacfg['barnyard_syslog_rhost']}, protocol {$suricatacfg['barnyard_syslog_proto']}, ";
-			$suricatabarnyardlog_output_plugins .= "port {$suricatacfg['barnyard_syslog_dport']}, operation_mode {$suricatacfg['barnyard_syslog_opmode']}, ";
-			$suricatabarnyardlog_output_plugins .= "log_facility {$suricatacfg['barnyard_syslog_facility']}, log_priority {$suricatacfg['barnyard_syslog_priority']}\n\n";
-		}
-	}
-	if ($suricatacfg['barnyard_bro_ids_enable'] == 'on') {
-		$suricatabarnyardlog_output_plugins .= "# alert_bro: log to a Bro-IDS receiver\n";
-		$suricatabarnyardlog_output_plugins .= "output alert_bro: {$suricatacfg['barnyard_bro_ids_rhost']}:{$suricatacfg['barnyard_bro_ids_dport']}\n";
-	}
-
-	// Trim leading and trailing newlines and spaces
-	$suricatabarnyardlog_output_plugins = rtrim($suricatabarnyardlog_output_plugins, "\n");	
-
-	// User pass-through arguments
-	$suricatabarnyardlog_config_pass_thru = str_replace("\r", "", base64_decode($suricatacfg['barnconfigpassthru']));
-
-	// Create the conf file as a text string
-	$barnyard2_conf_text = <<<EOD
-
-#   barnyard2.conf
-#   barnyard2 can be found at http://www.securixlive.com/barnyard2/index.php
-#
-
-## General Barnyard2 settings ##
-{$gen_configs}
-config reference_file:	    {$suricatadir}/reference.config
-config classification_file: {$suricatadir}/classification.config
-config sid_file:	    {$suricatadir}/sid-msg.map
-config gen_file:            {$suricatadir}/gen-msg.map
-config hostname:            {$suricatabarnyardlog_hostname_info_chk}
-config interface:           {$if_real}
-config waldo_file:          {$suricatalogdir}/barnyard2/{$suricata_uuid}_{$if_real}.waldo
-config logdir:              {$suricatalogdir}
-
-## START user pass through ##
-{$suricatabarnyardlog_config_pass_thru}
-## END user pass through ##
-
-## Setup input plugins ##
-input unified2
-
-## Setup output plugins ##
-{$suricatabarnyardlog_output_plugins}
-
-EOD;
-
-	/* Write out barnyard2_conf text string to disk */
-	@file_put_contents("{$suricatadir}/barnyard2.conf", $barnyard2_conf_text);
-	unset($barnyard2_conf_text);
 }
 
 function suricata_generate_yaml($suricatacfg) {

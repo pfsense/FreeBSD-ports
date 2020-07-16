@@ -24,22 +24,17 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	mltframework
 
 # Needed to be able to correctly check for updates in-app.
-FULLVERSION=	20.02.17
+FULLVERSION=	20.04.12
 
 USE_GL+=	gl
 USE_QT=		buildtools_build concurrent_build core declarative \
 		graphicaleffects_run gui multimedia network opengl \
 		printsupport quickcontrols_run sql \
-		sql-sqlite3_run webkit websockets widgets x11extras xml
+		sql-sqlite3_run webkit websockets widgets x11extras xml \
+		linguisttools_build
 USE_SDL=	sdl2
 USE_XORG=	x11
 QMAKE_ARGS=	${PORTNAME:tu}_VERSION="${FULLVERSION}"
-DESKTOP_ENTRIES="Shotcut" \
-		"Video Editor" \
-		"${PORTNAME}" \
-		"${PORTNAME}" \
-		"AudioVideo;Video;AudioVideoEditing;" \
-		""
 
 OPTIONS_DEFINE=	FREI0R LADSPA NLS WEBVFX
 OPTIONS_DEFAULT=FREI0R LADSPA WEBVFX
@@ -51,25 +46,12 @@ FREI0R_RUN_DEPENDS=	frei0r-plugins>=0:graphics/frei0r-plugins
 
 LADSPA_RUN_DEPENDS=	swhplugins>=0:audio/swhplugins
 
-NLS_USES=	qt:5
-NLS_USE=		QT=linguisttools_build
-
 WEBVFX_RUN_DEPENDS=	${LOCALBASE}/lib/mlt/libmltwebvfx.so:multimedia/webvfx-qt5
 
 post-patch:
-	${REINPLACE_CMD} -e 's/"qmelt"/"melt"/' \
-		${WRKSRC}/src/jobs/meltjob.cpp
-	${REINPLACE_CMD} -e 's|/share/man/man1|/man/man1|' ${WRKSRC}/src/src.pro
+	@${REINPLACE_CMD} -e 's/"qmelt"/"melt"/' ${WRKSRC}/src/jobs/meltjob.cpp
 
 pre-build:
 	@${FIND} ${WRKSRC} -name '.depend' -delete
-
-post-build-NLS-on:
-	cd ${BUILD_WRKSRC}/translations && ${LRELEASE} *.ts
-
-post-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/64x64/apps
-	${INSTALL_DATA} ${WRKSRC}/icons/${PORTNAME}-logo-64.png \
-		${STAGEDIR}${PREFIX}/share/icons/hicolor/64x64/apps/${PORTNAME}.png
 
 .include <bsd.port.mk>

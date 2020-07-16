@@ -1,17 +1,17 @@
 # $FreeBSD$
 
 PORTNAME=	octopus
-DISTVERSION=	8.4
-PORTREVISION=	3
+DISTVERSION=	9.2
+PORTREVISION=	1
 CATEGORIES=	science
-MASTER_SITES=	http://www.tddft.org/programs/${PORTNAME}/download/${DISTVERSION}/
+MASTER_SITES=	https://octopus-code.org/download/${DISTVERSION}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Scientific program aimed at the ab initio virtual experimentation
 
-BROKEN=		unfetchable
-
 LICENSE=	GPLv2
+
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libarpack.so:math/arpack-ng \
@@ -29,7 +29,8 @@ LIB_DEPENDS=	libarpack.so:math/arpack-ng \
 		libwebp.so:graphics/webp \
 		libxc.so:science/libxc
 
-USES=		compiler:c++11-lang fortran gmake jpeg localbase:ldflags
+USES=		compiler:c++11-lang fortran gmake jpeg localbase:ldflags perl5 shebangfix
+SHEBANG_FILES=	src/fdep/fortran_dependencies.pl
 GNU_CONFIGURE=	yes
 CONFIGURE_SHELL=	${PREFIX}/bin/bash
 USE_CXXSTD=	c++11

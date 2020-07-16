@@ -5,10 +5,10 @@ PORTNAME=	burp
 PORTVERSION?=	2.2.18
 # whenever PORTREVISION is increased,
 # sysutils/burp-devel's PKGVERSION must also increase
-PORTREVISION?=	3
+PORTREVISION?=	4
 CATEGORIES=	sysutils
 
-MAINTAINER=	salvadore@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Network backup and restore program
 
 LICENSE=	AGPLv3 PD
@@ -17,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/include/uthash.h:devel/uthash \
 		${LOCALBASE}/include/yajl/yajl_common.h:devel/yajl
-LIB_DEPENDS=	librsync.so:net/librsync2
+LIB_DEPENDS=	librsync.so:net/librsync
 RUN_DEPENDS=	bash:shells/bash
 
 USES=		autoreconf gmake libtool ncurses pkgconfig ssl

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	webdrivers
-PORTVERSION=	4.2.0
+PORTVERSION=	4.4.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -20,5 +20,8 @@ USES=		gem
 USE_RUBY=	yes
 
 NO_ARCH=	yes
+
+post-install:
+	${RM} ${STAGEDIR}${PREFIX}/bin/console ${STAGEDIR}${PREFIX}/bin/setup
 
 .include <bsd.port.mk>

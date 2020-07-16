@@ -2,24 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	suitesparse
-DISTVERSION=	5.4.0
-PORTREVISION=	6
+PORTVERSION=	5.7.2
+PORTREVISION=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	math
-MASTER_SITES=	http://faculty.cse.tamu.edu/davis/SuiteSparse/	\
-		https://mirror.sobukus.de/files/src/suitesparse/
-DISTNAME=	SuiteSparse-${PORTVERSION}
 
 MAINTAINER=	fortran@FreeBSD.org
-COMMENT=	SuiteSparse is a set of packages for sparse matrices calculation
+COMMENT=	Set of packages for sparse matrix calculation
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	dual
 
 LIB_DEPENDS=	libmetis.so:math/metis
 
-USES=		cmake:insource compiler:${OPENMP}c++11-lib fortran gmake localbase:ldflags
+USE_GITHUB=	yes
+GH_ACCOUNT=	DrTimothyAldenDavis
+GH_PROJECT=	SuiteSparse
+
+USES=		cmake:insource fortran gmake localbase:ldflags
 USE_LDCONFIG=	yes
-WRKSRC=		${WRKDIR}/SuiteSparse
 ALL_TARGET=	library # skip demos
 INSTALL_TARGET=	install # skip USES=cmake
 MAKE_ENV=	BLAS="${BLASLIB}" LAPACK="${LAPACKLIB}" \
@@ -29,7 +30,8 @@ MAKE_ENV=	BLAS="${BLASLIB}" LAPACK="${LAPACKLIB}" \
 		INSTALL="${STAGEDIR}${PREFIX}" \
 		INSTALL_DOC="${STAGEDIR}${DOCSDIR}" \
 		INSTALL_INCLUDE="${STAGEDIR}${PREFIX}/include/${PORTNAME}"
-CMAKE_ARGS=	-DCMAKE_INSTALL_INCLUDEDIR:PATH="include/${PORTNAME}"
+CMAKE_ARGS=	-DCMAKE_INSTALL_INCLUDEDIR:PATH="include/${PORTNAME}"	\
+		-DBUILD_GRB_STATIC_LIBRARY:BOOL=ON
 LDFLAGS+=	-L${WRKSRC}/lib # prevent linking with shared libs from the preinstalled older versions
 
 CONFLICTS_INSTALL=	mongoose plinkseq # bin/mongoose
@@ -55,6 +57,18 @@ OPENMP_VARS=		OPENMP=gcc-
 TBB_DESC=		Intel threading building blocks
 TBB_LIB_DEPENDS=	libtbb.so:devel/tbb
 TBB_MAKE_ENV=		TBB="-ltbb" SPQR_CONFIG="-DHAVE_TBB"
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == i386
+# See PR 230888 : Missing 64 bit atomic functions for i386
+USES+=		compiler:gcc-c++11-lib
+LDFLAGS+=	-latomic
+.elif defined(PPC_ABI) && ${PPC_ABI} == ELFv1
+USE_GCC=	yes
+.else
+USES+=	compiler:${OPENMP}c++11-lib
+.endif
 
 post-extract:
 	${RM} -r ${WRKSRC}/metis-*

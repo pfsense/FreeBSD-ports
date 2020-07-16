@@ -16,7 +16,7 @@ smartctl=%%PREFIX%%/sbin/smartctl
 case "${daily_status_smart_devices}" in
 	# XXX AUTO mode selects only regular ad/da disks 
 	[Aa][Uu][Tt][Oo])
-		daily_status_smart_devices="$(sysctl -n kern.disks | sed -E 's/[[:<:]](cd|ar)[0-9]+//g; s/nvd/nvme/g')"
+		daily_status_smart_devices="$(sysctl -n kern.disks | sed -E 's/[[:<:]](cd|ar|vtbd)[0-9]+//g; s/nvd/nvme/g')"
 		;;
 	*)	;;
 esac
@@ -74,9 +74,9 @@ case "${daily_status_smart_enable}" in
 					${trim_junk} "${tmpfile}"
 				elif [ `grep -c '^SMART support is: Unavailable' ${tmpfile}` -eq 1 ] ; then
 					rc=2
-				echo "N/A"
+					echo "N/A"
 				else
-					rc=1
+					rc=3
 					${smartctl} ${devflags} ${daily_status_smartctl_extra_status_flags} \
 						${device} | ${trim_junk}
 				fi

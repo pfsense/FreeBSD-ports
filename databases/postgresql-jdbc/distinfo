@@ -1,2 +1,3 @@
-SHA256 (postgresql/postgresql-jdbc-9.2-1004.src.tar.gz) = eeadff0d830cd19a4f52a9489748a7126b0c1d4863bf9a5d65618158dfc6ae68
-SIZE (postgresql/postgresql-jdbc-9.2-1004.src.tar.gz) = 1842921
+TIMESTAMP = 1592205793
+SHA256 (postgresql-42.2.14.jar) = 48bbba05845b40bcce66ece3d7652153d27b5379d5ae90977b78eefd7c7a0287
+SIZE (postgresql-42.2.14.jar) = 932808

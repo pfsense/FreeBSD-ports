@@ -1,8 +1,4 @@
 bin/ugene
-lib/ugene/libQSpec.so
-lib/ugene/libQSpec.so.1
-lib/ugene/libQSpec.so.1.0
-lib/ugene/libQSpec.so.1.0.0
 lib/ugene/libU2Algorithm.so
 lib/ugene/libU2Algorithm.so.1
 lib/ugene/libU2Algorithm.so.1.0
@@ -49,8 +45,6 @@ lib/ugene/libugenedb.so.1.0
 lib/ugene/libugenedb.so.1.0.0
 lib/ugene/plugins/CoreTests.license
 lib/ugene/plugins/CoreTests.plugin
-lib/ugene/plugins/GUITestBase.license
-lib/ugene/plugins/GUITestBase.plugin
 lib/ugene/plugins/annotator.license
 lib/ugene/plugins/annotator.plugin
 lib/ugene/plugins/api_tests.license
@@ -59,8 +53,6 @@ lib/ugene/plugins/ball.license
 lib/ugene/plugins/ball.plugin
 lib/ugene/plugins/biostruct3d_view.license
 lib/ugene/plugins/biostruct3d_view.plugin
-lib/ugene/plugins/browser_support.license
-lib/ugene/plugins/browser_support.plugin
 lib/ugene/plugins/chroma_view.license
 lib/ugene/plugins/chroma_view.plugin
 lib/ugene/plugins/circular_view.license
@@ -99,10 +91,6 @@ lib/ugene/plugins/libCoreTests.so
 lib/ugene/plugins/libCoreTests.so.1
 lib/ugene/plugins/libCoreTests.so.1.0
 lib/ugene/plugins/libCoreTests.so.1.0.0
-lib/ugene/plugins/libGUITestBase.so
-lib/ugene/plugins/libGUITestBase.so.1
-lib/ugene/plugins/libGUITestBase.so.1.0
-lib/ugene/plugins/libGUITestBase.so.1.0.0
 lib/ugene/plugins/libannotator.so
 lib/ugene/plugins/libannotator.so.1
 lib/ugene/plugins/libannotator.so.1.0
@@ -119,10 +107,6 @@ lib/ugene/plugins/libbiostruct3d_view.so
 lib/ugene/plugins/libbiostruct3d_view.so.1
 lib/ugene/plugins/libbiostruct3d_view.so.1.0
 lib/ugene/plugins/libbiostruct3d_view.so.1.0.0
-lib/ugene/plugins/libbrowser_support.so
-lib/ugene/plugins/libbrowser_support.so.1
-lib/ugene/plugins/libbrowser_support.so.1.0
-lib/ugene/plugins/libbrowser_support.so.1.0.0
 lib/ugene/plugins/libchroma_view.so
 lib/ugene/plugins/libchroma_view.so.1
 lib/ugene/plugins/libchroma_view.so.1.0
@@ -195,6 +179,10 @@ lib/ugene/plugins/liblinkdata_support.so
 lib/ugene/plugins/liblinkdata_support.so.1
 lib/ugene/plugins/liblinkdata_support.so.1.0
 lib/ugene/plugins/liblinkdata_support.so.1.0.0
+lib/ugene/plugins/libmetaphlan2_support.so
+lib/ugene/plugins/libmetaphlan2_support.so.1
+lib/ugene/plugins/libmetaphlan2_support.so.1.0
+lib/ugene/plugins/libmetaphlan2_support.so.1.0.0
 lib/ugene/plugins/libngs_reads_classification.so
 lib/ugene/plugins/libngs_reads_classification.so.1
 lib/ugene/plugins/libngs_reads_classification.so.1.0
@@ -277,6 +265,8 @@ lib/ugene/plugins/libworkflow_designer.so.1.0
 lib/ugene/plugins/libworkflow_designer.so.1.0.0
 lib/ugene/plugins/linkdata_support.license
 lib/ugene/plugins/linkdata_support.plugin
+lib/ugene/plugins/metaphlan2_support.license
+lib/ugene/plugins/metaphlan2_support.plugin
 lib/ugene/plugins/ngs_reads_classification.license
 lib/ugene/plugins/ngs_reads_classification.plugin
 lib/ugene/plugins/opencl_support.license
@@ -402,7 +392,6 @@ share/pixmaps/ugene.xpm
 %%DATADIR%%/cmdline/hmm3-build-and-search.uwl
 %%DATADIR%%/cmdline/join-quality.uwl
 %%DATADIR%%/cmdline/local-blast+.uwl
-%%DATADIR%%/cmdline/local-blast.uwl
 %%DATADIR%%/cmdline/pfm-build.uwl
 %%DATADIR%%/cmdline/pfm-search.uwl
 %%DATADIR%%/cmdline/pwm-build.uwl
@@ -424,9 +413,6 @@ share/pixmaps/ugene.xpm
 %%DATADIR%%/genome_lengths/mm9.genome
 %%DATADIR%%/genome_lengths/test.genome
 %%DATADIR%%/license
-%%PORTDOCS%%%%DOCSDIR%%/QueryDesigner_UserManual.pdf
-%%PORTDOCS%%%%DOCSDIR%%/UniproUGENE_UserManual.pdf
-%%PORTDOCS%%%%DOCSDIR%%/WorkflowDesigner_UserManual.pdf
 %%DATADIR%%/position_weight_matrix/JASPAR/all_jaspar.csv
 %%DATADIR%%/position_weight_matrix/JASPAR/fungi/MA0265.1.pfm
 %%DATADIR%%/position_weight_matrix/JASPAR/fungi/MA0266.1.pfm

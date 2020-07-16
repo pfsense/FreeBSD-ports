@@ -3,7 +3,6 @@
 
 PORTNAME=	thunderbird
 DISTVERSION=	68.10.0
-PORTREVISION=	1
 CATEGORIES=	mail news net-im
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/source \
 		MOZILLA/${PORTNAME}/candidates/${DISTVERSION}-candidates/build1/source
@@ -11,6 +10,8 @@ DISTFILES=	${DISTNAME}.source${EXTRACT_SUFX}
 
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Mozilla Thunderbird is standalone mail and news that stands above
+
+BROKEN_powerpc64=	fails to build: gmake[4]: *** [backend.mk:47: .deps/node.stub.stub] Error 246
 
 BUILD_DEPENDS=	nspr>=4.21:devel/nspr \
 		nss>=3.52.1:security/nss \

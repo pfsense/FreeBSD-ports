@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	knxd
-PORTVERSION=	0.14.33
-PORTREVISION=	0
+PORTVERSION=	0.14.35
+PORTREVISION=	2
 CATEGORIES=	net
 
 MAINTAINER=	mfechner@FreeBSD.org
@@ -29,5 +29,8 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS?=--disable-systemd --disable-usb \
 		CPPFLAGS="-I${LOCALBASE}/include" \
 		LDFLAGS="-I${LOCALBASE}/include -L/${LOCALBASE}/lib"
+
+post-install:
+	(cd ${WRKSRC} && src/server/knxd_args -d -e 15.15.1 -E 15.15.2:8 -D -T -S -B single -b ipt:192.168.0.117 -u /var/run/knxd > ${STAGEDIR}${PREFIX}/etc/knxd.conf.sample)
 
 .include <bsd.port.mk>

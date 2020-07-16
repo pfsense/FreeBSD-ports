@@ -10,7 +10,6 @@
     SUBDIR += anyremote
     SUBDIR += apitran
     SUBDIR += aprsd
-    SUBDIR += ath3k-firmware
     SUBDIR += atslog
     SUBDIR += bfhist
     SUBDIR += bforce-kst
@@ -54,7 +53,6 @@
     SUBDIR += flwrap
     SUBDIR += freedv
     SUBDIR += gammu
-    SUBDIR += geoid
     SUBDIR += gkermit
     SUBDIR += gnocky
     SUBDIR += gnokii
@@ -74,7 +72,6 @@
     SUBDIR += inspectrum
     SUBDIR += iwmbt-firmware
     SUBDIR += java-simple-serial-connector
-    SUBDIR += jerm
     SUBDIR += kb
     SUBDIR += kermit
     SUBDIR += klog
@@ -110,6 +107,9 @@
     SUBDIR += nmealib
     SUBDIR += o2sms
     SUBDIR += obexapp
+    SUBDIR += opencbm
+    SUBDIR += opencbm-kmod
+    SUBDIR += opencbm-plugin-xa1541
     SUBDIR += openobex
     SUBDIR += openzwave
     SUBDIR += openzwave-devel
@@ -143,8 +143,8 @@
     SUBDIR += py-hidapi
     SUBDIR += py-libconcord
     SUBDIR += py-lirc
+    SUBDIR += py-pyserial
     SUBDIR += py-qt5-serialport
-    SUBDIR += py-serial
     SUBDIR += py-xmodem
     SUBDIR += pyla
     SUBDIR += qico
@@ -217,7 +217,6 @@
     SUBDIR += xmorse
     SUBDIR += xnec2c
     SUBDIR += xnecview
-    SUBDIR += yaac
     SUBDIR += yagiuda
     SUBDIR += yaps
     SUBDIR += yfklog

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	chempy
-DISTVERSION=	0.7.10
+DISTVERSION=	0.7.11
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -33,6 +33,8 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
 USES=		python:3.5+
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
+
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}pymol # https://github.com/schrodinger/pymol-open-source/issues/100
 
 OPTIONS_DEFINE=		EXTRAS
 OPTIONS_DEFAULT=	EXTRAS

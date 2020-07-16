@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	fossology
-PORTVERSION=	3.7.0
+PORTVERSION=	3.8.1
 CATEGORIES=	devel
 PKGNAMESUFFIX=	-nomos-standalone
 

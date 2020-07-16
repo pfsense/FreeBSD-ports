@@ -11,7 +11,7 @@
 # or `x11/nvidia-driver-304').
 
 PORTNAME=	nvidia-driver
-DISTVERSION?=	440.64
+DISTVERSION?=	440.100
 # Always try to set PORTREVISION as it can be overridden by the slave ports
 PORTREVISION?=	0
 CATEGORIES=	x11
@@ -35,15 +35,9 @@ USES=		kmod uidfix xorg
 USE_XORG=	x11 xorg-server xext
 USE_LDCONFIG=	yes
 
-# NVIDIA_ROOT is not set in src/Makefile, which results in bogus -I/src
-# passed to compiler and broken build on HEAD since r221320 when option
-# -Wmissing-include-dirs was added for kernel sources.  Until properly
-# fixed upstream (across all versions, including legacy ones), use this
-# hack below to universally set NVIDIA_ROOT.  Also provide X11BASE value
-# since it is still used by legacy drivers.
 GLVND_JSON_PATH=	${PREFIX}/share/glvnd/egl_vendor.d
 WAYLAND_JSON_PATH=	${PREFIX}/share/egl/egl_external_platform.d
-MAKE_ENV=	NVIDIA_ROOT=${WRKSRC} X11BASE=${LOCALBASE} \
+MAKE_ENV=	DEBUG_FLAGS=${DEBUG_FLAGS} \
 		EGL_GLVND_JSON_PATH=${STAGEDIR}${GLVND_JSON_PATH} \
 		EGL_WAYLAND_JSON_PATH=${STAGEDIR}${WAYLAND_JSON_PATH}
 SUB_FILES=	pkg-message nvidia.conf

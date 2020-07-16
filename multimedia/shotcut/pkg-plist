@@ -1,8 +1,7 @@
 bin/shotcut
-man/man1/shotcut.1.gz
 share/applications/org.shotcut.Shotcut.desktop
 share/icons/hicolor/64x64/apps/org.shotcut.Shotcut.png
-share/icons/hicolor/64x64/apps/shotcut.png
+share/man/man1/shotcut.1.gz
 share/metainfo/org.shotcut.Shotcut.appdata.xml
 share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/export-edl/export-edl.js
@@ -88,6 +87,9 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/filters/contrast/meta.qml
 %%DATADIR%%/qml/filters/contrast/meta_movit.qml
 %%DATADIR%%/qml/filters/contrast/ui.qml
+%%DATADIR%%/qml/filters/corners/meta.qml
+%%DATADIR%%/qml/filters/corners/ui.qml
+%%DATADIR%%/qml/filters/corners/vui.qml
 %%DATADIR%%/qml/filters/crop/meta.qml
 %%DATADIR%%/qml/filters/crop/meta_movit.qml
 %%DATADIR%%/qml/filters/crop/ui.qml
@@ -375,5 +377,3 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%NLS%%%%DATADIR%%/translations/shotcut_uk.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_zh_CN.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_zh_TW.qm
-
-

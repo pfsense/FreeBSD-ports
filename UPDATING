@@ -5,6 +5,192 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+
+20200616:
+  AFFECTS: users of www/baikal
+  AUTHOR: gahr@FreeBSD.org
+
+  The www/baikal has been upated to 0.7.1. With the 0.7.0 release, our
+  configuration format was updated to use YAML files. You need to go through
+  the installer again but we pre-fill most values with the ones from your old
+  installation. We recommend that you make a full backup of your data, as a
+  safety measure. Starting with 0.7.0, Baikal stores data in both the Specific
+  and the config folders. Keep this in mind when upgrading!
+
+  Known issue:: Upgrading from versions older than 0.6.1 does not work.
+
+20200613:
+  AFFECTS: users of editors/libreoffice
+  AUTHOR: fluffy@FreeBSD.org
+
+  LibreOffice was updated to 6.4 branch with some critical changes:
+  - GTK2 option is obsolete by upstream
+  - GTK3 option is not more set by default because of unstable yet and have visual glitches
+  - QT5 option is set by default to provide comfy visual style for every user
+  - KDE option was renamed to KF5 follows upstream
+
+  Please re-run "make config" to pick up the new defaults
+
+20200610:
+  AFFECTS: users of www/node
+  AUTHOR: bhughes@FreeBSD.org
+
+  The www/node port has been updated to Node.js v14.0.0, the latest
+  upstream release. This is a major release, including many significant
+  changes. Users are encouraged to read the release announcements before
+  upgrading:
+
+  https://nodejs.org/en/blog/release/v14.0.0/
+
+20200602:
+  AFFECTS: users of www/radicale
+  AUTHOR: decke@FreeBSD.org
+
+  Migration from radicale 1.x to 2.x requires that you export the storage
+  with radicale 1.1.6 before updating.
+
+  Migration instructions are available at:
+  https://web.archive.org/web/20190314225402/https://radicale.org/1to2/
+
+20200602:
+  AFFECTS: users of sysutils/py-salt
+  AUTHOR: krion@FreeBSD.org
+
+  This port is moved to sysutils/py-salt-2019 and sysutils/py-salt was
+  updated to version 3000.
+
+  If you wish to use pysalt-2019 in the future, you might run the
+  following command:
+
+  # pkg set -o sysutils/py-salt:sysutils/py-salt-2019
+  # pkg upgrade
+
+20200531:
+  AFFECTS: users of mail/postfix-policyd-spf-python
+  AUTHOR:  yasu@utahime.org
+
+  This port is now deprecated because upstream project is superseded by its
+  successor. So uninstall this port and install mail/py-spf-engine instead.
+  Keep in mind that the path of configuration file is changed from
+  ${PREFIX}/etc/postfix-policyd-spf-python/policyd-spf.conf to
+  ${PREFIX}/etc/python-policyd-spf/policyd-spf.conf. So you need to move
+  it to new location unless you use the default one without changing.
+
+20200526:
+  AFFECTS: users of databases/mariadb104-client, databases/mariadb104-server
+  AUTHOR: brnrd@FreeBSD.org
+
+  The ports now add sample configuration files to /usr/local/etc/mysql. You
+  must merge your client configation with the conf.d/client.cnf and your
+  server configuration with conf.d/server.cnf.
+
+20200518:
+  AFFECTS: users of converters/libiconv
+  AUTHOR: zeising@FreeBSD.org
+
+  Support for the Japanese specific patches have been discontinued.
+  These were previously added in a nondefault ports options, for people who
+  needed them.
+  If you still need them, it might be possible to create a port of libiconv 1.14
+  which includes those patches.
+
+20200517:
+  AFFECTS: users of x11/sddm
+  AUTHOR: arrowd@FreeBSD.org
+
+  The home directory of sddm user has been moved to /var/lib/sddm. It is advised
+  to run following commands as root after updating the package:
+
+    # pw usermod -n sddm -d /var/lib/sddm
+    # pwd_mkdb /etc/master.passwd
+    # mv /usr/local/etc/sddm/home/state.conf /var/lib/sddm/state.conf
+    # rm -rf /usr/local/etc/sddm/home
+
+  Otherwise, SDDM will keep using /usr/local/etc/sddm/home/ as its HOME.
+
+20200515:
+  AFFECTS: users of devel/libphutil, devel/arcanist-lib, devel/phabricator
+  AUTHOR: grembo@FreeBSD.org
+
+  Upstream fully deprecated devel/libphutil and merged its functionality
+  into devel/arcanist-lib and devel/phabricator. As a result, the
+  devel/libphutil port will be removed from the ports tree.
+
+  After upgrading devel/(arcanist-lib|phabricator) to version 20200514, it is
+  recommended to remove the orphaned libphutil package by running:
+
+    # pkg delete php\*-libphutil
+
+  Alternatively, 'pkg autoremove' will also work as expected, but might
+  remove orphaned packages unrelated to this update.
+
+20200505:
+  AFFECTS: users of net-im/pidgin-rocketchat
+  AUTHOR: tobias.rehbein@web.de
+
+  This port has been turned into a libpurple plugin (net-im/purple-rocketchat)
+  to support other libpurple clients than pidgin.
+
+  This also changes some dependencies and you should run the following command
+  to prevent pidgin from being autoremoved.
+
+  # mark pidgin as being not automatically installed
+  pkg set -A 0 pidgin
+
+20200504:
+  AFFECTS: users of x11-wm/hs-xmonad
+  AUTHOR:  arrowd@FreeBSD.org
+
+  From now, it is recommended to use "build script" method to compile XMonad
+  config. See https://github.com/xmonad/xmonad-testing/ for general info and
+  port's pkg-message for concrete steps.
+
+20200503:
+  AFFECTS: users of net-mgmt/librenms
+  AUTHOR:  dvl@FreeBSD.org
+
+  Polling via cronjob is deprecated as of release 1.63
+  see see https://community.librenms.org/t/dropping-support-for-php-7-1-and-python-2/11851
+
+  Please migrate to the Dispatch Service:
+  https://docs.librenms.org/Extensions/Dispatcher-Service/
+
+  These steps should get you running:
+  * comment out the crontab entries listed above under PYPOLLER
+  * populate %%WWWDIR%%/.env with:
+    * APP_KEY - see farther below for how to create
+    * NODE_ID - see just below for how to create
+    * DB_HOST
+    * DB_DATABASE
+    * DB_USERNAME
+    * DB_PASSWORD
+  * you can create a NODE_ID with: php -r 'echo uniqid() . "\n";'
+  * sysrc librenms_enable="YES"
+  * service librenms start
+
+20200501:
+  AFFECTS: users of www/phpmyfaq
+  AUTHOR: flo@FreeBSD.org
+
+  phpMyFAQ has been updated to 3.0.2, old templates are not compatible with
+  this new version. Please see:
+
+  https://www.phpmyfaq.de/docs/3.0#3.4
+
+20200428:
+  AFFECTS: users of sysutils/ansible
+  AUTHOR: bofh@FreeBSD.org
+
+  Ansible has been updated to 2.9.7. Please follow the porting guide
+  to update the rulesets:
+
+  https://docs.ansible.com/ansible/devel/porting_guides/porting_guide_2.9.html
+
+  If you wish to stay with 2.8 version, you can switch
+  to new sysutils/ansible28 port, which tracks stable 2.8 branch:
+
+  # pkg set -n ansible:ansible28
+
 20200428:
   AFFECTS: x11-servers/xwayland-devel
   AUTHOR: jbeich@FreeBSD.org
@@ -14,23 +200,45 @@ you update your ports collection, before attempting any port upgrades.
 
   See 20200308 entry for more details.
 
-20200418:
-  AFFECTS: users of mail/mailman
-  AUTHOR: mandree@FreeBSD.org
+20200422:
+  AFFECTS: users of devel/kyua
+  AUTHOR: brooks@FreeBSD.org
 
-  Mailman versions on FreeBSD before (exclusively) 2.1.30 have not marked the
-  web templates as "sample" files, and would overwrite changes made locally or
-  through the web interface on updates.
+  A tests group has been added and the tests user should be a member
+  of it by default rather than nobody. You should update your password
+  database to match (change the group from 65534 to 977 after updating).
 
-  BEFORE updating mailman from a version such as 2.1.29_* or older, please
-  backup /usr/local/mailman/templates/ before the upgrade, and after installing
-  mailman 2.1.30 or a newer 2.1.x, restore from backup, overwriting the
-  existing newly installed templates/LANG/... files with those from your
-  backup, and then diff them against the respective *.sample files.  The *.txt
-  and *.html files are yours, and *.sample are the distributed ones.
+  Please use the following command to do so:
 
-  Once you have upgraded to 2.1.30, the port or package will take care to only
-  replace files that were unaltered from the shipped version.
+  pw usermod -n tests -g tests
+
+20200408:
+  AFFECTS: users of security/openssh-portable
+  AUTHOR: bdrewery@FreeBSD.org
+
+  OpenSSH was upgraded to 8.2p1 on 2020-03-23.
+
+  A restart of sshd is required after upgrade due to an incompatibility
+  introduced in 8.2.
+
+  Please see https://www.openssh.com/txt/release-8.2 for upcoming
+  deprecation notices.
+
+20200408
+  AFFECTS: users of net/irrd
+  AUTHOR: bofh@FreeBSD.org
+
+  Legacy version of net/irrd has been moved to net/irrd-legacy.
+  net/irrd has been upgraded to 4.X branch. If someone wants to stick with
+  legacy version then pkg users have to do something like
+
+  # pkg set -o net/irrd:net/irrd-legacy
+
+  For portmaster users
+  # portmaster -o net/irrd-legacy net/irrd
+
+  Both of the version can be installed and used concurrently in case there is
+  a need for migration
 
 20200403:
   AFFECTS: users of x11-fonts/fontconfig
@@ -112,7 +320,7 @@ you update your ports collection, before attempting any port upgrades.
   by default, instead of the older DRI2 interface.  This might cause regressions
   when using the legacy graphics drivers, either through
   graphics/drm-legacy-kmod or the graphics drivers in base.
-  
+
   If you experience issues when running OpenGL applications it is possible
   to force the use of DRI2 by setting the LIBGL_DRI3_DISABLE environment
   variable to 1 before starting any OpenGL application.  The easiest way to
@@ -442,6 +650,7 @@ you update your ports collection, before attempting any port upgrades.
   # pkg upgrade
 
   For portmaster users:
+  # sh
   # portmaster -o lang/python37 python36
   # REINSTALL="$(pkg info -o py36-\* | awk '{printf "%s ", $2}')"
   # pkg delete -f py36-\*

@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	code_saturne
-PORTVERSION=	6.0.2
+PORTVERSION=	6.1.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	science parallel
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -42,10 +41,11 @@ BINARY_ALIAS=	python=${PYTHON_CMD} \
 		pyrcc5=pyrcc5-${PYTHON_VER} \
 		pyuic5=pyuic5-${PYTHON_VER}
 
-OPTIONS_DEFINE=		DOCS EXAMPLES BATCH BLAS MPI
-OPTIONS_DEFAULT=	BATCH BLAS MPI METIS
+OPTIONS_DEFINE=		DOCS EXAMPLES BATCH BLAS MPI SCOTCH
+OPTIONS_DEFAULT=	BATCH BLAS MPI SCOTCH METIS
 OPTIONS_RADIO=		METIS
 OPTIONS_RADIO_METIS=	METIS PARMETIS
+BLAS_DESC=		Support of OpenBLAS
 BLAS_USES=		blaslapack
 BLAS_CONFIGURE_ON=	--with-blas=yes --with-blas-lib=${LOCALBASE}/lib --with-blas-libs=-lopenblas
 BLAS_LIB_DEPENDS=	libopenblas.so:math/openblas
@@ -53,12 +53,17 @@ BATCH_DESC=		Use Torque to submit batches
 BATCH_RUN_DEPENDS=	pbs-config:sysutils/torque
 MPI_LIB_DEPENDS=	libmpi.so:net/mpich
 MPI_CONFIGURE_WITH=	mpi
+METIS_DESC=		Support of METIS
 METIS_LIB_DEPENDS=	libmetis.so:math/metis
 METIS_CONFIGURE_ON=	--with-metis-include="${LOCALBASE}/include"
+PARMETIS_DESC=		Support of ParMETIS
 PARMETIS_LIB_DEPENDS=	libparmetis.so:math/parmetis
 PARMETIS_CONFIGURE_ON=	--with-metis-include="${LOCALBASE}/include/parmetis"	\
 			--with-metis-lib="${LOCALBASE}/lib/parmetis"
 PARMETIS_CONFIGURE_ENV=	LIBS=-lexecinfo
+SCOTCH_DESC=		Support of Scotch
+SCOTCH_BUILD_DEPENDS=	scotch>0:cad/scotch
+SCOTCH_CONFIGURE_ON=	--with-scotch-include="${LOCALBASE}/include"
 
 TEST_TARGET=	check
 
@@ -82,15 +87,13 @@ USE_TEX=	tex:build
 BUILD_DEPENDS+=	fig2dev:print/transfig		\
 		doxygen:devel/doxygen		\
 		dot:graphics/graphviz		\
-		sphinx-build-${PYTHON_VER}:textproc/py-sphinx@${PY_FLAVOR}
+		${PY_SPHINX}
 BINARY_ALIAS+=	sphinx-build=sphinx-build-${PYTHON_VER}
 ALL_TARGET=	all pdf
 DOCS=		AUTHORS ChangeLog README
 .endif
 
 pre-configure:
-	(cd ${WRKSRC} && ${LS} preprocessor/*/*.c src/*/*.c* |	\
-		${GREP} -v user_examples > po/POTFILES.in)
 	${FLEX} -o ${WRKSRC}/src/mei/mei_scanner.c ${WRKSRC}/src/mei/mei_scanner.l
 	${LOCALBASE}/bin/bison --defines=${WRKSRC}/src/mei/mei_parser.h	\
 		-o ${WRKSRC}/src/mei/mei_parser.c ${WRKSRC}/src/mei/mei_parser.y

@@ -1,4 +1,4 @@
---- node_modules/github/test/git-strategies.test.js.orig	2019-12-11 03:24:32 UTC
+--- node_modules/github/test/git-strategies.test.js.orig	2020-02-26 21:07:14 UTC
 +++ node_modules/github/test/git-strategies.test.js
 @@ -1535,7 +1535,7 @@ import * as reporterProxy from '../lib/reporter-proxy'
            assert.match(options.env.DISPLAY, /^.+$/);

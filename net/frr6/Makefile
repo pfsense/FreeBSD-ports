@@ -3,7 +3,7 @@
 PORTNAME=	frr
 PORTVERSION=	6.0.2
 DISTVERSIONPREFIX=	frr-
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net
 PKGNAMESUFFIX=	6
 
@@ -12,6 +12,9 @@ COMMENT=	IP routing protocol suite including BGP, IS-IS, OSPF and RIP
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 BUILD_DEPENDS=	gawk:lang/gawk
 LIB_DEPENDS=	libjson-c.so:devel/json-c
@@ -61,7 +64,8 @@ CONFIGURE_ARGS=	--enable-user=frr \
 		--disable-nhrpd \
 		--disable-pimd
 
-MANPAGES_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
+MANPAGES_BUILD_DEPENDS=	${PY_SPHINX}
+MANPAGES_BINARY_ALIAS=	sphinx-build=sphinx-build-${PYTHON_VER}
 MANPAGES_CONFIGURE_OFF=	--disable-doc
 SHELLACCESS_CONFIGURE_ENABLE=	shell-access
 FPM_CONFIGURE_ENABLE=		fpm

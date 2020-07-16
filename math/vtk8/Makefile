@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	vtk
-DISTVERSION=	8.1.2
-PORTREVISION=	5
+DISTVERSION=	8.2.0
 CATEGORIES=	math graphics
 MASTER_SITES=	http://www.vtk.org/files/release/${VTK_SHORT_VER}/
 PKGNAMESUFFIX=	8
@@ -18,7 +17,7 @@ LIB_DEPENDS=	libtiff.so:graphics/tiff \
 		libfreetype.so:print/freetype2 \
 		libexpat.so:textproc/expat2
 
-CONFLICTS=	vtk5 vtk6
+CONFLICTS=	vtk6 vtk9
 
 USES=		alias cmake compiler:c++11-lang gl jpeg localbase xorg
 USE_LDCONFIG=	${PREFIX}/lib/vtk-${VTK_SHORT_VER}

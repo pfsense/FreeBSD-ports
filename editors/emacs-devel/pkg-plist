@@ -2529,8 +2529,6 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/mail/mailclient.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/mail/mailheader.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/mail/mailheader.elc
-%%DATADIR%%/%%EMACS_VER%%/lisp/mail/metamail.el.gz
-%%DATADIR%%/%%EMACS_VER%%/lisp/mail/metamail.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/mail/mspools.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/mail/mspools.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/mail/qp.el.gz
@@ -2788,6 +2786,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-cmds.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-compat.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-compat.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-crypt.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-crypt.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-ftp.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-ftp.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-gvfs.el.gz
@@ -2903,16 +2903,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/landmark.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/lazy-lock.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/lazy-lock.elc
-%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/ledit.el.gz
-%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/ledit.elc
-%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/levents.el.gz
-%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/levents.elc
-%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/lmenu.el.gz
-%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/lmenu.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/longlines.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/longlines.elc
-%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/lucid.el.gz
-%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/lucid.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/mailpost.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/mailpost.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/mantemp.el.gz
@@ -2920,12 +2912,12 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/meese.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/meese.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/messcompat.el
+%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/metamail.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/metamail.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/mouse-sel.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/mouse-sel.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/old-emacs-lock.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/old-emacs-lock.elc
-%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/old-whitespace.el.gz
-%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/old-whitespace.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/otodo-mode.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/otodo-mode.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/patcomp.el.gz
@@ -3347,6 +3339,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/cc-vars.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/cfengine.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/cfengine.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/cl-font-lock.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/cl-font-lock.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/cmacexp.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/cmacexp.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/compile.el.gz
@@ -4115,6 +4109,7 @@ share/metainfo/emacs.appdata.xml
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/w32gui.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/w32heap.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/w32heap.h
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/w32image.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/w32inevt.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/w32inevt.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/w32menu.c

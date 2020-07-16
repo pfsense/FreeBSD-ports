@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mate-menus
-PORTVERSION=	1.22.1
+PORTVERSION=	1.24.0
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -18,7 +18,7 @@ LICENSE_FILE_LGPL20=	${WRKSRC}/COPYING.LIB
 PORTSCOUT=	limitw:1,even
 
 USES=		gettext gmake gnome libtool localbase pathfix pkgconfig \
-		python:2.7 tar:xz
+		python tar:xz
 USE_GNOME=	glib20 intltool introspection:buid
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
