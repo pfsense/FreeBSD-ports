@@ -12,7 +12,7 @@ COMMENT=	Voleatech Cellular Module Interface
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}serial>0:comms/py-pyserial@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyserial>0:comms/py-pyserial@${PY_FLAVOR}
 
 NO_BUILD=	yes
 NO_MTREE=	yes
