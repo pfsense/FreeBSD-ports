@@ -83,7 +83,9 @@
 			<description>
 				<![CDATA[
 				Limit the maximum total download size to the size specified here (in kilobytes).
-				<span class="text-info">Set to 0 to disable.</span>
+				<span class="text-info">Set to 0 to disable.<br />
+				<strong>Traffic control settings mainly work with universal HTTP, so it may not work without HTTPS interception, if HTTPS is used, it can also be a problem with dynamic content (javascript).</strong>
+				</span>
 				]]>
 			</description>
 			<type>input</type>
