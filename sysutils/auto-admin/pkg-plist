@@ -20,6 +20,7 @@ sbin/auto-change-nfsd-count
 sbin/auto-change-ownership
 sbin/auto-change-primary-group
 sbin/auto-change-uid
+sbin/auto-check-ports-branch
 sbin/auto-clean-disk
 sbin/auto-clean-pkgsrc
 sbin/auto-clean-ports
@@ -42,6 +43,7 @@ sbin/auto-enable-service
 sbin/auto-fastest-mirror
 sbin/auto-fetch-install-media
 sbin/auto-file-secure
+sbin/auto-firewall-setup
 sbin/auto-freebsd-wip-checkout
 sbin/auto-fusefs-install
 sbin/auto-gpu-setup
@@ -58,6 +60,9 @@ sbin/auto-install-packages
 sbin/auto-install-pkgsrc-tree
 sbin/auto-ipfw-gateway-setup
 sbin/auto-ipmi-install
+sbin/auto-ipmi-remote-access
+sbin/auto-ipmi-remote-power
+sbin/auto-ipmi-remote-status
 sbin/auto-krb-auth-setup
 sbin/auto-ldap-adduser
 sbin/auto-ldap-client-setup
@@ -67,20 +72,24 @@ sbin/auto-media-format
 sbin/auto-mount-any
 sbin/auto-network-restart
 sbin/auto-nfs-add-share
+sbin/auto-nfs-client-setup
 sbin/auto-nfs-restart
 sbin/auto-nfs-server-setup
 sbin/auto-octet-to-hex
+sbin/auto-operator-check
 sbin/auto-os-release
 sbin/auto-ostype
 sbin/auto-package-installed
 sbin/auto-passwd-user-expiration
 sbin/auto-password-status
+sbin/auto-pkg-branch
 sbin/auto-pkg-latest
 sbin/auto-pkgsrc-delete-all
 sbin/auto-pkgsrc-dir
 sbin/auto-pkgsrc-prefix
 sbin/auto-pkgsrc-remote-x11
 sbin/auto-pkgsrc-setup
+sbin/auto-ports-branch
 sbin/auto-ports-checkout
 sbin/auto-ports-setup
 sbin/auto-print-make-variable
@@ -96,6 +105,7 @@ sbin/auto-restore-user
 sbin/auto-root-check
 sbin/auto-secure-directory
 sbin/auto-service-enabled
+sbin/auto-set-conf-var
 sbin/auto-set-hostname
 sbin/auto-set-lid-switch-mode
 sbin/auto-set-memory-limits
@@ -104,6 +114,7 @@ sbin/auto-set-umask
 sbin/auto-sound-driver-setup
 sbin/auto-ssh-authorize
 sbin/auto-ssh-reverse-authorize
+sbin/auto-su+j-toggle
 sbin/auto-transfer-pw
 sbin/auto-unlock-local-pw
 sbin/auto-unlock-user
@@ -112,6 +123,8 @@ sbin/auto-update-system
 sbin/auto-user-admin
 sbin/auto-useradd
 sbin/auto-using-pkgsrc
+sbin/auto-wheel-check
 sbin/auto-wifi-failover
+sbin/auto-write-cache-toggle
 sbin/auto-xdm-toggle
 %%DATADIR%%/ipfw-rules.sh

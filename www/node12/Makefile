@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	node
-PORTVERSION=	12.16.1
-DISTVERSIONPREFIX=	v
+PORTVERSION=	12.18.2
 PORTREVISION=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	http://nodejs.org/dist/v${PORTVERSION}/
 PKGNAMESUFFIX=	12
@@ -40,7 +40,7 @@ BUNDLED_SSL_CONFIGURE_OFF=	--shared-openssl --openssl-use-def-ca-store
 BUNDLED_SSL_RUN_DEPENDS_OFF=	ca_root_nss>=0:security/ca_root_nss
 
 NLS_CONFIGURE_ON=	--with-intl=system-icu
-NLS_BUILD_DEPENDS=	icu>=64.2:devel/icu
+NLS_BUILD_DEPENDS=	icu>=67.1:devel/icu
 NLS_LIB_DEPENDS=	libicui18n.so:devel/icu
 
 DTRACE_CONFIGURE_ON=	--with-dtrace
@@ -67,9 +67,10 @@ MAKE_ENV+=	CC.host=${CC} CFLAGS.host="${CFLAGS}" \
 		CXX.host=${CXX} CXXFLAGS.host="${CXXFLAGS}" \
 		LINK.host=${CXX} LDFLAGS.host="${LDFLAGS}"
 
-BUILD_DEPENDS+=	c-ares>=1.15.0:dns/c-ares\
-		libuv>=1.33.1:devel/libuv \
-		libnghttp2>=1.40.0:www/libnghttp2
+BUILD_DEPENDS+=	c-ares>=1.16.0:dns/c-ares \
+		libuv>=1.38.0:devel/libuv \
+		libnghttp2>=1.41.0:www/libnghttp2 \
+		objdump:devel/binutils
 LIB_DEPENDS+=	libcares.so:dns/c-ares\
 		libuv.so:devel/libuv \
 		libnghttp2.so:www/libnghttp2
@@ -82,6 +83,8 @@ BROKEN_SSL+=	base
 
 .if ${ARCH} == armv6 || ${ARCH} == armv7
 EXTRA_PATCHES=	${PATCHDIR}/extra-patch-tools_v8__gypfiles_v8.gyp
+.elif defined(PPC_ABI) && ${PPC_ABI} == ELFv2
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-common.gypi
 .endif
 
 .if ${PORT_OPTIONS:MBUNDLED_SSL} && ${ARCH} != amd64

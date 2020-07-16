@@ -3,9 +3,9 @@
 
 PORTNAME=		ltfs
 DISTVERSIONPREFIX=	v
-DISTVERSION=		2.4.1.2
-DISTVERSIONSUFFIX=	-10254
-PORTREVISION=		3
+DISTVERSION=		2.4.2.0
+DISTVERSIONSUFFIX=	-10418
+PORTREVISION=		1
 CATEGORIES=		sysutils
 
 MAINTAINER=	kbowling@FreeBSD.org
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libicudata.so:devel/icu \
 		libpkg.so:${PKG_ORIGIN} \
 		libuuid.so:misc/e2fsprogs-libuuid
 
-USES=		autoreconf fuse gnome libtool:build pkgconfig ssl
+USES=		autoreconf compiler:c11 fuse gnome libtool:build pkgconfig ssl
 
 CONFIGURE_ARGS+=	--enable-icu-6x
 GH_ACCOUNT=		LinearTapeFileSystem

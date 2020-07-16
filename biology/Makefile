@@ -10,6 +10,7 @@
     SUBDIR += bamtools
     SUBDIR += bcftools
     SUBDIR += bedtools
+    SUBDIR += bioawk
     SUBDIR += biococoa
     SUBDIR += bolt-lmm
     SUBDIR += bowtie
@@ -21,7 +22,6 @@
     SUBDIR += checkm
     SUBDIR += clustal-omega
     SUBDIR += clustalw
-    SUBDIR += consed
     SUBDIR += cufflinks
     SUBDIR += cytoscape
     SUBDIR += ddocent
@@ -43,6 +43,7 @@
     SUBDIR += freebayes
     SUBDIR += garlic
     SUBDIR += gatk
+    SUBDIR += gcta
     SUBDIR += gemma
     SUBDIR += gff2ps
     SUBDIR += gmap
@@ -113,7 +114,8 @@
     SUBDIR += phred
     SUBDIR += phylip
     SUBDIR += phyml
-    SUBDIR += plinkseq
+    SUBDIR += picard-tools
+    SUBDIR += plink
     SUBDIR += primer3
     SUBDIR += prodigal
     SUBDIR += prodigy-lig
@@ -125,16 +127,20 @@
     SUBDIR += py-bx-python
     SUBDIR += py-cutadapt
     SUBDIR += py-dnaio
+    SUBDIR += py-ete3
     SUBDIR += py-fastTSNE
     SUBDIR += py-gffutils
     SUBDIR += py-gtfparse
+    SUBDIR += py-hits
     SUBDIR += py-loompy
     SUBDIR += py-macs2
     SUBDIR += py-multiqc
     SUBDIR += py-orange3-bioinformatics
     SUBDIR += py-orange3-single-cell
+    SUBDIR += py-pandas-charm
     SUBDIR += py-pyfaidx
     SUBDIR += py-pysam
+    SUBDIR += py-scikit-bio
     SUBDIR += py-xenaPython
     SUBDIR += pyfasta
     SUBDIR += python-nexus
@@ -143,21 +149,21 @@
     SUBDIR += ruby-bio
     SUBDIR += rubygem-bio
     SUBDIR += samtools
+    SUBDIR += scrm
     SUBDIR += seaview
     SUBDIR += seqan
     SUBDIR += seqan-apps
     SUBDIR += seqan1
     SUBDIR += seqio
     SUBDIR += seqtk
-    SUBDIR += seqtools
     SUBDIR += sim4
     SUBDIR += slclust
     SUBDIR += smithwaterman
     SUBDIR += stacks
     SUBDIR += star
     SUBDIR += stringtie
+    SUBDIR += subread
     SUBDIR += tRNAscan-SE
-    SUBDIR += t_coffee
     SUBDIR += tabixpp
     SUBDIR += tophat
     SUBDIR += treekin
@@ -170,6 +176,7 @@
     SUBDIR += velvet
     SUBDIR += viennarna
     SUBDIR += vsearch
+    SUBDIR += vt
     SUBDIR += wise
 
 .include <bsd.port.subdir.mk>

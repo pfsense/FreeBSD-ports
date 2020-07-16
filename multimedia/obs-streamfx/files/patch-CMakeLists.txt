@@ -1,0 +1,65 @@
+--- CMakeLists.txt.orig	2020-04-24 03:39:40 UTC
++++ CMakeLists.txt
+@@ -92,13 +92,13 @@ else()
+ endif()
+ 
+ # Detect Architecture
+-math(EXPR BITS "8*${CMAKE_SIZEOF_VOID_P}")
+-if("${BITS}" STREQUAL "32")
+-	set(ARCH "x86")
+-	message(STATUS "StreamFX no longer supports 32-bit builds, you are on your own if you continue.")
+-else()
+-	set(ARCH "x64")
+-endif()
++#math(EXPR BITS "8*${CMAKE_SIZEOF_VOID_P}")
++#if("${BITS}" STREQUAL "32")
++#	set(ARCH "x86")
++#	message(STATUS "StreamFX no longer supports 32-bit builds, you are on your own if you continue.")
++#else()
++#	set(ARCH "x64")
++#endif()
+ 
+ # All Warnings, Extra Warnings, Pedantic
+ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+@@ -183,7 +183,7 @@ else()
+ 	set(CMAKE_PACKAGE_SUFFIX_OVERRIDE "" CACHE STRING "Override for the suffix.")
+ 
+ 	if(UNIX)
+-		set(UNIX_LOCAL_STRUCTURE TRUE CACHE BOOL "Package for a local linux install.")
++		#set(UNIX_LOCAL_STRUCTURE TRUE CACHE BOOL "Package for a local linux install.")
+ 	endif()
+ 
+ 	if(NOT ${PropertyPrefix}OBS_DOWNLOAD)
+@@ -502,9 +502,9 @@ if((CMAKE_C_COMPILER_ID STREQUAL "GNU")
+ 	OR (CMAKE_C_COMPILER_ID STREQUAL "Clang")
+ 	OR (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+ 	if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
+-		list(APPEND PROJECT_LIBRARIES
+-			"stdc++fs"
+-		)
++		#list(APPEND PROJECT_LIBRARIES
++		#	"stdc++fs"
++		#)
+ 	endif()
+ endif()
+ 
+@@ -1031,8 +1031,8 @@ else()
+ 	else()
+ 		install(
+ 			TARGETS ${PROJECT_NAME}
+-			RUNTIME DESTINATION "./obs-plugins/${BITS}bit/" COMPONENT Runtime
+-			LIBRARY DESTINATION "./obs-plugins/${BITS}bit/" COMPONENT Runtime
++			RUNTIME DESTINATION "lib/obs-plugins" COMPONENT Runtime
++			LIBRARY DESTINATION "lib/obs-plugins" COMPONENT Runtime
+ 		)
+ 		if(MSVC)
+ 			install(
+@@ -1044,7 +1044,7 @@ else()
+ 	
+ 		install(
+ 			DIRECTORY "data/"
+-			DESTINATION "./data/obs-plugins/${PROJECT_NAME}/"
++			DESTINATION "share/obs/obs-plugins/${PROJECT_NAME}/"
+ 		)
+ 		
+ 		add_custom_target(

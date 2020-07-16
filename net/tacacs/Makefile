@@ -1,14 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	tacacs
-PORTVERSION=	201906100936
+PORTVERSION=	202004081858
 CATEGORIES=	net
 MASTER_SITES=	http://www.pro-bono-publico.de/projects/src/
 
 MAINTAINER=	akuz84@gmail.com
-COMMENT=	This is a TACACS+ daemon from pro-bono
-
-BROKEN=		unfetchable
+COMMENT=	TACACS+ daemon from pro-bono
 
 LICENSE=	BSD3CLAUSE
 

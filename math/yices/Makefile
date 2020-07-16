@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	yices
-DISTVERSION=	2.6.1
+DISTVERSION=	2.6.2
 CATEGORIES=	math
-MASTER_SITES=	http://yices.csl.sri.com/releases/${DISTVERSION}/
+MASTER_SITES=	https://yices.csl.sri.com/releases/${DISTVERSION}/
 DISTNAME=	${PORTNAME}-${DISTVERSION}-src
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	gperf:devel/gperf
 LIB_DEPENDS=	libgmp.so:math/gmp
 
-USES=		gmake localbase
+USES=		compiler:c11 gmake localbase
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-pic-gmp=${LOCALBASE}/lib/libgmp.so
 USE_LDCONFIG=	yes
@@ -26,6 +26,7 @@ CFLAGS+=	-fPIC
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
 post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*
 	@${RM} ${STAGEDIR}${PREFIX}/lib/*.a
 	@cd ${STAGEDIR}${PREFIX}/lib && ${LN} -s libyices.so.2.6 libyices.so && ${LN} -s libyices.so.2.6 libyices.so.2
 

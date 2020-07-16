@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	keepass
-PORTVERSION=	2.44
+PORTVERSION=	2.45
 CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/KeePass%202.x/${PORTVERSION}
 DISTNAME=	KeePass-${PORTVERSION}-Source
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	m.muenz@gmail.com
 COMMENT=	Light-weight and easy-to-use password manager
 
 LICENSE=	GPLv2+
@@ -40,6 +40,8 @@ DEBUG_VARS=		config=Debug
 DEBUG_VARS_OFF=		config=Release
 XDOTOOL_RUN_DEPENDS=	xdotool:x11/xdotool
 XSEL_RUN_DEPENDS=	xsel:x11/xsel-conrad
+
+MAKE_ENV=	MONO_REGISTRY_PATH=${WRKDIR}
 
 post-patch:
 	${REINPLACE_CMD} -e 's|sed\ -i|sed\ -i\ \"\"|g' ${WRKSRC}/Build/PrepMonoDev.sh

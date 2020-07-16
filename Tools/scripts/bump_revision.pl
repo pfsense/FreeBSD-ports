@@ -1,4 +1,4 @@
-#!/usr/bin/env perl -wT
+#!/usr/bin/env -S perl -wT
 
 # $FreeBSD$
 
@@ -7,15 +7,13 @@
 # set of ports, for instance, when in the latter set one of the ports bumped the
 # .so library version.
 #
-# It is best executed with the working directory set to the base of a
-# ports tree, such as /usr/ports.
-#
 # The shebang line above includes -T (taint) to be more distrustful 
 # about the environment, for security reasons, and is considered
 # good Perl practice.
 #
-# You can use either the -l (shaLlow, avoid grandparent dependencies,
-# slower) or -g option (include grandparent dependencies) option.
+# You can use either the
+# -l (shaLlow, avoid grandparent dependencies, slower) or
+# -g option (include grandparent dependencies) option.
 #
 # MAINTAINER=	mandree@FreeBSD.org
 #
@@ -27,7 +25,7 @@ use Cwd;
 use Data::Dumper;
 use File::Basename;
 
-use vars qw/$opt_c $opt_n $opt_i $opt_u $opt_l $opt_g $opt_p/;
+use vars qw/$opt_n $opt_f $opt_i $opt_u $opt_l $opt_g $opt_p/;
 
 # launder environment
 delete @ENV{'IFS', 'CDPATH', 'ENV', 'BASH_ENV'};
@@ -40,8 +38,8 @@ Usage: $0 [options] [<category>/]<portname>
 Options:
     -l              - shaLlow, only bump ports with direct dependencies.
     -g              - Grandchildren, also bump for indirect dependencies (default).
-    -c              - Check only (dry-run), do not change Makefiles.
-    -n              - No tmpdir, just use the directory where INDEX resides.
+    -n              - Check only (dry-run), do not change Makefiles.
+    -f              - No tmpdir, just use the directory where INDEX resides.
     -i <filename>   - Use this for INDEX name. Defaults to \${PORTSDIR}/INDEX-n,
                       where n is the major version of the OS, or \${PORTSDIR}/INDEX if missing.
     -p <dirname>    - Set portsdir, if different from /usr/ports.
@@ -111,7 +109,7 @@ my ($portsdir, $INDEX);
 {
     $opt_i = "";
     $opt_u = "";
-    getopts("cgi:lnu:p:");
+    getopts("fgi:lnu:p:") or die "Aborting";
     $shallow = $opt_l if $opt_l;
     if ($opt_l and $opt_g) {
 	die "Options -g and -l given, which are mutually exclusive. Pick either.";
@@ -126,7 +124,8 @@ my ($portsdir, $INDEX);
     $INDEX = $opt_i if ($opt_i);
     if (!-f $INDEX) { $INDEX = "$portsdir/INDEX"; }
 
-    die "$INDEX doesn't seem to exist. Please check the value supplied with -i, or use -i /path/to/INDEX." unless(-f $INDEX);
+    die "$INDEX doesn't seem to exist. Please check the value supplied with -i,\n" .
+	    "or use -i /path/to/INDEX, or check your -p PORTSDIR." unless(-f $INDEX);
 }
 usage() unless(@ARGV);
 
@@ -135,9 +134,19 @@ my $TMPDIR = File::Basename::dirname($INDEX);
 #
 # Sanity checking
 #
-if (-d "$TMPDIR/.svn" and not $opt_n and not $opt_c) {
+if (-d "$TMPDIR/.svn" and not $opt_f and not $opt_n) {
     die "$TMPDIR/.svn exists, cowardly refusing to proceed.\n";
 }
+
+
+# must launder $portsdir (from command line => tainted) first
+if ($portsdir =~ /^([-\@\w.\/]+)$/) {
+    $portsdir = $1; }
+else {
+    die "Portsdir \"$portsdir\" contains unsafe characters. Aborting";
+}
+
+chdir "$portsdir" or die "cannot cd to $portsdir: $!\nAborting";
 
 #
 # Read the index, save some interesting keys
@@ -249,7 +258,7 @@ my $ports = join(" ", keys %DEPPORTS);
 # Create a temp directory and cvs checkout the ports
 # (don't do error checking, too complicated right now)
 #
-unless ($opt_n or $opt_c) {
+unless ($opt_f or $opt_n) {
   $TMPDIR = ".bump_revsion_pl_tmpdir.$$";
   print "svn checkout into $TMPDIR...\n";
   mkdir($TMPDIR, 0755);
@@ -266,7 +275,7 @@ unless ($opt_n or $opt_c) {
     print "Updating Makefiles\n";
     foreach my $p (sort keys(%DEPPORTS)) {
 	print "- Updating Makefile of $p\n";
-    next if $opt_c;
+    next if $opt_n;
 	bumpMakefile "$p";
     }
 }
@@ -274,7 +283,7 @@ unless ($opt_n or $opt_c) {
 #
 # Commit the changes. Not automated.
 #
-unless ($opt_c) {
+unless ($opt_n) {
     print <<EOF;
 All PORTREVISIONs have been updated.  You are nearly done, only one
 thing remains:  Committing to the ports tree.  This program is not

@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	scrot
-DISTVERSION=	1.2
+DISTVERSION=	1.3
 CATEGORIES=	graphics
 
 MAINTAINER=	amdmi3@FreeBSD.org
-COMMENT=	SCReenshOT - command line screen capture utility
+COMMENT=	Command-line screen capture utility
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

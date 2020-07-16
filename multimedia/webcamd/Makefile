@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	webcamd
-PORTVERSION=	5.3.7.1
+PORTVERSION=	5.7.1.1
 PORTREVISION=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	http://www.selasky.org/hans_petter/distfiles/ \
@@ -14,22 +14,24 @@ COMMENT=	Port of Linux USB webcam and DVB drivers into userspace
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	v4l_compat>=1.0.20100321:multimedia/v4l_compat
-LIB_DEPENDS=	libv4l1.so:multimedia/libv4l
 
 USES=		pkgconfig tar:bzip2 uidfix
 MAKE_ARGS=	LIBDIR="${LOCALBASE}/lib" HAVE_CUSE="YES"
 USE_RC_SUBR=	webcamd
 SUB_FILES=	webcamd.conf
 
-OPTIONS_DEFINE=	COMPAT32 DEBUG HAL VT_CLIENT VT_SERVER DVB INPUT KEYBOARD MOUSE RADIO WEBCAM
+OPTIONS_DEFINE=	DEBUG HAL VT_CLIENT VT_SERVER DVB INPUT KEYBOARD MOUSE RADIO WEBCAM
 OPTIONS_DEFAULT=DVB HAL INPUT RADIO WEBCAM
+
+#
+# 32-bit compatibility support is mostly useful for
+# platforms using 32-bit applications:
+#
+OPTIONS_DEFINE_amd64=		COMPAT32
+OPTIONS_DEFAULT_amd64=		COMPAT32
 
 COMPAT32_DESC=	Enable 32-bit compatibility support
 COMPAT32_MAKE_ARGS=	HAVE_COMPAT32="YES"
-
-.if exists(/usr/lib32/libcuse.so)
-OPTIONS_DEFAULT+=	COMPAT32
-.endif
 
 HAL_DESC=	Build with HAL and DBUS support
 HAL_LIB_DEPENDS+=	libhal.so:sysutils/hal

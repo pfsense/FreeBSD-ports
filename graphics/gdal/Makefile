@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gdal
-PORTVERSION=	3.0.4
+PORTVERSION=	3.1.0
 PORTREVISION=	2
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://download.osgeo.org/gdal/${PORTVERSION}/ \
@@ -35,7 +35,7 @@ PCRE_DESC=	Regular expression support for SQLite
 USES=		compiler:c++11-lang gmake iconv jpeg localbase pkgconfig ssl tar:xz
 
 CFLAGS+=	-fPIC
-CONFIGURE_ARGS=	--datadir=${DATADIR} \
+CONFIGURE_ARGS=	--datadir=${PREFIX}/share \
 		--enable-static=yes \
 		--with-geotiff=yes \
 		--with-gif=yes \
@@ -102,7 +102,7 @@ JASPER_LIB_DEPENDS=	libjasper.so:graphics/jasper
 KML_CONFIGURE_WITH=	libkml
 KML_LIB_DEPENDS=	libkmlbase.so:science/libkml
 LIBXML2_CONFIGURE_OFF=	--with-xml2=no
-LIBXML2_CONFIGURE_ON=	--with-xml2=${LOCALBASE}/bin/xml2-config
+LIBXML2_CONFIGURE_ON=	--with-xml2=yes
 LIBXML2_LIB_DEPENDS=	libxml2.so:textproc/libxml2
 MYSQL_CONFIGURE_OFF=	--with-mysql=no
 MYSQL_CONFIGURE_ON=	--with-mysql=${LOCALBASE}/bin/mysql_config
@@ -151,9 +151,10 @@ post-patch:
 	@${RM} -r ${WRKSRC}/ogr/ogrsf_frmts/geojson/libjson/
 
 post-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d
+	${INSTALL_DATA} ${WRKSRC}/scripts/gdal-bash-completion.sh ${STAGEDIR}${PREFIX}/etc/bash_completion.d
 	cd ${WRKSRC}/ && ${INSTALL_DATA} ${HEADER_FILES} ${STAGEDIR}${PREFIX}/include/
 	${INSTALL_DATA} ${WRKSRC}/libgdal.a ${STAGEDIR}${PREFIX}/lib/
-	${TOUCH} ${STAGEDIR}${PREFIX}/lib/gdalplugins/.keepme
 	${INSTALL_DATA} ${WRKSRC}/GDALmake.opt ${STAGEDIR}${DATADIR}/
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgdal.so.${PORTVERSION}
 

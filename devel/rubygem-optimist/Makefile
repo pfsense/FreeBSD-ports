@@ -2,14 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	optimist
-PORTVERSION=	3.0.0
+PORTVERSION=	3.0.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	commandline option parser for Ruby
+COMMENT=	Command-line option parser for Ruby
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 USES=		gem
 USE_RUBY=	yes

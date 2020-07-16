@@ -3,6 +3,7 @@
 
 PORTNAME=	liblo
 PORTVERSION=	0.31
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -11,28 +12,21 @@ COMMENT=	Lightweight Open Sound Control implementation
 
 LICENSE=	LGPL21
 
-USES=		gmake libtool pathfix
+USES=		compiler:c++11-lang gmake libtool pathfix
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
-PORTDOCS=	*
-PORTEXAMPLES=	example_client \
-		example_server \
-		example_tcp_echo_server \
-		nonblocking_server_example
-
-OPTIONS_DEFINE=	DOXYGEN DOCS EXAMPLES
+OPTIONS_DEFINE=	DOCS DOXYGEN EXAMPLES
 OPTIONS_SUB=	yes
 
 DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
 
 .include <bsd.port.options.mk>
 
-post-patch:
 .if ${ARCH} == i386 || ${ARCH} == powerpc
-	@${REINPLACE_CMD} -e 's|deadbeef||; s|f00baa23||' ${WRKSRC}/lo/lo_macros.h
+EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-32bit
 .endif
 
 post-install-DOCS-on:
@@ -45,6 +39,6 @@ post-install-DOXYGEN-on:
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	cd ${WRKSRC}/examples && ${INSTALL_SCRIPT} ${PORTEXAMPLES} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_PROGRAM} ${WRKSRC}/examples/.libs/* ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

@@ -46,15 +46,15 @@ RUN_DEPENDS=	bind-tools>0:dns/bind-tools
 .endif
 
 # XXX: remove tar:bz2
-USES=		compiler:c11 cpe libedit libtool pkgconfig ssl tar:bz2
+USES=		autoreconf compiler:c11 cpe libedit libtool pkgconfig ssl tar:bz2
 # ISC releases things like 9.8.0-P1, which our versioning doesn't like
-ISCVERSION=	9.17.0a0.2020.03.30
+ISCVERSION=	9.17.0a0.2020.06.23
 # XXX: Remove gitlab
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.isc.org
 GL_ACCOUNT=	isc-projects
 GL_PROJECT=	bind9
-GL_COMMIT=	2df610a882d57fd95221ece4df03c04cd0f702b7
+GL_COMMIT=	e8fa9986bd3bc6fdb7d40b60ecebfdcafbabea4c
 
 CPE_VENDOR=	isc
 CPE_VERSION=	${ISCVERSION:C/-.*//}
@@ -64,10 +64,10 @@ CPE_UPDATE=	${ISCVERSION:C/.*-//:tl}
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-linux-caps \
+		--disable-shared \
 		--localstatedir=/var \
 		--sysconfdir=${ETCDIR} \
 		--with-dlopen=yes \
-		--disable-shared \
 		--with-libxml2 \
 		--with-openssl=${OPENSSLBASE} \
 		--with-readline="-L${LOCALBASE}/lib -ledit"
@@ -89,11 +89,11 @@ CONFLICTS=	bind911 bind912 bind913 bind914 bind916
 
 MAKE_JOBS_UNSAFE=	yes
 
-OPTIONS_DEFAULT=	DLZ_FILESYSTEM GSSAPI_NONE IDN JSON LMDB PYTHON \
+OPTIONS_DEFAULT=	DLZ_FILESYSTEM GSSAPI_NONE IDN JSON LMDB MANPAGES \
 			SIGCHASE TCP_FASTOPEN
 OPTIONS_DEFINE=		DNSTAP DOCS FIXED_RRSET GEOIP IDN JSON LARGE_FILE LMDB \
-			OVERRIDECACHE PORTREVISION PYTHON QUERYTRACE SIGCHASE \
-			START_LATE TCP_FASTOPEN TUNING_LARGE
+			MANPAGES OVERRIDECACHE PORTREVISION QUERYTRACE \
+			SIGCHASE START_LATE TCP_FASTOPEN TUNING_LARGE
 
 OPTIONS_RADIO=		CRYPTO
 OPTIONS_RADIO_CRYPTO=	NATIVE_PKCS11
@@ -109,8 +109,6 @@ OPTIONS_SINGLE_GSSAPI=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT GSSAPI_NONE
 OPTIONS_EXCLUDE=	${OPTIONS_GROUP_DLZ} DNSTAP DOCS GEOIP LMDB \
 			OVERRIDECACHE PORTREVISION QUERYTRACE START_LATE \
 			TCP_FASTOPEN TUNING_LARGE
-.else
-OPTIONS_EXCLUDE=	PYTHON
 .endif	# BIND_TOOLS_SLAVE
 
 OPTIONS_SUB=	yes
@@ -134,7 +132,6 @@ LMDB_DESC=		Use LMDB for zone management
 OVERRIDECACHE_DESC=	Use the override-cache patch
 NATIVE_PKCS11_DESC=	Use PKCS\#11 native API (**READ HELP**)
 PORTREVISION_DESC=	Show PORTREVISION in the version string
-PYTHON_DESC=		Build with Python utilities
 QUERYTRACE_DESC=	Enable the very verbose query tracelogging
 SIGCHASE_DESC=		dig/host/nslookup will do DNSSEC validation
 START_LATE_DESC=	Start BIND late in the boot process (see help)
@@ -167,16 +164,13 @@ GEOIP_CONFIGURE_ENABLE=	geoip
 GEOIP_CONFIGURE_WITH=	maxminddb
 GEOIP_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
 
-GSSAPI_BASE_CONFIGURE_ON=	--with-gssapi=${GSSAPIBASEDIR} \
-				KRB5CONFIG="${KRB5CONFIG}"
+GSSAPI_BASE_CONFIGURE_ON=	--with-gssapi="${KRB5CONFIG}"
 GSSAPI_BASE_USES=		gssapi
 
-GSSAPI_HEIMDAL_CONFIGURE_ON=	--with-gssapi=${GSSAPIBASEDIR} \
-				KRB5CONFIG="${KRB5CONFIG}"
+GSSAPI_HEIMDAL_CONFIGURE_ON=	--with-gssapi="${KRB5CONFIG}"
 GSSAPI_HEIMDAL_USES=		gssapi:heimdal
 
-GSSAPI_MIT_CONFIGURE_ON=	--with-gssapi=${GSSAPIBASEDIR} \
-				KRB5CONFIG="${KRB5CONFIG}"
+GSSAPI_MIT_CONFIGURE_ON=	--with-gssapi="${KRB5CONFIG}"
 GSSAPI_MIT_USES=		gssapi:mit
 
 GSSAPI_NONE_CONFIGURE_ON=	--without-gssapi
@@ -196,14 +190,11 @@ LARGE_FILE_CONFIGURE_ENABLE=	largefile
 LMDB_CONFIGURE_WITH=	lmdb=${LOCALBASE}
 LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
 
+MANPAGES_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
+
 OVERRIDECACHE_EXTRA_PATCHES=	${FILESDIR}/extrapatch-bind-min-override-ttl
 
 NATIVE_PKCS11_CONFIGURE_ENABLE=	native-pkcs11
-
-PYTHON_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>=0:devel/py-ply@${PY_FLAVOR}
-PYTHON_CONFIGURE_WITH=	python=${PYTHON_CMD}
-PYTHON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>=0:devel/py-ply@${PY_FLAVOR}
-PYTHON_USES=		python
 
 QUERYTRACE_CONFIGURE_ENABLE=	querytrace
 
@@ -237,16 +228,12 @@ SUB_LIST+=	ENGINES=/usr/lib/engines
 SUB_LIST+=	ENGINES=${LOCALBASE}/lib/engines
 .endif
 
-# XXX: Remove
-post-extract:
-	echo "SRCID=${GL_COMMIT}" > ${WRKSRC}/srcid
-
 # XXX: Remove first REINPLACE_CMD
 post-patch:
-	@${REINPLACE_CMD} -e '/RELEASETYPE=/s#$$#-${GL_COMMIT}#' \
-		${WRKSRC}/version
-.for FILE in check/named-checkconf.8 named/named.8 nsupdate/nsupdate.1 \
-	rndc/rndc.8
+	@${REINPLACE_CMD} -e '/^m4_define(\[bind_SRCID/s/\[m4.*\]/${GL_COMMIT}/' \
+		${WRKSRC}/configure.ac
+.for FILE in check/named-checkconf.rst named/named.rst nsupdate/nsupdate.rst \
+	rndc/rndc.rst
 	@${REINPLACE_CMD} -e 's#/etc/named.conf#${ETCDIR}/named.conf#g' \
 		-e 's#/etc/rndc.conf#${ETCDIR}/rndc.conf#g' \
 		-e "s#/var\/run\/named\/named.pid#/var/run/named/pid#" \
@@ -256,8 +243,8 @@ post-patch:
 .if !defined(BIND_TOOLS_SLAVE)
 .  if ${PORTREVISION:N0}
 post-patch-PORTREVISION-on:
-	@${REINPLACE_CMD} -e '/EXTENSIONS/s#=$$#=_${PORTREVISION}#' \
-		${WRKSRC}/version
+	@${REINPLACE_CMD} '/^m4_define.*bind_VERSION_EXTRA/s#)#_${PORTREVISION})#' \
+		${WRKSRC}/configure.ac
 .  endif
 
 post-install:
@@ -275,18 +262,20 @@ post-install:
 	${INSTALL_DATA} ${FILESDIR}/BIND.chroot.local.dist ${STAGEDIR}${PREFIX}/etc/mtree/BIND.chroot.local.dist.sample
 	${INSTALL_DATA} ${WRKSRC}/bin/rndc/rndc.conf \
 		${STAGEDIR}${ETCDIR}/rndc.conf.sample
+# FIXME: these are strange.
+	@${RM} -rf ${STAGEDIR}/wrkdirs ${STAGEDIR}${PREFIX}/lib/bind
 
 post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}/arm
-	${INSTALL_DATA} ${WRKSRC}/doc/arm/*.html ${STAGEDIR}${DOCSDIR}/arm
-	${INSTALL_DATA} ${WRKSRC}/doc/arm/Bv9ARM.pdf ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/CHANGES* ${WRKSRC}/HISTORY.md \
 		${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
 .else
 
-# Can't use USE_PYTHON=autoplist
-post-install-PYTHON-on:
-	@${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -type f | ${SED} -e 's|${STAGEDIR}||' >> ${TMPPLIST}
+do-install:
+	for dir in bin doc/man; do \
+		(cd ${INSTALL_WRKSRC}/$$dir && ${SETENV} ${MAKE_ENV} ${FAKEROOT} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET}) ; \
+	done
+
 .endif	# BIND_TOOLS_SLAVE
 
 .include <bsd.port.post.mk>

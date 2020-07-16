@@ -23,6 +23,7 @@
     SUBDIR += apq-pgsql
     SUBDIR += arangodb32
     SUBDIR += arangodb33
+    SUBDIR += arrow
     SUBDIR += ateam_mysql_ldap_auth
     SUBDIR += autobackupmysql
     SUBDIR += automysqlbackup
@@ -32,6 +33,7 @@
     SUBDIR += c3p0
     SUBDIR += cassandra-cpp-driver
     SUBDIR += cassandra3
+    SUBDIR += cassandra4
     SUBDIR += casstcl
     SUBDIR += cayley
     SUBDIR += cdb
@@ -40,6 +42,7 @@
     SUBDIR += clickhouse
     SUBDIR += cockroach
     SUBDIR += couchdb2
+    SUBDIR += couchdb3
     SUBDIR += courier-authlib-mysql
     SUBDIR += courier-authlib-pgsql
     SUBDIR += courier-authlib-userdb
@@ -49,7 +52,6 @@
     SUBDIR += dalmp
     SUBDIR += datamodeler
     SUBDIR += db
-    SUBDIR += db48
     SUBDIR += db5
     SUBDIR += db6
     SUBDIR += dbf
@@ -61,7 +63,6 @@
     SUBDIR += elixir-calecto
     SUBDIR += elixir-db_connection
     SUBDIR += elixir-ecto
-    SUBDIR += elixir-exredis
     SUBDIR += elixir-geo
     SUBDIR += elixir-mariaex
     SUBDIR += elixir-mongo
@@ -103,7 +104,6 @@
     SUBDIR += gom
     SUBDIR += gqlplus
     SUBDIR += grass7
-    SUBDIR += hamsterdb
     SUBDIR += hashtypes
     SUBDIR += hbase
     SUBDIR += hiredis
@@ -128,6 +128,7 @@
     SUBDIR += kyototycoon
     SUBDIR += ldb14
     SUBDIR += ldb15
+    SUBDIR += ldb20
     SUBDIR += leo_center
     SUBDIR += leofs
     SUBDIR += leveldb
@@ -173,32 +174,26 @@
     SUBDIR += mantis
     SUBDIR += mariadb-connector-c
     SUBDIR += mariadb-connector-odbc
-    SUBDIR += mariadb101-client
-    SUBDIR += mariadb101-server
-    SUBDIR += mariadb102-client
-    SUBDIR += mariadb102-server
     SUBDIR += mariadb103-client
     SUBDIR += mariadb103-server
     SUBDIR += mariadb104-client
     SUBDIR += mariadb104-server
-    SUBDIR += mariadb55-client
-    SUBDIR += mariadb55-server
     SUBDIR += mdbtools
     SUBDIR += mdcached
     SUBDIR += memcached
-    SUBDIR += memcacheq
     SUBDIR += mongodb36
     SUBDIR += mongodb36-tools
     SUBDIR += mongodb40
     SUBDIR += mongodb40-tools
+    SUBDIR += mongodb42
+    SUBDIR += mongodb42-tools
+    SUBDIR += mongodb44
     SUBDIR += mroonga
     SUBDIR += mtools-mongodb
     SUBDIR += mtop
     SUBDIR += mydbf2mysql
     SUBDIR += mydumper
     SUBDIR += mysac
-    SUBDIR += mysql++1
-    SUBDIR += mysql++3
     SUBDIR += mysql-connector-c
     SUBDIR += mysql-connector-c++
     SUBDIR += mysql-connector-java
@@ -206,7 +201,6 @@
     SUBDIR += mysql-connector-odbc
     SUBDIR += mysql-q4m
     SUBDIR += mysql-udf
-    SUBDIR += mysql2odbc
     SUBDIR += mysql2pgsql
     SUBDIR += mysql55-client
     SUBDIR += mysql55-server
@@ -219,7 +213,6 @@
     SUBDIR += mysqlbackup
     SUBDIR += mysqlbigram
     SUBDIR += mysqldump-secure
-    SUBDIR += mysqlidxchk
     SUBDIR += mysqlreport
     SUBDIR += mysqlsla
     SUBDIR += mysqlsniffer
@@ -379,7 +372,6 @@
     SUBDIR += p5-DBIx-DBSchema
     SUBDIR += p5-DBIx-DataSource
     SUBDIR += p5-DBIx-Dump
-    SUBDIR += p5-DBIx-Ease
     SUBDIR += p5-DBIx-HA
     SUBDIR += p5-DBIx-Handler
     SUBDIR += p5-DBIx-Inspector
@@ -413,7 +405,6 @@
     SUBDIR += p5-DBIx-XHTML_Table
     SUBDIR += p5-DBIx-XML_RDB
     SUBDIR += p5-DBM-Deep
-    SUBDIR += p5-DMOZ-ParseRDF
     SUBDIR += p5-DR-Tarantool
     SUBDIR += p5-DWH_File
     SUBDIR += p5-Dancer-Plugin-DBIC
@@ -492,7 +483,6 @@
     SUBDIR += p5-Search-InvertedIndex
     SUBDIR += p5-Search-Namazu
     SUBDIR += p5-Search-Xapian
-    SUBDIR += p5-Search-Xapian10
     SUBDIR += p5-Search-Xapian12
     SUBDIR += p5-Store-CouchDB
     SUBDIR += p5-T2
@@ -527,7 +517,6 @@
     SUBDIR += pear-DB_ldap2
     SUBDIR += pear-DoctrineCommon
     SUBDIR += pear-DoctrineDBAL
-    SUBDIR += pear-DoctrineORM
     SUBDIR += pear-Horde_Db
     SUBDIR += pear-Horde_HashTable
     SUBDIR += pear-Horde_Imsp
@@ -535,7 +524,6 @@
     SUBDIR += pear-Horde_Mongo
     SUBDIR += pear-MDB
     SUBDIR += pear-MDB2
-    SUBDIR += pear-MDB2_Driver_mysql
     SUBDIR += pear-MDB2_Driver_mysqli
     SUBDIR += pear-MDB2_Driver_pgsql
     SUBDIR += pear-MDB2_Schema
@@ -543,10 +531,6 @@
     SUBDIR += pear-Structures_DataGrid_DataSource_Array
     SUBDIR += pear-Structures_DataGrid_DataSource_CSV
     SUBDIR += pear-Structures_DataGrid_DataSource_DB
-    SUBDIR += pear-Structures_DataGrid_DataSource_DBQuery
-    SUBDIR += pear-Structures_DataGrid_DataSource_DBTable
-    SUBDIR += pear-Structures_DataGrid_DataSource_DataObject
-    SUBDIR += pear-Structures_DataGrid_DataSource_MDB2
     SUBDIR += pear-Structures_DataGrid_DataSource_PDO
     SUBDIR += pear-XML_Query2XML
     SUBDIR += pecl-cassandra
@@ -570,6 +554,7 @@
     SUBDIR += pg_activity
     SUBDIR += pg_citus
     SUBDIR += pg_dirtyread
+    SUBDIR += pg_ed25519
     SUBDIR += pg_partman
     SUBDIR += pg_qualstats
     SUBDIR += pg_reorg
@@ -578,7 +563,6 @@
     SUBDIR += pg_stat_kcache
     SUBDIR += pgaccess
     SUBDIR += pgadmin3
-    SUBDIR += pgagent
     SUBDIR += pgbadger
     SUBDIR += pgbarman
     SUBDIR += pgbouncer
@@ -731,6 +715,7 @@
     SUBDIR += proftpd-mod_sql_postgres
     SUBDIR += proftpd-mod_sql_sqlite
     SUBDIR += proftpd-mod_sql_tds
+    SUBDIR += prometheus-postgresql-adapter
     SUBDIR += pspg
     SUBDIR += puppetdb-terminus5
     SUBDIR += puppetdb-terminus6
@@ -805,6 +790,7 @@
     SUBDIR += py-pycql
     SUBDIR += py-pyhs
     SUBDIR += py-pylibmc
+    SUBDIR += py-pymemcache
     SUBDIR += py-pymssql
     SUBDIR += py-pymysql
     SUBDIR += py-pyodbc
@@ -824,6 +810,7 @@
     SUBDIR += py-sispy
     SUBDIR += py-south
     SUBDIR += py-sqlalchemy-migrate
+    SUBDIR += py-sqlalchemy-utils
     SUBDIR += py-sqlalchemy10
     SUBDIR += py-sqlalchemy11
     SUBDIR += py-sqlalchemy12
@@ -839,6 +826,7 @@
     SUBDIR += py-tableschema
     SUBDIR += py-tarantool
     SUBDIR += py-tiledb
+    SUBDIR += py-txredisapi
     SUBDIR += py-umemcache
     SUBDIR += py-unqlite
     SUBDIR += py-varstack
@@ -938,6 +926,7 @@
     SUBDIR += rubygem-em-redis-unified
     SUBDIR += rubygem-familia
     SUBDIR += rubygem-flipper-active_record
+    SUBDIR += rubygem-flipper-active_record017
     SUBDIR += rubygem-gdbm
     SUBDIR += rubygem-globalid
     SUBDIR += rubygem-globalid-rails5
@@ -958,8 +947,6 @@
     SUBDIR += rubygem-mysql204
     SUBDIR += rubygem-openid-redis-store
     SUBDIR += rubygem-paranoia
-    SUBDIR += rubygem-peek-mysql2-rails5
-    SUBDIR += rubygem-peek-pg-rails5
     SUBDIR += rubygem-pg
     SUBDIR += rubygem-pg0
     SUBDIR += rubygem-pg018
@@ -1030,7 +1017,6 @@
     SUBDIR += tuning-primer
     SUBDIR += twemproxy
     SUBDIR += unixODBC
-    SUBDIR += useracc
     SUBDIR += usql
     SUBDIR += vfront
     SUBDIR += virtualpg
@@ -1040,7 +1026,6 @@
     SUBDIR += xapian-bindings
     SUBDIR += xapian-bindings12
     SUBDIR += xapian-core
-    SUBDIR += xapian-core10
     SUBDIR += xapian-core12
     SUBDIR += xrootd
     SUBDIR += xtrabackup

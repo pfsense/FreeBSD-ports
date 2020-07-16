@@ -86,7 +86,7 @@ LIT_VARS=		_USES_PYTHON=python:2.7
 LLD_DESC=		Install lld, the LLVM linker
 LLD_DISTFILES=		lld-${DISTVERSION}.src${EXTRACT_SUFX}
 LLD_EXTRA_PATCHES=	${PATCHDIR}/lld
-LLDB_BUILD_DEPENDS=	swig3.0:devel/swig30 \
+LLDB_BUILD_DEPENDS=	swig:devel/swig \
 			${PY_ENUM34}
 LLDB_DESC=		Install lldb, the LLVM debugger
 LLDB_DISTFILES=		lldb-${DISTVERSION}.src${EXTRACT_SUFX}
@@ -333,6 +333,10 @@ post-patch-CLANG-on:
 	    ${PATCH_WRKSRC}/tools/clang/tools/clang-format/clang-format.py \
 	    ${PATCH_WRKSRC}/tools/clang/tools/clang-format/clang-format-sublime.py \
 	    ${PATCH_WRKSRC}/tools/clang/tools/clang-format/git-clang-format
+
+post-patch-LLD-on:
+		${REINPLACE_CMD} -e "s|'indexsidebar.html'|['indexsidebar.html']|" \
+			${PATCH_WRKSRC}/tools/lld/docs/conf.py
 
 post-build-COMPILER_RT-on:
 	${MKDIR} ${WRKDIR}/compiler-rt-build

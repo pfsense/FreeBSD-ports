@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	galera
-PORTVERSION?=	25.3.28
+PORTVERSION?=	25.3.30
 DISTVERSIONPREFIX?=	release_
-PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	devel@galeracluster.com
 COMMENT=	Synchronous multi-master replication engine
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_aarch64=		fails to compile: gu_int128.h: use of undeclared identifier '__bswap64_var'
 BROKEN_armv6=		fails to compile: gu_int128.h: use of undeclared identifier '__bswap64_var'
@@ -27,7 +27,8 @@ NOT_FOR_ARCHS=		i386
 NOT_FOR_ARCHS_REASON_i386=Uses 64 bit atomics that clang cannot generate on i386
 
 BUILD_DEPENDS=	checkmk:devel/check \
-		${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
+		${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs \
+		objdump:devel/binutils
 LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs
 
 USES=		compiler:c++11-lang python:build scons ssl

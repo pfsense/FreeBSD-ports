@@ -15,6 +15,9 @@ COMMENT=	Program to create standalone executables from Python scripts
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
+BROKEN_FreeBSD_12_powerpc64=	fails to compile: /usr/include/machine/ieeefp.h:36: expected '=', ',', ';', 'asm' or '__attribute__' before 'extern'
+BROKEN_FreeBSD_13_powerpc64=	fails to compile: /usr/include/machine/ieeefp.h:35:1: error: unknown type name '__BEGIN_DECLS'
+
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}altgraph>0:math/py-altgraph@${PY_FLAVOR}
 
 USES=		python
@@ -28,7 +31,7 @@ OPTIONS_DEFINE=		DOCS MANPAGES
 OPTIONS_DEFAULT=	MANPAGES
 OPTIONS_SUB=		yes
 
-DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx@${PY_FLAVOR}
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx18>0:textproc/py-sphinx18@${PY_FLAVOR}
 DOCS_MAKE_ARGS=		SPHINXBUILD=sphinx-build-${PYTHON_VER}
 DOCS_USES=		gmake
 MANPAGES_BUILD_DEPENDS=	${DOCS_BUILD_DEPENDS}

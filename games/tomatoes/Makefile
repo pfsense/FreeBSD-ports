@@ -5,14 +5,12 @@ PORTNAME=	tomatoes
 PORTVERSION=	1.55
 PORTREVISION=	1
 CATEGORIES=	games
-MASTER_SITES=	SF
+MASTER_SITES=	https://mirror.amdmi3.ru/distfiles/
 DISTFILES=	${PORTNAME}-linux-src-${PORTVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}-linux-${DATAVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Tomato-smashing, Q-Bert style
-
-BROKEN=		unfetchable
 
 LICENSE=	ZLIB
 

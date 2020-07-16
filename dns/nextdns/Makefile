@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	nextdns
-PORTVERSION=	1.4.33
+PORTVERSION=	1.6.3
 CATEGORIES=	dns security
 
 MAINTAINER=	rs@nextdns.io

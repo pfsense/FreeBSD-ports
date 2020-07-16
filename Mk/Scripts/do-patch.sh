@@ -17,10 +17,44 @@ validate_env dp_BZCAT dp_CAT dp_DISTDIR dp_ECHO_MSG dp_EXTRA_PATCHES \
 
 set -u
 
+has_failed=""
+
+cat_file() {
+	case "$1" in
+		*.Z|*.gz)
+			${dp_GZCAT} "$1"
+			;;
+		*.bz2)
+			${dp_BZCAT} "$1"
+			;;
+		*.xz)
+			${dp_XZCAT} "$1"
+			;;
+		*.zip)
+			${dp_UNZIP_NATIVE_CMD} -p "$1"
+			;;
+		*)
+			${dp_CAT} "$1"
+			;;
+	esac
+}
+
+# If we want to continue when one patch fails, set the flag, otherwise, abort.
+if [ -n "${dp_PATCH_CONTINUE_ON_FAIL}" ]; then
+	failure_fatal() {
+		has_failed=1
+	}
+else
+	failure_fatal() {
+		false
+	}
+fi
+
 apply_one_patch() {
 	local file="$1"
 	local msg="$2"
-	shift 2
+	local verbose="$3"
+	shift 3
 	local patch_strip=""
 
 	case ${file} in
@@ -30,27 +64,14 @@ apply_one_patch() {
 			;;
 	esac
 
-	if [ -n "${msg}" ]; then
-		${dp_ECHO_MSG} "===>  ${msg} ${file}${patch_strip:+ with ${patch_strip}}"
+	if [ -n "${verbose}" -o -n "${dp_PATCH_DEBUG_TMP}" ]; then
+		${dp_ECHO_MSG} "===>  Applying ${msg} ${file}${patch_strip:+ with ${patch_strip}}"
 	fi
 
-	case "${file}" in
-		*.Z|*.gz)
-			${dp_GZCAT} "${file}"
-			;;
-		*.bz2)
-			${dp_BZCAT} "${file}"
-			;;
-		*.xz)
-			${dp_XZCAT} "${file}"
-			;;
-		*.zip)
-			${dp_UNZIP_NATIVE_CMD} -p "${file}"
-			;;
-		*)
-			${dp_CAT} "${file}"
-			;;
-	esac | do_patch "$@" ${patch_strip}
+	if ! cat_file "$file" | do_patch "$@" ${patch_strip}; then
+		${dp_ECHO_MSG} "===>  FAILED Applying ${msg} ${file}${patch_strip:+ with ${patch_strip}}"
+		false
+	fi
 }
 
 do_patch() {
@@ -60,37 +81,44 @@ do_patch() {
 patch_from_directory() {
 	local dir="$1"
 	local msg="$2"
+	local patches_applied=""
+	local patches_failed=""
 
 	if [ -d "${dir}" ]; then
 		cd "${dir}"
 
 		if [ "$(echo patch-*)" != "patch-*" ]; then
 
-			${dp_ECHO_MSG} "===>  Applying ${msg} patches for ${dp_PKGNAME}"
+			${dp_ECHO_MSG} "===>  Applying ${msg} patches for ${dp_PKGNAME} from ${dir}"
 
-			PATCHES_APPLIED=""
 
 			for i in patch-*; do
 				case ${i} in
 					*.orig|*.rej|*~|*,v)
-						${dp_ECHO_MSG} "===>   Ignoring patchfile ${i}"
+						${dp_ECHO_MSG} "====>   IGNORING patchfile ${i}"
 						;;
 					*)
-						if [ -n "${dp_PATCH_DEBUG_TMP}" ]; then
-							${dp_ECHO_MSG} "===>  Applying ${msg} patch ${i}"
-						fi
-						if do_patch ${dp_PATCH_ARGS} < ${i}; then
-							PATCHES_APPLIED="${PATCHES_APPLIED} ${i}"
+						if apply_one_patch "${i}" "${msg}" "" ${dp_PATCH_ARGS}; then
+							patches_applied="${patches_applied} ${i}"
 						else
-							${dp_ECHO_MSG} "=> ${msg} patch ${i} failed to apply cleanly."
-							if [ -n "${PATCHES_APPLIED}" -a "${dp_PATCH_SILENT}" != "yes" ]; then
-								${dp_ECHO_MSG} "=> Patch(es) ${PATCHES_APPLIED} applied cleanly."
+							patches_failed="${patches_failed} ${i}"
+							if ! failure_fatal; then
+								break
 							fi
-							false
 						fi
 						;;
 				esac
 			done
+
+			if [ -n "${patches_failed}" -a "${dp_PATCH_SILENT}" != "yes" ]; then
+				if [ -n "${patches_applied}" ]; then
+					${dp_ECHO_MSG} "===> Cleanly applied ${msg} patch(es) ${patches_applied}"
+				fi
+				${dp_ECHO_MSG} "===> FAILED to apply cleanly ${msg} patch(es) ${patches_failed}"
+				# If we want to stop after the first failure, this returns false,
+				# let its return value bubble up here and stop everything.
+				failure_fatal
+			fi
 		fi
 	fi
 }
@@ -99,9 +127,12 @@ if [ -n "${dp_PATCHFILES}" ]; then
 	${dp_ECHO_MSG} "===>  Applying distribution patches for ${dp_PKGNAME}"
 	cd "${dp_DISTDIR}"
 	for i in ${dp_PATCHFILES}; do
-		apply_one_patch "${i}" \
-			"${dp_PATCH_DEBUG_TMP:+ Applying distribution patch}" \
-			${dp_PATCH_DIST_ARGS}
+		if ! apply_one_patch "${i}" \
+			"distribution patch" \
+			"" \
+			${dp_PATCH_DIST_ARGS}; then
+			failure_fatal
+		fi
 	done
 fi
 
@@ -111,9 +142,12 @@ if [ -n "${dp_EXTRA_PATCHES}" ]; then
 			patch_from_directory "${i}" \
 				"extra patch"
 		else
-			apply_one_patch "${i}" \
-				"Applying extra patch" \
-				${dp_PATCH_ARGS}
+			if ! apply_one_patch "${i}" \
+				"extra patch" \
+				"verbose" \
+				${dp_PATCH_ARGS}; then
+				failure_fatal
+			fi
 		fi
 	done
 fi
@@ -122,5 +156,13 @@ patch_from_directory "${dp_PATCHDIR}" "${dp_OPSYS}"
 
 if [ -n "${dp_EXTRA_PATCH_TREE}" ]; then
 	patch_from_directory "${dp_EXTRA_PATCH_TREE}/${dp_PKGORIGIN}" "local"
+fi
+
+if [ -n "$has_failed" ]; then
+	if [ -n "${dp_PATCH_DEBUG_TMP}" ]; then
+		${dp_ECHO_MSG} "==> Some patches failed to apply cleanly."
+		${dp_ECHO_MSG} "==> Look for FAILED messages above."
+	fi
+	false
 fi
 

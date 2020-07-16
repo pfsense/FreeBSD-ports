@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	claws-mail
-PORTREVISION=	0
+PORTREVISION=	3
 CATEGORIES=	mail news
 
 COMMENT=	Lightweight and featureful GTK+ based e-mail and news client
@@ -19,10 +19,11 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libexpat.so:textproc/expat2 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libnettle.so:security/nettle
-RUN_DEPENDS=	mime-support>0:misc/mime-support
+RUN_DEPENDS=	mime-support>0:misc/mime-support \
+		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
-USES=		autoreconf gettext-tools compiler:c++11-lang cpe desktop-file-utils gettext gnome pathfix pkgconfig \
-		python:3.6 shebangfix ssl xorg
+USES=		autoreconf compiler:c++11-lang cpe desktop-file-utils gettext \
+		gettext-tools gnome pathfix pkgconfig python:3.5+ shebangfix ssl xorg
 USE_XORG=	ice sm
 USE_GNOME=	cairo gtk20 librsvg2
 SHEBANG_FILES=	tools/*.pl tools/*.py tools/tb2claws-mail
@@ -61,19 +62,23 @@ THEMES_RUN_DEPENDS=	claws-mail-themes>0:x11-themes/claws-mail-themes
 .include "Makefile.claws"
 
 post-patch:
-	@${REINPLACE_CMD} 's|-dirty||' ${WRKSRC}/version
+	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
+	${WRKSRC}/src/common/ssl.c
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	(cd ${WRKSRC}/tools && \
-		${INSTALL_SCRIPT} OOo2claws-mail.pl acroread2claws-mail.pl \
-		calypso_convert.pl convert_mbox.pl eud2gc.py filter_conv.pl \
-		filter_conv_new.pl fix_date.sh gif2xface.pl google_msgid.pl \
-		google_search.pl kmail-mailbox2claws-mail.pl kmail2claws-mail.pl \
-		kmail2claws-mail_v2.pl multiwebsearch.conf multiwebsearch.pl \
-		nautilus2claws-mail.sh outlook2claws-mail.pl tb2claws-mail \
-		tbird2claws.py textviewer.pl textviewer.sh \
-		thunderbird-filters-convertor.pl uudec uuooffice vcard2xml.py \
+		${INSTALL_SCRIPT} acroread2claws-mail.pl \
+		calypso_convert.pl claws-mail-compose-insert-files.pl \
+		cm-reparent.pl convert_mbox.pl csv2addressbook.pl ddg_search.pl \
+		eud2gc.py filter_conv.pl filter_conv_new.pl fix_date.sh \
+		gif2xface.pl google_msgid.pl kmail-mailbox2claws-mail.pl \
+		kmail2claws-mail.pl kmail2claws-mail_v2.pl mairix.sh \
+		mew2claws-mail.pl multiwebsearch.conf multiwebsearch.pl \
+		nautilus2claws-mail.sh outlook2claws-mail.pl popfile-link.sh \
+		tb2claws-mail tbird2claws.py textviewer.pl textviewer.sh \
+		thunderbird-filters-convertor.pl update-po uudec uuooffice \
+		vcard2xml.py \
 		${STAGEDIR}${DATADIR})
 
 post-install-DOCS-on:

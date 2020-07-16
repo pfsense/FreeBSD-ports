@@ -191,26 +191,26 @@ fcron:*:247:
 signal-cli:*:248:
 sonarqube:*:249:
 sems:*:250:
-# free: 251
-# free: 252
+irrd:*:251:
+gonic:*:252:
 _adsuck:*:253:
 imds:*:254:
 _i2pd:*:255:
 _tor:*:256:
 _smtpd:*:257:
 _smtpq:*:258:
-# free: 259
+spiped:*:259:
 meta1s:*:260:
 meta1q:*:261:
 meta1c:*:262:meta1s
 meta1m:*:263:meta1s,meta1q
 meta1:*:264:
-# free: 265
-# free: 266
-# free: 267
+sshout:*:265:
+step:*:266:
+odoo:*:267:
 # free: 268
 # free: 269
-# free: 270
+_rpki-client:*:270:
 # free: 271
 # free: 272
 # free: 273
@@ -712,7 +712,7 @@ c-lightning:*:735:
 # free: 769
 postgres:*:770:
 cockroach:*:771:
-# free: 772
+postgrest:*:772:
 # free: 773
 # free: 774
 # free: 775
@@ -748,7 +748,7 @@ clickhouse:*:800:
 # free: 805
 # free: 806
 # free: 807
-# free: 808
+clixon:*:808:
 # free: 809
 # free: 810
 # free: 811
@@ -814,13 +814,13 @@ ebusd:*:854:
 # free: 871
 bitmark:*:872:
 bitmark-recorder:*:873:
-# free: 874
+librespeed:*:874:
 # free: 875
 # free: 876
 # free: 877
 # free: 878
 # free: 879
-# free: 880
+pyspf-milter:*:880:
 ultimaker:*:881:
 midpoint:*:882:
 ipfs-go:*:883:
@@ -917,7 +917,7 @@ boinc:*:973:
 radicale:*:974:
 unifi:*:975:
 minetest:*:976:
-# free: 977
+tests:*:977:
 _dnscrypt-proxy:*:978:
 ums:*:979:
 hbase:*:980:

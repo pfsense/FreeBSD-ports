@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Dancer2
-PORTVERSION=	0.300000
+PORTVERSION=	0.300004
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -57,6 +57,11 @@ TEST_DEPENDS=	p5-AnyEvent>=0:devel/p5-AnyEvent \
 		p5-Test-MockTime>=0:devel/p5-Test-MockTime \
 		p5-YAML>=0.86:textproc/p5-YAML
 
+USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
+
 OPTIONS_DEFINE=	XS
 OPTIONS_DEFAULT=XS
 
@@ -66,10 +71,5 @@ XS_RUN_DEPENDS=	p5-CGI-Deurl-XS>=0:www/p5-CGI-Deurl-XS \
 		p5-Scope-Upper>=0:devel/p5-Scope-Upper \
 		p5-URL-Encode-XS>=0:www/p5-URL-Encode-XS \
 		p5-YAML-LibYAML>=0:textproc/p5-YAML-LibYAML
-
-USES=		perl5
-USE_PERL5=	configure
-
-NO_ARCH=	yes
 
 .include <bsd.port.mk>

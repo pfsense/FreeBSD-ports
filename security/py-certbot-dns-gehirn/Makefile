@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}acme>=${ACME_VERSION},1:security/py-acme@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}certbot>=${ACME_VERSION},1:security/py-certbot@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dns-lexicon>=2.2.1:dns/py-dns-lexicon@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dns-lexicon>=2.1.22:dns/py-dns-lexicon@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}zope.interface>0:devel/py-zope.interface@${PY_FLAVOR}
 
@@ -25,7 +25,7 @@ NO_ARCH=	yes
 
 OPTIONS_DEFINE=	DOCS
 
-DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx@${PY_FLAVOR} \
+DOCS_BUILD_DEPENDS=	${PY_SPHINX} \
 			${PYTHON_PKGNAMEPREFIX}sphinx_rtd_theme>0:textproc/py-sphinx_rtd_theme@${PY_FLAVOR}
 
 .include "${.CURDIR}/../py-acme/version.mk"

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	highwayhash
-PORTVERSION=	g20190324
-PORTREVISION=	1
+PORTVERSION=	g20200527
 PORTEPOCH=	1
 CATEGORIES=	security
 
@@ -18,10 +17,10 @@ BROKEN_powerpc64=	fails to compile: g++6: error: unrecognized command line optio
 ONLY_FOR_ARCHS=		aarch64 amd64 powerpc powerpc64
 ONLY_FOR_ARCHS_REASON=	Assembly is implemented only for specific architectures in highwayhash/tsc_timer.h
 
-USES=		compiler:c++11-lib gmake
+USES=		compiler:c++11-lang gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
-GH_TAGNAME=	30bd801
+GH_TAGNAME=	954e56589a7e75bad04f1063174d78f8c17a9b3a
 USE_LDCONFIG=	yes
 
 .include <bsd.port.mk>

@@ -2,12 +2,11 @@
 
 PORTNAME=	shaderc
 DISTVERSIONPREFIX=v
-DISTVERSION=	2018.0
-PORTREVISION=	2
+DISTVERSION=	2020.0
 CATEGORIES=	graphics devel
 
-PATCH_SITES=	https://github.com/haasn/${GH_PROJECT}/commit/
-PATCHFILES=	21c8be385b3f.patch:-p1
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	21c8be385b3f.patch:-p1 # https://github.com/google/shaderc/pull/463
 
 MAINTAINER=	greg@unrelenting.technology
 COMMENT=	GLSL/HLSL to SPIR-V shader compiler
@@ -22,11 +21,10 @@ USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
+GH_TUPLE=	KhronosGroup:SPIRV-Headers:1.5.3:headers/third_party/spirv-headers
 
 CMAKE_ON+=	SHADERC_SKIP_TESTS
-CMAKE_OFF+=	SHADERC_ENABLE_NV_EXTENSIONS
-CMAKE_ARGS+=	-DPYTHON_EXE:STRING="${PYTHON_CMD}"
-CFLAGS+=	-Wno-ignored-attributes -Wno-c++11-narrowing
+CMAKE_ARGS+=	-DSPIRV-Headers_SOURCE_DIR=${WRKSRC}/third_party/spirv-headers
 
 # https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/shaderc
 

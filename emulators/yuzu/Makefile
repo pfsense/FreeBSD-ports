@@ -1,58 +1,61 @@
 # $FreeBSD$
 
 PORTNAME=	yuzu
-PORTVERSION=	s20200330
-PORTREVISION?=	1
+PORTVERSION=	s20200628
+PORTREVISION?=	0
 CATEGORIES=	emulators
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	905e8016a04e.patch:-p1 # https://github.com/yuzu-emu/yuzu/pull/1340
+PATCHFILES+=	34635a42c0b3.patch:-p1 # https://github.com/yuzu-emu/yuzu/pull/1703
+PATCHFILES+=	1adf640d3725.patch:-p1 # https://github.com/yuzu-emu/yuzu/pull/1703
+PATCHFILES+=	e6085ea35f0b.patch:-p1 # https://github.com/yuzu-emu/yuzu/pull/4208
+PATCHFILES+=	3b1683a15261.patch:-p1 # https://github.com/yuzu-emu/yuzu/pull/4208
+PATCHFILES+=	dda90ce1c249.patch:-p1 # https://github.com/yuzu-emu/yuzu/pull/4209
+PATCHFILES+=	b1b1ed7597cb.patch:-p1 # https://github.com/yuzu-emu/yuzu/pull/4221
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Nintendo Switch emulator/debugger
 
-LICENSE=	APACHE20 BSD2CLAUSE BSD3CLAUSE BSL GPLv2+ ISCL LGPL21+ LGPL3+ MIT OpenSSL UNLICENSE
+LICENSE=	APACHE20 BSD3CLAUSE GPLv2+ ISCL LGPL21+ LGPL3+ MIT UNLICENSE
 LICENSE_COMB=	multi
-LICENSE_FILE_BSD2CLAUSE=${WRKSRC}/externals/fmt/LICENSE.rst
 LICENSE_FILE_BSD3CLAUSE=${WRKSRC}/externals/inih/inih/LICENSE.txt
-LICENSE_FILE_BSL=	${WRKSRC}/externals/catch/LICENSE.txt
 LICENSE_FILE_GPLv2+ =	${WRKSRC}/license.txt
 LICENSE_FILE_ISCL=	${WRKSRC}/externals/cubeb/LICENSE
 LICENSE_FILE_LGPL21+ =	${_LICENSE_STORE}/LGPL21 # soundtouch
 LICENSE_FILE_LGPL3+ =	${_LICENSE_STORE}/LGPL3 # sirit
 LICENSE_FILE_MIT=	${WRKSRC}/externals/sirit/externals/SPIRV-Headers/LICENSE
-LICENSE_FILE_OpenSSL=	${WRKSRC}/externals/libressl/COPYING
 
 ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64
 ONLY_FOR_ARCHS_REASON=	requires int128
 
-BUILD_DEPENDS=	boost-libs>=1.66:devel/boost-libs \
-		gmake:devel/gmake
+BUILD_DEPENDS=	catch>0:devel/catch \
+		gmake:devel/gmake \
+		nlohmann-json>0:devel/nlohmann-json
+LIB_DEPENDS=	liblz4.so:archivers/liblz4 \
+		libzip.so:archivers/libzip \
+		libzstd.so:archivers/zstd \
+		libopus.so:audio/opus \
+		libboost_context.so:devel/boost-libs \
+		libfmt.so:devel/libfmt
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	yuzu-emu
-GH_TAGNAME=	4c72190a0
+GH_TAGNAME=	8596a1277
 GH_TUPLE=	yuzu-emu:unicorn:1.0.1-153-g73f45735:unicorn/externals/unicorn \
 		DarkLordZach:mbedtls:a280e60:mbedtls/externals/mbedtls \
 		KhronosGroup:SPIRV-Headers:2c51218:SPIRV_Headers/externals/sirit/externals/SPIRV-Headers \
-		KhronosGroup:Vulkan-Headers:v1.1.127-2-gd42d074:Vulkan_Headers/externals/Vulkan-Headers \
-		MerryMage:dynarmic:r1-1438-gf6ae9e1c:dynarmic/externals/dynarmic \
-		ReinUsesLisp:sirit:a712959:sirit/externals/sirit \
+		KhronosGroup:Vulkan-Headers:v1.2.140:Vulkan_Headers/externals/Vulkan-Headers \
+		MerryMage:dynarmic:r3-1-ge7166e8b:dynarmic/externals/dynarmic \
+		ReinUsesLisp:sirit:eefca56:sirit/externals/sirit \
 		arsenm:sanitizers-cmake:aab6948:sanitizers_cmake/externals/cubeb/cmake/sanitizers-cmake \
-		catchorg:Catch2:v2.3.0:catch/externals/catch \
-		citra-emu:ext-libressl-portable:7d01cb0:libressl/externals/libressl \
 		citra-emu:ext-soundtouch:060181e:soundtouch/externals/soundtouch \
-		facebook:zstd:v1.3.8:zstd/externals/zstd \
-		fmtlib:fmt:6.0.0-56-g4b8f8fac:fmt/externals/fmt \
-		kinetiknz:cubeb:cubeb-0.2-1172-g3ab5075:cubeb/externals/cubeb \
-		lz4:lz4:v1.8.0-8-g4db65c1:lz4/externals/lz4 \
-		madler:zlib:v1.2.11:zlib/externals/zlib/zlib \
-		nih-at:libzip:rel-1-5-2-93-g89bd6d63:libzip/externals/libzip/libzip \
-		svn2github:inih:603729d:inih/externals/inih/inih \
-		weidai11:cryptopp:CRYPTOPP_7_0_0-23-gf320e7d9:cryptopp/externals/cryptopp/cryptopp \
-		xiph:opus:v1.3.1-4-gad8fe90d:opus/externals/opus/opus
+		herumi:xbyak:v5.911:xbyak/externals/xbyak \
+		kinetiknz:cubeb:cubeb-0.2-1194-g616d773:cubeb/externals/cubeb \
+		svn2github:inih:603729d:inih/externals/inih/inih
 
-USES=		cmake compiler:c++17-lang iconv localbase:ldflags \
-		python:build sdl
+USES=		cmake compiler:c++17-lang localbase:ldflags python:build sdl ssl
 USE_SDL=	sdl2
-CXXFLAGS+=	-Wno-narrowing # https://github.com/yuzu-emu/yuzu/issues/3407
 LDFLAGS+=	-Wl,--as-needed # Qt5Network
 TEST_TARGET=	test
 
@@ -81,7 +84,7 @@ SDL_PLIST_FILES=bin/${PORTNAME}-cmd \
 		bin/${PORTNAME}-tester
 
 QT5_USES=	desktop-file-utils qt:5 shared-mime-info
-QT5_USE=	QT=qmake_build,buildtools_build,concurrent_build,core,gui,opengl,webengine,widgets
+QT5_USE=	QT=qmake_build,buildtools_build,concurrent_build,core,gui,webengine,widgets
 QT5_CMAKE_BOOL=	ENABLE_QT YUZU_USE_QT_WEB_ENGINE
 QT5_PLIST_FILES=bin/${PORTNAME} \
 		share/applications/${PORTNAME}.desktop \

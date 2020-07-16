@@ -2,7 +2,8 @@
 
 PORTNAME=	liteide
 DISTVERSIONPREFIX=	x
-DISTVERSION=	36.3
+DISTVERSION=	37.1
+PORTREVISION=	1
 CATEGORIES=	devel editors
 
 MAINTAINER=	dmgk@FreeBSD.org
@@ -11,12 +12,12 @@ COMMENT=	Simple, open source, cross-platform Go IDE
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/LICENSE.LGPL
 
-USES=		gl go:modules,no_targets,run qmake qt:5
+USES=		dos2unix gl go:modules,no_targets,run qmake qt:5
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	visualfc
-GH_TUPLE=	visualfc:gocode:f7c4f435e405:visualfc_gocode \
-		visualfc:gotools:b7edd68214b:visualfc_gotools
+GH_TUPLE=	visualfc:gocode:159fff9b218:visualfc_gocode \
+		visualfc:gotools:102fdcc65de:visualfc_gotools
 
 USE_GL=		gl
 USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}
@@ -34,6 +35,13 @@ OPTIONS_SUB=	yes
 DEBUG_CONFIGURE_ENABLE=	debug
 
 ICON_SIZES=	16 24 32 48 64 128
+
+DOS2UNIX_FILES=	src/utils/dlvclient/dlvclient.cpp \
+		src/utils/dlvclient/dlvtypes.h
+
+post-extract:
+	# Bundled, horribly outdated copy of QJsonDocument
+	rm -r ${WRKSRC}/src/3rdparty/qjsonrpc/src/json/
 
 post-build:
 	cd ${WRKSRC_visualfc_gocode} && \

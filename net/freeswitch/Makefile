@@ -2,22 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	freeswitch
-PORTVERSION=	1.8.7
-PORTREVISION=	2
+PORTVERSION=	1.10.3
+PORTREVISION=	1
 CATEGORIES=	net
-MASTER_SITES=	http://files.freeswitch.org/releases/freeswitch/ \
-		http://files.freeswitch.org/releases/sounds/:sounds
-DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}
+MASTER_SITES=	https://files.freeswitch.org/releases/freeswitch/ \
+		https://files.freeswitch.org/releases/sounds/:sounds
+DISTFILES=	${PORTNAME}-${PORTVERSION}.-release${EXTRACT_SUFX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Multi-protocol soft switch for telephony applications
 
 LICENSE=	MPL11
 
 ONLY_FOR_ARCHS=	amd64
 
+BUILD_DEPENDS=	gdiff:textproc/diffutils
 LIB_DEPENDS=	libsqlite3.so:databases/sqlite3 \
 		libcurl.so:ftp/curl \
+		libavformat.so:multimedia/ffmpeg \
 		libpcre.so:devel/pcre \
 		libspeexdsp.so:audio/speexdsp \
 		libspeex.so:audio/speex \
@@ -25,13 +27,20 @@ LIB_DEPENDS=	libsqlite3.so:databases/sqlite3 \
 		libopus.so:audio/opus \
 		libsndfile.so:audio/libsndfile \
 		libfreetype.so:print/freetype2 \
+		libodbc.so:databases/unixODBC \
 		libpng.so:graphics/png \
 		libjbig.so:graphics/jbigkit \
-		libtiff.so:graphics/tiff
+		libtiff.so:graphics/tiff \
+		libuuid.so:misc/e2fsprogs-libuuid
 
-USES=		gmake iconv jpeg libedit libtool lua perl5 pkgconfig shebangfix ssl tar:xz
+USES=		gmake iconv jpeg libedit autoreconf libtool lua perl5 \
+		pkgconfig shebangfix ssl
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	freeswitch
+BINARY_ALIAS=	diff=gdiff
+MAKE_JOBS_UNSAFE=yes
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}.-release
 
 SHEBANG_FILES=	scripts/fsxs.in
 
@@ -40,7 +49,7 @@ CONFLICTS_BUILD=	xmlrpc-c-*
 GNU_CONFIGURE=		yes
 CONFIGURE_ARGS=	--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig \
 		--enable-zrtp
-CFLAGS+=	-Wno-error
+CFLAGS+=	-Wno-error -I${LUA_INCDIR}
 
 USERS=		${PORTNAME}
 GROUPS=		${USERS}
@@ -71,27 +80,44 @@ RUSSIAN_DESC=		Russian Language Sounds
 SWEDISH_DESC=		Swedish Language Sounds
 
 ALL_MODULES_BUILD_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa \
-				${LOCALBASE}/bin/aclocal:devel/automake
+				${LOCALBASE}/bin/aclocal:devel/automake \
+				${LOCALBASE}/bin/erl:lang/erlang \
+				${LOCALBASE}/bin/bash:shells/bash \
+				${LOCALBASE}/bin/mariadb:databases/mariadb104-client
 ALL_MODULES_CONFLICTS_BUILD=	apr
 ALL_MODULES_EXTRA_PATCHES=	${FILESDIR}/extrapatch-modules.conf
-ALL_MODULES_LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg \
-				libopencv_video.so:graphics/opencv \
-				libopencv_core.so:graphics/opencv-core \
-				libhiredis.so:databases/hiredis \
-				libmemcached.so:databases/libmemcached \
+ALL_MODULES_LIB_DEPENDS=	libopencv_video.so:graphics/opencv \
 				libSoundTouch.so:audio/soundtouch \
 				libasound.so:audio/alsa-lib \
-				libportaudio.so:audio/portaudio \
-				libmp4v2.so:multimedia/mp4v2 \
-				libshout.so:audio/libshout \
-				libmpg123.so:audio/mpg123 \
+				libcodec2.so:audio/codec2 \
+				libflite.so:audio/flite \
+				libh2o.so:www/h2o \
+				libh323.so:net/h323plus \
+				libhiredis.so:databases/hiredis \
+				libilbc.so:net/ilbc \
+				libmemcached.so:databases/libmemcached \
+				libmongoc-1.0.so:devel/mongo-c-driver \
 				libmp3lame.so:audio/lame \
+				libmp4v2.so:multimedia/mp4v2 \
+				libmpg123.so:audio/mpg123 \
 				libnetsnmp.so:net-mgmt/net-snmp \
+				libopencv_core.so:graphics/opencv-core \
+				libopusfile.so:audio/opusfile \
+				libportaudio.so:audio/portaudio \
+				libpt.so:devel/ptlib \
+				librabbitmq.so:net/rabbitmq-c \
+				libshout.so:audio/libshout \
+				libtheora.so:multimedia/libtheora \
+				libtonezone.so:misc/dahdi \
 				libvlc.so:multimedia/vlc \
 				libyaml.so:textproc/libyaml
 ALL_MODULES_RUN_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa
-ALL_MODULES_USE=		XORG=x11 OPENLDAP=yes
-ALL_MODULES_USES=		autoreconf xorg # required by mod_unimrcp
+ALL_MODULES_USE=		XORG=x11 OPENLDAP=yes JAVA=yes
+ALL_MODULES_USES=		python:2.7 xorg # required by mod_unimrcp
+ALL_MODULES_CFLAGS=		-I${LOCALBASE}/include/openh323/ \
+				-I${JAVA_HOME}/include/ \
+				-I${JAVA_HOME}/include/freebsd
+JAVA_VERSION=			11
 
 8K_VARS=	BITRATES+=8000
 16K_VARS=	BITRATES+=16000
@@ -99,7 +125,8 @@ ALL_MODULES_USES=		autoreconf xorg # required by mod_unimrcp
 48K_VARS=	BITRATES+=48000
 
 PGSQL_USES=	pgsql
-PGSQL_CONFIGURE_ENABLE=	core-pgsql-support
+PGSQL_CONFIGURE_ENABLE=	core-pgsql-support core-pgsql-pkgconfig
+PGSQL_CONFIGURE_ENV_OFF=	ac_cv_lib_pq_PQgetvalue=false
 
 # install-strip causes `make stage' to fail:
 # libtool: install: strip --strip-debug /wrkdirs/usr/ports/net/freeswitch/work/stage/usr/local/lib/libfreeswitch.a
@@ -158,6 +185,9 @@ DISTFILES+=	${distfile}:sounds
 post-patch:
 		${REINPLACE_CMD} -Ee 's|^(applications/mod_signalwire)|#\1|' \
 			${WRKSRC}/modules.conf
+
+post-patch-PGSQL-off:
+		${REINPLACE_CMD} -Ee 's|^(databases/mod_pgsql)|#\1|' ${WRKSRC}/modules.conf
 
 post-install:
 		${MKDIR} ${STAGEDIR}${DATADIR}/sounds

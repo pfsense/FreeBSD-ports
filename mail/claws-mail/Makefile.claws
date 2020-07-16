@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTVERSION=	3.17.4
+PORTVERSION=	3.17.5
 CATEGORIES?=	mail
 MASTER_SITES=	http://www.claws-mail.org/download.php?file=releases/
 
@@ -13,34 +13,7 @@ GNU_CONFIGURE=	yes
 
 CONFIGURE_ARGS=	${ICONV_CONFIGURE_ARG} --disable-dbus --disable-static
 
-CLAWS_PLUGINS=	acpi_notifier \
-		address_keeper \
-		archive \
-		att_remover \
-		attachwarner \
-		bogofilter \
-		bsfilter \
-		clamd \
-		fancy \
-		fetchinfo \
-		gdata \
-		libravatar \
-		mailmbox \
-		managesieve \
-		newmail \
-		notification \
-		pdf_viewer \
-		perl \
-		python \
-		pgpcore \
-		pgpinline \
-		pgpmime \
-		rssyl \
-		smime \
-		spam_report \
-		spamassassin \
-		tnef_parse \
-		vcalendar
+.include "../claws-mail/Makefile.claws.plugins"
 
 .for p in ${CLAWS_PLUGINS}
 CONFIGURE_ARGS+=	--disable-${p}-plugin

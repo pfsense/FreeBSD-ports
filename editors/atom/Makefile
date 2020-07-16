@@ -2,7 +2,7 @@
 
 PORTNAME=	atom
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.45.0
+DISTVERSION=	1.48.0
 CATEGORIES=	editors
 MASTER_SITES=	https://nodejs.org/dist/v${APM_NODE_VER}/:node \
 		https://github.com/tagattie/FreeBSD-Atom/releases/download/v1.42.0/:jasmine_tagged \
@@ -13,7 +13,7 @@ DISTFILES=	node-v${APM_NODE_VER}${EXTRACT_SUFX}:node \
 		atom-npm-cache-${DISTVERSION}${EXTRACT_SUFX}:npm_cache \
 		atom-apm-cache-${DISTVERSION}${EXTRACT_SUFX}:npm_cache
 
-MAINTAINER=	tagattie@yandex.com
+MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Hackable text editor for the 21st century
 
 LICENSE=	MIT
@@ -25,9 +25,10 @@ BUILD_DEPENDS=	zip:archivers/zip \
 		electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
 		bash:shells/bash \
 		rg:textproc/ripgrep \
-		node:www/node10 \
-		npm:www/npm-node10
+		node10>:www/node10 \
+		npm-node10>0:www/npm-node10
 LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
+		libatspi.so:accessibility/at-spi2-core \
 		libsnappy.so:archivers/snappy \
 		libasound.so:audio/alsa-lib \
 		libFLAC.so:audio/flac \
@@ -38,9 +39,12 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libpci.so:devel/libpci \
 		libnspr4.so:devel/nspr \
 		libpcre2-8.so:devel/pcre2 \
+		libre2.so:devel/re2 \
+		liblcms2.so:graphics/lcms2 \
 		libdrm.so:graphics/libdrm \
 		libwebp.so:graphics/webp \
 		libavcodec.so:multimedia/ffmpeg \
+		libvpx.so:multimedia/libvpx \
 		libopenh264.so:multimedia/openh264 \
 		libcups.so:print/cups \
 		libfreetype.so:print/freetype2 \
@@ -59,9 +63,9 @@ USES=		desktop-file-utils gl gnome jpeg localbase:ldflags pkgconfig \
 
 USE_GITHUB=	yes
 
-.include "${.CURDIR}/../../devel/electron4/Makefile.version"
+.include "${.CURDIR}/../../devel/electron5/Makefile.version"
 # See ${WRKSRC}/apm/node_modules/atom-package-manager/BUNDLED_NODE_VERSION for APM_NODE_VER
-APM_NODE_VER=	10.2.1
+APM_NODE_VER=	10.20.1
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -76,7 +80,6 @@ USE_LDCONFIG=	${DATADIR}
 SHEBANG_FILES=	atom.sh
 SHEBANG_FILES_APM=	apm/node_modules/atom-package-manager/bin/apm \
 		apm/node_modules/atom-package-manager/bin/npm \
-		apm/node_modules/atom-package-manager/bin/python-interceptor.sh \
 		apm/node_modules/atom-package-manager/script/postinstall.sh \
 		apm/node_modules/atom-package-manager/node_modules/npm/configure \
 		apm/node_modules/atom-package-manager/node_modules/npm/lib/utils/completion.sh \
@@ -111,6 +114,9 @@ post-patch:
 
 pre-build: build-apm-node bootstrap-script bootstrap-apm bootstrap-atom clean-backup
 build-apm-node:
+	for p in ${PATCHDIR}/node/patch-*; do \
+		${PATCH} -p0 -d ${WRKDIR}/node-v${APM_NODE_VER} < $${p}; \
+	done
 	cd ${WRKDIR}/node-v${APM_NODE_VER} && \
 		${SETENV} ${CONFIGURE_ENV} CC=${CC} CXX=${CXX} ./configure && \
 		${SETENV} ${MAKE_ENV} ${BSDMAKE} -j ${MAKE_JOBS_NUMBER}

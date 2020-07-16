@@ -1,11 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	meta1
-PORTVERSION=	1.1.0a.14.1
+PORTVERSION=	1.1.0a.15.2
 CATEGORIES=	mail
-MASTER_SITES=	http://www.MeTA1.org/download/.alpha/gran/
-PKGNAMESUFFIX?=	${TLS_SUFFIX}${SASL_SUFFIX}${BERKELEYDB_SUFFIX}${PMILTER_SUFFIX}${PKGNAMESUFFIX2}
-DISTNAME=	${PORTNAME}-1.1.Alpha14.1
+MASTER_SITES=	http://www.MeTA1.org/download/.alpha/3rdt/
+DISTNAME=	${PORTNAME}-1.1.Alpha15.2
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Secure and efficient mail gateway
@@ -27,6 +26,7 @@ IGNORE=		your system does not support sysvipc
 USES=	libtool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--disable-dependency-tracking
+CPPFLAGS+=	-DMTA_NETINET6
 MAKE_ENV+=	META1CONFDIR="${META1CONFDIR}"
 PORTDOCS=	README.dvi README.html README.pdf README.ps README.txt \
 		img1.png img2.png img3.png img4.png img5.png img6.png \
@@ -63,11 +63,11 @@ SASL2_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 SASL2_CONFIGURE_ENABLE=	SASL
 SASL2_CONFIGURE_ON=	--with-sasl-incdir=${LOCALBASE}/include \
 			--with-sasl-libdir=${LOCALBASE}/lib
-SASL2AUTHD_RUN_DEPENDS=	${LOCALBASE}/sbin/saslauthd:security/cyrus-sasl2-saslauthd
+SASL2AUTHD_RUN_DEPENDS=	saslauthd:security/cyrus-sasl2-saslauthd
 TLS_USES=		ssl
 TLS_CONFIGURE_ENABLE=	TLS
 TLS_CPPFLAGS=		-I${LOCALBASE}/include
-TLS_LDFLAGS=		-I${LOCALBASE}/lib
+TLS_LDFLAGS=		-L${LOCALBASE}/lib
 
 .include <bsd.port.options.mk>
 
@@ -78,26 +78,17 @@ MAKE_ENV+=	MTA_NETINET6=1
 .if ${PORT_OPTIONS:MBDB}
 BROKEN=		port version of Berkeley DB is not compatible
 INVALID_BDB_VER=	48 5 6
-BERKELEYDB_SUFFIX=	-db${BDB_VER}
 CONFIGURE_ARGS+=	--disable-included-bdb
 CONFIGURE_ARGS+=	--with-bdb-incdir=${BDB_INCLUDE_DIR}
 CONFIGURE_ARGS+=	--with-bdb-libdir=${BDB_LIB_DIR}
+CONFIGURE_ARGS+=	--with-bdb-lib=${BDB_LIB_NAME}
 PLIST_SUB+=	WITH_BDBINT="@comment "
 .else
-BERKELEYDB_SUFFIX=	-intbdb
 PLIST_SUB+=	WITH_BDBINT=""
-.endif
-
-.if ! ${PORT_OPTIONS:MPMILTER}
-PMILTER_SUFFIX?=	-nopmilter
 .endif
 
 .if ${PORT_OPTIONS:MMSP}
 CONFLICTS+=	courier-0.* postfix-1.* postfix-2.* smail-3.* zmailer-2.* opensmtpd-* sendmail-*
-.endif
-
-.if ! ${PORT_OPTIONS:MSASL2}
-SASL_SUFFIX?=	-nosasl
 .endif
 
 .if ${PORT_OPTIONS:MSASL2AUTHD}
@@ -105,14 +96,6 @@ SASL_SUFFIX?=	-nosasl
 IGNORE=		option SASL2AUTHD needs option SASL2
 .endif
 .endif
-
-.if ! ${PORT_OPTIONS:MTLS}
-TLS_SUFFIX?=	-notls
-.endif
-
-post-patch:
-	${REINPLACE_CMD} -e 's| mapspec_kind;|;|' \
-		${WRKSRC}/include/sm/mapcnf.h
 
 post-configure:
 	@${CP} ${WRKSRC}/misc/sm.check.sh \

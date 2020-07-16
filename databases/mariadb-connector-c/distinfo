@@ -1,3 +1,3 @@
-TIMESTAMP = 1558436223
-SHA256 (mariadb-connector-c-3.0.10-src.tar.gz) = bd9aa1f137ead3dc68ed3165adc53541712076d08949800b6ccebd33da6d0ae8
-SIZE (mariadb-connector-c-3.0.10-src.tar.gz) = 668385
+TIMESTAMP = 1593021097
+SHA256 (mariadb-connector-c-3.1.9-src.tar.gz) = 108d99bf2add434dcb3bd9526ba1d89a2b9a943b62dcd9d0a41fcbef8ffbf2c7
+SIZE (mariadb-connector-c-3.1.9-src.tar.gz) = 745374

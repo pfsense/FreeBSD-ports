@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	git
-DISTVERSION=	2.26.2
+DISTVERSION=	2.27.0
 CATEGORIES=	devel
 MASTER_SITES=	KERNEL_ORG/software/scm/git
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -113,9 +113,8 @@ GUI_MAKE_ARGS_OFF=	NO_TCLTK=yes
 SVN_RUN_DEPENDS=	p5-Term-ReadKey>=0:devel/p5-Term-ReadKey \
 			p5-subversion>=0:devel/p5-subversion
 
-SUBTREE_BUILD_DEPENDS=	xmlto:textproc/xmlto \
-			asciidoc:textproc/asciidoc \
-			docbook-xml>0:textproc/docbook-xml
+SUBTREE_BUILD_DEPENDS=	asciidoctor:textproc/rubygem-asciidoctor\
+			xmlto:textproc/xmlto
 
 CVS_RUN_DEPENDS=	cvsps:devel/cvsps
 
@@ -220,7 +219,7 @@ post-install-HTMLDOCS-on:
 
 post-install-SUBTREE-on:
 	cd ${WRKSRC}/contrib/subtree && ${SETENV} ${MAKE_ENV} \
-		${MAKE_CMD} ${MAKE_FLAGS} Makefile ${MAKE_ARGS} install install-doc
+		${MAKE_CMD} ${MAKE_FLAGS} Makefile USE_ASCIIDOCTOR=1 ${MAKE_ARGS} install install-doc
 
 post-install-CONTRIB-on:
 	@${ECHO_MSG} "===> Installing contributed scripts"

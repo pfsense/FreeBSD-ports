@@ -43,6 +43,7 @@ include/snort/file_api/file_segment.h
 include/snort/file_api/file_service.h
 include/snort/flow/expect_cache.h
 include/snort/flow/flow.h
+include/snort/flow/flow_data.h
 include/snort/flow/flow_key.h
 include/snort/flow/flow_stash.h
 include/snort/flow/ha.h
@@ -65,6 +66,7 @@ include/snort/framework/lua_api.h
 include/snort/framework/module.h
 include/snort/framework/mpse.h
 include/snort/framework/mpse_batch.h
+include/snort/framework/packet_constraints.h
 include/snort/framework/parameter.h
 include/snort/framework/range.h
 include/snort/framework/so_rule.h
@@ -96,12 +98,14 @@ include/snort/lua/snort_config.lua
 include/snort/lua/snort_plugin.lua
 include/snort/main/analyzer_command.h
 include/snort/main/policy.h
+include/snort/main/snort.h
 include/snort/main/snort_config.h
 include/snort/main/snort_debug.h
 include/snort/main/snort_types.h
 include/snort/main/thread.h
 include/snort/managers/codec_manager.h
 include/snort/managers/inspector_manager.h
+include/snort/memory/memory_cap.h
 include/snort/mime/decode_b64.h
 include/snort/mime/decode_base.h
 include/snort/mime/file_mime_config.h
@@ -111,12 +115,12 @@ include/snort/mime/file_mime_log.h
 include/snort/mime/file_mime_paf.h
 include/snort/mime/file_mime_process.h
 include/snort/network_inspectors/appid/appid_api.h
+include/snort/network_inspectors/appid/appid_app_descriptor.h
 include/snort/network_inspectors/appid/appid_dns_session.h
 include/snort/network_inspectors/appid/appid_http_session.h
 include/snort/network_inspectors/appid/appid_session_api.h
 include/snort/network_inspectors/appid/appid_types.h
 include/snort/network_inspectors/appid/application_ids.h
-include/snort/network_inspectors/appid/http_xff_fields.h
 include/snort/network_inspectors/appid/tp_appid_module_api.h
 include/snort/network_inspectors/appid/tp_appid_session_api.h
 include/snort/network_inspectors/appid/tp_appid_types.h
@@ -162,6 +166,7 @@ include/snort/pub_sub/appid_events.h
 include/snort/pub_sub/cip_events.h
 include/snort/pub_sub/daq_message_event.h
 include/snort/pub_sub/data_decrypt_event.h
+include/snort/pub_sub/dcerpc_events.h
 include/snort/pub_sub/expect_events.h
 include/snort/pub_sub/finalize_packet_event.h
 include/snort/pub_sub/http_events.h
@@ -178,7 +183,8 @@ include/snort/target_based/snort_protocols.h
 include/snort/time/clock_defs.h
 include/snort/time/packet_time.h
 include/snort/time/stopwatch.h
-include/snort/utils/bitop.h
+include/snort/trace/trace.h
+include/snort/trace/trace_api.h
 include/snort/utils/boyer_moore.h
 include/snort/utils/cpp_macros.h
 include/snort/utils/endian.h
@@ -238,7 +244,6 @@ libdata/pkgconfig/snort.pc
 %%PORTDOCS%%%%DOCSDIR%%/ips_action.txt
 %%PORTDOCS%%%%DOCSDIR%%/ips_option.txt
 %%PORTDOCS%%%%DOCSDIR%%/logger.txt
-%%PORTDOCS%%%%DOCSDIR%%/module_trace.txt
 %%PORTDOCS%%%%DOCSDIR%%/modules.txt
 %%PORTDOCS%%%%DOCSDIR%%/options.txt
 %%PORTDOCS%%%%DOCSDIR%%/overview.txt
@@ -266,6 +271,7 @@ libdata/pkgconfig/snort.pc
 %%PORTDOCS%%%%DOCSDIR%%/telnet.txt
 %%PORTDOCS%%%%DOCSDIR%%/terms.txt
 %%PORTDOCS%%%%DOCSDIR%%/testing_numerical_values.txt
+%%PORTDOCS%%%%DOCSDIR%%/trace.txt
 %%PORTDOCS%%%%DOCSDIR%%/tutorial.txt
 %%PORTDOCS%%%%DOCSDIR%%/usage.txt
 %%PORTDOCS%%%%DOCSDIR%%/version.txt

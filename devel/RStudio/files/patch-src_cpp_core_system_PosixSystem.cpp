@@ -1,6 +1,14 @@
---- src/cpp/core/system/PosixSystem.cpp.orig	2020-01-23 23:30:24 UTC
+--- src/cpp/core/system/PosixSystem.cpp.orig	2020-05-18 18:11:10 UTC
 +++ src/cpp/core/system/PosixSystem.cpp
-@@ -47,13 +47,18 @@
+@@ -40,20 +40,25 @@
+ 
+ #include <uuid/uuid.h>
+ 
+-#ifdef __APPLE__
++#if !defined(__APPLE__) && !defined(__FreeBSD__)
+ #include <mach-o/dyld.h>
+ #include <sys/proc_info.h>
+ #include <libproc.h>
  #include <gsl/gsl>
  #endif
  

@@ -12,8 +12,6 @@ COMMENT=	Intuitive, easy to use open source scan program
 
 LICENSE=	GPLv2+
 
-PORTSCOUT=	ignore:v4.0.71
-
 LIB_DEPENDS=	libpaper.so:print/libpaper \
 		libsane.so:graphics/sane-backends \
 		libtiff.so:graphics/tiff
@@ -26,5 +24,7 @@ USE_KDE=	auth bookmarks codecs completion config configwidgets coreaddons \
 		textwidgets widgetsaddons xmlgui
 USE_QT=		concurrent core dbus gui network printsupport widgets xml \
 		buildtools_build qmake_build
+
+PORTSCOUT=	limit:^0\.
 
 .include <bsd.port.mk>

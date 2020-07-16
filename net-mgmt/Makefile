@@ -12,12 +12,10 @@
     SUBDIR += ap-utils
     SUBDIR += argus3
     SUBDIR += argus3-clients
-    SUBDIR += arpalert
     SUBDIR += arpscan
     SUBDIR += arpwatch
     SUBDIR += arts++
     SUBDIR += bandwidthd
-    SUBDIR += bgpq
     SUBDIR += bgpq3
     SUBDIR += bgpq4
     SUBDIR += bgpuma
@@ -144,7 +142,6 @@
     SUBDIR += nagios-check_email_delivery
     SUBDIR += nagios-check_hdd_health
     SUBDIR += nagios-check_hp_bladechassis
-    SUBDIR += nagios-check_memcached_paranoid
     SUBDIR += nagios-check_mysql_slave
     SUBDIR += nagios-check_netsnmp
     SUBDIR += nagios-check_ports
@@ -191,7 +188,6 @@
     SUBDIR += netspoc
     SUBDIR += netustad
     SUBDIR += networkmgr
-    SUBDIR += netwox
     SUBDIR += netxms
     SUBDIR += nfdump
     SUBDIR += nfsen
@@ -206,7 +202,6 @@
     SUBDIR += nsca27-client
     SUBDIR += nsd_exporter
     SUBDIR += nstat
-    SUBDIR += nstreams
     SUBDIR += nvidia_gpu_prometheus_exporter
     SUBDIR += observium
     SUBDIR += ocsinventory-agent
@@ -225,8 +220,6 @@
     SUBDIR += p5-Cisco-Reconfig
     SUBDIR += p5-Data-Validate-IP
     SUBDIR += p5-FusionInventory-Agent
-    SUBDIR += p5-GRNOC-Config
-    SUBDIR += p5-GRNOC-TL1
     SUBDIR += p5-MRTG-Parse
     SUBDIR += p5-Mon
     SUBDIR += p5-Monitoring-Livestatus
@@ -299,6 +292,8 @@
     SUBDIR += prometheus2
     SUBDIR += pushgateway
     SUBDIR += py-adal
+    SUBDIR += py-aggregate6
+    SUBDIR += py-arouteserver
     SUBDIR += py-ciscoconfparse
     SUBDIR += py-dnsdiag
     SUBDIR += py-ipcalc
@@ -349,7 +344,6 @@
     SUBDIR += rubygem-snmp
     SUBDIR += rubygem-visage-app
     SUBDIR += sblim-wbemcli
-    SUBDIR += scli
     SUBDIR += sdig
     SUBDIR += seafile-client
     SUBDIR += seafile-gui
@@ -360,7 +354,6 @@
     SUBDIR += sipcalc
     SUBDIR += sjitter
     SUBDIR += smokeping
-    SUBDIR += snmp++
     SUBDIR += snmp4nagios
     SUBDIR += snmptt
     SUBDIR += softflowd
@@ -380,7 +373,6 @@
     SUBDIR += unifi-devel
     SUBDIR += unifi-lts
     SUBDIR += unifi5
-    SUBDIR += victorops-nagios
     SUBDIR += virt-viewer
     SUBDIR += wdiag
     SUBDIR += whatmask
@@ -399,11 +391,6 @@
     SUBDIR += zabbix4-java
     SUBDIR += zabbix4-proxy
     SUBDIR += zabbix4-server
-    SUBDIR += zabbix42-agent
-    SUBDIR += zabbix42-frontend
-    SUBDIR += zabbix42-java
-    SUBDIR += zabbix42-proxy
-    SUBDIR += zabbix42-server
     SUBDIR += zabbix44-agent
     SUBDIR += zabbix44-frontend
     SUBDIR += zabbix44-java

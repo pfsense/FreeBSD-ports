@@ -1,9 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	simplescreenrecorder
-DISTVERSION=	0.3.11-20
-DISTVERSIONSUFFIX=	-g973cc00
-PORTREVISION=	3
+DISTVERSION=	0.4.2
 CATEGORIES=	multimedia
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,8 +10,7 @@ COMMENT=	Screen video recorder
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libasound.so:audio/alsa-lib \
-		libavformat.so:multimedia/ffmpeg
+LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg
 
 USES=		cmake compiler:c++11-lang pkgconfig qt:5 xorg
 USE_GITHUB=	yes
@@ -26,8 +23,11 @@ CMAKE_ON=	WITH_QT5
 CMAKE_OFF=	WITH_GLINJECT  # doesn't yet work on FreeBSD: https://github.com/MaartenBaert/ssr/issues/586#issuecomment-343780107
 CMAKE_OFF+=	WITH_OPENGL_RECORDING  # extra option requiried when GLInject is off, because this makes OpenGL recording dysfunctional
 
-OPTIONS_DEFINE=		PULSEAUDIO JACK
-OPTIONS_DEFAULT=	PULSEAUDIO
+OPTIONS_DEFINE=		ALSA PULSEAUDIO JACK
+OPTIONS_DEFAULT=	ALSA PULSEAUDIO
+
+ALSA_CMAKE_BOOL=	WITH_ALSA
+ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 
 PULSEAUDIO_CMAKE_BOOL=	WITH_PULSEAUDIO
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio

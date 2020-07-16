@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mailman
-DISTVERSION=	2.1.30
-PORTREVISION=	5
+DISTVERSION=	2.1.34
 CATEGORIES=	mail
 MASTER_SITES=	GNU \
 		SF/${PORTNAME}/Mailman%202.1%20%28stable%29/${PORTVERSION} \
@@ -128,11 +127,11 @@ MAIL_GID?=	_smtpd
 PKGNAMESUFFIX+=	-with-htdig
 # how to create PATCHFILES:
 #X identify what is the version of msapiro's patches corresponding to the release.
-#X fetch http://bazaar.launchpad.net/~msapiro/mailman/htdig/tarball/1812
+#X fetch http://bazaar.launchpad.net/~msapiro/mailman/htdig/tarball/1822
 #X unpack this tarball, and the original distfile
-#X diff -NEur original-unpack bazaar-unpack | xz --best -c >msapiro-htdig-1812.patch.xz
+#X diff -NEur original-unpack bazaar-unpack | xz --best -c >msapiro-htdig-1822.patch.xz
 #X upload the latter with mode 0644 or similar to freefall's public_distfiles/ directory
-_HTDIGREV=	1812
+_HTDIGREV=	1822
 PATCHFILES+=	msapiro-htdig-${_HTDIGREV}.patch.xz
 RUN_DEPENDS+=	htdig:textproc/htdig
 PLIST_SUB+=	SUB_HTDIG=""
@@ -178,11 +177,6 @@ post-patch:
 	${REINPLACE_CMD} -e 's/messages//' ${WRKSRC}/Makefile.in
 .endif
 	${MV} ${WRKSRC}/configure.in ${WRKSRC}/configure.ac # suppress warning
-	# Fix up translations for patch-0-security-88760f4d-8ef7-11ea-a66d-4b2ef158be83.
-	# Note it's not just search & replace, the pattern needs to be unedited for
-	# admin.py and edited for options.py.
-	${REINPLACE_CMD} -Ee '/Illegal Email Address: %\(safeuser\)/,+1H;$${p;x;s/ *. %\(safeuser\)s//g;}' \
-		${WRKSRC}/messages/*/LC_MESSAGES/mailman.po
 
 # post-patch-HTDIG-on is to fix https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=238508
 post-patch-HTDIG-on:
@@ -242,6 +236,7 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 	${ECHO} "This marker file ensures that Python's upgrade-site-packages handles ${PKGNAME}." >${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/mailman-info.txt
 	${INSTALL_SCRIPT} ${PKGINSTALL} ${STAGEDIR}${MAILMANDIR}/bin/FreeBSD-post-install
-	${FIND} ${STAGEDIR}${MAILMANDIR}/templates -type f -exec ${MV} '{}' '{}.sample' \;
+	${MKDIR} ${STAGEDIR}${MAILMANDIR}/templates/site/en
+	${INSTALL_DATA} ${FILESDIR}/templates_site_README.txt ${STAGEDIR}${MAILMANDIR}/templates/site/README.txt
 
 .include <bsd.port.mk>

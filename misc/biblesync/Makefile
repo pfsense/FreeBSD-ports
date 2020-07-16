@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	biblesync
-DISTVERSION=	2.0.1
+DISTVERSION=	2.1.0
 CATEGORIES=	misc
 
-MAINTAINER=	salvadore@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multicast shared co-navigation library for Bible programs
 
 LICENSE=	PD
@@ -13,8 +13,6 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid
 
 USES=		cmake gettext-runtime
-
-USE_GCC=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	karlkleinpaste

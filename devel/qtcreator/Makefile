@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	qtcreator
-DISTVERSION=	4.11.1
+DISTVERSION=	4.12.3
 CATEGORIES=	devel
 MASTER_SITES=	QT/official_releases/qtcreator/${DISTVERSION:R}/${DISTVERSION}
 DISTNAME=	qt-creator-opensource-src-${DISTVERSION}
@@ -10,6 +10,12 @@ DIST_SUBDIR=	KDE/Qt/qtcreator
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	C++ and QML IDE for Qt development
+
+LICENSE=	QtGPL
+LICENSE_GROUPS_QtGPL=	GPL
+LICENSE_NAME=	GPLv3 with Qt Company GPL Exception 1.0
+LICENSE_FILE=	${WRKSRC}/LICENSE.GPL3-EXCEPT
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 # depend on the split out qbs
 LIB_DEPENDS=	libqbscore.so:devel/qbs
@@ -50,8 +56,6 @@ EXAMPLES_USE=		QT=examples_run
 OPTIONS_DEFAULT=	DOCS EXAMPLES
 OPTIONS_DEFAULT_amd64=	QTWEBENGINE
 OPTIONS_DEFAULT_i386=	QTWEBENGINE
-OPTIONS_DEFAULT_powerpc64=	${OPTIONS_DEFAULT_powerpc64_${OSREL:R}}
-OPTIONS_DEFAULT_powerpc64_13=	QTWEBENGINE
 
 QTWEBENGINE_DESC=	Add dependency on qt5-webengine
 QTWEBENGINE_USE=	qt=webengine
@@ -75,7 +79,6 @@ SHEBANG_FILES=		tests/system/tools/objectsToTable.py \
 			scripts/packagePlugins.py \
 			scripts/ninjawrapper.py \
 			scripts/checkInstalledFiles.py \
-			scripts/generateClangTidyChecks.py \
 			scripts/createDistPackage.py \
 			scripts/createDevPackage.py \
 			scripts/deployqt.py \
@@ -88,6 +91,10 @@ SHEBANG_FILES=		tests/system/tools/objectsToTable.py \
 
 .if ${LLVM_DEFAULT:C/[1-5]./&0/:S,-devel,990,} >= 90
 LLVM_DEFAULT=	80
+.endif
+
+.if ${LLVM_DEFAULT} == 10
+EXTRA_PATCHES=	${PATCHDIR}/llvm10_patch-src_shared_clang_clang__installation.pri
 .endif
 
 post-patch:

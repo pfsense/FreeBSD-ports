@@ -3,7 +3,7 @@
 
 PORTNAME=	opencoarrays
 DISTVERSION=	2.7.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	lang parallel
 
 MAINTAINER=	ports@FreeBSD.org
@@ -13,6 +13,8 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_aarch64=		fails to build: Can't open module file 'ieee_arithmetic.mod' for reading at (1): No such file or directory
+BROKEN_FreeBSD_12_powerpc64=	fails to build: CMake Warning at CMakeLists.txt:280 (message): Could not find all MPI components!
+BROKEN_FreeBSD_13_powerpc64=	fails to build: Can't open module file 'ieee_arithmetic.mod' for reading at (1): No such file or directory
 
 BUILD_DEPENDS=	bash:shells/bash
 RUN_DEPENDS=	bash:shells/bash
@@ -27,7 +29,7 @@ USE_LDCONFIG=	yes
 PLIST_SUB=	GCC_VER=${_GCC_VER} PORTVERSION=${PORTVERSION}
 
 OPTIONS_SINGLE=		MPI
-OPTIONS_SINGLE_MPI=	MPICH OPENMPI OPENMPI2
+OPTIONS_SINGLE_MPI=	MPICH OPENMPI
 OPTIONS_DEFAULT=	MPICH
 
 MPICH_DESC=		Parallel processing support via MPICH
@@ -38,11 +40,8 @@ MPICH_CONFIGURE_ENV=	MPI_HOME=${LOCALBASE}
 OPENMPI_BUILD_DEPENDS=	${LOCALBASE}/mpi/openmpi/bin/mpif90:net/openmpi
 OPENMPI_RUN_DEPENDS=	${LOCALBASE}/mpi/openmpi/bin/mpif90:net/openmpi
 OPENMPI_CONFIGURE_ENV=	MPI_HOME=${LOCALBASE}/mpi/openmpi
-
-OPENMPI2_DESC=		Parallel processing support via Open MPI v2
-OPENMPI2_BUILD_DEPENDS=	${LOCALBASE}/mpi/openmpi2/bin/mpif90:net/openmpi2
-OPENMPI2_RUN_DEPENDS=	${LOCALBASE}/mpi/openmpi2/bin/mpif90:net/openmpi2
-OPENMPI2_CONFIGURE_ENV=	MPI_HOME=${LOCALBASE}/mpi/openmpi2
+OPENMPI_CMAKE_ON=	-DMPI_C_COMPILE_OPTIONS="-lpthread" \
+			-DMPI_Fortran_COMPILE_OPTIONS="-lpthread"
 
 .include <bsd.port.options.mk>
 

@@ -2,9 +2,11 @@
 
 PORTNAME=	vulkan-loader
 DISTVERSIONPREFIX=sdk-
-DISTVERSION=	1.1.108.0
-PORTREVISION=	1
+DISTVERSION=	1.2.135.0
 CATEGORIES=	graphics devel
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	8d2d49a9c89d.patch:-p1 # https://github.com/KhronosGroup/Vulkan-Loader/pull/419
 
 MAINTAINER=	greg@unrelenting.technology
 COMMENT=	Driver loader for the Vulkan graphics API
@@ -39,10 +41,17 @@ XCB_LIB_DEPENDS=	libX11-xcb.so:x11/libX11 \
 WAYLAND_CMAKE_BOOL=	BUILD_WSI_WAYLAND_SUPPORT
 WAYLAND_LIB_DEPENDS=	libwayland-egl.so:graphics/wayland
 
-post-patch:
-# Non-x86 targets use C code, so don't abort without GNU as (e.g., on aarch64)
-.if !exists(/usr/bin/as) && ${MACHINE_ARCH} != i386 && ${MACHINE_ARCH} != amd64
-	@${REINPLACE_CMD} 's/-ATT//' ${WRKSRC}/loader/CMakeLists.txt
+.include <bsd.port.pre.mk>
+
+# XXX Drop after FreeBSD 11.3/12.1 EOL
+.if ${ARCH} == i386 && ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} < 100
+. if ${LLVM_DEFAULT:C/[1-5]./&0/:S,-devel,990,} < 100
+LLVM_DEFAULT=	10
+. endif
+BUILD_DEPENDS+=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
+CC=		clang${LLVM_DEFAULT}
+CXX=		clang++${LLVM_DEFAULT}
+CPP=		clang-cpp${LLVM_DEFAULT}
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

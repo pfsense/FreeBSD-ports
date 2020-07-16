@@ -2,18 +2,11 @@
 
 PORTNAME=	cp2k
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.1.0
-PORTREVISION=	7
+DISTVERSION=	7.1.0-20200518
 CATEGORIES=	science
-
-PATCH_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/commit/
-PATCHFILES=	f03e6277feea9a65d543ca6c1184f58d3e83bc2a.patch:-p2 \
-		d00a71c4d0276aab849ac6a6483b9dcdb65613c9.patch:-p2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Quantum chemistry and solid state physics software package
-
-BROKEN=		unfetchable
 
 LICENSE=	GPLv2+
 
@@ -24,13 +17,13 @@ RUN_DEPENDS=	cp2k-data>0:science/cp2k-data
 
 USES=		fortran gmake localbase:ldflags python:build tar:bz2
 USE_GITHUB=	yes
+GH_TAGNAME=	2e995eec7fd208c8a72d9544807bd8b8ba8cd1cc
+GH_TUPLE=	cp2k:dbcsr:f385868eec7c89f40ac9d6d9783fc34a05d2f68e:cp2k_dbcsr/exts/dbcsr \
+		pseewald:fprettify:2b2801bf91dd651c417c232bb891d407bf81085c:pseewald_fprettify/tools/prettify/fprettify \
+		aradi:fypp:7895a7efb7d2f07dc284cece6cc9474297b8dc55:aradi_fypp/exts/dbcsr/tools/build_utils/fypp
 
-MAKEFILE=	${WRKSRC}/makefiles/Makefile
-MAKE_ARGS=	XARCH=FreeBSD-${NOLIBINT}libint-gfortran VERSION=${VERSION} FC=gfortran${GCC_DEFAULT} CC=${CC} LD=gfortran${GCC_DEFAULT} \
+MAKE_ARGS=	XARCH=FreeBSD-gfortran VERSION=${VERSION} FC=gfortran${GCC_DEFAULT} CC=${CC} LD=gfortran${GCC_DEFAULT} \
 		DATA_DIR=${DATADIR}
-
-BUILD_WRKSRC=	${WRKSRC}/.build
-INSTALL_WRKSRC=	${BUILD_WRKSRC}
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -41,7 +34,6 @@ OPTIONS_DEFAULT=	LIBINT SERIAL
 MULTIPROCESSING_DESC=	Multiprocessing
 
 LIBINT_DESC=		Use libint to evaluate integrals
-LIBINT_VARS_OFF=	NOLIBINT=no
 LIBINT_LIB_DEPENDS=	libint.so:science/libint
 
 SERIAL_DESC=		Single core (no multiprocessing)
@@ -59,7 +51,7 @@ OPENMP_MPI_VARS=	VERSION=psmp
 OPENMP_MPI_LIB_DEPENDS=	${MPI_LIB_DEPENDS}
 OPENMP_MPI_LDFLAGS=	${MPI_LDFLAGS}
 
-EXECUTABLES=		cp2k graph cp2k_shell dbcsr_performance_driver
+EXECUTABLES=		cp2k graph cp2k_shell
 
 PLIST_FILES=		${EXECUTABLES:C/(.*)/bin\/\1.${VERSION}/}
 
@@ -75,10 +67,10 @@ pre-configure:
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} 's|LIBS.*=.*|& ${LDFLAGS}|; s|^FCFLAGS.*=.*|& -I${LOCALBASE}/include|; s| -march=native||' ${WRKSRC}/arch/FreeBSD-*
+	@${REINPLACE_CMD} -i '' 's|LIBS.*=.*|& ${LDFLAGS}|; s|^FCFLAGS.*=.*|& -I${LOCALBASE}/include|; s| -march=native||' ${WRKSRC}/arch/FreeBSD-*
 
 pre-build:
-	@${MKDIR} ${BUILD_WRKSRC}
+	@${ECHO} ${PORTVERSION} > ${WRKSRC}/REVISION
 
 do-install:
 .for e in ${EXECUTABLES}

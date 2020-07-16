@@ -2,17 +2,17 @@
 
 PORTNAME=	kio-extras
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	devel kde kde-applications # kde kde-applications-plasma
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Plasma5 library to increase the functionality of KIO
 
 LIB_DEPENDS=	libtag.so:audio/taglib \
-		libHalf.so:graphics/ilmbase
+		libHalf.so:graphics/ilmbase \
+		libkdsoap.so:www/kdsoap
 
 USES=		cmake compiler:c++11-lib gettext gperf kde:5 \
-		pkgconfig qt:5 shared-mime-info shebangfix tar:xz
+		pkgconfig qt:5 shared-mime-info shebangfix tar:xz xorg
 USE_KDE=	activities archive auth bookmarks codecs completion config \
 		configwidgets coreaddons crash dbusaddons dnssd doctools ecm \
 		emoticons guiaddons i18n iconthemes init itemmodels itemviews \
@@ -22,6 +22,7 @@ USE_KDE=	activities archive auth bookmarks codecs completion config \
 USE_QT=		concurrent core dbus declarative gui location network phonon4 printsupport \
 		sql svg testlib webchannel widgets xml \
 		buildtools_build qmake_build
+USE_XORG=	xcursor
 SHEBANG_FILES=	info/kde-info2html
 
 # CVE-2018-19120

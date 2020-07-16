@@ -2,16 +2,14 @@
 
 PORTNAME=	xwayland
 DISTVERSIONPREFIX=	xorg-server-
-DISTVERSION=	1.20.0-626
-DISTVERSIONSUFFIX=	-g${GL_COMMIT:C/(.{12}).*/\1/}
-PORTREVISION=	1
+DISTVERSION=	1.20.0-673
+DISTVERSIONSUFFIX=	-gb0413b6e9
 CATEGORIES=	x11-servers
 PKGNAMESUFFIX=	-devel
 
-PATCH_SITES=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/commit/
-PATCHFILES+=	71749de24509.diff:-p1 # https://gitlab.freedesktop.org/xorg/xserver/merge_requests/393
-PATCHFILES+=	1e897704c822.diff:-p1 # https://gitlab.freedesktop.org/xorg/xserver/merge_requests/393
-PATCHFILES+=	83cda3ce3195.diff:-p1 # https://gitlab.freedesktop.org/xorg/xserver/merge_requests/393
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	9e0086f99b39.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
+PATCHFILES+=	30ea6cb622e9.patch:-p1 # https://gitlab.freedesktop.org/xorg/xserver/-/merge_requests/432
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	X11 server as Wayland client (development snapshot)
@@ -31,13 +29,11 @@ RUN_DEPENDS=	xkbcomp:x11/xkbcomp \
 CONFLICTS_INSTALL=	${PORTNAME}
 
 USES=		compiler:c11 gl meson pkgconfig xorg
-USE_GITLAB=	yes
+USE_GITHUB=	yes
 USE_GL=		gbm gl
 USE_XORG=	pixman xau xdmcp xfont2 xkbfile xshmfence xtrans
-GL_SITE=	https://gitlab.freedesktop.org
-GL_ACCOUNT=	xorg
-GL_PROJECT=	xserver
-GL_COMMIT=	5e91587302e85fd6f0e8d5ffbe30182e18c6913f
+GH_ACCOUNT=	freedesktop
+GH_PROJECT=	xorg-xserver
 MESON_ARGS=	-Dxwayland=true \
 		-Dxorg=false \
 		-Dxnest=false \

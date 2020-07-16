@@ -3,7 +3,7 @@
 PORTNAME=	dspdfviewer
 PORTVERSION=	1.15.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	27
+PORTREVISION=	30
 CATEGORIES=	graphics
 
 MAINTAINER=	fox@FreeBSD.org
@@ -47,6 +47,9 @@ CFLAGS+=	-Wno-error=zero-as-null-pointer-constant
 .if ${OPSYS} == FreeBSD && (${OSVERSION} >= 1300014 || (${OSVERSION} >= 1103000 && ${OSVERSION} < 1200000) || ${OSVERSION} >= 1201000)
 CFLAGS+=	-Wno-error=extra-semi-stmt
 .endif
+
+# Prepare for Qt5-5.15
+CFLAGS+=	-Wno-deprecated
 
 CFLAGS+=	-Wno-error=redundant-parens
 

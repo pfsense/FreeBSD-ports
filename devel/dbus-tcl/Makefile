@@ -3,19 +3,20 @@
 
 PORTNAME=	dbus-tcl
 PORTVERSION=	2.1
+PORTREVISION=	2
 CATEGORIES=	devel
-MASTER_SITES=	SF/${PORTNAME}/dbus/${PORTVERSION}/
+MASTER_SITES=	https://chiselapp.com/user/schelte/repository/dbus/uv/
 DISTNAME=	dbus-${PORTVERSION}
 
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	Tcl interface to the D-Bus messaging system
 
-BROKEN=		unfetchable
-
 LICENSE=	ISCL
 
 LIB_DEPENDS=	libdbus-1.so:devel/dbus
 BUILD_DEPENDS=	dtplite:devel/tcllib
+
+USES=		pkgconfig tcl:tea
 
 OPTIONS_DEFINE=	DOCS
 DOCSDIR=	${PREFIX}/share/doc/dbus
@@ -23,14 +24,14 @@ PORTDOCS=	*
 
 TEST_TARGET=	do-test
 
-USES=		pkgconfig tcl:tea
-
 PLIST_FILES=	lib/dbus/libdbus21.so.1 \
 		lib/dbus/pkgIndex.tcl \
 		man/mann/dbus.n.gz
 
 post-patch:
-	${REINPLACE_CMD} -e '/^INSTALL_PROGRAM/s|$$| -s|' \
+	${REINPLACE_CMD} \
+	    -e '/^INSTALL_PROGRAM/s|$$| -s|' \
+	    -e 's|\$$\+|$$>|' \
 	    ${WRKSRC}/Makefile.in
 
 do-test:

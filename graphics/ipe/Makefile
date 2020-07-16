@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ipe
-PORTVERSION=	7.2.13
+PORTVERSION=	7.2.19
 DISTVERSIONSUFFIX=	-src
 CATEGORIES=	graphics
 MASTER_SITES=	https://dl.bintray.com/otfried/generic/ipe/${PORTVERSION:R}/
@@ -13,8 +13,10 @@ COMMENT=	Extensible vector graphics editor with LaTeX support
 LICENSE=	GPLv3+
 
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
-LIB_DEPENDS=	libpng.so:graphics/png \
-		libfreetype.so:print/freetype2
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libfreetype.so:print/freetype2 \
+		libgsl.so:math/gsl \
+		libpng.so:graphics/png
 
 USES=		compiler:c++11-lib gmake gnome jpeg lua:52 pkgconfig qt:5
 USE_GNOME=	cairo

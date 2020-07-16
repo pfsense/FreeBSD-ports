@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	activemodel
-PORTVERSION=	6.0.2.2
+PORTVERSION=	6.0.3.2
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	60
@@ -12,8 +12,6 @@ COMMENT=	Toolkit for building modeling frameworks
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
-
-BROKEN_RUBY24=	yes
 
 RUN_DEPENDS=	rubygem-activesupport60>=${PORTVERSION}:devel/rubygem-activesupport60
 

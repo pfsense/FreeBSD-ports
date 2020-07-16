@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gcc
-PORTVERSION=	9.3.1.s20200328
+PORTVERSION=	9.3.1.s20200626
 CATEGORIES=	lang
 MASTER_SITES=	GCC/snapshots/${DIST_VERSION}
 PKGNAMESUFFIX=	${SUFFIX}-devel
@@ -73,7 +73,8 @@ CONFIGURE_ENV+=	UNAME_m="powerpc64"
 . if defined(PPC_ABI) && ${PPC_ABI} == ELFv2
 CONFIGURE_ARGS+=	--with-abi=elfv2
 . else
-USE_GCC=	8
+MAKE_ARGS+=	CFLAGS_FOR_TARGET="-O0" CXXFLAGS_FOR_TARGET="-O0" BOOT_CFLAGS="-O0"
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-libgcc_config_rs6000_t-crtstuff
 . endif
 .endif
 

@@ -1,9 +1,9 @@
---- src/python/grpcio/grpc_core_dependencies.py.orig	2019-12-18 01:59:05 UTC
+--- src/python/grpcio/grpc_core_dependencies.py.orig	2020-06-22 21:42:27 UTC
 +++ src/python/grpcio/grpc_core_dependencies.py
-@@ -694,56 +694,6 @@ CORE_SOURCE_FILES = [
-     'third_party/boringssl/ssl/tls_method.cc',
-     'third_party/boringssl/ssl/tls_record.cc',
-     'third_party/boringssl/third_party/fiat/curve25519.c',
+@@ -791,56 +791,6 @@ CORE_SOURCE_FILES = [
+     'third_party/boringssl-with-bazel/src/ssl/tls13_server.cc',
+     'third_party/boringssl-with-bazel/src/ssl/tls_method.cc',
+     'third_party/boringssl-with-bazel/src/ssl/tls_record.cc',
 -    'third_party/cares/cares/ares__close_sockets.c',
 -    'third_party/cares/cares/ares__get_hostent.c',
 -    'third_party/cares/cares/ares__read_line.c',

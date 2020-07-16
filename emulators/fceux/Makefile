@@ -3,7 +3,7 @@
 
 PORTNAME=	fceux
 PORTVERSION=	2.2.3
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	emulators
 MASTER_SITES=	SF/fceultra/Source%20Code/${PORTVERSION}%20src/
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
@@ -17,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 RUN_DEPENDS=	zenity:x11/zenity
 
 USES=		compiler:c++0x desktop-file-utils dos2unix localbase:ldflags \
-		pkgconfig scons sdl xorg
+		pkgconfig scons:python2 sdl xorg
 USE_SDL=	sdl
 USE_XORG=	x11
 USE_GNOME+=	gdkpixbuf2

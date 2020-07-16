@@ -34,7 +34,7 @@ BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS?=	libx264.so:multimedia/libx264
 
 X264_BUILD=	159
-X264_REV=	2991
+X264_REV=	2999
 X264_GITVER=	${GL_COMMIT:C/^(.{7}).*/\1/}
 
 USES?=		pkgconfig
@@ -43,7 +43,7 @@ USE_GITLAB=	yes
 USE_LDCONFIG=	yes
 GL_SITE=	https://code.videolan.org
 GL_ACCOUNT=	videolan
-GL_COMMIT=	1771b556ee45207f8711744ccbd5d42a3949b14c
+GL_COMMIT=	296494a4011f58f32adc54304a2654627558c59a
 HAS_CONFIGURE=	yes
 SHEBANG_FILES=	configure
 PLIST_FILES?=	bin/x264
@@ -52,6 +52,10 @@ OPTIONS_DEFINE+=	DEBUG FFMS LAVF PGO SWSCALE
 OPTIONS_RADIO+=		MP4
 OPTIONS_RADIO_MP4+=	GPAC LSMASH
 OPTIONS_DEFAULT+=	FFMS LAVF LSMASH SWSCALE
+
+.if make(makesum) # for optional distfiles
+.MAKEFLAGS:	WITH="${OPTIONS_DEFINE}"
+.endif
 
 FFMS_DESC=		FFmpeg Source input support
 GPAC_DESC=		GPAC library support
@@ -98,12 +102,6 @@ CONFIGURE_ARGS+=	--prefix="${PREFIX}" \
 			--extra-cflags="${CPPFLAGS} ${CFLAGS}" \
 			--extra-ldflags="${LDFLAGS}"
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == powerpc64
-USE_GCC=	yes
-.endif
-
 post-extract-PGO-on:
 	@${BZIP2_CMD} -dc ${DISTDIR}/${DIST_SUBDIR}/${Y4M_VIDEO_DISTFILE} \
 		>${WRKDIR}/${Y4M_VIDEO}
@@ -123,4 +121,4 @@ pre-build:
 	@(${RM} ${WRKSRC}/x264_config.h)
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

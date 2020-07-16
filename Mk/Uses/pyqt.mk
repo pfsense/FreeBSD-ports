@@ -15,6 +15,7 @@
 # USE_PYQT	- List of PyQt components to depend on
 #		* foo_build    only build depend
 #		* foo_run      only run depend
+#		* foo_test     only test depend
 #		* foo          both (default)
 # PYQT_SIPDIR	- where sip files will be installed to
 # PYQT_APIDIR	- where api files will be installed to
@@ -50,7 +51,7 @@ _PYQT_VERSION=	0
 
 PYQT_MAINTAINER=	kde@FreeBSD.org
 
-MASTER_SITE_RIVERBANK=	http://www.riverbankcomputing.com/static/Downloads/%SUBDIR%/
+MASTER_SITE_RIVERBANK=	https://www.riverbankcomputing.com/static/Downloads/%SUBDIR%/
 
 # https://www.riverbankcomputing.com/static/Downloads/sip/4.19.15/sip-4.19.15.tar.gz
 MASTER_SITES_SIP=	RIVERBANK/sip/${PORTVERSION} \
@@ -59,19 +60,19 @@ MASTER_SITES_SIP=	RIVERBANK/sip/${PORTVERSION} \
 MASTER_SITES_PYQT5=	RIVERBANK/PyQt5/${PORTVERSION} \
 			SF/pyqt/PyQt5/PyQt-${PORTVERSION} \
 			GENTOO
-#https://www.riverbankcomputing.com/static/Downloads/QScintilla/QScintilla_gpl-2.11.tar.gz
+#https://www.riverbankcomputing.com/static/Downloads/QScintilla/2.11.4/QScintilla-2.11.4.tar.gz
 MASTER_SITES_QSCI2=	RIVERBANK/QScintilla/${PORTVERSION} \
 			SF/pyqt/QScintilla2/QScintilla-${PORTVERSION} \
 			GENTOO
 
-SIP_VERSION=		4.19.19
-QSCI2_VERSION=		2.11.2
+SIP_VERSION=		4.19.21
+QSCI2_VERSION=		2.11.4
 PYQT5_VERSION=		5.13.1
 
 SIP_DISTNAME=		sip-${SIP_VERSION}
 PYQT5_DISTNAME=		PyQt5_gpl-${PYQT5_VERSION}
 PYQT5_DISTINFO_FILE=	${.CURDIR:H:H}/devel/${PYQT_RELNAME}/distinfo
-QSCI2_DISTNAME=		QScintilla_gpl-${QSCI2_VERSION}
+QSCI2_DISTNAME=		QScintilla-${QSCI2_VERSION}
 PYQT5_LICENSE=		GPLv3
 
 # Keep these synchronized with OPTIONS_DEFINE in devel/py-qt5
@@ -280,15 +281,17 @@ do-configure:
 .endif  # !target(do-configure)
 .endif  # defined(PYQT_DIST)
 
-# Set build and run depends -- we need to prefix them internally with "py-"
+# Set build, run and test depends -- we need to prefix them internally with "py-"
 # else we conflict with the ones defined in bsd.qt.mk with the same name
 _USE_PYQT_ALL+=			${_USE_PYQT${_PYQT_VERSION}_ONLY}
 .for comp in ${_USE_PYQT_ALL:O:u}
-_USE_PYQT_ALL_SUFFIXED+=		py-${comp} py-${comp}_build py-${comp}_run
+_USE_PYQT_ALL_SUFFIXED+=		py-${comp} py-${comp}_build py-${comp}_run py-${comp}_test
 py-${comp}_BUILD_DEPENDS?=		${py-${comp}_PATH}:${py-${comp}_PORT}@${PY_FLAVOR}
 py-${comp}_RUN_DEPENDS?=		${py-${comp}_PATH}:${py-${comp}_PORT}@${PY_FLAVOR}
+py-${comp}_TEST_DEPENDS?=		${py-${comp}_PATH}:${py-${comp}_PORT}@${PY_FLAVOR}
 py-${comp}_build_BUILD_DEPENDS?=	${py-${comp}_BUILD_DEPENDS}
 py-${comp}_run_RUN_DEPENDS?=		${py-${comp}_RUN_DEPENDS}
+py-${comp}_test_TEST_DEPENDS?=		${py-${comp}_TEST_DEPENDS}
 .endfor
 
 _USE_PYQT=      ${USE_PYQT:O:u}
@@ -296,6 +299,7 @@ _USE_PYQT=      ${USE_PYQT:O:u}
 .  if ${_USE_PYQT_ALL_SUFFIXED:Mpy-${comp}}
 BUILD_DEPENDS+=		${py-${comp}_BUILD_DEPENDS}
 RUN_DEPENDS+=		${py-${comp}_RUN_DEPENDS}
+TEST_DEPENDS+=		${py-${comp}_TEST_DEPENDS}
 .  else
 IGNORE?=	cannot be installed: unknown USE_PYQT component ${comp} #'
 .  endif

@@ -1,8 +1,13 @@
 man/man1/desktop-installer.1.gz
 sbin/battery_shutdown.sh
 sbin/desktop-installer
+%%DATADIR%%/20-swcursor.conf
 %%DATADIR%%/90-vboxguest.fdi
+%%DATADIR%%/CDE/xinitrc
+%%DATADIR%%/CINNAMON/xinitrc
+%%DATADIR%%/FLUXBOX/xinitrc
 %%DATADIR%%/GNOME2/xinitrc
+%%DATADIR%%/ICEWM/xinitrc
 %%DATADIR%%/KDE5/xinitrc
 %%DATADIR%%/LUMINA/gtkrc
 %%DATADIR%%/LUMINA/xinitrc
@@ -10,6 +15,8 @@ sbin/desktop-installer
 %%DATADIR%%/LXQT/xinitrc
 %%DATADIR%%/MATE/xinitrc
 %%DATADIR%%/Scripts/battery_shutdown.sh
+%%DATADIR%%/Scripts/desktop-admin
+%%DATADIR%%/WMAKER/xinitrc
 %%DATADIR%%/XDM/GiveConsole
 %%DATADIR%%/XDM/Xsetup_0
 %%DATADIR%%/XDM/Xstartup

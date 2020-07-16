@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	recoll
-DISTVERSION=	1.25.22
-PORTREVISION=	4
+PORTVERSION=	1.27.3
 CATEGORIES=	deskutils
 MASTER_SITES=	https://www.lesbonscomptes.com/recoll/
 
@@ -12,10 +11,6 @@ COMMENT=	Personal full text search package, based on Xapian
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN=		configure: error: --enable-python-chm is set but libchm is not found
-DEPRECATED=	Uses deprecated version of python
-EXPIRATION_DATE=	2020-08-15
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
 LIB_DEPENDS=	libxapian.so:databases/xapian-core
@@ -26,7 +21,7 @@ RUN_DEPENDS=	unrar:archivers/unrar \
 		unrtf:textproc/unrtf
 
 USES=		bison compiler:c++11-lang gmake gnome iconv libtool localbase \
-		python:2.7 shebangfix
+		pkgconfig python:3.5+ shebangfix
 USE_GNOME=	libxslt
 USE_LDCONFIG=	yes
 USE_PYTHON=	py3kplist
@@ -46,27 +41,31 @@ PYDISTUTILS_PKGVERSION=	1.0
 PLIST_SUB=		VERSION="${PORTVERSION}" \
 			PYDISTUTILS_EGGINFO="${PYDISTUTILS_EGGINFO}"
 
-OPTIONS_DEFINE=		ASPELL DJVU LATEX IMAGE PDF PS \
+OPTIONS_DEFINE=		ASPELL CHM DJVU LATEX IMAGE PDF PS \
 			SOUND QT5 X11MON
-OPTIONS_DEFAULT=	ASPELL IMAGE PDF PS SOUND
+OPTIONS_DEFAULT=	ASPELL CHM IMAGE PDF PS QT5 SOUND
 OPTIONS_SUB=		yes
 
 ASPELL_LIB_DEPENDS=	libaspell.so:textproc/aspell
 ASPELL_CONFIGURE_WITH=	aspell
+CHM_DESC=		Python bindings for Microsoft ITSS/CHM format
+CHM_LIB_DEPENDS=	libchm.so:misc/chmlib
+CHM_CONFIGURE_OFF=	--disable-python-chm
 DJVU_RUN_DEPENDS=	djvutxt:graphics/djvulibre
 IMAGE_DESC=		Store personal tags or textual descriptions in images
 IMAGE_RUN_DEPENDS=	exiftool:graphics/p5-Image-ExifTool
 LATEX_USE=		tex=dvipsk:run,latex:run
 PDF_RUN_DEPENDS=	pdftotext:graphics/poppler-utils
 PS_RUN_DEPENDS=		pstotext:print/pstotext
-USE_QT=			core gui network printsupport widgets webkit xml buildtools_build qmake_build
+USE_QT=			core gui printsupport widgets xml \
+			buildtools_build qmake_build
 QT5_USES=		qt:5 gl
 QT5_USE=		GL=gl
 QT5_CONFIGURE_ENABLE=	qtgui
+QT5_CONFIGURE_ON=	--disable-webkit
 QT5_CONFIGURE_ENV=	QMAKE="${QMAKE}" QMAKESPEC="${QMAKESPEC}" \
 			QTDIR="${PREFIX}"
-SOUND_RUN_DEPENDS=	mutagen-pony-${PYTHON_VER}:audio/py-mutagen@${PY_FLAVOR} \
-			pykaraoke:audio/py-karaoke@${PY_FLAVOR}
+SOUND_RUN_DEPENDS=	mutagen-pony-${PYTHON_VER}:audio/py-mutagen@${PY_FLAVOR}
 X11MON_DESC=		X11 session monitoring support
 X11MON_USES=		fam xorg
 X11MON_USE=		xorg=ice,sm,x11

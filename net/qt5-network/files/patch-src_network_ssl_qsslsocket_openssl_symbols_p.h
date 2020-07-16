@@ -1,6 +1,6 @@
 --- src/network/ssl/qsslsocket_openssl_symbols_p.h.orig	2019-10-01 07:47:06 UTC
 +++ src/network/ssl/qsslsocket_openssl_symbols_p.h
-@@ -72,6 +72,12 @@
+@@ -72,6 +72,14 @@
  #include "qsslsocket_openssl_p.h"
  #include <QtCore/qglobal.h>
  
@@ -8,6 +8,8 @@
 +# define TLS1_2_VERSION 0x0303
 +# define TLS_MAX_VERSION TLS1_2_VERSION
 +# define TLS_ANY_VERSION 0x10000
++# define DTLS1_2_VERSION                 0xFEFD
++# define DTLS_MAX_VERSION                DTLS1_2_VERSION
 +#endif
 +
  #if QT_CONFIG(ocsp)

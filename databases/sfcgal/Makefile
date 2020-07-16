@@ -3,8 +3,7 @@
 
 PORTNAME=	sfcgal
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.7
-PORTREVISION=	2
+DISTVERSION=	1.3.8
 CATEGORIES=	databases math graphics
 
 MAINTAINER=	lbartoletti@FreeBSD.org
@@ -13,12 +12,12 @@ COMMENT=	Wrapper library around CGAL for PostGIS
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libCGAL.so:math/cgal \
-		libboost_system.so:devel/boost-libs \
+BUILD_DEPENDS=	cgal>0:math/cgal
+LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libgmp.so:math/gmp \
 		libmpfr.so:math/mpfr
 
-USES=		cmake compiler:c++0x libtool
+USES=		cmake compiler:c++14-lang
 USE_GITHUB=	yes
 GH_ACCOUNT=	Oslandia
 GH_PROJECT=	SFCGAL

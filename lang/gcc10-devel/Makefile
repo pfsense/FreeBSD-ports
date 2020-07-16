@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gcc
-PORTVERSION=	10.0.1.s20200322
+PORTVERSION=	10.1.1.s20200620
 CATEGORIES=	lang
 MASTER_SITES=	GCC/snapshots/${DIST_VERSION}
 PKGNAMESUFFIX=	${SUFFIX}-devel
@@ -28,6 +28,8 @@ BUILD_DEPENDS+=	runtest:misc/dejagnu
 USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:xz
 USE_BINUTILS=	yes
 USE_PERL5=	build
+
+CONFLICTS=	gcc10-10.*
 
 CPE_VENDOR=	gnu
 CPE_VERSION=	${GCC_VERSION}

@@ -3,7 +3,7 @@
 
 PORTNAME=	scribus
 PORTVERSION=	1.5.5
-PORTREVISION=	10
+PORTREVISION=	14
 CATEGORIES=	print editors
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}${PKGNAMESUFFIX}/${PORTVERSION}/ \
 		http://www.scribus.net/downloads/${PORTVERSION}/
@@ -39,7 +39,7 @@ LIB_DEPENDS=	liblcms2.so:graphics/lcms2 \
 		libharfbuzz.so:print/harfbuzz \
 		libicuuc.so:devel/icu
 
-USES=		cmake compiler:c++11-lang desktop-file-utils dos2unix gnome \
+USES=		cmake compiler:gcc-c++11-lib desktop-file-utils dos2unix gnome \
 		jpeg pkgconfig python:2.7 qt:5 shared-mime-info ssl tar:xz
 USE_QT=		buildtools_build core declarative gui linguisttools_build \
 		network opengl printsupport qmake_build widgets xml

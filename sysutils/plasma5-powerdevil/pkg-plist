@@ -4,13 +4,13 @@ lib/libexec/kauth/discretegpuhelper
 lib/libexec/org_kde_powerdevil
 lib/libpowerdevilconfigcommonprivate.so
 lib/libpowerdevilconfigcommonprivate.so.5
-lib/libpowerdevilconfigcommonprivate.so.5.18.4
+lib/libpowerdevilconfigcommonprivate.so.%%KDE_PLASMA_VERSION%%
 lib/libpowerdevilcore.so
 lib/libpowerdevilcore.so.2
 lib/libpowerdevilcore.so.2.0.0
 lib/libpowerdevilui.so
 lib/libpowerdevilui.so.5
-lib/libpowerdevilui.so.5.18.4
+lib/libpowerdevilui.so.%%KDE_PLASMA_VERSION%%
 %%QT_PLUGINDIR%%/kcm_powerdevilactivitiesconfig.so
 %%QT_PLUGINDIR%%/kcm_powerdevilglobalconfig.so
 %%QT_PLUGINDIR%%/kcm_powerdevilprofilesconfig.so
@@ -80,6 +80,7 @@ share/locale/ar/LC_MESSAGES/powerdevilprofilesconfig.mo
 share/locale/as/LC_MESSAGES/powerdevil.mo
 share/locale/ast/LC_MESSAGES/libpowerdevilcommonconfig.mo
 share/locale/ast/LC_MESSAGES/powerdevil.mo
+share/locale/ast/LC_MESSAGES/powerdevilactivitiesconfig.mo
 share/locale/ast/LC_MESSAGES/powerdevilprofilesconfig.mo
 share/locale/be@latin/LC_MESSAGES/powerdevil.mo
 share/locale/bg/LC_MESSAGES/powerdevil.mo

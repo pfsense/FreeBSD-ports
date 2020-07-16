@@ -4,7 +4,7 @@
 PORTNAME=	mixxx
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	2.2.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 
 MAINTAINER=	acm@FreeBSD.org
@@ -33,7 +33,7 @@ LIB_DEPENDS=	libchromaprint.so:audio/chromaprint \
 		libprotobuf.so:devel/protobuf \
 		liblilv-0.so:audio/lilv
 
-USES=		compiler:c++11-lang gl iconv qt:5 pkgconfig scons xorg
+USES=		compiler:c++11-lang gl iconv qt:5 pkgconfig scons:python2 xorg
 USE_XORG=	x11
 USE_GL=		gl glu
 USE_GITHUB=	yes

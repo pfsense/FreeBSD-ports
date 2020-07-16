@@ -3,11 +3,11 @@
 
 PORTNAME=	sword
 PORTVERSION=	1.8.1
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	misc
 MASTER_SITES=	http://crosswire.org/ftpmirror/pub/sword/source/v${PORTVERSION:R}/
 
-MAINTAINER=	salvadore@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Framework for manipulating Bible texts
 
 LICENSE=	GPLv2

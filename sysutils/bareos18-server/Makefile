@@ -1,12 +1,12 @@
 # $FreeBSD$
 
-PORTNAME=	bareos18
+PORTNAME=	bareos
 DISTVERSIONPREFIX=	Release/
-DISTVERSION=	18.2.7
+DISTVERSION=	18.2.8
 PORTREVISION?=	0
 CATEGORIES?=	sysutils
 PKGNAMEPREFIX?=	#
-PKGNAMESUFFIX?=	-server
+PKGNAMESUFFIX?=	18-server
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT?=	Backup archiving recovery open sourced (server)
@@ -22,8 +22,6 @@ LIB_DEPENDS+=	liblzo2.so:archivers/lzo2 \
 USES+=		cmake:insource compiler:c++11-lang pkgconfig readline:port \
 		shebangfix
 USE_GITHUB=	yes
-GH_ACCOUNT=	${PORTNAME:S/18//}
-GH_PROJECT=	${PORTNAME:S/18//}
 
 USERS=		bareos
 GROUPS=		${USERS}
@@ -37,8 +35,6 @@ SHEBANG_FILES=	${WRKSRC}/core/src/cats/make_catalog_backup.pl.in
 CPPFLAGS+=	-I${LOCALBASE}/readline -I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-ETCDIR=		${PREFIX}/etc/${PORTNAME:S/18//}
-
 OPTIONS_DEFAULT=	OPENSSL
 OPTIONS_SINGLE=		CRYPTO
 OPTIONS_SINGLE_CRYPTO=	OPENSSL GNUTLS
@@ -48,7 +44,7 @@ MTX_DESC=		Install mtx for control of autochanger devices
 NDMP_DESC=		Enable build of NDMP support
 SCSICRYPTO_DESC=	Build LTO AME crypto plugin
 
-.if ${PKGNAMESUFFIX} == "-server"
+.if ${PKGNAMESUFFIX} == "18-server"
 OPTIONS_DEFINE=		MTX PYTHON NDMP NLS SCSICRYPTO
 OPTIONS_DEFAULT+=	PGSQL SCSICRYPTO
 OPTIONS_SINGLE_DATABASE=	SQLITE3 MYSQL PGSQL
@@ -69,7 +65,7 @@ OPENSSL_CMAKE_OFF=	-Dopenssl=OFF
 SCSICRYPTO_CMAKE_ON=	-Dscsi-crypto=ON
 SCSICRYPTO_CMAKE_OFF=	-Dscsi-crypto=OFF
 
-.if ${PKGNAMESUFFIX} == "-client" || ${PKGNAMESUFFIX} == "-server"  #Till end of the file
+.if ${PKGNAMESUFFIX} == "18-client" || ${PKGNAMESUFFIX} == "18-server"  #Till end of the file
 PYTHON_USES=		python
 PYTHON_CMAKE_ON=	-Dpython=ON
 PYTHON_CMAKE_OFF=	-Dpython=OFF
@@ -197,7 +193,7 @@ MAKE_ENV+=	MAN8="${MP8}" MAN1="${MP1}"
 
 post-patch:
 	@${REINPLACE_CMD}  '42d' ${WRKSRC}/CMakeLists.txt
-.if ${PKGNAMESUFFIX} == "-server"
+.if ${PKGNAMESUFFIX} == "18-server"
 	@${REINPLACE_CMD}  '25d' ${WRKSRC}/core/src/plugins/CMakeLists.txt
 .endif
 
@@ -227,5 +223,5 @@ post-install:
 .endif
 .else
 .include "${MASTERDIR}/Makefile.common"
-.endif # -client and -server are defined
+.endif # 18-client and 18-server are defined
 .include <bsd.port.mk>

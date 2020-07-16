@@ -4,7 +4,7 @@
 PORTNAME=	mythtv
 DISTVERSIONPREFIX=	v
 DISTVERSION=	30.0
-PORTREVISION?=	4
+PORTREVISION?=	5
 PORTEPOCH=	1
 CATEGORIES=	multimedia
 
@@ -12,7 +12,7 @@ PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 PATCHFILES+=	aab7d3f065a7.patch:-p2
 
 MAINTAINER?=	ports@FreeBSD.org
-COMMENT?=	MythTV is a homebrew PVR project
+COMMENT?=	Homebrew PVR project
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -83,7 +83,7 @@ OPTIONS_EXCLUDE+=	BINDINGS LIRC MYSQL
 .else
 CONFLICTS_INSTALL=	mythtv-frontend
 
-BUILD_DEPENDS+=	v4l_compat>=1.0.20100321:multimedia/v4l_compat
+BUILD_DEPENDS+=	v4l_compat>=1.18.0:multimedia/v4l_compat
 RUN_DEPENDS+=	tv_check:textproc/p5-xmltv \
 		wget:ftp/wget
 USES+=		perl5 python:2.7 shebangfix

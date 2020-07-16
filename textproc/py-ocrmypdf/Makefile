@@ -1,13 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	ocrmypdf
-DISTVERSION=	9.7.0
+DISTVERSION=	9.8.2
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	kai@FreeBSD.org
-COMMENT=	Adds an OCR test layer to scanned PDF files
+COMMENT=	Adds an OCR text layer to scanned PDF files
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -28,11 +28,11 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=1.9.1:devel/py-cffi@${PY_FLAVOR} \
 		tesseract:graphics/tesseract
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=4.4.1:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-helpers-namespace>=2019.1.8:devel/py-pytest-helpers-namespace@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytest-xdist>=1.29.0:devel/py-pytest-xdist@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytest-cov>=2.8.0:devel/py-pytest-cov@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pytest-xdist>=1.31.0:devel/py-pytest-xdist@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}python-xmp-toolkit>=2.0.1:textproc/py-python-xmp-toolkit@${PY_FLAVOR}
 
 USES=		ghostscript:run python:3.6+ shebangfix
+USE_LOCALE=	en_US.UTF-8
 USE_PYTHON=	autoplist concurrent distutils
 
 SHEBANG_FILES=	src/ocrmypdf/__main__.py \
@@ -41,7 +41,6 @@ SHEBANG_FILES=	src/ocrmypdf/__main__.py \
 		src/ocrmypdf/pdfinfo/__init__.py \
 		tests/spoof/gs_feature_elision.py \
 		tests/spoof/gs_pdfa_failure.py \
-		tests/spoof/tesseract_badutf8.py \
 		tests/spoof/tesseract_big_image_error.py \
 		tests/spoof/tesseract_cache.py \
 		tests/spoof/tesseract_noop.py \
@@ -49,8 +48,6 @@ SHEBANG_FILES=	src/ocrmypdf/__main__.py \
 		tests/spoof/gs_render_failure.py \
 		tests/spoof/gs_raster_failure.py \
 		tests/spoof/tesseract_crash.py
-
-USE_LOCALE=	en_US.UTF-8
 
 NO_ARCH=	yes
 

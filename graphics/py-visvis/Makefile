@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	visvis
-PORTVERSION=	1.12.2
+PORTVERSION=	1.12.3
+PORTREVISION=	1
 CATEGORIES=	graphics python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,7 +19,7 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}pyside2>=0:devel/pyside2@${PY_FLAVOR}
 LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
 
-USES=		gl python pyqt:5
+USES=		gl python:3.5+ pyqt:5
 USE_GL=		gl
 USE_PYQT=	core gui
 USE_PYTHON=	autoplist distutils

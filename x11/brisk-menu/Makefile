@@ -3,7 +3,7 @@
 
 PORTNAME=	brisk-menu
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.2
+DISTVERSION=	0.6.0
 PORTREVISION=	1
 CATEGORIES=	x11
 
@@ -17,15 +17,16 @@ LICENSE_FILE_CC-BY-SA-4.0=	${WRKSRC}/LICENSE.CC-BY-SA-4.0
 
 LIB_DEPENDS=	libnotify.so:devel/libnotify
 
-USES=		compiler:c11 gnome mate meson ninja pkgconfig gettext
+USES=		compiler:c11 gettext gnome mate meson ninja pkgconfig xorg
 MESON_ARGS=	--sysconfdir=${PREFIX}/etc
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	GhostBSD
+GH_ACCOUNT=	getsolus
 
 USE_GNOME=	gtk30
 USE_MATE=	menus panel
 GLIB_SCHEMAS=	com.solus-project.brisk-menu.gschema.xml
+USE_XORG=	x11
 
 .if exists(/usr/bin/ld.lld)
 LDFLAGS+=	-fuse-ld=lld

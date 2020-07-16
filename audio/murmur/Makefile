@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	murmur
-PORTVERSION=	1.3.0
-PORTREVISION=	3
+PORTVERSION=	1.3.1
 CATEGORIES=	audio net
 
 MAINTAINER=	feld@FreeBSD.org
-COMMENT=	Murmur is the server component of Mumble
+COMMENT=	Server component of Mumble
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

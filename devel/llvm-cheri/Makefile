@@ -73,7 +73,7 @@ OPTIONS_SUB=	yes
 CLANG_DESC=	Build clang
 CLANG_PORTDOCS=		clang
 CLANG_USE=		GNOME=libxml2
-DOCS_BUILD_DEPENDS=	sphinx-build-${PYTHON_VER}:textproc/py-sphinx@${PY_FLAVOR} \
+DOCS_BUILD_DEPENDS=	${PY_SPHINX} \
 			${PYTHON_PKGNAMEPREFIX}recommonmark>=0.0.20180530:textproc/py-recommonmark@${PY_FLAVOR}
 DOCS_CMAKE_ON=		-DLLVM_ENABLE_SPHINX=ON \
 			-DSPHINX_EXECUTABLE=${LOCALBASE}/bin/sphinx-build-${PYTHON_VER} \
@@ -85,8 +85,7 @@ LIT_DESC=		Install lit and FileCheck test tools
 LLD_DESC=		Install lld linker
 LLD_PORTDOCS=		lld
 LLDB_DESC=		Install lldb, the LLVM debugger (ignore on 9.x)
-LLDB_BUILD_DEPENDS=	swig3.0:devel/swig30
-LLDB_BINARY_ALIAS=	swig=swig3.0
+LLDB_BUILD_DEPENDS=	swig:devel/swig
 
 PLIST_SUB+=	COMMAND_SUFFIX=${COMMAND_SUFFIX} \
 		LLVM_MAJOR=${LLVM_MAJOR} \
@@ -265,6 +264,10 @@ post-patch:
 	    -e 's|from lit|from lit${LLVM_SUFFIX}|' \
 	    -e 's|lit\.|lit${LLVM_SUFFIX}.|' \
 	    ${WRKSRC}/llvm/utils/lit/lit.py ${WRKSRC}/llvm/utils/lit/lit/*.py
+
+post-patch-LLD-on:
+		${REINPLACE_CMD} -e "s|'indexsidebar.html'|['indexsidebar.html']|" \
+			${PATCH_WRKSRC}/lld/docs/conf.py
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/toolchains/

@@ -2,7 +2,7 @@
 #   $MCom: ports/finance/gnucash/Makefile,v 1.26 2008/12/31 03:25:18 mezz Exp $
 
 PORTNAME=	gnucash
-PORTVERSION=	3.9
+PORTVERSION=	3.11
 CATEGORIES=	finance gnome
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20%28stable%29/${PORTVERSION}
 
@@ -69,7 +69,7 @@ OFX_DESC=	OFX support
 OPTIONS_SUB=		yes
 AQBANKING_CMAKE_BOOL=	WITH_AQBANKING
 AQBANKING_LIB_DEPENDS=	libgwenhywfar.so:devel/gwenhywfar \
-			libgwenhywfar.so:devel/gwenhywfar \
+			libgwengui-gtk3.so:devel/gwenhywfar-gtk3 \
 			libktoblzcheck.so:finance/ktoblzcheck \
 			libaqbanking.so:finance/aqbanking
 AQBANKING_VARS=		GLIB_SCHEMAS+=org.gnucash.dialogs.import.hbci.gschema.xml

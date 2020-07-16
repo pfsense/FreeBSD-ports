@@ -28,7 +28,6 @@
     SUBDIR += aircraft-datcom
     SUBDIR += antioch
     SUBDIR += apbs
-    SUBDIR += atom
     SUBDIR += atompaw
     SUBDIR += avogadro2
     SUBDIR += avogadrolibs
@@ -73,11 +72,12 @@
     SUBDIR += elmerfem
     SUBDIR += epte
     SUBDIR += erd
+    SUBDIR += ergo
     SUBDIR += erkale
     SUBDIR += erkale-pseudopotentials
-    SUBDIR += esys-particle
     SUBDIR += fastcap
     SUBDIR += fasthenry
+    SUBDIR += fastjet
     SUBDIR += fisicalab
     SUBDIR += fleur
     SUBDIR += fsom
@@ -104,6 +104,7 @@
     SUBDIR += hdf5
     SUBDIR += hdf5-18
     SUBDIR += healpix
+    SUBDIR += hepmc3
     SUBDIR += highfive
     SUBDIR += hypre
     SUBDIR += iboview
@@ -163,7 +164,6 @@
     SUBDIR += msms
     SUBDIR += multiwfn
     SUBDIR += namd
-    SUBDIR += ncnn
     SUBDIR += nest
     SUBDIR += netcdf
     SUBDIR += netcdf-cxx
@@ -175,7 +175,6 @@
     SUBDIR += openbabel
     SUBDIR += openkim
     SUBDIR += openkim-models
-    SUBDIR += openmx
     SUBDIR += opensim-core
     SUBDIR += opensph
     SUBDIR += opsin
@@ -205,7 +204,6 @@
     SUBDIR += p5-Geo-BUFR
     SUBDIR += p5-Geo-Coordinates-Converter
     SUBDIR += p5-Geo-Coordinates-Converter-iArea
-    SUBDIR += p5-Geo-ReadGRIB
     SUBDIR += p5-Geo-WebService-Elevation-USGS
     SUBDIR += p5-Mcstas-Tools
     SUBDIR += p5-PerlMol
@@ -215,6 +213,7 @@
     SUBDIR += paje
     SUBDIR += paraview
     SUBDIR += pcmsolver
+    SUBDIR += plumed
     SUBDIR += pnetcdf
     SUBDIR += pulseview
     SUBDIR += py-DendroPy
@@ -244,12 +243,16 @@
     SUBDIR += py-gsd
     SUBDIR += py-h5json
     SUBDIR += py-h5py
+    SUBDIR += py-kim-query
     SUBDIR += py-kinematics
+    SUBDIR += py-kliff
+    SUBDIR += py-liac-arff
     SUBDIR += py-lifelines
     SUBDIR += py-mdp
     SUBDIR += py-mlpy
     SUBDIR += py-mmtf-python
     SUBDIR += py-molmod
+    SUBDIR += py-moltemplate
     SUBDIR += py-netCDF4
     SUBDIR += py-obspy
     SUBDIR += py-oddt
@@ -264,6 +267,7 @@
     SUBDIR += py-pydicom
     SUBDIR += py-pygeodesy
     SUBDIR += py-pygeometa
+    SUBDIR += py-pygmo2
     SUBDIR += py-pymatgen
     SUBDIR += py-pymol
     SUBDIR += py-pyosf
@@ -278,13 +282,13 @@
     SUBDIR += py-ruffus
     SUBDIR += py-scikit-fuzzy
     SUBDIR += py-scikit-learn
+    SUBDIR += py-scikit-optimize
     SUBDIR += py-scikit-sparse
     SUBDIR += py-scimath
     SUBDIR += py-scipy
     SUBDIR += py-scoria
     SUBDIR += py-spglib
     SUBDIR += py-tensorflow
-    SUBDIR += py-tensorflow-estimator
     SUBDIR += py-veusz
     SUBDIR += py-ws2300
     SUBDIR += pybrain
@@ -332,12 +336,14 @@
     SUBDIR += vipster
     SUBDIR += vmd
     SUBDIR += voro++
+    SUBDIR += votca
     SUBDIR += wannier90
     SUBDIR += wwplot
     SUBDIR += wxmacmolplt
     SUBDIR += xcrysden
     SUBDIR += xdrawchem
     SUBDIR += xfce4-equake-plugin
+    SUBDIR += xtb
     SUBDIR += yoda
 
 .include <bsd.port.subdir.mk>

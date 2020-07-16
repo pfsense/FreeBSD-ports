@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	waifu2x-ncnn-vulkan
-DISTVERSION=	20200224
+DISTVERSION=	20200606
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -11,15 +12,17 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	glslangValidator:devel/glslang \
-		${LOCALBASE}/include/vulkan/vulkan.h:devel/vulkan-headers \
-		${LOCALBASE}/lib/libvulkan.so:graphics/vulkan-loader \
-		${LOCALBASE}/lib/libncnn.a:science/ncnn
+		vulkan-headers>0:devel/vulkan-headers \
+		${LOCALBASE}/lib/libncnn.a:misc/ncnn
+LIB_DEPENDS=	libwebp.so:graphics/webp \
+		libvulkan.so:graphics/vulkan-loader
 
-USES=		cmake compiler:${OPENMP}c++11-lib
+USES=		cmake compiler:${OPENMP}c++11-lib localbase:ldflags
 USE_GITHUB=	yes
 GH_ACCOUNT=	nihui
 CMAKE_SOURCE_PATH=	${WRKSRC}/src
-LDFLAGS+=	-lpthread # XXX Convert ncnn to shared library
+CFLAGS+=	-isystem${LOCALBASE}/include/ncnn
+LDFLAGS+=	-lglslang -lHLSL -lOSDependent -lOGLCompiler -lSPIRV -lpthread # from ncnn
 PLIST_FILES=	bin/${PORTNAME}
 PORTDATA=	*
 
@@ -29,10 +32,14 @@ OPENMP=		gcc-
 .endif
 
 pre-configure:
-	@if ${GREP} -q 'NCNN_VULKAN.*0' ${LOCALBASE}/include/ncnn/platform.h; then \
-		${ECHO_MSG} "${PKGNAME}: Needs ncnn built with VULKAN enabled."; \
+	@if ${GREP} -q 'NCNN_VULKAN 0' ${LOCALBASE}/include/ncnn/platform.h; then \
+		${ECHO_MSG} "${PKGBASE} requires ncnn built with VULKAN option enabled."; \
 		return 1; \
 	fi
+
+post-extract:
+	@${ECHO_CMD} >${WRKSRC}/src/libwebp/CMakeLists.txt
+	@${ECHO_CMD} >${WRKSRC}/src/ncnn/CMakeLists.txt
 
 post-patch:
 	@${REINPLACE_CMD} -e '/PATHSTR/s,models-,${DATADIR}/&,' \

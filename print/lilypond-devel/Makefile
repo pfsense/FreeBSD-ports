@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lilypond
-DISTVERSION=	2.19.83
-PORTREVISION=	1
+DISTVERSION=	2.21.2
 CATEGORIES=	print audio
 MASTER_SITES=	http://lilypond.org/download/source/v${DISTVERSION:R}/
 PKGNAMESUFFIX=	-devel
@@ -13,66 +12,65 @@ COMMENT=	GNU music typesetter
 
 LICENSE=	GPLv3
 
-DEPRECATED=	Uses deprecated version of python
-EXPIRATION_DATE=	2020-09-15
-
-BUILD_DEPENDS=	pdftexi2dvi:print/texinfo \
-		t1ascii:print/t1utils \
-		bash:shells/bash \
+BUILD_DEPENDS=	bash:shells/bash \
 		convert:graphics/ImageMagick6 \
 		dblatex:textproc/dblatex \
 		fontforge:print/fontforge \
 		help2man:misc/help2man \
+		pdftexi2dvi:print/texinfo \
 		pngtopnm:graphics/netpbm \
 		rsync:net/rsync \
+		t1ascii:print/t1utils \
 		texi2html:textproc/texi2html \
 		zip:archivers/zip
-RUN_DEPENDS=	mftrace:print/mftrace \
-		${LOCALBASE}/share/fonts/dejavu/DejaVuSans-Bold.ttf:x11-fonts/dejavu
-LIB_DEPENDS=	libltdl.so:devel/libltdl \
-		libguile.so:lang/guile \
-		libgmp.so:math/gmp \
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
-		libfontconfig.so:x11-fonts/fontconfig
+		libgmp.so:math/gmp \
+		libguile.so:lang/guile1 \
+		libltdl.so:devel/libltdl
+RUN_DEPENDS=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans-Bold.ttf:x11-fonts/dejavu \
+		mftrace:print/mftrace
 
-INFO=		internals \
-		lilypond-changes \
-		lilypond-contributor \
-		lilypond-essay \
-		lilypond-extending \
-		lilypond-internals \
-		lilypond-learning \
-		lilypond-notation \
-		lilypond-snippets \
-		lilypond-usage \
-		lilypond-web \
-		music-glossary
-
-USES=		bison:build compiler:gcc-c++11-lib gettext ghostscript gmake \
-		gnome perl5 pkgconfig python:2.7
+USES=		bison:build compiler:c++11-lib ghostscript gmake gnome \
+		perl5 pkgconfig python:3.5+
 USE_CXXSTD=	c++11
-USE_TEX=	latex texmf
-USE_PERL5=	build
 USE_GNOME=	pango
+USE_PERL5=	build
+USE_TEX=	latex texmf
+
+GNU_CONFIGURE=		yes
+CONFIGURE_ARGS+=	--with-texgyre-dir=${LOCALBASE}/${TEXMFDISTDIR}/fonts/opentype/public/tex-gyre \
+			--without-urwotf-dir
+CONFIGURE_ENV+=		ac_cv_prog_MAKEINFO="${LOCALBASE}/bin/makeinfo" \
+			FLEX=${FLEX} \
+			HOME=${WRKDIR} \
+			YACC=${YACC}
 
 MAKEFILE=	GNUmakefile
-
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=--with-texgyre-dir=${LOCALBASE}/${TEXMFDISTDIR}/fonts/opentype/public/tex-gyre \
-		--with-python-include=${PYTHON_INCLUDEDIR} --without-urwotf-dir
-CONFIGURE_ENV+=	ac_cv_prog_MAKEINFO="${LOCALBASE}/bin/makeinfo" \
-		FLEX=${FLEX} YACC=${YACC} HOME=${WRKDIR}
-
 ALL_TARGET=	all
 
+BINARY_ALIAS=	python=${PYTHON_VERSION}
+
+INFO=		internals \
+				lilypond-changes \
+				lilypond-contributor \
+				lilypond-essay \
+				lilypond-extending \
+				lilypond-internals \
+				lilypond-learning \
+				lilypond-notation \
+				lilypond-snippets \
+				lilypond-usage \
+				lilypond-web \
+				music-glossary
 PLIST_SUB=	DISTVERSION=${DISTVERSION}
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes
 
+NLS_USES=	gettext
+
 post-patch:
-	@${FIND} ${WRKSRC} -name "*.cc" | ${XARGS} \
-	    ${REINPLACE_CMD} -e 's|isinf[ ]*(|::isinf(|g' -e 's|isnan|::isnan|g'
 	@${REINPLACE_CMD} -e 's|<FlexLexer.h>|"/usr/include/FlexLexer.h"|' \
 	    ${WRKSRC}/lily/include/includable-lexer.hh
 		${SED} -e 's|%%FONTDIR%%|${WRKDIR}/fontconfig/cache/|'  \

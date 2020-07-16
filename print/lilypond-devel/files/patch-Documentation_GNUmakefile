@@ -1,4 +1,4 @@
---- Documentation/GNUmakefile.orig	2017-02-26 12:08:59 UTC
+--- Documentation/GNUmakefile.orig	2020-04-09 12:55:56 UTC
 +++ Documentation/GNUmakefile
 @@ -73,9 +73,9 @@ source-links = $(outdir)/source\
  MAIN_INFO_DOC = lilypond-web

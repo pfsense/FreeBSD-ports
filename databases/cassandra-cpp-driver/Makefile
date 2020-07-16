@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	cassandra-cpp-driver
-PORTVERSION=	2.15.0
+PORTVERSION=	2.15.1
 PORTREVISION=	0
 CATEGORIES=	databases
 
@@ -32,7 +32,6 @@ PLIST_FILES=	include/cassandra.h \
 		libdata/pkgconfig/cassandra_static.pc
 
 post-patch:
-	@${REINPLACE_CMD} -e 's/ -Werror//' \
-		${WRKSRC}/cmake/modules/CppDriver.cmake
+	${REINPLACE_CMD} -e 's|-Werror||' ${WRKSRC}/src/CMakeLists.txt
 
 .include <bsd.port.mk>

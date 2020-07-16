@@ -3,7 +3,7 @@
 
 PORTNAME=	quisk
 DISTVERSION=	4.1.40
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	comms hamradio
 MASTER_SITES=	CHEESESHOP
 
@@ -11,6 +11,9 @@ MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Software Defined Radio (SDR)
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 BROKEN_i386=	strip: elf_update() failed: Invalid data buffer descriptor (bug#238131)
 

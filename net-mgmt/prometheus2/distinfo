@@ -1,5 +1,5 @@
-TIMESTAMP = 1585252190
-SHA256 (prometheus-prometheus-v2.17.1_GH0.tar.gz) = d0b53411ea0295c608634ca7ef1d43fa0f5559e7ad50705bf4d64d052e33ddaf
-SIZE (prometheus-prometheus-v2.17.1_GH0.tar.gz) = 12822668
-SHA256 (ports-assets-net-mgmt_prometheus2-v2.17.1_GH0.tar.gz) = c1a20cf912f6a5cdcf240bde19a05a7f6f2d5959dfff65a0564648568d3c58e2
-SIZE (ports-assets-net-mgmt_prometheus2-v2.17.1_GH0.tar.gz) = 5068129
+TIMESTAMP = 1594572798
+SHA256 (prometheus-prometheus-v2.19.2_GH0.tar.gz) = d4e84cae2fed6761bb8a80fcc69b6e0e9f274d19dffc0f38fb5845f11da1bbc3
+SIZE (prometheus-prometheus-v2.19.2_GH0.tar.gz) = 13338606
+SHA256 (ports-assets-net-mgmt_prometheus2-v2.19.2_GH0.tar.gz) = c95b017152c74d489b608a4689493ebd66b18ad3d1c5451310c2773c18a3bc10
+SIZE (ports-assets-net-mgmt_prometheus2-v2.19.2_GH0.tar.gz) = 5034529

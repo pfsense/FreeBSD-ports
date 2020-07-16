@@ -5,15 +5,13 @@ PORTNAME=	aquaextremesunken
 PORTVERSION=	1.0
 PORTREVISION=	8
 CATEGORIES=	x11-themes gnome
-MASTER_SITES=	http://www.users.monornet.hu/linux/gtk2/oldies/
+MASTER_SITES=	http://freebsd.nsu.ru/distfiles/ LOCAL/danfe
 PKGNAMEPREFIX?=	${TYPE}-
 PKGNAMESUFFIX=	-theme
 DISTNAME=	AquaExtremeSunken
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Port of AquaExtreme Sunken theme
-
-BROKEN=		unfetchable
 
 NO_BUILD=	yes
 

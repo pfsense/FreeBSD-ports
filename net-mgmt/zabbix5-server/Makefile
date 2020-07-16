@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	zabbix5
-PORTVERSION=	5.0.1
+PORTVERSION=	5.0.2
+PORTREVISION?=	0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://cdn.zabbix.com/zabbix/sources/stable/${PORTVERSION:R}/
 PKGNAMESUFFIX?=	-server
@@ -16,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
-CONFLICTS=	zabbix[0-9][0-9]${PKGNAMESUFFIX} zabbix[0-46-9]${PKGNAMESUFFIX}
+CONFLICTS_INSTALL=	zabbix[0-9][0-9]${PKGNAMESUFFIX} zabbix[0-46-9]${PKGNAMESUFFIX}
 
 ZABBIX_BUILD=	${PKGNAMESUFFIX:S/^-//}
 

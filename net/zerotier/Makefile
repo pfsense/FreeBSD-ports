@@ -5,6 +5,9 @@ PORTNAME=	zerotier
 DISTVERSION=	1.4.6
 CATEGORIES=	net
 
+PATCH_SITES=	https://github.com/zerotier/zerotierone/pull/
+PATCHFILES=	1043.patch:-p1
+
 MAINTAINER=	dch@FreeBSD.org
 COMMENT=	Network virtualization everywhere
 
@@ -14,6 +17,8 @@ LICENSE_NAME_BUSINESS=	Business Source License
 LICENSE_FILE_BUSINESS=	${WRKSRC}/LICENSE.txt
 LICENSE_FILE_MIT=	${WRKSRC}/ext/json/LICENSE.MIT
 LICENSE_PERMS_BUSINESS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+BUILD_DEPENDS=	as:devel/binutils
 
 USES=		gmake compiler:c++14-lang
 USE_RC_SUBR=	zerotier

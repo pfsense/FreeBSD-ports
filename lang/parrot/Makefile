@@ -3,13 +3,13 @@
 
 PORTNAME=	parrot
 PORTVERSION=	8.1.0
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	lang
 MASTER_SITES=	ftp://ftp.parrot.org/pub/parrot/releases/supported/${PORTVERSION}/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Parrot - virtual machine for dynamic languages
+COMMENT=	Virtual machine for dynamic languages
 
 LICENSE=	ART20
 

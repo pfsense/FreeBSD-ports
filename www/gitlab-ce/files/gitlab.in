@@ -47,8 +47,20 @@ restart_cmd="restart_gitlab"
 load_rc_config $name
 
 ### Environment variables
-RAILS_ENV="production"
-EXPERIMENTAL_PUMA=""
+RAILS_ENV=${RAILS_ENV:-'production'}
+SIDEKIQ_WORKERS=${SIDEKIQ_WORKERS:-1}
+USE_WEB_SERVER=${USE_WEB_SERVER:-'unicorn'}
+
+case "${USE_WEB_SERVER}" in
+  puma|unicorn)
+    use_web_server="$USE_WEB_SERVER"
+    ;;
+  *)
+    echo "Unsupported web server '${USE_WEB_SERVER}' (Allowed: 'puma', 'unicorn')" 1>&2
+    exit 1
+    ;;
+esac
+
 
 # Script variable names should be lower-case not to conflict with
 # internal /bin/sh variables such as PATH, EDITOR or SHELL.
@@ -57,8 +69,7 @@ app_root="%%PREFIX%%/www/gitlab-ce"
 pid_path="$app_root/tmp/pids"
 socket_path="$app_root/tmp/sockets"
 rails_socket="$socket_path/gitlab.socket"
-web_server_pid_path="$pid_path/unicorn.pid"
-sidekiq_pid_path="$pid_path/sidekiq.pid"
+web_server_pid_path="$pid_path/$use_web_server.pid"
 if checkyesno gitlab_mail_room_enable; then
 	mail_room_enabled=true
 else
@@ -151,13 +162,11 @@ if ! cd "$app_root" ; then
  echo "Failed to cd into $app_root, exiting!";  exit 1
 fi
 
-# Select the web server to use
-if [ -z "$EXPERIMENTAL_PUMA" ]; then
-  use_web_server="unicorn"
+if [ -z "$SIDEKIQ_WORKERS" ]; then
+  sidekiq_pid_path="$pid_path/sidekiq.pid"
 else
-  use_web_server="puma"
+  sidekiq_pid_path="$pid_path/sidekiq-cluster.pid"
 fi
-
 
 ### Init Script functions
 
@@ -379,7 +388,7 @@ start_gitlab() {
   if [ "$sidekiq_status" = "0" ]; then
     echo "The Sidekiq job dispatcher is already running with pid $spid, not restarting"
   else
-    RAILS_ENV=$RAILS_ENV bin/background_jobs start &
+    RAILS_ENV=$RAILS_ENV SIDEKIQ_WORKERS=$SIDEKIQ_WORKERS bin/background_jobs start &
   fi
 
   if [ "$gitlab_workhorse_status" = "0" ]; then
@@ -438,7 +447,7 @@ stop_gitlab() {
   fi
   if [ "$sidekiq_status" = "0" ]; then
     echo "Shutting down GitLab Sidekiq"
-    RAILS_ENV=$RAILS_ENV bin/background_jobs stop
+    RAILS_ENV=$RAILS_ENV SIDEKIQ_WORKERS=$SIDEKIQ_WORKERS bin/background_jobs stop
   fi
   if [ "$gitlab_workhorse_status" = "0" ]; then
     echo "Shutting down GitLab Workhorse"
@@ -542,7 +551,7 @@ reload_gitlab(){
   echo "Done."
 
   echo "Restarting GitLab Sidekiq since it isn't capable of reloading its config..."
-  RAILS_ENV=$RAILS_ENV bin/background_jobs restart
+  RAILS_ENV=$RAILS_ENV SIDEKIQ_WORKERS=$SIDEKIQ_WORKERS bin/background_jobs restart
 
   if [ "$mail_room_enabled" != true ]; then
     echo "Restarting GitLab MailRoom since it isn't capable of reloading its config..."

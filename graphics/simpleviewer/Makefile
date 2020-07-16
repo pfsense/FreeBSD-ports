@@ -3,7 +3,7 @@
 
 PORTNAME=	simpleviewer
 PORTVERSION=	3.1.7
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	https://bitbucket.org/andreyu/simple-viewer-gl/get/
 DISTNAME=	v${PORTVERSION}	# version tag, has no embedded ${PORTNAME}
@@ -16,6 +16,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libglfw.so:graphics/glfw \
+		liblz4.so:archivers/liblz4 \
 		libpng.so:graphics/png
 
 USES=		cmake:insource compiler:c++11-lang gl jpeg pkgconfig \
@@ -66,6 +67,8 @@ WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
 WEBP_CMAKE_OFF=		-DDISABLE_WEBP_SUPPORT:STRING=1
 
 post-patch:
+	@${REINPLACE_CMD} -e '/#include/s,lz4/,,' \
+		${WRKSRC}/src/formats/formatage.cpp
 	@${REINPLACE_CMD} -e 's,%%DATADIR%%,${DATADIR},' \
 		${WRKSRC}/src/main.cpp
 
@@ -83,3 +86,5 @@ do-install-EXAMPLES-on:
 	${INSTALL_DATA} ${WRKSRC}/config.example ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>
+
+JPEG2000_DESC+=	via OpenJPEG

@@ -1,3 +1,5 @@
-TIMESTAMP = 1583311829
-SHA256 (dmlc-xgboost-v1.0.2_GH0.tar.gz) = f0ff412996cc82d6be2006aaa90c6c24e5aed8ebe52b896dfa8d97e9fc2af4ed
-SIZE (dmlc-xgboost-v1.0.2_GH0.tar.gz) = 1171236
+TIMESTAMP = 1591680370
+SHA256 (dmlc-xgboost-v1.1.1_GH0.tar.gz) = b93b27727431410d2b9bfa7242d7757f2c3f7892ddf636c934d261660f6be644
+SIZE (dmlc-xgboost-v1.1.1_GH0.tar.gz) = 1255606
+SHA256 (dmlc-rabit-4fb34a008db6437c84d1877635064e09a55c8553_GH0.tar.gz) = 7d9a18b1613dfd3a5244524ecdb164d6b2a1f150d297cc7b8527e221aabb6eb7
+SIZE (dmlc-rabit-4fb34a008db6437c84d1877635064e09a55c8553_GH0.tar.gz) = 93236

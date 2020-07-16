@@ -31,6 +31,7 @@
     SUBDIR += dynamips-community
     SUBDIR += e-uae
     SUBDIR += edumips64
+    SUBDIR += elliott-803
     SUBDIR += emu64
     SUBDIR += emulationstation
     SUBDIR += fceux
@@ -61,6 +62,7 @@
     SUBDIR += klh10
     SUBDIR += lib765
     SUBDIR += libdsk
+    SUBDIR += libretro-ppsspp
     SUBDIR += libspectrum
     SUBDIR += linux-c7
     SUBDIR += linux-power9-functional-sim
@@ -95,6 +97,7 @@
     SUBDIR += ods2reader
     SUBDIR += open-vm-tools
     SUBDIR += open-vm-tools-nox11
+    SUBDIR += openmsx
     SUBDIR += p5-Acme-6502
     SUBDIR += parallels-tools
     SUBDIR += pcem
@@ -113,7 +116,6 @@
     SUBDIR += qemu-user-static
     SUBDIR += qemu-user-static-devel
     SUBDIR += qemu-utils
-    SUBDIR += qemu30
     SUBDIR += qemu31
     SUBDIR += qemu40
     SUBDIR += qmc2
@@ -124,6 +126,9 @@
     SUBDIR += rtc
     SUBDIR += rubygem-fission
     SUBDIR += simh
+    SUBDIR += simh-hp2100
+    SUBDIR += simh-hp3000
+    SUBDIR += simh-hpdoc
     SUBDIR += skyeye
     SUBDIR += snes9x-gtk
     SUBDIR += spim

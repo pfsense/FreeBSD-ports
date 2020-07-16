@@ -5,15 +5,13 @@ PORTNAME=	digital-cream
 PORTVERSION=	1.0
 PORTREVISION=	8
 CATEGORIES=	x11-themes gnome
-MASTER_SITES=	http://www.users.monornet.hu/linux/gtk2/oldies/
+MASTER_SITES=	http://freebsd.nsu.ru/distfiles/ LOCAL/danfe
 PKGNAMEPREFIX=	${TYPE}-
 PKGNAMESUFFIX=	-theme
 DISTNAME=	Digital-Cream
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Neat and clean theme for GNOME desktop
-
-BROKEN=		unfetchable
 
 USES=		tar:bzip2
 NO_BUILD=	yes

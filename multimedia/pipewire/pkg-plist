@@ -1,7 +1,8 @@
 bin/pipewire
-bin/pipewire-media-session
 bin/pw-cli
 bin/pw-dot
+bin/pw-metadata
+bin/pw-mididump
 bin/pw-mon
 bin/pw-profiler
 bin/spa-inspect
@@ -22,6 +23,7 @@ include/pipewire-0.3/pipewire/extensions/protocol-native.h
 include/pipewire-0.3/pipewire/extensions/session-manager.h
 include/pipewire-0.3/pipewire/extensions/session-manager/impl-interfaces.h
 include/pipewire-0.3/pipewire/extensions/session-manager/interfaces.h
+%%VULKAN%%include/pipewire-0.3/pipewire/extensions/session-manager/introspect-funcs.h
 include/pipewire-0.3/pipewire/extensions/session-manager/introspect.h
 include/pipewire-0.3/pipewire/extensions/session-manager/keys.h
 include/pipewire-0.3/pipewire/factory.h
@@ -126,16 +128,17 @@ include/spa-0.2/spa/utils/result.h
 include/spa-0.2/spa/utils/ringbuffer.h
 include/spa-0.2/spa/utils/type-info.h
 include/spa-0.2/spa/utils/type.h
-lib/alsa-lib/libasound_module_pcm_pipewire.so
+%%GSTREAMER%%lib/gstreamer-1.0/libgstpipewire.so
 lib/libpipewire-0.3.so
 lib/libpipewire-0.3.so.0
-lib/libpipewire-0.3.so.0.301.0
+lib/libpipewire-0.3.so.0.306.0
 lib/pipewire-0.3/libpipewire-module-access.so
 lib/pipewire-0.3/libpipewire-module-adapter.so
 lib/pipewire-0.3/libpipewire-module-client-device.so
 lib/pipewire-0.3/libpipewire-module-client-node.so
 lib/pipewire-0.3/libpipewire-module-link-factory.so
 lib/pipewire-0.3/libpipewire-module-metadata.so
+lib/pipewire-0.3/libpipewire-module-portal.so
 lib/pipewire-0.3/libpipewire-module-profiler.so
 lib/pipewire-0.3/libpipewire-module-protocol-native.so
 lib/pipewire-0.3/libpipewire-module-rtkit.so
@@ -144,7 +147,6 @@ lib/pipewire-0.3/libpipewire-module-spa-device-factory.so
 lib/pipewire-0.3/libpipewire-module-spa-device.so
 lib/pipewire-0.3/libpipewire-module-spa-node-factory.so
 lib/pipewire-0.3/libpipewire-module-spa-node.so
-lib/spa-0.2/alsa/libspa-alsa.so
 lib/spa-0.2/audioconvert/libspa-audioconvert.so
 lib/spa-0.2/audiomixer/libspa-audiomixer.so
 lib/spa-0.2/control/libspa-control.so
@@ -152,5 +154,6 @@ lib/spa-0.2/support/libspa-dbus.so
 lib/spa-0.2/support/libspa-support.so
 lib/spa-0.2/v4l2/libspa-v4l2.so
 lib/spa-0.2/videoconvert/libspa-videoconvert.so
+%%VULKAN%%lib/spa-0.2/vulkan/libspa-vulkan.so
 libdata/pkgconfig/libpipewire-0.3.pc
 libdata/pkgconfig/libspa-0.2.pc

@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	geoipupdate
-PORTVERSION=	4.2.2
+PORTVERSION=	4.3.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	net geography
 
 MAINTAINER=	adamw@FreeBSD.org
@@ -22,10 +23,10 @@ GH_ACCOUNT=	maxmind
 
 MAKE_ENV+=	GOPATH=${WRKSRC} \
 		CONFFILE=${PREFIX}/etc/GeoIP.conf \
-		DATADIR=${PREFIX}/share/GeoIP
+		DATADIR=${PREFIX}/share/GeoIP \
+		VERSION=${DISTVERSIONFULL}
 
-GH_SUBDIR=	src/github.com/${GH_ACCOUNT_DEFAULT}/${PORTNAME}/v4
-# Not needed: go-spew, pretty, testify
+GH_SUBDIR=	src/github.com/maxmind/geoipupdate/v4
 GH_TUPLE=	gofrs:flock:v0.7.1:flock/src/github.com/gofrs/flock \
 		pkg:errors:v0.9.1:pkg/src/github.com/pkg/errors \
 		spf13:pflag:v1.0.5:pflag/src/github.com/spf13/pflag
@@ -47,6 +48,7 @@ post-extract:
 	${RM} ${WRKSRC}/go.mod
 
 do-build-MANPAGES-on:
+	# lowdown generates everything as section 7
 	{ ${PRINTF} "title: geoipupdate\n\n" && ${CAT} ${WRKSRC}/doc/geoipupdate.md; } \
 		| ${LOCALBASE}/bin/lowdown -s -Tman \
 		| ${SED} -e '1s/7/1/' > ${WRKSRC}/build/geoipupdate.1

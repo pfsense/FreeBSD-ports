@@ -5,13 +5,11 @@ PORTNAME=	vils
 PORTVERSION=	20020228
 PORTREVISION=	1
 CATEGORIES=	sysutils
-MASTER_SITES=	http://www.secnetix.de/~olli/scripts/Generic-utilities/
+MASTER_SITES=	https://mirror.amdmi3.ru/distfiles/
 DISTFILES=	vils
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Use your favorite editor to rename files
-
-BROKEN=		unfetchable
 
 LICENSE=	BSD2CLAUSE
 

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	freeipmi
-PORTVERSION=	1.6.4
+PORTVERSION=	1.6.5
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU
 
@@ -19,10 +19,7 @@ BROKEN_armv7=		fails to link: libfreeipmi/.libs/libfreeipmi.so: undefined refere
 LIB_DEPENDS=	libargp.so:devel/argp-standalone \
 		libgcrypt.so:security/libgcrypt
 
-OPTIONS_DEFINE=	DEBUG DOCS IOPERM IPV6
-IOPERM_DESC=	Use i386_set_ioperm
-
-USES=		gmake libtool localbase shebangfix
+USES=		gmake libtool localbase makeinfo shebangfix
 
 CFLAGS+=	-D_WANT_SEMUN
 CONFIGURE_ARGS=	--disable-init-scripts \
@@ -44,6 +41,9 @@ SHEBANG_FILES=	contrib/ganglia/ganglia_ipmi_sensors.pl \
 		contrib/nagios/nagios_ipmi_sensors.pl \
 		contrib/pet/check_rmcpping \
 		contrib/pet/petalert.pl
+
+OPTIONS_DEFINE=	DEBUG DOCS IOPERM IPV6
+IOPERM_DESC=	Use i386_set_ioperm
 
 DEBUG_CONFIGURE_ON=	--enable-debug --enable-trace
 DEBUG_INSTALL_TARGET=	install

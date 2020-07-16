@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	gatk
-DISTVERSION=	4.1.5.0
+DISTVERSION=	4.1.7.0
 CATEGORIES=	biology java
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -11,7 +11,9 @@ COMMENT=	Variant discovery in high-throughput sequencing data
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
-BUILD_DEPENDS=	gradle:devel/gradle
+BROKEN_FreeBSD_12_powerpc64=	fails to build: String index out of range: -1
+
+BUILD_DEPENDS=	gradle62:devel/gradle62
 
 USES=		gettext-runtime
 USE_GITHUB=	yes
@@ -52,9 +54,8 @@ post-extract: # need a separate extract step because the cache is in /tmp, and n
 	@cd ${DEPS_CACHE_DIR} && ${TAR} xzf ${DISTDIR}/${PORTNAME}-${DISTVERSION}-deps${EXTRACT_SUFX}
 .endif
 
-
 do-build:
-	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} gradle \
+	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} gradle62 \
 		--gradle-user-home ${DEPS_CACHE_DIR}/gradle-${PORTNAME} --project-cache-dir ${DEPS_CACHE_DIR}/gradle-${PORTNAME} \
 		${GRADLE_ARGS} --build-cache localJar
 

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rails
-PORTVERSION=	6.0.2.2
+PORTVERSION=	6.0.3.2
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	60
@@ -11,8 +11,6 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Full-stack web application framework
 
 LICENSE=	MIT
-
-BROKEN_RUBY24=	yes
 
 RUN_DEPENDS=	rubygem-actioncable60>=${PORTVERSION}:www/rubygem-actioncable60 \
 		rubygem-actionmailbox60>=${PORTVERSION}:mail/rubygem-actionmailbox60 \
@@ -46,7 +44,7 @@ RUN_DEPENDS=	rubygem-actioncable60>=${PORTVERSION}:www/rubygem-actioncable60 \
 		rubygem-web-console-rails60>=3.3.0:devel/rubygem-web-console-rails60 \
 		rubygem-webdrivers>=0:www/rubygem-webdrivers \
 		rubygem-webmock>=0:www/rubygem-webmock \
-		rubygem-webpacker-rails60>=4.0<5:devel/rubygem-webpacker-rails60
+		rubygem-webpacker4-rails60>=4.0<5:devel/rubygem-webpacker4-rails60
 
 USES=		cpe gem
 USE_RUBY=	yes

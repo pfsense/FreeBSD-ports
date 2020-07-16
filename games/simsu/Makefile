@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	simsu
-PORTVERSION=	1.3.8
+PORTVERSION=	1.3.9
 CATEGORIES=	games
 MASTER_SITES=	https://gottcode.org/${PORTNAME}/ \
 		https://mirror.amdmi3.ru/distfiles/
@@ -24,10 +24,6 @@ PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes
-
-post-patch:
-	@${REINPLACE_CMD} -e \
-		's|share/man|man|' ${WRKSRC}/simsu.pro
 
 post-patch-NLS-off:
 	@${REINPLACE_CMD} -e \

@@ -5,16 +5,13 @@ PORTNAME=	quake2max
 PORTVERSION=	0.45
 PORTREVISION=	13
 CATEGORIES=	games
-MASTER_SITES=	http://www.bfeared.com/library/quake/archive/quakedev/qudos/quake2/engines/Quake2MaX/:src \
-		LOCAL/alepulver/:data
+MASTER_SITES=	http://freebsd.nsu.ru/distfiles/ LOCAL/danfe
 DISTNAME=	Quake2maX_${PORTVERSION}-src_unix
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:src ${Q2MAX_DATA}:data
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ${Q2MAX_DATA}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	OpenGL-only Quake II engine modification
-
-BROKEN=		unfetchable
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/gnu.txt

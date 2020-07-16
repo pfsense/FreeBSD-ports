@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	bcpp
-PORTVERSION=	20150811
+PORTVERSION=	20180401
 CATEGORIES=	devel
-MASTER_SITES=	ftp://invisible-island.net/bcpp/
+MASTER_SITES=	ftp://ftp.invisible-island.net/${PORTNAME}/ \
+		https://invisible-mirror.net/archives/${PORTNAME}/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Utility similar to indent for C++ code
-
-BROKEN=		unfetchable
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

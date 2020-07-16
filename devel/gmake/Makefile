@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gmake
-PORTVERSION=	4.2.1
-PORTREVISION=	3
+PORTVERSION=	4.3
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	GNU/make
 DISTNAME=	make-${PORTVERSION}
@@ -21,7 +21,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--program-prefix=g \
 		--without-guile
 
-USES=		cpe tar:bzip2
+USES=		cpe tar:lz
 CPE_VENDOR=	gnu
 
 OPTIONS_DEFINE=	NLS

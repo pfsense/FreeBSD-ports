@@ -3,6 +3,7 @@
 
 PORTNAME=	extra-cmake-modules
 DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
+PORTREVISION=	2
 CATEGORIES=	devel kde kde-frameworks
 
 MAINTAINER=	kde@FreeBSD.org
@@ -16,6 +17,8 @@ USE_QT=		linguisttools buildtools_build qmake_build
 
 HELP_USE=	QT=help_build  # qt5-help is only used to build a .qch file.
 NO_ARCH=	yes
+
+PORTDOCS=	html/*
 
 ## options
 

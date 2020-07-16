@@ -9,7 +9,7 @@ lib/cmake/KScreenLocker/KScreenLockerTargets.cmake
 lib/cmake/ScreenSaverDBusInterface/ScreenSaverDBusInterfaceConfig.cmake
 lib/libKScreenLocker.so
 lib/libKScreenLocker.so.5
-lib/libKScreenLocker.so.5.18.4
+lib/libKScreenLocker.so.%%KDE_PLASMA_VERSION%%
 @(,,4555) lib/libexec/kcheckpass
 lib/libexec/kscreenlocker_greet
 %%QT_PLUGINDIR%%/screenlocker_kcm.so
@@ -23,6 +23,7 @@ share/ksmserver/screenlocker/org.kde.passworddialog/metadata.desktop
 share/locale/ar/LC_MESSAGES/kscreenlocker.mo
 share/locale/ar/LC_MESSAGES/kscreenlocker_greet.mo
 share/locale/ar/LC_MESSAGES/screenlocker_kcm.mo
+share/locale/ast/LC_MESSAGES/screenlocker_kcm.mo
 share/locale/bs/LC_MESSAGES/kscreenlocker.mo
 share/locale/bs/LC_MESSAGES/kscreenlocker_greet.mo
 share/locale/bs/LC_MESSAGES/screenlocker_kcm.mo

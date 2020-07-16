@@ -1,9 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	git-cinnabar
-DISTVERSION=	0.5.4
-PORTREVISION=	3
+DISTVERSION=	0.5.5
+PORTREVISION=	2
 CATEGORIES=	devel
+PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX:N-py27}
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Git remote helper to interact with Mercurial repositories
@@ -11,22 +12,22 @@ COMMENT=	Git remote helper to interact with Mercurial repositories
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	${NONEXISTENT}:devel/git:configure
-RUN_DEPENDS=	git:devel/git \
-		hg:devel/mercurial
+RUN_DEPENDS=	git:devel/git
+py27_RUN_DEPENDS=	hg:devel/mercurial # XXX bug 242463
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	glandium
 
-USES=		gmake python:2.7,run shebangfix
-SHEBANG_LANG=	python2.7
+USES=		gmake python:run shebangfix
+USE_PYTHON=	flavors
+TARGET_ORDER_OVERRIDE=	510:fix-shebang # after do-patch
 SHEBANG_FILES=	${PORTNAME} git-remote-hg
 ALL_TARGET=	${PORTNAME}-helper
-.ifnmake describe
-MAKE_ENV!=	${MAKE} -V MAKE_ENV -C ${.CURDIR}/../git
-MAKE_ARGS!=	${MAKE} -V MAKE_ARGS -C ${.CURDIR}/../git
-.endif
-MAKE_ENV+=	PYTHON_PATH="${PYTHON_CMD}"
-MAKE_ARGS+=	SUBMODULE_STATUS=dummy
+MAKE_ENV=	${:!${MAKE} -V MAKE_ENV -C ${.CURDIR:H}/git!}
+MAKE_ARGS=	SUBMODULE_STATUS=dummy ${:!${MAKE} -V MAKE_ARGS -C ${.CURDIR:H}/git!}
+CFLAGS+=	-ffunction-sections -fdata-sections
+LDFLAGS+=	-Wl,--gc-sections
+.export		CPPFLAGS CFLAGS CXXFLAGS LDFLAGS # :configure
 DATADIR=	${PREFIX}/libexec/git-core
 PORTDATA=	*
 PORTDOCS=	README.md
@@ -34,7 +35,7 @@ PORTDOCS=	README.md
 OPTIONS_DEFINE=	DOCS
 
 post-configure:
-	@${TAR} cf - -C$$(${MAKE} -V WRKSRC -C ${PORTSDIR}/devel/git) . | \
+	@${TAR} cf - -C$$(${SETENV} -u FLAVOR ${MAKE} -V WRKSRC -C ${PORTSDIR}/devel/git) . | \
 		${TAR} xof - -C${WRKSRC}/git-core
 
 do-install:

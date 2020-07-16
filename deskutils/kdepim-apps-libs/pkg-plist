@@ -115,6 +115,7 @@ share/locale/es/LC_MESSAGES/libkaddressbookgrantlee.mo
 share/locale/es/LC_MESSAGES/libkaddressbookimportexport.mo
 share/locale/es/LC_MESSAGES/libsendlater.mo
 share/locale/et/LC_MESSAGES/libkaddressbookgrantlee.mo
+share/locale/et/LC_MESSAGES/libkaddressbookimportexport.mo
 share/locale/et/LC_MESSAGES/libsendlater.mo
 share/locale/fi/LC_MESSAGES/libkaddressbookgrantlee.mo
 share/locale/fi/LC_MESSAGES/libkaddressbookimportexport.mo
@@ -151,6 +152,7 @@ share/locale/nds/LC_MESSAGES/libsendlater.mo
 share/locale/nl/LC_MESSAGES/libkaddressbookgrantlee.mo
 share/locale/nl/LC_MESSAGES/libkaddressbookimportexport.mo
 share/locale/nl/LC_MESSAGES/libsendlater.mo
+share/locale/nn/LC_MESSAGES/libkaddressbookgrantlee.mo
 share/locale/pl/LC_MESSAGES/libkaddressbookgrantlee.mo
 share/locale/pl/LC_MESSAGES/libkaddressbookimportexport.mo
 share/locale/pl/LC_MESSAGES/libsendlater.mo

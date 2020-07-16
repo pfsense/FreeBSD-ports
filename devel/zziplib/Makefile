@@ -3,8 +3,8 @@
 
 PORTNAME=	zziplib
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.13.69
-PORTREVISION=	2
+PORTVERSION=	0.13.71
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -15,25 +15,28 @@ LICENSE_COMB=	dual
 LICENSE_FILE_LGPL21=	${WRKSRC}/COPYING.LIB
 LICENSE_FILE_MPL11=	${WRKSRC}/docs/COPYING.MPL
 
-BUILD_DEPENDS=	zip:archivers/zip
+BUILD_DEPENDS=	gsed:textproc/gsed \
+		zip:archivers/zip
 
 USES=		libtool pathfix pkgconfig
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	gdraheim
-GH_PROJECT=	zziplib
-USE_LDCONFIG=	yes
 
-GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--srcdir=${WRKSRC}
 CONFIGURE_ENV=	ac_cv_path_XMLTO=":"
+GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
+USE_LDCONFIG=	yes
+
 PORTSCOUT=	limit:^0\.
 
 OPTIONS_DEFINE=	SDL
 OPTIONS_SUB=	yes
-SDL_USES=		sdl
-SDL_USE=		SDL=sdl
+
 SDL_CONFIGURE_ENABLE=	sdl
+SDL_USE=		SDL=sdl
+SDL_USES=		sdl
 
 .include <bsd.port.mk>

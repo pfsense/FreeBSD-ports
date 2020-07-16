@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xfce4-conf
-PORTVERSION=	4.14.1
+PORTVERSION=	4.14.3
 CATEGORIES=	x11 xfce
 MASTER_SITES=	XFCE
 DISTNAME=	xfconf-${DISTVERSIONFULL}
@@ -45,7 +45,7 @@ NLS_USES=		gettext-runtime
 
 PERL_BUILD_DEPENDS=	p5-ExtUtils-Depends>=0.405:devel/p5-ExtUtils-Depends \
 			p5-ExtUtils-PkgConfig>=1.15:devel/p5-ExtUtils-PkgConfig \
-			p5-Glib2>=1.321:devel/p5-Glib2
+			p5-Glib>=1.321:devel/p5-Glib
 PERL_CONFIGURE_ENABLE=	perl-bindings
 PERL_LIB_DEPENDS=	libdbus-1.so:devel/dbus
 PERL_USE=		perl5=run
