@@ -450,8 +450,8 @@ if ($savemsg)
 							</div>
 							<div class="col-md-6">
 								<p>
-									<i class="fa fa-lg fa-check-circle" alt="Running"></i> <i class="fa fa-lg fa-times" alt="Not Running"></i> icons will show current snort and barnyard2 status<br/>
-									Click on the <i class="fa fa-lg fa-repeat" alt="Start"></i> or <i class="fa fa-lg fa-stop-circle-o" alt="Stop"></i> icons to start/stop Snort and Barnyard2.
+									<i class="fa fa-lg fa-check-circle" alt="Running"></i> <i class="fa fa-lg fa-times" alt="Not Running"></i> icons will show current Snort status<br/>
+									Click on the <i class="fa fa-lg fa-repeat" alt="Start"></i> or <i class="fa fa-lg fa-stop-circle-o" alt="Stop"></i> icons to start/stop Snort.
 								</p>
 							</div>
 						</div>', 'info')?>
