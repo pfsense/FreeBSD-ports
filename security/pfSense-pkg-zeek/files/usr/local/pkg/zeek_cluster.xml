@@ -70,7 +70,7 @@
 		<field>
 			<fielddescr>Enable Zeek Cluster</fielddescr>
 			<fieldname>enable_cluster</fieldname>
-			<description>Check to enable the cluster mode.</description>
+			<description>Check to enable cluster mode.</description>
 			<sethelp>
 				<![CDATA[
 				<strong><span class="errmsg">Note:</span> If enabled, Zeek stand-alone mode will be disabled.</strong>
@@ -105,7 +105,7 @@
 		<field>
 			<fielddescr>Worker 1 Interface</fielddescr>
 			<fieldname>worker1_interface</fieldname>
-			<description>Select the worker 1 interface.</description>
+			<description>Interface used to communicate with the first worker host.</description>
 			<type>interfaces_selection</type>
 			<multiple/>
 		</field>
@@ -120,7 +120,7 @@
 		<field>
 			<fielddescr>Worker 2 Interface</fielddescr>
 			<fieldname>worker2_interface</fieldname>
-			<description>Select the worker 2 interface.</description>
+			<description>Interface used to communicate with the second worker host.</description>
 			<type>interfaces_selection</type>
 			<multiple/>
 		</field>
@@ -128,7 +128,7 @@
 	<custom_php_validation_command>
 		<![CDATA[
 		if (!empty($_POST) && zeek_enabled()) {
-		log_error("Zeek standalone mode is enable. Disable first Zeek standalone mode under Services - Zeek NSM - General Settings.");
+		log_error("Zeek standalone mode is enabled. Disable Zeek standalone mode under Services > Zeek NSM > General Settings.");
 		}
 		zeek_validate_cluster($_POST, $input_errors);
 		]]>

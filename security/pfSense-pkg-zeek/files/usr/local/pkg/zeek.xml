@@ -105,7 +105,7 @@
 			<fieldname>active_interface</fieldname>
 			<description>
 				<![CDATA[
-				Set the right interface this zeek instance will monitor to.<br/>
+				Interfaces monitored by this Zeek instance.<br/>
 				<strong><span class="errmsg">Hint:</span> In most cases, a WAN interface will be used.</strong>
 				]]>
 			</description>
@@ -117,7 +117,7 @@
 			<fieldname>local_networks</fieldname>
 			<description>
 				<![CDATA[
-				Enter the IP addresses (e.g.:"10.0.0.0/8" or "fe80::/64") of the networks that Zeek will consider local to the monitored environment.<br/>
+				Enter the subnets (e.g.:"10.0.0.0/8" or "fe80::/64") of the networks which Zeek will consider local to the monitored environment.<br/>
 				<strong>Note: Put each entry on a separate line.</strong>
 				]]>
 			</description>

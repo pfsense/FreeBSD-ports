@@ -80,9 +80,9 @@
 			<type>select</type>
 			<default_value>disabled</default_value>
 			<options>
+				<option><name>Do not sync this package configuration</name><value>disabled</value></option>
 				<option><name>Sync to configured system backup server</name><value>auto</value></option>
 				<option><name>Sync to host(s) defined below</name><value>manual</value></option>
-				<option><name>Do not sync this package configuration</name><value>disabled</value></option>
 			</options>
 		</field>
 		<field>

@@ -153,7 +153,7 @@ EOD;
 # Just to be sure...
 sleep 5
 if [ /usr/bin/pgrep "zeek" ]; then
-/usr/bin/killall zeek 2>/dev/null
+	/usr/bin/killall zeek 2>/dev/null
 fi
 EOD;
 

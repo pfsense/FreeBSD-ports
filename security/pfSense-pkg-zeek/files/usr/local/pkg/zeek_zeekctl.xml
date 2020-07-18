@@ -107,8 +107,8 @@
 			<fieldname>mail_host_updown</fieldname>
 			<description>
 				<![CDATA[
-				Enable sending mail when broctl cron notices the availability of a host in the cluster to have changed.<br/>
-				A value of 1 means send mail when a host status changes, and a value of 0 means do not send mail.
+				Send an email when a host status changes.<br/>
+				A value of 1 means send mail, and a value of 0 means do not send mail.
 				]]>
 			</description>
 			<type>input</type>
@@ -148,7 +148,7 @@
 			<fieldname>stats_log</fieldname>
 			<description>
 				<![CDATA[
-				Enable ZeekControl to write statistics to the stats.log file.<br/>
+				Write ZeekControl statistics to stats.log.<br/>
 				A value of 1 means write to stats.log, and a value of 0 means do not write to stats.log.
 				]]>
 			</description>
@@ -161,7 +161,7 @@
 			<fieldname>stats_duration</fieldname>
 			<description>
 				<![CDATA[
-				Number of days that entries in the stats.log file are kept.<br/>
+				Number of days to retain stats.log entries.<br/>
 				A value of 0 means that entries never expire.
 				]]>
 			</description>

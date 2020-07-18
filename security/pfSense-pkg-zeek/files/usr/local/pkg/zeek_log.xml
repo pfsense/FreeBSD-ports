@@ -68,9 +68,9 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Remove Zeek Logs on Package Uninstall</fielddescr>
+			<fielddescr>Uninstall Cleanup</fielddescr>
 			<fieldname>remove_zeek_log</fieldname>
-			<description>Zeek log file will be removed when zeek package is uninstalled.</description>
+			<description>Remove the Zeek log when uninstalling the package.</description>
 			<type>checkbox</type>
 		</field>
 	</fields>

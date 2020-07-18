@@ -46,7 +46,7 @@ if ($_POST) {
 		$logarr = fetch_log($log);
 		// Print lines
 		foreach ($logarr as $logent) {
-			if(!is_numeric($logent[0])) {
+			if (!is_numeric($logent[0])) {
 				continue;
 			}
 			// Split line by space delimiter
