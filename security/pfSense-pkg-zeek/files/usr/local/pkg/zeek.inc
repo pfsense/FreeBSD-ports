@@ -258,27 +258,15 @@ function zeek_validate_general($post, &$input_errors) {
 }
 
 function zeek_validate_zeekctl($post, &$input_errors) {
-	$mail_connection_summary = trim($post['mail_connection_summary']);
-	if (!empty($mail_connection_summary) && (!is_numericint($mail_connection_summary))) {
-		$input_errors[] = "Enter a valid number in the 'mail connection summary' field.";
-	}
-	unset($mail_connection_summary);
-
 	$min_disk_space = trim($post['min_disk_space']);
 	if (!empty($min_disk_space) && (!is_numericint($min_disk_space))) {
 		$input_errors[] = "Enter a valid number in the 'min disk space' field.";
 	}
 	unset($min_disk_space);
 
-	$mail_host_updown = trim($post['mail_host_updown']);
-	if (!empty($mail_host_updown) && (!is_numericint($mail_host_updown))) {
-		$input_errors[] = "Enter a valid number in the 'mail host updown' field.";
-	}
-	unset($mail_host_updown);
-
 	$log_expiration = trim($post['log_expiration']);
 	if (!empty($log_expiration) && (!is_numericint($log_expiration))) {
-		$input_errors[] = "Enter a valid number in the 'mail host updown' field.";
+		$input_errors[] = "Enter a valid number in the 'log rotation interval' field.";
 	}
 	unset($log_expiration);
 
@@ -459,15 +447,15 @@ function zeek_zeekctl_resync() {
 		$settings = array();
 	}
 
-	$email = ($settings['admin_email'] ? $settings['admin_email'] : 'admin@localhost');
-	$mailconnection = ($settings['mail_connection_summary'] ? $settings['mail_connection_summary'] : 0);
-	$diskspace = ($settings['min_disk_space'] ? $settings['min_disk_space'] : 5);
-	$mailhostupdown = ($settings['mail_host_updown'] ? $settings['mail_host_updown'] : 1);
-	$rotate = ($settings['log_rotate'] ?  $settings['log_rotate'] : 3000);
-	$logexpiration = ($settings['log_expiration'] ? $settings['log_expiration'] : 0);
-	$statslog = ($settings['stats_log'] ? $settings['stats_log'] : 1);
-	$statsduration = ($settings['stats_duration'] ? $settings['stats_duration'] : 0);
-	$logdir = ($settings['log_dir'] ? $settings['log_dir'] : '/usr/local/logs');
+	$email = $settings['admin_email'] ? $settings['admin_email'] : 'admin@localhost';
+	$mailconnection = ($settings['mail_connection_summary'] == "on") ? 1 : 0;
+	$diskspace = $settings['min_disk_space'] ? $settings['min_disk_space'] : 5;
+	$mailhostupdown = ($settings['mail_host_updown'] == "on") ? 1 : 0;
+	$rotate = $settings['log_rotate'] ?  $settings['log_rotate'] : 3000;
+	$logexpiration = $settings['log_expiration'] ? $settings['log_expiration'] : 0;
+	$statslog = ($settings['stats_log'] == "on") ? 1 : 0;
+	$statsduration = $settings['stats_duration'] ? $settings['stats_duration'] : 0;
+	$logdir = $settings['log_dir'] ? $settings['log_dir'] : '/usr/local/logs';
 	if (!is_dir($logdir)) {
 		log_error("[zeek] Creating Zeek log dir '{$logdir}' ...");
 		safe_mkdir($logdir, 0755);
@@ -641,7 +629,6 @@ function zeek_log_resync() {
 	$zeeklogstate = false;
 
 	if (is_array($config['installedpackages']['zeeklog'])) {
-		// check whether zeek cluster is enabled ...
 		if ($config['installedpackages']['zeeklog']['config'][0]['remove_zeek_log'] == "on") {
 			$zeeklogstate = true;
 		}

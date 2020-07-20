@@ -79,15 +79,8 @@
 		<field>
 			<fielddescr>Mail Connection Summary</fielddescr>
 			<fieldname>mail_connection_summary</fieldname>
-			<description>
-				<![CDATA[
-				Mail connection summary reports each log rotation interval.
-				A value of 1 means mail connection summaries, and a value of 0 means do not mail connection summaries.
-				]]>
-			</description>
-			<type>input</type>
-			<size>5</size>
-			<default_value>1</default_value>
+			<description>Check to mail connection summary reports each log rotation interval.</description>
+			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Minimum Disk space</fielddescr>
@@ -105,15 +98,8 @@
 		<field>
 			<fielddescr>Mail Host Up-Down</fielddescr>
 			<fieldname>mail_host_updown</fieldname>
-			<description>
-				<![CDATA[
-				Send an email when a host status changes.<br/>
-				A value of 1 means send mail, and a value of 0 means do not send mail.
-				]]>
-			</description>
-			<type>input</type>
-			<size>5</size>
-			<default_value>1</default_value>
+			<description>Check to send an email when a host status changes.</description>
+			<type>checkbox</type>
 		</field>
 		<field>
 			<name>Logging Options</name>
@@ -146,15 +132,8 @@
 		<field>
 			<fielddescr>Enable Statistics Logging</fielddescr>
 			<fieldname>stats_log</fieldname>
-			<description>
-				<![CDATA[
-				Write ZeekControl statistics to stats.log.<br/>
-				A value of 1 means write to stats.log, and a value of 0 means do not write to stats.log.
-				]]>
-			</description>
-			<type>input</type>
-			<size>5</size>
-			<default_value>1</default_value>
+			<description>Check to enable writing ZeekControl statistics to stats.log.</description>
+			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Stats Log Expire Interval</fielddescr>
