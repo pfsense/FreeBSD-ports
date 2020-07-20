@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2011-2020 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,6 @@ $snortdir = SNORTDIR;
 $snortlogdir = SNORTLOGDIR;
 $rcdir = RCFILEPREFIX;
 $snort_starting = array();
-$by2_starting = array();
 
 if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 	$config['installedpackages']['snortglobal']['rule'] = array();
@@ -57,27 +56,6 @@ if ($_POST['status'] == 'check') {
 				$list[$intf_key] = "RUNNING";
 			}
 			elseif (file_exists("{$g['varrun_path']}/{$intf_key}_starting.lck") || file_exists("{$g['varrun_path']}/snort_pkg_starting.lck")) {
-				$list[$intf_key] = "STARTING";
-			}
-			else {
-				$list[$intf_key] = "STOPPED";
-			}
-		}
-		else {
-			$list[$intf_key] = "DISABLED";
-		}
-	}
-
-	// Iterate configured Barnyard2 interfaces and add status of each
-	// to the JSON array object.
-	foreach ($a_nat as $natent) {
-		$intf_key = "barnyard2_" . get_real_interface($natent['interface']) . $natent['uuid'];
-		$snort_intf_key = "snort_" . get_real_interface($natent['interface']) . $natent['uuid'];
-		if ($natent['barnyard_enable'] == "on") {
-			if (snort_is_running($natent['uuid'], get_real_interface($natent['interface']), 'barnyard2')) {
-				$list[$intf_key] = "RUNNING";
-			}
-			elseif (file_exists("{$g['varrun_path']}/{$snort_intf_key}_starting.lck") || file_exists("{$g['varrun_path']}/snort_pkg_starting.lck")) {
 				$list[$intf_key] = "STARTING";
 			}
 			else {
@@ -162,41 +140,6 @@ else {
 	}
 }
 
-/* start/stop barnyard2 */
-if ($_POST['by2toggle'] && is_numericint($_POST['id'])) {
-	$snortcfg = $config['installedpackages']['snortglobal']['rule'][$_POST['id']];
-	$if_real = get_real_interface($snortcfg['interface']);
-	$if_friendly = convert_friendly_interface_to_friendly_descr($snortcfg['interface']);
-	$id = $_POST['id'];
-
-	switch ($_POST['by2toggle']) {
-		case 'start':
-			// No need to rebuild Snort rules for Barnyard2,
-			// so flag that task as "off" to save time.
-			$rebuild_rules = false;
-			sync_snort_package_config();
-			$rebuild_rules = false;
-			if (snort_is_running($snortcfg['uuid'], $if_real, 'barnyard2')) {
-				log_error("Restarting Barnyard2 on {$if_friendly}({$if_real}) per user request...");
-				snort_barnyard_stop($snortcfg, $if_real);
-				snort_barnyard_start($snortcfg, $if_real);
-			}
-			else {
-				log_error("Starting Barnyard2 on {$if_friendly}({$if_real}) per user request...");
-				snort_barnyard_start($snortcfg, $if_real);
-			}
-			$by2_starting[$id] = 'TRUE';
-			break;
-		case 'stop':
-			if (snort_is_running($snortcfg['uuid'], $if_real, 'barnyard2')) {
-				log_error("Stopping Barnyard2 on {$if_friendly}({$if_real}) per user request...");
-				snort_barnyard_stop($snortcfg, $if_real);
-			}
-			unset($by2_starting[$id]);
-		default:
-	}
-}
-
 /* start/stop snort */
 if ($_POST['toggle'] && is_numericint($_POST['id'])) {
 	$snortcfg = $config['installedpackages']['snortglobal']['rule'][$_POST['id']];
@@ -244,9 +187,6 @@ EOD;
 				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/snort_{$if_real}{$snortcfg['uuid']}_startcmd.php");
 			}
 			$snort_starting[$id] = 'TRUE';
-			if ($snortcfg['barnyard_enable'] == 'on' && !isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}{$snort_uuid}.pid")) {
-				$by2_starting[$id] = 'TRUE';
-			}
 			break;
 		case 'stop':
 			if (snort_is_running($snortcfg['uuid'], $if_real)) {
@@ -254,11 +194,9 @@ EOD;
 				snort_stop($snortcfg, $if_real);
 			}
 			unset($snort_starting[$id]);
-			unset($by2_starting[$id]);
 			unlink_if_exists($start_lck_file);
 		default:
 			unset($snort_starting[$id]);
-			unset($by2_starting[$id]);
 			unlink_if_exists('{$start_lck_file}');
 	}
 	unset($snort_start_cmd);
@@ -294,7 +232,6 @@ if ($savemsg)
 <form action="snort_interfaces.php" method="post" enctype="multipart/form-data" name="iform" id="iform">
 <input type="hidden" name="id" id="id" value="">
 <input type="hidden" name="toggle" id="toggle" value="">
-<input type="hidden" name="by2toggle" id="by2toggle" value="">
 
 <div class="panel panel-default">
 	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Interface Settings Overview")?></h2></div>
@@ -308,7 +245,6 @@ if ($savemsg)
 					<th><?=gettext("Snort Status"); ?></th>
 					<th><?=gettext("Pattern Match"); ?></th>
 					<th><?=gettext("Blocking"); ?></th>
-					<th><?=gettext("Barnyard2 Status"); ?></th>
 					<th><?=gettext("Description"); ?></th>
 					<th><?=gettext("Actions"); ?></th>
 				</tr>
@@ -399,31 +335,6 @@ if ($savemsg)
 							<?=gettext('DISABLED');?>
 						<?php endif; ?>
 					</td>
-					<td id="frd<?=$nnats?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$nnats?>';">
-						<?php if ($config['installedpackages']['snortglobal']['rule'][$nnats]['barnyard_enable'] == 'on') : ?>
-							<?php if (snort_is_running($snort_uuid, $if_real, 'barnyard2')) : ?>
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>" class="fa fa-check-circle text-success icon-primary" title="<?=gettext('barnyard2 is running on this interface');?>"></i>
-								&nbsp;
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
-							<?php elseif ($by2_starting[$nnats] == 'TRUE' || file_exists("{$g['varrun_path']}/snort_pkg_starting.lck")) : ?>
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>" class="fa fa-cog fa-spin text-info icon-primary" title="<?=gettext('barnyard2 is starting on this interface');?>"></i>
-								&nbsp;
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
-							<?php else: ?>
-								<i class="fa fa-times-circle text-danger icon-primary" title="<?=gettext('barnyard2 is stopped on this interface');?>"></i>
-								&nbsp;
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_restart" class="fa fa-repeat icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Restart barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_start" class="fa fa-play-circle icon-pointer text-info icon-primary" onclick="javascript:by2_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Start barnyard2 on this interface');?>"></i>
-								<i id="barnyard2_<?=$if_real.$snort_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer text-info icon-primary hidden" onclick="javascript:by2_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Stop barnyard2 on this interface');?>"></i>
-							<?php endif; ?>
-						<?php else : ?>
-							<?=gettext('DISABLED');?>&nbsp;
-						<?php endif; ?>
-					</td>
 					<td class="bg-info" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$nnats?>';">
 						<?=htmlspecialchars($natent['descr'])?>
 					</td>
@@ -476,8 +387,8 @@ if ($savemsg)
 							</div>
 							<div class="col-md-6">
 								<p>
-									<i class="fa fa-lg fa-check-circle" alt="Running"></i> <i class="fa fa-lg fa-times" alt="Not Running"></i> icons will show current snort and barnyard2 status<br/>
-									Click on the <i class="fa fa-lg fa-repeat" alt="Start"></i> or <i class="fa fa-lg fa-stop-circle-o" alt="Stop"></i> icons to start/stop Snort and Barnyard2.
+									<i class="fa fa-lg fa-check-circle" alt="Running"></i> <i class="fa fa-lg fa-times" alt="Not Running"></i> icons will show current Snort status<br/>
+									Click on the <i class="fa fa-lg fa-repeat" alt="Start"></i> or <i class="fa fa-lg fa-stop-circle-o" alt="Stop"></i> icons to start/stop Snort.
 								</p>
 							</div>
 						</div>', 'info')?>
@@ -517,7 +428,7 @@ if ($savemsg)
 		// "key" is the service name followed by the physical interface and a UUID.
 		// The "value" of the key is either "DISABLED, STOPPED, STARTING, or RUNNING".
 		//
-		// Example keys:  snort_em1998 or barnyard2_em1998
+		// Example key:  snort_em1998
 		//
 		// Within the HTML of this page, icon controls for displaying status
 		// and for starting/restarting/stopping the service are tagged with
@@ -561,12 +472,6 @@ if ($savemsg)
 
 	function snort_iface_toggle(action, id) {
 		$('#toggle').val(action);
-		$('#id').val(id);
-		$('#iform').submit();
-	}
-
-	function by2_iface_toggle(action, id) {
-		$('#by2toggle').val(action);
 		$('#id').val(id);
 		$('#iform').submit();
 	}

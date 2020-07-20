@@ -52,6 +52,8 @@ else {
 	$pconfig['appid_stats_log_retention'] = $config['installedpackages']['snortglobal']['appid_stats_log_retention'];
 	$pconfig['appid_alerts_log_retention'] = $config['installedpackages']['snortglobal']['appid_alerts_log_retention'];
 	$pconfig['appid_alerts_log_limit_size'] = $config['installedpackages']['snortglobal']['appid_alerts_log_limit_size'];
+	$pconfig['unified2_log_limit'] = $config['installedpackages']['snortglobal']['unified2_log_limit'];
+	$pconfig['u2_archived_log_retention'] = $config['installedpackages']['snortglobal']['u2_archived_log_retention'];
 }
 // Load up some arrays with selection values (we use these later).
 // The keys in the $retentions array are the retention period
@@ -85,6 +87,8 @@ if (!isset($pconfig['appid_stats_log_retention']))
 	$pconfig['appid_stats_log_retention'] = "168";
 if (!isset($pconfig['appid_alerts_log_retention']))
 	$pconfig['appid_alerts_log_retention'] = "336";
+if (!isset($pconfig['u2_archived_log_retention']))
+	$pconfig['u2_archived_log_retention'] = "336";
 
 // Set default log file size limits
 if (!isset($pconfig['alert_log_limit_size']))
@@ -97,6 +101,8 @@ if (!isset($pconfig['appid_stats_log_limit_size']))
 	$pconfig['appid_stats_log_limit_size'] = "1000";
 if (!isset($pconfig['appid_alerts_log_limit_size']))
 	$pconfig['appid_alerts_log_limit_size'] = "500";
+if (!isset($pconfig['unified2_log_limit']))
+	$pconfig['unified2_log_limit'] = "500";
 
 if (isset($_POST['ResetAll'])) {
 
@@ -107,6 +113,7 @@ if (isset($_POST['ResetAll'])) {
 	$pconfig['event_pkts_log_retention'] = "336";
 	$pconfig['appid_stats_log_retention'] = "168";
 	$pconfig['appid_alerts_log_retention'] = "336";
+	$pconfig['u2_archived_log_retention'] = "336";
 
 	$pconfig['alert_log_limit_size'] = "500";
 	$pconfig['stats_log_limit_size'] = "500";
@@ -114,6 +121,7 @@ if (isset($_POST['ResetAll'])) {
 	$pconfig['event_pkts_log_limit_size'] = "0";
 	$pconfig['appid_stats_log_limit_size'] = "1000";
 	$pconfig['appid_alerts_log_limit_size'] = "500";
+	$pconfig['unified2_log_limit'] = "500";
 
 	/* Log a message at the top of the page to inform the user */
 	$savemsg = gettext("All log management settings on this page have been reset to their defaults.  Click APPLY if you wish to keep these new settings.");
@@ -157,6 +165,8 @@ if (isset($_POST['save']) || isset($_POST['apply'])) {
 		$config['installedpackages']['snortglobal']['appid_stats_log_retention'] = $_POST['appid_stats_log_retention'];
 		$config['installedpackages']['snortglobal']['appid_alerts_log_limit_size'] = $_POST['appid_alerts_log_limit_size'];
 		$config['installedpackages']['snortglobal']['appid_alerts_log_retention'] = $_POST['appid_alerts_log_retention'];
+		$config['installedpackages']['snortglobal']['unified2_log_limit'] = $_POST['unified2_log_limit'];
+		$config['installedpackages']['snortglobal']['u2_archived_log_retention'] = $_POST['u2_archived_log_retention'];
 
 		write_config("Snort pkg: saved updated configuration for LOGS MGMT.");
 		sync_snort_package_config();
@@ -271,7 +281,26 @@ print ($section);
 						</td>
 						<td><?=gettext("Snort alerts and event details");?></td>
 					</tr>
-
+					<tr>
+						<td>snort_<i>xxxxx</i>.u2</td>
+						<td><select name="unified2_log_limit" class="form-control" id="unified2_log_limit">
+							<?php foreach ($log_sizes as $k => $l): ?>
+								<option value="<?=$k;?>"
+								<?php if ($k == $pconfig['unified2_log_limit']) echo " selected"; ?>>
+									<?=htmlspecialchars($l);?></option>
+							<?php endforeach; ?>
+							</select>
+						</td>
+						<td><select name="u2_archived_log_retention" class="form-control" id="u2_archived_log_retention">
+							<?php foreach ($retentions as $k => $p): ?>
+								<option value="<?=$k;?>"
+								<?php if ($k == $pconfig['u2_archived_log_retention']) echo " selected"; ?>>
+									<?=htmlspecialchars($p);?></option>
+							<?php endforeach; ?>
+							</select>
+						</td>
+						<td><?=gettext("Snort alerts and event details in Unified2 binary log format");?></td>
+					</tr>
 					<tr>
 						<td>appid-alerts</td>
 						<td><select name="appid_alerts_log_limit_size" class="form-control" id="appid_alerts_log_limit_size">
@@ -292,7 +321,6 @@ print ($section);
 						</td>
 						<td><?=gettext("Application ID Alerts");?></td>
 					</tr>
-
 					<tr>
 						<td>app-stats</td>
 						<td><select name="appid_stats_log_limit_size" class="form-control" id="appid_stats_log_limit_size">
@@ -409,6 +437,10 @@ events.push(function(){
 		document.iform.sid_changes_log_limit_size.disabled = endis;
 		document.iform.event_pkts_log_limit_size.disabled = endis;
 		document.iform.event_pkts_log_retention.disabled = endis;
+		document.iform.unified2_log_limit.disabled = endis;
+		document.iform.u2_archived_log_retention.disabled = endis;
+		document.iform.appid_alerts_log_limit_size.disabled = endis;
+		document.iform.appid_alerts_log_retention.disabled = endis;
 	}
 
 	function enable_change_dirSize() {
