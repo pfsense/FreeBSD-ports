@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2019 Bill Meeks
+ * Copyright (c) 2013-2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -209,11 +209,6 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 		// Clean up variables we no longer need and free memory
 		unset($snort_conf_text, $selected_rules_sections, $suppress_file_name, $snort_misc_include_rules, $spoink_type, $snortunifiedlog_type, $alertsystemlog_type);
 		unset($home_net, $external_net, $ipvardef, $portvardef);
-
-		// Create barnyard2.conf file for interface
-		if ($snortcfg['barnyard_enable'] == 'on')
-			snort_generate_barnyard2_conf($snortcfg, $if_real);
-
 		update_status(gettext(" done.") . "\n");
 	}
 

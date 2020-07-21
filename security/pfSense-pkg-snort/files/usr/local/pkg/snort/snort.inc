@@ -507,25 +507,6 @@ function snort_is_running($if_real, $type = 'snort') {
 	return isvalidpid("{$g['varrun_path']}/{$type}_{$if_real}.pid");
 }
 
-function snort_barnyard_stop($snortcfg, $if_real) {
-	global $config, $g;
-
-	if (isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}.pid")) {
-		syslog(LOG_NOTICE, "[Snort] Barnyard2 STOP for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
-		killbypid("{$g['varrun_path']}/barnyard2_{$if_real}.pid");
-
-		// Now wait up to 5 seconds for Barnyard2 to actually stop and clear its PID file
-		$count = 0;
-		do {
-			if (!isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}.pid"))
-				break;
-			sleep(1);
-			$count++;
-		} while ($count < 5);
-	}
-	unlink_if_exists("{$g['varrun_path']}/barnyard2_{$if_real}.pid");
-}
-
 function snort_stop($snortcfg, $if_real) {
 	global $config, $g;
 
@@ -543,25 +524,6 @@ function snort_stop($snortcfg, $if_real) {
 		} while ($count < 10);
 	}
 	unlink_if_exists("{$g['varrun_path']}/snort_{$if_real}.pid");
-
-	snort_barnyard_stop($snortcfg, $if_real);
-}
-
-function snort_barnyard_start($snortcfg, $if_real, $background=FALSE) {
-	global $config, $g;
-
-	$snortdir = SNORTDIR;
-	$snortlogdir = SNORTLOGDIR;
-	$snort_uuid = $snortcfg['uuid'];
-	$snortbindir = SNORT_BINDIR;
-
-	if ($snortcfg['barnyard_enable'] == 'on' && $if_real <> "" && !isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}.pid")) {
-		syslog(LOG_NOTICE, "[Snort] Barnyard2 START for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
-		if ($background)
-			mwexec_bg("{$snortbindir}barnyard2 -f \"snort_{$snort_uuid}_{$if_real}.u2\" --pid-path {$g['varrun_path']} --nolock-pidfile -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/barnyard2.conf -d {$snortlogdir}/snort_{$if_real}{$snort_uuid} -D -q");
-	else
-			mwexec("{$snortbindir}barnyard2 -f \"snort_{$snort_uuid}_{$if_real}.u2\" --pid-path {$g['varrun_path']} --nolock-pidfile -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/barnyard2.conf -d {$snortlogdir}/snort_{$if_real}{$snort_uuid} -D -q");
-	}
 }
 
 function snort_start($snortcfg, $if_real, $background=FALSE) {
@@ -594,7 +556,6 @@ function snort_start($snortcfg, $if_real, $background=FALSE) {
 			mwexec_bg("{$snortbindir}snort -R _{$if_real} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface}");
 		else
 			mwexec("{$snortbindir}snort -R _{$if_real} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface}");
-		snort_barnyard_start($snortcfg, $if_real, $background);
 	}
 }
 
@@ -682,33 +643,6 @@ function snort_reload_config($snortcfg, $signal="SIGHUP") {
 	}
 }
 
-function snort_barnyard_reload_config($snortcfg, $signal="HUP") {
-
-	/*************************************************************/
-	/* This function sends the passed SIGNAL to the Barnyard2    */
-	/* instance on the passed interface to cause Barnyard to     */
-	/* reload and parse the running configuration without        */
-	/* impacting packet processing.  It also executes the reload */
-	/* as a background process and returns control immediately   */
-	/* to the caller.                                            */
-	/*                                                           */
-	/*  $signal = HUP (default) parses and reloads config.       */
-	/*************************************************************/
-	global $g;
-
-	$snortdir = SNORTDIR;
-	$if_real = get_real_interface($snortcfg['interface']);
-
-	/******************************************************/
-	/* Only send the SIGHUP if Barnyard2 is running and   */
-	/* we can find a valid PID for the process.           */
-	/******************************************************/
-	if (isvalidpid("{$g['varrun_path']}/barnyard2_{$if_real}.pid")) {
-		syslog(LOG_NOTICE, "[Snort] Barnyard2 CONFIG RELOAD initiated for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
-		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/barnyard2_{$if_real}.pid");
-	}
-}
-
 /*
  this code block is for deleting logs while keeping the newest file,
  snort is linked to these files while running, do not take the easy way out
@@ -728,17 +662,16 @@ function snort_post_delete_logs($snort_uuid = 0) {
 		$snort_log_dir = SNORTLOGDIR . "/snort_{$if_real}{$snort_uuid}";
 
 		if ($if_real != '') {
-			/* Clean-up Barnyard2 files if any exist */
+			/* Clean-up rotated unified2 log files if any exist */
 			$filelist = glob("{$snort_log_dir}/*{$snort_uuid}_{$if_real}.u2.*");
+
+			/* Skip the most recently rotated log */
 			unset($filelist[count($filelist) - 1]);
 			foreach ($filelist as $file)
 				@unlink($file);
 
 			/* Clean-up packet capture files if any exist */
 			unlink_if_exists("{$snort_log_dir}/snort.log.*");
-
-			/* Clean-up Barnyard2 archived files if any exist */
-			unlink_if_exists("{$snort_log_dir}/barnyard2/archive/*");
 
 			/* Clean-up stats file if enabled */
 			if ($value['perform_stat'] == 'on')
@@ -1049,10 +982,6 @@ function sync_snort_package_config() {
 
 		/* create a snort.conf file for interface */
 		snort_generate_conf($value);
-
-		/* create barnyard2.conf file for interface */
-		if ($value['barnyard_enable'] == 'on')
-			snort_generate_barnyard2_conf($value, get_real_interface($value['interface']));
 	}
 
 	$snortglob = $config['installedpackages']['snortglobal'];
@@ -1078,7 +1007,7 @@ function snort_build_sid_msg_map($rules_path, $sid_file) {
 	/*************************************************************/
 	/* This function reads all the rules file in the passed      */
 	/* $rules_path variable and produces a properly formatted    */
-	/* sid-msg.map v2 file for use by Snort and/or barnyard2.    */
+	/* sid-msg.map v2 file for use by Snort.                     */
 	/*                                                           */
 	/* This function produces the new v2 format sid-msg.map      */
 	/* with the field layout as follows:                         */
@@ -3274,44 +3203,9 @@ function snort_create_rc() {
 			$daq_type = "--daq pcap --daq-mode passive --treat-drop-as-alert";
 		}
 
-		$start_barnyard = <<<EOE
-
-	sleep 2
-	if [ ! -f {$g['varrun_path']}/barnyard2_{$if_real}.pid ]; then
-		pid=`/bin/pgrep -F {$g['varrun_path']}/barnyard2_{$if_real}.pid`
-	fi
-	if [ -z \$pid ]; then
-		/usr/bin/logger -p daemon.info -i -t SnortStartup "Barnyard2 START for {$value['descr']}({$if_real})..."
-		{$snortbindir}barnyard2 -f snort_{$snort_uuid}_{$if_real}.u2 --pid-path {$g['varrun_path']} --nolock-pidfile -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/barnyard2.conf -d {$snortlogdir}/snort_{$if_real}{$snort_uuid} -D -q > /dev/null 2>&1
-	fi
-EOE;
-		$stop_barnyard2 = <<<EOE
-
-	if [ -f {$g['varrun_path']}/barnyard2_{$if_real}.pid ]; then
-		/usr/bin/logger -p daemon.info -i -t SnortStartup "Barnyard2 STOP for {$value['descr']}({$if_real})..."
-		pid=`/bin/pgrep -F {$g['varrun_path']}/barnyard2_{$if_real}.pid`
-                /bin/pkill -F {$g['varrun_path']}/barnyard2_{$if_real}.pid -a
-		time=0 timeout=30
-		while kill -0 \$pid 2>/dev/null; do
-			sleep 1
-			time=\$((time+1))
-			if [ \$time -gt \$timeout ]; then
-				break
-			fi
-		done
-		if [ -f {$g['varrun_path']}/barnyard2_{$if_real}.pid ]; then
-			/bin/rm {$g['varrun_path']}/barnyard2_{$if_real}.pid
-		fi
-        fi
-EOE;
-		if ($value['barnyard_enable'] == 'on')
-			$start_barnyard2 = $start_barnyard;
-		else
-			$start_barnyard2 = $stop_barnyard2;
-
 		$start_snort_iface_start[] = <<<EOE
 
-	# Start snort and barnyard2 for {$value['descr']}
+	# Start snort for {$value['descr']}
 	if [ ! -f {$g['varrun_path']}/snort_{$if_real}.pid ]; then
 		pid=`/bin/pgrep -fn "snort -R {$if_real} "`
 	else
@@ -3323,12 +3217,11 @@ EOE;
 		{$snortbindir}snort -R _{$if_real} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface} > /dev/null 2>&1
 	fi
 
-	{$start_barnyard2}
 EOE;
 
 		$start_snort_iface_stop[] = <<<EOE
 
-	# Stop snort and barnyard2 for {$value['descr']}
+	# Stop snort for {$value['descr']}
 	if [ -f {$g['varrun_path']}/snort_{$if_real}.pid ]; then
 		pid=`/bin/pgrep -F {$g['varrun_path']}/snort_{$if_real}.pid`
 		/usr/bin/logger -p daemon.info -i -t SnortStartup "Snort STOP for {$value['descr']}({$if_real})..."
@@ -3361,7 +3254,6 @@ EOE;
 	fi
 
 	sleep 1
-	{$stop_barnyard2}
 EOE;
 	}
 
@@ -3418,129 +3310,6 @@ EOD;
 	/* write out snort.sh */
 	@file_put_contents("{$rcdir}snort.sh", $snort_sh_text);
 	@chmod("{$rcdir}snort.sh", 0755);
-}
-
-function snort_generate_barnyard2_conf($snortcfg, $if_real) {
-
-	/****************************************************/
-	/* This function creates the barnyard2.conf config  */
-	/* file for the passed interface when Barnyard2 is  */
-	/* enabled.                                         */
-	/****************************************************/
-
-	global $config, $g;
-
-	$snort_uuid = $snortcfg['uuid'];
-	$snortdir = SNORTDIR;
-	$snortcfgdir = SNORTDIR . "/snort_{$snort_uuid}_{$if_real}";
-	$snortlogdir = SNORTLOGDIR . "/snort_{$if_real}{$snort_uuid}";
-
-	// Create required directories for barnyard2 if missing
-	if (!is_dir("{$snortlogdir}/barnyard2"))
-		safe_mkdir("{$snortlogdir}/barnyard2");
-	if (!is_dir("{$snortlogdir}/barnyard2/archive"))
-		safe_mkdir("{$snortlogdir}/barnyard2/archive");
-
-	// Create the barnyard2 waldo file if missing
-	if (!file_exists("{$snortlogdir}/barnyard2/{$snort_uuid}_{$if_real}.waldo")) {
-		@touch("{$snortlogdir}/barnyard2/{$snort_uuid}_{$if_real}.waldo");
-		mwexec("/bin/chmod 770 {$snortlogdir}/barnyard2/{$snort_uuid}_{$if_real}.waldo", true);
-	}
-
-	// If there is no gen-msg.map file present, create an
-	// empty one so Barnyard2 will at least start.
-	if (!file_exists("{$snortcfgdir}/gen-msg.map"))
-		@file_put_contents("{$snortcfgdir}/gen-msg.map", "");
-
-	$snortbarnyard_hostname_info = php_uname("n");
-
-	// Set general config parameters
-	$gen_configs = "config quiet\nconfig daemon\nconfig decode_data_link\nconfig alert_with_interface_name\nconfig event_cache_size:    8192";
-	if ($snortcfg['barnyard_show_year'] == 'on')
-		$gen_configs .= "\nconfig show_year";
-	if ($snortcfg['barnyard_obfuscate_ip'] == 'on')
-		$gen_configs .= "\nconfig obfuscate";
-	if ($snortcfg['barnyard_dump_payload'] == 'on')
-		$gen_configs .= "\nconfig dump_payload";
-	if ($snortcfg['barnyard_archive_enable'] == 'on')
-		$gen_configs .= "\nconfig archivedir:          {$snortlogdir}/barnyard2/archive";
-
-	// Set output plugins
-	$snortbarnyardlog_output_plugins = "";
-	if ($snortcfg['barnyard_mysql_enable'] == 'on') {
-		$by2_dbpwd = base64_decode($snortcfg['barnyard_dbpwd']);
-		$snortbarnyardlog_output_plugins .= "# database: log to a MySQL DB\noutput database: log, mysql, ";
-		$snortbarnyardlog_output_plugins .= "user={$snortcfg['barnyard_dbuser']} password={$by2_dbpwd} ";
-		$snortbarnyardlog_output_plugins .= "dbname={$snortcfg['barnyard_dbname']} host={$snortcfg['barnyard_dbhost']}";
-		if (isset($snortcfg['barnyard_sensor_name']) && strlen($snortcfg['barnyard_sensor_name']) > 0)
-			$snortbarnyardlog_output_plugins .= " sensor_name={$snortcfg['barnyard_sensor_name']}";
-		if ($snortcfg['barnyard_disable_sig_ref_tbl'] == 'on')
-			$snortbarnyardlog_output_plugins .= " disable_signature_reference_table";
-		$snortbarnyardlog_output_plugins .= "\n\n";
-	}
-	if ($snortcfg['barnyard_syslog_enable'] == 'on') {
-		if ($snortcfg['barnyard_syslog_local'] == 'on') {
-			$snortbarnyardlog_output_plugins .= "# syslog_full: log to a local syslog receiver\noutput alert_syslog_full: ";
-		}
-		else {
-			$snortbarnyardlog_output_plugins .= "# syslog_full: log to a remote syslog receiver\noutput log_syslog_full: ";
-		}
-		if (isset($snortcfg['barnyard_sensor_name']) && strlen($snortcfg['barnyard_sensor_name']) > 0)
-			$snortbarnyardlog_output_plugins .= "sensor_name {$snortcfg['barnyard_sensor_name']}, ";
-		else
-			$snortbarnyardlog_output_plugins .= "sensor_name {$snortbarnyard_hostname_info}, ";
-		if ($snortcfg['barnyard_syslog_local'] == 'on')
-			$snortbarnyardlog_output_plugins .= "local, log_facility {$snortcfg['barnyard_syslog_facility']}, log_priority {$snortcfg['barnyard_syslog_priority']}, operation_mode default\n\n";
-		else {
-			$snortbarnyardlog_output_plugins .= "server {$snortcfg['barnyard_syslog_rhost']}, protocol {$snortcfg['barnyard_syslog_proto']}, ";
-			$snortbarnyardlog_output_plugins .= "port {$snortcfg['barnyard_syslog_dport']}, operation_mode {$snortcfg['barnyard_syslog_opmode']}, payload_encoding {$snortcfg['barnyard_syslog_payload_encoding']}, ";
-			$snortbarnyardlog_output_plugins .= "log_facility {$snortcfg['barnyard_syslog_facility']}, log_priority {$snortcfg['barnyard_syslog_priority']}\n\n";
-		}
-	}
-	if ($snortcfg['barnyard_bro_ids_enable'] == 'on') {
-		$snortbarnyardlog_output_plugins .= "# alert_bro: log to a Bro-IDS receiver\n";
-		$snortbarnyardlog_output_plugins .= "output alert_bro: {$snortcfg['barnyard_bro_ids_rhost']}:{$snortcfg['barnyard_bro_ids_dport']}\n";
-	}
-
-	// Trim leading and trailing newlines and spaces
-	$snortbarnyardlog_output_plugins = rtrim($snortbarnyardlog_output_plugins, "\n");	
-
-	// User pass-through arguments
-	$snortbarnyardlog_config_pass_thru = str_replace("\r", "", base64_decode($snortcfg['barnconfigpassthru']));
-
-	// Create the conf file as a text string
-	$barnyard2_conf_text = <<<EOD
-
-#   barnyard2.conf
-#   barnyard2 can be found at http://www.securixlive.com/barnyard2/index.php
-#
-
-## General Barnyard2 settings ##
-{$gen_configs}
-config reference_file:	    {$snortcfgdir}/reference.config
-config classification_file: {$snortcfgdir}/classification.config
-config sid_file:	    {$snortcfgdir}/sid-msg.map
-config gen_file:            {$snortcfgdir}/gen-msg.map
-config hostname:            {$snortbarnyard_hostname_info}
-config interface:           {$if_real}
-config waldo_file:          {$snortlogdir}/barnyard2/{$snort_uuid}_{$if_real}.waldo
-config logdir:              {$snortlogdir}
-
-## START user pass through ##
-{$snortbarnyardlog_config_pass_thru}
-## END user pass through ##
-
-## Setup input plugins ##
-input unified2
-
-## Setup output plugins ##
-{$snortbarnyardlog_output_plugins}
-
-EOD;
-
-	/* Write out barnyard2_conf text string to disk */
-	@file_put_contents("{$snortcfgdir}/barnyard2.conf", $barnyard2_conf_text);
-	unset($barnyard2_conf_text);
 }
 
 function snort_prepare_rule_files($snortcfg, $snortcfgdir) {

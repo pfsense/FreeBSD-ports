@@ -244,10 +244,10 @@ if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 				syslog(LOG_NOTICE, gettext("[Snort] Alert tcpdump packet capture file cleanup job removed {$prune_count} tcpdump packet capture file(s) from {$snort_log_dir}/..."));
 		}
 
-		// Prune any aged-out Barnyard2 archived logs if any exist
-		if (is_dir("{$snort_log_dir}/barnyard2/archive") && $value['u2_archived_log_retention'] > 0) {
+		// Prune any aged-out unified2 archived logs if any exist
+		if (is_dir("{$snort_log_dir}") && $value['u2_archived_log_retention'] > 0) {
 			$now = time();
-			$files = glob("{$snort_log_dir}/barnyard2/archive/snort_{$value['uuid']}_{$if_real}.u2.*");
+			$files = glob("{$snort_log_dir}/snort_{$value['uuid']}_{$if_real}.u2.*");
 			$prune_count = 0;
 			foreach ($files as $f) {
 				if (($now - filemtime($f)) > ($value['u2_archived_log_retention'] * 3600)) {
@@ -257,7 +257,7 @@ if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 			}
 			unset($files);
 			if ($prune_count > 0)
-				syslog(LOG_NOTICE, gettext("[Snort] Barnyard2 archived logs cleanup job removed {$prune_count} file(s) from {$snort_log_dir}/barnyard2/archive/..."));
+				syslog(LOG_NOTICE, gettext("[Snort] Unified2 archived logs cleanup job removed {$prune_count} file(s) from {$snort_log_dir}/..."));
 		}
 
 		// Prune aged-out perfmon stats logs if any exist
