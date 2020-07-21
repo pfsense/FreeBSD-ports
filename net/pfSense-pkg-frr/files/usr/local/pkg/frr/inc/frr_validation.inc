@@ -280,7 +280,7 @@ function frr_ospf_interfaces_validate_input() {
 	if ((strlen($_POST['interfacearea']) > 0) && !(is_ipaddr($_POST['interfacearea']) || ctype_digit($_POST['interfacearea']))) {
 		$input_errors[] = "Area must be a valid IP address or integer number.";
 	}
-	if ((strlen($_POST['interfacearea']) == 0) && strlen(($config['installedpackages']['frrospfd']['config'][0]['defaultarea']) == 0)) {
+	if ((strlen($_POST['interfacearea']) == 0) && (strlen($config['installedpackages']['frrospfd']['config'][0]['defaultarea']) == 0)) {
 		$input_errors[] = "Area must either be set on the interface or a default area set for the OSPF instance.";
 	}
 	if (!empty($_POST['networktype']) && !in_array($_POST['networktype'], array('broadcast', 'non-broadcast', 'point-to-multipoint', 'point-to-point'))) {
