@@ -578,6 +578,8 @@ function frr_package_config_upgrade() {
 	/* Populate FRR OSPF Settings */
 	init_config_arr(array('installedpackages', 'frrospfd', 'config', '0'));
 	$ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
+	init_config_arr(array('installedpackages', 'frrospf6d', 'config', '0'));
+	$ospf6d_conf = &$config['installedpackages']['frrospf6d']['config'][0];
 	init_config_arr(array('installedpackages', 'frrglobalacls', 'config'));
 	$frr_acls_conf = &$config['installedpackages']['frrglobalacls']['config'];
 	init_config_arr(array('installedpackages', 'frrglobalroutemaps', 'config'));
@@ -685,9 +687,27 @@ function frr_package_config_upgrade() {
 	}
 
 	/* updatefib -> areatype */
-	if (isset($conf['updatefib'])) {
-		$conf['areatype'] = $conf['updatefib'];
-		unset($conf['updatefib']);
+	if (isset($ospfd_conf['updatefib'])) {
+		$ospfd_conf['areatype'] = $ospfd_conf['updatefib'];
+		unset($ospfd_conf['updatefib']);
+		$need_write = true;
+	}
+
+	/* area->defaultarea */
+	if ((strlen($ospfd_conf['defaultarea']) == 0) && !empty($ospfd_conf['area'])) {
+		$ospfd_conf['defaultarea'] = $ospfd_conf['area'];
+		unset($ospfd_conf['area']);
+		$need_write = true;
+	}
+	if ((strlen($ospf6d_conf['defaultarea']) == 0) && !empty($ospf6d_conf['area'])) {
+		$ospf6d_conf['defaultarea'] = $ospf6d_conf['area'];
+		unset($ospf6d_conf['area']);
+		$need_write = true;
+	}
+	/* areatype->defaultareatype */
+	if ((strlen($ospfd_conf['defaultareatype']) == 0) && !empty($ospfd_conf['areatype'])) {
+		$ospfd_conf['defaultareatype'] = $ospfd_conf['areatype'];
+		unset($ospfd_conf['areatype']);
 		$need_write = true;
 	}
 
