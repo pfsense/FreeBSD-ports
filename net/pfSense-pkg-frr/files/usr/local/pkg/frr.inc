@@ -275,11 +275,67 @@ function frr_generate_config_rcfile() {
 		return null;
 	}
 
+	/* Config area to daemon name mapping */
+	$daemons = array(
+		'frr' => array('zebra', 'staticd'),
+		'frrbfd' => array('bfdd'),
+		'frrbgp' => array('bgpd'),
+		'frrospfd' => array('ospfd'),
+		'frrospf6d' => array('ospf6d')
+	);
+
+	/* Get FRR daemons enabled */
+	$frrdaemons = array();
+	if (!empty($config['installedpackages']['frr']['config'][0]['enable'])) {
+		foreach ($daemons as $config_key => $daemon) {
+			if (!empty($config['installedpackages'][$config_key]['config'][0]['enable'])) {
+				$frrdaemons = array_merge($frrdaemons, $daemon);
+			}
+		}
+	}
+	$frr_daemons_string = implode(" ", $frrdaemons);
+
 	/* Get FRR daemon modules to append to daemon commands */
-	$zebradmodules = ($config['installedpackages']['frr']['config'][0]['enablesnmpagentx']) ? '-M snmp' : '';
-	$bgpdmodules = ($config['installedpackages']['frrbgp']['config'][0]['enablesnmpagentx']) ? '-M snmp' : '';
-	$ospfdmodules = ($config['installedpackages']['frrospfd']['config'][0]['enablesnmpagentx']) ? '-M snmp' : '';
-	$ospf6dmodules = ($config['installedpackages']['frrospf6d']['config'][0]['enablesnmpagentx']) ? '-M snmp' : '';
+	$frrmodules = array();
+	/* SNMP */
+	foreach ($daemons as $config_key => $daemon) {
+		$frrmodules[$daemon[0]] = '';
+
+		if ($config['installedpackages'][$config_key]['config'][0]['enablesnmpagentx']) {
+			$frrmodules[$daemon[0]] .= ' -M snmp';
+		}
+	}
+	/* BGP RPKI */
+	if ($config['installedpackages']['frrbgp']['config'][0]['enablerpki']) {
+		$frrmodules['bgpd'] .= ' -M rpki';
+	}
+
+	/* Build the start command for enabled daemons */
+	$frr_daemons_start_cmd = "";
+	foreach ($frrdaemons as $daemon) {
+		$frr_daemons_start_cmd .= "	echo \"Starting {$daemon}\"\n";
+		$frr_daemons_start_cmd .= "	/bin/rm -f /var/run/frr/{$daemon}.pid\n";
+		$frr_daemons_start_cmd .= "	if /bin/pgrep -q {$daemon}; then\n";
+		$frr_daemons_start_cmd .= "		/usr/bin/killall {$daemon}\n";
+		$frr_daemons_start_cmd .= "		/usr/bin/killall -9 {$daemon} 2>/dev/null\n";
+		$frr_daemons_start_cmd .= "	fi\n";
+		$frr_daemons_start_cmd .= "	/usr/local/sbin/{$daemon} -d";
+
+		if (!empty($frrmodules[$daemon])) {
+			$frr_daemons_start_cmd .= $frrmodules[$daemon];
+		}
+		$frr_daemons_start_cmd .= "\n";
+	}
+
+	/* Record the generated start command so that it can be compared to decide
+	 * whether FRR requires a restart or a configuration reload */
+	$frr_daemons_start_cmd_last = file_get_contents("/tmp/frr_start_command_last.txt");
+	if (strcmp($frr_daemons_start_cmd, $frr_daemons_start_cmd_last) == 0) {
+		$frr_restart_needed = false;
+	} else {
+		$frr_restart_needed = true;
+	}
+	file_put_contents("/tmp/frr_start_command_last.txt", $frr_daemons_start_cmd);
 
 	/* Setup a CARP VIP status check, if needed, so the service won't start
 	 * unless this node is in a MASTER state */
@@ -290,99 +346,55 @@ function frr_generate_config_rcfile() {
 		$vhid = escapeshellarg("vhid {$vip['vhid']}");
 		$carp_ip_status_check = <<<EOF
 
-CARP_STATUS=`/sbin/ifconfig {$carpcheckinterface} | /usr/bin/grep 'carp:' | /usr/bin/grep {$vhid} | /usr/bin/awk '{print \$2;}'`
-if [ \${CARP_STATUS} != "MASTER" ]; then
-	exit;
-fi
+	CARP_STATUS=`/sbin/ifconfig {$carpcheckinterface} | /usr/bin/grep 'carp:' | /usr/bin/grep {$vhid} | /usr/bin/awk '{print \$2;}'`
+	if [ \${CARP_STATUS} != "MASTER" ]; then
+		exit;
+	fi
 EOF;
-	}
+}
 
 	/* When stopping, stop all services and remove old PID files */
 	$rc_file_stop = <<<EOF
-if [ -e /var/run/frr/zebra.pid ]; then
-	/bin/pkill -F /var/run/frr/zebra.pid
-	/bin/rm -f /var/run/frr/zebra.pid
-fi
-if [ -e /var/run/frr/staticd.pid ]; then
-	/bin/pkill -F /var/run/frr/staticd.pid
-	/bin/rm -f /var/run/frr/staticd.pid
-fi
-if [ -e /var/run/frr/ospfd.pid ]; then
-	/bin/pkill -F /var/run/frr/ospfd.pid
-	/bin/rm -f /var/run/frr/ospfd.pid
-fi
-if [ -e /var/run/frr/ospf6d.pid ]; then
-	/bin/pkill -F /var/run/frr/ospf6d.pid
-	/bin/rm -f /var/run/frr/ospf6d.pid
-fi
-if [ -e /var/run/frr/bgpd.pid ]; then
-	/bin/pkill -F /var/run/frr/bgpd.pid
-	/bin/rm -f /var/run/frr/bgpd.pid
-fi
-if [ -e /var/run/frr/bfdd.pid ]; then
-	/bin/pkill -F /var/run/frr/bfdd.pid
-	/bin/rm -f /var/run/frr/bfdd.pid
-fi
+frr_daemons="zebra staticd ospfd ospf6d bgpd bfdd watchfrr"
+
+	for daemon in \$frr_daemons; do
+		if [ -e /var/run/frr/\$daemon.pid ]; then
+		echo "Stopping \$daemon"
+		/bin/pkill -F /var/run/frr/\$daemon.pid
+		/bin/rm -f /var/run/frr/\$daemon.pid
+		fi
+	done
+
 EOF;
 	/* When starting, cleanup first, then fix permissions and make sure no
 	 * other instances are running before starting back up. */
 	$rc_file_start = <<<EOF
 /bin/mkdir -p /var/run/frr
-/bin/mkdir -p /var/log/frr
-/bin/rm -f /var/run/frr/zebra.pid
-/bin/rm -f /var/run/frr/staticd.pid
-/bin/rm -f /var/run/frr/ospfd.pid
-/bin/rm -f /var/run/frr/ospf6d.pid
-/bin/rm -f /var/run/frr/bgpd.pid
-/bin/rm -f /var/run/frr/bfdd.pid
+	/bin/mkdir -p /var/log/frr
 
-if [ -s {$frr_config_base}/frr_md5pw_del.conf ]; then
-	/sbin/setkey -f {$frr_config_base}/frr_md5pw_del.conf
-fi
+	if [ -s {$frr_config_base}/frr_md5pw_del.conf ]; then
+		/sbin/setkey -f {$frr_config_base}/frr_md5pw_del.conf
+	fi
 
-/usr/sbin/chown -R frr:frr {$frr_config_base}
-/usr/sbin/chown -R frr:frr /var/run/frr
-/usr/sbin/chown -R frr:frr /var/log/frr
-# Ensure no other copies of the daemons are running or it breaks.
-sleep 1
-if /bin/pgrep -q zebra; then
-	/usr/bin/killall zebra
-	sleep 1
-	/usr/bin/killall -9 zebra 2>/dev/null
-fi
-if /bin/pgrep -q staticd; then
-	/usr/bin/killall staticd
-	sleep 1
-	/usr/bin/killall -9 staticd 2>/dev/null
-fi
-if /bin/pgrep -q ospfd; then
-	/usr/bin/killall ospfd
-	sleep 1
-	/usr/bin/killall -9 ospfd 2>/dev/null
-fi
-if /bin/pgrep -q ospf6d; then
-	/usr/bin/killall ospf6d
-	sleep 1
-	/usr/bin/killall -9 ospf6d 2>/dev/null
-fi
-if /bin/pgrep -q bgpd; then
-	/usr/bin/killall bgpd
-	sleep 1
-	/usr/bin/killall -9 bgpd 2>/dev/null
-fi
-if /bin/pgrep -q bfdd; then
-	/usr/bin/killall bfdd
-	sleep 1
-	/usr/bin/killall -9 bfdd 2>/dev/null
-fi
-{$carp_ip_status_check}
-[ -s {$frr_config_base}/zebra.conf ] && /usr/local/sbin/zebra -d -f {$frr_config_base}/zebra.conf {$zebradmodules}
-[ -s {$frr_config_base}/staticd.conf ] && /usr/local/sbin/staticd -d -f {$frr_config_base}/staticd.conf
-[ -s {$frr_config_base}/ospfd.conf ] && /usr/local/sbin/ospfd -d -f {$frr_config_base}/ospfd.conf {$ospfdmodules}
-[ -s {$frr_config_base}/ospf6d.conf ] && /usr/local/sbin/ospf6d -d -f {$frr_config_base}/ospf6d.conf {$ospf6dmodules}
-[ -s {$frr_config_base}/bgpd.conf ] && /usr/local/sbin/bgpd -d -f {$frr_config_base}/bgpd.conf {$bgpdmodules}
-[ -s {$frr_config_base}/bfdd.conf ] && /usr/local/sbin/bfdd -d -f {$frr_config_base}/bfdd.conf
-[ -s {$frr_config_base}/frr_md5pw_add.conf ] && /sbin/setkey -f {$frr_config_base}/frr_md5pw_add.conf
+	/usr/sbin/chown -R frr:frr {$frr_config_base}
+	/usr/sbin/chown -R frr:frr /var/run/frr
+	/usr/sbin/chown -R frr:frr /var/log/frr
+
+	{$carp_ip_status_check}
+
+	# Perform configuration check
+	echo "Performing intergrated config test"
+	/usr/local/bin/vtysh -C
+
+	# Start Daemons
+{$frr_daemons_start_cmd}
+	[ -s {$frr_config_base}/frr_md5pw_add.conf ] && /sbin/setkey -f {$frr_config_base}/frr_md5pw_add.conf
+
+	echo "Performing vtysh boot"
+	/usr/local/bin/vtysh -b --config_dir /var/etc/frr
+
+	echo "Starting watchfrr"
+	/usr/local/sbin/watchfrr -d -r /usr/local/etc/rc.d/frrbBrestartbB%s -s /usr/local/etc/rc.d/frrbBstartbB%s -k /usr/local/etc/rc.d/frrbBstopbB%s -b bB -t 30 {$frr_daemons_string}
 
 EOF;
 
@@ -416,11 +428,23 @@ EOF;
 			case "MASTER":
 			// Assume it's up if the status can't be determined.
 			default:
-				mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
+				if ($frr_restart_needed) {
+					log_error("FRR Restarting");
+					mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
+				} else {
+					log_error("FRR Reloading Configuration");
+					mwexec_bg("/usr/local/sbin/frr-reload");
+				}
 				break;
 		}
 	} else {
-		mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
+		if ($frr_restart_needed) {
+			log_error("FRR Restarting");
+			mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
+		} else {
+			log_error("FRR Reloading Configuration");
+			mwexec_bg("/usr/local/sbin/frr-reload");
+		}
 	}
 }
 
