@@ -30,11 +30,11 @@ function frr_generate_config_ospf_areas() {
 	$conffile = "";
 
 	/* Automatic Area: Default */
-	if (!isset($auto_areas[$ospfd_conf['area']]) || !is_array($auto_areas[$ospfd_conf['area']])) {
-		$auto_areas[$ospfd_conf['area']] = array();
+	if (!isset($auto_areas[$ospfd_conf['defaultarea']]) || !is_array($auto_areas[$ospfd_conf['defaultarea']])) {
+		$auto_areas[$ospfd_conf['defaultarea']] = array();
 	}
-	$auto_areas[$ospfd_conf['area']]['area'] = $ospfd_conf['defaultarea'];
-	$auto_areas[$ospfd_conf['area']]['type'] = $ospfd_conf['defaultareatype'];
+	$auto_areas[$ospfd_conf['defaultarea']]['area'] = $ospfd_conf['defaultarea'];
+	$auto_areas[$ospfd_conf['defaultarea']]['type'] = $ospfd_conf['defaultareatype'];
 
 	/* Automatic Areas: Interfaces with Authentication */
 	init_config_arr(array('installedpackages', 'frrospfdinterfaces', 'config'));
@@ -45,7 +45,7 @@ function frr_generate_config_ospf_areas() {
 		}
 
 		/* Use default area if the interface area is empty */
-		$ifarea = (!empty($conf['interfacearea'])) ? $conf['interfacearea'] : $ospfd_conf['area'];
+		$ifarea = (isset($conf['interfacearea']) && (strlen($conf['interfacearea']) > 0)) ? $conf['interfacearea'] : $ospfd_conf['defaultarea'];
 
 		if (!isset($auto_areas[$ifarea]) || !is_array($auto_areas[$ifarea])) {
 			$auto_areas[$ifarea] = array();

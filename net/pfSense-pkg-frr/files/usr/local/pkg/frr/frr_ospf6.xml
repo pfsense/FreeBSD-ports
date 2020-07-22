@@ -170,7 +170,7 @@
 					<size>10</size>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>cost</fielddescr>
+					<fielddescr>Cost</fielddescr>
 					<fieldname>routecost</fieldname>
 					<type>input</type>
 					<size>10</size>

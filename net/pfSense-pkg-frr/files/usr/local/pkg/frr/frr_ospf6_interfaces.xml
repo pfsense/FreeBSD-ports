@@ -177,15 +177,15 @@
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>Retransmit Interval</fielddescr>
-			<fieldname>retransmitinterval</fieldname>
-			<description>Retransmit Interval this OSPF6 interface in seconds (Default 5).</description>
-			<type>input</type>
-		</field>
-		<field>
 			<fielddescr>Dead Timer</fielddescr>
 			<fieldname>deadtimer</fieldname>
 			<description>Dead Timer for this OSPF6 interface in seconds (Default 40).</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Retransmit Interval</fielddescr>
+			<fieldname>retransmitinterval</fieldname>
+			<description>Retransmit Interval this OSPF6 interface in seconds (Default 5).</description>
 			<type>input</type>
 		</field>
 

@@ -394,8 +394,8 @@ function frr_ospf_validate_input() {
 function frr_ospf6_interfaces_validate_input() {
 	global $config, $g, $input_errors;
 
-	if ((strlen($_POST['interfacearea']) > 0) && !($_POST['interfacearea'] == '0.0.0.0' || $_POST['interfacearea'] == '0')) {
-		$input_errors[] = "Area must be 0 or 0.0.0.0, FRR currently only supports the backbone area.";
+	if ((strlen($_POST['interfacearea']) > 0) && !($_POST['interfacearea'] == '0.0.0.0')) {
+		$input_errors[] = "Area must be 0.0.0.0, FRR currently only supports the backbone area.";
 	}
 
 	if ((strlen($_POST['interfacearea']) == 0) && (strlen($config['installedpackages']['frrospf6d']['config'][0]['defaultarea']) == 0)) {
@@ -414,8 +414,8 @@ function frr_ospf6_validate_input() {
 		if (!(is_ipaddr($_POST['defaultarea']) || ctype_digit($_POST['defaultarea']))) {
 			$input_errors[] = "Default Area must be a valid IP address or integer number.";
 		}
-		if (!($_POST['defaultarea'] == '0.0.0.0' || $_POST['defaultarea'] == '0')) {
-			$input_errors[] = "Area must be 0 or 0.0.0.0, FRR OSPFv3 currently only supports the backbone area.";
+		if (!($_POST['defaultarea'] == '0.0.0.0')) {
+			$input_errors[] = "Area must be 0.0.0.0, FRR OSPFv3 currently only supports the backbone area.";
 		}
 	} else {
 		if (is_array($config['installedpackages']['frrospfd6interfaces'])) {
