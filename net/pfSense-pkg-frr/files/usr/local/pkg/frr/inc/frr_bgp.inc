@@ -137,7 +137,7 @@ function frr_bgp_generate_router() {
 		/* No BGP config, stop. */
 		return null;
 	}
-	$bgpconf = "\n# BGP Config\n";
+	$bgpconf = "";
 
 	/* BGP Router Options */
 	if (frr_validate_asnum($frr_bgp_conf['asnum'])) {
@@ -796,8 +796,8 @@ function frr_bgp_generate_communitylists() {
 }
 
 function frr_generate_config_bgp() {
-	global $config, $frr_config_base, $frr_auto_config_warning;
-	unlink_if_exists("{$frr_config_base}/bgpd.conf");
+	global $config, $frr_config_base, $frr_integrated_config;
+
 	/* Make bgpd config */
 	if (is_array($config['installedpackages']['frr']['config'])) {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
@@ -808,49 +808,32 @@ function frr_generate_config_bgp() {
 	/* Populate FRR BGP Settings */
 	if (is_array($config['installedpackages']['frrbgp']['config'])) {
 		$frr_bgp_conf = &$config['installedpackages']['frrbgp']['config'][0];
-	} else {
-		/* No BGP config, stop. */
-		return null;
 	}
 
 	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['bgpd']) &&
 	    !empty($config['installedpackages']['frrglobalraw']['config'][0]['bgpd'])) {
 		// if there is a raw config specified in the config.xml use that instead of the assisted config
-		$bgpdconffile = str_replace("\r","",base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['bgpd']));
+		$frr_integrated_config['bgpd'] = str_replace("\r","",base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['bgpd']));
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
-		if (empty($frr_conf['enable']) || empty($frr_bgp_conf['enable'])) {
-			/* FRR is disabled or BGP Daemon is not enabled. */
+		if (empty($frr_bgp_conf)) {
+			log_error("FRR BGPd: No config data found.");
+			return;
+		} elseif (empty($frr_conf['enable']) || empty($frr_bgp_conf['enable'])) {
+			/* FRR is disabled or BGP is not enabled. */
 			return;
 		}
-		$bgpdconffile = $frr_auto_config_warning;
-
-		/* Pull the password and logging option from the global settings */
-		if ($frr_conf['password']) {
-			$bgpdconffile .= "password {$frr_conf['password']}\n";
-		}
-		if ($frr_conf['logging']) {
-			$bgpdconffile .= "log syslog\n";
-		}
-		/* SNMP AgentX Support*/
-		if ($frr_bgp_conf['enablesnmpagentx']) {
-			$bgpdconffile .= "agentx\n";
-		}
+		$frr_integrated_config['bgpd'] = "";
 
 		/* BGP Router Config */
-		$bgpdconffile .= frr_bgp_generate_router();
+		$frr_integrated_config['bgpd'] .= frr_bgp_generate_router();
 		/* BGP Router Advanced Config */
-		$bgpdconffile .= frr_bgp_generate_routeradvanced();
+		$frr_integrated_config['bgpd'] .= frr_bgp_generate_routeradvanced();
 		/* BGP Neighbors */
-		$bgpdconffile .= frr_bgp_generate_neighbors();
+		$frr_integrated_config['bgpd'] .= frr_bgp_generate_neighbors();
 		/* BGP AS Paths */
-		$bgpdconffile .= frr_bgp_generate_aspaths();
+		$frr_integrated_config['bgpd'] .= frr_bgp_generate_aspaths();
 		/* BGP Community Lists */
-		$bgpdconffile .= frr_bgp_generate_communitylists();
-		/* BGP Prefix Lists */
-		$bgpdconffile .= frr_zebra_generate_prefixlists();
-		/* Some route-map commands are BGP-specific, so print them here, too. */
-		$bgpdconffile .= frr_zebra_generate_routemaps();
+		$frr_integrated_config['bgpd'] .= frr_bgp_generate_communitylists();
 	}
-	file_put_contents("{$frr_config_base}/bgpd.conf", $bgpdconffile);
 }

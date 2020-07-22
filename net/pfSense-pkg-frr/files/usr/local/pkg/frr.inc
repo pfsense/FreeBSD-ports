@@ -43,7 +43,7 @@ $frr_auto_config_warning = <<<EOF
 # This file was created by an automatic configuration generator.  #
 # The contents of this file will be overwritten without warning!  #
 ###################################################################
-
+!
 
 EOF;
 
@@ -532,6 +532,10 @@ function frr_setkey() {
 /* Main function to generate all of the configuration files and make general
  * preparations */
 function frr_generate_config() {
+	/* Create integrated configuration global */
+	global $frr_integrated_config;
+	$frr_integrated_config = array();
+	$frr_integrated_config['interfaces'] = array();
 
 	/* Make sure that the FRR config directory exists and has the
 	 * correct ownership info. */
@@ -539,6 +543,9 @@ function frr_generate_config() {
 	chown(PKG_FRR_CONFIG_BASE, 'frr');
 	chgrp(PKG_FRR_CONFIG_BASE, 'frr');
 	clearstatcache();
+
+	/* vtysh configuration */
+	frr_generate_config_vtysh();
 
 	/* Zebra configuration */
 	frr_generate_config_zebra();
@@ -560,6 +567,111 @@ function frr_generate_config() {
 
 	/* Setup TCP MD5 authentication */
 	frr_setkey();
+
+	/* Integrated configuration */
+	frr_generate_config_integrated();
+}
+
+function frr_generate_config_vtysh() {
+	global $config, $frr_config_base, $frr_auto_config_warning;
+
+	unlink_if_exists("{$frr_config_base}/vtysh.conf");
+
+	/* Populate FRR Global Settings */
+	if (is_array($config['installedpackages']['frr']['config'])) {
+		$frr_conf = &$config['installedpackages']['frr']['config'][0];
+	}
+
+	/* If there is no raw configuration and no GUI configuration, stop. */
+	if (empty($frr_conf)) {
+		log_error("FRR vtysh: No config data found.");
+		return;
+	}
+	if (empty($frr_conf['enable'])) {
+		/* FRR master switch is off. */
+		return;
+	}
+
+	$vtyshconffile = "service integrated-vtysh-config\n\n";
+	file_put_contents("{$frr_config_base}/vtysh.conf", $vtyshconffile);
+	chown("{$frr_config_base}/vtysh.conf", 'frr');
+	chgrp("{$frr_config_base}/vtysh.conf", 'frr');
+}
+
+function frr_flatten_config_interfaces() {
+	global $frr_integrated_config;
+
+	$interfaces_config = "";
+	foreach (array_keys($frr_integrated_config['interfaces']) as $interface) {
+		$interfaces_config .= "interface {$interface}\n";
+		$interfaces_config .= $frr_integrated_config['interfaces'][$interface];
+	}
+	unset($interface);
+
+	$frr_integrated_config['interfaces'] = $interfaces_config;
+}
+
+function frr_generate_config_integrated() {
+	global $config, $frr_config_base, $frr_auto_config_warning, $frr_integrated_config;
+
+	unlink_if_exists("{$frr_config_base}/frr.conf");
+
+	/* Populate FRR Global Settings */
+	if (is_array($config['installedpackages']['frr']['config'])) {
+		$frr_conf = &$config['installedpackages']['frr']['config'][0];
+	}
+
+	/* If there is no raw configuration and no GUI configuration, stop. */
+	if (empty($frr_conf)) {
+		log_error("FRR Integrated: No config data found.");
+		return;
+	}
+	if (empty($frr_conf['enable'])) {
+		/* FRR master switch is off. */
+		return;
+	}
+
+	$integratedconffile = $frr_auto_config_warning;
+	$integratedconffile .= "frr defaults traditional\n";
+	$integratedconffile .= "hostname " . $config['system']['hostname'] . "." . $config['system']['domain'] . "\n";
+
+	/* Management Password */
+	if ($frr_conf['password']) {
+		$integratedconffile .= "password {$frr_conf['password']}\n";
+	}
+	/* Logging Options */
+	if ($frr_conf['logging']) {
+		$integratedconffile .= "log syslog\n";
+	}
+	/* SNMP AgentX Support*/
+	if ($frr_conf['enablesnmpagentx']) {
+		$integratedconffile .= "agentx\n";
+	}
+
+	$integratedconffile .= "service integrated-vtysh-config\n";
+	$integratedconffile .= "!\n";
+
+	if (!empty($frr_conf['routerid'])) {
+		$integratedconffile .= "router-id {$frr_conf['routerid']}\n";
+		$integratedconffile .= "!\n";
+	}
+
+	frr_flatten_config_interfaces();
+	$conf_keys = array('interfaces', 'bgpd', 'ospfd', 'ospf6d', 'staticd', 'zebra', 'bfdd');
+	foreach ($conf_keys as $key) {
+		if (empty($frr_integrated_config[$key])) {
+			continue;
+		}
+		$integratedconffile .= $frr_integrated_config[$key];
+		$integratedconffile .= "!\n";
+	}
+
+	$integratedconffile .= "line vty\n";
+	$integratedconffile .= "!\n";
+
+	file_put_contents("{$frr_config_base}/frr.conf", $integratedconffile, LOCK_EX);
+	chown("{$frr_config_base}/frr.conf", 'frr');
+	chgrp("{$frr_config_base}/frr.conf", 'frr');
 }
 
 /* Upgrade the FRR configuration to the latest format */
