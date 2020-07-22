@@ -58,7 +58,7 @@
 		<section>Services</section>
 		<configfile>frr.xml</configfile>
 		<url>/pkg_edit.php?xml=frr/frr_ospf6.xml</url>
-	</menu>	
+	</menu>
 	<menu>
 		<name>FRR</name>
 		<section>Status</section>
@@ -102,7 +102,7 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
-		</tab>		
+		</tab>
 		<tab>
 			<text>Status</text>
 			<url>/status_frr.php</url>
@@ -143,7 +143,13 @@
 		<rcfile>frr.sh</rcfile>
 		<executable>ospf6d</executable>
 		<description>FRR OSPF6 routing daemon</description>
-	</service>	
+	</service>
+	<service>
+		<name>FRR watchfrr</name>
+		<rcfile>frr.sh</rcfile>
+		<executable>watchfrr</executable>
+		<description>FRR watchfrr watchdog daemon</description>
+	</service>
 	<plugins>
 		<item>
 			<type>plugin_carp</type>
