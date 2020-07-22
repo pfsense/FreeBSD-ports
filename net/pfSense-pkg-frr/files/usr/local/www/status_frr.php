@@ -249,11 +249,7 @@ switch ($_REQUEST['protocol']) {
 	case "config":
 		$title_label = "FRR Configuration";
 		$config_files = array(
-			'zebra',
-			'bgpd',
-			'ospfd',
-			'ospf6d',
-			'bfdd',
+			'frr',
 			);
 		foreach ($config_files as $cf) {
 			if (file_exists("{$pkg_homedir}/{$cf}.conf") &&

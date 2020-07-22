@@ -626,9 +626,8 @@ function frr_zebra_generate_acceptfilters() {
 
 /* Make zebra config */
 function frr_generate_config_zebra() {
-	global $config, $frr_config_base, $frr_auto_config_warning;
-	unlink_if_exists("{$frr_config_base}/zebra.conf");
-	unlink_if_exists("{$frr_config_base}/staticd.conf");
+	global $config, $frr_config_base, $frr_integrated_config;
+
 	/* Populate FRR Global Settings */
 	if (is_array($config['installedpackages']['frr']['config'])) {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
@@ -648,36 +647,22 @@ function frr_generate_config_zebra() {
 			/* FRR master switch is off. */
 			return;
 		}
-		$zebraconffile = $frr_auto_config_warning;
-		/* Management Password */
-		if ($frr_conf['password']) {
-			$zebraconffile .= "password {$frr_conf['password']}\n";
-		}
-		/* Logging Options */
-		if ($frr_conf['logging']) {
-			$zebraconffile .= "log syslog\n";
-		}
-		/* SNMP AgentX Support*/
-		if ($frr_conf['enablesnmpagentx']) {
-			$zebraconffile .= "agentx\n";
-		}
 
+		$frr_integrated_config['zebra'] = "";
 		/* Access Lists */
-		$zebraconffile .= frr_zebra_generate_accesslists();
+		$frr_integrated_config['zebra'] .= frr_zebra_generate_accesslists();
 		/* Prefix Lists */
-		$zebraconffile .= frr_zebra_generate_prefixlists();
+		$frr_integrated_config['zebra'] .= frr_zebra_generate_prefixlists();
 		/* Route Maps */
-		/* Per-protocol applications of Route Maps*/
-		$zebraconffile .= frr_zebra_generate_routemaps();
+		$frr_integrated_config['zebra'] .= frr_zebra_generate_routemaps();
 		/* Default Accept Filters */
-		$zebraconffile .= frr_zebra_generate_acceptfilters();
+		$frr_integrated_config['zebra'] .= frr_zebra_generate_acceptfilters();
 	}
-	file_put_contents("{$frr_config_base}/zebra.conf", $zebraconffile);
 
 	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['staticd']) &&
 	    !empty($config['installedpackages']['frrglobalraw']['config'][0]['staticd'])) {
 		// if there is a raw config specified in the config.xml use that instead of the assisted config
-		$staticdconffile = str_replace("\r", "", base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['staticd']));
+		$frr_integrated_config['staticd'] = str_replace("\r", "", base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['staticd']));
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_conf)) {
@@ -688,15 +673,11 @@ function frr_generate_config_zebra() {
 			/* FRR master switch is off. */
 			return;
 		}
-		$staticdconffile = $frr_auto_config_warning;
+		$frr_integrated_config['staticd'] = "";
 		/* Null Routes */
-		$staticdconffile .= frr_zebra_generate_nullroutes();
+		$frr_integrated_config['staticd'] .= frr_zebra_generate_nullroutes();
 		/* Static Routes */
-		$staticdconffile .= frr_zebra_generate_staticroutes();
-
-	}
-	if (!empty($staticdconffile) && ($staticdconffile != $frr_auto_config_warning)) {
-		file_put_contents("{$frr_config_base}/staticd.conf", $staticdconffile);
+		$frr_integrated_config['staticd'] .= frr_zebra_generate_staticroutes();
 	}
 }
 
