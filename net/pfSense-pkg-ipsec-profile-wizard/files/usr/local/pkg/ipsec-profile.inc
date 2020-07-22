@@ -903,7 +903,7 @@ function iep_get_uuids($num=4) {
  *     2: Auth Data (PSK string or certificate data)
  ******/
 function iep_get_client_auth($user) {
-	global $mobile_p1, $a_user, $a_cert, $a_mobilekey;
+	global $mobile_p1, $a_user, $a_cert, $a_mobilekey, $mobileconfig;
 	$auth_type = "";
 	$ike_id = "";
 	$auth_data = "";
@@ -925,12 +925,26 @@ function iep_get_client_auth($user) {
 			break;
 
 		/* If it's a user+cert based type, get the user and certificate */
+		case 'hybrid_rsa_server':
 		case 'hybrid_cert_server':
+		case 'xauth_rsa_server':
 		case 'xauth_cert_server':
 			$auth_type = "hybrid";
-			$userentry = getUserEntry($user);
-			$auth_data = iep_get_cert_client_cert($mobile_p1['caref'], $userentry);
-			$ike_id = iep_get_cert_client_certid($cert);
+			if (empty($mobileconfig['user_source']) ||
+			    ($mobileconfig['user_source'] == "Local Database")) {
+				$userentry = getUserEntry($user);
+				$auth_data = iep_get_cert_client_cert($mobile_p1['caref'], $userentry);
+				$ike_id = iep_get_cert_client_certid($cert);
+			} else {
+				foreach ($a_cert as $cert) {
+					/* Check for ID match */
+					if ($cert['refid'] == $user) {
+						$auth_data = $cert;
+						$ike_id = iep_get_cert_client_certid($cert);
+						break;
+					}
+				}
+			}
 			break;
 
 		/* If it's a user-based type, look up the user entry based on the username */
@@ -980,7 +994,7 @@ function iep_get_client_auth($user) {
  *   certificates, or IPsec keys.
  ******/
 function iep_get_valid_users() {
-	global $config, $mobile_p1, $a_user, $a_cert, $a_mobilekey;
+	global $config, $mobile_p1, $a_user, $a_cert, $a_mobilekey, $mobileconfig;
 	$valid_users = array();
 
 	switch ($mobile_p1['authentication_method']) {
@@ -998,11 +1012,21 @@ function iep_get_valid_users() {
 		/* Methods which use certificates and users */
 		case 'hybrid_cert_server':
 		case 'xauth_cert_server':
-			foreach ($a_user as $user) {
-				if (!empty(iep_get_cert_client_id($cert['caref'], $user))) {
-					$valid_users[$user['name']] = "{$user['name']}";
-					if (!empty($user['descr'])) {
-						$valid_users[$user['name']] .= " ({$user['descr']})";
+			if (empty($mobileconfig['user_source']) ||
+			    ($mobileconfig['user_source'] == "Local Database")) {
+				foreach ($a_user as $user) {
+					if (!empty(iep_get_cert_client_id($cert['caref'], $user))) {
+						$valid_users[$user['name']] = "{$user['name']}";
+						if (!empty($user['descr'])) {
+							$valid_users[$user['name']] .= " ({$user['descr']})";
+						}
+					}
+				}
+			} else {
+				foreach ($a_cert as $cert) {
+					/* Check for CA match */
+					if ($cert['caref'] == $mobile_p1['caref']) {
+						$valid_users[$cert['refid']] = $cert['descr'];
 					}
 				}
 			}
@@ -1261,7 +1285,7 @@ function iep_generate_ikev1() {
 	global $mobile_p1, $user, $ike, $authMethod, $extendedAuth, $setCertUuid, $auth_type, $ike_id, $auth_data;
 	if ($authMethod == 'SharedSecret') {
 		/* With hybrid auth, group/ID needs to end with "[hybrid]" */
-		if ($mobile_p1['authentication_method'] == "hybrid_rsa_server") {
+		if (in_array($mobile_p1['authentication_method'], array("hybrid_rsa_server", "hybrid_cert_server"))) {
 			$localId = $user . '[hybrid]';
 		/* If an ID is not specifically set, use username */
 		} elseif (!$ike_id) {
@@ -1278,7 +1302,8 @@ function iep_generate_ikev1() {
 
 	$ikeDict .= iep_key_data_str("XAuthEnabled", "integer",
 		(int)$extendedAuth, IKESCOPE);
-	if ($extendedAuth) {
+	if ($extendedAuth &&
+	    !(in_array($mobile_p1['authentication_method'], array("xauth_rsa_server", "xauth_cert_server")))) {
 		$ikeDict .= iep_key_data_str("XAuthName", "string", $user,
 			IKESCOPE);
 	}
@@ -1413,16 +1438,20 @@ function iep_get_auth_info() {
 	if ($ike == "IPSec") {
 		$certAuthMethods = array(
 			"xauth_rsa_server",
+			"xauth_cert_server",
 			"rsasig"
 		);
 		$extendedAuthMethods = array(
 			"hybrid_rsa_server",
+			"hybrid_cert_server",
 			"xauth_rsa_server",
+			"xauth_cert_server",
 			"xauth_psk_server"
 		);
 		$certUuidMethods = array(
 			"rsasig",
-			"xauth_rsa_server"
+			"xauth_rsa_server",
+			"xauth_cert_server"
 		);
 	} else {
 		$certAuthMethods = array(
@@ -1431,6 +1460,7 @@ function iep_get_auth_info() {
 			"eap-radius",
 			"hybrid_rsa_server",
 			"xauth_rsa_server",
+			"xauth_cert_server",
 			"rsasig"
 		);
 		$extendedAuthMethods = array(
@@ -1441,7 +1471,8 @@ function iep_get_auth_info() {
 		$certUuidMethods = array(
 			"rsasig",
 			"eap-tls",
-			"xauth_rsa_server"
+			"xauth_rsa_server",
+			"xauth_cert_server"
 		);
 	}
 
@@ -1777,7 +1808,7 @@ function iep_generate_payload($vpn_name, $server_address, $user = null) {
 		[ 'key' => 'PayloadDescription', 'type' => 'string',
 		'value' => "Contains configuration settings for connecting to VPN on pfSense firewall and VPN appliance" ],
 		[ 'key' => 'PayloadDisplayName', 'type' => 'string',
-		'value' => "pfSense remote access VPN configuration" ],
+		'value' => empty($vpn_name) ? "pfSense remote access VPN configuration" : $vpn_name ],
 		[ 'key' => 'PayloadIdentifier', 'type' => 'string',
 		'value' => $profId ],
 		[ 'key' => 'PayloadOrganization', 'type' => 'string',
