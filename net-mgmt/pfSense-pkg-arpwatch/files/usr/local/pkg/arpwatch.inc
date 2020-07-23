@@ -63,9 +63,11 @@ function arpwatch_install_command() {
 			    .' '.$disable_zero
 			    .' '.$enable_zeropad
 			    .' -f '.escapeshellarg($arp_file)
-			    .' -i '.escapeshellarg($ifname)
-			    .' -w '.escapeshellarg($notifications_recipient)
-			    ."\n";
+			    .' -i '.escapeshellarg($ifname);
+			if (!empty($notifications_recipient)) {
+			    $rc['start'] .= ' -w '.escapeshellarg($notifications_recipient);
+			}
+			$rc['start'] .= "\n";
 		}
 	}
 
@@ -108,7 +110,8 @@ function arpwatch_validate_input($post, &$input_errors) {
 		}
 	}
 
-	if (filter_var($post['notifications_recipient'], FILTER_VALIDATE_EMAIL) === false) {
+	if (!empty($post['notifications_recipient']) &&
+	    (filter_var($post['notifications_recipient'], FILTER_VALIDATE_EMAIL) === false)) {
 		$input_errors[] = gettext("{$post['notifications_recipient']} is not a valid email address.");
 	}
 
@@ -167,7 +170,8 @@ function arpwatch_parse_database() {
 			$oui = strtolower(substr($mac, 0, 8));
 			$matches = array();
 
-			if (preg_match("/^$oui\s+(.*)$/m", file_get_contents(ARPWATCH_LOCAL_DIR.'/ethercodes.dat'), $matches)) {
+			if (file_exists(ARPWATCH_LOCAL_DIR.'/ethercodes.dat') && 
+			    preg_match("/^$oui\s+(.*)$/m", file_get_contents(ARPWATCH_LOCAL_DIR.'/ethercodes.dat'), $matches)) {
 				$vendor = $matches[1];
 			} else {
 				$vendor = 'unknown';
@@ -228,7 +232,8 @@ $fd = fopen('php://stdin','r');
 $message = stream_get_contents($fd);
 fclose($fd);
 
-if (false !== $message) {
+if ((false !== $message) && ((false === strpos($message, ': Cron ')) ||
+    ($config['installedpackages']['arpwatch']['config'][0]['cron_disable'] != 'on'))) {
 	$subject = array();
 	preg_match('/^Subject: (.*)$/m', $message, $subject);
 	init_config_arr(array('installedpackages', 'arpwatch', 'config', 0, 'row'));
