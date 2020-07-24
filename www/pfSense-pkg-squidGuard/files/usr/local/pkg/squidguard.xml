@@ -118,6 +118,13 @@
 			<type>password</type>
 		</field>
 		<field>
+			<fielddescr>LDAP Cache Time</fielddescr>
+			<fieldname>ldapcachetime</fieldname>
+			<description><![CDATA[Number of seconds to cache LDAP Results (recommended value: 300)]]></description>
+			<default_value>0</default_value>
+			<type>input</type>
+		</field>
+		<field>
 			<fielddescr>Strip NT domain name</fielddescr>
 			<fieldname>stripntdomain</fieldname>
 			<description><![CDATA[Strip NT domain name component from user names (/ or \ separated).]]></description>

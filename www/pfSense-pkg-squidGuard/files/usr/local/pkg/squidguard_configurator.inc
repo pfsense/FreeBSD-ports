@@ -245,6 +245,7 @@ define('F_WORKDIR',             'workdir');
 define('F_LDAPENABLE',          'ldap_enable');
 define('F_LDAPBINDDN',          'ldapbinddn');
 define('F_LDAPBINDPASS',        'ldapbindpass');
+define('F_LDAPCACHETIME',       'ldapcachetime');
 define('F_LDAPVERSION',         'ldapversion');
 define('F_STRIPNTDOMAIN',       'stripntdomain');
 define('F_STRIPREALM',          'striprealm');
@@ -849,6 +850,7 @@ function sg_create_config()
     if ( $squidguard_config[F_LDAPENABLE] == 'on' ) {
         $sgconf[] = "ldapbinddn {$squidguard_config[F_LDAPBINDDN]}";
         $sgconf[] = "ldapbindpass {$squidguard_config[F_LDAPBINDPASS]}";
+        $sgconf[] = "ldapcachetime {$squidguard_config[F_LDAPCACHETIME]}";
         $sgconf[] = "ldapprotover {$squidguard_config[F_LDAPVERSION]}";
         if ( $squidguard_config[F_STRIPNTDOMAIN] )
             $sgconf[] = "stripntdomain true";
