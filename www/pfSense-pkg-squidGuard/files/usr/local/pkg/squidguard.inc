@@ -1032,6 +1032,7 @@ function convert_pfxml_to_sgxml() {
     $sgxml[F_LDAPENABLE]       = $pfxml['ldap_enable'];
     $sgxml[F_LDAPBINDDN]       = $pfxml['ldapbinddn'];
     $sgxml[F_LDAPBINDPASS]     = $pfxml['ldapbindpass'];
+    $sgxml[F_LDAPCACHETIME]    = $pfxml['ldapcachetime'];
     $sgxml[F_LDAPVERSION]      = $pfxml['ldapversion'];
     $sgxml[F_STRIPNTDOMAIN]    = $pfxml['stripntdomain'];
     $sgxml[F_STRIPREALM]       = $pfxml['striprealm'];
