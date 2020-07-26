@@ -628,6 +628,24 @@ function frr_flatten_config_interfaces() {
 	$interfaces_config = "";
 	foreach (array_keys($frr_integrated_config['interfaces']) as $interface) {
 		$interfaces_config .= "interface {$interface}\n";
+
+		foreach(array('ospfd', 'ospf6d') as $service) {
+			if (empty($frr_integrated_config['interfaces_descr'][$interface][$service])) {
+				continue;
+			}
+			if (!isset($interface_description)) {
+				$interface_description = "";
+			} else {
+				$interface_description .= " | ";
+			}
+			$interface_description .= "{$service}: {$frr_integrated_config['interfaces_descr'][$interface][$service]}";
+		}
+		unset($service);
+
+		if (!empty($interface_description)) {
+			$interfaces_config .= " description {$interface_description}\n";
+		}
+
 		$interfaces_config .= $frr_integrated_config['interfaces'][$interface];
 	}
 	unset($interface);

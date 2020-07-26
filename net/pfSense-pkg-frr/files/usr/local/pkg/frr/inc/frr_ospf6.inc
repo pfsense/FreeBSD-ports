@@ -68,6 +68,9 @@ function frr_generate_config_ospf6() {
 					$frr_integrated_config['interfaces'][$realif] = "";
 				}
 
+				if (!empty($conf['descr'])) {
+					$frr_integrated_config['interfaces_descr'][$realif]['ospf6d'] = $conf['descr'];
+				}
 				if (isset($conf['instanceid']) && (strlen($conf['instanceid']) > 0)) {
 					$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 instance-id {$conf['instanceid']}\n";
 				}

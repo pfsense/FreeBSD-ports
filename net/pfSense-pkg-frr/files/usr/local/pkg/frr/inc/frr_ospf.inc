@@ -186,6 +186,9 @@ function frr_generate_config_ospf_interfaces() {
 			$frr_integrated_config['interfaces'][$realif] = "";
 		}
 
+		if (!empty($conf['descr'])) {
+			$frr_integrated_config['interfaces_descr'][$realif]['ospfd'] = $conf['descr'];
+		}
 		if (!empty($conf['networktype'])) {
 			$frr_integrated_config['interfaces'][$realif] .= " ip ospf network {$conf['networktype']}\n";
 		}
