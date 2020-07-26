@@ -681,7 +681,7 @@ function frr_generate_config_integrated() {
 	}
 
 	frr_flatten_config_interfaces();
-	$conf_keys = array('interfaces', 'bgpd', 'ospfd', 'ospf6d', 'staticd', 'zebra', 'bfdd');
+	$conf_keys = array('staticd', 'interfaces', 'bgpd', 'ospfd', 'ospf6d', 'zebra', 'bfdd');
 	foreach ($conf_keys as $key) {
 		if (empty($frr_integrated_config[$key])) {
 			continue;
