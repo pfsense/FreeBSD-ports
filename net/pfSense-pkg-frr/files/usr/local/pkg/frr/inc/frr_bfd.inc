@@ -26,7 +26,7 @@ function frr_get_bfd_peers($includedefault = true) {
 
 	if ($includedefault) {
 		$peers[] = array('name' => 'Default', 'value' => 'default');
-	}	
+	}
 	if (is_array($config['installedpackages']['frrbfdpeers']['config'])) {
 		foreach ($config['installedpackages']['frrbfdpeers']['config'] as $peer) {
 			$peer_name = $peer['peer'];
@@ -120,7 +120,7 @@ function frr_bfd_generate_peers() {
 			} else {
 				$bfdpeerconf .= "  no shutdown\n";
 			}
-			$bfdpeerconf .= "!\n";
+			$bfdpeerconf .= " !\n";
 		}
 	}
 
