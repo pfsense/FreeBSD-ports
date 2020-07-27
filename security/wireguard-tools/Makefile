@@ -13,7 +13,7 @@ USES=		gmake
 
 WRKSRC?=	${WRKDIR}/${GL_PROJECT}-${GL_COMMIT}-${GL_COMMIT}/src
 
-PLIST_FILES=	bin/wg bin/wg-quick
+PLIST_FILES=	bin/wg
 
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
