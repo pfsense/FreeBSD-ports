@@ -1276,6 +1276,7 @@
     SUBDIR += webscarab
     SUBDIR += whatweb
     SUBDIR += wipe
+    SUBDIR += wireguard-tools
     SUBDIR += wolfssl
     SUBDIR += wpa_supplicant
     SUBDIR += xca
