@@ -272,7 +272,7 @@ function frr_bgp_generate_routeradvanced() {
 		/* No BGP Advanced config, stop. */
 		return null;
 	}
-	$advconf = "\n  # Advanced BGP Config\n";
+	$advconf = "";
 	/* Advanced Options */
 	if (frr_validate_ulong($frr_bgpadv_conf['default_localpref'])) {
 		$advconf .= " bgp default local-preference {$frr_bgpadv_conf['default_localpref']}\n";
@@ -304,6 +304,9 @@ function frr_bgp_generate_routeradvanced() {
 	}
 	if (!empty($frr_bgpadv_conf['networkimportcheck'])) {
 		$advconf .= " bgp network import-check\n";
+	}
+	if (!empty($frr_bgpadv_conf['rejcectassetasconfedset'])) {
+		$advconf .= " bgp reject-as-sets\n";
 	}
 
 	/* Route Reflecting */
@@ -390,6 +393,9 @@ function frr_bgp_generate_routeradvanced() {
 	}
 	if (!empty($frr_bgpadv_conf['enforcefirstas'])) {
 		$advconf .= " bgp enforce-first-as\n";
+	}
+	if (!empty($frr_bgpadv_conf['disableebgprequirepolicy'])) {
+		$advconf .= " no bgp ebgp-requires-policy\n";
 	}
 
 	/* Networking Behavior */
