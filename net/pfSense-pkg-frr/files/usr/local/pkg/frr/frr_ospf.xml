@@ -115,6 +115,11 @@
 			</description>
 			<type>input</type>
 		</field>
+
+		<field>
+			<name>Modules</name>
+			<type>listtopic</type>
+		</field>
 		<field>
 			<fielddescr>Enable SNMP AgentX</fielddescr>
 			<fieldname>enablesnmpagentx</fieldname>
