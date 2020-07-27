@@ -141,10 +141,21 @@
 			<description>If checked, BGP will not assume IPv4 unicast by default.</description>
 			<type>checkbox</type>
 		</field>
+
+		<field>
+			<name>Modules</name>
+			<type>listtopic</type>
+		</field>
 		<field>
 			<fielddescr>Enable SNMP AgentX</fielddescr>
 			<fieldname>enablesnmpagentx</fieldname>
 			<description>Enable agentx support for accessing FRR Zebra data via SNMP with the net-snmp package.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Enable BGP RPKI</fielddescr>
+			<fieldname>enablerpki</fieldname>
+			<description>Enable BGP Resource Public Key Infrastructure.</description>
 			<type>checkbox</type>
 		</field>
 
