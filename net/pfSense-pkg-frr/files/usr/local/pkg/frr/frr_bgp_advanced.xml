@@ -152,6 +152,12 @@
 			<description>Check if the BGP network route exists in IGP</description>
 			<type>checkbox</type>
 		</field>
+		<field>
+			<fielddescr>Reject AS_SET/AS_CONFED_SET Routes</fielddescr>
+			<fieldname>rejcectassetasconfedset</fieldname>
+			<description>Reject incoming and outgoing routes with AS_SET or AS_CONFED_SET type</description>
+			<type>checkbox</type>
+		</field>
 
 		<field>
 			<name>Route Reflecting</name>
@@ -377,6 +383,12 @@
 			<fielddescr>Enforce First AS</fielddescr>
 			<fieldname>enforcefirstas</fieldname>
 			<description>Enforce the first AS for EBGP routes</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Disable EBGP Require Policy</fielddescr>
+			<fieldname>disableebgprequirepolicy</fieldname>
+			<description>Disable the requirement to apply incoming and outgoing filter to eBGP sessions</description>
 			<type>checkbox</type>
 		</field>
 
