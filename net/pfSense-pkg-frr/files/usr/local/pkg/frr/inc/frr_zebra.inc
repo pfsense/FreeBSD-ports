@@ -729,18 +729,16 @@ function frr_generate_config_zebra() {
 }
 
 /* The following function checks for the presence of and writes the contents of "/var/etc/frr/$module.conf" into the $module . "running" field within the config.xml file  */
-function write_frr_running_config() {
-	global $config, $frr_config_base, $frr_modules;
-	$modules = array('zebra', 'staticd', 'bgpd', 'ospfd', 'ospf6d', 'bfdd');
+function read_frr_running_config() {
+	global $config, $frr_config_base;
 
-	foreach ($frr_modules as $module) {
-		$moduleRunningFile = "{$frr_config_base}/{$module}.conf";
-		if (file_exists($moduleRunningFile) && (filesize($moduleRunningFile) > 0)) {
-			$moduleRunning = fopen("$moduleRunningFile", "r");
-			$config['installedpackages']['frrglobalraw']['config'][0][$module . "running"] = base64_encode(fread($moduleRunning, filesize($moduleRunningFile)));
-		} else {
-			$config['installedpackages']['frrglobalraw']['config'][0][$module . "running"] = base64_encode("# file {$module}.conf does not exist or is empty.");
-		}
+	$frrRunningFile = "{$frr_config_base}/frr.conf";
+	log_error($frrRunningFile);
+	if (file_exists($frrRunningFile) && (filesize($frrRunningFile) > 0)) {
+		$moduleRunning = fopen("$frrRunningFile", "r");
+		$config['installedpackages']['frrglobalraw']['config'][0]["frrrunning"] = base64_encode(fread($moduleRunning, filesize($frrRunningFile)));
+	} else {
+		$config['installedpackages']['frrglobalraw']['config'][0]["frrrunning"] = base64_encode("# file frr.conf does not exist or is empty.");
 	}
-	write_config(gettext("FRR: Wrote running configuration to pfSense config file."), false, true);
+	write_config(gettext("FRR: Saved running configuration into pfSense config file."), false, true);
 }

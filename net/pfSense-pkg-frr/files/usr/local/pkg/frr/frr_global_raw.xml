@@ -66,7 +66,7 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
-		</tab>		
+		</tab>
 		<tab>
 			<text>Status</text>
 			<url>/status_frr.php</url>
@@ -125,12 +125,6 @@
 			<fielddescr></fielddescr>
 			<description>
 				<![CDATA[
-				<p>
-				<button onclick='onCopyClick(zebra, zebrarunning); onCopyClick(staticd, staticdrunning);
-					onCopyClick(bgpd, bgpdrunning); onCopyClick(ospfd, ospfdrunning); 
-					onCopyClick(ospf6d, ospf6drunning); onCopyClick(bfdd, bfddrunning);
-					return false'>Copy All Running to Saved</button>
-				</p>
 				<p><b>Clicking "Update Running" will fill RUNNING fields with current configuration.</p>
 				<p><button class="btn btn-success btn-sm" name='update_running' id='update_running' type='submit' value='Update Running'><i class="fa fa-refresh icon-embed-btn"></i>Update Running</button></p>
 				]]>
@@ -146,8 +140,8 @@
 			<fielddescr></fielddescr>
 			<description>
 				<![CDATA[
-				The boxes on this page will override the GUI configuration with a completely custom configuration passed through
-				directly to FRR. Using this feature, experienced users can utilize more complicated configurations than are possible
+				The boxes on this page will override the GUI configuration with a custom configuration passed through directly to FRR.<br />
+				Using this feature, experienced users can utilize more complicated configurations than are possible
 				using the GUI while allowing the firewall to manage the processes and retaining the configuration in a way that survives
 				between reboots and upgrades.
 				]]>
@@ -155,8 +149,8 @@
 			<type>info</type>
 		</field>
 		<field>
-			<fielddescr>SAVED zebra.conf</fielddescr>
-			<fieldname>zebra</fieldname>
+			<fielddescr>SAVED frr.conf</fielddescr>
+			<fieldname>frr</fieldname>
 			<description>
 				<![CDATA[
 				Note: If a configuration is placed in this box and saved, the GUI settings (in all other tabs) will be overridden with the contents of this box.<br />
@@ -169,13 +163,13 @@
 			<cols>65</cols>
 		</field>
 		<field>
-			<fielddescr>RUNNING zebra.conf</fielddescr>
-			<fieldname>zebrarunning</fieldname>
+			<fielddescr>RUNNING frr.conf</fielddescr>
+			<fieldname>frrrunning</fieldname>
 			<description>
 				<![CDATA[
 				<script>
-				var zebra = document.getElementById('zebra');
-				var zebrarunning = document.getElementById('zebrarunning'); 
+				var frr = document.getElementById('frr');
+				var frrrunning = document.getElementById('frrrunning');
 				function onCopyClick(elem1, elem2) {
 					elem1.value = elem2.value;
 					configCheck(elem1, elem2);
@@ -188,222 +182,17 @@
 						elem1.style.backgroundColor = elem2.style.backgroundColor = 'white';
 					}
 				}
-				window.onload = configCheck(zebra, zebrarunning);
-				zebra.addEventListener('keyup', function() { configCheck(zebra, zebrarunning)});
-				zebrarunning.addEventListener('keyup', function() { configCheck(zebra, zebrarunning) });
+				window.onload = configCheck(frr, frrrunning);
+				zebra.addEventListener('keyup', function() { configCheck(frr, frrrunning)});
+				zebrarunning.addEventListener('keyup', function() { configCheck(frr, frrrunning) });
 				</script>
 				]]>
 				<![CDATA[
-				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/frr/zebra.conf".<br />
+				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/frr/frr.conf".<br />
 				Copy this text block to the "SAVED" block above to ensure configuration is saved.<br />
 				When finished copying, click "Save" at the bottom of the form.<br />
 				</b>
-				<button onclick='onCopyClick(zebra, zebrarunning); return false'>Copy Zebra Running to Saved</button>
-				</p>
-				]]>
-			</description>
-			<type>textarea</type>
-			<encoding>base64</encoding>
-			<rows>30</rows>
-			<cols>65</cols>
-		</field>
-		<field>
-			<fielddescr>SAVED staticd.conf</fielddescr>
-			<fieldname>staticd</fieldname>
-			<description>
-				<![CDATA[
-				Note: If a configuration is placed in this box and saved, the GUI settings (in all other tabs) will be overridden with the contents of this box.<br />
-				To get back the GUI configuration save this form below once with empty input fields.
-				]]>
-			</description>
-			<type>textarea</type>
-			<encoding>base64</encoding>
-			<rows>30</rows>
-			<cols>65</cols>
-		</field>
-		<field>
-			<fielddescr>RUNNING staticd.conf</fielddescr>
-			<fieldname>staticdrunning</fieldname>
-			<description>
-				<![CDATA[
-				<script>
-				var staticd = document.getElementById('staticd');
-				var staticdrunning = document.getElementById('staticdrunning'); 
-				window.onload = configCheck(staticd, staticdrunning);
-				staticd.addEventListener('keyup', function() { configCheck(staticd, staticdrunning)});
-				staticdrunning.addEventListener('keyup', function() { configCheck(staticd, staticdrunning) });
-				</script>
-				]]>
-				<![CDATA[
-				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/frr/staticd.conf".<br />
-				Copy this text block to the "SAVED" block above to ensure configuration is saved.<br />
-				When finished copying, click "Save" at the bottom of the form.<br />
-				</b>
-				<button onclick='onCopyClick(staticd, staticdrunning); return false'>Copy STATICd Running to Saved</button>
-				</p>
-				]]>
-			</description>
-			<type>textarea</type>
-			<encoding>base64</encoding>
-			<rows>30</rows>
-			<cols>65</cols>
-		</field>
-		<field>
-			<fielddescr>SAVED bgpd.conf</fielddescr>
-			<fieldname>bgpd</fieldname>
-			<description>
-				<![CDATA[
-				Note: If a configuration is placed in this box and saved, the GUI settings (in all other tabs) will be overridden with the contents of this box.<br />
-				To get back the GUI configuration save this form below once with empty input fields.
-				]]>
-			</description>
-			<type>textarea</type>
-			<encoding>base64</encoding>
-			<rows>30</rows>
-			<cols>65</cols>
-		</field>
-		<field>
-			<fielddescr>RUNNING bgpd.conf</fielddescr>
-			<fieldname>bgpdrunning</fieldname>
-			<description>
-				<![CDATA[
-				<script>
-				var bgpd = document.getElementById('bgpd');
-				var bgpdrunning = document.getElementById('bgpdrunning'); 
-				window.onload = configCheck(bgpd, bgpdrunning);
-				bgpd.addEventListener('keyup', function() { configCheck(bgpd, bgpdrunning)});
-				bgpdrunning.addEventListener('keyup', function() { configCheck(bgpd, bgpdrunning) });
-				</script>
-				]]>
-				<![CDATA[
-				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/frr/bgpd.conf".<br />
-				Copy this text block to the "SAVED" block above to ensure configuration is saved.<br />
-				When finished copying, click "Save" at the bottom of the form.<br />
-				</b>
-				<button onclick='onCopyClick(bgpd, bgpdrunning); return false'>Copy BGPd Running to Saved</button>
-				</p>
-				]]>
-			</description>
-			<type>textarea</type>
-			<encoding>base64</encoding>
-			<rows>30</rows>
-			<cols>65</cols>
-		</field>
-		<field>
-			<fielddescr>SAVED bfdd.conf</fielddescr>
-			<fieldname>bfdd</fieldname>
-			<description>
-				<![CDATA[
-				Note: If a configuration is placed in this box and saved, the GUI settings (in all other tabs) will be overridden with the contents of this box.<br />
-				To get back the GUI configuration save this form below once with empty input fields.
-				]]>
-			</description>
-			<type>textarea</type>
-			<encoding>base64</encoding>
-			<rows>30</rows>
-			<cols>65</cols>
-		</field>
-		<field>
-			<fielddescr>RUNNING bfdd.conf</fielddescr>
-			<fieldname>bfddrunning</fieldname>
-			<description>
-				<![CDATA[
-				<script>
-				var bfdd = document.getElementById('bfdd');
-				var bfddrunning = document.getElementById('bfddrunning');
-				window.onload = configCheck(bfdd, bfddrunning);
-				zebra.addEventListener('keyup', function() { configCheck(bfdd, bfddrunning)});
-				zebrarunning.addEventListener('keyup', function() { configCheck(bfdd, bfddrunning) });
-				</script>
-				]]>
-				<![CDATA[
-				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/frr/bfdd.conf".<br />
-				Copy this text block to the "SAVED" block above to ensure configuration is saved.<br />
-				When finished copying, click "Save" at the bottom of the form.<br />
-				</b>
-				<button onclick='onCopyClick(bfdd, bfddrunning); return false'>Copy BFDd Running to Saved</button>
-				</p>
-				]]>
-			</description>
-			<type>textarea</type>
-			<encoding>base64</encoding>
-			<rows>30</rows>
-			<cols>65</cols>
-		</field>
-		<field>
-			<fielddescr>SAVED ospfd.conf</fielddescr>
-			<fieldname>ospfd</fieldname>
-			<description>
-				<![CDATA[
-				Note: If a configuration is placed in this box and saved, the GUI settings (in all other tabs) will be overridden with the contents of this box.<br />
-				To get back the GUI configuration save this form below once with empty input fields.
-				]]>
-			</description>
-			<type>textarea</type>
-			<encoding>base64</encoding>
-			<rows>30</rows>
-			<cols>65</cols>
-		</field>
-		<field>
-			<fielddescr>RUNNING ospfd.conf</fielddescr>
-			<fieldname>ospfdrunning</fieldname>
-			<description>
-				<![CDATA[
-				<script>
-				var ospfd = document.getElementById('ospfd');
-				var ospfdrunning = document.getElementById('ospfdrunning'); 
-				window.onload = configCheck(ospfd, ospfdrunning);
-				ospfd.addEventListener('keyup', function() { configCheck(ospfd, ospfdrunning)});
-				ospfdrunning.addEventListener('keyup', function() { configCheck(ospfd, ospfdrunning) });
-				</script>
-				]]>
-				<![CDATA[
-				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/frr/ospfd.conf".<br />
-				Copy this text block to the "SAVED" block above to ensure configuration is saved.<br />
-				When finished copying, click "Save" at the bottom of the form.<br />
-				</b>
-				<button onclick='onCopyClick(ospfd, ospfdrunning); return false'>Copy OSPFd Running to Saved</button>
-				</p>
-				]]>
-			</description>
-			<type>textarea</type>
-			<encoding>base64</encoding>
-			<rows>30</rows>
-			<cols>65</cols>
-		</field>
-		<field>
-			<fielddescr>SAVED ospf6d.conf</fielddescr>
-			<fieldname>ospf6d</fieldname>
-			<description>
-				<![CDATA[
-				Note: If a configuration is placed in this box and saved, the GUI settings (in all other tabs) will be overridden with the contents of this box.<br />
-				To get back the GUI configuration save this form below once with empty input fields.
-				]]>
-			</description>		
-			<type>textarea</type>
-			<encoding>base64</encoding>
-			<rows>30</rows>
-			<cols>65</cols>
-		</field>
-		<field>
-			<fielddescr>RUNNING ospf6d.conf</fielddescr>
-			<fieldname>ospf6drunning</fieldname>
-			<description>
-				<![CDATA[
-				<script>
-				var ospf6d = document.getElementById('ospf6d');
-				var ospf6drunning = document.getElementById('ospf6drunning'); 
-				window.onload = configCheck(ospf6d, ospf6drunning);
-				ospf6d.addEventListener('keyup', function() { configCheck(ospf6d, ospf6drunning)});
-				ospf6drunning.addEventListener('keyup', function() { configCheck(ospf6d, ospf6drunning) });
-				</script>
-				]]>
-				<![CDATA[
-				<p><b>Note: This is the CURRENT RUNNING CONFIG from "/var/etc/frr/ospf6d.conf".<br />
-				Copy this text block to the "SAVED" block above to ensure configuration is saved.<br />
-				When finished copying, click "Save" at the bottom of the form.<br />
-				</b>
-				<button onclick='onCopyClick(ospf6d, ospf6drunning); return false'>Copy OSPF6d Running to Saved</button>
+				<button onclick='onCopyClick(frr, frrrunning); return false'>Copy frr.conf Running to Saved</button>
 				</p>
 				]]>
 			</description>
@@ -416,8 +205,8 @@
 	<custom_php_resync_config_command>
 		<![CDATA[
 		if ($_POST['update_running']) {
-                        write_frr_running_config();
-                }
+			read_frr_running_config();
+		}
 		frr_generate_config();
 		]]>
 	</custom_php_resync_config_command>
