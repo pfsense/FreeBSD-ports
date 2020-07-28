@@ -52,6 +52,10 @@
 			<url>pkg.php?xml=frr/frr_bgp_communities.xml</url>
 		</tab>
 		<tab>
+			<text>RPKI Cache Servers</text>
+			<url>pkg.php?xml=frr/frr_bgp_rpki_cache_servers.xml</url>
+		</tab>
+		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>
 		</tab>

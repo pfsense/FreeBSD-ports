@@ -708,14 +708,11 @@ function frr_bgp_generate_neighbors() {
 		}
 
 		if (!empty($afconf)) {
-			/* Fix spacing for extra directives */
-			$tconf = str_replace("\n", "\n  ", $tconf);
 			/* Add the AF header, extra directives, and then exit the block */
 			$nconf .= $afconf . $tconf . " exit-address-family\n";
 		} else {
 			$nconf .= $tconf;
 		}
-
 	}
 
 	return $nconf;
@@ -732,7 +729,7 @@ function frr_bgp_generate_aspaths() {
 		return null;
 	}
 	/* Section header */
-	$aspconf = "\n# AS Paths\n";
+	$aspconf = "";
 	/* Loop through AS Paths and process */
 	foreach ($frr_asp_conf as $asp) {
 		/* Sort by sequence if needed */
@@ -775,8 +772,8 @@ function frr_bgp_generate_communitylists() {
 		/* No CL config, stop. */
 		return null;
 	}
-	/* Section header */
-	$clconf = "\n# Community Lists\n";
+
+	$clconf = "";
 	/* Loop through CLs and process */
 	foreach ($frr_cls_conf as $cl) {
 		/* Get the type, either by number or explicitly */
@@ -800,6 +797,53 @@ function frr_bgp_generate_communitylists() {
 		}
 	}
 	return $clconf;
+}
+
+/* Generate BGP RPKI lines */
+function frr_bgp_generate_rpki_servers() {
+	global $config, $frr_config_base, $frr_integrated_config;
+
+	if (is_array($config['installedpackages']['frrbgp']['config'])) {
+		$frr_bgp_conf = &$config['installedpackages']['frrbgp']['config'][0];
+	} else {
+		/* If FRR is not configured, stop. */
+		return null;
+	}
+
+	if (empty($frr_bgp_conf['enablerpki'])) {
+		/* RPKI is not configured, stop. */
+		return null;
+	}
+
+	$rpki_config = "rpki\n";
+	if (!empty($frr_bgp_conf['rpkipollingperiod'])) {
+		$rpki_config .= " rpki polling_period {$frr_bgp_conf['rpkipollingperiod']}\n";
+	}
+	if (!empty($frr_bgp_conf['rpkiexpireinterval'])) {
+		$rpki_config .= " rpki expire_interval {$frr_bgp_conf['rpkiexpireinterval']}\n";
+	}
+	if (!empty($frr_bgp_conf['rpkiretryinterval'])) {
+		$rpki_config .= " rpki retry_interval {$frr_bgp_conf['rpkiretryinterval']}\n";
+	}
+
+	if (is_array($config['installedpackages']['frrbgprpkicacheservers']) || !empty($config['installedpackages']['frrbgprpkicacheservers'])) {
+		$frr_bgp_rpki_cs = &$config['installedpackages']['frrbgprpkicacheservers']['config'];
+		foreach ($frr_bgp_rpki_cs as $cs) {
+			$rpki_config .= " rpki cache {$cs['cacheserver']} {$cs['port']}";
+			foreach (array("username", "privkeypath", "pubkeypath", "knownhostspath") as $key) {
+				if (empty($cs[$key])) {
+					continue;
+				}
+				$rpki_config .= " {$cs[$key]}";
+			}
+			$rpki_config .= " preference {$cs['preference']}\n";
+		}
+	} else {
+		/* No RPKI cache servers configured, stop. */
+		return null;
+	}
+
+	return $rpki_config;
 }
 
 function frr_generate_config_bgp() {
@@ -842,5 +886,8 @@ function frr_generate_config_bgp() {
 		$frr_integrated_config['bgpd'] .= frr_bgp_generate_aspaths();
 		/* BGP Community Lists */
 		$frr_integrated_config['bgpd'] .= frr_bgp_generate_communitylists();
+
+		/* BGP RPKI */
+		$frr_integrated_config['rpki'] = frr_bgp_generate_rpki_servers();
 	}
 }

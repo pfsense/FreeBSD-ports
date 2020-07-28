@@ -5,7 +5,7 @@
 	<copyright>
 	<![CDATA[
 /*
- * frr_bgp_aspaths.xml
+ * frr_bgp_rpki.xml
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2012-2020 Rubicon Communications, LLC (Netgate)
@@ -25,10 +25,10 @@
  */
 	]]>
 	</copyright>
-	<name>frr_bgp_aspaths</name>
+	<name>frr_bgp_rpki_cache_servers</name>
 	<title>Services/FRR/BGP</title>
 	<include_file>/usr/local/pkg/frr.inc</include_file>
-	<aftersaveredirect>pkg.php?xml=frr/frr_bgp_aspaths.xml</aftersaveredirect>
+	<aftersaveredirect>pkg.php?xml=frr/frr_bgp_rpki_cache_servers.xml</aftersaveredirect>
 	<tabs>
 		<tab>
 			<text>BGP</text>
@@ -45,7 +45,6 @@
 		<tab>
 			<text>AS Paths</text>
 			<url>pkg.php?xml=frr/frr_bgp_aspaths.xml</url>
-			<active/>
 		</tab>
 		<tab>
 			<text>Communities</text>
@@ -54,6 +53,7 @@
 		<tab>
 			<text>RPKI Cache Servers</text>
 			<url>pkg.php?xml=frr/frr_bgp_rpki_cache_servers.xml</url>
+			<active/>
 		</tab>
 		<tab>
 			<text>[Global Settings]</text>
@@ -78,81 +78,72 @@
 	</tabs>
 	<adddeleteeditpagefields>
 		<columnitem>
-			<fielddescr>Name</fielddescr>
-			<fieldname>name</fieldname>
+			<fielddescr>Cache Server Address</fielddescr>
+			<fieldname>cacheserver</fieldname>
 		</columnitem>
 		<columnitem>
-			<fielddescr>Description</fielddescr>
-			<fieldname>descr</fieldname>
+			<fielddescr>Port</fielddescr>
+			<fieldname>port</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Preference</fielddescr>
+			<fieldname>preference</fieldname>
 		</columnitem>
 	</adddeleteeditpagefields>
 	<fields>
 		<field>
-			<fielddescr>Name</fielddescr>
-			<fieldname>name</fieldname>
-			<description>
-				<![CDATA[
-				The name of this AS Path List.
-				]]>
-			</description>
+			<fielddescr>Address</fielddescr>
+			<fieldname>cacheserver</fieldname>
+			<description>Address of the cache server</description>
 			<type>input</type>
-			<size>20</size>
+			<size>80</size>
+			<required/>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>port</fieldname>
+			<description>Port number to connect to the cache server</description>
+			<type>input</type>
+			<required/>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Preference</fielddescr>
+			<fieldname>preference</fieldname>
+			<description>Cache server preference</description>
+			<type>input</type>
 			<required/>
 		</field>
 		<field>
-			<fielddescr>Description</fielddescr>
-			<fieldname>descr</fieldname>
-			<size>50</size>
+			<fielddescr>Username</fielddescr>
+			<fieldname>username</fieldname>
+			<description>SSH username to establish an SSH connection to the cache server</description>
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr></fielddescr>
-			<description>
-				<![CDATA[
-				AS Path entries determine if networks are allowed or denied in specific contexts used in BGP route maps.
-				<br />
-				Order is important. Use the sequence field to reorder entries after saving.
-				<br />
-				The regular expression will match on the AS number and is surrounded by underscores (e.g. "_65534_"). Use "^" to match any.
-				]]>
-			</description>
-			<type>info</type>
+			<fielddescr>Private Key Path</fielddescr>
+			<fieldname>privkeypath</fieldname>
+			<description>Local path that includes the private key file of the router</description>
+			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>AS Path Entres</fielddescr>
-			<fieldname>none</fieldname>
-			<type>rowhelper</type>
-			<rowhelper>
-				<rowhelperfield>
-					<fielddescr>Sequence</fielddescr>
-					<fieldname>seq</fieldname>
-					<type>input</type>
-					<size>5</size>
-				</rowhelperfield>
-				<rowhelperfield>
-					<fielddescr>Action</fielddescr>
-					<fieldname>action</fieldname>
-					<description>Permit or deny access to a network.</description>
-					<type>select</type>
-					<default_value>Deny</default_value>
-					<options>
-						<option><name>Deny</name><value>deny</value></option>
-						<option><name>Permit</name><value>permit</value></option>
-					</options>
-				</rowhelperfield>
-				<rowhelperfield>
-					<fielddescr>Regular Expression</fielddescr>
-					<fieldname>regex</fieldname>
-					<type>input</type>
-					<size>25</size>
-				</rowhelperfield>
-			</rowhelper>
+			<fielddescr>Public Key Path</fielddescr>
+			<fieldname>pubkeypath</fieldname>
+			<description>Local path that includes the public key file of the router</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Known Hosts Path</fielddescr>
+			<fieldname>knownhostspath</fieldname>
+			<description>Local path that includes the known hosts file</description>
+			<type>input</type>
 		</field>
 	</fields>
 	<custom_php_resync_config_command>
 		frr_generate_config();
 	</custom_php_resync_config_command>
 	<custom_php_validation_command>
-		frr_bgp_aspaths_validate_input();
+		frr_bgp_rpki_cache_server_validate_input();
 	</custom_php_validation_command>
 </packagegui>
