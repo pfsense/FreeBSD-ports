@@ -453,6 +453,30 @@ function frr_bgp_validate_input() {
 	if (!empty($_POST['listenip']) && !is_ipaddr($_POST['listenip'])) {
 		$input_errors[] = "Listen IP must be an IP address or blank to bind to all IP addresses.";
 	}
+
+	if (strlen($_POST['rpkipollingperiod']) > 0) {
+		if (!is_numeric($_POST['rpkipollingperiod'])) {
+			$input_errors[] = "Polling period must be a number.";
+		}
+		/*polling_period (1-86400)*/
+		frr_validate_intrange_input("Polling period", $_POST['rpkipollingperiod'], 1, 86400);
+	}
+
+	if (strlen($_POST['rpkiexpireinterval']) > 0) {
+		if (!is_numeric($_POST['rpkiexpireinterval'])) {
+			$input_errors[] = "Expire interval must be a number.";
+		}
+		/*expire_interval (600-172800)*/
+		frr_validate_intrange_input("Expire interval", $_POST['rpkiexpireinterval'], 600, 172800);
+	}
+
+	if (strlen($_POST['rpkiretryinterval']) > 0) {
+		if (!is_numeric($_POST['rpkiretryinterval'])) {
+			$input_errors[] = "Retry interval must be a number.";
+		}
+		/*retry_interval (1-7200)*/
+		frr_validate_intrange_input("Polling period", $_POST['rpkiretryinterval'], 1, 7200);
+	}
 }
 
 function frr_bgp_advanced_validate_input() {
@@ -482,6 +506,26 @@ function frr_bgp_validate_group() {
 
 	if ($_POST['name'] == "") {
 		$input_errors[] = "A name is required.";
+	}
+}
+
+function frr_bgp_rpki_cache_server_validate_input() {
+	global $config, $input_errors;
+
+	if (strlen($_POST['port']) > 0) {
+		if (!is_numeric($_POST['port'])) {
+			$input_errors[] = "Port must be a number.";
+		}
+		/*preference (1-255)*/
+		frr_validate_intrange_input("Port", $_POST['port'], 1, 65535);
+	}
+
+	if (strlen($_POST['preference']) > 0) {
+		if (!is_numeric($_POST['preference'])) {
+			$input_errors[] = "Preference must be a number.";
+		}
+		/*preference (1-255)*/
+		frr_validate_intrange_input("Preference", $_POST['preference'], 1, 255);
 	}
 }
 

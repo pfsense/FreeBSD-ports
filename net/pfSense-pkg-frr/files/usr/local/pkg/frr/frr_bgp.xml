@@ -52,6 +52,10 @@
 			<url>pkg.php?xml=frr/frr_bgp_communities.xml</url>
 		</tab>
 		<tab>
+			<text>RPKI Cache Servers</text>
+			<url>pkg.php?xml=frr/frr_bgp_rpki_cache_servers.xml</url>
+		</tab>
+		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>
 		</tab>
@@ -157,6 +161,31 @@
 			<fieldname>enablerpki</fieldname>
 			<description>Enable BGP Resource Public Key Infrastructure.</description>
 			<type>checkbox</type>
+		</field>
+
+		<field>
+			<name>RPKI Timers</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Timers</fielddescr>
+			<fieldname>rpkipollingperiod</fieldname>
+			<description>Polling Period</description>
+			<type>input</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Expire Interval</fielddescr>
+			<fieldname>rpkiexpireinterval</fieldname>
+			<description>Expire Interval</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Retry Interval</fielddescr>
+			<fieldname>rpkiretryinterval</fieldname>
+			<description>Retry Interval</description>
+			<type>input</type>
+			<combinefields>end</combinefields>
 		</field>
 
 		<field>

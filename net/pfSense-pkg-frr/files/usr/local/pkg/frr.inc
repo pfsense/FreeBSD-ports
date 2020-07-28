@@ -636,14 +636,14 @@ function frr_flatten_config_interfaces() {
 			if (!isset($interface_description)) {
 				$interface_description = "";
 			} else {
-				$interface_description .= " | ";
+				$interface_description .= " - ";
 			}
 			$interface_description .= "{$service}: {$frr_integrated_config['interfaces_descr'][$interface][$service]}";
 		}
 		unset($service);
 
 		if (!empty($interface_description)) {
-			$interfaces_config .= " description {$interface_description}\n";
+			$interfaces_config .= " description \"{$interface_description}\"\n";
 		}
 
 		$interfaces_config .= $frr_integrated_config['interfaces'][$interface];
@@ -699,7 +699,7 @@ function frr_generate_config_integrated() {
 	}
 
 	frr_flatten_config_interfaces();
-	$conf_keys = array('staticd', 'interfaces', 'bgpd', 'ospfd', 'ospf6d', 'zebra', 'bfdd');
+	$conf_keys = array('staticd', 'interfaces', 'bgpd', 'rpki', 'ospfd', 'ospf6d', 'zebra', 'bfdd');
 	foreach ($conf_keys as $key) {
 		if (empty($frr_integrated_config[$key])) {
 			continue;
