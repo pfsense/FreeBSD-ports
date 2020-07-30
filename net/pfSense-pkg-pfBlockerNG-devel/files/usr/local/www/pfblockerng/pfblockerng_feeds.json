@@ -43,12 +43,6 @@
 						]
 				},
 				{
-					"feed":		"Abuse Ransomware Tracker",
-					"website":	"https://ransomwaretracker.abuse.ch/",
-					"url":		"https://ransomwaretracker.abuse.ch/downloads/RW_IPBL.txt",
-					"header":	"Abuse_IPBL"
-				},
-				{
 					"feed":		"Abuse SSL Blacklist",
 					"website":	"https://sslbl.abuse.ch/",
 					"url":		"https://sslbl.abuse.ch/blacklist/sslipblacklist.txt",
@@ -69,7 +63,8 @@
 					"alternate": [
 							{
 							"url":		"https://osint.bambenekconsulting.com/feeds/c2-ipmasterlist.txt",
-							"header":	"BBC_C2_Agr"
+							"header":	"BBC_C2_Agr",
+							"register":	"https://www.wellfedintelligence.com/"
 							}
 						]
 				},
@@ -224,13 +219,6 @@
 					"header":	"GreenSnow"
 				},
 				{
-					"feed":		"Juniper",
-					"website":	"https://www.juniper.net/",
-					"contact":	"https://www.juniper.net/us/en/contact-us/",
-					"url":		"https://www.juniper.net/security/auto/spam",
-					"header":	"Juniper"
-				},
-				{
 					"feed":		"Malware Domain List",
 					"website":	"https://www.malwaredomainlist.com/",
 					"contact":	"https://www.malwaredomainlist.com/contact.php",
@@ -244,54 +232,6 @@
 					"contact":	"https://www.maxmind.com/en/contact",
 					"url":		"https://www.maxmind.com/en/high-risk-ip-sample-list",
 					"header":	"MaxMind_BD_Proxy"
-				},
-				{
-					"feed":		"NoThink",
-					"website":	"https://www.nothink.org/",
-					"url":		"https://www.nothink.org/blacklist/blacklist_ssh_week.txt",
-					"header":	"NoThink_SSH_7d",
-					"alternate": [
-							{
-							"url":		"https://www.nothink.org/blacklist/blacklist_snmp_day.txt",
-							"header":	"NoThink_SSH_1d"
-							},
-							{
-							"url":		"https://www.nothink.org/blacklist/blacklist_snmp_year.txt",
-							"header":	"NoThink_SSH_365d"
-							}
-						]
-				},
-				{
-					"feed":		"NoThink",
-					"website":	"https://www.nothink.org/",
-					"url":		"https://www.nothink.org/blacklist/blacklist_snmp_week.txt",
-					"header":	"NoThink_SNMP_7d",
-					"alternate": [
-							{
-							"url":		"https://www.nothink.org/blacklist/blacklist_snmp_day.txt",
-							"header":	"NoThink_SNMP_1d"
-							},
-							{
-							"url":		"https://www.nothink.org/blacklist/blacklist_snmp_year.txt",
-							"header":	"NoThink_SNMP_365d"
-							}
-						]
-				},
-				{
-					"feed":		"NoThink",
-					"website":	"https://www.nothink.org/",
-					"url":		"https://www.nothink.org/blacklist/blacklist_telnet_week.txt",
-					"header":	"NoThink_Telnet_7d",
-					"alternate": [
-							{
-							"url":		"https://www.nothink.org/blacklist/blacklist_telnet_day.txt",
-							"header":	"NoThink_Telnet_1d"
-							},
-							{
-							"url":		"https://www.nothink.org/blacklist/blacklist_telnet_year.txt",
-							"header":	"NoThink_Telnet_365d"
-							}
-						]
 				},
 				{
 					"feed":		"Stop Forum Spam",
@@ -395,12 +335,6 @@
 					"website":	"https://malc0de.com/",
 					"url":		"https://malc0de.com/bl/IP_Blacklist.txt",
 					"header":	"Malc0de"
-				},
-				{
-					"feed":		"Malekal",
-					"website":	"http://malwaredb.malekal.com/",
-					"url":		"http://malwaredb.malekal.com/export.php?type=url",
-					"header":	"Malekal_BL"
 				},
 				{
 					"feed":		"Myip.ms",
@@ -538,18 +472,6 @@
 					"header":	"BDS_TOR"
 				},
 				{
-					"feed":		"Blutmagie",
-					"website":	"https://blutmagie.de/",
-					"url":		"https://torstatus.blutmagie.de/ip_list_exit.php/Tor_ip_list_EXIT.csv",
-					"header":	"Blut_TOR_EN",
-					"alternate": [
-							{
-							"url":		"https://torstatus.blutmagie.de/ip_list_all.php/Tor_ip_list_ALL.csv",
-							"header":	"Blut_TOR_All"
-							}
-						]
-				},
-				{
 					"feed":		"Dan.me",
 					"website":	"https://www.dan.me.uk/",
 					"url":		"https://www.dan.me.uk/torlist/?exit",
@@ -562,10 +484,22 @@
 						]
 				},
 				{
+					"feed":		"Rueckgr Tor",
+					"website":	"https://torstatus.rueckgr.at/",
+					"url":		"https://torstatus.rueckgr.at/ip_list_all.php/Tor_ip_list_ALL.csv",
+					"header":	"RUECKGR_TOR_All"
+				},
+				{
 					"feed":		"Emerging Threats",
 					"website":	"http://doc.emergingthreats.net/bin/view/Main/TorRules",
 					"url":		"https://rules.emergingthreats.net/blockrules/emerging-tor.rules",
 					"header":	"ET_TOR_All"
+				},
+				{
+					"feed":		"Tor Project Bulk Exit List",
+					"website":	"https://www.torproject.org/",
+					"url":		"https://check.torproject.org/torbulkexitlist",
+					"header":	"PROJECT_TOR_EN"
 				}
 			]
 		},
@@ -575,12 +509,6 @@
 			"action":	"block",
 			"cron":		"01hour",
 			"feeds": [
-				{
-					"feed":		"Improware",
-					"website":	"http://antispam.imp.ch/05-uribl.php?lng=1",
-					"url":		"http://antispam.imp.ch/spamlist",
-					"header":	"Improware"
-				},
 				{
 					"feed":		"Lashback",
 					"website":	"https://blacklist.lashback.com/",
@@ -614,6 +542,20 @@
 				}
 			]
 		},
+		"DNS_4": {
+			"info":		"A list of Public DNS servers.",
+			"description":	"List of Public DNS Servers.",
+			"action":	"permit",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"Public DNS",
+					"website":	"https://public-dns.info/",
+					"url":		"https://public-dns.info/nameservers.txt",
+					"header":	"Public_DNS4"
+				}
+			]
+		},
 		"Internic_4": {
 			"info":		"Internic is a list of the 13 IPv4 Root DNS servers via Internic Domain Registration service.-LB-Typically used for a Permit Outbound usage.-LB-The frequency of updates is set to once per week.",
 			"description":	"Internic - List of the 13 IPv4 Root DNS servers via Internic Domain Registration service.",
@@ -625,6 +567,34 @@
 					"website":	"https://www.internic.net/",
 					"url":		"https://www.internic.net/domain/named.root",
 					"header":	"Resolver4"
+				}
+			]
+		},
+		"Torrent_IP": {
+			"info":		"A list of Torrent trackers.",
+			"description":	"List of Torrent trackers.",
+			"action":	"block",
+			"cron":		"01hour",
+			"feeds": [
+				{
+					"feed":		"Ngosang",
+					"website":	"https://github.com/ngosang/trackerslist",
+					"url":		"https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_ip.txt",
+					"header":	"NGOSANG_TORRENT_IP"
+				}
+			]
+		},
+		"VPN_4": {
+			"info":		"A list of common VPN providers",
+			"description":	"List of common VPN providers.",
+			"action":	"block",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"Ejrv VPN",
+					"website":	"https://github.com/ejrv/VPNs",
+					"url":		"https://raw.githubusercontent.com/ejrv/VPNs/master/vpn-ipv4.txt",
+					"header":	"Ejrv_VPNv4"
 				}
 			]
 		},
@@ -681,12 +651,6 @@
 				{
 					"feed":		"BlockList DE",
 					"website":	"https://www.blocklist.de/",
-					"url":		"https://www.blocklist.de/lists/ircbot.txt",
-					"header":	"BlockListDE_IRC"
-				},
-				{
-					"feed":		"BlockList DE",
-					"website":	"https://www.blocklist.de/",
 					"url":		"https://lists.blocklist.de/lists/imap.txt",
 					"header":	"BlockListDE_IMAP"
 				},
@@ -725,28 +689,6 @@
 					"website":	"https://www.blocklist.de/",
 					"url":		"https://lists.blocklist.de/lists/strongips.txt",
 					"header":	"BlockListDE_Strong"
-				}
-			]
-		},
-		"Abuse_PS": {
-			"info":		"Abuse Ransomware Tracker - Payment Sites-LB-Aggressive - May contain false positives",
-			"description":	"Abuse Ransomware Tracker - Payment Sites",
-			"action":	"block",
-			"cron":		"01hour",
-			"feeds": [
-				{
-					"feed":		"Abuse Ransomware Tracker",
-					"website":	"https://ransomwaretracker.abuse.ch/blocklist/",
-					"url":		"https://ransomwaretracker.abuse.ch/downloads/CW_PS_IPBL.txt",
-					"info":		"IP address remain listed even after the threat has been eliminated (e.g. the VPS / server has been suspended by the hosting provider) for another 30 days.",
-					"header":	"Abuse_CW_PS"
-				},
-				{
-					"feed":		"Abuse Ransomware Tracker",
-					"website":	"https://ransomwaretracker.abuse.ch/blocklist/",
-					"url":		"https://ransomwaretracker.abuse.ch/downloads/LY_PS_IPBL.txt",
-					"info":		"IP address remain listed even after the threat has been eliminated (e.g. the VPS / server has been suspended by the hosting provider) for another 30 days.",
-					"header":	"Abuse_LY_PS"
 				}
 			]
 		}
@@ -808,6 +750,20 @@
 				}
 			]
 		},
+		"DNS_6": {
+			"info":		"A list of Public DNS servers.",
+			"description":	"List of Public DNS Servers.",
+			"action":	"permit",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"Public DNS",
+					"website":	"https://public-dns.info/",
+					"url":		"https://public-dns.info/nameservers.txt",
+					"header":	"Public_DNS6"
+				}
+			]
+		},
 		"Internic_6": {
 			"info":		"Internic is a list of the 13 IPv6 Root DNS servers via Internic Domain Registration service.-LB-Typically used for a Permit Outbound usage.-LB-The frequency of updates is set to once per week.",
 			"description":	"Internic - List of the 13 IPv6 Root DNS servers via Internic Domain Registration service.",
@@ -819,6 +775,20 @@
 					"Internic6":	"https://www.internic.net/",
 					"url":		"https://www.internic.net/domain/named.root",
 					"header":	"Resolver6"
+				}
+			]
+		},
+		"VPN_6": {
+			"info":		"A list of common VPN providers",
+			"description":	"List of common VPN providers.",
+			"action":	"block",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"Ejrv VPN",
+					"website":	"https://github.com/ejrv/VPNs",
+					"url":		"https://raw.githubusercontent.com/ejrv/VPNs/master/vpn-ipv6.txt",
+					"header":	"Ejrv_VPNv6"
 				}
 			]
 		}
@@ -1014,22 +984,10 @@
 					"header":	"D_Me_Tracking"
 				},
 				{
-					"feed":		"Malwarebytes - hpHosts",
-					"website":	"https://hosts-file.net/",
-					"url":		"https://hosts-file.net/ad_servers.txt",
-					"header":	"hpHosts_ATS"
-				},
-				{
 					"feed":		"Sysctl Labs",
 					"website":	"http://sysctl.org/cameleon/",
 					"url":		"http://sysctl.org/cameleon/hosts",
 					"header":	"Cameleon"
-				},
-				{
-					"feed":		"SquidBlackList",
-					"website":	"https://www.squidblacklist.org/downloads.html",
-					"url":		"https://www.squidblacklist.org/downloads/dg-ads.acl",
-					"header":	"SBL_ADs"
 				},
 				{
 					"feed":		"Yoyo",
@@ -1046,18 +1004,6 @@
 			"cron":		"EveryDay",
 			"feeds": [
 				{
-					"feed":		"Abuse Ransomware Tracker",
-					"website":	"https://ransomwaretracker.abuse.ch/",
-					"url":		"https://ransomwaretracker.abuse.ch/downloads/RW_DOMBL.txt",
-					"header":	"Abuse_DOMBL"
-				},
-				{
-					"feed":		"Abuse Ransomware Tracker",
-					"website":	"https://ransomwaretracker.abuse.ch/",
-					"url":		"https://ransomwaretracker.abuse.ch/downloads/RW_URLBL.txt",
-					"header":	"Abuse_URLBL"
-				},
-				{
 					"feed":		"Bambenek Consulting",
 					"website":	"https://osint.bambenekconsulting.com/feeds/",
 					"url":		"https://osint.bambenekconsulting.com/feeds/c2-dommasterlist-high.txt",
@@ -1065,9 +1011,16 @@
 					"alternate": [
 							{
 							"url":		"https://osint.bambenekconsulting.com/feeds/c2-dommasterlist.txt",
-							"header":	"BBC_DC2_Agr"
+							"header":	"BBC_DC2_Agr",
+							"register":	"https://www.wellfedintelligence.com/"
 							}
 						]
+				},
+				{
+					"feed":		"COVID-19 Cyber Threat Coalition",
+					"website":	"https://www.cyberthreatcoalition.org/",
+					"url":		"https://blocklist.cyberthreatcoalition.org/vetted/domain.txt",
+					"header":	"C19_CTC"
 				},
 				{
 					"feed":		"Dan Pollock",
@@ -1086,22 +1039,6 @@
 					"website":	"https://disconnect.me/disconnect",
 					"url":		"https://s3.amazonaws.com/lists.disconnect.me/simple_malware.txt",
 					"header":	"D_Me_Malw"
-				},
-				{
-					"feed":		"Internet Storm Center",
-					"website":	"https://isc.sans.edu/suspicious_domains.html",
-					"url":		"https://isc.sans.edu/feeds/suspiciousdomains_High.txt",
-					"header":	"ISC_SDH",
-					"alternate": [
-							{
-							"url":		"https://isc.sans.edu/feeds/suspiciousdomains_Low.txt",
-							"header":	"ISC_SDL"
-							},
-							{
-							"url":		"https://isc.sans.edu/feeds/suspiciousdomains_Medium.txt",
-							"header":	"ISC_SDM"
-							}
-						]
 				},
 				{
 					"feed":		"Malware Domains",
@@ -1202,80 +1139,6 @@
 				}
 			]
 		},
-		"hpHosts": {
-			"info":		"Malwarebytes - hpHosts is a collection of Domain Feeds from the hpHosts provider.-LB-The frequency of updates is set to once per day.",
-			"description":	"Malwarebytes - hpHosts - Collection of Feeds from the hpHosts provider.",
-			"action":	"block",
-			"cron":		"EveryDay",
-			"feeds": [
-				{
-					"feed":		"Malwarebytes - hpHosts",
-					"website":	"https://hosts-file.net/?s=Download",
-					"url":		"https://hosts-file.net/emd.txt",
-					"header":	"hpHosts_EMD"
-				},
-				{
-					"feed":		"Malwarebytes - hpHosts",
-					"website":	"https://hosts-file.net/?s=Download",
-					"url":		"https://hosts-file.net/exp.txt",
-					"header":	"hpHosts_EXP"
-				},
-				{
-					"feed":		"Malwarebytes - hpHosts",
-					"website":	"https://hosts-file.net/?s=Download",
-					"url":		"https://hosts-file.net/fsa.txt",
-					"header":	"hpHosts_FSA"
-				},
-				{
-					"feed":		"Malwarebytes - hpHosts",
-					"website":	"https://hosts-file.net/?s=Download",
-					"url":		"https://hosts-file.net/grm.txt",
-					"header":	"hpHosts_GRM"
-				},
-				{
-					"feed":		"Malwarebytes - hpHosts",
-					"website":	"https://hosts-file.net/?s=Download",
-					"url":		"https://hosts-file.net/hfs.txt",
-					"header":	"hpHosts_HFS"
-				},
-				{
-					"feed":		"Malwarebytes - hpHosts",
-					"website":	"https://hosts-file.net/?s=Download",
-					"url":		"https://hosts-file.net/hjk.txt",
-					"header":	"hpHosts_HJK"
-				},
-				{
-					"feed":		"Malwarebytes - hpHosts",
-					"website":	"https://hosts-file.net/?s=Download",
-					"url":		"https://hosts-file.net/mmt.txt",
-					"header":	"hpHosts_MMT"
-				},
-				{
-					"feed":		"Malwarebytes - hpHosts",
-					"website":	"https://hosts-file.net/?s=Download",
-					"url":		"https://hosts-file.net/pha.txt",
-					"header":	"hpHosts_PHA"
-				},
-				{
-					"feed":		"Malwarebytes - hpHosts",
-					"website":	"https://hosts-file.net/?s=Download",
-					"url": 		"https://hosts-file.net/psh.txt",
-					"header":	"hpHosts_PSH"
-				},
-				{
-					"feed":		"Malwarebytes - hpHosts",
-					"website":	"https://hosts-file.net/?s=Download",
-					"url":		"https://hosts-file.net/pup.txt",
-					"header":	"hpHosts_PUP"
-				},
-				{
-					"feed":		"Malwarebytes - hpHosts",
-					"website":	"https://hosts-file.net/?s=Download",
-					"url":		"https://hosts-file.net/wrz.txt",
-					"header":	"hpHosts_WRZ"
-				}
-			]
-		},
 		"BBcan177": {
 			"info":		"BBcan177 is a Domain feed as provided by BBcan177.-LB-The frequency of updates is set to once per day.",
 			"description":	"BBcan177 - Feed as provided by BBcan177.",
@@ -1287,28 +1150,6 @@
 					"website":	"https://forum.pfsense.org/index.php?action=profile;u=238481",
 					"url":		"https://gist.githubusercontent.com/BBcan177/4a8bf37c131be4803cb2/raw",
 					"header":	"MS_2"
-				}
-			]
-		},
-		"Abuse_C2": {
-			"info":		"Abuse Ransomware Tracker-LB-Aggressive C2 IPs, may contain false positives",
-			"description":	"Abuse Ransomware Tracker - Aggressive C2 IPs",
-			"action":	"block",
-			"cron":		"EveryDay",
-			"feeds": [
-				{
-					"feed":		"Abuse Ransomware Tracker",
-					"website":	"https://ransomwaretracker.abuse.ch/",
-					"url":		"https://ransomwaretracker.abuse.ch/downloads/CW_C2_DOMBL.txt",
-					"info":		"Aggressive list, may contain false positives",
-					"header":	"Abuse_CW_C2"
-				},
-				{
-					"feed":		"Abuse Ransomware Tracker",
-					"website":	"https://ransomwaretracker.abuse.ch/",
-					"url":		"https://ransomwaretracker.abuse.ch/downloads/TC_C2_DOMBL.txt",
-					"info":		"Aggressive list, may contain false positives",
-					"header":	"Abuse_TC_C2"
 				}
 			]
 		},
@@ -1337,6 +1178,48 @@
 					"website":	"https://www.malwaredomains.com/",
 					"url":		"https://mirror1.malwaredomains.com/files/Skype-resolvers.txt",
 					"header":	"Skype_Res"
+				}
+			]
+		},
+		"STUN": {
+			"info":		"A list of public STUN servers.",
+			"description":	"List of STUN servers.",
+			"action":	"block",
+			"cron":		"01hour",
+			"feeds": [
+				{
+					"feed":		"Enumer",
+					"website":	"http://enumer.org/",
+					"url":		"http://enumer.org/public-stun.txt",
+					"header":	"ENUMER_STUN"
+				}
+			]
+		},
+		"DoH": {
+			"info":		"A list of DNS-over-HTTPS servers.",
+			"description":	"List of DNS-over-HTTPS servers.",
+			"action":	"block",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"Heuristic Security",
+					"website":	"https://heuristicsecurity.com/",
+					"url":		"https://heuristicsecurity.com/dohservers.txt",
+					"header":	"HEUR_DoH"
+				}
+			]
+		},
+		"Torrent": {
+			"info":		"A list of Torrent trackers.",
+			"description":	"List of Torrent trackers.",
+			"action":	"block",
+			"cron":		"01hour",
+			"feeds": [
+				{
+					"feed":		"Ngosang",
+					"website":	"https://github.com/ngosang/trackerslist",
+					"url":		"https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt",
+					"header":	"NGOSANG_TORRENT"
 				}
 			]
 		},
@@ -1417,12 +1300,6 @@
 					"header":	"Malc0de"
 				},
 				{
-					"feed":		"Malekal",
-					"website":	"https://www.malekal.com/",
-					"url":		"https://www.malekal.com/HOSTS_filtre/HOSTS.txt",
-					"header":	"Malekal_Hosts"
-				},
-				{
 					"feed":		"Pulsedive",
 					"website":	"https://pulsedive.com/products/feed.php",
 					"url":		"https://pulsedive.com/premium?key=_API_KEY_&types=domain",
@@ -1457,7 +1334,7 @@
 				{
 					"feed":		"Kowabit",
 					"website":	"https://www.kowabit.de/blcklst/",
-					"url":		"https://blocklist.kowabit.de/fritzboxliste.txt",
+					"url":		"https://list.kwbt.de/fritzboxliste.txt",
 					"header":	"Kowabit"
 				},
 				{
