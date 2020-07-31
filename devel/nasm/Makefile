@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nasm
-PORTVERSION=	2.14.02
+PORTVERSION=	2.15.03
 PORTEPOCH=	1
 CATEGORIES=	devel lang
 MASTER_SITES=	https://www.nasm.us/pub/nasm/releasebuilds/${PORTVERSION}/ \
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_func_strspn=yes
-USES=		tar:xz gmake
+USES=		compiler:c11 tar:xz gmake
 MAKE_ARGS+=	INSTALLROOT=${STAGEDIR}
 INSTALL_TARGET=	install #needed for RDOFF_INSTALL_TARGET
 
