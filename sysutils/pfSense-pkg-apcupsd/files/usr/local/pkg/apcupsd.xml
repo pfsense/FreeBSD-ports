@@ -148,7 +148,7 @@
 			</description>
 			<type>input</type>
 			<size>60</size>
-			<required>true</required>
+			<required>false</required>
 		</field>
 		<field>
 			<fielddescr>Device</fielddescr>
