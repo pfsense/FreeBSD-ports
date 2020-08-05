@@ -183,6 +183,12 @@
 			<combinefields>end</combinefields>
 		</field>
 		<field>
+			<fielddescr>Address Family</fielddescr>
+			<fieldname>bothaf</fieldname>
+			<description>Allow neighbor to advertise and receive routes for both IPv4 and IPv6</description>
+			<type>checkbox</type>
+		</field>
+		<field>
 			<fielddescr>Default Originate</fielddescr>
 			<fieldname>defaultoriginate</fieldname>
 			<description>Originate default route to this neighbor. Choose a Route Map to restrict origination.</description>
