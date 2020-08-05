@@ -434,14 +434,17 @@ function frr_bgp_generate_neighbors() {
 				$nconf .= "  neighbor {$neighbor['peer']} peer-group {$neighbor['peergroup']}\n";
 				$tconf .= "  neighbor {$neighbor['peer']} peer-group {$neighbor['peergroup']}\n";
 			}
-			$afconf .= "  address-family";
-			if (is_ipaddrv4($neighbor['peer'])) {
-				$afconf .= " ipv4";
-			} elseif (is_ipaddrv6($neighbor['peer'])) {
-				$afconf .= " ipv6";
+
+			/* Both cases may be required by a neighbor. */
+			if (is_ipaddrv4($neighbor['peer']) || !empty($neighbor['bothaf'])) {
+				$afconf .= "  address-family ipv4 unicast\n";
+				$afconf .= "    neighbor {$neighbor['peer']} activate\n";
 			}
-			$afconf .= " unicast\n";
-			$afconf .= "    neighbor {$neighbor['peer']} activate\n";
+			if (is_ipaddrv6($neighbor['peer']) || !empty($neighbor['bothaf'])) {
+				$afconf .= "  address-family ipv6 unicast\n";
+				$afconf .= "    neighbor {$neighbor['peer']} activate\n";
+			}
+
 		} else {
 			/* This is not a valid neighbor! */
 			continue;
