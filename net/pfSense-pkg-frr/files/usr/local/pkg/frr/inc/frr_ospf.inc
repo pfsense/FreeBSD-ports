@@ -245,6 +245,24 @@ function frr_generate_config_ospf_interfaces() {
 	return $conffile;
 }
 
+function frr_generate_config_ospf_neighbors() {
+	global $config;
+	$conffile = "";
+
+	init_config_arr(array('installedpackages', 'frrospfdneighbors', 'config'));
+	foreach ($config['installedpackages']['frrospfdneighbors']['config'] as $conf) {
+		$conffile .= "  neighbor {$conf['neighbor']}" ;
+		if (!empty($conf['priority'])) {
+			$conffile .= " priority {$conf['priority']}";
+		}
+		if (!empty($conf['pollinginterval'])) {
+			$conffile .= " poll-interval {$conf['pollinginterval']}";
+		}
+		$conffile .= "\n" ;
+	}
+	return $conffile;
+}
+
 function frr_generate_config_ospf_redistribute($ospfd_conf, $variablename, $sourcename) {
 	$redistconf = "";
 	if ($ospfd_conf[$variablename]) {
@@ -341,6 +359,7 @@ function frr_generate_config_ospf() {
 		}
 
 		$conffile .= frr_generate_config_ospf_areas();
+		$conffile .= frr_generate_config_ospf_neighbors();
 
 		if ($frr_conf['logging'] && $ospfd_conf['adjacencylog']) {
 			$conffile .= "  log-adjacency-changes detail\n";
