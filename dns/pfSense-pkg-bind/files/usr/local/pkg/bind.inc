@@ -145,6 +145,7 @@ function bind_sync() {
 			if (preg_match("/named.conf/", $line)) {
 				$confgen = "named.conf";
 				file_put_contents(BIND_LOCALBASE . "/etc/rndc.conf", $rndc_file);
+				@symlink(BIND_LOCALBASE . "/etc/rndc.conf", BIND_LOCALBASE . "/etc/namedb/rndc.conf");
 			}
 		}
 	}
