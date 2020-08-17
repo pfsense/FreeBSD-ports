@@ -179,10 +179,15 @@ options {
 
 EOD;
 
+	$bind_conf .= "\tdnssec-validation ";
 	if ($bind_dnssec_validation == 'on') {
-		$bind_conf .= "\tdnssec-validation yes;\n";
+		$bind_conf .= "yes";
+	} elseif ($bind_dnssec_validation == 'off') {
+		$bind_conf .= "no";
+	} else {
+		$bind_conf .= "auto";
 	}
-	$bind_conf .= "\n";
+	$bind_conf .= ";\n\n";
 
 	// Check response rate limit option
 	//https://kb.isc.org/article/AA-01000/0/A-Quick-Introduction-to-Response-Rate-Limiting.html
