@@ -44,6 +44,10 @@
 			<url>pkg.php?xml=frr/frr_ospf_areas.xml</url>
 		</tab>
 		<tab>
+			<text>Neighbors</text>
+			<url>pkg.php?xml=frr/frr_ospf_neighbors.xml</url>
+		</tab>
+		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>
 		</tab>

@@ -145,6 +145,7 @@ function bind_sync() {
 			if (preg_match("/named.conf/", $line)) {
 				$confgen = "named.conf";
 				file_put_contents(BIND_LOCALBASE . "/etc/rndc.conf", $rndc_file);
+				@symlink(BIND_LOCALBASE . "/etc/rndc.conf", BIND_LOCALBASE . "/etc/namedb/rndc.conf");
 			}
 		}
 	}
@@ -179,10 +180,15 @@ options {
 
 EOD;
 
+	$bind_conf .= "\tdnssec-validation ";
 	if ($bind_dnssec_validation == 'on') {
-		$bind_conf .= "\tdnssec-validation yes;\n";
+		$bind_conf .= "yes";
+	} elseif ($bind_dnssec_validation == 'off') {
+		$bind_conf .= "no";
+	} else {
+		$bind_conf .= "auto";
 	}
-	$bind_conf .= "\n";
+	$bind_conf .= ";\n\n";
 
 	// Check response rate limit option
 	//https://kb.isc.org/article/AA-01000/0/A-Quick-Introduction-to-Response-Rate-Limiting.html
@@ -904,6 +910,9 @@ function bind_write_rcfile() {
 		fi
 EOD;
 	$rc['stop'] = <<<EOD
+		{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" sync -clean 2>/dev/null
+		{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" stop -clean 2>/dev/null
+		sleep 5
 		/usr/bin/killall -TERM named 2>/dev/null
 		sleep 2
 EOD;
@@ -912,8 +921,11 @@ EOD;
 		if [ -z "`/bin/ps auxw | /usr/bin/grep "[n]amed " | /usr/bin/awk '{print $2}'`" ]; then
 			{$BIND_LOCALBASE}/sbin/named {$ip_version} -c /etc/namedb/named.conf -u bind -t /cf/named/
 		else
+			{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" sync -clean 2>/dev/null
+			{$BIND_LOCALBASE}/sbin/rndc -q -c "{$BIND_LOCALBASE}/etc/rndc.conf" stop -clean 2>/dev/null
+			sleep 5
 			/usr/bin/killall -TERM named 2>/dev/null
-				sleep 3
+			sleep 3
 			{$BIND_LOCALBASE}/sbin/named {$ip_version} -c /etc/namedb/named.conf -u bind -t /cf/named/
 		fi
 EOD;

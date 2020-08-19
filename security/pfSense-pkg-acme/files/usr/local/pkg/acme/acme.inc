@@ -172,14 +172,8 @@ $a_acmeserver = array();
 $a_acmeserver['letsencrypt-staging-2'] = array('name' => "Let's Encrypt Staging ACME v2 (for TESTING purposes)",
     'url' => 'https://acme-staging-v02.api.letsencrypt.org'
 );
-$a_acmeserver['letsencrypt-staging'] = array('name' => "Let's Encrypt Staging ACME v1 (for TESTING purposes)",
-    'url' => 'https://acme-staging.api.letsencrypt.org',
-);
 $a_acmeserver['letsencrypt-production-2'] = array('name' => "Let's Encrypt Production ACME v2 (Applies rate limits to certificate requests)",
     'url' => 'https://acme-v02.api.letsencrypt.org'
-);
-$a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Production ACME v1 (Applies rate limits to certificate requests)",
-    'url' => 'https://acme-v01.api.letsencrypt.org',
 );
 $a_acmeserver['buypass-production'] = array('name' => "BuyPass Production ACME v1 (Applies rate limits to certificate requests)",
     'url' => 'https://api.buypass.com/acme'
@@ -1228,6 +1222,7 @@ function acme_custom_php_install_command() {
 	set_cronjob();
 	/* convert <desc> to <descr> to allow IDN characters, #10442 */
 	acme_convert_desc_to_descr();
+	acme_convert_letsencryptv1_to_letsencryptv2();
 	$static_output .= "Acme, running acme_custom_php_install_command() DONE\n";
 	update_output_window($static_output);
 	acme_write_all_certificates();
@@ -1244,6 +1239,19 @@ function acme_convert_desc_to_descr() {
 				$item['descr'] = $item['desc'];
 				unset($item['desc']);
 			}
+		}
+	}
+}
+
+function acme_convert_letsencryptv1_to_letsencryptv2() {
+	global $config;
+	init_config_arr(array('installedpackages', 'acme', 'accountkeys', 'item'));
+
+	foreach ($config['installedpackages']['acme']['accountkeys']['item'] as & $item) {
+		if ($item['acmeserver'] == 'letsencrypt-staging') {
+			$item['acmeserver'] = 'letsencrypt-staging-2';
+		} elseif ($item['acmeserver'] == 'letsencrypt-production') {
+			$item['acmeserver'] = 'letsencrypt-production-2';
 		}
 	}
 }
