@@ -78,7 +78,13 @@
 			<description>The email address that will receive notifications (warning: may send a lot of notifications in busy networks).</description>
 			<type>input</type>
 			<size>50</size>
-			<required/>
+		</field>
+		<field>
+			<fielddescr>Disable Cron emails</fielddescr>
+			<fieldname>disable_cron</fieldname>
+			<type>checkbox</type>
+			<description>Disables Cron email notifications from other packages.</description>
+			<default_value>on</default_value>
 		</field>
 		<field>
 			<fielddescr>Zero padded ethernet addresses</fielddescr>
