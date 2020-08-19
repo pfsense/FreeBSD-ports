@@ -29,9 +29,10 @@ require_once("haproxy/haproxy_utils.inc");
 require_once("haproxy/haproxy_htmllist.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
-$simplefields = array('nbthread', 'hard_stop_after', 'localstats_refreshtime', 'localstats_sticktable_refreshtime', 'log-send-hostname', 'ssldefaultdhparam',
-  'email_level', 'email_myhostname', 'email_from', 'email_to',
-  'resolver_retries', 'resolver_timeoutretry', 'resolver_holdvalid');
+$simplefields = array('nbthread', 'hard_stop_after', 'localstats_refreshtime', 'localstats_sticktable_refreshtime',
+	'log-send-hostname', 'sslcompatibilitymode', 'ssldefaultdhparam', 'email_level', 'email_myhostname',
+	'email_from', 'email_to', 'resolver_retries', 'resolver_timeoutretry', 'resolver_holdvalid');
+$sslcompatibilitymodes = array('auto' => 'Auto', 'modern' => 'Modern', 'intermediate' => 'Intermediate', 'old' => 'Old');
 
 $none = array();
 $none['']['name'] = "Dont log";
@@ -403,6 +404,20 @@ $section->addInput(new Form_Input('email_to', 'Mail to', 'text', $pconfig['email
 $form->add($section);
 
 $section = new Form_Section('Tuning');
+
+$section->addInput(new Form_Select(
+	'sslcompatibilitymode',
+	'SSL/TLS Compatibility Mode',
+	$pconfig['sslcompatibilitymode'],
+	$sslcompatibilitymodes
+))->setHelp(<<<EOD
+	The SSL/TLS Compatibility Mode determines which cipher suites and TLS versions are supported by default.<br />
+	Old mode disables SSLv3 and appropriate ciphers.<br />
+	Intermediate mode also disables HIGH ciphers, SHA1, TLS v1.0 and TLS v1.1.<br />
+	Modern mode also disables TLS v1.2, leaving only TLS v1.3 and AEAD ciphers.<br />
+	If unsure leave it as 'Auto'.
+EOD
+);
 
 $section->add(group_input_with_text(
 	'ssldefaultdhparam',
