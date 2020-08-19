@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * frr_ospf_neighbors.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2012-2020 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>frr_ospfd_neighbors</name>
+	<title>Services/FRR/OSPF</title>
+	<include_file>/usr/local/pkg/frr.inc</include_file>
+	<aftersaveredirect>pkg.php?xml=frr/frr_ospf_neighbors.xml</aftersaveredirect>
+	<tabs>
+		<tab>
+			<text>OSPF</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
+		</tab>
+		<tab>
+			<text>Interfaces</text>
+			<url>pkg.php?xml=frr/frr_ospf_interfaces.xml</url>
+		</tab>
+		<tab>
+			<text>Areas</text>
+			<url>pkg.php?xml=frr/frr_ospf_areas.xml</url>
+		</tab>
+		<tab>
+			<text>Neighbors</text>
+			<url>pkg.php?xml=frr/frr_ospf_neighbors.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>[Global Settings]</text>
+			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[BFD]</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
+			<text>[BGP]</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF6]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>		
+		<tab>
+			<text>Status</text>
+			<url>/status_frr.php?protocol=ospf</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Neighbor</fielddescr>
+			<fieldname>neighbor</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Priority</fielddescr>
+			<fieldname>priority</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Polling Interval</fielddescr>
+			<fieldname>pollinginterval</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<name>OSPF Neighbors</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				Define neighbors for "non-broadcast" and "point-to-multipoint" network types.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>OSPF Neighbor IPv4 Address</fielddescr>
+			<fieldname>neighbor</fieldname>
+			<size>30</size>
+			<type>input</type>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+			<size>30</size>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Neighbor Priority</fielddescr>
+			<fieldname>priority</fieldname>
+			<description>(0-255) Priority</description>
+			<size>30</size>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Dead Neighbor Polling interval</fielddescr>
+			<fieldname>pollinginterval</fieldname>
+			<description>(1-65535) Seconds</description>
+			<size>30</size>
+			<type>input</type>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		frr_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		frr_ospf_neighbors_validate_input();
+	</custom_php_validation_command>
+</packagegui>

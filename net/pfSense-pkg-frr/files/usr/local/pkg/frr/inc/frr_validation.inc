@@ -263,6 +263,16 @@ function frr_ospf_areas_validate_input() {
 	}
 }
 
+function frr_ospf_neighbors_validate_input() {
+	global $config, $id, $input_errors;
+	if (!is_ipaddrv4($_POST['neighbor'])) {
+		$input_errors[] = "Neighbor must be a valid IPv4 address.";
+	}
+
+	frr_validate_intrange_input("Neighbor Priority", $_POST['priority'], 0, 255);
+	frr_validate_intrange_input("Dead Neighbor Polling interval", $_POST['pollinginterval'], 1, 65535);
+}
+
 function frr_ospf_interfaces_validate_input() {
 	global $config, $id, $input_errors;
 
