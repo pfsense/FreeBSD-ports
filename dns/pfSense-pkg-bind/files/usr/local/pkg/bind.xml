@@ -293,8 +293,21 @@
 		<field>
 			<fielddescr>DNSSEC Validation</fielddescr>
 			<fieldname>bind_dnssec_validation</fieldname>
-			<description>Enable DNSSEC validation when BIND is acting as a recursive resolver.</description>
-			<type>checkbox</type>
+			<description>
+				<![CDATA[
+				Enable DNSSEC validation when BIND is acting as a recursive resolver:<br />
+				<b>Auto</b>: a trust anchor for the DNS root zone will automatically be used. This trust anchor is provided as part of BIND and is kept up to date using RFC 5011 key management;<br />
+				<b>On</b>: DNSSEC validation will only occur if at least one trust anchor has been explicitly configured using a trusted-keys or managed-keys statement;<br />
+				<b>Off</b>: DNSSEC validation will not occur
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>Auto</name><value>auto</value></option>
+				<option><name>On</name><value>on</value></option>
+				<option><name>Off</name><value>off</value></option>
+			</options>
+			<default>auto</default>
 		</field>
 		<field>
 			<fielddescr>Forwarder IPs</fielddescr>
