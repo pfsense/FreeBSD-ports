@@ -576,10 +576,12 @@ function iex_check_p2($type, $p2, $convert=false) {
 				implode(', ', array_keys($map_dh)));
 	}
 
-	if (($p2['lifetime'] >= 600) &&
-	    ($p2['lifetime'] <= 86400)) {
-		$ipsecLifetime = (int)$p2['lifetime'] / 60;
-		$options .= iep_key_data_str("LifeTimeInMinutes", "integer", $ipsecLifetime, SASCOPE);
+	if ($type == 'apple') {
+		if (($p2['lifetime'] >= 600) &&
+		    ($p2['lifetime'] <= 86400)) {
+			$ipsecLifetime = (int)$p2['lifetime'] / 60;
+			$options .= iep_key_data_str("LifeTimeInMinutes", "integer", $ipsecLifetime, SASCOPE);
+		}
 	}
 
 	/* If converting, return option string. Otherwise, return error list. */

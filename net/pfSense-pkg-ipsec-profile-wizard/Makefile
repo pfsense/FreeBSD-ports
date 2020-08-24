@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-ipsec-profile-wizard
 PORTVERSION=	1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
