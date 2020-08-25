@@ -77,7 +77,7 @@ BINARY_ALIAS+=	python3=python${PYTHON3_DEFAULT}
 BUNDLE_LIBS=	yes
 
 BUILD_DEPENDS+=	llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT} \
-				rust-cbindgen>=0.14.1:devel/rust-cbindgen \
+				rust-cbindgen>=0.14.3:devel/rust-cbindgen \
 				${RUST_DEFAULT}>=1.41:lang/${RUST_DEFAULT} \
 				${LOCALBASE}/bin/python${PYTHON3_DEFAULT}:lang/python${PYTHON3_DEFAULT:S/.//g} \
 				node:www/node
@@ -234,8 +234,6 @@ MOZ_OPTIONS+=	--disable-libproxy
 
 .if ${PORT_OPTIONS:MALSA}
 BUILD_DEPENDS+=	${LOCALBASE}/include/alsa/asoundlib.h:audio/alsa-lib
-RUN_DEPENDS+=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-plugins
-RUN_DEPENDS+=	alsa-lib>=1.1.1_1:audio/alsa-lib
 MOZ_OPTIONS+=	--enable-alsa
 .endif
 

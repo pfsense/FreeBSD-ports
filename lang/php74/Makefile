@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	php74
-DISTVERSION=	7.4.8
+DISTVERSION=	7.4.9
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=   PHP/distributions
@@ -64,6 +64,10 @@ CONFLICTS=	php71-* php72-* php73-*
 DESTDIRNAME=	INSTALL_ROOT
 
 .include <bsd.port.pre.mk>
+
+.if defined(PHP_FD_SETSIZE)
+CONFIGURE_ARGS+=	--enable-fd-setsize=${PHP_FD_SETSIZE}
+.endif
 
 .if ${PORT_OPTIONS:MMYSQLND}
 CONFIGURE_ARGS+=--enable-mysqlnd
