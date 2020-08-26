@@ -3,7 +3,6 @@
 
 PORTNAME=	radius
 DISTVERSION=	1.4.0b1
-PORTREVISION=	1
 CATEGORIES=	net security pear
 
 MAINTAINER=	miwi@FreeBSD.org
