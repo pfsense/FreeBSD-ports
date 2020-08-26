@@ -482,6 +482,15 @@ pkg_set_origin() {
 		    | sed "s/${_source}/${_target}/g")
 		_origin_source=$(_pkg query %o ${_pkg_source})
 		_origin_target=$(_pkg rquery -U %o ${_pkg_target})
+
+		# Don't try to change it when target package is not present
+		# anymore
+		if [ -z "${_origin_target}" ]; then
+			_exec "pkg-static set -A 1 ${_pkg_source}" \
+			    "Scheduling package ${_pkg_source} for removal"
+			continue
+		fi
+
 		_exec "pkg-static set -o ${_origin_source}:${_origin_target} \
 		    ${_pkg_source}" \
 		    "Update origin ${_origin_source} -> ${_origin_target}" \
