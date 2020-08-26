@@ -478,6 +478,15 @@ pkg_set_origin() {
 		    | sed "s/${_source}/${_target}/g")
 		_origin_source=$(_pkg query %o ${_pkg_source})
 		_origin_target=$(_pkg rquery -U %o ${_pkg_target})
+
+		# Don't try to change it when target package is not present
+		# anymore
+		if [ -z "${_origin_target}" ]; then
+			_exec "pkg-static set -A 1 ${_pkg_source}" \
+			    "Scheduling package ${_pkg_source} for removal"
+			continue
+		fi
+
 		_exec "pkg-static set -o ${_origin_source}:${_origin_target} \
 		    ${_pkg_source}" \
 		    "Update origin ${_origin_source} -> ${_origin_target}" \
@@ -562,7 +571,6 @@ pkg_upgrade() {
 
 	export next_stage=$(_pkg annotate -q -S ${kernel_pkg} next_stage)
 	export is_pkg_locked=$(_pkg annotate -q -S ${kernel_pkg} new_major)
-	export new_major_php=$(_pkg annotate -q -S ${kernel_pkg} new_major_php)
 
 	if [ -n "${next_stage}" -a -n "${booting}" -a -n "${boot_stage}" ]; then
 		if [ ${boot_stage} != ${next_stage} ]; then
@@ -720,13 +728,6 @@ pkg_upgrade() {
 			unlock_pkg=""
 		fi
 
-		local _new_php_pkg=$(_pkg rquery -U %dn ${_meta_pkg} \
-		    | egrep '^php[0-9]{2}$')
-
-		if [ "${cur_php_pkg}" != "${_new_php_pkg}" ]; then
-			pkg_set_origin ${cur_php_pkg} ${_new_php_pkg}
-		fi
-
 		# Download all upgrade packages first
 		fetch_upgrade_packages
 
@@ -818,11 +819,6 @@ pkg_upgrade() {
 		_pkg annotate -q -M ${kernel_pkg} next_stage 2
 		next_stage=2
 
-		if [ "${cur_php_pkg}" != "${_new_php_pkg}" ]; then
-			_pkg annotate -q -M ${kernel_pkg} new_major_php \
-			    ${_new_php_pkg}
-		fi
-
 		do_reboot
 		_exit 0
 	fi
@@ -899,10 +895,6 @@ pkg_upgrade() {
 
 		# Cleanup a possible crash report created during PHP upgrade
 		rm -f /tmp/PHP_errors.log
-
-		if [ -n "${new_major_php}" ]; then
-			_pkg annotate -q -D ${kernel_pkg} new_major_php
-		fi
 
 		_pkg annotate -q -D ${kernel_pkg} next_stage
 
