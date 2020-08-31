@@ -90,7 +90,7 @@ function frr_bfd_generate_peers() {
 			if (!empty($peer['multihop'])) {
 				$bfdpeerconf .= " multihop";
 			}
-			if (!empty($peer['local_address']) && $peer['interface'] <> 'default') {
+			if (!empty($peer['local_address'])) {
 				$bfdpeerconf .= " local-address {$peer['local_address']}";
 			}
 			if (!empty($peer['interface']) && $peer['interface'] <> 'default') {
