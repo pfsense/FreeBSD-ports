@@ -19,7 +19,10 @@
 * limitations under the License.
 */
 
-// list_by_ext: returns an array containing an alphabetic list of files in the specified directory ($path) with a file extension that matches $extension
+/*
+ * Returns an array containing an alphabetic list of files in the specified
+ * directory ($path) with a file extension that matches $extension
+ */
 function list_by_ext($extension, $path) {
 	$list = array();
 	$dir_handle = @opendir($path) or die("Unable to open {$path}");
