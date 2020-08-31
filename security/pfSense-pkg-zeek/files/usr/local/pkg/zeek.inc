@@ -110,11 +110,10 @@ function zeek_restart_services() {
 			}
 		}
 	} else {
-		//Zeek is disabled
+		// Zeek is disabled
 		if (is_service_running('zeek')) {
 			log_error("[zeek] Stopping service...");
-			//stop_service("zeek");
-			mwexec(ZEEK_ETC . "/rc.d/zeek.sh stop");
+			mwexec_bg(ZEEK_ETC . "/rc.d/zeek.sh stop");
 		}
 	}
 }
@@ -170,11 +169,9 @@ function zeek_install_command() {
 	/* Hard kill any running zeek processes that may have been started by any
 	 of the pfSense scripts such as check_reload_status() or rc.start_packages*/
 	if (is_process_running("zeek")) {
-		exec("/usr/bin/killall -z zeek");
+		killbyname("zeek");
 		sleep(2);
 	}
-	// Turn off tcp segmentation offload.
-	set_single_sysctl("net.inet.tcp.tso", "0");
 
 	// creating a backup file of the original zeekctl.cfg no matter if user checked this or not
 	if (!file_exists(ZEEK_ETC . "/zeekctl.cfg.backup")) {
@@ -194,9 +191,8 @@ function zeek_install_command() {
 		copy(ZEEK_ETC . "/networks.cfg", ZEEK_ETC . "/networks.cfg.backup");
 	}
 	// Change owner of zeek created files
-	exec("chown -R root:wheel /usr/local/logs");
-
-	exec("chown -R root:wheel /usr/local/spool");
+	chown("/usr/local/logs", "root");
+	chown("/usr/local/spool", "root");
 
 	unlink_if_exists("/usr/local/etc/rc.d/zeek.sh");
 
@@ -208,12 +204,12 @@ function zeek_install_command() {
 
 function zeek_deinstall_command() {
 	zeek_install_cron(false);
-	mwexec("/usr/bin/killall zeek");
+	killbyname("zeek");
 	unlink_if_exists("/usr/local/etc/rc.d/zeek.sh");
 
 	if (zeek_log_resync()) {
 		if (is_dir("/usr/local/logs")) {
-			exec("/bin/rm -rf /usr/local/logs/*");
+			rmdir_recursive("/usr/local/logs");
 		}
 	}
 }
@@ -290,45 +286,46 @@ function zeek_validate_zeekctl($post, &$input_errors) {
 }
 
 function zeek_validate_cluster($post, &$input_errors) {
-	if ($post['enable_cluster'] == 'on') {
-		$managerhost = trim($post['manager_host']);
+	if ($post['enable_cluster'] != 'on') {
+		return;
+	}
 
-		if (!is_ipaddr($managerhost) && !is_domain($managerhost)) {
-			$input_errors[] = "'Manager host' must contain a valid IP address or domain name.";
-		}
+	$managerhost = trim($post['manager_host']);
+	if (!is_ipaddr($managerhost) && !is_domain($managerhost)) {
+		$input_errors[] = "'Manager host' must contain a valid IP address or domain name.";
+	}
 
-		$proxyhost = trim($post['proxy_host']);
-		if (!is_ipaddr($proxyhost) && !is_domain($proxyhost)) {
-			$input_errors[] = "'Proxy host' must contain a valid IP address or domain name.";
-		}
+	$proxyhost = trim($post['proxy_host']);
+	if (!is_ipaddr($proxyhost) && !is_domain($proxyhost)) {
+		$input_errors[] = "'Proxy host' must contain a valid IP address or domain name.";
+	}
 
-		$proxyhost = trim($post['proxy_host']);
-		if (!is_ipaddr($proxyhost) && !is_domain($proxyhost)) {
-			$input_errors[] = "'Proxy host' must contain a valid IP address or domain name.";
-		}
+	$proxyhost = trim($post['proxy_host']);
+	if (!is_ipaddr($proxyhost) && !is_domain($proxyhost)) {
+		$input_errors[] = "'Proxy host' must contain a valid IP address or domain name.";
+	}
 
-		$worker1host = trim($post['worker1_host']);
-		if (!is_ipaddr($worker1host) && !is_domain($worker1host)) {
-			$input_errors[] = "'Worker 1 host' must contain a valid IP address or domain name.";
-		}
-		if (empty($post['worker1_interface'])) {
-			$input_errors[] = "Select one interface under 'Worker 1 Interface' to enable Worker 1.";
-		}
+	$worker1host = trim($post['worker1_host']);
+	if (!is_ipaddr($worker1host) && !is_domain($worker1host)) {
+		$input_errors[] = "'Worker 1 host' must contain a valid IP address or domain name.";
+	}
+	if (empty($post['worker1_interface'])) {
+		$input_errors[] = "Select one interface under 'Worker 1 Interface' to enable Worker 1.";
+	}
 
-		$worker2host = trim($post['worker2_host']);
-		if (!is_ipaddr($worker2host) && !is_domain($worker2host)) {
-			$input_errors[] = "'Worker 2' must contain a valid IP address or domain name.";
-		}
-		if (empty($post['worker2_interface'])) {
-			$input_errors[] = "Select one interface under 'Worker 2 Interface' to enable Worker 2.";
-		}
+	$worker2host = trim($post['worker2_host']);
+	if (!is_ipaddr($worker2host) && !is_domain($worker2host)) {
+		$input_errors[] = "'Worker 2' must contain a valid IP address or domain name.";
+	}
+	
+	if (empty($post['worker2_interface'])) {
+		$input_errors[] = "Select one interface under 'Worker 2 Interface' to enable Worker 2.";
 	}
 }
 
 function zeek_validate_script($post, &$input_errors) {
 	global $config;
 
-	//$settings = $config['installedpackages']['zeekscript']['config'];
 	if (!zeek_enabled()) {
 		$input_errors[] = 'Enabled Zeek instance first';
 	} else {
@@ -743,9 +740,9 @@ EOD;
 					$filename = "@load ".basename($path,".zeek")."";
 				}
 
-				$test =  escapeshellarg($path);
-				$dest = escapeshellarg('/usr/local/share/zeek/site');
-				exec("/bin/cp $test $dest");
+				$srcpath =  escapeshellarg($path);
+				$dstpath = escapeshellarg('/usr/local/share/zeek/site');
+				copy($srcpath,  $dstpath);
 				$newline = "\n";
 
 				$conf .= <<<EOD
@@ -937,7 +934,7 @@ function zeek_all_after_XMLRPC_resync() {
 
 	log_error("[zeek]: Finished XMLRPC process. For more information look at the host which started sync.");
 
-	exec(ZEEK_ETC . "/rc.d/zeek.sh restart");
+	mwexec_bg(ZEEK_ETC . "/rc.d/zeek.sh restart");
 }
 
 ?>
