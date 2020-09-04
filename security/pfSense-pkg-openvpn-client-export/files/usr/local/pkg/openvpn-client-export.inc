@@ -534,7 +534,7 @@ EOF;
 	}
 }
 
-function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $outpass, $proxy, $advancedoptions, $openvpn_version = "x86-xp", $usepkcs11, $pkcs11providers, $pkcs11id) {
+function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $outpass, $proxy, $advancedoptions, $openvpn_version = "x86-xp", $usepkcs11, $pkcs11providers, $pkcs11id, $silent) {
 	global $g, $input_errors, $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_version, $legacy_openvpn_version_rev;
 
 	switch ($openvpn_version) {
@@ -636,17 +636,19 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 
 	$files .= "openvpn-install.exe ";
 	$files .= "openvpn-postinstall.exe ";
-	if ($usetoken) {
-		$procchain = 	';!@Install@!UTF-8!
-RunProgram="openvpn-postinstall.exe /Import"
-;!@InstallEnd@!'
-;
+	$procchain = ';!@Install@!UTF-8!';
+	if ($usetoken && $silent) {
+		$procchain .= 'RunProgram="openvpn-install.exe /S"';
+		$procchain .= 'RunProgram="openvpn-postinstall.exe /S /Import"';
+	} elseif ($usetoken) {
+		$procchain .= 'RunProgram="openvpn-postinstall.exe /Import"';
+	} elseif ($silent) {
+		$procchain .= 'RunProgram="openvpn-install.exe /S"';
+		$procchain .= 'RunProgram="openvpn-postinstall.exe /S"';
 	} else {
-		$procchain = 	';!@Install@!UTF-8!
-RunProgram="openvpn-postinstall.exe"
-;!@InstallEnd@!'
-;
+		$procchain .= 'RunProgram="openvpn-postinstall.exe"';
 	}
+	$procchain .= ';!@InstallEnd@!';
 	file_put_contents("{$tempdir}/7zipConfig",$procchain);
 
 	exec("/usr/local/libexec/p7zip/7z -y a archive.7z {$files}");
