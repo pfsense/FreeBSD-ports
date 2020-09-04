@@ -218,6 +218,7 @@ if (!empty($act)) {
 	$verifyservercn = $_POST['verifyservercn'];
 	$blockoutsidedns = $_POST['blockoutsidedns'];
 	$legacy = $_POST['legacy'];
+	$silent = $_POST['silent'];
 	$randomlocalport = $_POST['randomlocalport'];
 	$usetoken = $_POST['usetoken'];
 	if ($usetoken && (substr($act, 0, 10) == "confinline")) {
@@ -355,7 +356,7 @@ if (!empty($act)) {
 		}
 
 		$exp_name = urlencode($exp_name);
-		$exp_path = openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $password, $proxy, $advancedoptions, substr($act, 5), $usepkcs11, $pkcs11providers, $pkcs11id);
+		$exp_path = openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $password, $proxy, $advancedoptions, substr($act, 5), $usepkcs11, $pkcs11providers, $pkcs11id, $silent);
 	}
 
 	if (!$exp_path) {
@@ -484,6 +485,13 @@ $section->addInput(new Form_Checkbox(
 	'Do not include OpenVPN 2.4 settings in the client configuration.',
 	$cfg['legacy']
 ))->setHelp("When using an older client (OpenVPN 2.3.x or earlier), check this option to prevent the exporter from placing known-incompatible settings such as Negotiable Cryptographic Parameters (NCP) into the client configuration.");
+
+$section->addInput(new Form_Checkbox(
+	'silent',
+	'Silent Installer',
+	'Create Windows installer for unattended deploy.',
+	$cfg['silent']
+))->setHelp("Create a silent Windows Installer for unattended deploy. Since this installer is not signed, you may need special software to deploy it correctly.");
 
 $section->addInput(new Form_Checkbox(
 	'randomlocalport',
@@ -761,6 +769,10 @@ function download_begin(act, i, j) {
 	if (document.getElementById("legacy").checked) {
 		legacy = 1;
 	}
+	var silent = 0;
+	if (document.getElementById("silent").checked) {
+		silent = 1;
+	}
 	var randomlocalport = 0;
 	if (document.getElementById("randomlocalport").checked) {
 		randomlocalport = 1;
@@ -853,6 +865,7 @@ function download_begin(act, i, j) {
 	exportform.appendChild(make_form_variable("verifyservercn", verifyservercn));
 	exportform.appendChild(make_form_variable("blockoutsidedns", blockoutsidedns));
 	exportform.appendChild(make_form_variable("legacy", legacy));
+	exportform.appendChild(make_form_variable("silent", silent));
 	exportform.appendChild(make_form_variable("randomlocalport", randomlocalport));
 	exportform.appendChild(make_form_variable("usetoken", usetoken));
 	exportform.appendChild(make_form_variable("usepkcs11", usepkcs11));
