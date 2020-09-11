@@ -40,7 +40,13 @@ else {
 	header("Pragma: no-cache");
 	header("Expires: Sat, 26 Jul 2014 05:00:00 GMT");
 
-	if (empty($ptype['REQUEST_URI']) || $ptype['REQUEST_URI'] != '/') {
+	$primary_mime = 'text';
+	$accept_header = getallheaders()['Accept'];
+	if ($accept_header) {
+		$primary_mime = explode('/', $accept_header, 2)[0];
+	}
+
+	if ($primary_mime == 'image') {
 		$type = 'DNSBL-1x1';
 		header("Content-Type: image/gif");
 		echo base64_decode('R0lGODlhAQABAJAAAP8AAAAAACH5BAUQAAAALAAAAAABAAEAAAICBAEAOw==');
