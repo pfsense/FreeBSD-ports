@@ -94,6 +94,18 @@
 			</description>
 			<type>input</type>
 		</field>
+		<field>
+			<fielddescr>Write Access</fielddescr>
+			<fieldname>tftpd_create</fieldname>
+			<description>Check to allow clients to upload files on the TFTP server.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Logging</fielddescr>
+			<fieldname>tftpd_logging</fieldname>
+			<description>Check to log read/write (RRQ/WRQ) requests.</description>
+			<type>checkbox</type>
+		</field>
 	</fields>
 	<custom_php_install_command>
 		install_package_tftpd();

@@ -69,6 +69,10 @@ function tftp_filesdir_bounds_check($filename, $error_msg) {
 
 function install_package_tftpd() {
 	safe_mkdir(FILES_DIR);
+	chown(FILES_DIR, 'nobody');
+	chgrp(FILES_DIR, 'nobody');
+	chown(FILES_DIR . '/*', 'nobody');
+	chgrp(FILES_DIR . '/*', 'nobody');
 	upgrade_config_tftpd();
 }
 
@@ -135,6 +139,16 @@ function sync_package_tftpd() {
 	// Max Block Size
 	if (!empty($tftpd_conf['tftpd_blocksize'])) {
 		$options .= " -B " . escapeshellarg($tftpd_conf['tftpd_blocksize']);
+	}
+
+	// Logging (RRQ/WRQ)
+	if ($tftpd_conf['tftpd_logging'] == "on") {
+		$options .= " -v ";
+	}
+
+	// Allow to upload files
+	if ($tftpd_conf['tftpd_create'] == "on") {
+		$options .= " -c -p ";
 	}
 
 	write_rcfile(array(
