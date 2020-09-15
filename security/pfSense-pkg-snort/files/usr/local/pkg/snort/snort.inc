@@ -539,6 +539,11 @@ function snort_start($snortcfg, $if_real, $background=FALSE) {
 	else
 		$quiet = "-q --suppress-config-log";
 
+	// If Snort is already running on this interface, stop it before restarting
+	if (snort_is_running($if_real)) {
+		snort_stop($snortcfg, $if_real);
+	}
+
 	if ($snortcfg['enable'] == 'on' && $if_real <> "" && !isvalidpid("{$g['varrun_path']}/snort_{$if_real}.pid")) {
 
 		// Adjust the interface specification and DAQ type according to operating mode

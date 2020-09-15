@@ -229,6 +229,7 @@ if (strcasecmp($action, 'dup') == 0) {
 }
 
 if ($_POST['save'] && !$input_errors) {
+	$snort_start = $snort_restart = $snort_reload = $snort_new_passlist = FALSE;
 	if (!isset($_POST['interface']))
 		$input_errors[] = "Interface is mandatory";
 
@@ -264,21 +265,34 @@ if ($_POST['save'] && !$input_errors) {
 	/* if no errors write to conf */
 	if (!$input_errors) {
 		/* Most changes don't require a rules rebuild, so default to "off" */
-		$rebuild_rules = false;
+		$rebuild_rules = FALSE;
 
 		$natent = $a_rule[$id];
 		$natent['interface'] = $_POST['interface'];
 		$natent['enable'] = $_POST['enable'] ? 'on' : 'off';
 		$natent['uuid'] = $pconfig['uuid'];
 
-		/* See if the HOME_NET, EXTERNAL_NET, or SUPPRESS LIST values were changed */
-		$snort_reload = false;
+		/* See if the HOME_NET, EXTERNAL_NET, or SUPPRESS LIST were changed and flag a reload if "yes" */
 		if ($_POST['homelistname'] && ($_POST['homelistname'] <> $natent['homelistname']))
 			$snort_reload = true;
 		if ($_POST['externallistname'] && ($_POST['externallistname'] <> $natent['externallistname']))
 			$snort_reload = true;
 		if ($_POST['suppresslistname'] && ($_POST['suppresslistname'] <> $natent['suppresslistname']))
 			$snort_reload = true;
+
+		/* See if the Pass List was changed and flag a Snort restart if "yes" */
+		if ($_POST['whitelistname'] && ($_POST['whitelistname'] <> $natent['whitelistname']))
+			$snort_new_passlist = true;
+
+		/* See if any Blocking settings changed and flag a restart if "yes" */
+		if ($_POST['blockoffenders7'] && ($_POST['blockoffenders7'] <> $natent['blockoffenders7']))
+			$snort_restart = true;
+		if ($_POST['blockoffenderskill'] && ($_POST['blockoffenderskill'] <> $natent['blockoffenderskill']))
+			$snort_restart = true;
+		if ($_POST['blockoffendersip'] && ($_POST['blockoffendersip'] <> $natent['blockoffendersip']))
+			$snort_restart = true;
+		if ($_POST['ips_mode'] && ($_POST['ips_mode'] <> $natent['ips_mode']))
+			$snort_restart = true;
 
 		if ($_POST['descr']) $natent['descr'] =  $_POST['descr']; else $natent['descr'] = convert_friendly_interface_to_friendly_descr($natent['interface']);
 		if ($_POST['performance']) $natent['performance'] = $_POST['performance']; else  unset($natent['performance']);
@@ -483,27 +497,45 @@ if ($_POST['save'] && !$input_errors) {
 		sync_snort_package_config();
 
 		/* See if we need to restart Snort after an interface re-assignment */
-		if ($snort_start == true) {
-			snort_start($natent, $if_real);
+		if ($snort_start) {
+			snort_start($natent, $if_real, TRUE);
+			$savemsg = gettext('Starting Snort on interface due to interface re-assignment.');
+		}
+
+		/* See if we need to restart Snort to activate changes made */
+		if ($snort_restart && !$snort_start && snort_is_running($if_real)) {
+			snort_start($natent, $if_real, TRUE);
+			$savemsg = gettext('Restarted Snort on this interface to activate new saved configuration settings.');
+		}
+
+		/* See if we need to restart Snort after a Pass List re-assignment, */
+		/* but only if we did not restart for any other reason.             */
+		if ($snort_new_passlist && !$snort_start && !$snort_restart && snort_is_running($if_real)) {
+			snort_start($natent, $if_real, TRUE);
+			$savemsg = gettext('Restarted Snort on this interface due to a Pass List change.');
 		}
 
 		/*******************************************************/
 		/* Signal Snort to reload configuration if we changed  */
-		/* HOME_NET, EXTERNAL_NET or Suppress list values.     */
-		/* The function only signals a running Snort instance  */
-		/* to safely reload these parameters.                  */
+		/* HOME_NET, EXTERNAL_NET or Suppress list values      */
+		/* unless we already restarted Snort earlier.  The     */
+		/* function only signals a running Snort instance to   */
+		/* safely reload these parameters.                     */
 		/*******************************************************/
-		if ($snort_reload == true)
+		if ($snort_reload && !$snort_start && !$snort_restart && snort_is_running($if_real)) {
 			snort_reload_config($natent, "SIGHUP");
+			$savemsg = gettext('Signaled Snort to reload configuration due to change in HOME_NET, EXTERNAL_NET or Suppress List assignments.');
+		}
 
-		unset($a_rule);
-		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
-		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
-		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
-		header( 'Cache-Control: post-check=0, pre-check=0', false );
-		header( 'Pragma: no-cache' );
-		header("Location: /snort/snort_interfaces.php");
-		exit;
+		/* If using Inline IPS and the current interface is a VLAN, advise  */
+		/* advise user that VLAN Hardware Filtering should be disabled.     */
+		if ($natent['enable'] == 'on' && $natent['ips_mode'] == 'ips_mode_inline' && interface_is_vlan(get_real_interface($natent['interface']))) {
+			$vlan_warn_msg = gettext('NOTICE:  When using Inline IPS Mode with VLAN interfaces, hardware-level VLAN filtering should be disabled with most network cards. Follow the steps in the Netgate documentation ') . 
+					 '<a target="_blank" href="https://docs.netgate.com/pfsense/en/latest/hardware/tuning-and-troubleshooting-network-cards.html#intel-ix-4-cards">' . gettext('here') . 
+					 '</a>' . gettext(' to disable hardware VLAN filtering.');
+		}
+
+		$pconfig = $natent;
 	} else
 		$pconfig = $_POST;
 }
@@ -538,13 +570,18 @@ if ($input_errors) {
 	print_input_errors($input_errors);
 }
 
+if ($vlan_warn_msg)
+	print_info_box($vlan_warn_msg);
+
 if ($savemsg) {
 	print_info_box($savemsg, 'success');
 }
 
+// If using Inline IPS, check that CSO, TSO and LRO are all disabled
 if ($pconfig['enable'] == 'on' && $pconfig['ips_mode'] == 'ips_mode_inline' && (!isset($config['system']['disablechecksumoffloading']) || !isset($config['system']['disablesegmentationoffloading']) || !isset($config['system']['disablelargereceiveoffloading']))) {
-	print_info_box(gettext('IPS inline mode requires that Hardware Checksum, Hardware TCP Segmentation and Hardware Large Receive Offloading ' .
-				'all be disabled on the ') . '<b>' . gettext('System > Advanced > Networking ') . '</b>' . gettext('tab.'));
+	print_info_box(gettext('WARNING! IPS inline mode requires that Hardware Checksum Offloading, Hardware TCP Segmentation Offloading and Hardware Large Receive Offloading ' .
+				'all be disabled for proper operation. This firewall currently has one or more of these Offloading settings NOT disabled. Visit the ') . '<a href="/system_advanced_network.php">' . 
+			        gettext('System > Advanced > Networking') . '</a>' . gettext(' tab and ensure all three of these Offloading settings are disabled.'));
 }
 
 $form = new Form(new Form_Button(
