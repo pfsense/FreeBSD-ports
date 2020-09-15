@@ -30,6 +30,7 @@ config snaplen: {$snaplen}
 config disable_decode_alerts
 config disable_tcpopt_experimental_alerts
 config disable_tcpopt_obsolete_alerts
+config disable_tcpopt_ttcp_alerts
 config disable_ttcp_alerts
 config disable_tcpopt_alerts
 config disable_ipopt_alerts
@@ -37,6 +38,9 @@ config disable_decode_drops
 
 # Enable the GTP decoder #
 config enable_gtp
+
+# Configure maximum number of flowbit references.
+config flowbits_size: 2048
 
 # Configure PCRE match limitations
 config pcre_match_limit: 3500
@@ -62,12 +66,12 @@ dynamicengine directory {$snort_dirs['dynamicengine']}
 dynamicdetection directory {$snort_dirs['dynamicrules']}
 
 # Inline packet normalization. For more information, see README.normalize
-# Disabled since we do not use "inline" mode with pfSense
-# preprocessor normalize_ip4
-# preprocessor normalize_tcp: ips ecn stream
-# preprocessor normalize_icmp4
-# preprocessor normalize_ip6
-# preprocessor normalize_icmp6
+# Does nothing in IDS mode (Legacy Mode blocking)
+preprocessor normalize_ip4
+preprocessor normalize_tcp: ips ecn stream
+preprocessor normalize_icmp4
+preprocessor normalize_ip6
+preprocessor normalize_icmp6
 
 # Flow and stream #
 {$frag3_global}
@@ -90,7 +94,7 @@ dynamicdetection directory {$snort_dirs['dynamicrules']}
 {$host_attrib_config}
 
 # Snort Output Logs #
-output alert_csv: alert timestamp,sig_generator,sig_id,sig_rev,msg,proto,src,srcport,dst,dstport,id,classification,priority {$alert_log_limit_size}
+output alert_csv: alert timestamp,sig_generator,sig_id,sig_rev,msg,proto,src,srcport,dst,dstport,id,classification,priority,action,disposition {$alert_log_limit_size}
 {$alertsystemlog_type}
 {$snortunifiedlog_type}
 {$spoink_type}

@@ -48,6 +48,8 @@ www/widgets/include/widget-snort.inc
 /var/db/snort/sidmods/disablesid-sample.conf
 /var/db/snort/sidmods/enablesid-sample.conf
 /var/db/snort/sidmods/modifysid-sample.conf
+/var/db/snort/sidmods/dropsid-sample.conf
+/var/db/snort/sidmods/rejectsid-sample.conf
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
 @dir /etc/inc

@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,6 +76,19 @@ function snort_is_sidmodslist_active($sidlist) {
 		if ($rule['modify_sid_file'] == $sidlist) {
 			return TRUE;
 		}
+
+		// The tests below let the user remove an assigned
+		// DROP_SID or REJECT_SID list from an interface
+		// that now uses a mode where these list types
+		// are no longer applicable.
+		if ($rule['blockoffenders7'] == 'on' && $rule['ips_mode'] == 'ips_mode_inline') {
+			if ($rule['drop_sid_file'] == $sidlist) {
+				return TRUE;
+			}
+			if ($rule['reject_sid_file'] == $sidlist) {
+				return TRUE;
+			}
+		}
 	}
 	return FALSE;
 }
@@ -109,6 +122,16 @@ if (isset($_POST['upload'])) {
 
 if (isset($_POST['sidlist_delete']) && isset($a_list[$_POST['sidlist_id']])) {
 	if (!snort_is_sidmodslist_active($a_list[$_POST['sidlist_id']]['name'])) {
+
+		// Remove the list from DROP_SID or REJECT_SID if assigned on any interface.
+		foreach($a_nat as $k => $rule) {
+			if ($rule['drop_sid_file'] == $a_list[$_POST['sidlist_id']]['name']) {
+				unset($a_nat[$k]['drop_sid_file']);
+			}
+			if ($rule['reject_sid_file'] == $a_list[$_POST['sidlist_id']]['name']) {
+				unset($a_nat[$k]['reject_sid_file']);
+			}
+		}
 		unset($a_list[$_POST['sidlist_id']]);
 
 		// Write the new configuration
@@ -190,6 +213,26 @@ if (isset($_POST['save_auto_sid_conf'])) {
 				continue;
 			}
 			$a_nat[$k]['modify_sid_file'] = $v;
+		}
+	}
+
+	if (is_array($_POST['drop_sid_file'])) {
+		foreach ($_POST['drop_sid_file'] as $k => $v) {
+			if ($v == "None") {
+				unset($a_nat[$k]['drop_sid_file']);
+				continue;
+			}
+			$a_nat[$k]['drop_sid_file'] = $v;
+		}
+	}
+
+	if (is_array($_POST['reject_sid_file'])) {
+		foreach ($_POST['reject_sid_file'] as $k => $v) {
+			if ($v == "None") {
+				unset($a_nat[$k]['reject_sid_file']);
+				continue;
+			}
+			$a_nat[$k]['reject_sid_file'] = $v;
 		}
 	}
 
@@ -500,10 +543,18 @@ print($section);
 					<th><?=gettext("Enable SID List")?></th>
 					<th><?=gettext("Disable SID List")?></th>
 					<th><?=gettext("Modify SID List")?></th>
+					<th><?=gettext("Drop SID List")?></th>
+					<th><?=gettext("Reject SID List")?></th>
 				   </tr>
 				</thead>
 				<tbody>
 			   <?php foreach ($a_nat as $k => $natent): ?>
+				<?php
+					// Skip displaying any instance where the physical pfSense interface is missing
+					if (get_real_interface($natent['interface']) == "") {
+						continue;
+					}
+				?>
 				<tr>
 					<td class="text-center">
 						<input type="checkbox" name="torestart[]" id="torestart[]" value="<?=$k;?>" title="<?=gettext("Apply new configuration and rebuild rules for this interface when saving");?>" />
@@ -565,12 +616,53 @@ print($section);
 							?>
 						</select>
 					</td>
+					<td>
+						<?php if ($natent['blockoffenders7'] == 'on' && $natent['ips_mode'] == 'ips_mode_inline') : ?>
+							<select name="drop_sid_file[<?=$k?>]" class="form-control" id="drop_sid_file[<?=$k?>]">
+								<?php
+									foreach ($sidmodselections as $choice) {
+										if ($choice == $natent['drop_sid_file'])
+											echo "<option value='{$choice}' selected>";
+										else
+											echo "<option value='{$choice}'>";
+
+										echo htmlspecialchars(gettext($choice)) . '</option>';
+									}
+								?>
+							</select>
+						<?php else : ?>
+							<input type="hidden" name="drop_sid_file[<?=$k?>]" id="drop_sid_file[<?=$k?>]" value="<?=isset($natent['drop_sid_file']) ? $natent['drop_sid_file'] : 'none';?>">
+							<span class="text-center"><?=gettext("N/A")?></span>
+						<?php endif; ?>
+					</td>
+					<td>
+						<?php if ($natent['blockoffenders7'] == 'on' && $natent['ips_mode'] == 'ips_mode_inline') : ?>
+							<select name="reject_sid_file[<?=$k?>]" class="form-control" id="reject_sid_file[<?=$k?>]">
+								<?php
+									foreach ($sidmodselections as $choice) {
+										if ($choice == $natent['reject_sid_file'])
+											echo "<option value='{$choice}' selected>";
+										else
+											echo "<option value='{$choice}'>";
+
+										echo htmlspecialchars(gettext($choice)) . '</option>';
+									}
+								?>
+							</select>
+						<?php else : ?>
+							<input type="hidden" name="reject_sid_file[<?=$k?>]" id="reject_sid_file[<?=$k?>]" value="<?=isset($natent['reject_sid_file']) ? $natent['reject_sid_file'] : 'none';?>">
+							<span class="text-center"><?=gettext("N/A")?></span>
+						<?php endif; ?>
+					</td>
+
+
 				</tr>
 			   <?php endforeach; ?>
 				</tbody>
 			</table>
 		</div>
 	</div>
+</div>
 	<div>
 		<button type="submit" id="save_auto_sid_conf" name="save_auto_sid_conf" class="btn btn-primary" value="<?=gettext("Save");?>" title="<?=gettext("Save SID Management configuration");?>" >
 			<i class="fa fa-save icon-embed-btn"></i>
@@ -592,12 +684,14 @@ print($section);
 					" In this case you would choose 'disable,enable' for the State Order.  Note that the last action performed takes priority.") .
 			'</p>' .
 			'<p>' .
-				gettext("The Enable SID File, Disable SID File, Modify SID File and Drop SID File drop-down controls specify which rule modification lists are run automatically for the interface.  Setting a list control to 'None' disables that modification. " . 
+				gettext("The Enable SID File, Disable SID File, Modify SID File, Drop SID File and Reject SID File drop-down controls specify which rule modification lists are run automatically for the interface.  Setting a list control to 'None' disables that modification. " . 
 					"Setting all list controls for an interface to 'None' disables automatic SID state management for the interface.") .
 			'</p>', 'info', false);
+
+		// Finished with config array reference, so release it
+		unset($a_nat);
 	?>
 	</div>
-</div>
 
 <script type="text/javascript">
 //<![CDATA[

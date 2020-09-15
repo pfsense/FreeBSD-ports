@@ -54,6 +54,7 @@ if (isset($id) && $a_nat[$id]) {
 		$pconfig['autoflowbitrules'] = $a_nat[$id]['autoflowbitrules'] == 'on' ? 'on' : 'off';;
 	$pconfig['ips_policy_enable'] = $a_nat[$id]['ips_policy_enable'] == 'on' ? 'on' : 'off';;
 	$pconfig['ips_policy'] = $a_nat[$id]['ips_policy'];
+	$pconfig['ips_policy_mode'] = $a_nat[$id]['ips_policy_mode'];
 } else {
 	$pconfig['autoflowbitrules'] = 'on';
 }
@@ -121,10 +122,12 @@ if (isset($_POST["save"])) {
 	if ($_POST['ips_policy_enable'] == "on") {
 		$a_nat[$id]['ips_policy_enable'] = 'on';
 		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
+		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	}
 	else {
 		$a_nat[$id]['ips_policy_enable'] = 'off';
 		unset($a_nat[$id]['ips_policy']);
+		unset($a_nat[$id]['ips_policy_mode']);
 	}
 
 	$enabled_items = "";
@@ -158,7 +161,7 @@ if (isset($_POST["save"])) {
 
 	$pconfig = $_POST;
 	$enabled_rulesets_array = explode("||", $enabled_items);
-	if (snort_is_running($snort_uuid, $if_real))
+	if (snort_is_running($if_real))
 		$savemsg = gettext("Snort is 'live-reloading' the new rule set.");
 
 	// Sync to configured CARP slaves if any are enabled
@@ -171,15 +174,18 @@ if (isset($_POST['unselectall'])) {
 	if ($_POST['ips_policy_enable'] == "on") {
 		$a_nat[$id]['ips_policy_enable'] = 'on';
 		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
+		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	}
 	else {
 		$a_nat[$id]['ips_policy_enable'] = 'off';
 		unset($a_nat[$id]['ips_policy']);
+		unset($a_nat[$id]['ips_policy_mode']);
 	}
 
 	$pconfig['autoflowbits'] = $_POST['autoflowbits'];
 	$pconfig['ips_policy_enable'] = $_POST['ips_policy_enable'];
 	$pconfig['ips_policy'] = $_POST['ips_policy'];
+	$pconfig['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	$enabled_rulesets_array = array();
 
 	$savemsg = gettext("All rule categories have been de-selected.  ");
@@ -193,10 +199,12 @@ if (isset($_POST['selectall'])) {
 	if ($_POST['ips_policy_enable'] == "on") {
 		$a_nat[$id]['ips_policy_enable'] = 'on';
 		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
+		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	}
 	else {
 		$a_nat[$id]['ips_policy_enable'] = 'off';
 		unset($a_nat[$id]['ips_policy']);
+		unset($a_nat[$id]['ips_policy_mode']);
 	}
 
 	$pconfig['autoflowbits'] = $_POST['autoflowbits'];
@@ -265,6 +273,9 @@ if ($input_errors) {
 if ($savemsg) {
 	print_info_box($savemsg);
 }
+
+// Finished with config array reference, so release it
+unset($a_nat);
 
 $tab_array = array();
 	$tab_array[] = array(gettext("Snort Interfaces"), true, "/snort/snort_interfaces.php");
@@ -380,6 +391,14 @@ if ($snortdownload == "on") {
 		'in an Excel file.  Max-Detect is a policy created for testing network traffic through your ' . 
 		'device.  This policy should be used with caution on production systems!</span>'
 	));
+	$section->addInput(new Form_Select(
+		'ips_policy_mode',
+		'IPS Policy Mode',
+		$pconfig['ips_policy_mode'],
+		array(  'alert' => 'Alert',
+			'policy'  => 'Policy')
+		))->setHelp('When Policy is selected, this will automatically change the action for rules in the selected IPS Policy from their default action of alert to the action specified ' .
+				'in the policy metadata (typically drop, but may be alert for some policy rules).');
 	print($section);
 }
 

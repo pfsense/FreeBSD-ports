@@ -168,15 +168,11 @@ if (isset($_POST['clear'])) {
 
 if (isset($_POST['mode'])) {
 	if ($_POST['mode'] == 'force') {
-		// Mount file system R/W since we need to remove files
-
 		// Remove the existing MD5 signature files to force a download
 		unlink_if_exists("{$snortdir}/{$emergingthreats_filename}.md5");
 		unlink_if_exists("{$snortdir}/{$snort_community_rules_filename}.md5");
 		unlink_if_exists("{$snortdir}/{$snort_rules_file}.md5");
 		unlink_if_exists("{$snortdir}/{$snort_openappid_filename}.md5");
-
-		// Revert file system to R/O.
 	}
 	
 	// Launch a background process to download the updates
@@ -248,7 +244,7 @@ display_top_tabs($tab_array, true);
 					<td><?=gettext($openappid_detectors_sig_date);?></td>
 				</tr>
 				<tr>
-                                        <td><?=gettext("Snort OpenAppID RULES Detectors");?></td>
+                                        <td><?=gettext("Snort AppID Open Text Rules");?></td>
                                         <td><?=trim($openappid_detectors_rules_sig_chk_local);?></td>
                                         <td><?=gettext($openappid_detectors_rules_sig_date);?></td>
                                 </tr>
