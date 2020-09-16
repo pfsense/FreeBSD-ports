@@ -24,11 +24,10 @@ global $shortcuts;
 
 $shortcuts['haproxy'] = array();
 $shortcuts['haproxy']['main'] = "/haproxy/haproxy_global.php";
-$loglink = '../status_pkglogs.php';
-if (file_exists($loglink)) {
-		$shortcuts['haproxy']['log'] = "/status_pkglogs.php?pkg=haproxy-devel";
-		} else {
-		$shortcuts['haproxy']['log'] = "/status_logs_packages.php?pkg=haproxy-devel";
-}
+if (substr(trim(file_get_contents("/etc/version")),0,3) < 2.5) {
+        $shortcuts['haproxy']['log'] = "/status_pkglogs.php?pkg=haproxy-devel";
+        } else {
+        $shortcuts['haproxy']['log'] = "/status_logs_packages.php?pkg=haproxy-devel";
+        }
 $shortcuts['haproxy']['status'] = "/haproxy/haproxy_stats.php?haproxystats=1";
 $shortcuts['haproxy']['service'] = "haproxy";
