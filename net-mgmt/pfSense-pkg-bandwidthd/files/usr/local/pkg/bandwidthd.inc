@@ -81,17 +81,6 @@ function bandwidthd_install_config() {
 	$output_cdf_val = ($bandwidthd_config['outputcdf'] != "" ? "output_cdf true" : "");
 	$recover_cdf_val = ($bandwidthd_config['recovercdf'] != "" ? "recover_cdf true" : "");
 
-	/* PostgreSQL Options */
-	if ($bandwidthd_config['outputpostgresql']) {
-		$postgresql_host = $bandwidthd_config['postgresqlhost'];
-		$postgresql_database = $bandwidthd_config['postgresqldatabase'];
-		$postgresql_username = $bandwidthd_config['postgresqlusername'];
-		$postgresql_password = base64_decode($bandwidthd_config['postgresqlpasswordenc']);
-		$postgresql_string_val = "pgsql_connect_string \"user = $postgresql_username dbname = $postgresql_database password = $postgresql_password host = $postgresql_host\"\n";
-	} else {
-		$postgresql_string_val = "";
-	}
-
 	/* Advanced Filter */
 	if ($bandwidthd_config['advfilter']) {
 		$filter_text_val = 'filter "' . base64_decode($bandwidthd_config['advfilter']) . '"';
@@ -144,10 +133,6 @@ function bandwidthd_install_config() {
 
 #Read back the cdf file on startup
 {$recover_cdf_val}
-
-# Standard postgres connect string, just like php, see postgres docs for
-# details
-{$postgresql_string_val}
 
 # Arbitrary sensor name, I recommend the sensors fully qualified domain
 # name
@@ -300,11 +285,6 @@ function bandwidthd_upgrade_config() {
 		unset($config['installedpackages']['bandwidthd']['config'][0]['filter']);
 		$changes++;
 	}
-	if (isset($bandwidthd_config['postgresqlpassword'])) {
-		$config['installedpackages']['bandwidthd']['config'][0]['postgresqlpasswordenc'] = base64_encode($bandwidthd_config['postgresqlpassword']);
-		unset($config['installedpackages']['bandwidthd']['config'][0]['postgresqlpassword']);
-		$changes++;
-	}
 	// Subnet(s) for Statistics Collection - convert old subnets_custom to interface_array here as well.
 	if (isset($bandwidthd_config['subnets_custom'])) {
 		$i = 0;
@@ -392,23 +372,6 @@ function bandwidthd_validate_input($post, &$input_errors) {
 	}
 	if (($post['graphcutoff']) && (!is_numericint($post['graphcutoff']))) {
 		$input_errors[] = gettext("The value for 'Graph Cutoff' must be a positive integer.");
-	}
-	if ($post['outputpostgresql']) {
-		if (!$post['postgresqlhost']) {
-		$input_errors[] = gettext("The value for 'Database Host' must not be empty when 'Output to PostgreSQL' is enabled.");
-		}
-		if (!$post['postgresqldatabase']) {
-		$input_errors[] = gettext("The value for 'Database Name' must not be empty when 'Output to PostgreSQL' is enabled.");
-		}
-		if (!$post['postgresqlusername']) {
-		$input_errors[] = gettext("The value for 'Database User' must not be empty when 'Output to PostgreSQL' is enabled.");
-		}
-		if (!$post['postgresqlpasswordenc']) {
-		$input_errors[] = gettext("The value for 'Database Password' must not be empty when 'Output to PostgreSQL' is enabled.");
-		}
-	}
-	if (($post['postgresqlhost']) && (!is_hostname($post['postgresqlhost']))) {
-		$input_errors[] = gettext("The value for 'Database Host' must be a valid hostname or IPv4.");
 	}
 	if (($post['advfilter']) && !preg_match("/^[a-zA-Z0-9\+\-\=\(\):. ]*$/", $post['advfilter'])) {
 		$input_errors[] = gettext('Advanced traffic filtering options may only contain characters matching ^[a-zA-Z0-9\+\-\=\(\):. ]*$ regexp.');

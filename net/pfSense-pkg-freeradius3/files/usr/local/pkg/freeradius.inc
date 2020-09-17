@@ -2054,6 +2054,10 @@ EOD;
 		sql1
 		{$varsqlconf2authorize}
 	}
+	dailycounter
+	monthlycounter
+	noresetcounter
+	expire_on_login
 
 EOD;
 	} else {
