@@ -1,29 +1,11 @@
 --- lib/freebl/Makefile.orig	2018-08-31 12:55:53 UTC
 +++ lib/freebl/Makefile
-@@ -119,7 +119,7 @@ else
-         DEFINES += -DNSS_X86
- endif
- endif
--ifdef NS_USE_GCC
-+ifdef CC_IS_GCC
- ifeq ($(CPU_ARCH),aarch64)
-     DEFINES += -DUSE_HW_AES -DUSE_HW_SHA1 -DUSE_HW_SHA2
-     EXTRA_SRCS += aes-armv8.c gcm-aarch64.c sha1-armv8.c sha256-armv8.c
-@@ -247,7 +247,7 @@ else ifeq ($(CPU_ARCH),x86)
+@@ -215,7 +215,7 @@ ifeq ($(CPU_ARCH),x86)
  endif
  endif # Darwin
  
 -ifeq ($(OS_TARGET),Linux)
 +ifeq (,$(filter-out Linux FreeBSD, $(OS_TARGET)))
  ifeq ($(CPU_ARCH),x86_64)
-     # Lower case s on mpi_amd64_common due to make implicit rules.
-     ASFILES  = arcfour-amd64-gas.s mpi_amd64_common.s
-@@ -728,7 +728,7 @@ $(OBJDIR)/$(PROG_PREFIX)gcm-arm32-neon$(OBJ_SUFFIX): C
- endif
- endif
- 
--ifdef NS_USE_GCC
-+ifdef CC_IS_GCC
- ifeq ($(CPU_ARCH),aarch64)
- $(OBJDIR)/$(PROG_PREFIX)aes-armv8$(OBJ_SUFFIX): CFLAGS += -march=armv8-a+crypto
- $(OBJDIR)/$(PROG_PREFIX)gcm-aarch64$(OBJ_SUFFIX): CFLAGS += -march=armv8-a+crypto
+     ASFILES  = arcfour-amd64-gas.s mpi_amd64_gas.s
+     ASFLAGS += -fPIC -Wa,--noexecstack
