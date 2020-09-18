@@ -21,6 +21,7 @@
 
 require_once("config.inc");
 require_once("util.inc");
+require_once("pkg-utils.inc");
 
 define('SUDO_BASE','/usr/local');
 define('SUDO_LIBEXEC_DIR', '/usr/local/libexec/sudo');
@@ -126,6 +127,15 @@ function sudo_get_users($list_all_user = false) {
 	$tmpuser["name"] = "user:root";
 	$tmpuser["descr"] = "User: root";
 	$users[] = $tmpuser;
+	
+	/* Make an entry for nagios, if the nrpe package is installed */
+        $nrpePackage = get_pkg_info('net-mgmt/pfSense-pkg-nrpe', true, true);
+        if (!empty($nrpePackage)) {
+                $tmpuser = array();
+                $tmpuser["name"] = "user:nagios";
+                $tmpuser["descr"] = "User: nagios";
+                $users[] = $tmpuser;
+        }
 
 	/* Add the all user if we want it */
 	if ($list_all_user) {
