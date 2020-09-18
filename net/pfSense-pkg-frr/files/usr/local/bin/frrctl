@@ -194,6 +194,9 @@ bfd*)
 		exit 1
 	fi
 	case $2 in
+	peer_br*)
+		daemon_command ${BFD_PORT} ${FRR_PASSWORD} "enable\nshow bfd peers brief"
+		;;
 	peer*)
 		daemon_command ${BFD_PORT} ${FRR_PASSWORD} "enable\nshow bfd peers"
 		;;
