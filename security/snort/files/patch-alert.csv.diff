@@ -1,6 +1,6 @@
-diff -ruN ./snort-2.9.16.orig/src/output-plugins/spo_csv.c ./snort-2.9.16/src/output-plugins/spo_csv.c
---- ./snort-2.9.16.orig/src/output-plugins/spo_csv.c	2020-04-08 07:45:15.000000000 -0400
-+++ ./src/output-plugins/spo_csv.c	2020-04-23 15:12:22.000000000 -0400
+diff -ruN ./snort-2.9.16.1.orig/src/output-plugins/spo_csv.c ./snort-2.9.16.1/src/output-plugins/spo_csv.c
+--- ./snort-2.9.16.1.orig/src/output-plugins/spo_csv.c	2020-07-10 07:28:24.000000000 -0400
++++ ./src/output-plugins/spo_csv.c	2020-08-26 18:28:51.000000000 -0400
 @@ -66,10 +66,11 @@
  
  #include "snort.h"
