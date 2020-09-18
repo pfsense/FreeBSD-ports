@@ -920,64 +920,59 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 			/* Protocol */
 			$alert_proto = $fields[5];
 			/* Action */
-			if (isset($fields[13])) {
-
-				// If not using Inline IPS Mode or not blocking offenders, then ALERT is
-				// the only valid action so force the current event's action to ALERT.
-				if ($a_instance[$instanceid]['ips_mode'] != 'ips_mode_inline' || $a_instance[$instanceid]['blockoffenders7'] != 'on') {
-					$fields[13] = "alert";
-				}
+			if (isset($fields[13]) && $a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' && $a_instance[$instanceid]['blockoffenders7'] == 'on') {
 
 				switch ($fields[13]) {
 
 					case "alert":
-						$alert_action = '<i class="fa fa-exclamation-triangle text-warning text-center" title="';
+						$alert_action = '<i class="fa fa-exclamation-triangle icon-pointer text-warning text-center" title="';
 						if (isset($alertsid[$fields[1]][$fields[2]])) {
-							$alert_action .= gettext("Rule action is User-Forced to ALERT") . '"</i>';
+							$alert_action .= gettext("Rule action is User-Forced to ALERT. Click to force a different action for this rule.");
 						}
 						else {
-							$alert_action .= gettext("Rule action is ALERT") . '"</i>';
+							$alert_action .= gettext("Rule action is ALERT. Click to force a different action for this rule.");
 						}
 						break;
 
 					case "drop":
-						$alert_action = '<i class="fa fa-thumbs-down text-danger text-center" title="';
+						$alert_action = '<i class="fa fa-thumbs-down icon-pointer text-danger text-center" title="';
 						if (isset($dropsid[$fields[1]][$fields[2]])) {
-							$alert_action .= gettext("Rule action is User-Forced to DROP") . '"</i>';
+							$alert_action .= gettext("Rule action is User-Forced to DROP. Click to force a different action for this rule.");
 						}
 						else {
-							$alert_action .=  gettext("Rule action is DROP") . '"</i>';
+							$alert_action .=  gettext("Rule action is DROP. Click to force a different action for this rule.");
 						}
 						break;
 
 					case "reject":
-						$alert_action = '<i class="fa fa-hand-stop-o text-warning text-center" title="';
+						$alert_action = '<i class="fa fa-hand-stop-o icon-pointer text-warning text-center" title="';
 						if (isset($rejectsid[$fields[1]][$fields[2]])) {
-							$alert_action .= gettext("Rule action is User-Forced to REJECT") . '"</i>';
+							$alert_action .= gettext("Rule action is User-Forced to REJECT. Click to force a different action for this rule.");
 						}
 						else {
-							$alert_action .= gettext("Rule action is REJECT") . '"</i>';
+							$alert_action .= gettext("Rule action is REJECT. Click to force a different action for this rule.");
 						}
 						break;
 
 					case "sdrop":
-						$alert_action = '<i class="fa fa-thumbs-o-down text-danger text-center" title="' . gettext("Rule action is SDROP") . '"</i>';
+						$alert_action = '<i class="fa fa-thumbs-o-down icon-pointer text-danger text-center" title="' . gettext("Rule action is SDROP. Click to force a different action for this rule.");
 						break;
 
 					case "log":
-						$alert_action = '<i class="fa fa-tasks text-center" title="' . gettext("Rule action is LOG") . '"</i>';
+						$alert_action = '<i class="fa fa-tasks icon-pointer text-center" title="' . gettext("Rule action is LOG. Click to force a different action for this rule.") . '"</i>';
 						break;
 
-					case "log":
-						$alert_action = '<i class="fa fa-thumbs-up text-success text-center" title="' . gettext("Rule action is PASS") . '"</i>';
+					case "pass":
+						$alert_action = '<i class="fa fa-thumbs-up icon-pointer text-success text-center" title="' . gettext("Rule action is PASS. Click to force a different action for this rule.");
 						break;
 
 					default:
-						$alert_action = '<i class="fa fa-question-circle text-danger text-center" title="' . gettext("Rule action is unrecognized!") . '"</i>';
+						$alert_action = '<i class="fa fa-question-circle icon-pointer text-danger text-center" title="' . gettext("Rule action is unrecognized!. Click to force a different action for this rule.");
 				}
+				$alert_action .= '" onClick="toggleAction(\'' . $fields[1] . '\', \'' . $fields[2] . '\');"</i>';
 			}
 			else {
-				$alert_action = '<i class="fa fa-exclamation-triangle text-warning text-center" title="' . gettext("Rule action is ALERT") . '"</i>';
+				$alert_action = '<i class="fa fa-exclamation-triangle text-warning text-center" title="' . gettext("Rule action is ALERT.") . '"</i>';
 			}
 			/* Disposition (not currently used, so just set to "Allow") */
 			$alert_disposition = isset($fields[14])?$fields[14]:gettext("Allow");
