@@ -43,8 +43,8 @@ $if_real = get_real_interface($a_instance[$id]['interface']);
 // Construct a pointer to the instance's logging subdirectory
 $snortlogdir = SNORTLOGDIR . "/snort_{$if_real}{$snort_uuid}/";
 
-// Construct a pointer to the PBI_BIN directory
-$snortbindir = SNORT_PBI_BINDIR;
+// Construct a pointer to the Snort BIN directory
+$snortbindir = SNORT_BINDIR;
 
 // Limit all file access to just the currently selected interface's logging subdirectory
 $logfile = htmlspecialchars($snortlogdir . basename($_POST['file']));

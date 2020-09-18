@@ -3,7 +3,7 @@
  * snort_ip_reputation.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2018-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2020 Bill Meeks
  * All rights reserved.
  *
@@ -35,34 +35,26 @@ if (is_null($id)) {
 	exit;
 }
 
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['wlist_files'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['wlist_files'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['wlist_files']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['wlist_files']['item'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id])) {
-	$config['installedpackages']['snortglobal']['rule'][$id] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['blist_files'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['blist_files'] = array();
-}
-if (!is_array($config['installedpackages']['snortglobal']['rule'][$id]['blist_files']['item'])) {
-	$config['installedpackages']['snortglobal']['rule'][$id]['blist_files']['item'] = array();
-}
-
 $a_nat = &$config['installedpackages']['snortglobal']['rule'];
 
 $pconfig = $a_nat[$id];
 $iprep_path = SNORT_IPREP_PATH;
 $if_real = get_real_interface($a_nat[$id]['interface']);
 $snort_uuid = $config['installedpackages']['snortglobal']['rule'][$id]['uuid'];
+
+// Init 'blist_files' and 'wlist_files' arrays if necessary
+if (!is_array($a_nat[$id]['blist_files'])) {
+	$a_nat[$id]['blist_files'] = array();
+}
+if (!is_array($a_nat[$id]['blist_files']['item'])) {
+	$a_nat[$id]['blist_files']['item'] = array();
+}
+if (!is_array($a_nat[$id]['wlist_files'])) {
+	$a_nat[$id]['wlist_files'] = array();
+}
+if (!is_array($a_nat[$id]['wlist_files']['item'])) {
+	$a_nat[$id]['wlist_files']['item'] = array();
+}
 
 // Set sensible defaults for any empty parameters
 if (empty($pconfig['iprep_memcap']))
@@ -147,8 +139,12 @@ if ($_POST['apply']) {
 	$rebuild_rules = false;
 	snort_generate_conf($a_nat[$id]);
 
-	// Soft-restart Snort to live-load new IPREP lists
-	snort_reload_config($a_nat[$id]);
+	// If Snort is already running, must restart to change IP REP preprocessor configuration.
+	if (snort_is_running($if_real)) {
+		syslog(LOG_NOTICE, gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to IP REP preprocessor configuration change."));
+		snort_stop($a_nat[$id], $if_real);
+		snort_start($a_nat[$id], $if_real, TRUE);
+	}
 
 	// Sync to configured CARP slaves if any are enabled
 	snort_sync_on_changes();
@@ -186,8 +182,13 @@ if ($_POST['save']) {
 		$rebuild_rules = false;
 		snort_generate_conf($a_nat[$id]);
 
-		// Soft-restart Snort to live-load new variables
-		snort_reload_config($a_nat[$id]);
+		// If Snort is already running, must restart to change IP REP preprocessor configuration.
+		if (snort_is_running($if_real)) {
+			syslog(LOG_NOTICE, gettext("Snort: restarting on interface " . convert_real_interface_to_friendly_descr($if_real) . " due to IP REP preprocessor configuration change."));
+			snort_stop($a_nat[$id], $if_real);
+			snort_start($a_nat[$id], $if_real, TRUE);
+			$savemsg = gettext("Snort has been restarted on interface " . convert_real_interface_to_friendly_descr($if_real) . " because IP Reputation preprocessor changes require a restart.");
+		}
 
 		// Sync to configured CARP slaves if any are enabled
 		snort_sync_on_changes();
@@ -216,6 +217,9 @@ if ($input_errors)
 	print_input_errors($input_errors);
 if ($savemsg)
 	print_info_box($savemsg);
+
+// Finished with config array reference, so release it
+unset($a_nat);
 
 $tab_array = array();
 $tab_array[] = array(gettext("Snort Interfaces"), true, "/snort/snort_interfaces.php");
@@ -256,6 +260,19 @@ if (is_subsystem_dirty('snort_iprep')) {
 	$msg .= '</div>';
 	$msg .= '<div class="pull-right"><button type="submit" class="btn btn-default btn-warning" name="apply" value="Apply Changes">Apply Changes</button></div>';
 	print '<div class="alert-warning clearfix" role="alert">' . $msg . '<br/></div>';
+}
+
+if (!is_array($pconfig['blist_files'])) {
+	$pconfig['blist_files'] = array();
+}
+if (!is_array($pconfig['blist_files']['item'])) {
+	$pconfig['blist_files']['item'] = array();
+}
+if (!is_array($pconfig['wlist_files'])) {
+	$pconfig['wlist_files'] = array();
+}
+if (!is_array($pconfig['wlist_files']['item'])) {
+	$pconfig['wlist_files']['item'] = array();
 }
 
 if ($g['platform'] == "nanobsd") {

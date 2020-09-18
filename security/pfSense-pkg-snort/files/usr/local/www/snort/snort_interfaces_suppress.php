@@ -68,7 +68,7 @@ if (isset($_POST['del_btn'])) {
 		foreach ($_POST['del'] as $itemi) {
 			/* make sure list is not being referenced by any interface */
 			if (snort_suppresslist_used($a_suppress[$itemi]['name'])) {
-				$input_errors[] = gettext("Suppression List '{$a_suppress[$itemi]['name']}' is currently assigned to one or more Snort interfaces and cannot be deleted.  Unassign it from all Snort interfaces first.");
+				$input_errors[] = gettext("Suppression List '{$a_suppress[$itemi]['name']}' is currently assigned to one or more Snort interfaces and cannot be deleted. Unassign it from all Snort interfaces first.");
 			} else {
 				unset($a_suppress[$itemi]);
 				$need_save = true;
@@ -77,6 +77,7 @@ if (isset($_POST['del_btn'])) {
 		if ($need_save) {
 			write_config("Snort pkg: deleted SUPPRESSION LIST.");
 			sync_snort_package_config();
+			unset($a_suppress);
 			header("Location: /snort/snort_interfaces_suppress.php");
 			return;
 		}
@@ -93,12 +94,13 @@ else {
 	}
 	if (is_numeric($delbtn_list) && $a_suppress[$delbtn_list]) {
 		if (snort_suppresslist_used($a_suppress[$delbtn_list]['name'])) {
-			$input_errors[] = gettext("This Suppression List '{$a_suppress[$delbtn_list]['name']}' is currently assigned to one or more Snort interfaces and cannot be deleted.  Unassign it from all Snort interfaces first.");
+			$input_errors[] = gettext("This Suppression List '{$$a_suppress[$delbtn_list]['name']}' is currently assigned to one or more Snort interfaces and cannot be deleted. Unassign it from all Snort interfaces first.");
 		}
 		else {
 			unset($a_suppress[$delbtn_list]);
 			write_config("Snort pkg: deleted SUPPRESSION LIST.");
 			sync_snort_package_config();
+			unset($a_suppress);
 			header("Location: /snort/snort_interfaces_suppress.php");
 			return;
 		}
@@ -184,6 +186,8 @@ display_top_tabs($tab_array, true);
 		</div>
 	</div>
 </div>
+
+<?php unset($a_suppress); ?>
 
 <script type="text/javascript">
 //<![CDATA[

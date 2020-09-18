@@ -3,7 +3,7 @@
  * snort_define_servers.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2018-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2019-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya.
  * Copyright (c) 2014-2020 Bill Meeks
@@ -139,6 +139,9 @@ if ($_POST['save']) {
 		/* Sync to configured CARP slaves if any are enabled */
 		snort_sync_on_changes();
 
+		/* Release config array reference */
+		unset($a_nat);
+
 		/* after click go to this page */
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
@@ -163,6 +166,9 @@ if ($input_errors)
 	print_input_errors($input_errors); // TODO: add checks
 if ($savemsg)
 	print_info_box($savemsg);
+
+// Finished with config array reference, so release it
+unset($a_nat);
 
 $tab_array = array();
 $tab_array[] = array(gettext("Snort Interfaces"), true, "/snort/snort_interfaces.php");

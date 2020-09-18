@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -80,6 +80,7 @@ if (isset($_POST['del_btn'])) {
 			}
 		}
 		if ($need_save) {
+			unset($a_passlist);
 			write_config("Snort pkg: deleted PASS LIST.");
 			sync_snort_package_config();
 			header("Location: /snort/snort_passlist.php");
@@ -102,6 +103,7 @@ else {
 		}
 		else {
 			unset($a_passlist[$delbtn_list]);
+			unset($a_passlist);
 			write_config("Snort pkg: deleted PASS LIST.");
 			sync_snort_package_config();
 			header("Location: /snort/snort_passlist.php");
@@ -217,5 +219,6 @@ events.push(function() {
 
 //]]>
 </script>
+<?php unset($a_passlist); ?>
 <?php include("foot.inc"); ?>
 

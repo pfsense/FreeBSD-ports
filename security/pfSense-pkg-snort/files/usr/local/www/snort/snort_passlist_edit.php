@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2020 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -49,6 +49,7 @@ elseif (isset($_GET['id']) && is_numericint($_GET['id'])) {
 
 /* Should never be called without identifying list index, so bail */
 if (is_null($id)) {
+	unset($a_passlist);
 	header("Location: /snort/snort_passlist.php");
 	exit;
 }
@@ -167,7 +168,7 @@ if ($_POST['save']) {
 
 		/* create pass list and homenet file, then sync files */
 		sync_snort_package_config();
-
+		unset($a_passlist);
 		header("Location: /snort/snort_passlist.php");
 		exit;
 	}
@@ -289,6 +290,7 @@ if (isset($id)) {
 }
 
 print($form);
+unset($a_passlist);
 ?>
 
 <script type="text/javascript">

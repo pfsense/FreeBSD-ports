@@ -249,7 +249,7 @@ print($form);
 ?>
 
 <div class="panel panel-default">
-	<div class="panel-heading"><h2 class="panel-title"><?=sprintf(gettext("Last %s Hosts Blocked by Snort"), $bnentries)?></h2></div>
+	<div class="panel-heading"><h2 class="panel-title"><?=sprintf(gettext("Last %s Hosts Blocked by Snort (only applicable to Legacy Blocking Mode interfaces)"), $bnentries)?></h2></div>
 	<div class="panel-body table-responsive">
 
 		<table class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
@@ -348,12 +348,12 @@ print($form);
 					<td colspan="4" style="text-align:center;" class="alert-info">
 						<?php	if (!empty($blocked_ips_array)) {
 							if ($counter > 1)
-								print($counter . gettext(" host IP addresses are currently being blocked by Snort."));
+								print($counter . gettext(" host IP addresses are currently being blocked by Snort on Legacy Mode Blocking interfaces."));
 							else
-								print($counter . gettext(" host IP address is currently being blocked Snort."));
+								print($counter . gettext(" host IP address is currently being blocked Snort on Legacy Blocking Mode interfaces."));
 						}
 						else {
-							print(gettext("There are currently no hosts being blocked by Snort."));
+							print(gettext("There are currently no hosts being blocked by Snort on Legacy Mode Blocking interfaces."));
 						}
 						?>
 					</td>

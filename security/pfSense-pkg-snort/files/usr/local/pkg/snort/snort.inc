@@ -501,30 +501,29 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
 }
 
 /* checks to see if service is running */
-function snort_is_running($snort_uuid, $if_real, $type = 'snort') {
+function snort_is_running($if_real, $type = 'snort') {
 	global $config, $g;
 
-	return isvalidpid("{$g['varrun_path']}/{$type}_{$if_real}{$snort_uuid}.pid");
+	return isvalidpid("{$g['varrun_path']}/{$type}_{$if_real}.pid");
 }
 
 function snort_stop($snortcfg, $if_real) {
 	global $config, $g;
 
-	$snort_uuid = $snortcfg['uuid'];
-	if (isvalidpid("{$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid")) {
-		log_error("[Snort] Snort STOP for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
-		killbypid("{$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid");
+	if (isvalidpid("{$g['varrun_path']}/snort_{$if_real}.pid")) {
+		syslog(LOG_NOTICE, "[Snort] Snort STOP for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
+		killbypid("{$g['varrun_path']}/snort_{$if_real}.pid");
 
 		// Now wait up to 10 seconds for Snort to actually stop and clear its PID file
 		$count = 0;
 		do {
-			if (!isvalidpid("{$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid"))
+			if (!isvalidpid("{$g['varrun_path']}/snort_{$if_real}.pid"))
 				break;
 			sleep(1);
 			$count++;
 		} while ($count < 10);
 	}
-	unlink_if_exists("{$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid");
+	unlink_if_exists("{$g['varrun_path']}/snort_{$if_real}.pid");
 }
 
 function snort_start($snortcfg, $if_real, $background=FALSE) {
@@ -533,19 +532,35 @@ function snort_start($snortcfg, $if_real, $background=FALSE) {
 	$snortdir = SNORTDIR;
 	$snortlogdir = SNORTLOGDIR;
 	$snort_uuid = $snortcfg['uuid'];
-	$snortbindir = SNORT_PBI_BINDIR;
+	$snortbindir = SNORT_BINDIR;
 
 	if ($config['installedpackages']['snortglobal']['verbose_logging'] == "on")
 		$quiet = "";
 	else
 		$quiet = "-q --suppress-config-log";
 
-	if ($snortcfg['enable'] == 'on' && !isvalidpid("{$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid")) {
-		log_error("[Snort] Snort START for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
+	// If Snort is already running on this interface, stop it before restarting
+	if (snort_is_running($if_real)) {
+		snort_stop($snortcfg, $if_real);
+	}
+
+	if ($snortcfg['enable'] == 'on' && $if_real <> "" && !isvalidpid("{$g['varrun_path']}/snort_{$if_real}.pid")) {
+
+		// Adjust the interface specification and DAQ type according to operating mode
+		if ($snortcfg['ips_mode'] == "ips_mode_inline" && $snortcfg['blockoffenders7'] == "on") {
+			$iface = $if_real . "^:" . $if_real;
+			$daq_type = "-Q --daq netmap";
+		}
+		else {
+			$iface = $if_real;
+			$daq_type = "--daq pcap --daq-mode passive --treat-drop-as-alert";
+		}
+
+		syslog(LOG_NOTICE, "[Snort] Snort START for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
 		if ($background)
-			mwexec_bg("{$snortbindir}snort -R {$snort_uuid} -D {$quiet} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$if_real}");
+			mwexec_bg("{$snortbindir}snort -R _{$if_real} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface}");
 		else
-			mwexec("{$snortbindir}snort -R {$snort_uuid} -D {$quiet} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$if_real}");
+			mwexec("{$snortbindir}snort -R _{$if_real} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface}");
 	}
 }
 
@@ -563,7 +578,7 @@ function snort_start_all_interfaces($background=FALSE) {
 		return;
 
 	foreach ($config['installedpackages']['snortglobal']['rule'] as $snortcfg) {
-		if ($snortcfg['enable'] != 'on')
+		if ($snortcfg['enable'] != 'on' || get_real_interface($snortcfg['interface']) == "")
 			continue;
 		snort_start($snortcfg, get_real_interface($snortcfg['interface']), $background);
 	}
@@ -627,9 +642,9 @@ function snort_reload_config($snortcfg, $signal="SIGHUP") {
 	/* Only send the SIGHUP if Snort is running and we    */
 	/* can find a valid PID for the process.              */
 	/******************************************************/
-	if (isvalidpid("{$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid")) {
-		log_error("[Snort] Snort RELOAD CONFIG for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
-		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid");
+	if (isvalidpid("{$g['varrun_path']}/snort_{$if_real}.pid")) {
+		syslog(LOG_NOTICE, "[Snort] Snort RELOAD CONFIG for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
+		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/snort_{$if_real}.pid");
 	}
 }
 
@@ -652,7 +667,7 @@ function snort_post_delete_logs($snort_uuid = 0) {
 		$snort_log_dir = SNORTLOGDIR . "/snort_{$if_real}{$snort_uuid}";
 
 		if ($if_real != '') {
-			/* Clean-up rotated unified2 log if any exist */
+			/* Clean-up rotated unified2 log files if any exist */
 			$filelist = glob("{$snort_log_dir}/*{$snort_uuid}_{$if_real}.u2.*");
 
 			/* Skip the most recently rotated log */
@@ -943,7 +958,7 @@ function snort_rules_up_install_cron($should_install) {
 	}
 }
 
-/* Only run when all ifaces needed to sync. Expects filesystem rw */
+/* Only run when all ifaces needed to sync */
 function sync_snort_package_config() {
 	global $config, $g;
 	global $rebuild_rules;
@@ -964,8 +979,10 @@ function sync_snort_package_config() {
 
 	$snortconf = $config['installedpackages']['snortglobal']['rule'];
 	foreach ($snortconf as $value) {
-		/* Skip configuration of any disabled interface */
-		if ($value['enable'] != 'on')
+		/* Skip configuration of any disabled instance or */
+		/* an instance whose assigned physical interface  */
+		/* has been removed.                              */
+		if (($value['enable'] != 'on') || (get_real_interface($value['interface']) == ""))
 			continue;
 
 		/* create a snort.conf file for interface */
@@ -1227,7 +1244,8 @@ function snort_load_rules_map($rules_path) {
 	 * Read all the rules into the map array.
 	 * The structure of the map array is:
 	 *
-	 *  map[gid][sid]['rule']['category']['action']['disabled']['managed']['flowbits']
+	 *  map[gid][sid]['rule']['category']['action']['disabled']['managed']['noalert']
+	 *     ['default_state']['default_action']['state_toggled']['modified']['flowbits']
 	 *
 	 *  where:
 	 *   gid            = Generator ID from rule, or 1 if general text rule
@@ -1237,12 +1255,14 @@ function snort_load_rules_map($rules_path) {
 	 *   action         = alert, drop, reject or pass
 	 *   disabled       = 1 if rule is disabled (commented out), 0 if 
 	 *                    rule is enabled
+	 *   managed        = 1 if rule is auto-managed by SID MGMT process,
+	 *                    0 if not auto-managed 
+	 *   noalert        = 1 if rule contains "noalert" or "flowbits:noalert" options
+	 *                    0 if not
 	 *   default_state  = 1 if rule is default enabled, 0 if default disabled
 	 *   default_action = alert, drop, reject or pass  
 	 *   state_toggled  = 1 if rule was toggled by SID MGMT process,
 	 *                    0 if not toggled
-	 *   managed        = 1 if rule is auto-managed by SID MGMT process,
-	 *                    0 if not auto-managed 
 	 *   modified       = 1 if rule action or content is modified by SID MGMT or
 	 *                      IPS Policy process,
 	 *                    0 if not modified
@@ -1339,6 +1359,14 @@ function snort_load_rules_map($rules_path) {
 				$map_ref[$gid][$sid]['disabled'] = 1;
 			else
 				$map_ref[$gid][$sid]['disabled'] = 0;
+
+			// Check for "noalert;" rule option
+			if (strpos($rule, 'noalert;') !== FALSE) {
+				$map_ref[$gid][$sid]['noalert'] = 1;
+			} else {
+				$map_ref[$gid][$sid]['noalert'] = 0;
+			}				
+
 
 			/* Grab the rule action (this is for a future option) */
 			$matches = array();
@@ -1606,7 +1634,7 @@ function snort_resolve_flowbits($rules, $active_rules) {
 
 	/* Check $rules array to be sure it is filled.    */
 	if (empty($rules)) {
-		log_error(gettext("[Snort] WARNING: Flowbit resolution not done - no rules in {$snortdir}/rules/ ..."));
+		syslog(LOG_WARNING, gettext("[Snort] WARNING: Flowbit resolution not done - no rules in {$snortdir}/rules/ ..."));
 		return array();
 	}
 
@@ -1679,7 +1707,7 @@ function snort_write_flowbit_rules_file($flowbit_rules, $rule_file) {
 	}
 }
 
-function snort_load_vrt_policy($policy, $all_rules=null) {
+function snort_load_vrt_policy($policy, $mode='alert', $all_rules=null) {
 
 	/************************************************/
 	/* This function returns an array of all rules  */
@@ -1690,6 +1718,12 @@ function snort_load_vrt_policy($policy, $all_rules=null) {
 	/*                  2.  balanced                */
 	/*                  3.  security                */
 	/*                  4.  max-detect              */
+	/*                                              */
+	/*      $mode --> determines rule action        */
+	/*                  1. alert = all rules alert  */
+	/*                  2. policy = rule action     */
+	/*                              set according   */
+	/*                              policy spec.    */
 	/*                                              */
 	/* $all_rules --> optional Rules Map array of   */
 	/*                rules to scan for policy.     */
@@ -1725,6 +1759,19 @@ function snort_load_vrt_policy($policy, $all_rules=null) {
 					if ($arulem2['disabled'] == 1) {
 						$vrt_policy_rules[$k1][$k2]['rule'] = ltrim(substr($arulem2['rule'], strpos($arulem2['rule'], "#") + 1));
 						$vrt_policy_rules[$k1][$k2]['disabled'] = 0;
+					}
+
+					// If policy mode is enabled, grab the suggested action
+					// for this policy and set it as the rule action.
+					if ($mode == 'policy') {
+						$matches = array();
+						if (preg_match('/' . "policy {$policy}-ips" . '([^,|^;]*)/', $arulem2['rule'], $matches)) {
+							if ($tmp = preg_replace('/^\s*alert\s/', trim($matches[1]) . ' ', $vrt_policy_rules[$k1][$k2]['rule'], 1)) {
+								$vrt_policy_rules[$k1][$k2]['rule'] = $tmp;
+								$vrt_policy_rules[$k1][$k2]['action'] = trim($matches[1]);
+								$vrt_policy_rules[$k1][$k2]['modified'] = 1;
+							}
+						}
 					}
 				}
 			}
@@ -1832,7 +1879,7 @@ function snort_parse_sidconf_file($sidconf_file,$split_lines=TRUE) {
 	// we can read like a normal file.
 	$fd = fopen("php://temp", "r+");
 	if ($fd == FALSE) {
-		log_error("[Snort] Failed to open SID MGMT list '{$sidconf_file}' for processing.");
+		syslog(LOG_ERR, "[Snort] Failed to open SID MGMT list '{$sidconf_file}' for processing.");
 		return $sid_mods;
 	}
 	fwrite($fd, base64_decode($list['content']));
@@ -1910,6 +1957,100 @@ function snort_sid_mgmt_list_exist($sid_mgmt_list) {
 	return FALSE;
 }
 
+function snort_process_dropsid(&$rule_map, $snortcfg, $log_results = FALSE, $log_file = NULL) {
+
+	/**********************************************/
+	/* This function loads and processes the list */
+	/* specified by 'drop_sid_file' for the       */
+	/* interface.  The list is assumed to be a    */
+	/* valid dropsid.conf list containing         */
+	/* instructions for modifying the action for  */
+	/* matching rule SIDs.                        */
+	/*                                            */
+	/*     $rule_map ==> reference to array of    */
+	/*                   current rules            */
+	/*  $snortcfg ==> interface config params     */
+	/*  $log_results ==> [optional] 'yes' to log  */
+	/*                   results to $log_file     */
+	/*     $log_file ==> full path and filename   */
+	/*                   of log file to write to  */
+	/*                                            */
+	/*     On Return ==> suitably modified        */
+	/*                   $rule_map array          */
+	/**********************************************/
+
+	$snortlogdir = SNORTLOGDIR;
+	$sid_mods = array();
+
+	// If no rules in $rule_map, then nothing to do
+	if (empty($rule_map)) {
+		return;
+	}
+
+	// Verify the 'drop_sid' list for the interface exists
+	if (!snort_sid_mgmt_list_exist($snortcfg['drop_sid_file'])) {
+		syslog(LOG_ERR, gettext("[Snort] Error - unable to find drop_sid list \"{$snortcfg['drop_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+		return;
+	} else {
+		$sid_mods = snort_parse_sidconf_file($snortcfg['drop_sid_file']);
+	}
+
+	if (!empty($sid_mods)) {
+		snort_modify_sid_state($rule_map, $sid_mods, "drop", $log_results, $log_file);
+	} elseif ($log_results == TRUE && !empty($log_file)) {
+		error_log(gettext("WARNING: no valid SID match tokens found in list \"{$snortcfg['drop_sid_file']}\".\n"), 3, $log_file);
+	}
+
+	unset($sid_mods);
+}
+
+function snort_process_rejectsid(&$rule_map, $snortcfg, $log_results = FALSE, $log_file = NULL) {
+
+	/**********************************************/
+	/* This function loads and processes the list */
+	/* specified by 'reject_sid_file' for the     */
+	/* interface.  The list is assumed to be a    */
+	/* valid rejectsid.conf list containing       */
+	/* instructions for modifying the action for  */
+	/* matching rule SIDs.                        */
+	/*                                            */
+	/*     $rule_map ==> reference to array of    */
+	/*                   current rules            */
+	/*  $snortcfg ==> interface config params     */
+	/*  $log_results ==> [optional] 'yes' to log  */
+	/*                   results to $log_file     */
+	/*     $log_file ==> full path and filename   */
+	/*                   of log file to write to  */
+	/*                                            */
+	/*     On Return ==> suitably modified        */
+	/*                   $rule_map array          */
+	/**********************************************/
+
+	$snortlogdir = SNORTLOGDIR;
+	$sid_mods = array();
+
+	// If no rules in $rule_map, then nothing to do
+	if (empty($rule_map)) {
+		return;
+	}
+
+	// Verify the 'reject_sid' list for the interface exists
+	if (!snort_sid_mgmt_list_exist($snortcfg['reject_sid_file'])) {
+		syslog(LOG_ERR, gettext("[Snort] Error - unable to find reject_sid list \"{$snortcfg['reject_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+		return;
+	} else {
+		$sid_mods = snort_parse_sidconf_file($snortcfg['reject_sid_file']);
+	}
+
+	if (!empty($sid_mods)) {
+		snort_modify_sid_state($rule_map, $sid_mods, "reject", $log_results, $log_file);
+	} elseif ($log_results == TRUE && !empty($log_file)) {
+		error_log(gettext("WARNING: no valid SID match tokens found in list \"{$snortcfg['reject_sid_file']}\".\n"), 3, $log_file);
+	}
+
+	unset($sid_mods);
+}
+
 function snort_sid_mgmt_auto_categories($snortcfg, $log_results = FALSE) {
 
 	/****************************************************/
@@ -1980,7 +2121,7 @@ function snort_sid_mgmt_auto_categories($snortcfg, $log_results = FALSE) {
 				// Attempt to open the 'disable_sid_file' for the interface
 				// Verify the assigned SID Mgmt List still exists in the firewall configuration
 				if (!snort_sid_mgmt_list_exist($snortcfg['disable_sid_file'])) {
-					log_error(gettext("[Snort] Error - unable to open disable_sid list \"{$snortcfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+					syslog(LOG_ERR, gettext("[Snort] Error - unable to open disable_sid list \"{$snortcfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 					if ($log_results == TRUE) {
 						error_log(gettext("Unable to find disable_sid list \"{$snortcfg['disable_sid_file']}\".\n"), 3, $log_file);
 					}
@@ -2000,7 +2141,7 @@ function snort_sid_mgmt_auto_categories($snortcfg, $log_results = FALSE) {
 
 				// Attempt to open the 'enable_sid_file' for the interface
 				if (!snort_sid_mgmt_list_exist($snortcfg['enable_sid_file'])) {
-					log_error(gettext("[snort] Error - unable to open enable_sid list \"{$snortcfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+					syslog(LOG_ERR, gettext("[snort] Error - unable to open enable_sid list \"{$snortcfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 					if ($log_results == TRUE) {
 						error_log(gettext("Unable to find enable_sid list \"{$snortcfg['enable_sid_file']}\".\n"), 3, $log_file);
 					}
@@ -2023,7 +2164,7 @@ function snort_sid_mgmt_auto_categories($snortcfg, $log_results = FALSE) {
 
 				// Attempt to open the 'enable_sid_file' for the interface
 				if (!snort_sid_mgmt_list_exist($snortcfg['enable_sid_file'])) {
-					log_error(gettext("[Snort] Error - unable to find enable_sid list \"{$snortcfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+					syslog(LOG_ERR, gettext("[Snort] Error - unable to find enable_sid list \"{$snortcfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 					if ($log_results == TRUE) {
 						error_log(gettext("Unable to open enable_sid list \"{$snortcfg['enable_sid_file']}\".\n"), 3, $log_file);
 					}
@@ -2044,7 +2185,7 @@ function snort_sid_mgmt_auto_categories($snortcfg, $log_results = FALSE) {
 
 				// Attempt to open the 'disable_sid_file' for the interface
 				if (!snort_sid_mgmt_list_exist($snortcfg['disable_sid_file'])) {
-					log_error(gettext("[Snort] Error - unable to open disable_sid list \"{$snortcfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+					syslog(LOG_ERR, gettext("[Snort] Error - unable to open disable_sid list \"{$snortcfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 					if ($log_results == TRUE) {
 						error_log(gettext("Unable to find disable_sid list \"{$snortcfg['disable_sid_file']}\".\n"), 3, $log_file);
 					}
@@ -2062,7 +2203,7 @@ function snort_sid_mgmt_auto_categories($snortcfg, $log_results = FALSE) {
 			break;
 
 		default:
-			log_error(gettext("[Snort] Unrecognized 'sid_state_order' value.  Skipping auto CATEGORY mgmt step for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+			syslog(LOG_ALERT, gettext("[Snort] Unrecognized 'sid_state_order' value.  Skipping auto CATEGORY mgmt step for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 			if ($log_results == TRUE) {
 				error_log(gettext("ERROR: unrecognized 'sid_state_order' value.  Skipping auto CATEGORY mgmt step for ") . convert_friendly_interface_to_friendly_descr($snortcfg['interface']). ".\n", 3, $log_file);
 			}
@@ -2215,7 +2356,8 @@ function snort_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results = F
 	/*                  tokens                    */
 	/*      $action ==> modification action for   */
 	/*                  matching SID targets:     */
-	/*                  'enable' or 'disable'     */
+	/*                  'enable', 'disable',      */
+	/*		    'drop' or 'reject'.       */
 	/* $log_results ==> [optional] 'yes' to log   */
 	/*                   results to $log_file     */
 	/*    $log_file ==> full path and filename    */
@@ -2242,13 +2384,27 @@ function snort_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results = F
 	switch ($action) {
 
 		case "enable":
+			$log_what = 'state';
+			$log_action = 'enabled';
 			break;
 
 		case "disable":
+			$log_what = 'state';
+			$log_action = 'disabled';
+			break;
+
+		case "drop":
+			$log_what = 'action';
+			$log_action = 'drop';
+			break;
+
+		case "reject":
+			$log_what = 'action';
+			$log_action = 'reject';
 			break;
 
 		default:
-			log_error(gettext("[Snort] Error - unknown action '{$action}' supplied to snort_modify_sid_state() function...no SIDs modified."));
+			syslog(LOG_ALERT, gettext("[Snort] Error - unknown action '{$action}' supplied to snort_modify_sid_state() function...no SIDs modified."));
 			return $sids;
 	}
 
@@ -2365,13 +2521,33 @@ function snort_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results = F
 					$changecount++;
 					$modcount++;
 				}
+				elseif ($action == 'drop' && $rule_map[$k1][$k2]['action'] != 'drop' && !in_array('noalert', $rule_map[$k1][$k2]['flowbits']) && $rule_map[$k1][$k2]['noalert'] == 0) {
+					if ($tmp = preg_replace('/\s*alert\s*/', 'drop ', $rule_map[$k1][$k2]['rule'], 1)) {
+						$rule_map[$k1][$k2]['rule'] = $tmp;
+						$rule_map[$k1][$k2]['action'] = 'drop';
+						$rule_map[$k1][$k2]['managed'] = 1;
+						$rule_map[$k1][$k2]['modified'] = 1;
+						$changecount++;
+						$modcount++;
+					}
+				}
+				elseif ($action == 'reject' && $rule_map[$k1][$k2]['action'] != 'reject' && !in_array('noalert', $rule_map[$k1][$k2]['flowbits']) && $rule_map[$k1][$k2]['noalert'] == 0) {
+					if ($tmp = preg_replace('/\s*alert\s*/', 'reject ', $rule_map[$k1][$k2]['rule'], 1)) {
+						$rule_map[$k1][$k2]['rule'] = $tmp;
+						$rule_map[$k1][$k2]['action'] = 'reject';
+						$rule_map[$k1][$k2]['managed'] = 1;
+						$rule_map[$k1][$k2]['modified'] = 1;
+						$changecount++;
+						$modcount++;
+					}
+				}
 			}
 		}
 	}
 
 	if ($log_results == TRUE && !empty($log_file)) {
 		error_log(gettext("    Found {$modcount} matching SIDs in the active rules.\n"), 3, $log_file);
-		error_log(gettext("    Changed state for {$changecount} SIDs to '{$action}d'.\n"), 3, $log_file);
+		error_log(gettext("    Changed {$log_what} for {$changecount} SIDs to '{$log_action}'.\n"), 3, $log_file);
 	}
 
 	// Return the array of matching SIDs
@@ -2501,7 +2677,7 @@ function snort_process_enablesid(&$rule_map, $snortcfg, $log_results = FALSE, $l
 
 	// Verify the 'enable_sid' list for the interface exists
 	if (!snort_sid_mgmt_list_exist($snortcfg['enable_sid_file'])) {
-		log_error(gettext("[Snort] Error - unable to find enable_sid list \"{$snortcfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+		syslog(LOG_ERR, gettext("[Snort] Error - unable to find enable_sid list \"{$snortcfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 		return;
 	}
 	else
@@ -2547,7 +2723,7 @@ function snort_process_disablesid(&$rule_map, $snortcfg, $log_results = FALSE, $
 
 	// Verify the 'disable_sid' list for the interface exists
 	if (!snort_sid_mgmt_list_exist($snortcfg['disable_sid_file'])) {
-		log_error(gettext("[Snort] Error - unable to find disable_sid list \"{$snortcfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+		syslog(LOG_ERR, gettext("[Snort] Error - unable to find disable_sid list \"{$snortcfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 		return;
 	}
 	else {
@@ -2594,7 +2770,7 @@ function snort_process_modifysid(&$rule_map, $snortcfg, $log_results = FALSE, $l
 
 	// Verify the 'modify_sid' list for the interface exists
 	if (!snort_sid_mgmt_list_exist($snortcfg['modify_sid_file'])) {
-		log_error(gettext("[Snort] Error - unable to find modify_sid list \"{$snortcfg['modify_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+		syslog(LOG_ERR, gettext("[Snort] Error - unable to find modify_sid list \"{$snortcfg['modify_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 		return;
 	} else {
 		$sid_mods = snort_parse_sidconf_file($snortcfg['modify_sid_file'],FALSE);
@@ -2645,7 +2821,7 @@ function snort_auto_sid_mgmt(&$rule_map, $snortcfg, $log_results = FALSE) {
 	// for the interface.
 	if ($config['installedpackages']['snortglobal']['auto_manage_sids'] == 'on' &&
 	    (!empty($snortcfg['disable_sid_file']) || !empty($snortcfg['enable_sid_file']) || 
-	    !empty($snortcfg['modify_sid_file']))) {
+	    !empty($snortcfg['modify_sid_file']) || !empty($snortcfg['drop_sid_file']) || !empty($snortcfg['reject_sid_file']))) {
 		if ($log_results == TRUE) {
 			error_log(gettext("********************************************************\n"), 3, $log_file);
 			error_log(gettext("Starting auto SID management for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) ."\n"), 3, $log_file);
@@ -2669,6 +2845,18 @@ function snort_auto_sid_mgmt(&$rule_map, $snortcfg, $log_results = FALSE) {
 						error_log(gettext("Processing modify_sid list: {$snortcfg['modify_sid_file']}\n"), 3, $log_file);
 					snort_process_modifysid($rule_map, $snortcfg, $log_results, $log_file);
 				}
+				if (!empty($snortcfg['drop_sid_file']) && ($snortcfg['blockoffenders7'] == 'on' && $snortcfg['ips_mode'] == 'ips_mode_inline')) {
+					if ($log_results == TRUE) {
+						error_log(gettext("Processing drop_sid list: {$snortcfg['drop_sid_file']}\n"), 3, $log_file);
+					}
+					snort_process_dropsid($rule_map, $snortcfg, $log_results, $log_file);
+				}
+				if (!empty($snortcfg['reject_sid_file']) && $snortcfg['blockoffenders7'] == 'on' && $snortcfg['ips_mode'] == 'ips_mode_inline') {
+					if ($log_results == TRUE) {
+						error_log(gettext("Processing reject_sid list: {$snortcfg['reject_sid_file']}\n"), 3, $log_file);
+					}
+					snort_process_rejectsid($rule_map, $snortcfg, $log_results, $log_file);
+				}
 				$result = TRUE;
 				break;
 
@@ -2688,11 +2876,23 @@ function snort_auto_sid_mgmt(&$rule_map, $snortcfg, $log_results = FALSE) {
 						error_log(gettext("Processing modify_sid list: {$snortcfg['modify_sid_file']}\n"), 3, $log_file);
 					snort_process_modifysid($rule_map, $snortcfg, $log_results, $log_file);
 				}
+				if (!empty($snortcfg['drop_sid_file']) && ($snortcfg['blockoffenders7'] == 'on' && $snortcfg['ips_mode'] == 'ips_mode_inline')) {
+					if ($log_results == TRUE) {
+						error_log(gettext("Processing drop_sid list: {$snortcfg['drop_sid_file']}\n"), 3, $log_file);
+					}
+					snort_process_dropsid($rule_map, $snortcfg, $log_results, $log_file);
+				}
+				if (!empty($snortcfg['reject_sid_file']) && $snortcfg['blockoffenders7'] == 'on' && $snortcfg['ips_mode'] == 'ips_mode_inline') {
+					if ($log_results == TRUE) {
+						error_log(gettext("Processing reject_sid list: {$snortcfg['reject_sid_file']}\n"), 3, $log_file);
+					}
+					snort_process_rejectsid($rule_map, $snortcfg, $log_results, $log_file);
+				}
 				$result = TRUE;
 				break;
 
 			default:
-				log_error(gettext("[Snort] Unrecognized 'sid_state_order' value.  Skipping auto SID mgmt step for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
+				syslog(LOG_ALERT, gettext("[Snort] Unrecognized 'sid_state_order' value.  Skipping auto SID mgmt step for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface'])));
 				if ($log_results == TRUE) {
 					error_log(gettext("ERROR: unrecognized 'sid_state_order' value.  Skipping auto SID mgmt step for ") . convert_friendly_interface_to_friendly_descr($snortcfg['interface']). ".\n", 3, $log_file);
 				}
@@ -2789,20 +2989,180 @@ function snort_modify_sids(&$rule_map, $snortcfg) {
 	unset($enablesid, $disablesid);
 }
 
+function snort_modify_sids_action(&$rule_map, $snortcfg) {
+
+	/***********************************************/
+	/* This function modifies the rules in the     */
+	/* passed rules_map array based on values in   */
+	/* the alertsid/dropsid configuration          */
+	/* parameters for the interface.               */
+	/*                                             */
+	/*  $rule_map = array of current rules         */
+	/*  $snortcfg = interface config settings      */
+	/***********************************************/
+
+	if (!isset($snortcfg['rule_sid_force_alert']) && 
+	    !isset($snortcfg['rule_sid_force_drop']) && 
+	    !isset($snortcfg['rule_sid_force_reject'])) {
+		return;
+	}
+
+	/* Load up our SID forced action arrays with manually changed SID actions */
+	$alertsid = snort_load_sid_mods($snortcfg['rule_sid_force_alert']);
+
+	/* DROP is only applicable when blocking offenders is enabled and when    */
+	/* 'block drops only' is enabled, or when using Inline IPS Mode.          */
+	if ($snortcfg['blockoffenders7'] == 'on' && $snortcfg['ips_mode'] == 'ips_mode_inline') {
+		$dropsid = snort_load_sid_mods($snortcfg['rule_sid_force_drop']);
+	}
+	else {
+		$dropsid = array();
+	}
+
+	/* REJECT is only applicable when blocking offenders is enabled and when  */
+	/* Inline IPS Mode is also enabled.                                       */
+	if ($snortcfg['blockoffenders7'] == 'on' && $snortcfg['ips_mode'] == 'ips_mode_inline') {
+		$rejectsid = snort_load_sid_mods($snortcfg['rule_sid_force_reject']);
+	}
+	else {
+		$rejectsid = array();
+	}
+
+	/* Change action for any rules that need to be */
+	/* forced to "alert" with alertsid mods.       */
+	if (!empty($alertsid)) {
+		foreach ($rule_map as $k1 => $rulem) {
+			foreach ($rulem as $k2 => $v) {
+				if (isset($alertsid[$k1][$k2]) && $v['action'] != 'alert') {
+					$matches = array();
+					if (preg_match('/^\s*#*\s*(drop|pass|reject)/i', $v['rule'], $matches)) {
+						$txt_regx = '/^\s*' . "{$matches[1]}" . '\s/';
+						if ($tmp = preg_replace($txt_regx, 'alert ', $v['rule'], 1)) {
+							$rule_map[$k1][$k2]['rule'] = $tmp;
+							$rule_map[$k1][$k2]['action'] = 'alert';
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/* Change action for any rules that need to be */
+	/* forced to "drop" with dropsid mods.         */
+	if (!empty($dropsid)) {
+		foreach ($rule_map as $k1 => $rulem) {
+			foreach ($rulem as $k2 => $v) {
+				if (isset($dropsid[$k1][$k2]) && $v['action'] != 'drop') {
+					$matches = array();
+					if (preg_match('/^\s*#*\s*(alert|pass|reject)/i', $v['rule'], $matches)) {
+						$txt_regx = '/^\s*' . "{$matches[1]}" . '\s/';
+						if ($tmp = preg_replace($txt_regx, 'drop ', $v['rule'], 1)) {
+							$rule_map[$k1][$k2]['rule'] = $tmp;
+							$rule_map[$k1][$k2]['action'] = 'drop';
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/* Change action for any rules that need to be */
+	/* forced to "reject" with rejectsid mods.     */
+	if (!empty($rejectsid)) {
+		foreach ($rule_map as $k1 => $rulem) {
+			foreach ($rulem as $k2 => $v) {
+				if (isset($rejectsid[$k1][$k2]) && $v['action'] != 'reject') {
+					$matches = array();
+					if (preg_match('/^\s*#*\s*(alert|pass|drop)/i', $v['rule'], $matches)) {
+						$txt_regx = '/^\s*' . "{$matches[1]}" . '\s/';
+						if ($tmp = preg_replace($txt_regx, 'reject ', $v['rule'], 1)) {
+							$rule_map[$k1][$k2]['rule'] = $tmp;
+							$rule_map[$k1][$k2]['action'] = 'reject';
+						}
+					}
+				}
+			}
+		}
+	}
+
+	unset($alertsid, $dropsid, $rejectsid);
+}
+
+function snort_get_filtered_rules($rules, $filter) {
+
+	/************************************************/
+	/* This function returns a rules_map array of   */
+	/* of rules filtered using the GID:SID pairs    */
+	/* found in the passed filter criteria array.   */
+	/*                                              */
+	/*   $rules --> file, a directory or an array   */
+	/*              containing rules files to scan  */
+	/*                                              */
+	/*  $filter --> array of GID:SID pairs to use   */
+	/*              for filtering returned rules    */
+	/*              map array.                      */
+	/*                                              */
+	/*  Returns --> rules_map array                 */
+	/************************************************/
+
+	$tmp_map = array();
+	$filtered_map = array();
+
+	// If the filter array is empty, just
+	// return an empty result to save time
+	// since nothing would match.
+	if (empty($filter)) {
+		return $filtered_map;
+	}
+
+	// Load up all the rules from the location passed
+	$tmp_map = snort_load_rules_map($rules);
+
+	// Now walk the loaded filter list and copy
+	// matching GID:SID rules from the target list
+	// over to the filtered array.
+	foreach ($filter as $k1 => $rulem) {
+		foreach($rulem as $k2 => $v) {
+			if (isset($tmp_map[$k1][$k2])) {
+				if (!is_array($filtered_map[$k1])) {
+					$filtered_map[$k1] = array();
+				}
+				if (!is_array($filtered_map[$k1][$k2])) {
+					$filtered_map[$k1][$k2] = array();
+				}
+				$filtered_map[$k1][$k2]['rule'] = $tmp_map[$k1][$k2]['rule'];
+				$filtered_map[$k1][$k2]['category'] = $tmp_map[$k1][$k2]['category'];
+				$filtered_map[$k1][$k2]['action'] = $tmp_map[$k1][$k2]['action'];
+				$filtered_map[$k1][$k2]['modified'] = $tmp_map[$k1][$k2]['modified'];
+				$filtered_map[$k1][$k2]['disabled'] = $tmp_map[$k1][$k2]['disabled'];
+				$filtered_map[$k1][$k2]['flowbits'] = $tmp_map[$k1][$k2]['flowbits'];
+				$filtered_map[$k1][$k2]['managed'] = $tmp_map[$k1][$k2]['managed'];
+				$filtered_map[$k1][$k2]['state_toggled'] = $tmp_map[$k1][$k2]['state_toggled'];
+				$filtered_map[$k1][$k2]['default_state'] = $tmp_map[$k1][$k2]['default_state'];
+				$filtered_map[$k1][$k2]['default_action'] = $tmp_map[$k1][$k2]['default_action'];
+			}
+		}
+	}
+
+	// Clean up and return the filtered list of rules
+	unset($tmp_map);
+	return $filtered_map;
+}
+
 function snort_create_rc() {
 
-/*********************************************************/
-/* This function builds the /usr/local/etc/rc.d/snort.sh */
-/* shell script for starting and stopping Snort.  The    */
-/* script is rebuilt on each package sync operation and  */
-/* after any changes to snort.conf saved in the GUI.     */
-/*********************************************************/
+	/*********************************************************/
+	/* This function builds the /usr/local/etc/rc.d/snort.sh */
+	/* shell script for starting and stopping Snort.  The    */
+	/* script is rebuilt on each package sync operation and  */
+	/* after any changes to snort.conf saved in the GUI.     */
+	/*********************************************************/
 
 	global $config, $g;
 
 	$snortdir = SNORTDIR;
 	$snortlogdir = SNORTLOGDIR;
-	$snortbindir = SNORT_PBI_BINDIR;
+	$snortbindir = SNORT_BINDIR;
 	$rcdir = RCFILEPREFIX;	
 
 	$snortconf = $config['installedpackages']['snortglobal']['rule'];
@@ -2826,24 +3186,40 @@ function snort_create_rc() {
 	// Loop thru each configured interface and build
 	// the shell script.
 	foreach ($snortconf as $value) {
-		// Skip disabled Snort interfaces
-		if ($value['enable'] <> 'on')
+
+		// Attempt to grab physical interface
+		// for this Snort instance.
+		$if_real = get_real_interface($value['interface']);
+
+		// Skip disabled Snort instances or
+		// intances whose pfSense physical
+		// interface has been removed.
+		if (($value['enable'] <> 'on') || ($if_real == ""))
 			continue;
 		$snort_uuid = $value['uuid'];
-		$if_real = get_real_interface($value['interface']);
+
+		// Adjust the interface specification and DAQ type according to operating mode
+		if ($value['ips_mode'] == "ips_mode_inline" && $value['blockoffenders7'] == "on") {
+			$iface = $if_real . "^:" . $if_real;
+			$daq_type = "-Q --daq netmap";
+		}
+		else {
+			$iface = $if_real;
+			$daq_type = "--daq pcap --daq-mode passive --treat-drop-as-alert";
+		}
 
 		$start_snort_iface_start[] = <<<EOE
 
 	# Start snort for {$value['descr']}
-	if [ ! -f {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid ]; then
-		pid=`/bin/pgrep -fn "snort -R {$snort_uuid} "`
+	if [ ! -f {$g['varrun_path']}/snort_{$if_real}.pid ]; then
+		pid=`/bin/pgrep -fn "snort -R {$if_real} "`
 	else
-		pid=`/bin/pgrep -F {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid`
+		pid=`/bin/pgrep -F {$g['varrun_path']}/snort_{$if_real}.pid`
 	fi
 
 	if [ -z \$pid ]; then
-		/usr/bin/logger -p daemon.info -i -t SnortStartup "Snort START for {$value['descr']}({$snort_uuid}_{$if_real})..."
-		{$snortbindir}snort -R {$snort_uuid} -D {$quiet} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$if_real} > /dev/null 2>&1
+		/usr/bin/logger -p daemon.info -i -t SnortStartup "Snort START for {$value['descr']}({$if_real})..."
+		{$snortbindir}snort -R _{$if_real} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface} > /dev/null 2>&1
 	fi
 
 EOE;
@@ -2851,10 +3227,10 @@ EOE;
 		$start_snort_iface_stop[] = <<<EOE
 
 	# Stop snort for {$value['descr']}
-	if [ -f {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid ]; then
-		pid=`/bin/pgrep -F {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid`
-		/usr/bin/logger -p daemon.info -i -t SnortStartup "Snort STOP for {$value['descr']}({$snort_uuid}_{$if_real})..."
-		/bin/pkill -F {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid -a
+	if [ -f {$g['varrun_path']}/snort_{$if_real}.pid ]; then
+		pid=`/bin/pgrep -F {$g['varrun_path']}/snort_{$if_real}.pid`
+		/usr/bin/logger -p daemon.info -i -t SnortStartup "Snort STOP for {$value['descr']}({$if_real})..."
+		/bin/pkill -F {$g['varrun_path']}/snort_{$if_real}.pid -a
 		time=0 timeout=30
 		while kill -0 \$pid 2>/dev/null; do
 			sleep 1
@@ -2863,14 +3239,14 @@ EOE;
 				break
 			fi
 		done
-		if [ -f {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid ]; then
-			/bin/rm {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid
+		if [ -f {$g['varrun_path']}/snort_{$if_real}.pid ]; then
+			/bin/rm {$g['varrun_path']}/snort_{$if_real}.pid
 		fi
 	else
-		pid=`/bin/pgrep -fn "snort -R {$snort_uuid} "`
+		pid=`/bin/pgrep -fn "snort -R {$if_real} "`
 		if [ ! -z \$pid ]; then
 			/usr/bin/logger -p daemon.info -i -t SnortStartup "Snort STOP for {$value['descr']}({$snort_uuid}_{$if_real})..."
-			/bin/pkill -fn "snort -R {$snort_uuid} "
+			/bin/pkill -fn "snort -R {$if_real} "
 			time=0 timeout=30
 			while kill -0 \$pid 2>/dev/null; do
 				sleep 1
@@ -2941,67 +3317,6 @@ EOD;
 	@chmod("{$rcdir}snort.sh", 0755);
 }
 
-function snort_get_filtered_rules($rules, $filter) {
-
-	/************************************************/
-	/* This function returns a rules_map array of   */
-	/* of rules filtered using the GID:SID pairs    */
-	/* found in the passed filter criteria array.   */
-	/*                                              */
-	/*   $rules --> file, a directory or an array   */
-	/*              containing rules files to scan  */
-	/*                                              */
-	/*  $filter --> array of GID:SID pairs to use   */
-	/*              for filtering returned rules    */
-	/*              map array.                      */
-	/*                                              */
-	/*  Returns --> rules_map array                 */
-	/************************************************/
-
-	$tmp_map = array();
-	$filtered_map = array();
-
-	// If the filter array is empty, just
-	// return an empty result to save time
-	// since nothing would match.
-	if (empty($filter)) {
-		return $filtered_map;
-	}
-
-	// Load up all the rules from the location passed
-	$tmp_map = snort_load_rules_map($rules);
-
-	// Now walk the loaded filter list and copy
-	// matching GID:SID rules from the target list
-	// over to the filtered array.
-	foreach ($filter as $k1 => $rulem) {
-		foreach($rulem as $k2 => $v) {
-			if (isset($tmp_map[$k1][$k2])) {
-				if (!is_array($filtered_map[$k1])) {
-					$filtered_map[$k1] = array();
-				}
-				if (!is_array($filtered_map[$k1][$k2])) {
-					$filtered_map[$k1][$k2] = array();
-				}
-				$filtered_map[$k1][$k2]['rule'] = $tmp_map[$k1][$k2]['rule'];
-				$filtered_map[$k1][$k2]['category'] = $tmp_map[$k1][$k2]['category'];
-				$filtered_map[$k1][$k2]['action'] = $tmp_map[$k1][$k2]['action'];
-				$filtered_map[$k1][$k2]['modified'] = $tmp_map[$k1][$k2]['modified'];
-				$filtered_map[$k1][$k2]['disabled'] = $tmp_map[$k1][$k2]['disabled'];
-				$filtered_map[$k1][$k2]['flowbits'] = $tmp_map[$k1][$k2]['flowbits'];
-				$filtered_map[$k1][$k2]['managed'] = $tmp_map[$k1][$k2]['managed'];
-				$filtered_map[$k1][$k2]['state_toggled'] = $tmp_map[$k1][$k2]['state_toggled'];
-				$filtered_map[$k1][$k2]['default_state'] = $tmp_map[$k1][$k2]['default_state'];
-				$filtered_map[$k1][$k2]['default_action'] = $tmp_map[$k1][$k2]['default_action'];
-			}
-		}
-	}
-
-	// Clean up and return the filtered list of rules
-	unset($tmp_map);
-	return $filtered_map;
-}
-
 function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 
 	/***********************************************************/
@@ -3033,7 +3348,7 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 		return;
 
 	/* Log a message for rules rebuild in progress */
-	log_error(gettext("[Snort] Updating rules configuration for: " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . " ..."));
+	syslog(LOG_NOTICE, gettext("[Snort] Updating rules configuration for: " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . " ..."));
 
 	// Get any automatic rule category enable/disable modifications
 	// if auto-SID Mgmt is enabled and conf files exist for the interface.
@@ -3063,9 +3378,8 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 	/* into the $enabled_rules array.                     */
 	$enabled_rules = snort_load_rules_map("{$snortcfgdir}/preproc_rules/");
 
-	/* Only rebuild rules if some are selected or an IPS Policy is enabled  */
+	/* Process CATEGORIES rules if some are selected or an IPS Policy is enabled  */
 	if (!empty($snortcfg['rulesets']) || $snortcfg['ips_policy_enable'] == 'on') {
-		$no_rules_defined = false;
 
 		/* Load up all the text rules into a Rules Map array. */
 		$all_rules = snort_load_rules_map("{$snortdir}/rules/");
@@ -3129,8 +3443,14 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 
 		/* Check if a pre-defined Snort Subscriber rules policy is selected. */
 		/* If so, add all the VRT policy rules to our enforcing rule set.    */
-		if (!empty($snortcfg['ips_policy'])) {
-			$policy_rules = snort_load_vrt_policy($snortcfg['ips_policy'], $all_rules);
+		if ($snortcfg['ips_policy_enable'] == 'on' && !empty($snortcfg['ips_policy'])) {
+			if ($snortcfg['blockoffenders7'] == 'on' && $snortcfg['ips_mode'] == 'ips_mode_inline') {
+				$policy_mode = $snortcfg['ips_policy_mode'];
+			}
+			else {
+				$policy_mode = 'alert';
+			}
+			$policy_rules = snort_load_vrt_policy($snortcfg['ips_policy'], $policy_mode, $all_rules);
 			foreach ($policy_rules as $k1 => $policy) {
 				foreach ($policy as $k2 => $p) {
 					if (!is_array($enabled_rules[$k1]))
@@ -3151,11 +3471,12 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 		// Do the auto-SID managment first, if enabled, then do any manual SID state changes.
 		snort_auto_sid_mgmt($enabled_rules, $snortcfg, TRUE);
 		snort_modify_sids($enabled_rules, $snortcfg);
+		snort_modify_sids_action($enabled_rules, $snortcfg);
 
 		/* Check for and disable any rules dependent upon disabled preprocessors if  */
 		/* this option is enabled for the interface.                                 */
 		if ($snortcfg['preproc_auto_rule_disable'] == "on") {
-			log_error('[Snort] Checking for rules dependent on disabled preprocessors for: ' . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . '...');
+			syslog(LOG_NOTICE, '[Snort] Checking for rules dependent on disabled preprocessors for: ' . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . '...');
 			snort_filter_preproc_rules($snortcfg, $enabled_rules);
 		}
 
@@ -3164,7 +3485,7 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 
 		/* If auto-flowbit resolution is enabled, generate the dependent flowbits rules file. */
 		if ($snortcfg['autoflowbitrules'] == 'on') {
-			log_error('[Snort] Enabling any flowbit-required rules for: ' . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . '...');
+			syslog(LOG_NOTICE, '[Snort] Enabling any flowbit-required rules for: ' . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . '...');
 			$fbits = snort_resolve_flowbits($all_rules, $enabled_rules);
 
 			/* Check for and disable any flowbit-required rules the user has  */
@@ -3174,7 +3495,7 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 			/* Check for and disable any flowbit-required rules dependent upon     */
 			/* disabled preprocessors if this option is enabled for the interface. */
 			if ($snortcfg['preproc_auto_rule_disable'] == "on") {
-				log_error('[Snort] Checking flowbit rules dependent on disabled preprocessors for: ' . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . '...');
+				syslog(LOG_NOTICE, '[Snort] Checking flowbit rules dependent on disabled preprocessors for: ' . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . '...');
 				snort_filter_preproc_rules($snortcfg, $fbits, true);
 			}
 			snort_write_flowbit_rules_file($fbits, "{$snortcfgdir}/rules/{$flowbit_rules_file}");
@@ -3184,62 +3505,49 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 			snort_write_flowbit_rules_file(array(), "{$snortcfgdir}/rules/{$flowbit_rules_file}");
 		unset($all_rules);
 	}
-	// If no rule categories were enabled, then use auto-SID management if enabled, since it may enable some rules
-	elseif ($config['installedpackages']['snortglobal']['auto_manage_sids'] == 'on' &&
-		(!empty($snortcfg['disable_sid_file']) || !empty($snortcfg['enable_sid_file']) || 
-		!empty($snortcfg['modify_sid_file']))) {
 
-		snort_auto_sid_mgmt($enabled_rules, $snortcfg, TRUE);
-		if (!empty($enabled_rules)) {
-			// Auto-SID management generated some rules, so use them
-			$no_rules_defined = false;
-			snort_modify_sids($enabled_rules, $snortcfg);
+	// Process SID Management directives if enabled
+	snort_auto_sid_mgmt($enabled_rules, $snortcfg, TRUE);
+	if (!empty($enabled_rules)) {
+		// Auto-SID management generated some rules, so use them
+		snort_modify_sids($enabled_rules, $snortcfg);
+		snort_modify_sids_action($enabled_rules, $snortcfg);
 
-			// Write the enforcing rules file to the Snort interface's "rules" directory.
-			snort_write_enforcing_rules_file($enabled_rules, "{$snortcfgdir}/rules/{$snort_enforcing_rules_file}");
+		// Write the enforcing rules file to the Snort interface's "rules" directory.
+		snort_write_enforcing_rules_file($enabled_rules, "{$snortcfgdir}/rules/{$snort_enforcing_rules_file}");
 
-			// If auto-flowbit resolution is enabled, generate the dependent flowbits rules file.
-			if ($snortcfg['autoflowbitrules'] == 'on') {
-				log_error('[Snort] Enabling any flowbit-required rules for: ' . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . '...');
+		// If auto-flowbit resolution is enabled, generate the dependent flowbits rules file.
+		if ($snortcfg['autoflowbitrules'] == 'on') {
+			syslog(LOG_NOTICE, '[Snort] Enabling any flowbit-required rules for: ' . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . '...');
 
-				// Load up all rules into a Rules Map array for flowbits assessment
-				$all_rules = snort_load_rules_map("{$snortdir}/rules/");
-				$fbits = snort_resolve_flowbits($all_rules, $enabled_rules);
+			// Load up all rules into a Rules Map array for flowbits assessment
+			$all_rules = snort_load_rules_map("{$snortdir}/rules/");
+			$fbits = snort_resolve_flowbits($all_rules, $enabled_rules);
 
-				// Check for and disable any flowbit-required rules the
-				// user has manually forced to a disabled state.
-				snort_modify_sids($fbits, $snortcfg);
-				snort_write_flowbit_rules_file($fbits, "{$snortcfgdir}/rules/{$flowbit_rules_file}");
-				unset($all_rules, $fbits);
-			} else
-				// Just put an empty file to always have the file present
-			snort_write_flowbit_rules_file(array(), "{$snortcfgdir}/rules/{$flowbit_rules_file}");
-		}
-		else {
-			snort_write_enforcing_rules_file(array(), "{$snortcfgdir}/rules/{$snort_enforcing_rules_file}");
-			snort_write_flowbit_rules_file(array(), "{$snortcfgdir}/rules/{$flowbit_rules_file}");
-		}
+			// Check for and disable any flowbit-required rules the
+			// user has manually forced to a disabled state.
+			snort_modify_sids($fbits, $snortcfg);
+			snort_write_flowbit_rules_file($fbits, "{$snortcfgdir}/rules/{$flowbit_rules_file}");
+			unset($all_rules, $fbits);
+		} else
+			// Just put an empty file to always have the file present
+		snort_write_flowbit_rules_file(array(), "{$snortcfgdir}/rules/{$flowbit_rules_file}");
 	}
 	else {
-		/* No regular rules or policy were selected, so just use the decoder and preproc rules */
-		snort_write_enforcing_rules_file($enabled_rules, "{$snortcfgdir}/rules/{$snort_enforcing_rules_file}");
+		snort_write_enforcing_rules_file(array(), "{$snortcfgdir}/rules/{$snort_enforcing_rules_file}");
 		snort_write_flowbit_rules_file(array(), "{$snortcfgdir}/rules/{$flowbit_rules_file}");
 	}
 
 	if (!empty($snortcfg['customrules'])) {
 		@file_put_contents("{$snortcfgdir}/rules/custom.rules", base64_decode($snortcfg['customrules']));
-		$no_rules_defined = false;
 	}
-	else
+	else {
 		@file_put_contents("{$snortcfgdir}/rules/custom.rules", "");
-
-	/* Log a warning if the interface has no rules defined or enabled */
-	if ($no_rules_defined)
-		log_error(gettext("[Snort] Warning - no text rules or IPS-Policy selected for: " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . " ..."));
+	}
 
 	/* Build a new sid-msg.map file from the enabled */
 	/* rules and copy it to the interface directory. */
-	log_error(gettext("[Snort] Building new sid-msg.map file for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . "..."));
+	syslog(LOG_NOTICE, gettext("[Snort] Building new sid-msg.map file for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . "..."));
 	snort_build_sid_msg_map("{$snortcfgdir}/rules/", "{$snortcfgdir}/sid-msg.map");
 }
 
@@ -3377,7 +3685,7 @@ function snort_filter_preproc_rules($snortcfg, &$active_rules, $persist_log = fa
 	/* than optimal with the preprocessors disabled.   */
 	/***************************************************/
 	if ($disabled_count > 0) {
-		log_error(gettext("[Snort] Warning: auto-disabled {$disabled_count} rules due to disabled preprocessor dependencies."));
+		syslog(LOG_WARNING, gettext("[Snort] Warning: auto-disabled {$disabled_count} rules due to disabled preprocessor dependencies."));
 		natcasesort($log_msg);
 		if ($fp) {
 			/* Only write the header when not persisting the log */
@@ -3402,7 +3710,7 @@ function snort_filter_preproc_rules($snortcfg, &$active_rules, $persist_log = fa
 				@fwrite($fp, sprintf("%-30s  %-10s  %-20s  %s", $tmp[0], $tmp[1], $tmp[2], $tmp[3]) . "\n");
 			}
 		}
-		log_error(gettext("[Snort] See '{$file}' for list of auto-disabled rules."));
+		syslog(LOG_NOTICE, gettext("[Snort] See '{$file}' for list of auto-disabled rules."));
 		unset($log_msg);
 	}
 	if ($fp)
@@ -3424,7 +3732,7 @@ function snort_generate_conf($snortcfg) {
 		return;
 
 	$snortdir = SNORTDIR;
-	$snortlibdir = SNORT_PBI_BASEDIR . "lib";
+	$snortlibdir = SNORT_BASEDIR . "lib";
 	$snortlogdir = SNORTLOGDIR;
 	$flowbit_rules_file = FLOWBITS_FILENAME;
 	$snort_enforcing_rules_file = SNORT_ENFORCING_RULES_FILENAME;
@@ -3500,7 +3808,7 @@ function snort_remove_dead_rules() {
 	}
 
 	// Log how many obsoleted files were removed
-	log_error(gettext("[Snort] Removed {$count} obsoleted rules category files."));
+	syslog(LOG_NOTICE, gettext("[Snort] Removed {$count} obsoleted rules category files."));
 
 	// Now remove any dead rules files from the interface configurations
 	if (!empty($cats) && is_array($config['installedpackages']['snortglobal']['rule'])) {
@@ -3526,7 +3834,7 @@ function snort_sync_on_changes() {
 
 	/* Do not attempt a package sync while booting up or installing package */
 	if ($g['booting'] || $g['snort_postinstall']) {
-		log_error("[snort] Skipping XMLRPC sync when booting up or during package reinstallation.");
+		syslog(LOG_NOTICE, "[snort] Skipping XMLRPC sync when booting up or during package reinstallation.");
 		return;
 	}
 
@@ -3540,7 +3848,7 @@ function snort_sync_on_changes() {
 				if (is_array($snort_sync['row'])){
 					$rs=$snort_sync['row'];
 				} else {
-					log_error("[snort] XMLRPC sync is enabled but there are no hosts configured as replication targets.");
+					syslog(LOG_NOTICE, "[snort] XMLRPC sync is enabled but there are no hosts configured as replication targets.");
 					return;
 				}
 				break;
@@ -3561,13 +3869,13 @@ function snort_sync_on_changes() {
 						$rs[0]['varsyncport'] = $config['system']['webgui']['port'] ?: '443';
 					}
 					if ($system_carp['synchronizetoip'] == "") {
-						log_error("[snort] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
+						syslog(LOG_NOTICE, "[snort] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
 						return;
 					} else {
 						$rs[0]['varsyncdestinenable'] = TRUE;
 					}
 				} else {
-					log_error("[snort] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
+					syslog(LOG_NOTICE, "[snort] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
 					return;
 				}
 				break;			
@@ -3576,7 +3884,7 @@ function snort_sync_on_changes() {
 				break;
 		}
 		if (is_array($rs)){
-			log_error("[snort] XMLRPC sync is starting.");
+			syslog(LOG_NOTICE, "[snort] XMLRPC sync is starting.");
 			foreach ($rs as $sh){
 				// Only sync enabled replication targets
 				if ($sh['varsyncdestinenable']) {
@@ -3607,11 +3915,11 @@ function snort_sync_on_changes() {
 					if ($success) {
 						snort_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol, $username, $password, $synctimeout, $syncstartsnort);
 					} else {
-						log_error("[snort] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
+						syslog(LOG_ERR, "[snort] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
 					}
 				}
 			}
-			log_error("[snort] XMLRPC sync completed.");
+			syslog(LOG_NOTICE, "[snort] XMLRPC sync completed.");
 		}
  	}
 }
@@ -3628,12 +3936,12 @@ function snort_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol,
 
 	/* Do not attempt a package sync while booting up or installing package */
 	if ($g['booting'] || isset($g['snort_postinstall'])) {
-		log_error("[snort] Skipping XMLRPC sync when booting up or during package reinstallation.");
+		syslog(LOG_NOTICE, "[snort] Skipping XMLRPC sync when booting up or during package reinstallation.");
 		return;
 	}
 
 	if ($username == "" || $password == "" || $sync_to_ip == "" || $port == "" || $protocol == "") {
-		log_error("[snort] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
+		syslog(LOG_ERR, "[snort] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
 		return;
 	}
 
@@ -3646,17 +3954,17 @@ function snort_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol,
 	
 	$downloadrulescmd = "";
 	if ($syncdownloadrules == "yes") {
-		$downloadrulescmd = "log_error(gettext(\"[snort] XMLRPC pkg sync: Update of downloaded rule sets requested...\"));\n";
+		$downloadrulescmd = "syslog(LOG_NOTICE, gettext(\"[snort] XMLRPC pkg sync: Update of downloaded rule sets requested...\"));\n";
 		$downloadrulescmd .= "\tinclude_once(\"/usr/local/pkg/snort/snort_check_for_rule_updates.php\");\n";
 	}
 	$snortstart = "";
 	if ($syncstartsnort == "ON") {
-		$snortstart = "log_error(gettext(\"[snort] XMLRPC pkg sync: Checking Snort status...\"));\n";
+		$snortstart = "syslog(LOG_NOTICE, gettext(\"[snort] XMLRPC pkg sync: Checking Snort status...\"));\n";
 		$snortstart .= "\tif (!is_process_running(\"snort\")) {\n";
-		$snortstart .= "\t\tlog_error(gettext(\"[snort] XMLRPC pkg sync: Snort not running. Sending a start command...\"));\n";
+		$snortstart .= "\t\tsyslog(LOG_NOTICE, gettext(\"[snort] XMLRPC pkg sync: Snort not running. Sending a start command...\"));\n";
 		$snortstart .= "\t\t\$sh_script = RCFILEPREFIX . \"snort.sh\";\n";
 		$snortstart .= "\t\tmwexec_bg(\"{\$sh_script} start\");\n\t}\n";
-		$snortstart .= "\telse {\n\t\tlog_error(gettext(\"[snort] XMLRPC pkg sync: Snort is running...\"));\n\t}\n";
+		$snortstart .= "\telse {\n\t\tsyslog(LOG_NOTICE, gettext(\"[snort] XMLRPC pkg sync: Snort is running...\"));\n\t}\n";
 	}
 
 	/*************************************************/
@@ -3676,12 +3984,12 @@ function snort_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol,
 	\$pkg_interface = "console";
 	{$downloadrulescmd}
 	unset(\$g["snort_postinstall"]);
-	log_error(gettext("[snort] XMLRPC pkg sync: Generating snort.conf file using Master Host settings..."));
+	syslog(LOG_NOTICE, gettext("[snort] XMLRPC pkg sync: Generating snort.conf file using Master Host settings..."));
 	\$rebuild_rules = true;
 	sync_snort_package_config();
 	\$rebuild_rules = false;
 	{$snortstart}
-	log_error(gettext("[snort] XMLRPC pkg sync process on this host is complete..."));
+	syslog(LOG_NOTICE, gettext("[snort] XMLRPC pkg sync process on this host is complete..."));
 	\$pkg_interface = \$orig_pkg_interface;
 	unset(\$g["snort_sync_in_progress"]);
 	return true;
@@ -3757,7 +4065,7 @@ EOD;
 			$method = 'pfsense.exec_php';
 			$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
 
-			log_error("[snort] XMLRPC sync sending auto-SID conf files to {$url}:{$port}.");
+			syslog(LOG_NOTICE, "[snort] XMLRPC sync sending auto-SID conf files to {$url}:{$port}.");
 			$msg = new XML_RPC_Message($method, $params);
 			$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
 			$cli->setCredentials($username, $password);
@@ -3765,17 +4073,17 @@ EOD;
 			$error = "";
 			if (!$resp) {
 				$error = "A communications error occurred while attempting Snort XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
-				log_error($error);
+				syslog(LOG_ERR, $error);
 				file_notice("sync_settings", $error, "Snort Settings Sync", "");
 			} elseif ($resp->faultCode()) {
 				$error = "An error code was received while attempting Snort XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
-				log_error($error);
+				syslog(LOG_ERR, $error);
 				file_notice("sync_settings", $error, "Snort Settings Sync", "");
 			}
 		}
 
 		if (!empty($sid_files) && $error == "") {
-			log_error("[snort] XMLRPC sync auto-SID conf files success with {$url}:{$port} (pfsense.exec_php).");
+			syslog(LOG_NOTICE, "[snort] XMLRPC sync auto-SID conf files success with {$url}:{$port} (pfsense.exec_php).");
 		}
 
 		/*************************************************/
@@ -3790,7 +4098,7 @@ EOD;
 			$method = 'pfsense.exec_php';
 			$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
 
-			log_error("[snort] Snort XMLRPC sync sending IPREP files to {$url}:{$port}.");
+			syslog(LOG_NOTICE, "[snort] Snort XMLRPC sync sending IPREP files to {$url}:{$port}.");
 			$msg = new XML_RPC_Message($method, $params);
 			$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
 			$cli->setCredentials($username, $password);
@@ -3798,17 +4106,17 @@ EOD;
 			$error = "";
 			if (!$resp) {
 				$error = "A communications error occurred while attempting Snort XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
-				log_error($error);
+				syslog(LOG_ERR, $error);
 				file_notice("sync_settings", $error, "Snort Settings Sync", "");
 			} elseif ($resp->faultCode()) {
 				$error = "An error code was received while attempting Snort XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
-				log_error($error);
+				syslog(LOG_ERR, $error);
 				file_notice("sync_settings", $error, "Snort Settings Sync", "");
 			}
 		}
 
 		if (!empty($iprep_files) && $error == "") {
-			log_error("[snort] XMLRPC sync IPREP files success with {$url}:{$port} (pfsense.exec_php).");
+			syslog(LOG_ERR, "[snort] XMLRPC sync IPREP files success with {$url}:{$port} (pfsense.exec_php).");
 		}
 
 		/* assemble xmlrpc payload */
@@ -3817,7 +4125,7 @@ EOD;
 			XML_RPC_encode($xml)
 		);
 
-		log_error("[snort] Beginning package configuration XMLRPC sync to {$url}:{$port}.");
+		syslog(LOG_NOTICE, "[snort] Beginning package configuration XMLRPC sync to {$url}:{$port}.");
 		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
 		$msg = new XML_RPC_Message($method, $params);
 		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
@@ -3827,14 +4135,14 @@ EOD;
 		$resp = $cli->send($msg, $synctimeout);
 		if (!$resp) {
 			$error = "A communications error occurred while attempting Snort XMLRPC sync with {$url}:{$port}.";
-			log_error($error);
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Snort Settings Sync", "");
 		} elseif ($resp->faultCode()) {
 			$error = "An error code was received while attempting Snort XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error($error);
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Snort Settings Sync", "");
 		} else {
-			log_error("[snort] Package configuration XMLRPC sync successfully completed with {$url}:{$port}.");
+			syslog(LOG_NOTICE, "[snort] Package configuration XMLRPC sync successfully completed with {$url}:{$port}.");
 		}
 
 		/* assemble xmlrpc payload */
@@ -3844,40 +4152,40 @@ EOD;
 			XML_RPC_encode($execcmd)
 		);
 
-		log_error("[snort] XMLRPC sync sending reload configuration cmd set as a file to {$url}:{$port}.");
+		syslog(LOG_NOTICE, "[snort] XMLRPC sync sending reload configuration cmd set as a file to {$url}:{$port}.");
 		$msg = new XML_RPC_Message($method, $params);
 		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
 		$cli->setCredentials($username, $password);
 		$resp = $cli->send($msg, $synctimeout);
 		if (!$resp) {
 			$error = "A communications error occurred while attempting Snort XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-			log_error($error);
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Snort Settings Sync", "");
 		} elseif ($resp->faultCode()) {
 			$error = "An error code was received while attempting Snort XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error($error);
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Snort Settings Sync", "");
 		} else {
-			log_error("[snort] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
+			syslog(LOG_NOTICE, "[snort] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
 		}
 
 		$params2 = array(
 			XML_RPC_encode($password),
 			XML_RPC_encode($execcmd2)
 		);
-		log_error("[snort] XMLRPC sync sending {$url}:{$port} cmd to execute configuration reload.");
+		syslog(LOG_NOTICE, "[snort] XMLRPC sync sending {$url}:{$port} cmd to execute configuration reload.");
 		$msg2 = new XML_RPC_Message($method, $params2);
 		$resp = $cli->send($msg2, $synctimeout);
 		if (!$resp) {
 			$error = "A communications error occurred while attempting Snort XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-			log_error($error);
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Snort Settings Sync", "");
 		} elseif ($resp->faultCode()) {
 			$error = "An error code was received while attempting Snort XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error($error);
+			syslog(LOG_ERR, $error);
 			file_notice("sync_settings", $error, "Snort Settings Sync", "");
 		} else {
-			log_error("[snort] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
+			syslog(LOG_NOTICE, "[snort] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
 		}
 	}
 }
