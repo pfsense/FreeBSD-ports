@@ -190,7 +190,8 @@ if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "ospf6")) && $frr
 }
 
 if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "bfd")) && $frr_enabled && $bfdd_enabled) {
-	defCmdT("bfd_peers", "BFD Peers", "{$control_script} bfd peers");
+	defCmdT("bfd_peers_brief", "BFD Peers Brief", "{$control_script} bfd peer_br");
+	defCmdT("bfd_peers", "BFD Peers", "{$control_script} bfd peer");
 }
 
 $title_label = "FRR";
