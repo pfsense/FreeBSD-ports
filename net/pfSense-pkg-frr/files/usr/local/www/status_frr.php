@@ -254,7 +254,7 @@ switch ($_REQUEST['protocol']) {
 			);
 		foreach ($config_files as $cf) {
 			if (file_exists("{$pkg_homedir}/{$cf}.conf") &&
-			    (filesize("{$pkg_homedir}/{$cf}.conf") > 0)) {
+				(filesize("{$pkg_homedir}/{$cf}.conf") > 0)) {
 				defCmdT("frr_{$cf}_config", "FRR {$cf}.conf", "/bin/cat {$pkg_homedir}/{$cf}.conf");
 			}
 		}

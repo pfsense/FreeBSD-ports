@@ -65,8 +65,8 @@ function frr_generate_config_ospf_areas() {
 
 		/* Check if an automatic area needs authentication that isn't set here. */
 		if (empty($defined_areas[$conf['area']]['authtype']) &&
-		    array_key_exists($conf['area'], $auto_areas) &&
-		    in_array($auto_areas[$conf['area']]['authtype'], array('digest', 'simple'))) {
+			array_key_exists($conf['area'], $auto_areas) &&
+			in_array($auto_areas[$conf['area']]['authtype'], array('digest', 'simple'))) {
 			$defined_areas[$conf['area']]['authtype'] = $auto_areas[$conf['area']]['authtype'];
 		}
 	}
@@ -273,20 +273,20 @@ function frr_generate_config_ospf_redistribute($ospfd_conf, $variablename, $sour
 	if ($ospfd_conf[$variablename]) {
 		$redistconf .= " redistribute {$sourcename}";
 		if (!empty($ospfd_conf[$variablename . '_routemap']) &&
-		    ($ospfd_conf[$variablename . '_routemap'] != 'none')) {
+			($ospfd_conf[$variablename . '_routemap'] != 'none')) {
 			$redistconf .= " route-map {$ospfd_conf[$variablename . '_routemap']}";
 		}
 		if (!empty($ospfd_conf[$variablename . '_metric']) &&
-		    ($ospfd_conf[$variablename . '_metric'] != 'none')) {
+			($ospfd_conf[$variablename . '_metric'] != 'none')) {
 			$redistconf .= " metric {$ospfd_conf[$variablename . '_metric']}";
 		}
 		if (!empty($ospfd_conf[$variablename . '_metrictype']) &&
-		    ($ospfd_conf[$variablename . '_metrictype'] != 'none')) {
+			($ospfd_conf[$variablename . '_metrictype'] != 'none')) {
 			$redistconf .= " metric-type {$ospfd_conf[$variablename . '_metrictype']}";
 		}
 		$redistconf .= "\n";
 		if (!empty($ospfd_conf[$variablename . '_distlist']) &&
-		    ($ospfd_conf[$variablename . '_distlist'] != 'none')) {
+			($ospfd_conf[$variablename . '_distlist'] != 'none')) {
 			$redistconf .= " distribute-list {$ospfd_conf[$variablename . '_distlist']} out {$sourcename}\n";
 		}
 	}
@@ -309,7 +309,7 @@ function frr_generate_config_ospf() {
 	}
 
 	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['ospfd']) &&
-	    !empty($config['installedpackages']['frrglobalraw']['config'][0]['ospfd'])) {
+		!empty($config['installedpackages']['frrglobalraw']['config'][0]['ospfd'])) {
 		/* If the user has supplied a raw configuration, use that instead of the GUI configuration. */
 		$frr_integrated_config['ospfd'] = str_replace("\r", "", base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['ospfd']));
 	} else {
@@ -365,15 +365,15 @@ function frr_generate_config_ospf() {
 		if ($ospfd_conf['redistributedefaultroute']) {
 			$frr_integrated_config['ospfd'] .= " default-information originate";
 			if (!empty($ospfd_conf['redistributedefaultroute_routemap']) &&
-			    ($ospfd_conf['redistributedefaultroute_routemap'] != 'none')) {
+				($ospfd_conf['redistributedefaultroute_routemap'] != 'none')) {
 				$frr_integrated_config['ospfd'] .= " route-map {$ospfd_conf['redistributedefaultroute_routemap']}";
 			}
 			if (!empty($ospfd_conf['redistributedefaultroute_metric']) &&
-			    ($ospfd_conf['redistributedefaultroute_metric'] != 'none')) {
+				($ospfd_conf['redistributedefaultroute_metric'] != 'none')) {
 				$frr_integrated_config['ospfd'] .= " metric {$ospfd_conf['redistributedefaultroute_metric']}";
 			}
 			if (!empty($ospfd_conf['redistributedefaultroute_metrictype']) &&
-			    ($ospfd_conf['redistributedefaultroute_metrictype'] != 'none')) {
+				($ospfd_conf['redistributedefaultroute_metrictype'] != 'none')) {
 				$frr_integrated_config['ospfd'] .= " metric-type {$ospfd_conf['redistributedefaultroute_metrictype']}";
 			}
 			$frr_integrated_config['ospfd'] .= "\n";

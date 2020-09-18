@@ -36,8 +36,8 @@ function frr_validate_word($word) {
 function frr_validate_community_asvalpair($community) {
 	list ($as, $val) = explode(":", $community);
 	if (is_numeric($as) && is_numeric($val) &&
-	    (($as >= 0) && ($as <= 65535)) &&
-	    (($val >= 0) && ($val <= 65535))) {
+		(($as >= 0) && ($as <= 65535)) &&
+		(($val >= 0) && ($val <= 65535))) {
 		return true;
 	}
 	return false;
@@ -180,8 +180,8 @@ function frr_global_prefixes_validate_input() {
 			if (!empty($_POST["ge{$matches[1]}"]) && !is_numeric($_POST["ge{$matches[1]}"])) {
 				$input_errors[] = "Minimum prefix in row {$matches[1]} must be a number.";
 			} elseif (isset($_POST["le{$matches[1]}"]) &&
-				    is_numeric($_POST["le{$matches[1]}"]) &&
-				    ( (int) $_POST["ge{$matches[1]}"] + 1 >= (int) $_POST["le{$matches[1]}"] )) {
+					is_numeric($_POST["le{$matches[1]}"]) &&
+					( (int) $_POST["ge{$matches[1]}"] + 1 >= (int) $_POST["le{$matches[1]}"] )) {
 				$input_errors[] = "Minimum prefix in row {$matches[1]} must be less than maximum, and differ by more than 1.";
 			}
 		}
@@ -233,7 +233,7 @@ function frr_ospf_areas_validate_input() {
 		/* rangeprefix must be a subnet */
 		if (preg_match("/^rangeprefix(\d+)$/", $key, $matches)) {
 			if (!empty($_POST["rangeprefix{$matches[1]}"]) &&
-			    !is_subnetv4($_POST["rangeprefix{$matches[1]}"])) {
+				!is_subnetv4($_POST["rangeprefix{$matches[1]}"])) {
 				$input_errors[] = "Summary Prefix in row {$matches[1]} must be a subnet.";
 			}
 		}
@@ -242,8 +242,8 @@ function frr_ospf_areas_validate_input() {
 		if (preg_match("/^rangecost(\d+)$/", $key, $matches)) {
 			frr_validate_intrange_input("Summary Cost in row {$matches[1]}", $_POST['rangecost{$matches[1]}'], 0, 16777215);
 			if (($_POST['rangecost{$matches[1]}'] <> "") &&
-			    (!empty($_POST['notadvertise{$matches[1]}']) ||
-			    !empty($_POST['subprefix{$matches[1]}']))) {
+				(!empty($_POST['notadvertise{$matches[1]}']) ||
+				!empty($_POST['subprefix{$matches[1]}']))) {
 				$input_errors[] = "Only one of Do Not Advertise, Cost, or Substitution Prefix may be chosen in row {$matches[1]}.";
 			}
 		}
@@ -251,12 +251,12 @@ function frr_ospf_areas_validate_input() {
 		/* subprefix must be a subnet */
 		if (preg_match("/^subprefix(\d+)$/", $key, $matches)) {
 			if (($_POST['subprefix{$matches[1]}'] <> "") &&
-			    !is_subnetv4($_POST["subprefix{$matches[1]}"])) {
+				!is_subnetv4($_POST["subprefix{$matches[1]}"])) {
 				$input_errors[] = "Substitute Prefix in row {$matches[1]} must be a subnet.";
 			}
 			if (!empty($_POST['subprefix{$matches[1]}']) &&
-			    (!empty($_POST['notadvertise{$matches[1]}']) ||
-			    !empty($_POST['rangecost{$matches[1]}']))) {
+				(!empty($_POST['notadvertise{$matches[1]}']) ||
+				!empty($_POST['rangecost{$matches[1]}']))) {
 				$input_errors[] = "Only one of Do Not Advertise, Cost, or Substitution Prefix may be chosen in row {$matches[1]}.";
 			}
 		}
