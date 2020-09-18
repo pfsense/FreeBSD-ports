@@ -171,7 +171,7 @@ function frr_ipsec_reload() {
 	global $config;
 	init_config_arr(array('installedpackages', 'frr', 'config', 0));
 	if (!empty($config['installedpackages']['frr']['config'][0]['ignoreipsecrestart']) ||
-	    empty($config['installedpackages']['frr']['config'][0]['enable']) || !is_process_running('zebra')) {
+		empty($config['installedpackages']['frr']['config'][0]['enable']) || !is_process_running('zebra')) {
 		return;
 	}
 
@@ -480,8 +480,8 @@ function frr_setkey() {
 	foreach ($neighbors as $nname => $neighbor) {
 		list($pwtype_base, $pwtype_bidir) = explode('-', $neighbor['password_type'], 2);
 		if ((($pwtype_base == "setkey") ||
-		    ($pwtype_base == "both")) &&
-		    is_ipaddr($neighbor['peer'])) {
+			($pwtype_base == "both")) &&
+			is_ipaddr($neighbor['peer'])) {
 			if (array_key_exists($neighbor['peergroup'], $neighbors)) {
 				$peergroup = $neighbors[$neighbor['peergroup']];
 			} else {
@@ -493,7 +493,7 @@ function frr_setkey() {
 			$tmp['src'] = frr_get_neighbor_updatesource($neighbor['updatesource'], $neighbor['updatesource_type']);
 			/* If that fails, check if this neighbor is a member of a peer group, and if that group has one */
 			if (empty($tmp['src']) && !empty($neighbor['peergroup']) &&
-			    !empty($peergroup)) {
+				!empty($peergroup)) {
 				if (!empty($peergroup['updatesource'])) {
 					/* Try to determine an update source from the group */
 					$tmp['src'] = frr_get_neighbor_updatesource($peergroup['updatesource'], $peergroup['updatesource_type']);
@@ -748,7 +748,7 @@ function frr_package_config_upgrade() {
 	if (is_array($ospfd_conf['row'])) {
 		foreach ($ospfd_conf['row'] as $idx => &$redistr) {
 			if (empty($redistr['routevalue']) ||
-			    ($redistr['redistribute']) != 'ON') {
+				($redistr['redistribute']) != 'ON') {
 				continue;
 			}
 			$dnrlist[] = $redistr['routevalue'];
@@ -827,8 +827,8 @@ function frr_package_config_upgrade() {
 	foreach ($frr_ospfinterfaces_conf as &$conf) {
 		$realif = get_real_interface($conf['interface']);
 		if (empty($realif) ||
-		    empty($conf['password']) ||
-		    isset($conf['authtype'])) {
+			empty($conf['password']) ||
+			isset($conf['authtype'])) {
 			continue;
 		}
 		if ($conf['md5password']) {

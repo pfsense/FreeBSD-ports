@@ -147,7 +147,7 @@ function frr_generate_config_bfd() {
 	}
 
 	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['bfdd']) &&
-	    !empty($config['installedpackages']['frrglobalraw']['config'][0]['bfdd'])) {
+		!empty($config['installedpackages']['frrglobalraw']['config'][0]['bfdd'])) {
 		// if there is a raw config specified in the config.xml use that instead of the assisted config
 		$frr_integrated_config['bfdd'] = str_replace("\r","",base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['bfdd']));
 	} else {

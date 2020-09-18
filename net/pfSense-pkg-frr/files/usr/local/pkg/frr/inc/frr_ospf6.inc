@@ -37,7 +37,7 @@ function frr_generate_config_ospf6() {
 	}
 
 	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['ospf6d']) &&
-	    !empty($config['installedpackages']['frrglobalraw']['config'][0]['ospf6d'])) {
+		!empty($config['installedpackages']['frrglobalraw']['config'][0]['ospf6d'])) {
 		/* If the user has supplied a raw configuration, use that instead of the GUI configuration. */
 		$frr_integrated_config['ospf6d'] = str_replace("\r", "", base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['ospf6d']));
 	} else {

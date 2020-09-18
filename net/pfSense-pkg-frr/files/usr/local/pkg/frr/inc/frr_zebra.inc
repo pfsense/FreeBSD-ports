@@ -115,10 +115,10 @@ function frr_get_acl_type($aclname) {
 	$acl_type = "";
 	if (is_numeric($aclname)) {
 		if ((($aclname > 0) && ($aclname < 100)) ||
-		    (($aclname > 1299) && ($aclname < 2000))) {
+			(($aclname > 1299) && ($aclname < 2000))) {
 			$acl_type = "standard";
 		} elseif ((($aclname > 99) && ($aclname < 200)) ||
-		    (($aclname > 1999) && ($aclname < 2700))) {
+			(($aclname > 1999) && ($aclname < 2700))) {
 			$acl_type = "extended";
 		}
 	} elseif (frr_validate_word($aclname)) {
@@ -145,8 +145,8 @@ function frr_generate_acl_hostspec($address, $acl_type) {
 				/* Hosts are "host x.x.x.x" */
 				$hostspec = "host {$address}";
 			} elseif (($address == "any") ||
-			    (empty($address) &&
-			    ($acl_type == "extended"))) {
+				(empty($address) &&
+				($acl_type == "extended"))) {
 				/* "any" */
 				$hostspec = "any";
 			}
@@ -339,8 +339,8 @@ function frr_zebra_generate_routemaps() {
 		/* General Options */
 		/* By this point, action must be "permit" or "deny" otherwise they are invalid, the name must be a valid word, and sequence must exist. */
 		if ((($rm['action'] != "permit") && ($rm['action'] != "deny")) ||
-		    !frr_validate_word($rm['name']) ||
-		    !is_numeric($rm['seq'])) {
+			!frr_validate_word($rm['name']) ||
+			!is_numeric($rm['seq'])) {
 			continue;
 		}
 		$rmconf .= "route-map {$rm['name']} {$rm['action']} {$rm['seq']}\n";
@@ -352,26 +352,26 @@ function frr_zebra_generate_routemaps() {
 
 		/* Logic Control */
 		if (in_array($rm['call'], frr_get_list_values(frr_get_routemap_list())) &&
-		    ($rm['call'] != "none")) {
+			($rm['call'] != "none")) {
 			$rmconf .= " call {$rm['call']}\n";
 		}
 		if (isset($rm['exitaction']) &&
-		    ($rm['exitaction'] == "next")) {
+			($rm['exitaction'] == "next")) {
 			$rmconf .= " on-match next\n";
 		} elseif (in_array($rm['exitaction'], frr_get_list_values(frr_get_routemap_list(true))) &&
-		    ($rm['exitaction'] != "none")) {
+			($rm['exitaction'] != "none")) {
 			$rmconf .= " on-match goto {$rm['exitaction']}\n";
 		}
 
 		/* Access List */
 		if (in_array($rm['acl_match'], frr_get_list_values(frr_get_accesslist_list())) &&
-		    ($rm['acl_match'] != "none")) {
+			($rm['acl_match'] != "none")) {
 			$rmconf .= " match ip address {$rm['acl_match']}\n";
 		}
 
 		/* Prefix List */
 		if (in_array($rm['prefix_match'], frr_get_list_values(frr_get_prefixlist_list())) &&
-		    ($rm['prefix_match'] != "none")) {
+			($rm['prefix_match'] != "none")) {
 			$rmconf .= " match ip address prefix-list {$rm['prefix_match']}\n";
 		}
 
@@ -379,27 +379,27 @@ function frr_zebra_generate_routemaps() {
 		switch ($rm['nexthop_action']) {
 			case "match-peer":
 				if (in_array($rm['nexthop_peer'], frr_get_list_values(frr_get_routemap_nexthop_list())) &&
-				    (($rm['nexthop_peer'] == "local") || is_ipaddr($rm['nexthop_peer']))) {
+					(($rm['nexthop_peer'] == "local") || is_ipaddr($rm['nexthop_peer']))) {
 					$rmconf .= " match peer {$rm['nexthop_peer']}\n";
 				}
 				break;
 			case "match-acl":
 				if (in_array($rm['nexthop_acl'], frr_get_list_values(frr_get_accesslist_list())) &&
-				    ($rm['nexthop_acl'] != "none")) {
+					($rm['nexthop_acl'] != "none")) {
 					$rmconf .= " match ip next-hop {$rm['nexthop_acl']}\n";
 				}
 				break;
 			case "match-pl":
 				if (in_array($rm['nexthop_pl'], frr_get_list_values(frr_get_prefixlist_list())) &&
-				    ($rm['nexthop_pl'] != "none")) {
+					($rm['nexthop_pl'] != "none")) {
 					$rmconf .= " match ip next-hop prefix-list {$rm['nexthop_pl']}\n";
 				}
 				break;
 			case "set":
 				if (in_array($rm['nexthop_peer'], frr_get_list_values(frr_get_routemap_nexthop_list())) &&
-				    (($rm['nexthop_peer'] == "peer-address") ||
-				    ($rm['nexthop_peer'] == "unchanged") ||
-				    is_ipaddr($rm['nexthop_peer']))) {
+					(($rm['nexthop_peer'] == "peer-address") ||
+					($rm['nexthop_peer'] == "unchanged") ||
+					is_ipaddr($rm['nexthop_peer']))) {
 					$rmconf .= " set ip next-hop {$rm['nexthop_peer']}\n";
 				}
 				break;
@@ -676,7 +676,7 @@ function frr_generate_config_zebra() {
 	}
 
 	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['zebra']) &&
-	    !empty($config['installedpackages']['frrglobalraw']['config'][0]['zebra'])) {
+		!empty($config['installedpackages']['frrglobalraw']['config'][0]['zebra'])) {
 		// if there is a raw config specified in the config.xml use that instead of the assisted config
 		$zebraconffile = str_replace("\r", "", base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['zebra']));
 	} else {
@@ -707,7 +707,7 @@ function frr_generate_config_zebra() {
 	}
 
 	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['staticd']) &&
-	    !empty($config['installedpackages']['frrglobalraw']['config'][0]['staticd'])) {
+		!empty($config['installedpackages']['frrglobalraw']['config'][0]['staticd'])) {
 		// if there is a raw config specified in the config.xml use that instead of the assisted config
 		$frr_integrated_config['staticd'] = str_replace("\r", "", base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['staticd']));
 	} else {
