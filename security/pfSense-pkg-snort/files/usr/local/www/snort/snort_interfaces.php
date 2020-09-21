@@ -59,12 +59,12 @@ if ($_POST['status'] == 'check') {
 		$stop_lck_file = "{$g['varrun_path']}/{$intf_key}_stopping.lck";
 		$start_lck_file = "{$g['varrun_path']}/{$intf_key}_starting.lck";
 
-		if (!snort_is_running(get_real_interface($intf['interface']))) {
+		if (!snort_is_running($intf['uuid'])) {
 			unlink_if_exists($stop_lck_file);
 		}
 
 		if ($intf['enable'] == "on") {
-			if (snort_is_running(get_real_interface($intf['interface'])) && !file_exists($stop_lck_file)) {
+			if (snort_is_running($intf['uuid']) && !file_exists($stop_lck_file)) {
 				$list[$intf_key] = "RUNNING";
 				unlink_if_exists($start_lck_file);
 				unset($snort_starting[$i]);
@@ -228,7 +228,7 @@ EOD;
 		case 'start':
 			unlink_if_exists($stop_lck_file);
 			file_put_contents("{$g['tmp_path']}/snort_{$if_real}_startcmd.php", $snort_start_cmd);
-			if (snort_is_running($if_real)) {
+			if (snort_is_running($snortcfg['uuid'])) {
 				syslog(LOG_NOTICE, "Restarting Snort on {$if_friendly}({$if_real}) per user request...");
 				snort_stop($snortcfg, $if_real);
 				mwexec_bg("/usr/local/bin/php -f {$g['tmp_path']}/snort_{$if_real}_startcmd.php");
@@ -240,7 +240,7 @@ EOD;
 			$snort_starting[$id] = TRUE;
 			break;
 		case 'stop':
-			if (snort_is_running($if_real)) {
+			if (snort_is_running($snortcfg['uuid'])) {
 				touch($stop_lck_file);
 				syslog(LOG_NOTICE, "Stopping Snort on {$if_friendly}({$if_real}) per user request...");
 				snort_stop($snortcfg, $if_real);
@@ -359,7 +359,7 @@ if ($savemsg)
 					</td>
 					<td id="frd<?=$i?>" ondblclick="document.location='snort_interfaces_edit.php?id=<?=$i?>';">
 						<?php if ($natent['enable'] == 'on') : ?>
-							<?php if (snort_is_running($if_real) && !file_exists($stop_lck_file)) : ?>
+							<?php if (snort_is_running($snort_uuid) && !file_exists($stop_lck_file)) : ?>
 								<i id="snort_<?=$if_real;?>" class="fa fa-check-circle text-success icon-primary" title="<?=gettext('snort is running on this interface');?>"></i>
 								&nbsp;
 								<i id="snort_<?=$if_real;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info" onclick="javascript:snort_iface_toggle($(this), 'start', '<?=$i?>');" title="<?=gettext('Restart snort on this interface');?>"></i>
