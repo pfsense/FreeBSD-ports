@@ -500,8 +500,13 @@ if ($snortdownload == 'on') {
 	if (file_exists("{$tmpfname}/{$snort_filename}")) {
 		snort_update_status(gettext("Installing Snort Subscriber ruleset..."));
 
-		/* Default to FreeBSD-11 for now as that is highest available version of SO rules */
+		/* Determine the platform FreeBSD major version so we can unpack  */
+		/* the corresponding SO rules. Default to FreeBSD-11.             */
 		$freebsd_version_so = 'FreeBSD-11';
+		$major_os_ver = strcspn(php_uname('r'), ".-");
+		if ($major_os_ver > 0) {
+			$freebsd_version_so = 'FreeBSD-' . substr(php_uname('r'), 0, $major_os_ver);
+		}
 
 		/* Remove the old Snort rules files */
 		$vrt_prefix = VRT_FILE_PREFIX;

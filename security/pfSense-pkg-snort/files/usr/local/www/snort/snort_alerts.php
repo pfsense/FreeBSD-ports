@@ -550,8 +550,8 @@ if ($_POST['clear']) {
 	file_put_contents("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert", "");
 	/* XXX: This is needed if snort is run as snort user */
 	mwexec("/bin/chmod 660 {$snortlogdir}/*", true);
-	if (file_exists("{$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid"))
-		mwexec("/bin/pkill -HUP -F {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid -a");
+	if (file_exists("{$g['varrun_path']}/snort_{$snort_uuid}.pid"))
+		mwexec("/bin/pkill -HUP -F {$g['varrun_path']}/snort_{$snort_uuid}.pid -a");
 	unset($a_instance);
 	header("Location: /snort/snort_alerts.php?instance={$instanceid}");
 	exit;

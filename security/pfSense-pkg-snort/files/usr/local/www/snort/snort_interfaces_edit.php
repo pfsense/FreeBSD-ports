@@ -326,7 +326,7 @@ if ($_POST['save'] && !$input_errors) {
 			// See if moving an existing Snort instance to another physical interface
 			if ($natent['interface'] != $a_rule[$id]['interface']) {
 				$oif_real = get_real_interface($a_rule[$id]['interface']);
-				if (snort_is_running($a_rule[$id]['uuid'], $oif_real)) {
+				if (snort_is_running($a_rule[$id]['uuid'])) {
 					snort_stop($a_rule[$id], $oif_real);
 					$snort_start = true;
 				}
@@ -503,14 +503,14 @@ if ($_POST['save'] && !$input_errors) {
 		}
 
 		/* See if we need to restart Snort to activate changes made */
-		if ($snort_restart && !$snort_start && snort_is_running($if_real)) {
+		if ($snort_restart && !$snort_start && snort_is_running($natent['uuid'])) {
 			snort_start($natent, $if_real, TRUE);
 			$savemsg = gettext('Restarted Snort on this interface to activate new saved configuration settings.');
 		}
 
 		/* See if we need to restart Snort after a Pass List re-assignment, */
 		/* but only if we did not restart for any other reason.             */
-		if ($snort_new_passlist && !$snort_start && !$snort_restart && snort_is_running($if_real)) {
+		if ($snort_new_passlist && !$snort_start && !$snort_restart && snort_is_running($natent['uuid'])) {
 			snort_start($natent, $if_real, TRUE);
 			$savemsg = gettext('Restarted Snort on this interface due to a Pass List change.');
 		}
@@ -522,7 +522,7 @@ if ($_POST['save'] && !$input_errors) {
 		/* function only signals a running Snort instance to   */
 		/* safely reload these parameters.                     */
 		/*******************************************************/
-		if ($snort_reload && !$snort_start && !$snort_restart && snort_is_running($if_real)) {
+		if ($snort_reload && !$snort_start && !$snort_restart && snort_is_running($natent['uuid'])) {
 			snort_reload_config($natent, "SIGHUP");
 			$savemsg = gettext('Signaled Snort to reload configuration due to change in HOME_NET, EXTERNAL_NET or Suppress List assignments.');
 		}
