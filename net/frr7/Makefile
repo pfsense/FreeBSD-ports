@@ -24,7 +24,7 @@ RUN_DEPENDS=	frr-reload:net/frr7
 USES=	python:run shebangfix
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/etc/|${PREFIX}/etc/|g' ${WRKSRC}/tools/frr-reload.py
+	@${REINPLACE_CMD} -e 's|/etc/frr|${ETCDIR}|g' ${WRKSRC}/tools/frr-reload.py
 	@${REINPLACE_CMD} -e 's|/usr/bin|${PREFIX}/bin|g' ${WRKSRC}/tools/frr-reload.py
 
 do-install:
@@ -123,7 +123,7 @@ USE_RC_SUBR=	frr watchfrr
 SHEBANG_FILES=	yang/embedmodel.py
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/etc/|${PREFIX}/etc/|g' ${WRKSRC}/tools/frr-reload
+	@${REINPLACE_CMD} -e 's|/etc/frr|${ETCDIR}/|g' ${WRKSRC}/tools/frr-reload
 	@${REINPLACE_CMD} -e 's|/usr/lib/|${PREFIX}/lib/|g' ${WRKSRC}/tools/frr-reload
 	@${REINPLACE_CMD} -e 's|frr-pythontools|frr7-pythontools|g' ${WRKSRC}/tools/frr-reload
 
