@@ -38,7 +38,7 @@
 		<tab>
 			<text>Peers</text>
 			<url>pkg.php?xml=frr/frr_bfd_peers.xml</url>
-		</tab>	
+		</tab>
 		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>

@@ -62,7 +62,7 @@
 		<tab>
 			<text>[OSPF6]</text>
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
-		</tab>		
+		</tab>
 		<tab>
 			<text>Status</text>
 			<url>/status_frr.php?protocol=ospf</url>
@@ -86,8 +86,9 @@
 			<fieldname>routerid</fieldname>
 			<description>
 				<![CDATA[
-				Specify the Router ID. RID is the highest logical (loopback) IP address configured on a router.<br />
+				Override the default Router ID. RID is the highest logical (loopback) IP address configured on a router.<br />
 				For more information on router identifiers see <a href='http://en.wikipedia.org/wiki/Open_Shortest_Path_First'>wikipedia</a>.
+
 				]]>
 			</description>
 			<type>input</type>
@@ -113,6 +114,11 @@
 				]]>
 			</description>
 			<type>input</type>
+		</field>
+
+		<field>
+			<name>Modules</name>
+			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>Enable SNMP AgentX</fielddescr>

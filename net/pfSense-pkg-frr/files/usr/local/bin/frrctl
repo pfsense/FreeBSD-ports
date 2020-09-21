@@ -24,36 +24,17 @@
 
 RC_SCRIPT=/usr/local/etc/rc.d/frr.sh
 FRR_CONFIG_BASE=/var/etc/frr
+FRR_CONFIG=${FRR_CONFIG_BASE}/frr.conf
 
-ZEBRA_CONFIG=${FRR_CONFIG_BASE}/zebra.conf
+if [ -f ${FRR_CONFIG} ]; then
+	FRR_PASSWORD=`/usr/bin/grep '^password ' ${FRR_CONFIG} | /usr/bin/awk '{print $2};'`
+fi
+
 ZEBRA_PORT=2601
-if [ -f ${ZEBRA_CONFIG} ]; then
-	ZEBRA_PASSWORD=`/usr/bin/grep '^password ' ${ZEBRA_CONFIG} | /usr/bin/awk '{print $2};'`
-fi
-
-OSPF_CONFIG=${FRR_CONFIG_BASE}/ospfd.conf
 OSPF_PORT=2604
-if [ -f ${OSPF_CONFIG} ]; then
-	OSPF_PASSWORD=`/usr/bin/grep '^password ' ${OSPF_CONFIG} | /usr/bin/awk '{print $2};'`
-fi
-
-OSPF6_CONFIG=${FRR_CONFIG_BASE}/ospf6d.conf
 OSPF6_PORT=2606
-if [ -f ${OSPF6_CONFIG} ]; then
-	OSPF6_PASSWORD=`/usr/bin/grep '^password ' ${OSPF6_CONFIG} | /usr/bin/awk '{print $2};'`
-fi
-
-BGP_CONFIG=${FRR_CONFIG_BASE}/bgpd.conf
 BGP_PORT=2605
-if [ -f ${BGP_CONFIG} ]; then
-	BGP_PASSWORD=`/usr/bin/grep '^password ' ${BGP_CONFIG} | /usr/bin/awk '{print $2};'`
-fi
-
-BFD_CONFIG=${FRR_CONFIG_BASE}/bfdd.conf
 BFD_PORT=2617
-if [ -f ${BFD_CONFIG} ]; then
-	BFD_PASSWORD=`/usr/bin/grep '^password ' ${BFD_CONFIG} | /usr/bin/awk '{print $2};'`
-fi
 
 daemon_command() {
 	COMMANDS=${2}
@@ -80,23 +61,23 @@ zebra)
 	fi
 	case $2 in
 	cpu*)
-		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show thread cpu"
+		daemon_command ${ZEBRA_PORT} ${FRR_PASSWORD} "show thread cpu"
 		;;
 	mem*)
 		shift; shift;
-		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show memory $*"
+		daemon_command ${ZEBRA_PORT} ${FRR_PASSWORD} "show memory $*"
 		;;
 	int*)
-		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show interface $3"
+		daemon_command ${ZEBRA_PORT} ${FRR_PASSWORD} "show interface $3"
 		;;
 	route6)
-		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show ipv6 route"
+		daemon_command ${ZEBRA_PORT} ${FRR_PASSWORD} "show ipv6 route"
 		;;
 	route)
-		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show ip route"
+		daemon_command ${ZEBRA_PORT} ${FRR_PASSWORD} "show ip route"
 		;;
 	bgpr*)
-		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show ip route bgp"
+		daemon_command ${ZEBRA_PORT} ${FRR_PASSWORD} "show ip route bgp"
 		;;
 	esac ;;
 ospf6)
@@ -106,31 +87,31 @@ ospf6)
 	fi
 	case $2 in
 	cpu*)
-		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show thread cpu"
+		daemon_command ${OSPF6_PORT} ${FRR_PASSWORD} "show thread cpu"
 		;;
 	mem*)
 		shift; shift;
-		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show memory $*"
+		daemon_command ${OSPF6_PORT} ${FRR_PASSWORD} "show memory $*"
 		;;
 	gen*)
-		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6"
+		daemon_command ${OSPF6_PORT} ${FRR_PASSWORD} "show ipv6 ospf6"
 		;;
 	nei*)
 		shift; shift;
-		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6 neighbor $*"
+		daemon_command ${OSPF6_PORT} ${FRR_PASSWORD} "show ipv6 ospf6 neighbor $*"
 		;;
 	dat*)
 		shift; shift;
-		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6 database $*"
+		daemon_command ${OSPF6_PORT} ${FRR_PASSWORD} "show ipv6 ospf6 database $*"
 		;;
 	int*)
-		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6 interface $3"
+		daemon_command ${OSPF6_PORT} ${FRR_PASSWORD} "show ipv6 ospf6 interface $3"
 		;;
 	bor*)
-		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6 border-routers"
+		daemon_command ${OSPF6_PORT} ${FRR_PASSWORD} "show ipv6 ospf6 border-routers"
 		;;
 	rou*)
-		daemon_command ${OSPF6_PORT} ${OSPF6_PASSWORD} "show ipv6 ospf6 route"
+		daemon_command ${OSPF6_PORT} ${FRR_PASSWORD} "show ipv6 ospf6 route"
 		;;
 	esac ;;
 ospf)
@@ -140,31 +121,31 @@ ospf)
 	fi
 	case $2 in
 	cpu*)
-		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show thread cpu"
+		daemon_command ${OSPF_PORT} ${FRR_PASSWORD} "show thread cpu"
 		;;
 	mem*)
 		shift; shift;
-		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show memory $*"
+		daemon_command ${OSPF_PORT} ${FRR_PASSWORD} "show memory $*"
 		;;
 	gen*)
-		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf"
+		daemon_command ${OSPF_PORT} ${FRR_PASSWORD} "show ip ospf"
 		;;
 	nei*)
 		shift; shift;
-		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf neighbor $*"
+		daemon_command ${OSPF_PORT} ${FRR_PASSWORD} "show ip ospf neighbor $*"
 		;;
 	dat*)
 		shift; shift;
-		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf database $*"
+		daemon_command ${OSPF_PORT} ${FRR_PASSWORD} "show ip ospf database $*"
 		;;
 	int*)
-		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf interface $3"
+		daemon_command ${OSPF_PORT} ${FRR_PASSWORD} "show ip ospf interface $3"
 		;;
 	bor*)
-		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf border-routers"
+		daemon_command ${OSPF_PORT} ${FRR_PASSWORD} "show ip ospf border-routers"
 		;;
 	rou*)
-		daemon_command ${OSPF_PORT} ${OSPF_PASSWORD} "show ip ospf route"
+		daemon_command ${OSPF_PORT} ${FRR_PASSWORD} "show ip ospf route"
 		;;
 	esac ;;
 bgp6*)
@@ -174,7 +155,7 @@ bgp6*)
 	fi
 	case $2 in
 	rou*)
-		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show bgp"
+		daemon_command ${BGP_PORT} ${FRR_PASSWORD} "show bgp"
 		;;
 	esac ;;
 bgp*)
@@ -184,27 +165,27 @@ bgp*)
 	fi
 	case $2 in
 	rou*)
-		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp"
+		daemon_command ${BGP_PORT} ${FRR_PASSWORD} "show ip bgp"
 		;;
 	nei*)
 		shift; shift;
-		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp neighbors $*"
+		daemon_command ${BGP_PORT} ${FRR_PASSWORD} "show ip bgp neighbors $*"
 		;;
 	peer*)
 		shift; shift;
-		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp peer-group $*"
+		daemon_command ${BGP_PORT} ${FRR_PASSWORD} "show ip bgp peer-group $*"
 		;;
 	sum*)
 		shift; shift;
-		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show bgp summary $*"
+		daemon_command ${BGP_PORT} ${FRR_PASSWORD} "show bgp summary $*"
 		;;
 	nexth*)
 		shift; shift;
-		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp nexthop detail $*"
+		daemon_command ${BGP_PORT} ${FRR_PASSWORD} "show ip bgp nexthop detail $*"
 		;;
 	mem*)
 		shift; shift;
-		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show bgp memory $*"
+		daemon_command ${BGP_PORT} ${FRR_PASSWORD} "show bgp memory $*"
 		;;
 	esac ;;
 bfd*)
@@ -213,15 +194,18 @@ bfd*)
 		exit 1
 	fi
 	case $2 in
+	peer_br*)
+		daemon_command ${BFD_PORT} ${FRR_PASSWORD} "enable\nshow bfd peers brief"
+		;;
 	peer*)
-		daemon_command ${BFD_PORT} ${BFD_PASSWORD} "enable\nshow bfd peers"
+		daemon_command ${BFD_PORT} ${FRR_PASSWORD} "enable\nshow bfd peers"
 		;;
 	count*)
-		daemon_command ${BFD_PORT} ${BFD_PASSWORD} "enable\nshow bfd peers counters"
+		daemon_command ${BFD_PORT} ${FRR_PASSWORD} "enable\nshow bfd peers counters"
 		;;
 	esac ;;
 cycleinterface)
-	daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "enable\nconfig terminal\ninterface $2\nshutdown\nexit\nexit"
+	daemon_command ${ZEBRA_PORT} ${FRR_PASSWORD} "enable\nconfig terminal\ninterface $2\nshutdown\nexit\nexit"
 	sleep 1;
-	daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "enable\nconfig terminal\ninterface $2\nno shutdown\nexit\nexit"
+	daemon_command ${ZEBRA_PORT} ${FRR_PASSWORD} "enable\nconfig terminal\ninterface $2\nno shutdown\nexit\nexit"
 esac

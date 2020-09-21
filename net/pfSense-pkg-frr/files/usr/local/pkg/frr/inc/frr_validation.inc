@@ -36,8 +36,8 @@ function frr_validate_word($word) {
 function frr_validate_community_asvalpair($community) {
 	list ($as, $val) = explode(":", $community);
 	if (is_numeric($as) && is_numeric($val) &&
-	    (($as >= 0) && ($as <= 65535)) &&
-	    (($val >= 0) && ($val <= 65535))) {
+		(($as >= 0) && ($as <= 65535)) &&
+		(($val >= 0) && ($val <= 65535))) {
 		return true;
 	}
 	return false;
@@ -180,8 +180,8 @@ function frr_global_prefixes_validate_input() {
 			if (!empty($_POST["ge{$matches[1]}"]) && !is_numeric($_POST["ge{$matches[1]}"])) {
 				$input_errors[] = "Minimum prefix in row {$matches[1]} must be a number.";
 			} elseif (isset($_POST["le{$matches[1]}"]) &&
-				    is_numeric($_POST["le{$matches[1]}"]) &&
-				    ( (int) $_POST["ge{$matches[1]}"] + 1 >= (int) $_POST["le{$matches[1]}"] )) {
+					is_numeric($_POST["le{$matches[1]}"]) &&
+					( (int) $_POST["ge{$matches[1]}"] + 1 >= (int) $_POST["le{$matches[1]}"] )) {
 				$input_errors[] = "Minimum prefix in row {$matches[1]} must be less than maximum, and differ by more than 1.";
 			}
 		}
@@ -233,7 +233,7 @@ function frr_ospf_areas_validate_input() {
 		/* rangeprefix must be a subnet */
 		if (preg_match("/^rangeprefix(\d+)$/", $key, $matches)) {
 			if (!empty($_POST["rangeprefix{$matches[1]}"]) &&
-			    !is_subnetv4($_POST["rangeprefix{$matches[1]}"])) {
+				!is_subnetv4($_POST["rangeprefix{$matches[1]}"])) {
 				$input_errors[] = "Summary Prefix in row {$matches[1]} must be a subnet.";
 			}
 		}
@@ -242,8 +242,8 @@ function frr_ospf_areas_validate_input() {
 		if (preg_match("/^rangecost(\d+)$/", $key, $matches)) {
 			frr_validate_intrange_input("Summary Cost in row {$matches[1]}", $_POST['rangecost{$matches[1]}'], 0, 16777215);
 			if (($_POST['rangecost{$matches[1]}'] <> "") &&
-			    (!empty($_POST['notadvertise{$matches[1]}']) ||
-			    !empty($_POST['subprefix{$matches[1]}']))) {
+				(!empty($_POST['notadvertise{$matches[1]}']) ||
+				!empty($_POST['subprefix{$matches[1]}']))) {
 				$input_errors[] = "Only one of Do Not Advertise, Cost, or Substitution Prefix may be chosen in row {$matches[1]}.";
 			}
 		}
@@ -251,12 +251,12 @@ function frr_ospf_areas_validate_input() {
 		/* subprefix must be a subnet */
 		if (preg_match("/^subprefix(\d+)$/", $key, $matches)) {
 			if (($_POST['subprefix{$matches[1]}'] <> "") &&
-			    !is_subnetv4($_POST["subprefix{$matches[1]}"])) {
+				!is_subnetv4($_POST["subprefix{$matches[1]}"])) {
 				$input_errors[] = "Substitute Prefix in row {$matches[1]} must be a subnet.";
 			}
 			if (!empty($_POST['subprefix{$matches[1]}']) &&
-			    (!empty($_POST['notadvertise{$matches[1]}']) ||
-			    !empty($_POST['rangecost{$matches[1]}']))) {
+				(!empty($_POST['notadvertise{$matches[1]}']) ||
+				!empty($_POST['rangecost{$matches[1]}']))) {
 				$input_errors[] = "Only one of Do Not Advertise, Cost, or Substitution Prefix may be chosen in row {$matches[1]}.";
 			}
 		}
@@ -394,8 +394,8 @@ function frr_ospf_validate_input() {
 function frr_ospf6_interfaces_validate_input() {
 	global $config, $g, $input_errors;
 
-	if ((strlen($_POST['interfacearea']) > 0) && !($_POST['interfacearea'] == '0.0.0.0' || $_POST['interfacearea'] == '0')) {
-		$input_errors[] = "Area must be 0 or 0.0.0.0, FRR currently only supports the backbone area.";
+	if ((strlen($_POST['interfacearea']) > 0) && !($_POST['interfacearea'] == '0.0.0.0')) {
+		$input_errors[] = "Area must be 0.0.0.0, FRR currently only supports the backbone area.";
 	}
 
 	if ((strlen($_POST['interfacearea']) == 0) && (strlen($config['installedpackages']['frrospf6d']['config'][0]['defaultarea']) == 0)) {
@@ -414,8 +414,8 @@ function frr_ospf6_validate_input() {
 		if (!(is_ipaddr($_POST['defaultarea']) || ctype_digit($_POST['defaultarea']))) {
 			$input_errors[] = "Default Area must be a valid IP address or integer number.";
 		}
-		if (!($_POST['defaultarea'] == '0.0.0.0' || $_POST['defaultarea'] == '0')) {
-			$input_errors[] = "Area must be 0 or 0.0.0.0, FRR OSPFv3 currently only supports the backbone area.";
+		if (!($_POST['defaultarea'] == '0.0.0.0')) {
+			$input_errors[] = "Area must be 0.0.0.0, FRR OSPFv3 currently only supports the backbone area.";
 		}
 	} else {
 		if (is_array($config['installedpackages']['frrospfd6interfaces'])) {
@@ -453,6 +453,30 @@ function frr_bgp_validate_input() {
 	if (!empty($_POST['listenip']) && !is_ipaddr($_POST['listenip'])) {
 		$input_errors[] = "Listen IP must be an IP address or blank to bind to all IP addresses.";
 	}
+
+	if (strlen($_POST['rpkipollingperiod']) > 0) {
+		if (!is_numeric($_POST['rpkipollingperiod'])) {
+			$input_errors[] = "Polling period must be a number.";
+		}
+		/*polling_period (1-86400)*/
+		frr_validate_intrange_input("Polling period", $_POST['rpkipollingperiod'], 1, 86400);
+	}
+
+	if (strlen($_POST['rpkiexpireinterval']) > 0) {
+		if (!is_numeric($_POST['rpkiexpireinterval'])) {
+			$input_errors[] = "Expire interval must be a number.";
+		}
+		/*expire_interval (600-172800)*/
+		frr_validate_intrange_input("Expire interval", $_POST['rpkiexpireinterval'], 600, 172800);
+	}
+
+	if (strlen($_POST['rpkiretryinterval']) > 0) {
+		if (!is_numeric($_POST['rpkiretryinterval'])) {
+			$input_errors[] = "Retry interval must be a number.";
+		}
+		/*retry_interval (1-7200)*/
+		frr_validate_intrange_input("Polling period", $_POST['rpkiretryinterval'], 1, 7200);
+	}
 }
 
 function frr_bgp_advanced_validate_input() {
@@ -482,6 +506,26 @@ function frr_bgp_validate_group() {
 
 	if ($_POST['name'] == "") {
 		$input_errors[] = "A name is required.";
+	}
+}
+
+function frr_bgp_rpki_cache_server_validate_input() {
+	global $config, $input_errors;
+
+	if (strlen($_POST['port']) > 0) {
+		if (!is_numeric($_POST['port'])) {
+			$input_errors[] = "Port must be a number.";
+		}
+		/*preference (1-255)*/
+		frr_validate_intrange_input("Port", $_POST['port'], 1, 65535);
+	}
+
+	if (strlen($_POST['preference']) > 0) {
+		if (!is_numeric($_POST['preference'])) {
+			$input_errors[] = "Preference must be a number.";
+		}
+		/*preference (1-255)*/
+		frr_validate_intrange_input("Preference", $_POST['preference'], 1, 255);
 	}
 }
 

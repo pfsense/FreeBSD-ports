@@ -26,7 +26,7 @@ function frr_get_bfd_peers($includedefault = true) {
 
 	if ($includedefault) {
 		$peers[] = array('name' => 'Default', 'value' => 'default');
-	}	
+	}
 	if (is_array($config['installedpackages']['frrbfdpeers']['config'])) {
 		foreach ($config['installedpackages']['frrbfdpeers']['config'] as $peer) {
 			$peer_name = $peer['peer'];
@@ -80,9 +80,8 @@ function frr_bfd_generate_peers() {
 		/* No BFD peer config, stop. */
 		return null;
 	}
-	/* Section header */
-	$bfddconffile = "\n# Peers";
 
+	$bfdpeerconf = "";
 	/* Loop through Peers and process */
 	foreach ($frr_bfd_peers as $peer) {
 		if (is_ipaddr($peer['peer'])) {
@@ -91,7 +90,7 @@ function frr_bfd_generate_peers() {
 			if (!empty($peer['multihop'])) {
 				$bfdpeerconf .= " multihop";
 			}
-			if (!empty($peer['local_address']) && $peer['interface'] <> 'default') {
+			if (!empty($peer['local_address'])) {
 				$bfdpeerconf .= " local-address {$peer['local_address']}";
 			}
 			if (!empty($peer['interface']) && $peer['interface'] <> 'default') {
@@ -121,7 +120,7 @@ function frr_bfd_generate_peers() {
 			} else {
 				$bfdpeerconf .= "  no shutdown\n";
 			}
-			$bfdpeerconf .= "\n";
+			$bfdpeerconf .= " !\n";
 		}
 	}
 
@@ -130,8 +129,8 @@ function frr_bfd_generate_peers() {
 
 /* Generate BFD configuration lines */
 function frr_generate_config_bfd() {
-	global $config, $frr_config_base, $frr_auto_config_warning;
-	unlink_if_exists("{$frr_config_base}/bfdd.conf");
+	global $config, $frr_config_base, $frr_integrated_config;
+
 	/* Make bfdd config */
 	if (is_array($config['installedpackages']['frr']['config'])) {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
@@ -148,29 +147,24 @@ function frr_generate_config_bfd() {
 	}
 
 	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['bfdd']) &&
-	    !empty($config['installedpackages']['frrglobalraw']['config'][0]['bfdd'])) {
+		!empty($config['installedpackages']['frrglobalraw']['config'][0]['bfdd'])) {
 		// if there is a raw config specified in the config.xml use that instead of the assisted config
-		$bfddconffile = str_replace("\r","",base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['bfdd']));
+		$frr_integrated_config['bfdd'] = str_replace("\r","",base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['bfdd']));
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_conf['enable']) || empty($frr_bfd_conf['enable'])) {
 			/* FRR is disabled or BFD Daemon is not enabled. */
 			return;
 		}
-		$bfddconffile = $frr_auto_config_warning;
-
-		/* Pull the password from the global settings */
-		if ($frr_conf['password']) {
-			$bfddconffile .= "password {$frr_conf['password']}\n";
-		}
-		if ($frr_conf['logging']) {
-			$bfddconffile .= "log syslog\n";
+		if (empty($frr_bfd_conf)) {
+			log_error("FRR BFDd: No config data found.");
+			return;
 		}
 
-		$bfddconffile .= "\nbfd\n";
+		$frr_integrated_config['bfdd'] = "";
+		$frr_integrated_config['bfdd'] .= "bfd\n";
 
 		/* BFD Peers */
-		$bfddconffile .= frr_bfd_generate_peers();
+		$frr_integrated_config['bfdd'] .= frr_bfd_generate_peers();
 	}
-	file_put_contents("{$frr_config_base}/bfdd.conf", $bfddconffile);
 }

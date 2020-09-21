@@ -29,7 +29,7 @@
 	<title>Services/FRR/BFD</title>
 	<include_file>/usr/local/pkg/frr.inc</include_file>
 	<aftersaveredirect>pkg.php?xml=frr/frr_bfd_peers.xml</aftersaveredirect>
-	<tabs>	
+	<tabs>
 		<tab>
 			<text>BFD</text>
 			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
@@ -38,7 +38,7 @@
 			<text>Peers</text>
 			<url>pkg.php?xml=frr/frr_bfd_peers.xml</url>
 			<active/>
-		</tab>	
+		</tab>
 		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>
@@ -78,7 +78,7 @@
 			<fieldname>shutdown</fieldname>
 		</columnitem>
 	</adddeleteeditpagefields>
-	<fields>		
+	<fields>
 		<field>
 			<name>Peer Configurations</name>
 			<type>listtopic</type>

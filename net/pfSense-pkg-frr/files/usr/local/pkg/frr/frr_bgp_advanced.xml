@@ -52,6 +52,10 @@
 			<url>pkg.php?xml=frr/frr_bgp_communities.xml</url>
 		</tab>
 		<tab>
+			<text>RPKI Cache Servers</text>
+			<url>pkg.php?xml=frr/frr_bgp_rpki_cache_servers.xml</url>
+		</tab>
+		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>
 		</tab>
@@ -150,6 +154,12 @@
 			<fielddescr>Network Import Check</fielddescr>
 			<fieldname>networkimportcheck</fieldname>
 			<description>Check if the BGP network route exists in IGP</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Reject AS_SET/AS_CONFED_SET Routes</fielddescr>
+			<fieldname>rejcectassetasconfedset</fieldname>
+			<description>Reject incoming and outgoing routes with AS_SET or AS_CONFED_SET type</description>
 			<type>checkbox</type>
 		</field>
 
@@ -377,6 +387,12 @@
 			<fielddescr>Enforce First AS</fielddescr>
 			<fieldname>enforcefirstas</fieldname>
 			<description>Enforce the first AS for EBGP routes</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Disable EBGP Require Policy</fielddescr>
+			<fieldname>disableebgprequirepolicy</fieldname>
+			<description>Disable the requirement to apply incoming and outgoing filter to eBGP sessions</description>
 			<type>checkbox</type>
 		</field>
 

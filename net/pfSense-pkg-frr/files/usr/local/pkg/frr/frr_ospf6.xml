@@ -78,7 +78,7 @@
 			<fieldname>routerid</fieldname>
 			<description>
 				<![CDATA[
-				Specify the Router ID. RID is the highest logical (loopback) IP address configured on a router.<br />
+				Override the default Router ID. RID is the highest logical (loopback) IP address configured on a router.<br />
 				For more information on router identifiers see <a href='http://en.wikipedia.org/wiki/Open_Shortest_Path_First'>wikipedia</a>.
 				]]>
 			</description>
@@ -116,6 +116,11 @@
 				]]>
 			</description>
 			<type>input</type>
+		</field>
+
+		<field>
+			<name>Modules</name>
+			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>Enable SNMP AgentX</fielddescr>
@@ -170,7 +175,7 @@
 					<size>10</size>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>cost</fielddescr>
+					<fielddescr>Cost</fielddescr>
 					<fieldname>routecost</fieldname>
 					<type>input</type>
 					<size>10</size>
