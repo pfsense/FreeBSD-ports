@@ -500,30 +500,31 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
 	return $valresult;
 }
 
-/* checks to see if service is running */
-function snort_is_running($if_real, $type = 'snort') {
+/* Checks to see if service is running by looking for PID filename matching the UUID */
+function snort_is_running($uuid) {
 	global $config, $g;
 
-	return isvalidpid("{$g['varrun_path']}/{$type}_{$if_real}.pid");
+	return isvalidpid("{$g['varrun_path']}/snort_{$uuid}.pid");
 }
 
 function snort_stop($snortcfg, $if_real) {
 	global $config, $g;
+	$snort_uuid = $snortcfg['uuid'];
 
-	if (isvalidpid("{$g['varrun_path']}/snort_{$if_real}.pid")) {
+	if (isvalidpid("{$g['varrun_path']}/snort_{$snort_uuid}.pid")) {
 		syslog(LOG_NOTICE, "[Snort] Snort STOP for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
-		killbypid("{$g['varrun_path']}/snort_{$if_real}.pid");
+		killbypid("{$g['varrun_path']}/snort_{$snort_uuid}.pid");
 
 		// Now wait up to 10 seconds for Snort to actually stop and clear its PID file
 		$count = 0;
 		do {
-			if (!isvalidpid("{$g['varrun_path']}/snort_{$if_real}.pid"))
+			if (!isvalidpid("{$g['varrun_path']}/snort_{$snort_uuid}.pid"))
 				break;
 			sleep(1);
 			$count++;
 		} while ($count < 10);
 	}
-	unlink_if_exists("{$g['varrun_path']}/snort_{$if_real}.pid");
+	unlink_if_exists("{$g['varrun_path']}/snort_{$snort_uuid}.pid");
 }
 
 function snort_start($snortcfg, $if_real, $background=FALSE) {
@@ -540,11 +541,11 @@ function snort_start($snortcfg, $if_real, $background=FALSE) {
 		$quiet = "-q --suppress-config-log";
 
 	// If Snort is already running on this interface, stop it before restarting
-	if (snort_is_running($if_real)) {
+	if (snort_is_running($snort_uuid)) {
 		snort_stop($snortcfg, $if_real);
 	}
 
-	if ($snortcfg['enable'] == 'on' && $if_real <> "" && !isvalidpid("{$g['varrun_path']}/snort_{$if_real}.pid")) {
+	if ($snortcfg['enable'] == 'on' && $if_real <> "" && !isvalidpid("{$g['varrun_path']}/snort_{$snort_uuid}.pid")) {
 
 		// Adjust the interface specification and DAQ type according to operating mode
 		if ($snortcfg['ips_mode'] == "ips_mode_inline" && $snortcfg['blockoffenders7'] == "on") {
@@ -558,9 +559,9 @@ function snort_start($snortcfg, $if_real, $background=FALSE) {
 
 		syslog(LOG_NOTICE, "[Snort] Snort START for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
 		if ($background)
-			mwexec_bg("{$snortbindir}snort -R _{$if_real} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface}");
+			mwexec_bg("{$snortbindir}snort -R _{$snort_uuid} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface}");
 		else
-			mwexec("{$snortbindir}snort -R _{$if_real} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface}");
+			mwexec("{$snortbindir}snort -R _{$snort_uuid} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface}");
 	}
 }
 
@@ -642,9 +643,9 @@ function snort_reload_config($snortcfg, $signal="SIGHUP") {
 	/* Only send the SIGHUP if Snort is running and we    */
 	/* can find a valid PID for the process.              */
 	/******************************************************/
-	if (isvalidpid("{$g['varrun_path']}/snort_{$if_real}.pid")) {
+	if (isvalidpid("{$g['varrun_path']}/snort_{$snort_uuid}.pid")) {
 		syslog(LOG_NOTICE, "[Snort] Snort RELOAD CONFIG for " . convert_real_interface_to_friendly_descr($if_real) . "({$if_real})...");
-		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/snort_{$if_real}.pid");
+		mwexec_bg("/bin/pkill -{$signal} -F {$g['varrun_path']}/snort_{$snort_uuid}.pid");
 	}
 }
 
@@ -3211,15 +3212,15 @@ function snort_create_rc() {
 		$start_snort_iface_start[] = <<<EOE
 
 	# Start snort for {$value['descr']}
-	if [ ! -f {$g['varrun_path']}/snort_{$if_real}.pid ]; then
-		pid=`/bin/pgrep -fn "snort -R {$if_real} "`
+	if [ ! -f {$g['varrun_path']}/snort_{$snort_uuid}.pid ]; then
+		pid=`/bin/pgrep -fn "snort -R {$snort_uuid} "`
 	else
-		pid=`/bin/pgrep -F {$g['varrun_path']}/snort_{$if_real}.pid`
+		pid=`/bin/pgrep -F {$g['varrun_path']}/snort_{$snort_uuid}.pid`
 	fi
 
 	if [ -z \$pid ]; then
 		/usr/bin/logger -p daemon.info -i -t SnortStartup "Snort START for {$value['descr']}({$if_real})..."
-		{$snortbindir}snort -R _{$if_real} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface} > /dev/null 2>&1
+		{$snortbindir}snort -R _{$snort_uuid} -D {$quiet} {$daq_type} -l {$snortlogdir}/snort_{$if_real}{$snort_uuid} --pid-path {$g['varrun_path']} --nolock-pidfile --no-interface-pidfile -G {$snort_uuid} -c {$snortdir}/snort_{$snort_uuid}_{$if_real}/snort.conf -i {$iface} > /dev/null 2>&1
 	fi
 
 EOE;
@@ -3227,10 +3228,10 @@ EOE;
 		$start_snort_iface_stop[] = <<<EOE
 
 	# Stop snort for {$value['descr']}
-	if [ -f {$g['varrun_path']}/snort_{$if_real}.pid ]; then
-		pid=`/bin/pgrep -F {$g['varrun_path']}/snort_{$if_real}.pid`
+	if [ -f {$g['varrun_path']}/snort_{$snort_uuid}.pid ]; then
+		pid=`/bin/pgrep -F {$g['varrun_path']}/snort_{$snort_uuid}.pid`
 		/usr/bin/logger -p daemon.info -i -t SnortStartup "Snort STOP for {$value['descr']}({$if_real})..."
-		/bin/pkill -F {$g['varrun_path']}/snort_{$if_real}.pid -a
+		/bin/pkill -F {$g['varrun_path']}/snort_{$snort_uuid}.pid -a
 		time=0 timeout=30
 		while kill -0 \$pid 2>/dev/null; do
 			sleep 1
@@ -3239,11 +3240,11 @@ EOE;
 				break
 			fi
 		done
-		if [ -f {$g['varrun_path']}/snort_{$if_real}.pid ]; then
-			/bin/rm {$g['varrun_path']}/snort_{$if_real}.pid
+		if [ -f {$g['varrun_path']}/snort_{$snort_uuid}.pid ]; then
+			/bin/rm {$g['varrun_path']}/snort_{$snort_uuid}.pid
 		fi
 	else
-		pid=`/bin/pgrep -fn "snort -R {$if_real} "`
+		pid=`/bin/pgrep -fn "snort -R {$snort_uuid} "`
 		if [ ! -z \$pid ]; then
 			/usr/bin/logger -p daemon.info -i -t SnortStartup "Snort STOP for {$value['descr']}({$snort_uuid}_{$if_real})..."
 			/bin/pkill -fn "snort -R {$if_real} "
