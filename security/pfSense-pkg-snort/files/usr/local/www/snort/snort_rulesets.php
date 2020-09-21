@@ -161,7 +161,7 @@ if (isset($_POST["save"])) {
 
 	$pconfig = $_POST;
 	$enabled_rulesets_array = explode("||", $enabled_items);
-	if (snort_is_running($if_real))
+	if (snort_is_running($a_nat[$id]['uuid']))
 		$savemsg = gettext("Snort is 'live-reloading' the new rule set.");
 
 	// Sync to configured CARP slaves if any are enabled

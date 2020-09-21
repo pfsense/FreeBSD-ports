@@ -111,9 +111,9 @@ function snort_check_dir_size_limit($snortloglimitsize) {
 			mwexec('/bin/chmod 660 {$snort_log_dir}/*', true);
 
 			// Soft-restart Snort process to resync logging
-			if (file_exists("{$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid")) {
+			if (file_exists("{$g['varrun_path']}/snort_{$snort_uuid}.pid")) {
 				syslog(LOG_NOTICE, gettext("[Snort] Restarting logging on {$value['descr']} ({$if_real})..."));
-				mwexec("/bin/pkill -HUP -F {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid -a");
+				mwexec("/bin/pkill -HUP -F {$g['varrun_path']}/snort_{$snort_uuid}.pid -a");
 			}
 		}
 		syslog(LOG_NOTICE, gettext("[Snort] Automatic clean-up of Snort logs completed."));
