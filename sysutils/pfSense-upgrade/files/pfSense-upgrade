@@ -1166,11 +1166,12 @@ do_reboot() {
 		_msg="in ${reboot_after} seconds."
 	fi
 
+	local _complete="System is going to be upgraded"
 	if [ -z "${dont_reboot}" ]; then
-		_echo "Upgrade is complete.  Rebooting ${_msg}"
-		echo "Upgrade is complete.  Rebooting ${_msg}" | wall
+		_echo "${_complete}.  Rebooting ${_msg}"
+		echo "${_complete}.  Rebooting ${_msg}" | wall
 		/etc/rc.notify_message -e -g -m \
-		    "Upgrade is complete.  Rebooting ${_msg}" >/dev/null 2>&1
+		    "${_complete}.  Rebooting ${_msg}" >/dev/null 2>&1
 		if [ "${_now}" = "now" ]; then
 			/etc/rc.reboot ${reboot_params}
 		else
