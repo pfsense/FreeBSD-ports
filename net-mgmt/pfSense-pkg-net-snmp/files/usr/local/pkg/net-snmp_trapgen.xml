@@ -301,7 +301,7 @@
 
 		<field>
 			<fielddescr></fielddescr>
-			<description><![CDATA[These entries define remote hosts that will receive SNMPv2c inform notifications sent from this firewall. ]]></description>
+			<description><![CDATA[These entries define remote hosts that will receive SNMPv2c Inform notifications sent from this firewall. ]]></description>
 			<type>info</type>
 		</field>
 		<field>
@@ -368,6 +368,245 @@
 		<field>
 			<fielddescr>Port</fielddescr>
 			<fieldname>informsink3_port</fieldname>
+			<description><![CDATA[Port Number]]></description>
+			<type>input</type>
+			<size>1</size>
+			<combinefields>end</combinefields>
+		</field>
+
+		<field>
+			<name>SNMPv3 Traps</name>
+			<type>listtopic</type>
+		</field>
+
+		<field>
+			<fielddescr></fielddescr>
+			<description><![CDATA[These entries define remote hosts that will receive SNMPv3 Trap notifications sent from this firewall. ]]></description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>SNMPv3 Trap Sink #1</fielddescr>
+			<fieldname>trap3sink1_host</fieldname>
+			<description><![CDATA[Target Hostname]]></description>
+			<type>input</type>
+			<size>2</size>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>User</fielddescr>
+			<fieldname>trap3sink1_user</fieldname>
+			<description><![CDATA[SNMPv3 User]]></description>
+			<type>select_source</type>
+			<source><![CDATA[netsnmp_get_usernames()]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+		</field>
+		<field>
+			<fielddescr>Security Level</fielddescr>
+			<fieldname>trap3sink1_security</fieldname>
+			<description><![CDATA[Security level for this connection.]]></description>
+			<type>select</type>
+			<default_value>priv</default_value>
+			<options>
+				<option><name>Private (Encryption Required)</name><value>priv</value></option>
+				<option><name>Authenticated</name><value>auth</value></option>
+				<option><name>Unauthenticated</name><value>noauth</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>trap3sink1_port</fieldname>
+			<description><![CDATA[Port Number]]></description>
+			<type>input</type>
+			<size>1</size>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>SNMPv3 Trap Sink #2</fielddescr>
+			<fieldname>trap3sink2_host</fieldname>
+			<description><![CDATA[Target Hostname]]></description>
+			<type>input</type>
+			<size>2</size>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>User</fielddescr>
+			<fieldname>trap3sink2_user</fieldname>
+			<description><![CDATA[SNMPv3 User]]></description>
+			<type>select_source</type>
+			<source><![CDATA[netsnmp_get_usernames()]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+		</field>
+		<field>
+			<fielddescr>Security Level</fielddescr>
+			<fieldname>trap3sink2_security</fieldname>
+			<description><![CDATA[Security level for this connection.]]></description>
+			<type>select</type>
+			<default_value>priv</default_value>
+			<options>
+				<option><name>Private (Encryption Required)</name><value>priv</value></option>
+				<option><name>Authenticated</name><value>auth</value></option>
+				<option><name>Unauthenticated</name><value>noauth</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>trap3sink2_port</fieldname>
+			<description><![CDATA[Port Number]]></description>
+			<type>input</type>
+			<size>1</size>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>SNMPv3 Trap Sink #3</fielddescr>
+			<fieldname>trap3sink3_host</fieldname>
+			<description><![CDATA[Target Hostname]]></description>
+			<type>input</type>
+			<size>2</size>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>User</fielddescr>
+			<fieldname>trap3sink3_user</fieldname>
+			<description><![CDATA[SNMPv3 User]]></description>
+			<type>select_source</type>
+			<source><![CDATA[netsnmp_get_usernames()]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+		</field>
+		<field>
+			<fielddescr>Security Level</fielddescr>
+			<fieldname>trap3sink3_security</fieldname>
+			<description><![CDATA[Security level for this connection.]]></description>
+			<type>select</type>
+			<default_value>priv</default_value>
+			<options>
+				<option><name>Private (Encryption Required)</name><value>priv</value></option>
+				<option><name>Authenticated</name><value>auth</value></option>
+				<option><name>Unauthenticated</name><value>noauth</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>trap3sink3_port</fieldname>
+			<description><![CDATA[Port Number]]></description>
+			<type>input</type>
+			<size>1</size>
+			<combinefields>end</combinefields>
+		</field>
+
+		<field>
+			<fielddescr></fielddescr>
+			<description><![CDATA[These entries define remote hosts that will receive SNMPv3 Inform notifications sent from this firewall. ]]></description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>SNMPv3 Inform Sink #1</fielddescr>
+			<fieldname>inform3sink1_host</fieldname>
+			<description><![CDATA[Target Hostname]]></description>
+			<type>input</type>
+			<size>2</size>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>User</fielddescr>
+			<fieldname>inform3sink1_user</fieldname>
+			<description><![CDATA[SNMPv3 User]]></description>
+			<type>select_source</type>
+			<source><![CDATA[netsnmp_get_usernames()]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+		</field>
+		<field>
+			<fielddescr>Security Level</fielddescr>
+			<fieldname>inform3sink1_security</fieldname>
+			<description><![CDATA[Security level for this connection.]]></description>
+			<type>select</type>
+			<default_value>priv</default_value>
+			<options>
+				<option><name>Private (Encryption Required)</name><value>priv</value></option>
+				<option><name>Authenticated</name><value>auth</value></option>
+				<option><name>Unauthenticated</name><value>noauth</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>inform3sink1_port</fieldname>
+			<description><![CDATA[Port Number]]></description>
+			<type>input</type>
+			<size>1</size>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>SNMPv3 Inform Sink #2</fielddescr>
+			<fieldname>inform3sink2_host</fieldname>
+			<description><![CDATA[Target Hostname]]></description>
+			<type>input</type>
+			<size>2</size>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>User</fielddescr>
+			<fieldname>inform3sink2_user</fieldname>
+			<description><![CDATA[SNMPv3 User]]></description>
+			<type>select_source</type>
+			<source><![CDATA[netsnmp_get_usernames()]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+		</field>
+		<field>
+			<fielddescr>Security Level</fielddescr>
+			<fieldname>inform3sink2_security</fieldname>
+			<description><![CDATA[Security level for this connection.]]></description>
+			<type>select</type>
+			<default_value>priv</default_value>
+			<options>
+				<option><name>Private (Encryption Required)</name><value>priv</value></option>
+				<option><name>Authenticated</name><value>auth</value></option>
+				<option><name>Unauthenticated</name><value>noauth</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>inform3sink2_port</fieldname>
+			<description><![CDATA[Port Number]]></description>
+			<type>input</type>
+			<size>1</size>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>SNMPv3 Inform Sink #3</fielddescr>
+			<fieldname>inform3sink3_host</fieldname>
+			<description><![CDATA[Target Hostname]]></description>
+			<type>input</type>
+			<size>2</size>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>User</fielddescr>
+			<fieldname>inform3sink3_user</fieldname>
+			<description><![CDATA[SNMPv3 User]]></description>
+			<type>select_source</type>
+			<source><![CDATA[netsnmp_get_usernames()]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+		</field>
+		<field>
+			<fielddescr>Security Level</fielddescr>
+			<fieldname>inform3sink3_security</fieldname>
+			<description><![CDATA[Security level for this connection.]]></description>
+			<type>select</type>
+			<default_value>priv</default_value>
+			<options>
+				<option><name>Private (Encryption Required)</name><value>priv</value></option>
+				<option><name>Authenticated</name><value>auth</value></option>
+				<option><name>Unauthenticated</name><value>noauth</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>inform3sink3_port</fieldname>
 			<description><![CDATA[Port Number]]></description>
 			<type>input</type>
 			<size>1</size>
