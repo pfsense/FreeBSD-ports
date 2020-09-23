@@ -437,6 +437,24 @@
 		</field>
 
 		<field>
+			<name>Graceful Restart</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Graceful Restart Mode</fielddescr>
+			<fieldname>grmode</fieldname>
+			<description>Neighbor graceful restart mode</description>
+			<type>select</type>
+			<default_value>default</default_value>
+			<options>
+				<option><name>Default</name><value>default</value></option>
+				<option><name>Restart</name><value>restart</value></option>
+				<option><name>Helper</name><value>helper</value></option>
+				<option><name>Disable</name><value>disable</value></option>
+			</options>
+		</field>
+
+		<field>
 			<name>Advanced Options</name>
 			<type>listtopic</type>
 		</field>

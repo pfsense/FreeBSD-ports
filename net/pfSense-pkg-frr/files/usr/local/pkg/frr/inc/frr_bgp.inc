@@ -161,8 +161,32 @@ function frr_bgp_generate_router() {
 		$bgpconf .= " bgp router-id {$frr_conf['routerid']}\n";
 	}
 
-	/* Timers */
+	/* Graceful restart/shutdown */
+	if (!empty($frr_bgp_conf['grglobaldisable'])) {
+		$bgpconf .= " bgp graceful-restart-disable\n";
+	}
+	if (!empty($frr_bgp_conf['disablepreservefwstate'])) {
+		$bgpconf .= " bgp graceful-restart preserve-fw-state\n";
+	}
+	/* Graceful restart timers */
+	if ((frr_validate_intrange($frr_bgp_conf['grstalepathtime'], 1, 4095))) {
+		$bgpconf .= " bgp graceful-restart stalepath-time {$frr_bgp_conf['grstalepathtime']}\n";
+	}
+	if ((frr_validate_intrange($frr_bgp_conf['grrestarttimetime'], 1, 4095))) {
+		$bgpconf .= " bgp graceful-restart restart-time {$frr_bgp_conf['grrestarttimetime']}\n";
+	}
+	if ((frr_validate_intrange($frr_bgp_conf['grselectdefertime'], 0, 3600))) {
+		$bgpconf .= " bgp graceful-restart select-defer-time {$frr_bgp_conf['grselectdefertime']}\n";
+	}
+	if ((frr_validate_intrange($frr_bgp_conf['grribstaletime'], 1, 3600))) {
+		$bgpconf .= " bgp graceful-restart rib-stale-time {$frr_bgp_conf['grribstaletime']}\n";
+	}
+	/* Graceful shutdown */
+	if (!empty($frr_bgp_conf['gsenable'])) {
+		$bgpconf .= " bgp graceful-shutdown\n";
+	}
 
+	/* Timers */
 	/* Set keep-alive and holdtime, both MUST be set together */
 	if ((frr_validate_intrange($frr_bgp_conf['timers_keepalive'], 0, 65535)) &&
 		(frr_validate_intrange($frr_bgp_conf['timers_holdtime'], 0, 65535))) {
@@ -483,6 +507,19 @@ function frr_bgp_generate_neighbors() {
 
 		if (!empty($neighbor['shutdown'])) {
 			$nconf .= " neighbor {$neighbor['peer']} shutdown\n";
+		}
+
+		switch ($neighbor['grmode']) {
+			case "restart":
+				$nconf .= "  neighbor {$neighbor['peer']} graceful-restart\n";
+				break;
+			case "helper":
+				$nconf .= "  neighbor {$neighbor['peer']} graceful-restart-helper\n";
+				break;
+			case "disable":
+				$nconf .= "  neighbor {$neighbor['peer']} graceful-restart-disable\n";
+				break;
+			default:
 		}
 
 		if (in_array($neighbor['updatesource'], frr_get_list_values(frr_get_interfaces())) &&
