@@ -1647,7 +1647,11 @@ EOD;
 	} elseif (file_exists(SQUID_ACLDIR . '/donotcache.acl')) {
 		unlink(SQUID_ACLDIR . '/donotcache.acl');
 	}
-	$conf .= "cache allow all\n";
+	if ($settings['nocache'] == 'on') {
+		$conf .= "cache deny all\n";
+	} else {
+		$conf .= "cache allow all\n";
+	}
 
 	return $conf.$refresh_conf;
 }
