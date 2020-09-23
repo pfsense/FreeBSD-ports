@@ -26,7 +26,6 @@ USES=	python:run shebangfix
 post-patch:
 	@${REINPLACE_CMD} -e 's|/etc/frr|${ETCDIR}|g' ${WRKSRC}/tools/frr-reload.py
 	@${REINPLACE_CMD} -e 's|/usr/bin|${PREFIX}/bin|g' ${WRKSRC}/tools/frr-reload.py
-	@${REINPLACE_CMD} -e 's|/usr/local/bin/tail|${TAIL}|g' ${WRKSRC}/tools/frr-reload.py
 
 do-install:
 	${MKDIR} ${STAGEDIR}/${PREFIX}/lib/frr
