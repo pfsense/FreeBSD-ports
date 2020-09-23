@@ -3,7 +3,7 @@
 PORTNAME=	frr
 PORTVERSION=	7.4
 DISTVERSIONPREFIX=	frr-
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 .if defined(PYTHONTOOLS)
 PKGNAMESUFFIX=	7-pythontools
@@ -24,9 +24,10 @@ RUN_DEPENDS=	frr-reload:net/frr7
 USES=	python:run shebangfix
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/etc/frr|${ETCDIR}|g' ${WRKSRC}/tools/frr-reload.py
-	@${REINPLACE_CMD} -e 's|/usr/bin|${PREFIX}/bin|g' ${WRKSRC}/tools/frr-reload.py
-	@${REINPLACE_CMD} -e 's|/usr/local/bin/tail|${TAIL}|g' ${WRKSRC}/tools/frr-reload.py
+	@${REINPLACE_CMD} -e 's|/etc/frr|${ETCDIR}|g' \
+		-e 's|/usr/bin|${PREFIX}/bin|g' \
+		-e 's|/usr/local/bin/tail|${TAIL}|g' \
+		${WRKSRC}/tools/frr-reload.py
 
 do-install:
 	${MKDIR} ${STAGEDIR}/${PREFIX}/lib/frr
@@ -42,7 +43,7 @@ USES=		autoreconf bison compiler:c++11-lang gmake pkgconfig libtool \
 
 BINARY_ALIAS=	python=${PYTHON_VERSION}
 
-CONFLICTS=	openbgpd openospfd zebra quagga frr5 frr6
+CONFLICTS=	openbgpd openospfd zebra quagga
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
@@ -124,9 +125,10 @@ USE_RC_SUBR=	frr watchfrr
 SHEBANG_FILES=	yang/embedmodel.py
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/etc/frr|${ETCDIR}/|g' ${WRKSRC}/tools/frr-reload
-	@${REINPLACE_CMD} -e 's|/usr/lib/|${PREFIX}/lib/|g' ${WRKSRC}/tools/frr-reload
-	@${REINPLACE_CMD} -e 's|frr-pythontools|frr7-pythontools|g' ${WRKSRC}/tools/frr-reload
+	@${REINPLACE_CMD} -e 's|/etc/frr|${ETCDIR}|g' \
+		-e 's|/usr/lib/|${PREFIX}/lib/|g' \
+		-e 's|frr-pythontools|frr7-pythontools|g' \
+		${WRKSRC}/tools/frr-reload
 
 post-install:
 	${MKDIR} ${STAGEDIR}/var/run/frr

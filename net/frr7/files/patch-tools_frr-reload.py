@@ -8,15 +8,9 @@ add lines starting with 'peer' to the list of sub-contexts that are handled by f
 https://github.com/FRRouting/frr/issues/6511#issuecomment-655163833
 
 Signed-off-by: Paul Manley <paul.manley@wholefoods.com>
----
- tools/frr-reload.py | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/tools/frr-reload.py b/tools/frr-reload.py
-index 200279b12..9e86cf215 100755
---- tools/frr-reload.py
+--- tools/frr-reload.py.orig	2020-06-30 11:08:57 UTC
 +++ tools/frr-reload.py
-@@ -588,6 +588,7 @@ end
+@@ -496,6 +496,7 @@ end
                    line.startswith("vnc defaults") or
                    line.startswith("vnc l2-group") or
                    line.startswith("vnc nve-group") or
@@ -24,5 +18,3 @@ index 200279b12..9e86cf215 100755
                    line.startswith("member pseudowire")):
                  main_ctx_key = []
  
--- 
-2.25.4

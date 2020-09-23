@@ -8,13 +8,7 @@ vtysh needs to be aware of how to properly exit a bfd peer when subsequent comma
 https://github.com/FRRouting/frr/issues/6511#issuecomment-656166206
 
 Signed-off-by: Paul Manley <paul.manley@wholefoods.com>
----
- vtysh/vtysh.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/vtysh/vtysh.c b/vtysh/vtysh.c
-index 29e0842da..9e5885c7b 100644
---- vtysh/vtysh.c
+--- vtysh/vtysh.c.orig	2020-06-30 11:08:57 UTC
 +++ vtysh/vtysh.c
 @@ -809,6 +809,9 @@ int vtysh_mark_file(const char *filename)
  			} else if ((prev_node == KEYCHAIN_KEY_NODE)
@@ -26,5 +20,3 @@ index 29e0842da..9e5885c7b 100644
  			} else if (tried) {
  				vty_out(vty, "end\n");
  			}
--- 
-2.25.4
