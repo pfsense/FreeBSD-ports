@@ -467,6 +467,10 @@ function frr_bgp_generate_neighbors() {
 			$nconf .= " neighbor {$neighbor['peer']} description {$neighbor['descr']}\n";
 		}
 
+		if (!empty($neighbor['shutdown'])) {
+			$nconf .= " neighbor {$neighbor['peer']} shutdown\n";
+		}
+
 		if (in_array($neighbor['updatesource'], frr_get_list_values(frr_get_interfaces())) &&
 			($neighbor['updatesource'] != 'default')) {
 			$updatesource = frr_get_neighbor_updatesource($neighbor['updatesource'], $neighbor['updatesource_type']);

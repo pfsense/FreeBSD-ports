@@ -89,6 +89,10 @@
 			<fielddescr>Remote AS</fielddescr>
 			<fieldname>asnum</fieldname>
 		</columnitem>
+		<columnitem>
+			<fielddescr>Shutdown</fielddescr>
+			<fieldname>shutdown</fieldname>
+		</columnitem>
 	</adddeleteeditpagefields>
 	<fields>
 		<field>
@@ -147,6 +151,12 @@
 				<option><name>setkey Only Bidirectional</name><value>setkey-bidir</value></option>
 			</options>
 			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Shutdown</fielddescr>
+			<fieldname>shutdown</fieldname>
+			<description>Administratively shutdown the neighbor</description>
+			<type>checkbox</type>
 		</field>
 		<field>
 			<name>Basic Options</name>
