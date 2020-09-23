@@ -78,6 +78,17 @@
 			<type>listtopic</type>
 		</field>
 		<field>
+			<fielddescr>Disable Caching</fielddescr>
+			<fieldname>nocache</fieldname>
+			<description>Disable caching completely.</description>
+			<sethelp>
+				<![CDATA[
+				This may be required if Squid is only used as a proxy to audit website access.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
 			<fielddescr>Cache Replacement Policy</fielddescr>
 			<fieldname>cache_replacement_policy</fieldname>
 			<description>
