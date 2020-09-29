@@ -1647,7 +1647,11 @@ EOD;
 	} elseif (file_exists(SQUID_ACLDIR . '/donotcache.acl')) {
 		unlink(SQUID_ACLDIR . '/donotcache.acl');
 	}
-	$conf .= "cache allow all\n";
+	if ($settings['nocache'] == 'on') {
+		$conf .= "cache deny all\n";
+	} else {
+		$conf .= "cache allow all\n";
+	}
 
 	return $conf.$refresh_conf;
 }
@@ -2746,9 +2750,11 @@ function squid_plugin_carp($pluginparams) {
 		(shutdown_lifetime 3 seconds) */
 		sleep(4);
 		start_service("squid");
+		filter_configure();
 	} elseif (($pluginparams['event'] == "rc.carpbackup") && is_service_running('squid')) {
 		log_error("[squid] Stopping service... (CARP BACKUP/INIT)");
 		squid_stop_monitor();
 		stop_service("squid");
+		filter_configure();
 	}
 }
