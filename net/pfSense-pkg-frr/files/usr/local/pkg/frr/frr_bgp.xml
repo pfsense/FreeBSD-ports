@@ -145,6 +145,12 @@
 			<description>If checked, BGP will not assume IPv4 unicast by default.</description>
 			<type>checkbox</type>
 		</field>
+		<field>
+			<fielddescr>Disable eBGP Requires Policy</fielddescr>
+			<fieldname>noebgprequirespolicy</fieldname>
+			<description>If checked, override the requirement for eBGP neighbors to have incoming/outgoing filters applied.</description>
+			<type>checkbox</type>
+		</field>
 
 		<field>
 			<name>Modules</name>
@@ -164,26 +170,75 @@
 		</field>
 
 		<field>
+			<name>Graceful Restart/Shutdown</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Disable BGP Graceful Restart</fielddescr>
+			<fieldname>grglobaldisable</fieldname>
+			<description>Globally disable graceful restart functionality in both restart and helper mode.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Preserve FW State</fielddescr>
+			<fieldname>disablepreservefwstate</fieldname>
+			<description>If checked, sets F-bit indication that fib is preserved while doing Graceful Restart.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Timers</fielddescr>
+			<fieldname>grstalepathtime</fieldname>
+			<description>Stale Path Time (1-4095, s)</description>
+			<type>input</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Restart Time</fielddescr>
+			<fieldname>grrestarttimetime</fieldname>
+			<description>Restart Time (1-4095, s)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Select Defer Time</fielddescr>
+			<fieldname>grselectdefertime</fieldname>
+			<description>Select Defer Time (0-3600, s)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>RIB State Time</fielddescr>
+			<fieldname>grribstaletime</fieldname>
+			<description>RIB State Time (1-3600, s)</description>
+			<type>input</type>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Enable BGP Graceful Shutdown</fielddescr>
+			<fieldname>gsenable</fieldname>
+			<description>If checked, enable BGP graceful shutdown.</description>
+			<type>checkbox</type>
+		</field>
+
+		<field>
 			<name>RPKI Timers</name>
 			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>Timers</fielddescr>
 			<fieldname>rpkipollingperiod</fieldname>
-			<description>Polling Period</description>
+			<description>Polling Period< (1-86400, s)/description>
 			<type>input</type>
 			<combinefields>begin</combinefields>
 		</field>
 		<field>
 			<fielddescr>Expire Interval</fielddescr>
 			<fieldname>rpkiexpireinterval</fieldname>
-			<description>Expire Interval</description>
+			<description>Expire Interval (600-172800, s)</description>
 			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Retry Interval</fielddescr>
 			<fieldname>rpkiretryinterval</fieldname>
-			<description>Retry Interval</description>
+			<description>Retry Interval (1-7200, s)</description>
 			<type>input</type>
 			<combinefields>end</combinefields>
 		</field>

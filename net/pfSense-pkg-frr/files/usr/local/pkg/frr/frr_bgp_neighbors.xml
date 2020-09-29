@@ -89,6 +89,10 @@
 			<fielddescr>Remote AS</fielddescr>
 			<fieldname>asnum</fieldname>
 		</columnitem>
+		<columnitem>
+			<fielddescr>Shutdown</fielddescr>
+			<fieldname>shutdown</fieldname>
+		</columnitem>
 	</adddeleteeditpagefields>
 	<fields>
 		<field>
@@ -147,6 +151,12 @@
 				<option><name>setkey Only Bidirectional</name><value>setkey-bidir</value></option>
 			</options>
 			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Shutdown</fielddescr>
+			<fieldname>shutdown</fieldname>
+			<description>Administratively shutdown the neighbor</description>
+			<type>checkbox</type>
 		</field>
 		<field>
 			<name>Basic Options</name>
@@ -424,6 +434,24 @@
 			<source><![CDATA[frr_get_bfd_peers()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
+		</field>
+
+		<field>
+			<name>Graceful Restart</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Graceful Restart Mode</fielddescr>
+			<fieldname>grmode</fieldname>
+			<description>Neighbor graceful restart mode</description>
+			<type>select</type>
+			<default_value>default</default_value>
+			<options>
+				<option><name>Default</name><value>default</value></option>
+				<option><name>Restart</name><value>restart</value></option>
+				<option><name>Helper</name><value>helper</value></option>
+				<option><name>Disable</name><value>disable</value></option>
+			</options>
 		</field>
 
 		<field>

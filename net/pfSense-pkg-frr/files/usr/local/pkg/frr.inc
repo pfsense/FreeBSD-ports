@@ -327,9 +327,14 @@ function frr_generate_config_rcfile() {
 		$frr_daemons_start_cmd .= "\n";
 	}
 
-	/* Record the generated start command so that it can be compared to decide
+	/* Check/Record the generated start command so that it can be compared to decide
 	 * whether FRR requires a restart or a configuration reload */
-	$frr_daemons_start_cmd_last = file_get_contents("/tmp/frr_start_command_last.txt");
+	if (file_exists("/tmp/frr_start_command_last.txt")) {
+		$frr_daemons_start_cmd_last = file_get_contents("/tmp/frr_start_command_last.txt");
+	} else {
+		$frr_daemons_start_cmd_last = '';
+	}
+
 	if (strcmp($frr_daemons_start_cmd, $frr_daemons_start_cmd_last) == 0) {
 		$frr_restart_needed = false;
 	} else {

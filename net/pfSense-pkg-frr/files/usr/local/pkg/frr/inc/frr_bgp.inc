@@ -161,8 +161,32 @@ function frr_bgp_generate_router() {
 		$bgpconf .= " bgp router-id {$frr_conf['routerid']}\n";
 	}
 
-	/* Timers */
+	/* Graceful restart/shutdown */
+	if (!empty($frr_bgp_conf['grglobaldisable'])) {
+		$bgpconf .= " bgp graceful-restart-disable\n";
+	}
+	if (!empty($frr_bgp_conf['disablepreservefwstate'])) {
+		$bgpconf .= " bgp graceful-restart preserve-fw-state\n";
+	}
+	/* Graceful restart timers */
+	if ((frr_validate_intrange($frr_bgp_conf['grstalepathtime'], 1, 4095))) {
+		$bgpconf .= " bgp graceful-restart stalepath-time {$frr_bgp_conf['grstalepathtime']}\n";
+	}
+	if ((frr_validate_intrange($frr_bgp_conf['grrestarttimetime'], 1, 4095))) {
+		$bgpconf .= " bgp graceful-restart restart-time {$frr_bgp_conf['grrestarttimetime']}\n";
+	}
+	if ((frr_validate_intrange($frr_bgp_conf['grselectdefertime'], 0, 3600))) {
+		$bgpconf .= " bgp graceful-restart select-defer-time {$frr_bgp_conf['grselectdefertime']}\n";
+	}
+	if ((frr_validate_intrange($frr_bgp_conf['grribstaletime'], 1, 3600))) {
+		$bgpconf .= " bgp graceful-restart rib-stale-time {$frr_bgp_conf['grribstaletime']}\n";
+	}
+	/* Graceful shutdown */
+	if (!empty($frr_bgp_conf['gsenable'])) {
+		$bgpconf .= " bgp graceful-shutdown\n";
+	}
 
+	/* Timers */
 	/* Set keep-alive and holdtime, both MUST be set together */
 	if ((frr_validate_intrange($frr_bgp_conf['timers_keepalive'], 0, 65535)) &&
 		(frr_validate_intrange($frr_bgp_conf['timers_holdtime'], 0, 65535))) {
@@ -420,13 +444,28 @@ function frr_bgp_generate_neighbors() {
 		return null;
 	}
 
+	/* Supported address families */
+	$address_families = array("ipv4 unicast", "ipv6 unicast");
+
 	/* Section header */
 	$nconf = "";
 
+	/* Placeholder for directives that could be global or in address-family */
+	/* Accumulated per-address family */
+	$afconf = array();
+	$tconf = array();
+	foreach ($address_families as $af) {
+		$afconf[$af] = "";
+		$tconf[$af] = "";
+	}
+
 	foreach ($frr_neighbor_conf as $neighbor) {
-		/* Placeholder for directives that could be global or in address-family */
-		$tconf = "";
-		$afconf = "";
+		/* Per-neighbor address family enabled flag */
+		$nei_af_flag = array();
+		foreach ($address_families as $af) {
+			$nei_af_flag[$af] = false;
+		}
+
 		/* General Options */
 		/* Check if this is a group or a peer */
 		$ntype = "peer";
@@ -438,25 +477,24 @@ function frr_bgp_generate_neighbors() {
 				($neighbor['peergroup'] != 'none') &&
 				in_array($neighbor['peergroup'], frr_get_list_values(frr_get_bgp_neighbor_list(true)))) {
 				$nconf .= " neighbor {$neighbor['peer']} peer-group {$neighbor['peergroup']}\n";
-				$tconf .= "  neighbor {$neighbor['peer']} peer-group {$neighbor['peergroup']}\n";
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} peer-group {$neighbor['peergroup']}\n";
 			}
 
 			/* Both cases may be required by a neighbor. */
 			if (is_ipaddrv4($neighbor['peer']) || !empty($neighbor['bothaf'])) {
-				$afconf .= "  address-family ipv4 unicast\n";
-				$afconf .= "    neighbor {$neighbor['peer']} activate\n";
+				$afconf["ipv4 unicast"] .= "  neighbor {$neighbor['peer']} activate\n";
+				$nei_af_flag["ipv4 unicast"] = true;
 			}
 			if (is_ipaddrv6($neighbor['peer']) || !empty($neighbor['bothaf'])) {
-				$afconf .= "  address-family ipv6 unicast\n";
-				$afconf .= "    neighbor {$neighbor['peer']} activate\n";
+				$afconf["ipv6 unicast"] .= "  neighbor {$neighbor['peer']} activate\n";
+				$nei_af_flag["ipv6 unicast"] = true;
 			}
-
-			$afconf .= " !\n";
 		} else {
 			/* This is not a valid neighbor! */
 			continue;
 		}
 
+		/* Global neighbor configuration items */
 		/* remote-as must come first, except for peer-group def/member line! */
 		if (frr_validate_asnum($neighbor['asnum'])) {
 			$nconf .= " neighbor {$neighbor['peer']} remote-as {$neighbor['asnum']}\n";
@@ -467,6 +505,23 @@ function frr_bgp_generate_neighbors() {
 			$nconf .= " neighbor {$neighbor['peer']} description {$neighbor['descr']}\n";
 		}
 
+		if (!empty($neighbor['shutdown'])) {
+			$nconf .= " neighbor {$neighbor['peer']} shutdown\n";
+		}
+
+		switch ($neighbor['grmode']) {
+			case "restart":
+				$nconf .= "  neighbor {$neighbor['peer']} graceful-restart\n";
+				break;
+			case "helper":
+				$nconf .= "  neighbor {$neighbor['peer']} graceful-restart-helper\n";
+				break;
+			case "disable":
+				$nconf .= "  neighbor {$neighbor['peer']} graceful-restart-disable\n";
+				break;
+			default:
+		}
+
 		if (in_array($neighbor['updatesource'], frr_get_list_values(frr_get_interfaces())) &&
 			($neighbor['updatesource'] != 'default')) {
 			$updatesource = frr_get_neighbor_updatesource($neighbor['updatesource'], $neighbor['updatesource_type']);
@@ -475,45 +530,11 @@ function frr_bgp_generate_neighbors() {
 			}
 		}
 
-		if (!empty($neighbor['defaultoriginate']) && ($neighbor['defaultoriginate'] != "no")) {
-			$tconf .= "  neighbor {$neighbor['peer']} default-originate";
-			if (($neighbor['defaultoriginate'] != "yes") &&
-				in_array($neighbor['defaultoriginate'], frr_get_list_values(frr_get_routemap_list(false, true)))) {
-				$tconf .= "  route-map {$neighbor['defaultoriginate']}";
-			}
-			$tconf .= "  \n";
-		}
-
-		switch ($neighbor['sendcommunity']) {
-			case "disabled":
-				$tconf .= "  no neighbor {$neighbor['peer']} send-community\n";
-				break;
-			case "enabled":
-				$tconf .= "  neighbor {$neighbor['peer']} send-community\n";
-				break;
-			case "standard":
-			case "extended":
-			case "both":
-				$tconf .= "  neighbor {$neighbor['peer']} send-community {$neighbor['sendcommunity']}\n";
-				break;
-			default:
-		}
-
 		list($pwtype_base, $pwtype_bidir) = explode('-', $neighbor['password_type'], 2);
 		if (!empty($neighbor['password']) &&
 			(($pwtype_base == "frr") ||
 			($pwtype_base == "both"))) {
 			$nconf .= " neighbor {$neighbor['peer']} password {$neighbor['password']}\n";
-		}
-
-		if ($neighbor['nexthopself'] == "enabled") {
-			$tconf .= "  neighbor {$neighbor['peer']} next-hop-self\n";
-		} elseif ($neighbor['nexthopself'] == "force") {
-			$tconf .= "  neighbor {$neighbor['peer']} next-hop-self force\n";
-		}
-
-		if (!empty($neighbor['softreconfigurationinbound'])) {
-			$tconf .= "  neighbor {$neighbor['peer']} soft-reconfiguration inbound\n";
 		}
 
 		if (frr_validate_intrange($neighbor['timers_keepalive'], 0, 65535)) {
@@ -529,94 +550,12 @@ function frr_bgp_generate_neighbors() {
 			$nconf .= " neighbor {$neighbor['peer']} timers connect {$neighbor['timers_connect']}\n";
 		}
 
-		/* Peer Filtering */
-		if (in_array($neighbor['distribute_in'], frr_get_list_values(frr_get_accesslist_list())) &&
-			($neighbor['distribute_in'] != "none")) {
-			$tconf .= "  neighbor {$neighbor['peer']} distribute-list {$neighbor['distribute_in']} in\n";
-		}
-		if (in_array($neighbor['distribute_out'], frr_get_list_values(frr_get_accesslist_list())) &&
-			($neighbor['distribute_out'] != "none")) {
-			$tconf .= "  neighbor {$neighbor['peer']} distribute-list {$neighbor['distribute_out']} out\n";
-		}
-
-		if (in_array($neighbor['prefixfilter_in'], frr_get_list_values(frr_get_prefixlist_list())) &&
-			($neighbor['prefixfilter_in'] != "none")) {
-			$tconf .= "  neighbor {$neighbor['peer']} prefix-list {$neighbor['prefixfilter_in']} in\n";
-		}
-		if (in_array($neighbor['prefixfilter_out'], frr_get_list_values(frr_get_prefixlist_list())) &&
-			($neighbor['prefixfilter_out'] != "none")) {
-			$tconf .= "  neighbor {$neighbor['peer']} prefix-list {$neighbor['prefixfilter_out']} out\n";
-		}
-
-		if (in_array($neighbor['aspathfilter_in'], frr_get_list_values(frr_get_bgp_aspath_list())) &&
-			($neighbor['aspathfilter_in'] != "none")) {
-			$tconf .= "  neighbor {$neighbor['peer']} filter-list {$neighbor['aspathfilter_in']} in\n";
-		}
-		if (in_array($neighbor['aspathfilter_out'], frr_get_list_values(frr_get_bgp_aspath_list())) &&
-			($neighbor['aspathfilter_out'] != "none")) {
-			$tconf .= "  neighbor {$neighbor['peer']} filter-list {$neighbor['aspathfilter_out']} out\n";
-		}
-
-		if (in_array($neighbor['routemap_in'], frr_get_list_values(frr_get_routemap_list())) &&
-			($neighbor['routemap_in'] != "none")) {
-			$tconf .= "  neighbor {$neighbor['peer']} route-map {$neighbor['routemap_in']} in\n";
-		}
-		if (in_array($neighbor['routemap_out'], frr_get_list_values(frr_get_routemap_list())) &&
-			($neighbor['routemap_out'] != "none")) {
-			$tconf .= "  neighbor {$neighbor['peer']} route-map {$neighbor['routemap_out']} out\n";
-		}
-
-		if (in_array($neighbor['unsuppressmap'], frr_get_list_values(frr_get_routemap_list())) &&
-			($neighbor['unsuppressmap'] != "none")) {
-			$tconf .= "  neighbor {$neighbor['peer']} unsuppress-map {$neighbor['unsuppressmap']}\n";
-		}
-
-		/* Advanced Options */
-		if (frr_validate_intrange($neighbor['weight'], 0, 65535)) {
-			$tconf .= "  neighbor {$neighbor['peer']} weight {$neighbor['weight']}\n";
-		}
-
 		if (!empty($neighbor['passive'])) {
 			$nconf .= " neighbor {$neighbor['peer']} passive\n";
 		}
 
-		if (!empty($neighbor['addpathtxallpaths'])) {
-			$tconf .= "  neighbor {$neighbor['peer']} addpath-tx-all-paths\n";
-		}
-		if (!empty($neighbor['addpathtxbestpathperas'])) {
-			$tconf .= "  neighbor {$neighbor['peer']} addpath-tx-bestpath-per-AS\n";
-		}
-
 		if (frr_validate_intrange($neighbor['advertisementinterval'], 0, 600)) {
 			$nconf .= " neighbor {$neighbor['peer']} advertisement-interval {$neighbor['advertisementinterval']}\n";
-		}
-
-		if (!empty($neighbor['allowasin']) && ($neighbor['allowasin'] != "disabled")) {
-			$tconf .= "  neighbor {$neighbor['peer']} allowas-in";
-			if ($neighbor['allowasin'] == "origin") {
-				$tconf .= "  origin";
-			} elseif (frr_validate_intrange($neighbor['allowasin'], 1, 10)) {
-				$tconf .= "  {$neighbor['allowasin']}";
-			}
-			$tconf .= "  \n";
-		}
-
-		if (!empty($neighbor['asoverride'])) {
-			$tconf .= "  neighbor {$neighbor['peer']} as-override\n";
-		}
-
-		if (!empty($neighbor['attributeunchanged'])) {
-			$tconf .= "  neighbor {$neighbor['peer']} attribute-unchanged";
-			if (!empty($neighbor['attributeunchanged_aspath'])) {
-				$tconf .= "  as-path";
-			}
-			if (!empty($neighbor['attributeunchanged_med'])) {
-				$tconf .= "  med";
-			}
-			if (!empty($neighbor['attributeunchanged_nexthop'])) {
-				$tconf .= "  next-hop";
-			}
-			$tconf .= "  \n";
 		}
 
 		if (!empty($neighbor['bfdenable'])) {
@@ -685,34 +624,164 @@ function frr_bgp_generate_neighbors() {
 			$nconf .= "\n";
 		}
 
-		if (!empty($neighbor['removeprivateas'])) {
-			$tconf .= "  neighbor {$neighbor['peer']} remove-private-AS";
-			if (!empty($neighbor['removeprivateas_all'])) {
-				$tconf .= "  all";
-			}
-			if (!empty($neighbor['removeprivateas_replace'])) {
-				$tconf .= "  replace-AS";
-			}
-			$tconf .= "  \n";
-		}
-
-		if (!empty($neighbor['routeclient_reflector'])) {
-			$tconf .= "  neighbor {$neighbor['peer']} route-reflector-client\n";
-		}
-		if (!empty($neighbor['routeclient_server'])) {
-			$tconf .= "  neighbor {$neighbor['peer']} route-server-client\n";
-		}
-
 		if (!empty($neighbor['solo'])) {
 			$nconf .= " neighbor {$neighbor['peer']} solo\n";
 		}
 
-		if (!empty($afconf)) {
-			/* Add the AF header, extra directives, and then exit the block */
-			$nconf .= $afconf . $tconf . " exit-address-family\n";
-		} else {
-			$nconf .= $tconf;
+		/* Address family neighbor configuration items */
+		foreach($address_families as $af) {
+			/* Check if neighbor is enabled for the current address family */
+			if (!($nei_af_flag[$af])) {
+				continue;
+			}
+
+			if (!empty($neighbor['defaultoriginate']) && ($neighbor['defaultoriginate'] != "no")) {
+				$tconf[$af]  .= "  neighbor {$neighbor['peer']} default-originate";
+				if (($neighbor['defaultoriginate'] != "yes") &&
+					in_array($neighbor['defaultoriginate'], frr_get_list_values(frr_get_routemap_list(false, true)))) {
+					$tconf[$af] .= "  route-map {$neighbor['defaultoriginate']}";
+				}
+				$tconf[$af] .= "  \n";
+			}
+
+			switch ($neighbor['sendcommunity']) {
+				case "disabled":
+					$tconf[$af] .= "  no neighbor {$neighbor['peer']} send-community\n";
+					break;
+				case "enabled":
+					$tconf[$af] .= "  neighbor {$neighbor['peer']} send-community\n";
+					break;
+				case "standard":
+				case "extended":
+				case "both":
+					$tconf[$af] .= "  neighbor {$neighbor['peer']} send-community {$neighbor['sendcommunity']}\n";
+					break;
+				default:
+			}
+
+			if ($neighbor['nexthopself'] == "enabled") {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} next-hop-self\n";
+			} elseif ($neighbor['nexthopself'] == "force") {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} next-hop-self force\n";
+			}
+
+			if (!empty($neighbor['softreconfigurationinbound'])) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} soft-reconfiguration inbound\n";
+			}
+
+			/* Peer Filtering */
+			if (in_array($neighbor['distribute_in'], frr_get_list_values(frr_get_accesslist_list())) &&
+				($neighbor['distribute_in'] != "none")) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} distribute-list {$neighbor['distribute_in']} in\n";
+			}
+			if (in_array($neighbor['distribute_out'], frr_get_list_values(frr_get_accesslist_list())) &&
+				($neighbor['distribute_out'] != "none")) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} distribute-list {$neighbor['distribute_out']} out\n";
+			}
+
+			if (in_array($neighbor['prefixfilter_in'], frr_get_list_values(frr_get_prefixlist_list())) &&
+				($neighbor['prefixfilter_in'] != "none")) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} prefix-list {$neighbor['prefixfilter_in']} in\n";
+			}
+			if (in_array($neighbor['prefixfilter_out'], frr_get_list_values(frr_get_prefixlist_list())) &&
+				($neighbor['prefixfilter_out'] != "none")) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} prefix-list {$neighbor['prefixfilter_out']} out\n";
+			}
+
+			if (in_array($neighbor['aspathfilter_in'], frr_get_list_values(frr_get_bgp_aspath_list())) &&
+				($neighbor['aspathfilter_in'] != "none")) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} filter-list {$neighbor['aspathfilter_in']} in\n";
+			}
+			if (in_array($neighbor['aspathfilter_out'], frr_get_list_values(frr_get_bgp_aspath_list())) &&
+				($neighbor['aspathfilter_out'] != "none")) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} filter-list {$neighbor['aspathfilter_out']} out\n";
+			}
+
+			if (in_array($neighbor['routemap_in'], frr_get_list_values(frr_get_routemap_list())) &&
+				($neighbor['routemap_in'] != "none")) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} route-map {$neighbor['routemap_in']} in\n";
+			}
+			if (in_array($neighbor['routemap_out'], frr_get_list_values(frr_get_routemap_list())) &&
+				($neighbor['routemap_out'] != "none")) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} route-map {$neighbor['routemap_out']} out\n";
+			}
+
+			if (in_array($neighbor['unsuppressmap'], frr_get_list_values(frr_get_routemap_list())) &&
+				($neighbor['unsuppressmap'] != "none")) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} unsuppress-map {$neighbor['unsuppressmap']}\n";
+			}
+
+			/* Advanced Options */
+			if (frr_validate_intrange($neighbor['weight'], 0, 65535)) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} weight {$neighbor['weight']}\n";
+			}
+
+			if (!empty($neighbor['addpathtxallpaths'])) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} addpath-tx-all-paths\n";
+			}
+			if (!empty($neighbor['addpathtxbestpathperas'])) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} addpath-tx-bestpath-per-AS\n";
+			}
+
+			if (frr_validate_intrange($neighbor['advertisementinterval'], 0, 600)) {
+				$nconf .= " neighbor {$neighbor['peer']} advertisement-interval {$neighbor['advertisementinterval']}\n";
+			}
+
+			if (!empty($neighbor['allowasin']) && ($neighbor['allowasin'] != "disabled")) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} allowas-in";
+				if ($neighbor['allowasin'] == "origin") {
+					$tconf[$af] .= "  origin";
+				} elseif (frr_validate_intrange($neighbor['allowasin'], 1, 10)) {
+					$tconf[$af] .= "  {$neighbor['allowasin']}";
+				}
+				$tconf[$af] .= "  \n";
+			}
+
+			if (!empty($neighbor['asoverride'])) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} as-override\n";
+			}
+
+			if (!empty($neighbor['attributeunchanged'])) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} attribute-unchanged";
+				if (!empty($neighbor['attributeunchanged_aspath'])) {
+					$tconf[$af] .= "  as-path";
+				}
+				if (!empty($neighbor['attributeunchanged_med'])) {
+					$tconf[$af] .= "  med";
+				}
+				if (!empty($neighbor['attributeunchanged_nexthop'])) {
+					$tconf[$af] .= "  next-hop";
+				}
+				$tconf[$af] .= "  \n";
+			}
+
+			if (!empty($neighbor['removeprivateas'])) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} remove-private-AS";
+				if (!empty($neighbor['removeprivateas_all'])) {
+					$tconf[$af] .= "  all";
+				}
+				if (!empty($neighbor['removeprivateas_replace'])) {
+					$tconf[$af] .= "  replace-AS";
+				}
+				$tconf[$af] .= "  \n";
+			}
+
+			if (!empty($neighbor['routeclient_reflector'])) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} route-reflector-client\n";
+			}
+			if (!empty($neighbor['routeclient_server'])) {
+				$tconf[$af] .= "  neighbor {$neighbor['peer']} route-server-client\n";
+			}
 		}
+	}
+
+	/* Accumulate final configuration*/
+	$nconf .= " !\n";
+	foreach ($address_families as $af) {
+		if (empty($afconf[$af])) {
+			continue;
+		}
+		$nconf .=  " address-family " . $af . "\n" . $afconf[$af] . $tconf[$af] . " exit-address-family\n" . " !\n";
 	}
 
 	return $nconf;
