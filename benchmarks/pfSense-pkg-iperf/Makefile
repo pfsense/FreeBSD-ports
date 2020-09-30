@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-iperf
 PORTVERSION=	3.0.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	benchmarks
 MASTER_SITES=	# empty
 DISTFILES=	# empty
