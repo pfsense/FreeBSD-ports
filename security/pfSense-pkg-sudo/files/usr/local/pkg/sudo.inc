@@ -126,7 +126,7 @@ function sudo_get_users($list_all_user = false) {
 
 	pkg_exec('query %U', $stdout, $stderr);
 	foreach (explode(PHP_EOL, $stdout) as $user) {
-		if ($user == ''){
+		if ($user == '') {
 			continue;
 		}
 		$a_user[]['name'] = $user;
@@ -140,7 +140,7 @@ function sudo_get_users($list_all_user = false) {
 	/* Include groups created by other packages */
 	pkg_exec('query %G', $stdout, $stderr);
 	foreach (explode(PHP_EOL, $stdout) as $group) {
-		if ($group == ''){
+		if ($group == '') {
 			continue;
 		}
 		$a_group[]['name'] = $group;
