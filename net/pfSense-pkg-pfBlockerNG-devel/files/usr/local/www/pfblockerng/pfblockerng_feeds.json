@@ -90,42 +90,9 @@
 				},
 				{
 					"feed":		"Internet Storm Center",
-					"website":	"https://isc.sans.edu/",
-					"contact":	"https://isc.sans.edu/contact.html",
-					"url":		"https://isc.sans.edu/api/sources/attacks/1000/30?text",
-					"header":	"ISC_1000_30",
-					"alternate": [
-							{
-							"url":		"https://isc.sans.edu/api/sources/attacks/1000/1?text",
-							"header":	"ISC_1000_1"
-							},
-							{
-							"url":		"https://isc.sans.edu/api/sources/attacks/1000/7?text",
-							"header":	"ISC_1000_7"
-							},
-							{
-							"url":		"https://isc.sans.edu/api/sources/attacks/1000/14?text",
-							"header":	"ISC_1000_14"
-							},
-							{
-							"url":		"https://isc.sans.edu/api/sources/attacks/1000/60?text",
-							"header":	"ISC_1000_60"
-							},
-							{
-							"url":		"https://isc.sans.edu/api/sources/attacks/1000/90?text",
-							"header":	"ISC_1000_90"
-							},
-							{
-							"url":		"https://isc.sans.edu/api/sources/attacks/1000/120?text",
-							"header":	"ISC_1000_120"
-							}
-						]
-				},
-				{
-					"feed":		"Internet Storm Center",
-					"website":	"https://isc.sans.edu/",
-					"url":		"https://isc.sans.edu/feeds/block.txt",
-					"header":	"ISC_Block"
+					"website":	"https://www.dshield.org",
+					"url":		"https://www.dshield.org/block.txt",
+					"header":	"DShield"
 				},
 				{
 					"feed":		"Pulsedive",
