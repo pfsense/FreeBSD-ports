@@ -21,6 +21,7 @@
 
 require_once("config.inc");
 require_once("util.inc");
+require_once("pkg-utils.inc");
 
 define('SUDO_BASE','/usr/local');
 define('SUDO_LIBEXEC_DIR', '/usr/local/libexec/sudo');
@@ -115,17 +116,37 @@ function sudo_get_users($list_all_user = false) {
 		$config['system']['user'] = array();
 	}
 	$a_user = &$config['system']['user'];
+
+	/* Make an entry for root, even though admin is essentially the same as root, they are distinct. */
+	$a_user[]['name'] = 'root';
+
+	/* Include users created by other packages */
+	$stdout = '';
+	$stderr = '';
+
+	pkg_exec('query %U', $stdout, $stderr);
+	foreach (explode(PHP_EOL, $stdout) as $user) {
+		if ($user == '') {
+			continue;
+		}
+		$a_user[]['name'] = $user;
+	}
+
 	if (!is_array($config['system']['group'])) {
 		$config['system']['group'] = array();
 	}
 	$a_group = &$config['system']['group'];
-	$users = array();
+	
+	/* Include groups created by other packages */
+	pkg_exec('query %G', $stdout, $stderr);
+	foreach (explode(PHP_EOL, $stdout) as $group) {
+		if ($group == '') {
+			continue;
+		}
+		$a_group[]['name'] = $group;
+	}
 
-	/* Make an entry for root, even though admin is essentially the same as root, they are distinct. */
-	$tmpuser = array();
-	$tmpuser["name"] = "user:root";
-	$tmpuser["descr"] = "User: root";
-	$users[] = $tmpuser;
+	$users = array();
 
 	/* Add the all user if we want it */
 	if ($list_all_user) {
