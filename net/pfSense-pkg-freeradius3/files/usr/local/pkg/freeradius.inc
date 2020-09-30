@@ -1319,9 +1319,11 @@ EOD;
 			if (base64_decode($svr_cert['prv'])) {
 				file_put_contents(FREERADIUS_CERTS . "/server_key.pem", base64_decode($svr_cert['prv']));
 			}
-		}
-		if (base64_decode($svr_cert['crt'])) {
-			file_put_contents(FREERADIUS_CERTS . "/server_cert.pem", base64_decode($svr_cert['crt']));
+			if (base64_decode($svr_cert['crt'])) {
+				file_put_contents(FREERADIUS_CERTS . "/server_cert.pem", 
+					base64_decode($svr_cert['crt']) . "\n" .
+					ca_chain($svr_cert));
+			}
 		}
 	}
 
