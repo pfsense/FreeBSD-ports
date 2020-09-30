@@ -306,8 +306,11 @@ function quagga_ospfd_install_conf() {
 	fwrite($fd, $bgpdconffile);
 	fclose($fd);
 	/* Clear existing md5 authentication sessions and remove existing md5 config files, if they exist. */
-	mwexec("/bin/test -e {$quagga_config_base}/bgpddelmd5pw.conf && /sbin/setkey -f {$quagga_config_base}/bgpddelmd5pw.conf && /bin/rm -f {$quagga_config_base}/bgpddelmd5pw.conf");
-	mwexec("/bin/test -e {$quagga_config_base}/bgpdaddmd5pw.conf && /bin/rm -f {$quagga_config_base}/bgpdaddmd5pw.conf");
+	if (file_exists("{$quagga_config_base}/bgpddelmd5pw.conf")) {
+		mwexec("/sbin/setkey -f {$quagga_config_base}/bgpddelmd5pw.conf");
+		@unlink("{$quagga_config_base}/bgpddelmd5pw.conf");
+	}
+	unlink_if_exists("{$quagga_config_base}/bgpdaddmd5pw.conf");
 	/* Builds BGPd md5 password configuration files based on confguration in pfSense config.xml. */
 	if (isset($config['installedpackages']['quaggaospfdraw']['config'][0]['row']) && is_array($config['installedpackages']['quaggaospfdraw']['config'][0]['row']))
 	{
