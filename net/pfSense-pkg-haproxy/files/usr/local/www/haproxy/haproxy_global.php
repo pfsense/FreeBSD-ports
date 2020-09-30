@@ -289,7 +289,7 @@ EOD
 );
 
 if (haproxy_version() >= "1.8") {
-	$section->addInput(new Form_Input('nbthread', 'Number of theads to start per process', 'text', $pconfig['nbthread']
+	$section->addInput(new Form_Input('nbthread', 'Number of threads to start per process', 'text', $pconfig['nbthread']
 	))->setPlaceholder("1")->setHelp(<<<EOD
 		Defaults to 1 if left blank ({$cpucores} CPU core(s) detected).<br/>
 		FOR NOW, THREADS SUPPORT IN HAPROXY 1.8 IS HIGHLY EXPERIMENTAL AND IT MUST BE ENABLED WITH CAUTION AND AT YOUR OWN RISK.
