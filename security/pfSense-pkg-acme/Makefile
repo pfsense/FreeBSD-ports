@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-acme
 PORTVERSION=	0.6.8
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -14,7 +14,8 @@ COMMENT=	ACME package for pfSense
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/bin/socat:net/socat \
-		${PHP_PKGNAMEPREFIX}pecl-ssh2>=0:security/pecl-ssh2@${PHP_FLAVOR}
+		${PHP_PKGNAMEPREFIX}pecl-ssh2>=0:security/pecl-ssh2@${PHP_FLAVOR} \
+		curl>7.67.0:ftp/curl
 
 IGNORE_WITH_PHP=	56 70 71
 USES=		php:flavors
