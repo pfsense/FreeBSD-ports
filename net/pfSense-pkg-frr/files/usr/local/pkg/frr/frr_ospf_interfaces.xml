@@ -35,13 +35,13 @@
 			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
 		</tab>
 		<tab>
+			<text>Areas</text>
+			<url>pkg.php?xml=frr/frr_ospf_areas.xml</url>
+		</tab>
+		<tab>
 			<text>Interfaces</text>
 			<url>pkg.php?xml=frr/frr_ospf_interfaces.xml</url>
 			<active/>
-		</tab>
-		<tab>
-			<text>Areas</text>
-			<url>pkg.php?xml=frr/frr_ospf_areas.xml</url>
 		</tab>
 		<tab>
 			<text>Neighbors</text>

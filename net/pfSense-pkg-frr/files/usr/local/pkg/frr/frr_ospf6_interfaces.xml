@@ -35,6 +35,10 @@
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
 		</tab>
 		<tab>
+			<text>Areas</text>
+			<url>pkg.php?xml=frr/frr_ospf6_areas.xml</url>
+		</tab>
+		<tab>
 			<text>Interfaces</text>
 			<url>pkg.php?xml=frr/frr_ospf6_interfaces.xml</url>
 			<active/>

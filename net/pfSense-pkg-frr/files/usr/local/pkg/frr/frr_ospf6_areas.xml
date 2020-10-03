@@ -5,7 +5,7 @@
 	<copyright>
 	<![CDATA[
 /*
- * frr_ospf_areas.xml
+ * frr_ospf6_areas.xml
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2012-2020 Rubicon Communications, LLC (Netgate)
@@ -25,27 +25,23 @@
  */
 	]]>
 	</copyright>
-	<name>frr_ospfd_areas</name>
-	<title>Services/FRR/OSPF</title>
+	<name>frr_ospfd6_areas</name>
+	<title>Services/FRR/OSPF6</title>
 	<include_file>/usr/local/pkg/frr.inc</include_file>
-	<aftersaveredirect>pkg.php?xml=frr/frr_ospf_areas.xml</aftersaveredirect>
+	<aftersaveredirect>pkg.php?xml=frr/frr_ospf6_areas.xml</aftersaveredirect>
 	<tabs>
 		<tab>
-			<text>OSPF</text>
-			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
+			<text>OSPF6</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
 		</tab>
 		<tab>
 			<text>Areas</text>
-			<url>pkg.php?xml=frr/frr_ospf_areas.xml</url>
+			<url>pkg.php?xml=frr/frr_ospf6_areas.xml</url>
 			<active/>
 		</tab>
 		<tab>
 			<text>Interfaces</text>
-			<url>pkg.php?xml=frr/frr_ospf_interfaces.xml</url>
-		</tab>
-		<tab>
-			<text>Neighbors</text>
-			<url>pkg.php?xml=frr/frr_ospf_neighbors.xml</url>
+			<url>pkg.php?xml=frr/frr_ospf6_interfaces.xml</url>
 		</tab>
 		<tab>
 			<text>[Global Settings]</text>
@@ -60,8 +56,8 @@
 			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
 		</tab>
 		<tab>
-			<text>[OSPF6]</text>
-			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+			<text>[OSPF]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
 		</tab>
 		<tab>
 			<text>Status</text>
@@ -80,10 +76,6 @@
 		<columnitem>
 			<fielddescr>Type</fielddescr>
 			<fieldname>type</fieldname>
-		</columnitem>
-		<columnitem>
-			<fielddescr>Authentication</fielddescr>
-			<fieldname>authtype</fieldname>
 		</columnitem>
 	</adddeleteeditpagefields>
 	<fields>
@@ -114,77 +106,33 @@
 				<option><name>Normal (default)</name><value>none</value></option>
 				<option><name>Stub Area (stub)</name><value>stub</value></option>
 				<option><name>Totally Stub (stub no-summary)</name><value>nosum</value></option>
-				<option><name>Not so Stub Area (nssa)</name><value>nssa</value></option>
-				<option><name>Not so Totally Stub Area (nssa no-summary)</name><value>nssanosum</value></option>
-			</options>
-		</field>
-		<field>
-			<fielddescr>Default Route Cost</fielddescr>
-			<fieldname>defaultcost</fieldname>
-			<description>Cost applied to default route summary LSA messages sent to stub areas (0-16777215)</description>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>ABR Shortcut</fielddescr>
-			<fieldname>shortcut</fieldname>
-			<description>Advertises the area as capable of using ABR shortcut behavior, if enabled in the OSPF Advanced Settings</description>
-			<type>select</type>
-			<default_value>default</default_value>
-			<options>
-				<option><name>Default</name><value>default</value></option>
-				<option><name>Enable</name><value>enable</value></option>
-				<option><name>Disable</name><value>disable</value></option>
+				<!-- FRR does not currently support NSSA for OSPFv3 -->
+				<!-- This has been left in and commented to add support easily at a later date -->
+				<!-- <option><name>Not so Stub Area (nssa)</name><value>nssa</value></option> -->
+				<!-- <option><name>Not so Totally Stub Area (nssa no-summary)</name><value>nssanosum</value></option> -->
 			</options>
 		</field>
 
 		<field>
-			<name>Authentication</name>
-			<type>listtopic</type>
-		</field>
-		<field>
-			<fielddescr>Authentication Type</fielddescr>
-			<fieldname>authtype</fieldname>
-			<description>
-				<![CDATA[
-				The type of OSPF authentication used by all routers in this area.
-				This type must match all neighbors.
-				<br />
-				Using Message Digest is the best practice as Simple Password authentication is weak.
-				]]>
-			</description>
-			<type>select</type>
-			<default_value></default_value>
-			<options>
-				<option><value></value><name>None (default)</name></option>
-				<option><value>digest</value><name>Message Digest (MD5 Hash)</name></option>
-				<option><value>simple</value><name>Simple Password</name></option>
-			</options>
-		</field>
-
-		<field>
-			<name>Route Summarization</name>
+			<name>Range Overrides</name>
 			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr></fielddescr>
 			<description>
 				<![CDATA[
-				When attached to more than one area, this router will act as an Area Border Router (ABR).
-				An ABR can choose to advertise a summary route instead of individual interface routes.
-				The entries in this list will be advertised to neighbors, and any networks contained inside the defined prefixes will not be advertised individually.
-				<br />
-				Only <strong>one</strong> of the options for each prefix may be activated.
+				Only <strong>one</strong> of the options for each range may be activated.
 				]]>
 			</description>
 			<type>info</type>
 		</field>
 		<field>
-			<fielddescr>Summary Range</fielddescr>
+			<fielddescr>Ranges</fielddescr>
 			<fieldname>none</fieldname>
 			<type>rowhelper</type>
 			<rowhelper>
 				<rowhelperfield>
-					<fielddescr>Summary Prefix</fielddescr>
+					<fielddescr>Prefix</fielddescr>
 					<fieldname>rangeprefix</fieldname>
 					<type>input</type>
 					<size>25</size>
@@ -198,12 +146,6 @@
 					<fielddescr>Cost (0-16777215)</fielddescr>
 					<fieldname>rangecost</fieldname>
 					<type>input</type>
-				</rowhelperfield>
-				<rowhelperfield>
-					<fielddescr>Substitute Prefix</fielddescr>
-					<fieldname>subprefix</fieldname>
-					<type>input</type>
-					<size>25</size>
 				</rowhelperfield>
 			</rowhelper>
 		</field>
@@ -254,6 +196,6 @@
 		frr_generate_config();
 	</custom_php_resync_config_command>
 	<custom_php_validation_command>
-		frr_ospf_areas_validate_input();
+		frr_ospf6_areas_validate_input();
 	</custom_php_validation_command>
 </packagegui>
