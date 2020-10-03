@@ -53,6 +53,11 @@ if (!is_array($config['cert'])) {
 
 $a_cert = $config['cert'];
 
+phpsession_begin();
+$guiuser = getUserEntry($_SESSION['Username']);
+$ovpnuserpriv = (is_array($guiuser) && userHasPrivilege($guiuser, "page-openvpn-client-export-user"));
+phpsession_end();
+
 $ras_server = array();
 foreach ($a_server as $server) {
 	if (isset($server['disable'])) {
@@ -704,7 +709,9 @@ servers[<?=$sindex?>][4] = '<?=$server['authmode']?>';
 <?php
 	$c=0;
 	foreach ($server['users'] as $uindex => $user): ?>
-<?php		if (!$server['crlref'] || !is_cert_revoked($user['cert'], $server['crlref'])): ?>
+<?php		if ((!$server['crlref'] || !is_cert_revoked($user['cert'], $server['crlref'])) &&
+		    (($server['authmode'] != 'local') || !$ovpnuserpriv ||
+		    (($guiuser['name'] == $user['name'])))): ?>
 servers[<?=$sindex?>][1][<?=$c?>] = new Array();
 servers[<?=$sindex?>][1][<?=$c?>][0] = '<?=$user['uindex']?>';
 servers[<?=$sindex?>][1][<?=$c?>][1] = '<?=$user['cindex']?>';

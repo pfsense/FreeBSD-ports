@@ -27,5 +27,10 @@ $priv_list['page-openvpn-client-export']['name'] = "WebCfg - OpenVPN: Client Exp
 $priv_list['page-openvpn-client-export']['descr'] = "Allow access to the OpenVPN: Client Export Utility page.";
 $priv_list['page-openvpn-client-export']['match'] = array();
 $priv_list['page-openvpn-client-export']['match'][] = "vpn_openvpn_export.php*";
+$priv_list['page-openvpn-client-export-user'] = array();
+$priv_list['page-openvpn-client-export-user']['name'] = "WebCfg - OpenVPN: Client Export Utility: User Config";
+$priv_list['page-openvpn-client-export-user']['descr'] = "Allow access to the OpenVPN: Client Export Utility page and get user configuration";
+$priv_list['page-openvpn-client-export-user']['match'] = array();
+$priv_list['page-openvpn-client-export-user']['match'][] = "vpn_openvpn_export.php*";
 
 ?>
