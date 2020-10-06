@@ -695,7 +695,11 @@ function frr_generate_config_integrated() {
 		$integratedconffile .= "agentx\n";
 	}
 
+	/* FRR Services */
 	$integratedconffile .= "service integrated-vtysh-config\n";
+	if ($frr_conf['passwordencrypt']) {
+		$integratedconffile .= "service password-encryption\n";
+	}
 	$integratedconffile .= "!\n";
 
 	if (!empty($frr_conf['routerid'])) {
@@ -715,6 +719,7 @@ function frr_generate_config_integrated() {
 
 	$integratedconffile .= "line vty\n";
 	$integratedconffile .= "!\n";
+	$integratedconffile .= "end\n";
 
 	file_put_contents("{$frr_config_base}/frr.conf", $integratedconffile, LOCK_EX);
 	chown("{$frr_config_base}/frr.conf", 'frr');

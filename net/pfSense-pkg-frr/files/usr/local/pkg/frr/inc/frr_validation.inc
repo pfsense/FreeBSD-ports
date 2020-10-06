@@ -209,8 +209,8 @@ function frr_global_raw_validate_input() {
 function frr_ospf_areas_validate_input() {
 	global $config, $id, $input_errors;
 	/* area must be an IP address */
-	if (!is_ipaddr($_POST['area'])) {
-		$input_errors[] = "Area must be a valid ip_address.";
+	if (!(is_ipaddr($_POST['area']) || ctype_digit($_POST['area']))) {
+		$input_errors[] = "Area must be a valid IP address or integer number.";
 	}
 
 	/* type must be ('none', 'stub', 'nosum', 'nssa', 'nssanosum') */
@@ -394,12 +394,61 @@ function frr_ospf_validate_input() {
 function frr_ospf6_interfaces_validate_input() {
 	global $config, $g, $input_errors;
 
-	if ((strlen($_POST['interfacearea']) > 0) && !($_POST['interfacearea'] == '0.0.0.0')) {
-		$input_errors[] = "Area must be 0.0.0.0, FRR currently only supports the backbone area.";
+	if ((strlen($_POST['interfacearea']) > 0) && (!(is_ipaddr($_POST['interfacearea']) || ctype_digit($_POST['interfacearea'])))) {
+		$input_errors[] = "Area must be a valid IP address or integer number.";
 	}
 
 	if ((strlen($_POST['interfacearea']) == 0) && (strlen($config['installedpackages']['frrospf6d']['config'][0]['defaultarea']) == 0)) {
 		$input_errors[] = "Area must either be set on the interface or a default given for the OSPFv3 instance.";
+	}
+}
+
+function frr_ospf6_areas_validate_input() {
+	global $config, $id, $input_errors;
+	/* area must be an IP address */
+	if (!(is_ipaddr($_POST['area']) || ctype_digit($_POST['area']))) {
+		$input_errors[] = "Area must be a valid IP address or integer number.";
+	}
+
+	/* type must be ('none', 'stub', 'nosum', 'nssa', 'nssanosum') */
+	if (!empty($_POST['type']) && !in_array($_POST['type'], array('none', 'stub', 'nosum', 'nssa', 'nssanosum'))) {
+		$input_errors[] = "Invalid Area Type.";
+	}
+
+	/* range array */
+	foreach ($_POST as $key => $value) {
+		$matches = array();
+
+		/* rangeprefix must be a subnet */
+		if (preg_match("/^rangeprefix(\d+)$/", $key, $matches)) {
+			if (!empty($_POST["rangeprefix{$matches[1]}"]) &&
+				!is_subnetv6($_POST["rangeprefix{$matches[1]}"])) {
+				$input_errors[] = "Summary Prefix in row {$matches[1]} must be a subnet.";
+			}
+		}
+
+		/* rangecost 0-16777215 */
+		if (preg_match("/^rangecost(\d+)$/", $key, $matches)) {
+			frr_validate_intrange_input("Summary Cost in row {$matches[1]}", $_POST['rangecost{$matches[1]}'], 0, 16777215);
+			if (($_POST['rangecost{$matches[1]}'] <> "") &&
+				(!empty($_POST['notadvertise{$matches[1]}']) ||
+				!empty($_POST['subprefix{$matches[1]}']))) {
+				$input_errors[] = "Only one of Do Not Advertise, Cost, or Substitution Prefix may be chosen in row {$matches[1]}.";
+			}
+		}
+
+		/* subprefix must be a subnet */
+		if (preg_match("/^subprefix(\d+)$/", $key, $matches)) {
+			if (($_POST['subprefix{$matches[1]}'] <> "") &&
+				!is_subnetv6($_POST["subprefix{$matches[1]}"])) {
+				$input_errors[] = "Substitute Prefix in row {$matches[1]} must be a subnet.";
+			}
+			if (!empty($_POST['subprefix{$matches[1]}']) &&
+				(!empty($_POST['notadvertise{$matches[1]}']) ||
+				!empty($_POST['rangecost{$matches[1]}']))) {
+				$input_errors[] = "Only one of Do Not Advertise, Cost, or Substitution Prefix may be chosen in row {$matches[1]}.";
+			}
+		}
 	}
 }
 
@@ -413,9 +462,6 @@ function frr_ospf6_validate_input() {
 	if (strlen($_POST['defaultarea']) > 0) {
 		if (!(is_ipaddr($_POST['defaultarea']) || ctype_digit($_POST['defaultarea']))) {
 			$input_errors[] = "Default Area must be a valid IP address or integer number.";
-		}
-		if (!($_POST['defaultarea'] == '0.0.0.0')) {
-			$input_errors[] = "Area must be 0.0.0.0, FRR OSPFv3 currently only supports the backbone area.";
 		}
 	} else {
 		if (is_array($config['installedpackages']['frrospfd6interfaces'])) {

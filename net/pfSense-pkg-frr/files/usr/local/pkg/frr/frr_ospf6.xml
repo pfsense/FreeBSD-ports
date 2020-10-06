@@ -36,6 +36,10 @@
 			<active/>
 		</tab>
 		<tab>
+			<text>Areas</text>
+			<url>pkg.php?xml=frr/frr_ospf6_areas.xml</url>
+		</tab>
+		<tab>
 			<text>Interfaces</text>
 			<url>pkg.php?xml=frr/frr_ospf6_interfaces.xml</url>
 		</tab>
@@ -137,20 +141,39 @@
 			<fielddescr></fielddescr>
 			<description>
 				<![CDATA[
-				<b>NOTE: Currently, FRR has not implemented support for OSPFv3 areas other than the backbone.</b><br/>
-				For more information see the <a href='https://docs.frrouting.org/en/stable-7.2/ospf6d.html#ospf6-area'>FRR docs</a>.
-				<br/><br/>
-
 				Settings for the default area, if not overriden.
+				Use the <a href="/pkg.php?xml=frr/frr_ospf6_areas.xml">Areas</a> tab instead for more control.
 				]]>
 			</description>
 			<type>info</type>
 		</field>
 		<field>
-			<fielddescr>Area</fielddescr>
+			<fielddescr>Default Area</fielddescr>
 			<fieldname>defaultarea</fieldname>
-			<description>Default area for this instance of OSPFv3. 	Used when an area is required but not defined elsewhere.</description>
+			<description>
+				<![CDATA[
+				Default OSPF6 area for this instance of OSPF6.
+				Used when an area is required but not defined elsewhere.<br />
+				For more information on Areas see <a href='http://en.wikipedia.org/wiki/Open_Shortest_Path_First#Area_types'>wikipedia</a>.
+				]]>
+			</description>
 			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Default Area Type</fielddescr>
+			<fieldname>defaultareatype</fieldname>
+			<description>Defines how the default area behaves</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>Normal (default)</name><value>none</value></option>
+				<option><name>Stub Area (stub)</name><value>stub</value></option>
+				<option><name>Totally Stub (stub no-summary)</name><value>nosum</value></option>
+				<!-- FRR does not currently support NSSA for OSPFv3 -->
+				<!-- This has been left in and commented to add support easily at a later date -->
+				<!-- <option><name>Not so Stub Area (nssa)</name><value>nssa</value></option> -->
+				<!-- <option><name>Not so Totally Stub Area (nssa no-summary)</name><value>nssanosum</value></option> -->
+			</options>
 		</field>
 
 		<field>

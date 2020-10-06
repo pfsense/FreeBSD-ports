@@ -225,7 +225,7 @@
 		<field>
 			<fielddescr>Timers</fielddescr>
 			<fieldname>rpkipollingperiod</fieldname>
-			<description>Polling Period< (1-86400, s)/description>
+			<description>Polling Period (1-86400, s)</description>
 			<type>input</type>
 			<combinefields>begin</combinefields>
 		</field>

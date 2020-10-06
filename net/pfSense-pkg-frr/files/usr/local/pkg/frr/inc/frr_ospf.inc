@@ -79,27 +79,28 @@ function frr_generate_config_ospf_areas() {
 	}
 
 	/* Process all areas */
+	ksort($defined_areas);
 	foreach ($defined_areas as $thisarea => $conf) {
 		/* type */
-		$areatype = " area {$conf['area']}";
+		$areatype = "";
 		switch ($conf['type']) {
 			case "stub":
-				$areatype .= " stub";
+				$areatype .= "stub";
 				break;
 			case "nosum":
-				$areatype .= " stub no-summary";
+				$areatype .= "stub no-summary";
 				break;
 			case "nssa":
-				$areatype .= " nssa";
+				$areatype .= "nssa";
 				break;
 			case "nssanosum":
-				$areatype .= " nssa no-summary";
+				$areatype .= "nssa no-summary";
 				break;
 			default:
 				$areatype = "";
 		}
 		if (!empty($areatype)) {
-			$conffile .= "{$areatype}\n";
+			$conffile .= " area {$conf['area']} {$areatype}\n";
 		}
 
 		/* defaultcost */
@@ -133,11 +134,9 @@ function frr_generate_config_ospf_areas() {
 				$conffile .= " area {$conf['area']} range {$range['rangeprefix']}";
 				if (!empty($range['rangenotadvertise'])) {
 					$conffile .= " not-advertise";
-				}
-				if (!empty($range['rangecost'])) {
+				} elseif (!empty($range['rangecost'])) {
 					$conffile .= " cost {$range['rangecost']}";
-				}
-				if (!empty($range['subprefix'])) {
+				} elseif (!empty($range['subprefix'])) {
 					$conffile .= " substitute {$range['subprefix']}";
 				}
 				$conffile .= "\n";
@@ -149,11 +148,6 @@ function frr_generate_config_ospf_areas() {
 			$conffile .= " area {$conf['area']} export-list {$conf['exportlist']}\n";
 		}
 
-		/* importlist */
-		if (!empty($conf['importlist']) && ($conf['importlist'] != "none")) {
-			$conffile .= " area {$conf['area']} import-list {$conf['importlist']}\n";
-		}
-
 		/* filterlist_out */
 		if (!empty($conf['filterlist_out']) && ($conf['filterlist_out'] != "none")) {
 			$conffile .= " area {$conf['area']} filter-list prefix {$conf['filterlist_out']} out\n";
@@ -163,6 +157,11 @@ function frr_generate_config_ospf_areas() {
 		if (!empty($conf['filterlist_in']) && ($conf['filterlist_in'] != "none")) {
 			$conffile .= " area {$conf['area']} filter-list prefix {$conf['filterlist_in']} in\n";
 		}
+
+		/* importlist */
+		if (!empty($conf['importlist']) && ($conf['importlist'] != "none")) {
+			$conffile .= " area {$conf['area']} import-list {$conf['importlist']}\n";
+		}
 	}
 
 	return $conffile;
@@ -170,9 +169,6 @@ function frr_generate_config_ospf_areas() {
 
 function frr_generate_config_ospf_interfaces() {
 	global $config, $passive_interfaces, $frr_integrated_config;
-	if (is_array($config['installedpackages']['frrospfd']['config'])) {
-		$ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
-	}
 
 	/* Setup interface entries to define network types, costs, etc. */
 	init_config_arr(array('installedpackages', 'frrospfdinterfaces', 'config'));
@@ -323,12 +319,6 @@ function frr_generate_config_ospf() {
 		}
 		$frr_integrated_config['ospfd'] = "";
 
-		/* Interface Settings */
-		$passive_interfaces = array();
-		global $passive_interfaces;
-
-		frr_generate_config_ospf_interfaces();
-
 		$redist = "";
 		$noredist = "";
 		/* Add entries for manually-defined networks */
@@ -350,8 +340,6 @@ function frr_generate_config_ospf() {
 		} elseif (is_ipaddrv4($frr_conf['routerid'])) {
 			$frr_integrated_config['ospfd'] .= " ospf router-id {$frr_conf['routerid']}\n";
 		}
-
-		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_areas();
 
 		if ($frr_conf['logging'] && $ospfd_conf['adjacencylog']) {
 			$frr_integrated_config['ospfd'] .= " log-adjacency-changes detail\n";
@@ -418,5 +406,13 @@ function frr_generate_config_ospf() {
 		if (!empty($redist)) {
 			$frr_integrated_config['ospfd'] .= $redist;
 		}
+
+		/* Area Settings */
+		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_areas();
+
+		/* Interface Settings */
+		$passive_interfaces = array();
+		global $passive_interfaces;
+		frr_generate_config_ospf_interfaces();
 	}
 }

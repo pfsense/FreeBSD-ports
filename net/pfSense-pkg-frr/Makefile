@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-frr
 PORTVERSION=	0.6.8
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -58,6 +58,8 @@ do-install:
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_global_raw.xml \
 		${STAGEDIR}${PREFIX}/pkg/frr
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_ospf6.xml \
+		${STAGEDIR}${PREFIX}/pkg/frr
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_ospf6_areas.xml \
 		${STAGEDIR}${PREFIX}/pkg/frr
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_ospf6_interfaces.xml \
 		${STAGEDIR}${PREFIX}/pkg/frr

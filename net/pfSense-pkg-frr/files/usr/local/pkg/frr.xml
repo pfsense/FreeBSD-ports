@@ -170,17 +170,10 @@
 			<required/>
 		</field>
 		<field>
-			<fielddescr>CARP Status IP</fielddescr>
-			<fieldname>carpstatusvid</fieldname>
-			<description>
-				<![CDATA[
-				Used to determine the CARP status. When the CARP vhid is in BACKUP status, frr will not be started.<br />
-				]]>
-			</description>
-			<type>select_source</type>
-			<source><![CDATA[frr_get_carp_list()]]></source>
-			<source_name>name</source_name>
-			<source_value>value</source_value>
+			<fielddescr>Encrypt Password</fielddescr>
+			<fieldname>passwordencrypt</fieldname>
+			<description>Enable password encryption service.</description>
+			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Logging</fielddescr>
@@ -210,6 +203,19 @@
 				]]>
 			</description>
 			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>CARP Status IP</fielddescr>
+			<fieldname>carpstatusvid</fieldname>
+			<description>
+				<![CDATA[
+				Used to determine the CARP status. When the CARP vhid is in BACKUP status, frr will not be started.<br />
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_carp_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
 		</field>
 
 		<field>
