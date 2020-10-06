@@ -17,6 +17,7 @@ pkg/frr/inc/frr_validation.inc
 pkg/frr/inc/frr_zebra.inc
 pkg/frr/frr_global_raw.xml
 pkg/frr/frr_ospf6.xml
+pkg/frr/frr_ospf6_areas.xml
 pkg/frr/frr_ospf6_interfaces.xml
 pkg/frr/frr_ospf.xml
 pkg/frr/frr_bgp_advanced.xml

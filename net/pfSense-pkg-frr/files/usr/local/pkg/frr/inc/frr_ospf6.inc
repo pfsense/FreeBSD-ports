@@ -21,6 +21,178 @@
 
 require_once("frr/inc/frr_ospf.inc");
 
+function frr_generate_config_ospf6_areas() {
+	global $config, $frr_config_base, $frr_auto_config_warning;
+	if (is_array($config['installedpackages']['frrospfd6']['config'])) {
+		$ospfd6_conf = &$config['installedpackages']['frrospfd6']['config'][0];
+	}
+
+	$defined_areas = array();
+	$auto_areas = array();
+	$conffile = "";
+
+	/* Interface: Area/Range mapping configuration */
+	if (is_array($config['installedpackages']['frrospf6dinterfaces']['config'])) {
+		foreach ($config['installedpackages']['frrospf6dinterfaces']['config'] as $conf) {
+			$realif = get_real_interface($conf['interface']);
+			if (empty($realif)) {
+				continue;
+			}
+			list($interface_ip, $interface_subnet, $subnet) = frr_get_interfaceinfo($conf['interface'], true);
+			$interface_area = (strlen($conf['interfacearea']) > 0) ? $conf['interfacearea'] : $ospf6d_conf['defaultarea'];
+			if (is_subnetv6("{$subnet}/{$interface_subnet}")) {
+				$cost = (is_numeric($conf['metric']) && ($conf['metric'] >= 0)) ? $conf['metric'] : 1;
+				$conffile .= " area {$interface_area} range {$subnet}/{$interface_subnet} cost {$cost}\n";
+			}
+		}
+	}
+
+	/* Automatic Area: Default */
+	if (!isset($auto_areas[$ospfd6_conf['defaultarea']]) || !is_array($auto_areas[$ospfd6_conf['defaultarea']])) {
+		$auto_areas[$ospfd6_conf['defaultarea']] = array();
+	}
+	$auto_areas[$ospfd6_conf['defaultarea']]['area'] = $ospfd6_conf['defaultarea'];
+	$auto_areas[$ospfd6_conf['defaultarea']]['type'] = $ospfd6_conf['defaultareatype'];
+
+	/* Copy automatic areas over only if they do not have custom settings */
+	foreach ($auto_areas as $aa) {
+		if (!array_key_exists($aa['area'], $defined_areas)) {
+			$defined_areas[$aa['area']] = $aa;
+		}
+	}
+
+	/* Load defined areas */
+	init_config_arr(array('installedpackages', 'frrospfd6areas', 'config'));
+	foreach ($config['installedpackages']['frrospfd6areas']['config'] as $conf) {
+		$defined_areas[$conf['area']] = $conf;
+	}
+
+	/* Process all areas */
+	ksort($defined_areas);
+	foreach ($defined_areas as $thisarea => $conf) {
+		/* type */
+		$areatype = "";
+		switch ($conf['type']) {
+			case "stub":
+				$areatype .= "stub";
+				break;
+			case "nosum":
+				$areatype .= "stub no-summary";
+				break;
+			/* FRR does not currently support NSSA for OSPFv3 */
+			/* This has been left in and commented to add support easily at a later date */
+			// case "nssa":
+			// 	$areatype .= " nssa";
+			// 	break;
+			// case "nssanosum":
+			// 	$areatype .= " nssa no-summary";
+			// 	break;
+			default:
+				$areatype = "";
+		}
+		if (!empty($areatype)) {
+			$conffile .=  " area {$conf['area']} {$areatype}\n";
+		}
+
+		/* Route Summarization */
+		if (is_array($conf['row'])) {
+			foreach ($conf['row'] as $range) {
+				if (empty($range['rangeprefix'])) {
+					continue;
+				}
+				$conffile .= " area {$conf['area']} range {$range['rangeprefix']}";
+				if (!empty($range['rangenotadvertise'])) {
+					$conffile .= " not-advertise";
+				} elseif (!empty($range['rangecost'])) {
+					$conffile .= " cost {$range['rangecost']}";
+				}
+				$conffile .= "\n";
+			}
+		}
+
+		/* exportlist */
+		if (!empty($conf['exportlist']) && ($conf['exportlist'] != "none")) {
+			$conffile .= " area {$conf['area']} export-list {$conf['exportlist']}\n";
+		}
+
+		/* filterlist_out */
+		if (!empty($conf['filterlist_out']) && ($conf['filterlist_out'] != "none")) {
+			$conffile .= " area {$conf['area']} filter-list prefix {$conf['filterlist_out']} out\n";
+		}
+
+		/* filterlist_in */
+		if (!empty($conf['filterlist_in']) && ($conf['filterlist_in'] != "none")) {
+			$conffile .= " area {$conf['area']} filter-list prefix {$conf['filterlist_in']} in\n";
+		}
+
+		/* importlist */
+		if (!empty($conf['importlist']) && ($conf['importlist'] != "none")) {
+			$conffile .= " area {$conf['area']} import-list {$conf['importlist']}\n";
+		}
+	}
+
+	return $conffile;
+}
+
+function frr_generate_config_ospf6_interfaces() {
+	global $config, $frr_integrated_config;
+
+	$router_interface_areas = "";
+
+	/* Setup interface entries to define network types, costs, etc. */
+	if (is_array($config['installedpackages']['frrospf6dinterfaces']['config'])) {
+		foreach ($config['installedpackages']['frrospf6dinterfaces']['config'] as $conf) {
+			$realif = get_real_interface($conf['interface']);
+			if (empty($realif)) {
+				continue;
+			}
+			/* Create interface string if it doesn't already exist */
+			if (!isset($frr_integrated_config['interfaces'][$realif])) {
+				$frr_integrated_config['interfaces'][$realif] = "";
+			}
+
+			/* Generate interface specific configuration */
+			if (!empty($conf['descr'])) {
+				$frr_integrated_config['interfaces_descr'][$realif]['ospf6d'] = $conf['descr'];
+			}
+			if (isset($conf['instanceid']) && (strlen($conf['instanceid']) > 0)) {
+				$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 instance-id {$conf['instanceid']}\n";
+			}
+			if (!empty($conf['networktype'])) {
+				$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 network {$conf['networktype']}\n";
+			}
+			if (!empty($conf['metric'])) {
+				$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 cost {$conf['metric']}\n";
+			}
+			if (!empty($conf['deadtimer'])) {
+				$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 dead-interval {$conf['deadtimer']}\n";
+			}
+			if (!empty($conf['hellointervalinseconds'])) {
+				$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 hello-interval {$conf['hellointervalinseconds']}\n";
+			}
+			if (!empty($conf['routerpriorityelections']) || ($conf['routerpriorityelections'] == "0")) {
+				$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 priority {$conf['routerpriorityelections']}\n";
+			}
+			if (!empty($conf['retransmitinterval'])) {
+				$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 retransmit-interval {$conf['retransmitinterval']}\n";
+			}
+			if (!empty($conf['passive'])) {
+				$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 passive\n";
+			}
+			if (!empty($conf['mtuignore'])) {
+				$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 mtu-ignore\n";
+			}
+			if (!empty($conf['bfdenable'])) {
+				$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 bfd\n";
+			}
+
+			/* Add area/instance mapping to main OSPFv3 configuration area */
+			$interface_area = (strlen($conf['interfacearea']) > 0) ? $conf['interfacearea'] : $ospf6d_conf['defaultarea'];
+			$frr_integrated_config["ospf6d"] .= " interface {$realif} area {$interface_area}\n";
+		}
+	}
+}
+
 function frr_generate_config_ospf6() {
 	global $config, $frr_config_base, $frr_integrated_config;
 
@@ -51,65 +223,6 @@ function frr_generate_config_ospf6() {
 		}
 		$frr_integrated_config['ospf6d'] = "";
 
-		/* Interface Settings */
-		$passive_interfaces = array();
-		$interface_networks = array();
-
-		$router_interface_areas = "";
-		/* Setup interface entries to define network types, costs, etc. */
-		if (is_array($config['installedpackages']['frrospf6dinterfaces']['config'])) {
-			foreach ($config['installedpackages']['frrospf6dinterfaces']['config'] as $conf) {
-				$realif = get_real_interface($conf['interface']);
-				if (empty($realif)) {
-					continue;
-				}
-				/* Create interface string if it doesn't already exist */
-				if (!isset($frr_integrated_config['interfaces'][$realif])) {
-					$frr_integrated_config['interfaces'][$realif] = "";
-				}
-
-				if (!empty($conf['descr'])) {
-					$frr_integrated_config['interfaces_descr'][$realif]['ospf6d'] = $conf['descr'];
-				}
-				if (isset($conf['instanceid']) && (strlen($conf['instanceid']) > 0)) {
-					$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 instance-id {$conf['instanceid']}\n";
-				}
-				if (!empty($conf['networktype'])) {
-					$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 network {$conf['networktype']}\n";
-				}
-				if (!empty($conf['metric'])) {
-					$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 cost {$conf['metric']}\n";
-				}
-				if (!empty($conf['deadtimer'])) {
-					$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 dead-interval {$conf['deadtimer']}\n";
-				}
-				if (!empty($conf['hellointervalinseconds'])) {
-					$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 hello-interval {$conf['hellointervalinseconds']}\n";
-				}
-				if (!empty($conf['routerpriorityelections']) || ($conf['routerpriorityelections'] == "0")) {
-					$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 priority {$conf['routerpriorityelections']}\n";
-				}
-				if (!empty($conf['retransmitinterval'])) {
-					$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 retransmit-interval {$conf['retransmitinterval']}\n";
-				}
-				if (!empty($conf['passive'])) {
-					$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 passive\n";
-				}
-				if (!empty($conf['mtuignore'])) {
-					$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 mtu-ignore\n";
-				}
-				if (!empty($conf['bfdenable'])) {
-					$frr_integrated_config['interfaces'][$realif] .= " ipv6 ospf6 bfd\n";
-				}
-				list($interface_ip, $interface_subnet, $subnet) = frr_get_interfaceinfo($conf['interface'], true);
-				$interface_area = (strlen($conf['interfacearea']) > 0) ? $conf['interfacearea'] : $ospf6d_conf['defaultarea'];
-				if (is_subnetv6("{$subnet}/{$interface_subnet}")) {
-					$cost = (is_numeric($conf['metric']) && ($conf['metric'] >= 0)) ? $conf['metric'] : 1;
-					$router_interface_areas .= " area {$interface_area} range {$subnet}/{$interface_subnet} cost {$cost}\n";
-				}
-				$router_interface_areas .= " interface {$realif} area {$interface_area}\n";
-			}
-		}
 		$redist = "";
 		$noredist = "";
 		/* Add entries for manually-defined networks */
@@ -133,8 +246,6 @@ function frr_generate_config_ospf6() {
 		} elseif (is_ipaddrv4($frr_conf['routerid'])) {
 			$frr_integrated_config['ospf6d'] .= " ospf6 router-id {$frr_conf['routerid']}\n";
 		}
-
-		$frr_integrated_config['ospf6d'] .= $router_interface_areas;
 
 		$stub_start = " area {$ospf6d_conf['defaultarea']} ";
 		switch($ospf6d_conf['updatefib']) {
@@ -217,5 +328,11 @@ function frr_generate_config_ospf6() {
 		if (!empty($ospf6d_conf['filterlist_in']) && ($ospf6d_conf['filterlist_in'] != "none")) {
 			$frr_integrated_config['ospf6d'] .= " area {$ospf6d_conf['defaultarea']} filter-list prefix {$ospf6d_conf['filterlist_in']} in\n";
 		}
+
+		/* Area Settings */
+		$frr_integrated_config['ospf6d'] .= frr_generate_config_ospf6_areas();
+
+		/* Interface Settings */
+		frr_generate_config_ospf6_interfaces();
 	}
 }
