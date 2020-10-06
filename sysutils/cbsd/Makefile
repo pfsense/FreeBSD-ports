@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	cbsd
-DISTVERSION=	12.1.13
+DISTVERSION=	12.1.16
 CATEGORIES=	sysutils
 
 MAINTAINER=	olevole@olevole.ru
@@ -31,6 +31,13 @@ GROUPS=	${PORTNAME}
 BIN_FILES=	\
 		bin/cbsdsh/mknodes \
 		bin/cbsdsh/mksyntax
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} != amd64 && ${ARCH} != i386
+EXTRA_PATCHES=	${FILESDIR}/extra-patch-Makefile \
+		${FILESDIR}/extra-patch-sudoexec_initenv
+.endif
 
 do-install:
 	@${ECHO} "Installing in ${CBSD_HOME}"

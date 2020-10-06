@@ -1,4 +1,4 @@
---- rrd.c.orig	2020-08-25 17:13:01 UTC
+--- rrd.c.orig	2020-08-28 12:06:18 UTC
 +++ rrd.c
 @@ -55,7 +55,7 @@ PHP_FUNCTION(rrd_fetch)
  	rrd_args *argv;

@@ -26,8 +26,8 @@
     SUBDIR += dgen-sdl
     SUBDIR += dolphin-emu
     SUBDIR += dosbox
+    SUBDIR += dosbox-staging
     SUBDIR += dtcyber
-    SUBDIR += dynagen
     SUBDIR += dynamips-community
     SUBDIR += e-uae
     SUBDIR += edumips64
@@ -117,7 +117,9 @@
     SUBDIR += qemu-user-static-devel
     SUBDIR += qemu-utils
     SUBDIR += qemu31
-    SUBDIR += qemu40
+    SUBDIR += qemu41
+    SUBDIR += qemu42
+    SUBDIR += qemu50
     SUBDIR += qmc2
     SUBDIR += quasi88
     SUBDIR += riscv-fesvr
@@ -167,7 +169,6 @@
     SUBDIR += wine-mono
     SUBDIR += wine-mono-devel
     SUBDIR += winetricks
-    SUBDIR += wxmupen64plus
     SUBDIR += x16-emulator
     SUBDIR += x16-rom
     SUBDIR += x48

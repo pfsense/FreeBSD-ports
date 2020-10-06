@@ -4,7 +4,7 @@ PORTNAME=	gophernicus
 DISTVERSION=	3.0.1
 CATEGORIES=	www
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modern full-featured and secure Gopher daemon
 
 LICENSE=	BSD2CLAUSE
@@ -12,9 +12,12 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USE_GITHUB=	yes
 MAKE_ARGS=	CC="${CC}" \
+		CFLAGS="${CFLAGS}" \
 		INSTALL=${INSTALL} \
 		SBINDIR=${STAGEDIR}${PREFIX}/sbin
 INSTALL_TARGET=	install-files
+# XXX: Drop after updating to 3.1
+CFLAGS+=	-fcommon
 SUB_FILES=	pkg-message
 
 PLIST_FILES=	sbin/gophernicus

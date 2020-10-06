@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	ephem
-PORTVERSION=	3.7.7.0
+PORTVERSION=	3.7.7.1
 CATEGORIES=	astro math python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	rhurlin@gwdg.de
+MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	Compute positions of the planets and stars
 
 LICENSE=	LGPL3

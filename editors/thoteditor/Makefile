@@ -3,7 +3,7 @@
 
 PORTNAME=	thoteditor
 PORTVERSION=	2.1e
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	editors www
 MASTER_SITES=	ftp://ftp.inrialpes.fr/pub/opera/sources/thot/ \
 		ftp://ftp.ruhr-uni-bochum.de/local/jk.collection/thot/
@@ -23,6 +23,11 @@ CONFIGURE_ARGS=	--with-thot --enable-plugin --without-insure --without-amaya \
 ALL_TARGET=	all schemas
 SUB_FILES=	thoteditor
 MAKE_JOBS_UNSAFE=	yes
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 post-extract:
 	@${MKDIR} ${WRKSRC}

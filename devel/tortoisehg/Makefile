@@ -1,11 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	tortoisehg
-DISTVERSION=	5.3.2
+DISTVERSION=	5.5.1
 PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	https://bitbucket.org/tortoisehg/thg/get/
-DISTNAME=	${DISTVERSION}
 
 MAINTAINER=	arrowd@FreeBSD.org
 COMMENT=	GUI for Mercurial VCS
@@ -13,17 +11,20 @@ COMMENT=	GUI for Mercurial VCS
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
-DEPRECATED=	Uses deprecated version of python
-EXPIRATION_DATE=	2020-09-15
-
-BUILD_DEPENDS=	hg:devel/mercurial
-RUN_DEPENDS=	hg:devel/mercurial \
+BUILD_DEPENDS=	${PY_MERCURIAL}
+RUN_DEPENDS=	${PY_MERCURIAL} \
 		${PYTHON_PKGNAMEPREFIX}iniparse>=0.4:devel/py-iniparse@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pygments>=0:textproc/py-pygments@${PY_FLAVOR}
+		${PY_PYGMENTS}
 
-USES=		pyqt:5 python:2.7
+USES=		pyqt:5 python
 USE_PYQT=	core gui network qscintilla2 xml
-USE_PYTHON=	distutils
+USE_PYTHON=	distutils autoplist
+
+USE_GITLAB=	yes
+GL_SITE=	https://foss.heptapod.net
+GL_ACCOUNT=	mercurial/tortoisehg
+GL_PROJECT=	thg
+GL_COMMIT=	d72f36279016056b2cf5fa32857a48e1022841bd
 
 OPTIONS_DEFINE=	NAUTILUS NLS
 NAUTILUS_DESC=	Install TortoiseHG Nautilus extension
@@ -33,17 +34,18 @@ NLS_USES=	gettext
 
 NO_ARCH=	yes
 SUB_FILES=	pkg-message
-DIST_SUBDIR=	${PORTNAME}
-WRKSRC=		${WRKDIR}/${PORTNAME}-thg-${TAGNAME}
-TAGNAME=	0d5a8de069c5
 
 # Do not conflict with devel/mercurial, which also installs hgext3rd/__init__.py
-EXTRACT_AFTER_ARGS=	--exclude ${PORTNAME}-thg-${TAGNAME}/hgext3rd/__init__.py
+EXTRACT_AFTER_ARGS=	--exclude thg-${GL_COMMIT}-${GL_COMMIT}/hgext3rd/__init__.py
+
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_VER} != ${PYTHON_DEFAULT}
+PKGNAMEPREFIX=		${PYTHON_PKGNAMEPREFIX}
+.endif
 
 post-patch:
-	@${REINPLACE_CMD} -e '/_path/ s|/usr|${PREFIX}|' ${WRKSRC}/${PYSETUP}
 	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|' ${WRKSRC}/contrib/tortoisehg.desktop
-	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/thg
 
 post-patch-NLS-on:
 	@${REINPLACE_CMD} -e 's/^%%NLS%%//' ${WRKSRC}/${PYSETUP}
@@ -62,5 +64,8 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/tortoisehg
 	${INSTALL_DATA} ${WRKSRC}/contrib/mergetools.rc ${STAGEDIR}${PREFIX}/share/tortoisehg/
 	${INSTALL_DATA} ${WRKSRC}/contrib/tortoisehg.desktop ${STAGEDIR}${PREFIX}/share/applications/
+	# workaround bug in python autoplist
+	@${REINPLACE_CMD} -e '/16x16$$/d' -e '/22x22$$/d' -e '/24x24$$/d' -e '/32x32$$/d' -e '/scalable$$/d' \
+		${_PYTHONPKGLIST}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -2,6 +2,10 @@
 #
 # MAINTAINER:	ports@FreeBSD.org
 #
+# Note: before committing to this file, contact portmgr to arrange for an
+# experimental ports run.  Untested commits may be backed out at portmgr's
+# discretion.
+#
 # Provide default versions for ports with multiple versions selectable
 # by the user.
 #
@@ -51,7 +55,7 @@ GCC_DEFAULT?=		9
 .endif
 # Possible values: 7, 8, 9, agpl
 GHOSTSCRIPT_DEFAULT?=	agpl
-# Possible values: 7, 8, 11, 12, 13
+# Possible values: 7, 8, 11, 12, 13, 14, 15
 JAVA_DEFAULT?=		8
 # Possible values: 0.6, 0.7, 1.0, 1.1
 JULIA_DEFAULT?=		1.0
@@ -65,12 +69,12 @@ LINUX_DEFAULT?=		c7
 LLVM_DEFAULT?=		90
 # Possible values: 5.1, 5.2, 5.3
 LUA_DEFAULT?=		5.2
-# Possible values: 5.5, 5.6, 5.7, 8.0, 5.5m, 10.1m, 10.2m, 10.3m, 10.4m, 5.5p, 5.6p, 5.7p, 5.6w
+# Possible values: 5.5, 5.6, 5.7, 8.0, 10.3m, 10.4m, 10.5m, 5.5p, 5.6p, 5.7p, 5.6w, 5.7w
 MYSQL_DEFAULT?=		5.7
 # Possible values: 5.28, 5.30, 5.32, devel
 .if !exists(${LOCALBASE}/bin/perl) || (!defined(_PORTS_ENV_CHECK) && \
     defined(PACKAGE_BUILDING))
-PERL5_DEFAULT?=		5.30
+PERL5_DEFAULT?=		5.32
 .elif !defined(PERL5_DEFAULT)
 # There's no need to replace development versions, like "5.23" with "devel"
 # because 1) nobody is supposed to use it outside of poudriere, and 2) it must
@@ -82,21 +86,21 @@ _PERL5_FROM_BIN!=	${LOCALBASE}/bin/perl -e 'printf "%vd\n", $$^V;'
 _EXPORTED_VARS+=	_PERL5_FROM_BIN
 PERL5_DEFAULT:=		${_PERL5_FROM_BIN:R}
 .endif
-# Possible values: 9.4, 9.5, 9.6, 10, 11, 12
-PGSQL_DEFAULT?=		11
+# Possible values: 9.5, 9.6, 10, 11, 12
+PGSQL_DEFAULT?=		12
 # Possible values: 7.2, 7.3, 7.4
-PHP_DEFAULT?=		7.2
-# Possible values: 2.7, 3.5, 3.6, 3.7, 3.8
+PHP_DEFAULT?=		7.4
+# Possible values: 2.7, 3.6, 3.7, 3.8
 PYTHON_DEFAULT?=	3.7
 # Possible values: 2.7
 PYTHON2_DEFAULT?=	2.7
-# Possible values: 3.5, 3.6, 3.7, 3.8
+# Possible values: 3.6, 3.7, 3.8
 PYTHON3_DEFAULT?=	3.7
 # Possible values: 2.5, 2.6, 2.7
 RUBY_DEFAULT?=		2.6
 # Possible values: rust, rust-nightly
 RUST_DEFAULT?=		rust
-# Possible values: 4.10, 4.11
+# Possible values: 4.10, 4.11, 4.12, 4.13
 SAMBA_DEFAULT?=		4.10
 # Possible values: base, openssl, libressl, libressl-devel
 .if !defined(SSL_DEFAULT)

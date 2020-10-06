@@ -43,7 +43,6 @@ SUB_LIST=	LLVM_PREFIX="${LLVM_PREFIX}" LLVM_SUFFIX="${LLVM_SUFFIX}"
 CMAKE_INSTALL_PREFIX=	${LLVM_PREFIX}
 CMAKE_SOURCE_PATH=	${WRKSRC}/llvm
 CMAKE_ARGS=	-DLLVM_BUILD_LLVM_DYLIB=ON
-CMAKE_ARGS+=	-DLLVM_LINK_LLVM_DYLIB=ON
 CMAKE_ARGS+=	-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
 CMAKE_ARGS+=	-DLLVM_ENABLE_RTTI=ON
 CMAKE_ARGS+=	-DLLVM_DEFAULT_TARGET_TRIPLE=${CONFIGURE_TARGET}
@@ -70,16 +69,20 @@ GH_TAGNAME=	${LLVM_PROJECT_COMMIT}
 
 .include "Makefile.snapshot"
 
-OPTIONS_DEFINE=	CLANG DOCS EXTRAS LIT LLD LLDB
+OPTIONS_DEFINE=	CLANG DOCS EXTRAS FLANG LIT LLD LLDB MLIR
 OPTIONS_DEFINE_amd64=	COMPILER_RT GOLD OPENMP
 OPTIONS_DEFINE_i386=	COMPILER_RT OPENMP
-OPTIONS_DEFAULT=	CLANG EXTRAS LIT LLD LLDB
+OPTIONS_DEFINE_powerpc64=	GOLD OPENMP
+OPTIONS_DEFAULT=	CLANG EXTRAS LIT LLD LLDB MLIR
 OPTIONS_DEFAULT_amd64=	COMPILER_RT GOLD OPENMP
 OPTIONS_DEFAULT_i386=	COMPILER_RT OPENMP
+OPTIONS_DEFAULT_powerpc64=     ${OPTIONS_DEFAULT_powerpc64_${OSREL:R}} OPENMP
+OPTIONS_DEFAULT_powerpc64_13=  GOLD
 OPTIONS_SUB=	yes
 
 # Pre-declared for options framework
 LIB_DEPENDS=
+PLIST_DIRS=
 PLIST_FILES=
 
 CLANG_DESC=	Build clang
@@ -109,6 +112,15 @@ DOCS_CMAKE_ON=		-DLLVM_ENABLE_SPHINX=ON \
 DOCS_PLIST_FILES=	${MAN1SRCS:S|^|man/man1/|:S|.1$|${LLVM_SUFFIX}.1.gz|}
 EXTRAS_DESC=		Extra clang tools
 EXTRAS_IMPLIES=		CLANG
+EXTRAS_PLIST_DIRS=	${LLVM_PREFIX:S|${PREFIX}/||}/include/clang-tidy/plugin
+FLANG_DESC=		Flang FORTRAN compiler
+FLANG_IMPLIES=		MLIR
+#FLANG_PORTDOCS=		flang
+FLANG_PLIST_DIRS=	${LLVM_PREFIX:S|${PREFIX}/||}/include/flang/Config
+# Docs require sphinx-markdown-tables which requires py-markdown > 3.0.1
+FLANG_CMAKE_ON=		-DFLANG_INCLUDE_DOCS=OFF
+# flang is broken with DYLIB linkage
+FLANG_CMAKE_OFF=	-DLLVM_LINK_LLVM_DYLIB=ON
 LIT_DESC=		Install lit and FileCheck test tools
 LLD_DESC=		Install lld, the LLVM linker
 LLDB_BUILD_DEPENDS=	swig:devel/swig
@@ -116,7 +128,9 @@ LLDB_DESC=		Install lldb, the LLVM debugger
 LLDB_IMPLIES=		CLANG
 LLDB_PORTDOCS=		lldb
 LLDB_VARS=		_USES_PYTHON=python:3.6+
+MLIR_DESC=		Multi-Level Intermediate Representation
 OPENMP_DESC=		Install libomp, the LLVM OpenMP runtime library
+OPENMP_PORTDOCS=	openmp
 OPENMP_CONFLICTS_INSTALL=	libiomp5-devel-*
 GOLD_DESC=		Build the LLVM Gold plugin for LTO
 GOLD_CMAKE_ON=		-DLLVM_BINUTILS_INCDIR=${LOCALBASE}/include
@@ -146,7 +160,9 @@ MAN1SRCS+=	bugpoint.1 \
 		llvm-dwarfdump.1 \
 		llvm-exegesis.1 \
 		llvm-extract.1 \
+		llvm-install-name-tool.1 \
 		llvm-lib.1 \
+		llvm-libtool-darwin.1 \
 		llvm-lipo.1 \
 		llvm-link.1 \
 		llvm-locstats.1 \
@@ -192,6 +208,10 @@ EXTRAS_LIBS=	\
 		libmodernizeCore
 EXTRAS_FILES=	index.js
 EXTRAS_PATTERN=	${EXTRAS_COMMANDS:tW:C/  */|/g}|${EXTRAS_LIBS:tW:C/  */|/g}|${EXTRAS_FILES:tW:C/  */|/g}
+
+FLANG_PATTERN=	${FLANG_COMMANDS:S/^/bin./:tW:C/  */|/g}|flang|libFIROptimizer|libFortran
+
+MLIR_PATTERN=	${MLIR_COMMANDS:S/^/bin./:tW:C/  */|/g}|mlir|libMLIR
 
 .include <bsd.port.options.mk>
 
@@ -240,6 +260,11 @@ SHEBANG_FILES+=	clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-
 		clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
 .endif
 
+.if ${PORT_OPTIONS:MFLANG}
+LLVM_ENABLE_PROJECTS+=	flang
+COMMANDS+=	${FLANG_COMMANDS}
+.endif
+
 .if ${PORT_OPTIONS:MLIT}
 MAN1SRCS+=	lit.1 FileCheck.1
 .endif
@@ -256,10 +281,16 @@ COMMANDS+=	${LLDB_COMMANDS}
 MAN1SRCS+=	lldb.1
 .endif
 
+.if ${PORT_OPTIONS:MMLIR}
+LLVM_ENABLE_PROJECTS+=	mlir
+COMMANDS+=	${MLIR_COMMANDS}
+.endif
+
 .if ${PORT_OPTIONS:MOPENMP}
 LLVM_ENABLE_PROJECTS+=	openmp
+MAN1SRCS+=		llvmopenmp.1
 .endif
-OPENMP_PATTERN=	libarcher|lib[ig]*omp|omp.h|ompt.h|omp-tools.h
+OPENMP_PATTERN=	libarcher|lib[ig]*omp|omp.h|ompt.h|ompt-multiplex.h|omp-tools.h
 
 .if defined(LLVM_ENABLE_PROJECTS)
 CMAKE_ARGS+=	-DLLVM_ENABLE_PROJECTS="${LLVM_ENABLE_PROJECTS:ts;}"
@@ -292,6 +323,7 @@ _COMPILER_RT_LIBS= \
 	libclang_rt.dd-x86_64.a \
 	libclang_rt.dyndd-x86_64.so \
 	libclang_rt.fuzzer-x86_64.a \
+	libclang_rt.fuzzer_interceptors-x86_64.a \
 	libclang_rt.fuzzer_no_main-x86_64.a \
 	libclang_rt.msan-x86_64.a \
 	libclang_rt.msan-x86_64.a.syms \
@@ -451,7 +483,6 @@ build-plist:
 	${RM} ${PLIST} ${PLIST}.tmp
 	${ECHO_CMD} "@comment >>>>> GENERATED FILE, DO NOT EDIT <<<<<" >> ${PLIST}.tmp
 	${ECHO_CMD} "@comment Alter build-plist target and regenerate as required" >> ${PLIST}.tmp
-	${ECHO_CMD} "%%EXTRAS%%@dir llvm-devel/include/clang-tidy/plugin" >> ${PLIST}.tmp
 .for command in ${COMMANDS}
 	${ECHO_CMD} bin/${command}${LLVM_SUFFIX} >> ${PLIST}.tmp
 .endfor
@@ -467,7 +498,8 @@ build-plist:
 	    -e 's|${PORTVERSION}|%%PORTVERSION%%|' \
 	    -e 's|release.cmake|%%CMAKE_BUILD_TYPE%%.cmake|' \
 	    -e 's|${LLVM_RELEASE:C/\./\\./g}|%%LLVM_RELEASE%%|' \
-	    -e 's|${LLVM_MAJOR:C/\./\\./}|%%LLVM_MAJOR%%|' \
+	    -e 's|\([^0-9]\)${LLVM_MAJOR:C/\./\\./}\([^0-9]\)|\1%%LLVM_MAJOR%%\2|' \
+	    -e 's|\([^0-9]\)${LLVM_MAJOR:C/\./\\./}$$|\1%%LLVM_MAJOR%%|' \
 	    | ${SORT} >> ${PLIST}.tmp
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/lit${LLVM_SUFFIX} -type f | \
 	    ${SED} -e 's|${STAGEDIR}${PYTHON_SITELIBDIR}|%%LIT%%%%PYTHON_SITELIBDIR%%|' \
@@ -480,14 +512,16 @@ build-plist:
 		{printf "%%%%COMPILER_RT%%%%"} \
 	    if ($$0 ~ /(bin\/(ld|lld|wasm-ld))|liblld[^b]|\/lld\// && $$0 !~ /lldb/) {printf "%%%%LLD%%%%"} \
 	    if ($$0 ~ /(${EXTRAS_PATTERN})/) {printf "%%%%EXTRAS%%%%"} \
+	    if ($$0 ~ /(${FLANG_PATTERN})/) {printf "%%%%FLANG%%%%"} \
 	    if ($$0 ~ /(argdumper|lldb|six.py)/) {printf "%%%%LLDB%%%%"} \
+	    if ($$0 ~ /(${MLIR_PATTERN})/) {printf "%%%%MLIR%%%%"} \
 	    if ($$0 ~ /(${OPENMP_PATTERN})/) {printf "%%%%OPENMP%%%%"} \
 	    if ($$0 ~ /LLVMgold/) {printf "%%%%GOLD%%%%"} \
 	    if ($$0 !~ /libclang_rt/) {print} \
 	}' ${PLIST}.tmp >> ${PLIST}
 	${ECHO_CMD} '@postexec if type ccache-update-links >/dev/null 2>&1; then ccache-update-links -v; fi' >> ${PLIST}
 	${ECHO_CMD} '@postunexec if type ccache-update-links >/dev/null 2>&1; then ccache-update-links -v; fi' >> ${PLIST}
-	${RM} ${PLIST}.tmp
+	#${RM} ${PLIST}.tmp
 
 check-commands:
 .for command in ${COMMANDS}

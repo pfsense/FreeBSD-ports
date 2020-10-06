@@ -412,7 +412,12 @@
 %%QT_LIBDIR%%/libQt5XmlPatterns.so.%%FULLVER%%
 %%DEBUG%%%%QT_LIBDIR%%/libQt5XmlPatterns.so.%%FULLVER%%.debug
 %%QT_BINDIR%%/xmlpatterns
+%%DEBUG%%%%QT_BINDIR%%/xmlpatterns.debug
 %%QT_BINDIR%%/xmlpatternsvalidator
+%%DEBUG%%%%QT_BINDIR%%/xmlpatternsvalidator.debug
 %%QT_MKSPECDIR%%/modules/qt_lib_xmlpatterns.pri
 %%QT_MKSPECDIR%%/modules/qt_lib_xmlpatterns_private.pri
+%%QT_QMLDIR%%/QtQuick/XmlListModel/libqmlxmllistmodelplugin.so
+%%QT_QMLDIR%%/QtQuick/XmlListModel/plugins.qmltypes
+%%QT_QMLDIR%%/QtQuick/XmlListModel/qmldir
 libdata/pkgconfig/Qt5XmlPatterns.pc

@@ -1,3 +1,3 @@
-TIMESTAMP = 1591187012
-SHA256 (rubygem/azure_mgmt_netapp-0.20.0.gem) = 52ce17647f17016a1ee512a0ebc3828e9dfba4e29c2a622eb2d9f8dec55aa95c
-SIZE (rubygem/azure_mgmt_netapp-0.20.0.gem) = 118784
+TIMESTAMP = 1599574535
+SHA256 (rubygem/azure_mgmt_netapp-0.20.2.gem) = f1a320f2fcb6b440235d86997983fc1f2c7d4be8cefe2200ab583ebdb0ef1616
+SIZE (rubygem/azure_mgmt_netapp-0.20.2.gem) = 168960

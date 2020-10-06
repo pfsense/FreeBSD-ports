@@ -1,7 +1,7 @@
 # Created by: Devon H. O'Dell <devon.odell@gmail.com>
 # $FreeBSD$
 
-PORTVERSION=	g20200610
+PORTVERSION=	g20200901
 # Always set PORTREVISION and PORTEPOCH explicitly as otherwise it is inherited from lang/go
 PORTREVISION=	0
 PORTEPOCH=	0
@@ -14,7 +14,7 @@ COMMENT=	Go programming language (development version)
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	golang
-GH_TAGNAME=	e92be18fd8b525b642ca25bdb3e2056b35d9d73c
+GH_TAGNAME=	01af46f7cc419da19f8a6a444da8f6022c016803
 
 CONFLICTS_INSTALL=	go
 

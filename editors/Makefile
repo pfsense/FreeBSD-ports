@@ -22,6 +22,7 @@
     SUBDIR += chexedit
     SUBDIR += codelite
     SUBDIR += cooledit
+    SUBDIR += cpeditor
     SUBDIR += cream
     SUBDIR += cudatext
     SUBDIR += deforaos-editor
@@ -73,6 +74,7 @@
     SUBDIR += kak-lsp
     SUBDIR += kakoune
     SUBDIR += kate
+    SUBDIR += kibi
     SUBDIR += kile
     SUBDIR += komodo-edit
     SUBDIR += lazarus
@@ -95,6 +97,7 @@
     SUBDIR += libreoffice-bs
     SUBDIR += libreoffice-ca
     SUBDIR += libreoffice-ca_valencia
+    SUBDIR += libreoffice-ckb
     SUBDIR += libreoffice-cs
     SUBDIR += libreoffice-cy
     SUBDIR += libreoffice-da
@@ -110,6 +113,7 @@
     SUBDIR += libreoffice-eu
     SUBDIR += libreoffice-fa
     SUBDIR += libreoffice-fi
+    SUBDIR += libreoffice-fur
     SUBDIR += libreoffice-fy
     SUBDIR += libreoffice-ga
     SUBDIR += libreoffice-gd
@@ -183,10 +187,10 @@
     SUBDIR += libreoffice-vec
     SUBDIR += libreoffice-xh
     SUBDIR += libreoffice-zu
+    SUBDIR += libreoffice6
     SUBDIR += linux-sublime
     SUBDIR += linux-sublime3
     SUBDIR += madedit
-    SUBDIR += medit
     SUBDIR += mg
     SUBDIR += micro
     SUBDIR += mined
@@ -201,6 +205,7 @@
     SUBDIR += neovim-qt
     SUBDIR += nvi-devel
     SUBDIR += nvi-m17n
+    SUBDIR += nvi2
     SUBDIR += o
     SUBDIR += openoffice-4
     SUBDIR += openoffice-devel
@@ -234,6 +239,7 @@
     SUBDIR += texmacs
     SUBDIR += texmaker
     SUBDIR += texstudio
+    SUBDIR += textadept
     SUBDIR += texworks
     SUBDIR += the
     SUBDIR += thoteditor

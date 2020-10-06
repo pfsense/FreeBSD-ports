@@ -27,13 +27,18 @@ DISTFILES=	mesa-${MESADISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	x11@FreeBSD.org
 
+NOT_FOR_ARCHS=sparc64
+NOT_FOR_ARCHS_REASON=not supported on sparc64
+
 COMPONENT=	${PORTNAME:tl:C/^lib//:C/mesa-//}
 
 BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:devel/libpthread-stubs \
 		${PYTHON_PKGNAMEPREFIX}mako>0:textproc/py-mako@${PY_FLAVOR}
 LIB_DEPENDS+=	libexpat.so:textproc/expat2
 .if ${COMPONENT} != clover
-USES+=		xorg
+.if ${PORT_OPTIONS:MPLATFORM_X11}
+USES+=	xorg
+.endif
 .endif
 .if ${COMPONENT} != osmesa
 LIB_DEPENDS+=	libdrm.so:graphics/libdrm
@@ -93,9 +98,6 @@ LLVM_DEFAULT=	80
 
 BINARY_ALIAS+=	python3=${PYTHON_VERSION}
 
-.if ${ARCH} == sparc64
-MESON_ARGS+=	-Dllvm=false
-.else
 BUILD_DEPENDS+=	llvm${LLVM_DEFAULT}>=3.9.0_4:devel/llvm${LLVM_DEFAULT}
 .if ${COMPONENT} != libs
 RUN_DEPENDS+=	llvm${LLVM_DEFAULT}>=3.9.0_4:devel/llvm${LLVM_DEFAULT}
@@ -103,8 +105,4 @@ RUN_DEPENDS+=	llvm${LLVM_DEFAULT}>=3.9.0_4:devel/llvm${LLVM_DEFAULT}
 MESON_ARGS+=	--native-file="${WRKSRC}/llvm.ini"
 LDFLAGS+=	-Wl,-rpath=${LOCALBASE}/llvm${LLVM_DEFAULT}/lib
 MESON_ARGS+=	-Dllvm=true
-.endif
-
-# we don't care about GLes v1
-MESON_ARGS+=	-Dgles1=false
 

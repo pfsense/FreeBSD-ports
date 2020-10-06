@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	appkonference
-PORTVERSION=	2.7
+PORTVERSION=	2.8
 PORTREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	SF
@@ -13,7 +13,7 @@ COMMENT=	High-performance Asterisk voice/video conferencing plugin
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=		amd64 armv6 armv7 i386 powerpc powerpc64
+ONLY_FOR_ARCHS=		amd64 armv6 armv7 i386 powerpc powerpc64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	not yet ported to this architecture
 
 BUILD_DEPENDS=	asterisk:net/asterisk13
@@ -23,6 +23,8 @@ USES=		compiler:features gmake
 USE_CSTD=	gnu89
 WRKSRC=		${WRKDIR}/${PORTNAME}/konference
 MAKE_ARGS=	ASTERISK_SRC_VERSION=1300
+# Fix build with clang11
+CFLAGS+=	-fcommon
 
 PLIST_FILES=	lib/asterisk/modules/app_konference.so
 

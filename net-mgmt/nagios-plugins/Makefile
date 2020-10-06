@@ -3,6 +3,7 @@
 
 PORTNAME=	nagios-plugins
 DISTVERSION=	2.3.3
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://www.nagios-plugins.org/download/ \
@@ -33,7 +34,7 @@ CONFIGURE_ARGS+=	--datadir=${PREFIX}/share \
 # Also, force some commands with their expected paths so that they don't get
 # disabled.
 CONFIGURE_ARGS+=	--with-ping-command="/sbin/ping -n -t %d -c %d %s" \
-			--with-ping6-command="/sbin/ping6 -n -X %d -c %d %s" \
+			--with-ping6-command="${_PING6_CMD}" \
 			ac_cv_path_PATH_TO_PING6=/sbin/ping6 \
 			ac_cv_path_PATH_TO_PING=/sbin/ping \
 			ac_cv_path_PATH_TO_QMAIL_QSTAT=/var/qmail/bin/qmail-qstat \
@@ -68,6 +69,10 @@ SSH_PORTABLE_DESC=	Build check_ssh with ports openssh (instead of base)
 
 DBI_LIB_DEPENDS=	libdbi.so:databases/libdbi
 DBI_CONFIGURE_WITH=	dbi
+
+DNS_BASE_CONFIGURE_ON=	--with-dig-command=/usr/bin/drill \
+			ac_cv_path_PATH_TO_NSLOOKUP=
+DNS_BASE_EXTRA_PATCHES=	${FILESDIR}/extra-patch-dig-to-drill.diff
 
 DNS_BINDTOOLS_BUILD_DEPENDS=	${LOCALBASE}/bin/dig:dns/bind-tools
 DNS_BINDTOOLS_RUN_DEPENDS=	${DNS_BINDTOOLS_BUILD_DEPENDS}
@@ -124,13 +129,10 @@ NAGIOSCGIURL?=	${NAGIOSHTMURL}/cgi-bin
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MDNS_BASE}
-EXTRA_PATCHES+=		${FILESDIR}/extra-patch-dig-to-drill.diff
-CONFIGURE_ARGS+=	--with-dig-command=/usr/bin/drill \
-			ac_cv_path_PATH_TO_NSLOOKUP=
-PLIST_SUB+=		CHECK_DNS="@comment "
+.if ${OSVERSION} < 1300041
+_PING6_CMD=	/sbin/ping6 -n -X %d -c %d %s
 .else
-PLIST_SUB+=		CHECK_DNS=""
+_PING6_CMD=	/sbin/ping6 -n -t %d -c %d %s
 .endif
 
 .if !exists(/usr/bin/ssh) && empty(PORT_OPTIONS:MSSH_PORTABLE)
@@ -140,7 +142,7 @@ PLIST_SUB+=	SSH=""
 .endif
 
 post-patch:
-	# add a fake PATH so that it gets set to a correct value during build.
+# add a fake PATH so that it gets set to a correct value during build.
 	@${REINPLACE_CMD} -e "s|$$ENV{'PATH'}=''|$$ENV{'PATH'}='foo'|; \
 		s|/usr/bin/|${LOCALBASE}/bin/|g" \
 		${WRKSRC}/plugins-scripts/*.pl

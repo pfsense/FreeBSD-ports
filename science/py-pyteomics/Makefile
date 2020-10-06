@@ -11,7 +11,7 @@ COMMENT=	Python modules for proteomics data analysis
 
 LICENSE=	APACHE20
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
@@ -24,7 +24,7 @@ TDA_DESC=	Target-decoy approach support
 UNIMOD_DESC=	Unimod database support
 XML_DESC=	XML support	
 
-DF_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}pandas>=0:math/py-pandas@${PY_FLAVOR}
+DF_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}pandas>=0,1:math/py-pandas@${PY_FLAVOR}
 GRAPHICS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matplotlib>=0:math/py-matplotlib@${PY_FLAVOR}
 TDA_RUN_DEPENDS=	${PYNUMPY}
 UNIMOD_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=0:devel/py-lxml@${PY_FLAVOR} \

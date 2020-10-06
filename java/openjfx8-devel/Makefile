@@ -3,15 +3,17 @@
 
 PORTNAME=	openjfx8
 DISTVERSION=	8u202-b07
-PORTREVISION=	6
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	java x11-toolkits devel
 MASTER_SITES=	https://github.com/t6/openjfx/releases/download/release/ \
 		http://hg.openjdk.java.net/openjfx/8u/rt/archive/${DISTVERSION}${EXTRACT_SUFX}?dummy=/
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	JavaFX SDK overlay for OpenJDK 8
+
+BROKEN=		Does not build with glib 2.66.0
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -36,7 +38,7 @@ JAVA_VERSION=	1.8
 USE_LDCONFIG=	yes
 USE_XORG=	x11 xtst xxf86vm
 
-CFLAGS+=	-Wno-unused-command-line-argument
+CFLAGS+=	-fcommon -Wno-unused-command-line-argument
 
 WRKSRC=		${WRKDIR}/rt-${DISTVERSION}
 

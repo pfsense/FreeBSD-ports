@@ -1,3 +1,3 @@
-TIMESTAMP = 1593545949
-SHA256 (awscli-1.18.91.tar.gz) = b2f6ff8b315a0d83d67be98c6e33a4307b5fd8eac5c32f4326af70d30abfce71
-SIZE (awscli-1.18.91.tar.gz) = 1262522
+TIMESTAMP = 1601495754
+SHA256 (awscli-1.18.150.tar.gz) = 8f9c218c7320e7cd9b17c853e48ee40c4f12d1f729fc5c21f3468bde48fe3d4b
+SIZE (awscli-1.18.150.tar.gz) = 1314714

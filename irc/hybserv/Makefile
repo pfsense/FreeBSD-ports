@@ -4,6 +4,7 @@
 PORTNAME=	hybserv
 DISTVERSIONPREFIX=	REL_
 DISTVERSION=	1_9_5
+PORTREVISION=	1
 CATEGORIES=	irc
 
 MAINTAINER=	ports@FreeBSD.org
@@ -17,6 +18,11 @@ GH_PROJECT=	${PORTNAME}2
 
 USES=		gmake
 GNU_CONFIGURE=	yes
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 USERS=		${PORTNAME}
 GROUPS=		${USERS}

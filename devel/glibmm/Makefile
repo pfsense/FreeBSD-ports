@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	glibmm
-PORTVERSION=	2.56.0
-PORTREVISION=	2
+PORTVERSION=	2.64.2
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome2
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	C++ interfaces for glib2
@@ -18,8 +17,6 @@ USES+=		tar:xz
 PORTSCOUT?=	limitw:1,even
 
 PLIST_SUB=	VERSION="2.4"
-
-.if !defined(REFERENCE_PORT)
 
 USES+=		compiler:c++11-lang gettext gmake gnome libtool pathfix perl5 \
 		pkgconfig
@@ -36,5 +33,3 @@ post-patch:
 .endfor
 
 .include <bsd.port.mk>
-
-.endif

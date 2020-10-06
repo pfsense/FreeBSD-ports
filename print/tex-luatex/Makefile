@@ -2,7 +2,7 @@
 
 PORTNAME=	luatex
 PORTVERSION=	0.80.0
-PORTREVISION=	18
+PORTREVISION=	20
 CATEGORIES=	print
 MASTER_SITES=	ftp://tug.org/historic/systems/texlive/2015/
 PKGNAMEPREFIX=	tex-
@@ -77,6 +77,10 @@ CONFIGURE_ARGS+=--with-system-$L \
 CPPFLAGS+=	-I${LOCALBASE}/include
 MAKE_JOBS_UNSAFE=	yes
 TEX_FORMATS=	luatex
+
+# Fix build on recent current -- our tex is so outdated,
+# that it's unlikely that any upstream patches apply.
+CFLAGS+=	-fcommon
 
 # buildenv and dumpenv in Makefile uses hard-coded TEXMFCNF.
 post-extract:

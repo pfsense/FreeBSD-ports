@@ -4,19 +4,16 @@ PORTNAME=	colobot
 DISTVERSIONPREFIX=	${PORTNAME}-gold-
 DISTVERSION=	0.1.12
 DISTVERSIONSUFFIX=	-alpha
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	https://colobot.info/files/music/:music
 DISTFILES=	colobot-music_ogg_0.1.12-alpha.tar.gz:music
 
-MAINTAINER=	fernape@FreeBSD.org
+MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Educational game aiming to teach programming to kids
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
-
-DEPRECATED=	Uses deprecated version of python
-EXPIRATION_DATE=	2020-08-15
 
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libsndfile.so:audio/libsndfile \
@@ -27,7 +24,8 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libboost_system.so:devel/boost-libs
 
 USES=		cmake compiler:c++11-lang gl gettext-runtime \
-		gettext-tools:build localbase:ldflags openal python:2.7 sdl
+		gettext-tools:build localbase:ldflags openal python:build \
+		sdl shebangfix
 USE_SDL=	image2 ttf2
 USE_GL=		gl glew glu
 USE_LDCONFIG=	yes
@@ -36,6 +34,7 @@ USE_GITHUB=	yes
 GH_TUPLE=	colobot:colobot-data:c467bd9:data
 
 LDFLAGS_i386=	-Wl,-znotext
+SHEBANG_FILES=	data/i18n-tools/scripts/process_translations.py
 
 post-extract:
 	@${MV} ${WRKDIR}/colobot-data-c467bd9/* ${WRKSRC}/data
@@ -50,5 +49,6 @@ post-patch:
 	@${REINPLACE_CMD} 's|/usr/local|${LOCALBASE}|g' ${WRKSRC}/cmake/FindSDL2_image.cmake
 	@${REINPLACE_CMD} 's|/usr/local|${LOCALBASE}|g' ${WRKSRC}/cmake/FindSDL2_ttf.cmake
 	@${REINPLACE_CMD} 's|/usr/local|${LOCALBASE}|g' ${WRKSRC}/tools/check-levels.sh
+	${REINPLACE_CMD} 's|python|${PYTHON_CMD}|' ${WRKSRC}/data/tools/*.sh
 
 .include <bsd.port.mk>

@@ -1,7 +1,6 @@
 bin/ircd
 bin/ircd-hybrid-mkpasswd
 %%ETCDIR%%/reference.conf
-etc/rc.d/ircd-hybrid
 lib/ircd-hybrid/modules/autoload/m_accept.la
 lib/ircd-hybrid/modules/autoload/m_accept.so
 lib/ircd-hybrid/modules/autoload/m_admin.la
@@ -52,6 +51,8 @@ lib/ircd-hybrid/modules/autoload/m_lusers.la
 lib/ircd-hybrid/modules/autoload/m_lusers.so
 lib/ircd-hybrid/modules/autoload/m_map.la
 lib/ircd-hybrid/modules/autoload/m_map.so
+@comment lib/ircd-hybrid/modules/autoload/m_metadata.la
+@comment lib/ircd-hybrid/modules/autoload/m_metadata.so
 lib/ircd-hybrid/modules/autoload/m_module.la
 lib/ircd-hybrid/modules/autoload/m_module.so
 lib/ircd-hybrid/modules/autoload/m_motd.la

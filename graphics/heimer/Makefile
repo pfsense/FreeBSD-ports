@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	heimer
-DISTVERSION=	1.18.0
+DISTVERSION=	1.20.0
 CATEGORIES=	graphics
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple mind map, diagram, and note-taking tool
 
 LICENSE=	CC-BY-SA-3.0 GPLv3+
@@ -15,7 +15,7 @@ USES=		cmake compiler:c++14-lang qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	juzzlin
 GH_PROJECT=	Heimer
-USE_QT=		core gui widgets xml buildtools_build linguisttools_build \
+USE_QT=		core gui svg widgets xml buildtools_build linguisttools_build \
 		qmake_build testlib_build
 TEST_TARGET=	test
 

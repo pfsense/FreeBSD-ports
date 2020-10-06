@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	thunderbird_labels
-PORTVERSION=	1.4.2
+PORTVERSION=	1.4.8
 DISTVERSIONPREFIX=	v
 CATEGORIES=	mail
 PKGNAMEPREFIX=	roundcube-
@@ -14,7 +14,7 @@ COMMENT=	Thunderbird Labels plugin for RoundCube webmail
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-RUN_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=0.5:mail/roundcube@${PHP_FLAVOR}
+RUN_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=1.4.0:mail/roundcube@${PHP_FLAVOR}
 
 USES=	php:flavors
 
@@ -43,7 +43,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${PLUGINDIR}
 	cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${PLUGINDIR}
 	cd ${STAGEDIR}${PLUGINDIR} && \
-		${MV} config.inc.php config.inc.php.sample && \
+		${MV} config.inc.php.dist config.inc.php.sample && \
 		${RM} coffee2js.sh docs/_config.yml && \
 		${RM} -r coffeescripts
 

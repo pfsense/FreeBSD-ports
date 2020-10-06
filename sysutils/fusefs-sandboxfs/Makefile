@@ -3,11 +3,11 @@
 PORTNAME=	sandboxfs
 DISTVERSIONPREFIX=	sandboxfs-
 DISTVERSION=	0.2.0
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Virtual file system for sandboxing
 
 LICENSE=	APACHE20

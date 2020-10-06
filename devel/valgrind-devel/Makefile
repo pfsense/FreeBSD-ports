@@ -2,29 +2,43 @@
 # $FreeBSD$
 
 PORTNAME=	valgrind
-PORTVERSION=	3.10.1.20160113
+PORTVERSION=	3.17.0.g20200723
 DISTVERSIONPREFIX=	freebsd-
-PORTREVISION=	7
+#PORTREVISION=	0
 PORTEPOCH=	1
 CATEGORIES=	devel
-MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${BB_PROJECT}/get/${BB_COMMIT}.tar.gz?dummy=/ \
-		http://mirror.shatow.net/freebsd/${PORTNAME}/
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	zeising@FreeBSD.org
+MAINTAINER=	pjfloyd@wanadoo.fr
 COMMENT=	Memory debugging and profiling tool
-
-BB_COMMIT=	ce1acb28953f
-BB_ACCOUNT=	stass
-BB_PROJECT=	valgrind-freebsd
 
 LICENSE=	GPLv2
 
+ONLY_FOR_ARCHS=	amd64 i386
+
+DOCS_BUILD_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl \
+		xsltproc:textproc/libxslt
+MANPAGES_BUILD_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl \
+		xsltproc:textproc/libxslt
+MPI_LIB_DEPENDS=	libmpich.so:net/mpich
+
+USES=		pathfix pkgconfig gmake perl5 shebangfix autoreconf
+USE_PERL5=	build
+GNU_CONFIGURE=	yes
+USE_LDCONFIG=	yes
+OPTIONS_SUB=	yes
+SHEBANG_FILES=	callgrind/callgrind_annotate.in callgrind/callgrind_control.in
+SSP_UNSAFE=		yes
+LIB32_PATH?=	${DESTDIR}/usr/lib32/libc.so
+
 CONFLICTS=	valgrind-[0-9]*
 
-ONLY_FOR_ARCHS=	i386 amd64
+USE_GITHUB=	yes
+GH_TAGNAME=	d4fba6a
+GH_ACCOUNT=	paulfloyd
+GH_PROJECT=	freebsd_valgrind
 
-LIB32_PATH?=	${DESTDIR}/usr/lib32/libc.so
+PORTDOCS=	html
 
 OPTIONS_DEFINE=		DOCS MANPAGES MPI
 OPTIONS_DEFINE_amd64=	32BIT
@@ -35,36 +49,9 @@ OPTIONS_DEFAULT_amd64=	32BIT
 32BIT_DESC=	Enable debugging of 32-bit programs (requires lib32)
 MPI_DESC=	Enable build of MPI wrappers
 
-DOCS_BUILD_DEPENDS=    docbook-xsl>=0:textproc/docbook-xsl \
-                       xsltproc:textproc/libxslt
-MANPAGES_BUILD_DEPENDS=        docbook-xsl>=0:textproc/docbook-xsl \
-                       xsltproc:textproc/libxslt
-MPI_LIB_DEPENDS=	libmpich.so:net/mpich
-
-OPTIONS_SUB=	yes
-USES=		pathfix pkgconfig gmake perl5 shebangfix autoreconf
-USE_PERL5=	build
-GNU_CONFIGURE=	yes
-USE_LDCONFIG=	yes
-SHEBANG_FILES=	callgrind/callgrind_annotate.in callgrind/callgrind_control.in
-
-EXTRA_PATCHES=	\
-		${FILESDIR}/accept4_syscall.patch:-p1 \
-		${FILESDIR}/jail_syscalls.patch:-p1 \
-		${FILESDIR}/kldload_syscalls.patch:-p1 \
-		${FILESDIR}/missing_fcntls.patch:-p1
-
-PORTDOCS=	html
-
-WRKSRC=		${WRKDIR}/${BB_ACCOUNT}-${BB_PROJECT}-${BB_COMMIT}
-
 CONFIGURE_ENV+=	ac_cv_path_PERL=${PERL}
 
 .include <bsd.port.options.mk>
-
-.if ${OSVERSION} > 1200030
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-ino64:-p1
-.endif
 
 .if ${ARCH} == "amd64"
 PLIST_SUB+=	AMD64="" ARCH=amd64

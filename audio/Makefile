@@ -11,12 +11,12 @@
     SUBDIR += abcde
     SUBDIR += abcselect
     SUBDIR += abgate-lv2
-    SUBDIR += abraca
     SUBDIR += adplay
     SUBDIR += afsp
     SUBDIR += aften
     SUBDIR += alac
     SUBDIR += alienwah
+    SUBDIR += alo-lv2
     SUBDIR += alsa-lib
     SUBDIR += alsa-plugins
     SUBDIR += alsa-sndio
@@ -28,7 +28,7 @@
     SUBDIR += amsynth
     SUBDIR += aqualung
     SUBDIR += ardour
-    SUBDIR += ardour5
+    SUBDIR += ardour6
     SUBDIR += ario
     SUBDIR += arss
     SUBDIR += artyfx-lv2
@@ -39,7 +39,6 @@
     SUBDIR += asunder
     SUBDIR += atunes
     SUBDIR += aubio
-    SUBDIR += aucatctl
     SUBDIR += audacity
     SUBDIR += audiere
     SUBDIR += audiocd-kio
@@ -59,10 +58,9 @@
     SUBDIR += beets
     SUBDIR += bharvestr-lv2
     SUBDIR += bjumblr-lv2
+    SUBDIR += bliss
     SUBDIR += blop
-    SUBDIR += blop-lv2
     SUBDIR += bristol
-    SUBDIR += bs2b-lv2
     SUBDIR += bsequencer-lv2
     SUBDIR += bshapr-lv2
     SUBDIR += bslizr-lv2
@@ -92,8 +90,6 @@
     SUBDIR += cmus
     SUBDIR += codec2
     SUBDIR += cpige
-    SUBDIR += cplay
-    SUBDIR += cpp-xmms2
     SUBDIR += crip
     SUBDIR += csound
     SUBDIR += csoundqt
@@ -118,6 +114,7 @@
     SUBDIR += din
     SUBDIR += discid
     SUBDIR += dpf-plugins-lv2
+    SUBDIR += dragonfly-reverb-lv2
     SUBDIR += drumgizmo
     SUBDIR += drumkv1-lv2
     SUBDIR += drumpiler
@@ -142,6 +139,7 @@
     SUBDIR += eteroj-lv2
     SUBDIR += etktab
     SUBDIR += exaile
+    SUBDIR += exhale
     SUBDIR += ezstream
     SUBDIR += faac
     SUBDIR += faad
@@ -551,6 +549,7 @@
     SUBDIR += nas
     SUBDIR += ncmpc
     SUBDIR += ncmpcpp
+    SUBDIR += ncpamixer
     SUBDIR += ncspot
     SUBDIR += nekobi-lv2
     SUBDIR += noise-repellent-lv2
@@ -569,6 +568,7 @@
     SUBDIR += opus
     SUBDIR += opus-tools
     SUBDIR += opusfile
+    SUBDIR += opustags
     SUBDIR += orbit-lv2
     SUBDIR += osalp
     SUBDIR += osd-lyrics
@@ -609,7 +609,6 @@
     SUBDIR += p5-Test-Corpus-Audio-MPD
     SUBDIR += p5-libvorbis
     SUBDIR += p5-tagged
-    SUBDIR += p5-xmms2
     SUBDIR += pacpl
     SUBDIR += padthv1-lv2
     SUBDIR += paman
@@ -651,23 +650,18 @@
     SUBDIR += py-apetag
     SUBDIR += py-aubio
     SUBDIR += py-audioread
-    SUBDIR += py-cddb
     SUBDIR += py-discid
     SUBDIR += py-discogs-client
     SUBDIR += py-eyed3
     SUBDIR += py-fmoo-audiotools
     SUBDIR += py-gmusicapi
-    SUBDIR += py-gmusicproxy
     SUBDIR += py-gtts
-    SUBDIR += py-hsaudiotag
-    SUBDIR += py-karaoke
+    SUBDIR += py-hsaudiotag3k
     SUBDIR += py-mpd
     SUBDIR += py-music21
     SUBDIR += py-musicbrainzngs
     SUBDIR += py-mutagen
-    SUBDIR += py-openal
     SUBDIR += py-opuslib
-    SUBDIR += py-py-jack
     SUBDIR += py-pyacoustid
     SUBDIR += py-pyaudio
     SUBDIR += py-pylast
@@ -682,7 +676,6 @@
     SUBDIR += py-tagpy
     SUBDIR += py-wavio
     SUBDIR += py-webrtcvad
-    SUBDIR += py-xmms2
     SUBDIR += qaudiosonar
     SUBDIR += qjackctl
     SUBDIR += qmidiarp
@@ -771,6 +764,7 @@
     SUBDIR += spotify-tui
     SUBDIR += spotifyd
     SUBDIR += squash
+    SUBDIR += squeezelite
     SUBDIR += sratom
     SUBDIR += stegosaurus-lv2
     SUBDIR += stk
@@ -808,14 +802,12 @@
     SUBDIR += timidity++-gtk
     SUBDIR += timidity++-motif
     SUBDIR += timidity++-slang
-    SUBDIR += timidity++-tcltk
     SUBDIR += timidity++-xaw
     SUBDIR += timidity++-xskin
     SUBDIR += tkeca
     SUBDIR += toolame
     SUBDIR += tosha
     SUBDIR += traverso
-    SUBDIR += triceratops-lv2
     SUBDIR += tse3
     SUBDIR += tta
     SUBDIR += tuneradio

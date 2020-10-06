@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Compress-Raw-Lzma
-PORTVERSION=	2.093
+PORTVERSION=	2.096
 CATEGORIES=	archivers perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -15,13 +15,8 @@ LICENSE_COMB=	dual
 
 TEST_DEPENDS=	p5-Test-Pod>=1:devel/p5-Test-Pod
 
-OPTIONS_DEFINE=	LZMALIB
-LZMALIB_DESC=	Use archivers/lzmalia instead of liblzma in base
-
 USES=		perl5
 USE_PERL5=	configure
-
-LZMALIB_LIB_DEPENDS=	liblzma.so.1:archivers/lzmalib
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Compress/Raw/Lzma/Lzma.so

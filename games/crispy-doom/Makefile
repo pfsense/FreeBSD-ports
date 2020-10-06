@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	crispy-doom
-PORTVERSION=	5.8.0
+PORTVERSION=	5.9.1
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	games
 
@@ -13,15 +13,20 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate \
 		libpng16.so:graphics/png
 
-USES=		autoreconf pkgconfig sdl
+CONFLICTS_INSTALL=	chocolate-doom
 
+USES=		autoreconf pkgconfig python:build sdl shebangfix
 USE_SDL=	mixer2 net2 sdl2
 GNU_CONFIGURE=	yes
+SHEBANG_FILES=	man/docgen man/simplecpp
 
 OPTIONS_DEFINE=	DOCS
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	fabiangreffrath
+
+post-patch:
+	${REINPLACE_CMD} "s|python|${PYTHON_VERSION}|" ${WRKSRC}/configure.ac
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/crispy-*

@@ -128,8 +128,6 @@ share/doc/HTML/ca/kcontrol/componentchooser/index.cache.bz2
 share/doc/HTML/ca/kcontrol/componentchooser/index.docbook
 share/doc/HTML/ca/kcontrol/cursortheme/index.cache.bz2
 share/doc/HTML/ca/kcontrol/cursortheme/index.docbook
-share/doc/HTML/ca/kcontrol/desktopthemedetails/edit-delete.png
-share/doc/HTML/ca/kcontrol/desktopthemedetails/edit-undo.png
 share/doc/HTML/ca/kcontrol/desktopthemedetails/get-new-theme.png
 share/doc/HTML/ca/kcontrol/desktopthemedetails/index.cache.bz2
 share/doc/HTML/ca/kcontrol/desktopthemedetails/index.docbook
@@ -145,8 +143,6 @@ share/doc/HTML/ca/kcontrol/fonts/index.docbook
 share/doc/HTML/ca/kcontrol/fonts/main.png
 share/doc/HTML/ca/kcontrol/formats/index.cache.bz2
 share/doc/HTML/ca/kcontrol/formats/index.docbook
-share/doc/HTML/ca/kcontrol/icons/edit-delete.png
-share/doc/HTML/ca/kcontrol/icons/edit-undo.png
 share/doc/HTML/ca/kcontrol/icons/get-new-theme.png
 share/doc/HTML/ca/kcontrol/icons/index.cache.bz2
 share/doc/HTML/ca/kcontrol/icons/index.docbook
@@ -168,8 +164,6 @@ share/doc/HTML/ca/kcontrol/keyboard/index.cache.bz2
 share/doc/HTML/ca/kcontrol/keyboard/index.docbook
 share/doc/HTML/ca/kcontrol/keys/index.cache.bz2
 share/doc/HTML/ca/kcontrol/keys/index.docbook
-share/doc/HTML/ca/kcontrol/keys/list-add.png
-share/doc/HTML/ca/kcontrol/keys/remove.png
 share/doc/HTML/ca/kcontrol/mouse/index.cache.bz2
 share/doc/HTML/ca/kcontrol/mouse/index.docbook
 share/doc/HTML/ca/kcontrol/notifications/index.cache.bz2
@@ -203,19 +197,10 @@ share/doc/HTML/ca/knetattach/screenshot2.png
 share/doc/HTML/ca/knetattach/screenshot3.png
 share/doc/HTML/ca/knetattach/screenshot4.png
 share/doc/HTML/ca/plasma-desktop/add-widgets.png
-share/doc/HTML/ca/plasma-desktop/application-launcher-settings.png
 share/doc/HTML/ca/plasma-desktop/application-launcher.png
 share/doc/HTML/ca/plasma-desktop/application-menu.png
-share/doc/HTML/ca/plasma-desktop/device_notifier_widget.png
-share/doc/HTML/ca/plasma-desktop/device_notifier_widget_actions.png
-share/doc/HTML/ca/plasma-desktop/folder-view.png
 share/doc/HTML/ca/plasma-desktop/index.cache.bz2
 share/doc/HTML/ca/plasma-desktop/index.docbook
-share/doc/HTML/ca/plasma-desktop/krunner-configure.png
-share/doc/HTML/ca/plasma-desktop/krunner-desktop-actions.png
-share/doc/HTML/ca/plasma-desktop/plasma-desktop-annotated.png
-share/doc/HTML/ca/plasma-desktop/remove.png
-share/doc/HTML/ca/plasma-desktop/system-tray-up-arrow.png
 share/doc/HTML/de/kcontrol/autostart/index.cache.bz2
 share/doc/HTML/de/kcontrol/autostart/index.docbook
 share/doc/HTML/de/kcontrol/baloo/index.cache.bz2
@@ -1718,6 +1703,7 @@ share/locale/da/LC_MESSAGES/kcm_cursortheme.mo
 share/locale/da/LC_MESSAGES/kcm_desktoppaths.mo
 share/locale/da/LC_MESSAGES/kcm_desktoptheme.mo
 share/locale/da/LC_MESSAGES/kcm_fonts.mo
+share/locale/da/LC_MESSAGES/kcm_keys.mo
 share/locale/da/LC_MESSAGES/kcm_launchfeedback.mo
 share/locale/da/LC_MESSAGES/kcm_lookandfeel.mo
 share/locale/da/LC_MESSAGES/kcm_nightcolor.mo
@@ -3919,6 +3905,7 @@ share/locale/ro/LC_MESSAGES/kcm5_emoticons.mo
 share/locale/ro/LC_MESSAGES/kcm5_icons.mo
 share/locale/ro/LC_MESSAGES/kcm5_joystick.mo
 share/locale/ro/LC_MESSAGES/kcm5_kded.mo
+share/locale/ro/LC_MESSAGES/kcm_activities5.mo
 share/locale/ro/LC_MESSAGES/kcm_autostart.mo
 share/locale/ro/LC_MESSAGES/kcm_baloofile.mo
 share/locale/ro/LC_MESSAGES/kcm_colors.mo
@@ -3928,6 +3915,7 @@ share/locale/ro/LC_MESSAGES/kcm_desktoptheme.mo
 share/locale/ro/LC_MESSAGES/kcm_fonts.mo
 share/locale/ro/LC_MESSAGES/kcm_launchfeedback.mo
 share/locale/ro/LC_MESSAGES/kcm_lookandfeel.mo
+share/locale/ro/LC_MESSAGES/kcm_nightcolor.mo
 share/locale/ro/LC_MESSAGES/kcm_search.mo
 share/locale/ro/LC_MESSAGES/kcm_solid_actions.mo
 share/locale/ro/LC_MESSAGES/kcm_splashscreen.mo
@@ -3946,8 +3934,10 @@ share/locale/ro/LC_MESSAGES/knetattach5.mo
 share/locale/ro/LC_MESSAGES/krdb.mo
 share/locale/ro/LC_MESSAGES/plasma_applet_org.kde.desktopcontainment.mo
 share/locale/ro/LC_MESSAGES/plasma_applet_org.kde.kimpanel.mo
+share/locale/ro/LC_MESSAGES/plasma_applet_org.kde.panel.mo
 share/locale/ro/LC_MESSAGES/plasma_applet_org.kde.plasma.kicker.mo
 share/locale/ro/LC_MESSAGES/plasma_applet_org.kde.plasma.kickoff.mo
+share/locale/ro/LC_MESSAGES/plasma_applet_org.kde.plasma.minimizeall.mo
 share/locale/ro/LC_MESSAGES/plasma_applet_org.kde.plasma.pager.mo
 share/locale/ro/LC_MESSAGES/plasma_applet_org.kde.plasma.showActivityManager.mo
 share/locale/ro/LC_MESSAGES/plasma_applet_org.kde.plasma.showdesktop.mo
@@ -3955,9 +3945,12 @@ share/locale/ro/LC_MESSAGES/plasma_applet_org.kde.plasma.taskmanager.mo
 share/locale/ro/LC_MESSAGES/plasma_applet_org.kde.plasma.trash.mo
 share/locale/ro/LC_MESSAGES/plasma_applet_org.kde.plasma.windowlist.mo
 share/locale/ro/LC_MESSAGES/plasma_applet_touchpad.mo
+share/locale/ro/LC_MESSAGES/plasma_runner_kwin.mo
 share/locale/ro/LC_MESSAGES/plasma_runner_plasma-desktop.mo
 share/locale/ro/LC_MESSAGES/plasma_shell_org.kde.plasma.desktop.mo
 share/locale/ro/LC_MESSAGES/plasma_toolbox_org.kde.desktoptoolbox.mo
+share/locale/ro/LC_MESSAGES/plasma_toolbox_org.kde.paneltoolbox.mo
+share/locale/ro/LC_MESSAGES/plasmaactivitymanager.mo
 share/locale/ru/LC_MESSAGES/attica_kde_plugin.mo
 share/locale/ru/LC_MESSAGES/kaccess.mo
 share/locale/ru/LC_MESSAGES/kcm5_componentchooser.mo

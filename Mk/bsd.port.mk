@@ -2018,10 +2018,12 @@ CONFIGURE_ENV+=	LANG=${USE_LOCALE} LC_ALL=${USE_LOCALE}
 MAKE_ENV+=		LANG=${USE_LOCALE} LC_ALL=${USE_LOCALE}
 .endif
 
-# Macro for doing in-place file editing using regexps
+# Macro for doing in-place file editing using regexps.  REINPLACE_ARGS may only
+# be used to set or override the -i argument.  Any other use is considered
+# invalid.
 REINPLACE_ARGS?=	-i.bak
 .if defined(DEVELOPER)
-REINPLACE_CMD?=	${SETENV} WRKSRC=${WRKSRC} REWARNFILE=${REWARNFILE} ${PORTSDIR}/Tools/scripts/sed_checked.sh
+REINPLACE_CMD?=	${SETENV} WRKSRC=${WRKSRC} REWARNFILE=${REWARNFILE} ${SCRIPTSDIR}/sed_checked.sh
 .else
 REINPLACE_CMD?=	${SED} ${REINPLACE_ARGS}
 .endif
@@ -3160,6 +3162,7 @@ do-extract: ${EXTRACT_WRKDIR}
 	@for file in ${EXTRACT_ONLY}; do \
 		if ! (cd ${EXTRACT_WRKDIR} && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${_DISTDIR}/$$file ${EXTRACT_AFTER_ARGS});\
 		then \
+			${ECHO_MSG} "===>  Failed to extract \"${_DISTDIR}/$$file\"."; \
 			exit 1; \
 		fi; \
 	done
@@ -5133,7 +5136,12 @@ install-desktop-entries:
 .if !target(create-binary-alias)
 create-binary-alias: ${BINARY_LINKDIR}
 .for target src in ${BINARY_ALIAS:C/=/ /}
-	@${RLN} `which ${src}` ${BINARY_LINKDIR}/${target}
+	@if srcpath=`which -- ${src}`; then \
+		${RLN} $${srcpath} ${BINARY_LINKDIR}/${target}; \
+	else \
+		${ECHO_MSG} "===>  Missing \"${src}\" to create a binary alias at \"${BINARY_LINKDIR}/${target}\""; \
+		${FALSE}; \
+	fi
 .endfor
 .endif
 .endif

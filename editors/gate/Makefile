@@ -3,7 +3,7 @@
 
 PORTNAME=	gate
 PORTVERSION=	2.06
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	editors
 MASTER_SITES=	http://www.unixpapa.com/software/
 
@@ -18,6 +18,11 @@ GNU_CONFIGURE=	yes
 
 CONFIGURE_ARGS=	--with-aspell=${LOCALBASE}/bin/aspell
 ALL_TARGET=	gate gate.1
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 post-patch:
 	@${REINPLACE_CMD} -e \

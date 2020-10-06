@@ -2,17 +2,18 @@
 
 PORTNAME=	phabricator
 PORTVERSION=	20200514
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
+
+PATCH_SITES=	https://github.com/grembo/phabricator/commit/
+PATCHFILES=	0851b89eb6633dd792cd4eb10c26f86c2f0da56a.patch:-p1
 
 MAINTAINER=	grembo@FreeBSD.org
 COMMENT=	Open source, software engineering platform
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-IGNORE_WITH_PHP=74
 
 RUN_DEPENDS=	arcanist-lib${PHP_PKGNAMESUFFIX}>=20200514:devel/arcanist-lib@${PHP_FLAVOR} \
 		git:devel/git

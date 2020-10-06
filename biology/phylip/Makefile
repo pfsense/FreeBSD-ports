@@ -3,6 +3,7 @@
 
 PORTNAME=	phylip
 PORTVERSION=	3.697
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	biology
 MASTER_SITES=	http://evolution.gs.washington.edu/phylip/download/
@@ -25,6 +26,11 @@ MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS} -DUNX" \
 		DFLAGS="${CFLAGS} -DX -I${LOCALBASE}/include" \
 		DLIBS="-L${LOCALBASE}/lib -lX11 -lXaw -lXt -lm"
 USE_LDCONFIG=	yes
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 PORTDOCS=	*
 

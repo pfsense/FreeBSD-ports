@@ -1,3 +1,3 @@
-TIMESTAMP = 1587438224
-SHA256 (rubygem/puppetfile-resolver-0.2.0.gem) = f467fd765cfa916608de9f2fbcfe99ce4014ab16d363d2fbd790b3cd77294f0c
-SIZE (rubygem/puppetfile-resolver-0.2.0.gem) = 156160
+TIMESTAMP = 1600277480
+SHA256 (rubygem/puppetfile-resolver-0.4.0.gem) = fc92c52f662fc1a80527e0c3a215885c1ca87c36cb786137d28badf43ecb459b
+SIZE (rubygem/puppetfile-resolver-0.4.0.gem) = 155648

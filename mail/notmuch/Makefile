@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	notmuch
-PORTVERSION=	0.29.1
-PORTREVISION?=	1
+PORTVERSION=	0.31
+PORTREVISION?=	0
 CATEGORIES?=	mail
 MASTER_SITES=	https://notmuchmail.org/releases/
 
@@ -28,7 +28,7 @@ TEST_DEPENDS=	bash:shells/bash \
 		gwc:sysutils/coreutils \
 		${LOCALBASE}/bin/gdb:devel/gdb
 
-USES=		compiler:c++11-lang gmake gnome pkgconfig python:build,test
+USES=		compiler:c++11-lang gmake gnome pkgconfig python:3.5+,build,test
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 .endif
@@ -64,6 +64,8 @@ DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
 DOXYGEN_CONFIGURE_WITH=	api-docs
 MANPAGES_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
 MANPAGES_CONFIGURE_WITH=	docs
+
+PORTSCOUT=	limit:^[0-9\.]*$$
 
 # Avoid conflict with C++20 <version> by ignoring <...> under WRKSRC
 post-patch:

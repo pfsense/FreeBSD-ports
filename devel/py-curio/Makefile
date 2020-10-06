@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	curio
-PORTVERSION=	1.2
+PORTVERSION=	1.4
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	
+COMMENT=	Coroutine-based library for concurrent Python systems programming
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

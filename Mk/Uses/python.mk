@@ -6,7 +6,7 @@
 #
 # Feature:	python
 # Usage:	USES=python[:version-spec][,arg,...]
-# Valid ARGS:	<version-spec>, patch, build, run, test
+# Valid ARGS:	<version-spec>, patch, build, run, test, env
 #
 # version-spec 	Declarative specification for the Python version(s) the
 #		port supports. Subsets and ranges can be specified:
@@ -20,7 +20,7 @@
 #
 #			USES=python:2.7		# Supports Python 2.7 Only
 #			USES=python:3.5+	# Supports Python 3.5 or later
-#			USES=python:3.5-3.7	# Supports Python 3.5 to 3.7
+#			USES=python:3.5-3.8	# Supports Python 3.5 to 3.8
 #			USES=python:-3.6	# Supports Python up to 3.6
 #			USES=python		# Supports any/all Python versions
 #
@@ -250,7 +250,7 @@ _INCLUDE_USES_PYTHON_MK=	yes
 # What Python version and what Python interpreters are currently supported?
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-_PYTHON_VERSIONS=		2.7 3.7 3.8 3.6 3.5 # preferred first
+_PYTHON_VERSIONS=		2.7 3.7 3.8 3.6 # preferred first
 _PYTHON_PORTBRANCH=		2.7		# ${_PYTHON_VERSIONS:[1]}
 _PYTHON_BASECMD=		${LOCALBASE}/bin/python
 _PYTHON_RELPORTDIR=		lang/python
@@ -329,7 +329,7 @@ DEV_WARNING+=		"lang/python27 reached End of Life and will be removed on 2020-12
 .elif ${_PYTHON_ARGS} == 2
 DEV_ERROR+=		"USES=python:2 is no longer supported, use USES=python:2.7"
 .elif ${_PYTHON_ARGS} == 3
-DEV_ERROR+=		"USES=python:3 is no longer supported, use USES=python:3.5+ or an appropriate version range"
+DEV_ERROR+=		"USES=python:3 is no longer supported, use USES=python:3.6+ or an appropriate version range"
 .endif  # ${_PYTHON_ARGS} == 2.7
 
 _PYTHON_VERSION:=	${PYTHON_DEFAULT}
@@ -428,7 +428,7 @@ PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
 # To avoid having dependencies with @ and empty flavor:
 # _PYTHON_VERSION is either set by (first that matches):
 # - If using Python flavors, from the current Python flavor
-# - If using a version restriction (USES=python:3.5+), from the first
+# - If using a version restriction (USES=python:3.6+), from the first
 #   acceptable default Python version.
 # - From PYTHON_DEFAULT
 PY_FLAVOR=	py${_PYTHON_VERSION:S/.//}
@@ -458,7 +458,7 @@ PYTHON_CMD?=		${_PYTHON_BASECMD}${_PYTHON_VERSION}
 .if exists(${PYTHON_CMD}-config)
 PYTHON_ABIVER!=		${PYTHON_CMD}-config --abiflags
 .elif ${PYTHON_REL} < 3800
-# Default ABI flags for lang/python3[567] ports
+# Default ABI flags for lang/python3[67] ports
 PYTHON_ABIVER=		m
 .endif
 .endif
@@ -596,7 +596,8 @@ _RELLIBDIR=		${PYTHONPREFIX_LIBDIR:S;${PREFIX}/;;}
 
 _USES_stage+=	934:add-plist-pymod
 add-plist-pymod:
-	@${SED} -e 's|^${STAGEDIR}${PREFIX}/||' \
+	@${SED} -e 's|^"\(.*\)"$$|\1|' \
+		-e 's|^${STAGEDIR}${PREFIX}/||' \
 		-e 's|^${PREFIX}/||' \
 		-e 's|^\(man/.*man[0-9]\)/\(.*\.[0-9]\)$$|\1/\2.gz|' \
 		-e 's|^\(share/man/.*man[0-9]\)/\(.*\.[0-9]\)$$|\1/\2.gz|' \
@@ -632,17 +633,19 @@ CMAKE_ARGS+=	-DPython_ADDITIONAL_VERSIONS=${PYTHON_VER}
 
 # Python 3rd-party modules
 PYGAME=		${PYTHON_PKGNAMEPREFIX}game>0:devel/py-game@${PY_FLAVOR}
-PYNUMPY=	${PYTHON_PKGNAMEPREFIX}numpy>=1.16,1<1.19,1:math/py-numpy@${PY_FLAVOR}
+PYNUMPY=	${PYTHON_PKGNAMEPREFIX}numpy>=1.16,1<1.20,1:math/py-numpy@${PY_FLAVOR}
 
 # Common Python modules that can be needed but only for some versions of Python.
 .if ${PYTHON_REL} < 3500
 PY_PILLOW=	${PYTHON_PKGNAMEPREFIX}pillow6>=6.0.0:graphics/py-pillow6@${PY_FLAVOR}
-PY_TYPING=	${PYTHON_PKGNAMEPREFIX}typing>=3.7.4.1:devel/py-typing@${PY_FLAVOR}
+PY_PYGMENTS=	${PYTHON_PKGNAMEPREFIX}pygments-25>=2.5.1:textproc/py-pygments-25@${PY_FLAVOR}
 PY_SPHINX=	${PYTHON_PKGNAMEPREFIX}sphinx18>=0:textproc/py-sphinx18@${PY_FLAVOR}
+PY_TYPING=	${PYTHON_PKGNAMEPREFIX}typing>=3.7.4.1:devel/py-typing@${PY_FLAVOR}
 .else
 PY_PILLOW=	${PYTHON_PKGNAMEPREFIX}pillow>=7.0.0:graphics/py-pillow@${PY_FLAVOR}
-PY_TYPING=
+PY_PYGMENTS=	${PYTHON_PKGNAMEPREFIX}pygments>=2.5.1:textproc/py-pygments@${PY_FLAVOR}
 PY_SPHINX=	${PYTHON_PKGNAMEPREFIX}sphinx>=0:textproc/py-sphinx@${PY_FLAVOR}
+PY_TYPING=
 .endif
 
 .if ${PYTHON_REL} < 3400
@@ -650,7 +653,7 @@ PY_ENUM34=	${PYTHON_PKGNAMEPREFIX}enum34>=1.1<2.0:devel/py-enum34@${PY_FLAVOR}
 PY_PATHLIB=	${PYTHON_PKGNAMEPREFIX}pathlib>0:devel/py-pathlib@${PY_FLAVOR}
 .else
 PY_ENUM34=
-PY_PATHLIB=	
+PY_PATHLIB=
 .endif
 
 .if ${PYTHON_REL} < 3300
@@ -663,6 +666,12 @@ PY_IPADDRESS=
 PY_FUTURES=	${PYTHON_PKGNAMEPREFIX}futures>=3.2:devel/py-futures@${PY_FLAVOR}
 .else
 PY_FUTURES=
+.endif
+
+.if ${PYTHON_VER} != ${PYTHON_DEFAULT}
+PY_MERCURIAL=	${PYTHON_PKGNAMEPREFIX}mercurial>=5.5:devel/mercurial@${PY_FLAVOR}
+.else
+PY_MERCURIAL=	mercurial>=5.5:devel/mercurial@${PY_FLAVOR}
 .endif
 
 CMAKE_ARGS+=	-DBOOST_PYTHON_SUFFIX:STRING=${PYTHON_SUFFIX}

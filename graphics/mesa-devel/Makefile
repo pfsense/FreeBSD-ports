@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	mesa
-DISTVERSION=	20.1-branchpoint-2478
-DISTVERSIONSUFFIX=	-g6cba468b5e7
+DISTVERSION=	20.2-branchpoint-2078
+DISTVERSIONSUFFIX=	-g8427e560672
 CATEGORIES=	graphics
 PKGNAMESUFFIX=	-devel
 
@@ -12,15 +12,9 @@ PATCHFILES+=	9f52b5177728.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-
 PATCHFILES+=	2b9168cf579b.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/1598
 PATCHFILES+=	55822330540d.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/1598
 PATCHFILES+=	f6c7569ad9ea.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/1598
-PATCHFILES+=	c7a2ab64144b.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/1598
-PATCHFILES+=	f3b7aba7ed39.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/1598
-PATCHFILES+=	23df7d9971dd.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/1598
-PATCHFILES+=	ec60ac47860a.patch:-p1
-PATCHFILES+=	807ae077ab19.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/3568
-PATCHFILES+=	fb7a3759f761.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/1619
-PATCHFILES+=	9291544ca0bd.patch:-p1
+PATCHFILES+=	cb8f7a253934.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/3568
 PATCHFILES+=	700efacda59c.patch:-p1
-PATCHFILES+=	58c4ac0987d5.patch:-p1
+PATCHFILES+=	8f3e0778f9a3.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/issues/966#note_394512
 PATCHFILES+=	167fa293d7b7.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/5464
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -28,7 +22,7 @@ COMMENT=	Bleeding edge Mesa drivers (OpenGL, Vulkan)
 
 LICENSE=	MIT
 
-ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64
+ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	Limited scope: no old drivers and no software rendering. \
 			See also https://mesamatrix.net/
 
@@ -46,12 +40,11 @@ GH_ACCOUNT=	mesa3d
 USE_LDCONFIG=	yes
 BINARY_ALIAS=	python=${PYTHON_CMD}
 SHEBANG_FILES=	src/vulkan/overlay-layer/${PORTNAME}-overlay-control.py
-PLATFORMS=	${PORT_OPTIONS:MX11:tl} ${PORT_OPTIONS:MWAYLAND:tl} drm surfaceless
 MESON_ARGS=	-Dgallium-omx=disabled \
 		-Dgallium-opencl=disabled \
 		-Dgallium-xa=disabled \
 		-Dgallium-xvmc=disabled \
-		-Dplatforms=${PLATFORMS:ts,} \
+		-Dplatforms=${PLATFORMS:O:[-1..1]:ts,} \
 		${BINARY_ALIAS:D--native-file=binary_alias.ini} \
 		${NULL}
 PLIST_SUB=	ARCH=${ARCH:S/amd/x86_/}
@@ -68,8 +61,8 @@ OPTIONS_MULTI_DRI=	i965
 OPTIONS_MULTI_GALLIUM=	iris r600 radeonsi
 OPTIONS_MULTI_VULKAN=	anv radv
 OPTIONS_EXCLUDE_DragonFly=	LIBUNWIND anv
-OPTIONS_EXCLUDE+=	${ARCH:Namd64:Ni386:C/.+/anv i965 iris/}
-OPTIONS_EXCLUDE+=	${ARCH:Naarch64:Namd64:Ni386:C/.+/LIBUNWIND/}
+OPTIONS_EXCLUDE+=	${ARCH:Namd64:Ni386:Nx86_64:C/.+/anv i965 iris/}
+OPTIONS_EXCLUDE+=	${ARCH:Naarch64:Namd64:Ni386:Npowerpc64:Nx86_64:C/.+/LIBUNWIND/}
 OPTIONS_EXCLUDE+=	${"${GL_DEFAULT:S/,/ /g:[-1]}"==${.CURDIR:T}:?COINST:}
 OPTIONS_EXCLUDE+=	${"${GL_DEFAULT:S/,/ /g:[1]}"!=libglvnd:?GLVND:}
 OPTIONS_SLAVE+=		${"${GL_DEFAULT:S/,/ /g:[-1]}"!=${.CURDIR:T}:?COINST:}
@@ -101,7 +94,7 @@ COINST_SUB_LIST=	SUFFIX=${PKGNAMESUFFIX}
 COINST_PLIST_SUB_OFF=	SUFFIX=
 
 GLVND_DESC=		GL Vendor-Neutral Dispatch support
-GLVND_BUILD_DEPENDS=	libglvnd>0:graphics/libglvnd
+GLVND_BUILD_DEPENDS=	libglvnd>=1.3.2:graphics/libglvnd
 GLVND_MESON_TRUE=	glvnd
 
 LIBUNWIND_DESC=		Use libunwind for stacktraces
@@ -130,9 +123,11 @@ radv_DESC=		Southern Islands and newer
 
 WAYLAND_BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols
 WAYLAND_LIB_DEPENDS=	libwayland-server.so:graphics/wayland
+WAYLAND_VARS=		PLATFORMS+=wayland
 
 X11_USES=		xorg
 X11_USE=		XORG=x11,xcb,xdamage,xext,xfixes,xorgproto,xrandr,xshmfence,xxf86vm
+X11_VARS=		PLATFORMS+=x11
 X11_MESON_OFF=		-Dglx=disabled
 
 ZSTD_DESC=		Use ZSTD for shader cache

@@ -269,9 +269,9 @@ librsvg2_LIB_DEPENDS=	librsvg-2.so:graphics/librsvg2
 librsvg2_USE_GNOME_IMPL=libgsf gdkpixbuf2 pango
 
 nautilus3_LIB_DEPENDS=	libnautilus-extension.so:x11-fm/nautilus
-nautilus3_USE_GNOME_IMPL=gnomedesktop3 gvfs libxml2
+nautilus3_USE_GNOME_IMPL=gnomedesktop3 libxml2
 
-metacity_LIB_DEPENDS=	libmetacity-private.so:x11-wm/metacity
+metacity_LIB_DEPENDS=	libmetacity.so:x11-wm/metacity
 
 gnomecontrolcenter3_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gnome-keybindings.pc:sysutils/gnome-control-center
 gnomecontrolcenter3_RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gnome-keybindings.pc:sysutils/gnome-control-center

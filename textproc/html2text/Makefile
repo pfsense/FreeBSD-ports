@@ -3,11 +3,12 @@
 
 PORTNAME=	html2text
 PORTVERSION=	1.3.2a
+PORTEPOCH=	1
 CATEGORIES=	textproc
 MASTER_SITES=	SUNSITE/apps/www/converters \
 		http://www.mbayer.de/html2text/downloads/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Converts HTML documents into plain text
 
 LICENSE=	GPLv2+

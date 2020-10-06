@@ -2,7 +2,7 @@
 
 PORTNAME=	gluoncv
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.0
+DISTVERSION=	0.8.0
 CATEGORIES=	misc # machine-learning
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -23,7 +23,7 @@ PY_DEPENDS=	${PYNUMPY} \
 BUILD_DEPENDS=	${PY_DEPENDS}
 RUN_DEPENDS=	${PY_DEPENDS}
 
-USES=		compiler:c11 python localbase
+USES=		compiler:c11 python:3.6+ localbase
 USE_GITHUB=	yes
 GH_ACCOUNT=	dmlc
 GH_PROJECT=	gluon-cv

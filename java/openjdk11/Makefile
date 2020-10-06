@@ -3,12 +3,11 @@
 PORTNAME=	openjdk
 DISTVERSIONPREFIX=	jdk-
 DISTVERSION=	${JDK_MAJOR_VERSION}.${JDK_MINOR_VERSION}.${JDK_PATCH_VERSION}+${JDK_BUILD_NUMBER}-${BSD_JDK_VERSION}
-PORTREVISION=	1
 CATEGORIES=	java devel
 PKGNAMESUFFIX?=	${JDK_MAJOR_VERSION}
 
 MAINTAINER=	java@FreeBSD.org
-COMMENT=	Java Development Kit ${JDK_MAJOR_VERSION}
+COMMENT?=	Java Development Kit ${JDK_MAJOR_VERSION}
 
 LICENSE=	GPLv2
 
@@ -25,7 +24,8 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libgif.so:graphics/giflib \
 		liblcms2.so:graphics/lcms2 \
 		libpng.so:graphics/png
-RUN_DEPENDS=	javavm:java/javavmwrapper
+RUN_DEPENDS=	javavm:java/javavmwrapper \
+		xorg-fonts-truetype>0:x11-fonts/xorg-fonts-truetype
 
 USES=		compiler:features gmake iconv jpeg pkgconfig xorg
 USE_XORG=	x11 xext xi xrandr xrender xt xtst
@@ -49,16 +49,22 @@ MAKE_ENV=	LANG="C" \
 
 JDK_OSARCH=	bsd-${ARCH:S/amd64/x86_64/:S/i386/x86/:S/powerpc64/ppc64/}
 JDK_BUILDDIR=	${WRKSRC}/build/${JDK_OSARCH}-normal-${JDK_BUILD_JVM}-${JDK_BUILD_TYPE}
+.if defined(BUILD_JRE)
+JDK_IMAGEDIR=	${JDK_BUILDDIR}/images/jre
+.else
 JDK_IMAGEDIR=	${JDK_BUILDDIR}/images/jdk
+.endif
 INSTALLDIR=	${PREFIX}/${PKGBASE}
 
 NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	11
 JDK_MINOR_VERSION=	0
-JDK_PATCH_VERSION=	7
+JDK_PATCH_VERSION=	8
 JDK_BUILD_NUMBER=	10
-BSD_JDK_VERSION=	2
+BSD_JDK_VERSION=	1
+
+JDK_BUG_URL=	https://bugs.freebsd.org/bugzilla/enter_bug.cgi?product=Ports%20%26%20Packages&component=Individual%20Port(s)&short_desc=java/${PORTNAME}${JDK_MAJOR_VERSION}%3A%20
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	CC=${CC} \
@@ -87,11 +93,19 @@ CONFIGURE_ARGS=	--with-boot-jdk=${BOOTSTRAPJDKDIR} \
 		--with-cacerts-file=${FILESDIR}/cacerts \
 		--with-version-string=${JDK_MAJOR_VERSION}.${JDK_MINOR_VERSION}.${JDK_PATCH_VERSION}+${JDK_BUILD_NUMBER}-${BSD_JDK_VERSION} \
 		--with-native-debug-symbols=none \
-		--with-debug-level=release
+		--with-debug-level=release \
+		--with-vendor-name="OpenJDK BSD Porting Team" \
+		--with-vendor-url="https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/" \
+		--with-vendor-bug-url="${JDK_BUG_URL}" \
+		--with-vendor-vm-bug-url="${JDK_BUG_URL}"
 
 JAVAVMS_COMMENT=	OpenJDK${JDK_MAJOR_VERSION}
 
+.if defined(BUILD_JRE)
+ALL_TARGET=		legacy-images
+.else
 ALL_TARGET=		images
+.endif
 JDK_BUILD_TYPE=		release
 
 .include <bsd.port.pre.mk>

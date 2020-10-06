@@ -3,7 +3,6 @@
 PORTNAME=	openjdk
 DISTVERSIONPREFIX=	jdk-
 DISTVERSION=	${JDK_MAJOR_VERSION}.${JDK_MINOR_VERSION}.${JDK_PATCH_VERSION}+${JDK_BUILD_NUMBER}-${BSD_JDK_VERSION}
-PORTREVISION=	1
 CATEGORIES=	java devel
 PKGNAMESUFFIX?=	${JDK_MAJOR_VERSION}
 
@@ -56,9 +55,11 @@ NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	13
 JDK_MINOR_VERSION=	0
-JDK_PATCH_VERSION=	3
-JDK_BUILD_NUMBER=	3
+JDK_PATCH_VERSION=	4
+JDK_BUILD_NUMBER=	8
 BSD_JDK_VERSION=	1
+
+JDK_BUG_URL=	https://bugs.freebsd.org/bugzilla/enter_bug.cgi?product=Ports%20%26%20Packages&component=Individual%20Port(s)&short_desc=java/${PORTNAME}${JDK_MAJOR_VERSION}%3A%20
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	CC=${CC} \
@@ -87,7 +88,11 @@ CONFIGURE_ARGS=	--with-boot-jdk=${BOOTSTRAPJDKDIR} \
 		--with-cacerts-file=${FILESDIR}/cacerts \
 		--with-version-string=${JDK_MAJOR_VERSION}.${JDK_MINOR_VERSION}.${JDK_PATCH_VERSION}+${JDK_BUILD_NUMBER}-${BSD_JDK_VERSION} \
 		--with-native-debug-symbols=none \
-		--with-debug-level=release
+		--with-debug-level=release \
+		--with-vendor-name="OpenJDK BSD Porting Team" \
+		--with-vendor-url="https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/" \
+		--with-vendor-bug-url="${JDK_BUG_URL}" \
+		--with-vendor-vm-bug-url="${JDK_BUG_URL}"
 
 JAVAVMS_COMMENT=	OpenJDK${JDK_MAJOR_VERSION}
 

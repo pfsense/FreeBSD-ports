@@ -12,16 +12,16 @@ AWS_AUTH_GH_TUPLE=	anomalizer:ngx_aws_auth:75c94e6:aws_auth
 AWS_AUTH_VARS=		DSO_EXTMODS+=aws_auth
 
 BROTLI_LIB_DEPENDS=	libbrotlicommon.so:archivers/brotli
-BROTLI_GH_TUPLE=	google:ngx_brotli:e505dce:brotli
+BROTLI_GH_TUPLE=	google:ngx_brotli:25f86f0:brotli
 BROTLI_VARS=		DSO_EXTMODS+=brotli
 
-CACHE_PURGE_GH_TUPLE=	torden:ngx_cache_purge:4b02a83:cache_purge
+CACHE_PURGE_GH_TUPLE=	torden:ngx_cache_purge:2b977cf:cache_purge
 CACHE_PURGE_VARS=	DSO_EXTMODS+=cache_purge
 
 CLOJURE_CATEGORIES+=	java
 CLOJURE_USE=		JAVA=yes JAVA_OS=native JAVA_VERSION=1.8 \
 			JAVA_VENDOR=openjdk JAVA_BUILD=yes JAVA_RUN=yes
-CLOJURE_GH_TUPLE=	nginx-clojure:nginx-clojure:eb286b9:clojure
+CLOJURE_GH_TUPLE=	nginx-clojure:nginx-clojure:4b1e964:clojure
 CLOJURE_CONFIGURE_ENV=	"JNI_INCS=-I${LOCALBASE}/openjdk8/include -I${LOCALBASE}/openjdk8/include/freebsd"
 CLOJURE_VARS=		DSO_EXTMODS+=clojure CLOJURE_SUBDIR=/src/c
 
@@ -43,8 +43,13 @@ DRIZZLE_GH_TUPLE=	openresty:drizzle-nginx-module:e93542e:drizzle
 DRIZZLE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-openresty-drizzle-nginx-module-config
 DRIZZLE_VARS=		DSO_EXTMODS+=drizzle
 
-DYNAMIC_UPSTREAM_GH_TUPLE=	cubicdaiya:ngx_dynamic_upstream:v0.1.6:dynamic_upstream
+DYNAMIC_UPSTREAM_GH_TUPLE=	ZigzagAK:ngx_dynamic_upstream:960eef2:dynamic_upstream
 DYNAMIC_UPSTREAM_VARS=		DSO_EXTMODS+=dynamic_upstream
+
+DYNAMIC_HC_GH_TUPLE=		ZigzagAK:ngx_dynamic_healthcheck:61acf02:dynamic_hc
+DYNAMIC_HC_VARS=		DSO_EXTMODS+=dynamic_hc
+DYNAMIC_HC_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_dynamic_healthcheck-config
+DYNAMIC_HC_IMPLIES=		DYNAMIC_UPSTREAM
 
 DEVEL_KIT_GH_TUPLE=		simpl:ngx_devel_kit:v0.3.1:devel_kit
 DEVEL_KIT_VARS=			FIRST_DSO_EXTMODS+=devel_kit
@@ -70,7 +75,7 @@ HTTP_ACCEPT_LANGUAGE_VARS=	DSO_EXTMODS+=accept_language
 HTTP_AUTH_DIGEST_GH_TUPLE=	atomx:nginx-http-auth-digest:274490c:auth_digest
 HTTP_AUTH_DIGEST_VARS=		DSO_EXTMODS+=auth_digest
 
-HTTP_AUTH_KRB5_GH_TUPLE=	stnoonan:spnego-http-auth-nginx-module:21bb963:auth_krb5
+HTTP_AUTH_KRB5_GH_TUPLE=	stnoonan:spnego-http-auth-nginx-module:72c8ee0:auth_krb5
 HTTP_AUTH_KRB5_VARS=		DSO_EXTMODS+=auth_krb5
 HTTP_AUTH_KRB5_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-spnego-http-auth-nginx-module-config
 
@@ -105,7 +110,7 @@ HTTP_IP2LOCATION_GH_TUPLE=	ip2location:ip2location-nginx:7aa49ce:ip2location
 HTTP_IP2LOCATION_LIB_DEPENDS=	libIP2Location.so:net/ip2location
 HTTP_IP2LOCATION_VARS=		DSO_EXTMODS+=ip2location
 
-HTTP_IP2PROXY_GH_TUPLE=		ip2location:ip2proxy-nginx:f9815e3:ip2proxy
+HTTP_IP2PROXY_GH_TUPLE=		ip2location:ip2proxy-nginx:668288a:ip2proxy
 HTTP_IP2PROXY_LIB_DEPENDS=	libIP2Proxy.so:net/ip2proxy
 HTTP_IP2PROXY_VARS=		DSO_EXTMODS+=ip2proxy
 
@@ -131,8 +136,10 @@ HTTP_NOTICE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_http_notice_module.c \
 				${PATCHDIR}/extra-patch-nginx-notice-config
 HTTP_NOTICE_VARS=		DSO_EXTMODS+=notice
 
-HTTP_PUSH_GH_TUPLE=		slact:nchan:v1.2.6:push
+HTTP_PUSH_GH_TUPLE=		slact:nchan:v1.2.7:push
 HTTP_PUSH_VARS=			DSO_EXTMODS+=push
+HTTP_PUSH_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-nchan-store-private.h \
+				${PATCHDIR}/extra-patch-nchan-store-redis-redis_lua_commands.h
 
 HTTP_PUSH_STREAM_GH_TUPLE=	wandenberg:nginx-push-stream-module:0.5.4:pushstream
 HTTP_PUSH_STREAM_VARS=		DSO_EXTMODS+=pushstream
@@ -153,7 +160,7 @@ HTTP_SUBS_FILTER_VARS=		DSO_EXTMODS+=subs_filter
 
 HTTP_TARANTOOL_LIB_DEPENDS=	libmsgpuck.so:devel/msgpuck \
 				libyajl.so:devel/yajl
-HTTP_TARANTOOL_GH_TUPLE=	tarantool:nginx_upstream_module:27836e4:nginx_tarantool
+HTTP_TARANTOOL_GH_TUPLE=	tarantool:nginx_upstream_module:daccb2a:nginx_tarantool
 HTTP_TARANTOOL_VARS=		DSO_EXTMODS+=nginx_tarantool
 HTTP_TARANTOOL_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ngx_http_tarantool-config
 
@@ -164,13 +171,12 @@ HTTP_UPLOAD_PROGRESS_GH_TUPLE=	masterzen:nginx-upload-progress-module:afb2d31:up
 HTTP_UPLOAD_PROGRESS_VARS=	DSO_EXTMODS+=uploadprogress
 
 HTTP_UPSTREAM_CHECK_GH_TUPLE=		yaoweibin:nginx_upstream_check_module:9aecf15:upstreamcheck
+HTTP_UPSTREAM_CHECK_CONFIGURE_ON=	--add-module=${WRKSRC_upstreamcheck}
 HTTP_UPSTREAM_CHECK_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src-http-modules-ngx_http_upstream_hash_module.c \
 					${PATCHDIR}/extra-patch-src-http-modules-ngx_http_upstream_ip_hash_module.c \
 					${PATCHDIR}/extra-patch-src-http-modules-ngx_http_upstream_least_conn_module.c \
 					${PATCHDIR}/extra-patch-src-http-ngx_http_upstream_round_robin.c \
-					${PATCHDIR}/extra-patch-src-http-ngx_http_upstream_round_robin.h \
-					${PATCHDIR}/extra-patch-nginx_upstream_check_module-config
-HTTP_UPSTREAM_CHECK_VARS=		DSO_EXTMODS+=upstreamcheck
+					${PATCHDIR}/extra-patch-src-http-ngx_http_upstream_round_robin.h
 
 HTTP_UPSTREAM_FAIR_GH_TUPLE=		jaygooby:nginx-upstream-fair:10ecdcf:upstreamfair
 HTTP_UPSTREAM_FAIR_VARS=		DSO_EXTMODS+=upstreamfair
@@ -204,7 +210,7 @@ LUA_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
 LUA_RUN_DEPENDS=	lua-resty-core>0:www/lua-resty-core
 LUA_CONFIGURE_ENV=	LUAJIT_INC=${LOCALBASE}/include/luajit-2.1 \
 			LUAJIT_LIB=${LOCALBASE}/lib
-LUA_GH_TUPLE=		openresty:lua-nginx-module:v0.10.15:lua
+LUA_GH_TUPLE=		openresty:lua-nginx-module:v0.10.17:lua
 LUA_VARS=		DSO_EXTMODS+=lua
 
 LINK_GH_TUPLE=		Taymindis:nginx-link-function:3.2.3:link
@@ -224,15 +230,16 @@ NAXSI_NGINX_VER=	0.56
 NAXSI_GH_TUPLE=		nbs-system:naxsi:${NAXSI_NGINX_VER}:naxsi
 NAXSI_VARS=		DSO_EXTMODS+=naxsi NAXSI_SUBDIR=/naxsi_src
 
-NJS_GH_TUPLE=		nginx:njs:0.4.1:njs
+NJS_GH_TUPLE=		nginx:njs:0.4.4:njs
 NJS_VARS=		DSO_EXTMODS+=njs NJS_SUBDIR=/nginx
+NJS_USES=		libedit
 
 OPENTRACING_GH_TUPLE=		opentracing-contrib:nginx-opentracing:2d81c29:opentracing
 OPENTRACING_LIB_DEPENDS=	libopentracing.so:devel/libopentracing
 OPENTRACING_VARS=		DSO_EXTMODS+=opentracing OPENTRACING_SUBDIR=/opentracing
 OPENTRACING_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-nginx-opentracing-opentracing-config
 
-PASSENGER_NGINX_VER=	6.0.5
+PASSENGER_NGINX_VER=	6.0.6
 PASSENGER_CATEGORIES=	ruby
 PASSENGER_USE=		ruby=yes
 PASSENGER_BUILD_DEPENDS=${LOCALBASE}/bin/rake:devel/rubygem-rake

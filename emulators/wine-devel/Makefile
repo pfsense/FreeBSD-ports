@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	wine
-DISTVERSION=	5.11
+DISTVERSION=	5.17
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/Source \
@@ -65,7 +66,7 @@ OPTIONS_SUB=	yes
 
 DOSBOX_DESC=	Use DOSBox to run MS-DOS programs
 LIBXSLT_DESC=	Use libxslt (only used by msxml3.dll)
-STAGING_DESC=	Include the Wine Staging patchset
+STAGING_DESC=	Include the Wine Staging patchset (experimental)
 VKD3D_DESC=	Direct3D 12 support via Vulkan
 VULKAN_DESC=	Vulkan API support
 WINEMAKER_DESC=	Fully support winemaker (requires Perl)
@@ -103,12 +104,13 @@ OPENAL_CONFIGURE_WITH=	openal
 OPENAL_USES=		openal
 
 STAGING_MASTER_SITES=	https://github.com/wine-staging/wine-staging/archive/:staging
-COMP_DIST=	v${DISTVERSION}.tar.gz
-STAGING_DISTFILES=	${COMP_DIST}:staging
+STAGING_DIST=		v${DISTVERSION}.tar.gz
+STAGING_DISTFILES=	${STAGING_DIST}:staging
 STAGING_EXTRACT_DEPENDS=	bash:shells/bash \
 				git:devel/git \
 				autoconf>0:devel/autoconf
 STAGING_LIB_DEPENDS=	libtxc_dxtn.so:graphics/s2tc
+STAGING_BROKEN=		fails to compile: file.c:237:37: error: 'EXTATTR_NAMESPACE_USER' undeclared
 
 V4L_CONFIGURE_WITH=	v4l2
 V4L_BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
@@ -151,10 +153,9 @@ X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 CONFIGURE_ARGS+=	--enable-win64 --libdir=${PREFIX}/lib
 PLIST_SUB+=		WINE32="@comment " WINE64=""
 
-# Wine assumes a WoW64 package is available, however WoW64 is not yet
-# available on FreeBSD. Also fix the desktop file.
+# Wine assumes a WoW64 package is available, which is not the case on
+# FreeBSD yet.
 post-patch:
-	${REINPLACE_CMD} 's|/wine|/wine64|g' ${WRKSRC}/tools/wineapploader.in
 	${REINPLACE_CMD} '/Exec/s|wine|wine64|g' ${WRKSRC}/loader/wine.desktop
 
 .else
@@ -162,7 +163,7 @@ PLIST_SUB+=		WINE32="" WINE64="@comment "
 .endif
 
 post-extract-STAGING-on: fix-shebang
-	cd ${WRKSRC} && ${TAR} xf ${DISTDIR}/${COMP_DIST} --strip-components 1
+	cd ${WRKSRC} && ${TAR} xf ${DISTDIR}/${STAGING_DIST} --strip-components 1
 	cd ${WRKSRC} && bash ./patches/patchinstall.sh --backend=patch DESTDIR=${WRKSRC} --all
 
 pre-build:

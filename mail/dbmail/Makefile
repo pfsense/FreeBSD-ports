@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dbmail
-PORTVERSION=	3.2.4
+PORTVERSION=	3.2.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	mail
 
@@ -10,6 +10,8 @@ MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	SQL database-based mail system (POP3 and IMAP)
 
 LICENSE=	GPLv2
+
+BROKEN_aarch64=	Fails to link: missing sbrk
 
 LIB_DEPENDS=	libgmime-2.6.so:mail/gmime26 \
 		libzdb.so:databases/libzdb \

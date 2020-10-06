@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	dlib
-DISTVERSION=	19.20
+DISTVERSION=	19.21
 CATEGORIES=	science devel math python
 MASTER_SITES=	http://dlib.net/files/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -49,7 +49,12 @@ AVX_VARS_OFF=		avxargs="--no USE_AVX_INSTRUCTIONS"
 
 PYDISTUTILS_BUILDARGS=	--set BOOST_PYTHON_SUFFIX:STRING=${PYTHON_SUFFIX} ${X11ARGS} ${JPEGARGS} ${PNGARGS} ${GIFARGS} ${SQLITEARGS} ${BLASLAPACKARGS} ${AVXARGS} ${BLASLAPACK}
 
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/dlib.so
+.include <bsd.port.pre.mk>
 
-.include <bsd.port.mk>
+.if ${FLAVOR} == py27
+PLIST_SUB+=		PYTHON2="" PYTHON3="@comment "
+.else
+PLIST_SUB+=		PYTHON2="@comment " PYTHON3=""
+.endif
+
+.include <bsd.port.post.mk>

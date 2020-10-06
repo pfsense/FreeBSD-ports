@@ -3,6 +3,7 @@
 
 PORTNAME=	cavezofphear
 PORTVERSION=	0.5.1
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	http://www.x86.no/cavezofphear/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -19,6 +20,11 @@ BUILD_WRKSRC=	${WRKDIR}/${DISTNAME}/src
 USES=		gmake ncurses tar:bzip2
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}"
 ALL_TARGET=	phear
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 PORTDOCS=	ChangeLog README README-EDITOR TODO
 

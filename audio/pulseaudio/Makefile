@@ -6,10 +6,11 @@
 
 PORTNAME=	pulseaudio
 PORTVERSION=	13.0
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://freedesktop.org/software/pulseaudio/releases/
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Sound server for UNIX
 
 LICENSE=	LGPL21

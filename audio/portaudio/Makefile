@@ -3,13 +3,13 @@
 
 PORTNAME=	portaudio
 PORTVERSION=	19.6.0
-PORTREVISION=	4
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://www.portaudio.com/archives/
 DISTNAME=	pa_stable_v190600_20161030
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Portable cross-platform Audio API
 
 LICENSE=	MIT

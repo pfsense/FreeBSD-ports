@@ -2,37 +2,31 @@
 # $FreeBSD$
 
 PORTNAME=	todo
-PORTVERSION=	2.11.0
-DISTVERSIONPREFIX=	v
+PORTVERSION=	2.12.0
 CATEGORIES=	deskutils
+MASTER_SITES=	https://github.com/todotxt/todo.txt-cli/releases/download/v${PORTVERSION}/
+DISTNAME=	todo.txt_cli-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Todo.txt Manager
 
 LICENSE=	GPLv3
-LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	bash:shells/bash
 
-# bin/todo
-CONFLICTS_INSTALL=	deforaos-todo devtodo
+USES=		shebangfix
 
 NO_ARCH=	yes
 NO_BUILD=	yes
-USES=		shebangfix
 
 PLIST_FILES=	bin/todo \
 		etc/todo.cfg \
 		etc/bash_completion.d/todo
 
-GH_ACCOUNT=	ginatrapani
-GH_PROJECT=	todo.txt-cli
-USE_GITHUB=	yes
+# bin/todo
+CONFLICTS_INSTALL=	deforaos-todo devtodo
 
 SHEBANG_FILES=	todo.sh todo_completion
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|@DEV_VERSION@|${PORTVERSION}|' ${WRKSRC}/todo.sh
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/todo.sh ${STAGEDIR}${PREFIX}/bin/todo

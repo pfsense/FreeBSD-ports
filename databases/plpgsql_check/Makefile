@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	plpgsql_check
-PORTVERSION=	1.10.1
+PORTVERSION=	1.13.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 PKGNAMEPREFIX=	postgresql${PGSQL_VER_NODOT}-
@@ -13,11 +13,12 @@ COMMENT=	PostgreSQL extension to check PL/pgSQL code
 LICENSE=	UNKNOWN
 LICENSE_NAME=	postcardware
 LICENSE_FILE=	${WRKSRC}/LICENSE
-LICENSE_PERMS=	dist-mirror pkg-mirror dist-sell pkg-sell auto-accept
+LICENSE_PERMS=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
 
-USES=		gmake pgsql
+USES=		compiler:c11 gmake pgsql
 
 LLD_UNSAFE=	yes
+MAKE_ARGS=	CC="${CC}"
 WANT_PGSQL=	server
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION:R}

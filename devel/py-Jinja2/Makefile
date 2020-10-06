@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Jinja2
-PORTVERSION=	2.10.1
+PORTVERSION=	2.11.2
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,17 +12,18 @@ MAINTAINER=	nivit@FreeBSD.org
 COMMENT?=	Fast and easy to use stand-alone template engine
 
 LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE=	${WRKSRC}/LICENSE.rst
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MarkupSafe>=0.23:textproc/py-MarkupSafe@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MarkupSafe>=0.23:textproc/py-MarkupSafe@${PY_FLAVOR}
 
 NO_ARCH=	yes
-USES=		python
 .if empty(PKGNAMESUFFIX)
+USES=		python
 USE_PYTHON=	autoplist distutils
 .endif
 .if ${PKGNAMESUFFIX} == -doc
+USES=		gmake python:3.6+
 USE_PYTHON=	flavors
 .endif
 
@@ -40,13 +41,17 @@ PY2TO3_ARGS=	--fix=all --no-diffs --nobackups --verbose --write
 .include <bsd.port.pre.mk>
 
 .if ${PKGNAMESUFFIX} == "-doc"
-BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}sphinx18>=1.1.3:textproc/py-sphinx18@${PY_FLAVOR}
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}Pallets-Sphinx-Themes>=1.2.3:textproc/py-pallets-sphinx-themes@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}importlib-metadata>=0.23:devel/py-importlib-metadata@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sphinx-issues>=1.2.0:textproc/py-sphinx-issues@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sphinx>=1.1.3:textproc/py-sphinx@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sphinxcontrib-log-cabinet>=1.0.1:textproc/py-sphinxcontrib-log-cabinet@${PY_FLAVOR}
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
 PORTDOCS=	*
 PORT_OPTIONS:=	${PORT_OPTIONS:NEXAMPLES}
 
 do-build:
-	(cd ${WRKSRC}/docs && ${MAKE} SPHINXBUILD=sphinx-build-${PYTHON_VER} html)
+	(cd ${WRKSRC}/docs && ${MAKE_CMD} SPHINXBUILD=sphinx-build-${PYTHON_VER} html)
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	qtcreator
-DISTVERSION=	4.12.3
+DISTVERSION=	4.13.1
 CATEGORIES=	devel
 MASTER_SITES=	QT/official_releases/qtcreator/${DISTVERSION:R}/${DISTVERSION}
 DISTNAME=	qt-creator-opensource-src-${DISTVERSION}
@@ -32,6 +32,7 @@ USE_QT=		buildtools concurrent core declarative designer gui help \
 
 CXXFLAGS_powerpc=	-maltivec
 CXXFLAGS_powerpc64=	-maltivec
+CXXFLAGS_powerpc64le=	-maltivec
 
 # be paranoid and do not extract qbs (devel/qbs) copy from source tree
 EXTRACT_AFTER_ARGS+=	--exclude '${DISTNAME}/src/shared/qbs'

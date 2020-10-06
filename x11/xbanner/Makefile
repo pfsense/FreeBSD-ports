@@ -3,13 +3,19 @@
 
 PORTNAME=	xbanner
 PORTVERSION=	1.31
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11
 MASTER_SITES=	SUNSITE/X11/xutils
 DISTNAME=	XBanner${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Make your XDM login screen look beautiful
+
+# Fix build with -fno-common (llvm 11)
+CFLAGS+=	-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 USES=		xorg
 USE_XORG=	x11 xpm

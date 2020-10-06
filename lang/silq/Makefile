@@ -1,11 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	silq
-PORTVERSION=	20200621
+PORTVERSION=	20200919
+PORTREVISION=	1
 CATEGORIES=	lang math science
 
 MAINTAINER=	se@FreeBSD.org
-COMMENT=	Silq from ETH Zürich
+COMMENT=	Silq from ETH Zuerich
 
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -17,9 +18,9 @@ BUILD_DEPENDS=	ldmd2:lang/ldc
 
 USE_GITHUB=	yes
 
-GH_TUPLE=	eth-sri:silq:7331c54 \
-		tgehr:ast:3018b4b:ast/ast \
-		tgehr:util:27168af:util/util
+GH_TUPLE=	eth-sri:silq:b09da8a \
+		tgehr:ast:0e36dc2:ast/ast \
+		tgehr:util:eb42377:util/util
 
 OPTIONS_DEFINE=	EXAMPLES
 

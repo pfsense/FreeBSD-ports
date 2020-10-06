@@ -19,4 +19,13 @@ file name. To get the new download naming schema visit snort.org,
 and look at 'My Account' -> 'Subscriptions and Oinkcodes'
 EOM
 }
+{
+  type: upgrade
+  message: <<EOM
+In release 0.7.4 blacklist was renamed to blocklist.
+
+Please compare existing files under %%ETCDIR%%
+with the new *.sample files adjust them if required.
+EOM
+}
 ]

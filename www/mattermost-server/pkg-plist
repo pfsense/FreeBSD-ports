@@ -34,9 +34,11 @@ etc/mattermost/config.json.sample
 %%WWWDIR%%/templates/post_batched_post_generic.html
 %%WWWDIR%%/templates/post_body_full.html
 %%WWWDIR%%/templates/post_body_generic.html
+%%WWWDIR%%/templates/remove_expired_license.html
 %%WWWDIR%%/templates/reset_body.html
 %%WWWDIR%%/templates/signin_change_body.html
 %%WWWDIR%%/templates/unsupported_browser.html
 %%WWWDIR%%/templates/unsupported_browser.js
 %%WWWDIR%%/templates/verify_body.html
+%%WWWDIR%%/templates/warn_metric_ack.html
 %%WWWDIR%%/templates/welcome_body.html

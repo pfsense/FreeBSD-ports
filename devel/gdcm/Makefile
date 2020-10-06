@@ -23,11 +23,13 @@ VTK6_DESC=		Build VTK 6 integration classes
 VTK6_LIB_DEPENDS=	libvtkCommonCore-${VTK6_VERSION}.so:math/vtk6
 VTK6_CMAKE_ON=		-DGDCM_USE_VTK:BOOL=ON \
 			-DVTK_DIR:PATH=${LOCALBASE}/lib/vtk-${VTK6_VERSION}
+VTK6_USES=		gl
+VTK6_USE=		GL=glu
 
 # Change this when updating the port
 GDCM_MAJOR=	3
 GDCM_MINOR=	0
-GDCM_PATCH=	6
+GDCM_PATCH=	8
 
 # Change this whenever VTK is updated
 VTK6_VERSION=	6.2

@@ -5,7 +5,10 @@ DISTVERSION=	2.4.11
 CATEGORIES=	games
 MASTER_SITES=	https://github.com/irtimmer/moonlight-embedded/releases/download/v${DISTVERSION}/
 
-MAINTAINER=	tobik@FreeBSD.org
+PATCH_SITES=	https://github.com/irtimmer/moonlight-embedded/commit/
+PATCHFILES=	5b6639c8a76c4bbb5e0b4bcfe41b8df136608885.patch:-p1
+
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Gamestream client
 
 LICENSE=	GPLv3+

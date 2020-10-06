@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Test2-Harness
-PORTVERSION=	1.000019
+PORTVERSION=	1.000028
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:EXODIST
@@ -16,7 +16,7 @@ LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
-RUN_DEPENDS=	p5-Data-UUID>=1.148:devel/p5-Data-UUID \
+RUN_DEPENDS=	p5-Data-UUID>=0:devel/p5-Data-UUID \
 		p5-Importer>=0.025:devel/p5-Importer \
 		p5-Long-Jump>=0.000001:devel/p5-Long-Jump \
 		p5-Scope-Guard>=0:devel/p5-Scope-Guard \
@@ -42,6 +42,7 @@ RECOMMENDED_BUILD_DEPENDS=	p5-Cpanel-JSON-XS>=0:converters/p5-Cpanel-JSON-XS \
 			p5-IO-Pager>=1.00:devel/p5-IO-Pager \
 			p5-JSON-MaybeXS>=0:converters/p5-JSON-MaybeXS \
 			p5-Term-ANSIColor>=0:devel/p5-Term-ANSIColor \
+			p5-Test2-Plugin-DBIProfile>=0.002002:devel/p5-Test2-Plugin-DBIProfile \
 			p5-Test2-Plugin-IOEvents>=0.001001:devel/p5-Test2-Plugin-IOEvents
 RECOMMENDED_RUN_DEPENDS=p5-Cpanel-JSON-XS>=0:converters/p5-Cpanel-JSON-XS \
 			p5-Email-Stuffer>=0.016:mail/p5-Email-Stuffer \
@@ -49,6 +50,7 @@ RECOMMENDED_RUN_DEPENDS=p5-Cpanel-JSON-XS>=0:converters/p5-Cpanel-JSON-XS \
 			p5-IO-Pager>=1.00:devel/p5-IO-Pager \
 			p5-JSON-MaybeXS>=0:converters/p5-JSON-MaybeXS \
 			p5-Term-ANSIColor>=0:devel/p5-Term-ANSIColor \
+			p5-Test2-Plugin-DBIProfile>=0.002002:devel/p5-Test2-Plugin-DBIProfile \
 			p5-Test2-Plugin-IOEvents>=0.001001:devel/p5-Test2-Plugin-IOEvents
 
 .include <bsd.port.mk>

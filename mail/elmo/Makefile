@@ -3,7 +3,7 @@
 
 PORTNAME=	elmo
 PORTVERSION=	1.3.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -19,6 +19,11 @@ GNU_CONFIGURE=	yes
 USES=		iconv localbase ncurses shebangfix perl5 ssl
 SHEBANG_FILES=	src/elmoconf.pl
 USE_PERL5=	run
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 OPTIONS_DEFINE=	GPGME NLS
 OPTIONS_SUB=	yes

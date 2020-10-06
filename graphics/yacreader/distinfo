@@ -1,5 +1,3 @@
-TIMESTAMP = 1569658599
-SHA256 (yacreader-yacreader-9.6.2_GH0.tar.gz) = e58cd10071180c759f53d74ac7049105b8608e63661bd1b68bcbd8fc8a534a80
-SIZE (yacreader-yacreader-9.6.2_GH0.tar.gz) = 7482573
-SHA256 (1d38bd6ffcee.patch) = 784fa1496310f5cd84ecefb77dc345b54d70f13b86dd596c3386726bd074d2e8
-SIZE (1d38bd6ffcee.patch) = 1754
+TIMESTAMP = 1599912613
+SHA256 (yacreader-yacreader-9.7.1_GH0.tar.gz) = 3468f30746e4666743aef6e11fb65bb815c9b66437df42cf46cd93d1a6b34f30
+SIZE (yacreader-yacreader-9.7.1_GH0.tar.gz) = 2355570

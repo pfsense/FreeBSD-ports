@@ -2,6 +2,7 @@
 
 PORTNAME=	rt
 DISTVERSION=	4.4.4
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://download.bestpractical.com/pub/rt/release/
 PKGNAMESUFFIX=	44
@@ -12,11 +13,11 @@ COMMENT=	Industrial-grade ticketing system written in Perl
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS_INSTALL=	rt40-4.0* rt42-4.2* brlcad-[0-9]*
+CONFLICTS_INSTALL=	rt42-4.2* brlcad-[0-9]*
 
 NO_ARCH=	yes
 
-# See doc/web_deployment.pod for info on the choices of webserver /
+# See docs/web_deployment.pod for info on the choices of webserver /
 # webapp combinations.  Note: if using apache, apache-2.4+ is
 # recommended.  For deployment with nginx, use the SPAWN_FCGI method
 # or the builtin webserver with a FCGI handler.
@@ -28,7 +29,7 @@ NO_ARCH=	yes
 # successfully for medium sized deployments.  If you only want the
 # builtin webserver, simply deselect all of the web options.
 #
-# See doc/full_text_indexing.pod if you need to set up full text
+# See docs/full_text_indexing.pod if you need to set up full text
 # indexes on your ticket database.  PostgreSQL is
 # recommended in this case: the MYSQL / SphinxSearch combination
 # mentioned in the docs is currently unsupported in the ports, but see
@@ -44,8 +45,6 @@ OPTIONS_DEFAULT=	AP_MODFASTCGI GD GPG MYSQL
 
 USERS?=		www
 GROUPS?=	rt www
-
-RUN_DEPENDS+=	${LOCALBASE}/bin/jsmin:devel/jsmin
 
 .include "${.CURDIR}/Makefile.cpan"
 

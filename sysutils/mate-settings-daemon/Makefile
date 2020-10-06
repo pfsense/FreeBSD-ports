@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mate-settings-daemon
-PORTVERSION=	1.24.0
+PORTVERSION=	1.24.1
 CATEGORIES=	sysutils mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -10,7 +10,7 @@ DIST_SUBDIR=	mate
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	MATE settings daemon
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libdbus-1.so:devel/dbus \

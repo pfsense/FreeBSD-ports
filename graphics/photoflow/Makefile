@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	photoflow
-DISTVERSION=	0.2.8-1398
-PORTREVISION=	2
+DISTVERSION=	0.2.8.20200828
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,17 +15,21 @@ BROKEN_i386=	see https://github.com/aferrero2707/PhotoFlow/issues/192
 
 LIB_DEPENDS=	libexiv2.so:graphics/exiv2 \
 		libfftw3.so:math/fftw3 \
+		libfftw3f.so:math/fftw3-float \
+		libiptcdata.so:graphics/libiptcdata \
+		libIex.so:graphics/ilmbase \
+		libIlmImf.so:graphics/openexr \
 		liblcms2.so:graphics/lcms2 \
 		liblensfun.so:graphics/lensfun \
 		libtiff.so:graphics/tiff \
 		libpugixml.so:textproc/pugixml \
 		libvips.so:graphics/vips
 
-USES=		cmake compiler:c++11-lang desktop-file-utils gettext gnome jpeg pkgconfig
+USES=		cmake desktop-file-utils gettext gnome jpeg pkgconfig # compiler:c++11-lang
 USE_GITHUB=	yes
 GH_ACCOUNT=	aferrero2707
 GH_PROJECT=	PhotoFlow
-GH_TAGNAME=	d92c3989
+GH_TAGNAME=	8472024f
 USE_GNOME=	atkmm cairomm glib20 glibmm gtk20 gtkmm24 libsigc++20 pangomm
 
 CMAKE_OFF=	BUNDLED_LENSFUN
@@ -47,5 +51,12 @@ OCIO_CMAKE_BOOL=	OCIO_ENABLED
 OCIO_LIB_DEPENDS=	libOpenColorIO.so:graphics/opencolorio
 OCIO_VARS=		GH_TUPLE+=sobotka:filmic-blender:1.1.1:fb/../.build/data/filmic-blender \
 			GH_TUPLE+=imageworks:OpenColorIO-Configs:0bb079c08be410030669cbf5f19ff869b88af953:c/../.build/data/ocio-configs
+
+# clang-10 fails to compile photoflow because it bundles an old version of GMIC that clang-10 doesn't like: https://github.com/aferrero2707/PhotoFlow/issues/220
+LLVM_VERSION=	90
+BUILD_DEPENDS=	clang${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
+CC=		clang${LLVM_VERSION}
+CXX=		clang++${LLVM_VERSION}
+CPP=		clang-cpp${LLVM_VERSION}
 
 .include <bsd.port.mk>

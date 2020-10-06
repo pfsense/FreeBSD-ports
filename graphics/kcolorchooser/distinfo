@@ -1,3 +1,3 @@
-TIMESTAMP = 1591712685
-SHA256 (KDE/applications/20.04.2/kcolorchooser-20.04.2.tar.xz) = 155a01e032fbb5c3bcd537ed872fcf09bc6f001b5d01c867e6ae4f10b07967de
-SIZE (KDE/applications/20.04.2/kcolorchooser-20.04.2.tar.xz) = 21828
+TIMESTAMP = 1598945426
+SHA256 (KDE/release-service/20.08.1/kcolorchooser-20.08.1.tar.xz) = 20cae01bd5e8c824f8e7900badd0d66464c363a749a1ce9fe6fe3a1e31c99ade
+SIZE (KDE/release-service/20.08.1/kcolorchooser-20.08.1.tar.xz) = 27064

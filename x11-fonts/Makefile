@@ -99,7 +99,6 @@
     SUBDIR += font-winitzki-cyrillic
     SUBDIR += font-xfree86-type1
     SUBDIR += fontconfig
-    SUBDIR += fontconfig-reference
     SUBDIR += fontmatrix
     SUBDIR += fontpreview
     SUBDIR += fonts-indic
@@ -141,6 +140,7 @@
     SUBDIR += libXfont2
     SUBDIR += libXft
     SUBDIR += liberation-fonts-ttf
+    SUBDIR += libertinus
     SUBDIR += libfontenc
     SUBDIR += linden-hill
     SUBDIR += linux-c7-fontconfig
@@ -167,7 +167,9 @@
     SUBDIR += nexfontsel
     SUBDIR += noto
     SUBDIR += noto-basic
+    SUBDIR += noto-emoji
     SUBDIR += noto-extra
+    SUBDIR += noto-hk
     SUBDIR += noto-jp
     SUBDIR += noto-kr
     SUBDIR += noto-sc

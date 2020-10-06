@@ -3,7 +3,11 @@
 
 PORTNAME=	csound
 DISTVERSION=	6.14.0
+PORTREVISION=	2
 CATEGORIES=	audio lang
+
+PATCH_SITES=	https://github.com/csound/csound/commit/
+PATCHFILES=	c444e8f752c3acc31d364b901204e09eae2e791e.patch:-p1
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Sound synthesizer
@@ -17,7 +21,7 @@ BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
 LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate \
 		libsndfile.so:audio/libsndfile
 
-USES=		alias bison cmake compiler:c++11-lib eigen:3 localbase ncurses python:2.7
+USES=		alias bison cmake compiler:c++11-lib eigen:3 localbase ncurses python
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 

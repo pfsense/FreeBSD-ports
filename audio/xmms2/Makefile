@@ -4,7 +4,7 @@
 PORTNAME?=	xmms2
 PORTVERSION=	0.8
 DISTVERSIONSUFFIX=	DrO_o
-PORTREVISION?=	34
+PORTREVISION?=	35
 CATEGORIES?=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}%20${DISTVERSIONSUFFIX}
 
@@ -199,12 +199,6 @@ EXTRA_PATCHES+=	${FILESDIR}/extra-patch-src-clients-vistest-wscript
 
 .endif # !XMMS2_SLAVE
 
-.include <bsd.port.pre.mk>
-
-.if defined(XMMS2_SLAVE) && ${XMMS2_SLAVE} == perl && ${PERL_LEVEL} >= 503100
-BUILD_DEPENDS+=  p5-Pod-Parser>=0:textproc/p5-Pod-Parser
-.endif
-
 # Force to nothing to avoid bsd.openssl.mk adding definitions
 # to it when AIRPLAY option is active, waf does not understand it anyway.
 MAKE_ARGS=
@@ -227,4 +221,4 @@ post-install:
 	${FIND} ${STAGEDIR}${PREFIX}/lib -name '*.so*' | ${XARGS} ${STRIP_CMD} 
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

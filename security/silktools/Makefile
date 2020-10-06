@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	silktools
-PORTVERSION=	3.19.0
+PORTVERSION=	3.19.1
 CATEGORIES=	security net
 MASTER_SITES=	http://tools.netsa.cert.org/releases/
 DISTNAME=	silk-${PORTVERSION}
@@ -17,7 +17,8 @@ LICENSE_FILE_GPLR=	${WRKSRC}/LICENSE.txt
 LICENSE_PERMS_GPLR=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 LIB_DEPENDS=	libfixbuf.so:net/libfixbuf
-BUILD_DEPENDS=	p5-DBI>=0:databases/p5-DBI
+BUILD_DEPENDS=	p5-DBI>=0:databases/p5-DBI \
+		${P5_POD_PARSER}
 RUN_DEPENDS=	p5-DBI>=0:databases/p5-DBI
 
 GNU_CONFIGURE=	yes

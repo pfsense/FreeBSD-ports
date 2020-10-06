@@ -1,11 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	syncthing
-PORTVERSION=	1.4.0
+PORTVERSION=	1.9.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/syncthing/syncthing/releases/download/v${PORTVERSION}/
 DISTNAME=	${PORTNAME}-source-${DISTVERSIONPREFIX}${PORTVERSION}
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Encrypted file sync tool

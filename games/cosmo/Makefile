@@ -3,7 +3,7 @@
 
 PORTNAME=	cosmo
 PORTVERSION=	2.0.4
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	http://hanzubon.jp/mirrors/Vine/%SUBDIR%/ \
 		http://ftp.jaist.ac.jp/pub/Linux/Vine/%SUBDIR%/ \
@@ -24,6 +24,11 @@ WRKSRC=		${WRKDIR}/cosmo2
 DIST_SUBDIR=	cosmo
 USES=		imake:notall,noman xorg
 USE_XORG=	x11 xext
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/X11/cosmo

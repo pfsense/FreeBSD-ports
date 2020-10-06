@@ -1,8 +1,9 @@
-Rename PREFIX to DATADIR as its purpose is only to find data files.
+Rename PREFIX to DATADIR as its only purpose is to access data files
+(and avoid conflict with FreeBSD PREFIX, which has another meaning)
 
---- src/game.c.orig	2014-11-17 19:06:17.227366945 +0100
-+++ src/game.c	2014-11-17 19:06:27.493911819 +0100
-@@ -3470,9 +3470,9 @@
+--- src/game.c.orig	2020-09-22 22:08:35 UTC
++++ src/game.c
+@@ -3405,9 +3405,9 @@ int app_main(int argc, char const * const argv[])
      }
  #endif
  

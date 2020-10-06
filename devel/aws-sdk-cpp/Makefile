@@ -1,19 +1,18 @@
 # $FreeBSD$
 
 PORTNAME=	aws-sdk-cpp
-PORTVERSION=	1.7.312
-PORTREVISION=	1
+PORTVERSION=	1.8.46
 CATEGORIES=	devel
 
 MAINTAINER=	danilo@FreeBSD.org
-COMMENT=	C++11 interface for Amazon Web Services (AWS)
+COMMENT=	C++ interface for Amazon Web Services (AWS)
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_aarch64=		fails to build: runaway process
 BROKEN_armv6=		fails to build: runaway process
 BROKEN_armv7=		fails to build: runaway process
+BROKEN_i386=		fails to build: compiler runs out of memory
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpulse.so:audio/pulseaudio \
@@ -37,16 +36,9 @@ CXXFLAGS+=	-Wno-error -Wno-c11-extensions
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == i386
-USE_GCC=        yes
-LDFLAGS+=	-latomic
-.endif
-
 post-patch:
 	${REINPLACE_CMD} -e "s,/pkgconfig,/../libdata/pkgconfig,g" \
 		${WRKSRC}/aws-cpp-sdk-core/CMakeLists.txt \
 		${WRKSRC}/cmake/utilities.cmake
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

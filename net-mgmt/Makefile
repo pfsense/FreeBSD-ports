@@ -15,6 +15,7 @@
     SUBDIR += arpscan
     SUBDIR += arpwatch
     SUBDIR += arts++
+    SUBDIR += bandwhich
     SUBDIR += bandwidthd
     SUBDIR += bgpq3
     SUBDIR += bgpq4
@@ -54,7 +55,6 @@
     SUBDIR += coovachilli
     SUBDIR += cowpatty
     SUBDIR += cricket
-    SUBDIR += crmsh
     SUBDIR += darkstat
     SUBDIR += devmon
     SUBDIR += devmon-templates
@@ -118,7 +118,6 @@
     SUBDIR += klg
     SUBDIR += lg
     SUBDIR += librenms
-    SUBDIR += librenms-agent
     SUBDIR += libsmi
     SUBDIR += lldpd
     SUBDIR += mbrowse
@@ -309,7 +308,6 @@
     SUBDIR += py-pyIOSXR
     SUBDIR += py-pyang
     SUBDIR += py-pyeapi
-    SUBDIR += py-pynsca
     SUBDIR += py-pynxos
     SUBDIR += py-pysmi
     SUBDIR += py-pysnmp
@@ -317,7 +315,6 @@
     SUBDIR += py-pyzabbix
     SUBDIR += py-snmp_passpersist
     SUBDIR += py-snmpclitools
-    SUBDIR += py-yapsnmp
     SUBDIR += rackmonkey
     SUBDIR += rancid3
     SUBDIR += rate
@@ -372,6 +369,7 @@
     SUBDIR += unbound_exporter
     SUBDIR += unifi-devel
     SUBDIR += unifi-lts
+    SUBDIR += unifi-poller
     SUBDIR += unifi5
     SUBDIR += virt-viewer
     SUBDIR += wdiag

@@ -1,0 +1,22 @@
+--- CMakeLists.txt.orig	2020-06-02 09:41:46 UTC
++++ CMakeLists.txt
+@@ -171,15 +171,19 @@ add_subdirectory(po)
+ 
+ 
+ # build docs
++if (FREEBSD_INSTALL_DOCS)
+ add_subdirectory(docs/libdnf)
+ if(WITH_BINDINGS)
+     add_subdirectory(docs/hawkey)
+ endif()
++endif()
+ 
+ 
+ # build tests
++if (BUILD_TESTING)
+ enable_testing()
+ add_subdirectory(tests)
++endif()
+ if(WITH_BINDINGS)
+     add_subdirectory(python/hawkey)
+ endif()

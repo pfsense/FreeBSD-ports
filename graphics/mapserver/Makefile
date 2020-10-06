@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=		mapserver
-PORTVERSION=		7.6.0
-PORTREVISION=	1
+PORTVERSION=		7.6.1
 CATEGORIES=		graphics www geography
 MASTER_SITES=		https://download.osgeo.org/mapserver/
 
@@ -47,7 +46,7 @@ WCS_DESC=		WCS Server support
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPYTHON}
-USES+=			python:2.7
+USES+=			python
 BUILD_DEPENDS+=		swig:devel/swig
 CMAKE_ARGS+=		-DWITH_PYTHON=yes
 PLIST_SUB+=		PYTHON=""

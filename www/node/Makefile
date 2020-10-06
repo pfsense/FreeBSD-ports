@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	node
-PORTVERSION=	14.11.0
 DISTVERSIONPREFIX=	v
+DISTVERSION=	14.13.0
 CATEGORIES=	www
-MASTER_SITES=	http://nodejs.org/dist/v${PORTVERSION}/
+MASTER_SITES=	http://nodejs.org/dist/v${DISTVERSION}/
 
 MAINTAINER=	bhughes@FreeBSD.org
 COMMENT=	V8 JavaScript for client and server
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_SSL=		libressl libressl-devel
 BROKEN_SSL_REASON=	Node.js 14.x requires OpenSSL 1.1.x or the BUNDLED_SSL option enabled
-ONLY_FOR_ARCHS=		aarch64 amd64 armv6 armv7 i386 powerpc64
+ONLY_FOR_ARCHS=		aarch64 amd64 armv6 armv7 i386 powerpc64 powerpc64le
 
 OPTIONS_DEFINE=		BUNDLED_SSL DOCS NLS DTRACE
 OPTIONS_DEFAULT=	DTRACE
@@ -70,8 +70,8 @@ MAKE_ENV+=	CC.host=${CC} CFLAGS.host="${CFLAGS}" \
 		LINK.host=${CXX} LDFLAGS.host="${LDFLAGS}"
 
 BUILD_DEPENDS+=	brotli>=1.0.9,1:archivers/brotli \
-		c-ares>=1.16.0:dns/c-ares \
-		libuv>=1.39.0:devel/libuv \
+		c-ares>=1.16.1:dns/c-ares \
+		libuv>=1.40.0:devel/libuv \
 		libnghttp2>=1.41.0:www/libnghttp2 \
 		objdump:devel/binutils
 LIB_DEPENDS+=	libbrotlidec.so:archivers/brotli \

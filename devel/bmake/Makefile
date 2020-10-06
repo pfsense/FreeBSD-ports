@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bmake
-PORTVERSION=	20200606
+PORTVERSION=	20200902
 CATEGORIES=	devel
 MASTER_SITES=	ftp://ftp.netbsd.org/pub/NetBSD/misc/sjg/
 
@@ -16,6 +16,10 @@ PORTSCOUT=	skipv:200910007
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 MAKE_ENV+=	CONFIG_SITE=${CONFIG_SITE}
+
+.if defined(BATCH)
+EXTRA_PATCHES=	${FILESDIR}/extrapatch-unit-tests_Makefile
+.endif
 
 post-patch:	.SILENT
 	${REINPLACE_CMD} 's/^\.Nx/NetBSD/' ${WRKDIR}/bmake/bmake.1

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	abyss
-DISTVERSION=	2.2.4
+DISTVERSION=	2.2.5
 CATEGORIES=	biology
 
 MAINTAINER=	yuri@FreeBSD.org

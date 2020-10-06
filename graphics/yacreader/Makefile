@@ -1,12 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	yacreader
-DISTVERSION=	9.6.2
-PORTREVISION=	6
+DISTVERSION=	9.7.1
 CATEGORIES=	graphics
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	1d38bd6ffcee.patch:-p1
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Yet another comic reader

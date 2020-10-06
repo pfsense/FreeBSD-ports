@@ -3,7 +3,7 @@
 
 PORTNAME=	viewvc
 DISTVERSION=	1.2.1
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	devel python
 
 MAINTAINER=	ohauer@FreeBSD.org
@@ -22,24 +22,22 @@ OPTIONS_DEFAULT=	WEBSRV APACHE SVN
 
 OPTIONS_SINGLE=		WEBSRV APMOD
 OPTIONS_SINGLE_WEBSRV=	APACHE LIGHTTPD
-OPTIONS_SINGLE_APMOD=	MODPYTHON35 MODWSGI
+OPTIONS_SINGLE_APMOD=	MODWSGI
 
 WEBSRV_DESC=		Enable web server support
 APMOD_DESC=		depend on Apache module
 
 MODWSGI_DESC=		Add mod_wsgi to the list of package dependencies
-MODPYTHON35_DESC=	Add mod_python35 to the list of package dependencies
 MYSQL_DESC=		Bonsai-like repository query facilities
 
 APACHE_USE=		APACHE_RUN=24+
 LIGHTTPD_RUN_DEPENDS=	lighttpd:www/lighttpd
-MODPYTHON35_RUN_DEPENDS=${APACHE_PKGNAMEPREFIX}mod_python35>=3.5:www/mod_python35
 MODWSGI_RUN_DEPENDS=	${APACHE_PKGNAMEPREFIX}${PYTHON_PKGNAMEPREFIX}mod_wsgi>=4.4.13:www/mod_wsgi4@${PY_FLAVOR}
 MYSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=0:databases/py-MySQLdb@${PY_FLAVOR}
 
 SVN_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}subversion-lts>=0:devel/py-subversion@${PY_FLAVOR}
 
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}pygments>=1.6:textproc/py-pygments@${PY_FLAVOR}
+RUN_DEPENDS+=		${PY_PYGMENTS}
 
 .include <bsd.port.options.mk>
 

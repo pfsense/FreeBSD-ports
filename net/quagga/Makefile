@@ -7,7 +7,7 @@ PORTREVISION=	8
 CATEGORIES=	net
 MASTER_SITES=	SAVANNAH
 
-MAINTAINER=	pi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free RIPv1, RIPv2, OSPFv2, BGP4, IS-IS route software
 
 LICENSE=	GPLv2+
@@ -15,11 +15,13 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	gawk:lang/gawk
 
-CONFLICTS=	frr5 frr6 frr7 openbgpd pimd zebra
-
 USES=		compiler:c11 cpe gmake libtool makeinfo \
 		perl5 readline ssl
+
+CONFLICTS=	frr7 openbgpd pimd zebra
+
 GNU_CONFIGURE=	yes
+CFLAGS+=	-fcommon
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 USE_PERL5=	build

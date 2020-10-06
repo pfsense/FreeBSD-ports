@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	sdl2
-PORTVERSION=	2.0.10
-PORTREVISION=	1
+PORTVERSION=	2.0.12
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	https://www.libsdl.org/release/
 DISTNAME=	SDL2-${PORTVERSION}
@@ -15,6 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 GNU_CONFIGURE=	yes
 USES=		gmake iconv libtool localbase:ldflags pathfix pkgconfig
+USE_CSTD=	c99
 USE_LDCONFIG=	yes
 
 CONFIGURE_ARGS+=	--disable-arts \
@@ -126,6 +127,12 @@ UDEV_LIB_DEPENDS=		libudev.so:devel/libudev-devd
 UDEV_BUILD_DEPENDS=		${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 
 .include <bsd.port.options.mk>
+
+# Similar to x11/pixman
+.if ${ARCH} == "armv6" || ${ARCH} == "armv7"
+BUILD_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
+CFLAGS+=	-B${LOCALBASE}/bin -no-integrated-as
+.endif
 
 .if ${PORT_OPTIONS:MALSA}
 .if !${PORT_OPTIONS:MSDL_AUDIO}

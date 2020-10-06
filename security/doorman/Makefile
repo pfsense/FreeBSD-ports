@@ -3,7 +3,7 @@
 
 PORTNAME=	doorman
 PORTVERSION=	0.81
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -23,6 +23,11 @@ SHEBANG_FILES=	ipfw_add ipfw_delete \
 		pfctl_add pfctl_delete
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	installdirs install-exec install-data
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 SUB_FILES=	pkg-message doormand.cf.EXAMPLE
 USE_RC_SUBR=	doorman

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	efl
-DISTVERSION=	1.20.7
-PORTREVISION=	25
+DISTVERSION=	1.24.3
+PORTREVISION=	3
 CATEGORIES=	devel enlightenment
 MASTER_SITES=	http://download.enlightenment.org/rel/libs/${PORTNAME}/
 DIST_SUBDIR=	enlightenment
@@ -14,186 +14,312 @@ COMMENT=	Enlightenment Foundation Libraries
 LICENSE=	BSD2CLAUSE LGPL21
 LICENSE_COMB=	multi
 
+BUILD_DEPENDS=	checkmk:devel/check
 LIB_DEPENDS=	libgif.so:graphics/giflib \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libdbus-1.so:devel/dbus \
+		libcurl.so:ftp/curl \
 		libsndfile.so:audio/libsndfile
+RUN_DEPENDS=	update-mime-database:misc/shared-mime-info
 
 # lib/libeio.so.1
 CONFLICTS_INSTALL=	libeio
 
-GNU_CONFIGURE=	yes
-USES=		autoreconf compiler:c++14-lang gettext-tools gmake gnome iconv \
-		jpeg libtool pathfix pkgconfig python:2.7,run shared-mime-info \
+USES=		compiler:c++14-lang gettext-tools gnome iconv \
+		jpeg libtool meson ninja ssl pathfix pkgconfig python:3.5+ shared-mime-info \
 		shebangfix tar:xz xorg
-SHEBANG_FILES=	src/scripts/eina/eina-bench-cmp
+SHEBANG_FILES=  src/tests/elementary/spec/generator.py \
+		src/bin/exactness/exactness_play.in \
+		src/bin/exactness/exactness_record.in
 USE_XORG=	x11 xcb xcursor xcomposite xdamage xext xfixes xi xinerama \
 		xrandr xrender xtst xscrnsaver
 USE_LDCONFIG=	yes
 
-CONFIGURE_ARGS=	--with-profile=release \
-		--enable-multisense \
-		--disable-systemd \
-		--disable-elput \
-		--disable-cserve \
-		--enable-i-really-know-what-i-am-doing-and-that-this-will-probably-break-things-and-i-will-fix-them-myself-and-send-patches-abb
+MESON_ARGS=	-Dsystemd=false -Deeze=false
+
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 INSTALLS_ICONS=	yes
 
 PLIST_SUB=	BRANCHVERSION=${PORTVERSION:R} PORTVERSION=${PORTVERSION}
 
-OPTIONS_DEFINE=		AVAHI FRIBIDI HARFBUZZ NLS PHYSICS PULSEAUDIO SSL WAYLAND WAYLAND_EGL
-OPTIONS_GROUP=		EMOTION INPUT LOADER
-OPTIONS_GROUP_EMOTION=	GSTREAMER LIBXINE V4L VLC
-OPTIONS_GROUP_INPUT=	IBUS SCIM
+OPTIONS_DEFINE=		AVAHI FRIBIDI HARFBUZZ NLS PHYSICS PULSEAUDIO SDL VNC EFLONE EXAMPLES DOXYGEN WAYLAND
+OPTIONS_GROUP=		EMOTION INPUT LOADER BINDINGS
+OPTIONS_GROUP_EMOTION=	GSTREAMER V4L
+OPTIONS_GROUP_INPUT=	IBUS SCIM XIM
 OPTIONS_GROUP_LOADER=	OPENJPEG PDF PS RAW SVG WEBP XCF
-OPTIONS_RADIO=		ENGINE
-OPTIONS_RADIO_ENGINE=	OPENGL OPENGLES SDL
-OPTIONS_DEFAULT=	FRIBIDI HARFBUZZ PHYSICS PULSEAUDIO SSL GSTREAMER PDF SVG OPENGL
+OPTIONS_GROUP_BINDINGS=	LUA CXX
+OPTIONS_GROUP_WAYLAND=	WAYLAND
+OPTIONS_SINGLE=		CRYPTO ENGINE LUAL
+OPTIONS_SINGLE_CRYPTO=	OPENSSL GNUTLS
+OPTIONS_SINGLE_ENGINE=	OPENGL OPENGLES NONE
+OPTIONS_SINGLE_LUAL=	LUAJIT LUALANG
+OPTIONS_DEFAULT=	FRIBIDI HARFBUZZ PHYSICS PULSEAUDIO EFLONE EXAMPLES GSTREAMER V4L SCIM XIM \
+			OPENSSL OPENJPEG PDF PS RAW SVG WEBP XCF OPENGL LUAJIT CXX
+OPTIONS_EXCLUDE_i386=	EXAMPLES
+OPTIONS_DEFAULT_aarch64=	LUALANG
+OPTIONS_DEFAULT_powerpc64=	LUALANG
+OPTIONS_DEFAULT_powerpc64le=	LUALANG
+OPTIONS_EXCLUDE_aarch64=	LUAJIT
+OPTIONS_EXCLUDE_powerpc64=	LUAJIT
+OPTIONS_EXCLUDE_powerpc64le=	LUAJIT
 OPTIONS_SUB=		yes
 
 HARFBUZZ_DESC=		OpenType text shaping engine
-PHYSICS_DESC=		Physics effects
-WAYLAND_DESC=		Wayland backend support
-WAYLAND_EGL_DESC=	Wayland-EGL backend support
-VLC_DESC=		Multimedia support by VLC
+PHYSICS_DESC=		Physics engine (bullet)
+EFLONE_DESC=		Create EFL-One library (single file library)
+VNC_DESC=		VNC Server support
 IBUS_DESC=		Intelligent Input Bus
 SCIM_DESC=		Smart Common Input Method
+XIM_DESC=		X Input Method
+SVG_DESC=		Vector graphics support
 XCF_DESC=		Gimp image format support
+LUAL_DESC=		LUA
+LUALANG_DESC=		Use Lua
+LUAJIT_DESC=		Use Luajit
 OPENGLES_DESC=		2D/3D rendering support via OpenGL ES
+NONE_DESC=		No acceleration, software only
+LUA_DESC=		Lua Bindings
+CXX_DESC=		C++ Bindings
+EXAMPLES_DESC=		Build examples of using EFL
 
-AVAHI_LIB_DEPENDS=		libavahi-client.so:net/avahi-app
-AVAHI_CONFIGURE_ENABLE=		avahi
+AVAHI_LIB_DEPENDS=	libavahi-client.so:net/avahi-app
+AVAHI_MESON_TRUE=	avahi
 
-FRIBIDI_LIB_DEPENDS=		libfribidi.so:converters/fribidi
-FRIBIDI_CONFIGURE_ENABLE=	fribidi
+FRIBIDI_LIB_DEPENDS=	libfribidi.so:converters/fribidi
+FRIBIDI_MESON_TRUE=	fribidi
 
-HARFBUZZ_LIB_DEPENDS=		libharfbuzz.so:print/harfbuzz
-HARFBUZZ_CONFIGURE_ENABLE=	harfbuzz
+HARFBUZZ_LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
+HARFBUZZ_MESON_TRUE=	harfbuzz
 
 NLS_USES=			gettext-runtime
-NLS_CONFIGURE_ENABLE=		nls
+NLS_MESON_TRUE=			nls
 
 PHYSICS_LIB_DEPENDS=		libBulletDynamics.so:devel/bullet
-PHYSICS_CONFIGURE_ENABLE=	physics
+PHYSICS_MESON_TRUE=		physics
 
 PULSEAUDIO_LIB_DEPENDS=		libpulse.so:audio/pulseaudio
-PULSEAUDIO_CONFIGURE_ENABLE=	pulseaudio
+PULSEAUDIO_MESON_TRUE=		pulseaudio
 
-WAYLAND_BROKEN=			ERROR: epoll_create() is deprecated, use epoll_create1(EPOLL_CLOEXEC).
+EFLONE_MESON_TRUE=		efl-one
+
+EXAMPLES_MESON_TRUE=		build-examples
+
+DOXYGEN_BUILD_DEPENDS=		doxygen:devel/doxygen
+# PR 247427
+DOXYGEN_PREVENTS=		OPENJPEG
+DOXYGEN_PREVENTS_MSG=		devel/doxygen installs graphics/openjpeg15 which breaks build of all ports that depend on graphics/openjpeg
+
+VNC_MESON_TRUE=			vnc-server
+VNC_LIB_DEPENDS=		libvncserver.so:net/libvncserver
+
 WAYLAND_BUILD_DEPENDS=		wayland-protocols>=1.7:graphics/wayland-protocols
 WAYLAND_LIB_DEPENDS=		libepoll-shim.so:devel/libepoll-shim \
-				libxkbcommon.so:x11/libxkbcommon \
-				libwayland-client.so:graphics/wayland \
-				libwayland-cursor.so:graphics/wayland
+		libxkbcommon.so:x11/libxkbcommon \
+		libwayland-client.so:graphics/wayland \
+		libwayland-cursor.so:graphics/wayland
 WAYLAND_CFLAGS=			-I${LOCALBASE}/include/libepoll-shim
 WAYLAND_LDFLAGS=		-lepoll-shim
-WAYLAND_CONFIGURE_ENABLE=	wayland
-
-WAYLAND_EGL_LIB_DEPENDS=	libwayland-egl.so:graphics/wayland
-WAYLAND_EGL_CONFIGURE_ENABLE=	egl
-WAYLAND_EGL_USE=		GL=egl
-WAYLAND_EGL_IMPLIES=		WAYLAND OPENGLES
+WAYLAND_MESON_TRUE=		wl
+WAYLAND_BROKEN=			Wayland bits compile but don't yet work at runtime
 
 GSTREAMER_USE=			GSTREAMER1=core
-GSTREAMER_CONFIGURE_ENABLE=	gstreamer1
-
-LIBXINE_LIB_DEPENDS=		libxine.so:multimedia/libxine
-LIBXINE_CONFIGURE_ENABLE=	xine
+GSTREAMER_MESON_TRUE=		gstreamer
 
 V4L_BUILD_DEPENDS=		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
-V4L_CONFIGURE_ENABLE=		v4l2
-
-VLC_LIB_DEPENDS=		libvlc.so:multimedia/vlc
-VLC_CONFIGURE_WITH=		generic_vlc
+V4L_MESON_TRUE=			v4l2
 
 IBUS_LIB_DEPENDS=		libibus-1.0.so:textproc/ibus
+IBUS_USES=			gnome
+IBUS_USE=			GNOME=glib20
+IBUS_MESON_TRUE=		glib
 
 SCIM_LIB_DEPENDS=		libscim-1.0.so:textproc/scim
-SCIM_CONFIGURE_ENABLE=		scim
 
-OPENJPEG_LIB_DEPENDS=		libopenjpeg.so:graphics/openjpeg15
-OPENJPEG_CONFIGURE_ENABLE=	image-loader-jp2k
+OPENJPEG_LIB_DEPENDS=		libopenjp2.so:graphics/openjpeg
+# PR 247427
+OPENJPEG_PREVENTS=		DOXYGEN
+OPENJPEG_PREVENTS_MSG=		devel/doxygen installs graphics/openjpeg15 which breaks build of all ports that depend on graphics/openjpeg
+
+GNUTLS_LIB_DEPENDS=		libgcrypt.so:security/libgcrypt \
+				libgnutls.so:security/gnutls
+GNUTLS_MESON_ON=		-Dcrypto=gnutls
+GNUTLS_MESON_OFF=		-Dcrypto=openssl
+GNUTLS_CFLAGS=			-I${LOCALBASE}/include/gnutls/
+GNUTLS_BROKEN=			GNUTLS option is broken by the upstream bug: https://phab.enlightenment.org/T8807
 
 PDF_LIB_DEPENDS=		libpoppler.so:graphics/poppler
-PDF_CONFIGURE_ENABLE=		poppler
 
 PS_LIB_DEPENDS=			libspectre.so:print/libspectre
-PS_CONFIGURE_ENABLE=		spectre
 
 RAW_LIB_DEPENDS=		libraw.so:graphics/libraw
-RAW_CONFIGURE_ENABLE=		libraw
 
+SVG_USES=			gnome
 SVG_USE=			GNOME=cairo GNOME=librsvg2
-SVG_CONFIGURE_ENABLE=		librsvg
 
 WEBP_LIB_DEPENDS=		libwebp.so:graphics/webp
-WEBP_CONFIGURE_ENABLE=		image-loader-webp
 
-XCF_CONFIGURE_ENABLE=		xcf
+LUAJIT_BUILD_DEPENDS=		luajit:lang/luajit
+LUAJIT_RUN_DEPENDS=		luajit:lang/luajit
+LUAJIT_MESON_ON=		-Dlua-interpreter=luajit
+LUAJIT_PREVENTS=		LUALANG
+
+LUALANG_USES=			lua:51,build,run
+LUALANG_MESON_ON=		-Dlua-interpreter=lua
+LUALANG_PREVENTS=		LUAJIT
 
 OPENGL_USES=			gl
 OPENGL_USE=			GL=gl
+OPENGL_MESON_ON=		-Dopengl=full
+OPENGL_PREVENTS=		OPENGLES NONE
 
 OPENGLES_USES=			gl
 OPENGLES_USE=			GL=glesv2
-OPENGLES_CONFIGURE_ON=		--with-opengl=es --enable-egl
+OPENGLES_MESON_ON=		-Dopengl=es-egl
+OPENGLES_PREVENTS=		OPENGL NONE
+
+NONE_MESON_ON=			-Dopengl=none
+NONE_PREVENTS=			OPENGL OPENGLES
 
 SDL_USES=			sdl
 SDL_USE=			SDL=sdl2
-SDL_CONFIGURE_ENABLE=		sdl
+SDL_MESON_TRUE=			sdl
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MPULSEAUDIO}
-PLIST_SUB+=			AUDIO=""
+ECORE-IMF-LOADERS-DISABLER-BASE=	-Decore-imf-loaders-disabler=
+ECORE-IMF-LOADERS-DISABLER:=		${ECORE-IMF-LOADERS-DISABLER-BASE}
+
+.if empty(PORT_OPTIONS:MIBUS)
+ECORE-IMF-LOADERS-DISABLER:=	"${ECORE-IMF-LOADERS-DISABLER-BASE}ibus"
+.endif
+
+.if empty(PORT_OPTIONS:MSCIM)
+.if ${ECORE-IMF-LOADERS-DISABLER} != ${ECORE-IMF-LOADERS-DISABLER-BASE}
+ECORE-IMF-LOADERS-DISABLER-BASE:=${ECORE-IMF-LOADERS-DISABLER}
+ECORE-IMF-LOADERS-DISABLER:=	"${ECORE-IMF-LOADERS-DISABLER-BASE},scim"
 .else
-CONFIGURE_ARGS+=		--disable-pulseaudio
-PLIST_SUB+=			AUDIO="@comment "
+ECORE-IMF-LOADERS-DISABLER:=	"${ECORE-IMF-LOADERS-DISABLER-BASE}scim"
+.endif
 .endif
 
-.if ${PORT_OPTIONS:MSSL}
-USES+=				ssl
+.if empty(PORT_OPTIONS:MXIM)
+.if ${ECORE-IMF-LOADERS-DISABLER} != ${ECORE-IMF-LOADERS-DISABLER-BASE}
+ECORE-IMF-LOADERS-DISABLER-BASE:=${ECORE-IMF-LOADERS-DISABLER}
+ECORE-IMF-LOADERS-DISABLER:=	"${ECORE-IMF-LOADERS-DISABLER-BASE},xim"
 .else
-CONFIGURE_ARGS+=		--with-crypto=none
+ECORE-IMF-LOADERS-DISABLER:=	"${ECORE-IMF-LOADERS-DISABLER-BASE}xim"
+.endif
 .endif
 
-.if ${PORT_OPTIONS:MIBUS}
-CONFIGURE_ARGS+=		--with-glib=yes
+MESON_ARGS+=			${ECORE-IMF-LOADERS-DISABLER}
+
+EVAS-LOADERS-DISABLER-BASE=	-Devas-loaders-disabler=
+EVAS-LOADERS-DISABLER:=		${EVAS-LOADERS-DISABLER-BASE}
+
+EVAS-LOADERS-DISABLER-BASE:=	${EVAS-LOADERS-DISABLER}
+EVAS-LOADERS-DISABLER:=		"${EVAS-LOADERS-DISABLER-BASE}json"
+
+.if empty(PORT_OPTIONS:MOPENJPEG)
+.if ${EVAS-LOADERS-DISABLER} != ${EVAS-LOADERS-DISABLER-BASE}
+EVAS-LOADERS-DISABLER-BASE:=	${EVAS-LOADERS-DISABLER}
+EVAS-LOADERS-DISABLER:=		"${EVAS-LOADERS-DISABLER-BASE},jp2k"
 .else
-CONFIGURE_ARGS+=		--disable-ibus --with-glib=no
+EVAS-LOADERS-DISABLER:=		"${EVAS-LOADERS-DISABLER-BASE}jp2k"
+.endif
 .endif
 
-.if empty(PORT_OPTIONS:MOPENGL) && empty(PORT_OPTIONS:MOPENGLES)
-CONFIGURE_ARGS+=		--with-opengl=none
+.if empty(PORT_OPTIONS:MPDF)
+.if ${EVAS-LOADERS-DISABLER} != ${EVAS-LOADERS-DISABLER-BASE}
+EVAS-LOADERS-DISABLER-BASE:=	${EVAS-LOADERS-DISABLER}
+EVAS-LOADERS-DISABLER:=		"${EVAS-LOADERS-DISABLER-BASE},pdf"
+.else
+EVAS-LOADERS-DISABLER:=		"${EVAS-LOADERS-DISABLER-BASE}pdf"
+.endif
 .endif
 
-# keep in sync with all platforms where libunwind is available
-.if (${ARCH} == amd64 || ${ARCH} == i386)
+.if empty(PORT_OPTIONS:MPS)
+.if ${EVAS-LOADERS-DISABLER} != ${EVAS-LOADERS-DISABLER-BASE}
+EVAS-LOADERS-DISABLER-BASE:=	${EVAS-LOADERS-DISABLER}
+EVAS-LOADERS-DISABLER:=		"${EVAS-LOADERS-DISABLER-BASE},ps"
+.else
+EVAS-LOADERS-DISABLER:=		"${EVAS-LOADERS-DISABLER-BASE}ps"
+.endif
+.endif
+
+.if empty(PORT_OPTIONS:MRAW)
+.if ${EVAS-LOADERS-DISABLER} != ${EVAS-LOADERS-DISABLER-BASE}
+EVAS-LOADERS-DISABLER-BASE:=	${EVAS-LOADERS-DISABLER}
+EVAS-LOADERS-DISABLER:=		"${EVAS-LOADERS-DISABLER-BASE},raw"
+.else
+EVAS-LOADERS-DISABLER:=		"${EVAS-LOADERS-DISABLER-BASE}raw"
+.endif
+.endif
+
+.if empty(PORT_OPTIONS:MSVG)
+.if ${EVAS-LOADERS-DISABLER} != ${EVAS-LOADERS-DISABLER-BASE}
+EVAS-LOADERS-DISABLER-BASE:=	${EVAS-LOADERS-DISABLER}
+EVAS-LOADERS-DISABLER:=		"${EVAS-LOADERS-DISABLER-BASE},rsvg"
+.else
+EVAS-LOADERS-DISABLER:=		"${EVAS-LOADERS-DISABLER-BASE}rsvg"
+.endif
+.endif
+
+.if empty(PORT_OPTIONS:MWEBP)
+.if ${EVAS-LOADERS-DISABLER} != ${EVAS-LOADERS-DISABLER-BASE}
+EVAS-LOADERS-DISABLER-BASE:=	${EVAS-LOADERS-DISABLER}
+EVAS-LOADERS-DISABLER:=		"${EVAS-LOADERS-DISABLER-BASE},webp"
+.else
+EVAS-LOADERS-DISABLER:=		"${EVAS-LOADERS-DISABLER-BASE}webp"
+.endif
+.endif
+
+.if empty(PORT_OPTIONS:MXCF)
+.if ${EVAS-LOADERS-DISABLER} != ${EVAS-LOADERS-DISABLER-BASE}
+EVAS-LOADERS-DISABLER-BASE:=	${EVAS-LOADERS-DISABLER}
+EVAS-LOADERS-DISABLER:=		"${EVAS-LOADERS-DISABLER-BASE},xcf"
+.else
+EVAS-LOADERS-DISABLER:=		"${EVAS-LOADERS-DISABLER-BASE}xcf"
+.endif
+.endif
+
+MESON_ARGS+=			${EVAS-LOADERS-DISABLER}
+
+.if ${PORT_OPTIONS:MLUA} && ${PORT_OPTIONS:MCXX}
+EFL_BINDINGS=	-Dbindings=luajit,cxx
+.else
+.if ${PORT_OPTIONS:MLUA}
+EFL_BINDINGS=	-Dbindings=luajit
+.else
+.if ${PORT_OPTIONS:MCXX}
+EFL_BINDINGS=	-Dbindings=cxx
+.endif
+.endif
+.endif
+
+MESON_ARGS+=			${EFL_BINDINGS}
+
+.if ${PORT_OPTIONS:MOPENGLES} && ${PORT_OPTIONS:MWAYLAND}
+LIB_DEPENDS+=		libwayland-egl.so:graphics/wayland
+MESON_ARGS+=		-Degl=true
+USE_GL=			egl
+.endif
+
+.if (${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH} == aarch64)
 LIB_DEPENDS+=	libunwind.so:devel/libunwind
 .endif
 
-.if ${ARCH:Mpowerpc*} || ${ARCH} == "sparc64"
-USES+=				lua
-CONFIGURE_ARGS+=		--enable-lua-old
-PLIST_SUB+=			ELUA="@comment "
-.else
-LIB_DEPENDS+=			libluajit-5.1.so:lang/luajit
-PLIST_SUB+=			ELUA=""
-.endif
-
 post-install:
-	@${RM} -r ${STAGEDIR}${PREFIX}/share/gdb
+	#@${RM} -r ${STAGEDIR}${PREFIX}/share/gdb
 	@for i in `${FIND} ${STAGEDIR}${PREFIX}/bin ${STAGEDIR}${PREFIX}/lib -type f`; do \
-	    if ${FILE} $$i | ${GREP} -q "not stripped"; then ${STRIP_CMD} $$i; fi; \
+		if ${FILE} $$i | ${GREP} -q "not stripped"; then ${STRIP_CMD} $$i; fi; \
 	done
-	# workaround for https://phab.enlightenment.org/T6783 : it leaves an empty directory
-	@if [ -d ${STAGEDIR}${PREFIX}/lib/evas/utils -a -z "$$(ls -A ${STAGEDIR}${PREFIX}/lib/evas/utils)" ]; then \
-	    ${RMDIR} ${STAGEDIR}${PREFIX}/lib/evas/utils; \
-	fi
+
+post-stage:
+	@${ECHO_CMD} "autogenerating plist";
+	@cd ${STAGEDIR}${PREFIX} && ${FIND} * -type f -or -type l >> ${TMPPLIST}
 
 .include <bsd.port.mk>

@@ -130,7 +130,6 @@
     SUBDIR += jls
     SUBDIR += jvim3
     SUBDIR += kakasi
-    SUBDIR += kanjipad
     SUBDIR += kasumi
     SUBDIR += kbanner
     SUBDIR += kcc
@@ -153,7 +152,6 @@
     SUBDIR += lsd-fpw
     SUBDIR += lynx
     SUBDIR += lynx-current
-    SUBDIR += mailman
     SUBDIR += man
     SUBDIR += man-doc
     SUBDIR += mecab
@@ -215,9 +213,7 @@
     SUBDIR += plan
     SUBDIR += prn
     SUBDIR += py-jaconv
-    SUBDIR += py-mecab
     SUBDIR += py-tegaki
-    SUBDIR += py-tegaki-gtk
     SUBDIR += py-zinnia
     SUBDIR += qkc
     SUBDIR += quit
@@ -280,7 +276,6 @@
     SUBDIR += wordnet-fpw
     SUBDIR += wordpress
     SUBDIR += wwasw-fpw
-    SUBDIR += xdtp
     SUBDIR += xpdf
     SUBDIR += xshodou
     SUBDIR += xtr

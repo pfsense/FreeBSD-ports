@@ -3,7 +3,7 @@
 
 PORTNAME=	esh
 PORTVERSION=	0.8.5
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	shells
 MASTER_SITES=	GENTOO
 
@@ -19,6 +19,11 @@ MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS} ${CPPFLAGS}" \
 		LIB="${LDFLAGS} -lreadline -lncurses"
 
 INFO=		esh
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 post-patch:
 	@${REINPLACE_CMD} -e \

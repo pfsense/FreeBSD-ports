@@ -1,3 +1,3 @@
-TIMESTAMP = 1591712737
-SHA256 (KDE/applications/20.04.2/kopete-20.04.2.tar.xz) = cfdf0381c789059515dd3390e4d9d86effe3dad485270d6da8a225e833a6753b
-SIZE (KDE/applications/20.04.2/kopete-20.04.2.tar.xz) = 9372040
+TIMESTAMP = 1598945477
+SHA256 (KDE/release-service/20.08.1/kopete-20.08.1.tar.xz) = 9846baae28d723963927d231716e2a8bc19795bac920958b688b48394ef5bc05
+SIZE (KDE/release-service/20.08.1/kopete-20.08.1.tar.xz) = 9384840

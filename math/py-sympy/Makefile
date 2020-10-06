@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sympy
-PORTVERSION=	1.5
+PORTVERSION=	1.6
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,7 @@ LICENSE=	BSD3CLAUSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mpmath>=0.19:math/py-mpmath@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.5+
 USE_PYTHON=	distutils concurrent autoplist
 NO_ARCH=	yes
 

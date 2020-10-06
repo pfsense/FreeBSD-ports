@@ -2,11 +2,10 @@
 
 PORTNAME=	cargo-audit
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.12.0
-PORTREVISION=	1
+DISTVERSION=	0.12.1
 CATEGORIES=	security
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Audit Cargo.lock for crates with security vulnerabilities
 
 LICENSE=	APACHE20 MIT
@@ -172,7 +171,7 @@ CARGO_CRATES=	abscissa_core-0.5.2 \
 		slab-0.4.2 \
 		smallvec-0.6.13 \
 		smallvec-1.4.0 \
-		smol_str-0.1.15 \
+		smol_str-0.1.16 \
 		stable_deref_trait-1.1.1 \
 		strsim-0.8.0 \
 		strsim-0.9.3 \

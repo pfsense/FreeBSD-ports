@@ -3,7 +3,7 @@
 
 PORTNAME=	varkon
 PORTVERSION=	1.19E
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	cad
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/Varkon_${PORTVERSION}
 DISTNAME=	Varkon_sources_${PORTVERSION}
@@ -21,12 +21,18 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils
 WRKSRC=		${WRKDIR}/Varkon_${PORTVERSION}
 BUILD_WRKSRC=	${WRKSRC}/sources
 
-USES=		gl gmake xorg
+USES=		dos2unix gl gmake xorg
 USE_XORG=	xpm
 USE_GL=		glu
 MAKE_ENV=	PLATFORM=FreeBSD
 ALL_TARGET=	# none
 MAKE_JOBS_UNSAFE=	yes
+DOS2UNIX_FILES=	sources/PL/src/Makefile.FreeBSD
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 VARKON_PREFIX=	${PREFIX}/lib/${PORTNAME}
 

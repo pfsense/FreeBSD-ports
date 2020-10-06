@@ -3,7 +3,7 @@
 
 PORTNAME=	monero-cli
 # To build from an arbitrary git commit comment PORTVERSION and PORTREVISION (if present)
-PORTVERSION=	0.16.0.0
+PORTVERSION=	0.16.0.3
 DISTVERSIONPREFIX=	v
 # and uncomment the following two lines (use for example -git-HEAD or -git-b6420e1)
 #PORTVERSION=	0
@@ -70,7 +70,7 @@ LD_EMULATION=	elf_amd64
 LD_EMULATION=	elf_i386_fbsd
 .elif ${ARCH} == powerpc
 LD_EMULATION=	elf32ppc
-.elif ${ARCH} == powerpc64
+.elif ${ARCH:Mpowerpc64*}
 LD_EMULATION=	elf64ppc
 .endif
 
