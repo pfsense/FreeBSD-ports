@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	obs-studio
-DISTVERSION=	25.0.8
+DISTVERSION=	26.0.0
 CATEGORIES=	multimedia
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,7 +10,7 @@ COMMENT=	Open source streaming/recording software
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_aarch64=	Fails to compile: invalid conversion between vector type and integer type
+BROKEN_i386=	https://github.com/obsproject/obs-browser/issues/241
 
 BUILD_DEPENDS=	v4l_compat>=0:multimedia/v4l_compat \
 		swig:devel/swig
@@ -47,6 +47,8 @@ USE_LDCONFIG=	yes
 CMAKE_ON=	UNIX_STRUCTURE
 CMAKE_ARGS=	-DOBS_VERSION_OVERRIDE:STRING="${PORTVERSION}"
 CFLAGS+=	-D_WITH_GETLINE
+
+LDFLAGS+=	-fPIC # pending https://github.com/obsproject/obs-studio/issues/3436
 
 .include <bsd.port.options.mk>
 

@@ -1,13 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	youtube_dl
-PORTVERSION=	2020.07.28
+PORTVERSION=	2020.09.20
 CATEGORIES=	www
 MASTER_SITES=	https://yt-dl.org/downloads/${PORTVERSION}/
 DISTNAME=	youtube-dl-${PORTVERSION}
 
 # Implicit approval to commit trivial version updates.
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Program for downloading videos from various services
 
 LICENSE=	UNLICENSE

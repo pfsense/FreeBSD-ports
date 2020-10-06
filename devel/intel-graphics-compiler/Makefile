@@ -2,11 +2,11 @@
 
 PORTNAME=	intel-graphics-compiler
 DISTVERSIONPREFIX=	igc-
-DISTVERSION=	1.0.4155
+DISTVERSION=	1.0.5064
 CATEGORIES=	devel
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	b4e40a433077.patch:-p1 # https://github.com/intel/intel-graphics-compiler/pull/129
+PATCHFILES+=	d878880cbb3b.patch:-p1 # https://github.com/intel/intel-graphics-compiler/pull/129
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Intel Graphics Compiler for OpenCL
@@ -23,10 +23,12 @@ USES=		bison cmake compiler:c++17-lang python:build
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_ACCOUNT=	intel
+GH_TUPLE=	intel:vc-intrinsics:8300678:vcintrin/../vc-intrinsics
+CMAKE_OFF=	INSTALL_SPIRVDLL
 CFLAGS+=	-Wno-macro-redefined # __fastcall
 PLIST_SUB=	ARCH_SUFX=${ARCH:S/i386/32/:S/amd//:S/x86_//}
 
-.if (exists(/usr/lib/clang/10.0.0) || exists(/usr/lib/clang/10.0.1)) && ${CXX} == c++
+.if (exists(/usr/lib/clang/10.0.0) || exists(/usr/lib/clang/10.0.1) || exists(/usr/lib/clang/11.0.0)) && ${CXX} == c++
 # https://github.com/intel/intel-graphics-compiler/issues/126
 BUILD_DEPENDS+=	clang++90:devel/llvm90
 USES:=		${USES:Ncompiler*}

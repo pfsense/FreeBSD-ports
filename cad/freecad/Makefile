@@ -2,11 +2,14 @@
 
 PORTNAME=	FreeCAD
 DISTVERSION=	0.18.4
-PORTREVISION=	9
+PORTREVISION=	10
 # use these for bugfixes/snapshots
 # DISTVERSION=	0.18-16093 # git rev-list --count
 # DISTVERSIONSUFFIX=	-g690774c0e
 CATEGORIES=	cad
+
+PATCH_SITES=	https://github.com/FreeCAD/FreeCAD/commit/
+PATCHFILES+=	6eacb17b3e03d20.patch:-p1 # Python 3.8 compat
 
 MAINTAINER=	cmt@FreeBSD.org
 COMMENT=	General purpose 3D CAD modeller

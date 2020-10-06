@@ -3,7 +3,7 @@
 
 PORTNAME=	erlang
 DISTVERSIONPREFIX=	OTP-
-DISTVERSION=	21.3.8.16
+DISTVERSION=	21.3.8.17
 PORTEPOCH=	4
 CATEGORIES=	lang parallel java
 DIST_SUBDIR=	erlang
@@ -15,7 +15,7 @@ LICENSE=	APACHE20
 
 BROKEN_sparc64=	Fails to build: error: fp_except undeclared
 
-USES=		autoreconf:build gmake ncurses perl5
+USES=		autoreconf:build compiler:c11 gmake ncurses perl5
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	erlang:otp,corba
 GH_PROJECT=	otp:otp corba:corba
@@ -44,8 +44,8 @@ TOOLS_VSN=	3.1.0.1
 
 OPTIONS_DEFINE=	CORBA DIRTY DTRACE FOP HIPE JAVA KQUEUE MANPAGES NATIVE ODBC OPENSSL PDF SCTP THREADS WX
 OPTIONS_DEFAULT=CORBA DIRTY DTRACE HIPE KQUEUE MANPAGES OPENSSL SCTP THREADS
-OPTIONS_EXCLUDE_powerpc64=	HIPE ${OPTIONS_EXCLUDE_${ARCH}_${OSREL:R}}
-OPTIONS_EXCLUDE_powerpc64_13=	DTRACE
+OPTIONS_EXCLUDE_powerpc64=	DTRACE HIPE
+OPTIONS_EXCLUDE_powerpc64le=	HIPE
 
 CORBA_DESC=	Enable Corba support
 DIRTY_DESC=	Enable Dirty schedulers

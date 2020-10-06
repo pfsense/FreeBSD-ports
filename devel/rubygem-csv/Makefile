@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	csv
-PORTVERSION=	3.1.5
+PORTVERSION=	3.1.7
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

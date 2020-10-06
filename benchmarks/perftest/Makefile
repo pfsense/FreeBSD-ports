@@ -4,9 +4,10 @@
 PORTNAME=	perftest
 DISTVERSIONPREFIX=	v
 DISTVERSION=	4.4-0.7
+PORTREVISION=	1
 CATEGORIES=	benchmarks
 
-MAINTAINER=	slavash@FreeBSD.org
+MAINTAINER=	hselasky@FreeBSD.org
 COMMENT=	Collection of tests for RDMA micro-benchmark
 
 LICENSE=	LGPL21 BSD2CLAUSE

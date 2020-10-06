@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	snort
-DISTVERSION=	3.0.1-5
+DISTVERSION=	3.0.3-1
 PORTEPOCH=	1
 CATEGORIES=	security
 PKGNAMESUFFIX=	3
@@ -16,7 +16,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libdnet.so:net/libdnet \
 		libpcap.so:net/libpcap \
-		libluajit-5.1.so:lang/luajit-openresty \
 		libhwloc.so:devel/hwloc \
 		libuuid.so:misc/e2fsprogs-libuuid \
 		libdaq.so:net/libdaq
@@ -58,6 +57,12 @@ HYPERSCAN_LIB_DEPENDS=	libhs.so:devel/hyperscan
 CONFLICTS=	snort-2*
 
 .include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc64
+LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit-openresty
+.else
+LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit
+.endif
 
 .if ${PORT_OPTIONS:MHYPERSCAN}
 PLIST_SUB+=	HYPERSCAN=""

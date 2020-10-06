@@ -3,10 +3,10 @@
 
 PORTNAME=	qgis
 DISTVERSIONPREFIX=	final-
-DISTVERSION=	3_14_0
+DISTVERSION=	3_14_16
 CATEGORIES=	graphics geography
 
-MAINTAINER=	rhurlin@gwdg.de
+MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	Free and Open Source Geographic Information System
 
 LICENSE=	GPLv2
@@ -32,6 +32,24 @@ BUILD_DEPENDS=	gpsbabel>=1.5.4:astro/gpsbabel \
 		${PYTHON_PKGNAMEPREFIX}six>=1.14.0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=3.7.7:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>=5.3.1:devel/py-yaml@${PY_FLAVOR}
+LIB_DEPENDS=	libexiv2.so:graphics/exiv2 \
+		libexpat.so:textproc/expat2 \
+		libgdal.so:graphics/gdal \
+		libgeos.so:graphics/geos \
+		libgsl.so:math/gsl \
+		libhdf5.so:science/hdf5 \
+		libnetcdf.so:science/netcdf \
+		libproj.so:graphics/proj \
+		libprotobuf-lite.so:devel/protobuf \
+		libqjson-qt5.so:devel/qjson \
+		libqscintilla2_qt5.so:devel/qscintilla2-qt5 \
+		libqt5keychain.so:security/qtkeychain \
+		libqwt6.so:x11-toolkits/qwt6 \
+		libspatialindex.so:devel/spatialindex \
+		libspatialite.so:databases/spatialite \
+		libsz.so:science/szip \
+		libxerces-c.so:textproc/xerces-c3 \
+		libzip.so:archivers/libzip
 RUN_DEPENDS=	astyle:devel/astyle \
 		${PYTHON_PKGNAMEPREFIX}black>=19.10:devel/py-black@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cycler>=0.10.0:devel/py-cycler@${PY_FLAVOR} \
@@ -70,29 +88,14 @@ RUN_DEPENDS=	astyle:devel/astyle \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=3.7.7:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}termcolor>=1.1.0:devel/py-termcolor@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>=5.3.1:devel/py-yaml@${PY_FLAVOR}
-LIB_DEPENDS=	libexiv2.so:graphics/exiv2 \
-		libexpat.so:textproc/expat2 \
-		libgdal.so:graphics/gdal \
-		libgeos.so:graphics/geos \
-		libgsl.so:math/gsl \
-		libhdf5.so:science/hdf5 \
-		libnetcdf.so:science/netcdf \
-		libproj.so:graphics/proj \
-		libprotobuf-lite.so:devel/protobuf \
-		libqjson-qt5.so:devel/qjson \
-		libqscintilla2_qt5.so:devel/qscintilla2-qt5 \
-		libqt5keychain.so:security/qtkeychain \
-		libqwt6.so:x11-toolkits/qwt6 \
-		libspatialindex.so:devel/spatialindex \
-		libspatialite.so:databases/spatialite \
-		libsz.so:science/szip \
-		libxerces-c.so:textproc/xerces-c3 \
-		libzip.so:archivers/libzip
 
 ### Fortran is needed by numpy, GRASS, etc.
 USES=		bison cmake compiler:features cpe desktop-file-utils \
 		fortran gl gmake gnome pgsql pyqt:5 python:3.6+ qca qt:5 \
 		shebangfix sqlite:3
+USE_LDCONFIG=	yes
+USE_GITHUB=	yes
+GH_PROJECT=	${PORTNAME:tu}
 USE_GNOME=	libxml2
 USE_GL=		gl
 USE_QT=		3d buildtools_build core concurrent dbus declarative \
@@ -102,12 +105,12 @@ USE_QT=		3d buildtools_build core concurrent dbus declarative \
 		webengine widgets webkit xml
 USE_PYQT=	core gui network qml quickwidgets qscintilla2 \
 		sip sql svg webkit_run webkitwidgets_run xml
-USE_LDCONFIG=	yes
 
 CONFLICTS_INSTALL=	qgis-ltr
 
-USE_GITHUB=	yes
-GH_PROJECT=	${PORTNAME:tu}
+INSTALLS_ICONS=	yes
+
+SHEBANG_FILES=	src/plugins/grass/scripts/*.py
 
 CMAKE_ARGS+=	-DCMAKE_BUILD_TYPE:STRING=Release \
 		-DPYRCC_PROGRAM:FILEPATH=${LOCALBASE}/bin/pyrcc5-${PYTHON_VER} \
@@ -127,8 +130,6 @@ CMAKE_ARGS+=	-Wno-dev
 CMAKE_OFF+=	SUPPRESS_QT_WARNINGS
 .endif
 
-SHEBANG_FILES=	src/plugins/grass/scripts/*.py
-
 OPTIONS_DEFINE=		GRASS SERVER
 OPTIONS_DEFAULT=	GRASS SERVER
 NO_OPTIONS_SORT=	yes
@@ -144,8 +145,6 @@ SERVER_CMAKE_BOOL=	WITH_SERVER WITH_SERVER_PLUGINS WITH_QSPATIALITE
 
 PLIST_SUB=	DISTVERSION=${PORTVERSION}
 
-INSTALLS_ICONS=	yes
-
 .include <bsd.port.pre.mk>
 
 post-patch:
@@ -155,6 +154,9 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|"-mllvm -inline-threshold=128"|"-O1"|g' \
 		${WRKSRC}/src/core/CMakeLists.txt
 .endif
+	@${REINPLACE_CMD} -e 's|%%PYQT_SIPDIR%%|${PYQT_SIPDIR}|' \
+		${WRKSRC}/cmake/FindPyQt5.py \
+		${WRKSRC}/cmake/FindSIP.py
 
 pre-configure:
 	${MKDIR} ${CONFIGURE_WRKSRC}/bin && ${LN} -s ${PYTHON_CMD} ${CONFIGURE_WRKSRC}/bin/python3

@@ -3,7 +3,7 @@
 
 PORTNAME=	saoimage
 PORTVERSION=	1.35.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	astro
 MASTER_SITES=	http://tdc-www.harvard.edu/software/saoimage/
 
@@ -15,6 +15,11 @@ MAKE_ENV=	OFLAGS="${CFLAGS}"
 ALL_TARGET=	${OPSYS}
 USES=		xorg
 USE_XORG=	x11
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 PLIST_FILES=	bin/saoimage etc/imtoolrc.sample share/man/man1/saoimage.1.gz
 

@@ -4,7 +4,7 @@
 #  devel/kdev-php
 #  devel/kdev-python
 PORTNAME=	kdevelop
-DISTVERSION=	5.5.2
+DISTVERSION=	5.6.0
 CATEGORIES=	devel kde
 MASTER_SITES=	KDE/stable/kdevelop/${DISTVERSION}/src
 DIST_SUBDIR=	KDE/kdevelop
@@ -38,15 +38,14 @@ USE_KDE=	archive attica auth bookmarks codecs completion config configwidgets \
 		widgetsaddons windowsystem xmlgui
 USE_QT=		concurrent core dbus declarative gui help network \
 		script sql widgets xml buildtools_build qmake_build
-CONFLICTS=	kdevelop-kde4-4* kdevelop-4* kdevplatform-kde4-4* kdevplatform-4*
 SHEBANG_FILES=	kdevplatform/util/kdevplatform_shell_environment.sh \
 		kdevplatform/util/.zshrc
 
 CMAKE_ARGS=	-DCMAKE_POLICY_DEFAULT_CMP0074=NEW -DLLVM_ROOT=${LOCALBASE}/llvm${LLVM_DEFAULT}
 
 # Versioning values, to reduce plist churn
-PLATFORM_VER=	33
-SO_VER=		55
+PLATFORM_VER=	34
+SO_VER=		56
 PLIST_SUB+=	PLATFORM_VER=${PLATFORM_VER} SO_VER=${SO_VER} SO_VER_LONG=${DISTVERSION}
 
 OPTIONS_DEFINE=	WEBENGINE

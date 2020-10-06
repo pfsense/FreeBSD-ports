@@ -6,6 +6,7 @@
 %%DATADIR%%/ruby/.rubocop_todo.yml
 %%DATADIR%%/ruby/git-hooks/post-receive
 %%DATADIR%%/ruby/git-hooks/pre-receive
+%%DATADIR%%/ruby/git-hooks/reference-transaction
 %%DATADIR%%/ruby/git-hooks/update
 %%DATADIR%%/ruby/gitlab-shell/.codeclimate.yml
 %%DATADIR%%/ruby/gitlab-shell/.gitlab-ci.yml
@@ -135,6 +136,7 @@
 %%DATADIR%%/ruby/lib/gitlab/rails_logger.rb
 %%DATADIR%%/ruby/lib/gitlab/ref_matcher.rb
 %%DATADIR%%/ruby/lib/gitlab/utils/strong_memoize.rb
+%%DATADIR%%/ruby/lib/praefect/transaction.rb
 %%DATADIR%%/ruby/proto/README.md
 %%DATADIR%%/ruby/proto/gitaly.rb
 %%DATADIR%%/ruby/proto/gitaly/blob_pb.rb
@@ -218,6 +220,7 @@
 %%DATADIR%%/ruby/spec/lib/gitlab/git/wiki_spec.rb
 %%DATADIR%%/ruby/spec/lib/gitlab/git/worktree_spec.rb
 %%DATADIR%%/ruby/spec/lib/gitlab/git_spec.rb
+%%DATADIR%%/ruby/spec/lib/gitlab/gollum_spec.rb
 %%DATADIR%%/ruby/spec/lib/gitlab/ref_matcher_spec.rb
 %%DATADIR%%/ruby/spec/spec_helper.rb
 %%DATADIR%%/ruby/spec/support/generate-seed-repo-rb
@@ -236,6 +239,7 @@
 @(,,555) %%DATADIR%%/bin/gitaly
 @(,,555) %%DATADIR%%/bin/gitaly-blackbox
 @(,,555) %%DATADIR%%/bin/gitaly-debug
+@(,,555) %%DATADIR%%/bin/gitaly-git2go
 @(,,555) %%DATADIR%%/bin/gitaly-hooks
 @(,,555) %%DATADIR%%/bin/gitaly-ssh
 @(,,555) %%DATADIR%%/bin/gitaly-wrapper

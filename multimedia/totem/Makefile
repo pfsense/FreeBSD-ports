@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	totem
-PORTVERSION=	3.26.2
+PORTVERSION=	3.38.0
 PORTREVISION=	1
 CATEGORIES=	multimedia gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Gstreamer-based video player for the GNOME 3 Desktop
@@ -39,8 +39,7 @@ PORTSCOUT=	limitw:1,even
 
 USES=		compiler desktop-file-utils gettext gl gnome localbase meson \
 		pkgconfig python:3.4+ tar:xz xorg
-USE_GNOME=	cairo gtk30 intlhack introspection libxml2 nautilus3 \
-		pygobject3
+USE_GNOME=	cairo gtk30 intlhack introspection libxml2 pygobject3 gnomedesktop3
 USE_XORG=	x11 xorgproto xtst ice sm
 USE_GSTREAMER1=	core good bad soup ugly
 INSTALLS_ICONS=	yes

@@ -78,9 +78,9 @@
     SUBDIR += phoon
     SUBDIR += pp3
     SUBDIR += ptiger
-    SUBDIR += py-RO
-    SUBDIR += py-astLib
+    SUBDIR += py-astlib
     SUBDIR += py-astropy
+    SUBDIR += py-astropy-helpers
     SUBDIR += py-ephem
     SUBDIR += py-horoscopegenerator
     SUBDIR += py-metar
@@ -89,8 +89,8 @@
     SUBDIR += py-pymetar
     SUBDIR += py-pysofa
     SUBDIR += py-pywapi
+    SUBDIR += py-ro
     SUBDIR += py-spacetrack
-    SUBDIR += pyephem
     SUBDIR += pyweather
     SUBDIR += qmapshack
     SUBDIR += readosm

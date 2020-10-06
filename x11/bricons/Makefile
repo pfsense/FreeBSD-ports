@@ -4,7 +4,7 @@
 PORTNAME=	bricons
 PORTVERSION=	3.0
 DISTVERSIONPREFIX=	athena-
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11
 MASTER_SITES=	XCONTRIB/../R5contrib
 
@@ -16,6 +16,11 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 USES=		imake perl5 tar:Z xorg
 USE_PERL5=	build
 USE_XORG=	xaw
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 post-patch:
 	@${REINPLACE_CMD} -e \

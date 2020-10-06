@@ -13,9 +13,7 @@
     SUBDIR += assimp
     SUBDIR += atomicparsley
     SUBDIR += audacious
-    SUBDIR += audacious-gtk3
     SUBDIR += audacious-plugins
-    SUBDIR += audacious-plugins-gtk3
     SUBDIR += avidemux
     SUBDIR += avidemux-cli
     SUBDIR += avidemux-plugins
@@ -58,7 +56,6 @@
     SUBDIR += elementary-videos
     SUBDIR += emby-server
     SUBDIR += emovix
-    SUBDIR += f3d
     SUBDIR += ffaudioconverter
     SUBDIR += ffdec
     SUBDIR += ffmpeg
@@ -70,7 +67,6 @@
     SUBDIR += flvtool++
     SUBDIR += fpc-dts
     SUBDIR += fpc-libvlc
-    SUBDIR += freevo
     SUBDIR += fxtv
     SUBDIR += gaupol
     SUBDIR += gavl
@@ -199,6 +195,7 @@
     SUBDIR += libdvdnav
     SUBDIR += libdvdread
     SUBDIR += libfame
+    SUBDIR += libgav1
     SUBDIR += libhdhomerun
     SUBDIR += libkate
     SUBDIR += libmatroska
@@ -334,8 +331,6 @@
     SUBDIR += py-cec
     SUBDIR += py-enzyme
     SUBDIR += py-ffmpeg-python
-    SUBDIR += py-flvlib
-    SUBDIR += py-gstreamer
     SUBDIR += py-gstreamer1
     SUBDIR += py-guessit
     SUBDIR += py-kaa-base
@@ -358,7 +353,6 @@
     SUBDIR += qmmp-qt5
     SUBDIR += qt-faststart
     SUBDIR += qt5-multimedia
-    SUBDIR += quodlibet
     SUBDIR += quvi
     SUBDIR += quvi09
     SUBDIR += rage
@@ -406,7 +400,6 @@
     SUBDIR += tivodecode
     SUBDIR += totem
     SUBDIR += totem-pl-parser
-    SUBDIR += tovid
     SUBDIR += transcode
     SUBDIR += tstools
     SUBDIR += tvheadend
@@ -448,7 +441,7 @@
     SUBDIR += vlc
     SUBDIR += vmaf
     SUBDIR += vtkmpeg2encode
-    SUBDIR += w_scan
+    SUBDIR += w_scan2
     SUBDIR += webcamd
     SUBDIR += webcamoid
     SUBDIR += webvfx-qt5

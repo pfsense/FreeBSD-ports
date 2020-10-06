@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	cups-filters
-PORTVERSION=	1.27.5
+PORTVERSION=	1.28.3
 CATEGORIES=	print
 MASTER_SITES=	https://www.openprinting.org/download/cups-filters/
 
@@ -134,6 +134,7 @@ PSPOPPLER_DESC= 		Poppler pdftops(1)
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/share|${PREFIX}/share|' \
+		-e 's|/etc|${PREFIX}&|' \
 		-e 's|README.gz|README|' \
 		${WRKSRC}/utils/cups-browsed.8 \
 		${WRKSRC}/utils/cups-browsed.conf.5 \

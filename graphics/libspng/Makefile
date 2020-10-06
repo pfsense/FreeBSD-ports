@@ -1,17 +1,19 @@
 # $FreeBSD$
 
 PORTNAME=	libspng
-DISTVERSION=	0.5.0
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.6.1
 CATEGORIES=	graphics
-MASTER_SITES=	https://gitlab.com/randy408/libspng/uploads/3d980bac86c51368f40af2f1ac79a057/
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple PNG decoding and encoding library
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		meson pkgconfig tar:xz
+USES=		meson pkgconfig
+USE_GITHUB=	yes
+GH_ACCOUNT=	randy408
 USE_LDCONFIG=	yes
 
 MESON_ARGS=	-Denable_opt=false

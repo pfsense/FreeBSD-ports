@@ -38,6 +38,8 @@ include/openssl/cryptoerr.h
 include/openssl/ct.h
 include/openssl/cterr.h
 include/openssl/des.h
+include/openssl/deserializer.h
+include/openssl/deserializererr.h
 include/openssl/dh.h
 include/openssl/dherr.h
 include/openssl/dsa.h
@@ -56,6 +58,7 @@ include/openssl/ess.h
 include/openssl/esserr.h
 include/openssl/evp.h
 include/openssl/evperr.h
+include/openssl/fipskey.h
 include/openssl/fips_names.h
 include/openssl/hmac.h
 include/openssl/http.h
@@ -64,7 +67,6 @@ include/openssl/idea.h
 include/openssl/kdf.h
 include/openssl/kdferr.h
 include/openssl/lhash.h
-include/openssl/mac.h
 include/openssl/macros.h
 include/openssl/md2.h
 include/openssl/md4.h
@@ -76,8 +78,8 @@ include/openssl/objects.h
 include/openssl/objectserr.h
 include/openssl/ocsp.h
 include/openssl/ocsperr.h
-include/openssl/%%OPENSSLDIR%%conf.h
-include/openssl/%%OPENSSLDIR%%v.h
+include/openssl/opensslconf.h
+include/openssl/opensslv.h
 include/openssl/ossl_typ.h
 include/openssl/param_build.h
 include/openssl/params.h
@@ -129,9 +131,9 @@ include/openssl/x509err.h
 include/openssl/x509v3.h
 include/openssl/x509v3err.h
 lib/libcrypto.a
-%%SHARED%%lib/engines-12/capi.so
-%%SHARED%%lib/engines-12/devcrypto.so
-%%SHARED%%lib/engines-12/padlock.so
+%%SHARED%%lib/engines-%%SHLIBVER%%/capi.so
+%%SHARED%%lib/engines-%%SHLIBVER%%/devcrypto.so
+%%SHARED%%lib/engines-%%SHLIBVER%%/padlock.so
 %%SHARED%%lib/libcrypto.so
 %%SHARED%%lib/libcrypto.so.%%SHLIBVER%%
 lib/libssl.a
@@ -449,7 +451,7 @@ man/man1/tsget.1.gz
 %%MAN3%%man/man3/OSSL_CMP_MSG_http_perform.3.gz
 %%MAN3%%man/man3/OSSL_CMP_SRV_CTX_new.3.gz
 %%MAN3%%man/man3/OSSL_CMP_STATUSINFO_new.3.gz
-%%MAN3%%man/man3/OSSL_CMP_exec_IR_ses.3.gz
+%%MAN3%%man/man3/OSSL_CMP_exec_certreq.3.gz
 %%MAN3%%man/man3/OSSL_CMP_log_open.3.gz
 %%MAN3%%man/man3/OSSL_CMP_validate_msg.3.gz
 %%MAN3%%man/man3/OSSL_CRMF_MSG_get0_tmpl.3.gz
@@ -457,6 +459,10 @@ man/man1/tsget.1.gz
 %%MAN3%%man/man3/OSSL_CRMF_MSG_set1_regCtrl_regToken.3.gz
 %%MAN3%%man/man3/OSSL_CRMF_MSG_set1_regInfo_certReq.3.gz
 %%MAN3%%man/man3/OSSL_CRMF_pbmp_new.3.gz
+%%MAN3%%man/man3/OSSL_DESERIALIZER.3.gz
+%%MAN3%%man/man3/OSSL_DESERIALIZER_CTX.3.gz
+%%MAN3%%man/man3/OSSL_DESERIALIZER_CTX_new_by_EVP_PKEY.3.gz
+%%MAN3%%man/man3/OSSL_DESERIALIZER_from_bio.3.gz
 %%MAN3%%man/man3/OSSL_HTTP_transfer.3.gz
 %%MAN3%%man/man3/OSSL_PARAM.3.gz
 %%MAN3%%man/man3/OSSL_PARAM_BLD.3.gz
@@ -480,6 +486,7 @@ man/man1/tsget.1.gz
 %%MAN3%%man/man3/OSSL_trace_set_channel.3.gz
 %%MAN3%%man/man3/OpenSSL_add_all_algorithms.3.gz
 %%MAN3%%man/man3/OpenSSL_version.3.gz
+%%MAN3%%man/man3/PEM_X509_INFO_read_bio_with_libctx.3.gz
 %%MAN3%%man/man3/PEM_bytes_read_bio.3.gz
 %%MAN3%%man/man3/PEM_read.3.gz
 %%MAN3%%man/man3/PEM_read_CMS.3.gz
@@ -503,7 +510,7 @@ man/man1/tsget.1.gz
 %%MAN3%%man/man3/PKCS7_verify.3.gz
 %%MAN3%%man/man3/PKCS8_pkey_add1_attr.3.gz
 %%MAN3%%man/man3/RAND_DRBG_generate.3.gz
-%%MAN3%%man/man3/RAND_DRBG_get0_master.3.gz
+%%MAN3%%man/man3/RAND_DRBG_get0_public.3.gz
 %%MAN3%%man/man3/RAND_DRBG_new.3.gz
 %%MAN3%%man/man3/RAND_DRBG_reseed.3.gz
 %%MAN3%%man/man3/RAND_DRBG_set_callbacks.3.gz
@@ -724,8 +731,8 @@ man/man1/tsget.1.gz
 %%MAN3%%man/man3/X509_load_http.3.gz
 %%MAN3%%man/man3/X509_new.3.gz
 %%MAN3%%man/man3/X509_sign.3.gz
+%%MAN3%%man/man3/X509_verify.3.gz
 %%MAN3%%man/man3/X509_verify_cert.3.gz
-%%MAN3%%man/man3/X509v3_cache_extensions.3.gz
 %%MAN3%%man/man3/X509v3_get_ext_by_NID.3.gz
 %%MAN3%%man/man3/d2i_DHparams.3.gz
 %%MAN3%%man/man3/d2i_PKCS8PrivateKey_bio.3.gz
@@ -789,6 +796,7 @@ man/man5/x509v3_config.5.gz
 %%MAN3%%man/man7/EVP_SIGNATURE-ED25519.7.gz
 %%MAN3%%man/man7/EVP_SIGNATURE-RSA.7.gz
 %%MAN3%%man/man7/OSSL_PROVIDER-FIPS.7.gz
+%%MAN3%%man/man7/OSSL_PROVIDER-base.7.gz
 %%MAN3%%man/man7/OSSL_PROVIDER-default.7.gz
 %%MAN3%%man/man7/OSSL_PROVIDER-legacy.7.gz
 %%MAN3%%man/man7/OSSL_PROVIDER-null.7.gz
@@ -826,7 +834,8 @@ man/man5/x509v3_config.5.gz
 %%MAN3%%man/man7/ssl.7.gz
 %%MAN3%%man/man7/x509.7.gz
 %%OPENSSLDIR%%/misc/CA.pl
-%%OPENSSLDIR%%/misc/tsget.pl
+@comment %%OPENSSLDIR%%/misc/tsget.pl
+%%OPENSSLDIR%%/misc/tsget
 @sample %%OPENSSLDIR%%/openssl.cnf.dist %%OPENSSLDIR%%/openssl.cnf
 @sample %%OPENSSLDIR%%/ct_log_list.cnf.dist %%OPENSSLDIR%%/ct_log_list.cnf
 @dir %%OPENSSLDIR%%/private

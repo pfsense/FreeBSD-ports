@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tor
-DISTVERSION=	0.4.4.2-alpha
+DISTVERSION=	0.4.4.4-rc
 CATEGORIES=	security net
 MASTER_SITES=	TOR
 PKGNAMESUFFIX=	-devel
@@ -91,6 +91,8 @@ BUILD_DEPENDS+=		${LOCALBASE}/lib/libtcmalloc.a:devel/google-perftools
 LIB_DEPENDS+=		libtcmalloc.so:devel/google-perftools
 .endif
 .endif
+
+PORTSCOUT=		limit:^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+-[a-z].*$$
 
 post-patch:
 	@${REINPLACE_CMD} -E -e "s@(-z) (relro|now)@-Wl,\1,\2@g" \

@@ -40,6 +40,8 @@ share/locale/zh/LC_MESSAGES/xournalpp.mo
 share/locale/zh_CN/LC_MESSAGES/xournalpp.mo
 share/locale/zh_HK/LC_MESSAGES/xournalpp.mo
 share/locale/zh_TW/LC_MESSAGES/xournalpp.mo
+%%DATADIR%%/plugins/ColorCycle/main.lua
+%%DATADIR%%/plugins/ColorCycle/plugin.ini
 %%DATADIR%%/plugins/Example/main.lua
 %%DATADIR%%/plugins/Example/plugin.ini
 %%DATADIR%%/plugins/Example/var_dump.lua
@@ -159,6 +161,7 @@ share/locale/zh_TW/LC_MESSAGES/xournalpp.mo
 %%DATADIR%%/ui/settings.glade
 %%DATADIR%%/ui/settingsButtonConfig.glade
 %%DATADIR%%/ui/settingsDeviceClassConfig.glade
+%%DATADIR%%/ui/settingsLanguageConfig.glade
 %%DATADIR%%/ui/texdialog.glade
 %%DATADIR%%/ui/toolbar.ini
 %%DATADIR%%/ui/toolbarCustomizeDialog.glade

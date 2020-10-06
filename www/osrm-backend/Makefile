@@ -3,7 +3,7 @@
 PORTNAME=	osrm-backend
 DISTVERSIONPREFIX=	v
 DISTVERSION=	5.22.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	www
 
 PATCH_SITES=	https://github.com/Project-OSRM/osrm-backend/commit/

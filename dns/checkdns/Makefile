@@ -3,13 +3,18 @@
 
 PORTNAME=	checkdns
 PORTVERSION=	0.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	dns
 MASTER_SITES=	http://www.enderunix.org/checkdns/ \
 		http://www.trunix.org/projeler/checkdns/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Domain name server analysis and reporting tool
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 SUB_FILES=	pkg-message
 

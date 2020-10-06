@@ -5,6 +5,7 @@ libexec/ibus-setup-table
 man/man1/ibus-table-createdb.1.gz
 share/applications/ibus-setup-table.desktop
 share/glib-2.0/schemas/org.freedesktop.ibus.engine.table.gschema.xml
+%%DATADIR%%/data/phrase.txt.bz2
 %%DATADIR%%/data/pinyin_table.txt.bz2
 %%DATADIR%%/engine/chinese_variants.py
 %%DATADIR%%/engine/factory.py
@@ -14,6 +15,7 @@ share/glib-2.0/schemas/org.freedesktop.ibus.engine.table.gschema.xml
 %%DATADIR%%/engine/tabcreatedb.py
 %%DATADIR%%/engine/table.py
 %%DATADIR%%/engine/tabsqlitedb.py
+%%DATADIR%%/engine/version.py
 %%DATADIR%%/icons/acommit.svg
 %%DATADIR%%/icons/cb-mode.svg
 %%DATADIR%%/icons/chinese.svg
@@ -32,7 +34,7 @@ share/glib-2.0/schemas/org.freedesktop.ibus.engine.table.gschema.xml
 %%DATADIR%%/icons/tab-mode.svg
 %%DATADIR%%/icons/tc-mode.svg
 %%DATADIR%%/icons/tcb-mode.svg
-%%DATADIR%%/setup/ibus-table-preferences.ui
+%%DATADIR%%/setup/i18n.py
 %%DATADIR%%/setup/main.py
 %%DATADIR%%/setup/version.py
 %%DATADIR%%/tables/template.txt

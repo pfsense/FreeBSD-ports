@@ -4,7 +4,7 @@
 PORTNAME=	flow-tools
 PORTVERSION=	0.68.6
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -15,32 +15,48 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	docbook-to-man:textproc/docbook-to-man
 
-USES=		autoreconf libtool:keepla python:run shebangfix
+USES=		autoreconf libtool:keepla python:patch shebangfix
+USE_GITHUB=	yes
+USE_LDCONFIG=	yes
+USE_RC_SUBR=	flow_capture flow_fanout
 
-OPTIONS_DEFINE=	MYSQL OPENSSL PGSQL
-PGSQL_CONFIGURE_ON=	--with-postgresql
-PGSQL_USES=		pgsql
-MYSQL_CONFIGURE_ON=	--with-mysql="${LOCALBASE}"
-MYSQL_USES=		mysql
-OPENSSL_CONFIGURE_ON=	--with-openssl="${OPENSSLBASE}"
-OPENSSL_USES=		ssl
+GH_ACCOUNT=	5u623l20
+GH_TAGNAME=	6e7c849
 
 SHEBANG_FILES=	bin/flow-*
 GNU_CONFIGURE=	yes
-USE_LDCONFIG=	yes
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	5u623l20
-GH_TAGNAME=	6e7c849
-SUB_LIST=	FLOW_CAPTURE_SPOOL="${FLOW_CAPTURE_SPOOL}" \
-		FLOW_CAPTURE_PIDDIR="${FLOW_CAPTURE_PIDDIR}"
-USE_RC_SUBR=	flow_capture flow_fanout
+SUB_LIST=	FLOW_CAPTURE_PIDDIR="${FLOW_CAPTURE_PIDDIR}" \
+		FLOW_CAPTURE_SPOOL="${FLOW_CAPTURE_SPOOL}"
+
+USERS=		flowtools
+GROUPS=		flowtools
 
 VARDIR?=		/var
 FLOW_CAPTURE_SPOOL=	${VARDIR}/db/flows
 FLOW_CAPTURE_PIDDIR=	${VARDIR}/run/flow-capture
 
-USERS=		flowtools
-GROUPS=		flowtools
+OPTIONS_DEFINE=	MYSQL OPENSSL PGSQL
 
-.include <bsd.port.mk>
+PY2TO3_CMD=	${LOCALBASE}/bin/2to3-${PYTHON_VER}
+PY2TO3_ARGS=	--fix=all --no-diffs --nobackups --verbose --write
+
+MYSQL_USES=		mysql
+MYSQL_CONFIGURE_ON=	--with-mysql="${LOCALBASE}"
+OPENSSL_USES=		ssl
+OPENSSL_CONFIGURE_ON=	--with-openssl="${OPENSSLBASE}"
+PGSQL_USES=		pgsql
+PGSQL_CONFIGURE_ON=	--with-postgresql
+PGSQL_CONFIGURE_OFF=	--with-postgresql=no
+
+.include <bsd.port.pre.mk>
+
+post-patch:
+.if ${PYTHON_MAJOR_VER} >= 3
+	${PY2TO3_CMD} ${PY2TO3_ARGS} ${WRKSRC}/bin/flow-*
+.endif
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/lib/libft.so.0.0.0
+
+.include <bsd.port.post.mk>

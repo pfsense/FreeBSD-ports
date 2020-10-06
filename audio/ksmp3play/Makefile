@@ -3,7 +3,7 @@
 
 PORTNAME=	ksmp3play
 PORTVERSION=	0.5.2.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}/${PORTVERSION:R}
 
@@ -23,6 +23,11 @@ EXTRACT_AFTER_ARGS=	--exclude CVS
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 OPTIONS_DEFINE=	DOCS
 

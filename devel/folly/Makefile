@@ -2,7 +2,7 @@
 
 PORTNAME=	folly
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2020.06.29.00
+DISTVERSION=	2020.09.14.00
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,8 +11,8 @@ COMMENT=	C++ library developed and used at Facebook
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_FreeBSD_11=	bug in folly, confusion with Jemalloc: https://github.com/facebook/folly/issues/1458
 BROKEN_i386=	error: use of undeclared identifier 'DCHECK': https://github.com/facebook/folly/issues/1168
-BROKEN_FreeBSD_13=	clang crashes: https://bugs.llvm.org/show_bug.cgi?id=42338
 
 LIB_DEPENDS=	libboost_atomic.so:devel/boost-libs \
 		libdouble-conversion.so:devel/double-conversion \

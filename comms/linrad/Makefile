@@ -2,7 +2,7 @@
 
 PORTNAME=	linrad
 PORTVERSION=	4.02
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://www.nitehawk.com/sm5bsz/linuxdsp/archive/\
 		http://www.sm5bsz.com/linuxdsp/archive/
@@ -39,6 +39,7 @@ BROKEN_aarch64=		fails to compile: implicit declaration of function outb
 BROKEN_armv6=		fails to configure: cannot find /nxb-bin/usr/bin/cc
 BROKEN_armv7=		fails to configure: cannot find /nxb-bin/usr/bin/cc
 BROKEN_powerpc64=	fails to compile: implicit declaration of function outb
+BROKEN_powerpc64le=	fails to compile: implicit declaration of function outb
 BROKEN_sparc64=		fails to compile: implicit declaration of function outb
 
 .include <bsd.port.pre.mk>
@@ -53,7 +54,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|%%DATADIR%%|${DATADIR}/|' \
 		${WRKSRC}/help.c
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}/|' \
-		${WRKSRC}/libfind1.c ${WRKSRC}/help.c
+		${WRKSRC}/libfind1.c
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}

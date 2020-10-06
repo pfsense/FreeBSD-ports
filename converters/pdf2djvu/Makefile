@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pdf2djvu
-DISTVERSION=	0.9.17
-PORTREVISION=	4
+DISTVERSION=	0.9.17.1
+PORTREVISION=	2
 CATEGORIES=	converters
 MASTER_SITES=	https://github.com/jwilk/${PORTNAME}/releases/download/${PORTVERSION}/
 

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	aws-sdk-mediastoredata
-PORTVERSION=	1.24.0
+PORTVERSION=	1.26.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

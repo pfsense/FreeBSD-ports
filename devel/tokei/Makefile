@@ -3,9 +3,10 @@
 PORTNAME=	tokei
 DISTVERSIONPREFIX=	v
 DISTVERSION=	12.0.4
+PORTREVISION=	4
 CATEGORIES=	devel
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Display statistics about your code
 
 LICENSE=	APACHE20 MIT

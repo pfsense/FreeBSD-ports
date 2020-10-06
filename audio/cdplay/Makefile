@@ -3,7 +3,7 @@
 
 PORTNAME=	cdplay
 PORTVERSION=	0.92
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	LOCAL/dannyboy
 
@@ -20,6 +20,11 @@ MAKE_ARGS=	CFLAGS="${CFLAGS} -c -ansi"	\
 		MANPATH="${MANPREFIX}/man/man1/" \
 		CC="${CC}"
 MAKE_JOBS_UNSAFE=	yes
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 PLIST_FILES=	bin/cdplay \
 		share/man/man1/cdplay.1.gz

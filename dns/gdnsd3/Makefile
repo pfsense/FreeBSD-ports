@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gdnsd
-PORTVERSION=	3.0.0
-PORTREVISION=	1
+PORTVERSION=	3.3.0
 CATEGORIES=	dns
 MASTER_SITES=	https://github.com/gdnsd/gdnsd/releases/download/v${PORTVERSION}/ \
 		ZI \
@@ -26,7 +25,7 @@ CONFIGURE_ARGS=	--localstatedir=/var
 USE_LDCONFIG=	yes
 USES=		pkgconfig libtool tar:xz perl5 gmake
 USE_PERL5=	build
-CPPFLAGS+=	-I${LOCALBASE}/include
+CPPFLAGS+=	-isystem${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 CONFLICTS_INSTALL=	gdnsd-1.[0-9]* gdnsd2-2.[0-9]*
 

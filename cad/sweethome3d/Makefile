@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sweethome3d
-PORTVERSION=	6.3
+PORTVERSION=	6.4.2
 CATEGORIES=	cad java
 MASTER_SITES=	SF/${PORTNAME}/SweetHome3D-source/${DISTNAME}/
 DISTNAME=	SweetHome3D-${PORTVERSION}-src
@@ -19,7 +19,7 @@ RUN_DEPENDS=	java3d>=0:java/java3d
 USES=		zip
 NO_ARCH=	yes
 USE_ANT=	yes
-USE_JAVA=	yes
+USE_JAVA=	8
 
 ALL_TARGET=	jarExecutable
 JARNAME=	SweetHome3D-${PORTVERSION}.jar

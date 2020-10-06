@@ -64,7 +64,7 @@ WKS_SERVER_CONFIGURE_ENABLE=	wks-tools
 # Touch the texinfo files to force makeinfo to run.  This fixes Linuxisms in
 # the paths in the man pages.
 pre-build:
-	@${TOUCH} ${WRKSRC}/doc/*.texi
+	${TOUCH} ${WRKSRC}/doc/*.texi
 
 post-install:
 	${MV} ${STAGEDIR}${PREFIX}/bin/gpgsplit ${STAGEDIR}${PREFIX}/bin/gpgsplit2

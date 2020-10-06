@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	freebsd-doc
-PORTVERSION=	54166
+PORTVERSION=	54536
 PORTEPOCH=	1
 CATEGORIES=	misc docs
 MASTER_SITES=	LOCAL/blackend
@@ -14,7 +14,8 @@ COMMENT?=	Documentation from the FreeBSD Documentation Project
 LICENSE=	BSD2CLAUSE
 
 BROKEN_aarch64=		fails to build: Exception in thread "main" java.lang.StackOverflowError at org.apache.fop.hyphenation.TernaryTree.insert(TernaryTree.java:180)
-BROKEN_powerpc64=	fails to build: Java Runtime Environment: SIGSEGV happened inside stack but outside yellow and red zone.
+BROKEN_FreeBSD_11_powerpc64=	fails to build: Java Runtime Environment: SIGSEGV happened inside stack but outside yellow and red zone.
+BROKEN_FreeBSD_12_powerpc64=	fails to build: Java Runtime Environment: SIGSEGV happened inside stack but outside yellow and red zone.
 
 BUILD_DEPENDS=	docproj>=2.0_6:textproc/docproj
 
@@ -42,14 +43,13 @@ DOCLANG?=		en_US.ISO8859-1
 DOCLANG_PREFIX?=	${DOCLANG:C/_.*$//}
 DOCBASE?=		share/doc/freebsd
 
-AVAILABLEFORMATS=	HTML HTML_SPLIT PDF PS TXT
+AVAILABLEFORMATS=	HTML HTML_SPLIT PDF TXT
 
 OPTIONS_DEFINE=		${AVAILABLEFORMATS}
 OPTIONS_DEFAULT=	HTML_SPLIT PDF
 HTML_DESC=		Single HTML file per document
 HTML_SPLIT_DESC=	The default HTML format used on www.FreeBSD.org
 PDF_DESC=		PDF format
-PS_DESC=		PostScript format
 TXT_DESC=		Plain text
 
 # if PACKAGE_BUILDING=yes, enable all of $AVAILABLEFORMATS.
@@ -66,7 +66,7 @@ PLIST_FORMATS+=	${O:tl:S,_,-,}
 .endif
 .endfor
 
-.if ${PORT_OPTIONS:MPDF} || ${PORT_OPTIONS:MPS}
+.if ${PORT_OPTIONS:MPDF}
 BUILD_DEPENDS+=	fop:textproc/fop \
 		${LOCALBASE}/share/fonts/GentiumPlus/GentiumPlus-R.ttf:x11-fonts/gentium-plus \
 		${LOCALBASE}/share/fonts/Droid/DroidSans.ttf:x11-fonts/droid-fonts-ttf \

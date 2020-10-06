@@ -19,7 +19,6 @@ share/ECM/find-modules/FindLibExiv2.cmake
 share/ECM/find-modules/FindLibGit2.cmake
 share/ECM/find-modules/FindOpenEXR.cmake
 share/ECM/find-modules/FindPhoneNumber.cmake
-share/ECM/find-modules/FindPng2Ico.cmake
 share/ECM/find-modules/FindPoppler.cmake
 share/ECM/find-modules/FindPulseAudio.cmake
 share/ECM/find-modules/FindPythonModuleGeneration.cmake
@@ -28,8 +27,10 @@ share/ECM/find-modules/FindQtWaylandScanner.cmake
 share/ECM/find-modules/FindSasl2.cmake
 share/ECM/find-modules/FindSeccomp.cmake
 share/ECM/find-modules/FindSharedMimeInfo.cmake
+share/ECM/find-modules/FindTaglib.cmake
 share/ECM/find-modules/FindUDev.cmake
 share/ECM/find-modules/FindWayland.cmake
+share/ECM/find-modules/FindWaylandProtocols.cmake
 share/ECM/find-modules/FindWaylandScanner.cmake
 share/ECM/find-modules/FindX11_XCB.cmake
 share/ECM/find-modules/FindXCB.cmake
@@ -51,11 +52,13 @@ share/ECM/modules/ECMAddAppIcon.cmake
 share/ECM/modules/ECMAddQch.cmake
 share/ECM/modules/ECMAddQtDesignerPlugin.cmake
 share/ECM/modules/ECMAddTests.cmake
+share/ECM/modules/ECMConfiguredInstall.cmake
 share/ECM/modules/ECMCoverageOption.cmake
 share/ECM/modules/ECMCreateQmFromPoFiles.cmake
 share/ECM/modules/ECMEnableSanitizers.cmake
 share/ECM/modules/ECMFindModuleHelpers.cmake
 share/ECM/modules/ECMFindQMLModule.cmake.in
+share/ECM/modules/ECMGenerateDBusServiceFile.cmake
 share/ECM/modules/ECMGenerateExportHeader.cmake
 share/ECM/modules/ECMGenerateHeaders.cmake
 share/ECM/modules/ECMGeneratePkgConfigFile.cmake

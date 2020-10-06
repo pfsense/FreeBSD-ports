@@ -10,8 +10,6 @@ COMMENT=	Library for counting the number of integer points in polytopes
 
 LICENSE=	GPLv2
 
-BROKEN=		fails to build
-
 LIB_DEPENDS=	libglpk.so:math/glpk \
 		libgmp.so:math/gmp \
 		libisl.so:devel/isl \
@@ -23,5 +21,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static --enable-shared --enable-shared-barvinok \
 		--with-gmp=system --with-polylib=system --with-isl=system
 USE_LDCONFIG=	yes
+
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

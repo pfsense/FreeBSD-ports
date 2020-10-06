@@ -3,7 +3,7 @@
 
 PORTNAME=	pureadmin
 PORTVERSION=	0.4
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	ftp
 MASTER_SITES=	SF/purify/Default/${PORTVERSION}
 
@@ -18,6 +18,11 @@ USE_GNOME=	intltool libglade2
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
 LIBS+=		-lX11 -lm
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 PORTDOCS=	index.txt introduction.txt main_window.txt \
 		preferences.txt user_manager.txt

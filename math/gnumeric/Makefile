@@ -2,19 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	gnumeric
-PORTVERSION=	1.12.46
+PORTVERSION=	1.12.48
 CATEGORIES=	math gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNOME spreadsheet program
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-DEPRECATED=	Uses deprecated version of python
-EXPIRATION_DATE=	2020-09-15
 
 BUILD_DEPENDS=	itstool:textproc/itstool \
 		ginstall:sysutils/coreutils
@@ -23,13 +20,14 @@ LIB_DEPENDS=	libgoffice-0.10.so:devel/goffice \
 		libpsiconv.so:converters/psiconv
 
 USES=		cpe desktop-file-utils gettext gmake gnome libtool \
-		localbase pathfix pkgconfig python:2.7 shebangfix tar:xz
+		localbase pathfix pkgconfig python shebangfix tar:xz
 USE_GNOME=	cairo intlhack gtk30 libgsf pygobject3
 USE_LDCONFIG=	yes
 INSTALLS_ICONS=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	\
 		--without-paradox \
+		--without-python \
 		--enable-introspection
 INSTALL_TARGET=	install-strip
 

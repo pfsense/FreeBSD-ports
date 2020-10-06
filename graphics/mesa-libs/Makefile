@@ -3,16 +3,12 @@
 
 PORTNAME=	mesa-libs
 PORTVERSION=	${MESAVERSION}
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 
 COMMENT=	OpenGL libraries that support GLX and EGL clients
 
 CONFLICTS_INSTALL=	libglvnd # include/GL/gl.h
-
-USES=		xorg
-USE_XORG=	xorgproto x11 xcb xdamage xext \
-		xfixes xshmfence xxf86vm xrandr
 
 OPTIONS_GROUP=			PLATFORM
 OPTIONS_GROUP_PLATFORM=		PLATFORM_X11 PLATFORM_WAYLAND PLATFORM_DRM PLATFORM_SURFACELESS
@@ -52,6 +48,12 @@ MESON_ARGS+=	-Ddri-drivers="swrast"
 
 .if ${PORT_OPTIONS:MPLATFORM_X11}
 MESA_PLATFORMS+=	x11
+USE_XORG+=		xorgproto x11 xcb xdamage xext \
+			xfixes xshmfence xxf86vm xrandr
+PLIST_SUB+=		GLX=""
+.else
+MESON_ARGS+=	-Dglx=disabled
+PLIST_SUB+=	GLX="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPLATFORM_WAYLAND} && ${PORT_OPTIONS:MWAYLAND}

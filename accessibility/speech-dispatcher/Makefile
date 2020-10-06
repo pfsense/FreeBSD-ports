@@ -2,6 +2,7 @@
 
 PORTNAME=	speech-dispatcher
 DISTVERSION=	0.8.8
+PORTREVISION=	1
 CATEGORIES?=	accessibility audio
 MASTER_SITES=	http://devel.freebsoft.org/pub/projects/speechd/
 
@@ -19,7 +20,7 @@ USES=		alias gettext gmake gnome libtool pathfix pkgconfig
 USE_GNOME=	glib20 intltool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-espeak-ng
-CFLAGS+=	-I${LOCALBASE}/include
+CFLAGS+=	-fcommon -I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip

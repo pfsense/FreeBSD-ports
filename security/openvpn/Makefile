@@ -3,7 +3,7 @@
 
 PORTNAME=		openvpn
 DISTVERSION=		2.4.9
-PORTREVISION?=		2
+PORTREVISION?=		3
 CATEGORIES=		security net net-vpn
 MASTER_SITES=		https://swupdate.openvpn.org/community/releases/ \
 			https://build.openvpn.net/downloads/releases/ \
@@ -24,16 +24,19 @@ SHEBANG_FILES=		sample/sample-scripts/verify-cn \
 			sample/sample-scripts/auth-pam.pl \
 			sample/sample-scripts/ucn.pl
 CONFIGURE_ARGS+=	--enable-strict
+# set PLUGIN_LIBDIR so that unqualified plugin paths are found:
+CONFIGURE_ENV+=		PLUGINDIR="${PREFIX}/lib/openvpn/plugins"
+
 # avoid picking up CMAKE, we don't have cmocka in the tarballs.
 CONFIGURE_ENV+=		ac_cv_prog_CMAKE= CMAKE=
 
 # let OpenVPN's configure script pick up the requisite libraries,
 # but do not break the plugin build if an older version is installed
+# XXX FIXME: once there is an opportunity for testing with older
+# versions with incompatible plugins again, try USES+=localbase:ldflags,
+# suggested by Mateusz Piotrowski 0mp@ 2020-07-17
 CPPFLAGS+=		-I${WRKSRC}/include -I${LOCALBASE}/include
 LDFLAGS+=		-L${LOCALBASE}/lib -Wl,--as-needed
-
-# set PLUGIN_LIBDIR so that unqualified plugin paths are found:
-CPPFLAGS+=		-DPLUGIN_LIBDIR=\\\"${PREFIX}/lib/openvpn/plugins\\\"
 
 OPTIONS_DEFINE=		PKCS11 EASYRSA DOCS EXAMPLES X509ALTUSERNAME \
 			TEST LZ4 LZO SMALL TUNNELBLICK ASYNC_PUSH

@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	dconf
-PORTVERSION=	0.36.0
+PORTVERSION=	0.38.0
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DISTNAME=	dconf-${PORTVERSION}
 DIST_SUBDIR=	gnome3
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Configuration database system for GNOME
 
 LICENSE=	LGPL21
@@ -25,8 +25,10 @@ USES=		gettext gnome localbase meson pkgconfig python:3.6+,build tar:xz
 USE_CSTD=	c99
 USE_GNOME=	glib20 libxslt:build
 USE_LDCONFIG=	yes
+.if ${/usr/bin/ld:L:tA} != /usr/bin/ld.lld
 USE_BINUTILS=	yes
 LDFLAGS+=	-B${LOCALBASE}/bin
+.endif
 BINARY_ALIAS=	python3=${PYTHON_VERSION}
 
 MESON_ARGS=	-Dman=true \

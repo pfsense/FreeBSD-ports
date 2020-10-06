@@ -16,8 +16,11 @@ LICENSE_FILE_MIT=	${WRKSRC}/LICENSE
 BROKEN_armv6=		fails to package: pypy_objspace_std.c: Crash in JIT!
 BROKEN_armv7=		fails to package: pypy_objspace_std.c: Crash in JIT!
 BROKEN_powerpc64=	fails to compile: platcheck_109.c: fatal error: linux/auxvec.h: No such file or directory
-ONLY_FOR_ARCHS?=	amd64 armv6 armv7 i386 powerpc64
+ONLY_FOR_ARCHS?=	amd64 armv6 armv7 i386 powerpc64 powerpc64le
 ONLY_FOR_ARCHS_REASON?=	PyPy JIT only supported on these architectures
+
+PATCH_SITES=	https://foss.heptapod.net/pypy/pypy/-/commit/
+PATCHFILES+=	455e1f635110df4bdc2981a3a0abf02e3d4d21b2.diff:-p1
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libffi.so:devel/libffi

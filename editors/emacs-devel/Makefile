@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	emacs
-DISTVERSION=	28.0.50.20200901
+DISTVERSION=	28.0.50.20200915
 PORTEPOCH=	2
 CATEGORIES=	editors
 PKGNAMESUFFIX=	-devel
@@ -28,7 +28,7 @@ USES=		autoreconf:build cpe gmake localbase:ldflags ncurses pkgconfig
 CPE_VENDOR=	gnu
 USE_GITHUB=	yes
 GH_ACCOUNT=	emacs-mirror
-GH_TAGNAME=	2e3ec40
+GH_TAGNAME=	e408f2f
 
 .if ${FLAVOR:U} != nox
 USES+=		desktop-file-utils gnome xorg
@@ -197,7 +197,8 @@ XFT_LIB_DEPENDS=		libfontconfig.so:x11-fonts/fontconfig \
 XFT_USE=			XORG=xft,xrender
 XFT_CONFIGURE_WITH=		xft
 XIM_CONFIGURE_WITH=		xim
-XML_USES=			gnome # portlint complains, but use for nox
+# keep XML_USES=gnome, because nox flavor does not have USES=gnome
+XML_USES=			gnome
 XML_USE=			GNOME=libxml2
 XML_CONFIGURE_WITH=		xml2
 XPM_USE=			XORG=xpm

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gettext
-PORTVERSION=	3.3.5
+PORTVERSION=	3.3.6
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -22,7 +22,11 @@ USE_RUBY=	yes
 
 NO_ARCH=	yes
 
-PLIST_FILES=	bin/rmsgcat bin/rmsgfmt bin/rmsginit bin/rmsgmerge bin/rxgettext
+PLIST_FILES=	bin/rmsgcat \
+		bin/rmsgfmt \
+		bin/rmsginit \
+		bin/rmsgmerge \
+		bin/rxgettext
 
 SHEBANG_FILES=	samples/*.rb samples/cgi/*.rb
 

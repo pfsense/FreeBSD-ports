@@ -170,6 +170,17 @@ CMake Error at IGC/CMakeLists.txt:1974 (message):
  
  // Linux, Android
  #define MY_EXTERN_C    extern "C"
+--- IGC/CMFE/AdaptorCM/InputArgsWrapper.cpp.orig	2020-08-29 06:30:46 UTC
++++ IGC/CMFE/AdaptorCM/InputArgsWrapper.cpp
+@@ -55,7 +55,7 @@ void InputArgsWrapper::processSupportDirectories(const
+     return;
+ 
+ // TODO: enable this for Windows
+-#if __linux__
++#if !defined(_WIN32)
+   // process files
+   std::error_code EC;
+   SeqStrT IncludeFiles;
 --- IGC/GenISAIntrinsics/GenIntrinsics.h.orig	2020-02-10 06:06:31 UTC
 +++ IGC/GenISAIntrinsics/GenIntrinsics.h
 @@ -67,7 +67,7 @@ namespace GenISAIntrinsic {
@@ -222,24 +233,17 @@ CMake Error at IGC/CMakeLists.txt:1974 (message):
 +#if defined(__GNUC__)
  #   pragma GCC diagnostic pop
  #endif
---- IGC/common/LLVMWarningsPush.hpp.orig	2019-11-27 01:05:20 UTC
+--- IGC/common/LLVMWarningsPush.hpp.orig	2020-09-16 10:27:28 UTC
 +++ IGC/common/LLVMWarningsPush.hpp
-@@ -55,13 +55,13 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+@@ -55,7 +55,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  #   pragma warning( push )
  #endif
  
 -#if defined(__linux__)
 +#if defined(__GNUC__)
  #   pragma GCC diagnostic push
- #endif
- 
- #include <llvm/Config/llvm-config.h>
- 
--#if defined(__linux__)
-+#if defined(__GNUC__)
- #    if __GNUC__ > 8
- #        pragma GCC diagnostic ignored "-Winit-list-lifetime"
- #    endif
+ #   if __GNUC__ > 8
+ #       pragma GCC diagnostic ignored "-Winit-list-lifetime"
 --- IGC/common/igc_regkeys.hpp.orig	2019-11-27 01:05:20 UTC
 +++ IGC/common/igc_regkeys.hpp
 @@ -39,7 +39,7 @@ typedef char debugString[256];
@@ -260,9 +264,9 @@ CMake Error at IGC/CMakeLists.txt:1974 (message):
  #define LINUX_RELEASE_MODE
  #endif
  
---- visa/BuildCISAIRImpl.cpp.orig	2020-01-09 09:46:51 UTC
+--- visa/BuildCISAIRImpl.cpp.orig	2020-09-16 10:27:28 UTC
 +++ visa/BuildCISAIRImpl.cpp
-@@ -684,7 +684,6 @@ extern void CISA_delete_buffer(YY_BUFFER_STATE buf);
+@@ -576,7 +576,6 @@ extern void CISA_delete_buffer(YY_BUFFER_STATE buf);
  
  int CISA_IR_Builder::ParseVISAText(const std::string& visaHeader, const std::string& visaText, const std::string& visaTextFile)
  {
@@ -270,12 +274,12 @@ CMake Error at IGC/CMakeLists.txt:1974 (message):
      // Direct output of parser to null
  #if defined(_WIN64) || defined(_WIN32)
      CISAout = fopen("nul", "w");
-@@ -746,16 +745,11 @@ int CISA_IR_Builder::ParseVISAText(const std::string& 
+@@ -627,16 +626,11 @@ int CISA_IR_Builder::ParseVISAText(const std::string& 
      }
  
-     return VISA_SUCCESS;
+     return status;
 -#else
--    assert(0 && "Asm parsing not supported on this platform");
+-    assert(0 && "vISA asm parsing not supported on this platform");
 -    return VISA_FAILURE;
 -#endif
  }
@@ -287,7 +291,7 @@ CMake Error at IGC/CMakeLists.txt:1974 (message):
      // Direct output of parser to null
  #if defined(_WIN64) || defined(_WIN32)
      CISAout = fopen("nul", "w");
-@@ -781,10 +775,6 @@ int CISA_IR_Builder::ParseVISAText(const std::string& 
+@@ -662,10 +656,6 @@ int CISA_IR_Builder::ParseVISAText(const std::string& 
          fclose(CISAout);
      }
      return VISA_SUCCESS;

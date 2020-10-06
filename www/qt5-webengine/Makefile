@@ -18,7 +18,7 @@
 
 PORTNAME=	webengine
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	www
 PKGNAMEPREFIX=	qt5-
 
@@ -32,6 +32,7 @@ BUILD_DEPENDS=	bison:devel/bison \
 		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libdbus-1.so:devel/dbus \
+		libdouble-conversion.so:devel/double-conversion \
 		libevent.so:devel/libevent \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
@@ -49,7 +50,7 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libwebp.so:graphics/webp
 
 DISTINFO_FILE=	${.CURDIR}/distinfo
-QT5_VERSION=	5.14.2
+QT5_VERSION=	5.15.0
 
 OPTIONS_SINGLE=		AUDIO
 OPTIONS_SINGLE_AUDIO=	ALSA PULSEAUDIO SNDIO
@@ -77,8 +78,9 @@ USES=		gl gnome gperf jpeg python:2.7,build pkgconfig \
 		qmake:norecursive,outsource qt-dist:5,webengine shebangfix xorg
 USE_GL=		gl
 USE_GNOME=	glib20 libxml2 libxslt
-USE_QT=		core declarative designer gui location network webchannel \
-		widgets buildtools_build qmake_build printsupport
+USE_QT=		core declarative gui location network printsupport \
+		webchannel widgets \
+		buildtools_build designer_build qmake_build
 USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xorgproto \
 		xrandr xrender xscrnsaver xtst
 

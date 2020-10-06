@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME?=	ixl
-PORTVERSION?=	1.11.29
+PORTVERSION?=	1.12.2
 PORTREVISION?=	0
 CATEGORIES=	net
 MASTER_SITES?=	https://downloadmirror.intel.com/${MASTER_SITE_SUBDIR}/ \

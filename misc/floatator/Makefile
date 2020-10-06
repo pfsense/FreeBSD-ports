@@ -3,7 +3,7 @@
 
 PORTNAME=	floatator
 PORTVERSION=	0.2.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	misc
 MASTER_SITES=	http://floatator.cichon.com/download/
 
@@ -18,6 +18,11 @@ MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS} -DNDEBUG" \
 		X11INCLUDE="-I${LOCALBASE}/include" X11LIB="-L${LOCALBASE}/lib"
 PLIST_FILES=	bin/floatator bin/floatator_X_interface
 MAKE_JOBS_UNSAFE=	yes
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 do-install:
 .for f in floatator floatator_X_interface

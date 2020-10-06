@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	blender
-DISTVERSION=	2.83.1
-PORTREVISION=	2
+DISTVERSION=	2.90.0
+PORTREVISION=	1
 CATEGORIES=	graphics multimedia
 MASTER_SITES=	http://download.blender.org/source/ \
 		http://mirror.cs.umn.edu/blender.org/source/ \
@@ -15,6 +15,9 @@ COMMENT=	3D modeling/rendering/animation package
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/doc/license/GPL3-license.txt
 
+NOT_FOR_ARCHS=	i386
+NOT_FOR_ARCHS_REASON=	uses 64bit atomic functions
+
 BUILD_DEPENDS=	${PYNUMPY}
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libfreetype.so:print/freetype2 \
@@ -24,7 +27,7 @@ RUN_DEPENDS=	${PYNUMPY}
 # libraries are used, if either of the most common options in blender
 # are set. We will pull boost in just to be on the safe side.
 
-USES=		cmake compiler:c++14-lang gl jpeg python:3.7 shebangfix \
+USES=		cmake compiler:c++14-lang gl jpeg python:3.8 shebangfix \
 		tar:xz xorg
 USE_XORG=	x11 xext xfixes xmu xrender
 USE_GL=		gl glu glew
@@ -74,6 +77,7 @@ COLLADA_USES=			gnome
 COMPOSITOR_CMAKE_BOOL=		WITH_COMPOSITOR
 CYCLES_IMPLIES=			OPENIMAGEIO
 CYCLES_CMAKE_BOOL=		WITH_CYCLES
+CYCLES_LIB_DEPENDS=		libpugixml.so:textproc/pugixml
 CYCLESEMBR_IMPLIES=		CYCLES
 CYCLESEMBR_CMAKE_BOOL=		WITH_CYCLES_EMBREE
 CYCLESEMBR_LIB_DEPENDS=		libembree3.so:graphics/embree

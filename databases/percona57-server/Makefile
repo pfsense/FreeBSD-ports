@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME?=	percona
-DISTVERSION=	5.7.30-33
+DISTVERSION=	5.7.31-34
 PORTREVISION?=	0
 CATEGORIES=	databases
 MASTER_SITES=	http://www.percona.com/downloads/Percona-Server-5.7/Percona-Server-${DISTVERSION}/source/tarball/:percona \
@@ -160,6 +160,9 @@ post-patch:
 	${WRKSRC}/configure.cmake
 
 .include <bsd.port.pre.mk>
+
+# Workaround to clang11/gcc10 with -fno-common by default
+CFLAGS+=	-fcommon
 
 .if ${CHOSEN_COMPILER_TYPE} == gcc
 CXXFLAGS+=	-fpermissive

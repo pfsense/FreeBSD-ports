@@ -1,4 +1,4 @@
---- utils/iserv/ghc.mk.orig	2020-03-23 22:25:01 UTC
+--- utils/iserv/ghc.mk.orig	2019-11-23 20:27:35 UTC
 +++ utils/iserv/ghc.mk
 @@ -31,7 +31,7 @@ endif
  # of overhead to startup and increases the binary sizes) but if you

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	usbids
-PORTVERSION=	20200329
+PORTVERSION=	20200826
 CATEGORIES=	misc
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -16,7 +16,7 @@ NO_BUILD=	yes
 
 PORTDATA=	usb.ids
 
-GH_TAGNAME=	d41c7bc
+GH_TAGNAME=	075e753
 USE_GITHUB=	yes
 
 do-install:

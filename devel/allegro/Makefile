@@ -3,10 +3,11 @@
 
 PORTNAME=	allegro
 DISTVERSION=	4.4.3.1
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/liballeg/allegro5/releases/download/${DISTVERSION}/
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cross-platform library for games and multimedia programming
 
 LICENSE=	GIFTWARE

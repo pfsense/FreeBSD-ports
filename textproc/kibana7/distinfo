@@ -1,3 +1,3 @@
-TIMESTAMP = 1591572884
-SHA256 (kibana-7.7.1-darwin-x86_64.tar.gz) = 7ca3ef174f16bef9ef5dabd13aac0ddb3ddc410add439da2da8f30631ad0295c
-SIZE (kibana-7.7.1-darwin-x86_64.tar.gz) = 290076338
+TIMESTAMP = 1599151442
+SHA256 (kibana-7.9.1-darwin-x86_64.tar.gz) = 7f015bac5de3116bc3dd06fdc8a13cce11bf5b877aad9ef81e043d2db571448a
+SIZE (kibana-7.9.1-darwin-x86_64.tar.gz) = 304677115

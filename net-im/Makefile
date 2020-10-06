@@ -6,11 +6,11 @@
     SUBDIR += 6cord
     SUBDIR += beebeep
     SUBDIR += centerim
-    SUBDIR += centerim-devel
+    SUBDIR += chatterino2
     SUBDIR += climm
     SUBDIR += coccinella
     SUBDIR += convey
-    SUBDIR += corebird
+    SUBDIR += cordless
     SUBDIR += coyim
     SUBDIR += cutegram
     SUBDIR += diligent
@@ -18,14 +18,11 @@
     SUBDIR += echat
     SUBDIR += ejabberd
     SUBDIR += ekiga
-    SUBDIR += empathy
-    SUBDIR += farsight2
     SUBDIR += farstream
     SUBDIR += finch
     SUBDIR += folks
     SUBDIR += fractal
     SUBDIR += freetalk
-    SUBDIR += fugu
     SUBDIR += gajim
     SUBDIR += gitterdone
     SUBDIR += gloox
@@ -58,7 +55,6 @@
     SUBDIR += libaccounts-qt5
     SUBDIR += libmesode
     SUBDIR += libnice
-    SUBDIR += libnice-gst010
     SUBDIR += libnice-gst1
     SUBDIR += libpurple
     SUBDIR += libqmatrixclient
@@ -114,11 +110,11 @@
     SUBDIR += profanity
     SUBDIR += prosody
     SUBDIR += prosody-modules
-    SUBDIR += proxy65
     SUBDIR += psi
     SUBDIR += purple-discord
     SUBDIR += purple-facebook
     SUBDIR += purple-hangouts
+    SUBDIR += purple-plugin-pack
     SUBDIR += purple-rocketchat
     SUBDIR += purple-slack
     SUBDIR += py-fbmq
@@ -126,14 +122,12 @@
     SUBDIR += py-nbxmpp
     SUBDIR += py-punjab
     SUBDIR += py-python-telegram-bot
-    SUBDIR += py-skype4py
     SUBDIR += py-slackclient
     SUBDIR += py-sleekxmpp
     SUBDIR += py-slixmpp
     SUBDIR += py-telepot
     SUBDIR += py-toxcore-c
     SUBDIR += py-unmessage
-    SUBDIR += py-xmpppy
     SUBDIR += qTox
     SUBDIR += quaternion
     SUBDIR += qxmpp-qt5
@@ -145,6 +139,7 @@
     SUBDIR += rubygem-tinder
     SUBDIR += ruqola
     SUBDIR += sayaka
+    SUBDIR += scli
     SUBDIR += scudcloud
     SUBDIR += sendxmpp
     SUBDIR += signal-cli
@@ -159,18 +154,14 @@
     SUBDIR += telegram-purple
     SUBDIR += telegramqml
     SUBDIR += telepathy-accounts-signon
-    SUBDIR += telepathy-farsight
     SUBDIR += telepathy-farstream
     SUBDIR += telepathy-gabble
     SUBDIR += telepathy-glib
-    SUBDIR += telepathy-haze
     SUBDIR += telepathy-idle
     SUBDIR += telepathy-logger
     SUBDIR += telepathy-logger-qt5
     SUBDIR += telepathy-mission-control
-    SUBDIR += telepathy-python
     SUBDIR += telepathy-qt
-    SUBDIR += telepathy-rakia
     SUBDIR += telepathy-salut
     SUBDIR += telepathy-sofiasip
     SUBDIR += tkabber
@@ -187,5 +178,6 @@
     SUBDIR += vqcc-gtk
     SUBDIR += xmpp-client
     SUBDIR += zephyr
+    SUBDIR += zoom
 
 .include <bsd.port.subdir.mk>

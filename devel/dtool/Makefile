@@ -2,7 +2,7 @@
 
 PORTNAME=	dtool
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.0
+DISTVERSION=	0.10.0
 PORTREVISION=	1
 CATEGORIES=	devel
 
@@ -71,7 +71,7 @@ CARGO_CRATES=	aho-corasick-0.7.6 \
 		keccak-0.1.0 \
 		lazy_static-1.4.0 \
 		libc-0.2.66 \
-		linked-hash-map-0.5.2 \
+		linked-hash-map-0.5.3 \
 		log-0.4.8 \
 		madato-0.5.3 \
 		md5-0.7.0 \
@@ -134,6 +134,7 @@ CARGO_CRATES=	aho-corasick-0.7.6 \
 		textwrap-0.11.0 \
 		thread_local-1.0.1 \
 		time-0.1.42 \
+		twox-hash-1.5.0 \
 		typenum-1.11.2 \
 		unicode-segmentation-1.6.0 \
 		unicode-width-0.1.7 \

@@ -16,9 +16,11 @@
     SUBDIR += CaribbeanStud
     SUBDIR += HeroesOfMightAndMagic
     SUBDIR += KnightCap
+    SUBDIR += NBlood
     SUBDIR += OpenTomb
     SUBDIR += abbayedesmorts
     SUBDIR += abe
+    SUBDIR += abstreet
     SUBDIR += abuse_sdl
     SUBDIR += ace-of-penguins
     SUBDIR += acm
@@ -54,7 +56,6 @@
     SUBDIR += ascii-invaders
     SUBDIR += asciiquarium
     SUBDIR += assaultcube
-    SUBDIR += asteroid
     SUBDIR += asteroids3d
     SUBDIR += astromenace
     SUBDIR += asylum
@@ -85,6 +86,7 @@
     SUBDIR += biorythm
     SUBDIR += bitefusion
     SUBDIR += black-box
+    SUBDIR += black-hole-solver
     SUBDIR += blackjackclient
     SUBDIR += blackshadeselite
     SUBDIR += blinken
@@ -92,6 +94,7 @@
     SUBDIR += blobby
     SUBDIR += blobwars
     SUBDIR += block
+    SUBDIR += blockattack
     SUBDIR += blockout
     SUBDIR += blockrage
     SUBDIR += blokish
@@ -150,6 +153,7 @@
     SUBDIR += connectagram
     SUBDIR += connectfive
     SUBDIR += construo
+    SUBDIR += coronapoker
     SUBDIR += corsix-th
     SUBDIR += cosmo
     SUBDIR += cosmosmash
@@ -183,7 +187,6 @@
     SUBDIR += defendguin
     SUBDIR += devilutionX
     SUBDIR += dhewm3
-    SUBDIR += diameter
     SUBDIR += diaspora
     SUBDIR += digger-vgl
     SUBDIR += divide-and-succeed
@@ -223,7 +226,6 @@
     SUBDIR += el
     SUBDIR += el-data
     SUBDIR += emptyepsilon
-    SUBDIR += endgame-singularity
     SUBDIR += endgame-singularity-music
     SUBDIR += endless-sky
     SUBDIR += endless-sky-high-dpi
@@ -414,7 +416,6 @@
     SUBDIR += kanagram
     SUBDIR += kapman
     SUBDIR += kartofel
-    SUBDIR += katawa-shoujo
     SUBDIR += katomic
     SUBDIR += kblackbox
     SUBDIR += kblocks
@@ -428,7 +429,6 @@
     SUBDIR += kgoldrunner
     SUBDIR += khangman
     SUBDIR += kigo
-    SUBDIR += kiki
     SUBDIR += killbots
     SUBDIR += kiriki
     SUBDIR += kjumpingcube
@@ -535,11 +535,8 @@
     SUBDIR += libshhcards
     SUBDIR += libtmcg
     SUBDIR += lightsoff
-    SUBDIR += lightyears
     SUBDIR += lincity
     SUBDIR += lincity-ng
-    SUBDIR += linux-darwinia-demo
-    SUBDIR += linux-defcon
     SUBDIR += linux-doom3
     SUBDIR += linux-doom3-demo
     SUBDIR += linux-dwarffortress
@@ -561,7 +558,6 @@
     SUBDIR += linux-unigine-heaven
     SUBDIR += linux-unigine-valley
     SUBDIR += linux-unrealgold
-    SUBDIR += linux-uplink-demo
     SUBDIR += linux-ut
     SUBDIR += linux-ut2003-demo
     SUBDIR += linux-virtual-jay-peak
@@ -570,6 +566,7 @@
     SUBDIR += lm-solve
     SUBDIR += lmarbles
     SUBDIR += lmpc
+    SUBDIR += lolcat
     SUBDIR += lordsawar
     SUBDIR += lpairs
     SUBDIR += lskat
@@ -707,7 +704,6 @@
     SUBDIR += orbital_eunuchs_sniper
     SUBDIR += orthorobot
     SUBDIR += osgg
-    SUBDIR += outerspace
     SUBDIR += p5-Acme-GuessNumber
     SUBDIR += p5-Algorithm-Pair-Best2
     SUBDIR += p5-Algorithm-Pair-Swiss
@@ -721,7 +717,6 @@
     SUBDIR += p5-Games-GuessWord
     SUBDIR += p5-Games-Tournament-RoundRobin
     SUBDIR += pachi
-    SUBDIR += pachi-game-engine
     SUBDIR += pacmanarena
     SUBDIR += palapeli
     SUBDIR += palomino
@@ -770,9 +765,9 @@
     SUBDIR += py-fife
     SUBDIR += py-mnemosyne
     SUBDIR += py-pychess
+    SUBDIR += py-pysol-cards
     SUBDIR += py-sgflib
     SUBDIR += py-sgfsummary
-    SUBDIR += pyfa
     SUBDIR += pysolfc
     SUBDIR += pyspacewar
     SUBDIR += q2p
@@ -824,7 +819,6 @@
     SUBDIR += regoth
     SUBDIR += reminiscence
     SUBDIR += renpy
-    SUBDIR += renpy6
     SUBDIR += rescue
     SUBDIR += residualvm
     SUBDIR += retroarch
@@ -891,7 +885,6 @@
     SUBDIR += solarconquest
     SUBDIR += solarus
     SUBDIR += solarus-quest-editor
-    SUBDIR += solarwolf
     SUBDIR += sopwith
     SUBDIR += spacejunk
     SUBDIR += spacezero
@@ -936,7 +929,6 @@
     SUBDIR += tetzle
     SUBDIR += textmaze
     SUBDIR += thegrind
-    SUBDIR += thudboard
     SUBDIR += tileworld
     SUBDIR += tkmoo
     SUBDIR += tomatoes
@@ -1049,7 +1041,6 @@
     SUBDIR += xdigger
     SUBDIR += xdino
     SUBDIR += xemeraldia
-    SUBDIR += xevil
     SUBDIR += xeyesplus
     SUBDIR += xfireworks
     SUBDIR += xfrisk
@@ -1080,7 +1071,6 @@
     SUBDIR += xmine
     SUBDIR += xminehunter
     SUBDIR += xmines
-    SUBDIR += xminesweep
     SUBDIR += xmlink
     SUBDIR += xmoto
     SUBDIR += xmris

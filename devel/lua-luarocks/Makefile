@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	luarocks
-PORTVERSION=	3.3.1
+PORTVERSION=	3.4.0
 CATEGORIES=	devel
 MASTER_SITES=	https://luarocks.org/releases/
 PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
@@ -36,19 +36,17 @@ LUAJIT_PLIST_SUB=	LUA_VER=${LUA_VER} \
 LUAJIT_VARS=		LUA_INCDIR=${LOCALBASE}/include/luajit-2.0 \
 			LUA_PKGNAMEPREFIX=lua51- \
 			LUA_VER=5.1
-LUAJIT_USES_OFF=	lua
+LUAJIT_USES_OFF=	lua:flavors
 
 post-patch:
 # /usr/local is a mix of site-local data and packages installs.
 # If PREFIX/LOCALBASE changes, look for dependencies there as well.
 .if defined(PREFIX) && ${PREFIX} != "/usr/local" && ${PREFIX} != "/usr"
-	@${REINPLACE_CMD} '/external_deps_dirs/ s|{ |&"${PREFIX}", |' \
-		${WRKSRC}/src/luarocks/core/cfg.lua
+	@${REINPLACE_CMD} '/external_deps_dirs/ s|{ |&"${PREFIX}", |' ${WRKSRC}/src/luarocks/core/cfg.lua
 .endif
 
 post-install:
 # Let @sample manage default config
-	${MV} ${STAGEDIR}${ETCDIR}/config-${LUA_VER}.lua \
-		${STAGEDIR}${ETCDIR}/config-${LUA_VER}.lua.sample
+	${MV} ${STAGEDIR}${ETCDIR}/config-${LUA_VER}.lua ${STAGEDIR}${ETCDIR}/config-${LUA_VER}.lua.sample
 
 .include <bsd.port.mk>

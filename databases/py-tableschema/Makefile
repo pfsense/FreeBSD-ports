@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tableschema
-PORTVERSION=	1.18.0
+PORTVERSION=	1.19.5
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,13 +18,14 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cached-property>=1.5:devel/py-cached-propert
 		${PYTHON_PKGNAMEPREFIX}dateutil>=2.4:devel/py-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}isodate>=0.5.4:devel/py-isodate@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jsonschema>=2.5:devel/py-jsonschema@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyrsistent>=0<0.17:devel/py-pyrsistent@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.5:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}rfc3986>=1.1.0:www/py-rfc3986@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.9:devel/py-six@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}tabulator>=1.29:devel/py-tabulator@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}tabulator>=1.51.3:devel/py-tabulator@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}unicodecsv>=0.14:devel/py-unicodecsv@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

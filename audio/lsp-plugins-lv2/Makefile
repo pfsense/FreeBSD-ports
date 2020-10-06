@@ -2,7 +2,8 @@
 
 PORTNAME=	lsp-plugins
 DISTVERSIONPREFIX=	${PORTNAME}-
-DISTVERSION=	1.1.22
+DISTVERSION=	1.1.26
+PORTREVISION=	1
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -12,7 +13,7 @@ COMMENT=	Collection of free LV2 plugins
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-ONLY_FOR_ARCHS=	amd64 armv7 i386 powerpc64
+ONLY_FOR_ARCHS=	amd64 armv7 i386 powerpc64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	assembly only for these architectures
 
 BUILD_DEPENDS=	lv2>0:audio/lv2

@@ -2,13 +2,8 @@
 
 PORTNAME=	swappy
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.0
+DISTVERSION=	1.2.1
 CATEGORIES=	graphics
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	b59700f47085.patch:-p1 # https://github.com/jtheoof/swappy/pull/42
-PATCHFILES+=	f82390dcec74.patch:-p1 # https://github.com/jtheoof/swappy/pull/42
-PATCHFILES+=	d7df51363873.patch:-p1 # https://github.com/jtheoof/swappy/pull/42
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Snapshot editing for Wayland (a la Snappy on macOS)
@@ -16,11 +11,15 @@ COMMENT=	Snapshot editing for Wayland (a la Snappy on macOS)
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		compiler:c11 gnome meson pkgconfig
+USES=		compiler:c11 desktop-file-utils gettext-tools gnome meson pkgconfig
 USE_GITHUB=	yes
 USE_GNOME=	cairo gdkpixbuf2 gtk30
 GH_ACCOUNT=	jtheoof
-PLIST_FILES=	bin/${PORTNAME}
+PLIST_FILES=	bin/${PORTNAME} \
+		share/applications/${PORTNAME}.desktop \
+		share/icons/hicolor/scalable/apps/${PORTNAME}.svg \
+		share/locale/en/LC_MESSAGES/${PORTNAME}.mo
+INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	CLIPBOARD ICONSFONT MANPAGES NOTIFY
 OPTIONS_DEFAULT=CLIPBOARD ICONSFONT MANPAGES NOTIFY

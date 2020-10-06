@@ -3,7 +3,7 @@
 
 PORTNAME=	efax
 DISTVERSION=	0.9a-001114a7
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	comms
 MASTER_SITES=	http://shino.pos.to/linux/
 
@@ -21,6 +21,11 @@ MAKE_ENV=	INSTALL_PROGRAM="${INSTALL_PROGRAM}" \
 		INSTALL_SCRIPT="${INSTALL_SCRIPT}" \
 		INSTALL_DATA="${INSTALL_DATA}"
 SUB_FILES=	pkg-message
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 CONFLICTS=	efax-gtk-*
 

@@ -4,10 +4,10 @@
 PORTNAME=	cmus
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.8.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Console-based music player with really cool features
 
 LICENSE=	GPLv2+

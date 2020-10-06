@@ -48,13 +48,13 @@ RUN_DEPENDS=	bind-tools>0:dns/bind-tools
 # XXX: remove tar:bz2
 USES=		autoreconf compiler:c11 cpe libedit libtool pkgconfig ssl tar:bz2
 # ISC releases things like 9.8.0-P1, which our versioning doesn't like
-ISCVERSION=	9.17.0a0.2020.06.23
+ISCVERSION=	9.17.4a0.2020.09.14
 # XXX: Remove gitlab
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.isc.org
 GL_ACCOUNT=	isc-projects
 GL_PROJECT=	bind9
-GL_COMMIT=	e8fa9986bd3bc6fdb7d40b60ecebfdcafbabea4c
+GL_COMMIT=	00c3533a7046cda366151da68fb70ff4d0134fd8
 
 CPE_VENDOR=	isc
 CPE_VERSION=	${ISCVERSION:C/-.*//}
@@ -64,17 +64,18 @@ CPE_UPDATE=	${ISCVERSION:C/.*-//:tl}
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-linux-caps \
-		--disable-shared \
 		--localstatedir=/var \
 		--sysconfdir=${ETCDIR} \
 		--with-dlopen=yes \
 		--with-libxml2 \
 		--with-openssl=${OPENSSLBASE} \
-		--with-readline="-L${LOCALBASE}/lib -ledit"
+		--with-readline=libedit
+CONFIGURE_ENV=	READLINE_CFLAGS="-L${LOCALBASE}/lib"
 ETCDIR=		${PREFIX}/etc/namedb
 
 .if defined(BIND_TOOLS_SLAVE)
 EXTRA_PATCHES=		${PATCHDIR}/extrapatch-bind-tools
+CONFIGURE_ARGS+=	--libdir=${PREFIX}/lib/bind-tools
 .else
 USE_RC_SUBR=		named
 # XXX: remove the big warning about it being a development version from pkg-message
@@ -90,10 +91,10 @@ CONFLICTS=	bind911 bind912 bind913 bind914 bind916
 MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFAULT=	DLZ_FILESYSTEM GSSAPI_NONE IDN JSON LMDB MANPAGES \
-			SIGCHASE TCP_FASTOPEN
+			TCP_FASTOPEN DNSTAP
 OPTIONS_DEFINE=		DNSTAP DOCS FIXED_RRSET GEOIP IDN JSON LARGE_FILE LMDB \
 			MANPAGES OVERRIDECACHE PORTREVISION QUERYTRACE \
-			SIGCHASE START_LATE TCP_FASTOPEN TUNING_LARGE
+			START_LATE TCP_FASTOPEN
 
 OPTIONS_RADIO=		CRYPTO
 OPTIONS_RADIO_CRYPTO=	NATIVE_PKCS11
@@ -108,7 +109,7 @@ OPTIONS_SINGLE_GSSAPI=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT GSSAPI_NONE
 .if defined(BIND_TOOLS_SLAVE)
 OPTIONS_EXCLUDE=	${OPTIONS_GROUP_DLZ} DNSTAP DOCS GEOIP LMDB \
 			OVERRIDECACHE PORTREVISION QUERYTRACE START_LATE \
-			TCP_FASTOPEN TUNING_LARGE
+			TCP_FASTOPEN
 .endif	# BIND_TOOLS_SLAVE
 
 OPTIONS_SUB=	yes
@@ -133,10 +134,8 @@ OVERRIDECACHE_DESC=	Use the override-cache patch
 NATIVE_PKCS11_DESC=	Use PKCS\#11 native API (**READ HELP**)
 PORTREVISION_DESC=	Show PORTREVISION in the version string
 QUERYTRACE_DESC=	Enable the very verbose query tracelogging
-SIGCHASE_DESC=		dig/host/nslookup will do DNSSEC validation
 START_LATE_DESC=	Start BIND late in the boot process (see help)
 TCP_FASTOPEN_DESC=	RFC 7413 support
-TUNING_LARGE_DESC=	Tune named for large systems (**READ HELP**)
 
 DLZ_BDB_CONFIGURE_ON=	--with-dlz-bdb=yes
 DLZ_BDB_USES=		bdb
@@ -164,13 +163,16 @@ GEOIP_CONFIGURE_ENABLE=	geoip
 GEOIP_CONFIGURE_WITH=	maxminddb
 GEOIP_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
 
-GSSAPI_BASE_CONFIGURE_ON=	--with-gssapi="${KRB5CONFIG}"
+GSSAPI_BASE_CONFIGURE_ON=	--with-gssapi="${KRB5CONFIG}" \
+				${GSSAPI_CONFIGURE_ARGS}
 GSSAPI_BASE_USES=		gssapi
 
-GSSAPI_HEIMDAL_CONFIGURE_ON=	--with-gssapi="${KRB5CONFIG}"
+GSSAPI_HEIMDAL_CONFIGURE_ON=	--with-gssapi="${KRB5CONFIG}" \
+				${GSSAPI_CONFIGURE_ARGS}
 GSSAPI_HEIMDAL_USES=		gssapi:heimdal
 
-GSSAPI_MIT_CONFIGURE_ON=	--with-gssapi="${KRB5CONFIG}"
+GSSAPI_MIT_CONFIGURE_ON=	--with-gssapi="${KRB5CONFIG}" \
+				${GSSAPI_CONFIGURE_ARGS}
 GSSAPI_MIT_USES=		gssapi:mit
 
 GSSAPI_NONE_CONFIGURE_ON=	--without-gssapi
@@ -198,17 +200,12 @@ NATIVE_PKCS11_CONFIGURE_ENABLE=	native-pkcs11
 
 QUERYTRACE_CONFIGURE_ENABLE=	querytrace
 
-SIGCHASE_CONFIGURE_ON=	STD_CDEFINES="-DDIG_SIGCHASE=1"
-
 START_LATE_SUB_LIST=		NAMED_BEFORE="LOGIN" \
 				NAMED_REQUIRE="SERVERS cleanvar"
 START_LATE_SUB_LIST_OFF=	NAMED_BEFORE="SERVERS" \
 				NAMED_REQUIRE="NETWORKING ldconfig syslogd"
 
 TCP_FASTOPEN_CONFIGURE_ENABLE=	tcp-fastopen
-
-TUNING_LARGE_CONFIGURE_ON=	--with-tuning=large
-TUNING_LARGE_CONFIGURE_OFF=	--with-tuning=default
 
 .include <bsd.port.options.mk>
 
@@ -262,8 +259,8 @@ post-install:
 	${INSTALL_DATA} ${FILESDIR}/BIND.chroot.local.dist ${STAGEDIR}${PREFIX}/etc/mtree/BIND.chroot.local.dist.sample
 	${INSTALL_DATA} ${WRKSRC}/bin/rndc/rndc.conf \
 		${STAGEDIR}${ETCDIR}/rndc.conf.sample
-# FIXME: these are strange.
-	@${RM} -rf ${STAGEDIR}/wrkdirs ${STAGEDIR}${PREFIX}/lib/bind
+# FIXME: this is strange.
+	@${RM} -rf ${STAGEDIR}/wrkdirs
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -272,9 +269,10 @@ post-install-DOCS-on:
 .else
 
 do-install:
-	for dir in bin doc/man; do \
+	for dir in bin lib doc/man; do \
 		(cd ${INSTALL_WRKSRC}/$$dir && ${SETENV} ${MAKE_ENV} ${FAKEROOT} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET}) ; \
 	done
+	@${RM} -r ${STAGEDIR}${PREFIX}/include
 
 .endif	# BIND_TOOLS_SLAVE
 

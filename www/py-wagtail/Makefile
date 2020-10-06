@@ -29,7 +29,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup448>=4.8<4.9:www/py-beautifulso
 		${PYTHON_PKGNAMEPREFIX}XlsxWriter>=1.2.8<2.0:textproc/py-xlsxwriter@${PY_FLAVOR}
 
 USES=		cpe python:3.6+ shebangfix
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
 

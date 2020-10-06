@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	argcomplete
-PORTVERSION=	1.11.1
+PORTVERSION=	1.12.1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,7 +18,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}coverage>=0:devel/py-coverage@${PY_FLAVOR} 
 		${PYTHON_PKGNAMEPREFIX}pexpect>=0:misc/py-pexpect@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
@@ -26,7 +26,7 @@ NO_ARCH=	yes
 .include <bsd.port.pre.mk>
 
 .if ${PYTHON_REL} < 3800
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>=0.23<2:devel/py-importlib-metadata@${PY_FLAVOR}
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>=0.23<3:devel/py-importlib-metadata@${PY_FLAVOR}
 .endif
 
 .include <bsd.port.post.mk>

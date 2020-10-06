@@ -937,6 +937,7 @@ man/man8/winbindd.8.gz
 %%PYTHON_SITELIBDIR%%/samba/tests/dns_forwarder_helpers/server.py
 %%PYTHON_SITELIBDIR%%/samba/tests/dns_forwarder.py
 %%PYTHON_SITELIBDIR%%/samba/tests/dns_invalid.py
+%%PYTHON_SITELIBDIR%%/samba/tests/dns_packet.py
 %%PYTHON_SITELIBDIR%%/samba/tests/dns_tkey.py
 %%PYTHON_SITELIBDIR%%/samba/tests/dns_wildcard.py
 %%PYTHON_SITELIBDIR%%/samba/tests/dns.py
@@ -1033,6 +1034,9 @@ man/man8/winbindd.8.gz
 %%PYTHON_SITELIBDIR%%/samba/tests/samba_tool/sites.py
 %%PYTHON_SITELIBDIR%%/samba/tests/samba_tool/timecmd.py
 %%PYTHON_SITELIBDIR%%/samba/tests/samba_tool/user_check_password_script.py
+%%PYTHON_SITELIBDIR%%/samba/tests/samba_tool/user_virtualCryptSHA_base.py
+%%PYTHON_SITELIBDIR%%/samba/tests/samba_tool/user_virtualCryptSHA_gpg.py
+%%PYTHON_SITELIBDIR%%/samba/tests/samba_tool/user_virtualCryptSHA_userPassword.py
 %%PYTHON_SITELIBDIR%%/samba/tests/samba_tool/user_virtualCryptSHA.py
 %%PYTHON_SITELIBDIR%%/samba/tests/samba_tool/user_wdigest.py
 %%PYTHON_SITELIBDIR%%/samba/tests/samba_tool/user.py

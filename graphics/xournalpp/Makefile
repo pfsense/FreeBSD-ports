@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	xournalpp
-DISTVERSION=	1.0.18.20200819
+DISTVERSION=	1.0.18.20200927
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,13 +18,10 @@ LIB_DEPENDS=	libpoppler-glib.so:graphics/poppler-glib \
 
 USES=		cmake compiler:c++11-lang gettext-tools gnome pkgconfig xorg
 USE_GITHUB=	yes
-GH_TAGNAME=	cdebec61151f968e6fafb2074be182aff970b0af
+GH_TAGNAME=	307d67f02d00c7c9305cc609736d49e2f54961d3
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 libxml2 pango
 USE_XORG=	x11 xi
 USE_TEX=	latex
-
-post-patch: # TEMP workaround for the bug in release 1.0.17: https://github.com/xournalpp/xournalpp/issues/1734#event-3018678460
-	@${REINPLACE_CMD} 's|gettext_create_translations ("$${potfile}")|gettext_create_translations ("$${potfile}" ALL)|' ${WRKSRC}/po/CMakeLists.txt
 
 # CAVEAT: crashes when built with gcc: https://github.com/xournalpp/xournalpp/issues/851
 

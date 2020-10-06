@@ -2,6 +2,7 @@
 
 PORTNAME=	pixman
 PORTVERSION=	0.40.0
+PORTREVISION=	1
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
@@ -12,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 PORTSCOUT=	limitw:1,even
 
-USES=		cpe perl5 tar:xz xorg-cat:lib
+USES=		compiler:c11 cpe perl5 tar:xz xorg-cat:lib
 USE_PERL5=	build
 CONFIGURE_ARGS=	--disable-gtk
 INSTALL_TARGET=	install-strip
@@ -28,9 +29,7 @@ MAKE_ARGS=      SUBDIRS=pixman
 BUILD_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
 CONFIGURE_ENV+=	CCASFLAGS="${CFLAGS} -B${LOCALBASE}/bin -no-integrated-as"
 LLD_UNSAFE=	yes
-.endif
-
-.if ${ARCH} == "powerpc64" || ${ARCH} == "powerpc"
+.elif ${ARCH} == "powerpc"
 CONFIGURE_ARGS+=	--disable-vmx
 .endif
 

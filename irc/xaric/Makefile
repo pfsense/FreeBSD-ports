@@ -3,6 +3,7 @@
 
 PORTNAME=	xaric
 PORTVERSION=	0.13.7
+PORTREVISION=	1
 CATEGORIES=	irc
 MASTER_SITES=	http://xaric.org/software/xaric/releases/
 
@@ -11,6 +12,11 @@ COMMENT=	IRC Client similer to BitchX or ircII
 
 GNU_CONFIGURE=	yes
 USES=		gmake ncurses pathfix ssl
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-ggdb3||g' ${WRKSRC}/Makefile.in

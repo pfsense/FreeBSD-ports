@@ -31,6 +31,8 @@
     SUBDIR += charmtimetracker
     SUBDIR += chart
     SUBDIR += clipit
+    SUBDIR += clipmenu
+    SUBDIR += clipnotify
     SUBDIR += conkyforecast
     SUBDIR += copyq
     SUBDIR += countdown
@@ -39,6 +41,7 @@
     SUBDIR += dfshow
     SUBDIR += docear
     SUBDIR += dosage
+    SUBDIR += dstask
     SUBDIR += easystroke
     SUBDIR += egroupware
     SUBDIR += fasd
@@ -136,9 +139,7 @@
     SUBDIR += kuserfeedback
     SUBDIR += latte-dock
     SUBDIR += libkdepim
-    SUBDIR += ljcharm
     SUBDIR += ljclive
-    SUBDIR += logjam
     SUBDIR += lookbook
     SUBDIR += lumina-archiver
     SUBDIR += lumina-calculator
@@ -150,7 +151,7 @@
     SUBDIR += lumina-screenshot
     SUBDIR += lumina-textedit
     SUBDIR += lxqt-notificationd
-    SUBDIR += mat
+    SUBDIR += mate-indicator-applet
     SUBDIR += mate-notification-daemon
     SUBDIR += mate-utils
     SUBDIR += mbox-importer

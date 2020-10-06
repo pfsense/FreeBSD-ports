@@ -2,11 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	codeblocks
-PORTVERSION=	17.12
-PORTREVISION=	10
+PORTVERSION=	20.03
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/Sources/${PORTVERSION}
-DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Open source, cross-platform, free C/C++ IDE
@@ -24,12 +22,12 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 USES=		autoreconf compiler:c++11-lang desktop-file-utils \
 		fam:gamin gettext-runtime gnome libtool localbase \
 		pathfix pkgconfig shared-mime-info tar:xz xorg
-USE_WX=		2.8
-USE_GNOME=	gtk20 cairo
+USE_WX=		3.0+
+USE_GNOME=	gtk30 cairo
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-wx-config=${WX_CONFIG} --with-contrib-plugins=all \
-		--disable-pch --with-boost-system=boost_system
+CONFIGURE_ARGS=	--with-wx-config=${WX_CONFIG} --disable-pch \
+		--with-boost-system=boost_system
 PKG_CONFIG_LIBDIR=	${LOCALBASE}/libdata/pkgconfig
 INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
@@ -39,11 +37,12 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 .include <bsd.port.pre.mk>
 
-.if ${CHOSEN_COMPILER_TYPE} == clang
-USE_CXXSTD=	c++11
-. if ${COMPILER_VERSION} >= 35
-CXXFLAGS+=	-Wno-undefined-bool-conversion
-. endif
+.if ${ARCH} != amd64 && ${ARCH} != i386
+CONFIGURE_ARGS+=	--with-contrib-plugins=all,-dragscroll
+PLIST_SUB=	X86="@comment "
+.else
+CONFIGURE_ARGS+=	--with-contrib-plugins=all
+PLIST_SUB=	X86=""
 .endif
 
 .include <bsd.port.post.mk>

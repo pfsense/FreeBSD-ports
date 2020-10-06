@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mate-control-center
-PORTVERSION=	1.24.0
+PORTVERSION=	1.24.1
 CATEGORIES=	sysutils mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -10,8 +10,9 @@ DIST_SUBDIR=	mate
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Control center for MATE project
 
-LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	GPLv2+ GPLv3+
+LICENSE_COMB=	multi
+LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	itstool:textproc/itstool
 LIB_DEPENDS=	libcanberra-gtk.so:audio/libcanberra \

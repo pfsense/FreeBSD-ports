@@ -3,7 +3,7 @@
 
 PORTNAME=	lagan
 PORTVERSION=	2.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	biology
 MASTER_SITES=	http://lagan.stanford.edu/lagan_web/
 DISTNAME=	${PORTNAME}${PORTVERSION:S/.//}
@@ -17,6 +17,11 @@ USES=		perl5 shebangfix
 USE_PERL5=	run
 SHEBANG_FILES=	slagan.pl
 MAKE_JOBS_UNSAFE=yes
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 SUB_FILES=	pkg-message
 SUB_LIST=	LAGAN_DIR="${LAGAN_DIR}"

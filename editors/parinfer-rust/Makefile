@@ -3,10 +3,10 @@
 PORTNAME=	parinfer-rust
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.4.3
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	editors
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Infer parentheses for Clojure, Lisp, and Scheme
 
 LICENSE=	ISCL

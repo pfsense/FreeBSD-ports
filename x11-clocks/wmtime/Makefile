@@ -3,13 +3,13 @@
 
 PORTNAME=	wmtime
 PORTVERSION=	1.0b2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-clocks windowmaker
 MASTER_SITES=	http://web.cs.mun.ca/~gstarkes/wmaker/dockapps/files/ \
 		http://freebsd.unixfreunde.de/sources/ \
 		http://mirror2.unixfreunde.de/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jpaetzel@FreeBSD.org
 COMMENT=	Time/Date applet for WindowMaker
 
 WRKSRC=		${WRKDIR}/wmtime.app/wmtime

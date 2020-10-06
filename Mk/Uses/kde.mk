@@ -54,16 +54,16 @@ _KDE_RELNAME=		KDE${_KDE_VERSION}
 
 # === VERSIONS OF THE DIFFERENT COMPONENTS =====================================
 # Current KDE desktop.
-KDE_PLASMA_VERSION?=		5.19.2
+KDE_PLASMA_VERSION?=		5.19.5
 KDE_PLASMA_BRANCH?=		stable
 
 # Current KDE frameworks.
-KDE_FRAMEWORKS_VERSION?=	5.71.0
+KDE_FRAMEWORKS_VERSION?=	5.74.0
 KDE_FRAMEWORKS_BRANCH?= 	stable
 
 # Current KDE applications.
-KDE_APPLICATIONS_VERSION?=	20.04.2
-KDE_APPLICATIONS_SHLIB_VER?=	5.14.2
+KDE_APPLICATIONS_VERSION?=	20.08.1
+KDE_APPLICATIONS_SHLIB_VER?=	5.15.1
 KDE_APPLICATIONS_BRANCH?=	stable
 # Upstream moves old software to Attic/. Specify the newest applications release there.
 # Only the major version is used for the comparison.
@@ -119,7 +119,7 @@ PORTDOCS?=		HTML/*
 PLIST_SUB+=		KDE_APPLICATIONS_SHLIB_VER=${KDE_APPLICATIONS_SHLIB_VER} \
 			KDE_APPLICATIONS_VERSION_SHORT="${KDE_APPLICATIONS_VERSION:R:R}"
 .        endif
-DIST_SUBDIR?=		KDE/applications/${KDE_APPLICATIONS_VERSION}
+DIST_SUBDIR?=		KDE/release-service/${KDE_APPLICATIONS_VERSION}
 .      elif ${_KDE_CATEGORY:Mkde-plasma}
 PORTVERSION?=		${KDE_PLASMA_VERSION}
 PKGNAMEPREFIX?=		plasma5-
@@ -193,7 +193,7 @@ _USE_FRAMEWORKS_TIER2=	auth completion crash doctools \
 
 _USE_FRAMEWORKS_TIER3=	activities activities-stats baloo5 bookmarks configwidgets \
 			designerplugin emoticons globalaccel guiaddons \
-			iconthemes init kcmutils kdeclarative \
+			iconthemes init kcmutils kdav kdeclarative \
 			kded kdesu kdewebkit kio kwayland-server newstuff notifyconfig parts \
 			people plasma-framework purpose runner service texteditor \
 			textwidgets wallet xmlgui xmlrpcclient
@@ -229,11 +229,11 @@ _USE_PLASMA_ALL=	activitymanagerd breeze breeze-gtk \
 # List of components of the KDE PIM distribution (part of applications).
 _USE_KDEPIM5_ALL=	akonadicontacts akonadiimportwizard akonadimime akonadinotes \
 			akonadicalendar akonadisearch alarmcalendar \
-			blog calendarcore calendarsupport calendarutils \
+			calendarcore calendarsupport calendarutils \
 			contacts eventviews gapi grantleetheme \
 			gravatar identitymanagement imap \
 			incidenceeditor kdepim-addons kdepim-apps-libs \
-			kdepim-runtime5 kitinerary kontactinterface kpimdav kpkpass \
+			kdepim-runtime5 kitinerary kontactinterface kpkpass \
 			ksmtp ldap libkdepim libkleo libksieve mailcommon \
 			mailimporter mailtransport mbox messagelib \
 			mime pimcommon pimtextedit tnef \
@@ -623,9 +623,6 @@ kde-akonadisearch_LIB=		libKF5AkonadiSearchCore.so
 kde-alarmcalendar_PORT=		net/kalarmcal
 kde-alarmcalendar_LIB=		libKF5AlarmCalendar.so
 
-kde-blog_PORT=			net/kblog
-kde-blog_LIB=			libKF5Blog.so
-
 kde-calendarsupport_PORT=	net/calendarsupport
 kde-calendarsupport_LIB=	libKF5CalendarSupport.so
 
@@ -659,11 +656,14 @@ kde-imap_LIB=			libKF5IMAP.so
 kde-incidenceeditor_PORT=	net/incidenceeditor
 kde-incidenceeditor_LIB=	libKF5IncidenceEditor.so
 
+kde-kdav_PORT=			net/kf5-kdav
+kde-kdav_LIB=			libKF5DAV.so
+
 kde-kdepim-addons_PORT=	deskutils/kdepim-addons
 kde-kdepim-addons_PATH=	${KDE_PREFIX}/lib/contacteditor/editorpageplugins/cryptopageplugin.so
 
 kde-kdepim-apps-libs_PORT=	deskutils/kdepim-apps-libs
-kde-kdepim-apps-libs_LIB=	libKF5SendLater.so
+kde-kdepim-apps-libs_LIB=	libKF5KaddressbookGrantlee.so
 
 kde-kdepim-runtime5_PORT=	deskutils/kdepim-runtime
 kde-kdepim-runtime5_PATH=	${KDE_PREFIX}/bin/gidmigrator
@@ -673,9 +673,6 @@ kde-kitinerary_LIB=		libKPimItinerary.so
 
 kde-kontactinterface_PORT=	net/kontactinterface
 kde-kontactinterface_LIB=	libKF5KontactInterface.so
-
-kde-kpimdav_PORT=		net/kdav
-kde-kpimdav_LIB=		libKF5DAV.so
 
 kde-kpkpass_PORT=		security/kpkpass
 kde-kpkpass_LIB=		libKPimPkPass.so

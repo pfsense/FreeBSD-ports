@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	drumkv1
-DISTVERSION=	0.9.15
+DISTVERSION=	0.9.17
+PORTREVISION=	1
 CATEGORIES=	audio multimedia
 MASTER_SITES=	SF
 PKGNAMESUFFIX=	-lv2
@@ -22,7 +23,6 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-alsa-midi
 USE_QT=		core gui widgets xml buildtools_build linguisttools_build qmake_build
 USE_GL=		gl
-USE_LDCONFIG=	yes
 
 BINARY_ALIAS=	qmake-qt5=${QMAKE}
 

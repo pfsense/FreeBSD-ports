@@ -13,6 +13,7 @@ COMMENT=	LV2 plugins to mangle, slash, repeat and do much more with your beats
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN=		fails to configure
 BROKEN_powerpc64=	fails to build: FileNotFoundError: [Errno 2] No such file or directory
 
 BUILD_DEPENDS=	lv2>0:audio/lv2 \
@@ -25,6 +26,9 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	blablack
 GH_PROJECT=	${PORTNAME}-lv2
 USE_GNOME=	atkmm gdkpixbuf2 gtkmm24
+
+DEPRECATED=	Unmaintained and doesn't build with the latest audio/lvtk version 2.x
+EXPIRATION_DATE=2021-02-28
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|#include <lvtk-1/lvtk|#include <lvtk-2/lvtk|' ${WRKSRC}/src/*.?pp

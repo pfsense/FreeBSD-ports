@@ -24,7 +24,7 @@ _QT_MK_INCLUDED=	qt.mk
 
 # Qt versions currently supported by the framework.
 _QT_SUPPORTED?=		5
-QT5_VERSION?=		5.14.2
+QT5_VERSION?=		5.15.0
 
 # We accept the Qt version to be passed by either or all of the three mk files.
 .  if empty(qt_ARGS) && empty(qmake_ARGS) && empty(qt-dist_ARGS)
@@ -139,8 +139,8 @@ _USE_QT_ALL+=	sql-ibase
 _USE_QT5_ONLY=		3d buildtools charts concurrent connectivity \
 			core datavis3d diag examples gamepad \
 			graphicaleffects location networkauth paths phonon4 plugininfo printsupport \
-			qdbus qdoc qdoc-data qev quickcontrols \
-			quickcontrols2 remoteobjects scxml sensors serialbus serialport speech \
+			qdbus qdoc qdoc-data qev quick3d quickcontrols quickcontrols2 \
+			quicktimeline remoteobjects scxml sensors serialbus serialport speech \
 			sql-tds uiplugin uitools virtualkeyboard wayland webchannel webglplugin \
 			webengine websockets websockets-qml webview widgets x11extras
 
@@ -259,11 +259,17 @@ qt-qev_PATH=		${LOCALBASE}/${QT_BINDIR_REL}/qev
 qt-qmake_PORT=		devel/${_QT_RELNAME}-qmake
 qt-qmake_PATH=		${LOCALBASE}/${QT_BINDIR_REL}/qmake
 
+qt-quick3d_PORT=	x11-toolkits/${_QT_RELNAME}-quick3d
+qt-quick3d_LIB=		libQt${_QT_LIBVER}Quick3D.so
+
 qt-quickcontrols_PORT=	x11-toolkits/${_QT_RELNAME}-quickcontrols
 qt-quickcontrols_PATH=	${LOCALBASE}/${QT_QMLDIR_REL}/QtQuick/Controls/qmldir
 
 qt-quickcontrols2_PORT=	x11-toolkits/${_QT_RELNAME}-quickcontrols2
 qt-quickcontrols2_LIB=	libQt${_QT_LIBVER}QuickControls2.so
+
+qt-quicktimeline_PORT=	x11-toolkits/${_QT_RELNAME}-quicktimeline
+qt-quicktimeline_PATH=	${LOCALBASE}/${QT_QMLDIR_REL}/QtQuick/Timeline/libqtquicktimelineplugin.so
 
 qt-remoteobjects_PORT=	devel/${_QT_RELNAME}-remoteobjects
 qt-remoteobjects_LIB=	libQt${_QT_LIBVER}RemoteObjects.so

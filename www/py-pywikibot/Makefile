@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pywikibot
-DISTVERSION=	3.0.20200609
+DISTVERSION=	4.3.0
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,7 @@ LICENSE=	MIT
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR}
 
-USES=		dos2unix python
+USES=		dos2unix python:3.5+
 DOS2UNIX_FILES=	setup.py
 USE_PYTHON=	autoplist distutils
 

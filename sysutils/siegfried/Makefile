@@ -3,10 +3,10 @@
 
 PORTNAME=	siegfried
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.0
+DISTVERSION=	1.9.0
 CATEGORIES=	sysutils
 
-MAINTAINER=	tobik@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	File identification tool
 
 LICENSE=	APACHE20

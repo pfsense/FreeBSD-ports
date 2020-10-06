@@ -9,6 +9,7 @@ LLVM_COMMANDS=	\
 		llvm-ar \
 		llvm-as \
 		llvm-bcanalyzer \
+		llvm-bitcode-strip \
 		llvm-cat \
 		llvm-cfi-verify \
 		llvm-config \
@@ -27,6 +28,7 @@ LLVM_COMMANDS=	\
 		llvm-ifs \
 		llvm-install-name-tool \
 		llvm-jitlink \
+		llvm-libtool-darwin \
 		llvm-link \
 		llvm-lipo \
 		llvm-mc \
@@ -55,7 +57,8 @@ LLVM_COMMANDS=	\
 		llvm-undname \
 		llvm-xray \
 		opt \
-		sancov
+		sancov \
+		split-file
 
 CLANG_COMMANDS=	\
 		c-index-test \
@@ -65,7 +68,6 @@ CLANG_COMMANDS=	\
 		clang-cpp \
 		clang-extdef-mapping \
 		clang-format \
-		clang-import-test \
 		clang-offload-bundler \
 		clang-offload-wrapper \
 		clang-scan-deps \
@@ -89,6 +91,12 @@ EXTRAS_COMMANDS= \
 		modularize \
 		pp-trace
 
+FLANG_COMMANDS=	\
+		f18 \
+		f18-parse-demo \
+		flang \
+		tco
+
 LIT_COMMANDS=	\
 		FileCheck \
 		lit \
@@ -107,3 +115,11 @@ LLDB_COMMANDS=	\
 		lldb-instr \
 		lldb-server \
 		lldb-vscode
+
+MLIR_COMMANDS=	\
+		mlir-cpu-runner \
+		mlir-linalg-ods-gen \
+		mlir-opt \
+		mlir-reduce \
+		mlir-tblgen \
+		mlir-translate

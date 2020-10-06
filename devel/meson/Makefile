@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	meson
-PORTVERSION=	0.54.3
+PORTVERSION=	0.55.3
 CATEGORIES=	devel python
 MASTER_SITES=	https://github.com/mesonbuild/${PORTNAME}/releases/download/${PORTVERSION}/
 
-MAINTAINER=	gnome@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	High performance build system
 
 LICENSE=	APACHE20
@@ -17,7 +17,8 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest-xdist>0:devel/py-pytest-xdist@${PY_F
 
 USES=		python:3.5+ shebangfix
 USE_PYTHON=	autoplist distutils noflavors
-SHEBANG_FILES=	mesonbuild/cmake/data/run_ctgt.py
+SHEBANG_FILES=	mesonbuild/rewriter.py \
+		mesonbuild/scripts/cmake_run_ctgt.py
 NO_ARCH=	yes
 
 # https://github.com/mesonbuild/meson/issues/6016

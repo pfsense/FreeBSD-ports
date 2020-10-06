@@ -51,7 +51,6 @@
     SUBDIR += graphlan
     SUBDIR += grappa
     SUBDIR += groopm
-    SUBDIR += haplohseq
     SUBDIR += hhsuite
     SUBDIR += hisat2
     SUBDIR += hmmer
@@ -107,7 +106,6 @@
     SUBDIR += p5-transdecoder
     SUBDIR += paml
     SUBDIR += pbbam
-    SUBDIR += pbcopper
     SUBDIR += pbseqan
     SUBDIR += pear-merger
     SUBDIR += phrap
@@ -148,6 +146,9 @@
     SUBDIR += recombine
     SUBDIR += ruby-bio
     SUBDIR += rubygem-bio
+    SUBDIR += rubygem-bio-executables
+    SUBDIR += rubygem-bio-old-biofetch-emulator
+    SUBDIR += rubygem-bio-shell
     SUBDIR += samtools
     SUBDIR += scrm
     SUBDIR += seaview
@@ -165,7 +166,6 @@
     SUBDIR += subread
     SUBDIR += tRNAscan-SE
     SUBDIR += tabixpp
-    SUBDIR += tophat
     SUBDIR += treekin
     SUBDIR += treepuzzle
     SUBDIR += trimadap

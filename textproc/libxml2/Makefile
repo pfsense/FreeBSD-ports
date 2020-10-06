@@ -17,8 +17,6 @@ PATCHFILES=	7ffcd44d7e6c46704f8af0321d9314cd26e0e18a.patch:-p1 \
 MAINTAINER?=	desktop@FreeBSD.org
 COMMENT?=	XML parser library for GNOME
 
-.if !defined(REFERENCE_PORT)
-
 LICENSE=	MIT TRIO
 LICENSE_COMB=	multi
 LICENSE_NAME_TRIO=	Trio License
@@ -83,5 +81,3 @@ post-patch:
 .endif
 
 .include <bsd.port.post.mk>
-
-.endif

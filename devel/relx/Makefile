@@ -3,18 +3,22 @@
 PORTNAME=	relx
 PORTVERSION=	3.33.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES+=	LOCAL/olgeni:deps \
 		http://olgeni.olgeni.com/~olgeni/distfiles/:deps \
 		https://repo.hex.pm/tarballs/:hex
-DISTFILES=	relx-cache-${PORTVERSION}${EXTRACT_SUFX}:deps
+DISTFILES=	relx-cache-${PORTVERSION}_${PORTREVISION}${EXTRACT_SUFX}:deps
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX} \
-		relx-cache-${PORTVERSION}${EXTRACT_SUFX}
+		relx-cache-${PORTVERSION}_${PORTREVISION}${EXTRACT_SUFX}
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Sane, simple release creation for Erlang
 
 LICENSE=	APACHE20
+
+DEPRECATED=	Script removed upstream, library included in devel/rebar3
+EXPIRATION_DATE=2021-03-01
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/erl:lang/erlang \
 		rebar3>=0:devel/rebar3

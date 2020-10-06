@@ -3,7 +3,7 @@
 
 PORTNAME=	sage
 PORTVERSION=	9.1
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	math
 MASTER_SITES=	https://mirrors.xmission.com/sage/src/		\
 		http://mirrors.xmission.com/sage/src/		\
@@ -333,22 +333,19 @@ CONFIGURE_ARGS=	--with-system-gcc=force		\
 		--enable-build-as-root		\
 		--localstatedir=/var
 MAKE_ENV=	MAKE=${GMAKE} DESTDIR=${BLDDIR}
+ALL_TARGET=	build
 REINPLACE_ARGS=	-i ''
 BINARY_ALIAS=	patch=${LOCALBASE}/bin/gpatch
+OPTIONS_SUB=	yes
 PLIST_SUB=	VER=${PORTVERSION}
 SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=	DOCS
 PORTDOCS=	*
 
-.include <bsd.port.pre.mk>
+DOCS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx
 
-# See https://lists.freebsd.org/pipermail/freebsd-python/2020-June/020710.html
-.if ${OSREL:R} < 13
-PLIST_SUB+=	EGG="" WHEEL="@comment "
-.else
-PLIST_SUB+=	EGG="@comment " WHEEL=""
-.endif
+.include <bsd.port.pre.mk>
 
 WSDIR=		${BLDDIR}${PREFIX}
 SPKG_INST=	configure.ac configure build/sage_bootstrap/uninstall.py	\
@@ -357,7 +354,7 @@ PY2FIX=		bin lib/${PYTHON_VERSION}
 DOC2FIX=	.pickle .doctree
 SE2FIX=		^ECLDIR= ^SINGULAR MAXIMA_PREFIX
 SHR2FIX=	GAP_ROOT_DIR PPLPY_DOCS SINGULARPATH
-STG2FIX=	bin/sage-env-config default.qepcadrc	\
+STG2FIX=	bin/sage-env-config	\
 		share/jupyter/kernels/sagemath/kernel.json
 BADLN=		kernels/sagemath/doc nbextensions/jsmol	\
 		nbextensions/mathjax nbextensions/threejs
@@ -460,6 +457,9 @@ pre-configure:
 	${MKDIR} ${BLDDIR}${PREFIX}/lib/pkgconfig	# Removed thereafter
 
 post-build:
+.if ${PORT_OPTIONS:MDOCS}
+	(cd ${WRKSRC} && ${MAKE_ENV} ${MAKE_CMD} doc)
+.endif
 .for d in ${PY2FIX}
 	${FIND} ${WSDIR}/${d} -type f -exec ${GREP} -I -l "${WSDIR}/bin/python" {} \;	|\
 	${XARGS} ${SED} -i "" -e 's|${WSDIR}/bin/pytho.*|${PYTHON_CMD}|'
@@ -511,9 +511,15 @@ post-build:
 	 -d ${PYTHONPREFIX_SITELIBDIR} -f ${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;} ||	\
 	 ${TRUE}))
 	${FIND} ${BLDDIR}${PREFIX} -name "*.bak" -delete
+# See https://lists.freebsd.org/pipermail/freebsd-python/2020-June/020710.html
+.if exists(${PYTHON_SITELIBDIR}/path.py-7.1.dist-info/WHEEL)
+PLIST_SUB+=	EGG="@comment " WHEEL=""
+.else
+PLIST_SUB+=	EGG="" WHEEL="@comment "
+.endif
 
 do-install:
-	cd "${BLDDIR}" && ${FIND} . | ${CPIO} -pdum ${STAGEDIR}
+	cd "${BLDDIR}" && ${FIND} . | ${CPIO} -pduml ${STAGEDIR}
 	# Remove bad links
 	${LN} -sf ${DOCSDIR}	\
 		${STAGEDIR}${PREFIX}/share/jupyter/kernels/sagemath/doc

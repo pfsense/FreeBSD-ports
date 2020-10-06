@@ -12,7 +12,6 @@ man/uk/man1/kdiff3.1.gz
 share/applications/org.kde.kdiff3.desktop
 %%PORTDOCS%%%%DOCSDIR%%/ca/kdiff3/index.cache.bz2
 %%PORTDOCS%%%%DOCSDIR%%/ca/kdiff3/index.docbook
-%%PORTDOCS%%%%DOCSDIR%%/ca/kdiff3/letter_by_letter.png
 %%PORTDOCS%%%%DOCSDIR%%/ca/kdiff3/open_dialog.png
 %%PORTDOCS%%%%DOCSDIR%%/de/kdiff3/index.cache.bz2
 %%PORTDOCS%%%%DOCSDIR%%/de/kdiff3/index.docbook
@@ -81,7 +80,9 @@ share/locale/es/LC_MESSAGES/kdiff3.mo
 share/locale/es/LC_MESSAGES/kdiff3fileitemactionplugin.mo
 share/locale/et/LC_MESSAGES/kdiff3.mo
 share/locale/et/LC_MESSAGES/kdiff3fileitemactionplugin.mo
+share/locale/eu/LC_MESSAGES/diff_ext.mo
 share/locale/eu/LC_MESSAGES/kdiff3.mo
+share/locale/eu/LC_MESSAGES/kdiff3fileitemactionplugin.mo
 share/locale/fi/LC_MESSAGES/diff_ext.mo
 share/locale/fi/LC_MESSAGES/kdiff3.mo
 share/locale/fi/LC_MESSAGES/kdiff3fileitemactionplugin.mo
@@ -101,7 +102,6 @@ share/locale/hu/LC_MESSAGES/kdiff3fileitemactionplugin.mo
 share/locale/ia/LC_MESSAGES/diff_ext.mo
 share/locale/ia/LC_MESSAGES/kdiff3.mo
 share/locale/ia/LC_MESSAGES/kdiff3fileitemactionplugin.mo
-share/locale/is/LC_MESSAGES/kdiff3.mo
 share/locale/it/LC_MESSAGES/diff_ext.mo
 share/locale/it/LC_MESSAGES/kdiff3.mo
 share/locale/it/LC_MESSAGES/kdiff3fileitemactionplugin.mo
@@ -126,6 +126,7 @@ share/locale/nl/LC_MESSAGES/diff_ext.mo
 share/locale/nl/LC_MESSAGES/kdiff3.mo
 share/locale/nl/LC_MESSAGES/kdiff3fileitemactionplugin.mo
 share/locale/nn/LC_MESSAGES/kdiff3.mo
+share/locale/nn/LC_MESSAGES/kdiff3fileitemactionplugin.mo
 share/locale/pl/LC_MESSAGES/diff_ext.mo
 share/locale/pl/LC_MESSAGES/kdiff3.mo
 share/locale/pl/LC_MESSAGES/kdiff3fileitemactionplugin.mo
@@ -137,6 +138,7 @@ share/locale/pt_BR/LC_MESSAGES/kdiff3.mo
 share/locale/pt_BR/LC_MESSAGES/kdiff3fileitemactionplugin.mo
 share/locale/ro/LC_MESSAGES/kdiff3.mo
 share/locale/ro/LC_MESSAGES/kdiff3fileitemactionplugin.mo
+share/locale/ru/LC_MESSAGES/diff_ext.mo
 share/locale/ru/LC_MESSAGES/kdiff3.mo
 share/locale/ru/LC_MESSAGES/kdiff3fileitemactionplugin.mo
 share/locale/rw/LC_MESSAGES/kdiff3.mo

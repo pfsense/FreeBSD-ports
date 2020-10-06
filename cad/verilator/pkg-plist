@@ -1,6 +1,8 @@
 bin/verilator
 bin/verilator_bin
+%%INSTALL_DBG_EXECUTABLES%%bin/verilator_bin_dbg
 bin/verilator_coverage
+%%INSTALL_DBG_EXECUTABLES%%bin/verilator_coverage_bin_dbg
 bin/verilator_gantt
 bin/verilator_profcfunc
 libdata/pkgconfig/verilator.pc
@@ -77,7 +79,6 @@ man/man1/verilator_profcfunc.1.gz
 %%DATADIR%%/include/verilated_threads.h
 %%DATADIR%%/include/verilated_trace.h
 %%DATADIR%%/include/verilated_trace_imp.cpp
-%%DATADIR%%/include/verilated_unordered_set_map.h
 %%DATADIR%%/include/verilated_vcd_c.cpp
 %%DATADIR%%/include/verilated_vcd_c.h
 %%DATADIR%%/include/verilated_vcd_sc.cpp

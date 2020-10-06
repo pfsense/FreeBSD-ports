@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	oj
-PORTVERSION=	3.10.6
+PORTVERSION=	3.10.14
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -11,8 +11,6 @@ COMMENT=	Fast JSON parser and serializer
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-LIB_DEPENDS=	libgmp.so:math/gmp
 
 USES=		gem
 USE_RUBY=	yes

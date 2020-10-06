@@ -3,13 +3,13 @@
 
 PORTNAME=	ess
 DISTVERSION=	18.10.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	http://ess.r-project.org/downloads/ess/ \
 		http://stat.ethz.ch/ESS/downloads/ess/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	rhurlin@gwdg.de
+MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	R support for Emacsen
 
 LICENSE=	GPLv2+

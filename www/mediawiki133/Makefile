@@ -12,8 +12,11 @@ COMMENT=	Wiki engine used by Wikipedia
 
 LICENSE=	GPLv2
 
-CONFLICTS=	mediawiki13[12]-[0-9]* mediawiki134-[0-9]*
+CONFLICTS=	mediawiki131-[0-9]* mediawiki13[4-5]-[0-9]*
 
+DEPRECATED=	Upstream end of life
+EXPIRATION_DATE=2020-12-31
+	
 USES=		php:flavors shebangfix
 SHEBANG_FILES=	maintenance/dev/*.sh \
 		maintenance/postgres/*.pl \

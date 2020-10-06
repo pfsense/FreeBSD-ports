@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	hplip
-PORTVERSION=	3.20.3
-PORTREVISION=	0
+PORTVERSION=	3.20.6
 CATEGORIES=	print
 MASTER_SITES=	SF
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	tijl@FreeBSD.org
 COMMENT=	Drivers and utilities for HP printers and All-in-One devices
 
 LICENSE=	GPLv2+ MIT BSD3CLAUSE
@@ -22,8 +21,7 @@ RUN_DEPENDS=	cups-filters>=0:print/cups-filters \
 CONFLICTS_INSTALL=	hpijs-[0-9]*
 
 INSTALL_TARGET=	install-strip
-USES=		dos2unix gnome jpeg libtool pkgconfig python shebangfix
-USE_GNOME=	pygobject3
+USES=		dos2unix jpeg libtool pkgconfig python shebangfix
 USE_LDCONFIG=	yes
 SHEBANG_GLOB=	*.py hpps pstotiff
 DOS2UNIX_FILES=	scan/sane/orblite.c
@@ -42,8 +40,8 @@ CONFIGURE_ENV+=	PYTHONINCLUDEDIR=${PYTHON_INCLUDEDIR}
 CPPFLAGS+=	-I${LOCALBASE}/include -I${PYTHON_INCLUDEDIR}
 LIBS+=		-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=		DOCS FAX SCAN SNMP X11 XSANE QT5
-OPTIONS_DEFAULT=	QT5 SCAN SNMP X11
+OPTIONS_DEFINE=		DOCS FAX SCAN SNMP X11 XSANE
+OPTIONS_DEFAULT=	SCAN SNMP X11
 OPTIONS_SUB=		yes
 
 DOCS_CONFIGURE_ENABLE=	doc-build
@@ -63,24 +61,20 @@ SNMP_LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
 SNMP_CONFIGURE_ENABLE=	network-build
 
 X11_DESC=		Graphical User Interface (Qt)
-X11_CONFIGURE_ENABLE=	gui-build
+X11_CONFIGURE_ENABLE=	gui-build qt5
+X11_USES=		pyqt:5
+X11_USE=		PYQT=core_run,dbussupport_run,gui_run,widgets_run
 
 XSANE_DESC=		Install XSane for scanning (implies SCAN)
 XSANE_IMPLIES=		SCAN
 XSANE_RUN_DEPENDS=	xsane:graphics/xsane
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
 
-.if ${PORT_OPTIONS:MQT5} && ${PORT_OPTIONS:MX11}
-USES+=			pyqt:5
-USE_PYQT=		core_run dbussupport_run gui_run sip widgets_run
-CONFIGURE_ARGS+=	--enable-qt5
+.if ${PYTHON_MAJOR_VER} >= 3
+RUN_DEPENDS+=  ${PYTHON_PKGNAMEPREFIX}gobject3>=0:devel/py-gobject3@${PY_FLAVOR}
 .else
-CONFIGURE_ARGS+=	--disable-qt5
-.endif
-
-.if ${PORT_OPTIONS:MX11} && ! ${PORT_OPTIONS:MQT5}
-BROKEN=			The X11 option requires the QT5 option
+RUN_DEPENDS+=  ${PYTHON_PKGNAMEPREFIX}gobject>=0:devel/py-gobject@${PY_FLAVOR}
 .endif
 
 post-patch:
@@ -144,4 +138,4 @@ post-install-SCAN-on:
 	${MV} ${STAGEDIR}${PREFIX}/etc/sane.d/dll.conf \
 		${STAGEDIR}${PREFIX}/etc/sane.d/dll.d/hpaio
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

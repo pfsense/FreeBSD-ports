@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	eccodes
-PORTVERSION=	2.17.0
+PORTVERSION=	2.18.0
 DISTVERSIONSUFFIX=	-Source
 CATEGORIES=	science
 MASTER_SITES=	https://confluence.ecmwf.int/download/attachments/45757960/ \
@@ -13,8 +13,6 @@ COMMENT=	ECMWF API for WMO FM-92 GRIB and FM-94 BUFR messages
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_powerpc64=	fails to compile: lib/libeccodes.so: undefined reference to `grib_decode_size_t'
 
 LIB_DEPENDS=	libnetcdf.so:science/netcdf \
 		libpng.so:graphics/png

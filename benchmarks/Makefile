@@ -3,6 +3,7 @@
 
     COMMENT = Benchmarking tools
 
+    SUBDIR += ali
     SUBDIR += apib
     SUBDIR += autobench
     SUBDIR += blogbench
@@ -16,6 +17,7 @@
     SUBDIR += dhrystone
     SUBDIR += dkftpbench
     SUBDIR += fhourstones
+    SUBDIR += filebench
     SUBDIR += fio
     SUBDIR += flamegraph
     SUBDIR += flops
@@ -38,9 +40,11 @@
     SUBDIR += iperf3
     SUBDIR += libcelero
     SUBDIR += libmicro
+    SUBDIR += linux-gputest
     SUBDIR += linux-vdbench
     SUBDIR += lmbench
     SUBDIR += lzbench
+    SUBDIR += mangohud
     SUBDIR += mdtest
     SUBDIR += nbench
     SUBDIR += netio
@@ -71,6 +75,7 @@
     SUBDIR += raidtest
     SUBDIR += ramspeed
     SUBDIR += randomio
+    SUBDIR += rubygem-benchmark
     SUBDIR += rubygem-benchmark-ips
     SUBDIR += rubygem-benchmark-memory
     SUBDIR += rubygem-derailed_benchmarks

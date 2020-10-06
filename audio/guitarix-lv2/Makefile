@@ -2,6 +2,7 @@
 
 PORTNAME=	guitarix
 DISTVERSION=	0.40.0
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/
 PKGNAMESUFFIX=	-lv2
@@ -9,6 +10,8 @@ DISTNAME=	${PORTNAME}2-${DISTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Virtual versatile amplification for Jack and set of LV2 plugins
+
+BROKEN=		Does not build with glib 2.66.0
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -37,7 +40,7 @@ LIB_DEPENDS=	libavahi-common.so:net/avahi-app \
 RUN_DEPENDS=	roboto-fonts-ttf>0:x11-fonts/roboto-fonts-ttf
 
 USES=		compiler:c++11-lang eigen:3 gnome libarchive localbase:ldflags \
-		pkgconfig python:build readline waf tar:xz
+		pkgconfig python:build readline waf xorg tar:xz
 USE_GNOME=	atkmm cairo gtk30 gtkmm30 pangomm
 USE_XORG=	x11
 USE_LDCONFIG=	yes

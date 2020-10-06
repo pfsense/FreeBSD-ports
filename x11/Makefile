@@ -71,6 +71,7 @@
     SUBDIR += fpc-x11
     SUBDIR += fstobdf
     SUBDIR += gdm
+    SUBDIR += glcapsviewer
     SUBDIR += gmrun
     SUBDIR += gnome-clipboard-daemon
     SUBDIR += gnome-desktop
@@ -81,7 +82,6 @@
     SUBDIR += gnome-shell-extensions
     SUBDIR += gnome-terminal
     SUBDIR += gnome3
-    SUBDIR += gnome3-lite
     SUBDIR += gnustep-app
     SUBDIR += grabc
     SUBDIR += grim
@@ -95,6 +95,7 @@
     SUBDIR += gtkterm2
     SUBDIR += guake
     SUBDIR += gxkb
+    SUBDIR += havoc
     SUBDIR += hhpc
     SUBDIR += hs-xmobar
     SUBDIR += hsetroot
@@ -115,6 +116,7 @@
     SUBDIR += keybinder
     SUBDIR += keybinder-gtk3
     SUBDIR += keyboardcast
+    SUBDIR += keynav
     SUBDIR += kf5-frameworkintegration
     SUBDIR += kf5-frameworks
     SUBDIR += kf5-kactivities
@@ -128,6 +130,7 @@
     SUBDIR += kf5-kwindowsystem
     SUBDIR += kf5-plasma-framework
     SUBDIR += konsole
+    SUBDIR += lavalauncher
     SUBDIR += lemonbar
     SUBDIR += libICE
     SUBDIR += libSM
@@ -160,9 +163,7 @@
     SUBDIR += libfm-extra
     SUBDIR += libfm-qt
     SUBDIR += libgnome
-    SUBDIR += libgnome-reference
     SUBDIR += libgnomekbd
-    SUBDIR += libgnomemm26
     SUBDIR += libinput
     SUBDIR += libmatekbd
     SUBDIR += libsx
@@ -225,6 +226,7 @@
     SUBDIR += mrxvt-devel
     SUBDIR += multi-aterm
     SUBDIR += mxico
+    SUBDIR += nezd
     SUBDIR += numlockx
     SUBDIR += nvidia-driver
     SUBDIR += nvidia-driver-304
@@ -232,6 +234,7 @@
     SUBDIR += nvidia-driver-390
     SUBDIR += nvidia-settings
     SUBDIR += nvidia-xconfig
+    SUBDIR += nwg-launchers
     SUBDIR += nxcomp
     SUBDIR += p5-Clipboard
     SUBDIR += p5-X11-GUITest
@@ -244,6 +247,7 @@
     SUBDIR += p5-XTerm-Conf
     SUBDIR += pcdm
     SUBDIR += perwindowlayoutd
+    SUBDIR += phosh
     SUBDIR += pipeglade
     SUBDIR += pixman
     SUBDIR += plank
@@ -284,6 +288,7 @@
     SUBDIR += sakura
     SUBDIR += sbxkb
     SUBDIR += screen-message
+    SUBDIR += screenkey
     SUBDIR += scripts
     SUBDIR += sddm
     SUBDIR += sessreg
@@ -333,6 +338,7 @@
     SUBDIR += wbar
     SUBDIR += wcm
     SUBDIR += wdisplays
+    SUBDIR += wdm
     SUBDIR += wev
     SUBDIR += wf-shell
     SUBDIR += wl-clipboard
@@ -447,6 +453,7 @@
     SUBDIR += xman
     SUBDIR += xmangekyou
     SUBDIR += xmascot
+    SUBDIR += xmenu
     SUBDIR += xmessage
     SUBDIR += xmh
     SUBDIR += xmodmap
@@ -456,6 +463,7 @@
     SUBDIR += xmsg
     SUBDIR += xmx
     SUBDIR += xnee
+    SUBDIR += xob
     SUBDIR += xorg
     SUBDIR += xorg-apps
     SUBDIR += xorg-cf-files

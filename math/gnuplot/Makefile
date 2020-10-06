@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	gnuplot
-PORTVERSION=	5.2.8
-PORTREVISION=	1
+PORTVERSION=	5.4.0
 CATEGORIES=	math graphics
 MASTER_SITES=	SF
 
@@ -43,15 +42,17 @@ CONFIGURE_ARGS+=--disable-x11-mbfonts \
 		--without-kpsexpand
 PLIST_SUB+=	X11="@comment "
 .else
-USES+=		gnome jpeg lua:53 xorg
+USES+=		gnome jpeg lua:53 ncurses xorg
 USE_TEX=	kpathsea
-USE_GNOME+=	atk cairo gtk20 gdkpixbuf2
-USE_WX=		2.8
+USE_GNOME+=	atk cairo gtk30 gdkpixbuf2
+USE_WX=		3.0+
 USE_XORG+=	x11
 LIB_DEPENDS+=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz \
 		libgd.so:graphics/gd \
 		libpng.so:graphics/png \
+		libwebp.so:graphics/webp \
 		libtiff.so:graphics/tiff
 CONFIGURE_ARGS+=--with-gd=${LOCALBASE} \
 		--with-gpic \
@@ -86,9 +87,9 @@ post-build-DOCS-on:
 	@cd ${WRKSRC}/docs && ${MAKE} groff
 
 pre-install:
-	${MKDIR} ${STAGEDIR}${DATADIR}/5.2 ; \
+	${MKDIR} ${STAGEDIR}${DATADIR}/5.4 ; \
 		${INSTALL_DATA} ${WRKSRC}/share/gnuplotrc \
-		${STAGEDIR}${DATADIR}/5.2/gnuplotrc.sample
+		${STAGEDIR}${DATADIR}/5.4/gnuplotrc.sample
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
@@ -102,7 +103,7 @@ post-install-DOCS-on:
 
 .if defined(LITE)
 post-stage:
-	@cd ${STAGEDIR}${PREFIX} && ${RMDIR} libexec/gnuplot/5.2 libexec/gnuplot
+	@cd ${STAGEDIR}${PREFIX} && ${RMDIR} libexec/gnuplot/5.4 libexec/gnuplot
 .endif
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 
 PORTNAME=	openntpd
 PORTVERSION=	6.2p3
-PORTREVISION=	6
+PORTREVISION=	8
 PORTEPOCH=	2
 CATEGORIES=	net
 MASTER_SITES=	OPENBSD/OpenNTPD
@@ -53,7 +53,7 @@ LDFLAGS+=		-L${WRKDIR}/libressl/lib
 # are owned by root, which creates problems of its own.
 pre-configure:
 	@cd `${MAKE} -V STAGEDIR -C ${PORTSDIR}/security/libressl`${PREFIX} \
-	    && ${FIND} -E . ! -name *.so\* | ${CPIO} -dump ${WRKDIR}/libressl >/dev/null 2>&1
+	    && ${FIND} . ! -name *.so\* | ${CPIO} -dump ${WRKDIR}/libressl >/dev/null 2>&1
 .endif # SSL_DEFAULT
 
 .include <bsd.port.post.mk>

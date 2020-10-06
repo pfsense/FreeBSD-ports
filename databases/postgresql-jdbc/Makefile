@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	postgresql
-PORTVERSION=	42.2.14
+PORTVERSION=	42.2.16
 CATEGORIES=	databases java
 MASTER_SITES=	http://jdbc.postgresql.org/download/
 PKGNAMESUFFIX=	-jdbc

@@ -1,23 +1,21 @@
 # $FreeBSD$
 
 PORTNAME=	keepassxc
-DISTVERSION=	2.5.4
+DISTVERSION=	2.6.1
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/keepassxreboot/keepassxc/releases/download/${DISTVERSION}/${PORTNAME}-${DISTVERSION}-src.tar.xz?dummy=/
 
 MAINTAINER=	melanhit@gmail.com
 COMMENT=	KeePass Cross-platform Community Edition
 
-LICENSE=	APACHE20 BOOST-1.0 BSD3CLAUSE CC0-1.0 GPLv2 GPLv3 LGPL21 \
-		LGPL3 NOKIA-LGPL-EXCEPTION
+LICENSE=	APACHE20 BSD3CLAUSE CC0-1.0 GPLv2 GPLv3 LGPL21 LGPL3 MIT \
+		NOKIA-LGPL-EXCEPTION
 LICENSE_COMB=	multi
-LICENSE_NAME_BOOST-1.0=			Boost Software License version 1.0
 LICENSE_NAME_NOKIA-LGPL-EXCEPTION=	Nokia Qt LGPL Exception version 1.1
-LICENSE_FILE_BOOST-1.0=			${WRKSRC}/LICENSE.BOOST-1.0
 LICENSE_FILE_NOKIA-LGPL-EXCEPTION=	${WRKSRC}/LICENSE.NOKIA-LGPL-EXCEPTION
-LICENSE_PERMS_BOOST-1.0=		dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_PERMS_NOKIA-LGPL-EXCEPTION=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+BUILD_DEPENDS=	asciidoctor:textproc/rubygem-asciidoctor
 LIB_DEPENDS=	libargon2.so:security/libargon2 \
 		libgcrypt.so:security/libgcrypt \
 		libgpg-error.so:security/libgpg-error \
@@ -29,7 +27,6 @@ USES=		cmake compiler:c++11-lang desktop-file-utils qt:5 readline \
 USE_QT=		concurrent core dbus gui network svg widgets buildtools_build \
 		linguisttools_build qmake_build testlib_build
 USE_XORG=	x11
-USE_LDCONFIG=	yes
 
 CMAKE_OFF=	WITH_XC_UPDATECHECK
 

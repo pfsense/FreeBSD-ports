@@ -1,7 +1,7 @@
 # Created by: Marc G. Fournier <scrappy@FreeBSD.org>
 # $FreeBSD$
 
-DISTVERSION?=	9.6.18
+DISTVERSION?=	9.6.19
 # PORTREVISION must be ?= otherwise, all slave ports get this PORTREVISION and
 # not their own.  Probably best to keep it at ?=0 when reset here too.
 PORTREVISION?=	0
@@ -22,4 +22,4 @@ INSTALL_DIRS?=	src/common src/timezone src/backend \
 ICU_PATCHFILE=	pg-96b4-icu-2016-10-02.diff.gz
 OPTIONS_DEFAULT+=ICU
 
-.include "${.CURDIR}/../postgresql12-server/Makefile"
+.include "${.CURDIR}/../postgresql13-server/Makefile"
