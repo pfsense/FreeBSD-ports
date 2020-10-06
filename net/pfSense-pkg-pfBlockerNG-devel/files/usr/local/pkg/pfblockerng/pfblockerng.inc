@@ -809,6 +809,10 @@ function pfb_build_if_list($show_wan=FALSE, $show_groups=FALSE) {
 		$pfb_interfaces['openvpn'] = 'OpenVPN';
 	}
 
+	if ($config['l2tp']['mode'] == "server") {
+		$pfb_interfaces['l2tp'] = 'L2TP VPN';
+	}
+
 	return $pfb_interfaces;
 }
 
