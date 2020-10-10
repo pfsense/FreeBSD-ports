@@ -40,7 +40,7 @@ display_top_tabs($tab_array);
 
 <?php include("foot.inc"); ?>
 <script>
-$('#bandwidthd').load(function() {
+$('#bandwidthd').on('load', function() {
 	/* Find height of iframe contnet and then add 20px for padding */
 	$(this).height( $(this).contents().find("body").height() + 20 );
 });
