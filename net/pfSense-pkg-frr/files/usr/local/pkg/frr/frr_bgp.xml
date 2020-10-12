@@ -145,12 +145,6 @@
 			<description>If checked, BGP will not assume IPv4 unicast by default.</description>
 			<type>checkbox</type>
 		</field>
-		<field>
-			<fielddescr>Disable eBGP Requires Policy</fielddescr>
-			<fieldname>noebgprequirespolicy</fieldname>
-			<description>If checked, override the requirement for eBGP neighbors to have incoming/outgoing filters applied.</description>
-			<type>checkbox</type>
-		</field>
 
 		<field>
 			<name>Modules</name>

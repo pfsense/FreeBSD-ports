@@ -374,23 +374,23 @@
 			<combinefields>end</combinefields>
 		</field>
 		<field>
-			<name>EBGP</name>
+			<name>eBGP</name>
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>EBGP Nexthop Connected</fielddescr>
+			<fielddescr>eBGP Nexthop Connected</fielddescr>
 			<fieldname>disableebgpconnectedroutecheck</fieldname>
-			<description>Disable checking if nexthop is connected on ebgp sessions</description>
+			<description>Disable checking if nexthop is connected on eBGP sessions</description>
 			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Enforce First AS</fielddescr>
 			<fieldname>enforcefirstas</fieldname>
-			<description>Enforce the first AS for EBGP routes</description>
+			<description>Enforce the first AS for eBGP routes</description>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Disable EBGP Require Policy</fielddescr>
+			<fielddescr>Disable eBGP Require Policy</fielddescr>
 			<fieldname>disableebgprequirepolicy</fieldname>
 			<description>Disable the requirement to apply incoming and outgoing filter to eBGP sessions</description>
 			<type>checkbox</type>
