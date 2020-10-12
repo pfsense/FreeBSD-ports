@@ -67,6 +67,10 @@
 			<url>/squid_monitor.php</url>
 		</tab>
 		<tab>
+                        <text>Status</text>
+                        <url>/status_squid.php</url>
+                </tab>
+		<tab>
 			<text>Sync</text>
 			<url>/pkg_edit.php?xml=squid_sync.xml</url>
 			<active/>
