@@ -23,6 +23,7 @@ www/widgets/widgets/squid_antivirus_status.widget.php
 www/squid_clwarn.php
 www/squid_monitor.php
 www/squid_monitor_data.php
+www/status_squid.php
 bin/check_ip.php
 pkg/sqpmon.sh
 www/squid_log_parser.php

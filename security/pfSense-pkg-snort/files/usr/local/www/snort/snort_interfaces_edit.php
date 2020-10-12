@@ -29,6 +29,13 @@ global $g, $config, $rebuild_rules;
 $snortdir = SNORTDIR;
 $snortlogdir = SNORTLOGDIR;
 
+$netmapifs = array('cc', 'cxl', 'cxgbe', 'em', 'igb', 'em', 'lem', 'ix', 'ixgbe', 'ixl', 're', 'vtnet');
+if (pfs_version_compare(false, 2.4, $g['product_version'])) {
+	/* add FreeBSD 12 iflib(4) supported devices */
+	$netmapifs = array_merge($netmapifs, array('ice', 'bnxt', 'vmx'));
+	sort($netmapifs);
+}
+
 if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
 	$config['installedpackages']['snortglobal']['rule'] = array();
 }
@@ -240,6 +247,20 @@ if ($_POST['save'] && !$input_errors) {
 				$input_errors[] = gettext("The '{$_POST['interface']}' interface is already assigned to another Snort instance.");
 				break;
 			}
+		}
+	}
+
+	if ($_POST['ips_mode'] == 'ips_mode_inline') {
+		$is_netmap = false;
+		$realint = get_real_interface($_POST['interface']);
+		foreach ($netmapifs as $if) {
+			if (substr($realint, 0, strlen($if)) == $if) {
+				$is_netmap = true;
+				break;
+			}
+		}
+		if (!$is_netmap) {
+			$input_errors[] = gettext("The '{$_POST['interface']}' interface do not support Inline Mode.");
 		}
 	}
 
@@ -697,8 +718,8 @@ $group->add(new Form_Select(
 $group->setHelp('Legacy Mode uses the PCAP engine to generate copies of packets for inspection as they traverse the interface.  Some "leakage" of packets will occur before ' . 
 		'Snort can determine if the traffic matches a rule and should be blocked.  Inline mode instead intercepts and inspects packets before they are handed ' . 
 		'off to the host network stack for further processing.  Packets matching DROP rules are simply discarded (dropped) and not passed to the host ' . 
-		'network stack.  No leakage of packets occurs with Inline Mode.  WARNING:  Inline Mode only works with NIC drivers which properly support Netmap!  If the ' . 
-		'hardware NIC driver does not support Netmap, using Inline Mode can result in a firewall system crash!  If problems are experienced with Inline Mode, switch to Legacy Mode instead.');
+		'network stack.  No leakage of packets occurs with Inline Mode.  WARNING:  Inline Mode only works with NIC drivers which properly support Netmap! ' . 
+		'Supported drivers: ' . implode(', ', $netmapifs) . '. If problems are experienced with Inline Mode, switch to Legacy Mode instead.');
 $section->add($group);
 $section->addInput(new Form_Checkbox(
 	'blockoffenderskill',
