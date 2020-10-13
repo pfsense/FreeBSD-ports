@@ -1459,7 +1459,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'number',
 		$pconfig['sf_appid_stats_period']
 	))->setAttribute('min', '60')->setAttribute('max', '3600')->setHelp('Bucket size in seconds for AppID stats.  Minimum is 60 (1 min) and maximum is 3600 (1 hr).  Default is 300 (5 mins).');
-	$group->setHelp('The bucket size in seconds used to collecxt AppID statistics.');
+	$group->setHelp('The bucket size in seconds used to collect AppID statistics.');
 	$section->add($group);
 	print($section);
 	//----- END AppID settings -----
