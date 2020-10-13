@@ -169,6 +169,8 @@ function frr_generate_config_ospf_areas() {
 
 function frr_generate_config_ospf_interfaces() {
 	global $config, $passive_interfaces, $frr_integrated_config;
+	init_config_arr(array('installedpackages', 'frrospfd', 'config'));
+	$ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
 
 	/* Setup interface entries to define network types, costs, etc. */
 	init_config_arr(array('installedpackages', 'frrospfdinterfaces', 'config'));
