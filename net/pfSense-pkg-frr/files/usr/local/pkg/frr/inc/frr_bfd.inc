@@ -90,10 +90,10 @@ function frr_bfd_generate_peers() {
 			if (!empty($peer['multihop'])) {
 				$bfdpeerconf .= " multihop";
 			}
-			if (!empty($peer['local_address'])) {
+			if (!empty($peer['local_address']) && ($peer['interface'] <> 'default')) {
 				$bfdpeerconf .= " local-address {$peer['local_address']}";
 			}
-			if (!empty($peer['interface']) && $peer['interface'] <> 'default') {
+			if (!empty($peer['interface']) && ($peer['interface'] <> 'default')) {
 				$realif = get_real_interface($peer['interface']);
 				$bfdpeerconf .= " interface {$realif}";
 			}
@@ -119,6 +119,9 @@ function frr_bfd_generate_peers() {
 				$bfdpeerconf .= "  shutdown\n";
 			} else {
 				$bfdpeerconf .= "  no shutdown\n";
+			}
+			if (!empty($peer['echomode'])) {
+				$bfdpeerconf .= "  echo-mode\n";
 			}
 			$bfdpeerconf .= " !\n";
 		}
