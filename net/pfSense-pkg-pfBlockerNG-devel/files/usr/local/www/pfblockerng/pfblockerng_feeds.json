@@ -386,6 +386,20 @@
 				}
 			]
 		},
+		"DoH_IP": {
+			"info":		"A list of DNS-over-HTTPS servers.",
+			"description":	"List of DNS-over-HTTPS servers.",
+			"action":	"block",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"The Great Wall",
+					"website":	"https://github.com/Sekhan/TheGreatWall",
+					"url":		"https://raw.githubusercontent.com/Sekhan/TheGreatWall/master/TheGreatWall_ipv4",
+					"header":	"TheGreatWall_DoH_IP"
+				}
+			]
+		},
 		"SFS": {
 			"info":		"SFS alias is a feed from Stop Forum Spam.-LB-This is an aggressive feed which is typically used to protect webservers etc.-LB-The frequency of updates is set to once every 8 hours. (3x / Day)",
 			"description":	"SFS - Stop Forum Spam",
@@ -678,6 +692,20 @@
 					"website":	"https://www.spamhaus.org/drop/",
 					"url":		"https://www.spamhaus.org/drop/dropv6.txt",
 					"header":	"Spamhaus_Drop6"
+				}
+			]
+		},
+		"DoH_6": {
+			"info":		"A list of DNS-over-HTTPS servers.",
+			"description":	"List of DNS-over-HTTPS servers.",
+			"action":	"block",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"The Great Wall",
+					"website":	"https://github.com/Sekhan/TheGreatWall",
+					"url":		"https://raw.githubusercontent.com/Sekhan/TheGreatWall/master/TheGreatWall_ipv6",
+					"header":	"TheGreatWall_DoH_IP6"
 				}
 			]
 		},
@@ -1173,6 +1201,12 @@
 					"website":	"https://heuristicsecurity.com/",
 					"url":		"https://heuristicsecurity.com/dohservers.txt",
 					"header":	"HEUR_DoH"
+				},
+				{
+					"feed":		"The Great Wall",
+					"website":	"https://github.com/Sekhan/TheGreatWall",
+					"url":		"https://raw.githubusercontent.com/Sekhan/TheGreatWall/master/TheGreatWall.txt",
+					"header":	"TheGreatWall_DoH"
 				}
 			]
 		},
