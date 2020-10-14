@@ -3835,15 +3835,9 @@ function freeradius_validate_users($post, &$input_errors) {
 		$input_errors[] = "Do not use special characters in the 'Description' field; only /^[a-zA-Z0-9 _,.;:+=()-]*$/ allowed.";
 	}
 
-	// IP Address; may contain a single trailing '+' for simultaneous connections
-	if ($post['varusersframedipaddress']) {
-		$framedip = str_replace('+', '', $post['varusersframedipaddress'], $pluscnt);
-		if (!is_ipaddrv4($framedip)) {
-			$input_errors[] = "The 'IPv4 Address' field must contain a valid IPv4 address.";
-		}
-		if ($pluscnt > 1) {
-			$input_errors[] = "The 'IPv4 Address' field may optionally contain only a single trailing '+'.";
-		}
+	// IPv4 Address
+	if ($post['varusersframedipaddress'] && !is_ipaddrv4($post['varusersframedipaddress'])) {
+		$input_errors[] = "The 'IPv4 Address' field must contain a valid IPv4 address.";
 	}
 
 	// Subnet Mask
@@ -3995,15 +3989,9 @@ function freeradius_validate_macs($post, &$input_errors) {
 		$input_errors[] = "Do not use special characters in the 'Description' field; only /^[a-zA-Z0-9 _,.;:+=()-]*$/ allowed.";
 	}
 
-	// IP Address; may contain a single trailing '+' for simultaneous connections
-	if ($post['varmacsframedipaddress']) {
-		$framedip = str_replace('+', '', $post['varmacsframedipaddress'], $pluscnt);
-		if (!is_ipaddrv4($framedip)) {
-			$input_errors[] = "The 'IPv4 Address' field must contain a valid IPv4 address.";
-		}
-		if ($pluscnt > 1) {
-			$input_errors[] = "The 'IPv4 Address' field may optionally contain only a single trailing '+'.";
-		}
+	// IPv4 Address
+	if ($post['varusersframedipaddress'] && !is_ipaddrv4($post['varusersframedipaddress'])) {
+		$input_errors[] = "The 'IPv4 Address' field must contain a valid IPv4 address.";
 	}
 
 	// Subnet Mask
