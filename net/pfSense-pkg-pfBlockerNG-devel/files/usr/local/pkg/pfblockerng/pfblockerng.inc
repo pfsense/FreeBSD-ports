@@ -2864,6 +2864,9 @@ function pfb_aliastables($mode) {
 	$msg = '';
 	$earlyshellcmd = '/usr/local/pkg/pfblockerng/pfblockerng.sh aliastables';
 
+	// Reload config.xml to get any recent changes
+	$config = parse_config(true);
+
 	init_config_arr(array('system', 'earlyshellcmd'));
 	$a_earlyshellcmd = &$config['system']['earlyshellcmd'];
 
@@ -2896,10 +2899,6 @@ function pfb_aliastables($mode) {
 
 		// Check conf file for earlyshellcmd/shellcmd package settings
 		elseif ($mode == 'conf') {
-
-			// Reload config.xml to get any recent changes
-			$config = parse_config(true);
-
 			// Add earlyshellcmd settings
 			if (!empty($a_earlyshellcmd)) {
 				if (!preg_grep("/pfblockerng.sh aliastables/", $a_earlyshellcmd)) {
