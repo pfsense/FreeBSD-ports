@@ -41,6 +41,11 @@
 		<section>Services</section>
 		<url>/pkg_edit.php?xml=squid_reverse_general.xml&amp;id=0</url>
 	</menu>
+	<menu>
+		<name>Squid Proxy Server</name>
+		<section>Status</section>
+		<url>/status_squid.php</url>
+	</menu>
 	<service>
 		<name>squid</name>
 		<rcfile>squid.sh</rcfile>

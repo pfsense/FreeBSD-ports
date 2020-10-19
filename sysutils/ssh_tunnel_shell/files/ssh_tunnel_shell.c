@@ -30,41 +30,24 @@
 #include <sys/time.h>
 #include <sys/stat.h>
 
+#include <fcntl.h>
+#include <termios.h>
 #include <stdio.h>
+#include <string.h>
 #include <syslog.h>
 #include <unistd.h>
-#include <strings.h>
-#include <fcntl.h>
 
-#define MESSAGE	"This login only supports SSH tunneling.\n"
-#define PATH	"/var/etc/ssh_tunnel_message"
-#define MAXLINE	2048
-
-/* Check if file exists */
-static int
-fexist(char * filename)
-{
-        struct stat buf;
-
-        if (( stat (filename, &buf)) < 0)
-                return (0);
-
-        if (! S_ISREG(buf.st_mode))
-                return (0);
-
-        return(1);
-}
+#define	STDINFD		0
 
 int
 main(__unused int argc, __unused char *argv[])
 {
-	struct timeval tv, tv1;
 	const char *user, *tt;
-	char buf[MAXLINE];
-	char c;
-	int fd, msent, nbytes;
+	struct termios t;
 
-	if ((tt = ttyname(0)) == NULL)
+	if (isatty(STDINFD) == 0)
+		return (1);
+	if ((tt = ttyname(STDINFD)) == NULL)
 		tt = "UNKNOWN";
 	if ((user = getlogin()) == NULL)
 		user = "UNKNOWN";
@@ -72,36 +55,19 @@ main(__unused int argc, __unused char *argv[])
 	syslog(LOG_CRIT, "Login by %s on %s", user, tt);
 	closelog();
 
-	msent = 0;
-	if (fexist(PATH)) {
-		fd = open(PATH, O_RDONLY);
-		if (fd > 0) {
-			do {
-				bzero(buf, MAXLINE);
-				nbytes = read(fd, buf, MAXLINE - 1);
-				if (nbytes < 0)
-					break;
-				else if (nbytes > 0) {
-					buf[nbytes] = '\0';
-					printf("%s", buf);
-					msent++;
-				}
-			} while (nbytes > 0);
-			close(fd);
-		}
-	}
-	if (msent == 0)
-		printf("%s", MESSAGE);
-	while (gettimeofday(&tv, NULL) < 0)
-		;
+	/* Disable the terminal ECHO. */
+	memset(&t, 0, sizeof(t));
+	if (tcgetattr(STDINFD, &t) == -1)
+		return (1);
+	t.c_lflag &= ~(ECHOKE | ECHOE | ECHOK | ECHO | ECHONL |
+	    ECHOPRT | ECHOCTL | ICANON);
+	if (tcsetattr(STDINFD, TCSANOW, &t) == -1)
+		return (1);
 
-	for (;;) {
-		c = getchar();
+	/* Check for the peer errors. */
+	for (;;)
+		if (getchar() == -1)
+			break;
 
-		while (gettimeofday(&tv1, NULL) < 0)
-			;
-		printf("You are logged in for %d hours %d minute(s)\n",
-			(tv1.tv_sec - tv.tv_sec)/3600, (tv1.tv_sec - tv.tv_sec)/60);
-	}
-	return 1;
+	return (1);
 }

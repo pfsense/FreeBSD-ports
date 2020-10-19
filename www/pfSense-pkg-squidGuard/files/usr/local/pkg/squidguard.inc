@@ -698,7 +698,7 @@ function squidguard_before_form_dest(&$pkg) {
 function make_grid_general_items($id = '') {
 	global $squidguard_config;
 
-	$bg_color = 'bgcolor="#dddddd"';
+	$bg_color = 'bgcolor="#919191"';
 	$res = '';
 	$res .= '<table width="100%">';
 
@@ -749,11 +749,11 @@ function make_grid_controls($type, $items, $enable_overtime = true) {
     foreach($items as $item) {
         if ($x === 0) {
             $color = '';
-            $color2 = 'style="background-color: #dddddd;"';
+            $color2 = 'style="background-color: #919191;"';
             $x = 1;
         }
         else {
-            $color = 'style="background-color: #dddddd;"';
+            $color = 'style="background-color: #919191;"';
             $color2 = '';
             $x = 0;
         }
@@ -826,7 +826,7 @@ function make_grid_controls($type, $items, $enable_overtime = true) {
 
     # header
     if (!empty($tbl)) {
-        $color = 'style="background-color: #dddddd;"';
+        $color = 'style="background-color: #919191;"';
         $thdr = '';
         $hdr1up = "<big>Target Categories</big>";
         $hdr1ov = "<big>Target Categories for off-time</big>";
