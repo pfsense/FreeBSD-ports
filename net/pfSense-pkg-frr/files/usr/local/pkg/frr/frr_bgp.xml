@@ -242,7 +242,7 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Redistribute</fielddescr>
+			<fielddescr>Redistribute Local</fielddescr>
 			<fieldname>redistributeconnectedsubnets</fieldname>
 			<description>Redistribute connected networks</description>
 			<type>select_source</type>
@@ -252,7 +252,7 @@
 			<combinefields>begin</combinefields>
 		</field>
 		<field>
-			<fielddescr>Redistribute static</fielddescr>
+			<fielddescr>Redistribute Static</fielddescr>
 			<fieldname>redistributestatic</fieldname>
 			<description>Redistribute FRR static routes</description>
 			<type>select_source</type>
@@ -268,11 +268,22 @@
 			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
+			<combinefields>end</combinefields>
 		</field>
 		<field>
 			<fielddescr>Redistribute OSPF</fielddescr>
 			<fieldname>redistributeospf</fieldname>
 			<description>Redistribute OSPF routes to BGP Neighbors</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Redistribute OSPFv3</fielddescr>
+			<fieldname>redistributeospf6</fieldname>
+			<description>Redistribute OSPFv3 routes to BGP Neighbors</description>
 			<type>select_source</type>
 			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
 			<source_name>name</source_name>
