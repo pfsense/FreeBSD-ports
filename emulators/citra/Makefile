@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	citra
-PORTVERSION=	s20201004
-PORTREVISION?=	1
+PORTVERSION=	s20201014
+PORTREVISION?=	0
 CATEGORIES=	emulators
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -23,7 +23,7 @@ LIB_DEPENDS=	libboost_serialization.so:devel/boost-libs
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	citra-emu
-GH_TAGNAME=	1c8461fde
+GH_TAGNAME=	1bb20571b
 GH_TUPLE=	citra-emu:ext-boost:36603a1:boost/externals/boost \
 		citra-emu:ext-libressl-portable:7d01cb0:libressl/externals/libressl \
 		citra-emu:ext-soundtouch:060181e:soundtouch/externals/soundtouch \
@@ -35,7 +35,7 @@ GH_TUPLE=	citra-emu:ext-boost:36603a1:boost/externals/boost \
 		facebook:zstd:v1.4.4:zstd/externals/zstd \
 		fmtlib:fmt:6.0.0-56-g4b8f8fac:fmt/externals/fmt \
 		herumi:xbyak:v5.95:xbyak/externals/xbyak \
-		kinetiknz:cubeb:cubeb-0.2-1252-g40865a6:cubeb/externals/cubeb \
+		kinetiknz:cubeb:cubeb-0.2-1251-ga7e83aa:cubeb/externals/cubeb \
 		lsalzman:enet:0eaf48e:enet/externals/enet \
 		lvandeve:lodepng:31d9704:lodepng/externals/lodepng/lodepng \
 		neobrain:nihstro:fd69de1:nihstro/externals/nihstro \
