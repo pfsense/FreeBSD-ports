@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	ssh_tunnel_shell
-PORTVERSION=	0.1
-PORTREVISION=	2
+PORTVERSION=	0.2
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# none
