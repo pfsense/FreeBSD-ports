@@ -23,6 +23,7 @@ require_once("filter.inc");
 require_once("pfsense-utils.inc");
 require_once("pkg-utils.inc");
 require_once("util.inc");
+require_once("xmlrpc_client.inc");
 
 define('NRPE_BASE', '/usr/local');
 define('NRPE_BINARY', "/usr/local/sbin/nrpe3");
@@ -204,7 +205,7 @@ EOD;
 	}
 	fwrite($fd, $nrpe_cfg);
 	fclose($fd);
-
+	nrpe_sync_config();
 }
 
 function nrpe_custom_php_service() {
@@ -251,6 +252,57 @@ function nrpe_custom_php_validation_command($post, &$input_errors) {
 			$input_errors[] = gettext("'Nagios Server(s)' entry '{$host}' is not a valid IP address.");
 		}
 	}
+}
+
+function nrpe_sync_config() {
+	global $config;
+	if (!is_array($config['hasync'])) {
+		return -1;
+	}
+	$system_carp = $config['hasync'];
+	// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
+	if ($config['system']['webgui']['protocol'] == "http") {
+		$varsyncprotocol = "http";
+		$varsyncport = $config['system']['webgui']['port'] ?: '80';
+	} else {
+		$varsyncprotocol = "https";
+		$varsyncport = $config['system']['webgui']['port'] ?: '443';
+	}
+	nrpe_do_xmlrpc_sync($system_carp['synchronizetoip'], 
+		$varsyncport,
+		$varsyncprotocol,
+		$system_carp['username'],
+		$system_carp['password'],
+		100
+		);
+}
+
+/* Do the actual XMLRPC sync */
+function nrpe_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout) {
+	global $config;
+
+	/*****************************************************/
+	/* Send over the <nrpe> portion of config.xml        */
+	/* $xml will hold the section to sync.               */
+	/*****************************************************/
+	$xml = array();
+	$xml['nrpe'] = $config['installedpackages']['nrpe'];
+
+	/*************************************************/
+	/* Build a series of commands as a PHP file for  */
+	/* the secondary host to execute to load the new */
+	/* settings.                                     */
+	/*************************************************/
+	$remote_nrpe_config_apply = <<<EOD
+require_once('/usr/local/pkg/nrpe.inc');
+nrpe_resync_package();
+EOD;
+
+	$synctimeout = intval($synctimeout);
+	$rpc_client = new pfsense_xmlrpc_client();
+	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
+	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
+	$resp = $rpc_client->xmlrpc_exec_php($remote_nrpe_config_apply, $synctimeout);
 }
 
 ?>
