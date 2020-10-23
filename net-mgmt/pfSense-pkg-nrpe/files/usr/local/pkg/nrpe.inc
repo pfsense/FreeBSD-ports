@@ -23,7 +23,6 @@ require_once("filter.inc");
 require_once("pfsense-utils.inc");
 require_once("pkg-utils.inc");
 require_once("util.inc");
-require_once("xmlrpc_client.inc");
 
 define('NRPE_BASE', '/usr/local');
 define('NRPE_BINARY', "/usr/local/sbin/nrpe3");
@@ -156,10 +155,8 @@ EOD;
 }
 
 function nrpe_resync_package() {
-	conf_mount_rw();
 	nrpe_custom_php_write_config();
 	nrpe_custom_php_service();
-	conf_mount_ro();
 }
 
 function nrpe_custom_php_write_config() {
@@ -207,7 +204,7 @@ EOD;
 	}
 	fwrite($fd, $nrpe_cfg);
 	fclose($fd);
-	nrpe_sync_config();
+
 }
 
 function nrpe_custom_php_service() {
@@ -253,74 +250,6 @@ function nrpe_custom_php_validation_command($post, &$input_errors) {
 		if (!empty($host) && !is_ipaddr($host)) {
 			$input_errors[] = gettext("'Nagios Server(s)' entry '{$host}' is not a valid IP address.");
 		}
-	}
-}
-
-function nrpe_sync_config() {
-	global $config;
-	if (is_array($config['hasync'])) {
-		$system_carp = $config['hasync'];
-		// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-		if ($config['system']['webgui']['protocol'] == "http") {
-			$varsyncprotocol = "http";
-			$varsyncport = $config['system']['webgui']['port'] ?: '80';
-		} else {
-			$varsyncprotocol = "https";
-			$varsyncport = $config['system']['webgui']['port'] ?: '443';
-		}
-		nrpe_do_xmlrpc_sync($system_carp['synchronizetoip'], $varsyncport, $varsyncprotocol, $system_carp['username'], $system_carp['password'], 100);
-	}
-}
-
-/* Do the actual XMLRPC sync */
-function nrpe_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout) {
-	global $config;
-
-	/*****************************************************/
-	/* Send over the <nrpe> portion of config.xml        */
-	/* $xml will hold the section to sync.               */
-	/*****************************************************/
-	$xml = array();
-	$xml['nrpe'] = $config['installedpackages']['nrpe'];
-	
-	/*************************************************/
-	/* Build a series of commands as a PHP file for  */
-	/* the secondary host to execute to load the new */
-	/* settings.                                     */
-	/*************************************************/
-	$remote_nrpe_config_apply = <<<EOD
-<?php
-require_once("/usr/bin/pkg/nrpe.inc");
-nrpe_custom_php_write_config();
-?>
-EOD;
-
-	/*************************************************/
-	/* First, have target host write the commands    */
-	/* to a PHP file in the /tmp directory.          */
-	/*************************************************/
-	$execcmd = "file_put_contents('/tmp/remote_nrpe_config_apply.php', '{$remote_nrpe_config_apply}');";
-
-	/*************************************************/
-	/* Now assemble a command to execute the         */
-	/* previously sent PHP file in the background.   */
-	/*************************************************/
-	$execcmd2 = "exec(\"/usr/local/bin/php-cgi -f '/tmp/remote_nrpe_config_apply.php' > /dev/null 2>&1 &\");";
-
-
-	if (pf_version() >= "2.4") {
-		$synctimeout = intval($synctimeout);
-		$rpc_client = new pfsense_xmlrpc_client();
-		$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
-		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
-		$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
-		$resp = $rpc_client->xmlrpc_exec_php($execcmd2, $synctimeout);
-	}
-}
-
-if(!function_exists('pf_version')) {
-	function pf_version() {
-		return substr(trim(file_get_contents("/etc/version")), 0, 3);
 	}
 }
 

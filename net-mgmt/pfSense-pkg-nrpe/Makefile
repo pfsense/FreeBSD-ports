@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-nrpe
-PORTVERSION=	3.2
+PORTVERSION=	3.1
 PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
