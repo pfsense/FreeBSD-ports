@@ -44,7 +44,7 @@ while (!feof(STDIN)) {
 					foreach ($cp['allowedip'] as $ipent) {
 						if (ip_in_subnet($check_ip, "{$ipent['ip']}/{$ipent['sn']}") &&
 						    (($ipent['dir'] == 'from') || ($ipent['dir'] == 'both'))) {
-							$status = 'allowedip';
+							$status = $check_ip;
 							break;
 						}
 					}
