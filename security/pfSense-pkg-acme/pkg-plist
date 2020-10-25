@@ -51,6 +51,7 @@ pkg/acme/dnsapi/dns_gdnsdk.sh
 pkg/acme/dnsapi/dns_gd.sh
 pkg/acme/dnsapi/dns_he.sh
 pkg/acme/dnsapi/dns_hexonet.sh
+pkg/acme/dnsapi/dns_hetzner.sh
 pkg/acme/dnsapi/dns_hostingde.sh
 pkg/acme/dnsapi/dns_infoblox.sh
 pkg/acme/dnsapi/dns_internetbs.sh

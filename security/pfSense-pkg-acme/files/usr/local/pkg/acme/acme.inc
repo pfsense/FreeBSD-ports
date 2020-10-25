@@ -660,6 +660,12 @@ $acme_domain_validation_method['dns_hexonet'] = array('name' => "DNS-Hexonet",
 			'description' => "Hexonet Password"
 		)
 	));
+$acme_domain_validation_method['dns_hetzner'] = array('name' => "DNS-Hetzner",
+	'fields' => array(
+		'HETZNER_Token' => array('name' => "hetzner_token", 'columnheader' => "Key", 'type' => "textbox",
+			'description' => "HETZNER API Key"
+		)
+	));
 $acme_domain_validation_method['dns_he'] = array('name' => "DNS-Hurricane Electric",
 	'fields' => array(
 		'HE_Username' => array('name' => "he_username", 'columnheader' => "Username", 'type' => "textbox",
