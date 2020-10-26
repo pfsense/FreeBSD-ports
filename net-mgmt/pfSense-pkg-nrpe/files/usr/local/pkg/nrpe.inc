@@ -30,12 +30,6 @@ define('NRPE_BINARY', "/usr/local/sbin/nrpe3");
 define('NRPE_CONFIG_DIR', NRPE_BASE . '/etc');
 define('NRPE_RCFILE', '/usr/local/etc/rc.d/nrpe3.sh');
 
-if(!function_exists('pf_version')) {
-	function pf_version() {
-		return substr(trim(file_get_contents("/etc/version")), 0, 3);
-	}
-}
-
 function nrpe_upgrade_config() {
 	global $config;
 	if (is_array($config['installedpackages']['nrpe2']['config'][0]) &&
@@ -262,18 +256,25 @@ function nrpe_custom_php_validation_command($post, &$input_errors) {
 
 function nrpe_sync_config() {
 	global $config;
-	if (is_array($config['hasync'])) {
-		$system_carp = $config['hasync'];
-		// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-		if ($config['system']['webgui']['protocol'] == "http") {
-			$varsyncprotocol = "http";
-			$varsyncport = $config['system']['webgui']['port'] ?: '80';
-		} else {
-			$varsyncprotocol = "https";
-			$varsyncport = $config['system']['webgui']['port'] ?: '443';
-		}
-		nrpe_do_xmlrpc_sync($system_carp['synchronizetoip'], $varsyncport, $varsyncprotocol, $system_carp['username'], $system_carp['password'], 100);
+	if (!is_array($config['hasync'])) {
+		return -1;
 	}
+	$system_carp = $config['hasync'];
+	// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
+	if ($config['system']['webgui']['protocol'] == "http") {
+		$varsyncprotocol = "http";
+		$varsyncport = $config['system']['webgui']['port'] ?: '80';
+	} else {
+		$varsyncprotocol = "https";
+		$varsyncport = $config['system']['webgui']['port'] ?: '443';
+	}
+	nrpe_do_xmlrpc_sync($system_carp['synchronizetoip'], 
+		$varsyncport,
+		$varsyncprotocol,
+		$system_carp['username'],
+		$system_carp['password'],
+		100
+		);
 }
 
 /* Do the actual XMLRPC sync */
@@ -310,16 +311,12 @@ EOD;
 	/* previously sent PHP file in the background.   */
 	/*************************************************/
 	$execcmd2 = "exec(\"/usr/local/bin/php-cgi -f '/tmp/remote_nrpe_config_apply.php' > /dev/null 2>&1 &\");";
-
-
-	if (pf_version() >= "2.4") {
-		$synctimeout = intval($synctimeout);
-		$rpc_client = new pfsense_xmlrpc_client();
-		$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
-		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
-		$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
-		$resp = $rpc_client->xmlrpc_exec_php($execcmd2, $synctimeout);
-	}
+	$synctimeout = intval($synctimeout);
+	$rpc_client = new pfsense_xmlrpc_client();
+	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
+	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
+	$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
+	$resp = $rpc_client->xmlrpc_exec_php($execcmd2, $synctimeout);
 }
 
 ?>
