@@ -97,6 +97,8 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_desec.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_df.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_dgon.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_dnsimple.sh \
@@ -139,11 +141,15 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_he.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_hetzner.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_hexonet.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_hostingde.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_infoblox.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_infomaniak.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_internetbs.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
@@ -154,6 +160,8 @@ do-install:
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_jd.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_joker.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_kappernet.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_kas.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
@@ -195,7 +203,11 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_netcup.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_netlify.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_nic.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_njalla.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_nm.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi

@@ -129,7 +129,7 @@ class acme_sh {
 		$this->debug = false;
 		$this->execacmesh(""
 				. " --home " . escapeshellarg($this->acmeconf)
-				. " --createAccountKey"
+				. " --create-account-key"
 				. " --accountkeylength 4096"
 				. " --accountconf " . escapeshellarg($this->accountconfig)
 				);
@@ -161,7 +161,7 @@ class acme_sh {
 		$this->execacmesh(""
 				. " --home " . escapeshellarg($this->acmeconf)
 				. " --accountconf " . escapeshellarg($this->accountconfig)
-				. " --createDomainKey -d " . escapeshellarg($domain)
+				. " --create-domain-key --domain " . escapeshellarg($domain)
 				. " --keylength " . escapeshellarg($keylength)
 				. " --log-level 3"
 				. " --log " . escapeshellarg($this->acmeconf."acme_createdomainkey.log")
@@ -221,7 +221,7 @@ EOF;
 		$domainstr = "";
 		foreach($domainstosign as $domain) {
 			$api = $domain->method; 
-			$domainstr .= " -d " . escapeshellarg($domain->domainname);
+			$domainstr .= " --domain " . escapeshellarg($domain->domainname);
 			if (!empty($domain->method)) {
 				$domainparameters = "";
 				if ($api && substr($api, 0, 4 ) === "dns_") {

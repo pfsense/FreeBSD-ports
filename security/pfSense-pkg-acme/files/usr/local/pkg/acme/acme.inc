@@ -582,6 +582,15 @@ $acme_domain_validation_method['dns_dyn'] = array('name' => "DNS-Dyn.com",
 			'description' => "dyn.com Password"
 		)
 	));
+$acme_domain_validation_method['dns_df'] = array('name' => "DNS-dyndnsfree.de",
+	'fields' => array(
+		'DF_user' => array('name' => "dyn_username", 'columnheader' => "Username", 'type' => "textbox",
+			'description' => "dyndnsfree.de Username"
+		),
+		'DF_password' => array('name' => "dyn_password", 'columnheader' => "Password", 'type' => "password",
+			'description' => "dyndnsfree.de Password"
+		)
+	));
 $acme_domain_validation_method['dns_dynu'] = array('name' => "DNS-Dynu",
 	'fields' => array(
 		'Dynu_ClientId' => array('name' => "dynu_clientid", 'columnheader' => "API Client ID", 'type' => "textbox",
@@ -651,6 +660,12 @@ $acme_domain_validation_method['dns_gdnsdk'] = array('name' => "DNS-GratisDNS",
 			'description' => "GratisDNS Password"
 		)
 	));
+$acme_domain_validation_method['dns_hetzner'] = array('name' => "DNS-Hetzner",
+	'fields' => array(
+		'HETZNER_Token' => array('name' => "HETZNER_Token", 'columnheader' => "API Token", 'type' => "password",
+			'description' => "Hetzner API Token. Visit https://dns.hetzner.com/settings/api-token to retrieve."
+		)
+	));
 $acme_domain_validation_method['dns_hexonet'] = array('name' => "DNS-Hexonet",
 	'fields' => array(
 		'Hexonet_Login' => array('name' => "hexonet_login", 'columnheader' => "Username", 'type' => "textbox",
@@ -688,6 +703,18 @@ $acme_domain_validation_method['dns_infoblox'] = array('name' => "DNS-Infoblox",
 		),
 		'Infoblox_View' => array('name' => "infoblox_view", 'columnheader' => "View", 'type' => "textbox",
 			'description' => "Infoblox DNS View name, or enter 'default'"
+		)
+	));
+$acme_domain_validation_method['dns_infomaniak'] = array('name' => "DNS-Infomaniak",
+	'fields' => array(
+		'INFOMANIAK_API_TOKEN' => array('name' => "infomaniak_api_token", 'columnheader' => "API Token", 'type' => "password",
+			'description' => "Infomaniak API token. Visit https://manager.infomaniak.com/v3/&lt;account_id&gt;/api/dashboard and generate a token with the scope Domain."
+		),
+		'DEFAULT_INFOMANIAK_API_URL' => array('name' => "default_infomaniak_api_url", 'columnheader' => "API URL", 'type' => "textbox",
+			'description' => "Infomaniak API URL (Default: https://api.infomaniak.com)"
+		),
+		'INFOMANIAK_TTL' => array('name' => "infomaniak_ttl", 'columnheader' => "TTL", 'type' => "textbox",
+			'description' => "Infomaniak DNS record TTL (Default: 300)"
 		)
 	));
 $acme_domain_validation_method['dns_internetbs'] = array('name' => "DNS-Internet.BS",
@@ -746,6 +773,15 @@ $acme_domain_validation_method['dns_joker'] = array('name' => "DNS-Joker.com",
 		),
 		'JOKER_PASSWORD' => array('name' => "joker_password", 'columnheader' => "Password", 'type' => "password",
 			'description' => "Joker.com Password"
+		)
+	));
+$acme_domain_validation_method['dns_kappernet'] = array('name' => "DNS-kapper.net",
+	'fields' => array(
+		'KAPPERNETDNS_Key' => array('name' => "kappernetdns_key", 'columnheader' => "API Key", 'type' => "textbox",
+			'description' => "kapper.net API Key"
+		),
+		'KAPPERNETDNS_Secret' => array('name' => "kappernetdns_secret", 'columnheader' => "API Secret", 'type' => "password",
+			'description' => "kapper.net API Secret"
 		)
 	));
 $acme_domain_validation_method['dns_kinghost'] = array('name' => "DNS-Kinghost API",
@@ -886,6 +922,12 @@ $acme_domain_validation_method['dns_netcup'] = array('name' => "DNS-netcup.net",
 			'description' => "Netcup Customer ID/Number"
 		)
 	));
+$acme_domain_validation_method['dns_netlify'] = array('name' => "DNS-Netlify",
+	'fields' => array(
+		'NETLIFY_ACCESS_TOKEN' => array('name' => "netlify_access_token", 'columnheader' => "API Token", 'type' => "password",
+			'description' => "Netlify API Token"
+		),
+	));
 $acme_domain_validation_method['dns_nic'] = array('name' => "DNS-nic.ru",
 	'fields' => array(
 		'NIC_Token' => array('name' => "nic_token", 'columnheader' => "API Token", 'type' => "textbox",
@@ -897,6 +939,12 @@ $acme_domain_validation_method['dns_nic'] = array('name' => "DNS-nic.ru",
 		'NIC_Password' => array('name' => "nic_password", 'columnheader' => "Password", 'type' => "password",
 			'description' => "nic.ru Password"
 		)
+	));
+$acme_domain_validation_method['dns_njalla'] = array('name' => "DNS-Njalla",
+	'fields' => array(
+		'NJALLA_Token' => array('name' => "netlify_access_token", 'columnheader' => "API Token", 'type' => "password",
+			'description' => "Njalla API Token"
+		),
 	));
 $acme_domain_validation_method['dns_nsone'] = array('name' => "DNS-NS1 (nsone.com)",
 	'fields' => array(
@@ -1513,7 +1561,14 @@ function & get_certificate($name) {
 					$domainstosign[] = $newdomain;
 					$envvariables = array();
 					if ($method == "dns_namecheap") {
-						$envvariables['NAMECHEAP_SOURCEIP'] = find_interface_ip(guess_interface_from_ip(getcurrentdefaultgatewayip('inet')));
+						# This function changed names on 2.5.0
+						if (!function_exists('route_get_default')) {
+							function route_get_default($ipprotocol) {
+								return getcurrentdefaultgatewayip($ipprotocol);
+							}
+						}
+
+						$envvariables['NAMECHEAP_SOURCEIP'] = find_interface_ip(guess_interface_from_ip(route_get_default('inet')));
 					}
 					global $acme_domain_validation_method;
 					foreach($acme_domain_validation_method[$method]['fields'] as $key => $field) {
