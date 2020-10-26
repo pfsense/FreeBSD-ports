@@ -451,7 +451,7 @@ function frr_bgp_generate_neighbors() {
 	foreach ($frr_neighbor_conf as $neighbor) {
 		/* Per-neighbor address family enabled flag */
 		$nei_af_flag = array();
-		foreach ($address_families as $af) {
+		foreach (FRR_BGP_ADDRESS_FAMILIES as $af) {
 			$nei_af_flag[$af] = false;
 		}
 
