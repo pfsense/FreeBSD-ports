@@ -752,6 +752,8 @@ function frr_package_config_upgrade() {
 	$frr_ospfinterfaces_conf = &$config['installedpackages']['frrospfdinterfaces']['config'];
 	init_config_arr(array('installedpackages', 'frrospfdareas', 'config'));
 	$frr_areas_conf = &$config['installedpackages']['frrospfdareas']['config'];
+	init_config_arr(array('installedpackages', 'frrbgp', 'config', '0'));
+	$bgp_conf = &$config['installedpackages']['frrbgp']['config'][0];
 
 	/* Iterate old network list looking for items marked to not redistribute */
 	$dnrlist = array();
@@ -872,6 +874,17 @@ function frr_package_config_upgrade() {
 	if ((strlen($ospfd_conf['defaultareatype']) == 0) && !empty($ospfd_conf['areatype'])) {
 		$ospfd_conf['defaultareatype'] = $ospfd_conf['areatype'];
 		unset($ospfd_conf['areatype']);
+		$need_write = true;
+	}
+
+	/* BGP distribution migrate */
+	if ((strlen($bgp_conf['redistributeconnected']) == 0) && !empty($bgp_conf['redistributeconnectedsubnets'])) {
+		$bgp_conf['redistributeconnected'] = $bgp_conf['redistributeconnectedsubnets'];
+		unset($bgp_conf['redistributeconnectedsubnets']);
+		$need_write = true;
+	}
+	if (($bgp_conf['redistributeospf'] == 'yes') && empty($bgp_conf['redistributeospf6'])) {
+		$bgp_conf['redistributeospf6'] = 'yes';
 		$need_write = true;
 	}
 
