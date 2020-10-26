@@ -19,8 +19,8 @@ pkg/acme/dnsapi/dns_autodns.sh
 pkg/acme/dnsapi/dns_aws.sh
 pkg/acme/dnsapi/dns_azure.sh
 pkg/acme/dnsapi/dns_cf.sh
-pkg/acme/dnsapi/dns_cloudns.sh
 pkg/acme/dnsapi/dns_clouddns.sh
+pkg/acme/dnsapi/dns_cloudns.sh
 pkg/acme/dnsapi/dns_cn.sh
 pkg/acme/dnsapi/dns_conoha.sh
 pkg/acme/dnsapi/dns_constellix.sh
@@ -29,6 +29,7 @@ pkg/acme/dnsapi/dns_cyon.sh
 pkg/acme/dnsapi/dns_da.sh
 pkg/acme/dnsapi/dns_ddnss.sh
 pkg/acme/dnsapi/dns_desec.sh
+pkg/acme/dnsapi/dns_df.sh
 pkg/acme/dnsapi/dns_dgon.sh
 pkg/acme/dnsapi/dns_dnsimple.sh
 pkg/acme/dnsapi/dns_doapi.sh
@@ -50,14 +51,17 @@ pkg/acme/dnsapi/dns_gcloud.sh
 pkg/acme/dnsapi/dns_gdnsdk.sh
 pkg/acme/dnsapi/dns_gd.sh
 pkg/acme/dnsapi/dns_he.sh
+pkg/acme/dnsapi/dns_hetzner.sh
 pkg/acme/dnsapi/dns_hexonet.sh
 pkg/acme/dnsapi/dns_hostingde.sh
 pkg/acme/dnsapi/dns_infoblox.sh
+pkg/acme/dnsapi/dns_infomaniak.sh
 pkg/acme/dnsapi/dns_internetbs.sh
 pkg/acme/dnsapi/dns_inwx.sh
 pkg/acme/dnsapi/dns_ispconfig.sh
 pkg/acme/dnsapi/dns_jd.sh
 pkg/acme/dnsapi/dns_joker.sh
+pkg/acme/dnsapi/dns_kappernet.sh
 pkg/acme/dnsapi/dns_kas.sh
 pkg/acme/dnsapi/dns_kinghost.sh
 pkg/acme/dnsapi/dns_knot.sh
@@ -78,7 +82,9 @@ pkg/acme/dnsapi/dns_namesilo.sh
 pkg/acme/dnsapi/dns_nederhost.sh
 pkg/acme/dnsapi/dns_neodigit.sh
 pkg/acme/dnsapi/dns_netcup.sh
+pkg/acme/dnsapi/dns_netlify.sh
 pkg/acme/dnsapi/dns_nic.sh
+pkg/acme/dnsapi/dns_njalla.sh
 pkg/acme/dnsapi/dns_nm.sh
 pkg/acme/dnsapi/dns_nsone.sh
 pkg/acme/dnsapi/dns_nsupdate.sh
