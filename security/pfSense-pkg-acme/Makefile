@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-acme
-PORTVERSION=	0.6.8
-PORTREVISION=	3
+PORTVERSION=	0.6.9
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
