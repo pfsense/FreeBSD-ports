@@ -200,7 +200,11 @@ function netsnmp_resync() {
 		}
 		/* An address or hostname is optional but needs to be before the port */
 		if (!empty($agent['ipaddress'])) {
-			$aa = "{$agent['ipaddress']}:{$aa}";
+			if (is_ipaddrv6($agent['ipaddress'])) {
+				$aa = "[{$agent['ipaddress']}]:{$aa}";
+			} else {
+				$aa = "{$agent['ipaddress']}:{$aa}";
+			}
 		}
 		/* Transport is optional (UDP is assumed) */
 		if (!empty($agent['transport'])) {

@@ -222,7 +222,11 @@ function frr_zebra_generate_accesslists() {
 				/* Nothing to do here, there was no valid source or destination for this line/type, so omit the entire line. */
 				continue;
 			}
-			$aclconf .= "{$ipv6}access-list {$acl['name']} {$line['action']} ";
+			$aclconf .= "{$ipv6}access-list {$acl['name']}";
+			if(!empty($line['seq'])) {
+				$aclconf .= " seq {$line['seq']}";
+			}
+			$aclconf .=  " {$line['action']} ";
 			/* Extended ACLs need "ip" before the src/dst specs */
 			if ($acl_type == "extended") {
 				$aclconf .= "ip ";
