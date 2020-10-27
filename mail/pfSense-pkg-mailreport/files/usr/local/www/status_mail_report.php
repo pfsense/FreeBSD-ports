@@ -84,6 +84,7 @@ include("head.inc");
 					<th>&nbsp;</th>
 					<th><?=gettext("Description")?></th>
 					<th><?=gettext("Schedule")?></th>
+					<th><?=gettext("Skippable")?></th>
 					<th><?=gettext("Commands")?></th>
 					<th><?=gettext("Logs")?></th>
 					<th><?=gettext("Actions")?></th>
