@@ -584,10 +584,10 @@ $acme_domain_validation_method['dns_dyn'] = array('name' => "DNS-Dyn.com",
 	));
 $acme_domain_validation_method['dns_df'] = array('name' => "DNS-dyndnsfree.de",
 	'fields' => array(
-		'DF_user' => array('name' => "dyn_username", 'columnheader' => "Username", 'type' => "textbox",
+		'DF_user' => array('name' => "df_user", 'columnheader' => "Username", 'type' => "textbox",
 			'description' => "dyndnsfree.de Username"
 		),
-		'DF_password' => array('name' => "dyn_password", 'columnheader' => "Password", 'type' => "password",
+		'DF_password' => array('name' => "df_password", 'columnheader' => "Password", 'type' => "password",
 			'description' => "dyndnsfree.de Password"
 		)
 	));
@@ -662,7 +662,7 @@ $acme_domain_validation_method['dns_gdnsdk'] = array('name' => "DNS-GratisDNS",
 	));
 $acme_domain_validation_method['dns_hetzner'] = array('name' => "DNS-Hetzner",
 	'fields' => array(
-		'HETZNER_Token' => array('name' => "HETZNER_Token", 'columnheader' => "API Token", 'type' => "password",
+		'HETZNER_Token' => array('name' => "hetzner_token", 'columnheader' => "API Token", 'type' => "password",
 			'description' => "Hetzner API Token. Visit https://dns.hetzner.com/settings/api-token to retrieve."
 		)
 	));
