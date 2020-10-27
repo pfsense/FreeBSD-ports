@@ -237,7 +237,7 @@ $section->addInput(new Form_Checkbox(
 	'Skip If No Content',
 	'Do not send the email if there is no content',
 	$pconfig['skipifempty']
-))->setHelp('If checked, no email will only be sent if there is output from the commands or content in the log files.');
+))->setHelp('If checked, email will only be sent if there is output from the commands or content in the log files.');
 
 $form->add($section);
 
