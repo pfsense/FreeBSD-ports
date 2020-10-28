@@ -294,10 +294,8 @@ function nrpe_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password
 	/* settings.                                     */
 	/*************************************************/
 	$remote_nrpe_config_apply = <<<EOD
-<?php
-require_once("/usr/local/pkg/nrpe.inc");
+require_once('/usr/local/pkg/nrpe.inc');
 nrpe_resync_package();
-?>
 EOD;
 
 	$synctimeout = intval($synctimeout);
