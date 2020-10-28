@@ -967,4 +967,3 @@ function frr_generate_config_bgp() {
 		$frr_integrated_config['rpki'] = frr_bgp_generate_rpki_servers();
 	}
 }
- 
