@@ -241,11 +241,6 @@ function sudo_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password
 	$xml = array();
 	$xml['sudo'] = $config['installedpackages']['sudo'];
 
-	/*************************************************/
-	/* Build a series of commands as a PHP file for  */
-	/* the secondary host to execute to load the new */
-	/* settings.                                     */
-	/*************************************************/
 	$remote_sudo_config_apply = <<<EOD
 <?php
 require_once("/usr/local/pkg/sudo.inc");
@@ -253,23 +248,11 @@ sudo_write_config();
 ?>
 EOD;
 
-	/*************************************************/
-	/* First, have target host write the commands    */
-	/* to a PHP file in the /tmp directory.          */
-	/*************************************************/
-	$execcmd = "file_put_contents('/tmp/remote_sudo_config_apply.php', '{$remote_sudo_config_apply}');";
-
-	/*************************************************/
-	/* Now assemble a command to execute the         */
-	/* previously sent PHP file in the background.   */
-	/*************************************************/
-	$execcmd2 = "exec(\"/usr/local/bin/php-cgi -f '/tmp/remote_sudo_config_apply.php' > /dev/null 2>&1 &\");";
 	$synctimeout = intval($synctimeout);
 	$rpc_client = new pfsense_xmlrpc_client();
 	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
 	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
-	$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
-	$resp = $rpc_client->xmlrpc_exec_php($execcmd2, $synctimeout);
+	$resp = $rpc_client->xmlrpc_exec_php($remote_sudo_config_apply, $synctimeout);
 }
 
 ?>
