@@ -242,10 +242,8 @@ function sudo_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password
 	$xml['sudo'] = $config['installedpackages']['sudo'];
 
 	$remote_sudo_config_apply = <<<EOD
-<?php
-require_once("/usr/local/pkg/sudo.inc");
+require_once('/usr/local/pkg/sudo.inc');
 sudo_write_config();
-?>
 EOD;
 
 	$synctimeout = intval($synctimeout);
