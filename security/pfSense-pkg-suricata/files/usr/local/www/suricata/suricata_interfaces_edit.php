@@ -31,6 +31,14 @@ global $g, $rebuild_rules;
 $suricatadir = SURICATADIR;
 $suricatalogdir = SURICATALOGDIR;
 
+// Define an array of native-mode netmap compatible NIC drivers
+$netmapifs = array('cc', 'cxl', 'cxgbe', 'em', 'igb', 'em', 'lem', 'ix', 'ixgbe', 'ixl', 're', 'vtnet');
+if (pfs_version_compare(false, 2.4, $g['product_version'])) {
+	/* add FreeBSD 12 iflib(4) supported devices */
+	$netmapifs = array_merge($netmapifs, array('ice', 'bnxt', 'vmx'));
+	sort($netmapifs);
+}
+
 init_config_arr(array('installedpackages', 'suricata', 'rule'));
 $suricataglob = $config['installedpackages']['suricata'];
 $a_rule = &$config['installedpackages']['suricata']['rule'];
@@ -68,6 +76,14 @@ $suricata_uuid = $pconfig['uuid'];
 // Get the physical configured interfaces on the firewall
 $interfaces = get_configured_interface_with_descr();
 
+// Footnote real interface associated with each configured interface
+foreach ($interfaces as $if => $desc) {
+	$interfaces[$if] = $interfaces[$if] . " (" . get_real_interface($if) . ")";
+}
+
+// Add a special "Unassigned" interface selection at end of list
+$interfaces["Unassigned"] = gettext("Unassigned");
+
 // See if interface is already configured, and use its values
 if (isset($id) && isset($a_rule[$id])) {
 	/* old options */
@@ -76,6 +92,10 @@ if (isset($id) && isset($a_rule[$id])) {
 		$pconfig['configpassthru'] = base64_decode($pconfig['configpassthru']);
 	if (empty($pconfig['uuid']))
 		$pconfig['uuid'] = $suricata_uuid;
+	if (get_real_interface($pconfig['interface']) == "") {
+		$pconfig['interface'] = gettext("Unassigned");
+		$pconfig['enable'] = "off";
+	}
 }
 
 // Must be a new interface, so try to pick next available physical interface to use
@@ -302,6 +322,20 @@ if (isset($_POST["save"]) && !$input_errors) {
 				$input_errors[] = gettext("The '{$_POST['interface']}' interface is already assigned to another Suricata instance.");
 				break;
 			}
+		}
+	}
+
+	if ($_POST['ips_mode'] == 'ips_mode_inline') {
+		$is_netmap = false;
+		$realint = get_real_interface($_POST['interface']);
+		foreach ($netmapifs as $if) {
+			if (substr($realint, 0, strlen($if)) == $if) {
+				$is_netmap = true;
+				break;
+			}
+		}
+		if (!$is_netmap) {
+			$input_errors[] = gettext("The '{$_POST['interface']}' interface does not support Inline IPS Mode with native netmap.");
 		}
 	}
 
@@ -653,9 +687,11 @@ if ($savemsg2) {
 	print_info_box($savemsg2);
 }
 
+// If using Inline IPS, check that CSO, TSO and LRO are all disabled
 if ($pconfig['enable'] == 'on' && $pconfig['ips_mode'] == 'ips_mode_inline' && (!isset($config['system']['disablechecksumoffloading']) || !isset($config['system']['disablesegmentationoffloading']) || !isset($config['system']['disablelargereceiveoffloading']))) {
-	print_info_box(gettext('IPS inline mode requires that Hardware Checksum, Hardware TCP Segmentation and Hardware Large Receive Offloading ' .
-				'all be disabled on the ') . '<b>' . gettext('System > Advanced > Networking ') . '</b>' . gettext('tab.'));
+	print_info_box(gettext('WARNING! IPS inline mode requires that Hardware Checksum Offloading, Hardware TCP Segmentation Offloading and Hardware Large Receive Offloading ' .
+				'all be disabled for proper operation. This firewall currently has one or more of these Offloading settings NOT disabled. Visit the ') . '<a href="/system_advanced_network.php">' . 
+			        gettext('System > Advanced > Networking') . '</a>' . gettext(' tab and ensure all three of these Offloading settings are disabled.'));
 }
 
 $tab_array = array();
