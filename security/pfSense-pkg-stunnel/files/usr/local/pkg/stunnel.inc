@@ -85,7 +85,7 @@ function stunnel_save() {
 	// Clean up certs that are no longer in use.
 	foreach (glob(STUNNEL_ETCDIR . "/*.pem") as $file) {
 		if (!in_array(basename($file), $in_use_certs)) {
-			unlink($file);
+			unlink_if_exists($file);
 		}
 	}
 
