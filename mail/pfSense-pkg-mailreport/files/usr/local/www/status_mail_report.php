@@ -84,6 +84,7 @@ include("head.inc");
 					<th>&nbsp;</th>
 					<th><?=gettext("Description")?></th>
 					<th><?=gettext("Schedule")?></th>
+					<th><?=gettext("Skippable")?></th>
 					<th><?=gettext("Commands")?></th>
 					<th><?=gettext("Logs")?></th>
 					<th><?=gettext("Actions")?></th>
@@ -113,6 +114,9 @@ include("head.inc");
 			</td>
 			<td onclick="fr_toggle(<?=$i?>)" id="frd<?=$i?>" ondblclick="document.location='status_mail_report_edit.php?id=<?=$i?>';">
 				<?=$friendly;?>
+			</td>
+			<td onclick="fr_toggle(<?=$i?>)" id="frd<?=$i?>" ondblclick="document.location='status_mail_report_edit.php?id=<?=$i?>';">
+				<?=ucfirst($mailreport['skipifempty']); ?>
 			</td>
 			<td onclick="fr_toggle(<?=$i?>)" id="frd<?=$i?>" ondblclick="document.location='status_mail_report_edit.php?id=<?=$i?>';">
 				<?=(is_array($mailreport['cmd']['row']) ? count($mailreport['cmd']['row']) : 0);?>

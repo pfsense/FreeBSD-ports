@@ -50,12 +50,16 @@ if (empty($thisreport['cmd']['row']) && empty($thisreport['log']['row'])) {
 
 // Print report header
 
+// Used to determine if any content was generated
+$hascontent = 0;
+
 // Print command output
 $cmdtext = "";
 foreach ($thisreport['cmd']['row'] as $cmd) {
 	$output = "";
 	$cmdtext .= gettext("Command output") . ": {$cmd['descr']} (" . htmlspecialchars($cmd['detail']) . ")<br />\n";
 	exec($cmd['detail'], $output);
+	$hascontent = $hascontent + count($output);
 	$cmdtext .= "<pre>\n";
 	$cmdtext .= implode("\n", $output);
 	$cmdtext .= "\n</pre>";
@@ -68,10 +72,14 @@ foreach ($thisreport['log']['row'] as $log) {
 	$filter = empty($log['detail']) ? null : array($log['detail']);
 	$logtext .= gettext("Log output") . ": " . get_friendly_log_name($log['logfile']) . " ({$log['logfile']})<br />\n";
 	$logtext .= "<pre>\n";
-	$logtext .= implode("\n", mail_report_get_log($log['logfile'], $lines, $filter));
+	$output = mail_report_get_log($log['logfile'], $lines, $filter);
+	$hascontent = $hascontent + count($output);
+	$logtext .= implode("\n", $output);
 	$logtext .= "\n</pre>";
 }
 
-mail_report_send($thisreport['descr'], $cmdtext, $logtext, $attach);
+if ($hascontent > 0 || empty($thisreport['skipifempty'])) {
+	mail_report_send($thisreport['descr'], $cmdtext, $logtext, $attach);
+}
 
 ?>

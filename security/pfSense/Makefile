@@ -75,7 +75,10 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		openvpn-auth-script>=0:security/openvpn-auth-script \
 		opensc>0:security/opensc \
 		ccid>0:devel/libccid \
-		iftop>0:net-mgmt/iftop
+		iftop>0:net-mgmt/iftop \
+		nss_ldap>0:net/nss_ldap \
+		pam_ldap>0:security/pam_ldap \
+		pam_mkhomedir>0:security/pam_mkhomedir
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
