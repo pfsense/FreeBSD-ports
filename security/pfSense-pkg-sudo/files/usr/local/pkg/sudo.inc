@@ -32,41 +32,49 @@ define('SUDO_SUDOERS', SUDO_CONFIG_DIR . '/sudoers');
 
 function sudo_install() {
 	global $g, $config;
-	/* If we don't have a config, pre-load some good default sudo entries. */
-	if (!is_array($config['installedpackages']['sudo']['config'][0]['row'])) {
-		$config['installedpackages']['sudo']['config'][0]['row'] = array(
-			0 => array(
-				"username" => "user:root",
-				"runas" => "user:root",
-				"cmdlist" => "ALL"
-			),
-			1 => array(
-				"username" => "user:admin",
-				"runas" => "user:root",
-				"cmdlist" => "ALL"
-			),
-			2 => array(
-				"username" => "group:admins",
-				"runas" => "user:root",
-				"cmdlist" => "ALL"
-			)
-		);
+
+	/*
+	 * If we don't have a config, pre-load some good default sudo entries.
+	 */
+	if (is_array(
+	    $config['installedpackages']['sudo']['config'][0]['row'])) {
+		return;
 	}
+	$config['installedpackages']['sudo']['config'][0]['row'] = array(
+		0 => array(
+			"username" => "user:root",
+			"runas" => "user:root",
+			"cmdlist" => "ALL"
+		),
+		1 => array(
+			"username" => "user:admin",
+			"runas" => "user:root",
+			"cmdlist" => "ALL"
+		),
+		2 => array(
+			"username" => "group:admins",
+			"runas" => "user:root",
+			"cmdlist" => "ALL"
+		)
+	);
 }
 
 function sudo_write_config() {
 	global $config;
 	$sudoers = "";
 
-	$sudoconf = "Plugin sudoers_policy " . SUDO_LIBEXEC_DIR . "/sudoers.so\n";
+	$sudoconf = "Plugin sudoers_policy " . SUDO_LIBEXEC_DIR .
+	    "/sudoers.so\n";
 	$sudoconf .= "Plugin sudoers_io " . SUDO_LIBEXEC_DIR . "/sudoers.so\n";
 	$sudoconf .= "Path noexec " . SUDO_LIBEXEC_DIR . "/sudo_noexec.so\n";
 	file_put_contents(SUDO_CONF, $sudoconf);
 
-	if (!is_array($config['installedpackages']['sudo']['config'][0]['row'])) {
+	if (!is_array(
+	    $config['installedpackages']['sudo']['config'][0]['row'])) {
 		/* No config, wipe sudoers file and bail. */
 		unlink(SUDO_SUDOERS);
-		log_error("No sudo configuration found, removing sudoers file to prevent unpredictable results.");
+		log_error("No sudo configuration found, removing sudoers " .
+		    "file to prevent unpredictable results.");
 		return;
 	}
 	$sudocfg = &$config['installedpackages']['sudo']['config'][0];
@@ -82,8 +90,10 @@ function sudo_write_config() {
 		$user = ($etype == "group") ? "%{$ename}" : $ename;
 		list($rtype, $rname) = explode(":", $sudo_commands['runas']);
 		$runas = ($rtype == "group") ? ":{$rname}" : $rname;
-		$nopasswd = ($sudo_commands['nopasswd'] == "ON") ? "NOPASSWD:" : "";
-		$commands = (empty($sudo_commands['cmdlist'])) ? "ALL" : $sudo_commands['cmdlist'];
+		$nopasswd = ($sudo_commands['nopasswd'] == "ON")
+		    ? "NOPASSWD:" : "";
+		$commands = (empty($sudo_commands['cmdlist']))
+		    ? "ALL" : $sudo_commands['cmdlist'];
 		$commands = ($commands == "all") ? "ALL" : $commands;
 		$sudoers .= "{$user} ALL=({$runas}) {$nopasswd} {$commands}\n";
 	}
@@ -97,7 +107,10 @@ function sudo_write_config() {
 	file_put_contents($tmpsudoers, $sudoers);
 	$result = exec("/usr/local/sbin/visudo -c -f {$tmpsudoers}");
 
-	/* If the file is OK, move it into place with the correct permissions, otherwise log an error and trash it. */
+	/*
+	 * If the file is OK, move it into place with the correct permissions,
+	 * otherwise log an error and trash it.
+	 */
 	if (stristr($result, "parsed OK")) {
 		rename($tmpsudoers, SUDO_SUDOERS);
 		chmod(SUDO_SUDOERS, 0440);
@@ -110,8 +123,8 @@ function sudo_write_config() {
 }
 
 /*
-Get a list of users and groups in a format we can use to make proper sudoers entries.
-Optionally include "ALL" as a user (for use by the Run As list)
+ * Get a list of users and groups in a format we can use to make proper sudoers
+ * entries.  Optionally include "ALL" as a user (for use by the Run As list)
  */
 function sudo_get_users($list_all_user = false) {
 	global $config;
@@ -120,7 +133,9 @@ function sudo_get_users($list_all_user = false) {
 	}
 	$a_user = &$config['system']['user'];
 
-	/* Make an entry for root, even though admin is essentially the same as root, they are distinct. */
+	/* Make an entry for root, even though admin is essentially the same
+	 * as root, they are distinct.
+	 */
 	$a_user[]['name'] = 'root';
 
 	/* Include users created by other packages */
@@ -166,14 +181,20 @@ function sudo_get_users($list_all_user = false) {
 		$users[] = $tmpuser;
 	}
 
-	/* Add the wheel group here. We may need other manual groups later (e.g. operator) */
+	/*
+	 * Add the wheel group here. We may need other manual groups later
+	 * (e.g. operator)
+	 */
 	$tmpuser = array();
 	$tmpuser["name"] = "group:wheel";
 	$tmpuser["descr"] = "Group: wheel";
 	$users[] = $tmpuser;
 
 	foreach ($a_group as $group) {
-		/* The "all" group is internal and doesn't make sense to use here. */
+		/*
+		 * The "all" group is internal and doesn't make sense to use
+		 * here.
+		 */
 		if ($group['name'] == "all") {
 			continue;
 		}
@@ -187,8 +208,9 @@ function sudo_get_users($list_all_user = false) {
 }
 
 /*
-Make sure commands passed in are valid executables to help ensure a valid sudoers file and expected behavior.
-This also forces the user to give full paths to executables, which they should be doing anyhow.
+ * Make sure commands passed in are valid executables to help ensure a valid
+ * sudoers file and expected behavior.  This also forces the user to give full
+ * paths to executables, which they should be doing anyhow.
  */
 function sudo_validate_commands(&$input_errors) {
 	$idx = 0;
@@ -201,7 +223,8 @@ function sudo_validate_commands(&$input_errors) {
 		foreach ($commands as $command) {
 			list($cmd, $params) = explode(" ", trim($command), 2);
 			if (!is_executable($cmd)) {
-				$input_errors[] = htmlspecialchars($cmd) . " is not an executable command.";
+				$input_errors[] = htmlspecialchars($cmd) .
+				    " is not an executable command.";
 			}
 		}
 	}
@@ -213,7 +236,10 @@ function sudo_sync_config() {
 		return -1;
 	}
 	$system_carp = $config['hasync'];
-	// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
+	/*
+	 * XMLRPC sync is currently only supported over connections using the
+	 * same protocol and port as this system
+	 */
 	if ($config['system']['webgui']['protocol'] == "http") {
 		$varsyncprotocol = "http";
 		$varsyncport = $config['system']['webgui']['port'] ?: '80';
@@ -221,23 +247,20 @@ function sudo_sync_config() {
 		$varsyncprotocol = "https";
 		$varsyncport = $config['system']['webgui']['port'] ?: '443';
 	}
-	sudo_do_xmlrpc_sync($system_carp['synchronizetoip'], 
-		$varsyncport,
-		$varsyncprotocol,
-		$system_carp['username'],
-		$system_carp['password'],
-		100
-	);
+	sudo_do_xmlrpc_sync($system_carp['synchronizetoip'], $varsyncport,
+	    $varsyncprotocol, $system_carp['username'],
+	    $system_carp['password'], 100);
 }
 
 /* Do the actual XMLRPC sync */
-function sudo_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout) {
+function sudo_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username,
+    $password, $synctimeout) {
 	global $config;
 
-	/*****************************************************/
-	/* Send over the <sudo> portion of config.xml        */
-	/* $xml will hold the section to sync.               */
-	/*****************************************************/
+	/*
+	 * Send over the <sudo> portion of config.xml
+	 * $xml will hold the section to sync.
+	 */
 	$xml = array();
 	$xml['sudo'] = $config['installedpackages']['sudo'];
 
@@ -248,9 +271,12 @@ EOD;
 
 	$synctimeout = intval($synctimeout);
 	$rpc_client = new pfsense_xmlrpc_client();
-	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
-	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
-	$resp = $rpc_client->xmlrpc_exec_php($remote_sudo_config_apply, $synctimeout);
+	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password,
+	    $protocol);
+	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section',
+	    $xml, $synctimeout);
+	$resp = $rpc_client->xmlrpc_exec_php($remote_sudo_config_apply,
+	    $synctimeout);
 }
 
 ?>
