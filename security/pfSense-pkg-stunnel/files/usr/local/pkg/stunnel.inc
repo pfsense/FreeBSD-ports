@@ -163,7 +163,7 @@ function stunnel_sync_config() {
 		$varsyncprotocol = "https";
 		$varsyncport = $config['system']['webgui']['port'] ?: '443';
 	}
-	nrpe_do_xmlrpc_sync($system_carp['synchronizetoip'], 
+	stunnel_do_xmlrpc_sync($system_carp['synchronizetoip'], 
 		$varsyncport,
 		$varsyncprotocol,
 		$system_carp['username'],
@@ -188,7 +188,7 @@ EOD;
 	$rpc_client = new pfsense_xmlrpc_client();
 	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
 	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
-	$resp = $rpc_client->xmlrpc_exec_php($remote_nrpe_config_apply, $synctimeout);
+	$resp = $rpc_client->xmlrpc_exec_php($remote_stunnel_config_apply, $synctimeout);
 }
 
 ?>
