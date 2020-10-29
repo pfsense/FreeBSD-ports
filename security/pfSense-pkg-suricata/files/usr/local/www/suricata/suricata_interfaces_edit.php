@@ -76,6 +76,14 @@ $suricata_uuid = $pconfig['uuid'];
 // Get the physical configured interfaces on the firewall
 $interfaces = get_configured_interface_with_descr();
 
+// Footnote real interface associated with each configured interface
+foreach ($interfaces as $if => $desc) {
+	$interfaces[$if] = $interfaces[$if] . " (" . get_real_interface($if) . ")";
+}
+
+// Add a special "Unassigned" interface selection at end of list
+$interfaces["Unassigned"] = gettext("Unassigned");
+
 // See if interface is already configured, and use its values
 if (isset($id) && isset($a_rule[$id])) {
 	/* old options */
@@ -84,6 +92,10 @@ if (isset($id) && isset($a_rule[$id])) {
 		$pconfig['configpassthru'] = base64_decode($pconfig['configpassthru']);
 	if (empty($pconfig['uuid']))
 		$pconfig['uuid'] = $suricata_uuid;
+	if (get_real_interface($pconfig['interface']) == "") {
+		$pconfig['interface'] = gettext("Unassigned");
+		$pconfig['enable'] = "off";
+	}
 }
 
 // Must be a new interface, so try to pick next available physical interface to use
