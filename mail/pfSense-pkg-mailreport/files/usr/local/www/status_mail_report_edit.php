@@ -241,6 +241,13 @@ $section->addInput(new Form_Input(
 	$pconfig['descr']
 ))->setHelp('Enter a description here for reference.');
 
+$section->addInput(new Form_Checkbox(
+	'skipifempty',
+	'Skip If No Content',
+	'Do not send the email if there is no content',
+	$pconfig['skipifempty']
+))->setHelp('If checked, no email will only be sent if there is output from the commands or content in the log files.');
+
 $form->add($section);
 
 $section = new Form_Section('Schedule');
