@@ -101,6 +101,8 @@ function stunnel_make_directories() {
 }
 
 function stunnel_make_default_cert() {
+	global $g, $config;
+
 	// Generate a self-signed default certificate if one does not already exist.
 	$stunnel_pem_filename = STUNNEL_ETCDIR . "/stunnel.pem";
 	if (!file_exists($stunnel_pem_filename)) {
@@ -138,7 +140,6 @@ function stunnel_rcfile() {
 }
 
 function stunnel_install() {
-	global $config;
 	stunnel_make_directories();
 	stunnel_make_default_cert();
 	stunnel_rcfile();
