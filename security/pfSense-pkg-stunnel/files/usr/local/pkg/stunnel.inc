@@ -25,6 +25,7 @@ require_once("pfsense-utils.inc");
 require_once("util.inc");
 require_once('services.inc');
 require_once('service-utils.inc');
+require_once("xmlrpc_client.inc");
 
 define('STUNNEL_LOCALBASE', '/usr/local');
 define('STUNNEL_ETCDIR', STUNNEL_LOCALBASE . "/etc/stunnel");
@@ -90,6 +91,7 @@ function stunnel_save() {
 
 	stunnel_rcfile();
 	restart_service("stunnel");
+	stunnel_sync_config();
 }
 
 function stunnel_make_directories() {
@@ -155,4 +157,48 @@ if (!function_exists('cert_build_list')) {
 		return $list;
 	}
 }
+
+function stunnel_sync_config() {
+	global $config;
+	if (!is_array($config['hasync'])) {
+		return -1;
+	}
+	$system_carp = $config['hasync'];
+	// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
+	if ($config['system']['webgui']['protocol'] == "http") {
+		$varsyncprotocol = "http";
+		$varsyncport = $config['system']['webgui']['port'] ?: '80';
+	} else {
+		$varsyncprotocol = "https";
+		$varsyncport = $config['system']['webgui']['port'] ?: '443';
+	}
+	stunnel_do_xmlrpc_sync($system_carp['synchronizetoip'], 
+		$varsyncport,
+		$varsyncprotocol,
+		$system_carp['username'],
+		$system_carp['password'],
+		100
+		);
+}
+
+/* Do the actual XMLRPC sync */
+function stunnel_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout) {
+	global $config;
+
+	$xml = array();
+	$xml['stunnel'] = $config['installedpackages']['stunnel'];
+
+	$remote_stunnel_config_apply = <<<EOD
+require_once('/usr/local/pkg/stunnel.inc');
+stunnel_save();
+EOD;
+
+	$synctimeout = intval($synctimeout);
+	$rpc_client = new pfsense_xmlrpc_client();
+	$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
+	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
+	$resp = $rpc_client->xmlrpc_exec_php($remote_stunnel_config_apply, $synctimeout);
+}
+
 ?>
+
