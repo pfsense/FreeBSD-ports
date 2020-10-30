@@ -763,7 +763,7 @@ if (!is_array($suricatacfg['libhtp_policy']))
 if (!is_array($suricatacfg['libhtp_policy']['item']))
 	$suricatacfg['libhtp_policy']['item'] = array();
 if (count($suricatacfg['libhtp_policy']['item']) < 1) {
-	$http_hosts_default_policy = "     personality: IDS\n     request-body-limit: 4096\n     response-body-limit: 4096\n";
+	$http_hosts_default_policy = "personality: IDS\n     request-body-limit: 4096\n     response-body-limit: 4096\n";
 	$http_hosts_default_policy .= "     double-decode-path: no\n     double-decode-query: no\n     uri-include-all: no\n";
 }
 else {
@@ -801,7 +801,7 @@ else {
 			}
 		}
 		else {
-			$http_hosts_default_policy = "     personality: {$v['personality']}\n     request-body-limit: {$v['request-body-limit']}\n";
+			$http_hosts_default_policy = "personality: {$v['personality']}\n     request-body-limit: {$v['request-body-limit']}\n";
 			$http_hosts_default_policy .= "     response-body-limit: {$v['response-body-limit']}\n";
 			$http_hosts_default_policy .= "     meta-field-limit: " . (isset($v['meta-field-limit']) ? $v['meta-field-limit'] : "18432") . "\n";
 			$http_hosts_default_policy .= "     double-decode-path: {$v['double-decode-path']}\n";
@@ -809,7 +809,7 @@ else {
 			$http_hosts_default_policy .= "     uri-include-all: {$v['uri-include-all']}\n";
 		}
 	}
-	// Remove trailing newline
+	// Remove any leading or trailing spaces and newline
 	$http_hosts_default_policy = trim($http_hosts_default_policy);
 	$http_hosts_policy = trim($http_hosts_policy);
 }

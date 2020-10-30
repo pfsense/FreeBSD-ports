@@ -270,14 +270,14 @@ function nrpe_custom_php_validation_command($post, &$input_errors) {
 
 function nrpe_sync_config() {
 	global $config;
-	if (!is_array($config['hasync'])) {
+	init_config_arr(array('hasync'));
+	$system_carp = $config['hasync'];
+	if (!is_array($system_carp) ||
+	    !$system_carp['synchronizetoip'] ||
+	    !$system_carp['username'] ||
+	    !$system_carp['password']) {
 		return -1;
 	}
-	$system_carp = $config['hasync'];
-	/*
-	 * XMLRPC sync is currently only supported over connections using the
-	 * same protocol and port as this system
-	 */
 	if ($config['system']['webgui']['protocol'] == "http") {
 		$varsyncprotocol = "http";
 		$varsyncport = $config['system']['webgui']['port'] ?: '80';
@@ -287,7 +287,7 @@ function nrpe_sync_config() {
 	}
 	nrpe_do_xmlrpc_sync($system_carp['synchronizetoip'], $varsyncport,
 	    $varsyncprotocol, $system_carp['username'],
-	    $system_carp['password'], 100);
+	    $system_carp['password'], 10);
 }
 
 /* Do the actual XMLRPC sync */
