@@ -1656,6 +1656,298 @@
 					"info":		"Generated every 6 hours from PhishTank, OpenPhish, Cert.pl and PhishFindR reports. Each domain is analyzed to eliminate false positives, through the Whitelist of Anudeep and the Alexa Rank."
 				}
 			]
+		},
+		"Firebog_Suspicious": {
+			"info":		"Something's fishy here.",
+			"description":	"Something's fishy here.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"PolishFiltersTeam KADhosts",
+					"website":	"https://github.com/PolishFiltersTeam/KADhosts",
+					"url":		"https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts_without_controversies.txt",
+					"header":	"PolishFiltersTeam_KADhosts"
+				},
+				{
+					"feed":		"Fademind's Spammers",
+					"website":	"https://github.com/FadeMind/hosts.extras/",
+					"url":		"https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts",
+					"header":	"Fademinds_Spammers"
+				},
+				{
+					"feed":		"WaLLy3K's Blacklist",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/static/w3kbl.txt",
+					"header":	"WaLLy3Ks_Blacklist"
+				},
+				{
+					"feed":		"Matomo Referrer Spam",
+					"website":	"https://github.com/matomo-org/referrer-spam-blacklist",
+					"url":		"https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt",
+					"header":	"Matomo_Referrer_Spam"
+				},
+				{
+					"feed":		"Someone Who Cares",
+					"website":	"https://someonewhocares.org/",
+					"url":		"https://someonewhocares.org/hosts/zero/hosts",
+					"header":	"Someone_Who_Cares"
+				},
+				{
+					"feed":		"neoFelhz's neoHosts",
+					"website":	"https://github.com/neofelhz/neohosts",
+					"url":		"https://cdn.jsdelivr.net/gh/neoFelhz/neohosts@gh-pages/basic/hosts",
+					"header":	"neoHosts"
+				},
+				{
+					"feed":		"RooneyMcNibNug's SNAFU list",
+					"website":	"https://github.com/RooneyMcNibNug/pihole-stuff/",
+					"url":		"https://raw.githubusercontent.com/RooneyMcNibNug/pihole-stuff/master/SNAFU.txt",
+					"header":	"RooneyMcNibNugs_SNAFU_list"
+				},
+				{
+					"feed":		"paulgb's BarbBlock",
+					"website":	"https://github.com/paulgb/BarbBlock",
+					"url":		"https://paulgb.github.io/BarbBlock/blacklists/hosts-file.txt",
+					"header":	"BarbBlock"
+				}
+			]
+		},
+		"Firebog_Advertising": {
+			"info":		"Waste of bandwith trying to sell stuff.",
+			"description":	"Waste of bandwith trying to sell stuff.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"Adguard DNS",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/AdguardDNS.txt",
+					"header":	"Adguard_DNS"
+				},
+				{
+					"feed":		"LanikSJ's Admiral Anti-Adblock",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/Admiral.txt",
+					"header":	"LanikSJs_Admiral_Anti_Adblock"
+				},
+				{
+					"feed":		"Anudeep ND's Blacklist",
+					"website":	"https://github.com/anudeepND/blacklist",
+					"url":		"https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt",
+					"header":	"Anudeep_NDs_Blacklist"
+				},
+				{
+					"feed":		"Easylist",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/Easylist.txt",
+					"header":	"Easylist"
+				},
+				{
+					"feed":		"Peter Lowe's Adservers",
+					"website":	"https://pgl.yoyo.org/adservers/",
+					"url":		"https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext",
+					"header":	"Peter_Lowes_Adservers"
+				},
+				{
+					"feed":		"Fademind's Unchecky Ads",
+					"website":	"https://github.com/FadeMind/hosts.extras",
+					"url":		"https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts",
+					"header":	"Fademinds_Unchecky_Ads"
+				},
+				{
+					"feed":		"hostsVN",
+					"website":	"https://github.com/bigdargon/hostsVN",
+					"url":		"https://raw.githubusercontent.com/bigdargon/hostsVN/master/hosts",
+					"header":	"hostsVN"
+				},
+				{
+					"feed":		"Jdlingyu's Ad-wars",
+					"website":	"https://github.com/jdlingyu/ad-wars",
+					"url":		"https://raw.githubusercontent.com/jdlingyu/ad-wars/master/hosts",
+					"header":	"Jdlingyus_Ad_wars"
+				}
+			]
+		},
+		"Firebog_Trackers": {
+			"info":		"Places that track you.",
+			"description":	"Places that track you.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"Easyprivacy",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/Easyprivacy.txt",
+					"header":	"Easyprivacy"
+				},
+				{
+					"feed":		"Fabrice Prigent's Ads",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/Prigent-Ads.txt",
+					"header":	"Fabrice_Prigents_Ads"
+				},
+				{
+					"feed":		"Fademind's 2o7 Network Trackers",
+					"website":	"https://github.com/Fademind/hosts.extras",
+					"url":		"https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts",
+					"header":	"Fademinds_2o7_Network_Trackers"
+				},
+				{
+					"feed":		"Crazy Max's Microsoft Telemetry",
+					"website":	"https://github.com/crazy-max/WindowsSpyBlocker",
+					"url":		"https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt",
+					"header":	"Crazy_Maxs_Microsoft_Telemetry"
+				},
+				{
+					"feed":		"Geoffrey Frogeye's First-Party Trackers",
+					"website":	"https://hostfiles.frogeye.fr/",
+					"url":		"https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt",
+					"header":	"Frogeye_First_Party"
+				},
+				{
+					"feed":		"Geoffrey Frogeye's Multi-Party Trackers",
+					"website":	"https://hostfiles.frogeye.fr/",
+					"url":		"https://hostfiles.frogeye.fr/multiparty-trackers-hosts.txt",
+					"header":	"Frogeye_Multi_Party"
+				},
+				{
+					"feed":		"Lightswitch05's Ads & Tracking",
+					"website":	"https://www.github.developerdan.com/hosts/",
+					"url":		"https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt",
+					"header":	"Lightswitch05s_Ads__Tracking"
+				},
+				{
+					"feed":		"Perflyst's Android Trackers",
+					"website":	"https://github.com/Perflyst/PiHoleBlocklist",
+					"url":		"https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/android-tracking.txt",
+					"header":	"Perflysts_Android_Trackers"
+				},
+				{
+					"feed":		"Perflyst's SmartTV Domains",
+					"website":	"https://github.com/Perflyst/PiHoleBlocklist",
+					"url":		"https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV.txt",
+					"header":	"Perflysts_SmartTV_Domains"
+				},
+				{
+					"feed":		"Perflyst's Amazon FireTV Domains",
+					"website":	"https://github.com/Perflyst/PiHoleBlocklist",
+					"url":		"https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/AmazonFireTV.txt",
+					"header":	"Perflysts_Amazon_FireTV_Domains"
+				}
+			]
+		},
+		"Firebog_Malicious": {
+			"info":		"Bad places.",
+			"description":	"Bad places.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"DandelionSprout's Anti Malware Filter",
+					"website":	"https://github.com/DandelionSprout/adfilt",
+					"url":		"https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt",
+					"header":	"DandelionSprouts_Anti_Malware_Filter"
+				},
+				{
+					"feed":		"DigitalSide Threat-Intel",
+					"website":	"https://osint.digitalside.it/",
+					"url":		"https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt",
+					"header":	"DigitalSide_Threat_Intel"
+				},
+				{
+					"feed":		"Fabrice Prigent's Cryptojacking",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/Prigent-Crypto.txt",
+					"header":	"Fabrice_Prigents_Cryptojacking"
+				},
+				{
+					"feed":		"Immortal' Malware Domains",
+					"website":	"https://www.malwaredomains.com/wordpress/?p=1282",
+					"url":		"https://mirror.cedia.org.ec/malwaredomains/immortal_domains.txt",
+					"header":	"Immortal_Malware_Domains"
+				},
+				{
+					"feed":		"Mandiant APT1 Report",
+					"website":	"https://bitbucket.org/ethanr/dns-blacklists",
+					"url":		"https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt",
+					"header":	"Mandiant_APT1_Report"
+				},
+				{
+					"feed":		"Phishing Army's Extended Blocklist",
+					"website":	"https://www.phishing.army/",
+					"url":		"https://phishing.army/download/phishing_army_blocklist_extended.txt",
+					"header":	"Phishing_Armys_Extended_Blocklist"
+				},
+				{
+					"feed":		"Shalla Malicious",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/Shalla-mal.txt",
+					"header":	"Shalla_Malicious"
+				},
+				{
+					"feed":		"Spam404",
+					"website":	"Spam404:",
+					"url":		"https://raw.githubusercontent.com/Spam404/lists/master/main-blacklist.txt",
+					"header":	"Spam404"
+				},
+				{
+					"feed":		"Fademind's Risky Hosts",
+					"website":	"https://github.com/FadeMind/hosts.extras",
+					"url":		"https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts",
+					"header":	"Fademinds_Risky_Hosts"
+				},
+				{
+					"feed":		"URLhaus Malicious URL blocklist",
+					"website":	"https://urlhaus.abuse.ch/api/",
+					"url":		"https://urlhaus.abuse.ch/downloads/hostfile/",
+					"header":	"URLhaus_Malicious_URL_blocklist"
+				},
+				{
+					"feed":		"Fabrice Prigent's Malware",
+					"website":	"https://firebog.net/",
+					"url":		"https://v.firebog.net/hosts/Prigent-Malware.txt",
+					"header":	"Fabrice_Prigents_Malware"
+				},
+				{
+					"feed":		"Turkey High Risk Phishing Blacklist",
+					"website":	"https://github.com/HorusTeknoloji/TR-PhishingList",
+					"url":		"https://raw.githubusercontent.com/HorusTeknoloji/TR-PhishingList/master/url-lists.txt",
+					"header":	"Turkey_High_Risk_Phishing_Blacklist"
+				}
+			]
+		},
+		"Firebog_Other": {
+			"info":		"Other random lists.",
+			"description":	"Other random lists.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"ZeroDot1 CoinBlockerLists",
+					"website":	"https://gitlab.com/ZeroDot1/CoinBlockerLists",
+					"url":		"https://zerodot1.gitlab.io/CoinBlockerLists/hosts_browser",
+					"header":	"ZeroDot1_CoinBlockerLists"
+				},
+				{
+					"feed":		"Chad Mayfield (All)",
+					"website":	"https://github.com/chadmayfield/my-pihole-blocklists",
+					"url":		"https://raw.githubusercontent.com/chadmayfield/my-pihole-blocklists/master/lists/pi_blocklist_porn_all.list",
+					"header":	"Chad_Mayfield_All"
+				},
+				{
+					"feed":		"Chad Mayfield (Top 1M)",
+					"website":	"https://github.com/chadmayfield/my-pihole-blocklists",
+					"url":		"https://raw.githubusercontent.com/chadmayfield/my-pihole-blocklists/master/lists/pi_blocklist_porn_top1m.list",
+					"header":	"Chad_Mayfield_Top_1M"
+				},
+				{
+					"feed":		"Anudeep ND's Facebook Blacklist",
+					"website":	"https://github.com/anudeepND/blacklist",
+					"url":		"https://raw.githubusercontent.com/anudeepND/blacklist/master/facebook.txt",
+					"header":	"Anudeep_NDs_Facebook_Blacklist"
+				}
+			]
 		}
 	}
 }
