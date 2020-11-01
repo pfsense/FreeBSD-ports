@@ -516,9 +516,12 @@ function echo_html_select($name, $keyvaluelist, $selected, $listEmptyMessage="",
 	return $result;
 }
 
-function haproxy_keyvalue_array($hap_array) {
+function haproxy_keyvalue_array($hap_array, $includedeprecatedkey = null) {
 	$result = array();
 	foreach($hap_array as $key => $item) {
+		if ($item['deprecated'] && $key != $includedeprecatedkey){
+			continue;
+		}
 		$result[$key] = $item['name'];
 	}
 	return $result;
