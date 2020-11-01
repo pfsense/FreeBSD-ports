@@ -827,7 +827,7 @@ $section->addInput(new Form_Select(
 	'check_type',
 	'Health check method',
 	$pconfig['check_type']?$pconfig['check_type']:"HTTP",
-	haproxy_keyvalue_array($a_checktypes)
+	haproxy_keyvalue_array($a_checktypes, $pconfig['check_type'])
 ))->setHelp('<textarea readonly="yes" cols="60" rows="2" id="check_type_description" name="check_type_description" style="padding:5px; border:1px dashed #990000; background-color: #ffffff; color: #000000; font-size: 8pt;"></textarea>');
 
 //TODO milliseconds behind field.
