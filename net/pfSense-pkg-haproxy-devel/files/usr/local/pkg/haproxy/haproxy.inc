@@ -1224,14 +1224,21 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 
 			$unix_socket = false;
 			$servers = array();
+			$serverprefix = haproxy_utils::haproxy_hostname_get_prefix($be['address']);
+			$serveraddress = haproxy_utils::haproxy_hostname_strip_prefix($be['address']);
+			if ($addrprefix && $serverprefix && $serverprefix !== $addrprefix) {
+				continue; // skip the server if its not 'usable' in this transparent-backend
+			}
 			if ($be['forwardto'] && $be['forwardto'] != "") {
 				$unix_socket = true;
 				$servers[] = "/{$be['forwardto']}.socket send-proxy-v2-ssl-cn";
 			} else {
-				if (is_ipaddr($be['address']) || $use_haproxyresolvers) {
-					$servers[] = $be['address'];
-				} elseif (is_hostname($be['address'])) {
-					$dnsresult_servers = haproxy_utils::query_dns($be['address'], $dnsquerytype);
+				if (in_array($serverprefix, array('unix@'))) {
+					$servers[] = $serveraddress;
+				} elseif (is_ipaddr($serveraddress) || $use_haproxyresolvers) {
+					$servers[] = $serveraddress;
+				} elseif (is_hostname($serveraddress)) {
+					$dnsresult_servers = haproxy_utils::query_dns($serveraddress, $dnsquerytype);
 					foreach($dnsresult_servers as $dnsresult_server){
 						$servers[] = $dnsresult_server['data'];
 					}
@@ -1248,14 +1255,16 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 						continue;
 					}
 				} else {
-					if (!$unix_socket) {
+					if (!$unix_socket && !$serverprefix) {
 						// place the ipv4@ or ipv6@ before the address, but not when using a unix socket
+						// or a prefix was already specified by the user.
 						$server = $addrprefix . $server;
 					}
 				}
 				if (!empty($be['port'])) {
 					$server = $server . ":" . $be['port'];
 				}
+				$server = $serverprefix . $server;
 				$servername = $be['name'];
 				$id = "";
 				if (count($servers) > 1) {

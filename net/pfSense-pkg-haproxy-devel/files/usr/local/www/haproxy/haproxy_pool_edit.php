@@ -431,8 +431,8 @@ if ($_POST) {
 		}
 
 		if (!isset($server['forwardto']) || $server['forwardto'] == "") {
-			if (!is_ipaddr($server_address) && !is_hostname($server_address) && !haproxy_is_frontendname($server_address)) {
-				$input_errors[] = "The field 'Address' for server $server_name is not a valid ip address or hostname." . $server_address;
+			if (!is_ipaddr($server_address) && !haproxy_utils::is_valid_haproxy_hostname($server_address) && !haproxy_is_frontendname($server_address)) {
+				$input_errors[] = "The field 'Address' for server '$server_name' is not a valid ip address or hostname '" . $server_address . "'.";
 			}
 		} else {
 			if ((!empty($server_address)) || ($server_port && !is_numeric($server_port))) {
