@@ -61,13 +61,14 @@ function zeek_enabled() {
 	global $config, $zeek_enabled;
 	$zeek_enabled = false;
 
-	if (is_array($config['installedpackages']['zeek']['config'])) {
-		// check whether Zeek is enabled ...
-		if ($config['installedpackages']['zeek']['config'][0]['enable_zeek'] == "on") {
-			// ... and has at least one interface configured ...
-			if (!empty($config['installedpackages']['zeek']['config'][0]['active_interface'])) {
-				$zeek_enabled = true;
-			}
+	init_config_arr(array('installedpackages', 'zeek', 'config'));
+	$settings = &$config['installedpackages']['zeek']['config'][0];
+
+	// check whether Zeek is enabled ...
+	if ($settings['enable_zeek'] == "on") {
+		// ... and has at least one interface configured ...
+		if (!empty($settings['active_interface'])) {
+			$zeek_enabled = true;
 		}
 	}
 	return $zeek_enabled;
@@ -78,11 +79,12 @@ function zeek_cluster_enabled() {
 	global $config, $zeek_cluster_enabled;
 	$zeek_cluster_enabled = false;
 
-	if (is_array($config['installedpackages']['zeekcluster'])) {
-		// check whether zeek cluster is enabled ...
-		if ($config['installedpackages']['zeekcluster']['config'][0]['enable_cluster'] == "on") {
-			$zeek_cluster_enabled = true;
-		}
+	init_config_arr(array('installedpackages', 'zeekcluster', 'config'));
+	$settings = &$config['installedpackages']['zeekcluster']['config'][0];
+
+	// check whether zeek cluster is enabled
+	if ($settings['enable_cluster'] == "on") {
+		$zeek_cluster_enabled = true;
 	}
 	return $zeek_cluster_enabled;
 }
@@ -222,11 +224,8 @@ function zeek_deinstall_command() {
 function zeek_validate_general($post, &$input_errors) {
 	global $config;
 
-	if (is_array($config['installedpackages']['zeek'])) {
-		$settings = $config['installedpackages']['zeek']['config'][0];
-	} else {
-		$settings = array();
-	}
+	init_config_arr(array('installedpackages', 'zeek', 'config'));
+	$settings = &$config['installedpackages']['zeek']['config'][0];
 
 	if ($post['enable_zeek'] == "on") {
 		if (!zeek_cluster_enabled()) {
@@ -351,11 +350,9 @@ function zeek_validate_script($post, &$input_errors) {
 function zeek_settings_resync() {
 	global $config;
 
-	if (is_array($config['installedpackages']['zeek'])) {
-		$settings = $config['installedpackages']['zeek']['config'][0];
-	} else {
-		$settings = array();
-	}
+	init_config_arr(array('installedpackages', 'zeek', 'config'));
+	$settings = &$config['installedpackages']['zeek']['config'][0];
+
 	$hostname = ($settings['hostname'] ? $settings['hostname'] : 'localhost');
 	// Read assigned interface
 	if ($settings['active_interface']) {
@@ -438,11 +435,8 @@ EOD;
 function zeek_zeekctl_resync() {
 	global $config;
 
-	if (is_array($config['installedpackages']['zeekcontrol'])) {
-		$settings = $config['installedpackages']['zeekcontrol']['config'][0];
-	} else {
-		$settings = array();
-	}
+	init_config_arr(array('installedpackages', 'zeekcontrol', 'config'));
+	$settings = &$config['installedpackages']['zeekcontrol']['config'][0];
 
 	$email = $settings['admin_email'] ? $settings['admin_email'] : 'admin@localhost';
 	$mailconnection = ($settings['mail_connection_summary'] == "on") ? 1 : 0;
@@ -545,11 +539,9 @@ EOD;
 function zeek_cluster_resync() {
 	global $config;
 
-	if (is_array($config['installedpackages']['zeekcluster'])) {
-		$settings = $config['installedpackages']['zeekcluster']['config'][0];
-	} else {
-		$settings = array();
-	}
+	init_config_arr(array('installedpackages', 'zeekcluster', 'config'));
+	$settings = &$config['installedpackages']['zeekcluster']['config'][0];
+
 	$managerhost = ($settings['manager_host'] ? $settings['manager_host'] : 'localhost');
 	$proxyhost = ($settings['proxy_host'] ? $settings['proxy_host'] : 'localhost');
 	$worker1host = ($settings['worker1_host'] ? $settings['worker1_host'] : 'localhost');
@@ -625,10 +617,11 @@ function zeek_log_resync() {
 	global $config, $zeeklogstate;
 	$zeeklogstate = false;
 
-	if (is_array($config['installedpackages']['zeeklog'])) {
-		if ($config['installedpackages']['zeeklog']['config'][0]['remove_zeek_log'] == "on") {
-			$zeeklogstate = true;
-		}
+	init_config_arr(array('installedpackages', 'zeeklog', 'config'));
+	$settings = &$config['installedpackages']['zeeklog']['config'][0];
+
+	if ($settings['remove_zeek_log'] == "on") {
+		$zeeklogstate = true;
 	}
 	return $zeeklogstate;
 }
@@ -727,30 +720,28 @@ function zeek_script_resync() {
 
 EOD;
 
-	$scripts = $config['installedpackages']['zeekscript']['config'];
+	init_config_arr(array('installedpackages', 'zeekscript', 'config'));
 
 	if (zeek_enabled()) {
-		if (is_array($scripts) && !empty($scripts)) {
-			foreach ($scripts as $script) {
-				$path = $script['zeekscriptpath'];
+		foreach ($config['installedpackages']['zeekscript']['config'] as $script) {
+			$path = $script['zeekscriptpath'];
+			$filename = '';
+			if ($script['zeekscriptpath'] == '') {
 				$filename = '';
-				if ($script['zeekscriptpath'] == '') {
-					$filename = '';
-				} else {
-					$filename = "@load ".basename($path,".zeek")."";
-				}
+			} else {
+				$filename = "@load ".basename($path,".zeek")."";
+			}
 
-				$srcpath =  escapeshellarg($path);
-				$dstpath = escapeshellarg('/usr/local/share/zeek/site');
-				copy($srcpath,  $dstpath);
-				$newline = "\n";
+			$srcpath =  escapeshellarg($path);
+			$dstpath = escapeshellarg('/usr/local/share/zeek/site');
+			copy($srcpath,  $dstpath);
+			$newline = "\n";
 
-				$conf .= <<<EOD
+			$conf .= <<<EOD
 {$filename}
 {$newline}
 
 EOD;
-			}
 		}
 
 	$destpath = '/usr/local/share/zeek/site/local.zeek';
@@ -773,84 +764,83 @@ EOD;
 function zeek_sync_on_changes() {
 	global $config;
 
-	if (is_array($config['installedpackages']['zeeksync']['config'])) {
-		$zeek_sync = $config['installedpackages']['zeeksync']['config'][0];
-		$synconchanges = $zeek_sync['synconchanges'];
-		$synctimeout = $zeek_sync['synctimeout'] ?: '250';
-		switch ($synconchanges) {
-			case "manual":
-				if (is_array($zeek_sync['row'])) {
-					$rs = $zeek_sync['row'];
+	init_config_arr(array('installedpackages', 'zeeksync', 'config'));
+	$zeek_sync = &$config['installedpackages']['zeeksync']['config'][0];
+	$synconchanges = $zeek_sync['synconchanges'];
+	$synctimeout = $zeek_sync['synctimeout'] ?: '250';
+	switch ($synconchanges) {
+		case "manual":
+			if (is_array($zeek_sync['row'])) {
+				$rs = $zeek_sync['row'];
+			} else {
+				log_error("[zeek] XMLRPC sync is enabled but there are no hosts configured as replication targets.");
+				return;
+			}
+		break;
+		case "auto":
+			if (is_array($config['hasync'])) {
+				$system_carp = $config['hasync'];
+				$rs[0]['ipaddress'] = $system_carp['synchronizetoip'];
+				$rs[0]['username'] = $system_carp['username'];
+				$rs[0]['password'] = $system_carp['password'];
+				$rs[0]['syncdestinenable'] = FALSE;
+				// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
+				if ($config['system']['webgui']['protocol'] == "http") {
+					$rs[0]['syncprotocol'] = "http";
+					$rs[0]['syncport'] = $config['system']['webgui']['port'] ?: '80';
 				} else {
-					log_error("[zeek] XMLRPC sync is enabled but there are no hosts configured as replication targets.");
-					return;
+					$rs[0]['syncprotocol'] = "https";
+					$rs[0]['syncport'] = $config['system']['webgui']['port'] ?: '443';
 				}
-			break;
-			case "auto":
-				if (is_array($config['hasync'])) {
-					$system_carp = $config['hasync'];
-					$rs[0]['ipaddress'] = $system_carp['synchronizetoip'];
-					$rs[0]['username'] = $system_carp['username'];
-					$rs[0]['password'] = $system_carp['password'];
-					$rs[0]['syncdestinenable'] = FALSE;
-					// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
-					if ($config['system']['webgui']['protocol'] == "http") {
-						$rs[0]['syncprotocol'] = "http";
-						$rs[0]['syncport'] = $config['system']['webgui']['port'] ?: '80';
-					} else {
-						$rs[0]['syncprotocol'] = "https";
-						$rs[0]['syncport'] = $config['system']['webgui']['port'] ?: '443';
-					}
-					if ($system_carp['synchronizetoip'] == "") {
-						log_error("[zeek] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
-						return;
-					} else {
-						$rs[0]['syncdestinenable'] = TRUE;
-					}
-				} else {
+				if ($system_carp['synchronizetoip'] == "") {
 					log_error("[zeek] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
 					return;
+				} else {
+					$rs[0]['syncdestinenable'] = TRUE;
 				}
-			break;
-			default:
+			} else {
+				log_error("[zeek] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
 				return;
-			break;
-		}
-		if (is_array($rs)) {
-			log_error("[zeek] XMLRPC sync is starting.");
-			foreach ($rs as $sh) {
-				// Only sync enabled replication targets
-				if ($sh['syncdestinenable']) {
-					$sync_to_ip = $sh['ipaddress'];
-					$port = $sh['syncport'];
-					$username = $sh['username'] ?: 'admin';
-					$password = $sh['password'];
-					$protocol = $sh['syncprotocol'];
+			}
+		break;
+		default:
+			return;
+		break;
+	}
+	if (is_array($rs)) {
+		log_error("[zeek] XMLRPC sync is starting.");
+		foreach ($rs as $sh) {
+			// Only sync enabled replication targets
+			if ($sh['syncdestinenable']) {
+				$sync_to_ip = $sh['ipaddress'];
+				$port = $sh['syncport'];
+				$username = $sh['username'] ?: 'admin';
+				$password = $sh['password'];
+				$protocol = $sh['syncprotocol'];
 
-					$error = '';
-					$valid = TRUE;
+				$error = '';
+				$valid = TRUE;
 
-					if ($password == "") {
-						$error = "Password parameter is empty. ";
-						$valid = FALSE;
-					}
-					if (!is_ipaddr($sync_to_ip) && !is_hostname($sync_to_ip) && !is_domain($sync_to_ip)) {
-						$error .= "Misconfigured Replication Target IP Address or Hostname. ";
-						$valid = FALSE;
-					}
-					if (!is_port($port)) {
-						$error .= "Misconfigured Replication Target Port. ";
-						$valid = FALSE;
-					}
-					if ($valid) {
-						zeek_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout);
-					} else {
-						log_error("[zeek] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
-					}
+				if ($password == "") {
+					$error = "Password parameter is empty. ";
+					$valid = FALSE;
+				}
+				if (!is_ipaddr($sync_to_ip) && !is_hostname($sync_to_ip) && !is_domain($sync_to_ip)) {
+					$error .= "Misconfigured Replication Target IP Address or Hostname. ";
+					$valid = FALSE;
+				}
+				if (!is_port($port)) {
+					$error .= "Misconfigured Replication Target Port. ";
+					$valid = FALSE;
+				}
+				if ($valid) {
+					zeek_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout);
+				} else {
+					log_error("[zeek] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
 				}
 			}
-			log_error("[zeek] XMLRPC sync completed.");
 		}
+		log_error("[zeek] XMLRPC sync completed.");
 	}
 }
 
