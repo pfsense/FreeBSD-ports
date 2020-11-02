@@ -30,6 +30,43 @@ require_once("config.inc");
 class haproxy_utils {
 	public static $pf_version;
 
+	public function is_valid_haproxy_hostname($hostname){
+		global $input_errors;
+		$parts = explode('@', $hostname);
+		if (count($parts) > 2) {
+			$input_errors[] = "The hostname '$hostname' contains multiple prefixes.";
+			return false;
+		}
+		if (count($parts) == 2) {
+			$hostnameprefix = $parts[0];
+			if ($hostnameprefix == "unix") {
+				// is there any way to further validate this.?.
+				return true; 
+			}
+			$hostnamename = $parts[1];
+			if (!in_array($hostnameprefix, array("ipv4","ipv6","upd","udp4","udp6","unix"))) {
+				$input_errors[] = "The hostname '$hostname' has a invalid prefix: $hostnameprefix@";
+				return false; // invalid prefix?
+			}
+		} else {
+			$hostnamename = $hostname;
+		}
+		return is_hostname($hostnamename);
+	}
+	public function haproxy_hostname_strip_prefix($hostname){
+		$i = stripos($hostname, '@');
+		if ($i !== false) {
+			$hostname = substr($hostname, $i + 1);
+		}
+		return $hostname;
+	}
+	public function haproxy_hostname_get_prefix($hostname){
+		$i = stripos($hostname, '@');
+		if ($i !== false) {
+			return substr($hostname, 0, $i + 1);
+		}
+		return false;
+	}
 	public function query_dns($host, $querytype="A,AAAA") {
 		$result = array();
 		$types = explode(',',$querytype);
@@ -516,9 +553,12 @@ function echo_html_select($name, $keyvaluelist, $selected, $listEmptyMessage="",
 	return $result;
 }
 
-function haproxy_keyvalue_array($hap_array) {
+function haproxy_keyvalue_array($hap_array, $includedeprecatedkey = null) {
 	$result = array();
 	foreach($hap_array as $key => $item) {
+		if ($item['deprecated'] && $key != $includedeprecatedkey){
+			continue;
+		}
 		$result[$key] = $item['name'];
 	}
 	return $result;
