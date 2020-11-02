@@ -269,7 +269,12 @@ SERVICENAME="radiusd"
 	fi
 
 EOD;
-	$rcfile['stop'] = FREERADIUS_ETC . '/rc.d/radiusd onestop';
+
+	$rcfile['stop'] = <<<EOD
+	if [ ! -f "/tmp/radiusd_start.lock" ]; then
+		{$freeradius_etc_dir}/rc.d/radiusd onestop
+	fi
+EOD;
 	write_rcfile($rcfile);
 }
 

@@ -127,7 +127,7 @@ if (isset($_GET['showstatresolvers'])){
 	$showstatresolversname = $_GET['showstatresolvers'];
 	echo "<td colspan='2'>";
 	echo "Resolver statistics: $sticktablename<br/>";
-	$res = haproxy_socket_command("show stat resolvers $showstatresolversname");
+	$res = haproxy_socket_command("show resolvers $showstatresolversname");
 	foreach($res as $line){
 		echo "<br/>".print_r($line,true);
 	}
