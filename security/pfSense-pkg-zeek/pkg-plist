@@ -12,3 +12,4 @@ www/zeek_alert_data.php
 www/select_box_file.php
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
+@dir /etc/inc
