@@ -1,0 +1,7 @@
+[
+{ type: install
+  message: <<EOM
+Please visit Services > Zeek NSM menu to configure the package.
+EOM
+}
+]

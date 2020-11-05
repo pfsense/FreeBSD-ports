@@ -28,10 +28,10 @@ require_once("util.inc");
 require_once("pfsense-utils.inc");
 
 global $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_version, $legacy_openvpn_version_rev;
-$current_openvpn_version = "2.4.9";
+$current_openvpn_version = "2.5.0";
 $current_openvpn_version_rev = "01";
-$legacy_openvpn_version = "2.3.18";
-$legacy_openvpn_version_rev = "02";
+$legacy_openvpn_version = "2.4.9";
+$legacy_openvpn_version_rev = "01";
 
 function get_openvpnserver_by_id($srvid) {
 	global $config;
@@ -202,14 +202,13 @@ EOF;
 //		$conf .= "proto tcp-client{$nl}";
 	$conf .= "cipher {$cipher}{$nl}";
 
-	if ($legacy == 0) {
-		if ($settings['ncp_enable'] == "disabled") {
-			$conf .= "ncp-disable{$nl}";
-		} else {
-			/* If the ncp-ciphers list is empty, don't specify a list so OpenVPN's default will be used. */
-			if (!empty($settings['ncp-ciphers'])) {
-				$conf .= "ncp-ciphers " . str_replace(',', ':', $settings['ncp-ciphers']) . "{$nl}";
-			}
+	if ($settings['ncp_enable'] == "disabled") {
+		$conf .= "ncp-disable{$nl}";
+	} else {
+		/* If the ncp-ciphers list is empty, don't specify a list so OpenVPN's default will be used. */
+		if (!empty($settings['ncp-ciphers'])) {
+			$conf .= ($legacy == 0) ? "data-ciphers" : "ncp-ciphers";
+			$conf .= " " . str_replace(',', ':', $settings['ncp-ciphers']) . "{$nl}";
 		}
 	}
 
@@ -241,12 +240,6 @@ EOF;
 	if (!empty($servercn) && !$nokeys) {
 		switch ($verifyservercn) {
 			case "none":
-				break;
-			case "tls-remote":
-				$conf .= "tls-remote {$servercn}{$nl}";
-				break;
-			case "tls-remote-quote":
-				$conf .= "tls-remote \"{$servercn}\"{$nl}";
 				break;
 			default:
 				if ((substr($expformat, 0, 7) != "yealink") && ($expformat != "snom")) {
@@ -534,28 +527,22 @@ EOF;
 	}
 }
 
-function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $outpass, $proxy, $advancedoptions, $openvpn_version = "x86-xp", $usepkcs11, $pkcs11providers, $pkcs11id, $silent) {
+function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $outpass, $proxy, $advancedoptions, $openvpn_version = "x64-msi", $usepkcs11, $pkcs11providers, $pkcs11id, $silent) {
 	global $g, $input_errors, $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_version, $legacy_openvpn_version_rev;
 
 	switch ($openvpn_version) {
-		case "x86-xp":
-			$client_install_exe = "openvpn-install-{$legacy_openvpn_version}-I0{$legacy_openvpn_version_rev}-i686.exe";
-			break;
-		case "x64-xp":
-			$client_install_exe = "openvpn-install-{$legacy_openvpn_version}-I0{$legacy_openvpn_version_rev}-x86_64.exe";
-			break;
-		case "x86-win6":
-			$client_install_exe = "openvpn-install-{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-i686.exe";
-			break;
-		case "x64-win6":
-			$client_install_exe = "openvpn-install-{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-x86_64.exe";
-			break;
 		case "Win7":
-			$client_install_exe = "openvpn-install-{$current_openvpn_version}-I6{$current_openvpn_version_rev}-Win7.exe";
+			$client_install_exe = "openvpn-install-{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-Win7.exe";
 			break;
 		case "Win10":
+			$client_install_exe = "openvpn-install-{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-Win10.exe";
+			break;
+		case "x86-msi":
+			$client_install_exe = "OpenVPN-{$current_openvpn_version}-I6{$current_openvpn_version_rev}-x86.msi";
+			break;
+		case "x64-msi":
 		default:
-			$client_install_exe = "openvpn-install-{$current_openvpn_version}-I6{$current_openvpn_version_rev}-Win10.exe";
+			$client_install_exe = "OpenVPN-{$current_openvpn_version}-I6{$current_openvpn_version_rev}-amd64.msi";
 			break;
 	}
 
@@ -582,12 +569,16 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 	// copy the template directory
 	exec("cp -r {$workdir}/template/* {$tempdir}");
 	// and put the required installer exe in place
-	exec("/bin/cp {$tempdir}/{$client_install_exe} {$tempdir}/openvpn-install.exe");
+
+	$installer_parts = pathinfo($client_install_exe);
+	$installer_filename = "openvpn-install.{$installer_parts['extension']}";
+
+	exec("/bin/cp {$tempdir}/{$client_install_exe} {$tempdir}/{$installer_filename}");
 
 	/* OpenVPN Win7/Win10 installer stub is 32-bit, but could need to read a 64-bit registry.
 	 * Using the 64-bit-aware openvpn-postinstall works fine even on 32-bit Windows 10.
 	 */
-	if (in_array($openvpn_version, array('Win7', 'Win10', 'x64-xp', 'x64-win6'))) {
+	if (in_array($openvpn_version, array('Win7', 'Win10', 'x64-msi'))) {
 		rename("{$tempdir}/openvpn-postinstall64.exe", "{$tempdir}/openvpn-postinstall.exe");
 	}
 
@@ -634,21 +625,27 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 	chdir($tempdir);
 	$files = "config ";
 
-	$files .= "openvpn-install.exe ";
+	$files .= "{$installer_filename} ";
 	$files .= "openvpn-postinstall.exe ";
-	$procchain = ';!@Install@!UTF-8!';
-	if ($usetoken && $silent) {
-		$procchain .= 'RunProgram="openvpn-install.exe /S"';
-		$procchain .= 'RunProgram="openvpn-postinstall.exe /S /Import"';
-	} elseif ($usetoken) {
-		$procchain .= 'RunProgram="openvpn-postinstall.exe /Import"';
-	} elseif ($silent) {
-		$procchain .= 'RunProgram="openvpn-install.exe /S"';
-		$procchain .= 'RunProgram="openvpn-postinstall.exe /S"';
+	$procchain = ';!@Install@!UTF-8!' . "\n";
+
+	$tokenarg = ($usetoken) ? ' /Import' : '';
+	if ($silent) {
+		$silentarg = ($installer_parts['extension'] == 'exe') ? ' /S' : ' /qn';
 	} else {
-		$procchain .= 'RunProgram="openvpn-postinstall.exe"';
+		$silentarg = '';
 	}
-	$procchain .= ';!@InstallEnd@!';
+
+	if ($installer_parts['extension'] == 'exe') {
+		$procchain .= "RunProgram=\"openvpn-install.exe{$silentarg}\"\n";
+	} else {
+		/* Have to use RunProgram not ExecuteFile since ExecuteFile won't chain with RunProgram */
+		$procchain .= "RunProgram=\"msiexec.exe /i openvpn-install.msi {$silentarg} /norestart\"\n";
+	}
+
+	$procchain .= "RunProgram=\"openvpn-postinstall.exe{$silentarg}{$tokenarg}\"\n";
+
+	$procchain .= ';!@InstallEnd@!' . "\n";
 	file_put_contents("{$tempdir}/7zipConfig",$procchain);
 
 	exec("/usr/local/libexec/p7zip/7z -y a archive.7z {$files}");
