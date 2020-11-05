@@ -29,6 +29,8 @@ SHEBANG_FILES=	aux/zeekctl/aux/trace-summary/trace-summary
 SUB_FILES=	pkg-message
 NO_MTREE=	yes
 
+UNAME_m!=	uname -m
+
 CMAKE_ARGS+=	-GNinja \
 		-D CMAKE_INSTALL_PREFIX:PATH=${PREFIX} \
 		-D ZEEK_ROOT_DIR:PATH=${PREFIX} \
@@ -45,7 +47,7 @@ CMAKE_ARGS+=	-GNinja \
 
 ZEEKUSER?=	zeek
 ZEEKGROUP?=	zeek
-PLIST_SUB+=	ARCH=${ARCH:S/aarch64/arm64/} \
+PLIST_SUB+=	ARCH=${UNAME_m} \
 		ZEEKUSER=${ZEEKUSER} \
 		ZEEKGROUP=${ZEEKGROUP} \
 		LCASE_OPSYS=${OPSYS:tl}
