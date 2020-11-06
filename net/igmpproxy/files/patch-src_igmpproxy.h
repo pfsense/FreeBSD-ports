@@ -20,7 +20,16 @@
  /*
   * Limit on length of route data
   */
-@@ -113,7 +113,7 @@ void my_log( int Serverity, int Errno, c
+@@ -68,7 +68,7 @@
+ #define MAX_IP_HEADER_LEN	60
+ #define IP_HEADER_RAOPT_LEN	24
+ 
+-#define MAX_MC_VIFS    32     // !!! check this const in the specific includes
++#define MAX_MC_VIFS    64     // !!! check this const in the specific includes
+ #define MAX_UPS_VIFS    8
+ 
+ // Useful macros..
+@@ -113,7 +113,7 @@ void my_log( int Serverity, int Errno, const char *Fmt
  
  /* ifvc.c
   */
