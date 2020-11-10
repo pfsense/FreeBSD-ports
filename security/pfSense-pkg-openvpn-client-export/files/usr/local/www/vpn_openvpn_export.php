@@ -83,7 +83,10 @@ foreach ($a_server as $server) {
 					$cert = lookup_cert($cert);
 				}
 
-				if (($cert['caref'] != $server['caref']) || !in_array($cert['refid'], $ecdsagood)) {
+				$purpose = cert_get_purpose($cert['crt']);
+				if (($cert['caref'] != $server['caref']) ||
+				    !in_array($cert['refid'], $ecdsagood) ||
+				    ($purpose['server'] == 'Yes')) {
 					continue;
 				}
 				$ras_userent = array();
@@ -98,7 +101,12 @@ foreach ($a_server as $server) {
 	} elseif (($server['mode'] == "server_tls") ||
 			(($server['mode'] == "server_tls_user") && ($server['authmode'] != "Local Database"))) {
 		foreach ($a_cert as $cindex => $cert) {
-			if (($cert['caref'] != $server['caref']) || ($cert['refid'] == $server['certref']) || !in_array($cert['refid'], $ecdsagood)) {
+
+			$purpose = cert_get_purpose($cert['crt']);
+			if (($cert['caref'] != $server['caref']) ||
+			    ($cert['refid'] == $server['certref']) ||
+			    !in_array($cert['refid'], $ecdsagood) ||
+			    ($purpose['server'] == 'Yes')) {
 				continue;
 			}
 			$ras_cert_entry['cindex'] = $cindex;
