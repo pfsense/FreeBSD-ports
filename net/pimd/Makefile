@@ -2,7 +2,7 @@
 
 PORTNAME=	pimd
 PORTVERSION=	2.3.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 
 MAINTAINER=	olivier@FreeBSD.org
@@ -21,10 +21,6 @@ USE_RC_SUBR=	${PORTNAME}
 
 HAS_CONFIGURE=	yes
 MAKE_ARGS=	prefix="${PREFIX}" sysconfdir="${PREFIX}/etc/"
-
-post-patch:
-	@${REINPLACE_CMD} -e '/define.*MAXVIFS/s/32/64/' \
-		${WRKSRC}/include/freebsd*/netinet/ip_mroute.h
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/pimd ${STAGEDIR}${PREFIX}/sbin/
