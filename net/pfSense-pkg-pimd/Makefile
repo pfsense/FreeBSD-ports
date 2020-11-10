@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-pimd
 PORTVERSION=	0.0.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +13,7 @@ COMMENT=	PIMD package for pfSense
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	pimd>=2.3.2_1:net/pimd
+RUN_DEPENDS=	pimd>=2.3.2_2:net/pimd
 
 CONFLICTS=	pfSense-pkg-Quagga_OSPF-[0-9]*
 
