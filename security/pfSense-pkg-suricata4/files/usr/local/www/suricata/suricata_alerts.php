@@ -113,7 +113,7 @@ function suricata_add_supplist_entry($suppress) {
 	/* If we created a new list or updated an existing one, save the change */
 	/* and return true; otherwise return false.                             */
 	if ($found_list) {
-		write_config();
+		write_config("Suricata pkg: saved change to Suppress List " . $s_list['name'] . " from ALERTS tab.");
 		sync_suricata_package_config();
 		return true;
 	}
@@ -287,7 +287,7 @@ if ($_POST['save']) {
 	$config['installedpackages']['suricata']['alertsblocks']['arefresh'] = $_POST['arefresh'] ? 'on' : 'off';
 	$config['installedpackages']['suricata']['alertsblocks']['alertnumber'] = $_POST['alertnumber'];
 
-	write_config();
+	write_config("Suricata pkg: saved change to ALERTS tab configuration.");
 
 	header("Location: /suricata/suricata_alerts.php?instance={$instanceid}");
 	exit;
@@ -527,7 +527,7 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 		unset($a_instance[$instanceid]['rule_sid_off']);
 
 	/* Update the config.xml file. */
-	write_config();
+	write_config("Suricata pkg: User-forced rule state override applied for rule {$gid}:{$sid} on ALERTS tab for interface {$a_instance[$instanceid]['interface']}.");
 
 	/*************************************************/
 	/* Update the suricata.yaml file and rebuild the */
