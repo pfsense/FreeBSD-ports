@@ -193,14 +193,6 @@
 					"header":	"GreenSnow"
 				},
 				{
-					"feed":		"Malware Domain List",
-					"website":	"https://www.malwaredomainlist.com/",
-					"contact":	"https://www.malwaredomainlist.com/contact.php",
-					"url":		"https://www.malwaredomainlist.com/hostslist/ip.txt",
-					"delist":	"https://www.malwaredomainlist.com/forums/index.php?board=16.0",
-					"header":	"MDL"
-				},
-				{
 					"feed":		"MaxMind",
 					"website":	"https://www.maxmind.com/en/high-risk-ip-sample-list",
 					"contact":	"https://www.maxmind.com/en/contact",
@@ -1172,12 +1164,6 @@
 					"website":	"https://www.malwaredomains.com/",
 					"url":		"https://mirror1.malwaredomains.com/files/immortal_domains.txt",
 					"header":	"MDS_Immortal"
-				},
-				{
-					"feed":		"Malware Domain List",
-					"website":	"https://www.malwaredomainlist.com/",
-					"url":		"https://www.malwaredomainlist.com/hostslist/hosts.txt",
-					"header":	"MDL"
 				},
 				{
 					"feed":		"MVPS Hosts",
