@@ -91,7 +91,7 @@ if ($_POST) {
 		$lcdproc_screens_config['scr_traffic_by_address_filter']       = $pconfig['scr_traffic_by_address_filter'];
 		$lcdproc_screens_config['scr_traffic_by_address_hostipformat'] = $pconfig['scr_traffic_by_address_hostipformat'];
 
-		write_config();
+		write_config("lcdproc: Screen settings saved");
 		sync_package_lcdproc();
 	}
 }

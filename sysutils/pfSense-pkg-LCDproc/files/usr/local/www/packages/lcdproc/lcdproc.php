@@ -71,7 +71,7 @@ if ($_POST) {
 		$lcdproc_config['mtxorb_type']                 = $pconfig['mtxorb_type'];
 		$lcdproc_config['mtxorb_adjustable_backlight'] = $pconfig['mtxorb_adjustable_backlight'];
 
-		write_config();
+		write_config("lcdproc: Settings saved");
 		sync_package_lcdproc();
 	}
 }

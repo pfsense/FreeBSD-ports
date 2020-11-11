@@ -66,7 +66,7 @@ if ($_POST) {
 
 	$a_mailreports[$reportid]['cmd']['row'] = $a_cmds;
 
-	write_config();
+	write_config("mailreport: Command settings saved");
 	header("Location: status_mail_report_edit.php?id={$reportid}");
 	return;
 }
