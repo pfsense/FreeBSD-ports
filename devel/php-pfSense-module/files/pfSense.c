@@ -3106,7 +3106,7 @@ PHP_FUNCTION(pfSense_interface_destroy) {
 	strlcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
 	if (ioctl(PFSENSE_G(s), SIOCIFDESTROY, &ifr) < 0) {
 		array_init(return_value);
-		add_assoc_string(return_value, "error", "Could not create interface");
+		add_assoc_string(return_value, "error", "Could not destroy interface");
 	} else
 		RETURN_TRUE;
 }
