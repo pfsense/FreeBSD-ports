@@ -82,6 +82,7 @@ PHP_FUNCTION(pfSense_bridge_del_member);
 PHP_FUNCTION(pfSense_bridge_member_flags);
 PHP_FUNCTION(pfSense_interface_listget);
 PHP_FUNCTION(pfSense_interface_create);
+PHP_FUNCTION(pfSense_interface_create2);
 PHP_FUNCTION(pfSense_interface_destroy);
 PHP_FUNCTION(pfSense_interface_flags);
 PHP_FUNCTION(pfSense_interface_setaddress);
