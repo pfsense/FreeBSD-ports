@@ -139,7 +139,7 @@ if ($_POST) {
 			}
 			
 			touch($d_haproxyconfdirty_path);
-			write_config();
+			write_config("haproxy: Global settings saved");
 		}
 	}
 }

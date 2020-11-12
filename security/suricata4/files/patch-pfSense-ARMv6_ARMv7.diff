@@ -1,10 +1,11 @@
-diff -ruN ./suricata-4.1.8.orig/configure.ac ./suricata-4.1.8/configure.ac
---- ./suricata-4.1.8.orig/configure.ac	2020-04-27 14:59:48.000000000 -0400
-+++ ./configure.ac	2020-06-30 12:06:02.000000000 -0400
-@@ -272,6 +272,23 @@
+diff -ruN ./suricata-4.1.9.orig/configure.ac ./suricata-4.1.9/configure.ac
+--- ./suricata-4.1.9.orig/configure.ac	2020-10-07 13:14:59.000000000 -0400
++++ ./configure.ac	2020-10-29 10:33:28.000000000 -0400
+@@ -272,7 +272,24 @@
      esac
      AC_MSG_RESULT(ok)
  
+-    # enable modifications for AFL fuzzing
 +    # armv6/7 platform needs compiler optimization disabled for now.
 +	NO_OPTIMIZE="no"
 +    AC_MSG_CHECKING([for armv6/armv7 platform])
@@ -22,9 +23,10 @@ diff -ruN ./suricata-4.1.8.orig/configure.ac ./suricata-4.1.8/configure.ac
 +			NO_OPTIMIZE="no"
 +	esac
 +
-     # enable modifications for AFL fuzzing
++   # enable modifications for AFL fuzzing
      AC_ARG_ENABLE(afl,
             AS_HELP_STRING([--enable-afl], Enable AFL fuzzing logic[])], [enable_afl="$enableval"],[enable_afl=no])
+ 
 @@ -2451,6 +2468,15 @@
              fi
          fi

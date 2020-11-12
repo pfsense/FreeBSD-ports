@@ -94,7 +94,7 @@ if (isset($_POST['del'])) {
 		}
 	}
 	if ($need_save) {
-		write_config();
+		write_config("mailreport: Item deleted");
 	}
 	header("Location: status_mail_report_edit.php?id={$id}");
 	return;
@@ -120,7 +120,7 @@ if (isset($_POST['del'])) {
 		$need_save = true;
 	}
 	if ($need_save) {
-		write_config();
+		write_config("mailreport: Item saved");
 		header("Location: status_mail_report_edit.php?id={$id}");
 		return;
 	}
@@ -212,7 +212,7 @@ if ($_POST) {
 
 	// Fix up cron job(s)
 	set_mail_report_cron_jobs($a_mailreports);
-	write_config();
+	write_config("mailreport: Settings updated");
 	configure_cron();
 	header("Location: status_mail_report.php");
 	return;

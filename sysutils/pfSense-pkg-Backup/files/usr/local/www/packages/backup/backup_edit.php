@@ -41,7 +41,7 @@ if ($_GET['act'] == "del") {
 	if ($_GET['type'] == 'backup') {
 		if ($a_backup[$_GET['id']]) {
 			unset($a_backup[$_GET['id']]);
-			write_config();
+			write_config("Backup: Item deleted");
 			backup_sync_package();
 			header("Location: backup.php");
 			exit;
@@ -79,7 +79,7 @@ if ($_POST) {
 			$a_backup[] = $ent;
 		}
 
-		write_config();
+		write_config("Backup: Settings saved");
 		backup_sync_package();
 
 		header("Location: backup.php");

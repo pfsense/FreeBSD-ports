@@ -73,7 +73,7 @@ if ($_POST) {
 
 	$a_mailreports[$reportid]['log']['row'] = $a_logs;
 
-	write_config();
+	write_config("mailreport: Logs settings updated");
 	header("Location: status_mail_report_edit.php?id={$reportid}");
 	return;
 }
