@@ -113,7 +113,7 @@ function suricata_add_supplist_entry($suppress) {
 	/* If we created a new list or updated an existing one, save the change */
 	/* and return true; otherwise return false.                             */
 	if ($found_list) {
-		write_config();
+		write_config("Suricata pkg: saved change to Suppress List " . $s_list['name'] . " from ALERTS tab.");
 		sync_suricata_package_config();
 		return true;
 	}
@@ -287,7 +287,7 @@ if ($_POST['save']) {
 	$config['installedpackages']['suricata']['alertsblocks']['arefresh'] = $_POST['arefresh'] ? 'on' : 'off';
 	$config['installedpackages']['suricata']['alertsblocks']['alertnumber'] = $_POST['alertnumber'];
 
-	write_config();
+	write_config("Suricata pkg: saved change to ALERTS tab configuration.");
 
 	header("Location: /suricata/suricata_alerts.php?instance={$instanceid}");
 	exit;
@@ -527,7 +527,7 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 		unset($a_instance[$instanceid]['rule_sid_off']);
 
 	/* Update the config.xml file. */
-	write_config();
+	write_config("Suricata pkg: User-forced rule state override applied for rule {$gid}:{$sid} on ALERTS tab for interface {$a_instance[$instanceid]['interface']}.");
 
 	/*************************************************/
 	/* Update the suricata.yaml file and rebuild the */
@@ -930,6 +930,7 @@ if ($filterlogentries && count($filterfieldsarray)) {
 			<thead>
 			   <tr class="sortableHeaderRowIdentifier text-nowrap">
 				<th data-sortable-type="date"><?=gettext("Date"); ?></th>
+				<th><?=gettext("Action"); ?></th>
 				<th data-sortable-type="numeric"><?=gettext("Pri"); ?></th>
 				<th><?=gettext("Proto"); ?></th>
 				<th><?=gettext("Class"); ?></th>
@@ -1053,6 +1054,42 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			/* Protocol */
 			$alert_proto = $fields['proto'];
 
+			/* Action */
+			if (isset($fields['action']) && $a_instance[$instanceid]['blockoffenders'] == 'on' && ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' || $a_instance[$instanceid]['block_drops_only'] == 'on')) {
+
+				switch ($fields['action']) {
+
+					case "Drop":
+					case "wDrop":
+						if (isset($dropsid[$fields['gid']][$fields['sid']])) {
+							$alert_action = '<i class="fa fa-thumbs-down icon-pointer text-danger text-center" title="';
+							$alert_action .= gettext("Rule action is User-Forced to DROP. Click to force a different action for this rule.");
+						}
+						elseif ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' && isset($rejectsid[$fields['gid']][$fields['sid']])) {
+							$alert_action = '<i class="fa fa-hand-stop-o icon-pointer text-warning text-center" title="';
+							$alert_action .= gettext("Rule action is User-Forced to REJECT. Click to force a different action for this rule.");
+						}
+						else {
+							$alert_action = '<i class="fa fa-thumbs-down icon-pointer text-danger text-center" title="';
+							$alert_action .=  gettext("Rule action is DROP. Click to force a different action for this rule.");
+						}
+						break;
+
+					default:
+						$alert_action = '<i class="fa fa-question-circle icon-pointer text-danger text-center" title="' . gettext("Rule action is unrecognized!. Click to force a different action for this rule.");
+				}
+				$alert_action .= '" onClick="toggleAction(\'' . $fields['gid'] . '\', \'' . $fields['sid'] . '\');"</i>';
+			}
+			else {
+				if ($a_instance[$instanceid]['blockoffenders'] == 'on' && ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' || $a_instance[$instanceid]['block_drops_only'] == 'on')) {
+					$alert_action = '<i class="fa fa-exclamation-triangle icon-pointer text-warning text-center" title="' . gettext("Rule action is ALERT.");
+					$alert_action .= '" onClick="toggleAction(\'' . $fields['gid'] . '\', \'' . $fields['sid'] . '\');"</i>';
+				}
+				else {
+					$alert_action = '<i class="fa fa-exclamation-triangle text-warning text-center" title="' . gettext("Rule action is ALERT.") . '"</i>';
+				}
+			}
+
 			/* IP SRC */
 			if ($decoder_event == FALSE) {
 				$alert_ip_src = $fields['src'];
@@ -1174,6 +1211,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			<tr>
 	<?php endif; ?>
 				<td><?=$alert_date;?><br/><?=$alert_time;?></td>
+				<td><?=$alert_action; ?></td>
 				<td><?=$alert_priority;?></td>
 				<td style="word-wrap:break-word; white-space:normal"><?=$alert_proto;?></td>
 				<td style="word-wrap:break-word; white-space:normal"><?=$alert_class;?></td>

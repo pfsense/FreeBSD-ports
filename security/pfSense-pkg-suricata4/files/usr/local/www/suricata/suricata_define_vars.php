@@ -115,7 +115,7 @@ if ($_POST) {
 
 		$a_nat[$id] = $natent;
 
-		write_config();
+		write_config("Suricata pkg: saved changes for PORT or IP variables.");
 
 		/* Update the suricata.yaml file for this interface. */
 		$rebuild_rules = false;

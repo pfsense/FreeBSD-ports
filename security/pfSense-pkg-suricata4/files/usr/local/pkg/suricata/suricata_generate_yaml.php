@@ -55,7 +55,7 @@ if (!empty($suricatacfg['externallistname']) && $suricatacfg['externallistname']
 else {
 	$external_net = "[";
 	foreach ($home_net_list as $ip)
-		$external_net .= "!{$ip}, ";
+		$external_net .= "!{$ip},";
 	$external_net = trim($external_net, ', ') . "]";
 }
 
@@ -249,6 +249,16 @@ else {
 /* End stats collection configuration   */
 /****************************************/
 
+if ($suricatacfg['enable_dns_log'] == 'on')
+	$dns_log_enabled = "yes";
+else
+	$dns_log_enabled = "no";
+
+if ($suricatacfg['append_dns_log'] == 'on')
+	$dns_log_append = "yes";
+else
+	$dns_log_append = "no";
+
 if ($suricatacfg['enable_http_log'] == 'on')
 	$http_log_enabled = "yes";
 else
@@ -424,14 +434,6 @@ if ($suricatacfg['eve_log_tls'] == 'on') {
 		$eve_out_types .= "\n            extended: no";
 }
 
-if ($suricatacfg['eve_log_dhcp'] == 'on') {
-	$eve_out_types .= "\n        - dhcp:";
-	if ($suricatacfg['eve_log_dhcp_extended'] == 'on')
-		$eve_out_types .= "\n            extended: yes";
-	else
-		$eve_out_types .= "\n            extended: no";
-}
-
 if ($suricatacfg['eve_log_files'] == 'on') {
 	$eve_out_types .= "\n        - files:";
 	if ($suricatacfg['eve_log_files_magic'] == 'on')
@@ -445,26 +447,6 @@ if ($suricatacfg['eve_log_files'] == 'on') {
 
 if ($suricatacfg['eve_log_ssh'] == 'on') {
 	$eve_out_types .= "\n        - ssh";
-}
-
-if ($suricatacfg['eve_log_nfs'] == 'on') {
-	$eve_out_types .= "\n        - nfs";
-}
-
-if ($suricatacfg['eve_log_smb'] == 'on') {
-	$eve_out_types .= "\n        - smb";
-}
-
-if ($suricatacfg['eve_log_krb5'] == 'on') {
-	$eve_out_types .= "\n        - krb5";
-}
-
-if ($suricatacfg['eve_log_ikev2'] == 'on') {
-	$eve_out_types .= "\n        - ikev2";
-}
-
-if ($suricatacfg['eve_log_tftp'] == 'on') {
-	$eve_out_types .= "\n        - tftp";
 }
 
 if ($suricatacfg['eve_log_smtp'] == 'on') {
@@ -721,7 +703,7 @@ if (!is_array($suricatacfg['libhtp_policy']))
 if (!is_array($suricatacfg['libhtp_policy']['item']))
 	$suricatacfg['libhtp_policy']['item'] = array();
 if (count($suricatacfg['libhtp_policy']['item']) < 1) {
-	$http_hosts_default_policy = "     personality: IDS\n     request-body-limit: 4096\n     response-body-limit: 4096\n";
+	$http_hosts_default_policy = "personality: IDS\n     request-body-limit: 4096\n     response-body-limit: 4096\n";
 	$http_hosts_default_policy .= "     double-decode-path: no\n     double-decode-query: no\n     uri-include-all: no\n";
 }
 else {
@@ -759,7 +741,7 @@ else {
 			}
 		}
 		else {
-			$http_hosts_default_policy = "     personality: {$v['personality']}\n     request-body-limit: {$v['request-body-limit']}\n";
+			$http_hosts_default_policy = "personality: {$v['personality']}\n     request-body-limit: {$v['request-body-limit']}\n";
 			$http_hosts_default_policy .= "     response-body-limit: {$v['response-body-limit']}\n";
 			$http_hosts_default_policy .= "     meta-field-limit: " . (isset($v['meta-field-limit']) ? $v['meta-field-limit'] : "18432") . "\n";
 			$http_hosts_default_policy .= "     double-decode-path: {$v['double-decode-path']}\n";
@@ -767,7 +749,7 @@ else {
 			$http_hosts_default_policy .= "     uri-include-all: {$v['uri-include-all']}\n";
 		}
 	}
-	// Remove trailing newline
+	// Remove any leading or trailing spaces and newline
 	$http_hosts_default_policy = trim($http_hosts_default_policy);
 	$http_hosts_policy = trim($http_hosts_policy);
 }
@@ -803,30 +785,6 @@ if (!empty($suricatacfg['smb_parser']))
 	$smb_parser = $suricatacfg['smb_parser'];
 else
 	$smb_parser = "yes";
-if (!empty($suricatacfg['krb5_parser']))
-	$krb5_parser = $suricatacfg['krb5_parser'];
-else
-	$krb5_parser = "yes";
-if (!empty($suricatacfg['ikev2_parser']))
-	$ikev2_parser = $suricatacfg['ikev2_parser'];
-else
-	$ikev2_parser = "yes";
-if (!empty($suricatacfg['nfs_parser']))
-	$nfs_parser = $suricatacfg['nfs_parser'];
-else
-	$nfs_parser = "yes";
-if (!empty($suricatacfg['tftp_parser']))
-	$tftp_parser = $suricatacfg['tftp_parser'];
-else
-	$tftp_parser = "yes";
-if (!empty($suricatacfg['ntp_parser']))
-	$ntp_parser = $suricatacfg['ntp_parser'];
-else
-	$ntp_parser = "yes";
-if (!empty($suricatacfg['dhcp_parser']))
-	$dhcp_parser = $suricatacfg['dhcp_parser'];
-else
-	$dhcp_parser = "yes";
 
 /* DNS Parser */
 if (!empty($suricatacfg['dns_parser_tcp']))

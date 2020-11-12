@@ -55,9 +55,26 @@ if (isset($_POST['del_x'])) {
 			$if_real = get_real_interface($a_nat[$rulei]['interface']);
 			$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$rulei]['interface']);
 			$suricata_uuid = $a_nat[$rulei]['uuid'];
-			suricata_stop($a_nat[$rulei], $if_real);
-			rmdir_recursive("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}");
-			rmdir_recursive("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}");
+
+			// Check that we still have the real interface defined in pfSense.
+			// The real interface will return as an empty string if it has
+			// been removed in pfSense.
+			if ($if_real == "") {
+				rmdir_recursive("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}");
+				rmdir_recursive("{$suricatadir}suricata_{$suricata_uuid}_*");
+				syslog(LOG_NOTICE, "Deleted the Suricata instance on a previously removed pfSense interface per user request...");
+			}
+			else {
+				// Delete the interface sub-directories and then the instance itself
+				$if_friendly = convert_friendly_interface_to_friendly_descr($snortcfg['interface']);
+				syslog(LOG_NOTICE, "Stopping Suricata on {$if_friendly}({$if_real}) due to Suricata instance deletion...");
+				suricata_stop($a_nat[$rulei], $if_real);
+				rmdir_recursive("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}");
+				rmdir_recursive("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}");
+				syslog(LOG_NOTICE, "Deleted Suricata instance on {$if_friendly}({$if_real}) per user request...");
+			}
+
+			// Finally, delete the interface's config entry entirely
 			unset($a_nat[$rulei]);
 		}
 
@@ -90,14 +107,27 @@ if (isset($_POST['del_x'])) {
 		$if_real = get_real_interface($a_nat[$delbtn_list]['interface']);
 		$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$delbtn_list]['interface']);
 		$suricata_uuid = $a_nat[$delbtn_list]['uuid'];
-		syslog(LOG_NOTICE, "Stopping Suricata on {$if_friendly}({$if_real}) due to interface deletion...");
-		suricata_stop($a_nat[$delbtn_list], $if_real);
-		rmdir_recursive("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}");
-		rmdir_recursive("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}");
+
+		// Check that we still have the real interface defined in pfSense.
+		// The real interface will return as an empty string if it has
+		// been removed in pfSense.
+		if ($if_real == "") {
+			rmdir_recursive("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}");
+			rmdir_recursive("{$suricatadir}suricata_{$suricata_uuid}_*");
+			syslog(LOG_NOTICE, "Deleted the Suricata instance on a previously removed pfSense interface per user request...");
+		}
+		else {
+			// Delete the interface sub-directories and then the instance itself
+			$if_friendly = convert_friendly_interface_to_friendly_descr($snortcfg['interface']);
+			syslog(LOG_NOTICE, "Stopping Suricata on {$if_friendly}({$if_real}) due to Suricata instance deletion...");
+			suricata_stop($a_nat[$rulei], $if_real);
+			rmdir_recursive("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}");
+			rmdir_recursive("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}");
+			syslog(LOG_NOTICE, "Deleted Suricata instance on {$if_friendly}({$if_real}) per user request...");
+		}
 
 		// Finally delete the interface's config entry entirely
-		unset($a_nat[$delbtn_list]);
-		syslog(LOG_NOTICE, "Deleted Suricata instance on {$if_friendly}({$if_real}) per user request...");
+		unset($a_nat[$rulei]);
 
 		// Save updated configuration
 		write_config("Suricata pkg: deleted one or more Suricata interfaces.");
@@ -185,6 +215,10 @@ if ($_POST['status'] == 'check') {
 	// into an associative array.  Return the array to the Ajax
 	// caller as a JSON object.
 	foreach ($a_nat as $intf) {
+		// Skip status update for any missing real interface
+		if (($if_real = get_real_interface($intf['interface'])) == "") {
+			continue;
+		}
 		$intf_key = "suricata_" . get_real_interface($intf['interface']) . $intf['uuid'];
 		if ($intf['enable'] == "on") {
 			if (suricata_is_running($intf['uuid'], get_real_interface($intf['interface']))) {
@@ -283,10 +317,17 @@ include_once("head.inc"); ?>
 ?>
 				<tr id="fr<?=$nnats?>">
 <?php
-					/* convert fake interfaces to real and check if iface is up */
-					/* There has to be a smarter way to do this */
+					/* Convert fake interfaces to real and check if iface is up. */
+					/* A null real interface indicates it has been removed from system. */
 					$if_real = get_real_interface($natent['interface']);
-					$natend_friendly= convert_friendly_interface_to_friendly_descr($natent['interface']);
+					if (($if_real = get_real_interface($natent['interface'])) == "") {
+						$natent['enable'] = "off";
+						$natend_friendly = gettext("Missing (removed?)");
+					}
+					else {
+						$natend_friendly = convert_friendly_interface_to_friendly_descr($natent['interface']) . " ({$if_real})";
+					}
+
 					$suricata_uuid = $natent['uuid'];
 
 					/* See if interface has any rules defined and set boolean flag */

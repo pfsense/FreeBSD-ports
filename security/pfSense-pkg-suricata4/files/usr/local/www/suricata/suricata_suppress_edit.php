@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2020 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -112,7 +112,7 @@ if ($_POST['save']) {
 		else
 			$a_suppress[] = $s_list;
 
-		write_config();
+		write_config("Suricata pkg: saved changes to Suppress List {$s_list['name']}.");
 		sync_suricata_package_config();
 
 		header("Location: /suricata/suricata_suppress.php");
