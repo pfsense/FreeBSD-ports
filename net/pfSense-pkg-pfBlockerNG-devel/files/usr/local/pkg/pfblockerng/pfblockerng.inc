@@ -209,23 +209,6 @@ $pfb['rfc7231'] = array(100 => '100 Continue',			101 => '101 Switching Protocols
 			526 => 'CF 526 Invalid SSL Certificate',527 => 'CF 527 Railgun Error'
 			);
 
-if (!function_exists('init_config_arr')) {
-	function init_config_arr() {
-		global $config;
-
-		$c = &$config;
-		if (!is_array($keys)) {
-			return null;
-		}
-		foreach ($keys as $k) {
-			if (!is_array($c[$k])) {
-				$c[$k] = array();
-			}
-			$c = &$c[$k];
-		}
-	}
-}
-
 
 // Function to filter/sanitize user input - ** TODO: Improve filter **
 function pfb_filter($input, $type) {
