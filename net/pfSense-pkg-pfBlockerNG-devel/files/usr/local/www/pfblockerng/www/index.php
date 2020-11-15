@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2015-2020 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,6 +24,25 @@ $ptype = array();
 $ptype['REQUEST_URI'] = htmlspecialchars(str_replace('|', '--', $_SERVER['REQUEST_URI']));
 foreach (array('HTTP_HOST', 'HTTP_REFERER', 'HTTP_USER_AGENT', 'REMOTE_ADDR') as $server_type) {
 	$ptype[$server_type] = htmlspecialchars($_SERVER[$server_type]) ?: 'Unknown';
+}
+
+$ptype['type'] = $ptype['group'] = $ptype['evald'] = $ptype['feed'] = '-';
+if (file_exists('/var/log/pfblockerng/dnsbl.log')) {
+	for ($i=0; $i <= 5; $i++) {
+		$data = array();
+		exec("/usr/bin/tail -n50 /var/log/pfblockerng/dnsbl.log | /usr/bin/grep ',{$ptype['HTTP_HOST']},' | /usr/bin/tail -1", $data, $retval);
+		if (isset($data[0]) && !empty($data[0])) {
+			$data = explode(',', $data[0]);
+			if (is_array($data) && !empty($data)) {
+				$ptype['type']  = htmlspecialchars($data[5]);
+				$ptype['group'] = htmlspecialchars($data[6]);
+				$ptype['evald'] = htmlspecialchars($data[7]);
+				$ptype['feed']  = htmlspecialchars($data[8]);
+				break;
+			}
+		}
+		usleep(50000);
+	}
 }
 
 if (pathinfo($ptype['REQUEST_URI'], PATHINFO_EXTENSION) == 'js') {

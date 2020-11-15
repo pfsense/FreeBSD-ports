@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2020 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2015-2020 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -110,6 +110,8 @@ if (!empty($gtype)) {
 }
 
 if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_POST['save'])) {
+
+	// $rowid	= 0;
 
 	$pfb_found	= FALSE;
 	$disable_move	= TRUE;
@@ -605,7 +607,7 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 else {
 	$tab_array[]	= array(gettext('DNSBL Groups'),	$active['feeds'],	'/pfblockerng/pfblockerng_category.php?type=dnsbl');
 	$tab_array[]	= array(gettext('DNSBL Category'),	false,			'/pfblockerng/pfblockerng_blacklist.php');
-	$tab_array[]    = array(gettext('DNSBL SafeSearch'),    false,   '/pfblockerng/pfblockerng_safesearch.php');
+	$tab_array[]	= array(gettext('DNSBL SafeSearch'),	false,			'/pfblockerng/pfblockerng_safesearch.php');
 }
 display_top_tabs($tab_array, true);
 
@@ -667,6 +669,7 @@ $section->addInput(new Form_StaticText(
 	. '<div class="infoblock alert-info clearfix">'
 	. 'Do not prefix the Alias Name with <strong>pfB_</strong> or <strong>pfb_</strong><br />'
 	. 'Do not add a <strong>_v4</strong> or <strong>_v6</strong> suffix to the Alias Name.<br />'
+	. '<strong>Names must be unique.</strong><br />'
 	. '<strong>International, special or space characters are not allowed.</strong>'
 	. '</div>'));
 
@@ -1219,15 +1222,33 @@ else {
 			. 'When set as \'Primary\', this DNSBL Group will be processed before all other DNSBL Groups/Category(s)')
 	  ->setAttribute('style', 'width: auto');
 
+	if ($pfb['dnsbl_py_blacklist']) {
+		$log_text = 'Default: <strong>DNSBL WebServer/VIP</strong><br />'
+				. '&#8226 <strong>DNSBL WebServer/VIP</strong>, Domains are sinkholed to the DNSBL VIP and logged via the DNSBL WebServer.<br />'
+				. '&#8226 <strong>Null Blocking (no logging)</strong>, Utilize \'0.0.0.0\' with no logging.<br />'
+				. '&#8226 <strong>Null Blocking (logging)</strong>, Utilize \'0.0.0.0\' with logging.<br /><br />'
+				. 'Blocked domains will be reported to the Alert/Python Block Table.<br />'
+				. 'A \'Force Reload - DNSBL\' is required for changes to take effect';
+
+		$log_options = ['enabled'	=> 'DNSBL WebServer/VIP',
+				'disabled'	=> 'Null Blocking (no logging)',
+				'disabled_log'	=> 'Null Blocking (logging)'];
+	} else {
+		$log_text = 'Default: <strong>Enabled</strong><br />'
+				. '&#8226 When \'Enabled\', Domains are sinkholed to the DNSBL VIP and logged via the DNSBL WebServer.<br />'
+				. '&#8226 When \'Disabled\', <strong>\'0.0.0.0\'</strong> will be used instead of the DNSBL VIP.<br />'
+				. 'A \'Force Reload - DNSBL\' is required for changes to take effect';
+
+		$log_options = ['enabled'	=> 'DNSBL WebServer/VIP',
+				'disabled'	=> 'Null Blocking (no logging)'];
+	}
+
 	$section->addInput(new Form_Select(
 		'logging',
-		'Logging',
+		'Logging / Blocking Mode',
 		$pconfig['logging'],
-		['enabled' => 'Enabled', 'disabled' => 'Disabled']
-	))->setHelp('Default: <strong>Enabled</strong><br />'
-			. 'When \'Enabled\', Domains are sinkholed to the DNSBL VIP and logged via the DNSBL Web Server.<br />'
-			. 'When \'Disabled\', <strong>\'0.0.0.0\'</strong> will be used instead of the DNSBL VIP.<br />'
-			. 'A \'Force Reload - DNSBL\' is required for changes to take effect')
+		$log_options
+	))->setHelp($log_text)
 	  ->setAttribute('style', 'width: auto');
 
 	$section->addInput(new Form_Checkbox(
