@@ -33,9 +33,9 @@ $pfb['dconfig'] = &$config['installedpackages']['pfblockerngdnsblsettings']['con
 
 // Collect local domain TLD for Python TLD Allow array
 if (strpos($config['system']['domain'], '.') !== FALSE) {
-        $local_tld = ltrim(strstr($config['system']['domain'], '.', FALSE), '.');
+	$local_tld = ltrim(strstr($config['system']['domain'], '.', FALSE), '.');
 } else {
-        $local_tld = $config['system']['domain'];
+	$local_tld = $config['system']['domain'];
 }
 $default_tlds = array('arpa',$local_tld,'com','net','org','edu','ca','co','io');
 
@@ -240,7 +240,7 @@ if ($_POST) {
 		$pfb['dconfig']['agateway_out']		= $_POST['agateway_out']			?: 'default';
 
 		// Set flag to update Blacklist CustomList on next Cron|Force update|Force reload
-                if (base64_decode($pfb['dconfig']['blacklist']) != $_POST['blacklist']) {
+		if (base64_decode($pfb['dconfig']['blacklist']) != $_POST['blacklist']) {
 			touch("{$pfb['dnsdir']}/DNSBL_custom.update");
 		}
 
@@ -312,12 +312,11 @@ if ($_POST) {
 			$input_errors[] = 'In order to utilize the DNSBL Python feature, first disable the DNS Resolver DHCP Registration option.';
 		}
 
-/*
 		// DNSBL Python mode is only available for pfSense 2.4.5 and above
 		if ($_POST['dnsbl_mode'] == 'dnsbl_python' && substr(trim(file_get_contents('/etc/version')), 0, 5) < '2.4.5') {
 			$input_errors[] = 'DNSBL Python mode is compatable with pfSense versions 2.4.5 and above.';
 		}
-*/
+
 		if (!$input_errors) {
 
 			// Replace DNSBL active blocked webpage with user selection
@@ -461,16 +460,12 @@ $dnsbl_text = 'This is an <strong>Advanced process</strong> to determine if all 
 		</ul></span>
 	</div>';
 
-//if (substr(trim(file_get_contents('/etc/version')), 0, 3) > '2.5') {
-	$dnsbl_modes = array('dnsbl_unbound' => 'Unbound mode', 'dnsbl_python' => 'Unbound python mode');
-//} else {
-	//$dnsbl_modes = array('dnsbl_unbound' => 'Unbound mode');
-//}
 
+$dnsbl_modes = array('dnsbl_unbound' => 'Unbound mode', 'dnsbl_python' => 'Unbound python mode');
 $section->addInput(new Form_Select(
-        'dnsbl_mode',
-        gettext('DNSBL Mode'),
-        $pconfig['dnsbl_mode'],
+	'dnsbl_mode',
+	gettext('DNSBL Mode'),
+	$pconfig['dnsbl_mode'],
 	$dnsbl_modes
 ))->setHelp('Select the DNSBL mode.&emsp;'
 		. '<span id="dnsbl_python_beta" class="badge" title="This feature is in BETA">Python mode BETA</span><div class="infoblock">'
@@ -2126,7 +2121,7 @@ $section->addInput(new Form_Checkbox(
 		. '<div id="dnsbl_python_tld_allow_text">'
 		. '<strong>By default</strong> \'ARPA\' and the pfSense TLD \'' . strtoupper($local_tld) . '\' are allowed.<br />'
 		. 'If no TLDs are selected, the following are added by default [ COM, NET, ORG, EDU, CA, CO, IO ]<br /><br />'
-                . 'Detailed TLD listings : <a target=_blank href="http://www.iana.org/domains/root/db">Root Zone Top-Level Domains.</a><br />'
+		. 'Detailed TLD listings : <a target=_blank href="http://www.iana.org/domains/root/db">Root Zone Top-Level Domains.</a><br />'
 		. 'Changes to this option will require a Force Update to take effect.<br /><br />'
 		. '<strong>Legend</strong>:<br />'
 		. '(*) TLD is used by atleast one DNSBL Feed in the Feeds Tab. Confirm the TLDs used by the selected Feeds.<br />'
@@ -2134,11 +2129,11 @@ $section->addInput(new Form_Checkbox(
 		);
 
 $section->addInput(new Form_Checkbox(
-        'pfb_pytld_sort',
-        '',
-        'Enable',
-        $pconfig['pfb_pytld_sort'] === 'on' ? true:false,
-        'on'
+	'pfb_pytld_sort',
+	'',
+	'Enable',
+	$pconfig['pfb_pytld_sort'] === 'on' ? true:false,
+	'on'
 ))->setHelp('Enable to sort TLDs alphabetically');
 
 $group = new Form_Group('TLD Group 1 (py)');
@@ -2169,13 +2164,13 @@ foreach (array('gTLD', 'ccTLD', 'iTLD', 'bgTLD') as $key => $tld_type) {
 }
 
 $section->addInput(new Form_Checkbox(
-        'pfb_idn',
-        gettext('IDN Blocking') . '(py)',
-        'Enable',
-        $pconfig['pfb_idn'] === 'on' ? true:false,
-        'on'
+	'pfb_idn',
+	gettext('IDN Blocking') . '(py)',
+	'Enable',
+	$pconfig['pfb_idn'] === 'on' ? true:false,
+	'on'
 ))->setHelp('Enable the Python IDN blocking feature (not Regex based). This will block all IDN\'s and domains that include \'xn--\'.<div class="infoblock">'
-        . 'Changes to this option will require a Force Update to take effect.</div>');
+		. 'Changes to this option will require a Force Update to take effect.</div>');
 
 $section->addInput(new Form_Checkbox(
 	'pfb_regex',
@@ -2265,10 +2260,10 @@ $group->add(new Form_Select(
   ->setWidth(3);
 
 $group->add(new Form_Select(
-        'pfb_dnsvip_skew',
-        'Skew',
-        $pconfig['pfb_dnsvip_skew'],
-        array_combine(range(0, 254, 1), range(0, 254, 1))
+	'pfb_dnsvip_skew',
+	'Skew',
+	$pconfig['pfb_dnsvip_skew'],
+	array_combine(range(0, 254, 1), range(0, 254, 1))
 ))->setHelp('Skew')
   ->addClass('dnsvip_carp')
   ->setWidth(3);
@@ -2369,8 +2364,8 @@ if (is_dir("{$indexdir}")) {
 	if (!empty($list)) {
 		foreach ($list as $line) {
 			if (strpos($line, 'index.php') !== FALSE || strpos($line, 'dnsbl_active.php') !== FALSE) {
-                                continue;
-                        } else {
+				continue;
+			} else {
 				$file = pathinfo($line, PATHINFO_BASENAME);
 				$l = array($file => $file);
 				$lista = array_merge($lista, $l);
@@ -2399,39 +2394,6 @@ $section->addInput(new Form_Checkbox(
 ))->setHelp('Default: <strong>Enabled</strong><br />Enable the backup and restore of the DNS Resolver Cache on DNSBL Update|Reload|Cron events');
 
 $form->add($section);
-
-// Print Custom List TextArea section
-
-/*
-$section = new Form_Section('DNSBL Blacklist', 'DNSBL_Blacklist_customlist', COLLAPSIBLE|SEC_CLOSED);
-$blacklist_text = 'No Regex Entries Allowed!&emsp;
-			<div class="infoblock">
-				Enter one &emsp; <strong>Domain Name</strong>&emsp; per line<br />
-				You may use "<strong>#</strong>" after any Domain name to add comments. &emsp;IE: (example.com # Blacklist example.com)<br />
-				This List is stored as \'Base64\' format in the config.xml file.<br /><br />
-
-				<span class="text-danger">Note: </span>These entries are only Blacklisted after a Force Update or Reload</span><br />
-
-				This is the default manual Blacklist, note that each DNSBL Group has its own Blacklist customlist which can be utilized.<br />
-				It is recommended to seperate manual blacklisted domains by category, ie: ADs vs Malicious.<br /><br />
-
-				Domains that are blacklisted via the DNS Reply log will be added to this customlist.
-			</div>';
-$section->addInput(new Form_Textarea(
-	'blacklist',
-	NULL,
-	$pconfig['blacklist']
-))->removeClass('form-control')
-  ->addClass('row-fluid col-sm-12')
-  ->setAttribute('columns', '90')
-  ->setAttribute('rows', '15')
-  ->setAttribute('wrap', 'off')
-  ->setAttribute('style', 'background:#fafafa; width: 100%')
-  ->setHelp($blacklist_text);
-
-$form->add($section);
-*/
-
 
 $section = new Form_Section('DNSBL Whitelist', 'DNSBL_Whitelist_customlist', COLLAPSIBLE|SEC_CLOSED);
 
@@ -2776,8 +2738,8 @@ $form->add($section);
 
 $section = new Form_Section('DNSBL IPs');
 $section->addInput(new Form_StaticText(
-        NULL,
-        'When IPs are found in any Domain based Feed, configure IP Firewall Rules for these IPs<br /><br />'
+	NULL,
+	'When IPs are found in any Domain based Feed, configure IP Firewall Rules for these IPs<br /><br />'
 	. '<span class="text-danger">Note: </span>To utilize this feature, define the Inbound/Outbound Interfaces in the <strong>IP Tab</strong>.'
 ));
 
@@ -3100,7 +3062,7 @@ events.push(function(){
 		if (found.indexOf('(py)') >= 0) {
 			$(this).html(found.replace('(py)', '&emsp;<i class="fa fa-bolt" title="DNSBL Python"></i>'));
 		}
-        });
+	});
 });
 
 //]]>
