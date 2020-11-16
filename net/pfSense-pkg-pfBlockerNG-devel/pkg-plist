@@ -35,9 +35,9 @@ www/widgets/javascript/pfblockerng.js
 www/widgets/widgets/pfblockerng.widget.php
 www/wizards/pfblockerng_wizard.xml
 www/wizards/pfblockerng_wizard.inc
-/var/unbound/pfb_unbound.py
-/var/unbound/pfb_unbound_include.inc
-/var/unbound/pfb_py_hsts.txt
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
 @dir /etc/inc
+@dir /var/unbound/pfb_unbound.py
+@dir /var/unbound/pfb_unbound_include.inc
+@dir /var/unbound/pfb_py_hsts.txt
