@@ -1336,12 +1336,6 @@
 			"cron":		"Weekly",
 			"feeds": [
 				{
-					"feed":		"Heuristic Security",
-					"website":	"https://heuristicsecurity.com",
-					"url":		"https://heuristicsecurity.com/dohservers.txt",
-					"header":	"Heuristic_DoH"
-				},
-				{
 					"feed":		"The Great Wall",
 					"website":	"https://github.com/Sekhan/TheGreatWall",
 					"url":		"https://raw.githubusercontent.com/Sekhan/TheGreatWall/master/TheGreatWall.txt",
