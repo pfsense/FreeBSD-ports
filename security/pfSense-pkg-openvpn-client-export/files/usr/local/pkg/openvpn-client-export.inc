@@ -182,7 +182,6 @@ EOF;
 	
 	// determine basic variables
 	$remotes = openvpn_client_export_build_remote_lines($settings, $useaddr, $interface, $expformat, $nl, $legacy);
-	$cipher = $settings['crypto'];
 	$digest = !empty($settings['digest']) ? $settings['digest'] : "SHA1";
 
 	// add basic settings
@@ -200,15 +199,32 @@ EOF;
 
 //	if ((($expformat != "inlinedroid") && ($expformat != "inlineios")) && ($proto == "tcp"))
 //		$conf .= "proto tcp-client{$nl}";
-	$conf .= "cipher {$cipher}{$nl}";
+
+	$data_ciphers = "";
+	/* This only exists on pfSense 2.5.0 with OpenVPN 2.5.0 */
+	if (function_exists('openvpn_build_data_cipher_list')) {
+		$cipher = $settings['data_ciphers_fallback'];
+		$data_ciphers = openvpn_build_data_cipher_list($settings['data_ciphers'], $cipher, ($settings['ncp_enable'] != "disabled"));
+	} else {
+		/* 2.4.x or earlier */
+		$cipher = $settings['crypto'];
+		$data_ciphers = $settings['ncp-ciphers'];
+	}
+	$data_ciphers = str_replace(',', ':', $data_ciphers);
 
 	if ($settings['ncp_enable'] == "disabled") {
 		$conf .= "ncp-disable{$nl}";
+		$conf .= "cipher {$cipher}{$nl}";
 	} else {
-		/* If the ncp-ciphers list is empty, don't specify a list so OpenVPN's default will be used. */
-		if (!empty($settings['ncp-ciphers'])) {
-			$conf .= ($legacy == 0) ? "data-ciphers" : "ncp-ciphers";
-			$conf .= " " . str_replace(',', ':', $settings['ncp-ciphers']) . "{$nl}";
+		/* If the data ciphers list is empty, don't specify a list so OpenVPN's default will be used. */
+		if (!empty($data_ciphers)) {
+			if ($legacy) {
+				$conf .= "ncp-ciphers {$data_ciphers}{$nl}";
+				$conf .= "cipher {$cipher}{$nl}";
+			} else {
+				$conf .= "data-ciphers {$data_ciphers}{$nl}";
+				$conf .= "data-ciphers-fallback {$cipher}{$nl}";
+			}
 		}
 	}
 
@@ -532,9 +548,11 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 
 	switch ($openvpn_version) {
 		case "Win7":
+			$legacy = true;
 			$client_install_exe = "openvpn-install-{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-Win7.exe";
 			break;
 		case "Win10":
+			$legacy = true;
 			$client_install_exe = "openvpn-install-{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-Win10.exe";
 			break;
 		case "x86-msi":
