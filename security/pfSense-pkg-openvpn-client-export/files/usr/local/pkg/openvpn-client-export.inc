@@ -33,6 +33,9 @@ $current_openvpn_version_rev = "01";
 $legacy_openvpn_version = "2.4.9";
 $legacy_openvpn_version_rev = "01";
 
+/* Ciphers not supported by legacy clients */
+$legacy_incompatible_ciphers = array("CHACHA20-POLY1305");
+
 function get_openvpnserver_by_id($srvid) {
 	global $config;
 	foreach($config['openvpn']['openvpn-server'] as $server) {
@@ -153,7 +156,7 @@ function openvpn_client_export_validate_config($srvid, $usrid, $crtid) {
 }
 
 function openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $nokeys = false, $proxy, $expformat = "baseconf", $outpass = "", $skiptls = false, $doslines = false, $advancedoptions = "", $usepkcs11, $pkcs11providers, $pkcs11id) {
-	global $input_errors, $g;
+	global $input_errors, $g, $legacy_incompatible_ciphers;
 
 	$validconfig = openvpn_client_export_validate_config($srvid, $usrid, $crtid);
 	if ($validconfig) {
@@ -210,7 +213,12 @@ EOF;
 		$cipher = $settings['crypto'];
 		$data_ciphers = $settings['ncp-ciphers'];
 	}
-	$data_ciphers = str_replace(',', ':', $data_ciphers);
+
+	$data_ciphers = explode(',', $data_ciphers);
+	if ($legacy) {
+		$data_ciphers = array_diff($data_ciphers, $legacy_incompatible_ciphers);
+	}
+	$data_ciphers = implode(':', $data_ciphers);
 
 	if ($settings['ncp_enable'] == "disabled") {
 		$conf .= "ncp-disable{$nl}";
@@ -218,14 +226,9 @@ EOF;
 	} else {
 		/* If the data ciphers list is empty, don't specify a list so OpenVPN's default will be used. */
 		if (!empty($data_ciphers)) {
-			if ($legacy) {
-				$conf .= "ncp-ciphers {$data_ciphers}{$nl}";
-				$conf .= "cipher {$cipher}{$nl}";
-			} else {
-				$conf .= "data-ciphers {$data_ciphers}{$nl}";
-				$conf .= "data-ciphers-fallback {$cipher}{$nl}";
-			}
+			$conf .= (($legacy) ? "ncp-ciphers" : "data-ciphers") . " {$data_ciphers}{$nl}";
 		}
+		$conf .= (($legacy) ? "cipher" : "data-ciphers-fallback") . " {$cipher}{$nl}";
 	}
 
 	$conf .= "auth {$digest}{$nl}";
