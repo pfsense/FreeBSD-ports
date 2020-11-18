@@ -343,9 +343,11 @@ if (!empty($act)) {
 		$exp_name = "openvpn-{$exp_name}-install-";
 		switch ($openvpn_version) {
 			case "Win7":
+				$legacy = true;
 				$exp_name .= "{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-Win7.exe";
 				break;
 			case "Win10":
+				$legacy = true;
 				$exp_name .= "{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-Win10.exe";
 				break;
 			case "x86-msi":
@@ -359,6 +361,17 @@ if (!empty($act)) {
 
 		$exp_name = urlencode($exp_name);
 		$exp_path = openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $password, $proxy, $advancedoptions, substr($act, 5), $usepkcs11, $pkcs11providers, $pkcs11id, $silent);
+	}
+
+	/* pfSense 2.5.0 with OpenVPN 2.5.0 has ciphers not compatible with
+	 * legacy clients, check for those and warn */
+	if ($legacy && function_exists('openvpn_build_data_cipher_list')) {
+		/* This will only be reached for pfSense 2.5.0 with OpenVPN 2.5.0 */
+		global $legacy_incompatible_ciphers;
+		$settings = get_openvpnserver_by_id($srvid);
+		if (in_array($settings['data_ciphers_fallback'], $legacy_incompatible_ciphers)) {
+			$input_errors[] = gettext("The Fallback Data Encryption Algorithm for the selected server is not compatible with Legacy clients.");
+		}
 	}
 
 	if (!$exp_path) {
