@@ -755,7 +755,7 @@ EOD;
 	if ($bind_enable == "on") {
 		chmod($bind_sh, 0755);
 		restart_service("named");
-	} elseif (is_service_running('named')) {
+	} else {
 		stop_service("named");
 		chmod($bind_sh, 0644);
 	}
