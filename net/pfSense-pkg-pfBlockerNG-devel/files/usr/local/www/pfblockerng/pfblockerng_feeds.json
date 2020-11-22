@@ -148,14 +148,15 @@
 				},
 				{
 					"feed":		"Bambenek Consulting",
-					"website":	"https://osint.bambenekconsulting.com/feeds/",
+					"website":	"https://faf.bambenekconsulting.com/feeds/",
 					"contact":	"https://www.bambenekconsulting.com/contact/",
-					"url":		"https://osint.bambenekconsulting.com/feeds/c2-ipmasterlist-high.txt",
+					"url":		"https://_API_KEY_@faf.bambenekconsulting.com/feeds/dga/c2-ipmasterlist-high.txt",
 					"header":	"BBC_C2",
-					"info":		"https://osint.bambenekconsulting.com/feeds/license.txt",
+					"info":		"Replace '_API_KEY_' with 'USER:PASS' in the URL after Registration (Replace @ to %40). https://faf.bambenekconsulting.com/feeds/license.txt",
+					"register":	"mailto:sales@bambenekconsulting.com?Subject=Access%20Request%20(pfBlockerNG)",
 					"alternate": [
 							{
-							"url":		"https://osint.bambenekconsulting.com/feeds/c2-ipmasterlist.txt",
+							"url":		"https://_API_KEY_@faf.bambenekconsulting.com/feeds/dga/c2-ipmasterlist.txt",
 							"header":	"BBC_C2_Agr"
 							}
 						]
@@ -1216,13 +1217,14 @@
 				},
 				{
 					"feed":		"Bambenek Consulting",
-					"website":	"https://osint.bambenekconsulting.com/feeds/",
-					"url":		"https://osint.bambenekconsulting.com/feeds/c2-dommasterlist-high.txt",
+					"website":	"https://faf.bambenekconsulting.com/feeds/",
+					"url":		"https://_API_KEY_@faf.bambenekconsulting.com/feeds/dga/c2-dommasterlist-high.txt",
 					"header":	"BBC_DC2",
-					"info":		"https://osint.bambenekconsulting.com/feeds/license.txt",
+					"info":		"Replace '_API_KEY_' with 'USER:PASS' in the URL after Registration (Replace @ to %40). https://faf.bambenekconsulting.com/feeds/license.txt",
+					"register":	"mailto:sales@bambenekconsulting.com?Subject=Access%20Request%20(pfBlockerNG)",
 					"alternate": [
 							{
-							"url":		"https://osint.bambenekconsulting.com/feeds/c2-dommasterlist.txt",
+							"url":		"https://_API_KEY_@faf.bambenekconsulting.com/feeds/dga/c2-dommasterlist.txt",
 							"header":	"BBC_DC2_Agr"
 							}
 						]
@@ -1378,13 +1380,14 @@
 			"feeds": [
 				{
 					"feed":		"Bambenek Consulting",
-					"website":	"https://osint.bambenekconsulting.com/feeds/",
-					"url":		"https://osint.bambenekconsulting.com/feeds/dga-feed-high.gz",
+					"website":	"https://faf.bambenekconsulting.com/feeds/",
+					"url":		"https://_API_KEY_@faf.bambenekconsulting.com/feeds/dga-feed-high.gz",
 					"header":	"BBC_DGA",
-					"info":		"https://osint.bambenekconsulting.com/feeds/license.txt",
+					"info":		"Replace '_API_KEY_' with 'USER:PASS' in the URL after Registration (Replace @ to %40). https://faf.bambenekconsulting.com/feeds/license.txt",
+					"register":	"mailto:sales@bambenekconsulting.com?Subject=Access%20Request%20(pfBlockerNG)",
 					"alternate": [
 							{
-							"url":		"https://osint.bambenekconsulting.com/feeds/dga-feed.gz",
+							"url":		"https://_API_KEY_@faf.bambenekconsulting.com/feeds/dga-feed.gz",
 							"header":	"BBC_DGA_Agr"
 							}
 						]
