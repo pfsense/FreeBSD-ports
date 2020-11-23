@@ -22,7 +22,7 @@ USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
 GL_ACCOUNT=	pfSense
 GL_PROJECT=	u-boot-binaries
-GL_COMMIT=	a6057a3a67b15e4a5753a95522c13741b77520f5
+GL_COMMIT=	8e4ab88390f325fb25da3c74f73c01e638d0af9c
 FETCH_BEFORE_ARGS=	--no-verify-peer
 
 do-install:
