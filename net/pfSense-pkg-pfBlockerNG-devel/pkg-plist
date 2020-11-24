@@ -41,4 +41,4 @@ www/wizards/pfblockerng_wizard.inc
 /var/unbound/pfb_unbound.py
 /var/unbound/pfb_unbound_include.inc
 /var/unbound/pfb_py_hsts.txt
-@dir /var/unbound
+@dir(unbound,unbound,) /var/unbound
