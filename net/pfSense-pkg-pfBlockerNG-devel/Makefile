@@ -22,11 +22,11 @@ RUN_DEPENDS=	${LOCALBASE}/bin/mmdblookup:net/libmaxminddb \
 		${PYTHON_PKGNAMEPREFIX}maxminddb>0:net/py-maxminddb@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}py-ipaddress>0:net/py-ipaddress@${PY_FLAVOR}
 
+USES=		php python
+
 CONFLICTS=	pfSense-pkg-pfBlockerNG
 
-USES=		php:flavors python
 USE_PHP=	intl
-IGNORE_WITH_PHP=	56 70 71
 NO_BUILD=	yes
 NO_MTREE=	yes
 
