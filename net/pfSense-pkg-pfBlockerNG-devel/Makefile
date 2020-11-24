@@ -19,8 +19,7 @@ RUN_DEPENDS=	${LOCALBASE}/bin/mmdblookup:net/libmaxminddb \
 		${LOCALBASE}/bin/jq:textproc/jq \
 		${LOCALBASE}/sbin/lighttpd:www/lighttpd \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}maxminddb>0:net/py-maxminddb@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}py-ipaddress>0:net/py-ipaddress@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}maxminddb>0:net/py-maxminddb@${PY_FLAVOR}
 
 USES=		php python
 
