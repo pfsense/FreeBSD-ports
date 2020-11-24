@@ -1020,74 +1020,69 @@ EOF;
 # convert_pfxml_to_sgxml
 # -----------------------------------------------------------------
 function convert_pfxml_to_sgxml() {
+	capability_update_source();
 
-    capability_update_source();
+	global $config;
+	$sgxml = array();
+	$pfxml = $config['installedpackages'][MODULE_GENERAL]['config'][0];
 
-    global $config;
-    $sgxml = array();
-    $pfxml = $config['installedpackages'][MODULE_GENERAL]['config'][0];
+	$sgxml[F_LOGDIR]           = SQUIDGUARD_LOGDIR;
+	$sgxml[F_DBHOME]           = SQUIDGUARD_DBHOME;
+	$sgxml[F_LDAPENABLE]       = $pfxml['ldap_enable'];
+	$sgxml[F_LDAPBINDDN]       = $pfxml['ldapbinddn'];
+	$sgxml[F_LDAPBINDPASS]     = $pfxml['ldapbindpass'];
+	$sgxml[F_LDAPCACHETIME]    = $pfxml['ldapcachetime'];
+	$sgxml[F_LDAPVERSION]      = $pfxml['ldapversion'];
+	$sgxml[F_STRIPNTDOMAIN]    = $pfxml['stripntdomain'];
+	$sgxml[F_STRIPREALM]       = $pfxml['striprealm'];
+	$sgxml[F_BINPATH]          = SQUIDGUARD_BINPATH;
+	$sgxml[F_WORKDIR]          = SQUIDGUARD_WORKDIR;
+	$sgxml[F_SGCONF_XML]       = SQUIDGUARD_WORKDIR . SQUIDGUARD_CONFXML;
+	$sgxml[F_ENABLED]          = $pfxml[F_SQUIDGUARDENABLE];
+	$sgxml[F_BLACKLISTENABLED] = $pfxml[F_BLACKLIST];
+	$sgxml[F_BLACKLISTURL]     = $pfxml[F_BLACKLISTURL];
+	$sgxml[F_SOURCES]          = convert_pfxml_to_sgxml_source($config);
+	$sgxml[F_DESTINATIONS]     = convert_pfxml_to_sgxml_destination($config);
+	$sgxml[F_REWRITES]         = convert_pfxml_to_sgxml_rewrite($config);
+	$sgxml[F_TIMES]            = convert_pfxml_to_sgxml_time($config);
+	$sgxml[F_ACLS]             = convert_pfxml_to_sgxml_acl($config);
+	$sgxml[F_DEFAULT]          = convert_pfxml_to_sgxml_default($config);
 
-    $sgxml[F_LOGDIR]           = SQUIDGUARD_LOGDIR;
-    $sgxml[F_DBHOME]           = SQUIDGUARD_DBHOME;
-    $sgxml[F_LDAPENABLE]       = $pfxml['ldap_enable'];
-    $sgxml[F_LDAPBINDDN]       = $pfxml['ldapbinddn'];
-    $sgxml[F_LDAPBINDPASS]     = $pfxml['ldapbindpass'];
-    $sgxml[F_LDAPCACHETIME]    = $pfxml['ldapcachetime'];
-    $sgxml[F_LDAPVERSION]      = $pfxml['ldapversion'];
-    $sgxml[F_STRIPNTDOMAIN]    = $pfxml['stripntdomain'];
-    $sgxml[F_STRIPREALM]       = $pfxml['striprealm'];
-    $sgxml[F_BINPATH]          = SQUIDGUARD_BINPATH;
-    $sgxml[F_WORKDIR]          = SQUIDGUARD_WORKDIR;
-    $sgxml[F_SGCONF_XML]       = SQUIDGUARD_WORKDIR . SQUIDGUARD_CONFXML;
-    $sgxml[F_ENABLED]          = $pfxml[F_SQUIDGUARDENABLE];
-    $sgxml[F_BLACKLISTENABLED] = $pfxml[F_BLACKLIST];
-    $sgxml[F_BLACKLISTURL]     = $pfxml[F_BLACKLISTURL];
-    $sgxml[F_SOURCES]          = convert_pfxml_to_sgxml_source($config);
-    $sgxml[F_DESTINATIONS]     = convert_pfxml_to_sgxml_destination($config);
-    $sgxml[F_REWRITES]         = convert_pfxml_to_sgxml_rewrite($config);
-    $sgxml[F_TIMES]            = convert_pfxml_to_sgxml_time($config);
-    $sgxml[F_ACLS]             = convert_pfxml_to_sgxml_acl($config);
-    $sgxml[F_DEFAULT]          = convert_pfxml_to_sgxml_default($config);
+	# url_rewrite_children options
+	$sgxml[F_REWRITE_CH]		= $pfxml['rewrite_children'];
+	$sgxml[F_REWRITE_CH_STARTUP]	= $pfxml['rewrite_children_startup'];
+	$sgxml[F_REWRITE_CH_IDLE]		= $pfxml['rewrite_children_idle'];
 
-    # url_rewrite_children options
-    $sgxml[F_REWRITE_CH]		= $pfxml['rewrite_children'];
-    $sgxml[F_REWRITE_CH_STARTUP]	= $pfxml['rewrite_children_startup'];
-    $sgxml[F_REWRITE_CH_IDLE]		= $pfxml['rewrite_children_idle'];
+	# log
+	$sgxml[F_ENABLELOG]    = $pfxml['enable_log']    == 'on' ? 'on' : 'off';
+	$sgxml[F_ENABLEGUILOG] = $pfxml['enable_guilog'] == 'on' ? 'on' : 'off';
+	$sgxml[F_LOGROTATION]  = $pfxml['log_rotation']  == 'on' ? 'on' : 'off';
 
-    # log
-    $sgxml[F_ENABLELOG]    = $pfxml['enable_log']    == 'on' ? 'on' : 'off';
-    $sgxml[F_ENABLEGUILOG] = $pfxml['enable_guilog'] == 'on' ? 'on' : 'off';
-    $sgxml[F_LOGROTATION]  = $pfxml['log_rotation']  == 'on' ? 'on' : 'off';
+	#Clean adversiting
+	$sgxml[F_ADV_BLANKIMG] = $pfxml['adv_blankimg']  == 'on' ? 'on' : 'off';
 
-    #Clean adversiting
-    $sgxml[F_ADV_BLANKIMG] = $pfxml['adv_blankimg']  == 'on' ? 'on' : 'off';
+	# other
+	$lanip = $config['interfaces']['lan']['ipaddr'];
+	$sgxml[F_CURRENT_LAN_IP] = $lanip;
 
+	# transparent
+	$squidxml = $config['installedpackages']['squid']['config'][0];
+	if($squidxml['transparent_proxy'] == 'on') {
+		$sgxml[F_SQUID_TRANSPARENT_MODE] = 'on';
+	} else {
+		unset($sgxml[F_SQUID_TRANSPARENT_MODE]);
+	}
 
-    # other
-    $lanip = $config['interfaces']['lan']['ipaddr'];
-    $sgxml[F_CURRENT_LAN_IP] = $lanip;
+	# WebGUI
+	$sgxml[F_CURRENT_GUI_PORT]  = $config['system']['webgui']['port'];
+	$sgxml[F_CURRENT_GUI_PROTO] = $config['system']['webgui']['protocol'];
 
-    # transparent
-    $squidxml = $config['installedpackages']['squid']['config'][0];
-    if($squidxml['transparent_proxy'] == 'on') {
-        $guiport = $config['system']['webgui']['port'];
-        $guiprotocol = $config['system']['webgui']['protocol'];
+	# store cfg cache
+	$cfg_xml = dump_xml_config($sgxml, F_SQUIDGUARD);
+	safe_mkdir(dirname($sgxml[F_SGCONF_XML]));
+	file_put_contents($sgxml[F_SGCONF_XML], $cfg_xml);
 
-        $sgxml[F_SQUID_TRANSPARENT_MODE] = 'on';
-        $sgxml[F_CURRENT_GUI_PORT]  = $guiport;
-        $sgxml[F_CURRENT_GUI_PROTO] = $guiprotocol;
-    } else {
-        unset($sgxml[F_SQUID_TRANSPARENT_MODE]);
-        unset($sgxml[F_CURRENT_GUI_PORT]);
-        unset($sgxml[F_CURRENT_GUI_PROTO]);
-    }
-
-    # store cfg cache
-    $cfg_xml = dump_xml_config($sgxml, F_SQUIDGUARD);
-    safe_mkdir(dirname($sgxml[F_SGCONF_XML]));
-    file_put_contents($sgxml[F_SGCONF_XML], $cfg_xml);
-
-    return $sgxml;
+	return $sgxml;
 }
 
 # -----------------------------------------------------------------

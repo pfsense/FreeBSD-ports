@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2020 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2015-2020 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -218,6 +218,7 @@ $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblo
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://viz.greynoise.io/ip/<?=$host;?>">
+						<?=gettext("Grey Noise");?></a></td>
 				</tr>
 
 				<br />
@@ -409,13 +410,18 @@ $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblo
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://www.shodan.io/search?query=<?=$host;?>">
+					<td><a target="_blank" href="https://www.shodan.io/search?query=<?=$domain;?>">
 						<?=gettext("Shodan");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://api.stopforumspam.org/api?ip=<?=$host;?>">
+					<td><a target="_blank" href="https://api.stopforumspam.org/api?ip=<?=$domain;?>">
 						<?=gettext("Stop Forum Spam");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://viz.greynoise.io/query/?gnql=<?=$domain;?>">
+						<?=gettext("Grey Noise");?></a></td>
 				</tr>
 
 			<?php else: ?>

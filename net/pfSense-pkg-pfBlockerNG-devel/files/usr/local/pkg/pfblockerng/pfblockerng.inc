@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2015-2020 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -72,10 +72,12 @@ $pfb['folder_array'] = array(	"{$pfb['dbdir']}", "{$pfb['logdir']}", "{$pfb['ccd
 // Files
 $pfb['log']		= "{$pfb['logdir']}/pfblockerng.log";
 $pfb['dnslog']		= "{$pfb['logdir']}/dnsbl.log";
+$pfb['dnsreplylog']	= "{$pfb['logdir']}/dns_reply.log";
 $pfb['ip_blocklog']	= "{$pfb['logdir']}/ip_block.log";
 $pfb['ip_permitlog']	= "{$pfb['logdir']}/ip_permit.log";
 $pfb['ip_matchlog']	= "{$pfb['logdir']}/ip_match.log";
 $pfb['errlog']		= "{$pfb['logdir']}/error.log";
+$pfb['pyerrlog']	= "{$pfb['logdir']}/py_error.log";
 $pfb['extraslog']	= "{$pfb['logdir']}/extras.log";
 $pfb['dnsbl_parse_err']	= "{$pfb['logdir']}/dnsbl_parsed_error.log";
 
@@ -83,8 +85,8 @@ $pfb['master']		= "{$pfb['dbdir']}/masterfile";
 $pfb['supptxt']		= "{$pfb['dbdir']}/pfbsuppression.txt";
 $pfb['dnsbl_supptxt']	= "{$pfb['dbdir']}/pfbdnsblsuppression.txt";
 $pfb['geoip_isos']	= "{$pfb['dbdir']}/geoip.txt";
-$pfb['dnsbl_info']	= "{$pfb['dbdir']}/dnsbl.sqlite";
-$pfb['dnsbl_levent']	= "{$pfb['dbdir']}/dnsbl_levent.sqlite";
+$pfb['dnsbl_info']	= '/var/unbound/pfb_py_dnsbl.sqlite';
+$pfb['dnsbl_resolver']	= '/var/unbound/pfb_py_resolver.sqlite';
 $pfb['dnsbl_cache']	= "{$pfb['dbdir']}/dnsbl_cache.sqlite";
 $pfb['asn_cache']	= "{$pfb['dbdir']}/asn_cache.sqlite";
 
@@ -98,6 +100,11 @@ $pfb['dnsbl_tld_txt']	= "{$pfb['dnsdir']}/DNSBL_TLD.txt";
 $pfb['dnsbl_tld_data']	= '/usr/local/pkg/pfblockerng/dnsbl_tld';
 $pfb['dnsbl_conf']	= '/var/unbound/pfb_dnsbl_lighty.conf';
 $pfb['dnsbl_cert']	= '/var/unbound/dnsbl_cert.pem';
+$pfb['unbound_py_conf']	= '/var/unbound/pfb_unbound.ini';
+$pfb['unbound_py_wh']	= '/var/unbound/pfb_py_whitelist.txt';
+$pfb['unbound_py_data']	= '/var/unbound/pfb_py_data.txt';
+$pfb['unbound_py_zone'] = '/var/unbound/pfb_py_zone.txt';
+$pfb['unbound_py_count']= '/var/unbound/pfb_py_count';
 
 $pfb['dnsbl_safesearch']		= '/usr/local/pkg/pfblockerng/pfb_dnsbl.safesearch.conf';
 $pfb['dnsbl_youtube_restrict']		= '/usr/local/pkg/pfblockerng/pfb_dnsbl.youtube_restrict.conf';
@@ -134,6 +141,8 @@ $pfb['continents'] = array (	'Top Spammers'		=> 'pfB_Top',
 				'Proxy and Satellite'	=> 'pfB_PS'
 				);
 
+$pfb['continent_list'] = array_flip(array('pfB_Africa', 'pfB_Antarctica', 'pfB_Asia', 'pfB_Europe', 'pfB_NAmerica', 'pfB_Oceania', 'pfB_SAmerica', 'pfB_Top'));
+
 // Base rule array
 $pfb['base_rule_reg'] = array('ipprotocol' => 'inet');
 
@@ -157,7 +166,9 @@ $pfb['curl_defaults'] = array(  CURLOPT_USERAGENT	=> 'pfSense/pfBlockerNG cURL d
 				CURLOPT_SSL_VERIFYHOST	=> true,
 				CURLOPT_FRESH_CONNECT	=> true,
 				CURLOPT_FILETIME	=> true,
-				CURLOPT_CONNECTTIMEOUT	=> 15,
+				CURLOPT_TCP_FASTOPEN	=> true,
+				CURLOPT_TCP_NODELAY	=> true,
+				CURLOPT_CONNECTTIMEOUT	=> 15
 				);
 
 // RFC7231 HTTP response codes
@@ -198,6 +209,8 @@ $pfb['rfc7231'] = array(100 => '100 Continue',			101 => '101 Switching Protocols
 			526 => 'CF 526 Invalid SSL Certificate',527 => 'CF 527 Railgun Error'
 			);
 
+
+// Function to filter/sanitize user input - ** TODO: Improve filter **
 function pfb_filter($input, $type) {
 
 	$result = '';
@@ -224,6 +237,9 @@ function pfb_global() {
 		safe_mkdir("{$folder}", 0755);
 	}
 
+	// Reload config.xml to get any recent changes
+	$config = parse_config(true);
+
 	// General variables
 	$pfb['config']		= $config['installedpackages']['pfblockerng']['config'][0];
 	$pfb['ipconfig']	= $config['installedpackages']['pfblockerngipsettings']['config'][0];
@@ -248,13 +264,51 @@ function pfb_global() {
 
 	$pfb['dnsbl']		= $pfb['dnsblconfig']['pfb_dnsbl'];		// Enabled state of DNSBL
 	$pfb['dnsbl_vip']	= $pfb['dnsblconfig']['pfb_dnsvip']	?: '';	// Virtual IP local address
+	$pfb['dnsbl_v6']	= $pfb['dnsblconfig']['pfb_dnsblv6']	?: '';	// Enable/Disable DNSBL IPv6
 	$pfb['dnsbl_port']	= $pfb['dnsblconfig']['pfb_dnsport'];		// Lighttpd web server http port setting
 	$pfb['dnsbl_port_ssl']	= $pfb['dnsblconfig']['pfb_dnsport_ssl'];	// Lighttpd web server https port setting
 	$pfb['dnsbl_alexa']	= $pfb['dnsblconfig']['alexa_enable'];		// TOP1M whitelist
-	$pfb['dnsbl_alexatype'] = $pfb['dnsblconfig']['alexa_type'] ?: 'Alexa'; // TOP1M type (Alexa or Cisco)
+	$pfb['dnsbl_alexatype'] = $pfb['dnsblconfig']['alexa_type'] ?: 'tranco'; // TOP1M type (Tranco, Alexa or Cisco)
+	$pfb['dnsbl_cache']	= $pfb['dnsblconfig']['pfb_cache'];		// DNSBL Option to backup/restore Resolver cache
 	$pfb['dnsbl_sync']	= $pfb['dnsblconfig']['pfb_dnsbl_sync'];	// Live Updates to Resolver without a Reload
 
+	$pfb['dnsbl_python']	= $pfb['dnsblconfig']['pfb_python'];		// DNSBL Resolver python integration
+	$pfb['dnsbl_mode']	= $pfb['dnsblconfig']['dnsbl_mode'];		// DNSBL Mode (Unbound/python mode)
+
+	$pfb['dnsbl_py_reply']	= $pfb['dnsblconfig']['pfb_py_reply'];		// DNSBL Resolver python DNS Reply logging
+	$pfb['dnsbl_py_block']	= $pfb['dnsblconfig']['pfb_py_block'];		// DNSBL Resolver python blocking mode
+	$pfb['dnsbl_hsts']	= $pfb['dnsblconfig']['pfb_hsts'];		// DNSBL Resolver python block HSTS via Null Block mode
+	$pfb['dnsbl_idn']	= $pfb['dnsblconfig']['pfb_idn'];		// DNSBL Resolver python block IDN domains
+	$pfb['dnsbl_regex']	= $pfb['dnsblconfig']['pfb_regex'];		// DNSBL Resolver python regex
+	$pfb['dnsbl_regex_list']= $pfb['dnsblconfig']['pfb_regex_list'];	// DNSBL Resolver python regex list
+	$pfb['dnsbl_cname']	= $pfb['dnsblconfig']['pfb_cname'];		// DNSBL Resolver python CNAME Validation
+	$pfb['dnsbl_pytld']	= $pfb['dnsblconfig']['pfb_pytld'];		// DNSBL Resolver python TLD Allow option
+	$pfb['dnsbl_py_nolog']	= $pfb['dnsblconfig']['pfb_py_nolog'];		// DNSBL Resolver python - Log events via DNSBL Webserver vs python
+
+	// DNSBL Resolver mode (Unbound/Python)
+	$pfb['dnsbl_py_blacklist'] = FALSE;
+	if ($pfb['dnsbl_mode'] == 'dnsbl_python' && $pfb['dnsbl_py_block'] == 'on') {
+		$pfb['dnsbl_py_blacklist'] = TRUE;
+	}
+
+	// SafeSearch
+	init_config_arr(array('installedpackages', 'pfblockerngsafesearch'));
+	$pfb['safesearch_enable']	= $config['installedpackages']['pfblockerngsafesearch']['safesearch_enable']	?: 'Disable';
+	$pfb['safesearch_youtube']	= $config['installedpackages']['pfblockerngsafesearch']['safesearch_youtube']	?: 'Disable';
+	$pfb['safesearch_firefoxdoh']	= $config['installedpackages']['pfblockerngsafesearch']['safesearch_firefoxdoh']?: 'Disable';
+
+	// DNSBL SafeSearch
+	$pfb['dnsbl_safe_search'] = FALSE;
+	if ($pfb['safesearch_enable'] !== 'Disable' ||
+	    $pfb['safesearch_youtube'] !== 'Disable' ||
+	    $pfb['safesearch_firefoxdoh'] !== 'Disable') {
+		$pfb['dnsbl_safe_search'] = TRUE;
+	}
+
 	$pfb['extdns']		= $pfb['config_global']['pfbextdns']	?: '8.8.8.8';	// External DNS Server for TLD drill and CNAME Queries
+
+	// Unbound chroot cmd
+	$pfb['chroot_cmd'] = "/usr/sbin/chroot -u unbound -g unbound / /usr/local/sbin/unbound-control -c {$g['unbound_chroot_path']}/unbound.conf";
 
 	// Define SQLite3 parameters
 	$pfb['sqlite_timeout']	= 100000;
@@ -287,6 +341,22 @@ function pfb_global() {
 	}
 }
 pfb_global();
+
+// Function to get pfBlockerNG package version
+function pfb_pkg_ver() {
+	global $config;
+
+	$pkg_ver = 'v??';
+	if (is_array($config['installedpackages']['package'])) {
+		foreach ($config['installedpackages']['package'] as $pkg_info) {
+			if (strpos($pkg_info['name'], 'pfBlockerNG') !== FALSE) {
+				$pkg_ver = 'v' . $pkg_info['version'];
+				break;
+			}
+		}
+	}
+	return $pkg_ver;
+}
 
 
 // Firewall Filter Service
@@ -338,7 +408,7 @@ function pfb_filter_service() {
 EOF;
 	$rc['stop']	= <<<EOF
 
-	# Terminate pfBlockerNG Firewall filter Daemon (clog/tail) and filter Daemon, if found
+	# Terminate pfBlockerNG Firewall filter Daemon (clog) and filter Daemon, if found
 	pidnum="\$(/bin/ps -wax | /usr/bin/grep '[c]log_pfb -f /var/log/filter.log\|[t]ail_pfb -F /var/log/filter.log\|[p]fblockerng.inc filterlog' | /usr/bin/awk '{print \$1}')"
 	if [ ! -z "\${pidnum}" ]; then
 		for i in \${pidnum}; do
@@ -367,13 +437,19 @@ function pfb_dnsbl_service() {
 	# Ensure all processes are stopped
 	rc_stop
 
-	# Start DNSBL Lighttpd webserver and DNSBL HTTPS Daemon
+	# Start DNSBL Lighttpd webserver (Unbound/Python mode) and DNSBL HTTPS Daemon (Unbound mode only)
 	if [ -e '/var/unbound/pfb_dnsbl_lighty.conf' ]; then
+		/usr/bin/logger -p daemon.info -t lighttpd_pfb "[pfBlockerNG] DNSBL Webserver started"
 		/usr/local/sbin/lighttpd_pfb -f /var/unbound/pfb_dnsbl_lighty.conf
 	fi
 
+	# Check if Unbound mode is enabled
+	unbound_mode="\$(/usr/local/sbin/read_xml_tag.sh string installedpackages/pfblockerngdnsblsettings/config/dnsbl_mode)"
+
 	# Start DNSBL Resolver queries Daemon
-	/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblockerng.inc queries &
+	if [ "\${unbound_mode}" == 'dnsbl_unbound' ]; then
+		/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblockerng.inc queries &
+	fi
 
 EOF;
 	$rc['stop']	= <<<EOF
@@ -512,13 +588,23 @@ function pfb_log_mgmt() {
 	global $g, $pfb;
 	pfb_global();
 
-	foreach (array('log', 'errlog', 'extraslog', 'ip_blocklog', 'ip_permitlog', 'ip_matchlog', 'dnslog', 'dnsbl_parse_err') as $logtype) {
+	foreach (array(	'log', 'errlog', 'extraslog', 'ip_blocklog', 'ip_permitlog', 'ip_matchlog',
+			'dnslog', 'dnsbl_parse_err', 'dnsreplylog') as $logtype) {
+
 		// Max lines in Log file
 		$logmax	= $pfb['config']['log_max_' . $logtype] ?: 20000;
 
 		if ($logmax != 'nolimit' && file_exists($pfb[$logtype])) {
 			$temp = tempnam("{$g['tmp_path']}/", 'pfb_log');
-			exec("/usr/bin/tail -n {$logmax} {$pfb[$logtype]} > {$temp}; /bin/mv -f {$temp} {$pfb[$logtype]}");
+			exec("/usr/bin/tail -n {$logmax} {$pfb[$logtype]} > {$temp}");
+
+			// Set DNSBL python logfile permissions
+			if (($pfb['dnsbl_py_blacklist'] && $logtype == 'dnslog') || $logtype == 'dnsreplylog') {
+				@chown($temp, 'unbound');
+				@chgrp($temp, 'unbound');
+			}
+
+			exec("/bin/mv -f {$temp} {$pfb[$logtype]}");
 			unlink_if_exists($temp);
 		}
 	}
@@ -541,25 +627,39 @@ function pfb_logger($log, $logtype) {
 		$pfb['pnow'] = "{$now}";
 	}
 
-	// Print to pfBlockerNG log and Error log
-	if ($logtype == 2) {
-		@file_put_contents("{$pfb['log']}", "{$log}", FILE_APPEND);
-		@file_put_contents("{$pfb['errlog']}", "{$log}", FILE_APPEND);
+	switch ($logtype) {
 
-	// Print to Extras log
-	} elseif ($logtype == 3) {
-		@file_put_contents("{$pfb['extraslog']}", "{$log}", FILE_APPEND);
+		// Print to pfBlockerNG log
+		case 1:
+			@file_put_contents("{$pfb['log']}", "{$log}", FILE_APPEND);
+			break;
 
-	// Print to screen and Extras log
-	} elseif ($logtype == 4) {
-		if (!$g['pfblockerng_install'] && !$pfb['extras_update']) {
-			print "{$log}";
-		}
-		@file_put_contents("{$pfb['extraslog']}", "{$log}", FILE_APPEND);
+		// Print to pfBlockerNG log and Error log
+		case 2:
+			@file_put_contents("{$pfb['log']}", "{$log}", FILE_APPEND);
+			@file_put_contents("{$pfb['errlog']}", "{$log}", FILE_APPEND);
+			break;
 
-	// Print to pfBlockerNG log
-	} else {
-		@file_put_contents("{$pfb['log']}", "{$log}", FILE_APPEND);
+		// Print to Extras log
+		case 3:
+			@file_put_contents("{$pfb['extraslog']}", "{$log}", FILE_APPEND);
+			break;
+
+		// Print to screen and Extras log
+		case 4:
+			if (!$g['pfblockerng_install'] && !$pfb['extras_update']) {
+				print "{$log}";
+			}
+			@file_put_contents("{$pfb['extraslog']}", "{$log}", FILE_APPEND);
+			break;
+
+		// Print to debugger
+		case 5:
+			@file_put_contents("/tmp/pfb_debug", "{$now} | {$log}", FILE_APPEND);
+			break;
+
+		default:
+			break;
 	}
 }
 
@@ -809,7 +909,7 @@ function pfb_build_if_list($show_wan=FALSE, $show_groups=FALSE) {
 		$pfb_interfaces['openvpn'] = 'OpenVPN';
 	}
 
-	if ($config['l2tp']['mode'] == "server") {
+	if ($config['l2tp']['mode'] == 'server') {
 		$pfb_interfaces['l2tp'] = 'L2TP VPN';
 	}
 
@@ -835,17 +935,20 @@ function dnsbl_alias_update($mode, $alias, $pfbfolder, $lists_dnsbl_current, $al
 	global $pfb;
 
 	if ($mode == 'update') {
+
 		// Create master alias file
-		$pfb_output = @fopen("{$pfb['dnsalias']}/{$alias}", 'w');
-		foreach ($lists_dnsbl_current as $clist) {
-			if (($handle = @fopen("{$pfbfolder}/{$clist}.txt", 'r')) !== FALSE) {
-				while (($line = @fgets($handle)) !== FALSE) {
-					@fwrite($pfb_output, $line);
+		if ($lists_dnsbl_current != '') {
+			$pfb_output = @fopen("{$pfb['dnsalias']}/{$alias}", 'w');
+			foreach ($lists_dnsbl_current as $clist) {
+				if (($handle = @fopen("{$pfbfolder}/{$clist}.txt", 'r')) !== FALSE) {
+					while (($line = @fgets($handle)) !== FALSE) {
+						@fwrite($pfb_output, $line);
+					}
 				}
+				@fclose($handle);
 			}
-			@fclose($handle);
+			@fclose($pfb_output);
 		}
-		@fclose($pfb_output);
 
 		// Update DNSBL alias statistics
 		$dns_now = date('M d H:i:s', time());
@@ -894,7 +997,7 @@ function dnsbl_save_stats() {
 
 	// Save group statistics to SQLite3 database (Remove any feeds that are not referenced)
 	$db_update = $db_delete = '';
-	pfb_logger("\nSaving DNSBL database...", 1);
+	pfb_logger("\nSaving DNSBL statistics...", 1);
 
 	// Collect existing SQL group names
 	$sql_groupnames = array();
@@ -946,7 +1049,6 @@ function dnsbl_save_stats() {
 					$stmt = $db_handle->prepare($db_update);
 					if ($stmt) {
 						$stmt->bindValue(':groupname', $group['groupname'], SQLITE3_TEXT);
-
 						if (!$pfb_delete) {
 							$group['timestamp'] = pfb_filter($group['timestamp'], 1);
 
@@ -970,7 +1072,7 @@ function dnsbl_save_stats() {
 		}
 		pfb_close_sqlite($db_handle);
 	}
-	pfb_logger(" completed\n", 1);
+	pfb_logger(" completed [ NOW ]", 1);
 }
 
 
@@ -978,27 +1080,48 @@ function dnsbl_save_stats() {
 function pfb_create_lighttpd() {
 	global $pfb;
 
+	$pfb_conf = '';
 	$pfb_conf = <<<EOF
 #
 #pfBlockerNG DNSBL Lighttpd configuration file
 #
 server.tag			= "pfBlockerNG DNSBL"
-server.bind			= "0.0.0.0"
+server.bind			= "127.0.0.1"
 server.port			= "{$pfb['dnsbl_port']}"
 server.event-handler		= "freebsd-kqueue"
 server.network-backend		= "freebsd-sendfile"
 server.dir-listing		= "disable"
 server.document-root		= "/usr/local/www/pfblockerng/www/"
 server.max-request-size		= "1"
-server.errorlog			= "|/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblockerng.inc dnsbl"
 server.pid-file			= "/var/run/dnsbl.pid"
 
 EOF;
 
+if (!$pfb['dnsbl_py_blacklist'] || $pfb['dnsbl_py_nolog'] == 'on') {
+	$pfb_conf .= <<<EOF
+server.errorlog			= "|/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblockerng.inc dnsbl"
+
+EOF;
+}
+
+if ($pfb['dnsbl_v6'] == 'on') {
+	$pfb_conf .= <<<EOF
+server.use-ipv6			= "enable"
+
+EOF;
+}
 	if (file_exists('/usr/local/lib/lighttpd/mod_openssl.so')) {
-		$pfb_conf .= 'server.modules			= ( "mod_access", "mod_accesslog", "mod_fastcgi", "mod_rewrite", "mod_openssl" )';
+		if (!$pfb['dnsbl_py_blacklist'] || $pfb['dnsbl_py_nolog'] == 'on') {
+			$pfb_conf .= 'server.modules			= ( "mod_access", "mod_accesslog", "mod_fastcgi", "mod_rewrite", "mod_openssl" )';
+		} else {
+			$pfb_conf .= 'server.modules			= ( "mod_fastcgi", "mod_rewrite", "mod_openssl" )';
+		}
 	} else {
-		$pfb_conf .= 'server.modules			= ( "mod_access", "mod_accesslog", "mod_fastcgi", "mod_rewrite" )';
+		if (!$pfb['dnsbl_py_blacklist'] || $pfb['dnsbl_py_nolog'] == 'on') {
+			$pfb_conf .= 'server.modules			= ( "mod_access", "mod_accesslog", "mod_fastcgi", "mod_rewrite" )';
+		} else {
+			$pfb_conf .= 'server.modules			= ( "mod_fastcgi", "mod_rewrite" )';
+		}
 	}
 
 	$pfb_conf .= <<<EOF
@@ -1008,22 +1131,37 @@ mimetype.assign			= ( ".html" => "text/html", ".gif" => "image/gif" )
 url.access-deny			= ( "~", ".inc" )
 fastcgi.server			= ( ".php" => ( "localhost" => ( "socket" => "/var/run/php-fpm.socket", "broken-scriptfilename" => "enable" ) ) )
 
+EOF;
+	if (!$pfb['dnsbl_py_blacklist'] || $pfb['dnsbl_py_nolog'] == 'on') {
+
+	$pfb_conf .= <<<EOF
 debug.log-condition-handling	= "enable"
 accesslog.use-syslog		= "disable"
 accesslog.format		= "INDEX!%r!%V!%h!%{Referer}i * %r * %{User-Agent}i"
 accesslog.filename		= "|/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblockerng.inc index"
+
+EOF;
+}
+	$pfb_conf .= <<<EOF
 
 \$HTTP["scheme"] == "http" {
 	url.rewrite-once = ( ".*" => "/index.php" )
 }
 
 \$HTTP["remoteip"] =~ ".*" {
-	\$SERVER["socket"] == "0.0.0.0:{$pfb['dnsbl_port_ssl']}" {
+
+	\$SERVER["socket"] == "127.0.0.1:{$pfb['dnsbl_port_ssl']}" {
 		ssl.engine	= "enable"
 		ssl.pemfile	= "/var/unbound/dnsbl_cert.pem"
 		ssl.dh-file	= "/etc/dh-parameters.4096"
 		ssl.cipher-list	= "EECDH+AESGCM:EDH+AESGCM:AES128+EECDH:AES128+EDH"
 		ssl.ec-curve	= "secp384r1"
+		ssl.honor-cipher-order = "enable"
+		ssl.openssl.ssl-conf-cmd = ("Protocol" => "-ALL, TLSv1.2")
+	}
+
+	\$SERVER["socket"] == "{$pfb['dnsbl_vip']}:80" {
+		#
 	}
 
 	\$SERVER["socket"] == "{$pfb['dnsbl_vip']}:443" {
@@ -1032,7 +1170,45 @@ accesslog.filename		= "|/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblock
 		ssl.dh-file	= "/etc/dh-parameters.4096"
 		ssl.cipher-list	= "EECDH+AESGCM:EDH+AESGCM:AES128+EECDH:AES128+EDH"
 		ssl.ec-curve	= "secp384r1"
+		ssl.honor-cipher-order = "enable"
+		ssl.openssl.ssl-conf-cmd = ("Protocol" => "-ALL, TLSv1.2")
 	}
+
+EOF;
+	if ($pfb['dnsbl_v6'] == 'on') {
+		$pfb_conf .= <<<EOF
+
+	\$SERVER["socket"] == "[::1]:{$pfb['dnsbl_port']}" {
+		#
+	}
+
+	\$SERVER["socket"] == "[::1]:{$pfb['dnsbl_port_ssl']}" {
+		ssl.engine	= "enable"
+		ssl.pemfile	= "/var/unbound/dnsbl_cert.pem"
+		ssl.dh-file	= "/etc/dh-parameters.4096"
+		ssl.cipher-list	= "EECDH+AESGCM:EDH+AESGCM:AES128+EECDH:AES128+EDH"
+		ssl.ec-curve	= "secp384r1"
+		ssl.honor-cipher-order = "enable"
+		ssl.openssl.ssl-conf-cmd = ("Protocol" => "-ALL, TLSv1.2")
+	}
+
+	\$SERVER["socket"] == "[::{$pfb['dnsbl_vip']}]:80" {
+		#
+	}
+
+	\$SERVER["socket"] == "[::{$pfb['dnsbl_vip']}]:443" {
+		ssl.engine	= "enable"
+		ssl.pemfile	= "/var/unbound/dnsbl_cert.pem"
+		ssl.dh-file	= "/etc/dh-parameters.4096"
+		ssl.cipher-list	= "EECDH+AESGCM:EDH+AESGCM:AES128+EECDH:AES128+EDH"
+		ssl.ec-curve	= "secp384r1"
+		ssl.honor-cipher-order = "enable"
+		ssl.openssl.ssl-conf-cmd = ("Protocol" => "-ALL, TLSv1.2")
+	}
+
+EOF;
+	}
+	$pfb_conf .= <<<EOF
 
 	\$HTTP["host"] =~ ".*" {
 		url.rewrite-once = ( ".*" => "/index.php" )
@@ -1040,34 +1216,36 @@ accesslog.filename		= "|/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblock
 }
 
 EOF;
-	@file_put_contents($pfb['dnsbl_conf'], $pfb_conf, LOCK_EX);
+	return $pfb_conf;
 }
 
 
 // Function to create DNSBL SSL certificate
 function pfb_create_dnsbl_cert() {
-	global $pfb;
+	global $pfb, $config, $cert_strict_values;
 
-	$dn = array (	'countryName'		=> 'CA',
-			'stateOrProvinceName'	=> 'ST_DNSBL',
-			'localityName'		=> 'LN_DNSBL',
-			'organizationName'	=> 'ON_DNSBL',
-			'organizationalUnitName'=> 'OU_DNSBL',
-			'commonName'		=> 'CN_DNSBL',
-			'emailAddress'		=> 'dnsbl@example.com'
-			);
+	$cert		= array();
+	$cert['refid']	= uniqid();
+	$cert['descr']	= sprintf(gettext("pfBlockerNG DNSBL (%s)"), $cert['refid']);
+	$cert_hostname	= "{$config['system']['hostname']}-pfBNG-DNSBL-{$cert['refid']}";
 
-	$pkey_config = array (	'digest_alg'		=> 'sha256',
-				'private_key_bits'	=> 2048,
-				'private_key_type'	=> OPENSSL_KEYTYPE_RSA
-				);
+	$dn = array(
+		'organizationName'	=> "pfBlockerNG DNSBL Self-Signed Certificate",
+		'commonName'		=> $cert_hostname,
+		'subjectAltName'	=> "DNS:{$cert_hostname}");
 
-	$pkey	= openssl_pkey_new($pkey_config);
-	$csr	= openssl_csr_new($dn, $pkey);
-	$cert	= openssl_csr_sign($csr, NULL, $pkey, 3650);
-
-	openssl_pkey_export($pkey, $privatekey);
-	openssl_x509_export($cert, $publickey);
+	$old_err_level = error_reporting(0); /* otherwise openssl_ functions throw warnings directly to a page screwing menu tab */
+	if (!cert_create($cert, null, 2048, $cert_strict_values['max_server_cert_lifetime'] ?: 398, $dn, 'self-signed', 'sha256')) {
+		while ($ssl_err = openssl_error_string()) {
+			log_error(sprintf(gettext("Error creating pfBlockerNG DNSBL Certificate: openssl library returns: %s"), $ssl_err));
+		}
+		error_reporting($old_err_level);
+		return null;
+	}
+	error_reporting($old_err_level);
+	$privatekey	= base64_decode($cert['prv']);
+	$publickey	= base64_decode($cert['crt']);
+ 
 	@file_put_contents("{$pfb['dnsbl_cert']}", "{$privatekey}{$publickey}", LOCK_EX);
 }
 
@@ -1075,14 +1253,16 @@ function pfb_create_dnsbl_cert() {
 // Create DNSBL VIP and NAT rules, lighttpd conf and services
 function pfb_create_dnsbl($mode) {
 	global $config, $pfb;
+	pfb_global();
 
 	// Reload config.xml to get any recent changes
 	$config = parse_config(true);
 
 	$new_nat = $new_vip = $pfb_ex_nat = $pfb_ex_vip = $dnsbl_ex_nat = $dnsbl_ex_vip = array();
 	$pfb['dnsbl_vip_changed'] = $pfbupdate = FALSE;
+	$iface = escapeshellarg(get_real_interface($pfb['dnsbl_iface']));
 
-	if ((!empty($pfb['dnsbl_port']) && !empty($pfb['dnsbl_port_ssl']) && !empty($pfb['dnsbl_vip']) && $mode == 'enable') || $mode == 'disable') {
+	if ((!empty($pfb['dnsbl_port']) && !empty($pfb['dnsbl_port_ssl']) && !empty($pfb['dnsbl_vip']) && $mode == 'enabled') || $mode == 'disabled') {
 
 		// DNSBL NAT rules generation
 		$pfbfound = FALSE;
@@ -1100,10 +1280,11 @@ function pfb_create_dnsbl($mode) {
 			}
 		}
 
-		if ($mode == 'enable') {
+		if ($mode == 'enabled') {
 			// Generate new DNSBL NAT per DNSBL listening ports
 			$selected_ports = array("{$pfb['dnsbl_port']}" => '80', "{$pfb['dnsbl_port_ssl']}" => '443');
 			foreach ($selected_ports as $port => $lport) {
+
 				$dnsbl_new_nat[] =	array ( 'source'		=> array('any'  => ''),
 								'destination'		=> array('address' => "{$pfb['dnsbl_vip']}", 'port' => "{$lport}"),
 								'protocol'		=> 'tcp',
@@ -1114,6 +1295,21 @@ function pfb_create_dnsbl($mode) {
 								'associated-rule-id'	=> 'pass',
 								'natreflection'		=> 'purenat'
 								);
+
+				// Add DNSBL IPv6 NAT Rules
+				if ($pfb['dnsbl_v6'] == 'on') {
+					$dnsbl_new_nat[] = array (	'source'		=> array('any'  => ''),
+									'destination'		=> array('address' => "::{$pfb['dnsbl_vip']}",
+													'port' => "{$lport}"),
+									'protocol'		=> 'tcp',
+									'target'		=> '::1',
+									'local-port'		=> "{$port}",
+									'interface'		=> "{$pfb['dnsbl_iface']}",
+									'descr'			=> 'pfB DNSBL - DO NOT EDIT',
+									'associated-rule-id'	=> 'pass',
+									'natreflection'		=> 'purenat'
+									);
+				}
 			}
 
 			// Compare existing to new and if they are not identical update
@@ -1132,9 +1328,8 @@ function pfb_create_dnsbl($mode) {
 		}
 
 		// DNSBL VIP generation
-		$dnsbl_new_vip		= array();
-		$dnsbl_new_vip[0]	= array();
-
+		$dnsbl_new_vip				= array();
+		$dnsbl_new_vip[0]			= array();
 		$dnsbl_new_vip[0]['interface']		= "{$pfb['dnsbl_iface']}";
 		$dnsbl_new_vip[0]['descr']		= 'pfB DNSBL - DO NOT EDIT';
 		$dnsbl_new_vip[0]['type']		= 'single';
@@ -1143,12 +1338,32 @@ function pfb_create_dnsbl($mode) {
 
 		if ($pfb['dnsbl_vip_type'] == 'carp') {
 			$dnsbl_new_vip[0]['mode']	= 'carp';
-			$dnsbl_new_vip[0]['vhid']	= '1';
-			$dnsbl_new_vip[0]['advskew']	= '0';
-			$dnsbl_new_vip[0]['advbase']	= '1';
+			$dnsbl_new_vip[0]['vhid']	= "{$pfb['dnsbl_vip_vhid']}";
+			$dnsbl_new_vip[0]['advskew']	= "{$pfb['dnsbl_vip_skew']}";
+			$dnsbl_new_vip[0]['advbase']	= "{$pfb['dnsbl_vip_base']}";
 			$dnsbl_new_vip[0]['password']	= "{$pfb['dnsbl_vip_pass']}";
 		} else {
 			$dnsbl_new_vip[0]['mode']	= 'ipalias';
+		}
+
+		// Add DNSBL IPv6 VIP
+		if ($pfb['dnsbl_v6'] == 'on') {
+			$dnsbl_new_vip[1]			= array();
+			$dnsbl_new_vip[1]['interface']		= "{$pfb['dnsbl_iface']}";
+			$dnsbl_new_vip[1]['descr']		= 'pfB DNSBL - DO NOT EDIT';
+			$dnsbl_new_vip[1]['type']		= 'single';
+			$dnsbl_new_vip[1]['subnet_bits']	= '128';
+			$dnsbl_new_vip[1]['subnet']		= "::{$pfb['dnsbl_vip']}";
+
+			if ($pfb['dnsbl_vip_type'] == 'carp') {
+				$dnsbl_new_vip[1]['mode']	= 'carp';
+				$dnsbl_new_vip[1]['vhid']	= "{$pfb['dnsbl_vip_vhid']}";
+				$dnsbl_new_vip[1]['advskew']	= "{$pfb['dnsbl_vip_skew']}";
+				$dnsbl_new_vip[1]['advbase']	= "{$pfb['dnsbl_vip_base']}";
+				$dnsbl_new_vip[1]['password']	= "{$pfb['dnsbl_vip_pass']}";
+			} else {
+				 $dnsbl_new_vip[1]['mode']	= 'ipalias';
+			}
 		}
 
 		$pfbfound = FALSE;
@@ -1166,7 +1381,7 @@ function pfb_create_dnsbl($mode) {
 			}
 		}
 
-		if ($mode == 'enable') {
+		if ($mode == 'enabled') {
 			// Compare existing to new and if they are not identical update
 			if ($dnsbl_ex_vip !== $dnsbl_new_vip) {
 				$pfb['dnsbl_vip_changed'] = TRUE;
@@ -1183,57 +1398,103 @@ function pfb_create_dnsbl($mode) {
 			}
 		}
 
-		// Only create DNSBL Lighttpd configuration file if not exists, or listening port changed
-		if (!file_exists($pfb['dnsbl_conf']) && $mode == 'enable' || $pfbupdate && $mode == 'enable') {
-			pfb_create_lighttpd();
+		// Compare previous Lighttpd conf
+		$pfb_lighty_conf = pfb_create_lighttpd();
+		$pfb_lighty_conf_ex = @file_get_contents($pfb['dnsbl_conf']);
+		if ($pfb_lighty_conf !== $pfb_lighty_conf_ex) {
 			$pfbupdate = TRUE;
-
+			@file_put_contents($pfb['dnsbl_conf'], $pfb_lighty_conf, LOCK_EX);
 			$log = "\nSaving new DNSBL web server configuration to port [ {$pfb['dnsbl_port']} and {$pfb['dnsbl_port_ssl']} ]";
 			pfb_logger("{$log}", 1);
 		}
 
+		// Validate DNSBL VIP address(es)
+		$pfb['dnsbl_v6'] == 'on' ? $vip_count = 2 : $vip_count = 1;
+		$result = array();
+		foreach (array("inet {$pfb['dnsbl_vip']}", "inet6 ::{$pfb['dnsbl_vip']}") as $g_vip) {
+			$g_vip = escapeshellarg($g_vip);
+			exec("/sbin/ifconfig {$iface} | {$pfb['grep']} {$g_vip} 2>&1", $result, $retval);
+		}
+		if (count($result) != $vip_count) {
+			$pfbupdate = TRUE;
+		}
+
 		// Update config.xml, if changes required
 		if ($pfbupdate) {
-			$log = "\nSaving DNSBL config changes.";
-			pfb_logger("{$log}", 1);
-
 			init_config_arr(array('nat', 'rule'));
 			$config['nat']['rule'] = $new_nat;
 
 			init_config_arr(array('virtualip', 'vip'));
 			$config['virtualip']['vip'] = $new_vip;
-
 			write_config('pfBlockerNG: saving DNSBL changes');
+		}
+
+		if ($mode == 'enabled' && $pfbupdate) {
 
 			// Execute ifconfig to enable VIP address
-			$iface = get_real_interface("{$pfb['dnsbl_iface']}");
 			if (!empty($iface) && !empty($pfb['dnsbl_vip'])) {
 
-				// Clear any existing VIP
-				exec('/sbin/ifconfig ' . escapeshellarg("{$iface}") . " | {$pfb['grep']} " . escapeshellarg("{$pfb['dnsbl_vip']}") . ' 2>&1',
-					$result, $return);
-				if (!empty($result)) {
-					mwexec('/sbin/ifconfig ' . escapeshellarg("{$iface}") . ' delete ' . escapeshellarg("{$pfb['dnsbl_vip']}"));
+				if (is_service_running('pfb_dnsbl')) {
+					pfb_logger("\nStop Service DNSBL", 1);
+					stop_service('pfb_dnsbl');
 				}
 
-				// Configure VIP type (ipalias or carp)
-				if ($pfb['dnsbl_vip_type'] == 'carp') {
-					$vip_password		= "{$pfb['dnsbl_vip_pass']}";
-					$vip_password		= escapeshellarg(addslashes(str_replace(' ', '', $vip_password)));
+				foreach (array("{$pfb['dnsbl_vip']}", "::{$pfb['dnsbl_vip']}") as $vip) {
 
-					if ($pfb['dnsbl_vip_pass'] != '') {
-						$password	= " pass {$vip_password}";
+					$mask = '32';
+					$inet = 'inet';
+					if (strpos($vip, '::') !== FALSE) {
+						$mask = '128';
+						$inet = 'inet6';
 					}
 
-					$advskew = (isset($config['virtualip_carp_maintenancemode'])) ? 'advskew 254' : 'advskew 0';
-					mwexec('/sbin/ifconfig ' . escapeshellarg("{$iface}") . ' vhid 1 ' . "{$advskew} advbase 1 {$password}");
-					mwexec('/sbin/ifconfig ' . escapeshellarg("{$iface}") . ' ' . escapeshellarg("{$pfb['dnsbl_vip']}") . '/32 alias vhid 1');
-				}
-				else {
-					mwexec('/sbin/ifconfig ' . escapeshellarg("{$iface}") . ' inet '. escapeshellarg("{$pfb['dnsbl_vip']}") . '/32 alias');
+					$g_vip	= escapeshellarg("{$inet} {$vip}");
+					$vip	= escapeshellarg($vip);
+
+					// Clear any existing VIP
+					$result = exec("/sbin/ifconfig {$iface} | {$pfb['grep']} {$g_vip} 2>&1");
+					if (!empty($result)) {
+						exec("/sbin/ifconfig {$iface} {$inet} {$vip} -alias 2>&1");
+					}
+
+					if ($inet == 'inet6' && $pfb['dnsbl_v6'] != 'on') {
+						break;
+					}
+
+					// Configure VIP type (ipalias or carp)
+					if ($pfb['dnsbl_vip_type'] == 'carp') {
+						$vhid		= "vhid {$pfb['dnsbl_vip_vhid']}";
+						$advbase	= "advbase {$pfb['dnsbl_vip_base']}";
+						$advskew	= "advskew {$pfb['dnsbl_vip_skew']}";
+						if (isset($config['virtualip_carp_maintenancemode'])) {
+							$advskew = 'advskew 254';
+						}
+
+						$password = '';
+						if (!empty($pfb['dnsbl_vip_pass'])) {
+							$password = 'pass ' . escapeshellarg(addslashes(str_replace(' ', '', $pfb['dnsbl_vip_pass'])));
+						}
+
+						exec("/sbin/ifconfig {$iface} {$inet} {$vhid} {$advskew} {$advbase} {$password} 2>&1");
+						exec("/sbin/ifconfig {$iface} {$inet} '{$vip}/{$mask}' alias {$vhid} 2>&1");
+					}
+					else {
+						exec("/sbin/ifconfig {$iface} {$inet} '{$vip}/{$mask}' alias 2>&1");
+					}
+
+					// Validate 'tentative' interface state
+					for ($i=10; $i > 0; $i--) {
+						$result = exec("/sbin/ifconfig {$iface} | {$pfb['grep']} {$g_vip} | {$pfb['grep']} 'tentative' 2>&1");
+						if (!empty($result)) {
+							pfb_logger('.', 1);
+							usleep(500000);
+						} else {
+							break;
+						}
+					}
 				}
 
-				$log = "VIP address configured. Widget Packet statistics reset.\n";
+				$log = "\nVIP address(es) configured";
 				pfb_logger("{$log}", 1);
 				$pfb['filter_configure'] = TRUE;
 			} else {
@@ -1244,7 +1505,7 @@ function pfb_create_dnsbl($mode) {
 	}
 
 	// Save settings, restart services as required
-	if ($mode == 'enable') {
+	if ($mode == 'enabled') {
 
 		// Create DNSBL SSL certificate
 		if (!file_exists("{$pfb['dnsbl_cert']}")) {
@@ -1266,30 +1527,44 @@ function pfb_create_dnsbl($mode) {
 		}
 	}
 	else {
-		// Remove DNSBL VIP address
-		$iface = get_real_interface("{$pfb['dnsbl_iface']}");
-		if (!empty($iface) && !empty($pfb['dnsbl_vip'])) {
-
-			// Clear any existing VIP
-			exec('/sbin/ifconfig ' . escapeshellarg("{$iface}") . " | {$pfb['grep']} " . escapeshellarg("{$pfb['dnsbl_vip']}") . ' 2>&1',
-				$result, $return);
-			if (!empty($result)) {
-				mwexec('/sbin/ifconfig ' . escapeshellarg("{$iface}") . ' inet '. escapeshellarg("{$pfb['dnsbl_vip']}") . ' delete');
-				$pfb['filter_configure'] = TRUE;
-			}
-		}
-
 		if (is_service_running('pfb_dnsbl')) {
 			pfb_logger("Stop Service DNSBL\n", 1);
 			stop_service('pfb_dnsbl');
+		}
+
+		// Remove DNSBL VIP address
+		if (!empty($iface) && !empty($pfb['dnsbl_vip'])) {
+			foreach (array("{$pfb['dnsbl_vip']}" => 'inet', "::{$pfb['dnsbl_vip']}" => 'inet6') as $vip => $inet) {
+
+				$g_vip	= escapeshellarg("{$inet} {$vip}");
+				$vip	= escapeshellarg($vip);
+
+				$result = exec("/sbin/ifconfig {$iface} | {$pfb['grep']} {$g_vip} 2>&1");
+				if (!empty($result)) {
+					exec("/sbin/ifconfig {$iface} {$inet} {$vip} -alias 2>&1");
+					$pfb['filter_configure'] = TRUE;
+				}
+
+				// Validate 'tentative' interface state
+				for ($i=10; $i > 0; $i--) {
+					$result = exec("/sbin/ifconfig {$iface} | {$pfb['grep']} {$g_vip} | {$pfb['grep']} 'tentative' 2>&1");
+					if (!empty($result)) {
+						pfb_logger('.', 1);
+						usleep(500000);
+					} else {
+						break;
+					}
+				}
+			}
 		}
 	}
 }
 
 
-// Define DNSBL Unbound include settings
+// Define DNSBL Unbound include settings (config.xml)
 function pfb_unbound_dnsbl($mode) {
 	global $config, $pfb;
+        pfb_global();
 
 	// Reload config.xml to get any recent changes
 	$config = parse_config(true);
@@ -1311,19 +1586,31 @@ function pfb_unbound_dnsbl($mode) {
 		// Append DNSBL Unbound pfSense conf integration
 		if (!strstr($unbound_custom, 'pfb_dnsbl.*conf')) {
 			if ($mode == 'enabled') {
-				$pfbupdate = TRUE;
-				$unbound_custom .= "\n{$unbound_include}";
-				$log = "\nAdding to existing Unbound custom options";
+				if (!$pfb['dnsbl_py_blacklist']) {
+					$pfbupdate = TRUE;
+					$unbound_custom .= "\n{$unbound_include}";
+					$log = "\nAdding DNSBL Unbound mode (Resolver adv. setting)";
+				}
+				elseif ($pfb['dnsbl_safe_search']) {
+					$pfbupdate = TRUE;
+					$unbound_custom .= "\n{$unbound_include}";
+					$log = "\nAdding DNSBL SafeSearch mode (Resolver adv. setting)";
+				}
 			}
 		}
 		else {
 			// Remove DNSBL Unbound pfSense conf integration when disabled
-			if ($mode == 'disabled') {
+			// or when DNSBL python mode is enabled but not when SafeSearch is enabled
+			if ($mode == 'disabled' || ($pfb['dnsbl_py_blacklist'] && !$pfb['dnsbl_safe_search'])) {
 				$custom = explode ("\n", $unbound_custom);
 				foreach ($custom as $key => $line) {
 					if (strpos($line, 'pfb_dnsbl.*conf') !== FALSE) {
 						$pfbupdate = TRUE;
-						$log = "\nRemoving DNSBL Unbound custom option";
+						if (!$pfb['dnsbl_py_blacklist']) {
+							$log = "\nRemoving DNSBL Unbound mode (Resolver adv. setting)";
+						} else {
+							$log = "\nRemoving DNSBL SafeSearch mode (Resolver adv. setting)";
+						}
 						unset($custom[$key]);
 					}
 				}
@@ -1334,9 +1621,16 @@ function pfb_unbound_dnsbl($mode) {
 	else {
 		// Add DNSBL Unbound pfSense conf integration
 		if ($mode == 'enabled') {
-			$pfbupdate = TRUE;
-			$unbound_custom = "{$unbound_include}";
-			$log = "\nAdding DNSBL Unbound server:include option";
+			if (!$pfb['dnsbl_py_blacklist']) {
+				$pfbupdate = TRUE;
+				$unbound_custom = "{$unbound_include}";
+				$log = "\nAdding DNSBL Unbound mode (Resolver adv. setting)";
+			}
+			elseif ($pfb['dnsbl_safe_search']) {
+				$pfbupdate = TRUE;
+				$unbound_custom = "{$unbound_include}";
+				$log = "\nAdding DNSBL SafeSearch mode (Resolver adv. setting)";
+			}
 		}
 	}
 
@@ -1356,7 +1650,410 @@ function pfb_unbound_dnsbl($mode) {
 		pfb_logger("{$log}", 1);
 		$unbound_custom = base64_encode(str_replace("\r\n", "\n", $unbound_custom));
 		$pfb['unboundconfig'] = "{$unbound_custom}";
-		write_config('pfBlockerNG: saving Unbound config');
+		write_config('pfBlockerNG: saving Unbound custom options');
+	}
+
+	// Modify unbound.conf file as required
+	if (file_exists("{$pfb['dnsbldir']}/unbound.conf")) {
+		$conf = file("{$pfb['dnsbldir']}/unbound.conf");
+		if (empty($conf)) {
+			pfb_logger("\nDNS Resolver configuration file missing or empty, Exiting!", 1);
+		}
+
+		$unbound = FALSE;	// Unbound mode
+		$unbound_py = FALSE;	// Unbound python mode
+
+		$u_update = FALSE;
+		$u_msg = '';
+		foreach ($conf as $key => $line) {
+
+			if (empty($line)) {
+                                continue;
+			}
+
+			elseif (strpos($line, 'pfb_dnsbl.*conf') !== FALSE) {
+				if ($mode == 'enabled') {
+					if (!$pfb['dnsbl_py_blacklist'] || $pfb['dnsbl_safe_search']) {
+						$unbound = TRUE;
+					}
+					else {
+						$u_update = TRUE;
+						$u_msg .= "  Removed DNSBL SafeSearch mode\n";
+						unset($conf[$key]);
+					}
+				} else {
+					$u_update = TRUE;
+					$u_msg .= "  Removed DNSBL Unbound mode\n"; 
+					unset($conf[$key]);
+				}
+			}
+
+			elseif (strpos($line, 'module-config:') !== FALSE) {
+				if ($mode == 'enabled' && $pfb['dnsbl_mode'] == 'dnsbl_python') {
+					if (strpos($line, 'module-config: "python') !== FALSE) {
+						$unbound_py = TRUE;
+					} else {
+						$u_update = TRUE;
+						$u_msg .= "  Added DNSBL Unbound Python mode\n";
+						$conf[$key] = str_replace('module-config: "', 'module-config: "python ', $line);
+					}
+				}
+				else {
+					if (strpos($line, 'module-config: "python') !== FALSE) {
+						$u_update = TRUE;
+						$u_msg .= "  Removed DNSBL Unbound Python mode\n";
+						$conf[$key] = str_replace('module-config: "python ', 'module-config: "', $line);
+					}
+				}
+			}
+
+			// Remove any DNSBL VIPs added to unbound.conf on 'disable'
+			elseif (strpos($line, 'interface:') !== FALSE && $mode == 'disabled' && strpos($line, $pfb['dnsbl_vip']) !== FALSE) { 
+				$u_update = TRUE;
+				$u_msg .= "  Removed DNSBL VIP from Unbound Interface settings\n";
+				unset($conf[$key]);
+			}
+
+			elseif (strpos($line, 'python-script: pfb_unbound.py') !== FALSE) {
+				if ($mode == 'enabled' && $pfb['dnsbl_mode'] == 'dnsbl_python') {
+					$unbound_py = TRUE;
+				} else {
+					$u_update = TRUE;
+					$u_msg .= "  Removed DNSBL Unbound Python mode script\n";
+					unset($conf[$key-1]); // remove 'python:' line above
+					unset($conf[$key]);
+				}
+			}
+		}
+
+		// Add Unbound include line
+		if (!$unbound && $mode == 'enabled') {
+			if (!$pfb['dnsbl_py_blacklist']) {
+				$u_update = TRUE;
+				$u_msg .= "  Added DNSBL Unbound mode\n";
+				$conf[] = "\nserver:include: {$pfb['dnsbl_file']}.*conf\n";
+			}
+			elseif ($pfb['dnsbl_safe_search']) {
+				$u_update = TRUE;
+				$u_msg .= "  Added DNSBL Unbound mode (SafeSearch)\n";
+				$conf[] = "\nserver:include: {$pfb['dnsbl_file']}.*conf\n";
+			}
+		}
+
+		// Add python script line
+		if (!$unbound_py && $mode == 'enabled' && $pfb['dnsbl_mode'] == 'dnsbl_python') {
+			$u_update = TRUE;
+			$u_msg .= "  Added DNSBL Unbound Python mode script\n";
+			$conf[] = "\npython:\npython-script: pfb_unbound.py\n";
+		}
+
+		// Save changes to unbound.conf
+		if ($u_update) {
+			pfb_logger("\nDNS Resolver ( {$mode} ) unbound.conf modifications:\n{$u_msg}", 1);
+			@file_put_contents("{$pfb['dnsbldir']}/unbound.tmp", $conf, LOCK_EX);
+			@chown("{$pfb['dnsbldir']}/unbound.tmp", 'unbound');
+			@chgrp("{$pfb['dnsbldir']}/unbound.tmp", 'unbound');
+			return TRUE;
+		}
+	}
+	else {
+		pfb_logger("\n\n*** [ Unbound.conf file missing. Exiting! ] ***\n\n", 1);
+	}
+
+	return FALSE;
+}
+
+
+// Create DNSBL Whitelist
+function pfb_unbound_python_whitelist($mode='') {
+	global $pfb;
+	pfb_global();
+
+	$dnsbl_whitelist = '';
+	$dnsbl_white = pfbng_text_area_decode($pfb['dnsblconfig']['suppression'], TRUE, FALSE);
+	if (!empty($dnsbl_white)) {
+		foreach ($dnsbl_white as $key => $line) {
+			if (!empty($line)) {
+				if (substr($line, 0, 4) == 'www.') {
+					$line = substr($line, 4);
+				}
+
+				// Minimize the python whitelist queries to the smallest tld segment count
+				if (!isset($tld_segments)) {
+					$tld_segments = (substr_count($line, '.') +1);
+				}
+				$tld_segments = @min((array((substr_count($line, '.') +1), $tld_segments) ?: 1));
+
+				if (substr($line, 0, 1) == '.') {
+					$line = ltrim($line, '.');
+					$dnsbl_whitelist .= "{$line},1\n";
+				} else {
+					$dnsbl_whitelist .= "{$line},0\n";
+				}
+			}
+		}
+	}
+
+	if ($mode == 'alerts') {
+		@file_put_contents($pfb['unbound_py_wh'], $dnsbl_whitelist, LOCK_EX);
+	} else {
+		return $dnsbl_whitelist;
+	}
+}
+
+
+// Unbound python configuration file
+function pfb_unbound_python($mode) {
+	global $config, $pfb;
+	pfb_global();
+
+	// Reload config.xml to get any recent changes
+	$config = parse_config(true);
+
+	$pfbpython = FALSE;
+	init_config_arr(array('unbound'));
+
+	// Ensure log file permissions are set as 'unbound:unbound'
+	foreach (array('dnsbl.log', 'dns_reply.log') as $logfile) {
+		if (file_exists("{$pfb['logdir']}/{$logfile}")) {
+			@chown("{$pfb['logdir']}/{$logfile}", 'unbound');
+			@chgrp("{$pfb['logdir']}/{$logfile}", 'unbound');
+		}
+	}
+
+
+	// Add python settings to DNS Resolver configuration
+	$python_enable = 'off';
+	if ($mode == 'enabled' && $pfb['dnsbl_mode'] == 'dnsbl_python') {
+		$python_enable = 'on';
+
+		if (!isset($config['unbound']['python']) ||
+		    $config['unbound']['python_script'] != 'pfb_unbound') {
+
+			$config['unbound']['python']		= '';
+			$config['unbound']['python_order']	= 'pre_validator';
+			$config['unbound']['python_script']	= 'pfb_unbound';
+
+			$pfbpython = TRUE;
+			$log = 'Added DNSBL Unbound python integration settings';
+			pfb_logger("\n{$log}", 1);
+			write_config("pfBlockerNG: {$log}");
+		}
+
+		// If DNSBL python blocking mode enabled
+		if ($pfb['dnsbl_py_blacklist']) {
+
+			// Create DNSBL Whitelist
+			$dnsbl_whitelist = pfb_unbound_python_whitelist();
+
+			// Compare previous DNSBL Whitelist to new Whitelist
+			$pfb_py_whitelist_ex = @file_get_contents($pfb['unbound_py_wh']);
+			if ($dnsbl_whitelist !== $pfb_py_whitelist_ex) {
+				$pfbpython = TRUE;
+				@file_put_contents($pfb['unbound_py_wh'], $dnsbl_whitelist, LOCK_EX);
+			}
+		}
+
+		// Remove previous whitelist and reload
+		elseif (file_exists($pfb['unbound_py_wh'])) {
+			unlink_if_exists($pfb['unbound_py_wh']);
+			$pfbpython = TRUE;
+		}
+
+		if (!isset($tld_segments)) {
+			$tld_segments = '1';
+		}
+
+		$python_ipv6 = 'off';
+		if ($pfb['dnsbl_v6'] == 'on') {
+			$python_ipv6 = 'on';
+		}
+
+		$python_reply = 'off';
+		if ($pfb['dnsbl_py_reply'] == 'on') {
+			$python_reply = 'on';
+		}
+
+		$python_blocking = 'off';
+		if ($pfb['dnsbl_py_blacklist']) {
+			$python_blocking = 'on';
+		}
+
+		$python_hsts = 'off';
+		if ($pfb['dnsbl_hsts'] == 'on') {
+			$python_hsts = 'on';
+		}
+
+		$python_idn = 'off';
+		if ($pfb['dnsbl_idn'] == 'on') {
+			$python_idn = 'on';
+		}
+
+		$python_tld = 'off';
+		if ($pfb['dnsbl_pytld'] == 'on' && !empty($pfb['dnsblconfig']['pfb_pytlds_gtld'])) {
+			$python_tld = 'on';
+		}
+
+		$python_cname = 'off';
+		if ($pfb['dnsbl_cname'] == 'on') {
+			$python_cname = 'on';
+		}
+
+		$python_tlds = '';
+		if (!empty($pfb['dnsblconfig']['pfb_pytlds_gtld'])) {
+			$python_tlds = $pfb['dnsblconfig']['pfb_pytlds_gtld'];
+		}
+		if (!empty($pfb['dnsblconfig']['pfb_pytlds_cctld'])) {
+			$python_tlds .= ',' . $pfb['dnsblconfig']['pfb_pytlds_cctld'];
+		}
+		if (!empty($pfb['dnsblconfig']['pfb_pytlds_itld'])) {
+			$python_tlds .= ',' . $pfb['dnsblconfig']['pfb_pytlds_itld'];
+		}
+		if (!empty($pfb['dnsblconfig']['pfb_pytlds_bgtld'])) {
+			$python_tlds .= ',' . $pfb['dnsblconfig']['pfb_pytlds_bgtld'];
+		}
+		$python_tlds = ltrim($python_tlds, ',');
+
+		$python_nolog = 'off';
+		if ($pfb['dnsbl_py_nolog'] == 'on') {
+			$python_nolog = 'on';
+		}
+
+		$now = date('m/d/y H:i:s', time());
+
+		$pfb_py_conf = <<<EOF
+; pfBlockerNG DNSBL Unbound python configuration file
+; pfb_unbound.ini [ File created: {$now} ]
+[MAIN]
+dnsbl_ipv4	= {$pfb['dnsbl_vip']}
+python_enable	= {$python_enable}
+python_ipv6	= {$python_ipv6}
+python_reply	= {$python_reply}
+python_blocking	= {$python_blocking}
+python_hsts	= {$python_hsts}
+python_idn	= {$python_idn}
+python_tld_seg	= {$tld_segments}
+python_tld	= {$python_tld}
+python_tlds	= {$python_tlds}
+python_nolog	= {$python_nolog}
+python_cname	= {$python_cname}
+
+[REGEX]
+
+EOF;
+		if ($pfb['dnsbl_regex'] == 'on' && isset($pfb['dnsbl_regex_list']) && !empty($pfb['dnsbl_regex_list'])) {
+			$regex = '';
+			$regex_list = pfbng_text_area_decode($pfb['dnsbl_regex_list'], TRUE, TRUE);
+			if (!empty($regex_list)) {
+				$counter = 1;
+				foreach ($regex_list as $key => $list) {
+					if (!isset($list[1])) {
+						$list[1] = "Regex_{$counter}";
+					} else {
+						$list[1] = trim(ltrim($list[1], '#'));
+						$list[1] = preg_replace("/\W/", '', str_replace(' ', '_', $list[1]));
+					}
+					$regex .= "{$list[1]} = {$list[0]}\n";
+					$counter++;
+				}
+			}
+			$pfb_py_conf .= <<<EOF
+{$regex}
+EOF;
+		}
+
+		// Compare previous ini file to new ini (bypass file timestamp string)
+		$pfb_py_conf_ex		= @file_get_contents($pfb['unbound_py_conf']);
+		$pfb_py_conf_ex2	= preg_replace("/File created:.* ]/", "File created: {$now} ]", $pfb_py_conf_ex);
+
+		if ($pfb_py_conf !== $pfb_py_conf_ex2) {
+			$pfbpython = TRUE;
+			@file_put_contents($pfb['unbound_py_conf'], $pfb_py_conf, LOCK_EX);
+		}
+	}
+
+	else {
+		$mode = 'disabled';
+
+		// Remove python settings from DNS Resolver configuration
+		if (isset($config['unbound']['python'])) {
+			unset($config['unbound']['python']);
+			$config['unbound']['python_order']	= '';
+			$config['unbound']['python_script']	= '';
+
+			$log = 'Removing DNSBL Unbound python integration settings';
+			pfb_logger("\n{$log}", 1);
+			write_config("pfBlockerNG: {$log}");
+		}
+	}
+
+	// Mount lib and bin folders
+	$base_py = '/usr/local';
+
+	$log = '';
+	foreach (array('/bin', '/lib') as $dir) {
+		$validate = exec("/sbin/mount | {$pfb['grep']} '{$pfb['dnsbldir']}{$base_py}{$dir}' 2>&1");
+
+		if ($mode == 'enabled' && empty($validate)) {
+			if (!is_dir("{$pfb['dnsbldir']}{$base_py}{$dir}")) {
+				$log .= "\n  Creating: {$pfb['dnsbldir']}{$base_py}{$dir}";
+				safe_mkdir("{$pfb['dnsbldir']}{$base_py}{$dir}");
+			}
+			$pfbpython = TRUE;
+			$log .= "\n  Mounting: /usr/local{$dir}";
+			exec("/sbin/mount_nullfs -o ro " . escapeshellarg("/usr/local{$dir}") . ' '
+				. escapeshellarg("{$pfb['dnsbldir']}{$base_py}{$dir}") . " 2>&1", $output, $retval);
+                        if ($retval != 0) {
+				$log .= "\n  Failed to mount [ /usr/local{$dir} ] to [ {$pfb['dnsbldir']}{$base_py}{$dir} ]!";
+			}
+		}
+	}
+
+	if (!empty($log)) {
+		pfb_logger("\nAdding DNSBL Unbound python mounts:{$log}\n", 1);
+	}
+
+	// Set flag to unmount python folders after the next reboot is completed to avoid crashing Unbound
+	if ($mode == 'disabled') {
+		$pfb['dnsbl_python_unmount'] = TRUE;
+	}
+	return $pfbpython;
+}
+
+
+// Unbound python unmount
+function pfb_unbound_python_unmount() {
+	global $pfb;
+
+	// Unmount lib and bin folders
+	$base_py = '/usr/local';
+
+	$log = '';
+	foreach (array('/bin', '/lib') as $dir) {
+		$validate = exec("/sbin/mount | {$pfb['grep']} '{$pfb['dnsbldir']}{$base_py}{$dir}' 2>&1");
+		if (!empty($validate)) {
+			$log .= "\n  Unmounting: /usr/local{$dir}";
+			exec("/sbin/umount -t nullfs {$pfb['dnsbldir']}{$base_py}{$dir} 2>&1", $output, $retval);
+                        if ($retval != 0) {
+				$log .= "\n  Failed to unmount [ {$pfb['dnsbldir']}{$base_py}{$dir} ]!";
+			}
+		}
+
+		foreach (array( "/usr/local{$dir}", '/usr/local', '/usr') as $folder) {
+			if (is_dir("{$pfb['dnsbldir']}{$folder}")) {
+				$log .= "\n  Removing: {$pfb['dnsbldir']}{$folder}";
+				@rmdir("{$pfb['dnsbldir']}{$folder}");
+			}
+
+			// Delete remaining subfolders on next loop
+			if ($dir == '/bin') {
+				break;
+			}
+		}
+	}
+
+	if (!empty($log)) {
+		pfb_logger("\nRemoving DNSBL Unbound python mounts:{$log}\n", 1);
 	}
 }
 
@@ -1377,13 +2074,20 @@ function tld_search($tld, $dparts, $j, $k) {
 function tld_analysis() {
 	global $pfb, $tlds;
 
-	pfb_logger("TLD:\n", 1);
+	if (!file_exists("{$pfb['dnsbl_file']}.raw")) {
+		pfb_logger("\n\nTLD Analysis not required.", 1);
+		return;
+	}
+
+	pfb_logger("\nTLD:\n", 1);
 
 	$domain_cnt = 0;
 	$pfb_found = FALSE;				// Flag to determine if TLD 'redirect' zones found
-	rmdir_recursive("{$pfb['dnsbl_tmpdir']}");
-	safe_mkdir("{$pfb['dnsbl_tmpdir']}");
 
+	rmdir_recursive("{$pfb['dnsbl_tmpdir']}");
+	if (!$pfb['dnsbl_py_blacklist']) {
+		safe_mkdir("{$pfb['dnsbl_tmpdir']}");
+	}
 	unlink_if_exists("{$pfb['dnsbl_file']}.tsp");
 	unlink_if_exists("{$pfb['dnsbl_tld_txt']}.*");
 	unlink_if_exists("{$pfb['dnsbl_tld_remove']}.tsp");
@@ -1410,15 +2114,33 @@ function tld_analysis() {
 		return;
 	}
 
+	// DNSBL python - create file handles for data, zone, and remove files
+	if ($pfb['dnsbl_py_blacklist']) {
+		$p_data = @fopen("{$pfb['unbound_py_data']}.raw", 'w');
+		$p_zone = @fopen("{$pfb['unbound_py_zone']}.raw", 'w');
+		$p_tsp = @fopen("{$pfb['dnsbl_tld_remove']}", 'w');
+
+		if ((get_resource_type($p_data) != 'stream') ||
+		    (get_resource_type($p_zone) != 'stream') ||
+		    (get_resource_type($p_tsp) != 'stream')) {
+			pfb_logger("\nFailed to create DNSBL python data|zone|remove file handles! Exiting\n", 1);
+			return;
+		}
+	}
+
 	// Collect TLD Blacklist(s). If configured the whole TLD will be blocked
 	$tld_blacklist = pfbng_text_area_decode($pfb['dnsblconfig']['tldblacklist'], TRUE, FALSE);
 	if (!empty($tld_blacklist)) {
 		$tld_blacklist = array_flip($tld_blacklist);
 	}
 
-	// Collect TLD Whitelist(s). If configured, create a 'static local-zone' Resolver entry
-	$whitelist = pfbng_text_area_decode($pfb['dnsblconfig']['tldwhitelist'], TRUE, FALSE);
-	$tld_whitelist = array();
+	// Collect TLD Whitelist(s). If configured, create a 'static local-zone' Resolver entry (Not required for python mode blocking)
+	$whitelist = array();
+	if (!$pfb['dnsbl_py_blacklist']) {
+		$whitelist = pfbng_text_area_decode($pfb['dnsblconfig']['tldwhitelist'], TRUE, FALSE);
+		$tld_whitelist = array();
+	}
+
 	if (!empty($tld_blacklist) && !empty($whitelist)) {
 		foreach ($whitelist as $domain) {
 
@@ -1429,7 +2151,7 @@ function tld_analysis() {
 
 			// Resolve Domain IP address
 			else {
-				$resolved_host = exec("/usr/bin/drill -4 @{$pfb['extdns']} {$domain} | grep -v '^;\|^$' | head -1 | cut -d '\t' -f5 2>&1");
+				$resolved_host = exec("/usr/bin/drill @{$pfb['extdns']} {$domain} | grep -v '^;\|^$' | head -1 | cut -f5 2>&1");
 			}
 
 			$tld = '';
@@ -1474,6 +2196,28 @@ function tld_analysis() {
 			$tld = trim($tld, '.');				// Remove any leading/trailing dots
 			$tld_blacklist[$tld] = '';			// Add new TLD entry
 
+			// DNSBL python - TLD Blacklist (Set logging type to enabled '1')
+			if ($pfb['dnsbl_py_blacklist']) {
+				$tld_cnt++;
+				$pfb_found = TRUE;
+				$tld_segments = @max((array((substr_count($tld, '.') +1), $tld_segments) ?: 1));
+
+				pfb_logger("{$tld}|", 1);
+				@fwrite($p_zone, ",{$tld},,1,DNSBL_TLD,DNSBL_TLD\n");
+
+				// Add TLD to remove file
+				@fwrite($p_tsp, ".{$tld},,\n");
+
+				// Collect List of TLDs and save to DNSBL folder
+				$tld_list .= ",{$tld},,\n";
+
+				// Remove any 'TLD Blacklists' from the 'TLD master list'
+				if (isset($tlds[$tld])) {
+					unset($tlds[$tld]);
+				}
+				continue;
+			}
+
 			$dnsbl_file = "{$pfb['dnsbl_tmpdir']}/DNSBL_{$tld}.txt";
 			if (!file_exists($dnsbl_file)) {
 
@@ -1489,17 +2233,43 @@ function tld_analysis() {
 					$whitelist = $tld_whitelist[$tld];
 
 					foreach ($whitelist as $list) {
-						$dnsbl_line .= "local-data: \"{$list[0]} A {$list[1]}\"\n";
-
-						// Collect list of TLDs and save to DNSBL folder
-						$tld_list .= "{$tld} | {$list[0]} A {$list[1]}\n";
+						$ip_type = is_ipaddr($list[1]);
+						switch ($ip_type) {
+							case 4:
+								$dnsbl_line .= "local-data: \"{$list[0]} A {$list[1]}\"\n";
+								$tld_list .= "{$tld} | {$list[0]} A {$list[1]}\n";
+								if ($pfb['dnsbl_v6'] == 'on') {
+									$r = exec("/usr/bin/drill @{$pfb['extdns']} AAAA {$list[0]} | grep -v '^;\|^$' | head -1 | cut -f5 2>&1");
+									if (is_ipaddrv6($r)) {
+										$dnsbl_line .= "local-data: \"{$list[0]} AAAA {$r}\"\n";
+										$tld_list .= "{$list[0]} AAAA {$r}\"\n";
+									}
+								}
+								break;
+							case 6:
+								$r = exec("/usr/bin/drill @{$pfb['extdns']} A {$list[0]} | grep -v '^;\|^$' | head -1 | cut -f5 2>&1");
+								if (is_ipaddrv4($r)) {
+									$dnsbl_line .= "local-data: \"{$list[0]} A {$r}\"\n";
+									$tld_list .= "{$tld} | {$list[0]} A {$r}\"\n";
+								}
+								$dnsbl_line .= "local-data: \"{$list[0]} AAAA {$list[1]}\"\n";
+								$tld_list .= "{$tld} | {$list[0]} AAAA {$list[1]}\"\n";
+								break;
+							default:
+								break;
+						}
 					}
 				}
 
 				// Create 'redirect' zone for whole TLD
 				else {
 					pfb_logger("{$tld}|", 1);
-					$dnsbl_line = "local-zone: \"{$tld}\" redirect local-data: \"{$tld} 60 IN A {$pfb['dnsbl_vip']}\"\n";
+
+					$ipv6_dnsbl = '';
+					if ($pfb['dnsbl_v6'] == 'on') {
+						$ipv6_dnsbl = " local-data: \"{$tld} 60 IN AAAA ::{$pfb['dnsbl_vip']}\"";
+					}
+					$dnsbl_line = "local-zone: \"{$tld}\" redirect local-data: \"{$tld} 60 IN A {$pfb['dnsbl_vip']}\"{$ipv6_dnsbl}\n";
 
 					// Collect List of TLDs and save to DNSBL folder
 					$tld_list .= "{$tld}\n";
@@ -1563,10 +2333,11 @@ function tld_analysis() {
 	// [ $pfb['dnsbl_file']}.tsp	] Final DNSBL output file (using 'transparent' zone)
 	// [ $pfb['dnsbl_tld_remove']	] File of Sub-Domains to be removed (from 'redirect' zone)
 
-	// Analyse DNSBL: 1) 'redirect' zone for whole Domain 2) 'transparent' zone only
+	// DNSBL Unbound: Analyse DNSBL: 1) 'redirect' zone for whole Domain 2) 'transparent' zone only
+	// DNSBL python: Analyse DNSBL into local and zone files
+
 	if (($fhandle = @fopen("{$pfb['dnsbl_file']}.raw", 'r')) !== FALSE) {
 		while (($line = @fgets($fhandle)) !== FALSE) {
-
 			if (empty($line)) {
 				continue;
 			}
@@ -1581,17 +2352,40 @@ function tld_analysis() {
 				}
 			}
 
-			$eparts	= explode(' ', str_replace('"', '', $line));
-			$domain = $eparts[1];
-			$sinkip = str_replace("\n", '', "{$eparts[5]}");
+			// DNSBL python blocking mode
+			if ($pfb['dnsbl_py_blacklist']) {
+				$eparts = explode(',', $line, 3);
+				$domain = $eparts[1];
+				$dparts = explode('.', $domain);
+				$dcnt   = count($dparts);
+				$tld    = end($dparts);
+				$d_info = $eparts[2]; // Logging Type/Header/Alias group details
+				$dfound	= '';
+			}
 
-			$dparts = explode('.', $domain);
-			$dcnt	= count($dparts);
-			$tld	= end($dparts);
-			$dfound = '';
+			// DNSBL Unbound blocking mode
+			else {
+				$eparts = explode(' ', str_replace('"', '', $line), 3);
+				$domain = $eparts[1];
+				$s_info = trim($eparts[2]);
 
-			// Determine if TLD exists in TLD Blacklist
-			if (!empty($tld_blacklist)) {
+				if ($pfb['dnsbl_v6'] == 'on') {
+					// Determine if DNSBL Logging is disabled and switch to '::'
+					if (strpos($s_info, ' A 0.0.0.0') !== FALSE) {
+						$s_info6 = str_replace(' A 0.0.0.0', ' AAAA ::', $s_info);
+					} else {
+						$s_info6 = str_replace(' A ', ' AAAA ::', $s_info);
+					}
+				}
+
+				$dparts = explode('.', $domain);
+				$dcnt	= count($dparts);
+				$tld	= end($dparts);
+				$dfound = '';
+			}
+
+			// Determine if TLD exists in TLD Blacklist (skip for DNSBL python)
+			if (!$pfb['dnsbl_py_blacklist'] && !empty($tld_blacklist)) {
 
 				// Determine minimum 'tld level' for loop efficiency
 				$min_cnt = @min(array($tld_segments, ($dcnt -1)));
@@ -1633,35 +2427,60 @@ function tld_analysis() {
 
 			// Create 'redirect' zone for Domain
 			if (!empty($dfound)) {
-
 				$pfb_found = TRUE;
-				$domain_line = "local-zone: \"{$dfound}\" redirect local-data: \"{$dfound} 60 IN A {$sinkip}\"\n";
-				@file_put_contents("{$pfb['dnsbl_file']}.tsp", $domain_line, FILE_APPEND | LOCK_EX);
 
-				// Add Domain to remove file for [ 1- 'redirect zone' Domains 2- Unbound memory domains ]
-				// This removes any of these domains and sub-domains
-				@file_put_contents("{$pfb['dnsbl_tld_remove']}", ".{$dfound} 60\n\"{$dfound} 60\n", FILE_APPEND | LOCK_EX);
+				// DNSBL python blocking mode
+				if ($pfb['dnsbl_py_blacklist']) {
+					@fwrite($p_zone, ",{$dfound},{$d_info}");
 
-				// Add Domain to remove file for 'transparent zone' domains
-				// This removes any of these sub-domains
-				@file_put_contents("{$pfb['dnsbl_tld_remove']}.tsp", ".{$dfound} 60\n", FILE_APPEND | LOCK_EX);
+					// TLD remove files - See below for description
+					@fwrite($p_tsp, ".{$dfound},,\n");
+				}
+				else {
+					$ipv6_dnsbl = '';
+					if ($pfb['dnsbl_v6'] == 'on') {
+						$ipv6_dnsbl = " local-data: \"{$dfound} {$s_info6}\"";
+					}
+					$domain_line = "local-zone: \"{$dfound}\" redirect local-data: \"{$dfound} {$s_info}\"{$ipv6_dnsbl}\n";
+					@file_put_contents("{$pfb['dnsbl_file']}.tsp", $domain_line, FILE_APPEND | LOCK_EX);
+
+					// Add Domain to remove file for [ 1- 'redirect zone' Domains 2- Unbound memory domains ]
+					// This removes any of these domains and sub-domains
+					@file_put_contents("{$pfb['dnsbl_tld_remove']}", ".{$dfound} 60\n\"{$dfound} 60\n", FILE_APPEND | LOCK_EX);
+
+					// Add Domain to remove file for 'transparent zone' domains
+					// This removes any of these sub-domains
+					@file_put_contents("{$pfb['dnsbl_tld_remove']}.tsp", ".{$dfound} 60\n", FILE_APPEND | LOCK_EX);
+				}
 			}
 
 			// Create 'transparent zone' for Sub-Domain
 			else {
-				if (!empty($tld)) {
-					$dnsbl_file = "{$pfb['dnsbl_tmpdir']}/DNSBL_{$tld}.txt";
-
-					// Create a temp file for each TLD. w/ 'transparent' header followed by each 'local-data' line
-					if (!file_exists($dnsbl_file)) {
-						$dnsbl_header = "local-zone: \"{$tld}\" \"transparent\"\n";
-						@file_put_contents($dnsbl_file, $dnsbl_header, LOCK_EX);
-					}
-					@file_put_contents($dnsbl_file, $line, FILE_APPEND | LOCK_EX);
+				// DNSBL python blocking mode
+				if ($pfb['dnsbl_py_blacklist']) {
+					@fwrite($p_data, ",{$domain},{$d_info}");
 				}
 				else {
-					$oline = htmlentities($line);
-					pfb_logger("\nDebug: Missing TLD: {$oline}", 1);
+					if (!empty($tld)) {
+						$dnsbl_file = "{$pfb['dnsbl_tmpdir']}/DNSBL_{$tld}.txt";
+
+						// Create a temp file for each TLD. w/ 'transparent' header followed by each 'local-data' line
+						if (!file_exists($dnsbl_file)) {
+							$dnsbl_header = "local-zone: \"{$tld}\" \"transparent\"\n";
+							@file_put_contents($dnsbl_file, $dnsbl_header, LOCK_EX);
+						}
+
+						$ipv6_dnsbl = '';
+						if ($pfb['dnsbl_v6'] == 'on') {
+							$ipv6_dnsbl = " local-data: \"{$domain} {$s_info6}\"";
+						}
+						$domain_line = "local-data: \"{$domain} {$s_info}\"{$ipv6_dnsbl}\n";
+						@file_put_contents($dnsbl_file, $domain_line, FILE_APPEND | LOCK_EX);
+					}
+					else {
+						$oline = htmlentities($line);
+						pfb_logger("\nDebug: Missing TLD: {$oline}", 1);
+					}
 				}
 			}
 
@@ -1671,6 +2490,10 @@ function tld_analysis() {
 	}
 
 	@fclose($fhandle);
+	@fclose($p_data);
+	@fclose($p_zone);
+	@fclose($p_tsp);
+
 	unset($tlds, $tld_blacklist, $tld_exclusion);
 
 	// TLD 'redirect zones' found. Finalize TLD function
@@ -1683,18 +2506,22 @@ function tld_analysis() {
 		$log .= "TLD finalize";
 		pfb_logger("{$log}", 1);
 
-		// Create a csv list of 'recently updated' DNSBL Feeds, as ordered by User
-		$dnsbl_feeds = '';
-		if (!empty($pfb['tld_update'])) {
-			foreach ($pfb['tld_update'] as $alias => $data) {
-				foreach ($data['feeds'] as $feed) {
-					$dnsbl_feeds .= "{$feed},";
+		// Execute Domain De-duplication
+		if ($pfb['dnsbl_py_blacklist']) {
+			exec("{$pfb['script']} domaintldpy >> {$pfb['log']} 2>&1");
+		}
+		else {
+			// Create a csv list of 'recently updated' DNSBL Feeds, as ordered by User
+			$dnsbl_feeds = '';
+			if (!empty($pfb['tld_update'])) {
+				foreach ($pfb['tld_update'] as $alias => $data) {
+					foreach ($data['feeds'] as $feed) {
+						$dnsbl_feeds .= "{$feed},";
+					}
 				}
 			}
+			exec("{$pfb['script']} domaintld x x x {$dnsbl_feeds} >> {$pfb['log']} 2>&1");
 		}
-
-		// Execute Domain De-duplication
-		exec("{$pfb['script']} domaintld x x x {$dnsbl_feeds} >> {$pfb['log']} 2>&1");
 		pfb_logger("\nTLD finalize... completed [ NOW ]\n", 1);
 
 		// Update DNSBL Alias and Widget Stats
@@ -1716,73 +2543,175 @@ function tld_analysis() {
 
 	// Save DNSBL Alias statistics
 	dnsbl_save_stats();
+
+	if ($pfb['dnsbl_py_blacklist'] && file_exists("{$pfb['dnsbl_file']}.raw")) {
+		unlink_if_exists("{$pfb['dnsbl_file']}.raw");
+	}
+}
+
+// Function to Start Unbound
+function pfb_stop_start_unbound($type) {
+	global $g, $pfb;
+
+	$final = array();
+	if (is_process_running('unbound')) {
+		pfb_logger("\nStopping Unbound Resolver", 1);
+		exec("{$pfb['chroot_cmd']} stop 2>&1");
+	}
+
+	// If unbound is still running, wait up to 30 seconds for it to terminate.
+	for ($i=1; $i <= 30; $i++) {
+		if (is_process_running('unbound')) {
+			pfb_logger('.', 1);
+			sleep(1);
+		}
+	}
+
+	// Add/Remove additional python mounts
+	if (file_exists('/var/unbound/pfb_unbound_include.inc')) {
+		$g['pfblockerng_include_verbose'] = TRUE;
+		pfb_logger("\nAdditional mounts{$type}:", 1);
+		require_once('/var/unbound/pfb_unbound_include.inc');
+		unset($g['pfblockerng_include_verbose']);
+	}
+
+	// Remove Unbound python mounts
+	if ($pfb['dnsbl_python_unmount']) {
+		pfb_unbound_python_unmount();
+	}
+
+	pfb_logger("\nStarting Unbound Resolver", 1);
+	exec("/usr/local/sbin/unbound -c /var/unbound/unbound.conf 2>&1", $final['result'], $final['retval']);
+	return $final;
 }
 
 
 // Reload Resolver
-function pfb_reload_unbound($mode, $chroot_cmd) {
+function pfb_reload_unbound($mode, $cache=FALSE, $pfbpython=FALSE) {
 	global $g, $pfb;
 
-	$cache_dumpfile = '/var/tmp/unbound_cache';
+	$final = array();
+	$type = '';
+	if ($mode == 'enabled' && $pfb['dnsbl_py_blacklist']) {
+		$type = ' (DNSBL python)';
+	}
+
+	if (!$pfb['dnsbl_py_blacklist'] && file_exists("{$pfb['dnsbl_file']}.raw")) {
+		@rename("{$pfb['dnsbl_file']}.raw", "{$pfb['dnsbl_file']}.conf");
+	}
+
 	unlink_if_exists("{$cache_dumpfile}");
+	if ($mode == 'enabled' && is_process_running('unbound') && !$pfb['dnsbl_python_unmount'] && !$pfbpython) {
 
-	exec("{$chroot_cmd} dump_cache > {$cache_dumpfile} 2>&1");
+		$log = "\nReloading Unbound Resolver{$type}";
+		pfb_logger($log, 1);
+
+		if ($cache && $pfb['dnsbl_cache'] == 'on') {
+			$cache_dumpfile = '/var/tmp/unbound_cache';
+			exec("{$pfb['chroot_cmd']} dump_cache > {$cache_dumpfile} 2>&1");
+			pfb_logger('.', 1);
+		}
+	}
+
+	$final = pfb_stop_start_unbound($type);
 	pfb_logger('.', 1);
 
-	exec("{$chroot_cmd} reload 2>&1", $result, $retval);
-	pfb_logger('.', 1);
+	if ($final['retval'] != 0) {
 
-	if ($retval != 0) {
+		@copy("{$pfb['dnsbldir']}/unbound.conf", "{$pfb['dnsbldir']}/unbound.conf.error");
 		if ($mode == 'enabled') {
-			$log = "\nDNSBL {$mode} FAIL - restoring Unbound conf *** Fix error(s) and a Force Reload required! ***\n";
-			pfb_logger("{$log}", 2);
-			$log = htmlspecialchars(implode("\n", $result));
+			if (!$pfb['dnsbl_py_blacklist']) {
+				$log = "\nDNSBL {$mode} FAIL - restoring Unbound conf *** Fix error(s) and a Force Reload required! ***\n";
 
-			// Try to restore previous DNSBL database
-			if (file_exists("{$pfb['dnsbl_file']}.bk")) {
-				@rename("{$pfb['dnsbl_file']}.bk", "{$pfb['dnsbl_file']}.conf");
+				// Try to restore previous DNSBL database
+				if (file_exists("{$pfb['dnsbl_file']}.bk")) {
+					@rename("{$pfb['dnsbl_file']}.bk", "{$pfb['dnsbl_file']}.conf");
+				}
+
+				// Wipe DNSBL database
+				else {
+					$log .= ' Restore previous database Failed!';
+					unlink_if_exists("{$pfb['dnsbl_file']}.conf");
+					touch("{$pfb['dnsbl_file']}.conf");
+
+					// Restore previous unbound.conf
+					if (file_exists("{$pfb['dnsbldir']}/unbound.bk")) {
+						@rename("{$pfb['dnsbldir']}/unbound.bk", "{$pfb['dnsbldir']}/unbound.conf");
+					}
+				}
 			}
-
-			// Wipe DNSBL database
 			else {
-				$log .= ' Restore previous database Failed! .';
-				unlink_if_exists("{$pfb['dnsbl_file']}.conf");
-				touch("{$pfb['dnsbl_file']}.conf");
-
-				// Restore previous unbound.conf
+				$log = "\nDNSBL {$mode} FAIL  *** Fix error(s) and a Force Reload required! ***\n";
 				if (file_exists("{$pfb['dnsbldir']}/unbound.bk")) {
 					@rename("{$pfb['dnsbldir']}/unbound.bk", "{$pfb['dnsbldir']}/unbound.conf");
 				}
 			}
-			pfb_logger("{$log}", 1);
+			pfb_logger("{$log}", 2);
 		}
 		else {
 			$log = "\nDNSBL {$mode} - Unbound conf update FAIL *** Fix error(s) and a Force Reload required! ***\n";
-			pfb_logger("{$log}", 1);
+			pfb_logger("{$log}", 2);
 		}
 
-		// Reload Resolver
-		exec("{$chroot_cmd} reload 2>&1", $result, $retval);
+		$log = htmlspecialchars(implode("\n", $final['result']));
+		pfb_logger("\n\n====================\n\n{$log}\n\n====================\n\n", 2);
+		$final = pfb_stop_start_unbound($type);
+	}
+
+	// Confirm that Resolver is running
+	if (is_process_running('unbound')) {
 		pfb_logger('.', 1);
-	}
 
-	if ($retval == 0 && file_exists($cache_dumpfile) && filesize($cache_dumpfile) > 0) {
-		exec("{$chroot_cmd} load_cache < {$cache_dumpfile} 2>&1", $result);
-	}
+		// $final['result'] will be appended with previous result above
+		exec("{$pfb['chroot_cmd']} status 2>&1", $final['result'], $final['retval']);
+		pfb_logger('.', 1);
+		if (preg_grep("/is running.../", $final['result'])) {
+			pfb_logger(" completed [ NOW ]", 1);
 
-	// Touch unbound pid file for Query daemon
-	if (file_exists("{$g['varrun_path']}/unbound.pid")) {
-		touch("{$g['varrun_path']}/unbound.pid");
+			// Restore Resolver cache
+			if ($cache && $pfb['dnsbl_cache'] == 'on' && file_exists($cache_dumpfile) && filesize($cache_dumpfile) > 0) {
+				exec("{$pfb['chroot_cmd']} load_cache < {$cache_dumpfile} 2>&1");
+				$log = "\nResolver cache restored [ NOW ]";
+				pfb_logger($log, 1);
+			}
+		}
+		else {
+			$log = htmlspecialchars(implode("\n", $final['result']));
+			pfb_logger(" Not completed. [ NOW ]\n{$log}\n", 1);
+		}
+	}
+	else {
+		$log = htmlspecialchars(implode("\n", $final['result']));
+		pfb_logger(" Not completed. [ NOW ]\n{$log}\n", 1);
+	}
+}
+
+
+// Function to clear Unbound/DNSBL work files
+function pfb_unbound_clear_work_files() {
+	global $pfb;
+
+	foreach (array( $pfb['dnsbl_cache'],
+			"{$pfb['dnsbldir']}/unbound.bk",
+			"{$pfb['dnsbldir']}/unbound.tmp",
+			"{$pfb['dnsbl_file']}.bk",
+			"{$pfb['dnsbl_file']}.tsp",
+			"{$pfb['dnsbl_file']}.sync",
+			"/tmp/dnsbl_remove*",
+			"/tmp/dnsbl_add*",
+			"/tmp/dnsbl_tld*",
+			"{$pfb['unbound_py_data']}.raw",
+			"{$pfb['unbound_py_zone']}.raw") as $remove) {
+		unlink_if_exists($remove);
 	}
 }
 
 
 // Load new DNSBL updates to Unbound Resolver
-function pfb_update_unbound($mode, $pfbupdate) {
+function pfb_update_unbound($mode, $pfbupdate, $pfbpython) {
 	global $g, $pfb;
 
 	if ($mode == 'enabled') {
-		pfb_logger(" completed [ NOW ]\n", 1);
 		$ext = '.bk';
 	} else {
 		$ext = '.*';	// Remove all DNSBL Unbound files
@@ -1808,6 +2737,7 @@ function pfb_update_unbound($mode, $pfbupdate) {
 		$pfbupdate = TRUE;
 		unlink_if_exists("{$pfb['dnsbl_file']}.reload");
 		unlink_if_exists("{$pfb['dnsbl_unlock']}");
+		unlink_if_exists("{$pfb['dnsbl_unlock']}.data");
 	}
 
 	// Backup existing unbound.conf and rename new unbound.conf file
@@ -1816,15 +2746,40 @@ function pfb_update_unbound($mode, $pfbupdate) {
 		@rename("{$pfb['dnsbldir']}/unbound.tmp", "{$pfb['dnsbldir']}/unbound.conf");
 	}
 
+	// When pfBlockerNG is disabled and 'keep blocklists' is disabled.
+	if ($pfb['enable'] == '' && $pfb['keep'] == '' && !$pfb['install']) {
+		unlink_if_exists("{$pfb['dnsbl_file']}{$ext}");
+	}
+
+	// Disable DNSBL
+	if (($pfb['enable'] != 'on' || $pfb['dnsbl'] != 'on') && !$pfb['install']) {
+
+		pfb_reload_unbound('disabled', FALSE, $pfbpython);
+		if (is_service_running('pfb_dnsbl')) {
+			pfb_logger("\nStop Service DNSBL", 1);
+			stop_service('pfb_dnsbl');
+		}
+		pfb_unbound_clear_work_files();
+
+		// Unmount Unbound python 'lib/bin' folders after Unbound has been reloaded with the python integration enabled
+		if ($pfb['dnsbl_python_unmount']) {
+			pfb_unbound_python_unmount();
+			unset($pfb['dnsbl_python_unmount']);
+		}
+		pfb_logger("\nDNSBL is disabled\n", 1);
+		return;
+	}
+
 	// Load new DNSBL updates
 	if (is_service_running('unbound')) {
-		$chroot_cmd = "/usr/sbin/chroot -u unbound -g unbound / /usr/local/sbin/unbound-control -c {$g['unbound_chroot_path']}/unbound.conf";
 
 		// 'Live sync' new DNSBL updates utilizing unbound-control
-		if ($pfb['dnsbl_sync'] && !$pfbupdate && filesize("{$pfb['dnsbl_file']}.conf") > 0) {
+		if (!$pfb['dnsbl_py_blacklist'] && $pfb['dnsbl_sync'] && !$pfbpython &&
+		    file_exists("{$pfb['dnsbl_file']}.conf") && filesize("{$pfb['dnsbl_file']}.conf") > 0) {
+
 			$sync_fail = FALSE;
 
-			pfb_logger('Resolver Live Sync analysis', 1);
+			pfb_logger("\nResolver Live Sync analysis", 1);
 			exec("{$pfb['script']} dnsbl_livesync >> {$pfb['log']} 2>&1");
 			pfb_logger(" completed [ NOW ]", 1);
 
@@ -1837,14 +2792,14 @@ function pfb_update_unbound($mode, $pfbupdate) {
 			if (!$pfb['dnsbl_tld']) {
 				unset($ucsync[0], $ucsync[2]);
 			}
-			
+
 			pfb_logger("\nResolver Live Sync finalizing:", 1);
 			foreach ($ucsync as $skey => $sync) {
 				$file = $pfb[$sync[0]];
 
 				if (filesize("{$file}") > 0) {
 					$result = array();
-					exec("{$chroot_cmd} {$sync[1]} < {$file}", $result, $retval);
+					exec("{$pfb['chroot_cmd']} {$sync[1]} < {$file}", $result, $retval);
 					$result	= implode("\n", $result);
 					$log	= "\n\t{$sync[2]}:\t\t{$result}";
 				}
@@ -1858,104 +2813,72 @@ function pfb_update_unbound($mode, $pfbupdate) {
 				}
 			}
 
-			if (!$sync_fail) {
-				pfb_logger("\nResolver Live Sync.", 1);
-			}
-			else {
+			if ($sync_fail) {
 				pfb_logger("\nResolver Live Sync ... FAILED!", 1);
-
-				// Reload Resolver
-				pfb_reload_unbound($mode, $chroot_cmd);
+				pfb_reload_unbound('reload', FALSE, $pfbpython);
 			}
 		}
 
 		// Do a full Reload of Unbound
 		else {
-			pfb_logger('Reloading Unbound Resolver', 1);
-			if (file_exists("{$pfb['dnsbl_file']}.raw")) {
-				@rename("{$pfb['dnsbl_file']}.raw", "{$pfb['dnsbl_file']}.conf");
-			}
-
-			// Reload Resolver
-			pfb_reload_unbound($mode, $chroot_cmd);
-			pfb_logger('.', 1);
+			pfb_reload_unbound($mode, TRUE, $pfbpython);
 		}
 	}
 
 	// Start Unbound Service with new DNSBL Updates
 	else {
-		pfb_logger('Starting Unbound Service..', 1);
-		if (file_exists("{$pfb['dnsbl_file']}.raw")) {
-			@rename("{$pfb['dnsbl_file']}.raw", "{$pfb['dnsbl_file']}.conf");
-		}
-
-		// Code from services_unbound.php 'apply'
-		$retval = services_unbound_configure();
-		if ($retval == 0) {
-			clear_subsystem_dirty('unbound');
-		}
-		system_resolvconf_generate();	// Update resolv.conf
-		system_dhcpleases_configure();	// Start or restart dhcpleases
+		pfb_reload_unbound($mode, FALSE, $pfbpython);
 	}
 
-	$result = array();
-	pfb_logger('.', 1);
-	exec("/usr/local/sbin/unbound-control -c {$pfb['dnsbldir']}/unbound.conf status 2>&1", $result);
-	pfb_logger('.', 1);
-	if (preg_grep("/is running.../", $result)) {
-		pfb_logger(" completed [ NOW ]\n", 1);
-	} else {
-		pfb_logger(" Not completed. [ NOW ]\n", 1);
+	if ($pfbpython) {
+		$log = "\nRestarting DNSBL Service (DNSBL python)";
+		pfb_logger("{$log}", 1);
+		restart_service('pfb_dnsbl');
 	}
 
-	$final_cnt = exec("{$pfb['grep']} -v '\"transparent\"\|\"static\"' {$pfb['dnsbl_file']}.conf | {$pfb['grep']} -c ^ 2>&1");
 	$dnsbl_cnt = exec("/bin/cat {$pfb['dnsdir']}/*.txt | {$pfb['grep']} -c ^ 2>&1");
-	if ($final_cnt == $dnsbl_cnt) {
-		$log = "DNSBL update [ {$final_cnt} | PASSED  ]... completed [ NOW ]";
-	} else {
-		$log = "\n*** DNSBL update [ {$final_cnt} ] [ {$dnsbl_cnt} ] ... OUT OF SYNC ! *** [ NOW ]";
+
+	// Unbound blocking mode enabled
+	if (!$pfb['dnsbl_py_blacklist']) {
+		$final_cnt = exec("{$pfb['grep']} -v '\"transparent\"\|\"static\"' {$pfb['dnsbl_file']}.conf | {$pfb['grep']} -c ^ 2>&1");
+		if ($final_cnt == $dnsbl_cnt) {
+			$log = "\nDNSBL update [ {$final_cnt} | PASSED  ]... completed [ NOW ]";
+		} else {
+			$log = "\n*** DNSBL update [ {$final_cnt} ] [ {$dnsbl_cnt} ] ... OUT OF SYNC ! *** [ NOW ]";
+		}
+		pfb_logger("{$log}", 1);
 	}
-	pfb_logger("{$log}", 1);
 
-	// Persist/remove Adv. custom option in Unbound conf file
-	pfb_unbound_dnsbl($mode);
-
-	// Remove DNSBL SQLite cache database
-	unlink_if_exists($pfb['dnsbl_cache']);
-
-	// Remove backup files
-	unlink_if_exists("{$pfb['dnsbldir']}/unbound.bk");
-	unlink_if_exists("{$pfb['dnsbldir']}/unbound.tmp");
-
-	// Remove TLD and Live sync work files
-	unlink_if_exists("/tmp/dnsbl_remove*");
-	unlink_if_exists("/tmp/dnsbl_add*");
-	unlink_if_exists("/tmp/dnsbl_tld*");
-
-	// When pfBlockerNG is disabled and 'keep blocklists' is disabled.
-	if ($pfb['enable'] == '' && $pfb['keep'] == '' && !$pfb['install']) {
-		unlink_if_exists("{$pfb['dnsbl_file']}{$ext}");
-	} else {
-		unlink_if_exists("{$pfb['dnsbl_file']}.bk");
+	// Python blocking mode enabled
+	else {
+		$tld_cnt = @file_get_contents($pfb['unbound_py_count']);
+		$dnsbl_cnt = $dnsbl_cnt - $tld_cnt;
+		$final_cnt = exec("/bin/cat {$pfb['unbound_py_data']} {$pfb['unbound_py_zone']} | {$pfb['grep']} -c ^ 2>&1");
+		if ($final_cnt == $dnsbl_cnt) {
+			$log = "\nDNSBL update [ {$final_cnt} | PASSED  ]... completed [ NOW ]";
+		} else {
+			$log = "\n*** DNSBL update [ {$final_cnt} ] [ {$dnsbl_cnt} ] ... OUT OF SYNC ! *** [ NOW ]";
+		}
+		pfb_logger("{$log}", 1);
 	}
 
 	// DEBUG Live Sync
-	if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && $pfb['dnsbl_sync'] && !$pfbupdate && !$sync_fail) {
+	if (!$pfb['dnsbl_py_blacklist'] && $pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && $pfb['dnsbl_sync'] && !$pfbupdate && !$pfbpython && !$sync_fail) {
 		pfb_logger("\n\nDNSBL DEBUG", 1);
 		$datacnt = $zonecnt = 0;
 
-		exec("{$chroot_cmd} list_local_data | {$pfb['grep']} '{$pfb['dnsbl_vip']}\|0\.0\.0\.0$' | {$pfb['grep']} -c ^ 2>&1", $datacnt, $retval);
+		exec("{$pfb['chroot_cmd']} list_local_data | {$pfb['grep']} '{$pfb['dnsbl_vip']}\|0\.0\.0\.0$' | {$pfb['grep']} -v 'AAAA' | {$pfb['grep']} -c ^ 2>&1", $datacnt, $retval);
 		$datacnt = implode($datacnt);
 		pfb_logger('.', 1);
 
 		if ($pfb['dnsbl_tld']) {
-			exec("{$chroot_cmd} list_local_zones | {$pfb['grep']} \"redirect\" | {$pfb['grep']} -c ^ 2>&1", $zonecnt, $retval);
+			exec("{$pfb['chroot_cmd']} list_local_zones | {$pfb['grep']} \"redirect\" | {$pfb['grep']} -c ^ 2>&1", $zonecnt, $retval);
 			pfb_logger('.', 1);
 			$zonecnt = implode($zonecnt);
 
 			$tldcnt = array('0');
 			if (file_exists('/var/db/pfblockerng/dnsbl/DNSBL_TLD.txt')) {
-				exec("{$pfb['grep']} -c ' A ' /var/db/pfblockerng/dnsbl/DNSBL_TLD.txt 2>&1", $tldcnt, $retval);
+				exec("{$pfb['grep']} -c ' A \| AAAA ' /var/db/pfblockerng/dnsbl/DNSBL_TLD.txt 2>&1", $tldcnt, $retval);
 			}
 			$tldcnt = implode($tldcnt);
 			$datacnt = $datacnt + $tldcnt;
@@ -1963,9 +2886,8 @@ function pfb_update_unbound($mode, $pfbupdate) {
 		pfb_logger("[ Data(s): {$datacnt}\tZone(s): {$zonecnt} | NOW ]", 1);
 	}
 
-	// Remove file marker to re-enable DNSBL Queries daemon
-	unlink_if_exists("{$pfb['dnsbl_file']}.sync");
-
+	// Clear work files
+	pfb_unbound_clear_work_files();
 	pfb_logger("\n------------------------------------------------------------------------", 1);
 }
 
@@ -1986,7 +2908,7 @@ function pfblockerng_top1m() {
 	}
 
 	$linecnt = $x = 0;
-	pfb_logger("Building TOP1M Whitelist [", 1);
+	pfb_logger(" Building TOP1M Whitelist [", 1);
 
 	if (($handle = @fopen("{$pfb['dbdir']}/top-1m.csv", 'r')) !== FALSE) {
 		$pfb_output = @fopen("{$pfb['dbdir']}/pfbalexawhitelist.txt", 'w');
@@ -2013,7 +2935,11 @@ function pfblockerng_top1m() {
 				$x++;
 
 				// Create three whitelist options per TOP1M whitelisted Domain
-				@fwrite($pfb_output, ".{$csvline[1]} 60\n\"{$csvline[1]} 60\n\"www.{$csvline[1]} 60\n");
+				if ($pfb['dnsbl_py_blacklist']) {
+					@fwrite($pfb_output, ".{$csvline[1]},,\n,{$csvline[1]},,\n,www.{$csvline[1]},,\n");
+				} else {
+					@fwrite($pfb_output, ".{$csvline[1]} 60\n\"{$csvline[1]} 60\n\"www.{$csvline[1]} 60\n");
+				}
 			}
 
 			if ($x >= $pfb['dnsbl_alexa_cnt']) {
@@ -2130,7 +3056,7 @@ function ip_explode($ip) {
 
 
 // Determine the header which Alerted an IP address and return the header name
-function find_reported_header($ip, $pfbfolder) {
+function find_reported_header($ip, $pfbfolder, $geoip=FALSE) {
 	global $pfb;
 
 	// Find exact IP match
@@ -2150,7 +3076,12 @@ function find_reported_header($ip, $pfbfolder) {
 		}
 
 		$cidrs = array();
-		exec("{$pfb['grep']} -s '^{$query}\.' {$pfbfolder} 2>&1", $result);
+		if (!$geoip) {
+			exec("{$pfb['grep']} -s '^{$query}\.' {$pfbfolder} 2>&1", $result);
+		} else {
+			$geoip_list = "Africa\|Antarctica\|Asia\|Europe\|North_America\|South_America\|Oceania\|Proxy_and_Satellite\|Top_Spammers";
+			exec("{$pfb['grep']} -s '^{$query}\.' {$pfb['ccdir']}/*.txt | {$pfb['grep']} -v '{$geoip_list}' 2>&1", $result);
+		}
 		if (!empty($result)) {
 			foreach ($result as $line) {
 				$rx = pfb_parse_query($line);
@@ -2491,7 +3422,7 @@ function pfb_download_failure($alias, $header, $pfbfolder, $list_url) {
 
 		if (!empty($ip)) {
 			// Query Firewall aliastables
-			$result = find_reported_header($ip, "{$pfbfolder}/*");
+			$result = find_reported_header($ip, "{$pfbfolder}/*", FALSE);
 			if (!empty($result) && $result[0] != 'Unknown') {
 				$log = " [ {$ip} ] Firewall IP block found in: [ {$result[0]} | {$result[1]} ]\n";
 				pfb_logger("{$log}", 2);
@@ -2635,7 +3566,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype, $pfb_log, $agateway_in='
 			if (!empty($aproto_out)) {
 				$rule['protocol'] = "{$aproto_out}";
 			}
-			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
+			if ($pfb['global_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
 			if (!empty($agateway_out) && $agateway_out != 'default') {
@@ -2678,7 +3609,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype, $pfb_log, $agateway_in='
 			if (!empty($aproto_in)) {
 				$rule['protocol'] = "{$aproto_in}";
 			}
-			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
+			if ($pfb['global_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
 			if (!empty($agateway_in) && $agateway_in != 'default') {
@@ -2720,7 +3651,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype, $pfb_log, $agateway_in='
 			if (!empty($aproto_out)) {
 				$rule['protocol'] = "{$aproto_out}";
 			}
-			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
+			if ($pfb['global_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
 			if (!empty($agateway_out) && $agateway_out != 'default') {
@@ -2763,7 +3694,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype, $pfb_log, $agateway_in='
 			if (!empty($aproto_in)) {
 				$rule['protocol'] = "{$aproto_in}";
 			}
-			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
+			if ($pfb['global_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
 			if (!empty($agateway_in) && $agateway_in != 'default') {
@@ -2803,7 +3734,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype, $pfb_log, $agateway_in='
 			if (!empty($aproto_out)) {
 				$rule['protocol'] = "{$aproto_out}";
 			}
-			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
+			if ($pfb['global_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
 			if (!empty($agateway_out) && $agateway_out != 'default') {
@@ -2842,7 +3773,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype, $pfb_log, $agateway_in='
 			if (!empty($aproto_in)) {
 				$rule['protocol'] = "{$aproto_in}";
 			}
-			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
+			if ($pfb['global_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
 			if (!empty($agateway_in) && $agateway_in != 'default') {
@@ -2899,6 +3830,7 @@ function pfb_aliastables($mode) {
 
 		// Check conf file for earlyshellcmd/shellcmd package settings
 		elseif ($mode == 'conf') {
+
 			// Add earlyshellcmd settings
 			if (!empty($a_earlyshellcmd)) {
 				if (!preg_grep("/pfblockerng.sh aliastables/", $a_earlyshellcmd)) {
@@ -3437,6 +4369,11 @@ function pfb_collect_localhosts() {
 		}
 	}
 
+	// Add localhost hostname
+	if (!isset($local_hosts['127.0.0.1'])) {
+		$local_hosts['127.0.0.1'] = strtolower(($config['system']['hostname'] ?: 'pfSense') . '.' . ($config['system']['domain'] ?: 'localdomain'));
+	}
+
 	return $local_hosts;
 }
 
@@ -3665,10 +4602,10 @@ function pfb_daemon_filterlog() {
 					}
 
 					switch (TRUE) {
-						case isset($local_hosts["{$client}:{$port}"]):
+						case isset($local_hosts["{$client}:{$port}"]) && !empty($local_hosts["{$client}:{$port}"]):
 							$hostname = $local_hosts["{$client}:{$port}"];
 							break;
-						case isset($local_hosts[$client]):
+						case isset($local_hosts[$client]) && !empty($local_hosts[$client]):
 							$hostname = $local_hosts[$client];
 							break;
 						default:
@@ -3676,12 +4613,17 @@ function pfb_daemon_filterlog() {
 					}
 
 					// Find the header which alerted this host
-					$pfb_query = find_reported_header($host, $folder);
+					$geoip_folder = FALSE;
+					$geoip_validate = substr($pfb_alias, 0, -3);
+					if (isset($pfb['continent_list'][$geoip_validate])) {
+						$geoip_folder = TRUE;
+					}
+					$pfb_query = find_reported_header($host, $folder, $geoip_folder);
 
 					// Report specific ET IQRisk details
 					if ($et_enabled && strpos($pfb_query[0], "{$et_header}") !== FALSE) {
 						$ET_orig = $pfb_query;
-						$pfb_query = find_reported_header($host, "{$pfb['etdir']}/*");
+						$pfb_query = find_reported_header($host, "{$pfb['etdir']}/*", FALSE);
 
 						// ET IQRisk category is unknown.
 						if ($pfb_query[1] == 'Unknown') {
@@ -3761,7 +4703,7 @@ function pfb_daemon_filterlog() {
 
 									// Create string '| ASN | Name | Description |' from json fields
 									$final = json_decode($result);
-									if (is_object($final)) {
+									if (is_object($final) && is_object($final->data->prefixes[0]->asn)) {
 										foreach ($final->data->prefixes[0]->asn as $key => $line) {
 											if ($key == 'country_code') {
 												break;
@@ -3805,7 +4747,7 @@ function pfb_daemon_filterlog() {
 						}
 					}
 
-					// Log:		"Date/Timestamp/Tracker ID/Interface/Interface Name/Action/IP Version"
+					// Log:		"Date timestamp/Tracker ID/Interface/Interface Name/Action/IP Version"
 					$log		= "{$f[0]} {$f[1]} {$f[2]},{$d[3]},{$d[4]},{$int},{$d[6]},{$d[8]},";
 
 					$resolved_host	= gethostbyaddr($host) ?: 'Unknown';
@@ -3813,7 +4755,7 @@ function pfb_daemon_filterlog() {
 						$resolved_host = 'Unknown';
 					}
 
-					// Details:	"Direction/GeoIP/Aliasname/IP evaluated/Feed Name/Resolved Hostname/Client Hostname"
+					// Details:	"Direction/GeoIP/Aliasname/IP evaluated/Feed Name/Resolved Hostname/Client Hostname/ASN/Duplicate status"
 					$details	= "{$dir},{$geoip},{$pfb_alias},{$pfb_query[1]},{$pfb_query[0]},{$resolved_host},{$hostname},{$asn}";
 
 					// Reverse Match text
@@ -3886,57 +4828,122 @@ function pfb_dnsbl_parse($domain, $src_ip, $req_agent) {
 
 	// If domain is not in DNSBL cache, query for blocked domain details
 	if (!$dnsbl_cache) {
+		$o_domain = $domain; // Store original domain for CNAME query
 
-		$domainparse	= str_replace('.', '\.', $domain);
-		$dquery		= " \"{$domainparse} 60";
+		while (TRUE) {
 
-		$pfb_feed	= pfb_parse_line(exec("{$pfb['grep']} -sHm1 '{$dquery}' {$pfb['dnsdir']}/*.txt 2>&1"));
-		$pfb_group	= $pfb_type = $pfb_final = 'Unknown';
-
-		// Exact Domain match found
-		if (!empty($pfb_feed)) {
-			$pfb_group	= pfb_parse_line(exec("{$pfb['grep']} -sHm1 '{$dquery}' {$pfb['dnsalias']}/* 2>&1"));
-
-			// Determine DNSBL Type
-			$pfb_type = 'DNSBL';
-			if (gethostbyname("sub.{$domain}") == $pfb['dnsbl_vip']) {
-				$pfb_type = 'TLD';
+			$domainparse = str_replace('.', '\.', $domain);
+			if ($pfb['dnsbl_py_blacklist']) {
+				$dquery = ",{$domainparse},,";
+				$pfb_feed = exec("{$pfb['grep']} -shm1 '{$dquery}' {$pfb['unbound_py_data']} 2>&1");
+			} else {
+				$dquery = " \"{$domainparse} 60";
+				$pfb_feed = pfb_parse_line(exec("{$pfb['grep']} -sHm1 '{$dquery}' {$pfb['dnsdir']}/*.txt 2>&1"));
 			}
-			$pfb_final	= $domain;
-		}
+			$pfb_group = $pfb_type = $pfb_final = 'Unknown';
 
-		else {
-			$dparts 	= explode('.', $domain);
-			unset($dparts[0]);
-			$dcnt		= count($dparts);
+			// Exact Domain match found
+			if (!empty($pfb_feed)) {
 
-			for ($i=0; $i <= $dcnt; $i++) {
+				if ($pfb['dnsbl_py_blacklist']) {
+					list($dummy, $pfb_final, $empty_placeholder, $log_type, $pfb_feed, $pfb_group) = explode(',', $pfb_feed);
+					$pfb_type = 'DNSBL';
+				}
+				else {
+					$pfb_group = pfb_parse_line(exec("{$pfb['grep']} -sHm1 '{$dquery}' {$pfb['dnsalias']}/* 2>&1"));
 
-				$domainparse	= str_replace('.', '\.', implode('.', $dparts));
-				$dquery		= " \"{$domainparse} 60";
-
-				// Determine if TLD exists in TLD Blacklist
-				if (file_exists("{$pfb['dnsbl_tld_txt']}")) {
-					exec("/usr/bin/grep -l '^{$domainparse}$' {$pfb['dnsbl_tld_txt']} 2>&1", $match);
-					if (!empty($match[0])) {
-						$pfb_group = $pfb_feed = $pfb_type = 'DNSBL_TLD';
-						$pfb_final = $domainparse;
-						break;
+					// Determine DNSBL Type
+					$pfb_type = 'DNSBL';
+					if (gethostbyname("dnsbl.test.{$domain}") == $pfb['dnsbl_vip']) {
+						$pfb_type = 'TLD';
 					}
+					$pfb_final = $domain;
+				}
+			}
+
+			else {
+				$dparts = explode('.', $domain);
+				if (!$pfb['dnsbl_py_blacklist']) {
+					unset($dparts[0]);
+				}
+				$dcnt = count($dparts);
+
+				for ($i=0; $i <= $dcnt; $i++) {
+
+					$domainparse = str_replace('.', '\.', implode('.', $dparts));
+					if (!$pfb['dnsbl_py_blacklist']) {
+						$dquery	= " \"{$domainparse} 60";
+
+						// Determine if TLD exists in TLD Blacklist
+						if (file_exists("{$pfb['dnsbl_tld_txt']}")) {
+							exec("/usr/bin/grep -l '^{$domainparse}$' {$pfb['dnsbl_tld_txt']} 2>&1", $match);
+							if (!empty($match[0])) {
+								$pfb_group = $pfb_feed = $pfb_type = 'DNSBL_TLD';
+								$pfb_final = $domainparse;
+								break;
+							}
+						}
+					}
+
+					if ($pfb['dnsbl_py_blacklist']) {
+						$dquery = ",{$domainparse},,";
+						$pfb_feed = exec("{$pfb['grep']} -shm1 '{$dquery}' {$pfb['unbound_py_zone']} 2>&1");
+
+						// Collect Alias Group name
+						if (!empty($pfb_feed)) {
+							list($dummy, $d_found, $empty_placeholder, $log_type, $pfb_feed, $pfb_group) = explode(',', $pfb_feed);
+
+							$pfb_final = str_replace('\.', '.', $domainparse);
+							$pfb_type = 'TLD';
+							if ($pfb_feed == 'DNSBL_TLD') {
+								$pfb_type = 'DNSBL_TLD';
+							}
+							break;
+						}
+					}
+					else {
+						$pfb_feed = pfb_parse_line(exec("{$pfb['grep']} -sHm1 '{$dquery}' {$pfb['dnsdir']}/*.txt 2>&1"));
+					
+						// Collect Alias Group name
+						if (!empty($pfb_feed)) {
+							$pfb_group	= pfb_parse_line(exec("{$pfb['grep']} -sHm1 '{$dquery}' {$pfb['dnsalias']}/* 2>&1"));
+							$pfb_type	= 'TLD';
+							$pfb_final	= str_replace('\.', '.', $domainparse);
+							break;
+						}
+					}
+					unset($dparts[$i]);
+				}
+			}
+
+			// Query for CNAME(s)
+			if (empty($pfb_feed)) {
+				if (!isset($cnames)) {
+					exec("/usr/bin/drill {$domain} @{$pfb['extdns']} | /usr/bin/awk '/CNAME/ {sub(\"\.$\", \"\", $5); print $5;}'", $cnames);
+					$cname_cnt = count($cnames);
+				}
+				if (is_array($cnames) && !empty($cnames)) {
+					$domain = array_shift($cnames);
 				}
 
-				$pfb_feed = pfb_parse_line(exec("{$pfb['grep']} -sHm1 '{$dquery}' {$pfb['dnsdir']}/*.txt 2>&1"));
-				// Collect Alias Group name
-				if (!empty($pfb_feed)) {
-					$pfb_group	= pfb_parse_line(exec("{$pfb['grep']} -sHm1 '{$dquery}' {$pfb['dnsalias']}/* 2>&1"));
-					$pfb_type	= 'TLD';
-					$pfb_final	= str_replace('\.', '.', $domainparse);
+				if ($cname_cnt == 0) {
+					$domain = $o_domain; // No CNAME match found, revert back to original domain
 					break;
 				}
-				unset($dparts[$i]);
+				$cname_cnt--;
+			}
+			else {
+				break;
 			}
 		}
 		$pfb_feed = $pfb_feed ?: 'Unknown';
+
+		if (isset($cnames)) {
+			unset($cnames);
+			if ($pfb_feed != 'Unknown') {
+				$pfb_type = "{$pfb_type}-CNAME";
+			}
+		}
 
 		// Save entry to DNSBL cache
 		$db_update = "INSERT into dnsblcache ( type, domain, groupname, final, feed ) VALUES ( :type, :domain, :groupname, :final, :feed )";
@@ -4103,11 +5110,11 @@ function pfb_open_sqlite($table, $message) {
 		$db_table	= 'dnsbl';
 		$db_create	= "CREATE TABLE IF NOT EXISTS dnsbl ( groupname TEXT, timestamp TEXT, entries TEXT, counter INTEGER );";
 	} elseif ($table == 2) {
-		$database	= $pfb['dnsbl_levent'];
+		$database	= $pfb['dnsbl_resolver'];
 		$db_table	= 'lastevent';
 		$db_create	= "CREATE TABLE IF NOT EXISTS lastevent ( row INTEGER, groupname TEXT, entry TEXT, details TEXT );";
 	} elseif ($table == 3) {
-		$database	= $pfb['dnsbl_levent'];
+		$database	= $pfb['dnsbl_resolver'];
 		$db_table	= 'resolver';
 		$db_create	= "CREATE TABLE IF NOT EXISTS resolver ( row INTEGER, totalqueries INTEGER, queries INTEGER );";
 	} elseif ($table == 4) {
@@ -4170,9 +5177,14 @@ function pfb_open_sqlite($table, $message) {
 			@file_put_contents($pfb['errlog'], "\nDNSBL_SQL: Database failure - {$message}", FILE_APPEND | LOCK_EX);
 			return;
 		}
+
+		if ($table <= 3 && file_exists($database)) {
+			@chown($database, 'unbound');
+			@chgrp($database, 'unbound');
+                }
 		return $db_handle;
 	}
-	return;
+	return FALSE;
 }
 
 
@@ -4311,20 +5323,19 @@ function pfb_daemon_queries() {
 
 	$nice		= '/usr/bin/nice -n20';
 	$unbound_pid	= "{$g['varrun_path']}/unbound.pid";
-	$cmd		= '/usr/local/sbin/unbound-control -c /var/unbound/unbound.conf stats_noreset';
 
 	while (TRUE) {
 		sleep($sleep_freq);
 
 		// If 'Live Sync' file marker exists skip DNSBL Queries daemon to avoid unbound-control collisions
-		if (file_exists("{$pfb['dnsbl_file']}.sync")) {
+		if (platform_booting() || $g['pfblockerng_install'] || file_exists("{$pfb['dnsbl_file']}.sync")) {
 			continue;
 		}
 
 		// Collect Unbound Resolver pid
 		$pid = exec("{$nice} /usr/bin/pgrep -anx 'unbound' 2>&1");
 		if (!empty($pid)) {
-			$output	= exec("{$nice} {$cmd} | {$nice} {$pfb['grep']} 'total.num.queries=' | cut -d '=' -f2 2>&1");
+			$output	= exec("{$pfb['chroot_cmd']} stats_noreset | {$nice} {$pfb['grep']} 'total.num.queries=' | cut -d '=' -f2 2>&1");
 			$query	= intval($output);
 			if (!is_numeric($query)) {
 				$query = '';
@@ -4584,22 +5595,24 @@ function convert_feeds_json() {
 function pfb_alerts_default_page() {
 	global $pfb;
 
-	$get_req = '';
 	if (isset($pfb['config_global']) &&
 	    isset($pfb['config_global']['pfbpageload'])) {
-
-		$setting = $pfb['config_global']['pfbpageload'];
-		if ($setting == 'dnsbl_stat') {
-			$get_req = '?view=dnsbl_stat';
-		} elseif ($setting == 'ip_block_stat') {
-			$get_req = '?view=ip_block_stat';
-		} elseif ($setting == 'ip_permit_stat') {
-			$get_req = '?view=ip_permit_stat';
-		} elseif ($setting == 'ip_match_stat') {
-			$get_req = '?view=ip_match_stat';
+		switch($pfb['config_global']['pfbpageload']) {
+			case 'dnsbl_stat':
+				return '?view=dnsbl_stat';
+			case 'dnsbl_reply_stat':
+				return '?view=dnsbl_reply_stat';
+			case 'ip_block_stat':
+				return '?view=ip_block_stat';
+			case 'ip_permit_stat':
+				return '?view=ip_permit_stat';
+			case 'ip_match_stat':
+				return '?view=ip_match_stat';
+			case 'reply':
+				return '?view=reply';
 		}
 	}
-	return $get_req;
+	return '';
 }
 
 
@@ -4607,6 +5620,9 @@ function pfb_alerts_default_page() {
 function pfBlockerNG_clearip() {
 	global $pfb;
 
+	exec("{$pfb['pfctl']} -z 2>&1");
+
+	/* TODO: Clear only pfB counters
 	$pfb_tables = array();
 	exec("{$pfb['pfctl']} -sTables | {$pfb['grep']} 'pfB_' 2>&1", $pfb_tables);
 	if (!empty($pfb_tables)) {
@@ -4614,11 +5630,13 @@ function pfBlockerNG_clearip() {
 			exec("{$pfb['pfctl']} -t {$table} -T zero");
 		}
 	}
+	*/
 }
 
 
 // Clear DNSBL SQLite database statistics/queries as required
 function pfBlockerNG_cleardnsbl($mode, $totalqueries = 0) {
+	global $g, $pfb;
 
 	// Format of todo array: database, error message, SQLite command
 	$todo = array();
@@ -4633,8 +5651,8 @@ function pfBlockerNG_cleardnsbl($mode, $totalqueries = 0) {
 	}
 
 	// Clear Unbound Resolver statistics
-	if (is_service_running('unbound')) {
-		exec('/usr/local/sbin/unbound-control -c /var/unbound/unbound.conf flush_stats 2>/dev/null');
+	if (is_process_running('unbound')) {
+		exec("{$pfb['chroot_cmd']} flush_stats 2>&1");
 	}
 
 	if (!empty($todo)) {
@@ -4728,7 +5746,7 @@ function pfb_clear_contents() {
 	unlink_if_exists("{$pfb['supptxt']}");
 	unlink_if_exists("{$pfb['dnsbl_supptxt']}");
 	unlink_if_exists("{$pfb['dnsbl_info']}");
-	unlink_if_exists("{$pfb['dnsbl_levent']}");
+	unlink_if_exists("{$pfb['dnsbl_resolver']}");
 	unlink_if_exists("{$pfb['dnsbl_cache']}");
 	unlink_if_exists("{$pfb['asn_cache']}");
 	rmdir_recursive("{$pfb['origdir']}");
@@ -4755,9 +5773,9 @@ function sync_package_pfblockerng($cron='') {
 	if (platform_booting() || $g['pfblockerng_install']) {
 		// Create DNSBL NAT, VIP, Lighttpd service and certs if required on reboot.
 		if ($pfb['dnsbl'] == 'on') {
-			pfb_create_dnsbl('enable');
+			pfb_create_dnsbl('enabled');
 		}
-		$log = 'Update terminated during boot process. If the boot process has completed, delete the file: /var/run/booting.';
+		$log = 'Sync terminated during boot process.';
 		pfb_logger("\n{$log}\nUPDATE PROCESS ENDED [ NOW ]\n", 1);
 		log_error("[pfBlockerNG] {$log}");
 		return;
@@ -4795,7 +5813,7 @@ function sync_package_pfblockerng($cron='') {
 
 	// Start of pfBlockerNG logging to 'pfblockerng.log'
 	if ($pfb['enable'] == 'on' && !$pfb['save']) {
-		$log = " UPDATE PROCESS START [ NOW ]\n";
+		$log = " UPDATE PROCESS START [ " . pfb_pkg_ver() . " ] [ NOW ]\n";
 		pfb_logger("{$log}", 1);
 	} else {
 		if ($cron != 'noupdates') {
@@ -4830,46 +5848,45 @@ function sync_package_pfblockerng($cron='') {
 	$pfb['deny_action_inbound']  = $pfb['ipconfig']['inbound_deny_action']	?: 'block';
 	$pfb['deny_action_outbound'] = $pfb['ipconfig']['outbound_deny_action']	?: 'reject';
 
-	$pfb['float']	= $pfb['ipconfig']['enable_float'];				// Enable/Disable floating autorules
-	$pfb['dup']	= $pfb['ipconfig']['enable_dup'];				// Enable remove of duplicate IPs utilizing grepcidr
-	$pfb['agg']	= $pfb['ipconfig']['enable_agg'];				// Enable aggregation of CIDRs
-	$pfb['order']	= $pfb['ipconfig']['pass_order'];				// Order of the autorules
-	$pfb['suffix']	= $pfb['ipconfig']['autorule_suffix'];				// Suffix used for autorules
-	$pfb['kstates'] = $pfb['ipconfig']['killstates'];				// Firewall states removal
-	$pfb['ip_ph']	= $pfb['ipconfig']['ip_placeholder'] ?: '127.1.7.7';		// Placeholder IP Address
+	$pfb['float']		= $pfb['ipconfig']['enable_float'];				// Enable/Disable floating autorules
+	$pfb['dup']		= $pfb['ipconfig']['enable_dup'];				// Enable remove of duplicate IPs utilizing grepcidr
+	$pfb['agg']		= $pfb['ipconfig']['enable_agg'];				// Enable aggregation of CIDRs
+	$pfb['order']		= $pfb['ipconfig']['pass_order'];				// Order of the autorules
+	$pfb['global_log']	= $pfb['ipconfig']['enable_log'];				// Enable Global IP logging
+	$pfb['suffix']		= $pfb['ipconfig']['autorule_suffix'];				// Suffix used for autorules
+	$pfb['kstates'] 	= $pfb['ipconfig']['killstates'];				// Firewall states removal
+	$pfb['ip_ph']		= $pfb['ipconfig']['ip_placeholder'] ?: '127.1.7.7';		// Placeholder IP Address
 
 	// DNSBL settings
-	$pfb['dnsbl_vip_type']	= $pfb['dnsblconfig']['pfb_dnsvip_type'] ?: 'ipalias';	// Virtual IP type
-	$pfb['dnsbl_vip_pass']	= $pfb['dnsblconfig']['pfb_dnsvip_pass'];		// Virtual IP Carp password (if required)
-	$pfb['dnsbl_iface']	= $pfb['dnsblconfig']['dnsbl_interface']?: 'lan';	// VIP Local Interface setting
-	$pfb['dnsbl_ip']	= $pfb['dnsblconfig']['action']		?: 'Disabled';	// Enable/Disable IP blocking from DNSBL lists
-	$pfb['dnsbl_rule']	= $pfb['dnsblconfig']['pfb_dnsbl_rule'] ?: 'Disabled';	// Auto create a Floating Pass Rule for other Lan subnets
-	$pfb['dnsbl_alexa_cnt']	= $pfb['dnsblconfig']['alexa_count']	?: '1000';	// TOP1M whitelist domain setting
-	$pfb['dnsbl_alexa_inc']	= $pfb['dnsblconfig']['alexa_inclusion'] ?: '';		// TOP1M TLDs inclusions for whitelisting
-	$pfb['dnsbl_tld']	= $pfb['dnsblconfig']['pfb_tld'];			// Enable TLD Function
-
-	init_config_arr(array('installedpackages', 'pfblockerngsafesearch'));
-	$pfb['safesearch_enable']	= $config['installedpackages']['pfblockerngsafesearch']['safesearch_enable']	?: 'Disabled';
-	$pfb['safesearch_youtube']	= $config['installedpackages']['pfblockerngsafesearch']['safesearch_youtube']	?: 'Disabled';
-	$pfb['safesearch_firefoxdoh']	= $config['installedpackages']['pfblockerngsafesearch']['safesearch_firefoxdoh']?: 'Disabled';
+	$pfb['dnsbl_vip_type']	= $pfb['dnsblconfig']['pfb_dnsvip_type'] ?: 'ipalias';		// Virtual IP type
+	$pfb['dnsbl_vip_vhid']	= $pfb['dnsblconfig']['pfb_dnsvip_vhid'];			// Virtual IP Carp VHID
+	$pfb['dnsbl_vip_base']	= $pfb['dnsblconfig']['pfb_dnsvip_base'];			// Virtual IP Carp advbase
+	$pfb['dnsbl_vip_skew']	= $pfb['dnsblconfig']['pfb_dnsvip_skew'];			// Virtual IP Carp skew
+	$pfb['dnsbl_vip_pass']	= $pfb['dnsblconfig']['pfb_dnsvip_pass'];			// Virtual IP Carp password (if required)
+	$pfb['dnsbl_iface']	= $pfb['dnsblconfig']['dnsbl_interface']?: 'lo0';		// VIP Local Interface setting
+	$pfb['dnsbl_ip']	= $pfb['dnsblconfig']['action']		?:  'Disabled';		// Enable/Disable IP blocking from DNSBL lists
+	$pfb['dnsbl_rule']	= $pfb['dnsblconfig']['pfb_dnsbl_rule'] ?: 'Disabled';		// Auto create a Floating Pass Rule for other Lan subnets
+	$pfb['dnsbl_alexa_cnt']	= $pfb['dnsblconfig']['alexa_count']	?: '1000';		// TOP1M whitelist domain setting
+	$pfb['dnsbl_alexa_inc']	= $pfb['dnsblconfig']['alexa_inclusion']?: '';			// TOP1M TLDs inclusions for whitelisting
+	$pfb['dnsbl_tld']	= $pfb['dnsblconfig']['pfb_tld'];				// Enable TLD Function
 
 	// Reputation config variables
 	init_config_arr(array('installedpackages', 'pfblockerngreputation', 'config', 0));
 	$pfb['config_rep'] = $config['installedpackages']['pfblockerngreputation']['config'][0];
 
-	$pfb['rep']	= $pfb['config_rep']['enable_rep'];				// Enable/Disable 'Max' Reputation
-	$pfb['prep']	= $pfb['config_rep']['enable_pdup'];				// Enable/Disable 'pRep' Reputation
-	$pfb['drep']	= $pfb['config_rep']['enable_dedup']	?: 'x';			// Enable/Disable 'dRep' Reputation
-	$pfb['etupdate']= $pfb['config_rep']['et_update'];				// Perform a Force Update on ET categories
-	$pfb['ccwhite'] = $pfb['config_rep']['ccwhite'];				// Action for whitelist Country category
-	$pfb['ccblack'] = $pfb['config_rep']['ccblack'];				// Action for blacklist Country category
+	$pfb['rep']		= $pfb['config_rep']['enable_rep'];				// Enable/Disable 'Max' Reputation
+	$pfb['prep']		= $pfb['config_rep']['enable_pdup'];				// Enable/Disable 'pRep' Reputation
+	$pfb['drep']		= $pfb['config_rep']['enable_dedup']	?: 'x';			// Enable/Disable 'dRep' Reputation
+	$pfb['etupdate']	= $pfb['config_rep']['et_update'];				// Perform a Force Update on ET categories
+	$pfb['ccwhite'] 	= $pfb['config_rep']['ccwhite'];				// Action for whitelist Country category
+	$pfb['ccblack'] 	= $pfb['config_rep']['ccblack'];				// Action for blacklist Country category
 
-	$pfb['etblock'] = $pfb['config_rep']['etblock']		?: 'x';			// Emerging Threats IQRisk block categories
-	$pfb['etmatch'] = $pfb['config_rep']['etmatch']		?: 'x';			// Emerging Threats IQRisk match categories
-	$pfb['max']	= $pfb['config_rep']['p24_max_var']	?: 'x';			//  'Max' variable setting for Reputation
-	$pfb['dmax']	= $pfb['config_rep']['p24_dmax_var']	?: 'x';			// 'dMax' variable setting for Reputation
-	$pfb['pmax']	= $pfb['config_rep']['p24_pmax_var']	?: 'x';			// 'pMax' variable setting for Reputation
-	$pfb['ccexclude']= $pfb['config_rep']['ccexclude']	?: 'x';			// List of Countries to whitelist
+	$pfb['etblock'] 	= $pfb['config_rep']['etblock']		?: 'x';			// Emerging Threats IQRisk block categories
+	$pfb['etmatch'] 	= $pfb['config_rep']['etmatch']		?: 'x';			// Emerging Threats IQRisk match categories
+	$pfb['max']		= $pfb['config_rep']['p24_max_var']	?: 'x';			// 'Max' variable setting for Reputation
+	$pfb['dmax']		= $pfb['config_rep']['p24_dmax_var']	?: 'x';			// 'dMax' variable setting for Reputation
+	$pfb['pmax']		= $pfb['config_rep']['p24_pmax_var']	?: 'x';			// 'pMax' variable setting for Reputation
+	$pfb['ccexclude']	= $pfb['config_rep']['ccexclude']	?: 'x';			// List of Countries to whitelist
 
 	// Starting variable to skip Reputation functions, if no changes are required
 	$pfb['repcheck'] = FALSE;
@@ -5016,11 +6033,60 @@ function sync_package_pfblockerng($cron='') {
 		}
 	}
 
+
+
+	// TO BE REMOVED AT FUTURE DATE:
+
+	// DNSBL Python mode is not compatable with dhcpleases binary code,
+	// as it attempts to HUP the Unbound PID and will cause DNSBL Python mode to crash Unbound
+
+	// Force DNSBL Mode to DNSBL Unbound mode until the DNS Resolver DHCP Registration option has been disabled.
+	if ($pfb['dnsbl_mode'] == 'dnsbl_python' && isset($config['unbound']['regdhcp'])) {
+		$pfb['dnsbl_mode']		= 'dnsbl_unbound';
+		$pfb['dnsbl_py_blacklist']	= FALSE;
+
+		$log = "\n [ ALERT ]\n"
+			. " DNSBL Python mode is not compatable with the DNS Resolver DHCP Registration option!\n"
+			. " The DNS Resolver DHCP Registration option must be disabled to utilize the DNSBL Python feature!\n"
+			. " DNSBL has been automatically downgraded to the DNSBL Unbound mode!\n\n";
+		pfb_logger("{$log}", 1);
+
+		$log = "[pfBlockerNG]: Terminating DNSBL Python mode due to DNS Resolver DHCP Registration option enabled!\n";
+		@file_put_contents('/var/log/pfblockerng/py_error.log', $log, FILE_APPEND);
+	}
+
+
+/*
+
+	// DNSBL Python mode is only available for pfSense 2.4.5 and above
+	if ($pfb['dnsbl_mode'] == 'dnsbl_python' && substr(trim(file_get_contents('/etc/version')), 0, 5) < '2.4.5') {
+		$pfb['dnsbl_mode']		= 'dnsbl_unbound';
+		$pfb['dnsbl_py_blacklist']	= FALSE;
+
+		$log = "\n [ ALERT ]\n"
+			. " DNSBL Python mode is only compatible with pfSense versions 2.4.5 and above!\n"
+			. " DNSBL has been automatically downgraded to the DNSBL Unbound mode!\n\n";
+		pfb_logger("{$log}", 1);
+
+		$log = "[pfBlockerNG]: Terminating DNSBL Python mode due pfSense version less than 2.4.5.";
+		@file_put_contents('/var/log/pfblockerng/py_error.log', $log, FILE_APPEND);
+	}
+
+*/
+
+
 	// Determine max Domain count available for DNSBL TLD analysis (Avoid Unbound memory exhaustion)
 	$pfs_memory = (round(get_single_sysctl('hw.physmem') / (1024*1024)) ?: 1000);
-	$pfb['pfs_mem'] = array(   '0' => '100000', '1500' =>  '150000', '2000' =>  '200000', '2500' =>  '250000', '3000' =>  '400000',
-				'4000' => '600000', '5000' => '1000000', '6000' => '1500000', '7000' => '2000000', '8000' => '2500000',
-				'12000' => '3000000', '16000' => '4000000');
+
+	if (!$pfb['dnsbl_py_blacklist']) {
+		$pfb['pfs_mem'] = array(   '0' => '100000', '1500' =>  '150000', '2000' =>  '200000', '2500' =>  '250000', '3000' =>  '400000',
+					'4000' => '600000', '5000' => '1000000', '6000' => '1500000', '7000' => '2000000', '8000' => '2500000',
+					'12000' => '3000000', '16000' => '4000000');
+	} else {
+		$pfb['pfs_mem'] = array(   '0' => '200000', '1500' =>  '300000', '2000' =>  '400000', '2500' =>  '500000', '3000' =>  '800000',
+					'4000' => '1200000', '5000' => '2000000', '6000' => '3000000', '7000' => '4000000', '8000' => '5000000',
+					'12000' => '6000000', '16000' => '8000000');
+	}
 
 	foreach ($pfb['pfs_mem'] as $pfb_mem => $domain_max) {
 		if ($pfs_memory >= $pfb_mem) {
@@ -5329,14 +6395,11 @@ function sync_package_pfblockerng($cron='') {
 	}
 
 	if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && !$pfb['save'] && !$dnsbl_error) {
-		if (isset($config['installedpackages']['pfblockerngdnsbl']['config']) ||
-		    (isset($pfb['blconfig']) && $pfb['blconfig']['blacklist_enable'] != 'Disable' &&
-		    !empty($pfb['blconfig']['blacklist_selected']))) {
-			
+		if (isset($config['installedpackages']['pfblockerngdnsbl']['config'])) {
 			$dnsbl_missing = FALSE;
 
 			// Collect existing DNSBL group statistics
-			// SQLite3 Database format [ group name , updated timestamp , total domain count, total blocked count ]
+			// SQLite3 Database format [ group name, updated timestamp, total domain count, total blocked count ]
 
 			$pfb['dnsbl_info_stats'] = array();
 			if (file_exists("{$pfb['dnsbl_info']}")) {
@@ -5364,13 +6427,40 @@ function sync_package_pfblockerng($cron='') {
 				$dnsbl_missing = TRUE;
 			}
 
-			// Rebuild DNSBL database or DNSBL statistics if files are not found
-			if (!file_exists("{$pfb['dnsbl_file']}.conf")) {
+			if ($pfb['dnsbl_py_blacklist']) {
+
+				// When DNSBL python blocking mode is enabled, zone should not exist, and data should exist
+				if (!$pfb['dnsbl_tld']) {
+					if (file_exists($pfb['unbound_py_zone'])) {
+						$dnsbl_missing = TRUE;
+					}
+					if (!file_exists($pfb['unbound_py_data'])) {
+						$dnsbl_missing = TRUE;
+					}
+				}
+
+				// When DNSBL python blocking mode is enabled, atleast one 'data or zone' file must exist
+				else {
+					$found = FALSE;
+					if (file_exists($pfb['unbound_py_data'])) {
+						$found = TRUE;
+					}
+					if (file_exists($pfb['unbound_py_zone'])) {
+						$found = TRUE;
+					} 
+					if (!$found) {
+						$dnsbl_missing = TRUE;
+					}
+				}
+			}
+
+			// Check if DNSBL database is missing, when DNSBL python blocking mode is not enabled
+			if (!$pfb['dnsbl_py_blacklist'] && !file_exists("{$pfb['dnsbl_file']}.conf")) {
 				$dnsbl_missing = TRUE;
 			}
 
 			if ($dnsbl_missing) {
-				$log = "\n Missing DNSBL stats and/or Unbound DNSBL conf file - Rebuilding\n";
+				$log = "\n Missing DNSBL stats and/or Unbound DNSBL files - Rebuilding\n";
 				pfb_logger("{$log}", 1);
 				$pfb['reuse_dnsbl'] = 'on';
 				touch("{$pfb['dnsbl_file']}.reload");
@@ -5379,7 +6469,7 @@ function sync_package_pfblockerng($cron='') {
 			// SafeSearch
 			pfb_logger("\n Loading DNSBL SafeSearch...", 1);
 			$safesearch_hosts = array();
-			$safesearch_types = array(	array( 'safesearch_enable',	'Enable',	'safesearch'),
+			$safesearch_types = array(      array( 'safesearch_enable',	'Enable',	'safesearch'),
 							array( 'safesearch_youtube',	'Strict',	'youtube_restrict'),
 							array( 'safesearch_youtube',	'Moderate',	'youtube_restrictmoderate'),
 							array( 'safesearch_firefoxdoh',	'Enable',	'firefoxdoh')
@@ -5390,6 +6480,7 @@ function sync_package_pfblockerng($cron='') {
 				if ($pfb[$safe_type[0]] == $safe_type[1]) {
 					$pfb_found = TRUE;
 
+					// Copy file is not exists or has been updated
 					if (!file_exists("{$pfb['dnsbldir']}/pfb_dnsbl.{$safe_type[2]}.conf") ||
 					    @md5_file($pfb["dnsbl_{$safe_type[2]}"]) !==
 					    @md5_file("{$pfb['dnsbldir']}/pfb_dnsbl.{$safe_type[2]}.conf")) {
@@ -5412,11 +6503,18 @@ function sync_package_pfblockerng($cron='') {
 				$safesearch_hosts = array_unique($safesearch_hosts);
 				foreach ($safesearch_hosts as $line) {
 					if (!empty($line)) {
+
 						// Remove 'www.' prefix
 						if (substr($line, 0, 4) == 'www.') {
 							$line = substr($line, 4);
 						}
-						$pfb_whitelist .= ".{$line} 60\n\"{$line} 60\n";
+
+
+						if ($pfb['dnsbl_py_blacklist']) {
+							$pfb_whitelist .= ".{$line},,\n,{$line},,\n";
+						} else {
+							$pfb_whitelist .= ".{$line} 60\n\"{$line} 60\n";
+						}
 					}
 				}
 			}
@@ -5445,15 +6543,29 @@ function sync_package_pfblockerng($cron='') {
 						}
 
 						if ($wildcard) {
-							$pfb_whitelist .= ".{$line} 60\n\"{$line} 60\n";
+							if ($pfb['dnsbl_py_blacklist']) {
+								$pfb_whitelist .= ".{$line},,\n,{$line},,\n";
+							} else {
+								$pfb_whitelist .= ".{$line} 60\n\"{$line} 60\n";
+							}
 						} else {
-							$pfb_whitelist .= "\"{$line} 60\n\"www.{$line} 60\n";
+							if ($pfb['dnsbl_py_blacklist']) {
+								$pfb_whitelist .= ",{$line},,\n,www.{$line},,\n";
+							} else {
+								$pfb_whitelist .= "\"{$line} 60\n\"www.{$line} 60\n";
+							}
 						}
 					}
 				}
 			}
 
-			$pfb_whitelist .= "\"localhost.localdomain 60\n";	// Added due to SWC Feed
+			//  Added due to SWC Feed
+			if ($pfb['dnsbl_py_blacklist']) {
+				$pfb_whitelist .= ",localhost.localdomain,,\n";
+			} else {
+				$pfb_whitelist .= "\"localhost.localdomain 60\n";
+			}
+
 			@file_put_contents("{$pfb['dnsbl_supptxt']}", $pfb_whitelist, LOCK_EX);
 			pfb_logger(" completed", 1);
 
@@ -5473,12 +6585,12 @@ function sync_package_pfblockerng($cron='') {
 					// Check if TOP1M download already in progress
 					exec('/bin/ps -wax', $result_cron);
 					if (!preg_grep("/pfblockerng[.]php\s+al/", $result_cron)) {
-						$log = "\nTOP1M Database downloading ( approx 21MB ) ... Please wait ...\n";
+						$log = "\n TOP1M Database downloading ( approx 21MB ) ... Please wait ...\n";
 						pfb_logger("{$log}", 1);
 						exec('/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php al');
 					}
 					else {
-						$log = "\nTOP1M download already in process...\n";
+						$log = "\n TOP1M download already in process...\n";
 						pfb_logger("{$log}", 1);
 					}
 				}
@@ -5487,6 +6599,9 @@ function sync_package_pfblockerng($cron='') {
 				if (!file_exists("{$pfb['dbdir']}/pfbalexawhitelist.txt") ||
 				    file_exists("{$pfb['dbdir']}/top-1m.update")) {
 					pfblockerng_top1m();
+					$pfb['reuse_dnsbl'] = 'on';
+					touch("{$pfb['dnsbl_file']}.reload");
+					pfb_logger("\n DNSBL - TOP1M changes found - Rebuilding!\n", 1);
 				}
 				pfb_logger(" completed", 1);
 			}
@@ -5684,11 +6799,18 @@ function sync_package_pfblockerng($cron='') {
 								$custom = FALSE;
 							}
 
-							// If Logging is enabled, utilize DNSBL Web Server & DNSBL VIP, otherwise use '0.0.0.0'
+							// If Null Blocking mode is selected, use '0.0.0.0|::', otherwise utilize DNSBL WebServer/DNSBL VIP
 							if ($list['logging'] == 'disabled') {
-								$sinkhole_type = '0.0.0.0';
+								$sinkhole_type4 = '0.0.0.0';
+								$sinkhole_type6 = '::';
+								$logging_type	= '2';	// Null Blocking no logging
+							}
+							elseif ($list['logging'] == 'disabled_log') {
+								$logging_type	= '0';	// Null Blocking logging
 							} else {
-								$sinkhole_type = "{$pfb['dnsbl_vip']}";
+								$sinkhole_type4 = "{$pfb['dnsbl_vip']}";
+								$sinkhole_type6 = "::{$pfb['dnsbl_vip']}";
+								$logging_type	= '1';	// DNSBL VIP logging
 							}
 
 							// Determine 'list' details (return array $pfbarr)
@@ -5710,6 +6832,7 @@ function sync_package_pfblockerng($cron='') {
 							    !file_exists("{$pfbfolder}/{$header}.update") &&
 							    !file_exists("{$pfbfolder}/{$header}.fail") &&
 							    $pfbreuse == '') {
+
 
 								if ($row['state'] == 'Hold') {
 									$log = "\n[ {$header} ]{$logtab} static hold. [ NOW ]";
@@ -6131,8 +7254,20 @@ function sync_package_pfblockerng($cron='') {
 												continue;
 											}
 
-											$domain_data = "local-data: \"" . strtolower($line)
-													. " 60 IN A {$sinkhole_type}\"\n";
+											// For DNSBL python, save domain and Logging type
+											if ($pfb['dnsbl_py_blacklist']) {
+												$domain_data = ',' . strtolower($line)
+													. ",,{$logging_type},{$header},{$alias}\n";
+											}
+											else {
+												$ipv6_dnsbl = "\n";
+												if ($pfb['dnsbl_v6'] == 'on' && !$pfb['dnsbl_tld']) {
+													$ipv6_dnsbl = " local-data: \"" . strtolower($line)
+															. " 60 IN AAAA {$sinkhole_type6}\"\n";
+												}
+												$domain_data = "local-data: \"" . strtolower($line)
+														. " 60 IN A {$sinkhole_type4}\"{$ipv6_dnsbl}";
+											}
 											@fwrite($dhandle, $domain_data);
 										}
 									}
@@ -6172,15 +7307,25 @@ function sync_package_pfblockerng($cron='') {
 										$pfb_alexa = 'on';
 									}
 
+									// DNSBL python requires a different deduplication process
+									$dup_mode = '';
+									if ($pfb['dnsbl_py_blacklist']) {
+										$dup_mode = 'python';
+									}
+
 									// Call script to process DNSBL 'De-Duplication / Whitelisting / TOP1M Whitelisting'
-									exec("{$pfb['script']} dnsbl_scrub {$header} {$pfb_alexa} {$elog}");
+									exec("{$pfb['script']} dnsbl_scrub {$header} {$pfb_alexa} {$dup_mode} {$elog}");
 
 									if ($ip_cnt > 0) {
 										pfb_logger("  IPv4 count={$ip_cnt}\n", 1);
 									}
 
-									$result = array();
-									exec("/usr/local/sbin/unbound-checkconf {$pfb['dnsbldir']}/check.conf 2>&1", $result);
+									if (!$pfb['dnsbl_py_blacklist']) {
+										$result = array();
+										exec("/usr/local/sbin/unbound-checkconf {$pfb['dnsbldir']}/check.conf 2>&1", $result);
+									} else {
+										$result = array('unbound-checkconf: no errors');
+									}
 									unlink_if_exists("{$pfb['dnsbldir']}/check.conf");
 								}
 								else {
@@ -6196,7 +7341,7 @@ function sync_package_pfblockerng($cron='') {
 								}
 
 								// If parse error found, use previously downloaded file if available
-								if (!preg_grep("/unbound-checkconf: no errors/", $result)) {
+								if (!$pfb['dnsbl_py_blacklist'] && !preg_grep("/unbound-checkconf: no errors/", $result)) {
 									unlink_if_exists("{$pfbfolder}/{$header}.bk");
 
 									pfb_logger("\n  DNSBL FAIL - Skipped! Use previous data, if found:\n", 2);
@@ -6262,8 +7407,30 @@ function sync_package_pfblockerng($cron='') {
 			}
 		}
 
+		// Add DNSBL Python options to widget statistics
+		if ($pfb['dnsbl_mode'] == 'dnsbl_python') {
+			if ($pfb['dnsbl_idn'] == 'on') {
+				$idn_cnt = 1;
+				$pfb['alias_dnsbl_all'][] = 'DNSBL_IDN';
+				dnsbl_alias_update('update', 'DNSBL_IDN', '', '', $idn_cnt);
+			}
+			if ($pfb['dnsbl_pytld'] == 'on') {
+				$pytld_cnt = 0;
+				$pfb['alias_dnsbl_all'][] = 'DNSBL_TLD_Allow';
+				dnsbl_alias_update('update', 'DNSBL_TLD_Allow', '', '', $pytld_cnt);
+			}
+			if ($pfb['dnsbl_regex'] == 'on') {
+				$regex_cnt = 0;
+				if (isset($pfb['dnsbl_regex_list'])) {
+					$regex_cnt = count(pfbng_text_area_decode($pfb['dnsbl_regex_list'], TRUE, FALSE)) ?: 0;
+				}
+				$pfb['alias_dnsbl_all'][] = 'DNSBL_Regex';
+				dnsbl_alias_update('update', 'DNSBL_Regex', '', '', $regex_cnt);
+			}
+		}
+
 		// Save DNSBL Alias statistics (Not for TLD mode)
-		if (!$pfb['dnsbl_tld']) {
+		if ($pfb['domain_update'] && !$pfb['dnsbl_tld']) {
 			dnsbl_save_stats();
 		}
 	}
@@ -6283,8 +7450,13 @@ function sync_package_pfblockerng($cron='') {
 				@fclose($handle);
 			}
 			@fclose($pfb_ips);
-			touch("{$pfb['denydir']}/DNSBLIP_v4.update");
 		}
+
+		// Add empty placeholder IP
+		else {
+			@file_put_contents("{$pfb['dbdir']}/DNSBLIP_v4.txt", "{$pfb['ip_ph']}\n", LOCK_EX);
+		}
+		touch("{$pfb['denydir']}/DNSBLIP_v4.update");
 	}
 
 	// Remove DNSBL IP feed, if disabled
@@ -6299,7 +7471,9 @@ function sync_package_pfblockerng($cron='') {
 
 	if ($pfb['domain_update']) {
 		if (!empty($lists_dnsbl_all)) {
-			pfb_logger("\n------------------------------------------------------------------------\nAssembling DNSBL database...", 1);
+			pfb_logger("\n------------------------------------------------------------------------\n", 1);
+
+			pfb_logger('Assembling DNSBL database...', 1);
 			$pfb_output = @fopen("{$pfb['dnsbl_file']}.raw", 'w');
 			foreach ($lists_dnsbl_all as $current_list) {
 				if (($handle = @fopen("{$pfb['dnsdir']}/{$current_list}", 'r')) !== FALSE) {
@@ -6310,20 +7484,42 @@ function sync_package_pfblockerng($cron='') {
 				@fclose($handle);
 			}
 			@fclose($pfb_output);
+			pfb_logger("... completed [ NOW ]", 1);
+
+			// DNSBL Python blocking mode, if TLD is not enabled
+			if ($pfb['dnsbl_py_blacklist'] && !$pfb['dnsbl_tld']) {
+				unlink_if_exists($pfb['unbound_py_data']);
+				unlink_if_exists($pfb['unbound_py_zone']);
+				unlink_if_exists($pfb['unbound_py_count']);
+				rename("{$pfb['dnsbl_file']}.raw", $pfb['unbound_py_data']);
+			}
 		}
+
 		else {
 			$log = "\nDNSBL not Updated!\n";
 			pfb_logger("{$log}", 1);
 		}
 	}
 	else {
-		// When DNSBL is enabled and no Aliases are defined, or all Aliases are Disabled. Set flag to clear out Unbound pfb_dnsbl.conf file.
+		// When DNSBL is enabled and no Aliases are defined, or all Aliases are Disabled
 		if (empty($lists_dnsbl_all) && !$pfb['save']) {
 			pfb_logger("\nClearing all DNSBL Feeds", 1);
 			$pfb['domain_clear'] = TRUE;
-			$pfb_output = @fopen("{$pfb['dnsbl_file']}.conf", 'w');
-			@fwrite($pfb_output, '');
-			@fclose($pfb_output);
+
+			// Clear out Unbound pfb_dnsbl.conf file
+			if (!$pfb['dnsbl_py_blacklist']) {
+				$pfb_output = @fopen("{$pfb['dnsbl_file']}.conf", 'w');
+				@fwrite($pfb_output, '');
+				@fclose($pfb_output);
+			}
+
+			// Remove DNSBL Python files
+			else {
+				unlink_if_exists($pfb['unbound_py_data']);
+				unlink_if_exists($pfb['unbound_py_zone']);
+				unlink_if_exists($pfb['unbound_py_wh']);
+				unlink_if_exists($pfb['unbound_py_count']);
+			}
 		}
 	}
 
@@ -6331,70 +7527,34 @@ function sync_package_pfblockerng($cron='') {
 	#	UNBOUND INTEGRATION	#
 	#################################
 
-	$pfbupdate = FALSE;
-	if (file_exists("{$pfb['dnsbldir']}/unbound.conf")) {
-		$conf = file("{$pfb['dnsbldir']}/unbound.conf");
-	}
-
+	$pfbupdate = $pfbpython = FALSE;
 	if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && $pfb['unbound_state'] == 'on') {
-		// If new domain updates found, backup existing DNSBL domain feed
-		if ($pfb['domain_update'] || $pfb['domain_clear']) {
-			if (file_exists ("{$pfb['dnsbl_file']}.conf")) {
-				// Create backup of existing DNSBL database
-				@copy("{$pfb['dnsbl_file']}.conf", "{$pfb['dnsbl_file']}.bk");
-			}
-			@file_put_contents("{$pfb['dnsbldir']}/unbound.tmp", $conf, LOCK_EX);
-		}
-
-		// Add 'include:' line in Unbound conf file if not found
-		if (isset($conf) && !strstr(implode($conf), 'pfb_dnsbl.*conf')) {
-			if (file_exists("{$pfb['dnsbl_file']}.conf")) {
-				$log = "\nConfiguring DNSBL...";
-				pfb_logger("{$log}", 1);
-
-				$pfbupdate = TRUE;
-				$conf[] = "# Unbound custom options\n\nserver:include: {$pfb['dnsbl_file']}.*conf\n";
-				@file_put_contents("{$pfb['dnsbldir']}/unbound.tmp", $conf, LOCK_EX);
-			}
-		}
-
-		// Load new DNSBL updates to Unbound Resolver
-		if ($pfb['domain_update'] || $pfbupdate || $pfbpython ||$pfb['domain_clear'] || $safesearch_update) {
-			pfb_update_unbound('enabled', $pfbupdate);
-		}
-
-		// Create DNSBL NAT and VIP and lighttpd web server conf if required.
-		pfb_create_dnsbl('enable');
+		$mode = 'enabled';
 	}
-	else {
-		// When pfBlockerNG or DNSBL is disabled and not during an installation.
-		if (($pfb['enable'] == '' || $pfb['dnsbl'] == '') && !$pfb['install']) {
-			// Remove 'Unbound' conf integration
-			if (isset($conf) && stripos(implode($conf), 'pfb_dnsbl.*conf') !== FALSE) {
-				$pfbupdate = FALSE;
-				foreach ($conf as $key => $line) {
-					if (strpos($line, 'pfb_dnsbl.*conf') !== FALSE) {
-						$pfbupdate = TRUE;
-						unset ($conf[$key]);
-					}
-				}
-				if ($pfbupdate) {
-					@file_put_contents("{$pfb['dnsbldir']}/unbound.tmp", $conf, LOCK_EX);
-					// Load new DNSBL updates to Unbound Resolver
-					pfb_update_unbound('disabled', $pfbupdate);
-				}
-			}
-
-			// Remove DNSBL NAT, VIP and lighttpd service
-			pfb_create_dnsbl('disable');
-		}
-		pfb_logger("\n** DNSBL Disabled **", 1);
+	elseif (($pfb['enable'] == '' || $pfb['dnsbl'] == '') && !$pfb['install']) {
+		$mode = 'disabled';
 	}
 
-	if (isset($conf)) {
-		unset($conf);
+	// Modify Unbound python configuration and mount lib/bin folders, as required
+	$pfbpython = pfb_unbound_python($mode);
+
+	// Modify Unbound.conf file, as required
+	$pfbupdate = pfb_unbound_dnsbl($mode);
+
+	// Modify DNSBL NAT and VIP and lighttpd web server conf, as required.
+	pfb_create_dnsbl($mode);
+
+	// Load new DNSBL updates to Unbound Resolver, as required
+	if ($pfb['domain_update'] || $pfbupdate || $pfbpython ||$pfb['domain_clear'] || $safesearch_update) {
+
+		// Create backup of existing DNSBL Unbound database
+		if (!$pfb['dnsbl_py_blacklist'] && file_exists("{$pfb['dnsbl_file']}.conf")) {
+			@copy("{$pfb['dnsbl_file']}.conf", "{$pfb['dnsbl_file']}.bk");
+		}
+
+		pfb_update_unbound($mode, $pfbupdate, $pfbpython);
 	}
-	unlink_if_exists("{$pfb['dnsbl_file']}.bk");
+
 
 	#################################
 	#	Assign Countries	#
@@ -7268,6 +8428,16 @@ function sync_package_pfblockerng($cron='') {
 					'type'		=> 'port',
 					'detail'	=> 'DO NOT EDIT THIS PORT||DO NOT EDIT THIS PORT'
 					);
+
+		if ($pfb['dnsbl_v6'] == 'on') {
+			$new_aliases_list[] = 'pfB_DNSBL_VIPs';
+			$new_aliases[] = array(	'name'		=> 'pfB_DNSBL_VIPs',
+						'address'	=> "{$pfb['dnsbl_vip']} ::{$pfb['dnsbl_vip']}",
+						'descr'		=> 'pfBlockerNG DNSBL VIPs',
+						'type'		=> 'host',
+						'detail'	=> 'DO NOT EDIT THIS HOST||DO NOT EDIT THIS HOST'
+						);
+		}
 	}
 
 	#########################################
@@ -7438,11 +8608,12 @@ function sync_package_pfblockerng($cron='') {
 				$rule['type']		= 'pass';
 				$rule['direction']	= 'any';
 				$rule['interface']	= "{$pfb['dnsblconfig']['dnsbl_allow_int']}";
+				$rule['ipprotocol']	= ($pfb['dnsbl_v6'] == 'on' ? $rule['ipprotocol'] = 'inet46' : $rule['ipprotocol'] = 'inet');
 				$rule['descr']		= 'pfB_DNSBL_Ping';
 				$rule['protocol']	= 'icmp';
 				$rule['icmptype']	= 'echoreq';
 				$rule['source']		= array('any' => '');
-				$rule['destination']	= array('address' => "{$pfb['dnsbl_vip']}");
+				$rule['destination']	= array('address' => ($pfb['dnsbl_v6'] == 'on' ? 'pfB_DNSBL_VIPs' : $pfb['dnsbl_vip']));
 				$rule['created']	= array('time' => (int)microtime(true), 'username' => 'Auto');
 				$new_rules[]		= $rule;
 
@@ -7451,10 +8622,12 @@ function sync_package_pfblockerng($cron='') {
 				$rule['type']		= 'pass';
 				$rule['direction']	= 'any';
 				$rule['interface']	= "{$pfb['dnsblconfig']['dnsbl_allow_int']}";
+				$rule['ipprotocol']	= ($pfb['dnsbl_v6'] == 'on' ? $rule['ipprotocol'] = 'inet46' : $rule['ipprotocol'] = 'inet');
 				$rule['descr']		= 'pfB_DNSBL_Permit';
 				$rule['protocol']	= 'tcp/udp';
 				$rule['source']		= array('any' => '');
-				$rule['destination']	= array('address' => "{$pfb['dnsbl_vip']}", 'port' => 'pfB_DNSBL_Ports');
+				$rule['destination']	= array('address' => ($pfb['dnsbl_v6'] == 'on' ? 'pfB_DNSBL_VIPs' : $pfb['dnsbl_vip']),
+								 'port' => 'pfB_DNSBL_Ports');
 				$rule['created']	= array('time' => (int)microtime(true), 'username' => 'Auto');
 				$new_rules[]		= $rule;
 			}
@@ -7814,7 +8987,7 @@ function sync_package_pfblockerng($cron='') {
 	#	XMLRPC - sync process		#
 	#########################################
 
-	if (!platform_booting() && !$g['pfblockerng_install']) {
+	if (!platform_booting() && !$g['pfblockerng_install'] && $pfb['conf_mod'] && isset($pfb_config)) {
 		pfblockerng_sync_on_changes();
 	}
 
@@ -8171,6 +9344,11 @@ function pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $p
 		}
 		if (isset($config['installedpackages']['pfblockerngdnsblsettings'])) {
 			$xml['pfblockerngdnsblsettings']= $config['installedpackages']['pfblockerngdnsblsettings'];
+
+			// Remove CARP Advskew setting, if found
+			if (isset($xml['pfblockerngdnsblsettings']['pfb_dnsvip_skew'])) {
+				unset($xml['pfblockerngdnsblsettings']['pfb_dnsvip_skew']);
+			}
 		}
 	}
 
@@ -8204,6 +9382,8 @@ function pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $p
 		$xml['pfblockerngblacklist']		= $config['installedpackages']['pfblockerngblacklist'];
 	if (isset($config['installedpackages']['pfblockerngglobal']))
 		$xml['pfblockerngglobal']		= $config['installedpackages']['pfblockerngglobal'];
+	if (isset($config['installedpackages']['pfblockerngsafesearch']))
+		$xml['pfblockerngsafesearch']		= $config['installedpackages']['pfblockerngsafesearch'];
 
 	// Execute applicable XMLRPC code as per pfSense version
 	if (substr(trim(file_get_contents('/etc/version')), 0, 3) < '2.4') {
@@ -8229,13 +9409,13 @@ function pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $p
 
 		if (!$resp) {
 			log_error("[pfBlockerNG] XMLRPC communications error occurred while attempting sync with {$url}:{$port}.");
-			file_notice('sync_settings', $error, 'pfBlockerNG Settings Sync', '');
+			file_notice('pfBlockerNG Sync settings', $error, 'pfBlockerNG', '/pfblockerng/pfblockerng_sync.php', 2);
 			$success = FALSE;
 		} elseif ($resp->faultCode()) {
 			$cli->setDebug(1);
 			$resp = $cli->send($msg, $synctimeout);
 			log_error("[pfBlockerNG] XMLRPC errors syncing with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString());
-			file_notice('sync_settings', $error, 'pfBlockerNG Settings Sync', '');
+			file_notice('pfBlockerNG Sync settings', $error, 'pfBlockerNG', '/pfblockerng/pfblockerng_sync.php', 2);
 			$success = FALSE;
 		}
 		return $success;
