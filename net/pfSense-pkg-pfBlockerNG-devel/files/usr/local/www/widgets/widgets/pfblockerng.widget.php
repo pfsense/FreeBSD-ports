@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2020 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2015-2020 BBcan177@gmail.com
  * All rights reserved.
  *
  * Originally based Upon pfBlocker
@@ -106,9 +106,9 @@ if ($_POST) {
 					$pfb_day = '7';
 				}
 
-				if (!pfblockerng_cron_exists($pfb_cmd, '*', '0', '*', $pfb_day)) {
+				if (!pfblockerng_cron_exists($pfb_cmd, '0', '0', '*', $pfb_day)) {
 					install_cron_job("pfblockerng.php {$type}", false);
-					install_cron_job($pfb_cmd, true, '*', '0', '*', '*', $pfb_day, 'root');
+					install_cron_job($pfb_cmd, true, '0', '0', '*', '*', $pfb_day, 'root');
 				}
 			}
 			else {
@@ -219,6 +219,7 @@ function pfBlockerNG_update_table() {
 					'id'		- Alias key value				*/
 
 	exec("{$pfb['pfctl']} -vvsTables | {$pfb['grep']} -A4 'pfB_'", $pfb_pfctl);
+	$pfb_packets = pfSense_get_pf_rules();
 	if (!empty($pfb_pfctl)) {
 		foreach($pfb_pfctl as $line) {
 			$line = trim(str_replace(array( '[', ']' ), '', $line));
@@ -246,11 +247,13 @@ function pfBlockerNG_update_table() {
 					$pfb_table[$pfb_alias]['count'] = $addr;
 					continue;
 				}
-				if (substr($line, 0, 11) == 'Evaluations') {
-					$packets = trim(substr(strrchr($line, ':'), 1));
-					$pfb_table[$pfb_alias]['packets'] = $packets;
-					unset($pfb_alias);
+				foreach ($pfb_packets as $pkey => $prule) {
+					if (strpos($prule['label'], ": {$pfb_alias}") !== FALSE) {
+						$pfb_table[$pfb_alias]['packets'] += $prule['packets'];
+						unset($pfb_packets[$pkey]);
+					}
 				}
+				unset($pfb_alias);
 			}
 		}
 	}
@@ -485,22 +488,46 @@ function pfBlockerNG_get_header($mode='') {
 		$pfb_msg = 'pfBlockerNG is Disabled.';
 	}
 
+	$unbound_validate = FALSE;
+	if ($pfb['dnsbl_mode'] == 'dnsbl_python') {
+		$py_mode = '(Python mode)';
+		if (strpos(file_get_contents("{$pfb['dnsbldir']}/unbound.conf"), 'pfb_unbound.py') !== FALSE) {
+			$unbound_validate = TRUE;
+		}
+	} else {
+		$py_mode = '(Unbound mode)';
+		if (strpos(file_get_contents("{$pfb['dnsbldir']}/unbound.conf"), 'pfb_dnsbl') !== FALSE) {
+			$unbound_validate = TRUE;
+		}
+	}
+
 	// Status indicator if DNSBL is actively running
-	if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && $pfb['unbound_state'] == 'on'
-	    && strpos(file_get_contents("{$pfb['dnsbldir']}/unbound.conf"), 'pfb_dnsbl') !== FALSE) {
+	if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && $pfb['unbound_state'] == 'on' && $unbound_validate) {
 
 		// Check DNSBL Database Sanity
 		$db_sanity = exec("{$pfb['grep']} 'DNSBL update' {$pfb['logdir']}/pfblockerng.log | tail -1 | {$pfb['grep']} -o 'OUT OF SYNC'");
 		if ($db_sanity == 'OUT OF SYNC') {
 			$dnsbl_status	= 'fa fa-exclamation-circle text-warning';
-			$dnsbl_msg	= 'DNSBL is out of sync. Perform a Force Reload to correct.';
+			$dnsbl_msg	= "DNSBL {$py_mode} is out of sync. Perform a Force Reload to correct.";
 		} else {
 			$dnsbl_status	= 'fa fa-check-circle text-success';
-			$dnsbl_msg	= "DNSBL is Active on vip: {$pfb['dnsbl_vip']} ports: {$pfb['dnsbl_port']} & {$pfb['dnsbl_port_ssl']}";
+			$dnsbl_msg	= "DNSBL {$py_mode} is Active on vip: {$pfb['dnsbl_vip']} ports: {$pfb['dnsbl_port']} & {$pfb['dnsbl_port_ssl']}";
+		}
+
+		// Check for any Python Integration errors
+		if ($pfb['dnsbl_mode'] == 'dnsbl_python' && (int)@filesize($pfb['pyerrlog']) > 0) {
+			$dnsbl_status	= 'fa fa-exclamation-circle text-warning';
+			$dnsbl_msg	= "DNSBL {$py_mode} errors Found! Review py_error.log";
 		}
 	} else {
 		$dnsbl_status		= 'fa fa-times-circle text-danger';
-		$dnsbl_msg		= 'DNSBL is Disabled.';
+
+		// Check for any Python Integration errors
+		if ($pfb['dnsbl_mode'] == 'dnsbl_python' && (int)@filesize($pfb['pyerrlog']) > 0) {
+			$dnsbl_msg = "DNSBL {$py_mode} is Disabled with errors! Review py_error.log";
+		} else {
+			$dnsbl_msg = "DNSBL {$py_mode} is Disabled.";
+		}
 	}
 
 	// Collect folder/file counts
@@ -733,7 +760,7 @@ function pfBlockerNG_get_table($mode='', $pfb_table) {
 					$packets  = "<a href=\"/pfblockerng/pfblockerng_alerts.php?filterdnsbl={$pfb_alias}\" ";
 					$packets .= "target=\"_blank\" title=\"Click to view these packets in Alerts tab\" >{$values['packets']}</a>";
 				} else {
-					$packets = $values['packets'];
+					$packets = $values['packets'] ?: 0;
 				}
 			} else {
 				// Add firewall rules count associated with alias
@@ -753,7 +780,7 @@ function pfBlockerNG_get_table($mode='', $pfb_table) {
 					$packets .= "title=\"Click to view these packets in Alerts tab\" >{$values['packets']}</a>";
 				}
 				else {
-					$packets = $values['packets'];
+					$packets = $values['packets'] ?: 0;
 				}
 
 				// Alias table popup

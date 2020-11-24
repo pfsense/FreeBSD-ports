@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2015-2020 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -86,11 +86,10 @@ if (!empty($pfb['dnsbl_port']) && !empty($pfb['dnsbl_port_ssl'])) {
 	pfb_create_lighttpd();
 	update_status(" done.\n");
 
-	if (!file_exists("{$pfb['dnsbl_cert']}")) {
-		update_status("Creating DNSBL Certificate...");
-		pfb_create_dnsbl_cert();
-		update_status(" done.\n");
-	}
+	unlink_if_exists($pfb['dnsbl_cert']);
+	update_status("Creating DNSBL Certificate...");
+	pfb_create_dnsbl_cert();
+	update_status(" done.\n");
 }
 
 update_status("Starting DNSBL Service...");
@@ -110,8 +109,8 @@ if (!file_exists('/usr/local/www/pfblockerng/www/dnsbl_active.php') ||
 update_status("Upgrading previous settings:\n");
 
 // Remove discontinued pfBlockerNG CRON job
-$pfb_cron = &$config['cron']['item'];
-if (isset($pfb_cron)) {
+if (is_array($config['cron']['item'])) {
+	$pfb_cron = &$config['cron']['item'];
 	foreach ($pfb_cron as $key => $item) {
 		if (strpos($item['command'], 'pfblockerng.php dc >>') !== FALSE) {
 			unset($pfb_cron[$key]);
@@ -408,6 +407,29 @@ if (file_exists('/var/db/pfblockerng/dnsbl_info') &&
 	pfb_close_sqlite($db_handle);
 }
 unlink_if_exists('/var/db/pfblockerng/dnsbl_info');
+
+// Move dnsbl_levent.sqlite -> /var/unbound folder
+$u_found = FALSE;
+if (file_exists('/var/db/pfblockerng/dnsbl_levent.sqlite') && !file_exists($pfb['dnsbl_resolver'])) {
+	$ufound = TRUE;
+	@copy('/var/db/pfblockerng/dnsbl_levent.sqlite', $pfb['dnsbl_resolver']);
+	@chown($pfb['dnsbl_resolver'], 'unbound');
+	@chgrp($pfb['dnsbl_resolver'], 'unbound');
+}
+unlink_if_exists('/var/db/pfblockerng/dnsbl_levent.sqlite');
+
+// Move dnsbl.sqlite -> /var/unbound folder
+if (file_exists('/var/db/pfblockerng/dnsbl.sqlite') && !file_exists($pfb['dnsbl_info'])) {
+	$ufound = TRUE;
+	@copy('/var/db/pfblockerng/dnsbl.sqlite', $pfb['dnsbl_info']);
+	@chown($pfb['dnsbl_info'], 'unbound');
+	@chgrp($pfb['dnsbl_info'], 'unbound');
+}
+unlink_if_exists('/var/db/pfblockerng/dnsbl.sqlite');
+
+if ($ufound) {
+	$final = pfb_stop_start_unbound('');
+}
 
 // Upgrade EasyList to new Format
 update_status(" Upgrading previous EasyLists to new format...");

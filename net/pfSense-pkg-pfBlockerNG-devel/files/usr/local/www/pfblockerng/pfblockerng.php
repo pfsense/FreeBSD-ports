@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2015-2020 BBcan177@gmail.com
  * All rights reserved.
  *
  * Originally based upon pfBlocker by
@@ -84,11 +84,14 @@ $pfb['extras'][1]['folder']	= "{$pfb['geoipshare']}";
 $pfb['extras'][1]['type']	= 'geoip';
 
 $pfb['extras'][2]			= array();
-if ($pfb['dnsbl_alexatype'] == 'Alexa') {
+if ($pfb['dnsbl_alexatype'] == 'alexa') {
 	$pfb['extras'][2]['url']	= 'https://s3.amazonaws.com/alexa-static/top-1m.csv.zip';
+} elseif ($pfb['dnsbl_alexatype'] == 'tranco') {
+	$pfb['extras'][2]['url']	= 'https://tranco-list.eu/top-1m.csv.zip';
 } else {
-	$pfb['extras'][2]['url']	= 'https://s3-us-west-1.amazonaws.com/umbrella-static/top-1m.csv.zip';
+	$pfb['extras'][2]['url']	= 'https://s3-us-west-1.amazonaws.com/umbrella-static/top-1m.csv.zip';  // Cisco
 }
+
 $pfb['extras'][2]['file_dwn']	= 'top-1m.csv.zip';
 $pfb['extras'][2]['file']	= 'top-1m.csv';
 $pfb['extras'][2]['folder']	= "{$pfb['dbdir']}";
@@ -177,11 +180,12 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'dcc', '
 			}
 
 			// Proceed with conversion of MaxMind files on download success
-			if (empty($pfb['cc']) && pfblockerng_download_extras(600, $logtype)) {
-				pfblockerng_uc_countries();
-				pfblockerng_get_countries();
+			if (pfblockerng_download_extras(600, $logtype)) {
+				if (empty($pfb['cc'])) {
+					pfblockerng_uc_countries();
+					pfblockerng_get_countries();
+				}
 			}
-
 			break;
 		case 'bu':		// Update MaxMind binary database files only.
 			unset($pfb['extras'][1], $pfb['extras'][2]);
@@ -289,6 +293,7 @@ function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $for
 				curl_setopt_array($ch, $pfb['curl_defaults']);		// Load curl default settings
 				curl_setopt($ch, CURLOPT_NOBODY, true);			// Exclude the body from the output
 				curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD');
 
 				// Allow downgrade of cURL settings if user configured
 				if ($pflex == 'Flex') {
@@ -457,7 +462,7 @@ function pfblockerng_sync_cron() {
 	$hour = date('G');
 	$dow  = date('N');
 	$pfb['update_cron'] = FALSE;
-	$log = " CRON  PROCESS  START [ NOW ]\n";
+	$log = " CRON  PROCESS  START [ " . pfb_pkg_ver() . " ] [ NOW ]\n";
 	pfb_logger("{$log}", 1);
 
 	$list_type = array('pfblockernglistsv4' => '_v4', 'pfblockernglistsv6' => '_v6', 'pfblockerngdnsbl' => '_v4');
@@ -1312,7 +1317,7 @@ $php_data = <<<EOF
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2020 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2015-2020 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -1833,7 +1838,7 @@ $php_rep = <<<'EOF'
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2020 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2015-2020 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
