@@ -1242,36 +1242,58 @@ function sg_create_simple_config($blk_dbhome, $blk_destlist, $redirect_to = "404
 # -------------------------------------------------------------------------------------------------
 function sg_redirector_base_url($rdr_info, $redirect_mode)
 {
-    global $squidguard_config;
-    $rdr_path = '';
+	global $squidguard_config;
+	$rdr_path = '';
 
-    # gui port, ip & proto
-    $guiip = (!empty($squidguard_config[F_CURRENT_LAN_IP])) ? $squidguard_config[F_CURRENT_LAN_IP] : '127.0.0.1';
-    $guiport = (!empty($squidguard_config[F_CURRENT_GUI_PORT])) ? $squidguard_config[F_CURRENT_GUI_PORT] : '80';
-    $rdr_path = "http://$guiip:$guiport" . REDIRECT_BASE_URL;
+	# gui port, ip & proto
+	$guiip = (!empty($squidguard_config[F_CURRENT_LAN_IP])) ? $squidguard_config[F_CURRENT_LAN_IP] : '127.0.0.1';
+	$guiproto = (!empty($squidguard_config[F_CURRENT_GUI_PROTO])) ? $squidguard_config[F_CURRENT_GUI_PROTO] : 'http';
+	if (empty($squidguard_config[F_CURRENT_GUI_PORT])) {
+		$guiport = ($guiproto == 'http') ? '80' : '443';
+	} else {
+		$guiport = $squidguard_config[F_CURRENT_GUI_PORT];
+	}
+	$rdr_path = "$guiproto://$guiip:$guiport" . REDIRECT_BASE_URL;
 
-    # check redirect
-    $errmsg = '';
-    if (!sg_check_redirect($redirect_mode, $rdr_info, $errmsg)) {
-        $redirect_mode = RMOD_INT_ERRORPAGE;
-        $rdr_info = "Bad redirect settings. $errmsg Check you configuration.";
-        sg_addlog("sg_redirector_base_url", "$errmsg", SQUIDGUARD_ERROR);
-    }
+	# check redirect
+	$errmsg = '';
+	if (!sg_check_redirect($redirect_mode, $rdr_info, $errmsg)) {
+		$redirect_mode = RMOD_INT_ERRORPAGE;
+		$rdr_info = "Bad redirect settings. $errmsg Check you configuration.";
+		sg_addlog("sg_redirector_base_url", "$errmsg", SQUIDGUARD_ERROR);
+	}
 
-    switch($redirect_mode) {
-        case RMOD_EXT_ERR:         $rdr_path = "$rdr_info" . REDIRECT_URL_ARGS; break;
-        case RMOD_EXT_RDR:         $rdr_path = "$rdr_info"; break;
-        case RMOD_EXT_MOVED:       $rdr_path = "301:$rdr_info"; break;
-        case RMOD_EXT_FOUND:       $rdr_path = "302:$rdr_info"; break;
-        case RMOD_INT_BLANKPAGE:   $rdr_path .= "?url=blank&msg=" . rawurlencode($rdr_info) . REDIRECT_URL_ARGS; break;
-        case RMOD_INT_BLANKIMG:    $rdr_path .= "?url=blank_img&msg=" . rawurlencode($rdr_info) . REDIRECT_URL_ARGS; break;
-        case RMOD_INT_SIZELIMIT:   $rdr_path .= "?url=maxlen_$rdr_info" . REDIRECT_URL_ARGS; break;
-        case RMOD_INT_ERRORPAGE:
-        default:                   $rdr_path .= "?url=" . rawurlencode("403 $rdr_info") . REDIRECT_URL_ARGS; break;
-    }
+	switch($redirect_mode) {
+		case RMOD_EXT_ERR:
+			$rdr_path = "$rdr_info" . REDIRECT_URL_ARGS;
+			break;
+		case RMOD_EXT_RDR:
+			$rdr_path = "$rdr_info";
+			break;
+		case RMOD_EXT_MOVED:
+			$rdr_path = "301:$rdr_info";
+			break;
+		case RMOD_EXT_FOUND:
+			$rdr_path = "302:$rdr_info";
+			break;
+		case RMOD_INT_BLANKPAGE:
+			$rdr_path .= "?url=blank&msg=" . rawurlencode($rdr_info) . REDIRECT_URL_ARGS;
+			break;
+		case RMOD_INT_BLANKIMG:
+			$rdr_path .= "?url=blank_img&msg=" . rawurlencode($rdr_info) . REDIRECT_URL_ARGS;
+			break;
+		case RMOD_INT_SIZELIMIT:
+			$rdr_path .= "?url=maxlen_$rdr_info" . REDIRECT_URL_ARGS;
+			break;
+		case RMOD_INT_ERRORPAGE:
+		default:                   
+			$rdr_path .= "?url=" . rawurlencode("403 $rdr_info") . REDIRECT_URL_ARGS;
+			break;
+	}
+	$rdr_path = "$guiproto://$guiip:$guiport" . REDIRECT_BASE_URL;
 
-    sg_addlog("sg_redirector_base_url", "Select redirector base url ($rdr_path)", SQUIDGUARD_INFO);
-    return $rdr_path;
+	sg_addlog("sg_redirector_base_url", "Select redirector base url ($rdr_path)", SQUIDGUARD_INFO);
+	return $rdr_path;
 }
 
 # -------------------------------------------------------------------------------------------------

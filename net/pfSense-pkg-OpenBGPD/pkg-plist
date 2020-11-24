@@ -1,9 +1,0 @@
-pkg/openbgpd.xml
-www/openbgpd_status.php
-www/openbgpd_raw.php
-pkg/openbgpd.inc
-/etc/inc/priv/openbgpd.priv.inc
-pkg/openbgpd_groups.xml
-pkg/openbgpd_neighbors.xml
-%%DATADIR%%/info.xml
-@dir /etc/inc/priv

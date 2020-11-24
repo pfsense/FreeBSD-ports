@@ -83,7 +83,10 @@ foreach ($a_server as $server) {
 					$cert = lookup_cert($cert);
 				}
 
-				if (($cert['caref'] != $server['caref']) || !in_array($cert['refid'], $ecdsagood)) {
+				$purpose = cert_get_purpose($cert['crt']);
+				if (($cert['caref'] != $server['caref']) ||
+				    !in_array($cert['refid'], $ecdsagood) ||
+				    ($purpose['server'] == 'Yes')) {
 					continue;
 				}
 				$ras_userent = array();
@@ -98,7 +101,12 @@ foreach ($a_server as $server) {
 	} elseif (($server['mode'] == "server_tls") ||
 			(($server['mode'] == "server_tls_user") && ($server['authmode'] != "Local Database"))) {
 		foreach ($a_cert as $cindex => $cert) {
-			if (($cert['caref'] != $server['caref']) || ($cert['refid'] == $server['certref']) || !in_array($cert['refid'], $ecdsagood)) {
+
+			$purpose = cert_get_purpose($cert['crt']);
+			if (($cert['caref'] != $server['caref']) ||
+			    ($cert['refid'] == $server['certref']) ||
+			    !in_array($cert['refid'], $ecdsagood) ||
+			    ($purpose['server'] == 'Yes')) {
 				continue;
 			}
 			$ras_cert_entry['cindex'] = $cindex;
@@ -334,29 +342,36 @@ if (!empty($act)) {
 		$openvpn_version = substr($act, 5);
 		$exp_name = "openvpn-{$exp_name}-install-";
 		switch ($openvpn_version) {
-			case "x86-xp":
-				$exp_name .= "{$legacy_openvpn_version}-I0{$legacy_openvpn_version_rev}-i686.exe";
-				break;
-			case "x64-xp":
-				$exp_name .= "{$legacy_openvpn_version}-I0{$legacy_openvpn_version_rev}-x86_64.exe";
-				break;
-			case "x86-win6":
-				$exp_name .= "{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-i686.exe";
-				break;
-			case "x64-win6":
-				$exp_name .= "{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-x86_64.exe";
-				break;
 			case "Win7":
-				$exp_name .= "{$current_openvpn_version}-I6{$current_openvpn_version_rev}-Win7.exe";
+				$legacy = true;
+				$exp_name .= "{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-Win7.exe";
 				break;
 			case "Win10":
+				$legacy = true;
+				$exp_name .= "{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-Win10.exe";
+				break;
+			case "x86-msi":
+				$exp_name .= "{$current_openvpn_version}-I6{$current_openvpn_version_rev}-x86.exe";
+				break;
+			case "x64-msi":
 			default:
-				$exp_name .= "{$current_openvpn_version}-I6{$current_openvpn_version_rev}-Win10.exe";
+				$exp_name .= "{$current_openvpn_version}-I6{$current_openvpn_version_rev}-amd64.exe";
 				break;
 		}
 
 		$exp_name = urlencode($exp_name);
 		$exp_path = openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $password, $proxy, $advancedoptions, substr($act, 5), $usepkcs11, $pkcs11providers, $pkcs11id, $silent);
+	}
+
+	/* pfSense 2.5.0 with OpenVPN 2.5.0 has ciphers not compatible with
+	 * legacy clients, check for those and warn */
+	if ($legacy && function_exists('openvpn_build_data_cipher_list')) {
+		/* This will only be reached for pfSense 2.5.0 with OpenVPN 2.5.0 */
+		global $legacy_incompatible_ciphers;
+		$settings = get_openvpnserver_by_id($srvid);
+		if (in_array($settings['data_ciphers_fallback'], $legacy_incompatible_ciphers)) {
+			$input_errors[] = gettext("The Fallback Data Encryption Algorithm for the selected server is not compatible with Legacy clients.");
+		}
 	}
 
 	if (!$exp_path) {
@@ -464,13 +479,9 @@ $section->addInput(new Form_Select(
 	'Verify Server CN',
 	$cfg['verifyservercn'],
 	array(
-		"auto" => "Automatic - Use verify-x509-name (OpenVPN 2.3+) where possible",
-		"tls-remote" => "Use tls-remote (Deprecated, use only on old clients < OpenVPN 2.2.x)",
-		"tls-remote-quote" => "Use tls-remote and quote the server CN",
+		"auto" => "Automatic - Use verify-x509-name where possible",
 		"none" => "Do not verify the server CN")
-))->setHelp("Optionally verify the server certificate Common Name (CN) when the client connects. Current clients, including the most recent versions of Windows, Viscosity, Tunnelblick, OpenVPN on iOS and Android and so on should all work at the default automatic setting.".
-	"<br/><br/>Only use tls-remote if an older client must be used. The option has been deprecated by OpenVPN and will be removed in the next major version.".
-	"<br/><br/>With tls-remote the server CN may optionally be enclosed in quotes. This can help if the server CN contains spaces and certain clients cannot parse the server CN. Some clients have problems parsing the CN with quotes. Use only as needed.");
+))->setHelp("Optionally verify the server certificate Common Name (CN) when the client connects. ");
 
 $section->addInput(new Form_Checkbox(
 	'blockoutsidedns',
@@ -482,9 +493,9 @@ $section->addInput(new Form_Checkbox(
 $section->addInput(new Form_Checkbox(
 	'legacy',
 	'Legacy Client',
-	'Do not include OpenVPN 2.4 settings in the client configuration.',
+	'Do not include OpenVPN 2.5 settings in the client configuration.',
 	$cfg['legacy']
-))->setHelp("When using an older client (OpenVPN 2.3.x or earlier), check this option to prevent the exporter from placing known-incompatible settings such as Negotiable Cryptographic Parameters (NCP) into the client configuration.");
+))->setHelp("When using an older client (OpenVPN 2.4.x), check this option to prevent the exporter from placing known-incompatible settings into the client configuration.");
 
 $section->addInput(new Form_Checkbox(
 	'silent',
@@ -645,9 +656,6 @@ print($form);
 	</div>
 </div>
 
-<?= print_info_box(gettext("Servers configured with features that require OpenVPN 2.4 will not work with OpenVPN 2.3.x or older clients. " .
-"These features include: AEAD encryption such as AES-GCM, TLS Encryption+Authentication, ECDH, LZ4 Compression and other non-legacy compression choices, IPv6 DNS servers, and more."), 'warning', false); ?>
-
 <div class="panel panel-default">
 	<div class="panel-heading"><h2 class="panel-title"><?=gettext("OpenVPN Clients")?></h2></div>
 	<div class="panel-body">
@@ -666,17 +674,12 @@ print($form);
 		</div>
 	</div>
 </div>
-<span class="help-block"><?=gettext('Only OpenVPN-compatible certificates are shown')?>
+<span class="help-block"><?=gettext('Only OpenVPN-compatible user certificates are shown')?>
 <br />
 <br />
 <?= print_info_box(gettext("If a client is missing from the list it is likely due to a CA mismatch between the OpenVPN server instance and the client certificate, the client certificate does not exist on this firewall, or a user certificate is not associated with a user when local database authentication is enabled." .
-"<br />" .
-"<br />" .
-"OpenVPN 2.4.8+ requires Windows 7 or later" .
-"<br />" .
-"The &quot;win6&quot; Windows installers include the tap-windows6 driver which requires Windows Vista or later. " .
-"<br />" .
-"The &quot;XP&quot; Windows installers work on Windows XP and later versions. "), 'info', false); ?>
+"<br /><br />" .
+"OpenVPN 2.4.8+ requires Windows 7 or later"), 'info', false); ?>
 
 Links to OpenVPN clients for various platforms:<br />
 <br />
@@ -955,21 +958,16 @@ function server_changed() {
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
-		cell2.innerHTML += "<br\/>- Current Windows Installer (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
+		cell2.innerHTML += "<br\/>- Current Windows Installers (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 7/8/8.1/2012r2<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-msi\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 64-bit<\/a>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-msi\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 32-bit<\/a>";
+		cell2.innerHTML += "<br\/>- Legacy Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win10\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 10/2016/2019<\/a>";
-/* TODO: Hide old clients if the server is using AES-GCM or other features that require 2.4. */
-		cell2.innerHTML += "<br\/>- Old Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-xp\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x86-xp<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-xp\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x64-xp<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-win6\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x86-win6<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-win6\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x64-win6<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 7/8/8.1/2012r2<\/a>";
 		cell2.innerHTML += "<br\/>- Viscosity (Mac OS X and Windows):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"visc\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Viscosity Bundle<\/a>";
@@ -1004,19 +1002,15 @@ function server_changed() {
 		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
 		cell2.innerHTML += "<br\/>- Current Windows Installer (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 7/8/8.1/2012r2<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-msi\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 64-bit<\/a>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-msi\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 32-bit<\/a>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<br\/>- Legacy Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win10\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 10/2016/2019<\/a>";
-/* TODO: Hide old clients if the server is using AES-GCM or other features that require 2.4. */
-		cell2.innerHTML += "<br\/>- Old Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-xp\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x86-xp<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-xp\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x64-xp<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-win6\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x86-win6<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-win6\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x64-win6<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 7/8/8.1/2012r2<\/a>";
 		cell2.innerHTML += "<br\/>- Viscosity (Mac OS X and Windows):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"visc\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Viscosity Bundle<\/a>";
@@ -1059,19 +1053,14 @@ function server_changed() {
 		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
 		cell2.innerHTML += "<br\/>- Current Windows Installer (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 7/8/8.1/2012r2<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-msi\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 64-bit<\/a>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-msi\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 32-bit<\/a>";
+		cell2.innerHTML += "<br\/>- Legacy Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win10\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 10/2016/2019<\/a>";
-/* TODO: Hide old clients if the server is using AES-GCM or other features that require 2.4. */
-		cell2.innerHTML += "<br\/>- Old Windows Installers (<?=$legacy_openvpn_version . '-Ix' . $legacy_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-xp\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x86-xp<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-xp\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x64-xp<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-win6\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x86-win6<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-win6\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> x64-win6<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-Win7\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> 7/8/8.1/2012r2<\/a>";
 		cell2.innerHTML += "<br\/>- Viscosity (Mac OS X and Windows):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"visc\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Viscosity Bundle<\/a>";

@@ -1,0 +1,15 @@
+pkg/zeek.xml
+pkg/zeek.inc
+/etc/inc/priv/zeek.priv.inc
+www/shortcuts/pkg_zeek.inc
+pkg/zeek_zeekctl.xml
+pkg/zeek_cluster.xml
+pkg/zeek_script.xml
+pkg/zeek_log.xml
+pkg/zeek_sync.xml
+www/zeek_alerts.php
+www/zeek_alert_data.php
+www/select_box_file.php
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv
+@dir /etc/inc

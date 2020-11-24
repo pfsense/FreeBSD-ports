@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2020 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2015-2020 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -129,10 +129,13 @@ function step4_submitphpaction() {
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsvip']		= $config['pfblockerng_wizard']['step3']['pfb_dnsvip'];
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsport']		= $config['pfblockerng_wizard']['step3']['pfb_dnsport'];
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsport_ssl']		= $config['pfblockerng_wizard']['step3']['pfb_dnsport_ssl'];
+	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsblv6']		= $config['pfblockerng_wizard']['step3']['pfb_dnsblv6'] ? 'on' : '';
 	$new_config['pfblockerngdnsblsettings']['config'][0]['pfb_dnsbl'] 		= 'on';
 
 	// Default DNSBL Whitelist
-	$new_config['pfblockerngdnsblsettings']['config'][0]['suppression']		= 
+	if ($config['pfblockerng_wizard']['step3']['suppression'] == 'on') {
+
+		$new_config['pfblockerngdnsblsettings']['config'][0]['suppression']		= 
 
 "czMuYW1hem9uYXdzLmNvbQ0KczMtMS5hbWF6b25hd3MuY29tICMgQ05BTUUgZm9yIChzMy5hbWF6b25hd3MuY29tKQ0KLmdpdGh1Yi5jb20NCi5naXRodWJ1c2VyY29udGVudC5jb20gDQp
 naXRodWIubWFwLmZhc3RseS5uZXQgIyBDTkFNRSBmb3IgKHJhdy5naXRodWJ1c2VyY29udGVudC5jb20pDQouZ2l0bGFiLmNvbQ0KLmFwcGxlLmNvbSANCi5zb3VyY2Vmb3JnZS5uZXQNCi5mbHMtbmEuYW1hem9uLmNvbSAjIGFsZXhhDQouY29udHJ
@@ -146,6 +149,7 @@ kcm9wYm94LmNvbQ0Kd3d3LmRyb3Bib3guY29tDQp3d3cuZHJvcGJveC1kbnMuY29tICMgQ05BTUUgZm9
 lLmNvbQ0KcGJzLnR3aW1nLmNvbSAjIHR3aXR0ZXIgaW1hZ2VzDQp3d3cucGJzLnR3aW1nLmNvbSAjIHR3aXR0ZXIgaW1hZ2VzDQpjczE5Ni53YWMuZWRnZWNhc3RjZG4ubmV0ICMgQ05BTUUgZm9yIChwYnMudHdpbWcuY29tKQ0KY3MyLXdhYy5hcHI
 tODMxNS5lZGdlY2FzdGRucy5uZXQgIyBDTkFNRSBmb3IgKHBicy50d2ltZy5jb20pDQpjczItd2FjLXVzLjgzMTUuZWNkbnMubmV0ICMgQ05BTUUgZm9yIChwYnMudHdpbWcuY29tKQ0KY3M0NS53YWMuZWRnZWNhc3RjZG4ubmV0ICMgQ05BTUUgZm9
 yIChwYnMudHdpbWcuY29tKQ==";
+	}
 
 	// Selected Alias/Groups to add to default installation
 	$new = array();

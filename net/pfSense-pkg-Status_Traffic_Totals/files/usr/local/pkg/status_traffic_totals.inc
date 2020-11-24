@@ -94,7 +94,7 @@ function vnstat_create_nic_dbs() {
 function vnstat_delete_nic_dbs() {
 	global $vnstat_dbdir;
 	stop_service('vnstatd');
-	unlink_if_exists("{$vnstat_dbdir}/vnstat.db");
+	rmdir_recursive($vnstat_dbdir);
 }
 
 function vnstat_read() {
@@ -145,7 +145,8 @@ function vnstat_install() {
 }
 
 function vnstat_deinstall() {
-	// Nothing yet
+	global $vnstat_dbdir;
+	rmdir_recursive($vnstat_dbdir);
 }
 
 function vnstat_write_rcfile() {
@@ -214,7 +215,7 @@ function vnstat_sync() {
 	$vnscfg =& $config['installedpackages']['traffictotals']['config'][0];
 
 	if (isset($vnscfg['enabled'])) { // Enabled
-		//make the directory for the nterface databases
+		//make the directory for the interface databases
 		safe_mkdir('/var/db/vnstat');
 		//overwrite vnstat conf
 		vnstat_write_conf();

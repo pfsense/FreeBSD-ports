@@ -1561,14 +1561,9 @@ function & get_certificate($name) {
 					$domainstosign[] = $newdomain;
 					$envvariables = array();
 					if ($method == "dns_namecheap") {
-						# This function changed names on 2.5.0
-						if (!function_exists('route_get_default')) {
-							function route_get_default($ipprotocol) {
-								return getcurrentdefaultgatewayip($ipprotocol);
-							}
-						}
-
-						$envvariables['NAMECHEAP_SOURCEIP'] = find_interface_ip(guess_interface_from_ip(route_get_default('inet')));
+						# The function to find the default gateway changed on 2.5.0
+						$defgw = function_exists('route_get_default') ? route_get_default('inet') : getcurrentdefaultgatewayip('inet');
+						$envvariables['NAMECHEAP_SOURCEIP'] = find_interface_ip(guess_interface_from_ip($defgw));
 					}
 					global $acme_domain_validation_method;
 					foreach($acme_domain_validation_method[$method]['fields'] as $key => $field) {

@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2020 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2015-2020 BBcan177@gmail.com
  * All rights reserved.
  *
  * Portions of this code are based on original work done for the
@@ -78,7 +78,8 @@ function getlogs($logdir, $log_extentions = array('log')) {
 $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'logdir'	=> "{$pfb['logdir']}/",
 						'logs'		=> array('pfblockerng.log', 'error.log', 'ip_block.log', 'ip_permit.log', 'ip_match.log',
-									'dnsbl.log', 'extras.log', 'dnsbl_parsed_error.log', 'maxmind_ver', 'wizard.log'),
+									'dnsbl.log', 'extras.log', 'dnsbl_parsed_error.log', 'dns_reply.log', 'py_error.log',
+									'maxmind_ver', 'wizard.log'),
 						'download'	=> TRUE,
 						'clear'		=> TRUE
 						),
@@ -94,7 +95,7 @@ $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'download'	=> TRUE,
 						'clear'		=> TRUE
 						),
-			'origdnslogs'	=> array('name'		=> 'Original DNS Files',
+			'origdnslogs'	=> array('name'		=> 'Original DNSBL Files',
 						'ext'		=> array('orig', 'raw'),
 						'logdir'	=> "{$pfb['dnsorigdir']}/",
 						'download'	=> TRUE,
@@ -140,7 +141,7 @@ $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'download'	=> TRUE,
 						'clear'		=> FALSE
 						),
-			'etiprep'	=> array('name'		=> 'ET IPRep Files',
+			'etiprep'	=> array('name'		=> 'Proofpoint/ET IPRep Files',
 						'ext'		=> '.*',
 						'logdir'	=> "{$pfb['etdir']}/",
 						'download'	=> TRUE,
@@ -152,14 +153,26 @@ $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'download'	=> TRUE,
 						'clear'		=> FALSE
 						),
-			'unbound'	=> array('name'		=> 'Unbound Resolver DNSBL',
+			'unbound'	=> array('name'		=> 'DNSBL Unbound mode',
 						'ext'		=> array('pfb_dnsbl.conf'),
+						'logdir'	=> "{$pfb['dnsbldir']}/",
+						'download'	=> TRUE,
+						'clear'		=> FALSE
+						),
+			'python'	=> array('name'		=> 'DNSBL Python mode',
+						'ext'		=> array('pfb_py*.txt'),
 						'logdir'	=> "{$pfb['dnsbldir']}/",
 						'download'	=> TRUE,
 						'clear'		=> FALSE
 						),
 			'dnsbl_tld'	=> array('name'		=> 'DNSBL TLD List',
 						'ext'		=> array('dnsbl_tld'),
+						'logdir'	=> '/usr/local/pkg/pfblockerng/',
+						'download'	=> TRUE,
+						'clear'		=> FALSE
+						),
+			'dnsbl_safe'	=> array('name'		=> 'DNSBL Safe Search',
+						'ext'		=> array('pfb_dnsbl*.conf'),
 						'logdir'	=> '/usr/local/pkg/pfblockerng/',
 						'download'	=> TRUE,
 						'clear'		=> FALSE
@@ -171,6 +184,12 @@ $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'clear'		=> TRUE
 						)
 		);
+
+if ($pfb['dnsbl_py_blacklist']) {
+        unset($pfb_logtypes['unbound']);
+} else {
+        unset($pfb_logtypes['python']);
+}
 
 // Dynamically add any configured DNSBL Categeory Feeds
 if ($pfb['blconfig'] &&
@@ -203,19 +222,21 @@ function pfb_validate_filepath($validate, $pfb_logtypes) {
 	$path = pathinfo($validate, PATHINFO_DIRNAME) . '/';
 	$file = basename($validate);
 
-	if ($path == '/var/unbound/' && $file != 'pfb_dnsbl.conf') {
+	if ($path == '/var/unbound/' && substr($file, 0, 4) != 'pfb_') {
 		return FALSE;
 	}
+
 	return isset($allowed_path[$path]);
 }
 
 $pconfig = array();
 if ($_POST) {
 	$pconfig = $_POST;
-}
+}	
 
 // Send logfile to screen
 if ($_REQUEST['ajax']) {
+
 	clearstatcache();
 	$pfb_logfilename = htmlspecialchars($_REQUEST['file']);
 	if (!pfb_validate_filepath($pfb_logfilename, $pfb_logtypes)) {
@@ -242,6 +263,7 @@ if ($_REQUEST['ajax']) {
 
 // Download/Clear logfile
 if ($pconfig['logFile'] && ($pconfig['download'] || $pconfig['clear'])) {
+	
 	$s_logfile = htmlspecialchars($pconfig['logFile']);
 	if (!pfb_validate_filepath($s_logfile, $pfb_logtypes)) {
 		print ("|0|" . gettext('Invalid filename/path') . ".|");
@@ -250,11 +272,19 @@ if ($pconfig['logFile'] && ($pconfig['download'] || $pconfig['clear'])) {
 
 	// Clear selected file
 	if ($pconfig['clear']) {
-		unlink_if_exists($s_logfile);
+
+		// Python log file must be truncated to not lose python file pointer
+		if (strpos($s_logfile, 'py_error.log') !== FALSE) {
+			$fp = @fopen("{$s_logfile}", 'r+');
+			@ftruncate($fp, 0);
+			@fclose($fp);
+		} else {
+			unlink_if_exists($s_logfile);
+		}
 	}
 
 	// Download log
-	if ($pconfig['download']) {
+	elseif($pconfig['download']) {
 		if (file_exists($s_logfile)) {
 			session_cache_limiter('public');
 			$fd = @fopen($s_logfile, "rb");
@@ -357,7 +387,6 @@ $section->addInput(new Form_Select(
 	$options
 ))->setHelp('Choose which log/file you want to view.');
 $form->add($section);
-
 
 // Add appropriate buttons for logfile
 $logbtns = '&emsp;&nbsp;<i class="fa fa-refresh icon-pointer icon-primary" onclick="loadFile()" title="Refresh current logfile."></i>';

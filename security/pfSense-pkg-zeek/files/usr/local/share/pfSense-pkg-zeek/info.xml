@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>zeek</name>
+		<website>https://www.zeek.org</website>
+		<descr><![CDATA[
+			Zeek (formerly Bro) is a passive, open-source network traffic analyzer.
+			It detects specific attacks, including those defined by signatures or events, as well as unusual activity.
+			]]>
+		</descr>
+		<version>%%PKGVERSION%%</version>
+		<maintainer>coreteam@pfsense.org</maintainer>
+		<configurationfile>/zeek.xml</configurationfile>
+		<only_for_archs>i386 amd64</only_for_archs>
+	</package>
+</pfsensepkgs>

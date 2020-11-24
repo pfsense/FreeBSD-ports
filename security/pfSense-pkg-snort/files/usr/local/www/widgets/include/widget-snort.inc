@@ -39,7 +39,7 @@ function widget_snort_uninstall() {
 				unset($widgetlist[$key]);
 		}
 		$config['widgets']['sequence'] = implode(",", $widgetlist);
-		write_config();
+		write_config("Snort widget removed");
 	}
 }
 ?>

@@ -431,8 +431,8 @@ if ($_POST) {
 		}
 
 		if (!isset($server['forwardto']) || $server['forwardto'] == "") {
-			if (!is_ipaddr($server_address) && !is_hostname($server_address) && !haproxy_is_frontendname($server_address)) {
-				$input_errors[] = "The field 'Address' for server $server_name is not a valid ip address or hostname." . $server_address;
+			if (!is_ipaddr($server_address) && !haproxy_utils::is_valid_haproxy_hostname($server_address) && !haproxy_is_frontendname($server_address)) {
+				$input_errors[] = "The field 'Address' for server '$server_name' is not a valid ip address or hostname '" . $server_address . "'.";
 			}
 		} else {
 			if ((!empty($server_address)) || ($server_port && !is_numeric($server_port))) {
@@ -827,7 +827,7 @@ $section->addInput(new Form_Select(
 	'check_type',
 	'Health check method',
 	$pconfig['check_type']?$pconfig['check_type']:"HTTP",
-	haproxy_keyvalue_array($a_checktypes)
+	haproxy_keyvalue_array($a_checktypes, $pconfig['check_type'])
 ))->setHelp('<textarea readonly="yes" cols="60" rows="2" id="check_type_description" name="check_type_description" style="padding:5px; border:1px dashed #990000; background-color: #ffffff; color: #000000; font-size: 8pt;"></textarea>');
 
 //TODO milliseconds behind field.

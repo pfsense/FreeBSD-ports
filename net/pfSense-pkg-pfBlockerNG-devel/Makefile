@@ -22,11 +22,11 @@ RUN_DEPENDS=	${LOCALBASE}/bin/mmdblookup:net/libmaxminddb \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}maxminddb>0:net/py-maxminddb@${PY_FLAVOR}
 
+USES=		php python
+
 CONFLICTS=	pfSense-pkg-pfBlockerNG
 
-USES=		php:flavors python
 USE_PHP=	intl
-IGNORE_WITH_PHP=	56 70 71
 NO_BUILD=	yes
 NO_MTREE=	yes
 
@@ -44,6 +44,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/include
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/javascript
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/wizards
+	${MKDIR} ${STAGEDIR}/var/unbound
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/pfblockerng.xml \
 		${STAGEDIR}${PREFIX}/pkg
@@ -119,6 +120,12 @@ do-install:
 		${STAGEDIR}${PREFIX}/www/pfblockerng/www
 	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/pfblockerng/www/dnsbl_default.php \
 		${STAGEDIR}${PREFIX}/www/pfblockerng/www
+	${INSTALL_DATA} -m 0755 ${FILESDIR}/var/unbound/pfb_unbound.py \
+		${STAGEDIR}/var/unbound
+	${INSTALL_DATA} -m 0755 ${FILESDIR}/var/unbound/pfb_unbound_include.inc \
+		${STAGEDIR}/var/unbound
+	${INSTALL_DATA} -m 0755 ${FILESDIR}/var/unbound/pfb_py_hsts.txt \
+		${STAGEDIR}/var/unbound
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
