@@ -726,8 +726,8 @@ foreach ($rowdata[$rowid] as $tags) {
 
 		if ($rowdata[$rowid]['sort'] == 'no-sort') {
 
-			$move_anchor = "<input type=\"checkbox\" name=\"Lmove[{$r_id}]\" value=\"{$r_id}\" />
-						<button type=\"submit\" class=\"fa fa-anchor button-icon\" name=\"Xmove\" value=\"{$r_id}\"
+			$move_anchor = "<input type=\"checkbox\" name=\"Lmove[{$r_id}]\" value=\"{$r_id}\" id=\"{$r_id}\" />
+						<button type=\"submit\" class=\"fa fa-anchor button-icon\" name=\"Xmove\" value=\"{$r_id}\" id=\"{$r_id}\"
 						title=\"Move checked entries before this anchor\"></button>";
 
 			$group->add(new Form_StaticText(
