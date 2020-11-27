@@ -1290,7 +1290,6 @@ function sg_redirector_base_url($rdr_info, $redirect_mode)
 			$rdr_path .= "?url=" . rawurlencode("403 $rdr_info") . REDIRECT_URL_ARGS;
 			break;
 	}
-	$rdr_path = "$guiproto://$guiip:$guiport" . REDIRECT_BASE_URL;
 
 	sg_addlog("sg_redirector_base_url", "Select redirector base url ($rdr_path)", SQUIDGUARD_INFO);
 	return $rdr_path;
