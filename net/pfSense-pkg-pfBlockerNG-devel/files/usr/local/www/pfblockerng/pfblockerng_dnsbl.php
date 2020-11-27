@@ -2305,15 +2305,15 @@ $section->addInput(new Form_Input(
 		. 'This Port must not be in use by any other process.'
 );
 
-$interface_list	= pfb_build_if_list(FALSE, FALSE);
-$interface_list = array_merge(array('lo0' => 'Localhost'), $interface_list);
-$int_size	= count($interface_list) ?: '1';
+$interface_list		= pfb_build_if_list(FALSE, FALSE);
+$interface_list_all	= array_merge(array('lo0' => 'Localhost'), $interface_list);
+$int_size		= count($interface_list) ?: '1';
 
 $section->addInput(new Form_Select(
 	'dnsbl_interface',
 	gettext('Web Server Interface'),
 	$pconfig['dnsbl_interface'],
-	$interface_list
+	$interface_list_all
 ))->setHelp('Select the interface which DNSBL Web Server will Listen on.<br />'
 	. 'Default: <strong>Localhost</strong> - Selected Interface should be a Local Interface only.');
 
