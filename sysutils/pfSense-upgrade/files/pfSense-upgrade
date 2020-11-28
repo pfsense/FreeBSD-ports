@@ -788,7 +788,10 @@ pkg_upgrade() {
 			fi
 		fi
 
-		if [ -n "${uboot_pkg}" ] && upgrade_available ${uboot_pkg}; then
+		# Do not upgrade u-boot when a new FreeBSD major version is
+		# available.  It requires new kernel and base to be in place.
+		if [ -z "${NEW_MAJOR}" -a -n "${uboot_pkg}" ] &&
+		    upgrade_available ${uboot_pkg}; then
 			_exec "pkg-static upgrade -U ${uboot_pkg}" \
 			    "Upgrading ${product} u-boot"
 			if [ -n "${uboot_update}" -a -x ${uboot_update} ]; then
