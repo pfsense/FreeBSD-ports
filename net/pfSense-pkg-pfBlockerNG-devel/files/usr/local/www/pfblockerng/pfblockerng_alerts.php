@@ -956,7 +956,7 @@ if (isset($_POST) && !empty($_POST)) {
 
 			if ($pfb['dnsbl_py_blacklist']) {
 				if ($dnsbl_type == 'python') {
-					@file_put_contents($pfb['unbound_py_wh'], "{$domain}\n", FILE_APPEND | LOCK_EX);
+					@file_put_contents($pfb['unbound_py_wh'], "{$domain},0\n", FILE_APPEND | LOCK_EX);
 				}
 				else {
 					$tmp = tempnam('/tmp', 'dnsbl_alert_');
