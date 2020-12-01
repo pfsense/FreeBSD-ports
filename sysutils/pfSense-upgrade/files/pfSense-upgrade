@@ -788,7 +788,10 @@ pkg_upgrade() {
 			fi
 		fi
 
-		if [ -n "${uboot_pkg}" ] && upgrade_available ${uboot_pkg}; then
+		# Do not upgrade u-boot when a new FreeBSD major version is
+		# available.  It requires new kernel and base to be in place.
+		if [ -z "${NEW_MAJOR}" -a -n "${uboot_pkg}" ] &&
+		    upgrade_available ${uboot_pkg}; then
 			_exec "pkg-static upgrade -U ${uboot_pkg}" \
 			    "Upgrading ${product} u-boot"
 			if [ -n "${uboot_update}" -a -x ${uboot_update} ]; then
@@ -853,6 +856,19 @@ pkg_upgrade() {
 				# Upgrade base packages using pkg-static
 				_exec "pkg-static upgrade -r ${product}-core" \
 				    "Upgrading necessary core packages"
+
+				# Update the U-boot at stage 2 if it was not
+				# updated at the first stage because of a
+				# $MAJOR update.
+				if [ -n "${uboot_pkg}" ] &&
+				    upgrade_available ${uboot_pkg}; then
+					_exec "pkg-static upgrade -U ${uboot_pkg}" \
+					    "Upgrading ${product} u-boot"
+					if [ -n "${uboot_update}" -a \
+					    -x ${uboot_update} ]; then
+						${uboot_update}
+					fi
+				fi
 
 				# Make sure PHP setup is fine
 				/etc/rc.php_ini_setup >/dev/null 2>&1

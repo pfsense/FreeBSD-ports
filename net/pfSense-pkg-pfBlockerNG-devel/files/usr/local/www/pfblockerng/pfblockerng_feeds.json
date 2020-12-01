@@ -631,6 +631,20 @@
 				}
 			]
 		},
+		"Proxy_IP": {
+			"info":		"A list of free, public, forward proxy servers.",
+			"description":	"List of public Proxy servers.",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"Clarketm",
+					"website":	"https://github.com/clarketm/proxy-list",
+					"url":		"https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt",
+					"header":	"Clarketm_Proxy_IP"
+				}
+			]
+		},
 		"Torrent_IP": {
 			"info":		"A list of Torrent trackers.",
 			"description":	"List of Torrent trackers.",
@@ -1084,6 +1098,20 @@
 				}
 			]
 		},
+		"Email": {
+			"info":		"List of email providers. If not filtered by 'TOP1M Whitelist' may block many websites.",
+			"description":	"Email - List of email providers domains.",
+			"action":	"",
+			"cron":		"Weekly",
+			"feeds": [
+				{
+					"feed":		"Edwin-zvs",
+					"website":	"https://github.com/edwin-zvs/email-providers",
+					"url":		"https://raw.githubusercontent.com/edwin-zvs/email-providers/master/email-providers.csv",
+					"header":	"Edwin_Email"
+				}
+			]
+		},
 		"Malicious": {
 			"info":		"Malicious group is a collection of Malicious Domain Feeds.-LB-May contain false positives.-LB-The frequency of updates is set to once per day.",
 			"description":	"Malicious - Collection of Malicious Domain Feeds.",
@@ -1496,7 +1524,7 @@
 				{
 					"feed":		"Kowabit",
 					"website":	"https://www.kowabit.de/blcklst/",
-					"url":		"https://blocklist.kowabit.de/fritzboxliste.txt",
+					"url":		"https://list.kwbt.de/fritzboxliste.txt",
 					"info":		"Contains false positives!",
 					"header":	"Kowabit"
 				},

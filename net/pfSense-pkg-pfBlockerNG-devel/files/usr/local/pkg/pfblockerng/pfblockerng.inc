@@ -1708,7 +1708,8 @@ function pfb_unbound_dnsbl($mode) {
 			}
 
 			// Remove any DNSBL VIPs added to unbound.conf on 'disable'
-			elseif (strpos($line, 'interface:') !== FALSE && $mode == 'disabled' && strpos($line, $pfb['dnsbl_vip']) !== FALSE) { 
+			elseif ((strpos($line, 'interface:') !== FALSE) && ($mode == 'disabled') &&
+			    !empty($pfb['dnsbl_vip']) && (strpos($line, $pfb['dnsbl_vip']) !== FALSE)) { 
 				$u_update = TRUE;
 				$u_msg .= "  Removed DNSBL VIP from Unbound Interface settings\n";
 				unset($conf[$key]);
