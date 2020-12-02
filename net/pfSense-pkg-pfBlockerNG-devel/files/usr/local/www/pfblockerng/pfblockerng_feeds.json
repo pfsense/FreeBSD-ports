@@ -192,6 +192,14 @@
 					"url":		"https://blocklist.greensnow.co/greensnow.txt",
 					"header":	"GreenSnow"
 				},
+				{	
+					"feed":		"Malware Domain List",	
+					"website":	"https://www.malwaredomainlist.com/",	
+					"contact":	"https://www.malwaredomainlist.com/contact.php",	
+					"url":		"https://www.malwaredomainlist.com/hostslist/ip.txt",	
+					"delist":	"https://www.malwaredomainlist.com/forums/index.php?board=16.0",	
+					"header":	"MDL"	
+				},
 				{
 					"feed":		"MaxMind",
 					"website":	"https://www.maxmind.com/en/high-risk-ip-sample-list",
