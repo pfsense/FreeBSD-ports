@@ -347,7 +347,7 @@
 			</description>
 			<type>input</type>
 			<size>5</size>
-			<default_value>953</default_value>
+			<default_value>8953</default_value>
 			<advancedfield/>
 		</field>
 		<field>
