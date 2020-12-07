@@ -120,14 +120,14 @@ if (isset($_POST['del_x'])) {
 			// Delete the interface sub-directories and then the instance itself
 			$if_friendly = convert_friendly_interface_to_friendly_descr($snortcfg['interface']);
 			syslog(LOG_NOTICE, "Stopping Suricata on {$if_friendly}({$if_real}) due to Suricata instance deletion...");
-			suricata_stop($a_nat[$rulei], $if_real);
+			suricata_stop($a_nat[$delbtn_list], $if_real);
 			rmdir_recursive("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}");
 			rmdir_recursive("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}");
 			syslog(LOG_NOTICE, "Deleted Suricata instance on {$if_friendly}({$if_real}) per user request...");
 		}
 
 		// Finally delete the interface's config entry entirely
-		unset($a_nat[$rulei]);
+		unset($a_nat[$delbtn_list]);
 
 		// Save updated configuration
 		write_config("Suricata pkg: deleted one or more Suricata interfaces.");
