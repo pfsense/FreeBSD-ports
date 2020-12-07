@@ -166,7 +166,6 @@ $pfb['curl_defaults'] = array(  CURLOPT_USERAGENT	=> 'pfSense/pfBlockerNG cURL d
 				CURLOPT_SSL_VERIFYHOST	=> true,
 				CURLOPT_FRESH_CONNECT	=> true,
 				CURLOPT_FILETIME	=> true,
-				CURLOPT_TCP_FASTOPEN	=> true,
 				CURLOPT_TCP_NODELAY	=> true,
 				CURLOPT_CONNECTTIMEOUT	=> 15
 				);
@@ -332,6 +331,8 @@ function pfb_global() {
 			$pfb['curl_defaults'][CURLOPT_PROXYAUTH]	= 'CURLAUTH_ANY | CURLAUTH_ANYSAFE';
 			$pfb['curl_defaults'][CURLOPT_PROXYUSERPWD]	= "{$config['system']['proxyuser']}:{$config['system']['proxypass']}";
 		}
+	} else {
+		$pfb['curl_defaults'][CURLOPT_TCP_FASTOPEN]		= true;
 	}
 
 	// Set pfBlockerNG to disabled on 're-install'
