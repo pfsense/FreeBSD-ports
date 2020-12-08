@@ -1109,7 +1109,7 @@
 		"Email": {
 			"info":		"List of email providers. If not filtered by 'TOP1M Whitelist' may block many websites.",
 			"description":	"Email - List of email providers domains.",
-			"action":	"",
+			"action":	"block",
 			"cron":		"Weekly",
 			"feeds": [
 				{
@@ -1634,6 +1634,28 @@
 					"website":	"https://github.com/hoshsadiq/adblock-nocoin-list",
 					"url":		"https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/hosts.txt",
 					"header":	"NoCoin"
+				}
+			]
+		},
+		"Compilation": {
+			"info":		"Compilation group is a collection of feeds containing data from a group of other feeds.",
+			"description":	"Compilation - feeds that aggregate other feeds",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"OISD",
+					"website":	"https://oisd.nl/",
+					"url":		"https://dbl.oisd.nl/",
+					"header":	"OISD",
+					"info":		"Ads, (Mobile) App Ads, Phishing, Malvertising, Malware, Spyware, Ransomware, CryptoJacking, Scam, Telemetry, Analytics, Tracking (Where not needed for proper functionality)."
+				},
+				{
+					"feed":		"Phishing Army",
+					"website":	"https://phishing.army/",
+					"url":		"https://phishing.army/download/phishing_army_blocklist.txt",
+					"header":	"PhishingArmy",
+					"info":		"Generated every 6 hours from PhishTank, OpenPhish, Cert.pl and PhishFindR reports. Each domain is analyzed to eliminate false positives, through the Whitelist of Anudeep and the Alexa Rank."
 				}
 			]
 		}
