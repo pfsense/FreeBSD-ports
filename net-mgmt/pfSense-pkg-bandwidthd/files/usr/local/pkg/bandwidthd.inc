@@ -161,75 +161,18 @@ EOF;
 	fwrite($fd, $config_file);
 	fclose($fd);
 
-	/* nanobsd hacks */
-	if ($g['platform'] == 'nanobsd') {
-		$bandwidthd_nano_dir = "/var/bandwidthd";
-		$bandwidthd_htdocs_dir = $bandwidthd_nano_dir . "/htdocs";
-		if (!is_dir($bandwidthd_nano_dir)) {
-			unlink_if_exists($bandwidthd_nano_dir);
-			mkdir($bandwidthd_nano_dir);
-		}
-	} else {
-		$bandwidthd_htdocs_dir = $bandwidthd_base_dir . "/htdocs";
-	}
+	$bandwidthd_htdocs_dir = $bandwidthd_base_dir . "/htdocs";
 
 	$rc = array();
 	$rc['file'] = 'bandwidthd.sh';
 	$rc['stop'] = '/usr/bin/killall bandwidthd';
 
 	if ($bandwidthd_config['enable']) {
-		if ($g['platform'] == 'nanobsd') {
-		/* On nanobsd:
-		* first, /var/bandwidthd is created, with real /var/bandwidth/htdocs inside, where the graph data is written;
-		* soft link to the real bandwidth program is made - /var/bandwidthd/bandwidthd;
-		* soft link to the etc folder with the conf file is made - /var/bandwidthd/etc;
-		* bandwidthd is started from /var/bandwidthd with the current dir /var/bandwidth.
-		* This way, it looks in ./etc for the conf file, writes graph files in ./htdocs
-		* writes cdf log files (if selected in the config) to ./
-		* All of these are on the /var filesystem, which is a read-write memory disk on nanobsd	*/
-
-			$rc['start'] = <<<EOD
-if [ ! -d "{$bandwidthd_nano_dir}" ] ; then
-	if [ -e "{$bandwidthd_nano_dir}" ] ; then
-		/bin/rm -f {$bandwidthd_nano_dir}
-	fi
-	/bin/mkdir -p {$bandwidthd_nano_dir}
-fi
-if [ ! -d "{$bandwidthd_htdocs_dir}" ] ; then
-	if [ -e "{$bandwidthd_htdocs_dir}" ] ; then
-		/bin/rm -f {$bandwidthd_htdocs_dir}
-	fi
-	/bin/mkdir -p {$bandwidthd_htdocs_dir}
-fi
-if [ ! -L "{$bandwidthd_nano_dir}/bandwidthd" ] ; then
-	if [ -e "{$bandwidthd_nano_dir}/bandwidthd" ] ; then
-		/bin/rm -Rf {$bandwidthd_nano_dir}/bandwidthd
-	fi
-	/bin/ln -s {$bandwidthd_base_dir}/bandwidthd {$bandwidthd_nano_dir}/bandwidthd
-fi
-if [ ! -L "{$bandwidthd_nano_dir}/etc" ] ; then
-	if [ -e "{$bandwidthd_nano_dir}/etc" ] ; then
-		/bin/rm -Rf {$bandwidthd_nano_dir}/etc
-	fi
-	/bin/ln -s {$bandwidthd_config_dir} {$bandwidthd_nano_dir}/etc
-fi
-if [ ! -f "{$bandwidthd_htdocs_dir}/legend.gif" ] ; then
-	/bin/cp {$bandwidthd_base_dir}/htdocs/legend.gif {$bandwidthd_htdocs_dir}
-fi
-if [ ! -f "{$bandwidthd_htdocs_dir}/logo.gif" ] ; then
-	/bin/cp {$bandwidthd_base_dir}/htdocs/logo.gif {$bandwidthd_htdocs_dir}
-fi
-cd {$bandwidthd_nano_dir}
-{$bandwidthd_nano_dir}/bandwidthd
-cd -
-EOD;
-		} else {
-			$rc['start'] = <<<EOD
+		$rc['start'] = <<<EOD
 cd {$bandwidthd_base_dir}
 {$bandwidthd_base_dir}/bandwidthd
 cd -
 EOD;
-		}
 	} else {
 		// bandwidthd is disabled, so do not put any real start commands in the script.
 		// This effectively disables it but keeps all the files in place (e.g. saved logs) ready to reload when it is enabled.
