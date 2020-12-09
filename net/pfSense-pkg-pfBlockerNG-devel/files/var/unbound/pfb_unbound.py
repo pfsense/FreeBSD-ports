@@ -65,7 +65,7 @@ except Exception as e:
 
 
 def init_standard(id, env):
-    global pfb, dataDB, zoneDB, regexDB, hstsDB, whiteDB, excludeDB, dnsblDB, feedGroupIndexDB, maxmindReader
+    global pfb, dataDB, zoneDB, regexDB, hstsDB, whiteDB, excludeDB, dnsblDB, noAAAADB, feedGroupIndexDB, maxmindReader
 
     if not register_inplace_cb_reply(inplace_cb_reply, env, id):
         log_info('[pfBlockerNG]: Failed register_inplace_cb_reply')
@@ -135,6 +135,7 @@ def init_standard(id, env):
     pfb['dnsbl_ipv6'] = ''
     pfb['regexDB'] = False
     pfb['whiteDB'] = False
+    pfb['noAAAADB'] = False
     pfb['python_idn'] = False
     pfb['python_ipv6'] = False
     pfb['python_hsts'] = False
@@ -175,6 +176,7 @@ def init_standard(id, env):
     regexDB = defaultdict(str)
     whiteDB = defaultdict(str)
     hstsDB = defaultdict(str)
+    noAAAADB = defaultdict(str)
     feedGroupDB = defaultdict(str)
     feedGroupIndexDB = defaultdict(list)
     excludeDB = []
@@ -248,6 +250,18 @@ def init_standard(id, env):
                                 sys.stderr.write("[pfBlockerNG]: Regex [ {} ] compile error pattern [  {}  ] on line #{}: {}" .format(name, pattern, r_count, a))
                             pass
                         r_count += 1
+
+            # Collect user-defined no AAAA domains
+            if config.has_section('noAAAA'):
+                noaaaa_config = config.items('noAAAA')
+                if noaaaa_config:
+                    try:
+                        for row, line in noaaaa_config:
+                            noAAAADB[line.rstrip('\r\n')] = 0
+                            pfb['noAAAADB'] = True
+                    except Exception as e:
+                        sys.stderr.write("[pfBlockerNG]: Failed to load no AAAA domain list: {}" .format(e))
+                        pass
 
             # While reading 'data|zone' CSV files: Replace 'Feed/Group' pairs with an index value (Memory performance)
             feedGroup_index = 0
@@ -836,12 +850,33 @@ def inform_super(id, qstate, superqstate, qdata):
     return True
 
 def operate(id, event, qstate, qdata):
-    global pfb, dataDB, zoneDB, hstsDB, whiteDB, excludeDB, dnsblDB, feedGroupIndexDB
+    global pfb, dataDB, zoneDB, hstsDB, whiteDB, excludeDB, dnsblDB, noAAAADB, feedGroupIndexDB
+
+    qstate_valid = False
+    if qstate is not None and qstate.qinfo.qtype is not None:
+        qstate_valid = True
+        q_type = qstate.qinfo.qtype
+        q_name_original = get_q_name_qstate(qstate)
+
+    #no AAAA validation
+    if qstate_valid and pfb['noAAAADB'] and q_type == RR_TYPE_AAAA:
+        isnoAAAA = noAAAADB.get(q_name_original)
+        if isnoAAAA is not None:
+
+            # Create FQDN Reply Message (AAAA -> A)
+            msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_A, RR_CLASS_IN, PKT_QR | PKT_RA | PKT_AA)
+            if msg is None or not msg.set_return_msg(qstate):
+                qstate.ext_state[id] = MODULE_ERROR
+                return True
+
+            qstate.return_msg.rep.security = 2
+
+            qstate.return_rcode = RCODE_NOERROR
+            qstate.ext_state[id] = MODULE_FINISHED
+            return True
 
     # DNSBL Validation for specific RR_TYPES only
-    if pfb['python_blacklist'] and qstate is not None and qstate.qinfo.qtype is not None and qstate.qinfo.qtype in pfb['rr_types']:
-        q_name_original = get_q_name_qstate(qstate)
-        q_type = qstate.qinfo.qtype
+    if qstate_valid and pfb['python_blacklist'] and q_type in pfb['rr_types']:
 
 	# Create list of Domain/CNAMES to be evaluated
         validate = []

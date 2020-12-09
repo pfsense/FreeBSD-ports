@@ -311,13 +311,6 @@
 					"header":	"ISC_Miner"
 				},
 				{
-					"feed":		"Internet Storm Center",
-					"website":	"https://isc.sans.edu/",
-					"url":		"https://isc.sans.edu/api/threatlist/onyphe",
-					"info":		"This is the IP version of the ISC Onyphe Feed. An Alternative ISC Domain version of Onyphe also exists",
-					"header":	"ISC_Onyphe"
-				},
-				{
 					"feed":		"Krisk Intel",
 					"website":	"https://kriskintel.com/",
 					"url":		"https://kriskintel.com/feeds/ktip_malicious_Ips.txt",
@@ -467,6 +460,12 @@
 					"website":	"https://www.shadowserver.org/",
 					"url":		"https://isc.sans.edu/api/threatlist/shadowserver",
 					"header":	"ISC_Shadowserver"
+				},
+				{
+					"feed":		"Internet Storm Center",
+					"website":	"https://isc.sans.edu/",
+					"url":		"https://isc.sans.edu/api/threatlist/onyphe",
+					"header":	"ISC_Onyphe"
 				},
 				{
 					"feed":		"Maltrail",
@@ -1077,7 +1076,7 @@
 		"ADs": {
 			"info":		"ADs group is a collection of ADvertisement Domain Feeds.-LB-Some sites may become slow or unresponsive. Whitelist Domains as required.-LB-The frequency of updates is set to once per day.",
 			"description":	"ADs - Collection of ADvertisement Domain Feeds.",
-			"action":	"",
+			"action":	"block",
 			"cron":		"EveryDay",
 			"feeds": [
 				{
@@ -1155,13 +1154,6 @@
 					"website":	"https://disconnect.me/disconnect",
 					"url":		"https://s3.amazonaws.com/lists.disconnect.me/simple_malware.txt",
 					"header":	"D_Me_Malw"
-				},
-				{
-					"feed":		"Internet Storm Center",
-					"website":	"https://isc.sans.edu/",
-					"url":		"https://isc.sans.edu/api/threatlisthosts/onyphe",
-					"info":		"This is the Host version of the ISC Onyphe Feed. An Alternative ISC IP version of Onyphe also exists",
-					"header":	"ISC_Host_Onyphe"
 				},
 				{
 					"feed":		"Maltrail",
