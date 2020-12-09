@@ -50,7 +50,7 @@ function pfBlockerNG_fetch_new_widget_callback(callback_data) {
 				if (row_split[2] == '-') {
 					$('.pfb_' + row_split[0]).html(row_split[1]);
 				} else if (row_split[2] == 'title') {
-					row_split[1] = row_split[1].replace('_BR_', '\n');
+					row_split[1] = row_split[1].replaceAll('_BR_', '\n');
 					$('.pfb_title_' + row_split[0]).attr('title', row_split[1]);
 				} else if (row_split[0] == 'PFBSTATUS') {
 					$('.PFBSTATUS').attr('class', row_split[1]).prop('title', row_split[2]);
@@ -73,6 +73,7 @@ function pfBlockerNG_fetch_new_widget_callback(callback_data) {
 			var tbody = $('#pfBNG-table');
 			tbody.html('<tr>' + new_data_to_add + '</tr>');
 			$('body').popover({ selector: '[data-popover]', trigger: 'click hover', placement: 'right', delay: {show: 50, hide: 400}});
+			$('#pfB_col1, #pfB_col2, #pfB_col3, #pfB_col4').attr("data-sorted", false);
 		}
 	}
 }
