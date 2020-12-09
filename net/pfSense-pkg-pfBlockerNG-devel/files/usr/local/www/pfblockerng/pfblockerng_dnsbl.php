@@ -2124,7 +2124,7 @@ $section->addInput(new Form_Checkbox(
 		. '<div id="dnsbl_python_tld_allow_text">'
 		. '<strong>By default</strong> \'ARPA\' and the pfSense TLD \'' . strtoupper($local_tld) . '\' are allowed.<br />'
 		. 'If no TLDs are selected, the following are added by default [ COM, NET, ORG, EDU, CA, CO, IO ]<br /><br />'
-                . 'Detailed TLD listings : <a target=_blank href="http://www.iana.org/domains/root/db">Root Zone Top-Level Domains.</a><br />'
+		. 'Detailed TLD listings : <a target=_blank href="http://www.iana.org/domains/root/db">Root Zone Top-Level Domains.</a><br />'
 		. 'Changes to this option will require a Force Update to take effect.<br /><br />'
 		. '<strong>Legend</strong>:<br />'
 		. '(*) TLD is used by atleast one DNSBL Feed in the Feeds Tab. Confirm the TLDs used by the selected Feeds.<br />'
