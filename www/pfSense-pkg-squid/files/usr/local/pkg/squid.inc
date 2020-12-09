@@ -513,12 +513,9 @@ function squid_fixup_user() {
 function squid_install_command() {
 	global $config, $g;
 
-	/* Set storage system for nanobsd */
+	/* Set storage system for ramdisk */
 	if (!is_array($config['installedpackages']['squidcache'])) {
 		$config['installedpackages']['squidcache'] = array();
-	}
-	if ($g['platform'] == "nanobsd") {
-		$config['installedpackages']['squidcache']['config'][0]['harddisk_cache_system'] = 'null';
 	}
 
 	// Fix user/group entry permissions
@@ -1585,9 +1582,7 @@ function squid_resync_cache() {
 	$offline_mode = ($settings['enable_offline'] == 'on' ? 'on' : 'off');
 	$conf = '';
 	if (!isset($settings['harddisk_cache_system'])) {
-		if ($g['platform'] == "nanobsd") {
-			$disk_cache_system = 'null';
-		} elseif (!is_array($config['installedpackages']['squidcache']['config'])) {
+		if (!is_array($config['installedpackages']['squidcache']['config'])) {
 			log_error("[squid] 'Local Cache' not configured, disk cache will be disabled.");
 			log_error("[squid] Please, configure and save 'Local Cache' settings before enabling Squid proxy.");
 		} else {

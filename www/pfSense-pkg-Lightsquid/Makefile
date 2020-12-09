@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Lightsquid
 PORTVERSION=	3.0.6
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	www
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -15,8 +15,6 @@ LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/libexec/lightsquid/ip2name.list:www/lightsquid \
 		${LOCALBASE}/sbin/lighttpd:www/lighttpd
-
-CONFLICTS=	pfSense-base-nanobsd-[0-9]*
 
 NO_BUILD=	yes
 NO_MTREE=	yes
