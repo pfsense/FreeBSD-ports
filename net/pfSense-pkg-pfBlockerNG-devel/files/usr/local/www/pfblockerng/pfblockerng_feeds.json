@@ -1108,7 +1108,7 @@
 		"Email": {
 			"info":		"List of email providers. If not filtered by 'TOP1M Whitelist' may block many websites.",
 			"description":	"Email - List of email providers domains.",
-			"action":	"",
+			"action":	"block",
 			"cron":		"Weekly",
 			"feeds": [
 				{
