@@ -166,7 +166,6 @@ $pfb['curl_defaults'] = array(  CURLOPT_USERAGENT	=> 'pfSense/pfBlockerNG cURL d
 				CURLOPT_SSL_VERIFYHOST	=> true,
 				CURLOPT_FRESH_CONNECT	=> true,
 				CURLOPT_FILETIME	=> true,
-				CURLOPT_TCP_FASTOPEN	=> true,
 				CURLOPT_TCP_NODELAY	=> true,
 				CURLOPT_CONNECTTIMEOUT	=> 15
 				);
