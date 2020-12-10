@@ -2358,14 +2358,14 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 }
 
 
-// Archive IP aliastables and DNSBL database. ( NanoBSD and Ramdisk installations only )
+// Archive IP aliastables and DNSBL database. ( Ramdisk installations only )
 function pfb_aliastables($mode) {
 	global $g, $config, $pfb;
 	$earlyshellcmd = '/usr/local/pkg/pfblockerng/pfblockerng.sh aliastables';
 	$msg = '';
 
-	// Only execute function if platform is NanoBSD or Ramdisks are used.
-	if (($g['platform'] != 'pfSense') || isset($config['system']['use_mfs_tmpvar'])) {
+	// Only execute function if Ramdisks are used.
+	if (isset($config['system']['use_mfs_tmpvar'])) {
 		if ($mode == 'update') {
 			// Archive aliastable folder
 			pfb_logger("\n\nArchiving Aliastable folder\n", 1);
@@ -2632,7 +2632,7 @@ function sync_package_pfblockerng($cron='') {
 		}
 	}
 
-	// Call function for NanoBSD/Ramdisk processes.
+	// Call function for Ramdisk processes.
 	pfb_aliastables('conf');
 
 	// If table limit not defined, set default to 2M
@@ -5086,7 +5086,7 @@ function sync_package_pfblockerng($cron='') {
 		filter_configure();		// Load filter_configure which will create the pfctl tables
 		$pfb_filter_configure = TRUE;	// Flag to skip State removal function due to pf reloading
 
-		// Call function for NanoBSD/Ramdisk processes.
+		// Call function for Ramdisk processes.
 		pfb_aliastables('update');
 	} else {
 		// Don't execute on user 'save'
@@ -5126,7 +5126,7 @@ function sync_package_pfblockerng($cron='') {
 				}
 				pfb_logger("\n", 1);
 
-				// Call function for NanoBSD/Ramdisk processes.
+				// Call function for Ramdisk processes.
 				pfb_aliastables('update');
 			} else {
 				$log = "No Changes to Aliases, Skipping pfctl Update\n";

@@ -373,10 +373,6 @@ $tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricat
 $tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
 display_top_tabs($tab_array, true);
 
-if ($g['platform'] == "nanobsd") {
-	$input_errors[] = gettext("SID auto-management is not supported on NanoBSD installs");
-}
-
 /* Display Alert message, under form tag or no refresh */
 if ($input_errors) {
 	print_input_errors($input_errors);

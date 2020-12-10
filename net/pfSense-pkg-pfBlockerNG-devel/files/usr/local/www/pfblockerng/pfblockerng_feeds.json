@@ -311,13 +311,6 @@
 					"header":	"ISC_Miner"
 				},
 				{
-					"feed":		"Internet Storm Center",
-					"website":	"https://isc.sans.edu/",
-					"url":		"https://isc.sans.edu/api/threatlist/onyphe",
-					"info":		"This is the IP version of the ISC Onyphe Feed. An Alternative ISC Domain version of Onyphe also exists",
-					"header":	"ISC_Onyphe"
-				},
-				{
 					"feed":		"Krisk Intel",
 					"website":	"https://kriskintel.com/",
 					"url":		"https://kriskintel.com/feeds/ktip_malicious_Ips.txt",
@@ -467,6 +460,12 @@
 					"website":	"https://www.shadowserver.org/",
 					"url":		"https://isc.sans.edu/api/threatlist/shadowserver",
 					"header":	"ISC_Shadowserver"
+				},
+				{
+					"feed":		"Internet Storm Center",
+					"website":	"https://isc.sans.edu/",
+					"url":		"https://isc.sans.edu/api/threatlist/onyphe",
+					"header":	"ISC_Onyphe"
 				},
 				{
 					"feed":		"Maltrail",
@@ -1077,7 +1076,7 @@
 		"ADs": {
 			"info":		"ADs group is a collection of ADvertisement Domain Feeds.-LB-Some sites may become slow or unresponsive. Whitelist Domains as required.-LB-The frequency of updates is set to once per day.",
 			"description":	"ADs - Collection of ADvertisement Domain Feeds.",
-			"action":	"",
+			"action":	"block",
 			"cron":		"EveryDay",
 			"feeds": [
 				{
@@ -1109,7 +1108,7 @@
 		"Email": {
 			"info":		"List of email providers. If not filtered by 'TOP1M Whitelist' may block many websites.",
 			"description":	"Email - List of email providers domains.",
-			"action":	"",
+			"action":	"block",
 			"cron":		"Weekly",
 			"feeds": [
 				{
@@ -1155,13 +1154,6 @@
 					"website":	"https://disconnect.me/disconnect",
 					"url":		"https://s3.amazonaws.com/lists.disconnect.me/simple_malware.txt",
 					"header":	"D_Me_Malw"
-				},
-				{
-					"feed":		"Internet Storm Center",
-					"website":	"https://isc.sans.edu/",
-					"url":		"https://isc.sans.edu/api/threatlisthosts/onyphe",
-					"info":		"This is the Host version of the ISC Onyphe Feed. An Alternative ISC IP version of Onyphe also exists",
-					"header":	"ISC_Host_Onyphe"
 				},
 				{
 					"feed":		"Maltrail",
@@ -1634,6 +1626,28 @@
 					"website":	"https://github.com/hoshsadiq/adblock-nocoin-list",
 					"url":		"https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/hosts.txt",
 					"header":	"NoCoin"
+				}
+			]
+		},
+		"Compilation": {
+			"info":		"Compilation group is a collection of feeds containing data from a group of other feeds.",
+			"description":	"Compilation - feeds that aggregate other feeds",
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"OISD",
+					"website":	"https://oisd.nl/",
+					"url":		"https://dbl.oisd.nl/",
+					"header":	"OISD",
+					"info":		"Ads, (Mobile) App Ads, Phishing, Malvertising, Malware, Spyware, Ransomware, CryptoJacking, Scam, Telemetry, Analytics, Tracking (Where not needed for proper functionality)."
+				},
+				{
+					"feed":		"Phishing Army",
+					"website":	"https://phishing.army/",
+					"url":		"https://phishing.army/download/phishing_army_blocklist.txt",
+					"header":	"PhishingArmy",
+					"info":		"Generated every 6 hours from PhishTank, OpenPhish, Cert.pl and PhishFindR reports. Each domain is analyzed to eliminate false positives, through the Whitelist of Anudeep and the Alexa Rank."
 				}
 			]
 		}

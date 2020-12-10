@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-ntopng
 PORTVERSION=	0.8.13
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -19,8 +19,6 @@ RUN_DEPENDS=	${LOCALBASE}/bin/ntopng:net/ntopng \
 		${LOCALBASE}/share/fonts/webfonts/arial.ttf:x11-fonts/webfonts \
 		${LOCALBASE}/bin/acyclic:graphics/graphviz
 LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
-
-CONFLICTS=	pfSense-base-nanobsd-[0-9]*
 
 NO_BUILD=	yes
 NO_MTREE=	yes

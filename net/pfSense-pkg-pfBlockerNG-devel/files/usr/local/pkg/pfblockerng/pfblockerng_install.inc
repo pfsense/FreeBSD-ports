@@ -32,9 +32,16 @@ $g['pfblockerng_install'] = TRUE;
 // MaxMind Database is no longer pre-installed during package installation
 update_status("\nMaxMind GeoIP databases are not pre-installed during installation.\nTo utilize the MaxMind GeoIP functionalities, you will be required to register for a free MaxMind user account and access key. Review the IP tab: MaxMind Settings for more details.\n\n");
 
+$pfb['widgets'] = $config['widgets']['sequence'];
 if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'pfblockerng') !== FALSE) {
 	update_status("\nRestoring previous pfBlockerNG Widget settings...");
-	// Restore previous widget setting if 'keep' is enabled.
+
+	// Fix incorrect Dashboard widget sequence
+	if (strpos($pfb['widgets'], ':show') !== FALSE) {
+		$pfb['widgets'] = str_replace(':show', ':open:0', $pfb['widgets']);
+		update_status("Fix incorrect Dashboard widget sequence...");
+	}
+
 	$config['widgets']['sequence'] = $pfb['widgets'];
 	write_config('pfBlockerNG: Save widget');
 } else {
@@ -42,9 +49,9 @@ if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'p
 	$widgets = $config['widgets']['sequence'];
 	if (strpos($widgets, 'pfblockerng') === FALSE) {
 		if (empty($widgets)) {
-			$config['widgets']['sequence'] = 'pfblockerng:col2:show';
+			$config['widgets']['sequence'] = 'pfblockerng:col2:open:0';
 		} else {
-			$config['widgets']['sequence'] .= ',pfblockerng:col2:show';
+			$config['widgets']['sequence'] .= ',pfblockerng:col2:open:0';
 		}
 		write_config('pfBlockerNG: Save widget');
 	}

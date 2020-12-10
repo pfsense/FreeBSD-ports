@@ -163,15 +163,6 @@ display_top_tabs($tab_array, true);
 
 		<div class="table-responsive">
 
-	<?php if ($g['platform'] == "nanobsd") : ?>
-			<table id="maintable" class="table table-striped table-hover table-condensed">
-				<tbody>
-				<tr>
-					<td><?php echo gettext("IP Reputation is not supported on NanoBSD installs"); ?></td>
-				</tr>
-				</tbody>
-			</table>
-	<?php else: ?>
 			<table id="maintable" class="table table-striped table-hover table-condensed">
 				<thead>
 					<tr>
@@ -236,7 +227,6 @@ display_top_tabs($tab_array, true);
 				</p>
 			</div>
 		</div>
-	<?php endif; ?>
 		</form>
 	</div>
 </div>

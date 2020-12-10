@@ -287,7 +287,7 @@ function freeradius_settings_resync($restart_svc = true) {
 
 	$frlib = freeradius_get_libdir();
 
-	// We do some checks of some folders which will be deleted after reboot on nanobsd systems
+	// We do some checks of some folders which will be deleted after reboot on ramdisk systems
 	safe_mkdir("/var/log/radacct/datacounter/daily");
 	safe_mkdir("/var/log/radacct/datacounter/weekly");
 	safe_mkdir("/var/log/radacct/datacounter/monthly");

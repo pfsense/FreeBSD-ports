@@ -172,10 +172,6 @@ $if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interfa
 $pgtitle = array(gettext("Suricata"), $if_friendly, gettext("IP Reputation Preprocessor"));
 include_once("head.inc");
 
-if ($g['platform'] == "nanobsd") {
-	$input_errors[] = gettext("IP Reputation is not supported on NanoBSD installs");
-}
-
 /* Display Alert message */
 if ($input_errors)
 	print_input_errors($input_errors);
@@ -345,8 +341,6 @@ print($form);
 </nav>
 
 
-<?php if ($g['platform'] != "nanobsd") : ?>
-
 <script type="text/javascript">
 //<![CDATA[
 events.push(function() {
@@ -461,7 +455,6 @@ function iplistComplete(req) {
 });
 //]]>
 </script>
-<?php endif; ?>
 
 <?php include("foot.inc");
 ?>
