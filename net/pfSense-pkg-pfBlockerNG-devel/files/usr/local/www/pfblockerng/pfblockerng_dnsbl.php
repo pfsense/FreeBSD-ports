@@ -73,6 +73,7 @@ $pconfig['pfb_hsts']		= isset($pfb['dconfig']['pfb_hsts'])			? $pfb['dconfig']['
 $pconfig['pfb_idn']		= $pfb['dconfig']['pfb_idn']				?: '';
 $pconfig['pfb_regex']		= $pfb['dconfig']['pfb_regex']				?: '';
 $pconfig['pfb_cname']		= $pfb['dconfig']['pfb_cname']				?: '';
+$pconfig['pfb_noaaaa']		= $pfb['dconfig']['pfb_noaaaa']				?: '';
 $pconfig['pfb_pytld']		= $pfb['dconfig']['pfb_pytld']				?: '';
 $pconfig['pfb_pytld_sort']	= $pfb['dconfig']['pfb_pytld_sort']			?: '';
 $pconfig['pfb_pytlds_gtld']	= explode(',', $pfb['dconfig']['pfb_pytlds_gtld'])	?: $default_tlds;
@@ -81,6 +82,7 @@ $pconfig['pfb_pytlds_itld']	= explode(',', $pfb['dconfig']['pfb_pytlds_itld'])	?
 $pconfig['pfb_pytlds_bgtld']	= explode(',', $pfb['dconfig']['pfb_pytlds_bgtld'])	?: array();
 $pconfig['pfb_py_nolog']	= $pfb['dconfig']['pfb_py_nolog']			?: '';
 $pconfig['pfb_regex_list']	= base64_decode($pfb['dconfig']['pfb_regex_list'])	?: '';
+$pconfig['pfb_noaaaa_list']	= base64_decode($pfb['dconfig']['pfb_noaaaa_list'])	?: '';
 $pconfig['action']		= $pfb['dconfig']['action']				?: 'Disabled';
 $pconfig['aliaslog']		= $pfb['dconfig']['aliaslog']				?: 'enabled';
 
@@ -195,6 +197,7 @@ if ($_POST) {
 		$pfb['dconfig']['pfb_idn']		= $_POST['pfb_idn']				?: '';
 		$pfb['dconfig']['pfb_regex']		= $_POST['pfb_regex']				?: '';
 		$pfb['dconfig']['pfb_cname']		= $_POST['pfb_cname']				?: '';
+		$pfb['dconfig']['pfb_noaaaa']		= $_POST['pfb_noaaaa']				?: '';
 
 		// Non-ascii characters are not allowed for DNSBL Regex
 		if (!mb_detect_encoding($_POST['pfb_regex_list'], 'ASCII', TRUE)) {
@@ -202,6 +205,7 @@ if ($_POST) {
 		}
 
 		$pfb['dconfig']['pfb_regex_list']	= base64_encode($_POST['pfb_regex_list'])	?: '';
+		$pfb['dconfig']['pfb_noaaaa_list']	= base64_encode($_POST['pfb_noaaaa_list'])	?: '';
 		$pfb['dconfig']['pfb_pytld']		= $_POST['pfb_pytld']				?: '';
 		$pfb['dconfig']['pfb_pytld_sort']	= $_POST['pfb_pytld_sort']			?: '';
 		$pfb['dconfig']['pfb_py_nolog']		= $_POST['pfb_py_nolog']			?: '';
@@ -460,7 +464,6 @@ $dnsbl_text = 'This is an <strong>Advanced process</strong> to determine if all 
 		</ul></span>
 	</div>';
 
-
 $dnsbl_modes = array('dnsbl_unbound' => 'Unbound mode', 'dnsbl_python' => 'Unbound python mode');
 $section->addInput(new Form_Select(
 	'dnsbl_mode',
@@ -476,7 +479,7 @@ $section->addInput(new Form_Select(
 		. '&emsp;&emsp;&emsp;&emsp;Python DNSBL mode is <strong>not</strong> compatable with the DNS Resolver DHCP Registration option (Unbound will Crash)!<br />'
 		. '&emsp;&emsp;&emsp;&emsp;This mode will utilize the python integration of Unbound for DNSBL.<br />'
 		. '&emsp;&emsp;&emsp;&emsp;This mode will allow logging of DNS Replies, and more advanced DNSBL Blocking features.<br />'
-		. '&emsp;&emsp;&emsp;&emsp;This mode requires substatially less memory </div>'
+		. '&emsp;&emsp;&emsp;&emsp;This mode requires substantially less memory </div>'
 );
 
 $section->addInput(new Form_Checkbox(
@@ -2170,7 +2173,7 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['pfb_idn'] === 'on' ? true:false,
 	'on'
 ))->setHelp('Enable the Python IDN blocking feature (not Regex based). This will block all IDN\'s and domains that include \'xn--\'.<div class="infoblock">'
-		. 'Changes to this option will require a Force Update to take effect.</div>');
+	. 'Changes to this option will require a Force Update to take effect.</div>');
 
 $section->addInput(new Form_Checkbox(
 	'pfb_regex',
@@ -2189,6 +2192,14 @@ $section->addInput(new Form_Checkbox(
 	'on'
 ))->setHelp('Enable the Python CNAME Validation feature. All CNAMES will be evaluated against DNSBL database and blocked.<br />'
 		. 'Events are logged with a "_CNAME" suffix in the DNSBL Log.');
+
+$section->addInput(new Form_Checkbox(
+	'pfb_noaaaa',
+	gettext('no AAAA') . '(py)',
+	'Enable',
+	$pconfig['pfb_noaaaa'] === 'on' ? true:false,
+	'on'
+))->setHelp('Enable the Python no-AAAA feature. This will block all (IPv6) AAAA DNS requests for the defined domains. no AAAA List below.');
 
 $form->add($section);
 
@@ -2211,6 +2222,26 @@ $section->addInput(new Form_Textarea(
   ->setAttribute('wrap', 'off')
   ->setAttribute('style', 'background:#fafafa; width: 100%')
   ->setHelp($regex_text);
+
+$form->add($section);
+
+$noaaaa_text = 'List of no AAAA domains to block the (IPv6) AAAA DNS Resolution.<br /><br />
+		Enter a single domain per line.<br /><br />
+		Any domain added to the no AAAA list, will never be filtered by any DNSBL python blocking.<br /><br />
+		This List is stored as \'Base64\' format in the config.xml file.<br /><br />';
+
+$section = new Form_Section('Python no AAAA  List', 'Python_noaaaa_list', COLLAPSIBLE|SEC_CLOSED);
+$section->addInput(new Form_Textarea(
+	'pfb_noaaaa_list',
+	'Python no AAAA List',
+	$pconfig['pfb_noaaaa_list']
+))->removeClass('form-control')
+  ->addClass('row-fluid col-sm-12')
+  ->setAttribute('columns', '90')
+  ->setAttribute('rows', '15')
+  ->setAttribute('wrap', 'off')
+  ->setAttribute('style', 'background:#fafafa; width: 100%')
+  ->setHelp($noaaaa_text);
 
 $form->add($section);
 
@@ -2344,8 +2375,6 @@ $group->add(new Form_Checkbox(
 		. '<br /><br />'
 		. 'This option is not designed to bypass DNSBL for the non-selected LAN segments<br />'
 		. 'This option is only required for networks with multiple LAN Segments.');
-
-$int_size = count($interface_list) ?: '1';
 
 $group->add(new Form_Select(
 	'dnsbl_allow_int',
@@ -2958,8 +2987,10 @@ function enable_python() {
 	hideCheckbox('pfb_hsts', !python);
 	hideCheckbox('pfb_idn', !python);
 	hideCheckbox('pfb_regex', !python);
+	hideCheckbox('pfb_noaaaa', !python);
 	hideCheckbox('pfb_cname', !python);
 	hideInput('pfb_regex_list', !python);
+	hideInput('pfb_noaaaa_list', !python);
 	hideCheckbox('pfb_pytld', !python);
 	hideCheckbox('pfb_pytld_sort', !python);
 	hideMultiClass('pfb_python', !python);
@@ -3004,6 +3035,14 @@ function enable_python_regex() {
 	}
 }
 
+function enable_python_noaaaa() {
+	if ($('#dnsbl_mode').val() == 'dnsbl_python' && $('#pfb_noaaaa').prop('checked')) {
+		$('#Python_noaaaa_list').show();
+	} else {
+		$('#Python_noaaaa_list').hide();
+	}
+}
+
 function enable_dnsblip() {
 	var dnsblip = $('#action').prop('checked'); 
 	hideInput('aliaslog', !dnsblip);
@@ -3034,6 +3073,7 @@ events.push(function(){
 		enable_python();
 		enable_python_pytld();
 		enable_python_regex();
+		enable_python_noaaaa();
 	});
 	enable_python();
 
@@ -3051,6 +3091,11 @@ events.push(function(){
 		enable_python_regex();
 	});
 	enable_python_regex();
+
+	$('#pfb_noaaaa').click(function() {
+		enable_python_noaaaa();
+	});
+	enable_python_noaaaa();
 
 	$('#action').click(function() {
 		enable_dnsblip();

@@ -100,7 +100,6 @@ fi
 ip_placeholder2="$(echo ${ip_placeholder} | sed 's/\./\\\./g')"
 ip_placeholder3="$(echo ${ip_placeholder} | cut -d '.' -f 1-3)"
 
-PLATFORM="$(cat /etc/platform)"
 USE_MFS_TMPVAR="$(/usr/bin/grep -c use_mfs_tmpvar /cf/conf/config.xml)"
 DISK_NAME="$(/bin/df /var/db/rrd | /usr/bin/tail -1 | /usr/bin/awk '{print $1;}')"
 DISK_TYPE="$(/usr/bin/basename ${DISK_NAME} | /usr/bin/cut -c1-2)"

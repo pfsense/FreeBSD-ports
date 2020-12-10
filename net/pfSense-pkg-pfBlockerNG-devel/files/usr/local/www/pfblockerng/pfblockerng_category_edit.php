@@ -1007,9 +1007,9 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 						<li>'Alias Native' lists are kept in their Native format without any modifications.</li></ul>
 
 				<span class=\"text-danger\">Note: </span><ul>
-					When manually creating 'Alias' type firewall rules; <strong>Do not add</strong> (pfB_) to the
-					start of the rule description, use (pfb_) (Lowercase prefix). Manually created 'Alias' rules with 'pfB_' in the
-					description will be auto-removed by package when 'Auto' rules are defined.</ul>
+					When manually creating 'Alias' type firewall rules; Prefix the Firewall rule Description with <strong>pfb_</strong>
+					This will ensure that that Dashboard widget reports those statistics correctly. <strong>Do not</strong> 
+					prefix with (pfB_) as those Rules will be auto-removed by package when 'Auto' rules are defined.</ul>
 			</div>";
 }
 else {
