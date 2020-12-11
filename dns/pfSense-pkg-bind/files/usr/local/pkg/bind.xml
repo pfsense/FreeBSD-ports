@@ -315,7 +315,6 @@
 			<description>
 				<![CDATA[
 				Enter IPs of DNS servers to use for recursion. Separate by semi-colons (;).<br />
-				Please also add a semi-colon (;) behind the last entry<br />
 				Applies only if Enable Forwarding is chosen.
 				]]>
 			</description>
