@@ -462,7 +462,7 @@
 					"header":	"ISC_Shadowserver"
 				},
 				{
-					"feed":		"Internet Storm Center",
+					"feed":		"Internet Storm Center - Onyphe",
 					"website":	"https://isc.sans.edu/",
 					"url":		"https://isc.sans.edu/api/threatlist/onyphe",
 					"header":	"ISC_Onyphe"
@@ -1108,7 +1108,7 @@
 		"Email": {
 			"info":		"List of email providers. If not filtered by 'TOP1M Whitelist' may block many websites.",
 			"description":	"Email - List of email providers domains.",
-			"action":	"block",
+			"action":	"",
 			"cron":		"Weekly",
 			"feeds": [
 				{
@@ -1647,6 +1647,12 @@
 					"website":	"https://phishing.army/",
 					"url":		"https://phishing.army/download/phishing_army_blocklist.txt",
 					"header":	"PhishingArmy",
+					"alternate": [
+							{
+							"url":		"https://phishing.army/download/phishing_army_blocklist_extended.txt",
+							"header":	"PhishingArmy_agr"
+							}
+						],
 					"info":		"Generated every 6 hours from PhishTank, OpenPhish, Cert.pl and PhishFindR reports. Each domain is analyzed to eliminate false positives, through the Whitelist of Anudeep and the Alexa Rank."
 				}
 			]
