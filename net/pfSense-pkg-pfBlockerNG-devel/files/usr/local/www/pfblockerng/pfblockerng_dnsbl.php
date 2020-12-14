@@ -316,6 +316,13 @@ if ($_POST) {
 			$input_errors[] = 'In order to utilize the DNSBL Python feature, first disable the DNS Resolver DHCP Registration option.';
 		}
 
+		// DNSBL Python mode is not compatable with the DNS Resolver OpenVPN Client Registration option (pfSense < 2.5)
+		if ($_POST['dnsbl_mode'] == 'dnsbl_python' && substr(trim(file_get_contents('/etc/version')), 0, 3) < '2.5' &&
+		    isset($config['unbound']['regovpnclients'])) {
+			$input_errors[] = 'DNSBL Python mode is not compatable with the DNS Resolver \'OpenVPN Client Registration option\'!';
+			$input_errors[] = 'In order to utilize the DNSBL Python feature, first disable the DNS Resolver OpenVPN Client Registration option.';
+		}
+
 		// DNSBL Python mode is only available for pfSense 2.4.5 and above
 		if ($_POST['dnsbl_mode'] == 'dnsbl_python' && substr(trim(file_get_contents('/etc/version')), 0, 5) < '2.4.5') {
 			$input_errors[] = 'DNSBL Python mode is compatable with pfSense versions 2.4.5 and above.';
@@ -477,6 +484,7 @@ $section->addInput(new Form_Select(
 		. '<strong>Unbound Python Mode</strong>:<br />'
 		. '&emsp;&emsp;&emsp;&emsp;This mode is only available for pfSense version 2.4.5 and above.<br />'
 		. '&emsp;&emsp;&emsp;&emsp;Python DNSBL mode is <strong>not</strong> compatable with the DNS Resolver DHCP Registration option (Unbound will Crash)!<br />'
+		. '&emsp;&emsp;&emsp;&emsp;Python DNSBL mode is <strong>not</strong> compatable with the DNS Resolver OpenVPN Client Registration (pfSense < 2.5)!<br />'
 		. '&emsp;&emsp;&emsp;&emsp;This mode will utilize the python integration of Unbound for DNSBL.<br />'
 		. '&emsp;&emsp;&emsp;&emsp;This mode will allow logging of DNS Replies, and more advanced DNSBL Blocking features.<br />'
 		. '&emsp;&emsp;&emsp;&emsp;This mode requires substantially less memory </div>'

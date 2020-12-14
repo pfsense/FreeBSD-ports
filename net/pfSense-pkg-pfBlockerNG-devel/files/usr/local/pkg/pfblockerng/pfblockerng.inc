@@ -333,7 +333,8 @@ function pfb_global() {
 			$pfb['curl_defaults'][CURLOPT_PROXYAUTH]	= 'CURLAUTH_ANY | CURLAUTH_ANYSAFE';
 			$pfb['curl_defaults'][CURLOPT_PROXYUSERPWD]	= "{$config['system']['proxyuser']}:{$config['system']['proxypass']}";
 		}
-	} else {
+	}
+	else {
 		$pfb['curl_defaults'][CURLOPT_TCP_FASTOPEN]		= true;
 	}
 
@@ -6126,6 +6127,22 @@ function sync_package_pfblockerng($cron='') {
 		@file_put_contents('/var/log/pfblockerng/py_error.log', $log, FILE_APPEND);
 	}
 
+	// Force DNSBL Mode to DNSBL Unbound mode until the DNS Resolver DHCP OpenVPN Client Registration option has been disabled in pfSense < 2.5.
+	if ($pfb['dnsbl_mode'] == 'dnsbl_python' && substr(trim(file_get_contents('/etc/version')), 0, 3) < '2.5' &&
+	    isset($config['unbound']['regovpnclients'])) {
+
+		$pfb['dnsbl_mode']		= 'dnsbl_unbound';
+		$pfb['dnsbl_py_blacklist']	= FALSE;
+
+		$log = "\n [ ALERT ]\n"
+			. " DNSBL Python mode is not compatable with the DNS Resolver OpenVPN Client Registration option enabled!\n"
+			. " The DNS Resolver DHCP Registration option must be disabled to utilize the DNSBL Python feature!\n"
+			. " DNSBL has been automatically downgraded to the DNSBL Unbound mode!\n\n";
+		pfb_logger("{$log}", 1);
+
+		$log = "[pfBlockerNG]: Terminating DNSBL Python mode due to DNS Resolver OpenVPN Client Registration option enabled!\n";
+		@file_put_contents('/var/log/pfblockerng/py_error.log', $log, FILE_APPEND);
+	}
 
 /*
 

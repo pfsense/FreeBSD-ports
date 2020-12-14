@@ -126,6 +126,12 @@ if ($type != 'GeoIP') {
 	}
 }
 
+// Remove any empty '<config></config>' XML tags
+if (isset($rowdata[0]) && empty($rowdata[0])) {
+	unset($rowdata[0]);
+	$rowdata = array_values($rowdata);
+}
+
 if (!empty($action) && isset($gtype) && isset($rowid)) {
 
 	switch ($action) {

@@ -59,10 +59,11 @@ global $config, $g, $pfb;
 if (isset($argv[1])) {
 	if ($argv[1] == 'clearip') {
 		pfBlockerNG_clearip();
+		pfBlockerNG_clearsqlite('clearip');
 		exit;
 	}
 	elseif ($argv[1] == 'cleardnsbl') {
-		pfBlockerNG_cleardnsbl('clearall');
+		pfBlockerNG_clearsqlite('clearall');
 		exit;
 	}
 }
