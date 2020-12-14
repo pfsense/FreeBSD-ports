@@ -32,7 +32,7 @@ if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' && $_REQUEST && $_REQUEST['pfb']) {
 
 	$query = htmlspecialchars($_REQUEST['pfb']);
 	if (file_exists("/var/db/aliastables/{$query}_v4.txt")) {
-        	$type = '_v4';
+		$type = '_v4';
 	} elseif (file_exists("/var/db/aliastables/{$query}_v6.txt")) {
 		$type = '_v6';
 	}
@@ -63,7 +63,7 @@ if (isset($argv[1])) {
 		exit;
 	}
 	elseif ($argv[1] == 'cleardnsbl') {
-		pfBlockerNG_clearsqlite('clearall');
+		pfBlockerNG_clearsqlite('cleardnsbl');
 		exit;
 	}
 }
@@ -1537,7 +1537,7 @@ $section->addInput(new Form_StaticText(
 
 // Maxmind License Key verification
 if (empty($pfb['maxmind_key'])) {
-        print_callout('<br /><br /><p><strong>'
+	print_callout('<br /><br /><p><strong>'
 			. 'MaxMind now requires a License Key! Review the IP tab: MaxMind settings for more information.'
 			. '</strong></p><br />', 'danger', '');
 }
