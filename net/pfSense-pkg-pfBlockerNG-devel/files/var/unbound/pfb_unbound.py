@@ -65,7 +65,7 @@ except Exception as e:
 
 
 def init_standard(id, env):
-    global pfb, dataDB, zoneDB, regexDB, hstsDB, whiteDB, excludeDB, dnsblDB, noAAAADB, feedGroupIndexDB, maxmindReader
+    global pfb, dataDB, zoneDB, regexDB, hstsDB, whiteDB, excludeDB, dnsblDB, noAAAADB, gpListDB, feedGroupIndexDB, maxmindReader
 
     if not register_inplace_cb_reply(inplace_cb_reply, env, id):
         log_info('[pfBlockerNG]: Failed register_inplace_cb_reply')
@@ -141,6 +141,7 @@ def init_standard(id, env):
     pfb['python_hsts'] = False
     pfb['python_reply'] = False
     pfb['python_cname'] = False
+    pfb['group_policy'] = False
     pfb['python_enable'] = False
     pfb['python_nolog'] = False
     pfb['python_maxmind'] = False
@@ -176,6 +177,7 @@ def init_standard(id, env):
     regexDB = defaultdict(str)
     whiteDB = defaultdict(str)
     hstsDB = defaultdict(str)
+    gpListDB = defaultdict(str)
     noAAAADB = defaultdict(str)
     feedGroupDB = defaultdict(str)
     feedGroupIndexDB = defaultdict(list)
@@ -262,6 +264,17 @@ def init_standard(id, env):
                     except Exception as e:
                         sys.stderr.write("[pfBlockerNG]: Failed to load no AAAA domain list: {}" .format(e))
                         pass
+
+            if config.has_section('GP_Bypass_List'):
+                gp_bypass_list = config.items('GP_Bypass_List')
+                if gp_bypass_list:
+                    try:
+                        for row, line in gp_bypass_list:
+                            gpListDB[line.rstrip('\r\n')] = 0
+                            pfb['group_policy'] = True
+                    except Exception as e:
+                        sys.stderr.write("[pfBlockerNG]: Failed to load GP Bypass List: {}" .format(e))
+                        pass 
 
             # While reading 'data|zone' CSV files: Replace 'Feed/Group' pairs with an index value (Memory performance)
             feedGroup_index = 0
@@ -850,7 +863,7 @@ def inform_super(id, qstate, superqstate, qdata):
     return True
 
 def operate(id, event, qstate, qdata):
-    global pfb, dataDB, zoneDB, hstsDB, whiteDB, excludeDB, dnsblDB, noAAAADB, feedGroupIndexDB
+    global pfb, dataDB, zoneDB, hstsDB, whiteDB, excludeDB, dnsblDB, noAAAADB, gpListDB, feedGroupIndexDB
 
     qstate_valid = False
     if qstate is not None and qstate.qinfo.qtype is not None:
@@ -878,11 +891,22 @@ def operate(id, event, qstate, qdata):
     # DNSBL Validation for specific RR_TYPES only
     if qstate_valid and pfb['python_blacklist'] and q_type in pfb['rr_types']:
 
+        # Group Policy - Bypass DNSBL Validation
+        bypass_dnsbl = False
+        if pfb['group_policy']:
+            q_ip = get_q_ip(qstate)
+
+            if q_ip != 'Unknown':
+                isgpBypass = gpListDB.get(q_ip)
+
+                if isgpBypass is not None:
+                    bypass_dnsbl = True
+
 	# Create list of Domain/CNAMES to be evaluated
         validate = []
 
         # Skip 'in-addr.arpa' domains
-        if not q_name_original.endswith('.in-addr.arpa'):
+        if not q_name_original.endswith('.in-addr.arpa') and not bypass_dnsbl:
             validate.append(q_name_original)
 
             # DNSBL CNAME Validation

@@ -74,6 +74,7 @@ $pconfig['pfb_idn']		= $pfb['dconfig']['pfb_idn']				?: '';
 $pconfig['pfb_regex']		= $pfb['dconfig']['pfb_regex']				?: '';
 $pconfig['pfb_cname']		= $pfb['dconfig']['pfb_cname']				?: '';
 $pconfig['pfb_noaaaa']		= $pfb['dconfig']['pfb_noaaaa']				?: '';
+$pconfig['pfb_gp']		= $pfb['dconfig']['pfb_gp']				?: '';
 $pconfig['pfb_pytld']		= $pfb['dconfig']['pfb_pytld']				?: '';
 $pconfig['pfb_pytld_sort']	= $pfb['dconfig']['pfb_pytld_sort']			?: '';
 $pconfig['pfb_pytlds_gtld']	= explode(',', $pfb['dconfig']['pfb_pytlds_gtld'])	?: $default_tlds;
@@ -83,6 +84,7 @@ $pconfig['pfb_pytlds_bgtld']	= explode(',', $pfb['dconfig']['pfb_pytlds_bgtld'])
 $pconfig['pfb_py_nolog']	= $pfb['dconfig']['pfb_py_nolog']			?: '';
 $pconfig['pfb_regex_list']	= base64_decode($pfb['dconfig']['pfb_regex_list'])	?: '';
 $pconfig['pfb_noaaaa_list']	= base64_decode($pfb['dconfig']['pfb_noaaaa_list'])	?: '';
+$pconfig['pfb_gp_bypass_list']	= base64_decode($pfb['dconfig']['pfb_gp_bypass_list'])	?: '';
 $pconfig['action']		= $pfb['dconfig']['action']				?: 'Disabled';
 $pconfig['aliaslog']		= $pfb['dconfig']['aliaslog']				?: 'enabled';
 
@@ -198,6 +200,7 @@ if ($_POST) {
 		$pfb['dconfig']['pfb_regex']		= $_POST['pfb_regex']				?: '';
 		$pfb['dconfig']['pfb_cname']		= $_POST['pfb_cname']				?: '';
 		$pfb['dconfig']['pfb_noaaaa']		= $_POST['pfb_noaaaa']				?: '';
+		$pfb['dconfig']['pfb_gp']		= $_POST['pfb_gp']				?: '';
 
 		// Non-ascii characters are not allowed for DNSBL Regex
 		if (!mb_detect_encoding($_POST['pfb_regex_list'], 'ASCII', TRUE)) {
@@ -221,6 +224,9 @@ if ($_POST) {
 		$pfb['dconfig']['pfb_pytlds_cctld']	= implode(',', (array)$_POST['pfb_pytlds_cctld']);
 		$pfb['dconfig']['pfb_pytlds_itld']	= implode(',', (array)$_POST['pfb_pytlds_itld']);
 		$pfb['dconfig']['pfb_pytlds_bgtld']	= implode(',', (array)$_POST['pfb_pytlds_bgtld']);
+
+		// Group Policy
+		$pfb['dconfig']['pfb_gp_bypass_list']	= base64_encode($_POST['pfb_gp_bypass_list'])	?: '';
 
 		$pfb['dconfig']['action']		= $_POST['action']				?: 'Disabled';
 		$pfb['dconfig']['aliaslog']		= $_POST['aliaslog']				?: 'enabled';
@@ -259,6 +265,8 @@ if ($_POST) {
 		$pfb['dconfig']['tldexclusion']		= base64_encode($_POST['tldexclusion'])		?: '';
 		$pfb['dconfig']['tldblacklist']		= base64_encode($_POST['tldblacklist'])		?: '';
 		$pfb['dconfig']['tldwhitelist']		= base64_encode($_POST['tldwhitelist'])		?: '';
+
+		$pfb['dconfig']['pfb_gp_bypass_list']	= base64_encode($_POST['pfb_gp_bypass_list'])	?: '';
 
 		// Validate DNSBL VIP address
 		if (!is_ipaddrv4($_POST['pfb_dnsvip'])) {
@@ -2180,8 +2188,7 @@ $section->addInput(new Form_Checkbox(
 	'Enable',
 	$pconfig['pfb_idn'] === 'on' ? true:false,
 	'on'
-))->setHelp('Enable the Python IDN blocking feature (not Regex based). This will block all IDN\'s and domains that include \'xn--\'.<div class="infoblock">'
-	. 'Changes to this option will require a Force Update to take effect.</div>');
+))->setHelp('Enable the Python IDN blocking feature (not Regex based). This will block all IDN\'s and domains that include \'xn--\'.');
 
 $section->addInput(new Form_Checkbox(
 	'pfb_regex',
@@ -2189,8 +2196,7 @@ $section->addInput(new Form_Checkbox(
 	'Enable',
 	$pconfig['pfb_regex'] === 'on' ? true:false,
 	'on'
-))->setHelp('Enable the Python Regex blocking feature. Regex list below: [Python Regex List]<div class="infoblock">'
-		. 'Changes to this option will require a Force Update to take effect.</div>');
+))->setHelp('Enable the Python Regex blocking feature. Regex list below: [Python Regex List]');
 
 $section->addInput(new Form_Checkbox(
 	'pfb_cname',
@@ -2209,6 +2215,34 @@ $section->addInput(new Form_Checkbox(
 	'on'
 ))->setHelp('Enable the Python no-AAAA feature. This will block all (IPv6) AAAA DNS requests for the defined domains. no AAAA List below.');
 
+$section->addInput(new Form_Checkbox(
+	'pfb_gp',
+	gettext('Python Group Policy') . '(py)',
+	'Enable',
+	$pconfig['pfb_gp'] === 'on' ? true:false,
+	'on'
+))->setHelp('Enable the Python Group Policy functionality to allow certain Local LAN IPs to bypass DNSBL');
+
+$form->add($section);
+
+$section = new Form_Section('Python Group Policy', 'Python_Group_Policy', COLLAPSIBLE|SEC_CLOSED);
+$section->addInput(new Form_StaticText(
+        NULL,
+        'This is a preliminary DNSBL Group Policy configuration that will bypass DNSBL for the defined LAN IPs.'));
+
+$section->addInput(new Form_Textarea(
+        'pfb_gp_bypass_list',
+        'Bypass IPs',
+        $pconfig['pfb_gp_bypass_list']
+))->removeClass('form-control')
+  ->addClass('row-fluid col-sm-12')
+  ->setAttribute('columns', '90')
+  ->setAttribute('rows', '15')
+  ->setAttribute('wrap', 'off')
+  ->setAttribute('style', 'background:#fafafa; width: 100%')
+  ->setHelp('Enter the Local LAN IPs (one per line) that will bypass Python DNSBL Blocking.<br />'
+		. 'Changes to this option will require a Force Update to take effect.');
+
 $form->add($section);
 
 $regex_text = 'List of Python Regex\'s to block via DNSBL<br /><br />
@@ -2216,7 +2250,8 @@ $regex_text = 'List of Python Regex\'s to block via DNSBL<br /><br />
 		You may use "<strong>#</strong>" after each line for a Regex Description. IE:&emsp;/regex/ # Regex Description here<br /><br />
 		Ensure a space is entered before the # character. Keep the Regex description less than 15 characters as it will be used in<br />
 		the Alerts Tab. If no Description is entered a default Regex line number will be utilized.<br />
-		This List is stored as \'Base64\' format in the config.xml file.<br /><br />';
+		This List is stored as \'Base64\' format in the config.xml file.<br /><br />
+		Changes to this option will require a Force Update to take effect.';
 
 $section = new Form_Section('Python Regex List', 'Python_regex_list', COLLAPSIBLE|SEC_CLOSED);
 $section->addInput(new Form_Textarea(
@@ -2236,7 +2271,8 @@ $form->add($section);
 $noaaaa_text = 'List of no AAAA domains to block the (IPv6) AAAA DNS Resolution.<br /><br />
 		Enter a single domain per line.<br /><br />
 		Any domain added to the no AAAA list, will never be filtered by any DNSBL python blocking.<br /><br />
-		This List is stored as \'Base64\' format in the config.xml file.<br /><br />';
+		This List is stored as \'Base64\' format in the config.xml file.<br /><br />
+		Changes to this option will require a Force Update to take effect.';
 
 $section = new Form_Section('Python no AAAA  List', 'Python_noaaaa_list', COLLAPSIBLE|SEC_CLOSED);
 $section->addInput(new Form_Textarea(
@@ -2776,8 +2812,9 @@ $form->add($section);
 $section = new Form_Section('DNSBL IPs');
 $section->addInput(new Form_StaticText(
 	NULL,
-	'When IPs are found in any Domain based Feed, configure IP Firewall Rules for these IPs<br /><br />'
-	. '<span class="text-danger">Note: </span>To utilize this feature, define the Inbound/Outbound Interfaces in the <strong>IP Tab</strong>.'
+	'When IPs are found in any Domain based Feed, these IPs will be added to the <strong>pfB_DNSBL_IP</strong> IP Aliastable and<br />'
+	. ' a firewall rule will be added to block those IPs.<br /><br />'
+	. '<span class="text-danger">Note: </span>To utilize this feature, select the appropriate List Action and define the Inbound/Outbound Interfaces in the <strong>IP Tab</strong>.'
 ));
 
 $list_action_text = 'Default: <strong>Disabled</strong>
@@ -2997,8 +3034,10 @@ function enable_python() {
 	hideCheckbox('pfb_regex', !python);
 	hideCheckbox('pfb_noaaaa', !python);
 	hideCheckbox('pfb_cname', !python);
+	hideCheckbox('pfb_gp', !python);
 	hideInput('pfb_regex_list', !python);
 	hideInput('pfb_noaaaa_list', !python);
+	hideInput('pfb_gp_bypass_list', !python);
 	hideCheckbox('pfb_pytld', !python);
 	hideCheckbox('pfb_pytld_sort', !python);
 	hideMultiClass('pfb_python', !python);
@@ -3051,6 +3090,14 @@ function enable_python_noaaaa() {
 	}
 }
 
+function enable_python_gp() {
+	if ($('#dnsbl_mode').val() == 'dnsbl_python' && $('#pfb_gp').prop('checked')) {
+		$('#Python_Group_Policy').show();
+	} else {
+		$('#Python_Group_Policy').hide();
+	}
+}
+
 function enable_dnsblip() {
 	var dnsblip = $('#action').prop('checked'); 
 	hideInput('aliaslog', !dnsblip);
@@ -3082,6 +3129,7 @@ events.push(function(){
 		enable_python_pytld();
 		enable_python_regex();
 		enable_python_noaaaa();
+		enable_python_gp();
 	});
 	enable_python();
 
@@ -3104,6 +3152,11 @@ events.push(function(){
 		enable_python_noaaaa();
 	});
 	enable_python_noaaaa();
+
+	$('#pfb_gp').click(function() {
+		enable_python_gp();
+	});
+	enable_python_gp();
 
 	$('#action').click(function() {
 		enable_dnsblip();
