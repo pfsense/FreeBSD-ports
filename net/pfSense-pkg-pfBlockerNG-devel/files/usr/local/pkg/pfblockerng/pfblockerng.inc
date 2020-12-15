@@ -286,6 +286,9 @@ function pfb_global() {
 	$pfb['dnsbl_noaaaa']	= $pfb['dnsblconfig']['pfb_noaaaa'];		// DNSBL Resolver python no AAAA
 	$pfb['dnsbl_noaaaa_list']=$pfb['dnsblconfig']['pfb_noaaaa_list'];	// DNSBL Resolver python no AAAA list
 
+	$pfb['dnsbl_gp']		= $pfb['dnsblconfig']['pfb_gp'];		// DNSBL Resolver python - DNSBL Bypass
+	$pfb['dnsbl_gp_bypass_list']	= $pfb['dnsblconfig']['pfb_gp_bypass_list'];	// DNSBL Resolver python - List of Local IPs to bypass DNSBL
+
 	// DNSBL Resolver mode (Unbound/Python)
 	$pfb['dnsbl_py_blacklist'] = FALSE;
 	if ($pfb['dnsbl_mode'] == 'dnsbl_python' && $pfb['dnsbl_py_block'] == 'on') {
@@ -333,7 +336,8 @@ function pfb_global() {
 			$pfb['curl_defaults'][CURLOPT_PROXYAUTH]	= 'CURLAUTH_ANY | CURLAUTH_ANYSAFE';
 			$pfb['curl_defaults'][CURLOPT_PROXYUSERPWD]	= "{$config['system']['proxyuser']}:{$config['system']['proxypass']}";
 		}
-	} else {
+	}
+	else {
 		$pfb['curl_defaults'][CURLOPT_TCP_FASTOPEN]		= true;
 	}
 
@@ -1284,34 +1288,38 @@ function pfb_create_dnsbl($mode) {
 		}
 
 		if ($mode == 'enabled') {
-			// Generate new DNSBL NAT per DNSBL listening ports
-			$selected_ports = array("{$pfb['dnsbl_port']}" => '80', "{$pfb['dnsbl_port_ssl']}" => '443');
-			foreach ($selected_ports as $port => $lport) {
 
-				$dnsbl_new_nat[] =	array ( 'source'		=> array('any'  => ''),
-								'destination'		=> array('address' => "{$pfb['dnsbl_vip']}", 'port' => "{$lport}"),
-								'protocol'		=> 'tcp',
-								'target'		=> '127.0.0.1',
-								'local-port'		=> "{$port}",
-								'interface'		=> "{$pfb['dnsbl_iface']}",
-								'descr'			=> 'pfB DNSBL - DO NOT EDIT',
-								'associated-rule-id'	=> 'pass',
-								'natreflection'		=> 'purenat'
-								);
+			// Generate new DNSBL NAT per DNSBL listening ports except for 'localhost' interface setting.
+			$dnsbl_new_nat = array();
+			if ($pfb['dnsbl_iface'] != 'lo0') {
+				$selected_ports = array("{$pfb['dnsbl_port']}" => '80', "{$pfb['dnsbl_port_ssl']}" => '443');
+				foreach ($selected_ports as $port => $lport) {
 
-				// Add DNSBL IPv6 NAT Rules
-				if ($pfb['dnsbl_v6'] == 'on') {
-					$dnsbl_new_nat[] = array (	'source'		=> array('any'  => ''),
-									'destination'		=> array('address' => "::{$pfb['dnsbl_vip']}",
-													'port' => "{$lport}"),
+					$dnsbl_new_nat[] =	array ( 'source'		=> array('any'  => ''),
+									'destination'		=> array('address' => "{$pfb['dnsbl_vip']}", 'port' => "{$lport}"),
 									'protocol'		=> 'tcp',
-									'target'		=> '::1',
+									'target'		=> '127.0.0.1',
 									'local-port'		=> "{$port}",
 									'interface'		=> "{$pfb['dnsbl_iface']}",
 									'descr'			=> 'pfB DNSBL - DO NOT EDIT',
 									'associated-rule-id'	=> 'pass',
 									'natreflection'		=> 'purenat'
 									);
+
+					// Add DNSBL IPv6 NAT Rules
+					if ($pfb['dnsbl_v6'] == 'on') {
+						$dnsbl_new_nat[] = array (	'source'		=> array('any'  => ''),
+										'destination'		=> array('address' => "::{$pfb['dnsbl_vip']}",
+														'port' => "{$lport}"),
+										'protocol'		=> 'tcp',
+										'target'		=> '::1',
+										'local-port'		=> "{$port}",
+										'interface'		=> "{$pfb['dnsbl_iface']}",
+										'descr'			=> 'pfB DNSBL - DO NOT EDIT',
+										'associated-rule-id'	=> 'pass',
+										'natreflection'		=> 'purenat'
+										);
+					}
 				}
 			}
 
@@ -1982,6 +1990,21 @@ EOF;
 
 [noAAAA]
 {$noaaaa}
+EOF;
+			}
+		}
+
+		if ($pfb['dnsbl_gp'] == 'on' && isset($pfb['dnsbl_gp_bypass_list']) && !empty($pfb['dnsbl_gp_bypass_list'])) {
+			$gp_bypass = '';
+			$gp_bypass_list = pfbng_text_area_decode($pfb['dnsbl_gp_bypass_list'], TRUE, TRUE);
+			if (!empty($gp_bypass_list)) {
+				foreach ($gp_bypass_list as $key => $list) {
+					$gp_bypass .= "{$key} = {$list[0]}\n";
+				}
+				$pfb_py_conf .= <<<EOF
+
+[GP_Bypass_List]
+{$gp_bypass}
 EOF;
 			}
 		}
@@ -6126,6 +6149,22 @@ function sync_package_pfblockerng($cron='') {
 		@file_put_contents('/var/log/pfblockerng/py_error.log', $log, FILE_APPEND);
 	}
 
+	// Force DNSBL Mode to DNSBL Unbound mode until the DNS Resolver DHCP OpenVPN Client Registration option has been disabled in pfSense < 2.5.
+	if ($pfb['dnsbl_mode'] == 'dnsbl_python' && substr(trim(file_get_contents('/etc/version')), 0, 3) < '2.5' &&
+	    isset($config['unbound']['regovpnclients'])) {
+
+		$pfb['dnsbl_mode']		= 'dnsbl_unbound';
+		$pfb['dnsbl_py_blacklist']	= FALSE;
+
+		$log = "\n [ ALERT ]\n"
+			. " DNSBL Python mode is not compatable with the DNS Resolver OpenVPN Client Registration option enabled!\n"
+			. " The DNS Resolver DHCP Registration option must be disabled to utilize the DNSBL Python feature!\n"
+			. " DNSBL has been automatically downgraded to the DNSBL Unbound mode!\n\n";
+		pfb_logger("{$log}", 1);
+
+		$log = "[pfBlockerNG]: Terminating DNSBL Python mode due to DNS Resolver OpenVPN Client Registration option enabled!\n";
+		@file_put_contents('/var/log/pfblockerng/py_error.log', $log, FILE_APPEND);
+	}
 
 /*
 
@@ -8495,7 +8534,7 @@ function sync_package_pfblockerng($cron='') {
 
 		$new_aliases_list[] = 'pfB_DNSBL_Ports';
 		$new_aliases[] = array( 'name'		=> 'pfB_DNSBL_Ports',
-					'address'	=> "{$pfb['dnsbl_port']} {$pfb['dnsbl_port_ssl']}",
+					'address'	=> $pfb['dnsbl_iface'] != 'lo0' ? "{$pfb['dnsbl_port']} {$pfb['dnsbl_port_ssl']}" : '80, 443',
 					'descr'		=> 'pfBlockerNG DNSBL VIP Ports',
 					'type'		=> 'port',
 					'detail'	=> 'DO NOT EDIT THIS PORT||DO NOT EDIT THIS PORT'
