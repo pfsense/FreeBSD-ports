@@ -286,6 +286,9 @@ function pfb_global() {
 	$pfb['dnsbl_noaaaa']	= $pfb['dnsblconfig']['pfb_noaaaa'];		// DNSBL Resolver python no AAAA
 	$pfb['dnsbl_noaaaa_list']=$pfb['dnsblconfig']['pfb_noaaaa_list'];	// DNSBL Resolver python no AAAA list
 
+	$pfb['dnsbl_gp']		= $pfb['dnsblconfig']['pfb_gp'];		// DNSBL Resolver python - DNSBL Bypass
+	$pfb['dnsbl_gp_bypass_list']	= $pfb['dnsblconfig']['pfb_gp_bypass_list'];	// DNSBL Resolver python - List of Local IPs to bypass DNSBL
+
 	// DNSBL Resolver mode (Unbound/Python)
 	$pfb['dnsbl_py_blacklist'] = FALSE;
 	if ($pfb['dnsbl_mode'] == 'dnsbl_python' && $pfb['dnsbl_py_block'] == 'on') {
@@ -1307,7 +1310,7 @@ function pfb_create_dnsbl($mode) {
 					if ($pfb['dnsbl_v6'] == 'on') {
 						$dnsbl_new_nat[] = array (	'source'		=> array('any'  => ''),
 										'destination'		=> array('address' => "::{$pfb['dnsbl_vip']}",
-										'port' => "{$lport}"),
+														'port' => "{$lport}"),
 										'protocol'		=> 'tcp',
 										'target'		=> '::1',
 										'local-port'		=> "{$port}",
@@ -1987,6 +1990,21 @@ EOF;
 
 [noAAAA]
 {$noaaaa}
+EOF;
+			}
+		}
+
+		if ($pfb['dnsbl_gp'] == 'on' && isset($pfb['dnsbl_gp_bypass_list']) && !empty($pfb['dnsbl_gp_bypass_list'])) {
+			$gp_bypass = '';
+			$gp_bypass_list = pfbng_text_area_decode($pfb['dnsbl_gp_bypass_list'], TRUE, TRUE);
+			if (!empty($gp_bypass_list)) {
+				foreach ($gp_bypass_list as $key => $list) {
+					$gp_bypass .= "{$key} = {$list[0]}\n";
+				}
+				$pfb_py_conf .= <<<EOF
+
+[GP_Bypass_List]
+{$gp_bypass}
 EOF;
 			}
 		}
