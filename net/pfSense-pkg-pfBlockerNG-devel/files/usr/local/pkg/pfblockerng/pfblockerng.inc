@@ -1285,34 +1285,38 @@ function pfb_create_dnsbl($mode) {
 		}
 
 		if ($mode == 'enabled') {
-			// Generate new DNSBL NAT per DNSBL listening ports
-			$selected_ports = array("{$pfb['dnsbl_port']}" => '80', "{$pfb['dnsbl_port_ssl']}" => '443');
-			foreach ($selected_ports as $port => $lport) {
 
-				$dnsbl_new_nat[] =	array ( 'source'		=> array('any'  => ''),
-								'destination'		=> array('address' => "{$pfb['dnsbl_vip']}", 'port' => "{$lport}"),
-								'protocol'		=> 'tcp',
-								'target'		=> '127.0.0.1',
-								'local-port'		=> "{$port}",
-								'interface'		=> "{$pfb['dnsbl_iface']}",
-								'descr'			=> 'pfB DNSBL - DO NOT EDIT',
-								'associated-rule-id'	=> 'pass',
-								'natreflection'		=> 'purenat'
-								);
+			// Generate new DNSBL NAT per DNSBL listening ports except for 'localhost' interface setting.
+			$dnsbl_new_nat = array();
+			if ($pfb['dnsbl_iface'] != 'lo0') {
+				$selected_ports = array("{$pfb['dnsbl_port']}" => '80', "{$pfb['dnsbl_port_ssl']}" => '443');
+				foreach ($selected_ports as $port => $lport) {
 
-				// Add DNSBL IPv6 NAT Rules
-				if ($pfb['dnsbl_v6'] == 'on') {
-					$dnsbl_new_nat[] = array (	'source'		=> array('any'  => ''),
-									'destination'		=> array('address' => "::{$pfb['dnsbl_vip']}",
-													'port' => "{$lport}"),
+					$dnsbl_new_nat[] =	array ( 'source'		=> array('any'  => ''),
+									'destination'		=> array('address' => "{$pfb['dnsbl_vip']}", 'port' => "{$lport}"),
 									'protocol'		=> 'tcp',
-									'target'		=> '::1',
+									'target'		=> '127.0.0.1',
 									'local-port'		=> "{$port}",
 									'interface'		=> "{$pfb['dnsbl_iface']}",
 									'descr'			=> 'pfB DNSBL - DO NOT EDIT',
 									'associated-rule-id'	=> 'pass',
 									'natreflection'		=> 'purenat'
 									);
+
+					// Add DNSBL IPv6 NAT Rules
+					if ($pfb['dnsbl_v6'] == 'on') {
+						$dnsbl_new_nat[] = array (	'source'		=> array('any'  => ''),
+										'destination'		=> array('address' => "::{$pfb['dnsbl_vip']}",
+										'port' => "{$lport}"),
+										'protocol'		=> 'tcp',
+										'target'		=> '::1',
+										'local-port'		=> "{$port}",
+										'interface'		=> "{$pfb['dnsbl_iface']}",
+										'descr'			=> 'pfB DNSBL - DO NOT EDIT',
+										'associated-rule-id'	=> 'pass',
+										'natreflection'		=> 'purenat'
+										);
+					}
 				}
 			}
 
@@ -8512,7 +8516,7 @@ function sync_package_pfblockerng($cron='') {
 
 		$new_aliases_list[] = 'pfB_DNSBL_Ports';
 		$new_aliases[] = array( 'name'		=> 'pfB_DNSBL_Ports',
-					'address'	=> "{$pfb['dnsbl_port']} {$pfb['dnsbl_port_ssl']}",
+					'address'	=> $pfb['dnsbl_iface'] != 'lo0' ? "{$pfb['dnsbl_port']} {$pfb['dnsbl_port_ssl']}" : '80, 443',
 					'descr'		=> 'pfBlockerNG DNSBL VIP Ports',
 					'type'		=> 'port',
 					'detail'	=> 'DO NOT EDIT THIS PORT||DO NOT EDIT THIS PORT'
