@@ -1679,7 +1679,8 @@
 					"feed":		"WaLLy3K's Blacklist",
 					"website":	"https://firebog.net/",
 					"url":		"https://v.firebog.net/hosts/static/w3kbl.txt",
-					"header":	"WaLLy3Ks"
+					"header":	"WaLLy3Ks",
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
 				},
 				{
 					"feed":		"Matomo Referrer Spam",
@@ -1724,12 +1725,14 @@
 					"website":	"https://firebog.net/",
 					"url":		"https://v.firebog.net/hosts/AdguardDNS.txt",
 					"header":	"Adguard_DNS"
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
 				},
 				{
 					"feed":		"LanikSJ's Admiral Anti-Adblock",
 					"website":	"https://firebog.net/",
 					"url":		"https://v.firebog.net/hosts/Admiral.txt",
 					"header":	"LanikSJ"
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
 				},
 				{
 					"feed":		"Anudeep ND's Blacklist",
@@ -1742,6 +1745,7 @@
 					"website":	"https://firebog.net/",
 					"url":		"https://v.firebog.net/hosts/Easylist.txt",
 					"header":	"Easylist"
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
 				},
 				{
 					"feed":		"Peter Lowe's Adservers",
@@ -1780,12 +1784,14 @@
 					"website":	"https://firebog.net/",
 					"url":		"https://v.firebog.net/hosts/Easyprivacy.txt",
 					"header":	"Easyprivacy"
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
 				},
 				{
 					"feed":		"Fabrice Prigent's Ads",
 					"website":	"https://firebog.net/",
 					"url":		"https://v.firebog.net/hosts/Prigent-Ads.txt",
 					"header":	"Prigent_Ads"
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
 				},
 				{
 					"feed":		"Fademind's 2o7 Network Trackers",
@@ -1860,6 +1866,7 @@
 					"website":	"https://firebog.net/",
 					"url":		"https://v.firebog.net/hosts/Prigent-Crypto.txt",
 					"header":	"Prigent_Crypto"
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
 				},
 				{
 					"feed":		"Immortal' Malware Domains",
@@ -1884,6 +1891,7 @@
 					"website":	"https://firebog.net/",
 					"url":		"https://v.firebog.net/hosts/Shalla-mal.txt",
 					"header":	"Shalla_Malicious"
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
 				},
 				{
 					"feed":		"Fademind's Risky Hosts",
@@ -1902,6 +1910,7 @@
 					"website":	"https://firebog.net/",
 					"url":		"https://v.firebog.net/hosts/Prigent-Malware.txt",
 					"header":	"Prigent_Malware"
+					"info":		"This feed is a formatted copy of the original source feed. See https://firebog.net for more information."
 				},
 				{
 					"feed":		"Turkey High Risk Phishing Blacklist",
