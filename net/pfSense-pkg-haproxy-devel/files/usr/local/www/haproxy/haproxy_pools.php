@@ -67,7 +67,7 @@ if ($_POST['apply']) {
 		}
 
 		$a_pools = $a_filter_new;
-		if (write_config()) {
+		if (write_config("haproxy-devel: Updated rule order")) {
 			mark_subsystem_dirty('filter');
 		}
 
@@ -77,7 +77,7 @@ if ($_POST['apply']) {
 } elseif ($_GET['act'] == "del") {
 	if (isset($a_pools[$_GET['id']])) {
 		unset($a_pools[$_GET['id']]);
-		write_config();
+		write_config("haproxy-devel: Pool deleted");
 		touch($d_haproxyconfdirty_path);
 	}
 	header("Location: haproxy_pools.php");

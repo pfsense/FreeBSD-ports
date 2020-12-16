@@ -19,6 +19,9 @@
  * limitations under the License.
  */
 
+/* Supported address famililes constant */
+define("FRR_BGP_ADDRESS_FAMILIES", array("ipv4 unicast", "ipv6 unicast"));
+
 /* Fetch the list of BGP AS Paths for use in selection lists */
 function frr_get_bgp_aspath_list() {
 	global $config;
@@ -913,9 +916,6 @@ function frr_bgp_generate_address_families() {
 
 function frr_generate_config_bgp() {
 	global $config, $frr_config_base, $frr_integrated_config, $frr_bgp_config_address_family;
-
-	/* Supported address famililes constant */
-	define("FRR_BGP_ADDRESS_FAMILIES", array("ipv4 unicast", "ipv6 unicast"));
 
 	/* Make bgpd config */
 	if (is_array($config['installedpackages']['frr']['config'])) {

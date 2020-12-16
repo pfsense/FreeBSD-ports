@@ -371,7 +371,7 @@ function syslogng_resync() {
 		}
 	}
 
-	write_config();
+	write_config("syslog-ng: Settings saved");
 	filter_configure();
 }
 

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+		<![CDATA[
+		/* $Id$ */
+		/* ====================================================================================== */
+		/*
+		* zeek_zeekctl.xml
+		* part of pfSense (https://www.pfSense.org/)
+		* Copyright (c) 2018-2020 Prosper Doko
+		* Copyright (c) 2020 Mark Overholser
+		* All rights reserved.
+		*
+		* Licensed under the Apache License, Version 2.0 (the "License");
+		* you may not use this file except in compliance with the License.
+		* You may obtain a copy of the License at
+		*
+		* http://www.apache.org/licenses/LICENSE-2.0
+		*
+		* Unless required by applicable law or agreed to in writing, software
+		* distributed under the License is distributed on an "AS IS" BASIS,
+		* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		* See the License for the specific language governing permissions and
+		* limitations under the License.
+		*/
+		/* ====================================================================================== */
+		]]>
+	</copyright>
+	<name>zeekcontrol</name>
+	<title>Zeek NSM: ZeekControl Settings</title>
+	<include_file>/usr/local/pkg/zeek.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=zeek.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>ZeekControl Config</text>
+			<url>/pkg_edit.php?xml=zeek_zeekctl.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Zeek Cluster</text>
+			<url>/pkg_edit.php?xml=zeek_cluster.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Zeek Scripts</text>
+			<url>/pkg.php?xml=zeek_script.xml</url>
+		</tab>
+		<tab>
+			<text>Log Mgmt</text>
+			<url>/pkg_edit.php?xml=zeek_log.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Real Time Inspection</text>
+			<url>/zeek_alerts.php</url>
+		</tab>
+		<tab>
+			<text>XMLRPC Sync</text>
+			<url>/pkg_edit.php?xml=zeek_sync.xml</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Mails Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Administrator's Email</fielddescr>
+			<fieldname>admin_email</fieldname>
+			<description>Recipient address for all emails sent out by Zeek and ZeekControl.</description>
+			<type>input</type>
+			<size>60</size>
+			<required/>
+			<default_value>root@localhost</default_value>
+		</field>
+		<field>
+			<fielddescr>Mail Connection Summary</fielddescr>
+			<fieldname>mail_connection_summary</fieldname>
+			<description>Check to mail connection summary reports each log rotation interval.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Minimum Disk space</fielddescr>
+			<fieldname>min_disk_space</fieldname>
+			<description>
+				<![CDATA[
+				Percentage of minimum disk space available before warning is mailed.<br/>
+				A value of 0 disables this feature.
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>5</default_value>
+		</field>
+		<field>
+			<fielddescr>Mail Host Up-Down</fielddescr>
+			<fieldname>mail_host_updown</fieldname>
+			<description>Check to send an email when a host status changes.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name>Logging Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Log Rotation Interval</fielddescr>
+			<fieldname>log_rotate</fieldname>
+			<description>
+				<![CDATA[The frequency of log rotation in seconds for the manager/standalone node (zero to disable rotation).<br/>
+				A value of 0 disables log rotation.
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>3600</default_value>
+		</field>
+		<field>
+			<fielddescr>Log Expire Interval</fielddescr>
+			<fieldname>log_expiration</fieldname>
+			<description>
+				<![CDATA[
+				Number of days log files are kept (zero means log files never expire).
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>Enable Statistics Logging</fielddescr>
+			<fieldname>stats_log</fieldname>
+			<description>Check to enable writing ZeekControl statistics to stats.log.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Stats Log Expire Interval</fielddescr>
+			<fieldname>stats_duration</fieldname>
+			<description>
+				<![CDATA[
+				Number of days to retain stats.log entries.<br/>
+				A value of 0 means that entries never expire.
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>0</default_value>
+		</field>
+
+		<field>
+			<name>Other Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Log Store Directory</fielddescr>
+			<fieldname>log_dir</fieldname>
+			<description>
+				<![CDATA[
+				Location of the log directory where log files will be archived each rotation interval<br/>
+				Default: /usr/local/logs<br/>
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+			<required/>
+			<default_value>/usr/local/logs</default_value>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+		zeek_validate_zeekctl($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		zeek_zeekctl_resync();
+	</custom_php_resync_config_command>
+</packagegui>

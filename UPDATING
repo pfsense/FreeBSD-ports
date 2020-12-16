@@ -5,6 +5,162 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+<<<<<<< HEAD
+||||||| parent of 05e54ef29b62 (Update security/openvpn 2.5. For 2.3 peers, update your configuration,)
+20201029:
+  AFFECTS: users of www/node
+  AUTHOR: bhughes@FreeBSD.org
+
+  The www/node port has been updated to Node.js v15.0.0, the latest
+  upstream release. A new port, www/node14, has been created for the
+  v14.x LTS branch. Users wanting to stay on v14.x can replace www/node
+  with www/node14 with one of the following commands:
+
+  # pkg install www/node14
+    or
+  # portmaster -o www/node14 www/node
+    or
+  # portupgrade -o www/node14 www/node
+
+20201026:
+  AFFECTS: users of emulators/qemu
+  AUTHOR: bofh@FreeBSD.org
+
+  emulators/qemu has been updated to 5.0.1. Previous 4.2.X branch has
+  been repocopied to emulators/qemu42. If someone wants to stick with 4.2.X
+  branch please use one of the following command:
+
+  # pkg install emulators/qemu42
+    or
+  # portmaster -o emulators/qemu42 emulators/qemu
+    or
+  # portupgrade -o emulators/qemu42 emulators/qemu
+
+20201021:
+  AFFECTS: users of www/py-unit
+  AUTHOR: osa@FreeBSD.org
+
+  The www/py-unit port has been renamed to www/unit-python.
+
+20201012:
+  AFFECTS: Users of mesa-dri with VAAPI or VDPAU options
+  AUTHOR: manu@FreeBSD.org
+
+  The nondefault options VAAPI and VDPAU were removed from the mesa-dri
+  port and two new ports, mesa-gallium-va and mesa-gallium-vdpau now contain
+  the necessary libraries for using VAAPI or VDPAU on AMD hardware.
+
+20201012:
+  AFFECTS: users of devel/libsoup-gnome
+  AUTHOR: bapt@FreeBSD.org
+
+  libsoup-gnome has been merged back into libsoup for people building locally:
+  first delete libsoup-gnome before installing the new libsoup
+
+  $ pkg delete -f libsoup-gnome
+
+20201011:
+  AFFECTS: users of sysutils/rundeck3 who use MySQL as database
+  AUTHOR: daniel.tihanyi@tetragir.com
+
+  Please note that the MySQL JDBC driver is no longer bundled with Rundeck.
+  Please make sure that you migrate to the MariaDB Connector or copy the
+  driver yourself. More instructions:
+
+  https://docs.rundeck.com/docs/upgrading/upgrading-to-rundeck-3.3.4.html
+
+20201006:
+  AFFECTS: users of sysutils/tenshi
+  AUTHOR: 0mp@FreeBSD.org
+
+  The default location for tenshi's configuration file has changed.  It was
+  moved to /usr/local/etc/tenshi/tenshi.conf from /usr/local/etc/tenshi.conf
+  in order to follow upstream defaults.
+
+=======
+20201030:
+  AFFECTS: users of security/openvpn
+  AUTHOR: mandree@FreeBSD.org
+
+  The security/openvpn port has been updated to v2.5.0, which brings a
+  change to the default ciphersuite, which no longer contains BF-CBC.
+
+  Some options have been removed. Also, if you need to support very old (v2.3)
+  and unsupported clients or servers, you will need to adjust the
+  configuration. For details, see:
+  https://github.com/OpenVPN/openvpn/blob/release/2.5/Changes.rst#overview-of-changes-in-25
+
+20201029:
+  AFFECTS: users of www/node
+  AUTHOR: bhughes@FreeBSD.org
+
+  The www/node port has been updated to Node.js v15.0.0, the latest
+  upstream release. A new port, www/node14, has been created for the
+  v14.x LTS branch. Users wanting to stay on v14.x can replace www/node
+  with www/node14 with one of the following commands:
+
+  # pkg install www/node14
+    or
+  # portmaster -o www/node14 www/node
+    or
+  # portupgrade -o www/node14 www/node
+
+20201026:
+  AFFECTS: users of emulators/qemu
+  AUTHOR: bofh@FreeBSD.org
+
+  emulators/qemu has been updated to 5.0.1. Previous 4.2.X branch has
+  been repocopied to emulators/qemu42. If someone wants to stick with 4.2.X
+  branch please use one of the following command:
+
+  # pkg install emulators/qemu42
+    or
+  # portmaster -o emulators/qemu42 emulators/qemu
+    or
+  # portupgrade -o emulators/qemu42 emulators/qemu
+
+20201021:
+  AFFECTS: users of www/py-unit
+  AUTHOR: osa@FreeBSD.org
+
+  The www/py-unit port has been renamed to www/unit-python.
+
+20201012:
+  AFFECTS: Users of mesa-dri with VAAPI or VDPAU options
+  AUTHOR: manu@FreeBSD.org
+
+  The nondefault options VAAPI and VDPAU were removed from the mesa-dri
+  port and two new ports, mesa-gallium-va and mesa-gallium-vdpau now contain
+  the necessary libraries for using VAAPI or VDPAU on AMD hardware.
+
+20201012:
+  AFFECTS: users of devel/libsoup-gnome
+  AUTHOR: bapt@FreeBSD.org
+
+  libsoup-gnome has been merged back into libsoup for people building locally:
+  first delete libsoup-gnome before installing the new libsoup
+
+  $ pkg delete -f libsoup-gnome
+
+20201011:
+  AFFECTS: users of sysutils/rundeck3 who use MySQL as database
+  AUTHOR: daniel.tihanyi@tetragir.com
+
+  Please note that the MySQL JDBC driver is no longer bundled with Rundeck.
+  Please make sure that you migrate to the MariaDB Connector or copy the
+  driver yourself. More instructions:
+
+  https://docs.rundeck.com/docs/upgrading/upgrading-to-rundeck-3.3.4.html
+
+20201006:
+  AFFECTS: users of sysutils/tenshi
+  AUTHOR: 0mp@FreeBSD.org
+
+  The default location for tenshi's configuration file has changed.  It was
+  moved to /usr/local/etc/tenshi/tenshi.conf from /usr/local/etc/tenshi.conf
+  in order to follow upstream defaults.
+
+>>>>>>> 05e54ef29b62 (Update security/openvpn 2.5. For 2.3 peers, update your configuration,)
 20201002:
   AFFECTS: users of mail/fetchmail beginning with 6.4.12_1
   AUTHOR:  mandree@FreeBSD.org

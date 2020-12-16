@@ -2,8 +2,8 @@
  * pfblockerng.js
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2020 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2019 BBcan177@gmail.com
+ * Copyright (c) 2016=2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2020 BBcan177@gmail.com
  * All rights reserved.
  *
  * Javascript and Integration modifications by J. Nieuwenhuizen and J. Van Breedam
@@ -24,7 +24,7 @@
 var pfBlockerNGFailedTimer;
 var pfBlockerNGWidgetTimer;
 
-<!-- update timers (10000 ms = 10 seconds, 60000 ms = 1 minute, 300000 ms = 5 mins) -->
+/* update timers (10000 ms = 10 seconds, 60000 ms = 1 minute, 300000 ms = 5 mins) */
 var pfBlockerNGupdateFailedDelay	= 300000;
 var pfBlockerNGupdateWidgetDelay	= 10000;
 
@@ -50,7 +50,7 @@ function pfBlockerNG_fetch_new_widget_callback(callback_data) {
 				if (row_split[2] == '-') {
 					$('.pfb_' + row_split[0]).html(row_split[1]);
 				} else if (row_split[2] == 'title') {
-					row_split[1] = row_split[1].replace('_BR_', '\n');
+					row_split[1] = row_split[1].replaceAll('_BR_', '\n');
 					$('.pfb_title_' + row_split[0]).attr('title', row_split[1]);
 				} else if (row_split[0] == 'PFBSTATUS') {
 					$('.PFBSTATUS').attr('class', row_split[1]).prop('title', row_split[2]);
@@ -73,6 +73,7 @@ function pfBlockerNG_fetch_new_widget_callback(callback_data) {
 			var tbody = $('#pfBNG-table');
 			tbody.html('<tr>' + new_data_to_add + '</tr>');
 			$('body').popover({ selector: '[data-popover]', trigger: 'click hover', placement: 'right', delay: {show: 50, hide: 400}});
+			$('#pfB_col1, #pfB_col2, #pfB_col3, #pfB_col4').attr("data-sorted", false);
 		}
 	}
 }
@@ -162,7 +163,7 @@ events.push(function() {
 
 	$('[id^=pfblockerngclearicon]').click(function(event) {
 		$('<div></div>').appendTo('body')
-		.html('<div><h6>Select which Packet Counts to clear:</h6></div>')
+		.html('<div><h6>Select which Packet Counts to clear:</h6><small>Note: Selecting \'IP\' will clear all pfSense counters.</small></div>')
 		.dialog({
 			modal: true,
 			autoOpen: true,

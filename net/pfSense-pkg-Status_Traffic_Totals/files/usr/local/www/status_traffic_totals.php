@@ -436,7 +436,7 @@ events.push(function() {
 
 						$.each(raw_json.interfaces[interface_index].traffic.hour, function(hour_index, value) {
 
-							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day, value.id);
+							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day, value.time.hour);
 
 							tx_series.push([date+((0-ServerUTCOffset)*3600000), value.tx]);
 							rx_series.push([date+((0-ServerUTCOffset)*3600000), value.rx]);
@@ -657,10 +657,10 @@ events.push(function() {
 
 							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day);
 
-							localStorage.setItem(value.id+1, date);
+							localStorage.setItem(index, date);
 
-							tx_series.push([value.id+1, value.tx]);
-							rx_series.push([value.id+1, value.rx]);
+							tx_series.push([index, value.tx]);
+							rx_series.push([index, value.rx]);
 
 						});
 

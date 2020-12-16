@@ -183,19 +183,6 @@ display_top_tabs($tab_array, true);
 
 <?php
 
-if ($g['platform'] == "nanobsd") {
-?>
-
-	<div class="panel panel-default">
-		<div class="panel-heading"><h2 class="panel-title"><?=gettext("IP Reputation List Management")?></h2></div>
-		<div class="panel-body text-center">
-				<h4><?=gettext("IP Reputation is not supported on NanoBSD installs"); ?></h4>
-		</div>
-	</div>
-
-<?php
-} else {
-
 $form = new Form;
 $section = new Form_Section('IP Reputation List Management');
 $section->addInput(new Form_Checkbox(
@@ -300,10 +287,6 @@ print $form;
 		</div>
 	</div>
 </form>
-
-<?php
-}
-?>
 
 <div class="infoblock">
 	<div class="alert alert-info clearfix" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

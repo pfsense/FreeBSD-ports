@@ -141,6 +141,7 @@ static zend_function_entry pfSense_functions[] = {
     PHP_FE(pfSense_bridge_member_flags, NULL)
     PHP_FE(pfSense_interface_listget, NULL)
     PHP_FE(pfSense_interface_create, NULL)
+    PHP_FE(pfSense_interface_create2, NULL)
     PHP_FE(pfSense_interface_destroy, NULL)
     PHP_FE(pfSense_interface_flags, NULL)
     PHP_FE(pfSense_interface_capabilities, NULL)
@@ -3072,23 +3073,45 @@ PHP_FUNCTION(pfSense_interface_listget) {
 	freeifaddrs(ifdata);
 }
 
+static int interface_create(char *ifname, unsigned long op, zend_string **str, zval *return_value) {
+	struct ifreq ifr;
+	int err;
+
+	memset(&ifr, 0, sizeof(ifr));
+	strlcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
+
+	*str = NULL;
+	if (ioctl(PFSENSE_G(s), op, &ifr) == -1) {
+		array_init(return_value);
+		add_assoc_string(return_value, "error", "Could not create interface");
+		return (-1);
+	}
+	*str = zend_string_init(ifr.ifr_name, strlen(ifr.ifr_name), 0);
+	return (0);
+}
+
 PHP_FUNCTION(pfSense_interface_create) {
 	char *ifname;
 	size_t ifname_len;
-	struct ifreq ifr;
 	zend_string *str;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname, &ifname_len) == FAILURE) {
 		RETURN_NULL();
 	}
+	if (interface_create(ifname, SIOCIFCREATE, &str, return_value) == 0) {
+		RETURN_STR(str);
+	}
+}
 
-	memset(&ifr, 0, sizeof(ifr));
-	strlcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
-	if (ioctl(PFSENSE_G(s), SIOCIFCREATE2, &ifr) < 0) {
-		array_init(return_value);
-		add_assoc_string(return_value, "error", "Could not create interface");
-	} else {
-		str = zend_string_init(ifr.ifr_name, strlen(ifr.ifr_name), 0);
+PHP_FUNCTION(pfSense_interface_create2) {
+	char *ifname;
+	size_t ifname_len;
+	zend_string *str;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname, &ifname_len) == FAILURE) {
+		RETURN_NULL();
+	}
+	if (interface_create(ifname, SIOCIFCREATE2, &str, return_value) == 0) {
 		RETURN_STR(str);
 	}
 }
@@ -3106,7 +3129,7 @@ PHP_FUNCTION(pfSense_interface_destroy) {
 	strlcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
 	if (ioctl(PFSENSE_G(s), SIOCIFDESTROY, &ifr) < 0) {
 		array_init(return_value);
-		add_assoc_string(return_value, "error", "Could not create interface");
+		add_assoc_string(return_value, "error", "Could not destroy interface");
 	} else
 		RETURN_TRUE;
 }

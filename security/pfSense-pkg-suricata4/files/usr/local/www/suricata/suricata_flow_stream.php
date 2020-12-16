@@ -76,7 +76,7 @@ if (isset($id) && $a_nat[$id]) {
 		if (!is_array($a_nat[$id]['host_os_policy']['item']))
 			$a_nat[$id]['host_os_policy']['item'] = array();
 		$a_nat[$id]['host_os_policy']['item'][] = $default;
-		write_config();
+		write_config("Suricata pkg: saved new default Host_OS_Policy engine.");
 		$host_os_policy_engine_next_id++;
 	}
 	else
@@ -173,7 +173,7 @@ if ($_POST['save_os_policy']) {
 			}
 
 			// Now write the new engine array to conf
-			write_config();
+			write_config("Suricata pkg: saved new Host_OS_Policy engine.");
 			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 			header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -206,7 +206,7 @@ elseif ($_POST['del_os_policy']) {
 	}
 	if (isset($id) && $a_nat[$id]) {
 		$a_nat[$id] = $natent;
-		write_config();
+		write_config("Suricata pkg: deleted a Host_OS_Policy engine.");
 	}
 	header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 	header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
@@ -320,7 +320,7 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		/**************************************************/
 		if (isset($id) && $a_nat[$id]) {
 			$a_nat[$id] = $natent;
-			write_config();
+			write_config("Suricata pkg: saved flow or stream configuration changes.");
 			$rebuild_rules = false;
 			suricata_generate_yaml($natent);
 
@@ -408,7 +408,7 @@ elseif ($_POST['save_import_alias']) {
 			}
 
 			// Write the new engine array to config file
-			write_config();
+			write_config("Suricata pkg: saved Host_OS_Policy engine created from a defined firewall alias.");
 			$importalias = false;
 			$selectalias = false;
 			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );

@@ -275,68 +275,62 @@ if (!is_array($pconfig['wlist_files']['item'])) {
 	$pconfig['wlist_files']['item'] = array();
 }
 
-if ($g['platform'] == "nanobsd") {
-	// Print info box to alert user IP Rep is not supported on NanoBSD installs
-	print_info_box(gettext("The IP REPUTATION feature is not supported on NanoBSD instllations!"), "danger");
-}
-else {
-	$section = new Form_Section('IP Reputation Preprocessor Configuration');
-	$section->addInput(new Form_Checkbox(
-		'reputation_preproc',
-		'Enable IP Reputation',
-		'Use IP Reputation Lists on this interface.  Default is Not Checked.',
-		$pconfig['reputation_preproc'] == 'on' ? true:false,
-		'on'
-	));
-	$section->addInput(new Form_Input(
-		'iprep_memcap',
-		'Memory Cap',
-		'text',
-		$pconfig['iprep_memcap']
-	))->setHelp('Maximum memory in megabytes (MB) supported for IP Reputation Lists. Default is 500.  The minimum value is 1 MB and the maximum is 4095 MB.  Enter an integer value between 1 and 4095.');
-	$group = new Form_Group('Scan Local');
-	$group->add(new Form_Checkbox(
-		'iprep_scan_local',
-		'',
-		'Scan RFC 1918 addresses on this interface.  Default is Not Checked.',
-		$pconfig['iprep_scan_local'] == 'on' ? true:false,
-		'on'
-	))->setHelp('When checked, Snort will inspect addresses in the 10/8, 172.16/12 and 192.168/16 ranges defined in RFC 1918.  If these address ranges are used in your internal network, and this instance is on an internal interface, this option should usually be enabled (checked).');
-	$section->add($group);
-	$section->addInput(new Form_Select(
-		'iprep_nested_ip',
-		'Nested IP',
-		$pconfig['iprep_nested_ip'],
-		array( 'inner' => 'Inner', 'outer' => 'Outer', 'both' => 'Both')
-	))->setHelp('Specify which IP address to use for whitelist/blacklist matching when there is IP encapsulation. Default is Inner.');
-	$section->addInput(new Form_Select(
-		'iprep_priority',
-		'Priority',
-		$pconfig['iprep_priority'],
-		array( 'blacklist' => 'Blacklist', 'whitelist' => 'Whitelist')
-	))->setHelp('Specify which list has priority when source/destination is on blacklist while destination/source is on whitelist. Default is Whitelist.');
-	$section->addInput(new Form_Select(
-		'iprep_white',
-		'Whitelist Meaning',
-		$pconfig['iprep_white'],
-		array( 'unblack' => 'Unblack', 'trust' => 'Trust')
-	))->setHelp('Specify the meaning of whitelist. "Unblack" unblacks blacklisted IP addresses and routes them for further inspection.  "Trust" means the packet bypasses all further Snort detection.  Default is "Unblack".');
+$section = new Form_Section('IP Reputation Preprocessor Configuration');
+$section->addInput(new Form_Checkbox(
+	'reputation_preproc',
+	'Enable IP Reputation',
+	'Use IP Reputation Lists on this interface.  Default is Not Checked.',
+	$pconfig['reputation_preproc'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Input(
+	'iprep_memcap',
+	'Memory Cap',
+	'text',
+	$pconfig['iprep_memcap']
+))->setHelp('Maximum memory in megabytes (MB) supported for IP Reputation Lists. Default is 500.  The minimum value is 1 MB and the maximum is 4095 MB.  Enter an integer value between 1 and 4095.');
+$group = new Form_Group('Scan Local');
+$group->add(new Form_Checkbox(
+	'iprep_scan_local',
+	'',
+	'Scan RFC 1918 addresses on this interface.  Default is Not Checked.',
+	$pconfig['iprep_scan_local'] == 'on' ? true:false,
+	'on'
+))->setHelp('When checked, Snort will inspect addresses in the 10/8, 172.16/12 and 192.168/16 ranges defined in RFC 1918.  If these address ranges are used in your internal network, and this instance is on an internal interface, this option should usually be enabled (checked).');
+$section->add($group);
+$section->addInput(new Form_Select(
+	'iprep_nested_ip',
+	'Nested IP',
+	$pconfig['iprep_nested_ip'],
+	array( 'inner' => 'Inner', 'outer' => 'Outer', 'both' => 'Both')
+))->setHelp('Specify which IP address to use for whitelist/blacklist matching when there is IP encapsulation. Default is Inner.');
+$section->addInput(new Form_Select(
+	'iprep_priority',
+	'Priority',
+	$pconfig['iprep_priority'],
+	array( 'blacklist' => 'Blacklist', 'whitelist' => 'Whitelist')
+))->setHelp('Specify which list has priority when source/destination is on blacklist while destination/source is on whitelist. Default is Whitelist.');
+$section->addInput(new Form_Select(
+	'iprep_white',
+	'Whitelist Meaning',
+	$pconfig['iprep_white'],
+	array( 'unblack' => 'Unblack', 'trust' => 'Trust')
+))->setHelp('Specify the meaning of whitelist. "Unblack" unblacks blacklisted IP addresses and routes them for further inspection.  "Trust" means the packet bypasses all further Snort detection.  Default is "Unblack".');
 
-	$btnsave = new Form_Button(
-		'save',
-		'Save',
-		null,
-		'fa-save'
-	);
-	$btnsave->addClass('btn-primary')->addClass('btn-default');
-	$btnsave->setAttribute('title', gettext('Save configuration and live-reload the running Snort configuration'));
-	$section->addInput(new Form_StaticText(
-		null,
-		$btnsave
-	));
+$btnsave = new Form_Button(
+	'save',
+	'Save',
+	null,
+	'fa-save'
+);
+$btnsave->addClass('btn-primary')->addClass('btn-default');
+$btnsave->setAttribute('title', gettext('Save configuration and live-reload the running Snort configuration'));
+$section->addInput(new Form_StaticText(
+	null,
+	$btnsave
+));
 
-	print($section);
-} 
+print($section);
 
 ?>
 
@@ -447,7 +441,6 @@ else {
 </div>
 </form>
 
-<?php if ($g['platform'] != "nanobsd") : ?>
 <script type="text/javascript">
 //<![CDATA[
 events.push(function(){
@@ -546,7 +539,6 @@ events.push(function(){
 
 //]]>
 </script>
-<?php endif; ?>
 
 <?php include("foot.inc"); ?>
 

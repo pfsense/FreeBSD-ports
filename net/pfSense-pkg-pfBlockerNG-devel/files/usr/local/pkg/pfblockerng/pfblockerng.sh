@@ -1,6 +1,6 @@
 #!/bin/sh
 # pfBlockerNG Shell Function Script - By BBcan177@gmail.com - 04-12-14
-# Copyright (c) 2015-2019 BBcan177@gmail.com
+# Copyright (c) 2015-2020 BBcan177@gmail.com
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License Version 2 as
@@ -89,6 +89,10 @@ dnsbl_remove=/tmp/dnsbl_remove
 dnsbl_remove_zone=/tmp/dnsbl_remove_zone
 dnsbl_remove_data=/tmp/dnsbl_remove_data
 
+dnsbl_python_data=/var/unbound/pfb_py_data.txt
+dnsbl_python_zone=/var/unbound/pfb_py_zone.txt
+dnsbl_python_count=/var/unbound/pfb_py_count
+
 ip_placeholder="$(/usr/local/sbin/read_xml_tag.sh string installedpackages/pfblockerngipsettings/config/ip_placeholder)"
 if [ -z "${ip_placeholder}" ]; then
 	ip_placeholder=127.1.7.7
@@ -96,7 +100,6 @@ fi
 ip_placeholder2="$(echo ${ip_placeholder} | sed 's/\./\\\./g')"
 ip_placeholder3="$(echo ${ip_placeholder} | cut -d '.' -f 1-3)"
 
-PLATFORM="$(cat /etc/platform)"
 USE_MFS_TMPVAR="$(/usr/bin/grep -c use_mfs_tmpvar /cf/conf/config.xml)"
 DISK_NAME="$(/bin/df /var/db/rrd | /usr/bin/tail -1 | /usr/bin/awk '{print $1;}')"
 DISK_TYPE="$(/usr/bin/basename ${DISK_NAME} | /usr/bin/cut -c1-2)"
@@ -118,9 +121,9 @@ exitnow() {
 }
 
 
-# Function to restore IP aliastables and DNSBL database from archive on reboot. ( NanoBSD and Ramdisk installations only )
+# Function to restore IP aliastables and DNSBL database from archive on reboot. ( Ramdisk installations only )
 aliastables() {
-	if [ "${PLATFORM}" != 'pfSense' ] || [ ${USE_MFS_TMPVAR} -gt 0 ] || [ "${DISK_TYPE}" = 'md' ]; then
+	if [ ${USE_MFS_TMPVAR} -gt 0 ] || [ "${DISK_TYPE}" = 'md' ]; then
 		if [ ! -d '/var/unbound' ]; then
 			mkdir '/var/unbound'
 			chown -f unbound:unbound /var/unbound
@@ -376,7 +379,15 @@ dnsbl_scrub() {
 		# Only execute awk command, if master domain file contains data.
 		query_size="$(grep -c ^ ${domainmaster})"
 		if [ "${query_size}" -gt 0 ]; then
-			awk 'FNR==NR{a[$2];next}!($2 in a)' "${domainmaster}" "${pfbdomain}${alias}.bk2" > "${pfbdomain}${alias}.bk"
+
+			# Unbound blocking mode dedup
+			if [ "${dedup}" == '' ]; then
+				awk 'FNR==NR{a[$2];next}!($2 in a)' "${domainmaster}" "${pfbdomain}${alias}.bk2" > "${pfbdomain}${alias}.bk"
+
+			# Unbound python blocking mode dedup
+			else
+				awk -F',' 'FNR==NR{a[$2];next}!($2 in a)' "${domainmaster}" "${pfbdomain}${alias}.bk2" > "${pfbdomain}${alias}.bk"
+			fi
 		fi
 
 		rm -f "${domainmaster}"
@@ -395,11 +406,20 @@ dnsbl_scrub() {
 		countw="$((countf - countx))"
 
 		if [ "${countw}" -gt 0 ]; then
-			data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
-				cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+			if [ "${dedup}" == '' ]; then
+				data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
+					cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+			else
+				data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
+					cut -d ',' -f2 | sort | uniq | tr '\n' '|')"
+			fi
 
 			if [ -z "${data}" ]; then
-				data="$(cut -d '"' -f2 ${pfbdomain}${alias}.bk | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+				if [ "${dedup}" == '' ]; then
+					data="$(cut -d '"' -f2 ${pfbdomain}${alias}.bk | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+				else
+					data="$(cut -d ',' -f2 ${pfbdomain}${alias}.bk | sort | uniq | tr '\n' '|')"
+				fi
 			fi
 
 			echo "  Whitelist: ${data}"
@@ -409,7 +429,7 @@ dnsbl_scrub() {
 		countw=0
 	fi
 
-	# Process Alexa Whitelist
+	# Process TOP1M Whitelist
 	if [ "${alexa_enable}" == "on" ] && [ -s "${pfbalexa}" ] && [ -s "${pfbdomain}${alias}.bk" ]; then
 		countf="$(grep -c ^ ${pfbdomain}${alias}.bk)"
 		grep -vF -f "${pfbalexa}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
@@ -417,11 +437,20 @@ dnsbl_scrub() {
 		counta="$((countf - countx))"
 
 		if [ "${counta}" -gt 0 ]; then
-			data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
-				cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+			if [ "${dedup}" == '' ]; then
+				data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
+					cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+			else
+				data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
+					cut -d ',' -f2 | sort | uniq | tr '\n' '|')"
+			fi
 
 			if [ -z "${data}" ]; then
-				data="$(cut -d '"' -f2 ${pfbdomain}${alias}.bk | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+				if [ "${dedup}" == '' ]; then
+					data="$(cut -d '"' -f2 ${pfbdomain}${alias}.bk | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+				else
+					data="$(cut -d ',' -f2 ${pfbdomain}${alias}.bk | sort | uniq | tr '\n' '|')"
+				fi
 			fi
 
 			echo "  TOP1M Whitelist: ${data}"
@@ -546,6 +575,68 @@ domaintld() {
 	echo ' ----------------------------------------'
 	printf "%-12s %-10s %-10s %-10s\n" " ${countto}" "${counttm}" "${counttr}" "${counttf}"
 	printf ' -----------------------------------------'
+}
+
+
+# Function to process TLD python
+domaintldpy() {
+	# List of Feeds
+	dnsbl_files="${cc}";
+
+	if [ -s "${dnsbl_python_data}.raw" ]; then
+		sort "${dnsbl_python_data}.raw" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_python_data}.raw"
+		countd="$(grep -c ^ ${dnsbl_python_data}.raw)"
+	else
+		countd=0
+	fi
+
+	if [ -s "${dnsbl_python_zone}.raw" ]; then
+		sort "${dnsbl_python_zone}.raw" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_python_zone}.raw"
+		countz="$(grep -c ^ ${dnsbl_python_zone}.raw)"
+	else
+		countz=0
+	fi
+
+	printf "."
+
+	countto="$((countd + countz))"
+
+	if [ -s "${dnsbl_tld_remove}" ]; then
+		sort "${dnsbl_tld_remove}" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_tld_remove}"
+		counttm="$(grep -c '^\.' ${dnsbl_tld_remove})"
+	else
+		counttm=0
+	fi
+
+	printf "."
+
+	# Remove redundant Domains (in data)
+	if [ -s "${dnsbl_tld_remove}" ] && [ -s "${dnsbl_python_data}.raw" ]; then
+		grep -vF -f "${dnsbl_tld_remove}" "${dnsbl_python_data}.raw" > "${dnsbl_python_data}"
+	elif [ -e "${dnsbl_python_data}.raw" ]; then
+		mv "${dnsbl_python_data}.raw" "${dnsbl_python_data}"
+	fi
+
+	printf "."
+
+	# Remove redundant Domains (in zone)
+	if [ -s "${dnsbl_tld_remove}" ] && [ -s "${dnsbl_python_zone}.raw" ]; then
+		grep -vF -f "${dnsbl_tld_remove}" "${dnsbl_python_zone}.raw" > "${dnsbl_python_zone}"
+	elif [ -e "${dnsbl_python_zone}.raw" ]; then
+		mv "${dnsbl_python_zone}.raw" "${dnsbl_python_zone}"
+	fi
+
+	counttf="$(cat ${dnsbl_python_data} ${dnsbl_python_zone} | grep -c ^)"
+	counttr="$((countto - counttf))"
+
+	echo
+	echo ' ----------------------------------------'
+	printf "%-12s %-10s %-10s %-10s\n" ' Original' 'Matches' 'Removed' 'Final'
+	echo ' ----------------------------------------'
+	printf "%-12s %-10s %-10s %-10s\n" " ${countto}" "${counttm}" "${counttr}" "${counttf}"
+	printf ' -----------------------------------------'
+
+	echo "${counttr}" > "${dnsbl_python_count}"
 }
 
 
@@ -1139,6 +1230,9 @@ case "${1}" in
 		;;
 	domaintld)
 		domaintld
+		;;
+	domaintldpy)
+		domaintldpy
 		;;
 	dnsbl_livesync)
 		dnsbl_livesync

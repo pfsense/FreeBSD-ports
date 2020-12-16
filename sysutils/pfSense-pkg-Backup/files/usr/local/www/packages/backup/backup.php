@@ -41,7 +41,7 @@ if ($_GET['act'] == "del") {
 	if ($_GET['type'] == 'backup') {
 		if ($a_backup[$_GET['id']]) {
 			unset($a_backup[$_GET['id']]);
-			write_config();
+			write_config("Backup: Item deleted");
 			header("Location: backup.php");
 			exit;
 		}
@@ -210,7 +210,7 @@ if (count($a_backup) > 0):
 							<a href="backup_edit.php?type=backup&amp;act=del&amp;id=<?=$i?>"><i class="fa fa-trash" alt="delete"></i></a>
 						</td>
 					</tr>
-<?	$i++;
+<?php	$i++;
 	endforeach;
 endif; ?>
 					<tr>

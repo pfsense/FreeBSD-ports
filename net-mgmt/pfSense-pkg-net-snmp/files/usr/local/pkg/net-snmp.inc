@@ -313,7 +313,7 @@ function netsnmp_resync() {
 		$snmpd_config .= "sysDescr {$nhisettings['sysdescr']}\n";
 	} else {
 		$snmpd_config .= "sysDescr {$g['product_name']} {$config['system']['hostname']}.{$config['system']['domain']}" .
-						 " {$g['product_version_string']} {$g['platform']} " . php_uname("s") .
+						 " {$g['product_version_string']} " . php_uname("s") .
 						 " " . php_uname("r") . " " . php_uname("m") . "\n";
 	}
 

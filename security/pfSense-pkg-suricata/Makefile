@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-suricata
 PORTVERSION=	6.0.0
+PORTREVISION=	4
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -12,7 +13,7 @@ COMMENT=	pfSense package suricata
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	suricata>=6.0.0:security/suricata
+RUN_DEPENDS=	suricata==5.0.4:security/suricata
 
 NO_BUILD=	yes
 NO_MTREE=	yes

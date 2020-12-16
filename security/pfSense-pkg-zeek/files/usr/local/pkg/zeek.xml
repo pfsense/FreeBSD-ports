@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+		<![CDATA[
+		/* $Id$ */
+		/* ====================================================================================== */
+		/*
+		zeek.xml
+		* part of pfSense (https://www.pfSense.org/)
+		* Copyright (c) 2018-2020 Prosper Doko
+		* Copyright (c) 2020 Mark Overholser
+		* All rights reserved.
+		*
+		* Licensed under the Apache License, Version 2.0 (the "License");
+		* you may not use this file except in compliance with the License.
+		* You may obtain a copy of the License at
+		*
+		* http://www.apache.org/licenses/LICENSE-2.0
+		*
+		* Unless required by applicable law or agreed to in writing, software
+		* distributed under the License is distributed on an "AS IS" BASIS,
+		* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		* See the License for the specific language governing permissions and
+		* limitations under the License.
+		*/
+		/* ====================================================================================== */
+		]]>
+	</copyright>
+	<description>Zeek NSM Package</description>
+	<name>zeek</name>
+	<version>%%PKGVERSION%%</version>
+	<title>Zeek NSM: General Settings</title>
+	<include_file>/usr/local/pkg/zeek.inc</include_file>
+	<menu>
+		<name>Zeek NSM</name>
+		<tooltiptext>Set up Zeek NSM settings</tooltiptext>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=zeek.xml&amp;id=0</url>
+	</menu>
+	<service>
+		<name>zeek</name>
+		<rcfile>zeek.sh</rcfile>
+		<executable>zeek</executable>
+		<description>Zeek Network Security Monitor service</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=zeek.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>ZeekControl Config</text>
+			<url>/pkg_edit.php?xml=zeek_zeekctl.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Zeek Cluster</text>
+			<url>/pkg_edit.php?xml=zeek_cluster.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Zeek Scripts</text>
+			<url>/pkg.php?xml=zeek_script.xml</url>
+		</tab>
+		<tab>
+			<text>Log Mgmt</text>
+			<url>/pkg_edit.php?xml=zeek_log.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Real Time Inspection</text>
+			<url>/zeek_alerts.php</url>
+		</tab>
+		<tab>
+			<text>XMLRPC Sync</text>
+			<url>/pkg_edit.php?xml=zeek_sync.xml</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Zeek General Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable Zeek NSM</fielddescr>
+			<fieldname>enable_zeek</fieldname>
+			<description>Check to enable the Zeek NSM.</description>
+			<sethelp>
+				<![CDATA[
+				<strong><span class="errmsg">Note:</span> If unchecked, all zeek services will be disabled and stopped.</strong>
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Hostname</fielddescr>
+			<fieldname>hostname</fieldname>
+			<description>Enter the hostname or IP address of the host.</description>
+			<type>input</type>
+			<size>60</size>
+			<default_value>localhost</default_value>
+		</field>
+		<field>
+			<fielddescr>Zeek Interface(s)</fielddescr>
+			<fieldname>active_interface</fieldname>
+			<description>
+				<![CDATA[
+				Interfaces monitored by this Zeek instance.<br/>
+				<strong><span class="errmsg">Hint:</span> In most cases, a WAN interface will be used.</strong>
+				]]>
+			</description>
+			<type>interfaces_selection</type>
+			<multiple/>
+		</field>
+		<field>
+			<fielddescr>Local Network Configuration</fielddescr>
+			<fieldname>local_networks</fieldname>
+			<description>
+				<![CDATA[
+				Enter the subnets (e.g.:"10.0.0.0/8" or "fe80::/64") of the networks which Zeek will consider local to the monitored environment.<br/>
+				<strong>Note: Put each entry on a separate line.</strong>
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>50</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		zeek_install_command();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		zeek_deinstall_command();
+	</custom_php_deinstall_command>
+	<custom_php_validation_command>
+		zeek_validate_general($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		zeek_settings_resync();
+	</custom_php_resync_config_command>
+</packagegui>

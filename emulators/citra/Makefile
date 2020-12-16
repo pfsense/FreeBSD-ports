@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	citra
-PORTVERSION=	s20201014
+PORTVERSION=	s20201124
 PORTREVISION?=	0
 CATEGORIES=	emulators
 
@@ -23,26 +23,26 @@ LIB_DEPENDS=	libboost_serialization.so:devel/boost-libs
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	citra-emu
-GH_TAGNAME=	1bb20571b
+GH_TAGNAME=	a13a23051
 GH_TUPLE=	citra-emu:ext-boost:36603a1:boost/externals/boost \
 		citra-emu:ext-libressl-portable:7d01cb0:libressl/externals/libressl \
 		citra-emu:ext-soundtouch:060181e:soundtouch/externals/soundtouch \
 		MerryMage:dynarmic:r2-37-g8d1699ba:dynarmic/externals/dynarmic \
 		arsenm:sanitizers-cmake:aab6948:sanitizers_cmake/externals/cubeb/cmake/sanitizers-cmake \
 		arun11299:cpp-jwt:v1.1.1:cpp_jwt/externals/cpp-jwt \
-		benhoyt:inih:r42-6-g2023872:inih/externals/inih/inih \
+		benhoyt:inih:r52:inih/externals/inih/inih \
 		catchorg:Catch2:v2.3.0:catch/externals/catch \
 		facebook:zstd:v1.4.4:zstd/externals/zstd \
 		fmtlib:fmt:6.0.0-56-g4b8f8fac:fmt/externals/fmt \
 		herumi:xbyak:v5.95:xbyak/externals/xbyak \
-		kinetiknz:cubeb:cubeb-0.2-1251-ga7e83aa:cubeb/externals/cubeb \
+		kinetiknz:cubeb:cubeb-0.2-1255-g1d66483:cubeb/externals/cubeb \
 		lsalzman:enet:0eaf48e:enet/externals/enet \
 		lvandeve:lodepng:31d9704:lodepng/externals/lodepng/lodepng \
 		neobrain:nihstro:fd69de1:nihstro/externals/nihstro \
 		weidai11:cryptopp:CRYPTOPP_7_0_0-23-gf320e7d9:cryptopp/externals/cryptopp/cryptopp \
 		wwylele:teakra:3e032a7:teakra/externals/teakra
 
-USES=		cmake compiler:c++17-lang iconv localbase:ldflags sdl
+USES=		cmake compiler:c++17-lang localbase:ldflags sdl
 USE_SDL=	sdl2
 CMAKE_ON=	USE_SYSTEM_BOOST
 LDFLAGS+=	-Wl,--as-needed # Qt5Network
@@ -76,8 +76,8 @@ SDL_PLIST_FILES=bin/${PORTNAME} \
 		share/man/man6/${PORTNAME}.6.gz
 
 QT5_USES=	desktop-file-utils qt:5 shared-mime-info
-QT5_USE=	QT=qmake_build,buildtools_build,concurrent_build,core,gui,multimedia,opengl,widgets
-QT5_CMAKE_BOOL=	ENABLE_QT
+QT5_USE=	QT=qmake_build,buildtools_build,linguisttools_build,concurrent_build,core,gui,multimedia,widgets
+QT5_CMAKE_BOOL=	ENABLE_QT ENABLE_QT_TRANSLATION
 QT5_PLIST_FILES=bin/${PORTNAME}-qt \
 		"@comment bin/${PORTNAME}-room" \
 		share/applications/${PORTNAME}.desktop \
