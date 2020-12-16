@@ -1,3 +1,3 @@
-TIMESTAMP = 1595868598
-SHA256 (pfSense-wireguard-tools-a2d3a3dc9e7a0fb540d977932f82bfaa0f33bdcb_GL0.tar.gz) = 9d7e2a13a3347787ed1746dd59c7baa9b486733f48413db11b6a63578b82e80c
-SIZE (pfSense-wireguard-tools-a2d3a3dc9e7a0fb540d977932f82bfaa0f33bdcb_GL0.tar.gz) = 125765
+TIMESTAMP = 1608155064
+SHA256 (pfSense-wireguard-tools-b252b4effb62f0a3a5727cc188cfa4ec7ea7ca59_GL0.tar.gz) = c4eabbb4aa4c1f80d7b3f676baa89bf5444ca7b4b79570dbf1a5553e26c1f608
+SIZE (pfSense-wireguard-tools-b252b4effb62f0a3a5727cc188cfa4ec7ea7ca59_GL0.tar.gz) = 124918
