@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-pfBlockerNG-devel
 PORTVERSION=	3.0.0
-PORTREVISION=	2
+PORTREVISION=	7
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
