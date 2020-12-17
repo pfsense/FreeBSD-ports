@@ -4,11 +4,12 @@ PORTNAME=	rlvm
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	0.14-67
 DISTVERSIONSUFFIX=	-g9350209
-PORTREVISION=	22
+PORTREVISION=	23
 CATEGORIES=	games
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 PATCHFILES=	fb627bad9129.patch:-p1
+PATCHFILES+=	97c808194c56.patch:-p1 # https://github.com/eglaysher/rlvm/pull/89
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	RealLive virtual machine clone
@@ -28,7 +29,7 @@ RUN_DEPENDS=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf:x11-fonts/dejavu
 USE_GITHUB=	yes
 GH_ACCOUNT=	eglaysher
 
-USES=		compiler:c++11-lib gl gnome pkgconfig scons:python2 sdl
+USES=		compiler:c++11-lib gl gnome pkgconfig scons sdl
 USE_GL=		glew glu
 USE_GNOME=	gtk20
 USE_SDL=	image mixer ttf
@@ -69,7 +70,8 @@ post-patch:
 		${WRKSRC}/src/platforms/gtk/gtk_rlvm_instance.cc
 	@${REINPLACE_CMD} -e 's,/usr/share,${LOCALBASE}/share,' \
 		-e 's,truetype/ttf-dejavu,dejavu,' \
-		-e 's,truetype/[^/"]*/,TTF/,' \
+		-e 's,truetype/mona,mona-ttf,' \
+		-e 's,truetype/,,' \
 		${WRKSRC}/src/utilities/find_font_file.cc
 
 do-test-TEST-on:
