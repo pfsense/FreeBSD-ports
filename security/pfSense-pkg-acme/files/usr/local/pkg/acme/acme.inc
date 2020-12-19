@@ -930,8 +930,11 @@ $acme_domain_validation_method['dns_netlify'] = array('name' => "DNS-Netlify",
 	));
 $acme_domain_validation_method['dns_nic'] = array('name' => "DNS-nic.ru",
 	'fields' => array(
-		'NIC_Token' => array('name' => "nic_token", 'columnheader' => "API Token", 'type' => "textbox",
-			'description' => "nic.ru API Token"
+		'NIC_ClientID' => array('name' => "nic_clientid", 'columnheader' => "API ClientID", 'type' => "textbox",
+			'description' => "nic.ru API Client ID"
+		),
+		'NIC_ClientSecret' => array('name' => "nic_clientsecret", 'columnheader' => "API Client Secret", 'type' => "textbox",
+			'description' => "nic.ru API Client Secret"
 		),
 		'NIC_Username' => array('name' => "nic_username", 'columnheader' => "Username", 'type' => "textbox",
 			'description' => "nic.ru Username"
