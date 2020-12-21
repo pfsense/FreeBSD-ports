@@ -268,7 +268,7 @@ function pfb_global() {
 	$pfb['dnsbl_port_ssl']	= $pfb['dnsblconfig']['pfb_dnsport_ssl'];	// Lighttpd web server https port setting
 	$pfb['dnsbl_alexa']	= $pfb['dnsblconfig']['alexa_enable'];		// TOP1M whitelist
 	$pfb['dnsbl_alexatype'] = $pfb['dnsblconfig']['alexa_type'] ?: 'tranco'; // TOP1M type (Tranco, Alexa or Cisco)
-	$pfb['dnsbl_cache']	= $pfb['dnsblconfig']['pfb_cache'];		// DNSBL Option to backup/restore Resolver cache
+	$pfb['dnsbl_res_cache']	= $pfb['dnsblconfig']['pfb_cache'];		// DNSBL Option to backup/restore Resolver cache
 	$pfb['dnsbl_sync']	= $pfb['dnsblconfig']['pfb_dnsbl_sync'];	// Live Updates to Resolver without a Reload
 
 	$pfb['dnsbl_python']	= $pfb['dnsblconfig']['pfb_python'];		// DNSBL Resolver python integration
@@ -2656,7 +2656,7 @@ function pfb_reload_unbound($mode, $cache=FALSE, $pfbpython=FALSE) {
 		$log = "\nReloading Unbound Resolver{$type}";
 		pfb_logger($log, 1);
 
-		if ($cache && $pfb['dnsbl_cache'] == 'on') {
+		if ($cache && $pfb['dnsbl_res_cache'] == 'on') {
 			$cache_dumpfile = '/var/tmp/unbound_cache';
 			exec("{$pfb['chroot_cmd']} dump_cache > {$cache_dumpfile} 2>&1");
 			pfb_logger('.', 1);
@@ -2719,7 +2719,7 @@ function pfb_reload_unbound($mode, $cache=FALSE, $pfbpython=FALSE) {
 			pfb_logger(" completed [ NOW ]", 1);
 
 			// Restore Resolver cache
-			if ($cache && $pfb['dnsbl_cache'] == 'on' && file_exists($cache_dumpfile) && filesize($cache_dumpfile) > 0) {
+			if ($cache && $pfb['dnsbl_res_cache'] == 'on' && file_exists($cache_dumpfile) && filesize($cache_dumpfile) > 0) {
 				exec("{$pfb['chroot_cmd']} load_cache < {$cache_dumpfile} 2>&1");
 				$log = "\nResolver cache restored [ NOW ]";
 				pfb_logger($log, 1);
@@ -2742,6 +2742,7 @@ function pfb_unbound_clear_work_files() {
 	global $pfb;
 
 	foreach (array( $pfb['dnsbl_cache'],
+			"/var/tmp/unbound_cache",
 			"{$pfb['dnsbldir']}/unbound.bk",
 			"{$pfb['dnsbldir']}/unbound.tmp",
 			"{$pfb['dnsbl_file']}.bk",
@@ -5851,6 +5852,7 @@ function pfb_clear_contents() {
 	unlink_if_exists("{$pfb['dnsbl_info']}");
 	unlink_if_exists("{$pfb['dnsbl_resolver']}");
 	unlink_if_exists("{$pfb['dnsbl_cache']}");
+	unlink_if_exists("/var/tmp/unbound_cache");
 	unlink_if_exists("{$pfb['asn_cache']}");
 	rmdir_recursive("{$pfb['origdir']}");
 	rmdir_recursive("{$pfb['matchdir']}");
@@ -8534,7 +8536,7 @@ function sync_package_pfblockerng($cron='') {
 
 		$new_aliases_list[] = 'pfB_DNSBL_Ports';
 		$new_aliases[] = array( 'name'		=> 'pfB_DNSBL_Ports',
-					'address'	=> $pfb['dnsbl_iface'] != 'lo0' ? "{$pfb['dnsbl_port']} {$pfb['dnsbl_port_ssl']}" : '80, 443',
+					'address'	=> $pfb['dnsbl_iface'] != 'lo0' ? "{$pfb['dnsbl_port']} {$pfb['dnsbl_port_ssl']}" : '80 443',
 					'descr'		=> 'pfBlockerNG DNSBL VIP Ports',
 					'type'		=> 'port',
 					'detail'	=> 'DO NOT EDIT THIS PORT||DO NOT EDIT THIS PORT'

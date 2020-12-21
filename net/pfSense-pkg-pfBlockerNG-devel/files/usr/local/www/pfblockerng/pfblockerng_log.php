@@ -206,11 +206,6 @@ if ($pfb['blconfig'] &&
 	}
 }
 
-// Function to escape Log viewer output
-function pfb_htmlspecialchars($line) {
-	return htmlspecialchars($line, ENT_NOQUOTES);
-}
-
 // Function to validate file/path
 function pfb_validate_filepath($validate, $pfb_logtypes) {
 
@@ -222,7 +217,7 @@ function pfb_validate_filepath($validate, $pfb_logtypes) {
 	$path = pathinfo($validate, PATHINFO_DIRNAME) . '/';
 	$file = basename($validate);
 
-	if ($path == '/var/unbound/' && substr($file, 0, 4) != 'pfb_') {
+	if ($path == '/var/unbound/' && substr($file, 0, 4) != 'pfb_' && !file_exists("{$file}")) {
 		return FALSE;
 	}
 
@@ -240,22 +235,53 @@ if ($_REQUEST['ajax']) {
 	clearstatcache();
 	$pfb_logfilename = htmlspecialchars($_REQUEST['file']);
 	if (!pfb_validate_filepath($pfb_logfilename, $pfb_logtypes)) {
-		print ("|0|" . gettext('Invalid filename/path') . ".|");
+		print ("|3|" . gettext('Invalid filename/path') . "|IA==|");
 		exit;
 	}
 
 	// Load log
 	if ($_REQUEST['action'] == 'load') {
 		if (!file_exists($pfb_logfilename)) {
-			print ("|3|" . gettext('Log file is empty or does not exist') . ".|");
-		} else {
-			$data = implode(array_map('pfb_htmlspecialchars', @file($pfb_logfilename)));
-			if ($data === false) {
-				print ("|1|" . gettext('Failed to read log file') . ".|");
-			} else {
-				$data = base64_encode($data);
-				print ("|0|" . $pfb_logfilename . "|" . $data . "|");
+			print ("|0|" . gettext('Log file does not exist') . "|IA==|");
+		}
+		elseif (($fhandle = @fopen("{$pfb_logfilename}", 'r')) !== FALSE) {
+
+			$linecnt = exec("{$pfb['grep']} -c ^ {$pfb_logfilename} 2>&1");
+			$maxcnt = 10000; // Max line limit
+
+			$validate = FALSE;
+			$line_limit = '';
+			if ($linecnt > $maxcnt) {
+				$validate = TRUE;
+				$skipcnt = ($linecnt - $maxcnt);
+				$line_limit = " [ Displaying last {$maxcnt} lines only ]";
 			}
+
+			$data = '';
+			$linecnt = 0;
+			while (($line = @fgets($fhandle)) !== FALSE) {
+				if ($validate && $skipcnt >= $linecnt) {
+					$linecnt++;
+					continue;
+				}
+
+				$data .= htmlspecialchars($line, ENT_NOQUOTES);
+				$linecnt++;
+			}
+
+			if (!empty($data)) {
+				$data = base64_encode($data);
+				print ("|0|File successfully loaded: Total Lines: {$linecnt}{$line_limit}|{$data}|");
+				if (isset($data)) {
+					unset($data);
+				}
+			}
+			else {
+				print ("|0|File successfully loaded: Total Lines: 0|IA==|");
+			}
+		}
+		else {
+			print ("|1|" . gettext('Failed to read log file') . "|IA==|");
 		}
 		exit;
 	}
@@ -331,13 +357,6 @@ $form = new Form(false);
 
 // Build 'Shortcut Links' section
 $section = new Form_Section('Log/File Browser selections');
-$section->addInput(new Form_StaticText(
-	'Links',
-	'<small>'
-	. '<a href="/firewall_aliases.php" target="_blank">Firewall Aliases</a>&emsp;'
-	. '<a href="/firewall_rules.php" target="_blank">Firewall Rules</a>&emsp;'
-	. '<a href="/status_logs_filter.php" target="_blank">Firewall Logs</a></small>'
-));
 
 // Collect main logtypes
 $options = array();
@@ -416,6 +435,12 @@ $section->addInput(new Form_Textarea(
 	''
 ))->removeClass('form-control')->addClass('row-fluid col-sm-12')->setAttribute('rows', '30')->setAttribute('wrap', 'off')
   ->setAttribute('style', 'background:#fafafa; width: 100%');
+
+// Scroll to end of page when loading logs
+$section->addInput(new Form_StaticText(
+	NULL,
+	'<div id="endofpage"></div>'));
+
 $form->add($section);
 
 $form->addGlobal(new Form_Input('download', 'download', 'hidden', ''));
@@ -437,10 +462,8 @@ print($form);
 <script type="text/javascript">	
 //<![CDATA[
 
-var toggle = false;
-
 function loadFile() {
-	$("#fileStatus").html("<?=gettext("Loading file"); ?> ...");
+	$("#fileStatus").html("<?=gettext("Loading file, please wait"); ?> ...");
 	$("#fileStatusBox").show(250);
 	$("#filePathBox").show(250);
 	$("#fbTarget").html("");
@@ -461,26 +484,35 @@ function loadComplete(req) {
 	$("#fileContent").show(250);
 	var values = req.responseText.split("|");
 	values.shift(); values.pop();
+	fileText = values[1];
 
-	if(values.shift() == "0") {
-		var file = values.shift();
-		var fileContent = window.atob(values.join("|"));
-		$("#fileStatus").html("<?=gettext("File successfully loaded"); ?>.");
-		$("#fbTarget").html(file);
+	if (values.shift() == "0") {
+		var fileinfo = values.shift();
+		var fileContent = window.atob(values[0]);
+		$("#fileStatus").html(fileinfo);
+		$("#fbTarget").html($("#logFile").val());
 		$("#fileRefreshBtn").show();
 		$("#fileContent").prop("disabled", false);
 		$("#fileContent").val(fileContent);
 		$("#fileContent").css("overflow", "scroll");
+
+		var endofpage = document.getElementById("endofpage")
+		endofpage.scrollIntoView();
 	} else {
-		$("#fileStatus").html(values[0]);
+		$("#fileStatus").html(fileText);
 		$("#fbTarget").html("");
 		$("#fileRefreshBtn").hide();
 		$("#fileContent").val("");
 		$("#fileContent").prop("disabled", true);
 	}
+	values = null;
 }
 
 events.push(function() {
+
+	// Expand textarea to full width
+	$('label[class="col-sm-2 control-label"]:eq(3)').remove();
+	$('div[class="col-sm-10"]:eq(3)').removeClass('col-sm-10').addClass('col-sm-12');
 
 	// Select log type and clear download variable
 	$('#logtype').on('click', function() {
@@ -490,14 +522,14 @@ events.push(function() {
 		$('form').submit();
 	});
 
+	$('#logFile').prepend("<option value='dummy' selected='selected'>Click to select log file</option>");
 	$('#logFile').on('click', function() {
-		// Toggle used to prevent opening the logfile on first click of dropdown menu
-		if (toggle) {
-			loadFile();
-			// Scroll to the bottom of the page
-			$("html, body").animate({ scrollTop: $(document).height() }, 1000);
-		}
-		toggle = ! toggle
+		$('#logFile').on('change', function(e) {
+			e.stopImmediatePropagation();
+			if ($("#logFile").val() != 'dummy' && $("#logFile").val() != '') {
+				loadFile()
+			}
+		});
 	});
 
 	// Download selected logfile 
