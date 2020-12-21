@@ -472,6 +472,10 @@ if ($pfb['enable'] == 'on' && isset($pconfig['run']) && !empty($pconfig['pfb_for
 
 events.push(function(){
 
+	// Expand textarea to full width
+	$('label[class="col-sm-2 control-label"]:eq(6)').remove();
+	$('div[class="col-sm-10"]:eq(4), div[class="col-sm-10"]:eq(5)').removeClass('col-sm-10').addClass('col-sm-12');
+
 	// Hide/Show 'Force Reload' radios
 	function mode_change(mode) {
 		if (mode == 'on') {
