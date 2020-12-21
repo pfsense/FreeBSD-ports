@@ -2742,7 +2742,7 @@ function pfb_unbound_clear_work_files() {
 	global $pfb;
 
 	foreach (array( $pfb['dnsbl_cache'],
-			$pfb['dnsbl_res_cache'],
+			"/var/tmp/unbound_cache",
 			"{$pfb['dnsbldir']}/unbound.bk",
 			"{$pfb['dnsbldir']}/unbound.tmp",
 			"{$pfb['dnsbl_file']}.bk",
@@ -5852,7 +5852,7 @@ function pfb_clear_contents() {
 	unlink_if_exists("{$pfb['dnsbl_info']}");
 	unlink_if_exists("{$pfb['dnsbl_resolver']}");
 	unlink_if_exists("{$pfb['dnsbl_cache']}");
-	unlink_if_exists("{$pfb['dnsbl_res_cache']}");
+	unlink_if_exists("/var/tmp/unbound_cache");
 	unlink_if_exists("{$pfb['asn_cache']}");
 	rmdir_recursive("{$pfb['origdir']}");
 	rmdir_recursive("{$pfb['matchdir']}");
