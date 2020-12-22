@@ -100,7 +100,7 @@
 			<fieldname>interface</fieldname>
 			<description>Enter the desired participating interface here.</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_interfaces(false, false)]]></source>
+			<source><![CDATA[frr_get_interfaces(false, false, true)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<required/>
