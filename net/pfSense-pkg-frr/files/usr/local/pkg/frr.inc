@@ -26,6 +26,8 @@ require_once("service-utils.inc");
 require_once("util.inc");
 
 define('PKG_FRR_CONFIG_BASE', '/var/etc/frr');
+define('PKG_FRR_LIST_NONE_VALUE', array('name' => 'None', 'value' => 'none'));
+
 /* Since we need to embed this in strings & HERE Docs, copy to a var. Can't embed constants. */
 global $frr_config_base;
 $frr_config_base = PKG_FRR_CONFIG_BASE;
@@ -57,7 +59,7 @@ require_once("frr/inc/frr_ospf6.inc");
 /* Build a list of only CARP VIPs, formatted for use in a selection list */
 function frr_get_carp_list() {
 	$list = array();
-	$list[] = array("name" => "none", "value" => "none");
+	$list[] = PKG_FRR_LIST_NONE_VALUE;
 	$carplist = get_configured_vip_list("all", VIP_CARP);
 	foreach ($carplist as $vid => $vaddr) {
 		$vip = get_configured_vip($vid);
@@ -205,7 +207,7 @@ function frr_get_route_destinations() {
 	global $config;
 	$list = array();
 
-	$list[] = array("name" => "None", "value" => "none");
+	$list[] = PKG_FRR_LIST_NONE_VALUE;
 
 	/* Add non-disabled gateways to the list */
 	$gateways = return_gateways_array();
@@ -260,6 +262,11 @@ function frr_array_seq_sort(&$arr) {
 	}
 }
 
+/* Sort an array by its 'name' and 'seq' value. */
+function frr_array_name_seq_sort(&$arr) {
+	usort($arr, "frr_array_name_seq_compare");
+}
+
 /* Convert a CIDR prefix to wildcard bits */
 function frr_cidr_to_wildcard_bits($cidr) {
 	return long2ip(~gen_subnet_mask_long($cidr));
@@ -297,6 +304,7 @@ function frr_generate_config_rcfile() {
 
 	/* Get FRR daemon modules to append to daemon commands */
 	$frrmodules = array();
+
 	/* SNMP */
 	foreach ($daemons as $config_key => $daemon) {
 		$frrmodules[$daemon[0]] = '';
@@ -746,6 +754,8 @@ function frr_package_config_upgrade() {
 	$ospf6d_conf = &$config['installedpackages']['frrospf6d']['config'][0];
 	init_config_arr(array('installedpackages', 'frrglobalacls', 'config'));
 	$frr_acls_conf = &$config['installedpackages']['frrglobalacls']['config'];
+	init_config_arr(array('installedpackages', 'frrglobalprefixes', 'config'));
+	$frr_prefixes_conf = &$config['installedpackages']['frrglobalprefixes']['config'];
 	init_config_arr(array('installedpackages', 'frrglobalroutemaps', 'config'));
 	$frr_routemap_conf = &$config['installedpackages']['frrglobalroutemaps']['config'];
 	init_config_arr(array('installedpackages', 'frrospfdinterfaces', 'config'));
@@ -888,6 +898,28 @@ function frr_package_config_upgrade() {
 		$need_write = true;
 	}
 
+	/* ACL and Prefix List add IP Type*/
+	foreach ($frr_acls_conf as $aclconf) {
+		if (empty($aclconf['iptype']) && !empty($aclconf['row'])) {
+			if (is_subnetv4($aclconf['row'][0]['source'])) {
+				$aclconf['iptype'] = 'IPv4';
+			} else {
+				$aclconf['iptype'] = 'IPv6';
+			}
+			$need_write = true;
+		}
+	}
+	foreach ($frr_prefixes_conf as $prefixconf) {
+		if (empty($prefixconf['iptype']) && !empty($prefixconf['row'])) {
+			if (is_subnetv4($aclconf['row'][0]['source'])) {
+				$aclconf['iptype'] = 'IPv4';
+			} else {
+				$aclconf['iptype'] = 'IPv6';
+			}
+			$need_write = true;
+		}
+	}
+
 	/* Save Changes */
 	if ($need_write) {
 		update_status("Saving changes ... ");
@@ -896,7 +928,6 @@ function frr_package_config_upgrade() {
 	} else {
 		update_status("Nothing to do.\n");
 	}
-
 }
 
 /* Install-time functions */

@@ -74,6 +74,10 @@
 	</tabs>
 	<adddeleteeditpagefields>
 		<columnitem>
+			<fielddescr>IP Type</fielddescr>
+			<fieldname>iptype</fieldname>
+		</columnitem>
+		<columnitem>
 			<fielddescr>Name</fielddescr>
 			<fieldname>name</fieldname>
 		</columnitem>
@@ -83,6 +87,18 @@
 		</columnitem>
 	</adddeleteeditpagefields>
 	<fields>
+		<field>
+			<fielddescr>IP Type</fielddescr>
+			<fieldname>iptype</fieldname>
+			<description>Prefix list IP version.</description>
+			<type>select</type>
+			<default_value>IPv4</default_value>
+			<options>
+				<option><name>IPv4</name><value>IPv4</value></option>
+				<option><name>IPv6</name><value>IPv6</value></option>
+			</options>
+			<required/>
+		</field>
 		<field>
 			<fielddescr>Name</fielddescr>
 			<fieldname>name</fieldname>
@@ -141,6 +157,11 @@
 					<fieldname>source</fieldname>
 					<type>input</type>
 					<size>25</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Any</fielddescr>
+					<fieldname>any</fieldname>
+					<type>checkbox</type>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Minimum Prefix</fielddescr>
