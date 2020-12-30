@@ -19,14 +19,13 @@
  * limitations under the License.
  */
 
-/* Supported address famililes constant */
-define("FRR_BGP_ADDRESS_FAMILIES", array("ipv4 unicast", "ipv6 unicast"));
+define('PKG_FRR_BGP_ADDRESS_FAMILIES', array('ipv4 unicast', 'ipv6 unicast'));
 
 /* Fetch the list of BGP AS Paths for use in selection lists */
 function frr_get_bgp_aspath_list() {
 	global $config;
 	$list = array();
-	$list[] = array("name" => "None", "value" => "none");
+	$list[] = PKG_FRR_LIST_NONE_VALUE;
 	if (is_array($config['installedpackages']['frrbgpaspaths']['config'])) {
 		foreach ($config['installedpackages']['frrbgpaspaths']['config'] as $asp) {
 			$list[] = array("name" => "{$asp['name']} - {$asp['descr']}", "value" => $asp['name']);
@@ -39,7 +38,7 @@ function frr_get_bgp_aspath_list() {
 function frr_get_bgp_community_list() {
 	global $config, $frr_well_known_communities;
 	$list = array();
-	$list[] = array("name" => "None", "value" => "none");
+	$list[] = PKG_FRR_LIST_NONE_VALUE;
 
 	foreach ($frr_well_known_communities as $wkc) {
 		$tmp["name"] = $wkc;
@@ -208,7 +207,7 @@ function frr_bgp_generate_router() {
 		$bgpconf .= "\n";
 	}
 	/* Address-family options */
-	foreach (FRR_BGP_ADDRESS_FAMILIES as $af) {
+	foreach (PKG_FRR_BGP_ADDRESS_FAMILIES as $af) {
 		$ipfamily = explode(" ", $af)[0];
 		$af_pre = $af . "-pre";
 
@@ -454,7 +453,7 @@ function frr_bgp_generate_neighbors() {
 	foreach ($frr_neighbor_conf as $neighbor) {
 		/* Per-neighbor address family enabled flag */
 		$nei_af_flag = array();
-		foreach (FRR_BGP_ADDRESS_FAMILIES as $af) {
+		foreach (PKG_FRR_BGP_ADDRESS_FAMILIES as $af) {
 			$nei_af_flag[$af] = false;
 		}
 
@@ -620,7 +619,7 @@ function frr_bgp_generate_neighbors() {
 		}
 
 		/* Address family neighbor configuration items */
-		foreach(FRR_BGP_ADDRESS_FAMILIES as $af) {
+		foreach(PKG_FRR_BGP_ADDRESS_FAMILIES as $af) {
 			/* Check if neighbor is enabled for the current address family */
 			if (!($nei_af_flag[$af])) {
 				continue;
@@ -904,7 +903,7 @@ function frr_bgp_generate_address_families() {
 
 	$afconf = "";
 
-	foreach (FRR_BGP_ADDRESS_FAMILIES as $af) {
+	foreach (PKG_FRR_BGP_ADDRESS_FAMILIES as $af) {
 		if (empty($frr_bgp_config_address_family["{$af}-pre"])) {
 			continue;
 		}
@@ -945,7 +944,7 @@ function frr_generate_config_bgp() {
 		$frr_integrated_config['bgpd'] = "";
 
 		$frr_bgp_config_address_family = array();
-		foreach (FRR_BGP_ADDRESS_FAMILIES as $af) {
+		foreach (PKG_FRR_BGP_ADDRESS_FAMILIES as $af) {
 			$frr_bgp_config_address_family[$af] = "";
 			$frr_bgp_config_address_family["{$af}-pre"] = "";
 		}
