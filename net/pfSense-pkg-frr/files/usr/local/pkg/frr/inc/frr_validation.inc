@@ -536,9 +536,9 @@ function frr_ospf6_validate_input() {
 			$input_errors[] = "Default Area must be a valid IP address or integer number.";
 		}
 	} else {
-		if (is_array($config['installedpackages']['frrospfd6interfaces'])) {
+		if (is_array($config['installedpackages']['frrospf6dinterfaces'])) {
 			$interfaces_no_area = array();
-			foreach ($config['installedpackages']['frrospfd6interfaces']['config'] as $interface) {
+			foreach ($config['installedpackages']['frrospf6dinterfaces']['config'] as $interface) {
 				if (strlen($interface['interfacearea']) == 0) { $interfaces_no_area[] = $interface['interface']; }
 			}
 			if (!empty($interfaces_no_area)) {

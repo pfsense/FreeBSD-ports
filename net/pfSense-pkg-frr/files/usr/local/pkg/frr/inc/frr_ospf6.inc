@@ -23,8 +23,10 @@ require_once("frr/inc/frr_ospf.inc");
 
 function frr_generate_config_ospf6_areas() {
 	global $config, $frr_config_base, $frr_auto_config_warning;
+
+	/* Populate FRR OSPF6 Settings */
 	if (is_array($config['installedpackages']['frrospf6d']['config'])) {
-		$ospf6d_conf = &$config['installedpackages']['frrospf6d']['config'][0];
+		$frr_ospf6d_conf = &$config['installedpackages']['frrospf6d']['config'][0];
 	}
 
 	$defined_areas = array();
@@ -136,9 +138,12 @@ function frr_generate_config_ospf6_areas() {
 
 function frr_generate_config_ospf6_interfaces() {
 	global $config, $frr_integrated_config;
+
+	/* Populate FRR OSPF6 Settings */
 	if (is_array($config['installedpackages']['frrospf6d']['config'])) {
-		$ospf6d_conf = &$config['installedpackages']['frrospf6d']['config'][0];
+		$frr_ospf6d_conf = &$config['installedpackages']['frrospf6d']['config'][0];
 	}
+
 	$router_interface_areas = "";
 
 	/* Setup interface entries to define network types, costs, etc. */
