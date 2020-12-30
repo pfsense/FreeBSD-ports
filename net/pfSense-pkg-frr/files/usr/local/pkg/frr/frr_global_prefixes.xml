@@ -157,6 +157,9 @@
 			</rowhelper>
 		</field>
 	</fields>
+	<custom_delete_php_command>
+		frr_generate_config();
+	</custom_delete_php_command>
 	<custom_php_resync_config_command>
 		frr_generate_config();
 	</custom_php_resync_config_command>
