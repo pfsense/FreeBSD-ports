@@ -284,6 +284,25 @@
 				</rowhelperfield>
 			</rowhelper>
 		</field>
+
+		<field>
+			<name>Force Service Restart</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Force Service Restart</fielddescr>
+			<fieldname>service_force_restart</fieldname>
+			<type>button</type>
+			<buttonicon>fa-cog</buttonicon>
+			<buttonclass>btn-danger</buttonclass>
+			<description>
+				<![CDATA[
+				Click to force a service restart.<br />
+				<b>This will cause a reconvergance of any enabled routing protocols!</b>
+				]]>
+			</description>
+			<placeonbottom/>
+		</field>
 	</fields>
 	<custom_php_resync_config_command>
 		frr_generate_config();

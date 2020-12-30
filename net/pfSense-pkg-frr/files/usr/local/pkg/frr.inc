@@ -273,7 +273,7 @@ function frr_cidr_to_wildcard_bits($cidr) {
 }
 
 /* Create the rc.d service control script for FRR */
-function frr_generate_config_rcfile() {
+function frr_generate_config_rcfile($force_restart = false) {
 	global $config, $frr_config_base, $frr_modules;
 	/* If frr is not configured, then stop */
 	if (is_array($config['installedpackages']['frr']['config'])) {
@@ -333,6 +333,11 @@ function frr_generate_config_rcfile() {
 			$frr_daemons_start_cmd .= $frrmodules[$daemon];
 		}
 		$frr_daemons_start_cmd .= "\n";
+	}
+
+	/* If force_restart is set, delete the previously generated start command file to force a service restart */
+	if ($force_restart) {
+		unlink_if_exists("/tmp/frr_start_command_last.txt");
 	}
 
 	/* Check/Record the generated start command so that it can be compared to decide
@@ -442,20 +447,20 @@ EOF;
 			// Assume it's up if the status can't be determined.
 			default:
 				if ($frr_restart_needed) {
-					log_error("FRR Restarting");
+					log_error("FRR: Restarting services.");
 					mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
 				} else {
-					log_error("FRR Reloading Configuration");
+					log_error("FRR: Reloading configuration.");
 					mwexec_bg("/usr/local/sbin/frr-reload");
 				}
 				break;
 		}
 	} else {
 		if ($frr_restart_needed) {
-			log_error("FRR Restarting");
+			log_error("FRR: Restarting services.");
 			mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
 		} else {
-			log_error("FRR Reloading Configuration");
+			log_error("FRR: Reloading configuration.");
 			mwexec_bg("/usr/local/sbin/frr-reload");
 		}
 	}
@@ -599,14 +604,20 @@ function frr_generate_config() {
 	/* BFD Configuration */
 	frr_generate_config_bfd();
 
-	/* Create the rc.d service control script */
-	frr_generate_config_rcfile();
-
 	/* Setup TCP MD5 authentication */
 	frr_setkey();
 
 	/* Integrated configuration */
 	frr_generate_config_integrated();
+
+	/* Create the rc.d service control script and trigger restart/reload */
+	if (!empty($_POST['service_force_restart'])) {
+		log_error("FRR: Service restart forced.");
+		$force_restart = true;
+	} else {
+		$force_restart = false;
+	}
+	frr_generate_config_rcfile($force_restart);
 }
 
 function frr_generate_config_vtysh() {
@@ -625,10 +636,11 @@ function frr_generate_config_vtysh() {
 		return;
 	}
 	if (empty($frr_conf['enable'])) {
-		/* FRR master switch is off. */
+		log_error("FRR vtysh: FRR master switch is off.");
 		return;
 	}
 
+	$vtyshconffile = $frr_auto_config_warning;
 	$vtyshconffile = "service integrated-vtysh-config\n\n";
 	file_put_contents("{$frr_config_base}/vtysh.conf", $vtyshconffile);
 	chown("{$frr_config_base}/vtysh.conf", 'frr');
@@ -682,9 +694,11 @@ function frr_generate_config_integrated() {
 		return;
 	}
 	if (empty($frr_conf['enable'])) {
-		/* FRR master switch is off. */
+		log_error("FRR Integrated: FRR master switch is off.");
 		return;
 	}
+
+	log_error("FRR Integrated: Rebuild configuration.");
 
 	$integratedconffile = $frr_auto_config_warning;
 	$integratedconffile .= "frr defaults traditional\n";
