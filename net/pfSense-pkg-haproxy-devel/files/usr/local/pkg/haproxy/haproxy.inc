@@ -41,6 +41,9 @@ $a_frontendmode['tcp'] = array('name' => "tcp", 'shortname' => "tcp");
 $a_frontendmode['health'] = array('name' => "health", 'shortname' => "health");
 */
 
+global $openssl111;
+$openssl111 = (OPENSSL_VERSION_NUMBER >= 269488128);
+
 global $a_acltypes;
 $a_acltypes = array();
 $a_acltypes["host_starts_with"] = array('name' => 'Host starts with:', 'casesensitive' => true,
@@ -1410,16 +1413,18 @@ function haproxy_getocspurl($filename) {
 }
 
 function haproxy_updateocsp_one($socketupdate, $filename, $name) {
+	global $openssl111;
 	if (file_exists("{$filename}.ocsp")) {
 		// If the .ocsp file exists we want to use ocsp
 		syslog(LOG_NOTICE, "HAProxy Retrieving OCSP for frontend {$name}.. ");
 		$ocsp_url = haproxy_getocspurl($filename);
 		$ocsp_host = parse_url($ocsp_url, PHP_URL_HOST);
+		$ocsp_host_dm = ($openssl111) ? "=" : " ";
 		if (empty($ocsp_url)) {
 			// If cert does not have a ocsp_uri, it cannot be updated..
 			syslog(LOG_ERR, "HAProxy OCSP ERROR Cert does not have a ocsp_uri");
 		} else {
-			$retval = exec("openssl ocsp -issuer {$filename}.issuer -verify_other {$filename}.issuer -cert {$filename} -url {$ocsp_url} -header Host {$ocsp_host} -respout {$filename}.ocsp 2>&1", $output, $err);
+			$retval = exec("openssl ocsp -issuer {$filename}.issuer -verify_other {$filename}.issuer -cert {$filename} -url {$ocsp_url} -header Host{$ocsp_host_dm}{$ocsp_host} -respout {$filename}.ocsp 2>&1", $output, $err);
 			if ($socketupdate) {
 				$ocspresponse = base64_encode(file_get_contents("{$filename}.ocsp"));
 				$r = haproxy_socket_command("set ssl ocsp-response $ocspresponse");
@@ -1460,9 +1465,7 @@ function haproxy_updateocsp($socketupdate = true) {
 }
 
 function haproxy_writeconf($configpath) {
-	global $config, $a_files_cache;
-	global $aliastable;
-	global $a_action, $a_error;
+	global $config, $a_files_cache, $aliastable, $a_action, $a_error, $openssl111;
 	if (!isset($aliastable)) {
 		alias_make_table($config);
 	}
@@ -1519,12 +1522,6 @@ function haproxy_writeconf($configpath) {
 
 		/* ssl-default-bind-ciphersuites and ssl-default-server-ciphersuites is only available
 		 *  when support for OpenSSL was built in and OpenSSL 1.1.1 or later was used to build HAProxy. */
-		if (OPENSSL_VERSION_NUMBER >= 269488128) {
-			$openssl111 = true;
-		} else {
-			$openssl111 = false;
-		}
-
 		if ($a_global['sslcompatibilitymode'] == 'modern') {
 			/* https://ssl-config.mozilla.org/#server=haproxy&version=2.1&config=modern&openssl=1.1.1d&guideline=5.4 */
 			if ($openssl111) {
