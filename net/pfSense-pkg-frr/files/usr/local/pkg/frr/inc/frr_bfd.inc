@@ -139,14 +139,12 @@ function frr_generate_config_bfd() {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
 	} else {
 		/* If FRR is not configured, stop. */
+		frr_package_log("FRR BFDd: No FRR global config data found.");
 		return null;
 	}
 	/* Populate FRR BFD Settings */
 	if (is_array($config['installedpackages']['frrbfd']['config'])) {
 		$frr_bfd_conf = &$config['installedpackages']['frrbfd']['config'][0];
-	} else {
-		/* No BFD config, stop. */
-		return null;
 	}
 
 	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['bfdd']) &&
@@ -155,12 +153,16 @@ function frr_generate_config_bfd() {
 		$frr_integrated_config['bfdd'] = str_replace("\r","",base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['bfdd']));
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
-		if (empty($frr_conf['enable']) || empty($frr_bfd_conf['enable'])) {
-			/* FRR is disabled or BFD Daemon is not enabled. */
-			return;
-		}
 		if (empty($frr_bfd_conf)) {
-			log_error("FRR BFDd: No config data found.");
+			frr_package_log("FRR BFDd: No config data found.");
+			return;
+		} elseif (empty($frr_bfd_conf['enable'])) {
+			/* BFD Daemon is not enabled. */
+			frr_package_log("FRR BFDd: BFD disabled.");
+			return;
+		} elseif (empty($frr_conf['enable'])) {
+			/* FRR is disabled or BFD Daemon is not enabled. */
+			frr_package_log("FRR BFDd: FRR master disabled.");
 			return;
 		}
 

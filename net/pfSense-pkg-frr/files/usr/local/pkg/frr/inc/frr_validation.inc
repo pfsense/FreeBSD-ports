@@ -191,9 +191,6 @@ function frr_global_acls_validate_input() {
 			}
 		}
 		if (preg_match("/^source(\d+)$/", $key, $matches)) {
-			log_error(print_r($key, true));
-			log_error(print_r($_POST, true));
-			log_error(print_r("sourceany{$matches[1]}", true));
 			if (!is_subnet($_POST["source{$matches[1]}"]) && (($_POST["source{$matches[1]}"] != 'any') && !($_POST["sourceany{$matches[1]}"]))) {
 				$input_errors[] = "Source in row {$matches[1]} must be a subnet.";
 			}

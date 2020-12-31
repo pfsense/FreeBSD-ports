@@ -690,7 +690,7 @@ function frr_generate_config_zebra() {
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_conf)) {
-			log_error("FRR Zebra: No config data found.");
+			frr_package_log("FRR Zebra: No config data found.");
 			return;
 		}
 		if (empty($frr_conf['enable'])) {
@@ -725,7 +725,7 @@ function frr_generate_config_zebra() {
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_conf)) {
-			log_error("FRR staticd: No config data found.");
+			frr_package_log("FRR staticd: No config data found.");
 			return;
 		}
 		if (empty($frr_conf['enable'])) {
@@ -745,7 +745,6 @@ function read_frr_running_config() {
 	global $config, $frr_config_base;
 
 	$frrRunningFile = "{$frr_config_base}/frr.conf";
-	log_error($frrRunningFile);
 	if (file_exists($frrRunningFile) && (filesize($frrRunningFile) > 0)) {
 		$moduleRunning = fopen("$frrRunningFile", "r");
 		$config['installedpackages']['frrglobalraw']['config'][0]["frrrunning"] = base64_encode(fread($moduleRunning, filesize($frrRunningFile)));

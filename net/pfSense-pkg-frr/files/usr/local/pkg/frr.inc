@@ -447,20 +447,20 @@ EOF;
 			// Assume it's up if the status can't be determined.
 			default:
 				if ($frr_restart_needed) {
-					log_error("FRR: Restarting services.");
+					frr_package_log("FRR: Restarting services.");
 					mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
 				} else {
-					log_error("FRR: Reloading configuration.");
+					frr_package_log("FRR: Reloading configuration.");
 					mwexec_bg("/usr/local/sbin/frr-reload");
 				}
 				break;
 		}
 	} else {
 		if ($frr_restart_needed) {
-			log_error("FRR: Restarting services.");
+			frr_package_log("FRR: Restarting services.");
 			mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
 		} else {
-			log_error("FRR: Reloading configuration.");
+			frr_package_log("FRR: Reloading configuration.");
 			mwexec_bg("/usr/local/sbin/frr-reload");
 		}
 	}
@@ -571,6 +571,24 @@ function frr_setkey() {
 	}
 }
 
+/* Write a message to the syslog conditionally on package log level setting*/
+function frr_package_log($string, $priority = LOG_INFO) {
+	global $config;
+
+	/* Populate FRR Global Settings */
+	if (is_array($config['installedpackages']['frr']['config'])) {
+		$frr_conf = &$config['installedpackages']['frr']['config'][0];
+	}
+
+	/* Check if extended package logging is enabled */
+	if (is_null($frr_conf['pkgloglevel']) || ($frr_conf['pkgloglevel'] < 1)) {
+		// Extended logging is disabled
+		return;
+	}
+
+	syslog($priority, "FRR Package: {$string}");
+}
+
 /* Main function to generate all of the configuration files and make general
  * preparations */
 function frr_generate_config() {
@@ -612,7 +630,7 @@ function frr_generate_config() {
 
 	/* Create the rc.d service control script and trigger restart/reload */
 	if (!empty($_POST['service_force_restart'])) {
-		log_error("FRR: Service restart forced.");
+		frr_package_log("FRR: Service restart forced.");
 		$force_restart = true;
 	} else {
 		$force_restart = false;
@@ -632,11 +650,11 @@ function frr_generate_config_vtysh() {
 
 	/* If there is no raw configuration and no GUI configuration, stop. */
 	if (empty($frr_conf)) {
-		log_error("FRR vtysh: No config data found.");
+		frr_package_log("FRR vtysh: No config data found.");
 		return;
 	}
 	if (empty($frr_conf['enable'])) {
-		log_error("FRR vtysh: FRR master switch is off.");
+		frr_package_log("FRR vtysh: FRR master switch is off.");
 		return;
 	}
 
@@ -690,15 +708,15 @@ function frr_generate_config_integrated() {
 
 	/* If there is no raw configuration and no GUI configuration, stop. */
 	if (empty($frr_conf)) {
-		log_error("FRR Integrated: No config data found.");
+		frr_package_log("FRR Integrated: No config data found.");
 		return;
 	}
 	if (empty($frr_conf['enable'])) {
-		log_error("FRR Integrated: FRR master switch is off.");
+		frr_package_log("FRR Integrated: FRR master switch is off.");
 		return;
 	}
 
-	log_error("FRR Integrated: Rebuild configuration.");
+	frr_package_log("FRR Integrated: Rebuild configuration.");
 
 	$integratedconffile = $frr_auto_config_warning;
 	$integratedconffile .= "frr defaults traditional\n";
