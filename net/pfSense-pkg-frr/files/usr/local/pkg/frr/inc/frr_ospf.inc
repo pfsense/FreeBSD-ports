@@ -254,7 +254,7 @@ function frr_generate_config_ospf_neighbors() {
 
 	init_config_arr(array('installedpackages', 'frrospfdneighbors', 'config'));
 	foreach ($config['installedpackages']['frrospfdneighbors']['config'] as $conf) {
-		$conffile .= "  neighbor {$conf['neighbor']}" ;
+		$conffile .= " neighbor {$conf['neighbor']}" ;
 		if (!empty($conf['priority'])) {
 			$conffile .= " priority {$conf['priority']}";
 		}
@@ -411,6 +411,9 @@ function frr_generate_config_ospf() {
 
 		/* Area Settings */
 		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_areas();
+
+		/* Neighbor Settings */
+		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_neighbors();
 
 		/* Interface Settings */
 		$passive_interfaces = array();
