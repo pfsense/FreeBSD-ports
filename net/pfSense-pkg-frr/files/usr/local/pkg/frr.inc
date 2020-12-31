@@ -273,7 +273,7 @@ function frr_cidr_to_wildcard_bits($cidr) {
 }
 
 /* Create the rc.d service control script for FRR */
-function frr_generate_config_rcfile($force_restart = false) {
+function frr_generate_config_rcfile() {
 	global $config, $frr_config_base, $frr_modules;
 	/* If frr is not configured, then stop */
 	if (is_array($config['installedpackages']['frr']['config'])) {
@@ -333,11 +333,6 @@ function frr_generate_config_rcfile($force_restart = false) {
 			$frr_daemons_start_cmd .= $frrmodules[$daemon];
 		}
 		$frr_daemons_start_cmd .= "\n";
-	}
-
-	/* If force_restart is set, delete the previously generated start command file to force a service restart */
-	if ($force_restart) {
-		unlink_if_exists("/tmp/frr_start_command_last.txt");
 	}
 
 	/* Check/Record the generated start command so that it can be compared to decide
@@ -432,37 +427,53 @@ EOF;
 		}
 	}
 
-	/* Start/Restart FRR, if a CARP VIP is set, check its status and act
-	 * appropriately. */
-	if (isset($frr_conf['carpstatusvid']) && $frr_conf['carpstatusvid'] != "none") {
-		$status = get_carp_interface_status($frr_conf['carpstatusvid']);
-		switch (strtoupper($status)) {
-			// Stop the service if the VIP is in BACKUP or INIT state.
-			case "BACKUP":
-			case "INIT":
-				mwexec_bg("/usr/local/etc/rc.d/frr.sh stop");
-				break;
-			// Start the service if the VIP is MASTER state.
-			case "MASTER":
-			// Assume it's up if the status can't be determined.
-			default:
-				if ($frr_restart_needed) {
-					log_error("FRR: Restarting services.");
-					mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
-				} else {
-					log_error("FRR: Reloading configuration.");
-					mwexec_bg("/usr/local/sbin/frr-reload");
-				}
-				break;
+	return $frr_restart_needed;
+}
+
+function frr_service_action($restart_needed) {
+	global $config, $frr_config_base, $frr_modules;
+	/* If frr is not configured, then stop */
+	if (is_array($config['installedpackages']['frr']['config'])) {
+		$frr_conf = &$config['installedpackages']['frr']['config'][0];
+	} else {
+		return null;
+	}
+
+	if ($frr_conf['enable']) {
+		/* Start/Restart FRR, if a CARP VIP is set, check its status and appropriately. */
+		if (isset($frr_conf['carpstatusvid']) && $frr_conf['carpstatusvid'] != "none") {
+			$status = get_carp_interface_status($frr_conf['carpstatusvid']);
+			switch (strtoupper($status)) {
+				// Stop the service if the VIP is in BACKUP or INIT state.
+				case "BACKUP":
+				case "INIT":
+					mwexec_bg("/usr/local/etc/rc.d/frr.sh stop");
+					break;
+				// Start the service if the VIP is MASTER state.
+				case "MASTER":
+				// Assume it's up if the status can't be determined.
+				default:
+					if ($restart_needed) {
+						log_error("FRR: Restarting services.");
+						mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
+					} else {
+						log_error("FRR: Reloading configuration.");
+						mwexec_bg("/usr/local/sbin/frr-reload");
+					}
+					break;
+			}
+		} else {
+			if ($restart_needed) {
+				log_error("FRR: Restarting services.");
+				mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
+			} else {
+				log_error("FRR: Reloading configuration.");
+				mwexec_bg("/usr/local/sbin/frr-reload");
+			}
 		}
 	} else {
-		if ($frr_restart_needed) {
-			log_error("FRR: Restarting services.");
-			mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
-		} else {
-			log_error("FRR: Reloading configuration.");
-			mwexec_bg("/usr/local/sbin/frr-reload");
-		}
+		log_error("FRR: Stopping services.");
+		mwexec_bg("/usr/local/etc/rc.d/frr.sh stop");
 	}
 }
 
@@ -613,11 +624,11 @@ function frr_generate_config() {
 	/* Create the rc.d service control script and trigger restart/reload */
 	if (!empty($_POST['service_force_restart'])) {
 		log_error("FRR: Service restart forced.");
-		$force_restart = true;
-	} else {
-		$force_restart = false;
+		/* If force_restart is set, delete the previously generated start command file to force a service restart */
+		unlink_if_exists("/tmp/frr_start_command_last.txt");
 	}
-	frr_generate_config_rcfile($force_restart);
+	$restart_needed = frr_generate_config_rcfile();
+	frr_service_action($restart_needed);
 }
 
 function frr_generate_config_vtysh() {
