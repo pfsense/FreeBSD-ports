@@ -135,6 +135,6 @@
 		sync_package_filer();
 	</custom_delete_php_command> 
 	<custom_php_resync_config_command>
-		sync_package_filer();
+		sync_package_filer($_POST);
 	</custom_php_resync_config_command>
 </packagegui>
