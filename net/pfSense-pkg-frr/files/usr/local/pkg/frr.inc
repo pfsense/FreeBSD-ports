@@ -754,6 +754,11 @@ function frr_generate_config_integrated() {
 	$integratedconffile .= "!\n";
 
 	if (!empty($frr_conf['routerid'])) {
+		if (is_ipaddrv4($frr_conf['routerid'])) {
+			$integratedconffile .= "ip ";
+		} elseif (is_ipaddrv6($frr_conf['routerid'])) {
+			$integratedconffile .= "ipv6 ";
+		}
 		$integratedconffile .= "router-id {$frr_conf['routerid']}\n";
 		$integratedconffile .= "!\n";
 	}
