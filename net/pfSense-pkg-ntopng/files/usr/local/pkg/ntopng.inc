@@ -155,7 +155,11 @@ function ntopng_sync_package() {
 	/* Create rc script */
 	$stop = <<<EOD
 # Kill ntopng and redis
-	while [ "$(pgrep ntopng)" != "" ]; do /usr/bin/killall ntopng && sleep 3; done; /usr/bin/killall redis-cli redis-server
+	while pgrep -q ntopng; do
+		/usr/bin/killall ntopng
+		sleep 3
+	done
+	/usr/bin/killall redis-cli redis-server
 EOD;
 
 	$start = <<<EOD
