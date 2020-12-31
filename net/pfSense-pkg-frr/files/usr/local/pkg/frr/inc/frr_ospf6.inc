@@ -23,8 +23,8 @@ require_once("frr/inc/frr_ospf.inc");
 
 function frr_generate_config_ospf6_areas() {
 	global $config, $frr_config_base, $frr_auto_config_warning;
-	if (is_array($config['installedpackages']['frrospfd6']['config'])) {
-		$ospfd6_conf = &$config['installedpackages']['frrospfd6']['config'][0];
+	if (is_array($config['installedpackages']['frrospf6d']['config'])) {
+		$ospf6d_conf = &$config['installedpackages']['frrospf6d']['config'][0];
 	}
 
 	$defined_areas = array();
@@ -48,11 +48,11 @@ function frr_generate_config_ospf6_areas() {
 	}
 
 	/* Automatic Area: Default */
-	if (!isset($auto_areas[$ospfd6_conf['defaultarea']]) || !is_array($auto_areas[$ospfd6_conf['defaultarea']])) {
-		$auto_areas[$ospfd6_conf['defaultarea']] = array();
+	if (!isset($auto_areas[$ospf6d_conf['defaultarea']]) || !is_array($auto_areas[$ospf6d_conf['defaultarea']])) {
+		$auto_areas[$ospf6d_conf['defaultarea']] = array();
 	}
-	$auto_areas[$ospfd6_conf['defaultarea']]['area'] = $ospfd6_conf['defaultarea'];
-	$auto_areas[$ospfd6_conf['defaultarea']]['type'] = $ospfd6_conf['defaultareatype'];
+	$auto_areas[$ospf6d_conf['defaultarea']]['area'] = $ospf6d_conf['defaultarea'];
+	$auto_areas[$ospf6d_conf['defaultarea']]['type'] = $ospf6d_conf['defaultareatype'];
 
 	/* Copy automatic areas over only if they do not have custom settings */
 	foreach ($auto_areas as $aa) {
@@ -136,7 +136,9 @@ function frr_generate_config_ospf6_areas() {
 
 function frr_generate_config_ospf6_interfaces() {
 	global $config, $frr_integrated_config;
-
+	if (is_array($config['installedpackages']['frrospf6d']['config'])) {
+		$ospf6d_conf = &$config['installedpackages']['frrospf6d']['config'][0];
+	}
 	$router_interface_areas = "";
 
 	/* Setup interface entries to define network types, costs, etc. */
