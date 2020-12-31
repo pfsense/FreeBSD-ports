@@ -921,6 +921,7 @@ function frr_generate_config_bgp() {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
 	} else {
 		/* If FRR is not configured, stop. */
+		log_error("FRR BGPd: No FRR global config data found.");
 		return null;
 	}
 	/* Populate FRR BGP Settings */
@@ -937,10 +938,16 @@ function frr_generate_config_bgp() {
 		if (empty($frr_bgp_conf)) {
 			log_error("FRR BGPd: No config data found.");
 			return;
-		} elseif (empty($frr_conf['enable']) || empty($frr_bgp_conf['enable'])) {
-			/* FRR is disabled or BGP is not enabled. */
+		} elseif (empty($frr_bgp_conf['enable'])) {
+			/* BGP daemon is not enabled. */
+			log_error("FRR BGPd: BGP disabled.");
+			return;
+		} elseif (empty($frr_conf['enable'])) {
+			/* FRR is disabled or BFD Daemon is not enabled. */
+			log_error("FRR BGPd: FRR master disabled.");
 			return;
 		}
+
 		$frr_integrated_config['bgpd'] = "";
 
 		$frr_bgp_config_address_family = array();
