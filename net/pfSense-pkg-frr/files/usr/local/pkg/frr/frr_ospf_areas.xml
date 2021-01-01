@@ -136,7 +136,6 @@
 				<option><name>Disable</name><value>disable</value></option>
 			</options>
 		</field>
-
 		<field>
 			<name>Authentication</name>
 			<type>listtopic</type>
@@ -160,7 +159,6 @@
 				<option><value>simple</value><name>Simple Password</name></option>
 			</options>
 		</field>
-
 		<field>
 			<name>Route Summarization</name>
 			<type>listtopic</type>
@@ -207,7 +205,6 @@
 				</rowhelperfield>
 			</rowhelper>
 		</field>
-
 		<field>
 			<name>ABR Summary Route Filtering</name>
 			<type>listtopic</type>

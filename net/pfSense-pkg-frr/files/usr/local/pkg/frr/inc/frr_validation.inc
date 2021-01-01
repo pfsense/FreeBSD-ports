@@ -656,7 +656,7 @@ function frr_bfd_peer_validate_input() {
 			$input_errors[] = "Detect multiplier must be a number.";
 		}
 		/*detect-multiplier (2-255)*/
-		frr_validate_intrange_input("Detect multiplier", $_POST['receiveinterval'], 2, 255);
+		frr_validate_intrange_input("Detect multiplier", $_POST['detectmultiplier'], 2, 255);
 	}
 
 	if (!empty($_POST['receiveinterval'])) {
@@ -681,5 +681,57 @@ function frr_bfd_peer_validate_input() {
 		}
 		/*echo-interval (10-60000)*/
 		frr_validate_intrange_input("Echo interval", $_POST['echointerval'], 10, 60000);
+	}
+
+	if (!empty($_POST['minimumttl'])) {
+		if (!is_numeric($_POST['minimumttl'])) {
+			$input_errors[] = "Minimum TTL must be a number.";
+		}
+		/*minimum-ttl (1-254)*/
+		frr_validate_intrange_input("Minimum TTL", $_POST['minimumttl'], 1, 254);
+	}
+}
+
+function frr_bfd_profile_validate_input() {
+	global $config, $input_errors;
+
+	if (!empty($_POST['detectmultiplier'])) {
+		if (!is_numeric($_POST['detectmultiplier'])) {
+			$input_errors[] = "Detect multiplier must be a number.";
+		}
+		/*detect-multiplier (2-255)*/
+		frr_validate_intrange_input("Detect multiplier", $_POST['detectmultiplier'], 2, 255);
+	}
+
+	if (!empty($_POST['receiveinterval'])) {
+		if (!is_numeric($_POST['receiveinterval'])) {
+			$input_errors[] = "Receive interval must be a number.";
+		}
+		/*receive-interval (10-60000)*/
+		frr_validate_intrange_input("Receive interval", $_POST['receiveinterval'], 10, 60000);
+	}
+
+	if (!empty($_POST['transmitinterval'])) {
+		if (!is_numeric($_POST['transmitinterval'])) {
+			$input_errors[] = "Transmit interval must be a number.";
+		}
+		/*transmit-interval (10-60000)*/
+		frr_validate_intrange_input("Transmit interval", $_POST['transmitinterval'], 10, 60000);
+	}
+
+	if (!empty($_POST['echointerval'])) {
+		if (!is_numeric($_POST['echointerval'])) {
+			$input_errors[] = "Echo interval must be a number.";
+		}
+		/*echo-interval (10-60000)*/
+		frr_validate_intrange_input("Echo interval", $_POST['echointerval'], 10, 60000);
+	}
+
+	if (!empty($_POST['minimumttl'])) {
+		if (!is_numeric($_POST['minimumttl'])) {
+			$input_errors[] = "Minimum TTL must be a number.";
+		}
+		/*minimum-ttl (1-254)*/
+		frr_validate_intrange_input("Minimum TTL", $_POST['minimumttl'], 1, 254);
 	}
 }

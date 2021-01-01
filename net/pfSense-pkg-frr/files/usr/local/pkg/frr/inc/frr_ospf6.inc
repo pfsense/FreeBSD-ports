@@ -22,7 +22,7 @@
 require_once("frr/inc/frr_ospf.inc");
 
 function frr_generate_config_ospf6_areas() {
-	global $config, $frr_config_base, $frr_auto_config_warning;
+	global $config, $frr_auto_config_warning;
 
 	/* Populate FRR OSPF6 Settings */
 	if (is_array($config['installedpackages']['frrospf6d']['config'])) {
@@ -201,7 +201,7 @@ function frr_generate_config_ospf6_interfaces() {
 }
 
 function frr_generate_config_ospf6() {
-	global $config, $frr_config_base, $frr_integrated_config;
+	global $config, $frr_integrated_config;
 
 	/* Populate FRR Global Settings */
 	if (is_array($config['installedpackages']['frr']['config'])) {
@@ -347,6 +347,7 @@ function frr_generate_config_ospf6() {
 		$frr_integrated_config['ospf6d'] .= frr_generate_config_ospf6_areas();
 
 		/* Interface Settings */
+		/* Interface settings do not return a string as they are an accumulation of all protocols */
 		frr_generate_config_ospf6_interfaces();
 	}
 }

@@ -212,7 +212,6 @@
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
-
 		<field>
 			<name>Logging</name>
 			<type>listtopic</type>
@@ -244,7 +243,6 @@
 			<description>Enable agentx support for accessing FRR Zebra data via SNMP with the net-snmp package.</description>
 			<type>checkbox</type>
 		</field>
-
 		<field>
 			<name>Route Handling</name>
 			<type>listtopic</type>
@@ -300,7 +298,6 @@
 				</rowhelperfield>
 			</rowhelper>
 		</field>
-
 		<field>
 			<name>Force Service Restart</name>
 			<type>listtopic</type>

@@ -27,7 +27,7 @@ function frr_generate_config_ospf_areas() {
 
 	$defined_areas = array();
 	$auto_areas = array();
-	$conffile = "";
+	$aconf = "";
 
 	/* Automatic Area: Default */
 	if (!isset($auto_areas[$frr_ospfd_conf['defaultarea']]) || !is_array($auto_areas[$frr_ospfd_conf['defaultarea']])) {
@@ -100,26 +100,26 @@ function frr_generate_config_ospf_areas() {
 				$areatype = "";
 		}
 		if (!empty($areatype)) {
-			$conffile .= " area {$conf['area']} {$areatype}\n";
+			$aconf .= " area {$conf['area']} {$areatype}\n";
 		}
 
 		/* defaultcost */
 		if (!empty($conf['defaultcost'])) {
-			$conffile .= " area {$conf['area']} default-cost {$conf['defaultcost']}\n";
+			$aconf .= " area {$conf['area']} default-cost {$conf['defaultcost']}\n";
 		}
 
 		/* shortcut */
 		if (!empty($conf['shortcut'])) {
-			$conffile .= " area {$conf['area']} shortcut {$conf['shortcut']}\n";
+			$aconf .= " area {$conf['area']} shortcut {$conf['shortcut']}\n";
 		}
 
 		/* authentication */
 		switch ($conf['authtype']) {
 			case "digest":
-				$conffile .= " area {$conf['area']} authentication message-digest\n";
+				$aconf .= " area {$conf['area']} authentication message-digest\n";
 				break;
 			case "simple":
-				$conffile .= " area {$conf['area']} authentication\n";
+				$aconf .= " area {$conf['area']} authentication\n";
 				break;
 			default:
 				break;
@@ -131,40 +131,40 @@ function frr_generate_config_ospf_areas() {
 				if (empty($range['rangeprefix'])) {
 					continue;
 				}
-				$conffile .= " area {$conf['area']} range {$range['rangeprefix']}";
+				$aconf .= " area {$conf['area']} range {$range['rangeprefix']}";
 				if (!empty($range['rangenotadvertise'])) {
-					$conffile .= " not-advertise";
+					$aconf .= " not-advertise";
 				} elseif (!empty($range['rangecost'])) {
-					$conffile .= " cost {$range['rangecost']}";
+					$aconf .= " cost {$range['rangecost']}";
 				} elseif (!empty($range['subprefix'])) {
-					$conffile .= " substitute {$range['subprefix']}";
+					$aconf .= " substitute {$range['subprefix']}";
 				}
-				$conffile .= "\n";
+				$aconf .= "\n";
 			}
 		}
 
 		/* exportlist */
 		if (!empty($conf['exportlist']) && ($conf['exportlist'] != "none")) {
-			$conffile .= " area {$conf['area']} export-list {$conf['exportlist']}\n";
+			$aconf .= " area {$conf['area']} export-list {$conf['exportlist']}\n";
 		}
 
 		/* filterlist_out */
 		if (!empty($conf['filterlist_out']) && ($conf['filterlist_out'] != "none")) {
-			$conffile .= " area {$conf['area']} filter-list prefix {$conf['filterlist_out']} out\n";
+			$aconf .= " area {$conf['area']} filter-list prefix {$conf['filterlist_out']} out\n";
 		}
 
 		/* filterlist_in */
 		if (!empty($conf['filterlist_in']) && ($conf['filterlist_in'] != "none")) {
-			$conffile .= " area {$conf['area']} filter-list prefix {$conf['filterlist_in']} in\n";
+			$aconf .= " area {$conf['area']} filter-list prefix {$conf['filterlist_in']} in\n";
 		}
 
 		/* importlist */
 		if (!empty($conf['importlist']) && ($conf['importlist'] != "none")) {
-			$conffile .= " area {$conf['area']} import-list {$conf['importlist']}\n";
+			$aconf .= " area {$conf['area']} import-list {$conf['importlist']}\n";
 		}
 	}
 
-	return $conffile;
+	return $aconf;
 }
 
 function frr_generate_config_ospf_interfaces() {
@@ -250,20 +250,20 @@ function frr_generate_config_ospf_interfaces() {
 
 function frr_generate_config_ospf_neighbors() {
 	global $config;
-	$conffile = "";
+	$neiconf= "";
 
 	init_config_arr(array('installedpackages', 'frrospfdneighbors', 'config'));
 	foreach ($config['installedpackages']['frrospfdneighbors']['config'] as $conf) {
-		$conffile .= " neighbor {$conf['neighbor']}" ;
+		$neiconf .= " neighbor {$conf['neighbor']}" ;
 		if (!empty($conf['priority'])) {
-			$conffile .= " priority {$conf['priority']}";
+			$neiconf .= " priority {$conf['priority']}";
 		}
 		if (!empty($conf['pollinginterval'])) {
-			$conffile .= " poll-interval {$conf['pollinginterval']}";
+			$neiconf .= " poll-interval {$conf['pollinginterval']}";
 		}
-		$conffile .= "\n" ;
+		$neiconf .= "\n" ;
 	}
-	return $conffile;
+	return $neiconf;
 }
 
 function frr_generate_config_ospf_redistribute($frr_ospfd_conf, $variablename, $sourcename) {
@@ -422,6 +422,7 @@ function frr_generate_config_ospf() {
 		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_neighbors();
 
 		/* Interface Settings */
+		/* Interface settings do not return a string as they are an accumulation of all protocols */
 		$passive_interfaces = array();
 		global $passive_interfaces;
 		frr_generate_config_ospf_interfaces();

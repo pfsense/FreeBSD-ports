@@ -188,6 +188,15 @@ function frr_bgp_generate_router() {
 		$bgpconf .= " bgp graceful-shutdown\n";
 	}
 
+	/* Global neighbors administrative shutdown */
+	if (!empty($frr_bgp_conf['shutdown'])) {
+		$bgpconf .= " bgp shutdown";
+		if (!empty($frr_bgp_conf['shutdownmessage'])) {
+			$bgpconf .= " message \"{$frr_bgp_conf['shutdownmessage']}\"";
+		}
+		$bgpconf .= "\n";
+	}
+
 	/* Timers */
 	/* Set keep-alive and holdtime, both MUST be set together */
 	if ((frr_validate_intrange($frr_bgp_conf['timers_keepalive'], 0, 65535)) &&
@@ -495,8 +504,23 @@ function frr_bgp_generate_neighbors() {
 			$nconf .= " neighbor {$neighbor['peer']} description {$neighbor['descr']}\n";
 		}
 
+		/* Neighbor administrative/automatic shutdown */
 		if (!empty($neighbor['shutdown'])) {
-			$nconf .= " neighbor {$neighbor['peer']} shutdown\n";
+			$nconf .= " neighbor {$neighbor['peer']} shutdown";
+			if (!empty($neighbor['shutdownmessage'])) {
+				$nconf .= " message \"{$neighbor['shutdownmessage']}\"";
+			}
+			$nconf .= "\n";
+		}
+
+		if (!empty($neighbor['shutdownautortt'])) {
+			$nconf .= " neighbor {$neighbor['peer']} shutdown rtt {$neighbor['shutdownautortt']}";
+			if (!empty($neighbor['shutdownautokeepalive'])) {
+				$nconf .= " count {$neighbor['shutdownautokeepalive']}";
+			} else {
+				$nconf .= " count 1";
+			}
+			$nconf .= "\n";
 		}
 
 		switch ($neighbor['grmode']) {
@@ -601,19 +625,6 @@ function frr_bgp_generate_neighbors() {
 			$nconf .= "\n";
 		}
 
-		if (frr_validate_ulong($neighbor['maximumprefix_num'], 1)) {
-			$nconf .= " neighbor {$neighbor['peer']} maximum-prefix {$neighbor['maximumprefix_num']}";
-			if (frr_validate_intrange($neighbor['maximumprefix_threshold'], 1, 100)) {
-				$nconf .= " {$neighbor['maximumprefix_threshold']}";
-			}
-			if (!empty($neighbor['maximumprefix_warnonly'])) {
-				$nconf .= " warning-only";
-			} elseif (frr_validate_intrange($neighbor['maximumprefix_restart'], 1, 65535)) {
-				$nconf .= " {$neighbor['maximumprefix_restart']}";
-			}
-			$nconf .= "\n";
-		}
-
 		if (!empty($neighbor['solo'])) {
 			$nconf .= " neighbor {$neighbor['peer']} solo\n";
 		}
@@ -647,6 +658,26 @@ function frr_bgp_generate_neighbors() {
 					$frr_bgp_config_address_family[$af] .= "  neighbor {$neighbor['peer']} send-community {$neighbor['sendcommunity']}\n";
 					break;
 				default:
+			}
+
+			if (frr_validate_ulong($neighbor['maximumprefix_num'], 1)) {
+				$frr_bgp_config_address_family[$af] .= " neighbor {$neighbor['peer']} maximum-prefix {$neighbor['maximumprefix_num']}";
+				if (frr_validate_intrange($neighbor['maximumprefix_threshold'], 1, 100)) {
+					$frr_bgp_config_address_family[$af] .= " {$neighbor['maximumprefix_threshold']}";
+				}
+				if (!empty($neighbor['maximumprefix_warnonly'])) {
+					$frr_bgp_config_address_family[$af] .= " warning-only";
+				} elseif (frr_validate_intrange($neighbor['maximumprefix_restart'], 1, 65535)) {
+					$frr_bgp_config_address_family[$af] .= " restart {$neighbor['maximumprefix_restart']}";
+				}
+				if (!empty($neighbor['maximumprefix_force'])) {
+					$frr_bgp_config_address_family[$af] .= " force";
+				}
+				$frr_bgp_config_address_family[$af] .= "\n";
+			}
+
+			if (frr_validate_ulong($neighbor['maximumprefixout_num'], 1)) {
+				$frr_bgp_config_address_family[$af] .= " neighbor {$neighbor['peer']} maximum-prefix-out {$neighbor['maximumprefixout_num']}\n";
 			}
 
 			if ($neighbor['nexthopself'] == "enabled") {
