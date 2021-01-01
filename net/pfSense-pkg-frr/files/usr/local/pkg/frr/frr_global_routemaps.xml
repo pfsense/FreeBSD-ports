@@ -503,6 +503,7 @@
 		</field>
 	</fields>
 	<custom_php_resync_config_command>
+		frr_config_sort_route_map();
 		frr_generate_config();
 	</custom_php_resync_config_command>
 	<custom_php_validation_command>
