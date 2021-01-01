@@ -972,6 +972,7 @@ function frr_package_config_upgrade() {
 			$need_write = true;
 		}
 	}
+	update_status("Done.\n");
 
 	/* Save Changes */
 	if ($need_write) {
@@ -983,8 +984,28 @@ function frr_package_config_upgrade() {
 	}
 }
 
+function frr_set_tunables() {
+	global $config;
+
+	init_config_arr(array('sysctl', 'item'));
+	$sysctl_conf = &$config['sysctl']['item'];
+	$sysctl_maxsockbuff = array('tunable' => 'kern.ipc.maxsockbuf', 'value' => 16777216, 'descr' => "Maximum socket buffer size - set by FRR package");
+
+	if (!in_array($sysctl_maxsockbuff, $sysctl_conf)) {
+		update_status("Installing maxsockbuf tunable ... ");
+		$sysctl_conf[] = $sysctl_maxsockbuff;
+		write_config('FRR: Installed maxsockbuf tunable.');
+		system_setup_sysctl();
+		update_status("Done.\n");
+	}
+}
+
 /* Install-time functions */
 function frr_package_install() {
 	/* Upgrade the configuration */
 	frr_package_config_upgrade();
+
+	/* Set tunable kern.ipc.maxsockbuf to FRR recommended */
+	/* OSPF and OSPF6 most likely won't work with this */
+	frr_set_tunables();
 }
