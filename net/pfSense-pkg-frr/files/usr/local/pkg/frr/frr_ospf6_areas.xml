@@ -112,7 +112,6 @@
 				<!-- <option><name>Not so Totally Stub Area (nssa no-summary)</name><value>nssanosum</value></option> -->
 			</options>
 		</field>
-
 		<field>
 			<name>Range Overrides</name>
 			<type>listtopic</type>
@@ -149,7 +148,6 @@
 				</rowhelperfield>
 			</rowhelper>
 		</field>
-
 		<field>
 			<name>ABR Summary Route Filtering</name>
 			<type>listtopic</type>

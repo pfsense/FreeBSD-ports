@@ -69,6 +69,76 @@ function frr_get_bfd_source_addresses($includedefault = true) {
 	return $addresses;
 }
 
+/* Fetch a list of BFD profiles for use in selection lists */
+function frr_get_bfd_profiles() {
+	global $config;
+
+	$list = array();
+	$list[] = PKG_FRR_LIST_NONE_VALUE;
+
+	if (is_array($config['installedpackages']['frrbfdprofiles']['config'])) {
+		$frr_bfd_profiles = &$config['installedpackages']['frrbfdprofiles']['config'];
+		foreach ($frr_bfd_profiles as $profile) {
+			$name = empty($profile['descr']) ? $profile['name'] : "{$profile['name']} - {$profile['descr']}";
+			$list[] = array("name" => $name, "value" => $profile['name']);
+			unset($name);
+		}
+	}
+
+	return ($list);
+}
+
+/* Generate BFD Profiles configuration lines */
+function frr_bfd_generate_profiles() {
+	global $config;
+
+	/* Populate FRR BFD profiles definitions */
+	if (is_array($config['installedpackages']['frrbfdprofiles']['config'])) {
+		$frr_bfd_profiles = &$config['installedpackages']['frrbfdprofiles']['config'];
+	} else {
+		/* No BFD profiles config, stop. */
+		return null;
+	}
+
+	$bfdprofileconf = "";
+	/* Loop through Profiles and process */
+	foreach ($frr_bfd_profiles as $profile) {
+		/* Profile Definition */
+		$bfdprofileconf .= " profile {$profile['name']}\n";
+
+		/* Profile Options */
+		if (frr_validate_intrange($profile['detectmultiplier'], 2, 255)) {
+			$bfdprofileconf .= "  detect-multiplier {$profile['detectmultiplier']}\n";
+		}
+		if (frr_validate_intrange($profile['receiveinterval'], 10, 60000)) {
+			$bfdprofileconf .= "  receive-interval {$profile['receiveinterval']}\n";
+		}
+		if (frr_validate_intrange($profile['transmitinterval'], 10, 60000)) {
+			$bfdprofileconf .= "  transmit-interval {$profile['transmitinterval']}\n";
+		}
+		if (frr_validate_intrange($profile['echointerval'], 10, 60000)) {
+			$bfdprofileconf .= "  echo-interval {$profile['echointerval']}\n";
+		}
+		if (!empty($profile['passive'])) {
+			$bfdprofileconf .= "  passive-mode\n";
+		}
+		if (!empty($profile['shutdown'])) {
+			$bfdprofileconf .= "  shutdown\n";
+		} else {
+			$bfdprofileconf .= "  no shutdown\n";
+		}
+		if (!empty($profile['echomode'])) {
+			$bfdprofileconf .= "  echo-mode\n";
+		}
+		if (frr_validate_intrange($profile['minimumttl'], 1, 254)) {
+			$bfdprofileconf .= "  minimum-ttl {$profile['minimumttl']}\n";
+		}
+		$bfdprofileconf .= " !\n";
+	}
+
+	return $bfdprofileconf;
+}
+
 /* Generate BFD Peers configuration lines */
 function frr_bfd_generate_peers() {
 	global $config;
@@ -100,28 +170,32 @@ function frr_bfd_generate_peers() {
 			$bfdpeerconf .= "\n";
 
 			/* Peer Options */
-			if (!empty($peer['label'])) {
-				$bfdpeerconf .= "  label {$peer['label']}\n";
-			}
-			if (frr_validate_intrange($peer['detectmultiplier'], 2, 255)) {
-				$bfdpeerconf .= "  detect-multiplier {$peer['detectmultiplier']}\n";
-			}
-			if (frr_validate_intrange($peer['receiveinterval'], 10, 60000)) {
-				$bfdpeerconf .= "  receive-interval {$peer['receiveinterval']}\n";
-			}
-			if (frr_validate_intrange($peer['transmitinterval'], 10, 60000)) {
-				$bfdpeerconf .= "  transmit-interval {$peer['transmitinterval']}\n";
-			}
-			if (frr_validate_intrange($peer['echointerval'], 10, 60000)) {
-				$bfdpeerconf .= "  transmit-interval {$peer['echointerval']}\n";
-			}
-			if (!empty($peer['shutdown'])) {
-				$bfdpeerconf .= "  shutdown\n";
+			if ((empty($peer['profile'])) || ($peer['profile'] == 'none')) {
+				if (!empty($peer['label'])) {
+					$bfdpeerconf .= "  label {$peer['label']}\n";
+				}
+				if (frr_validate_intrange($peer['detectmultiplier'], 2, 255)) {
+					$bfdpeerconf .= "  detect-multiplier {$peer['detectmultiplier']}\n";
+				}
+				if (frr_validate_intrange($peer['receiveinterval'], 10, 60000)) {
+					$bfdpeerconf .= "  receive-interval {$peer['receiveinterval']}\n";
+				}
+				if (frr_validate_intrange($peer['transmitinterval'], 10, 60000)) {
+					$bfdpeerconf .= "  transmit-interval {$peer['transmitinterval']}\n";
+				}
+				if (frr_validate_intrange($peer['echointerval'], 10, 60000)) {
+					$bfdpeerconf .= "  echo-interval {$peer['echointerval']}\n";
+				}
+				if (!empty($peer['shutdown'])) {
+					$bfdpeerconf .= "  shutdown\n";
+				} else {
+					$bfdpeerconf .= "  no shutdown\n";
+				}
+				if (!empty($peer['echomode'])) {
+					$bfdpeerconf .= "  echo-mode\n";
+				}
 			} else {
-				$bfdpeerconf .= "  no shutdown\n";
-			}
-			if (!empty($peer['echomode'])) {
-				$bfdpeerconf .= "  echo-mode\n";
+				$bfdpeerconf .= "  profile {$peer['profile']}\n";
 			}
 			$bfdpeerconf .= " !\n";
 		}
@@ -168,6 +242,9 @@ function frr_generate_config_bfd() {
 
 		$frr_integrated_config['bfdd'] = "";
 		$frr_integrated_config['bfdd'] .= "bfd\n";
+
+		/* BFD Profiles */
+		$frr_integrated_config['bfdd'] .= frr_bfd_generate_profiles();
 
 		/* BFD Peers */
 		$frr_integrated_config['bfdd'] .= frr_bfd_generate_peers();

@@ -641,7 +641,7 @@ function frr_generate_config_vtysh() {
 	}
 
 	$vtyshconffile = $frr_auto_config_warning;
-	$vtyshconffile = "service integrated-vtysh-config\n\n";
+	$vtyshconffile .= "service integrated-vtysh-config\n\n";
 	file_put_contents("{$frr_config_base}/vtysh.conf", $vtyshconffile);
 	chown("{$frr_config_base}/vtysh.conf", 'frr');
 	chgrp("{$frr_config_base}/vtysh.conf", 'frr');
@@ -742,6 +742,9 @@ function frr_generate_config_integrated() {
 	$integratedconffile .= "line vty\n";
 	$integratedconffile .= "!\n";
 	$integratedconffile .= "end\n";
+
+	/* Remove sample configuration files */
+	array_map('unlink', glob("{$frr_config_base}/*.sample*"));
 
 	file_put_contents("{$frr_config_base}/frr.conf", $integratedconffile, LOCK_EX);
 	chown("{$frr_config_base}/frr.conf", 'frr');
