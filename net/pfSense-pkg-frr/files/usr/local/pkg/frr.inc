@@ -260,11 +260,13 @@ function frr_array_seq_sort(&$arr) {
 	if ($need_sort) {
 		usort($arr, "frr_array_seq_compare");
 	}
+
+	return $need_sort;
 }
 
 /* Sort an array by its 'name' and 'seq' value. */
 function frr_array_name_seq_sort(&$arr) {
-	usort($arr, "frr_array_name_seq_compare");
+	return usort($arr, "frr_array_name_seq_compare");
 }
 
 /* Convert a CIDR prefix to wildcard bits */
@@ -783,6 +785,24 @@ function frr_generate_config_integrated() {
 	file_put_contents("{$frr_config_base}/frr.conf", $integratedconffile, LOCK_EX);
 	chown("{$frr_config_base}/frr.conf", 'frr');
 	chgrp("{$frr_config_base}/frr.conf", 'frr');
+}
+
+/* Upgrade the FRR configuration to the latest format */
+function frr_config_sort_route_map() {
+	global $config;
+
+	update_status("Sorting route-map configuration items");
+
+	init_config_arr(array('installedpackages', 'frrglobalroutemaps', 'config'));
+	$frr_routemap_conf = &$config['installedpackages']['frrglobalroutemaps']['config'];
+
+	$need_write = frr_array_name_seq_sort($frr_routemap_conf);
+
+	if ($need_write) {
+		update_status("Saving sorted route-map configuration items");
+		write_config('FRR: Sorted route-map configuration items');
+		update_status("Done.\n");
+	}
 }
 
 /* Upgrade the FRR configuration to the latest format */
