@@ -98,7 +98,7 @@ $section->addInput(new Form_Select(
 	gettext('SafeSearch Redirection'),
 	$pconfig['safesearch_enable'],
 	['Disable' => 'Disable', 'Enable' => 'Enable']
-))->setHelp('Select to enable SafeSearch Redirection. At the moment it is supported by Google, Yandex, DuckDuckGo, Bing and Pixabay. Only Google, YouTube, and Pixabay support both IPv4/IPv6 SafeSearch redirection. Other search engines support IPv4 SafeSearch only.')
+))->setHelp('Select to enable SafeSearch Redirection. At the moment it is supported by Google, Yandex, DuckDuckGo, Bing and Pixabay.')
   ->setAttribute('style', 'width: auto');
 
 $section->addInput(new Form_Select(
