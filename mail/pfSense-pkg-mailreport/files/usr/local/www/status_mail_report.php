@@ -76,7 +76,7 @@ include("head.inc");
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h2 class="panel-title"><?=gettext('Email Reports')?></h2>
-			<?=gettext("Define reports to by sent periodically via email.");?>
+			<?=gettext("Define reports to be sent periodically via email.");?>
 		</div>
 		<div class="panel-body table-responsive">
 			<table class="table table-striped table-hover">
