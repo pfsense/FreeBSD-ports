@@ -2,7 +2,7 @@
 
 PORTNAME=	svt-av1
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.5
+DISTVERSION=	0.8.6
 CATEGORIES=	multimedia
 PKGNAMEPREFIX=	gstreamer1-plugins-
 
@@ -18,7 +18,7 @@ USES=		gnome meson pkgconfig
 USE_GITHUB=	yes
 USE_GNOME=	glib20
 USE_GSTREAMER1=	yes
-GH_ACCOUNT=	OpenVisualCloud
+GH_ACCOUNT=	AOMediaCodec
 GH_PROJECT=	SVT-AV1
 WRKSRC_SUBDIR=	gstreamer-plugin
 PLIST_FILES=	lib/gstreamer-1.0/libgstsvtav1enc.so

@@ -20,11 +20,11 @@ Revert https://github.com/yuzu-emu/yuzu/commit/d5dfe34c4935
          "ZLIB              1.2         zlib/1.2.11"
          "zstd              1.4         zstd/1.4.5"
      )
---- externals/CMakeLists.txt.orig	2020-07-07 22:13:55 UTC
+--- externals/CMakeLists.txt.orig	2020-10-16 03:59:34 UTC
 +++ externals/CMakeLists.txt
-@@ -82,6 +82,3 @@ if (ENABLE_WEB_SERVICE)
-     target_compile_definitions(httplib INTERFACE -DCPPHTTPLIB_OPENSSL_SUPPORT)
-     target_link_libraries(httplib INTERFACE OpenSSL::SSL OpenSSL::Crypto)
+@@ -85,6 +85,3 @@ if (ENABLE_WEB_SERVICE)
+         target_link_libraries(httplib INTERFACE crypt32 cryptui ws2_32)
+     endif()
  endif()
 -
 -# Opus
@@ -286,14 +286,14 @@ Revert https://github.com/yuzu-emu/yuzu/commit/d5dfe34c4935
 -    opus/silk/float
 -    opus/src
 -)
---- src/core/CMakeLists.txt.orig	2020-07-07 22:13:55 UTC
+--- src/core/CMakeLists.txt.orig	2020-11-07 06:39:05 UTC
 +++ src/core/CMakeLists.txt
-@@ -614,7 +614,7 @@ endif()
+@@ -644,7 +644,7 @@ endif()
  create_target_directory_groups(core)
  
  target_link_libraries(core PUBLIC common PRIVATE audio_core video_core)
--target_link_libraries(core PUBLIC Boost::boost PRIVATE fmt::fmt nlohmann_json::nlohmann_json mbedtls opus unicorn zip)
-+target_link_libraries(core PUBLIC Boost::boost PRIVATE fmt::fmt nlohmann_json::nlohmann_json mbedtls Opus::Opus unicorn zip)
+-target_link_libraries(core PUBLIC Boost::boost PRIVATE fmt::fmt nlohmann_json::nlohmann_json mbedtls opus zip)
++target_link_libraries(core PUBLIC Boost::boost PRIVATE fmt::fmt nlohmann_json::nlohmann_json mbedtls Opus::Opus zip)
  
  if (YUZU_ENABLE_BOXCAT)
      target_compile_definitions(core PRIVATE -DYUZU_ENABLE_BOXCAT)

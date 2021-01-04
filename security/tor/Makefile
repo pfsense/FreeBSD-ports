@@ -3,6 +3,7 @@
 
 PORTNAME=	tor
 DISTVERSION=	0.4.4.6
+PORTREVISION=	1
 CATEGORIES=	security net
 MASTER_SITES=	TOR
 
@@ -39,7 +40,7 @@ PLIST_SUB=	USER="${USERS}" GROUP="${GROUPS}"
 GROUPS=		_tor
 USERS=		_tor
 
-CONFLICTS_INSTALL=	tor-devel-[0-9]*
+CONFLICTS_INSTALL=	tor-devel
 
 STATIC_TOR_USES=	ssl:build
 STATIC_TOR_USES_OFF=	ssl
@@ -86,9 +87,14 @@ TOR_ZSTD_LIBS=		-lzstd
 CONFIGURE_ARGS+=	--with-malloc=tcmalloc
 .if ${PORT_OPTIONS:MSTATIC_TOR}
 BUILD_DEPENDS+=		${LOCALBASE}/lib/libtcmalloc.a:devel/google-perftools
+LDFLAGS+=		-lc++ -lm # required by libtcmalloc.a and isn't cocered by google-perftools' `pkg-config --libs libtcmalloc` output
 .else
 LIB_DEPENDS+=		libtcmalloc.so:devel/google-perftools
 .endif
+.endif
+
+.if ${SSL_DEFAULT:Mlibressl*}
+BROKEN=		Libressl 3.2.1 with compatibility issues to Tor relays: https://gitlab.torproject.org/tpo/core/tor/-/issues/40128
 .endif
 
 post-patch:
@@ -98,14 +104,6 @@ post-patch:
 		${WRKSRC}/src/config/torrc.*.in \
 		${WRKSRC}/doc/tor.1.* \
 		${WRKSRC}/doc/tor.html.in
-
-post-patch-STATIC_TOR-off:
-	@${REINPLACE_CMD} -e "s@-ltcmalloc@${LOCALBASE}/lib/libtcmalloc.so@" \
-		${WRKSRC}/configure
-
-post-patch-STATIC_TOR-on:
-	@${REINPLACE_CMD} -e "s@-ltcmalloc@${LOCALBASE}/lib/libtcmalloc.a@" \
-		${WRKSRC}/configure
 
 post-install:
 	@${MKDIR} ${STAGEDIR}/var/log/tor ${STAGEDIR}/var/run/tor ${STAGEDIR}/var/db/tor

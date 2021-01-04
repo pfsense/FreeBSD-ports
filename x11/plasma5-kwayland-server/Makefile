@@ -14,9 +14,10 @@ BUILD_DEPENDS=	plasma-wayland-protocols>=0:x11/plasma-wayland-protocols \
 		wayland-protocols>=1.14:graphics/wayland-protocols
 RUN_DEPENDS=	plasma-wayland-protocols>=0:x11/plasma-wayland-protocols
 
-USES=		cmake compiler:c++11-lang kde:5 pkgconfig qt:5 tar:xz
+USES=		cmake compiler:c++11-lang gl kde:5 pkgconfig qt:5 tar:xz
+USE_GL=		egl
 USE_KDE=	ecm wayland
-USE_QT=		concurrent gui wayland \
+USE_QT=		concurrent core gui wayland \
 		buildtools_build qmake_build
 
 .include <bsd.port.mk>

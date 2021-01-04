@@ -1,0 +1,9 @@
+[
+ { type: install
+   message: <<EOM
+   To install bash/zsh completion support, please run:
+
+     $ bit complete
+EOM
+ }
+]

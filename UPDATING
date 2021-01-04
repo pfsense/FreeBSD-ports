@@ -5,79 +5,146 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
-<<<<<<< HEAD
-||||||| parent of 05e54ef29b62 (Update security/openvpn 2.5. For 2.3 peers, update your configuration,)
-20201029:
-  AFFECTS: users of www/node
-  AUTHOR: bhughes@FreeBSD.org
+20210102:
+  AFFECTS: x11/libexo, XFCE4 desktop users
+  AUTHOR: madpilot@FreeBSD.org
 
-  The www/node port has been updated to Node.js v15.0.0, the latest
-  upstream release. A new port, www/node14, has been created for the
-  v14.x LTS branch. Users wanting to stay on v14.x can replace www/node
-  with www/node14 with one of the following commands:
+  XFCE4 has been updated to version 4.16. Unluckily due to how the
+  update works out it interacts badly with a defect in pkg which can
+  cause files from the libexo package to be absent after upgrade.
 
-  # pkg install www/node14
-    or
-  # portmaster -o www/node14 www/node
-    or
-  # portupgrade -o www/node14 www/node
+  To avoid the issue, before upgrading all packages, please update
+  libexo by itself:
 
-20201026:
-  AFFECTS: users of emulators/qemu
-  AUTHOR: bofh@FreeBSD.org
+  # pkg upgrade libexo
+  # pkg upgrade
 
-  emulators/qemu has been updated to 5.0.1. Previous 4.2.X branch has
-  been repocopied to emulators/qemu42. If someone wants to stick with 4.2.X
-  branch please use one of the following command:
+  If you have already upgraded and you notice XFCE issues due to
+  missing libraries you can recover easily by forcing reinstallation
+  of libexo:
 
-  # pkg install emulators/qemu42
-    or
-  # portmaster -o emulators/qemu42 emulators/qemu
-    or
-  # portupgrade -o emulators/qemu42 emulators/qemu
+  # pkg upgrade -f libexo
 
-20201021:
-  AFFECTS: users of www/py-unit
-  AUTHOR: osa@FreeBSD.org
+  Users upgrading via ports should not be affected.
 
-  The www/py-unit port has been renamed to www/unit-python.
+20201228:
+  AFFECTS: www/py-flexget
+  AUTHOR: jbeich@FreeBSD.org
 
-20201012:
-  AFFECTS: Users of mesa-dri with VAAPI or VDPAU options
-  AUTHOR: manu@FreeBSD.org
+  py-flexget (or py37-flexget) has been renamed to flexget.
+  "pkg upgrade" doesn't track MOVED file unlike portmaster, so
+  provide a hint e.g.,
 
-  The nondefault options VAAPI and VDPAU were removed from the mesa-dri
-  port and two new ports, mesa-gallium-va and mesa-gallium-vdpau now contain
-  the necessary libraries for using VAAPI or VDPAU on AMD hardware.
+    $ pkg upgrade -x flexget
 
-20201012:
-  AFFECTS: users of devel/libsoup-gnome
-  AUTHOR: bapt@FreeBSD.org
+  or install again, letting pkg remove the old version
 
-  libsoup-gnome has been merged back into libsoup for people building locally:
-  first delete libsoup-gnome before installing the new libsoup
+    $ pkg install flexget
 
-  $ pkg delete -f libsoup-gnome
+20201218:
+  AFFECTS: users of www/qt5-webengine
+  AUTHOR: kai@FreeBSD.org
 
-20201011:
-  AFFECTS: users of sysutils/rundeck3 who use MySQL as database
-  AUTHOR: daniel.tihanyi@tetragir.com
+  Users that upgrade www/qt5-webengine without using pkg/poudriere might
+  experience failures due to conflicts with the installed version of 5.15.2.
 
-  Please note that the MySQL JDBC driver is no longer bundled with Rundeck.
-  Please make sure that you migrate to the MariaDB Connector or copy the
-  driver yourself. More instructions:
+  In that case, pkg delete -f the qt5-webengine package before building
+  the updated version.
 
-  https://docs.rundeck.com/docs/upgrading/upgrading-to-rundeck-3.3.4.html
+20201130:
+  AFFECTS: users of graphics/jpeg
+  AUTHOR: rene@FreeBSD.org
 
-20201006:
-  AFFECTS: users of sysutils/tenshi
-  AUTHOR: 0mp@FreeBSD.org
+  The graphics/jpeg port has been removed in favor of graphics/jpeg-turbo.
+  The former port was vulnerable and used an outdated ABI and API.
 
-  The default location for tenshi's configuration file has changed.  It was
-  moved to /usr/local/etc/tenshi/tenshi.conf from /usr/local/etc/tenshi.conf
-  in order to follow upstream defaults.
+  Please check your make configuration for JPEG_PORT and remove it or
+  set it to "jpeg-turbo" if it is currently set to "jpeg".
 
-=======
+20201128:
+  AFFECTS: users of databases/cego
+  AUTHOR: pi@FreeBSD.org
+
+  Database updates from 2.45.x to 2.46.x require a xml tableset export
+  and import, since table structure information has been changed.
+
+20201128:
+  AFFECTS: users of lang/ruby26
+  AUTHOR: mfechner@FreeBSD.org
+
+  The default ruby version has been updated from 2.6 to 2.7.
+
+  If you compile your own ports you may keep 2.6 as the default version by
+  adding the following lines to your /etc/make.conf file:
+
+  #
+  # Keep ruby 2.6 as default version
+  #
+  DEFAULT_VERSIONS+=ruby=2.6
+
+  If you wish to update to the new default version, you need to first stop any
+  software that uses ruby. Then, you will need to follow these steps, depending
+  upon how you manage your system.
+
+  If you use pkg, simply upgrade:
+  # pkg upgrade
+
+  If you do not use pkg, please check entry 20190420.
+  The description there should also work for this version.
+
+20201112:
+  AFFECTS: users of net-mgmt/pushgateway
+  AUTHOR: rhurlin@FreeBSD.org
+
+  The v0.10.0 release changes the storage format. v0.10 can read the
+  storage format of v0.5--v0.9. It will then persist the new format so
+  that a downgrade won't be possible anymore [1].
+
+  For later releases >= v1.0.0 only persistence files created by v0.10+
+  are usable. So please, upgrade to v0.10 first to convert existing
+  persistence files.
+
+  It is intended to replace v0.10.0 in about four weeks from now (not
+  before 2020-12-12) by >= v1.3.0.
+
+  [1] https://github.com/prometheus/pushgateway/releases/tag/v0.10.0
+
+20201110:
+  AFFECTS: users of net-mgmt/netbox
+  AUTHOR: kai@FreeBSD.org
+
+  Changes related to the NetBox configuration:
+
+  1. If in use, LDAP authentication must be enabled by setting
+     REMOTE_AUTH_BACKEND to 'netbox.authentication.LDAPBackend'.  (The LDAP
+     configuration parameters in ldap_config.py remain unchanged.)
+
+  2. REMOTE_AUTH_DEFAULT_PERMISSIONS now takes a dictionary rather than a
+     list.  This is a mapping of permission names to a dictionary of
+     constraining attributes, or None.
+
+     For example, ['dcim.add_site', 'dcim.change_site'] would become
+     {'dcim.add_site': None, 'dcim.change_site': None}.
+
+  3. Support for the DEFAULT_TIMEOUT parameter under REDIS database
+     configuration was removed.  Set RQ_DEFAULT_TIMEOUT as a global
+     configuration parameter instead.
+
+  Please also check the pkg-message and the changelogs for further info.
+
+20201106:
+  AFFECTS: users of www/samdruckerserver
+  AUTHOR: dvl@FreeBSD.org
+
+  If upgrading from < 0.2.4, the database schema has changed.
+
+  Run these scripts to update your database:
+
+  * PostgreSQL/updates-2020.08.28.sql
+  * PostgreSQL/procedures.sql
+
+  These scripts are in /usr/local/share/samdrucker/PostgreSQL
+
 20201030:
   AFFECTS: users of security/openvpn
   AUTHOR: mandree@FreeBSD.org
@@ -160,7 +227,6 @@ you update your ports collection, before attempting any port upgrades.
   moved to /usr/local/etc/tenshi/tenshi.conf from /usr/local/etc/tenshi.conf
   in order to follow upstream defaults.
 
->>>>>>> 05e54ef29b62 (Update security/openvpn 2.5. For 2.3 peers, update your configuration,)
 20201002:
   AFFECTS: users of mail/fetchmail beginning with 6.4.12_1
   AUTHOR:  mandree@FreeBSD.org
@@ -177,6 +243,17 @@ you update your ports collection, before attempting any port upgrades.
   will not be interactively queried from an rcfile.  Put passwords into
   the [.]fetchmailrc or into a .netrc file.
 
+20201002:
+  AFFECTS: users of sysutils/modules
+  AUTHOR: 0mp@FreeBSD.org
+
+  The upstream developers of the Modules port encourage users to consult
+  the MIGRATING document, which describes the major changes occurring between
+  versions of Modules. It provides an overview of the new features and changed
+  behaviors that will be encountered when upgrading:
+
+  https://modules.readthedocs.io/en/v4.6.0/MIGRATING.html
+
 20200930:
   AFFECTS: users of sysutils/syslog-ng32[789]
   AUTHOR: cy@FreeBSD.org
@@ -186,7 +263,7 @@ you update your ports collection, before attempting any port upgrades.
   consistent with the rest of the ports tree. syslog_ng_config and
   syslog_ng_pid will continue to work until syslog-ng331 has been
   released and imported into ports.
-  
+
 20200924:
   AFFECTS: users of net/freeradius3, who need python support
   AUTHOR: zi@FreeBSD.org
@@ -412,7 +489,7 @@ you update your ports collection, before attempting any port upgrades.
   Switching to the fork panda-cclient fixes these issues. Therefore we make the
   usage of Panda cclient the new default. If you want to use the old cclient,
   you need to enable it now!
-  
+
 20200616:
   AFFECTS: users of www/baikal
   AUTHOR: gahr@FreeBSD.org
@@ -898,7 +975,7 @@ you update your ports collection, before attempting any port upgrades.
     pkill -F /usr/local/var/lib/prosody/prosody.pid
 
     # copy the data directory
-    cp -a /usr/local/var/lib/prosody /var/db/prosody
+    cp -a /usr/local/var/lib/prosody /var/db/
     rm -f /var/db/prosody/prosody.pid
 
   Make sure your prosody config has the following option set:
@@ -15054,7 +15131,7 @@ or
   sysutils/cdrtools-cjk port has been removed, as the required functionality is
   now available in cdrtools 3.0.0 in the standard sysutils/cdrtools port.
 
- 20100915:
+20100915:
   AFFECTS: autoconf, automake
   AUTHOR: autotools@FreeBSD.org
 
@@ -15641,7 +15718,7 @@ or
   script failure to start nullmailer-send.
 
   Support for "[-u user]" command-line switch was recently MFC'd to 6-STABLE
- (http://www.freebsd.org/cgi/query-pr.cgi?pr=bin/146266).  FreeBSD 6.X users
+  (http://www.freebsd.org/cgi/query-pr.cgi?pr=bin/146266).  FreeBSD 6.X users
   should patch and install daemon(8) by one of the methods described below.
 
   If /usr/src is not yet populated, csup the 6-STABLE sources and run these

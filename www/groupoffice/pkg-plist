@@ -287,7 +287,7 @@
 %%WWWDIR%%/go/core/customfield/Notes.php
 %%WWWDIR%%/go/core/customfield/Number.php
 %%WWWDIR%%/go/core/customfield/Select.php
-%%WWWDIR%%/go/core/customfield/Template.php
+%%WWWDIR%%/go/core/customfield/TemplateField.php
 %%WWWDIR%%/go/core/customfield/Text.php
 %%WWWDIR%%/go/core/customfield/TextArea.php
 %%WWWDIR%%/go/core/customfield/User.php
@@ -435,6 +435,7 @@
 %%WWWDIR%%/go/core/oauth/server/repositories/RefreshTokenRepository.php
 %%WWWDIR%%/go/core/oauth/server/repositories/ScopeRepository.php
 %%WWWDIR%%/go/core/oauth/server/repositories/UserRepository.php
+%%WWWDIR%%/go/core/orm/CustomFieldsModel.php
 %%WWWDIR%%/go/core/orm/CustomFieldsTrait.php
 %%WWWDIR%%/go/core/orm/Entity.php
 %%WWWDIR%%/go/core/orm/EntityFilesTrait.php
@@ -464,6 +465,7 @@
 %%WWWDIR%%/go/core/validate/CountryCode.php
 %%WWWDIR%%/go/core/validate/ErrorCode.php
 %%WWWDIR%%/go/core/validate/ValidationTrait.php
+%%WWWDIR%%/go/core/views/extjs3/ActivityWatcher.js
 %%WWWDIR%%/go/core/views/extjs3/Array.js
 %%WWWDIR%%/go/core/views/extjs3/AuthenticationManager.js
 %%WWWDIR%%/go/core/views/extjs3/BrowserStorage.js
@@ -523,6 +525,8 @@
 %%WWWDIR%%/go/core/views/extjs3/customfields/type/Select.js
 %%WWWDIR%%/go/core/views/extjs3/customfields/type/SelectDialog.js
 %%WWWDIR%%/go/core/views/extjs3/customfields/type/SelectOptionsTree.js
+%%WWWDIR%%/go/core/views/extjs3/customfields/type/TemplateField.js
+%%WWWDIR%%/go/core/views/extjs3/customfields/type/TemplateFieldDialog.js
 %%WWWDIR%%/go/core/views/extjs3/customfields/type/Text.js
 %%WWWDIR%%/go/core/views/extjs3/customfields/type/TextArea.js
 %%WWWDIR%%/go/core/views/extjs3/customfields/type/TextAreaDialog.js
@@ -554,6 +558,7 @@
 %%WWWDIR%%/go/core/views/extjs3/filter/Conditions.js
 %%WWWDIR%%/go/core/views/extjs3/filter/FieldSet.js
 %%WWWDIR%%/go/core/views/extjs3/filter/FilterAddButton.js
+%%WWWDIR%%/go/core/views/extjs3/filter/FilterCombo.js
 %%WWWDIR%%/go/core/views/extjs3/filter/FilterDialog.js
 %%WWWDIR%%/go/core/views/extjs3/filter/FilterGrid.js
 %%WWWDIR%%/go/core/views/extjs3/filter/VariableFilterDialog.js
@@ -593,6 +598,7 @@
 %%WWWDIR%%/go/core/views/extjs3/form/README.md
 %%WWWDIR%%/go/core/views/extjs3/form/RadioGroup.js
 %%WWWDIR%%/go/core/views/extjs3/form/RecurrenceFieldset.js
+%%WWWDIR%%/go/core/views/extjs3/form/SelectField.js
 %%WWWDIR%%/go/core/views/extjs3/form/StoreField.js
 %%WWWDIR%%/go/core/views/extjs3/form/Switch.js
 %%WWWDIR%%/go/core/views/extjs3/form/TimeField.js
@@ -700,6 +706,7 @@
 %%WWWDIR%%/go/modules/business/newsletters/install/install.sql
 %%WWWDIR%%/go/modules/business/newsletters/install/uninstall.sql
 %%WWWDIR%%/go/modules/business/newsletters/install/updates.php
+%%WWWDIR%%/go/modules/business/newsletters/language/bg.php
 %%WWWDIR%%/go/modules/business/newsletters/language/cs.php
 %%WWWDIR%%/go/modules/business/newsletters/language/de.php
 %%WWWDIR%%/go/modules/business/newsletters/language/en.php
@@ -710,6 +717,7 @@
 %%WWWDIR%%/go/modules/business/newsletters/language/nl.php
 %%WWWDIR%%/go/modules/business/newsletters/language/pl.php
 %%WWWDIR%%/go/modules/business/newsletters/language/pt_br.php
+%%WWWDIR%%/go/modules/business/newsletters/language/ro.php
 %%WWWDIR%%/go/modules/business/newsletters/model/AddressList.php
 %%WWWDIR%%/go/modules/business/newsletters/model/AddressListEntity.php
 %%WWWDIR%%/go/modules/business/newsletters/model/Newsletter.php
@@ -737,11 +745,16 @@
 %%WWWDIR%%/go/modules/business/studio/factory/FileFactoryInterface.php
 %%WWWDIR%%/go/modules/business/studio/factory/FrontEndFileFactory.php
 %%WWWDIR%%/go/modules/business/studio/factory/SqlFileFactory.php
+%%WWWDIR%%/go/modules/business/studio/icon.png
 %%WWWDIR%%/go/modules/business/studio/install/install.sql
 %%WWWDIR%%/go/modules/business/studio/install/uninstall.sql
 %%WWWDIR%%/go/modules/business/studio/install/updates.php
+%%WWWDIR%%/go/modules/business/studio/language/bg.php
 %%WWWDIR%%/go/modules/business/studio/language/en.php
 %%WWWDIR%%/go/modules/business/studio/language/nl.php
+%%WWWDIR%%/go/modules/business/studio/language/pt_br.php
+%%WWWDIR%%/go/modules/business/studio/language/ro.php
+%%WWWDIR%%/go/modules/business/studio/model/Settings.php
 %%WWWDIR%%/go/modules/business/studio/model/Studio.php
 %%WWWDIR%%/go/modules/business/studio/service/AbstractGenerator.php
 %%WWWDIR%%/go/modules/business/studio/service/BackendGenerator.php
@@ -785,6 +798,7 @@
 %%WWWDIR%%/go/modules/business/wopi/install/install.sql
 %%WWWDIR%%/go/modules/business/wopi/install/uninstall.sql
 %%WWWDIR%%/go/modules/business/wopi/install/updates.php
+%%WWWDIR%%/go/modules/business/wopi/language/bg.php
 %%WWWDIR%%/go/modules/business/wopi/language/cs.php
 %%WWWDIR%%/go/modules/business/wopi/language/de.php
 %%WWWDIR%%/go/modules/business/wopi/language/en.php
@@ -824,6 +838,7 @@
 %%WWWDIR%%/go/modules/community/addressbook/install/install.sql
 %%WWWDIR%%/go/modules/community/addressbook/install/uninstall.sql
 %%WWWDIR%%/go/modules/community/addressbook/install/updates.php
+%%WWWDIR%%/go/modules/community/addressbook/language/bg.php
 %%WWWDIR%%/go/modules/community/addressbook/language/cs.php
 %%WWWDIR%%/go/modules/community/addressbook/language/de.php
 %%WWWDIR%%/go/modules/community/addressbook/language/en.php
@@ -835,6 +850,7 @@
 %%WWWDIR%%/go/modules/community/addressbook/language/nl.php
 %%WWWDIR%%/go/modules/community/addressbook/language/pl.php
 %%WWWDIR%%/go/modules/community/addressbook/language/pt_br.php
+%%WWWDIR%%/go/modules/community/addressbook/language/ro.php
 %%WWWDIR%%/go/modules/community/addressbook/model/Address.php
 %%WWWDIR%%/go/modules/community/addressbook/model/AddressBook.php
 %%WWWDIR%%/go/modules/community/addressbook/model/Contact.php
@@ -978,6 +994,7 @@
 %%WWWDIR%%/go/modules/community/comments/language/nl.php
 %%WWWDIR%%/go/modules/community/comments/language/pl.php
 %%WWWDIR%%/go/modules/community/comments/language/pt_br.php
+%%WWWDIR%%/go/modules/community/comments/language/ro.php
 %%WWWDIR%%/go/modules/community/comments/model/Comment.php
 %%WWWDIR%%/go/modules/community/comments/model/Label.php
 %%WWWDIR%%/go/modules/community/comments/views/extjs3/CommentForm.js
@@ -1001,6 +1018,7 @@
 %%WWWDIR%%/go/modules/community/dev/resources/oldcommonlang.php
 %%WWWDIR%%/go/modules/community/dokuwiki/INSTALL.TXT
 %%WWWDIR%%/go/modules/community/dokuwiki/Module.php
+%%WWWDIR%%/go/modules/community/dokuwiki/language/bg.php
 %%WWWDIR%%/go/modules/community/dokuwiki/language/de.php
 %%WWWDIR%%/go/modules/community/dokuwiki/language/en.php
 %%WWWDIR%%/go/modules/community/dokuwiki/language/fr.php
@@ -1009,6 +1027,7 @@
 %%WWWDIR%%/go/modules/community/dokuwiki/language/nl.php
 %%WWWDIR%%/go/modules/community/dokuwiki/language/pl.php
 %%WWWDIR%%/go/modules/community/dokuwiki/language/pt_br.php
+%%WWWDIR%%/go/modules/community/dokuwiki/language/ro.php
 %%WWWDIR%%/go/modules/community/dokuwiki/language/ru.php
 %%WWWDIR%%/go/modules/community/dokuwiki/language/vi.php
 %%WWWDIR%%/go/modules/community/dokuwiki/lib/plugins/authgroupoffice/admin.php
@@ -1127,6 +1146,7 @@
 %%WWWDIR%%/go/modules/community/googleauthenticator/install/install.sql
 %%WWWDIR%%/go/modules/community/googleauthenticator/install/uninstall.sql
 %%WWWDIR%%/go/modules/community/googleauthenticator/install/updates.php
+%%WWWDIR%%/go/modules/community/googleauthenticator/language/bg.php
 %%WWWDIR%%/go/modules/community/googleauthenticator/language/cs.php
 %%WWWDIR%%/go/modules/community/googleauthenticator/language/de.php
 %%WWWDIR%%/go/modules/community/googleauthenticator/language/en.php
@@ -1151,6 +1171,7 @@
 %%WWWDIR%%/go/modules/community/imapauthenticator/install/install.sql
 %%WWWDIR%%/go/modules/community/imapauthenticator/install/uninstall.sql
 %%WWWDIR%%/go/modules/community/imapauthenticator/install/updates.php
+%%WWWDIR%%/go/modules/community/imapauthenticator/language/bg.php
 %%WWWDIR%%/go/modules/community/imapauthenticator/language/cs.php
 %%WWWDIR%%/go/modules/community/imapauthenticator/language/de.php
 %%WWWDIR%%/go/modules/community/imapauthenticator/language/en.php
@@ -1181,6 +1202,7 @@
 %%WWWDIR%%/go/modules/community/ldapauthenticator/install/install.sql
 %%WWWDIR%%/go/modules/community/ldapauthenticator/install/uninstall.sql
 %%WWWDIR%%/go/modules/community/ldapauthenticator/install/updates.php
+%%WWWDIR%%/go/modules/community/ldapauthenticator/language/bg.php
 %%WWWDIR%%/go/modules/community/ldapauthenticator/language/cs.php
 %%WWWDIR%%/go/modules/community/ldapauthenticator/language/de.php
 %%WWWDIR%%/go/modules/community/ldapauthenticator/language/en.php
@@ -1209,6 +1231,7 @@
 %%WWWDIR%%/go/modules/community/multi_instance/controller/Instance.php
 %%WWWDIR%%/go/modules/community/multi_instance/cron/DeactivateTrials.php
 %%WWWDIR%%/go/modules/community/multi_instance/cron/InstanceCron.php
+%%WWWDIR%%/go/modules/community/multi_instance/icon.png
 %%WWWDIR%%/go/modules/community/multi_instance/install/install.sql
 %%WWWDIR%%/go/modules/community/multi_instance/install/uninstall.sql
 %%WWWDIR%%/go/modules/community/multi_instance/install/updates.php
@@ -1225,6 +1248,7 @@
 %%WWWDIR%%/go/modules/community/multi_instance/model/Instance.php
 %%WWWDIR%%/go/modules/community/multi_instance/oninstall.php
 %%WWWDIR%%/go/modules/community/multi_instance/site-conf.tpl
+%%WWWDIR%%/go/modules/community/multi_instance/views/extjs3/AllowedModulesPanel.js
 %%WWWDIR%%/go/modules/community/multi_instance/views/extjs3/InstanceDialog.js
 %%WWWDIR%%/go/modules/community/multi_instance/views/extjs3/MainPanel.js
 %%WWWDIR%%/go/modules/community/multi_instance/views/extjs3/Module.js
@@ -1287,10 +1311,13 @@
 %%WWWDIR%%/go/modules/community/notes/views/extjs3/themes/default/style.css
 %%WWWDIR%%/go/modules/community/notes/views/extjs3/tsconfig.json
 %%WWWDIR%%/go/modules/community/notesencrypt/Module.php
+%%WWWDIR%%/go/modules/community/notesencrypt/language/bg.php
 %%WWWDIR%%/go/modules/community/notesencrypt/language/de.php
 %%WWWDIR%%/go/modules/community/notesencrypt/language/en.php
 %%WWWDIR%%/go/modules/community/notesencrypt/language/fr.php
 %%WWWDIR%%/go/modules/community/notesencrypt/language/pl.php
+%%WWWDIR%%/go/modules/community/notesencrypt/language/pt_br.php
+%%WWWDIR%%/go/modules/community/notesencrypt/language/ro.php
 %%WWWDIR%%/go/modules/community/notesencrypt/views/extjs3/Functions.js
 %%WWWDIR%%/go/modules/community/notesencrypt/views/extjs3/Module.js
 %%WWWDIR%%/go/modules/community/notesencrypt/views/extjs3/NoteDetailOverride.js
@@ -1314,6 +1341,7 @@
 %%WWWDIR%%/go/modules/community/serverclient/language/nb.php
 %%WWWDIR%%/go/modules/community/serverclient/language/nl.php
 %%WWWDIR%%/go/modules/community/serverclient/language/pl.php
+%%WWWDIR%%/go/modules/community/serverclient/language/pt_br.php
 %%WWWDIR%%/go/modules/community/serverclient/language/ru.php
 %%WWWDIR%%/go/modules/community/serverclient/language/sv.php
 %%WWWDIR%%/go/modules/community/serverclient/language/th.php
@@ -1321,7 +1349,6 @@
 %%WWWDIR%%/go/modules/community/serverclient/model/HttpClient.php
 %%WWWDIR%%/go/modules/community/serverclient/model/HttpClient.php.bak
 %%WWWDIR%%/go/modules/community/serverclient/model/MailDomain.php
-%%WWWDIR%%/go/modules/community/serverclient/scripts.inc.php
 %%WWWDIR%%/go/modules/community/serverclient/views/extjs3/UserOverride.js
 %%WWWDIR%%/go/modules/community/serverclient/views/extjs3/scripts.txt
 %%WWWDIR%%/go/modules/community/serverclient/views/extjs3/themes/default/images/serverclient.png
@@ -1403,12 +1430,14 @@
 %%WWWDIR%%/language/holidays/nl.php
 %%WWWDIR%%/language/holidays/pt.php
 %%WWWDIR%%/language/holidays/pt_br.php
+%%WWWDIR%%/language/holidays/ro.php
 %%WWWDIR%%/language/holidays/sv.php
 %%WWWDIR%%/language/holidays/th.php
 %%WWWDIR%%/language/languages.php
 %%WWWDIR%%/licensechecks/groupoffice-pro.php
 %%WWWDIR%%/modules/addressbook/AddressbookModule.php
 %%WWWDIR%%/modules/addressbook/install/updates.php
+%%WWWDIR%%/modules/addressbook/language/bg.php
 %%WWWDIR%%/modules/addressbook/language/cs.php
 %%WWWDIR%%/modules/addressbook/language/de.php
 %%WWWDIR%%/modules/addressbook/language/es.php
@@ -1423,6 +1452,7 @@
 %%WWWDIR%%/modules/assistant/controller/FileController.php
 %%WWWDIR%%/modules/assistant/filehandler/Assistant.php
 %%WWWDIR%%/modules/assistant/install/install.sql
+%%WWWDIR%%/modules/assistant/language/bg.php
 %%WWWDIR%%/modules/assistant/language/cs.php
 %%WWWDIR%%/modules/assistant/language/de.php
 %%WWWDIR%%/modules/assistant/language/en.php
@@ -1434,6 +1464,7 @@
 %%WWWDIR%%/modules/assistant/language/nl.php
 %%WWWDIR%%/modules/assistant/language/pl.php
 %%WWWDIR%%/modules/assistant/language/pt_br.php
+%%WWWDIR%%/modules/assistant/language/ro.php
 %%WWWDIR%%/modules/assistant/scripts.txt
 %%WWWDIR%%/modules/assistant/themes/Default/images/assistant.png
 %%WWWDIR%%/modules/assistant/themes/Default/style.css
@@ -1468,6 +1499,7 @@
 %%WWWDIR%%/modules/billing/ExpensesWindow.js
 %%WWWDIR%%/modules/billing/ExportDialog.js
 %%WWWDIR%%/modules/billing/ExportIncomeDialog.js
+%%WWWDIR%%/modules/billing/ExportMonthlyDialog.js
 %%WWWDIR%%/modules/billing/ImportDialog.js
 %%WWWDIR%%/modules/billing/ImportItemsWindow.js
 %%WWWDIR%%/modules/billing/ImportPaymentsDialog.js
@@ -1531,6 +1563,7 @@
 %%WWWDIR%%/modules/billing/controller/ExportCatalogController.php
 %%WWWDIR%%/modules/billing/controller/ExportCustomersController.php
 %%WWWDIR%%/modules/billing/controller/ExportIncomeController.php
+%%WWWDIR%%/modules/billing/controller/ExportMonthlyController.php
 %%WWWDIR%%/modules/billing/controller/ExportOrdersController.php
 %%WWWDIR%%/modules/billing/controller/ExportOutstandingController.php
 %%WWWDIR%%/modules/billing/controller/ExportProductSalesController.php
@@ -1567,6 +1600,7 @@
 %%WWWDIR%%/modules/billing/install/updatescripts/8_fill_payments_table_for_existing_orders.php
 %%WWWDIR%%/modules/billing/install/updatescripts/9_move_bcc_from_books_to_statuses.php
 %%WWWDIR%%/modules/billing/install/updatescripts/manual_sync_order_totals.php
+%%WWWDIR%%/modules/billing/language/bg.php
 %%WWWDIR%%/modules/billing/language/cs.php
 %%WWWDIR%%/modules/billing/language/de.php
 %%WWWDIR%%/modules/billing/language/en.php
@@ -1580,6 +1614,7 @@
 %%WWWDIR%%/modules/billing/language/nl.php
 %%WWWDIR%%/modules/billing/language/pl.php
 %%WWWDIR%%/modules/billing/language/pt_br.php
+%%WWWDIR%%/modules/billing/language/ro.php
 %%WWWDIR%%/modules/billing/language/ru.php
 %%WWWDIR%%/modules/billing/language/sv.php
 %%WWWDIR%%/modules/billing/model/Book.php
@@ -1889,6 +1924,7 @@
 %%WWWDIR%%/modules/cron/CronModule.php
 %%WWWDIR%%/modules/cron/controller/CronGroupController.php
 %%WWWDIR%%/modules/cron/controller/CronUserController.php
+%%WWWDIR%%/modules/cron/language/bg.php
 %%WWWDIR%%/modules/cron/language/bn_bd.php
 %%WWWDIR%%/modules/cron/language/cs.php
 %%WWWDIR%%/modules/cron/language/de.php
@@ -2012,6 +2048,7 @@
 %%WWWDIR%%/modules/demodata/addressbook/noperson.jpg
 %%WWWDIR%%/modules/demodata/addressbook/wecoyote.png
 %%WWWDIR%%/modules/demodata/controller/DemodataController.php
+%%WWWDIR%%/modules/demodata/language/bg.php
 %%WWWDIR%%/modules/demodata/language/bn_bd.php
 %%WWWDIR%%/modules/demodata/language/cs.php
 %%WWWDIR%%/modules/demodata/language/de.php
@@ -2021,6 +2058,7 @@
 %%WWWDIR%%/modules/demodata/language/id.php
 %%WWWDIR%%/modules/demodata/language/pl.php
 %%WWWDIR%%/modules/demodata/language/pt_br.php
+%%WWWDIR%%/modules/demodata/language/ro.php
 %%WWWDIR%%/modules/demodata/scripts.txt
 %%WWWDIR%%/modules/documenttemplates/DocumenttemplatesModule.php
 %%WWWDIR%%/modules/documenttemplates/EmailTemplateDialog.js
@@ -2034,6 +2072,7 @@
 %%WWWDIR%%/modules/documenttemplates/controller/EmailTemplateController.php
 %%WWWDIR%%/modules/documenttemplates/controller/TemplateController.php
 %%WWWDIR%%/modules/documenttemplates/install/letter_template.docx
+%%WWWDIR%%/modules/documenttemplates/language/bg.php
 %%WWWDIR%%/modules/documenttemplates/language/cs.php
 %%WWWDIR%%/modules/documenttemplates/language/de.php
 %%WWWDIR%%/modules/documenttemplates/language/en.php
@@ -2048,6 +2087,7 @@
 %%WWWDIR%%/modules/documenttemplates/language/nl.php
 %%WWWDIR%%/modules/documenttemplates/language/pl.php
 %%WWWDIR%%/modules/documenttemplates/language/pt_br.php
+%%WWWDIR%%/modules/documenttemplates/language/ro.php
 %%WWWDIR%%/modules/documenttemplates/language/sv.php
 %%WWWDIR%%/modules/documenttemplates/language/th.php
 %%WWWDIR%%/modules/documenttemplates/model/Parser.php
@@ -2365,6 +2405,7 @@
 %%WWWDIR%%/modules/filesearch/install/uninstall.sql
 %%WWWDIR%%/modules/filesearch/install/updates.inc.php
 %%WWWDIR%%/modules/filesearch/install/updatescripts/1_install_cron.php
+%%WWWDIR%%/modules/filesearch/language/bg.php
 %%WWWDIR%%/modules/filesearch/language/cs.php
 %%WWWDIR%%/modules/filesearch/language/de.php
 %%WWWDIR%%/modules/filesearch/language/en.php
@@ -2377,6 +2418,7 @@
 %%WWWDIR%%/modules/filesearch/language/nl.php
 %%WWWDIR%%/modules/filesearch/language/pl.php
 %%WWWDIR%%/modules/filesearch/language/pt_br.php
+%%WWWDIR%%/modules/filesearch/language/ro.php
 %%WWWDIR%%/modules/filesearch/model/DocBundle.php
 %%WWWDIR%%/modules/filesearch/model/DocBundleFile.php
 %%WWWDIR%%/modules/filesearch/model/Duplicate.php
@@ -2478,6 +2520,7 @@
 %%WWWDIR%%/modules/googledrive/google-api-php-client/src/service/Google_Service.php
 %%WWWDIR%%/modules/googledrive/google-api-php-client/src/service/Google_ServiceResource.php
 %%WWWDIR%%/modules/googledrive/google-api-php-client/src/service/Google_Utils.php
+%%WWWDIR%%/modules/googledrive/language/bg.php
 %%WWWDIR%%/modules/googledrive/language/cs.php
 %%WWWDIR%%/modules/googledrive/language/de.php
 %%WWWDIR%%/modules/googledrive/language/en.php
@@ -2522,6 +2565,7 @@
 %%WWWDIR%%/modules/groups/language/it.php
 %%WWWDIR%%/modules/hoursapproval2/Hoursapproval2Module.php
 %%WWWDIR%%/modules/hoursapproval2/controller/ApproveController.php
+%%WWWDIR%%/modules/hoursapproval2/language/bg.php
 %%WWWDIR%%/modules/hoursapproval2/language/cs.php
 %%WWWDIR%%/modules/hoursapproval2/language/de.php
 %%WWWDIR%%/modules/hoursapproval2/language/en.php
@@ -2535,6 +2579,7 @@
 %%WWWDIR%%/modules/hoursapproval2/language/nl.php
 %%WWWDIR%%/modules/hoursapproval2/language/pl.php
 %%WWWDIR%%/modules/hoursapproval2/language/pt_br.php
+%%WWWDIR%%/modules/hoursapproval2/language/ro.php
 %%WWWDIR%%/modules/hoursapproval2/language/ru.php
 %%WWWDIR%%/modules/hoursapproval2/language/sv.php
 %%WWWDIR%%/modules/hoursapproval2/scripts.txt
@@ -2556,6 +2601,7 @@
 %%WWWDIR%%/modules/leavedays/install/updates.inc.php
 %%WWWDIR%%/modules/leavedays/install/updatescripts/1_store_national_holiday_hours.php
 %%WWWDIR%%/modules/leavedays/install/updatescripts/2_update_to_credit_types.php
+%%WWWDIR%%/modules/leavedays/language/bg.php
 %%WWWDIR%%/modules/leavedays/language/cs.php
 %%WWWDIR%%/modules/leavedays/language/de.php
 %%WWWDIR%%/modules/leavedays/language/en.php
@@ -2568,6 +2614,7 @@
 %%WWWDIR%%/modules/leavedays/language/nl.php
 %%WWWDIR%%/modules/leavedays/language/pl.php
 %%WWWDIR%%/modules/leavedays/language/pt_br.php
+%%WWWDIR%%/modules/leavedays/language/ro.php
 %%WWWDIR%%/modules/leavedays/model/Credit.php
 %%WWWDIR%%/modules/leavedays/model/CreditType.php
 %%WWWDIR%%/modules/leavedays/model/Leaveday.php
@@ -2766,6 +2813,7 @@
 %%WWWDIR%%/modules/phpbb3/auth_groupoffice.php
 %%WWWDIR%%/modules/phpbb3/controller/BridgeController.php
 %%WWWDIR%%/modules/phpbb3/install/noautoinstall
+%%WWWDIR%%/modules/phpbb3/language/bg.php
 %%WWWDIR%%/modules/phpbb3/language/bn_bd.php
 %%WWWDIR%%/modules/phpbb3/language/cs.php
 %%WWWDIR%%/modules/phpbb3/language/en.php
@@ -2835,6 +2883,7 @@
 %%WWWDIR%%/modules/postfixadmin/themes/ExtJS/style.css
 %%WWWDIR%%/modules/pr2analyzer/Pr2analyzerModule.php
 %%WWWDIR%%/modules/pr2analyzer/controller/TimeController.php
+%%WWWDIR%%/modules/pr2analyzer/language/bg.php
 %%WWWDIR%%/modules/pr2analyzer/language/cs.php
 %%WWWDIR%%/modules/pr2analyzer/language/de.php
 %%WWWDIR%%/modules/pr2analyzer/language/en.php
@@ -2848,6 +2897,7 @@
 %%WWWDIR%%/modules/pr2analyzer/language/nl.php
 %%WWWDIR%%/modules/pr2analyzer/language/pl.php
 %%WWWDIR%%/modules/pr2analyzer/language/pt_br.php
+%%WWWDIR%%/modules/pr2analyzer/language/ro.php
 %%WWWDIR%%/modules/pr2analyzer/themes/Default/images/pr2analizer.png
 %%WWWDIR%%/modules/pr2analyzer/themes/Default/images/reports.png
 %%WWWDIR%%/modules/pr2analyzer/themes/Default/style.css
@@ -2934,6 +2984,7 @@
 %%WWWDIR%%/modules/projects2/install/updatescripts/5_install_income_notification_cron.php
 %%WWWDIR%%/modules/projects2/install/updatescripts/budget_to_income.php
 %%WWWDIR%%/modules/projects2/install/updatescripts/share_existing_statuses.php
+%%WWWDIR%%/modules/projects2/language/bg.php
 %%WWWDIR%%/modules/projects2/language/cs.php
 %%WWWDIR%%/modules/projects2/language/de.php
 %%WWWDIR%%/modules/projects2/language/en.php
@@ -2978,6 +3029,7 @@
 %%WWWDIR%%/modules/projects2/report/AbstractReport.php
 %%WWWDIR%%/modules/projects2/report/EmployeesReport.php
 %%WWWDIR%%/modules/projects2/report/ExportAll.php
+%%WWWDIR%%/modules/projects2/report/FinanceReport.php
 %%WWWDIR%%/modules/projects2/report/Planning.php
 %%WWWDIR%%/modules/projects2/report/ProjectCostBatchReport.php
 %%WWWDIR%%/modules/projects2/report/ProjectCostReport.php
@@ -3073,6 +3125,7 @@
 %%WWWDIR%%/modules/savemailas/install/demo2.eml
 %%WWWDIR%%/modules/savemailas/install/install.sql
 %%WWWDIR%%/modules/savemailas/install/updates.php
+%%WWWDIR%%/modules/savemailas/language/bg.php
 %%WWWDIR%%/modules/savemailas/language/cs.php
 %%WWWDIR%%/modules/savemailas/language/de.php
 %%WWWDIR%%/modules/savemailas/language/en.php
@@ -3086,6 +3139,7 @@
 %%WWWDIR%%/modules/savemailas/language/nl.php
 %%WWWDIR%%/modules/savemailas/language/pl.php
 %%WWWDIR%%/modules/savemailas/language/pt_br.php
+%%WWWDIR%%/modules/savemailas/language/ro.php
 %%WWWDIR%%/modules/savemailas/language/sv.php
 %%WWWDIR%%/modules/savemailas/language/th.php
 %%WWWDIR%%/modules/savemailas/model/LinkedEmail.php
@@ -3176,6 +3230,7 @@
 %%WWWDIR%%/modules/site/install/install.sql
 %%WWWDIR%%/modules/site/install/uninstall.sql
 %%WWWDIR%%/modules/site/install/updates.inc.php
+%%WWWDIR%%/modules/site/language/bg.php
 %%WWWDIR%%/modules/site/language/bn_bd.php
 %%WWWDIR%%/modules/site/language/cs.php
 %%WWWDIR%%/modules/site/language/de.php
@@ -3190,6 +3245,7 @@
 %%WWWDIR%%/modules/site/language/nl.php
 %%WWWDIR%%/modules/site/language/pl.php
 %%WWWDIR%%/modules/site/language/pt_br.php
+%%WWWDIR%%/modules/site/language/ro.php
 %%WWWDIR%%/modules/site/model/Content.php
 %%WWWDIR%%/modules/site/model/FormModel.php
 %%WWWDIR%%/modules/site/model/Menu.php
@@ -3346,6 +3402,7 @@
 %%WWWDIR%%/modules/smime/language/nl.php
 %%WWWDIR%%/modules/smime/language/pl.php
 %%WWWDIR%%/modules/smime/language/pt_br.php
+%%WWWDIR%%/modules/smime/language/ro.php
 %%WWWDIR%%/modules/smime/model/Certificate.php
 %%WWWDIR%%/modules/smime/model/PublicCertificate.php
 %%WWWDIR%%/modules/smime/scripts.txt
@@ -3419,6 +3476,7 @@
 %%WWWDIR%%/modules/sync/install/install.sql
 %%WWWDIR%%/modules/sync/install/uninstall.sql
 %%WWWDIR%%/modules/sync/install/updates.inc.php
+%%WWWDIR%%/modules/sync/language/bg.php
 %%WWWDIR%%/modules/sync/language/cs.php
 %%WWWDIR%%/modules/sync/language/de.php
 %%WWWDIR%%/modules/sync/language/en.php
@@ -3575,6 +3633,7 @@
 %%WWWDIR%%/modules/tickets/install/updatescripts/6_remove_ticket_identifier_from_email_subject.php
 %%WWWDIR%%/modules/tickets/install/updatescripts/7_set_last_agent_and_contact_response_time.php
 %%WWWDIR%%/modules/tickets/install/updatescripts/8_install_cron.php
+%%WWWDIR%%/modules/tickets/language/bg.php
 %%WWWDIR%%/modules/tickets/language/cs.php
 %%WWWDIR%%/modules/tickets/language/de.php
 %%WWWDIR%%/modules/tickets/language/en.php
@@ -3589,6 +3648,7 @@
 %%WWWDIR%%/modules/tickets/language/nl.php
 %%WWWDIR%%/modules/tickets/language/pl.php
 %%WWWDIR%%/modules/tickets/language/pt_br.php
+%%WWWDIR%%/modules/tickets/language/ro.php
 %%WWWDIR%%/modules/tickets/language/ru.php
 %%WWWDIR%%/modules/tickets/language/sv.php
 %%WWWDIR%%/modules/tickets/language/th.php
@@ -3632,6 +3692,7 @@
 %%WWWDIR%%/modules/timeregistration2/install/install.sql
 %%WWWDIR%%/modules/timeregistration2/install/uninstall.sql
 %%WWWDIR%%/modules/timeregistration2/install/updates.inc.php
+%%WWWDIR%%/modules/timeregistration2/language/bg.php
 %%WWWDIR%%/modules/timeregistration2/language/cs.php
 %%WWWDIR%%/modules/timeregistration2/language/de.php
 %%WWWDIR%%/modules/timeregistration2/language/en.php
@@ -3645,6 +3706,7 @@
 %%WWWDIR%%/modules/timeregistration2/language/nl.php
 %%WWWDIR%%/modules/timeregistration2/language/pl.php
 %%WWWDIR%%/modules/timeregistration2/language/pt_br.php
+%%WWWDIR%%/modules/timeregistration2/language/ro.php
 %%WWWDIR%%/modules/timeregistration2/language/ru.php
 %%WWWDIR%%/modules/timeregistration2/language/sv.php
 %%WWWDIR%%/modules/timeregistration2/model/Day.php
@@ -3827,6 +3889,7 @@
 %%WWWDIR%%/modules/z-push/vendor/z-push/backend/ipcmemcached/ipcmemcachedprovider.php
 %%WWWDIR%%/modules/z-push/vendor/z-push/backend/ipcsharedmemory/ipcsharedmemoryprovider.php
 %%WWWDIR%%/modules/z-push/vendor/z-push/backend/ipcwincache/ipcwincacheprovider.php
+%%WWWDIR%%/modules/z-push/vendor/z-push/backend/kopano/checkshares.php
 %%WWWDIR%%/modules/z-push/vendor/z-push/backend/kopano/config.php
 %%WWWDIR%%/modules/z-push/vendor/z-push/backend/kopano/exporter.php
 %%WWWDIR%%/modules/z-push/vendor/z-push/backend/kopano/importer.php
@@ -3873,6 +3936,7 @@
 %%WWWDIR%%/modules/z-push/vendor/z-push/config.php
 %%WWWDIR%%/modules/z-push/vendor/z-push/include/iCalendar.php
 %%WWWDIR%%/modules/z-push/vendor/z-push/include/mimeDecode.php
+%%WWWDIR%%/modules/z-push/vendor/z-push/include/rtfclass.php
 %%WWWDIR%%/modules/z-push/vendor/z-push/include/z_RFC822.php
 %%WWWDIR%%/modules/z-push/vendor/z-push/include/z_RTF.php
 %%WWWDIR%%/modules/z-push/vendor/z-push/include/z_caldav.php
@@ -3896,6 +3960,7 @@
 %%WWWDIR%%/modules/z-push/vendor/z-push/lib/core/synccollections.php
 %%WWWDIR%%/modules/z-push/vendor/z-push/lib/core/syncparameters.php
 %%WWWDIR%%/modules/z-push/vendor/z-push/lib/core/topcollector.php
+%%WWWDIR%%/modules/z-push/vendor/z-push/lib/core/userstoreinfo.php
 %%WWWDIR%%/modules/z-push/vendor/z-push/lib/core/zlog.php
 %%WWWDIR%%/modules/z-push/vendor/z-push/lib/core/zpush.php
 %%WWWDIR%%/modules/z-push/vendor/z-push/lib/core/zpushdefs.php
@@ -4029,6 +4094,7 @@
 %%WWWDIR%%/modules/zpushadmin/install/install.sql
 %%WWWDIR%%/modules/zpushadmin/install/uninstall.sql
 %%WWWDIR%%/modules/zpushadmin/install/updates.php
+%%WWWDIR%%/modules/zpushadmin/language/bg.php
 %%WWWDIR%%/modules/zpushadmin/language/cs.php
 %%WWWDIR%%/modules/zpushadmin/language/de.php
 %%WWWDIR%%/modules/zpushadmin/language/en.php
@@ -4040,6 +4106,7 @@
 %%WWWDIR%%/modules/zpushadmin/language/nb.php
 %%WWWDIR%%/modules/zpushadmin/language/nl.php
 %%WWWDIR%%/modules/zpushadmin/language/pl.php
+%%WWWDIR%%/modules/zpushadmin/language/ro.php
 %%WWWDIR%%/modules/zpushadmin/language/sv.php
 %%WWWDIR%%/modules/zpushadmin/language/th.php
 %%WWWDIR%%/modules/zpushadmin/model/Device.php
@@ -4124,6 +4191,7 @@
 %%WWWDIR%%/vendor/egulias/email-validator/src/Exception/CommaInDomain.php
 %%WWWDIR%%/vendor/egulias/email-validator/src/Exception/ConsecutiveAt.php
 %%WWWDIR%%/vendor/egulias/email-validator/src/Exception/ConsecutiveDot.php
+%%WWWDIR%%/vendor/egulias/email-validator/src/Exception/DomainAcceptsNoMail.php
 %%WWWDIR%%/vendor/egulias/email-validator/src/Exception/DomainHyphened.php
 %%WWWDIR%%/vendor/egulias/email-validator/src/Exception/DotAtEnd.php
 %%WWWDIR%%/vendor/egulias/email-validator/src/Exception/DotAtStart.php
@@ -4134,6 +4202,7 @@
 %%WWWDIR%%/vendor/egulias/email-validator/src/Exception/ExpectingDomainLiteralClose.php
 %%WWWDIR%%/vendor/egulias/email-validator/src/Exception/ExpectingQPair.php
 %%WWWDIR%%/vendor/egulias/email-validator/src/Exception/InvalidEmail.php
+%%WWWDIR%%/vendor/egulias/email-validator/src/Exception/LocalOrReservedDomain.php
 %%WWWDIR%%/vendor/egulias/email-validator/src/Exception/NoDNSRecord.php
 %%WWWDIR%%/vendor/egulias/email-validator/src/Exception/NoDomainPart.php
 %%WWWDIR%%/vendor/egulias/email-validator/src/Exception/NoLocalPart.php
@@ -4181,6 +4250,8 @@
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/README.md
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/UPGRADING.md
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/composer.json
+%%WWWDIR%%/vendor/guzzlehttp/guzzle/src/BodySummarizer.php
+%%WWWDIR%%/vendor/guzzlehttp/guzzle/src/BodySummarizerInterface.php
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/src/Client.php
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/src/ClientInterface.php
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/src/ClientTrait.php
@@ -4208,6 +4279,7 @@
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/src/Handler/StreamHandler.php
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/src/HandlerStack.php
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/src/MessageFormatter.php
+%%WWWDIR%%/vendor/guzzlehttp/guzzle/src/MessageFormatterInterface.php
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/src/Middleware.php
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/src/Pool.php
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/src/PrepareBodyMiddleware.php
@@ -4218,16 +4290,23 @@
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/src/Utils.php
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/src/functions.php
 %%WWWDIR%%/vendor/guzzlehttp/guzzle/src/functions_include.php
+%%WWWDIR%%/vendor/guzzlehttp/promises/.php_cs.dist
 %%WWWDIR%%/vendor/guzzlehttp/promises/CHANGELOG.md
 %%WWWDIR%%/vendor/guzzlehttp/promises/LICENSE
 %%WWWDIR%%/vendor/guzzlehttp/promises/Makefile
 %%WWWDIR%%/vendor/guzzlehttp/promises/README.md
 %%WWWDIR%%/vendor/guzzlehttp/promises/composer.json
+%%WWWDIR%%/vendor/guzzlehttp/promises/phpstan-baseline.neon
+%%WWWDIR%%/vendor/guzzlehttp/promises/phpstan.neon.dist
+%%WWWDIR%%/vendor/guzzlehttp/promises/psalm.xml
 %%WWWDIR%%/vendor/guzzlehttp/promises/src/AggregateException.php
 %%WWWDIR%%/vendor/guzzlehttp/promises/src/CancellationException.php
 %%WWWDIR%%/vendor/guzzlehttp/promises/src/Coroutine.php
+%%WWWDIR%%/vendor/guzzlehttp/promises/src/Create.php
+%%WWWDIR%%/vendor/guzzlehttp/promises/src/Each.php
 %%WWWDIR%%/vendor/guzzlehttp/promises/src/EachPromise.php
 %%WWWDIR%%/vendor/guzzlehttp/promises/src/FulfilledPromise.php
+%%WWWDIR%%/vendor/guzzlehttp/promises/src/Is.php
 %%WWWDIR%%/vendor/guzzlehttp/promises/src/Promise.php
 %%WWWDIR%%/vendor/guzzlehttp/promises/src/PromiseInterface.php
 %%WWWDIR%%/vendor/guzzlehttp/promises/src/PromisorInterface.php
@@ -4235,6 +4314,7 @@
 %%WWWDIR%%/vendor/guzzlehttp/promises/src/RejectionException.php
 %%WWWDIR%%/vendor/guzzlehttp/promises/src/TaskQueue.php
 %%WWWDIR%%/vendor/guzzlehttp/promises/src/TaskQueueInterface.php
+%%WWWDIR%%/vendor/guzzlehttp/promises/src/Utils.php
 %%WWWDIR%%/vendor/guzzlehttp/promises/src/functions.php
 %%WWWDIR%%/vendor/guzzlehttp/promises/src/functions_include.php
 %%WWWDIR%%/vendor/guzzlehttp/psr7/CHANGELOG.md
@@ -4246,13 +4326,17 @@
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/CachingStream.php
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/DroppingStream.php
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/FnStream.php
+%%WWWDIR%%/vendor/guzzlehttp/psr7/src/Header.php
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/InflateStream.php
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/LazyOpenStream.php
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/LimitStream.php
+%%WWWDIR%%/vendor/guzzlehttp/psr7/src/Message.php
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/MessageTrait.php
+%%WWWDIR%%/vendor/guzzlehttp/psr7/src/MimeType.php
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/MultipartStream.php
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/NoSeekStream.php
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/PumpStream.php
+%%WWWDIR%%/vendor/guzzlehttp/psr7/src/Query.php
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/Request.php
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/Response.php
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/Rfc7230.php
@@ -4264,6 +4348,7 @@
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/Uri.php
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/UriNormalizer.php
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/UriResolver.php
+%%WWWDIR%%/vendor/guzzlehttp/psr7/src/Utils.php
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/functions.php
 %%WWWDIR%%/vendor/guzzlehttp/psr7/src/functions_include.php
 %%WWWDIR%%/vendor/html2text/html2text/.gitignore
@@ -6159,6 +6244,8 @@
 %%WWWDIR%%/vendor/setasign/fpdi/README.md
 %%WWWDIR%%/vendor/setasign/fpdi/SECURITY.md
 %%WWWDIR%%/vendor/setasign/fpdi/composer.json
+%%WWWDIR%%/vendor/setasign/fpdi/phpcs.xml
+%%WWWDIR%%/vendor/setasign/fpdi/phpstan.neon
 %%WWWDIR%%/vendor/setasign/fpdi/src/FpdfTpl.php
 %%WWWDIR%%/vendor/setasign/fpdi/src/FpdfTplTrait.php
 %%WWWDIR%%/vendor/setasign/fpdi/src/Fpdi.php
@@ -6621,10 +6708,30 @@
 %%WWWDIR%%/vendor/symfony/polyfill-iconv/bootstrap.php
 %%WWWDIR%%/vendor/symfony/polyfill-iconv/composer.json
 %%WWWDIR%%/vendor/symfony/polyfill-intl-idn/Idn.php
+%%WWWDIR%%/vendor/symfony/polyfill-intl-idn/Info.php
 %%WWWDIR%%/vendor/symfony/polyfill-intl-idn/LICENSE
 %%WWWDIR%%/vendor/symfony/polyfill-intl-idn/README.md
+%%WWWDIR%%/vendor/symfony/polyfill-intl-idn/Resources/unidata/DisallowedRanges.php
+%%WWWDIR%%/vendor/symfony/polyfill-intl-idn/Resources/unidata/Regex.php
+%%WWWDIR%%/vendor/symfony/polyfill-intl-idn/Resources/unidata/deviation.php
+%%WWWDIR%%/vendor/symfony/polyfill-intl-idn/Resources/unidata/disallowed.php
+%%WWWDIR%%/vendor/symfony/polyfill-intl-idn/Resources/unidata/disallowed_STD3_mapped.php
+%%WWWDIR%%/vendor/symfony/polyfill-intl-idn/Resources/unidata/disallowed_STD3_valid.php
+%%WWWDIR%%/vendor/symfony/polyfill-intl-idn/Resources/unidata/ignored.php
+%%WWWDIR%%/vendor/symfony/polyfill-intl-idn/Resources/unidata/mapped.php
+%%WWWDIR%%/vendor/symfony/polyfill-intl-idn/Resources/unidata/virama.php
 %%WWWDIR%%/vendor/symfony/polyfill-intl-idn/bootstrap.php
 %%WWWDIR%%/vendor/symfony/polyfill-intl-idn/composer.json
+%%WWWDIR%%/vendor/symfony/polyfill-intl-normalizer/LICENSE
+%%WWWDIR%%/vendor/symfony/polyfill-intl-normalizer/Normalizer.php
+%%WWWDIR%%/vendor/symfony/polyfill-intl-normalizer/README.md
+%%WWWDIR%%/vendor/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php
+%%WWWDIR%%/vendor/symfony/polyfill-intl-normalizer/Resources/unidata/canonicalComposition.php
+%%WWWDIR%%/vendor/symfony/polyfill-intl-normalizer/Resources/unidata/canonicalDecomposition.php
+%%WWWDIR%%/vendor/symfony/polyfill-intl-normalizer/Resources/unidata/combiningClass.php
+%%WWWDIR%%/vendor/symfony/polyfill-intl-normalizer/Resources/unidata/compatibilityDecomposition.php
+%%WWWDIR%%/vendor/symfony/polyfill-intl-normalizer/bootstrap.php
+%%WWWDIR%%/vendor/symfony/polyfill-intl-normalizer/composer.json
 %%WWWDIR%%/vendor/symfony/polyfill-mbstring/LICENSE
 %%WWWDIR%%/vendor/symfony/polyfill-mbstring/Mbstring.php
 %%WWWDIR%%/vendor/symfony/polyfill-mbstring/README.md
@@ -6633,6 +6740,18 @@
 %%WWWDIR%%/vendor/symfony/polyfill-mbstring/Resources/unidata/upperCase.php
 %%WWWDIR%%/vendor/symfony/polyfill-mbstring/bootstrap.php
 %%WWWDIR%%/vendor/symfony/polyfill-mbstring/composer.json
+%%WWWDIR%%/vendor/symfony/polyfill-php70/LICENSE
+%%WWWDIR%%/vendor/symfony/polyfill-php70/Php70.php
+%%WWWDIR%%/vendor/symfony/polyfill-php70/README.md
+%%WWWDIR%%/vendor/symfony/polyfill-php70/Resources/stubs/ArithmeticError.php
+%%WWWDIR%%/vendor/symfony/polyfill-php70/Resources/stubs/AssertionError.php
+%%WWWDIR%%/vendor/symfony/polyfill-php70/Resources/stubs/DivisionByZeroError.php
+%%WWWDIR%%/vendor/symfony/polyfill-php70/Resources/stubs/Error.php
+%%WWWDIR%%/vendor/symfony/polyfill-php70/Resources/stubs/ParseError.php
+%%WWWDIR%%/vendor/symfony/polyfill-php70/Resources/stubs/SessionUpdateTimestampHandlerInterface.php
+%%WWWDIR%%/vendor/symfony/polyfill-php70/Resources/stubs/TypeError.php
+%%WWWDIR%%/vendor/symfony/polyfill-php70/bootstrap.php
+%%WWWDIR%%/vendor/symfony/polyfill-php70/composer.json
 %%WWWDIR%%/vendor/symfony/polyfill-php72/LICENSE
 %%WWWDIR%%/vendor/symfony/polyfill-php72/Php72.php
 %%WWWDIR%%/vendor/symfony/polyfill-php72/README.md

@@ -1,14 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	fail2ban
-PORTVERSION=	0.11.1
-PORTREVISION=	2
+PORTVERSION=	0.11.2
 CATEGORIES=	security python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-
-PATCHFILES=	55e76c0b807e87f6a04d459bb9c59da33c98572b.patch:-p1 \
-		9d7388e68448e9294e568a8ad21599e719c914b0.patch:-p1
-PATCH_SITES=	https://github.com/fail2ban/fail2ban/commit/
 
 MAINTAINER=	theis@gmx.at
 COMMENT=	Scans log files and bans IP that makes too many password failures
@@ -18,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
-USES=		python:patch shebangfix
+USES=		python:3.6+,patch shebangfix
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist distutils
 USE_RC_SUBR=	fail2ban
@@ -30,7 +25,8 @@ SHEBANG_LANG=	fail2ban-python
 
 SUB_LIST+=	PYTHON_CMD=${PYTHON_CMD}
 
-PYDISTUTILS_INSTALLARGS+=	--install-data=${ETCDIR} --without-test
+PYDISTUTILS_BUILDARGS+=		--without-tests
+PYDISTUTILS_INSTALLARGS+=	--install-data=${ETCDIR}
 
 PORTDOCS=	README.md DEVELOP
 

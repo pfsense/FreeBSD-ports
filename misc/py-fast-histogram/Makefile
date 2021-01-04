@@ -16,10 +16,10 @@ BUILD_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}setuptools_scm>0:devel/py-setuptools_scm@${PY_FLAVOR}
 RUN_DEPENDS=	${PYNUMPY}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/fast_histogram/_histogram_core.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/fast_histogram/_histogram_core*.so
 
 .include <bsd.port.mk>

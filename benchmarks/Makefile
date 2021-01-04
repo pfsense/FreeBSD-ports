@@ -32,6 +32,7 @@
     SUBDIR += httperf
     SUBDIR += hyperfine
     SUBDIR += imb
+    SUBDIR += inferno
     SUBDIR += interbench
     SUBDIR += iorate
     SUBDIR += iozone
@@ -101,6 +102,7 @@
     SUBDIR += unixbench
     SUBDIR += uperf
     SUBDIR += vegeta
+    SUBDIR += vkmark
     SUBDIR += webbench
     SUBDIR += wrk
 

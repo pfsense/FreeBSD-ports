@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	zeek
-PORTVERSION=	3.0.11
+PORTVERSION=	3.0.12
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	https://old.zeek.org/downloads/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -12,7 +13,8 @@ COMMENT=	System for detecting network intruders in real-time
 
 LICENSE=	BSD3CLAUSE
 
-BROKEN_powerpc64=	Does not build: error: zero-size array 'names'
+BROKEN_FreeBSD_11_powerpc64==	Does not build: error: zero-size array 'names'
+BROKEN_FreeBSD_12_powerpc64==	Does not build: error: zero-size array 'names'
 
 USES=		bison cmake compiler:c++11-lang gettext-runtime ninja perl5 python shebangfix ssl
 USE_LDCONFIG=	yes
@@ -45,7 +47,7 @@ CMAKE_ARGS+=	-GNinja \
 
 ZEEKUSER?=	zeek
 ZEEKGROUP?=	zeek
-PLIST_SUB+=	ARCH=${ARCH:S/aarch64/arm64/} \
+PLIST_SUB+=	ARCH=${UNAME_M} \
 		ZEEKUSER=${ZEEKUSER} \
 		ZEEKGROUP=${ZEEKGROUP} \
 		LCASE_OPSYS=${OPSYS:tl}
@@ -53,12 +55,11 @@ PLIST_SUB+=	ARCH=${ARCH:S/aarch64/arm64/} \
 USERS=		${ZEEKUSER}
 GROUPS=		${ZEEKGROUP}
 
-OPTIONS_DEFINE= BROCCOLI BROKER DEBUG GEOIP2 IPSUMDUMP LBL_CF LBL_HF \
-		NETMAP PERFTOOLS ZEEKCTL
+OPTIONS_DEFINE= BROKER DEBUG GEOIP2 IPSUMDUMP LBL_CF LBL_HF NETMAP \
+		PERFTOOLS ZEEKCTL
 OPTIONS_DEFAULT=BROKER GEOIP2 IPSUMDUMP LBL_CF LBL_HF NETMAP ZEEKCTL
 OPTIONS_SUB=	yes
 
-BROCCOLI_DESC=	Build support for libbroccoli communications (DEPRECATED)
 BROKER_DESC=	Enable the Broker communication library
 GEOIP2_DESC=	Build with GeoIP2 (MaxMindDB) support
 IPSUMDUMP_DESC=	Enables traffic summaries
@@ -70,7 +71,6 @@ ZEEKCTL_DESC=	ZeekControl support (implies BROKER and IPSUMDUMP)
 
 ZEEKCTL_IMPLIES=		BROKER IPSUMDUMP
 
-BROCCOLI_LIB_DEPENDS=	libbroccoli.so:security/broccoli
 BROKER_BUILD_DEPENDS=	swig:devel/swig
 BROKER_CMAKE_BOOL=	ENABLE_BROKER
 DEBUG_CMAKE_BOOL=	ENABLE_DEBUG
@@ -98,28 +98,38 @@ ZEEKCTL_RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash \
 USE_RC_SUBR=	zeek
 .endif
 
+post-patch:
+	# Silence the "use ZeekControl.plugin instead of BroControl.plugin" nag
+	@${REINPLACE_CMD} -e 's/^print/#&/' \
+	    ${WRKSRC}/aux/zeekctl/BroControl/__init__.py
+
 post-install-ZEEKCTL-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}/logs
 	${MKDIR} ${STAGEDIR}${PREFIX}/spool/tmp
 	${MKDIR} ${STAGEDIR}${PREFIX}/spool/installed-scripts-do-not-touch/auto
 	${MKDIR} ${STAGEDIR}${PREFIX}/spool/installed-scripts-do-not-touch/site
 .for F in zeekctl.cfg networks.cfg node.cfg
-	${MV} ${STAGEDIR}${PREFIX}/etc/${F} ${STAGEDIR}${PREFIX}/etc/${F}.example
+	${MV} ${STAGEDIR}${PREFIX}/etc/${F} ${STAGEDIR}${PREFIX}/etc/${F}.sample
 .endfor
 	${RM} ${STAGEDIR}${PREFIX}/share/zeekctl/scripts/zeekctl-config.sh
 	${LN} -s ../../../spool/zeekctl-config.sh \
 	    ${STAGEDIR}${PREFIX}/share/zeekctl/scripts/zeekctl-config.sh
 
 post-install:
-	${RM} -r ${STAGEDIR}${PREFIX}/share/zeek/cmake
+	${MV} ${STAGEDIR}${DATADIR}/site/local.zeek \
+	    ${STAGEDIR}${DATADIR}/site/local.zeek.sample
 
 pre-install-ZEEKCTL-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/rc.d
 
 post-build-NETMAP-on:
 	${LN} -s ../.build ${WRKSRC}/build
-	(cd ${WRKSRC_bro_netmap} && ./configure --bro-dist=${WRKSRC} \
+	cd ${WRKSRC_bro_netmap} && ./configure --bro-dist=${WRKSRC} \
 	    --install-root=${STAGEDIR}${PREFIX}/lib/zeek/plugins && \
-	    make && make install)
+	    make && make install
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+UNAME_M!=	${UNAME} -m
+
+.include <bsd.port.post.mk>

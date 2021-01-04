@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	librsvg
-PORTVERSION=	2.50.0
+PORTVERSION=	2.50.2
 CATEGORIES=	graphics gnome
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	2-rust
@@ -31,9 +31,11 @@ CONFIGURE_ARGS=	--disable-Bsymbolic \
 		--enable-vala
 # Make sure it uses the Rust toolchain from ports.
 CONFIGURE_ENV=	CARGO=${LOCALBASE}/bin/cargo \
-		RUSTC=${LOCALBASE}/bin/rustc
+		RUSTC=${LOCALBASE}/bin/rustc \
+		RUSTFLAGS="${RUSTFLAGS} -C linker=${CC:Q} ${LDFLAGS:C/.+/-C link-arg=&/}"
 MAKE_ENV=	CARGO_BUILD_JOBS=${MAKE_JOBS_NUMBER} \
-		RUSTC=${LOCALBASE}/bin/rustc
+		RUSTC=${LOCALBASE}/bin/rustc \
+		RUSTFLAGS="${RUSTFLAGS} -C linker=${CC:Q} ${LDFLAGS:C/.+/-C link-arg=&/}"
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 

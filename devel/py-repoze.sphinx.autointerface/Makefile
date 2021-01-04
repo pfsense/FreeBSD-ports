@@ -7,13 +7,13 @@ CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	cpm@FreeBSD.org
+MAINTAINER=	zope@FreeBSD.org
 COMMENT=	Auto-generates API docs from Zope interfaces
 
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=	python
+USES=	python:3.6+
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

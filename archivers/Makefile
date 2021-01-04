@@ -149,10 +149,6 @@
     SUBDIR += php-lz4
     SUBDIR += php-snappy
     SUBDIR += php-zstd
-    SUBDIR += php72-bz2
-    SUBDIR += php72-phar
-    SUBDIR += php72-zip
-    SUBDIR += php72-zlib
     SUBDIR += php73-bz2
     SUBDIR += php73-phar
     SUBDIR += php73-zip
@@ -161,6 +157,10 @@
     SUBDIR += php74-phar
     SUBDIR += php74-zip
     SUBDIR += php74-zlib
+    SUBDIR += php80-bz2
+    SUBDIR += php80-phar
+    SUBDIR += php80-zip
+    SUBDIR += php80-zlib
     SUBDIR += pigz
     SUBDIR += pixz
     SUBDIR += plzip
@@ -177,7 +177,6 @@
     SUBDIR += py-lz4
     SUBDIR += py-lzma
     SUBDIR += py-lzstring
-    SUBDIR += py-pyliblzma
     SUBDIR += py-python-lhafile
     SUBDIR += py-python-lzo
     SUBDIR += py-python-snappy

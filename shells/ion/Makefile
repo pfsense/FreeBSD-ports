@@ -2,11 +2,11 @@
 
 PORTNAME=	ion
 DISTVERSION=	1.0.5-1355
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	shells
 PKGNAMESUFFIX=	-shell
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Modern system shell written in Rust
 
 LICENSE=	MIT

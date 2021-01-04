@@ -3,7 +3,7 @@
 
 PORTNAME=	gnome-shell
 PORTVERSION=	3.36.6
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	x11 gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -17,7 +17,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl \
 		sassc:textproc/sassc \
 		gnome-control-center:sysutils/gnome-control-center \
-		a2x:textproc/asciidoc
+		a2x:textproc/asciidoc \
+		${LOCALBASE}/share/bash-completion/bash_completion.sh:shells/bash-completion
 LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification \
 		libdrm.so:graphics/libdrm \
 		libmutter-6.so:x11-wm/mutter \
@@ -28,7 +29,7 @@ LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification \
 		libpolkit-agent-1.so:sysutils/polkit \
 		libp11-kit.so:security/p11-kit \
 		libical.so:devel/libical \
-		libgcr-3.so:security/gcr \
+		libgcr-base-3.so:security/gcr \
 		libicuuc.so:devel/icu \
 		libpulse.so:audio/pulseaudio \
 		libcroco-0.6.so:textproc/libcroco \

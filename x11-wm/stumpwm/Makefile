@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	stumpwm
-DISTVERSION=	19.11-155
-DISTVERSIONSUFFIX=	-g25e1854
-PORTREVISION=	4
+DISTVERSION=	20.11
+PORTREVISION=	3
 CATEGORIES=	x11-wm lisp
 
 MAINTAINER=	jrm@FreeBSD.org
@@ -54,12 +53,15 @@ do-build:
 	(cd ${WRKSRC} && \
 		CL_SOURCE_REGISTRY="${WRKSRC}" \
 		ASDF_OUTPUT_TRANSLATIONS="/:" \
+		FBSD_ASDF_COMPILE_PORT=t PORTNAME=${PORTNAME} WRKSRC=${WRKSRC}/ \
 		${SBCL} \
-		--eval "(asdf:oos 'asdf:compile-op :${PORTNAME})" \
-		--eval "(load \"load-stumpwm.lisp\")" \
-		--eval "(load \"manual.lisp\")" \
-		--eval "(stumpwm::generate-manual)" \
-		--eval "(sb-ext:quit)" && \
+		--noinform --no-sysinit --no-userinit \
+		--eval '#.(load "${LOCALBASE}/etc/asdf-init")' \
+		--eval "(asdf:oos 'asdf:compile-op :${PORTNAME} :force t)" \
+		--eval '(load "load-stumpwm.lisp")' \
+		--eval '(load "manual.lisp")' \
+		--eval '(stumpwm::generate-manual)' \
+		--eval '(sb-ext:quit)' && \
 		makeinfo stumpwm.texi)
 
 do-install:

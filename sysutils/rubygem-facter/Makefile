@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	facter
-PORTVERSION=	4.0.41
+PORTVERSION=	4.0.47
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
@@ -11,7 +11,9 @@ COMMENT=	Cross-platform Ruby library for retrieving facts from OS
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	rubygem-hocon>=1.3:devel/rubygem-hocon \
+# rubygem-ffi is a soft dependency, but is used on FreeBSD to resolve some facts
+RUN_DEPENDS=	rubygem-ffi>=1.0:devel/rubygem-ffi \
+		rubygem-hocon>=1.3:devel/rubygem-hocon \
 		rubygem-thor>=1.0.1:devel/rubygem-thor
 
 USES=		gem

@@ -10,7 +10,6 @@
     SUBDIR += aewan
     SUBDIR += apel
     SUBDIR += asedit
-    SUBDIR += atom
     SUBDIR += beav
     SUBDIR += biew
     SUBDIR += bitedit
@@ -64,6 +63,7 @@
     SUBDIR += hexpert
     SUBDIR += hnb
     SUBDIR += hte
+    SUBDIR += imhex
     SUBDIR += impress
     SUBDIR += jed
     SUBDIR += jedit
@@ -192,6 +192,7 @@
     SUBDIR += linux-sublime3
     SUBDIR += madedit
     SUBDIR += mg
+    SUBDIR += mg-static
     SUBDIR += micro
     SUBDIR += mined
     SUBDIR += mle
@@ -203,7 +204,6 @@
     SUBDIR += nedit
     SUBDIR += neovim
     SUBDIR += neovim-qt
-    SUBDIR += nvi-devel
     SUBDIR += nvi-m17n
     SUBDIR += nvi2
     SUBDIR += o
@@ -220,6 +220,7 @@
     SUBDIR += poedit
     SUBDIR += psgml
     SUBDIR += puff
+    SUBDIR += py-babi
     SUBDIR += py-editorconfig
     SUBDIR += py-pynvim
     SUBDIR += quilter
@@ -227,6 +228,7 @@
     SUBDIR += scite
     SUBDIR += se
     SUBDIR += semi
+    SUBDIR += setzer
     SUBDIR += shed
     SUBDIR += slime
     SUBDIR += ssed

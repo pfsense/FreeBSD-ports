@@ -1,11 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	libgcrypt
-PORTVERSION=	1.8.5
+PORTVERSION=	1.8.7
 CATEGORIES=	security
 MASTER_SITES=	GNUPG
 
-MAINTAINER=	cpm@FreeBSD.org
+MAINTAINER=	cy@FreeBSD.org
 COMMENT=	General purpose cryptographic library based on the code from GnuPG
 
 LICENSE=	GPLv2+ LGPL21+

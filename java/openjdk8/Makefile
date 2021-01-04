@@ -11,7 +11,7 @@ COMMENT?=	Java Development Kit ${JDK_MAJOR_VERSION}
 
 LICENSE=	GPLv2
 
-ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc powerpc64
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc powerpc64 powerpc64le
 
 BUILD_DEPENDS=	zip:archivers/zip \
 		autoconf>0:devel/autoconf \
@@ -51,7 +51,7 @@ INSTALLDIR=	${PREFIX}/${PKGBASE}
 NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	8
-JDK_UPDATE_VERSION=	265
+JDK_UPDATE_VERSION=	275
 JDK_BUILD_NUMBER=	01
 BSD_JDK_VERSION=	1
 JTREG_VERSION=		4.1
@@ -187,12 +187,13 @@ MAKE_ENV+=	JAVADOC_CMD_MEM="-Xmx768m"
 .endif
 
 .if ${ARCH} == i386
+CONFIGURE_ARGS+=	--disable-jfr
 # Fix the build for i386 when WITH_LLD_IS_LD is set
 # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=225741
 MAKE_ENV+=	LFLAGS="-Wl,-z,notext"
 .endif
 
-.if ${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH} == powerpc64
+.if ${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH:Mpowerpc64*}
 JDK_BUILD_JVM=	server
 .else
 JDK_BUILD_JVM=	zero
@@ -216,6 +217,15 @@ MAKE_ARGS+=	USE_PRECOMPILED_HEADER=0
 
 .if defined(PPC_ABI) && ${PPC_ABI} == ELFv2
 EXTRA_PATCHES+= ${FILESDIR}/extra-patch-ppc64-elfv2
+MAKE_ARGS+=	USE_PRECOMPILED_HEADER=0
+.endif
+
+.if ${ARCH} == powerpc64
+CONFIGURE_ARGS+=	--disable-jfr
+.endif
+
+.if ${ARCH} == powerpc64le
+CONFIGURE_ARGS+=	--disable-jfr
 MAKE_ARGS+=	USE_PRECOMPILED_HEADER=0
 .endif
 
@@ -243,8 +253,6 @@ post-patch:
 	    ${WRKSRC}/jdk/src/share/classes/com/sun/java/swing/plaf/gtk/Metacity.java \
 	    ${WRKSRC}/jdk/src/share/classes/sun/print/PSPrinterJob.java \
 	    ${WRKSRC}/jdk/src/solaris/classes/sun/nio/fs/BsdFileSystemProvider.java
-	@${REINPLACE_CMD} -e 's|/usr/local/share/java/classes|${LOCALBASE}/share/java/classes|' \
-	    ${WRKSRC}/jdk/src/bsd/doc/man/*.1
 	@${REINPLACE_CMD} -e 's|%%ICONV_CPPFLAGS%%|${ICONV_CPPFLAGS}|' \
 	    -e 's|%%ICONV_LDFLAGS%%|${ICONV_LDFLAGS}|' \
 	    ${WRKSRC}/jdk/make/lib/Awt2dLibraries.gmk \

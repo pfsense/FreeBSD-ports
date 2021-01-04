@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	fet
-DISTVERSION=	5.46.0
-CATEGORIES=	deskutils
+DISTVERSION=	5.48.1
+CATEGORIES=	deskutils education
 MASTER_SITES=	https://lalescu.ro/liviu/fet/download/ \
 		https://lalescu.ro/liviu/fet/download/old/ \
 		https://timetabling.de/download/ \

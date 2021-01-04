@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	chainer
-DISTVERSION=	7.2.0
-PORTREVISION=	2
+DISTVERSION=	7.7.0
 CATEGORIES=	science # machine-learning
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,7 +19,7 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PY_TYPING} \
 		${PYTHON_PKGNAMEPREFIX}typing-extensions>0:devel/py-typing-extensions@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes

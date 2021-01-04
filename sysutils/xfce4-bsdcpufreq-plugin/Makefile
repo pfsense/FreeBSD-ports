@@ -3,7 +3,8 @@
 #
 
 PORTNAME=	xfce4-bsdcpufreq-plugin
-PORTVERSION=	0.3
+PORTVERSION=	0.3.1
+PORTREVISION=	1
 CATEGORIES=	sysutils xfce
 
 MAINTAINER=	riggs@FreeBSD.org
@@ -24,7 +25,7 @@ PLIST_FILES=	lib/xfce4/panel/plugins/libbsdcpufreq.so \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	riggs-
-GH_TAGNAME=	a093f86
+GH_TAGNAME=	345edc2
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/xfce4/panel/plugins

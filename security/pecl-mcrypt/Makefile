@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	mcrypt
-PORTVERSION=	1.0.3
+PORTVERSION=	1.0.4
+PORTREVISION=	0
 CATEGORIES=	security pear
 
 MAINTAINER=	pizzamig@FreeBSD.org
@@ -13,5 +14,9 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libmcrypt.so:security/libmcrypt
 
 USES=	php:pecl
+
+post-patch:
+	${REINPLACE_CMD} -e 's/RETURN_FALSE$$/RETURN_FALSE;/g' ${WRKSRC}/mcrypt.c
+	${REINPLACE_CMD} -e 's/RETURN_TRUE$$/RETURN_TRUE;/g' ${WRKSRC}/mcrypt.c
 
 .include <bsd.port.mk>

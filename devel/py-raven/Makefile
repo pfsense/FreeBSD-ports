@@ -12,12 +12,14 @@ COMMENT=	Client for Sentry
 
 LICENSE=	BSD2CLAUSE
 
-USES=		python
+USES=		python:3.6+
 # either CHEESESHOP or github, whatever is newer
 USE_GITHUB=	yes
 GH_ACCOUNT=	getsentry
 GH_PROJECT=	raven-python
 USE_PYTHON=	autoplist concurrent distutils
+
+NO_ARCH=	yes
 
 .include <bsd.port.pre.mk>
 

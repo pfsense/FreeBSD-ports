@@ -1,12 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	wlroots
-DISTVERSION=	0.11.0
-PORTREVISION=	1
+DISTVERSION=	0.12.0
 CATEGORIES=	x11-toolkits
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	0fe36eb89754.patch:-p1 # https://github.com/swaywm/wlroots/pull/2064
+PATCHFILES+=	8bdf0df41719.patch:-p1 # https://github.com/swaywm/wlroots/pull/2064
 PATCHFILES+=	90cb6d26877b.patch:-p1 # https://github.com/swaywm/wlroots/pull/2064
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -34,19 +33,13 @@ USE_LDCONFIG=	yes
 GH_ACCOUNT=	swaywm
 MESON_ARGS=	-Dexamples=false
 
-# XXX Drop after FreeBSD 11.3 EOL (aarch64)
-.if exists(/usr/lib/clang/8.0.0)
-# https://github.com/swaywm/wlroots/issues/1450
-LLD_UNSAFE=	yes
-.endif
-
 OPTIONS_DEFINE=	CONSOLEKIT LIBSEAT X11
-OPTIONS_DEFAULT=X11
+OPTIONS_DEFAULT=LIBSEAT X11
 OPTIONS_SUB=	yes
 
 CONSOLEKIT_DESC=	DRM sessions without root using ConsoleKit2
 CONSOLEKIT_PATCH_SITES=	https://github.com/myfreeweb/${GH_PROJECT}/commit/:ck2
-CONSOLEKIT_PATCHFILES=	b59460944208.patch:-p1:ck2 # https://github.com/swaywm/wlroots/pull/1467
+CONSOLEKIT_PATCHFILES=	fcee578b13eb.patch:-p1:ck2 # https://github.com/swaywm/wlroots/pull/1467
 CONSOLEKIT_LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 			libconsolekit.so:sysutils/consolekit2
 CONSOLEKIT_MESON_ENABLED=	consolekit2
@@ -55,20 +48,13 @@ CONSOLEKIT_MESON_ENABLED=	consolekit2
 .endif
 
 LIBSEAT_DESC=		DRM sessions with/without root via libseat (experimental)
-LIBSEAT_PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/:libseat
-LIBSEAT_PATCHFILES=	bad1e9afa8ea.patch:-p1:libseat # https://github.com/swaywm/wlroots/pull/2364
-LIBSEAT_PATCHFILES+=	330c50b48dfe.patch:-p1:libseat # https://github.com/swaywm/wlroots/pull/2379
-LIBSEAT_PATCHFILES+=	4a85ae24c7df.patch:-p1:libseat # https://github.com/swaywm/wlroots/pull/2383
 LIBSEAT_LIB_DEPENDS=	libseat.so:sysutils/seatd
 LIBSEAT_MESON_ENABLED=	libseat
-.if make(makesum)
-.MAKEFLAGS:		WITH+=LIBSEAT
-.endif
 
-X11_LIB_DEPENDS=libxcb-errors.so:x11/xcb-util-errors \
-		libxcb-icccm.so:x11/xcb-util-wm
-X11_RUN_DEPENDS=xwayland-devel>0:x11-servers/xwayland-devel
-X11_USE=	XORG=x11,xcb
-X11_MESON_ENABLED=x11-backend xcb-icccm xwayland
+X11_LIB_DEPENDS=	libxcb-errors.so:x11/xcb-util-errors \
+			libxcb-icccm.so:x11/xcb-util-wm
+X11_RUN_DEPENDS=	xwayland-devel>0:x11-servers/xwayland-devel
+X11_USE=		XORG=x11,xcb
+X11_MESON_ENABLED=	x11-backend xcb-icccm xwayland
 
 .include <bsd.port.mk>
