@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	shibboleth-sp
-PORTVERSION=	3.1.0
+PORTVERSION=	3.2.0
+PORTREVISION=	1
 CATEGORIES=	security www
 MASTER_SITES=	http://shibboleth.net/downloads/service-provider/${PORTVERSION}/
 
@@ -12,11 +13,7 @@ COMMENT=	C++ Shibboleth Service Provider (Internet2) for Apache
 LICENSE=	APACHE20
 
 BUILD_DEPENDS=	boost-libs>=0:devel/boost-libs
-LIB_DEPENDS=	libsaml.so:security/opensaml \
-		libxmltooling-lite.so:devel/xmltooling \
-		liblog4shib.so:devel/log4shib \
-		libxerces-c.so:textproc/xerces-c3 \
-		libxml-security-c.so:security/apache-xml-security-c
+LIB_DEPENDS=	libsaml.so:security/opensaml
 
 USES=		gmake tar:bzip2 cpe pkgconfig libtool
 GNU_CONFIGURE=	yes

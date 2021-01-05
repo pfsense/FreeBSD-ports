@@ -12,7 +12,6 @@ COMMENT=	ANSI Common Lisp implementation
 
 LICENSE=	LGPL20
 
-BROKEN_aarch64=		fails to compile: error: unknown type name AO_TS_t
 BROKEN_mips=		fails to build: qemu: uncaught target signal 11 (Segmentation fault) - core dumped
 BROKEN_mips64=		fails to build: qemu: uncaught target signal 11 (Segmentation fault) - core dumped
 
@@ -56,7 +55,6 @@ SAGE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_aclocal.m4 \
 			${PATCHDIR}/extra-patch-src_c_file.d \
 			${PATCHDIR}/extra-patch-src_compile.lsp.in \
 			${PATCHDIR}/extra-patch-src_configure.ac \
-			${PATCHDIR}/extra-patch-src_lsp_format.lsp \
 			${PATCHDIR}/extra-patch-src_Makefile.in
 
 SOCKETS_CONFIGURE_ON=	--with-tcp=yes

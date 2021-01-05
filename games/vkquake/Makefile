@@ -5,13 +5,16 @@ DISTVERSION=	1.03.0
 PORTREVISION=	1
 CATEGORIES=	games
 
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	a869a22d9b51.patch:-p2 # vulkan-headers >= 140
+
 MAINTAINER=	greg@unrelenting.technology
 COMMENT=	Quake 1 port using Vulkan instead of OpenGL, based on QuakeSpasm
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/../LICENSE.txt
 
-BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:devel/vulkan-headers
+BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers
 LIB_DEPENDS=	libX11-xcb.so:x11/libX11 \
 		libvulkan.so:graphics/vulkan-loader
 

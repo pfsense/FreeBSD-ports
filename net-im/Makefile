@@ -13,6 +13,7 @@
     SUBDIR += cordless
     SUBDIR += coyim
     SUBDIR += cutegram
+    SUBDIR += dendrite
     SUBDIR += diligent
     SUBDIR += dino
     SUBDIR += echat
@@ -59,9 +60,9 @@
     SUBDIR += libpurple
     SUBDIR += libqmatrixclient
     SUBDIR += libqtelegram-ae
+    SUBDIR += libquotient
     SUBDIR += libsignon-glib
     SUBDIR += libstrophe
-    SUBDIR += libtelepathy
     SUBDIR += licq
     SUBDIR += licq-icq
     SUBDIR += licq-jabber
@@ -76,6 +77,7 @@
     SUBDIR += meanwhile
     SUBDIR += mikutter
     SUBDIR += mtxclient
+    SUBDIR += neochat
     SUBDIR += nextcloud-talk
     SUBDIR += nheko
     SUBDIR += openfire
@@ -123,7 +125,6 @@
     SUBDIR += py-punjab
     SUBDIR += py-python-telegram-bot
     SUBDIR += py-slackclient
-    SUBDIR += py-sleekxmpp
     SUBDIR += py-slixmpp
     SUBDIR += py-telepot
     SUBDIR += py-toxcore-c
@@ -150,6 +151,7 @@
     SUBDIR += talkatu
     SUBDIR += teamwords
     SUBDIR += telegram
+    SUBDIR += telegram-cli
     SUBDIR += telegram-desktop
     SUBDIR += telegram-purple
     SUBDIR += telegramqml
@@ -177,7 +179,8 @@
     SUBDIR += uTox
     SUBDIR += vqcc-gtk
     SUBDIR += xmpp-client
-    SUBDIR += zephyr
+    SUBDIR += yume
+    SUBDIR += zkgroup
     SUBDIR += zoom
 
 .include <bsd.port.subdir.mk>

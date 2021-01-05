@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nim
-PORTVERSION=	1.2.6
-PORTREVISION=	1
+PORTVERSION=	1.4.2
 CATEGORIES=	lang
 MASTER_SITES=	https://nim-lang.org/download/
 
@@ -13,18 +12,21 @@ COMMENT=	Nim programming language
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/copying.txt
 
-BROKEN_mips64=		fails to build: build.sh: clang: not found
 BROKEN_sparc64=		fails to build: build.sh: clang: not found
 
+LIB_DEPENDS=	libpcre.so:devel/pcre
 TEST_DEPENDS=	node>=0:www/node
 
 USES=		compiler:c11 tar:xz
 USE_LDCONFIG=	yes
 
-TOOLS_DESC=	Build and install nim tools
+CONFLICTS_INSTALL=	nimble
+
+TOOLS_DESC=	Build and install nim tools, including nimble
 
 OPTIONS_DEFINE=	DOCS TOOLS
 OPTIONS_DEFAULT=	DOCS TOOLS
+OPTIONS_EXCLUDE_powerpc64=	DOCS
 
 TEST_BINARY_ALIAS=	node=nodejs
 
@@ -34,7 +36,7 @@ MAKE_JOBS_UNSAFE=	yes
 
 .include <bsd.port.pre.mk>
 
-TLIST=	nimfind nimgrep nimpretty nimsuggest testament
+TLIST=	nimble nimfind nimgrep nimpretty nimsuggest testament
 
 .if ${CHOSEN_COMPILER_TYPE} == "gcc"
 EXTRA_PATCHES=	${PATCHDIR}/elfv1-patch-build.sh
@@ -61,11 +63,18 @@ do-build:
 		-d:release --nimcache=${WRKDIR}/nimcache --app:lib \
 		-d:createNimRtl lib/nimrtl.nim
 
+do-build-DOCS-on:
+	cd ${WRKSRC} && ./koch --localdocs docs \
+		-d:release --nimcache=${WRKDIR}/nimcache --docCmd=skip
+
 do-build-TOOLS-on:
-	cd ${WRKSRC} && ./koch toolsNoNimble --parallelBuild=${MAKE_JOBS_NUMBER} \
-		-d:release --nimcache=${WRKDIR}/nimcache
+	cd ${WRKSRC} && ./koch tools --parallelBuild=${MAKE_JOBS_NUMBER} \
+		-d:release --nimcache=${WRKSRC}/nimcache
 
 do-install:
+	# Revert hack to build docs
+	@${REINPLACE_CMD} -e '/%%NIMCACHE%%/d' \
+		${WRKSRC}/config/nim.cfg
 	# Install nim compiler
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/nim ${STAGEDIR}${PREFIX}/bin
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/nim
@@ -83,6 +92,7 @@ do-install:
 .endfor
 
 do-install-DOCS-on:
+	${FIND} ${WRKSRC}/doc -name "*.idx" -delete
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
 

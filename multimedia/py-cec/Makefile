@@ -15,10 +15,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcec.so:multimedia/libcec
 
-USES=		compiler:c++11-lang localbase python
+USES=		compiler:c++11-lang localbase python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/cec.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/cec*.so
 
 .include <bsd.port.mk>

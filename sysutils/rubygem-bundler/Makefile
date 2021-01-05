@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	bundler
-PORTVERSION=	2.0.2
+PORTVERSION=	2.1.4
 PORTEPOCH=	1
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
-COMMENT=	Tool that manages gem dependencies for ruby applications
+COMMENT=	Tool that manages gem dependencies for Ruby applications
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

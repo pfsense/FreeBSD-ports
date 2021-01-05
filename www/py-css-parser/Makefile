@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	css-parser
-PORTVERSION=	1.0.4
+PORTVERSION=	1.0.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,7 +17,7 @@ LICENSE_FILE_LGPL3=	${WRKSRC}/COPYING.LESSER
 
 NO_ARCH=	yes
 USE_PYTHON=	autoplist concurrent distutils
-USES=		python
+USES=		python:3.6+
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ebook-utils

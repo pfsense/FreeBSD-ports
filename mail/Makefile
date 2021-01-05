@@ -36,7 +36,6 @@
     SUBDIR += bogofilter-kc
     SUBDIR += bogofilter-lmdb
     SUBDIR += bogofilter-sqlite
-    SUBDIR += bogofilter-tc
     SUBDIR += bsfilter
     SUBDIR += bsmtp
     SUBDIR += bulk_mailer
@@ -135,7 +134,6 @@
     SUBDIR += findmaildirs
     SUBDIR += geary
     SUBDIR += gensig
-    SUBDIR += getmail
     SUBDIR += getmail6
     SUBDIR += gmime2
     SUBDIR += gmime2-sharp
@@ -270,7 +268,6 @@
     SUBDIR += opensmtpd-extras-table-mysql
     SUBDIR += opensmtpd-extras-table-passwd
     SUBDIR += opensmtpd-extras-table-postgresql
-    SUBDIR += opensmtpd-extras-table-python
     SUBDIR += opensmtpd-extras-table-redis
     SUBDIR += opensmtpd-extras-table-socketmap
     SUBDIR += opensmtpd-extras-table-sqlite
@@ -453,9 +450,9 @@
     SUBDIR += perdition
     SUBDIR += pflogsumm
     SUBDIR += pfqueue
-    SUBDIR += php72-imap
     SUBDIR += php73-imap
     SUBDIR += php74-imap
+    SUBDIR += php80-imap
     SUBDIR += phplist
     SUBDIR += phpmailer
     SUBDIR += phpmailer6
@@ -489,14 +486,18 @@
     SUBDIR += py-afew
     SUBDIR += py-aiosmtpd
     SUBDIR += py-alot
+    SUBDIR += py-authheaders
     SUBDIR += py-authres
+    SUBDIR += py-django-mailman3
     SUBDIR += py-dkimpy
     SUBDIR += py-email-validator
     SUBDIR += py-email_reply_parser
+    SUBDIR += py-flanker
     SUBDIR += py-flask-mail
     SUBDIR += py-flufl.bounce
     SUBDIR += py-fuglu
     SUBDIR += py-mail-parser
+    SUBDIR += py-mailmanclient
     SUBDIR += py-managesieve3
     SUBDIR += py-milter
     SUBDIR += py-notmuch
@@ -506,7 +507,6 @@
     SUBDIR += py-pymailq
     SUBDIR += py-pyspf
     SUBDIR += py-pyzmail
-    SUBDIR += py-spambayes
     SUBDIR += py-spf-engine
     SUBDIR += py-validate_email
     SUBDIR += pymsgauth

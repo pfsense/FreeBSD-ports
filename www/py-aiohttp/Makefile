@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	aiohttp
-PORTVERSION=	3.5.4
+PORTVERSION=	3.6.2
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,11 +14,10 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}attrs>=17.3.0:devel/py-attrs@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}chardet>=2.0:textproc/py-chardet@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}multidict>=4.0:www/py-multidict@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}async_timeout>=3.0:devel/py-async_timeout@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yarl>=1.0:www/py-yarl@${PY_FLAVOR}
-
+		${PYTHON_PKGNAMEPREFIX}chardet>=2.0<4.0:textproc/py-chardet@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}multidict>=4.5:www/py-multidict@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}async_timeout>=3.0<4.0:devel/py-async_timeout@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}yarl>=1.0<2.0:www/py-yarl@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=3.8.2:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-timeout>0:devel/py-pytest-timeout@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-xdist>0:devel/py-pytest-xdist@${PY_FLAVOR} \
@@ -33,7 +32,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=3.8.2:devel/py-pytest@${PY_FLAVOR} 
 
 # Actually 3.5.3+
 USES=		python:3.5+
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist distutils cython
 
 .include <bsd.port.pre.mk>
 
@@ -41,6 +40,9 @@ USE_PYTHON=	autoplist distutils
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}idna_ssl>=1.0:dns/py-idna_ssl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}typing-extensions>=3.6.5:devel/py-typing-extensions@${PY_FLAVOR}
 .endif
+
+pre-configure:
+	@${TOUCH} ${WRKSRC}/aiohttp/*.pyx
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/aiohttp/*.so

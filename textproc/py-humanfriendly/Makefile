@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	humanfriendly
-PORTVERSION=	7.1.1
+PORTVERSION=	9.1
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ COMMENT=	Human friendly output for text interfaces using Python
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

@@ -16,10 +16,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libzbar.so:graphics/zbar
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>0:math/py-numpy@${PY_FLAVOR}
 
-USES=		iconv:wchar_t python
+USES=		iconv:wchar_t python:3.6+
 USE_PYTHON=	autoplist distutils
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/zbar/_zbar.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/zbar/_zbar*.so
 
 .include <bsd.port.mk>

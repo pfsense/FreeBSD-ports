@@ -1,7 +1,6 @@
 %%DATADIR%%/.codeclimate.yml
 %%DATADIR%%/.gitignore
 %%DATADIR%%/.gitlab-ci.yml
-%%DATADIR%%/.rubocop.yml
 %%DATADIR%%/.ruby-version
 %%DATADIR%%/CHANGELOG
 %%DATADIR%%/CONTRIBUTING.md
@@ -18,9 +17,6 @@
 @(,,555) %%DATADIR%%/bin/gitlab-shell-authorized-principals-check
 @(,,555) %%DATADIR%%/bin/install
 @sample %%DATADIR%%/config.yml.sample
-@(,,555) %%DATADIR%%/hooks/post-receive
-@(,,555) %%DATADIR%%/hooks/pre-receive
-@(,,555) %%DATADIR%%/hooks/update
 %%DATADIR%%/spec/gitlab_shell_authorized_keys_check_spec.rb
 %%DATADIR%%/spec/gitlab_shell_authorized_principals_check_spec.rb
 %%DATADIR%%/spec/gitlab_shell_custom_git_receive_pack_spec.rb
@@ -29,6 +25,7 @@
 %%DATADIR%%/spec/gitlab_shell_lfs_authentication_spec.rb
 %%DATADIR%%/spec/gitlab_shell_personal_access_token_spec.rb
 %%DATADIR%%/spec/gitlab_shell_two_factor_recovery_spec.rb
+%%DATADIR%%/spec/gitlab_shell_two_factor_verify_spec.rb
 %%DATADIR%%/spec/spec_helper.rb
 %%DATADIR%%/spec/support/gitlab_shell_setup.rb
 %%DATADIR%%/spec/support/http_unix_server.rb

@@ -1,20 +1,20 @@
 # Created by: Boris Samorodov <bsam@FreeBSD.org>
 # $FreeBSD$
 
+.include "${.CURDIR}/../../devel/eric6/bsd.eric6.mk"
+
 PKGNAMESUFFIX=	-qt5-${FLAVOR:U:S/_/-/}
 DISTNAME=	${PORTNAME}-nolang-${DISTVERSION}
+PORTREVISION=	0
 CATEGORIES=	devel python
 
-# Note to MAINTAINER: this should be converted to USES=pyqt, USE_PYQT=[...]
-BUILD_DEPENDS+=	${PYQT_PY_RELNAME}-chart>=${PYQT_VERSION}:x11-toolkits/py-qt5-chart@${PY_FLAVOR}
-RUN_DEPENDS+=	${PYQT_PY_RELNAME}-chart>=${PYQT_VERSION}:x11-toolkits/py-qt5-chart@${PY_FLAVOR}
-RUN_DEPENDS+=	${PYTHON_LIBDIR}/lib-dynload/_sqlite3.so:databases/py-sqlite3@${PY_FLAVOR}
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
 CONFLICTS_INSTALL=	${FLAVORS:N${FLAVOR}:C/^/${PORTNAME}${PKGNAMESUFFIX}-/:C/$/-[0-9]*/}
 
 USES+=		desktop-file-utils python:3.5+ pyqt:5 shebangfix
 USE_PYTHON=	flavors
-USE_PYQT=	core gui qscintilla2 webengine \
+USE_PYQT=	chart core gui qscintilla2 webengine \
 		help_run network_run svg_run sql_run
 INSTALL_PY=	install.py -c -f eric6config.freebsd -i ${STAGEDIR}
 SHEBANG_FILES=	*.py eric/eric6/*.py eric/scripts/*.py
@@ -27,7 +27,6 @@ PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-.include "${.CURDIR}/bsd.eric6.mk"
 .include <bsd.port.options.mk>
 
 post-patch:

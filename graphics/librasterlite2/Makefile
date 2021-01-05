@@ -4,7 +4,7 @@
 PORTNAME=	librasterlite2
 PORTVERSION=	1.0.0
 DISTVERSIONSUFFIX=-rc0
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	graphics geography
 MASTER_SITES=	http://www.gaia-gis.it/gaia-sins/
 
@@ -15,7 +15,6 @@ LICENSE=	MPL11 GPLv2 LGPL21
 LICENSE_COMB=	dual
 
 LIB_DEPENDS=	libspatialite.so:databases/spatialite \
-		libsqlite3.so:databases/sqlite3 \
 		libgeotiff.so:graphics/libgeotiff \
 		libjbig.so:graphics/jbigkit \
 		libpng.so:graphics/png \
@@ -29,7 +28,7 @@ LIB_DEPENDS=	libspatialite.so:databases/spatialite \
 		libcurl.so:ftp/curl
 
 GNU_CONFIGURE=	yes
-USES=		gmake iconv jpeg libtool pathfix pkgconfig
+USES=		gmake iconv jpeg libtool pathfix pkgconfig sqlite
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

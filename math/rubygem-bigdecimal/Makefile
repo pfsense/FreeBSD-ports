@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bigdecimal
-PORTVERSION=	2.0.0
+PORTVERSION=	3.0.0
 CATEGORIES=	math rubygems
 MASTER_SITES=	RG
 
@@ -13,7 +13,5 @@ LICENSE=	RUBY
 
 USES=		gem
 USE_RUBY=	yes
-
-#NO_ARCH=	yes
 
 .include <bsd.port.mk>

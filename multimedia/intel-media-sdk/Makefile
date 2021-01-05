@@ -2,11 +2,11 @@
 
 PORTNAME=	intel-media-sdk
 DISTVERSIONPREFIX=	intel-mediasdk-
-DISTVERSION=	20.3.1
+DISTVERSION=	20.5.1
 CATEGORIES=	multimedia
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	84c8e6473e96.patch:-p1 # https://github.com/Intel-Media-SDK/MediaSDK/pull/2395
+PATCHFILES+=	1658e1c9a34f.patch:-p1 # https://github.com/Intel-Media-SDK/MediaSDK/pull/2537
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Hardware video decoding/encoding/filtering on Intel GPUs
@@ -58,9 +58,6 @@ post-patch:
 		-e '/set( *git_commit/s/"[^"]*"/"${DISTVERSIONFULL}"/' \
 		${WRKSRC}/builder/FindFunctions.cmake \
 		${WRKSRC}/builder/FindGlobals.cmake
-# Don't depend on lang/intel-compute-runtime during build
-	@${REINPLACE_CMD} -e 's,/etc[^[:space:]]*,/,' \
-		${WRKSRC}/builder/FindOpenCL.cmake
 # Don't assume GCC and glibc libraries are available
 	@${REINPLACE_CMD} -e 's/ -lstdc++ -ldl//' \
 		${WRKSRC}/api/mfx_dispatch/linux/pkg-config*.cmake

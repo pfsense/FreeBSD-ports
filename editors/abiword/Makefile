@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	abiword
-PORTVERSION=	3.0.1
-PORTREVISION=	16
+PORTVERSION=	3.0.4
+PORTREVISION=	1
 CATEGORIES=	editors
 MASTER_SITES=	http://www.abisource.com/downloads/abiword/${PORTVERSION}/source/
 DIST_SUBDIR=	AbiWord

@@ -12,7 +12,7 @@ COMMENT=	RFC 7049 - Concise Binary Object Representation
 
 LICENSE=	APACHE20
 
-USES=		compiler python
+USES=		compiler python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 .include <bsd.port.pre.mk>
@@ -23,6 +23,6 @@ post-patch:
 .endif
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/cbor/_cbor.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/cbor/_cbor*.so
 
 .include <bsd.port.post.mk>

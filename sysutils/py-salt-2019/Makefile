@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	salt
-PORTVERSION=	2019.2.5
+PORTVERSION=	2019.2.8
 CATEGORIES=	sysutils python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +15,7 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}MarkupSafe>0:textproc/py-MarkupSafe@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}markupsafe>0:textproc/py-markupsafe@${PY_FLAVOR} \
 		${PY_ENUM34} \
 		${PY_FUTURES} \
 		${PYTHON_PKGNAMEPREFIX}libcloud>=0.14.0:net/py-libcloud@${PY_FLAVOR} \
@@ -60,6 +60,9 @@ USE_RC_SUBR=	salt_api \
 SUB_LIST+=	PYTHON_CMD=${PYTHON_CMD}
 
 SUB_FILES=	pkg-message
+
+# Upstream archive contains files with UTF-8 names
+EXTRACT_CMD=	${SETENV} LC_ALL=en_US.UTF-8 /usr/bin/bsdtar
 
 OPTIONS_DEFINE=	AWS RAET TCP ZEROMQ
 OPTIONS_DEFAULT=ZEROMQ

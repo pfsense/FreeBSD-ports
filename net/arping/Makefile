@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	arping
-DISTVERSION=	2.19
+DISTVERSION=	2.21
 CATEGORIES=	net
 MASTER_SITES=	http://www.habets.pp.se/synscan/files/
 
@@ -15,6 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libnet.so:net/libnet
 
 USES=		localbase
+USE_CSTD=	c99
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	sbin/arping man/man8/arping.8.gz

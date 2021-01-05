@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	python-telegram-bot
-PORTVERSION=	12.8
+PORTVERSION=	13.1
 CATEGORIES=	net-im devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,7 +18,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}decorator>0:devel/py-decorator@${PY_FLAVOR} 
 		${PYTHON_PKGNAMEPREFIX}urllib3>0:net/py-urllib3@${PY_FLAVOR}
 
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 PYDISTUTILS_BUILDARGS=	--with-upstream-urllib3
 

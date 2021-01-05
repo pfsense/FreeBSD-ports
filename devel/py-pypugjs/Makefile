@@ -1,17 +1,22 @@
 # $FreeBSD$
 
 PORTNAME=	pypugjs
-PORTVERSION=	4.2.2
+PORTVERSION=	5.9.8
 CATEGORIES=	devel lang python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	mmokhi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PugJS syntax adapter for Django, Jinja2 and Mako templates
 
 LICENSE=	MIT
 
-USES=		python
-USE_PYTHON=	distutils autoplist
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}chardet>=0:textproc/py-chardet@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${PY_FLAVOR}
+
+USES=		python:3.6+
+USE_PYTHON=	autoplist concurrent distutils
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

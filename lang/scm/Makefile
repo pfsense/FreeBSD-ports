@@ -15,8 +15,9 @@ COMMENT=	Scheme interpreter
 
 LICENSE=	LGPL21
 
-BROKEN_aarch64=	ld: error: undefined symbol: sbrk
+BROKEN_aarch64=		fails to link: missing sbrk
 BROKEN_powerpc64=	fails to build: "/wrkdirs/usr/ports/lang/scm/work/slib/lineio.scm": read-char: Wrong type in arg1 #f
+BROKEN_riscv64=		fails to link: missing sbrk
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
@@ -55,6 +56,10 @@ SCM_MODULES=	byte.so bytenumb.so crs.so differ.so edline.so gsubr.so \
 SCM_MODULES_X11=x.so
 
 .include <bsd.port.pre.mk>
+
+.if ${OSVERSION} > 1300000
+LIB_DEPENDS+=	libgnuregex.so.[6-9]:devel/libgnuregex
+.endif
 
 .if ${PORT_OPTIONS:MX11}
 SCM_MODULES+=	${SCM_MODULES_X11}

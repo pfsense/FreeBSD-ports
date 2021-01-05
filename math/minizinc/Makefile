@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	minizinc
-DISTVERSION=	2.4.3.20200807 # from the develop branch because it contains fixes for the latest bison
-PORTREVISION=	1
+DISTVERSION=	2.5.3
 CATEGORIES=	math lang
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -20,8 +19,9 @@ USES=		bison cmake compiler:c++11-lang
 USE_GITHUB=	yes
 GH_ACCOUNT=	MiniZinc
 GH_PROJECT=	libminizinc
-GH_TAGNAME=	01854690be366b964df9e25eaf5bd244759c4e76 # develop branch
 USE_LDCONFIG=	yes
+
+CXXFLAGS+=	-DFREEBSD_MZN_STDLIB_DIR="\\\"${DATADIR}\\\""
 
 CMAKE_ON=	BUILD_SHARED_LIBS
 
@@ -30,10 +30,8 @@ OPTIONS_DEFINE=		WITH_SCIP
 WITH_SCIP_DESC=		Build with the SCIP optimizer
 WITH_SCIP_CMAKE_BOOL=	USE_SCIP
 WITH_SCIP_LIB_DEPENDS=	libscip.so:math/SCIP/
-WITH_SCIP_BROKEN=	Build failure: https://github.com/MiniZinc/libminizinc/issues/402
 
 post-patch:
 	${REINPLACE_CMD} -e 's|string std_lib_dir;|string std_lib_dir = "${DATADIR}";|' ${WRKSRC}/mzn2doc.cpp
-	${REINPLACE_CMD} -e 's|std_lib_dir(stdlibDir) {}|std_lib_dir(stdlibDir.empty() ? "${DATADIR}" : stdlibDir) {}|' ${WRKSRC}/lib/flattener.cpp
 
 .include <bsd.port.mk>

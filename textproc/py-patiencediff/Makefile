@@ -13,11 +13,11 @@ LICENSE=	GPLv2+
 
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/patiencediff/_patiencediff_c.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/patiencediff/_patiencediff_c*.so
 
 do-test:
 	cd ${WRKSRC} && ${PYTHON_CMD} -m pytest -v build/

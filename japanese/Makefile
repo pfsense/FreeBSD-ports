@@ -58,6 +58,7 @@
     SUBDIR += fcitx-anthy
     SUBDIR += fcitx-mozc
     SUBDIR += fcitx-skk
+    SUBDIR += fcitx5-anthy
     SUBDIR += flower-fpw
     SUBDIR += foldoc-fpw
     SUBDIR += font-aozoramincho
@@ -213,8 +214,6 @@
     SUBDIR += plan
     SUBDIR += prn
     SUBDIR += py-jaconv
-    SUBDIR += py-tegaki
-    SUBDIR += py-zinnia
     SUBDIR += qkc
     SUBDIR += quit
     SUBDIR += roget-fpw

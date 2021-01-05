@@ -3,6 +3,7 @@
 
 PORTNAME=	thunderbird
 DISTVERSION=	78.6.0
+PORTREVISION=	1
 CATEGORIES=	mail news net-im
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/source \
 		MOZILLA/${PORTNAME}/candidates/${DISTVERSION}-candidates/build1/source
@@ -31,6 +32,7 @@ LIB_DEPENDS=	libjson-c.so:devel/json-c \
 SSP_UNSAFE=	yes
 USE_GECKO=	gecko
 USE_MOZILLA=	-sqlite
+CFLAGS_powerpc64le=	-DSQLITE_BYTEORDER=1234
 
 USES=		tar:xz
 

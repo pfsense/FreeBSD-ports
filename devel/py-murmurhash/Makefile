@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	murmurhash
-PORTVERSION=	1.0.2
+PORTVERSION=	1.0.5
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,10 +12,10 @@ COMMENT=	Cython bindings for MurmurHash2
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
-USE_PYTHON=	distutils autoplist
+USES=		python:3.6+
+USE_PYTHON=	distutils cython autoplist
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/murmurhash/mrmr.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/murmurhash/mrmr*.so
 
 .include <bsd.port.mk>

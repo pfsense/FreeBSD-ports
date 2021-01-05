@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	moodle
-PORTVERSION=	3.8.5
-CATEGORIES=	www
+PORTVERSION=	3.8.6
+CATEGORIES=	www education
 MASTER_SITES=	SF/moodle/Moodle/stable38/
 PKGNAMESUFFIX=	${PKGORIGIN:T:S/moodle//}${PHP_PKGNAMESUFFIX}
 
@@ -12,12 +12,16 @@ COMMENT=	Course management system based on social constructionism
 
 LICENSE=	GPLv3
 
-CONFLICTS=	moodle35-3.5.[0-9]* moodle37-3.7.[0-9]* moodle39-3.9-[0-9]*
+CONFLICTS=	moodle35-3.5.[0-9]* moodle37-3.7.[0-9]* moodle39-3.9-[0-9]* \
+		moodle310-3.10
+
+DEPRECATED=	Deprecated by upstream
+EXPIRATION_DATE=2021-03-03
 
 USES=		cpe php:flavors tar:tgz
 USE_PHP=	ctype curl dom fileinfo filter gd hash iconv intl json mbstring \
 		opcache openssl pcre session simplexml soap spl tokenizer \
-		xml xmlreader xmlrpc zip zlib
+		xml xmlreader zip zlib
 WRKSRC=		${WRKDIR}/moodle
 
 OPTIONS_SINGLE=		BACKEND
@@ -39,6 +43,12 @@ SUB_LIST=	MOODLEDIR=${MOODLEDIR} \
 
 MOODLEDIR?=	www/moodle
 MOODLEDATADIR?=	moodledata
+
+.include <bsd.port.options.mk>
+
+.if ${FLAVOR} != php80
+USE_PHP+=       xmlrpc
+.endif
 
 pre-install:
 	@${ECHO_CMD} "@owner ${WWWOWN}" >> ${PLIST}

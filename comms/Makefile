@@ -18,7 +18,6 @@
     SUBDIR += bluegps
     SUBDIR += bluez-firmware
     SUBDIR += bpl+
-    SUBDIR += chirp
     SUBDIR += chu
     SUBDIR += comserv
     SUBDIR += concordance
@@ -86,6 +85,7 @@
     SUBDIR += libticables2
     SUBDIR += libticalcs2
     SUBDIR += libusbmuxd
+    SUBDIR += limesuite
     SUBDIR += linrad
     SUBDIR += liquid-dsp
     SUBDIR += lirc
@@ -137,9 +137,9 @@
     SUBDIR += py-adafruit-ampy
     SUBDIR += py-esptool
     SUBDIR += py-hidapi
-    SUBDIR += py-libconcord
     SUBDIR += py-lirc
     SUBDIR += py-pyserial
+    SUBDIR += py-qt5-sensors
     SUBDIR += py-qt5-serialport
     SUBDIR += py-xmodem
     SUBDIR += pyla

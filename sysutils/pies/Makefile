@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pies
-PORTVERSION=	1.4
+PORTVERSION=	1.5
 CATEGORIES=	sysutils
 MASTER_SITES=	http://download.gnu.org.ua/pub/release/${PORTNAME}/ \
 		http://download.gnu.org.ua/pub/alpha/${PORTNAME}/
@@ -12,8 +12,9 @@ COMMENT=	Program Invocation and Execution Supervisor
 
 LICENSE=	GPLv3+
 
-USES=		charsetfix iconv tar:bz2
+USES=		charsetfix gmake iconv tar:bz2
 GNU_CONFIGURE=	yes
+USE_RC_SUBR=	${PORTNAME}
 
 INFO=		${PORTNAME}
 PORTDOCS=	ChangeLog NEWS README

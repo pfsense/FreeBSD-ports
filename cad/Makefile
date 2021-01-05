@@ -9,6 +9,7 @@
     SUBDIR += admesh
     SUBDIR += adms
     SUBDIR += alliance
+    SUBDIR += archimedes
     SUBDIR += astk-client
     SUBDIR += astk-serveur
     SUBDIR += atlc
@@ -114,6 +115,7 @@
     SUBDIR += sp2sp
     SUBDIR += spice
     SUBDIR += stepcode
+    SUBDIR += stm32flash
     SUBDIR += sumo
     SUBDIR += sweethome3d
     SUBDIR += tkgate

@@ -16,10 +16,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 CONFLICTS_INSTALL=	py*-sendfile-[0-9]*
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/sendfile.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/sendfile*.so
 
 .include <bsd.port.mk>

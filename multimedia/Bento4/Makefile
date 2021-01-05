@@ -7,14 +7,16 @@ DISTVERSIONPREFIX=v
 DISTVERSIONSUFFIX=-628
 CATEGORIES=	multimedia devel
 
-MAINTAINER=	mmokhi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full-featured MP4 format and MPEG DASH library and tools
 
 LICENSE=	GPLv2
 
 BROKEN_aarch64=		fails to compile: Ap4AesBlockCipher.cpp:93:4: AP4_PLATFORM_BYTE_ORDER is not set
+BROKEN_riscv64=		fails to compile: Ap4AesBlockCipher.cpp:93:4: AP4_PLATFORM_BYTE_ORDER is not set
 
 RUN_DEPENDS=	bash:shells/bash
+
 USES=		cmake:noninja python shebangfix
 SHEBANG_GLOB=	*.sh *.py
 SHEBANG_FILES=	Source/Python/*/*

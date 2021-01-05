@@ -3,8 +3,7 @@
 
 PORTNAME=	bambootracker
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.3-11
-DISTVERSIONSUFFIX=	-g5e0e6ef
+DISTVERSION=	0.4.5
 CATEGORIES=	audio
 MASTER_SITES=	LOCAL/ehaupt:extras
 DISTFILES=	${PORTNAME}-extras-${EXTRASVERSION}${EXTRACT_SUFX}:extras
@@ -58,26 +57,22 @@ QMAKE_ARGS+=	CONFIG+="use_jack" \
 QMAKE_ARGS+=	CONFIG+="use_pulse"
 .endif
 
-.if (${OSVERSION} >= 1300096)
-EXTRA_PATCHES=	${PATCHDIR}/extrapatch-BambooTracker_BambooTracker.pro
-.endif
-
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons \
 		${STAGEDIR}${MANPREFIX}/man/fr.UTF-8/man1
 	${INSTALL_PROGRAM} ${WRKSRC}/BambooTracker/BambooTracker \
 		${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/BambooTracker.1 \
+	${INSTALL_MAN} ${WRKSRC}/data/man/en/man1/BambooTracker.1 \
 		${STAGEDIR}${MANPREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/BambooTracker.fr.1 \
+	${INSTALL_MAN} ${WRKSRC}/data/man/fr/man1/BambooTracker.1 \
 		${STAGEDIR}${MANPREFIX}/man/fr.UTF-8/man1
-	${INSTALL_DATA} ${WRKSRC}/BambooTracker.desktop ${STAGEDIR}${DESKTOPDIR}
-	${INSTALL_DATA} ${WRKSRC}/BambooTracker/res/icon/icon_256x256.png \
+	${INSTALL_DATA} ${WRKSRC}/data/applications/BambooTracker.desktop ${STAGEDIR}${DESKTOPDIR}
+	${INSTALL_DATA} ${WRKSRC}/img/icon.png \
 		${STAGEDIR}${PREFIX}/share/icons/BambooTracker.png
 
 do-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/demos/modules/*.btm \
+	${INSTALL_DATA} ${WRKSRC}/data/demos/modules/*.btm \
 		${WRKDIR}/${PORTNAME}-extras-${EXTRASVERSION}/*.btm \
 		${STAGEDIR}${EXAMPLESDIR}
 

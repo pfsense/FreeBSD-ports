@@ -2,6 +2,8 @@
 # MAINTAINER: portmgr@FreeBSD.org
 # $FreeBSD$
 
+set -o pipefail
+
 if [ -z "${STAGEDIR}" -o -z "${PREFIX}" -o -z "${LOCALBASE}" ]; then
 	echo "STAGEDIR, PREFIX, LOCALBASE required in environment." >&2
 	exit 1
@@ -209,7 +211,7 @@ stripped() {
 	# files with spaces are kept intact.
 	# Using readelf -h ... /ELF Header:/ will match on all ELF files.
 	find ${STAGEDIR} -type f ! -name '*.a' ! -name '*.o' \
-	    -exec readelf -S {} + 2>/dev/null | awk '
+	    -exec sh -c 'readelf -S -- /dev/null "$@" || :' -- {} + 2>/dev/null | awk '
 	    /File:/ {sub(/File: /, "", $0); file=$0}
 	    /[[:space:]]\.debug_info[[:space:]]*PROGBITS/ {print file}' |
 	    while read -r f; do
@@ -420,6 +422,7 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "devel/libIDL" ]; then warn "you need USE_GNOME+=libidl"
 	elif [ ${pkg} = "x11-fm/nautilus" ]; then warn "you need USE_GNOME+=nautilus3"
 	elif [ ${pkg} = "devel/ORBit2" ]; then warn "you need USE_GNOME+=orbit2"
+	elif [ ${pkg} = "graphics/librsvg2-rust" ]; then warn "you need USE_GNOME+=librsvg2"
 	# mate
 	# grep LIB_DEPENDS= Mk/Uses/mate.mk |sed -e 's|\(.*\)_LIB_DEPENDS.*:\(.*\)\/\(.*\)|elif [ ${pkg} = "\2/\3" ]; then warn "you need USE_MATE+=\1"|'
 	elif [ ${pkg} = "x11-fm/caja" ]; then warn "you need USE_MATE+=caja"
@@ -589,7 +592,7 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "converters/libiconv" ]; then
 		warn "you need USES+=iconv, USES+=iconv:wchar_t, or USES+=iconv:translit depending on needs"
 	# jpeg
-	elif [ ${pkg} = "graphics/jpeg" -o ${pkg} = "graphics/jpeg-turbo" ]; then
+	elif [ ${pkg} = "graphics/jpeg-turbo" ]; then
 		warn "you need USES+=jpeg"
 	# libarchive
 	elif [ ${pkg} = "archivers/libarchive" ]; then

@@ -2,8 +2,8 @@
 
 PORTNAME=	rpcs3
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.12-10959 # git rev-list --count HEAD
-DISTVERSIONSUFFIX=	-g046923d9f
+DISTVERSION=	0.0.14-11506 # git rev-list --count HEAD
+DISTVERSIONSUFFIX=	-g2b8eb8deb
 CATEGORIES=	emulators
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -25,8 +25,8 @@ ONLY_FOR_ARCHS_REASON=	requires int128 and SSE2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	RPCS3
-GH_TUPLE=	RPCS3:hidapi:hidapi-0.8.0-rc1-27-g9220f5e:hidapi/3rdparty/hidapi \
-		RPCS3:llvm-mirror:f5679565d348:llvm/llvm \
+GH_TUPLE=	RPCS3:hidapi:hidapi-0.8.0-rc1-28-g8961cf8:hidapi/3rdparty/hidapi \
+		RPCS3:llvm-mirror:cb7748dfa0d:llvm/llvm \
 		Cyan4973:xxHash:v0.8.0:xxHash/3rdparty/xxHash \
 		FNA-XNA:FAudio:20.05:FAudio/3rdparty/FAudio \
 		google:flatbuffers:v1.11.0:flatbuffers/3rdparty/flatbuffers \
@@ -49,21 +49,6 @@ CMAKE_ON=	CMAKE_SKIP_RPATH USE_SYSTEM_CURL USE_SYSTEM_FFMPEG USE_SYSTEM_LIBPNG
 CMAKE_OFF=	USE_NATIVE_INSTRUCTIONS USE_PRECOMPILED_HEADERS
 LDFLAGS+=	-Wl,--as-needed # GLU
 
-# https://bugs.llvm.org/show_bug.cgi?id=46557
-BUILD_DEPENDS+=	clang++${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
-USES:=		${USES:Ncompiler*}
-CC=		clang${LLVM_DEFAULT}
-CXX=		clang++${LLVM_DEFAULT}
-CPP=		clang-cpp${LLVM_DEFAULT}
-
-# XXX Drop after FreeBSD 11.3/12.1 EOL
-.if make(makesum) || (!exists(/usr/include/c++/v1/fenv.h) && exists(/usr/lib/libc++.so))
-MASTER_SITES+=	https://github.com/llvm/llvm-project/releases/download/llvmorg-${LLVM_VER}/:libcxx
-DISTFILES+=	libcxx-${LLVM_VER}.src.tar.xz:libcxx
-CXXFLAGS+=	-nostdinc++ -isystem${WRKDIR}/libcxx-${LLVM_VER}.src/include
-LLVM_VER=	10.0.1
-.endif
-
 OPTIONS_DEFINE=	ALSA EVDEV FAUDIO PULSEAUDIO VULKAN
 OPTIONS_DEFAULT=EVDEV FAUDIO VULKAN
 
@@ -85,7 +70,7 @@ PULSEAUDIO_LIB_DEPENDS=	libpulse-simple.so:audio/pulseaudio
 PULSEAUDIO_CMAKE_BOOL=	USE_PULSE
 
 VULKAN_DESC=		Vulkan renderer
-VULKAN_BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:devel/vulkan-headers
+VULKAN_BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers
 VULKAN_LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
 VULKAN_CMAKE_BOOL=	USE_VULKAN
 
@@ -95,4 +80,24 @@ post-patch:
 		-e '/GIT_VERSION/s/local_build/${GH_TAGNAME:C/[^-]*-//}/' \
 		${WRKSRC}/${PORTNAME}/git-version.cmake
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+# Ignore Mk/bsd.default-versions.mk but respect make.conf(5)
+.if !defined(DEFAULT_VERSIONS) || ! ${DEFAULT_VERSIONS:Mllvm*}
+LLVM_DEFAULT=	11 # bump if not latest release
+.endif
+BUILD_DEPENDS+=	clang++${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
+USES:=		${USES:Ncompiler*}
+CC=		clang${LLVM_DEFAULT}
+CXX=		clang++${LLVM_DEFAULT}
+CPP=		clang-cpp${LLVM_DEFAULT}
+
+# XXX Drop after FreeBSD 12.1 EOL
+.if make(makesum) || (!exists(/usr/include/c++/v1/fenv.h) && exists(/usr/lib/libc++.so))
+MASTER_SITES+=	https://github.com/llvm/llvm-project/releases/download/llvmorg-${LLVM_VER}/:libcxx
+DISTFILES+=	libcxx-${LLVM_VER}.src.tar.xz:libcxx
+CXXFLAGS+=	-nostdinc++ -isystem${WRKDIR}/libcxx-${LLVM_VER}.src/include
+LLVM_VER=	10.0.1
+.endif
+
+.include <bsd.port.post.mk>

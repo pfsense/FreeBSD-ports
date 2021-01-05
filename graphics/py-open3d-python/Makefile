@@ -3,7 +3,7 @@
 PORTNAME=	open3d-python
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/../LICENSE
 LIB_DEPENDS=	libOpen3D.so:graphics/open3d
 
 USES=		cmake compiler:c++11-lang eigen:3 fortran localbase:ldflags \
-		pkgconfig python
+		pkgconfig python:3.6+
 USE_GITHUB=	yes
 GH_ACCOUNT=	IntelVCL
 GH_PROJECT=	Open3D
@@ -31,8 +31,10 @@ LDFLAGS+=	-pthread # https://github.com/IntelVCL/Open3D/issues/510
 
 PLIST_FILES=	${PYTHON_SITELIBDIR}/open3d.so
 
-.if !exists(/usr/include/c++/v1/experimental/optional)
+.include <bsd.port.pre.mk>
+
+.if !exists(/usr/include/c++/v1/experimental/optional) && ${CHOSEN_COMPILER_TYPE} == clang
 BROKEN=		Base C++ compiler is missing the header <experimental/optional>, see bug\#249538
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

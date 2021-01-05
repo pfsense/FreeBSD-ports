@@ -1,9 +1,9 @@
---- src/types.h.orig	2011-06-21 21:50:00 UTC
+--- src/types.h.orig	2020-10-26 22:55:04 UTC
 +++ src/types.h
-@@ -79,6 +79,4 @@ extern guint win_height;
- const gchar *custom_signal_0;
- const gchar *custom_signal_1;
+@@ -77,6 +77,4 @@ extern gboolean full_view;
+ extern gint win_width;
+ extern gint win_height;
  
--extern int PAGE_SIZE;
+-extern int page_size;
 -
  #endif

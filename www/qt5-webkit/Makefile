@@ -2,11 +2,14 @@
 
 PORTNAME=		webkit
 DISTVERSION=		5.212.0-alpha4
-PORTREVISION=	3
+PORTREVISION=		4
 CATEGORIES=		www
 MASTER_SITES=		https://github.com/qt${PORTNAME}/qt${PORTNAME}/releases/download/${DISTNAME}/
 PKGNAMEPREFIX=		qt5-
 DISTNAME=		qt${PORTNAME}-${DISTVERSION}
+
+PATCH_SITES=		https://github.com/qt${PORTNAME}/qt${PORTNAME}/commit/
+PATCHFILES+=		78360c01c796b6260bf828bc9c8a0ef73c5132fd.patch:-p1
 
 MAINTAINER=		kde@FreeBSD.org
 COMMENT=		QtWebKit with a more modern WebKit code base

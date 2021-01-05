@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	moltemplate
-DISTVERSION=	2.18.6
+DISTVERSION=	2.19.4
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,7 +16,7 @@ RUN_DEPENDS=	${PYNUMPY} \
 		bash:shells/bash
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		python shebangfix
+USES=		python:3.6+ shebangfix
 SHEBANG_FILES=	moltemplate/scripts/molc.sh
 USE_PYTHON=	distutils concurrent autoplist
 

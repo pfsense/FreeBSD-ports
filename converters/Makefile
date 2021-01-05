@@ -137,14 +137,13 @@
     SUBDIR += pear-Services_JSON
     SUBDIR += pecl-igbinary
     SUBDIR += php-bsdconv
-    SUBDIR += php72-iconv
-    SUBDIR += php72-mbstring
-    SUBDIR += php72-recode
     SUBDIR += php73-iconv
     SUBDIR += php73-mbstring
     SUBDIR += php73-recode
     SUBDIR += php74-iconv
     SUBDIR += php74-mbstring
+    SUBDIR += php80-iconv
+    SUBDIR += php80-mbstring
     SUBDIR += psiconv
     SUBDIR += py-bencode.py
     SUBDIR += py-bencoder
@@ -179,6 +178,5 @@
     SUBDIR += xml2c
     SUBDIR += yj
     SUBDIR += ytnef
-    SUBDIR += zbase32
 
 .include <bsd.port.subdir.mk>

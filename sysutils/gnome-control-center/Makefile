@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gnome-control-center
-PORTVERSION=	3.36.4
+PORTVERSION=	3.38.2
 CATEGORIES=	sysutils gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -33,7 +33,7 @@ LIB_DEPENDS=	libcanberra.so:audio/libcanberra \
 		libgtop-2.0.so:devel/libgtop \
 		libgrilo-0.3.so:net/grilo \
 		libpolkit-gobject-1.so:sysutils/polkit \
-		libhandy-0.0.so:x11-toolkits/libhandy0 \
+		libhandy-1.so:x11-toolkits/libhandy \
 		libudisks2.so:sysutils/libudisks \
 		libsecret-1.so:security/libsecret \
 		libepoxy.so:graphics/libepoxy
@@ -67,6 +67,10 @@ CHEESE_MESON_TRUE=	cheese
 WAYLAND_MESON_TRUE=	wayland
 WAYLAND_LIB_DEPENDS=	libgudev-1.0.so:devel/libgudev
 
+# This can be removed after 11.x is no longer supported
+.if exists(/usr/bin/ld.lld) && (${/usr/bin/ld:L:tA} != /usr/bin/ld.lld)
+LDFLAGS+=      -fuse-ld=lld
+.endif
 
 .include <bsd.port.pre.mk>
 # FreeBSD base gained /etc/os-release in r354922, which

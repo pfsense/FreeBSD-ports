@@ -16,10 +16,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	liblo.so:audio/liblo
 
-USES=		localbase python
+USES=		localbase python:3.6+
 USE_PYTHON=	autoplist concurrent cython distutils
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/liblo.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/liblo*.so
 
 .include <bsd.port.mk>
