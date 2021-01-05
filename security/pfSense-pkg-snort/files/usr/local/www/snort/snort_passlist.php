@@ -3,7 +3,7 @@
  * snort_passlist.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
  * Copyright (c) 2019 Bill Meeks
  * All rights reserved.

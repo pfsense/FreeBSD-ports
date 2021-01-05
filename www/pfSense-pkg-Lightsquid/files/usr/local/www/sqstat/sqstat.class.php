@@ -3,7 +3,7 @@
  * sqstat.class.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2006 Alex Samorukov <samm@os2.kiev.ua>
  * Copyright (c) 2011 Sergey Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.

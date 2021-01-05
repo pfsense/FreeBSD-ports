@@ -3,7 +3,7 @@
  * tftp_files.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008 Mark J Crane
  * All rights reserved.
  *
