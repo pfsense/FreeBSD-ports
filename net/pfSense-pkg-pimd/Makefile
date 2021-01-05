@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-pimd
 PORTVERSION=	0.0.3
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
