@@ -3,7 +3,7 @@
  * haproxy_xmlrpcsyncclient.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 PiBa-NL
  * All rights reserved.
  *

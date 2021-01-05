@@ -3,7 +3,7 @@
  * mail_reports.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2007-2011 Seth Mos <seth.mos@dds.nl>
  * All rights reserved.
  *
