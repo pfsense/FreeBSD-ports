@@ -376,7 +376,7 @@
 				</span><br/><br/>
 				<strong><span class="text-info">Splice All: </span></strong><br/>
 				<span>
-				This configuration is suitable if you want to use the <a href="https://doc.pfsense.org/index.php/SquidGuard_package" target="_blank">SquidGuard package</a> for web filtering.</br>
+				This configuration is suitable if you want to use the <a href="https://docs.netgate.com/pfsense/en/latest/packages/cache-proxy/squidguard.html" target="_blank">SquidGuard package</a> for web filtering.</br>
 				All destinations will be spliced. SquidGuard can do its job of denying or allowing destinations according its rules, as it does with HTTP.<br/>
 				You do <em>not</em> need to install the CA certificate configured below on clients.<br/>
 				Content filtering (such as Antivirus) <em>will not</em> be available for SSL sites.

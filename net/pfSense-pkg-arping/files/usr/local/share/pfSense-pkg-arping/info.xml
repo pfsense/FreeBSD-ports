@@ -6,6 +6,6 @@
 		<website>http://www.habets.pp.se/synscan/programs.php?prog=arping</website>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>arping.xml</configurationfile>
-		<pkginfolink>https://doc.pfsense.org/index.php/Arping</pkginfolink>
+		<pkginfolink>https://docs.netgate.com/pfsense/en/latest/packages/arping.html</pkginfolink>
 	</package>
 </pfsensepkgs>

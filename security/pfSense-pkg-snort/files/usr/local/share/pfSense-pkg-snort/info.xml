@@ -2,7 +2,7 @@
 <pfsensepkgs>
 	<package>
 		<name>snort</name>
-		<pkginfolink>https://doc.pfsense.org/index.php/Setup_Snort_Package</pkginfolink>
+		<pkginfolink>https://docs.netgate.com/pfsense/en/latest/packages/snort/index.html</pkginfolink>
 		<website>http://www.snort.org</website>
 		<descr><![CDATA[Snort is an open source network intrusion prevention and detection system (IDS/IPS). Combining the benefits of signature, protocol, and anomaly-based inspection.]]></descr>
 		<version>%%PKGVERSION%%</version>

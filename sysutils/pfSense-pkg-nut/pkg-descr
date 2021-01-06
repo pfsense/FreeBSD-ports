@@ -2,4 +2,4 @@ Network UPS Tools provides support for monitoring of Uninterruptible Power
 Supplies. It supports UPS units attached locally via USB or serial, and remote
 units via the SNMP protocol, the APCUPSD protocol or the NUT protocol.
 
-WWW: https://forum.pfsense.org/index.php?topic=115349.0
+WWW: https://docs.netgate.com/pfsense/en/latest/packages/nut.html
