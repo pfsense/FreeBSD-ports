@@ -137,7 +137,6 @@
 			<description>Ignore MTU values for OSPF peers on this interface. Allows OSPF to form full adjacencies even when there is an MTU mismatch.</description>
 			<type>checkbox</type>
 		</field>
-
 		<field>
 			<name>OSPF Interface Handling</name>
 			<type>listtopic</type>
@@ -160,7 +159,6 @@
 			<description>Prevent routes for this interface subnet or IP address from being distributed by OSPF (Suggested for Multi-WAN environments).</description>
 			<type>checkbox</type>
 		</field>
-
 		<field>
 			<name>Authentication</name>
 			<type>listtopic</type>
@@ -198,7 +196,6 @@
 			</description>
 			<type>input</type>
 		</field>
-
 		<field>
 			<name>Advanced</name>
 			<type>listtopic</type>
@@ -241,7 +238,6 @@
 			</description>
 			<type>input</type>
 		</field>
-
 		<field>
 			<name>BFD</name>
 			<type>listtopic</type>
@@ -258,6 +254,9 @@
 			<type>checkbox</type>
 		</field>
 	</fields>
+	<custom_delete_php_command>
+		frr_generate_config();
+	</custom_delete_php_command>
 	<custom_php_resync_config_command>
 		frr_generate_config();
 	</custom_php_resync_config_command>
