@@ -3,7 +3,7 @@
  * status_mail_report.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,7 +76,7 @@ include("head.inc");
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h2 class="panel-title"><?=gettext('Email Reports')?></h2>
-			<?=gettext("Define reports to by sent periodically via email.");?>
+			<?=gettext("Define reports to be sent periodically via email.");?>
 		</div>
 		<div class="panel-body table-responsive">
 			<table class="table table-striped table-hover">

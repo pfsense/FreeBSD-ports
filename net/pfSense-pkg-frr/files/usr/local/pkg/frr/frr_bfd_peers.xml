@@ -8,7 +8,7 @@
  * frr_bfd_peers.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,6 +38,10 @@
 			<text>Peers</text>
 			<url>pkg.php?xml=frr/frr_bfd_peers.xml</url>
 			<active/>
+		</tab>
+		<tab>
+			<text>Profiles</text>
+			<url>pkg.php?xml=frr/frr_bfd_profiles.xml</url>
 		</tab>
 		<tab>
 			<text>[Global Settings]</text>
@@ -111,6 +115,23 @@
 			<type>input</type>
 		</field>
 		<field>
+			<fielddescr>Profile</fielddescr>
+			<fieldname>Profile</fieldname>
+			<description>
+				<![CDATA[
+				Select the profile for peer take configuration from.
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_bfd_profiles()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<name>Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
 			<fielddescr>Multihop</fielddescr>
 			<fieldname>multihop</fieldname>
 			<description>
@@ -132,7 +153,6 @@
 			</description>
 			<type>checkbox</type>
 		</field>
-
 		<field>
 			<name>Source Address/Interface</name>
 			<type>listtopic</type>
@@ -140,7 +160,7 @@
 		<field>
 			<fielddescr>Interface</fielddescr>
 			<fieldname>interface</fieldname>
-			<description>Select the interface which BFD will use as a packet source</description>
+			<description>Select the interface which BFD will use as a packet source.</description>
 			<type>select_source</type>
 			<source><![CDATA[frr_get_interfaces()]]></source>
 			<source_name>name</source_name>
@@ -160,7 +180,6 @@
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
-
 		<field>
 			<name>Advanced Options</name>
 			<type>listtopic</type>
@@ -220,6 +239,9 @@
 			<type>checkbox</type>
 		</field>
 	</fields>
+	<custom_delete_php_command>
+		frr_generate_config();
+	</custom_delete_php_command>
 	<custom_php_resync_config_command>
 		frr_generate_config();
 	</custom_php_resync_config_command>

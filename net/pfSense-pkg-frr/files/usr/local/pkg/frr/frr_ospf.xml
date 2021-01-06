@@ -8,7 +8,7 @@
  * frr_ospf.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -115,7 +115,6 @@
 			</description>
 			<type>input</type>
 		</field>
-
 		<field>
 			<name>Modules</name>
 			<type>listtopic</type>
@@ -126,7 +125,6 @@
 			<description>Enable agentx support for accessing FRR Zebra data via SNMP with the net-snmp package.</description>
 			<type>checkbox</type>
 		</field>
-
 		<field>
 			<name>Default Area</name>
 			<type>listtopic</type>
@@ -167,7 +165,6 @@
 				<option><name>Not so Totally Stub Area (nssa no-summary)</name><value>nssanosum</value></option>
 			</options>
 		</field>
-
 		<field>
 			<name>OSPF Networks</name>
 			<type>listtopic</type>
@@ -211,7 +208,6 @@
 				</rowhelperfield>
 			</rowhelper>
 		</field>
-
 		<field>
 			<name>Route Redistribution</name>
 			<type>listtopic</type>
@@ -276,7 +272,6 @@
 			</description>
 			<type>info</type>
 		</field>
-
 		<field>
 			<fielddescr>pfSense Kernel Routes</fielddescr>
 			<fieldname>redistributekernel</fieldname>
@@ -326,7 +321,6 @@
 			</description>
 			<type>info</type>
 		</field>
-
 		<field>
 			<fielddescr>BGP Routes</fielddescr>
 			<fieldname>redistributebgp</fieldname>
@@ -376,7 +370,6 @@
 			</description>
 			<type>info</type>
 		</field>
-
 		<field>
 			<fielddescr>FRR Static Routes</fielddescr>
 			<fieldname>redistributestatic</fieldname>
@@ -426,7 +419,6 @@
 			</description>
 			<type>info</type>
 		</field>
-
 		<field>
 			<name>Default Route Redistribution</name>
 			<type>listtopic</type>
@@ -464,7 +456,6 @@
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
-
 		<field>
 			<name>Advanced</name>
 			<type>listtopic</type>
@@ -487,7 +478,6 @@
 			<description>Base value, in Mbit/s, used to calculate automatic interface costs. Must be set the same on all OSPF routers (1-4294967, default 100).</description>
 			<type>input</type>
 		</field>
-
 		<field>
 			<fielddescr>Max Metric</fielddescr>
 			<fieldname>max_metric_administrative</fieldname>
@@ -527,7 +517,6 @@
 				<option><name>Standard (RFC2328)</name><value>standard</value></option>
 			</options>
 		</field>
-
 	</fields>
 	<custom_php_resync_config_command>
 		frr_generate_config();

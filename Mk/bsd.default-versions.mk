@@ -20,7 +20,7 @@ _INCLUDE_BSD_DEFAULT_VERSIONS_MK=	yes
 LOCALBASE?=	/usr/local
 
 .for lang in APACHE BDB COROSYNC EMACS FIREBIRD FORTRAN FPC GCC GHOSTSCRIPT \
-	JAVA JULIA LAZARUS LINUX LLVM LUA MYSQL PERL5 PGSQL PHP PYTHON PYTHON2 \
+	JAVA JULIA LAZARUS LIBRSVG2 LINUX LLVM LUA MYSQL PERL5 PGSQL PHP PYTHON PYTHON2 \
 	PYTHON3 RUBY RUST SAMBA SSL TCLTK VARNISH
 .if defined(${lang}_DEFAULT)
 ERROR+=	"The variable ${lang}_DEFAULT is set and it should only be defined through DEFAULT_VERSIONS+=${lang:tl}=${${lang}_DEFAULT} in /etc/make.conf"
@@ -35,7 +35,7 @@ ${_l:tu}_DEFAULT=	${lang:C/.*=//g}
 
 # Possible values: 2.4
 APACHE_DEFAULT?=	2.4
-# Possible values: 48, 5, 6
+# Possible values: 5, 6, 18
 BDB_DEFAULT?=		5
 # Possible values: 2, 3
 COROSYNC_DEFAULT?=	2
@@ -45,11 +45,13 @@ COROSYNC_DEFAULT?=	2
 FIREBIRD_DEFAULT?=	2.5
 # Possible values: flang (experimental), gfortran
 FORTRAN_DEFAULT?=	gfortran
-# Possible values: 3.0.4
-FPC_DEFAULT?=		3.0.4
-# Possible values: 8, 9 (powerpcspe was dropped with GCC 9)
+# Possible values: 3.2.0
+FPC_DEFAULT?=		3.2.0
+# Possible values: 8, 9 (powerpcspe was dropped with GCC 9), 10
 .if ${ARCH} == "powerpcspe"
 GCC_DEFAULT?=		8
+.elif ${ARCH} == "powerpc64le"
+GCC_DEFAULT?=		10
 .else
 GCC_DEFAULT?=		9
 .endif
@@ -59,16 +61,24 @@ GHOSTSCRIPT_DEFAULT?=	agpl
 JAVA_DEFAULT?=		8
 # Possible values: 0.6, 0.7, 1.0, 1.1
 JULIA_DEFAULT?=		1.0
-# Possible values: 2.0.8
-LAZARUS_DEFAULT?=	2.0.8
+# Possible values: 2.0.10
+LAZARUS_DEFAULT?=	2.0.10
+# Possible values: rust legacy
+.if empty(ARCH:Naarch64:Narmv6:Narmv7:Namd64:Ni386:Npowerpc64:Npowerpc64le)
+LIBRSVG2_DEFAULT?=	rust
+.else
+LIBRSVG2_DEFAULT?=	legacy
+.endif
 # Possible values: c7
 LINUX_DEFAULT?=		c7
 # Possible values: 60, 70, 80, 90, -devel (to be used when non-base compiler is required)
 # Please give notice to the Graphics Team (x11@FreeBSD.org) in advance before 
 # bumping the LLVM version.
 LLVM_DEFAULT?=		90
-# Possible values: 5.1, 5.2, 5.3
+# Possible values: 5.1, 5.2, 5.3, 5.4
 LUA_DEFAULT?=		5.2
+# Possible values: 5.10, 5.20, 6.8
+MONO_DEFAULT=		5.10
 # Possible values: 5.5, 5.6, 5.7, 8.0, 10.3m, 10.4m, 10.5m, 5.5p, 5.6p, 5.7p, 5.6w, 5.7w
 MYSQL_DEFAULT?=		5.7
 # Possible values: 5.28, 5.30, 5.32, devel
@@ -86,22 +96,22 @@ _PERL5_FROM_BIN!=	${LOCALBASE}/bin/perl -e 'printf "%vd\n", $$^V;'
 _EXPORTED_VARS+=	_PERL5_FROM_BIN
 PERL5_DEFAULT:=		${_PERL5_FROM_BIN:R}
 .endif
-# Possible values: 9.5, 9.6, 10, 11, 12
+# Possible values: 9.5, 9.6, 10, 11, 12, 13
 PGSQL_DEFAULT?=		12
-# Possible values: 7.2, 7.3, 7.4
+# Possible values: 7.3, 7.4 8.0
 PHP_DEFAULT?=		7.4
-# Possible values: 2.7, 3.6, 3.7, 3.8
+# Possible values: 2.7, 3.6, 3.7, 3.8, 3.9
 PYTHON_DEFAULT?=	3.7
 # Possible values: 2.7
 PYTHON2_DEFAULT?=	2.7
-# Possible values: 3.6, 3.7, 3.8
+# Possible values: 3.6, 3.7, 3.8, 3.9
 PYTHON3_DEFAULT?=	3.7
-# Possible values: 2.5, 2.6, 2.7
-RUBY_DEFAULT?=		2.6
+# Possible values: 2.5, 2.6, 2.7, 3.0
+RUBY_DEFAULT?=		2.7
 # Possible values: rust, rust-nightly
 RUST_DEFAULT?=		rust
-# Possible values: 4.10, 4.11, 4.12, 4.13
-SAMBA_DEFAULT?=		4.10
+# Possible values: 4.11, 4.12, 4.13
+SAMBA_DEFAULT?=		4.12
 # Possible values: base, openssl, libressl, libressl-devel
 .if !defined(SSL_DEFAULT)
 #	If no preference was set, check for an installed base version

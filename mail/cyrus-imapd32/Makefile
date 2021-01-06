@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	cyrus-imapd
-PORTVERSION=	3.2.3
+PORTVERSION=	3.2.5
+#PORTREVISION=	0
 CATEGORIES=	mail
 MASTER_SITES=	https://github.com/cyrusimap/cyrus-imapd/releases/download/${PORTNAME}-${PORTVERSION}/
 PKGNAMESUFFIX=	32
@@ -38,15 +39,16 @@ MAKE_JOBS_UNSAFE=	yes
 
 USES+=		shebangfix
 SHEBANG_FILES=	imap/promdatagen snmp/snmpgen tools/config2header \
-		tools/masssievec tools/mkimap perl/sieve/scripts/*.pl
+		tools/masssievec tools/mkimap tools/translatesieve \
+		perl/sieve/scripts/*.pl
 
 CPE_VENDOR=	cmu
 CPE_PRODUCT=	cyrus_imap_server
 
 OPTIONS_DEFINE=		AUTOCREATE BACKUP CLAMAV HTTP IDLED LDAP MURDER \
-			MYSQL NNTP PGSQL REPLICATION SNMP SQLITE SQUAT XAPIAN \
-			DOCS
-OPTIONS_DEFAULT=	AUTOCREATE IDLED SQLITE SQUAT
+			MYSQL NNTP PGSQL REPLICATION SNMP SQLITE SQUAT SRS \
+			XAPIAN DOCS
+OPTIONS_DEFAULT=	AUTOCREATE IDLED SQLITE SQUAT SRS
 OPTIONS_SUB=		yes
 AUTOCREATE_DESC=	Enable autocreate support
 AUTOCREATE_CONFIGURE_ENABLE=	autocreate
@@ -82,9 +84,9 @@ PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_ON=	--with-pgsql=${LOCALBASE}
 REPLICATION_DESC=	Enable replication (experimental)
 REPLICATION_CONFIGURE_ENABLE=replication
-#SRS_DESC=		Enable Sender Rewriting Scheme support
-#SRS_CONFIGURE_ENABLE=	srs
-#SRS_LIB_DEPENDS=	libsrs2.so:mail/libsrs2
+SRS_DESC=		Enable Sender Rewriting Scheme support
+SRS_CONFIGURE_ENABLE=	srs
+SRS_LIB_DEPENDS=	libsrs2.so:mail/libsrs2
 SNMP_LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
 SNMP_CONFIGURE_ON=	--with-snmp=${LOCALBASE}
 SNMP_CONFIGURE_OFF=	--with-snmp=no
@@ -181,9 +183,11 @@ post-patch:
 			  -e "s|%%CYRUS_USER%%|${CYRUS_USER}|g" \
 			  -e "s|%%CYRUS_GROUP%%|${CYRUS_GROUP}|g" \
 		${WRKSRC}/tools/mkimap
+.for f in masssievec translatesieve
 	@${REINPLACE_CMD} -e "s|/etc/|${PREFIX}/etc/|g" \
 			  -e "s|/usr/sieve|/var/imap/sieve|g" \
-		${WRKSRC}/tools/masssievec
+		${WRKSRC}/tools/${f}
+.endfor
 	@${REINPLACE_CMD} \
 		-e 's|$$(libdir)/\(pkgconfig\)|${PREFIX}/libdata/\1|g' \
 		-e 's|$$(mandir)/\(man[8]\)|${PREFIX}/cyrus/man/\1|g' \
@@ -198,10 +202,10 @@ post-install:
 	${SED} -e 's,/run/cyrus/socket,/var/imap/socket,' \
 		${WRKSRC}/doc/examples/cyrus_conf/normal.conf \
 		> ${STAGEDIR}${EXAMPLESDIR}/cyrus.conf
-	${INSTALL_SCRIPT} ${WRKSRC}/tools/mkimap \
-		${STAGEDIR}${CYRUS_PREFIX}/sbin/mkimap
-	${INSTALL_SCRIPT} ${WRKSRC}/tools/masssievec \
-		${STAGEDIR}${CYRUS_PREFIX}/sbin/masssievec
+.for f in mkimap masssievec translatesieve
+	${INSTALL_SCRIPT} ${WRKSRC}/tools/${f} \
+		${STAGEDIR}${CYRUS_PREFIX}/sbin/${f}
+.endfor
 	${INSTALL_DATA} ${WRKDIR}/cyrus-imapd-man.conf \
 		${STAGEDIR}${PREFIX}/etc/man.d/cyrus-imapd.conf
 .for s in 1 3 5

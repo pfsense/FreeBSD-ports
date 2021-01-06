@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	openzfs
-PORTVERSION=	2020100400
+PORTVERSION=	2020120100
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
@@ -11,6 +11,7 @@ COMMENT=	OpenZFS userland for FreeBSD
 LICENSE=	CDDL
 
 BROKEN_aarch64=	invokes x86 assembler
+BROKEN_riscv64=	fails to compile: btree_test.c:462:49: result of comparison of constant -1 with expression of type 'char' is always true
 
 RUN_DEPENDS=	openzfs-kmod>=0:sysutils/openzfs-kmod
 
@@ -20,15 +21,14 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX} --with-config="user"
 
 OPTIONS_DEFINE=	DEBUG PYTHON TESTS
-DEBUG_DESC=	Build a debug configuration
-PYTHON_DESC=	Build the pyzfs library, arc_summary and arcstat utilities
+PYTHON_DESC=	Build the pyzfs library, arc_summary, arcstat, and dbufstat utilities
 TESTS_DESC=	Install the ZFS Test Suite
 OPTIONS_SUB=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	openzfs
 GH_PROJECT=	zfs
-GH_TAGNAME=	79f0935fa
+GH_TAGNAME=	aa2778d10
 
 .include <bsd.port.pre.mk>
 

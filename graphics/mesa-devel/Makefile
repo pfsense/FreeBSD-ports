@@ -1,22 +1,22 @@
 # $FreeBSD$
 
 PORTNAME=	mesa
-DISTVERSION=	20.2-branchpoint-2078
-DISTVERSIONSUFFIX=	-g8427e560672
+DISTVERSION=	20.3-branchpoint-1910
+DISTVERSIONSUFFIX=	-g7de14689322
 CATEGORIES=	graphics
 PKGNAMESUFFIX=	-devel
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	ee5c7790fa93.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/1598
 PATCHFILES+=	9f52b5177728.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/1598
-PATCHFILES+=	2b9168cf579b.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/1598
 PATCHFILES+=	55822330540d.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/1598
 PATCHFILES+=	f6c7569ad9ea.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/1598
 PATCHFILES+=	cb8f7a253934.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/3568
 PATCHFILES+=	700efacda59c.patch:-p1
-PATCHFILES+=	8f3e0778f9a3.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/issues/966#note_394512
+PATCHFILES+=	4ed6d957f689.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/issues/966#note_394512
 PATCHFILES+=	167fa293d7b7.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/5464
-PATCHFILES+=	e14ca702af24.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/7257
+PATCHFILES+=	19e001833ec1.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/7778
+PATCHFILES+=	50433886a3e3.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/6881
+PATCHFILES+=	79a9c5e470c2.patch:-p1 # https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/8221
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Bleeding edge Mesa drivers (OpenGL, Vulkan)
@@ -88,6 +88,7 @@ r600_DESC=		R600, R700, Evergreen, Northern Islands
 radeonsi_DESC=		Southern Islands and newer
 
 COINST_DESC=		Allow co-installation with another Mesa port
+COINST_VARS=		LLVM_DEFAULT=10 # chase mesa-dri
 COINST_MESON_ON=	-Degl-lib-suffix=${PKGNAMESUFFIX}
 COINST_PLIST_SUB=	SUFFIX=${PKGNAMESUFFIX}
 COINST_SUB_FILES=	libmap.conf
@@ -103,7 +104,7 @@ LIBUNWIND_LIB_DEPENDS=	libunwind.so:devel/libunwind
 LIBUNWIND_MESON_ENABLED=	libunwind
 
 LLVM_DESC=		Build with LLVM support
-LLVM_LIB_DEPENDS=	libLLVM-${LLVM_DEFAULT:C/^([6-9])0/\1/:S/-devel/11/}.so:devel/llvm${LLVM_DEFAULT}
+LLVM_LIB_DEPENDS=	libLLVM-${LLVM_DEFAULT:C/^([6-9])0/\1/:S/-devel/12/}.so:devel/llvm${LLVM_DEFAULT}
 LLVM_MESON_ENABLED=	llvm
 LLVM_BINARY_ALIAS=	llvm-config=llvm-config${LLVM_DEFAULT}
 .for i in r600 radeonsi radv
@@ -117,7 +118,7 @@ VDPAU_BUILD_DEPENDS=	libvdpau>0:multimedia/libvdpau
 VDPAU_MESON_ENABLED=	gallium-vdpau
 
 VULKAN_DESC=		Vulkan drivers and layers
-VULKAN_BUILD_DEPENDS=	glslangValidator:devel/glslang
+VULKAN_BUILD_DEPENDS=	glslangValidator:graphics/glslang
 VULKAN_MESON_TRUE=	vulkan-device-select-layer vulkan-overlay-layer
 anv_DESC=		Haswell and newer
 radv_DESC=		Southern Islands and newer

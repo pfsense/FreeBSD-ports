@@ -8,7 +8,7 @@
  * frr_bgp_neighbors.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -153,10 +153,34 @@
 			<combinefields>end</combinefields>
 		</field>
 		<field>
+			<name>Shutdown</name>
+			<type>listtopic</type>
+		</field>
+		<field>
 			<fielddescr>Shutdown</fielddescr>
 			<fieldname>shutdown</fieldname>
-			<description>Administratively shutdown the neighbor</description>
+			<description>Neighbor administrative shutdown</description>
 			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Shutdown Message</fielddescr>
+			<fieldname>shutdownmessage</fieldname>
+			<description>Shutdown message (optional)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Auto-Shutdown</fielddescr>
+			<fieldname>shutdownautortt</fieldname>
+			<description>RTT in milliseconds to automatically shutdown the peer if exceeded.</description>
+			<type>input</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Auto-Shutdown Keepalive Count</fielddescr>
+			<fieldname>shutdownautortt</fieldname>
+			<description>Number of keepalive messages to count before shutting down the peer when round-trip-time exceeds the set threshold.</description>
+			<type>input</type>
+			<combinefields>end</combinefields>
 		</field>
 		<field>
 			<name>Basic Options</name>
@@ -264,7 +288,6 @@
 			<type>input</type>
 			<combinefields>end</combinefields>
 		</field>
-
 		<field>
 			<name>Peer Filtering</name>
 			<type>listtopic</type>
@@ -394,7 +417,6 @@
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
-
 		<field>
 			<name>BFD</name>
 			<type>listtopic</type>
@@ -435,7 +457,6 @@
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
-
 		<field>
 			<name>Graceful Restart</name>
 			<type>listtopic</type>
@@ -453,7 +474,6 @@
 				<option><name>Disable</name><value>disable</value></option>
 			</options>
 		</field>
-
 		<field>
 			<name>Advanced Options</name>
 			<type>listtopic</type>
@@ -668,6 +688,12 @@
 			<type>input</type>
 		</field>
 		<field>
+			<fielddescr>Maximum Prefix Out</fielddescr>
+			<fieldname>maximumprefixout_num</fieldname>
+			<description>Maximum Prefix to Send (1-4294967295)</description>
+			<type>input</type>
+		</field>
+		<field>
 			<fielddescr>Remove Private AS</fielddescr>
 			<fieldname>removeprivateas</fieldname>
 			<description>Remove private ASNs in outbound updates</description>
@@ -687,7 +713,6 @@
 			<type>checkbox</type>
 			<combinefields>end</combinefields>
 		</field>
-
 		<field>
 			<fielddescr>Route Client</fielddescr>
 			<fieldname>routeclient_reflector</fieldname>
@@ -708,8 +733,10 @@
 			<description>Neighbor is part of its own update group</description>
 			<type>checkbox</type>
 		</field>
-
 	</fields>
+	<custom_delete_php_command>
+		frr_generate_config();
+	</custom_delete_php_command>
 	<custom_php_resync_config_command>
 		frr_generate_config();
 	</custom_php_resync_config_command>

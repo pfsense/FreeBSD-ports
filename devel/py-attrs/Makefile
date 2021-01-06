@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	attrs
-PORTVERSION=	19.3.0
+PORTVERSION=	20.3.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	axel.rau@chaos1.de
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python attributes without boilerplate
 
 LICENSE=	MIT
@@ -20,8 +20,8 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}coverage>0:devel/py-coverage@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}zope.interface>0:devel/py-zope.interface@${PY_FLAVOR}
 
-USES=		python
-USE_PYTHON=	autoplist distutils
+USES=		python:3.6+
+USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
 

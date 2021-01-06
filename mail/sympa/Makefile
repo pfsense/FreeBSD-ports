@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sympa
-DISTVERSION=	6.2.56
+DISTVERSION=	6.2.58
 PORTREVISION=	1
 CATEGORIES=	mail
 
@@ -12,7 +12,8 @@ COMMENT=	Electronic mailing list manager
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${RUN_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS} \
+		postfix>=0:mail/postfix
 RUN_DEPENDS=	\
 	p5-App-cpanminus>=0:devel/p5-App-cpanminus	\
 	p5-Archive-Zip>=1.05:archivers/p5-Archive-Zip	\

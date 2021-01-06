@@ -1,3 +1,5 @@
+Remark: if you plan to use this port with Code_Aster, you need science/tfel-edf.
+
 `MFront` is a code generator which translates a set of closely related
 domain specific languages into plain C++ on top of the `TFEL`
 library. Those languages covers three kind of material knowledge:

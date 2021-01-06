@@ -75,9 +75,11 @@
     SUBDIR += fpc-base
     SUBDIR += fpc-docs
     SUBDIR += fpc-lua
+    SUBDIR += fpc-pastojs
     SUBDIR += fpc-rexx
     SUBDIR += fpc-rtl-console
     SUBDIR += fpc-rtl-extra
+    SUBDIR += fpc-rtl-generics
     SUBDIR += fpc-rtl-objpas
     SUBDIR += fpc-rtl-unicode
     SUBDIR += fpc-source
@@ -116,6 +118,7 @@
     SUBDIR += go
     SUBDIR += go-devel
     SUBDIR += gomacro
+    SUBDIR += gprolog
     SUBDIR += gravity
     SUBDIR += groovy
     SUBDIR += gscheme
@@ -140,8 +143,6 @@
     SUBDIR += janet
     SUBDIR += jimtcl
     SUBDIR += jruby
-    SUBDIR += julia
-    SUBDIR += julia10
     SUBDIR += jython
     SUBDIR += kawa
     SUBDIR += kf5-kross
@@ -168,6 +169,7 @@
     SUBDIR += lua51
     SUBDIR += lua52
     SUBDIR += lua53
+    SUBDIR += lua54
     SUBDIR += luajit
     SUBDIR += luajit-openresty
     SUBDIR += malbolge
@@ -181,6 +183,9 @@
     SUBDIR += mmix
     SUBDIR += mono
     SUBDIR += mono-basic
+    SUBDIR += mono5.10
+    SUBDIR += mono5.20
+    SUBDIR += mono6.8
     SUBDIR += mosh
     SUBDIR += mosml
     SUBDIR += mtasc
@@ -251,12 +256,12 @@
     SUBDIR += pfe
     SUBDIR += pharo
     SUBDIR += php-mode.el
-    SUBDIR += php72
-    SUBDIR += php72-extensions
     SUBDIR += php73
     SUBDIR += php73-extensions
     SUBDIR += php74
     SUBDIR += php74-extensions
+    SUBDIR += php80
+    SUBDIR += php80-extensions
     SUBDIR += picoc
     SUBDIR += plexil
     SUBDIR += pocl
@@ -283,6 +288,7 @@
     SUBDIR += python36
     SUBDIR += python37
     SUBDIR += python38
+    SUBDIR += python39
     SUBDIR += qmasm
     SUBDIR += qscheme
     SUBDIR += quickjs
@@ -299,6 +305,7 @@
     SUBDIR += ruby25
     SUBDIR += ruby26
     SUBDIR += ruby27
+    SUBDIR += ruby30
     SUBDIR += runawk
     SUBDIR += rust
     SUBDIR += rust-bootstrap
@@ -328,7 +335,6 @@
     SUBDIR += solidity
     SUBDIR += spidermonkey17
     SUBDIR += spidermonkey185
-    SUBDIR += spidermonkey24
     SUBDIR += spidermonkey52
     SUBDIR += spidermonkey60
     SUBDIR += spidermonkey78
@@ -336,6 +342,7 @@
     SUBDIR += squeak
     SUBDIR += squirrel
     SUBDIR += swi-pl
+    SUBDIR += tauthon
     SUBDIR += tcbasic
     SUBDIR += tcc
     SUBDIR += tcl-manual
@@ -356,6 +363,7 @@
     SUBDIR += visualworks
     SUBDIR += voc
     SUBDIR += yabasic
+    SUBDIR += yap
     SUBDIR += yorick
     SUBDIR += ypsilon
     SUBDIR += zig

@@ -9334,6 +9334,7 @@ share/icons/hicolor/24x24/status/mate-netspeed-wireless-100.png
 share/icons/hicolor/24x24/status/mate-netspeed-wireless-25.png
 share/icons/hicolor/24x24/status/mate-netspeed-wireless-50.png
 share/icons/hicolor/24x24/status/mate-netspeed-wireless-75.png
+share/icons/hicolor/256x256/apps/mate-eyes-applet.png
 share/icons/hicolor/32x32/apps/mate-ax-bouncekeys.png
 share/icons/hicolor/32x32/apps/mate-ax-key-base.png
 share/icons/hicolor/32x32/apps/mate-ax-key-inverse.png
@@ -9410,6 +9411,7 @@ share/icons/hicolor/48x48/apps/mate-sticky-super-latched.png
 share/icons/hicolor/48x48/apps/mate-sticky-super-locked.png
 share/icons/hicolor/48x48/apps/mate-sticky-super-none.png
 share/icons/hicolor/48x48/devices/mate-netspeed-plip.png
+share/icons/hicolor/64x64/apps/mate-eyes-applet.png
 share/icons/hicolor/scalable/apps/mate-eyes-applet.svg
 share/icons/hicolor/scalable/apps/mate-netspeed-applet.svg
 share/icons/hicolor/scalable/apps/mate-sticky-notes-applet.svg
@@ -9481,6 +9483,7 @@ share/locale/it/LC_MESSAGES/mate-applets.mo
 share/locale/ja/LC_MESSAGES/mate-applets.mo
 share/locale/jv/LC_MESSAGES/mate-applets.mo
 share/locale/ka/LC_MESSAGES/mate-applets.mo
+share/locale/kab/LC_MESSAGES/mate-applets.mo
 share/locale/kk/LC_MESSAGES/mate-applets.mo
 share/locale/km/LC_MESSAGES/mate-applets.mo
 share/locale/kn/LC_MESSAGES/mate-applets.mo

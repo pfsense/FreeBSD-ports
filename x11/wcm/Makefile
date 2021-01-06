@@ -2,7 +2,7 @@
 
 PORTNAME=	wcm
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.0
+DISTVERSION=	0.6.0
 PORTREVISION=	1
 CATEGORIES=	x11
 
@@ -13,11 +13,11 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
-		wayfire>0:x11-wm/wayfire \
-		wf-shell>0:x11/wf-shell
+		wayfire>0:x11-wm/wayfire
 LIB_DEPENDS=	libevdev.so:devel/libevdev \
 		libwf-config.so:devel/wf-config \
 		libwayland-client.so:graphics/wayland
+RUN_DEPENDS=	wayfire>0:x11-wm/wayfire
 
 CONFLICTS_INSTALL=	wcmcommander # bin/wcm
 
@@ -27,5 +27,13 @@ USE_GNOME=	gtk30 libxml2
 GH_ACCOUNT=	WayfireWM
 DATADIR=	${PREFIX}/share/wayfire
 INSTALLS_ICONS=	yes
+
+OPTIONS_DEFINE=	WFSHELL
+OPTIONS_DEFAULT=WFSHELL
+OPTIONS_SUB=	yes
+
+WFSHELL_DESC=			Build with wf-shell support
+WFSHELL_BUILD_DEPENDS=		wf-shell>0:x11/wf-shell
+WFSHELL_MESON_ENABLED=		wf_shell
 
 .include <bsd.port.mk>

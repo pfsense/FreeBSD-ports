@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	djangorestframework
-DISTVERSION=	3.11.0
+PORTVERSION=	3.12.1
 PORTEPOCH=	1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
@@ -13,14 +13,14 @@ COMMENT=	Django REST framework
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django22>=1.11:www/py-django22@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django22>=2.2:www/py-django22@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytz>=0:devel/py-pytz@${PY_FLAVOR}
 
 USES=		python:3.5+
 USE_PYTHON=	distutils autoplist
 
 CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}djangorestframework3* \
-			${PYTHON_PKGNAMEPREFIX}dj22-djangorestframework
+			${PYTHON_PKGNAMEPREFIX}dj31-djangorestframework
 NO_ARCH=		yes
 
 .include <bsd.port.mk>

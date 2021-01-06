@@ -2,8 +2,7 @@
 
 PORTNAME=	phoc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.2
-PORTREVISION=	2
+DISTVERSION=	0.5.1
 CATEGORIES=	x11-wm
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -19,14 +18,15 @@ LIB_DEPENDS=	libwayland-server.so:graphics/wayland \
 		libxkbcommon.so:x11/libxkbcommon
 RUN_DEPENDS=	${LOCALBASE}/share/glib-2.0/schemas/org.gnome.mutter.gschema.xml:x11-wm/mutter
 
-USES=		compiler:c11 gl gnome meson pkgconfig xorg
+USES=		compiler:c11 gl gnome meson pkgconfig python:build shebangfix xorg
 USE_GITLAB=	yes
 USE_GL=		glesv2
 USE_GNOME=	gnomedesktop3
-USE_XORG=	pixman
+USE_XORG=	pixman xcb
 GL_SITE=	https://source.puri.sm
 GL_ACCOUNT=	Librem5
-GL_COMMIT=	0be2173791e709e8d07d5916ad12adbba614a799
+GL_COMMIT=	9fe63674a80268acd97fc7fb7db1a8448243bb1e
+SHEBANG_FILES=	build-aux/post_install.py
 CFLAGS+=	-Wno-error=format-nonliteral # clang
 PLIST_FILES=	bin/${PORTNAME}
 GLIB_SCHEMAS=	sm.puri.phoc.gschema.xml

@@ -1,10 +1,15 @@
 # $FreeBSD$
 
 PORTNAME=	webrtc-audio-processing
-PORTVERSION=	0.3.1
-PORTREVISION=	2
+DISTVERSION=	1.0
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	https://freedesktop.org/software/pulseaudio/${PORTNAME}/
+
+PATCH_SITES=	https://gitlab.freedesktop.org/pulseaudio/${PORTNAME}/-/commit/
+PATCHFILES+=	2083c9a5dd34.diff:-p1 # https://gitlab.freedesktop.org/pulseaudio/webrtc-audio-processing/-/merge_requests/6
+PATCHFILES+=	3f9907f93d39.diff:-p1 # https://gitlab.freedesktop.org/pulseaudio/webrtc-audio-processing/-/merge_requests/13
+PATCHFILES+=	b34c1d5746ea.diff:-p1 # https://gitlab.freedesktop.org/pulseaudio/webrtc-audio-processing/-/merge_requests/14
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	AudioProcessing module from WebRTC project
@@ -12,8 +17,11 @@ COMMENT=	AudioProcessing module from WebRTC project
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf compiler:c++11-lib libtool pkgconfig tar:xz
+BUILD_DEPENDS=	cmake:devel/cmake
+LIB_DEPENDS=	libabsl_strings.so:devel/abseil
+
+USES=		compiler:c++17-lang meson
 USE_LDCONFIG=	yes
-GNU_CONFIGURE=	yes
+CFLAGS_i386=	-msse # https://gitlab.freedesktop.org/pulseaudio/webrtc-audio-processing/-/issues/5
 
 .include <bsd.port.mk>

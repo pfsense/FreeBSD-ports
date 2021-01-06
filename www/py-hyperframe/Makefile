@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	hyperframe
-PORTVERSION=	5.2.0
+PORTVERSION=	6.0.0
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ COMMENT=	Python module that decodes binary streams into HTTP/2 frames
 
 LICENSE=	MIT
 
-USES?=		python
+USES?=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes

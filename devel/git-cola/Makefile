@@ -3,7 +3,8 @@
 
 PORTNAME=		git-cola
 DISTVERSIONPREFIX=	v
-DISTVERSION=		3.5
+DISTVERSION=		3.8
+PORTREVISION=	1
 CATEGORIES=		devel
 
 MAINTAINER=		dch@FreeBSD.org
@@ -19,7 +20,6 @@ USES=			desktop-file-utils gmake gnome python pyqt:5 qt:5 shebangfix
 USE_GITHUB=		yes
 USE_PYQT=		core gui network widgets
 
-SHEBANG_FILES=		share/git-cola/bin/git-xbase
 INSTALLS_ICONS=		yes
 NO_ARCH=		yes
 
@@ -33,8 +33,8 @@ NLS_USES=		gettext
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|LN_S = $$(LN) -s -f|LN_S = ${RLN}|;\
-s|$$(LN_S) "$$(datadir)/icons/git-cola.svg"|$$(LN_S) \
-"$$(DESTDIR)$$(datadir)/icons/git-cola.svg"|' \
+	s|$$(LN_S) "$$(datadir)/icons/git-cola.svg"|$$(LN_S) \
+	"$$(DESTDIR)$$(datadir)/icons/git-cola.svg"|' \
 		${WRKSRC}/Makefile
 
 .include <bsd.port.mk>

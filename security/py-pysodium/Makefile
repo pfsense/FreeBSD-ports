@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pysodium
-PORTVERSION=	0.7.5
+PORTVERSION=	0.7.6
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libsodium.so:security/libsodium
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

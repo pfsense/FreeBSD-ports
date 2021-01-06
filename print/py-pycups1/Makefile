@@ -16,7 +16,7 @@ LICENSE_COMB=	dual
 
 LIB_DEPENDS=	libcups.so:print/cups
 
-USES=		iconv localbase python tar:bzip2
+USES=		iconv localbase python:3.6+ tar:bzip2
 USE_PYTHON=	autoplist concurrent distutils
 
 # pycups 2.0.0+ requires Python 3.6+
@@ -35,6 +35,6 @@ pre-configure:
 	@${REINPLACE_CMD} -e 's|#ifdef __SVR4|#ifdef __FreeBSD__|' ${WRKSRC}/cupsppd.c
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/cups.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/cups*.so
 
 .include <bsd.port.post.mk>

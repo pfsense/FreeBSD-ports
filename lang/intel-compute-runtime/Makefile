@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	compute-runtime
-DISTVERSION=	20.38.17961
-PORTREVISION=	1
+DISTVERSION=	20.52.18783
 CATEGORIES=	lang
 PKGNAMEPREFIX=	intel-
 
@@ -25,7 +24,7 @@ USES=		cmake compiler:c++14-lang localbase:ldflags pkgconfig
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_ACCOUNT=	intel
-CMAKE_ON=	SKIP_UNIT_TESTS
+CMAKE_ON=	SKIP_UNIT_TESTS SUPPORT_DG1
 CMAKE_ARGS=	-DNEO_OCL_DRIVER_VERSION:STRING="${DISTVERSIONFULL}"
 PLIST_FILES=	bin/ocloc \
 		etc/OpenCL/vendors/intel.icd \

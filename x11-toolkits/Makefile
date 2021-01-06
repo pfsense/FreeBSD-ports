@@ -38,6 +38,7 @@
     SUBDIR += gtk30
     SUBDIR += gtkada
     SUBDIR += gtkada3
+    SUBDIR += gtkd
     SUBDIR += gtkdatabox
     SUBDIR += gtkextra
     SUBDIR += gtkglarea2
@@ -45,7 +46,6 @@
     SUBDIR += gtkglextmm
     SUBDIR += gtkimageview
     SUBDIR += gtkmathview
-    SUBDIR += gtkmm20
     SUBDIR += gtkmm24
     SUBDIR += gtkmm30
     SUBDIR += gtksourceview2
@@ -84,7 +84,6 @@
     SUBDIR += libwnck
     SUBDIR += libwnck3
     SUBDIR += libxaw3dxft
-    SUBDIR += libxfce4gui
     SUBDIR += linux-c7-gtk2
     SUBDIR += linux-c7-gtk3
     SUBDIR += linux-c7-openmotif
@@ -153,6 +152,7 @@
     SUBDIR += p5-Tk-ToolBar
     SUBDIR += p5-Tk-WaitBox
     SUBDIR += pango
+    SUBDIR += pangolin
     SUBDIR += pangomm
     SUBDIR += pangox-compat
     SUBDIR += pangoxsl
@@ -160,14 +160,13 @@
     SUBDIR += plib
     SUBDIR += py-AnyQt
     SUBDIR += py-Pmw
-    SUBDIR += py-SquareMap
     SUBDIR += py-easygui
     SUBDIR += py-fltk
-    SUBDIR += py-gtk2
     SUBDIR += py-guietta
     SUBDIR += py-qt5-chart
     SUBDIR += py-qt5-gui
     SUBDIR += py-qt5-quick
+    SUBDIR += py-qt5-quick3d
     SUBDIR += py-qt5-quickwidgets
     SUBDIR += py-qt5-widgets
     SUBDIR += py-tkinter

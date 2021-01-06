@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ibus-typing-booster
-PORTVERSION=	2.9.7
+PORTVERSION=	2.10.2
 CATEGORIES=	textproc
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -15,16 +15,20 @@ BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/xdg/Menu.py:devel/py-xdg@${PY_FLAVOR}		\
 		${PYTHON_LIBDIR}/lib-dynload/_sqlite3.so:databases/py-sqlite3@${PY_FLAVOR}
 LIB_DEPENDS=	libibus-1.0.so:textproc/ibus	\
 		libm17n.so:devel/m17n-lib
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/xdg/Menu.py:devel/py-xdg@${PY_FLAVOR}		\
+RUN_DEPENDS=	CLDR>0:textproc/CLDR	\
+		${PYTHON_SITELIBDIR}/xdg/Menu.py:devel/py-xdg@${PY_FLAVOR}		\
 		${PYTHON_SITELIBDIR}/dbus/bus.py:devel/py-dbus@${PY_FLAVOR}		\
 		${PYTHON_SITELIBDIR}/hunspell.so:textproc/py-hunspell@${PY_FLAVOR}	\
 		${LOCALBASE}/share/unicode/ucd/Index.txt:textproc/UCD			\
-		${LOCALBASE}/share/unicode/cldr/readme.html:textproc/CLDR		\
 		${PYTHON_LIBDIR}/lib-dynload/_sqlite3.so:databases/py-sqlite3@${PY_FLAVOR}
-TEST_DEPENDS=	${LOCALBASE}/share/hunspell/de_DE.dic:german/hunspell		\
-		${LOCALBASE}/share/hunspell/ko_KR.aff:korean/hunspell		\
-		${LOCALBASE}/libexec/ibus-engine-m17n:textproc/ibus-m17n	\
+TEST_DEPENDS=	${LOCALBASE}/share/hunspell/cs_CZ.dic:textproc/cs-hunspell	\
+		${LOCALBASE}/share/hunspell/de_DE.dic:german/hunspell		\
 		${LOCALBASE}/share/hunspell/en_US.aff:textproc/en-hunspell	\
+		${LOCALBASE}/share/hunspell/es_ES.dic:textproc/es-hunspell	\
+		${LOCALBASE}/share/hunspell/it_IT.dic:textproc/it-hunspell	\
+		${LOCALBASE}/share/hunspell/ko_KR.aff:korean/hunspell		\
+		${LOCALBASE}/share/hunspell/sv_SE.dic:textproc/sv-hunspell	\
+		${LOCALBASE}/libexec/ibus-engine-m17n:textproc/ibus-m17n	\
 		${LOCALBASE}/share/m17n/hi-inscript2.mim:devel/m17n-inscript2	\
 		${PYTHON_SITELIBDIR}/mock/mock.py:devel/py-mock@${PY_FLAVOR}	\
 		gmake:devel/gmake
@@ -34,13 +38,15 @@ GH_ACCOUNT=	mike-fabian
 
 USES=		autoreconf gettext gmake gnome iconv pathfix pkgconfig python:3.6+
 USE_GNOME=	glib20 gtk30 pygobject3
+USE_LOCALE=	en_US.UTF-8
 GNU_CONFIGURE=	yes
 NO_ARCH=	yes
 INSTALLS_ICONS=	yes
 GLIB_SCHEMAS=	org.freedesktop.ibus.engine.typing-booster.gschema.xml
 
 TEST_TARGET=	check
-TEST_ENV=	MAKE_CMD=${LOCALBASE}/bin/gmake LC_ALL=en_US.UTF-8
+TEST_ENV=	MAKE_CMD=${LOCALBASE}/bin/gmake LC_ALL=en_US.UTF-8	\
+		IBUS_TYPING_BOOSTER_DEBUG_LEVEL=1
 
 OPTIONS_DEFINE=	HUNSPELL
 OPTIONS_DEFAULT=HUNSPELL

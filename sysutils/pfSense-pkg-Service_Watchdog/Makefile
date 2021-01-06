@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Service_Watchdog
 PORTVERSION=	1.8.7
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty

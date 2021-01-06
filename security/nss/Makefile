@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	nss
-PORTVERSION=	3.60
+PORTVERSION=	3.60.1
 CATEGORIES=	security
 MASTER_SITES=	MOZILLA/security/${PORTNAME}/releases/${DISTNAME:tu:C/[-.]/_/g}_RTM/src
+DISTNAME=	${PORTNAME}-3.60 # XXX Drop after 3.60.1 distfile appears
 
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Libraries to support development of security-enabled applications
@@ -47,7 +48,6 @@ INSTALL_BINS=	certutil cmsutil crlutil derdump makepqg \
 OPTIONS_DEFINE=	DEBUG
 OPTIONS_DEFINE_powerpc=		VSX
 OPTIONS_DEFINE_powerpc64=	VSX
-OPTIONS_DEFINE_powerpc64le=	VSX
 
 VSX_CFLAGS=	-DUSE_PPC_CRYPTO
 VSX_DESC=	Use VSX optimized routines (POWER8 or newer)
@@ -61,7 +61,7 @@ BINS=		${DIST}/${OPSYS}${OSREL}_OPT.OBJ
 BINS=		${DIST}/${OPSYS}${OSREL}_DBG.OBJ
 .endif
 
-.if ${ARCH:Mpowerpc64*} || ${ARCH} == powerpc
+.if ${ARCH} == powerpc64 || ${ARCH} == powerpc
 EXTRA_PATCHES=	${FILESDIR}/${ARCH}${PPC_ABI:tl}-lib_freebl_scripts_gen.sh
 USES+=		compiler:c++11-lang # -mcrypto -mvsx
 .if ! ${PORT_OPTIONS:MVSX}

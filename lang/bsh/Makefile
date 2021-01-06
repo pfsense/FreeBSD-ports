@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bsh
-DISTVERSION=	2.0b6
-PORTREVISION=	1
+DISTVERSION=	2.1.0
 CATEGORIES=	lang java
 
 MAINTAINER=	pfg@FreeBSD.org
@@ -15,9 +14,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	beanshell
 GH_PROJECT=	beanshell
 
-USE_JAVA=	yes
-JAVA_BUILD=	8
-
+USE_JAVA=	8
 USE_ANT=	yes
 ALL_TARGET=	jarall
 

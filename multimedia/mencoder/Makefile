@@ -3,7 +3,6 @@
 
 PORTNAME=	mencoder
 PORTVERSION=	${MPLAYER_PORT_VERSION}.${MPLAYER_SNAPSHOT_DATE:S/-//g}
-PORTREVISION=	2
 CATEGORIES=	multimedia audio
 
 MAINTAINER=	riggs@FreeBSD.org
@@ -32,8 +31,6 @@ BLURAY_DESC?=	BluRay support
 DVDNAV_DESC?=	DVD navigation features support
 LZO_DESC?=	Enable external liblzo library
 RTCPU_DESC?=	Use runtime CPU detection
-
-RESTRICTED=	Port has restricted dependencies
 
 PATCHDIR=	${.CURDIR}/../mplayer/files
 FILESDIR=	${PATCHDIR}

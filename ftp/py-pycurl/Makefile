@@ -17,7 +17,7 @@ LICENSE_FILE_MIT=	${WRKSRC}/COPYING-MIT
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
-USES=		python ssl
+USES=		python:3.6+ ssl
 USE_PYTHON=	autoplist concurrent distutils
 
 PORTDOCS=	AUTHORS INSTALL.rst README.rst RELEASE-NOTES.rst
@@ -25,7 +25,7 @@ PORTDOCS=	AUTHORS INSTALL.rst README.rst RELEASE-NOTES.rst
 OPTIONS_DEFINE=	DOCS
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}*.so
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	hcloud
-DISTVERSION=	1.9.1
+DISTVERSION=	1.10.0
 CATEGORIES=	sysutils python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -23,7 +23,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flake8>=3.6.0:devel/py-flake8@${PY_FLAVOR} 
 		${PYTHON_PKGNAMEPREFIX}tox>=3.5.3:devel/py-tox@${PY_FLAVOR}
 
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 do-test:

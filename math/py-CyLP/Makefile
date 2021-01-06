@@ -2,7 +2,7 @@
 
 PORTNAME=	CyLP
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.4
+DISTVERSION=	0.91.0
 CATEGORIES=	math python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -24,10 +24,11 @@ LIB_DEPENDS=	libblas.so:math/blas \
 		liblapack.so:math/lapack
 RUN_DEPENDS=	${PY_DEPENDS}
 
-USES=		compiler:c++11-lang python
+USES=		compiler:c++11-lang python:3.6+
+USE_PYTHON=	distutils cython autoplist
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	coin-or
-USE_PYTHON=	distutils cython autoplist
 
 MAKE_ENV=	COIN_INSTALL_DIR=${LOCALBASE}
 

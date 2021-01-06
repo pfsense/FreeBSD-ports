@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	keepassxc
-DISTVERSION=	2.6.1
+DISTVERSION=	2.6.2
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/keepassxreboot/keepassxc/releases/download/${DISTVERSION}/${PORTNAME}-${DISTVERSION}-src.tar.xz?dummy=/
 
@@ -45,7 +45,7 @@ BROWSER_DESC=		Browser integration with KeePassXC-Browser
 
 KEESHARE_CMAKE_BOOL=	WITH_XC_KEESHARE WITH_XC_KEESHARE_SECURE
 KEESHARE_DESC=		Sharing integration with KeeShare
-KEESHARE_LIB_DEPENDS=	libquazip5.so:archivers/quazip
+KEESHARE_LIB_DEPENDS=	libquazip1-qt5.so:archivers/quazip
 
 # Legacy/Deprecated.
 NETWORKING_CMAKE_BOOL=	WITH_XC_NETWORKING

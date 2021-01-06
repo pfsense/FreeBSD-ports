@@ -8,7 +8,7 @@
  * frr_ospf6_areas.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -112,7 +112,6 @@
 				<!-- <option><name>Not so Totally Stub Area (nssa no-summary)</name><value>nssanosum</value></option> -->
 			</options>
 		</field>
-
 		<field>
 			<name>Range Overrides</name>
 			<type>listtopic</type>
@@ -149,7 +148,6 @@
 				</rowhelperfield>
 			</rowhelper>
 		</field>
-
 		<field>
 			<name>ABR Summary Route Filtering</name>
 			<type>listtopic</type>
@@ -191,7 +189,9 @@
 			<source_value>value</source_value>
 		</field>
 	</fields>
-
+	<custom_delete_php_command>
+		frr_generate_config();
+	</custom_delete_php_command>
 	<custom_php_resync_config_command>
 		frr_generate_config();
 	</custom_php_resync_config_command>

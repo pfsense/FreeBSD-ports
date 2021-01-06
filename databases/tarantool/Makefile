@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tarantool
-PORTVERSION=	2.4.2
+PORTVERSION=	2.6.1
 CATEGORIES=	databases
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -11,6 +11,8 @@ COMMENT=	NoSQL database running in a Lua application server
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_aarch64=		fails to compile: mmintrin.h:50:12: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different siz
+BROKEN_riscv64=		fails to compile: mmintrin.h:50:12: invalid conversion between vector type '__m64' (vector of 1 'long long' value) and integer type 'int' of different siz
 NOT_FOR_ARCHS=		armv6 powerpc64 sparc64
 NOT_FOR_ARCHS_REASON=	fails to build: Unsupported architecture
 
@@ -43,11 +45,11 @@ SUB_FILES=	pkg-message
 
 GH_TUPLE=	luafun:luafun:e248e00:luafun_luafun/third_party/luafun \
 		tarantool:decNumber:5ddfde1:tarantool_decNumber/third_party/decNumber \
-		tarantool:luajit:377198b:tarantool_luajit/third_party/luajit \
+		tarantool:luajit:8fc103f:tarantool_luajit/third_party/luajit \
 		tarantool:luarocks:954c2f5:tarantool_luarocks/third_party/luarocks \
 		tarantool:serpent:879580f:tarantool_serpent/third_party/serpent \
 		tarantool:small:fcac155:tarantool_small/src/lib/small \
-		tarantool:test-run:d920322:tarantool_test_run/test-run
+		tarantool:test-run:b5fcafb:tarantool_test_run/test-run
 USE_GITHUB=	yes
 
 USERS=		tarantool

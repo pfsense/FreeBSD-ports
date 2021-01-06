@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	toxic
-PORTVERSION=	0.8.3
+PORTVERSION=	0.10.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
 CATEGORIES=	net-im
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -23,7 +22,7 @@ LIB_DEPENDS=	libvpx.so:multimedia/libvpx		\
 		libconfig.so:devel/libconfig
 RUN_DEPENDS=	${LOCALBASE}/lib/libtoxcore.a:net-im/tox
 
-USES=		desktop-file-utils gettext-runtime gmake ncurses openal:al,alut pkgconfig
+USES=		compiler:c11 desktop-file-utils gettext-runtime gmake ncurses openal:al,alut pkgconfig
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	JFreegman
@@ -36,10 +35,10 @@ X11_USE=	GNOME=gdkpixbuf2,glib20 XORG=x11
 X11_MAKE_ARGS_OFF=	DISABLE_X11=1 DISABLE_DESKTOP_NOTIFY=1
 X11_LIB_DEPENDS=libnotify.so:devel/libnotify
 
-PYTHON_USES=	python:3.3+
+PYTHON_USES=	python:3.7+
 PYTHON_MAKE_ARGS=	ENABLE_PYTHON=1
 
-CFLAGS+=	-I${NCURSESINC}
+CFLAGS+=	-I${NCURSESINC} -pthread
 LDFLAGS+=	-L${NCURSESLIB}
 LDFLAGS_i386=	-Wl,-znotext
 MAKE_ENV=	USER_CFLAGS="${CFLAGS}" USER_LDFLAGS="${LDFLAGS}"	\

@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	jp2a
-PORTVERSION=	1.0.9
-DISTVERSIONPREFIX=	v
+DISTVERSION=	1.1.0
+PORTREVISION=	1
 CATEGORIES=	graphics
+MASTER_SITES=	https://github.com/Talinx/${PORTNAME}/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Converts JPG images to ASCII
@@ -12,21 +13,23 @@ COMMENT=	Converts JPG images to ASCII
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libcurl.so:ftp/curl
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libpng16.so:graphics/png
 
-USES=		autoreconf jpeg ncurses pkgconfig
+USES=		jpeg localbase ncurses pkgconfig tar:bz2
+USE_CSTD=	c99
+
 GNU_CONFIGURE=	yes
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	Talinx
-
-CONFIGURE_ARGS=	--with-jpeg-prefix=${LOCALBASE} \
-		--with-curl-config=${LOCALBASE}/bin/curl-config
-
-MAKE_ENV+=	bashcompdir=${STAGEDIR}${PREFIX}/etc/bash_completion.d
+CONFIGURE_ARGS=	--disable-doxygen-doc
 CONFIGURE_ENV+=	bashcompdir=${STAGEDIR}${PREFIX}/etc/bash_completion.d
+MAKE_ENV+=	bashcompdir=${STAGEDIR}${PREFIX}/etc/bash_completion.d
 
-PLIST_FILES=	bin/jp2a man/man1/jp2a.1.gz etc/bash_completion.d/jp2a
+LDFLAGS+=	-lm
+
+PLIST_FILES=	bin/jp2a \
+		etc/bash_completion.d/jp2a \
+		man/man1/jp2a.1.gz
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/jp2a ${STAGEDIR}${PREFIX}/bin

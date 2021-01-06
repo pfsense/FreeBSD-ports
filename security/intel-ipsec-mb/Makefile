@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	intel-ipsec-mb
-DISTVERSIONPREFIX=	v
-DISTVERSION=	0.54.1
+DISTVERSION=	0.55.0
 DISTVERSIONSUFFIX=	-dev
 CATEGORIES=	security
 
@@ -20,7 +19,7 @@ USES=		gmake compiler:c11 localbase:ldflags
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	intel
-GH_PROJECT=	intel-ipsec-mb
+GH_TAGNAME=	55179f0
 
 USE_LDCONFIG=	yes
 PLIST_FILES=	include/intel-ipsec-mb.h \
@@ -31,13 +30,13 @@ PLIST_FILES=	include/intel-ipsec-mb.h \
 
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/lib/intel-ipsec-mb.h ${STAGEDIR}${PREFIX}/include/
-	${INSTALL_LIB} ${WRKSRC}/lib/libIPSec_MB.so.${DISTVERSION}${DISTVERSIONSUFFIX} ${STAGEDIR}${PREFIX}/lib/libIPSec_MB.so.${DISTVERSION}
+	${INSTALL_LIB} ${WRKSRC}/lib/libIPSec_MB.so.${DISTVERSION} ${STAGEDIR}${PREFIX}/lib/libIPSec_MB.so.${DISTVERSION}
 	${RLN} ${STAGEDIR}${PREFIX}/lib/libIPSec_MB.so.${DISTVERSION} ${STAGEDIR}${PREFIX}/lib/libIPSec_MB.so.0
 	${RLN} ${STAGEDIR}${PREFIX}/lib/libIPSec_MB.so.0 ${STAGEDIR}${PREFIX}/lib/libIPSec_MB.so
 	${INSTALL_MAN} ${WRKSRC}/lib/libipsec-mb.7 ${STAGEDIR}${PREFIX}/man/man7
 
 do-test:
 	cd ${WRKSRC}/test && ./ipsec_xvalid_test -v
-	cd ${WRKSRC}/test && ./ipsec_MB_testapp -v
+	cd ${WRKSRC}/test && ./ipsec_MB_testapp --auto-detect
 
 .include <bsd.port.mk>

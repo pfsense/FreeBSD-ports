@@ -4,7 +4,7 @@
 PORTNAME=	libobjc2
 DISTVERSIONPREFIX=v
 DISTVERSION=	2.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	lang devel gnustep
 
 MAINTAINER=	ports@FreeBSD.org
@@ -13,6 +13,8 @@ COMMENT=	Replacement Objective-C runtime supporting modern Objective-C features
 LICENSE=	MIT
 
 BROKEN_sparc64=		Does not compile on sparc64: Cannot configure clang properly
+BROKEN_riscv64=		Does not link on riscv64: undefined symbol: objc_msgSend
+
 USES=		cmake compiler objc:compiler
 
 USE_GITHUB=	yes

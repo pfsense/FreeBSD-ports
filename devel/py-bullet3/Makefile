@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	bullet3
-DISTVERSION=	3.05
+DISTVERSION=	3.08
 CATEGORIES=	devel
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -11,7 +11,7 @@ COMMENT=	Python version of 3D collision detection library Bullet
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		compiler:c++11-lang gl localbase python
+USES=		compiler:c++11-lang gl localbase python:3.6+
 USE_GITHUB=	yes
 GH_ACCOUNT=	bulletphysics
 USE_PYTHON=	autoplist distutils
@@ -21,6 +21,6 @@ post-patch: # remove examples because they fail: https://github.com/bulletphysic
 	@${REINPLACE_CMD} -E 's,"examples/.*\.(cpp|c|m)",,' ${WRKSRC}/setup.py
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pybullet.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pybullet*.so
 
 .include <bsd.port.mk>

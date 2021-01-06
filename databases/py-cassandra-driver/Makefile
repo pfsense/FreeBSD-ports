@@ -20,7 +20,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=0:devel/py-nose@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytz>0:devel/py-pytz@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sure>0:devel/py-sure@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist cython distutils
 
 OPTIONS_DEFINE=	LIBEV MURMUR3
@@ -29,7 +29,7 @@ MURMUR3_DESC=	Enable murmur3 extension
 OPTIONS_DEFAULT=	LIBEV MURMUR3
 
 LIBEV_LIB_DEPENDS=	libev.so:devel/libev
-LIBEV_VARS=	STRIPFILES=${STAGEDIR}${PYTHON_SITELIBDIR}/cassandra/io/libevwrapper.so
+LIBEV_VARS=	STRIPFILES=${STAGEDIR}${PYTHON_SITELIBDIR}/cassandra/io/libevwrapper*.so
 LIBEV_VARS_OFF=	PYDISTUTILS_BUILDARGS+=--no-libev PYDISTUTILS_INSTALLARGS+=--no-libev
 
 MURMUR3_VARS_OFF=	PYDISTUTILS_BUILDARGS+=--no-murmur3 PYDISTUTILS_INSTALLARGS+=--no-murmur3

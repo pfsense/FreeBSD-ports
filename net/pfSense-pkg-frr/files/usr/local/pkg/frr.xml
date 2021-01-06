@@ -8,7 +8,7 @@
  * frr.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -163,6 +163,18 @@
 			<type>checkbox</type>
 		</field>
 		<field>
+			<fielddescr>Default Router ID</fielddescr>
+			<fieldname>routerid</fieldname>
+			<description>
+				<![CDATA[
+				Specify the default Router ID. RID is the highest logical (loopback) IP address configured on a router.<br />
+				For more information on router identifiers see <a href='http://en.wikipedia.org/wiki/Open_Shortest_Path_First'>wikipedia</a>.<br />
+				Per-daemon configuration will take precedence over this setting.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
 			<fielddescr>Master Password</fielddescr>
 			<fieldname>password</fieldname>
 			<description>Password to access the management daemons. Required.</description>
@@ -174,23 +186,6 @@
 			<fieldname>passwordencrypt</fieldname>
 			<description>Enable password encryption service.</description>
 			<type>checkbox</type>
-		</field>
-		<field>
-			<fielddescr>Logging</fielddescr>
-			<fieldname>logging</fieldname>
-			<description>If set to yes, Logs will be written via syslog.</description>
-			<type>checkbox</type>
-		</field>
-		<field>
-			<fielddescr>Router ID</fielddescr>
-			<fieldname>routerid</fieldname>
-			<description>
-				<![CDATA[
-				Specify the default Router ID. RID is the highest logical (loopback) IP address configured on a router.<br />
-				For more information on router identifiers see <a href='http://en.wikipedia.org/wiki/Open_Shortest_Path_First'>wikipedia</a>.
-				]]>
-			</description>
-			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Ignore IPsec Restart</fielddescr>
@@ -209,7 +204,7 @@
 			<fieldname>carpstatusvid</fieldname>
 			<description>
 				<![CDATA[
-				Used to determine the CARP status. When the CARP vhid is in BACKUP status, frr will not be started.<br />
+				Used to determine the CARP status. When the CARP vhid is in BACKUP status, FRR will not be started.<br />
 				]]>
 			</description>
 			<type>select_source</type>
@@ -217,7 +212,27 @@
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
-
+		<field>
+			<name>Logging</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Syslog Logging</fielddescr>
+			<fieldname>logging</fieldname>
+			<description>If set to yes, FRR daemon Logs will be written via syslog.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Package Logging Level</fielddescr>
+			<fieldname>pkgloglevel</fieldname>
+			<description>Set the log level for package scripts</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>Normal</name><value>0</value></option>
+				<option><name>Extended</name><value>1</value></option>
+			</options>
+		</field>
 		<field>
 			<name>Modules</name>
 			<type>listtopic</type>
@@ -228,7 +243,6 @@
 			<description>Enable agentx support for accessing FRR Zebra data via SNMP with the net-snmp package.</description>
 			<type>checkbox</type>
 		</field>
-
 		<field>
 			<name>Route Handling</name>
 			<type>listtopic</type>
@@ -283,6 +297,24 @@
 					<source_value>value</source_value>
 				</rowhelperfield>
 			</rowhelper>
+		</field>
+		<field>
+			<name>Force Service Restart</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Force Service Restart</fielddescr>
+			<fieldname>service_force_restart</fieldname>
+			<type>button</type>
+			<buttonicon>fa-cog</buttonicon>
+			<buttonclass>btn-danger</buttonclass>
+			<description>
+				<![CDATA[
+				Click to force a service restart.<br />
+				<b>This will cause a reconvergance of any enabled routing protocols!</b>
+				]]>
+			</description>
+			<placeonbottom/>
 		</field>
 	</fields>
 	<custom_php_resync_config_command>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	spdx
-PORTVERSION=	2.5.0
+PORTVERSION=	2.5.1
 CATEGORIES=	misc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,7 @@ COMMENT=	SPDX license list database
 LICENSE=	CC0-1.0
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

@@ -3,24 +3,23 @@
 
 PORTNAME=	emacs
 DISTVERSION=	27.1
+PORTREVISION=	4
 PORTEPOCH=	3
-PORTREVISION=	1
 CATEGORIES=	editors
 MASTER_SITES=	GNU
 
+PATCH_SITES=	https://github.com/emacs-mirror/emacs/commit/:upstream
+PATCHFILES=	43a1b79f56cb1ac6530e8b41f3c329890a00a8f6.patch:-p1:upstream
+
 .if ${FLAVOR:U} == canna
-PATCH_SITES=		https://www.gentei.org/~yuuji/software/emacs27canna/
-PATCHFILES=		emacs27.0.90-canna-20200308.diff.gz
-PATCH_DIST_STRIP=	-p1
+PATCH_SITES+=		https://www.gentei.org/~yuuji/software/emacs27canna/:canna
+PATCHFILES+=		emacs27.0.90-canna-20200308.diff.gz:-p1:canna
 .endif
 
 MAINTAINER=	emacs@FreeBSD.org
-COMMENT=	GNU editing macros
-.if ${FLAVOR:U} == nox
-COMMENT+=	(No X flavor)
-.elif ${FLAVOR:U} == canna
-COMMENT+=	(Canna Japanese input flavor)
-.endif
+COMMENT=	GNU editing macros ${COMMENT_${FLAVOR}}
+COMMENT_nox=	(No X flavor)
+COMMENT_canna=	(Canna Japanese input flavor)
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

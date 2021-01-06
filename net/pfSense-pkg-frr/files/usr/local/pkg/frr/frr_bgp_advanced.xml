@@ -8,7 +8,7 @@
  * frr_bgp_advanced.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -96,7 +96,6 @@
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
-
 		<field>
 			<name>Advanced Timers</name>
 			<type>listtopic</type>
@@ -139,7 +138,6 @@
 			<type>input</type>
 			<combinefields>end</combinefields>
 		</field>
-
 		<field>
 			<name>Advanced Routing Behavior</name>
 			<type>listtopic</type>
@@ -162,7 +160,6 @@
 			<description>Reject incoming and outgoing routes with AS_SET or AS_CONFED_SET type</description>
 			<type>checkbox</type>
 		</field>
-
 		<field>
 			<name>Route Reflecting</name>
 			<type>listtopic</type>
@@ -395,7 +392,6 @@
 			<description>Disable the requirement to apply incoming and outgoing filter to eBGP sessions</description>
 			<type>checkbox</type>
 		</field>
-
 		<field>
 			<name>Networking Behavior</name>
 			<type>listtopic</type>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	suil
-PORTVERSION=	0.10.6
+PORTVERSION=	0.10.8
 CATEGORIES=	audio
 MASTER_SITES=	http://download.drobilla.net/
 
@@ -20,7 +20,7 @@ RUN_DEPENDS=	lv2>=1.14.0:audio/lv2
 USES=		compiler:c++11-lang gnome pkgconfig python:build qt:5 \
 		tar:bzip2 waf xorg
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 gtk30 pango
-USE_QT=		core gui widgets
+USE_QT=		core gui widgets x11extras
 USE_XORG=	x11
 USE_LDCONFIG=	yes
 

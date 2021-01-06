@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * frr_bfd_profiles.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2012-2020 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>frr_bfd_profiles</name>
+	<title>Services/FRR/BFD</title>
+	<include_file>/usr/local/pkg/frr.inc</include_file>
+	<aftersaveredirect>pkg.php?xml=frr/frr_bfd_profiles.xml</aftersaveredirect>
+	<tabs>
+		<tab>
+			<text>BFD</text>
+			<url>pkg_edit.php?xml=frr/frr_bfd.xml</url>
+		</tab>
+		<tab>
+			<text>Peers</text>
+			<url>pkg.php?xml=frr/frr_bfd_peers.xml</url>
+		</tab>
+		<tab>
+			<text>Profiles</text>
+			<url>pkg.php?xml=frr/frr_bfd_profiles.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>[Global Settings]</text>
+			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>[BGP]</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF6]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_frr.php?protocol=bfd</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Name</fielddescr>
+			<fieldname>name</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<name>Profile Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Name</fielddescr>
+			<fieldname>name</fieldname>
+			<type>input</type>
+			<size>20</size>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+			<size>50</size>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Shutdown</fielddescr>
+			<fieldname>shutdown</fieldname>
+			<description>
+				<![CDATA[
+				Enables or disables the peer.
+				When the peer is disabled an "administrative down" message is sent to the remote peer.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Passive</fielddescr>
+			<fieldname>passive</fieldname>
+			<description>
+				<![CDATA[
+				Mark session as passive.
+				A passive session will not attempt to start the connection and will wait for control packets from peer before it begins replying.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name>Profile Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Detect Multiplier</fielddescr>
+			<fieldname>detectmultiplier</fieldname>
+			<description>
+				<![CDATA[
+				Configures the detection multiplier to determine packet loss.
+				<br />
+				The remote transmission interval will be multiplied by this value to determine the connection loss detection timer.
+				<br />
+				The default value is 3.
+				]]>
+			</description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>Receive Interval</fielddescr>
+			<fieldname>receiveinterval</fieldname>
+			<description>
+				<![CDATA[
+				Configures the minimum interval at which this system is capable of receiving control packets.
+				<br />
+				The default value is 300 milliseconds.
+				]]>
+			</description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>Transmit Interval</fielddescr>
+			<fieldname>transmitinterval</fieldname>
+			<description>The minimum transmission interval for the system to use to send BFD control packets.</description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>Echo Interval</fielddescr>
+			<fieldname>echointerval</fieldname>
+			<description>The minimal echo receive interval that the system is capable of handling.</description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>Minimum TTL</fielddescr>
+			<fieldname>minimumttl</fieldname>
+			<description>
+				<![CDATA[
+				    For multi hop sessions only, configure the minimum expected TTL for an incoming BFD control packet.<br />
+    				This feature serves the purpose of tightening the packet validation requirements to avoid receiving BFD control packets from other sessions.<br />
+    				The default value is 254 (which means we only expect one hop between this system and the peer).
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Echo Mode</fielddescr>
+			<fieldname>echomode</fieldname>
+			<description>
+				<![CDATA[
+					Enables or disables the echo transmission mode. This mode is disabled by default.
+					FRR documentation recommendeds that the transmission interval of control packets to be increased after enabling echo-mode to reduce bandwidth usage. For example: transmission-interval 2000.
+					Echo mode is not supported on multi-hop setups, see RFC 5883 section 3.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+	</fields>
+	<custom_delete_php_command>
+		frr_generate_config();
+	</custom_delete_php_command>
+	<custom_php_resync_config_command>
+		frr_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		frr_bfd_profile_validate_input();
+	</custom_php_validation_command>
+</packagegui>

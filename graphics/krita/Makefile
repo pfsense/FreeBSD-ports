@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	krita
-DISTVERSION=	4.3.0
+DISTVERSION=	4.4.1
 PORTREVISION=	5
 CATEGORIES=	graphics kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${DISTVERSION}
@@ -26,7 +26,7 @@ LIB_DEPENDS=	libImath.so:graphics/ilmbase \
 		libpng.so:graphics/png \
 		libpoppler.so:graphics/poppler \
 		libpoppler-qt5.so:graphics/poppler-qt5 \
-		libquazip5.so:archivers/quazip \
+		libquazip1-qt5.so:archivers/quazip \
 		libraw.so:graphics/libraw \
 		libtiff.so:graphics/tiff \
 		libxcb.so:x11/libxcb \
@@ -52,13 +52,14 @@ OPTIONS_SUB=		yes
 GMIC_DESC=		Depend on the G'Mic plugin #'
 GMIC_RUN_DEPENDS=	gmic_krita_qt:graphics/gmic-qt@krita
 
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr
+OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr \
+			libSeExpr2.so:graphics/seexpr
 OPENEXR_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_OpenEXR
 
 CONFLICTS_INSTALL=	calligra-2*
 
-PLIST_SUB=	SHLIB_VER=19.0.0 \
-		SHLIB_SHVER=19
+PLIST_SUB=	SHLIB_VER=20.0.0 \
+		SHLIB_SHVER=20
 
 LDFLAGS=	-lpthread
 

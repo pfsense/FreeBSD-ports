@@ -2,7 +2,7 @@
 
 PORTNAME=	palisade
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.10.3
+DISTVERSION=	1.10.6
 CATEGORIES=	security math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -19,8 +19,8 @@ BUILD_DEPENDS=	autoconf:devel/autoconf # possibly a mistake in the project
 USES=		cmake:noninja localbase # compiler:c++11-lang
 USE_GITLAB=	yes
 USE_GITHUB=	nodefault
-GL_PROJECT=	palisade-development # there's also palisade-release
-GL_COMMIT=	70472b1e473a3f804ec155333c1a18e5b05ec202
+GL_PROJECT=	palisade-release # there's also palisade-development
+GL_COMMIT=	7eec669e1faa4aca0434021b7bdd5fd43695c075
 GH_TUPLE=	\
 		JerryRyan:cereal:a384b101:cereal/third-party/cereal \
 		google:benchmark:d3ad0b9d:benchmark/third-party/google-benchmark \
@@ -29,18 +29,21 @@ USE_LDCONFIG=	yes
 
 CMAKE_OFF=	BUILD_UNITTESTS BUILD_EXAMPLES BUILD_BENCHMARKS
 CMAKE_OFF+=	WITH_NTL # https://gitlab.com/palisade/palisade-development/-/issues/180
-CMAKE_ARGS=	-DWITH_NTL=Y
+CMAKE_ARGS=	-DWITH_NTL=Y # libntl.so will be discontinued in 1.11, see https://gitlab.com/palisade/palisade-development/-/issues/180
 
 CXXFLAGS+=	-I${WRKSRC}/third-party/google-test/googletest
 
 BINARY_ALIAS=	git=false
 
 # clang-8 fails: error: use of undeclared identifier '__builtin_FILE'
-BUILD_DEPENDS+=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
-RUN_DEPENDS+=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
-CPP=		clang-cpp${LLVM_DEFAULT}
-CC=		clang${LLVM_DEFAULT}
-CXX=		clang++${LLVM_DEFAULT}
+LLVM_VERSION=	10 # ${LLVM_DEFAULT}
+BUILD_DEPENDS+=	clang${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
+RUN_DEPENDS+=	clang${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
+CPP=		clang-cpp${LLVM_VERSION}
+CC=		clang${LLVM_VERSION}
+CXX=		clang++${LLVM_VERSION}
+
+LDFLAGS+=	-pthread # only for tests: see https://gitlab.com/palisade/palisade-release/-/issues/23
 
 OPTIONS_DEFINE=		OPENMP
 OPTIONS_DEFAULT=	OPENMP

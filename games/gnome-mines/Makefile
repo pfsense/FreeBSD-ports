@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gnome-mines
-PORTVERSION=	3.28.0
+PORTVERSION=	3.36.1
 CATEGORIES=	games gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -25,6 +25,6 @@ USE_GNOME=	gtk30 librsvg2
 INSTALLS_ICONS=	yes
 
 BINARY_ALIAS=	python3=${PYTHON_VERSION}
-GLIB_SCHEMAS=	org.gnome.mines.gschema.xml
+GLIB_SCHEMAS=	org.gnome.Mines.gschema.xml
 
 .include <bsd.port.mk>

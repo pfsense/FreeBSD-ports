@@ -21,7 +21,7 @@ LIB_DEPENDS=	libboost_iostreams.so:devel/boost-libs \
 		libmpfr.so:math/mpfr \
 		${PY_BOOST}
 
-USES=		cmake compiler:c++14-lang python
+USES=		cmake compiler:c++14-lang python:3.6+
 USE_GITHUB=	yes
 GH_ACCOUNT=	bluescarni
 USE_PYTHON=	flavors
@@ -41,6 +41,6 @@ post-patch: # FIND_PACKAGE(Boost) only supports modules python and python3
 	@${REINPLACE_CMD} -e 's|$${REQUIRED_BOOST_LIBS} python)|$${REQUIRED_BOOST_LIBS} python${PYTHON_MAJOR_VER:S/2//})|' ${WRKSRC}/CMakeLists.txt
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pyranha/_core.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pyranha/_core*.so
 
 .include <bsd.port.mk>

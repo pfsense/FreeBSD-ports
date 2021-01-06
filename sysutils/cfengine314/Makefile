@@ -16,6 +16,9 @@ LICENSE=	GPLv3
 
 CPE_VENDOR=	gnu
 
+DEPRECATED=		Expire one year after cfengine 3.16.0 released
+EXPIRATION_DATE=	2021-06-22
+
 CONFLICTS=	cfengine3[0-9]-* cfengine31[013-9]-*
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=	314
@@ -32,7 +35,7 @@ GNU_CONFIGURE=	yes
 USES=		autoreconf cpe gmake gnome libtool localbase shebangfix ssl
 USE_GNOME=	libxml2
 SHEBANG_FILES=	examples/remake_outputs.pl
-CFLAGS+=	-Wno-return-type
+CFLAGS+=	-Wno-return-type -fcommon
 # EXAMPLESDIR=	${PREFIX}/share/examples/cfengine3
 DOCSDIR=	${PREFIX}/share/doc/cfengine
 MAKE_ENV=	EXPLICIT_VERSION=${PORTVERSION}

@@ -3,7 +3,7 @@
 
 PORTNAME=	e2fsprogs
 PORTVERSION=	1.45.6
-PORTREVISION?=	4
+PORTREVISION?=	5
 CATEGORIES?=	sysutils
 MASTER_SITES=	KERNEL_ORG/linux/kernel/people/tytso/${PORTNAME}/v${PORTVERSION}
 
@@ -132,7 +132,7 @@ CONFIGURE_ARGS+=--disable-nls
 libintl=
 .endif
 
-.if ${MASTERDIR} == ${.CURDIR} && ${ARCH} == "aarch64"
+.if ${MASTERDIR} == ${.CURDIR} && (${ARCH} == "aarch64" || ${ARCH} == "riscv64")
 EXTRA_PATCHES+=	${FILESDIR}/extrapatch-no-sbrk
 .endif
 

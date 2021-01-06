@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	musicpd
-PORTVERSION=	0.21.26
-PORTREVISION=	1
+PORTVERSION=	0.22.3
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	https://www.musicpd.org/download/mpd/${PORTVERSION:R}/
 DISTNAME=	mpd-${PORTVERSION}
@@ -13,32 +13,32 @@ COMMENT=	Remote-controllable music daemon
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	${LOCALBASE}/bin/sphinx-build:textproc/py-sphinx@${PY_FLAVOR}
 LIB_DEPENDS=	libboost_iostreams.so:devel/boost-libs \
 		libicudata.so:devel/icu
 
-USES=		compiler:c++14-lang gnome meson pkgconfig tar:xz
+USES=		compiler:c++17-lang gnome localbase:ldflags meson pkgconfig \
+		python:build tar:xz
 
 USE_GNOME=	glib20
 
 USE_RC_SUBR=	${PORTNAME}
 MESON_ARGS=	-Dauto_features=disabled \
 		-Dbzip2=enabled \
+		-Ddocumentation=enabled \
 		-Dhttpd=true \
 		-Dicu=enabled \
 		-Doss=enabled \
 		-Dpipe=true \
 		-Dsyslog=enabled \
 		-Dzlib=enabled
-CFLAGS+=	-I${PREFIX}/include
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 PORTDOCS=	AUTHORS README.md NEWS
 
 SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=	DOCS ID3TAG IPV6 ISO9660 SQLITE3 \
-		PROXYDB LAME VORBISENC ZZIP
+		PROXYDB VORBISENC ZZIP
 
 OPTIONS_RADIO=	RESAMPLER ZEROCONF
 
@@ -46,16 +46,16 @@ OPTIONS_RADIO_ZEROCONF=	AVAHI MDNSRESPONDER
 
 OPTIONS_RADIO_RESAMPLER=	SAMPLERATE SOXR
 
-OPTIONS_MULTI=	FILE_FORMAT
+OPTIONS_MULTI=	DOCUMENTATION FILE_FORMAT
 OPTIONS_MULTI_FILE_FORMAT=	\
 			ADPLUG AUDIOFILE FAAD FFMPEG FLAC FLUIDSYNTH \
 			GME MAD MIKMOD MODPLUG MPG123 MUSEPACK \
-			OPUS SIDPLAY2 SNDFILE TWOLAME \
+			OPUS SIDPLAY SNDFILE TWOLAME \
 			VORBIS WAVPACK WILDMIDI
 
 OPTIONS_GROUP=	ACCESS PLAYBACK
 
-OPTIONS_GROUP_ACCESS=	CDPARANOIA CURL MMS NFS PLAYLISTS QOBUZ \
+OPTIONS_GROUP_ACCESS=	CDPARANOIA CURL LAME MMS NFS PLAYLISTS QOBUZ \
 			SMB SOUNDCLOUD TIDAL YAJL
 
 OPTIONS_GROUP_PLAYBACK=	AO JACK OPENAL PULSEAUDIO \
@@ -69,7 +69,8 @@ PROXYDB_DESC=	Proxy database support via libmpdclient
 LAME_DESC=	Support for MP3 Icecast Streams
 PLAYLISTS_DESC=	Enable extra playlist support (wma, RSS)
 QOBUZ_DESC=	Streaming service support: Qobuz
-SIDPLAY2_DESC=	Sidplay support (C64 mono and stereo files)
+SIDPLAY_DESC=	Sidplay support (C64 mono and stereo files)
+SMB_DESC=	SMB network support (currently strongly discouraged)
 SOUNDCLOUD_DESC=Streaming service support: SoundCloud
 TIDAL_DESC=	Streaming service support: TIDAL (currently defunct)
 TWOLAME_DESC=	TwoLAME support (mp2)
@@ -78,8 +79,8 @@ WILDMIDI_DESC=	WildMIDI support (MIDI files)
 YAJL_DESC=	JSON support via libyajl
 ZZIP_DESC=	Support for zzip archives
 
-OPTIONS_DEFAULT=CURL FFMPEG FLAC ID3TAG \
-		PLAYLISTS SNDFILE VORBIS VORBISENC
+OPTIONS_DEFAULT=CURL FFMPEG FLAC ID3TAG LAME OPUS \
+		PLAYLISTS PROXYDB SNDFILE VORBIS VORBISENC
 
 # Decoder plugins
 ADPLUG_MESON_ENABLED=	adplug
@@ -115,9 +116,9 @@ OPUS_LIB_DEPENDS=	libopus.so:audio/opus \
 			libogg.so:audio/libogg
 PLAYLISTS_MESON_ENABLED=expat
 PLAYLISTS_LIB_DEPENDS=	libexpat.so:textproc/expat2
-SIDPLAY2_MESON_ENABLED=	sidplay
-SIDPLAY2_LIB_DEPENDS=	libsidplay2.so:audio/libsidplay2
-SIDPLAY2_LDFLAGS=	-L${LOCALBASE}/lib/sidplay/builders
+SIDPLAY_MESON_ENABLED=	sidplay
+SIDPLAY_LIB_DEPENDS=	libsidplayfp.so:audio/libsidplayfp
+SIDPLAY_CXXFLAGS=	-D_LIBCPP_ENABLE_CXX17_REMOVED_AUTO_PTR
 SNDFILE_MESON_ENABLED=	sndfile
 SNDFILE_LIB_DEPENDS=	libsndfile.so:audio/libsndfile
 VORBIS_MESON_ENABLED=	vorbis
@@ -147,6 +148,7 @@ AO_MESON_ENABLED=	ao
 AO_LIB_DEPENDS=		libao.so:audio/libao
 JACK_MESON_ENABLED=	jack
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
+JACK_CXXFLAGS=		-Wno-register
 OPENAL_MESON_ENABLED=	openal
 OPENAL_USES=		openal
 PULSEAUDIO_MESON_ENABLED=	pulse
@@ -241,22 +243,30 @@ post-patch:
 	 ${REINPLACE_CMD} -e "$${start},$${finish}s,^#,," \
 		${WRKSRC}/doc/mpdconf.example
 # Fix man pages for executable names
-	@${REINPLACE_CMD} -e 's/^\(\.B m\)pd/\1usicpd/' \
-		-e 's#^\(\.BI \)/etc/mpd.conf#\1${PREFIX}/etc/${PORTNAME}.conf#' \
-		-e 's#^mpd.conf#${PORTNAME}.conf#' \
-		-e 's#^mpd(1)#musicpd(1)#' \
-		${WRKSRC}/doc/mpd.1 ${WRKSRC}/doc/mpd.conf.5
+	@${REINPLACE_CMD} \
+		-e 's#^``mpd#``${PORTNAME}#' \
+		-e 's#:: mpd#:: ${PORTNAME}#' \
+		-e 's#mpd(1)#${PORTNAME}(1)#' \
+		-e 's#/etc/mpd.conf#${PREFIX}/etc/${PORTNAME}.conf#' \
+		-e 's#mpd.conf#${PORTNAME}.conf#' \
+		-e 's#mpd.conf(5)#${PORTNAME}.conf(5)#' \
+		${WRKSRC}/doc/mpd.1.rst ${WRKSRC}/doc/mpd.conf.5.rst
+	@${REINPLACE_CMD} \
+		-e "s#'mpd'#'${PORTNAME}'#" \
+		-e "s#'mpd.conf'#'${PORTNAME}.conf'#" \
+		-e "s#'mpd.conf doc#'${PORTNAME}.conf doc#" \
+		${WRKSRC}/doc/conf.py
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/_build/mpd \
-		${STAGEDIR}/${PREFIX}/bin/${PORTNAME}
-	${INSTALL_MAN} ${WRKSRC}/doc/mpd.1 \
-		${STAGEDIR}/${PREFIX}/man/man1/${PORTNAME}.1
-	${INSTALL_MAN} ${WRKSRC}/doc/mpd.conf.5 \
-		${STAGEDIR}/${PREFIX}/man/man5/${PORTNAME}.conf.5
+		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	${INSTALL_MAN} ${WRKSRC}/_build/doc/${PORTNAME}.1 \
+		${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/_build/doc/${PORTNAME}.conf.5 \
+		${STAGEDIR}${PREFIX}/man/man5
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}/
 	${INSTALL_DATA} ${WRKSRC}/doc/mpdconf.example \
-		${STAGEDIR}/${PREFIX}/etc/${PORTNAME}.conf.sample
+		${STAGEDIR}${PREFIX}/etc/${PORTNAME}.conf.sample
 
 .include <bsd.port.post.mk>

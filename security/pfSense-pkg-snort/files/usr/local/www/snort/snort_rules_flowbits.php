@@ -3,7 +3,7 @@
  * snort_rules_flowbits.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2016 Bill Meeks
  * All rights reserved.
  *

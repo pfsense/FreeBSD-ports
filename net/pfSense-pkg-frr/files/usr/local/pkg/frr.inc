@@ -3,7 +3,7 @@
  * frr.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,6 +26,8 @@ require_once("service-utils.inc");
 require_once("util.inc");
 
 define('PKG_FRR_CONFIG_BASE', '/var/etc/frr');
+define('PKG_FRR_LIST_NONE_VALUE', array('name' => 'None', 'value' => 'none'));
+
 /* Since we need to embed this in strings & HERE Docs, copy to a var. Can't embed constants. */
 global $frr_config_base;
 $frr_config_base = PKG_FRR_CONFIG_BASE;
@@ -57,7 +59,7 @@ require_once("frr/inc/frr_ospf6.inc");
 /* Build a list of only CARP VIPs, formatted for use in a selection list */
 function frr_get_carp_list() {
 	$list = array();
-	$list[] = array("name" => "none", "value" => "none");
+	$list[] = PKG_FRR_LIST_NONE_VALUE;
 	$carplist = get_configured_vip_list("all", VIP_CARP);
 	foreach ($carplist as $vid => $vaddr) {
 		$vip = get_configured_vip($vid);
@@ -205,7 +207,7 @@ function frr_get_route_destinations() {
 	global $config;
 	$list = array();
 
-	$list[] = array("name" => "None", "value" => "none");
+	$list[] = PKG_FRR_LIST_NONE_VALUE;
 
 	/* Add non-disabled gateways to the list */
 	$gateways = return_gateways_array();
@@ -258,6 +260,13 @@ function frr_array_seq_sort(&$arr) {
 	if ($need_sort) {
 		usort($arr, "frr_array_seq_compare");
 	}
+
+	return $need_sort;
+}
+
+/* Sort an array by its 'name' and 'seq' value. */
+function frr_array_name_seq_sort(&$arr) {
+	return usort($arr, "frr_array_name_seq_compare");
 }
 
 /* Convert a CIDR prefix to wildcard bits */
@@ -297,6 +306,7 @@ function frr_generate_config_rcfile() {
 
 	/* Get FRR daemon modules to append to daemon commands */
 	$frrmodules = array();
+
 	/* SNMP */
 	foreach ($daemons as $config_key => $daemon) {
 		$frrmodules[$daemon[0]] = '';
@@ -419,37 +429,53 @@ EOF;
 		}
 	}
 
-	/* Start/Restart FRR, if a CARP VIP is set, check its status and act
-	 * appropriately. */
-	if (isset($frr_conf['carpstatusvid']) && $frr_conf['carpstatusvid'] != "none") {
-		$status = get_carp_interface_status($frr_conf['carpstatusvid']);
-		switch (strtoupper($status)) {
-			// Stop the service if the VIP is in BACKUP or INIT state.
-			case "BACKUP":
-			case "INIT":
-				mwexec_bg("/usr/local/etc/rc.d/frr.sh stop");
-				break;
-			// Start the service if the VIP is MASTER state.
-			case "MASTER":
-			// Assume it's up if the status can't be determined.
-			default:
-				if ($frr_restart_needed) {
-					log_error("FRR Restarting");
-					mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
-				} else {
-					log_error("FRR Reloading Configuration");
-					mwexec_bg("/usr/local/sbin/frr-reload");
-				}
-				break;
+	return $frr_restart_needed;
+}
+
+function frr_service_action($restart_needed) {
+	global $config, $frr_config_base, $frr_modules;
+	/* If frr is not configured, then stop */
+	if (is_array($config['installedpackages']['frr']['config'])) {
+		$frr_conf = &$config['installedpackages']['frr']['config'][0];
+	} else {
+		return null;
+	}
+
+	if ($frr_conf['enable']) {
+		/* Start/Restart FRR, if a CARP VIP is set, check its status and appropriately. */
+		if (isset($frr_conf['carpstatusvid']) && $frr_conf['carpstatusvid'] != "none") {
+			$status = get_carp_interface_status($frr_conf['carpstatusvid']);
+			switch (strtoupper($status)) {
+				// Stop the service if the VIP is in BACKUP or INIT state.
+				case "BACKUP":
+				case "INIT":
+					mwexec_bg("/usr/local/etc/rc.d/frr.sh stop");
+					break;
+				// Start the service if the VIP is MASTER state.
+				case "MASTER":
+				// Assume it's up if the status can't be determined.
+				default:
+					if ($restart_needed) {
+						frr_package_log("FRR: Restarting services.");
+						mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
+					} else {
+						frr_package_log("FRR: Reloading configuration.");
+						mwexec_bg("/usr/local/sbin/frr-reload");
+					}
+					break;
+			}
+		} else {
+			if ($restart_needed) {
+				frr_package_log("FRR: Restarting services.");
+				mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
+			} else {
+				frr_package_log("FRR: Reloading configuration.");
+				mwexec_bg("/usr/local/sbin/frr-reload");
+			}
 		}
 	} else {
-		if ($frr_restart_needed) {
-			log_error("FRR Restarting");
-			mwexec_bg("/usr/local/etc/rc.d/frr.sh restart");
-		} else {
-			log_error("FRR Reloading Configuration");
-			mwexec_bg("/usr/local/sbin/frr-reload");
-		}
+		frr_package_log("FRR: Stopping services.");
+		mwexec_bg("/usr/local/etc/rc.d/frr.sh stop");
 	}
 }
 
@@ -558,6 +584,24 @@ function frr_setkey() {
 	}
 }
 
+/* Write a message to the syslog conditionally on package log level setting*/
+function frr_package_log($string, $priority = LOG_INFO) {
+	global $config;
+
+	/* Populate FRR Global Settings */
+	if (is_array($config['installedpackages']['frr']['config'])) {
+		$frr_conf = &$config['installedpackages']['frr']['config'][0];
+	}
+
+	/* Check if extended package logging is enabled */
+	if (is_null($frr_conf['pkgloglevel']) || ($frr_conf['pkgloglevel'] < 1)) {
+		// Extended logging is disabled
+		return;
+	}
+
+	syslog($priority, "FRR Package: {$string}");
+}
+
 /* Main function to generate all of the configuration files and make general
  * preparations */
 function frr_generate_config() {
@@ -591,14 +635,20 @@ function frr_generate_config() {
 	/* BFD Configuration */
 	frr_generate_config_bfd();
 
-	/* Create the rc.d service control script */
-	frr_generate_config_rcfile();
-
 	/* Setup TCP MD5 authentication */
 	frr_setkey();
 
 	/* Integrated configuration */
 	frr_generate_config_integrated();
+
+	/* Create the rc.d service control script and trigger restart/reload */
+	if (!empty($_POST['service_force_restart'])) {
+		frr_package_log("FRR: Service restart forced.");
+		/* If force_restart is set, delete the previously generated start command file to force a service restart */
+		unlink_if_exists("/tmp/frr_start_command_last.txt");
+	}
+	$restart_needed = frr_generate_config_rcfile();
+	frr_service_action($restart_needed);
 }
 
 function frr_generate_config_vtysh() {
@@ -613,15 +663,16 @@ function frr_generate_config_vtysh() {
 
 	/* If there is no raw configuration and no GUI configuration, stop. */
 	if (empty($frr_conf)) {
-		log_error("FRR vtysh: No config data found.");
+		frr_package_log("FRR vtysh: No config data found.");
 		return;
 	}
 	if (empty($frr_conf['enable'])) {
-		/* FRR master switch is off. */
+		frr_package_log("FRR vtysh: FRR master switch is off.");
 		return;
 	}
 
-	$vtyshconffile = "service integrated-vtysh-config\n\n";
+	$vtyshconffile = $frr_auto_config_warning;
+	$vtyshconffile .= "service integrated-vtysh-config\n\n";
 	file_put_contents("{$frr_config_base}/vtysh.conf", $vtyshconffile);
 	chown("{$frr_config_base}/vtysh.conf", 'frr');
 	chgrp("{$frr_config_base}/vtysh.conf", 'frr');
@@ -670,13 +721,15 @@ function frr_generate_config_integrated() {
 
 	/* If there is no raw configuration and no GUI configuration, stop. */
 	if (empty($frr_conf)) {
-		log_error("FRR Integrated: No config data found.");
+		frr_package_log("FRR Integrated: No config data found.");
 		return;
 	}
 	if (empty($frr_conf['enable'])) {
-		/* FRR master switch is off. */
+		frr_package_log("FRR Integrated: FRR master switch is off.");
 		return;
 	}
+
+	frr_package_log("FRR Integrated: Rebuild configuration.");
 
 	$integratedconffile = $frr_auto_config_warning;
 	$integratedconffile .= "frr defaults traditional\n";
@@ -703,6 +756,11 @@ function frr_generate_config_integrated() {
 	$integratedconffile .= "!\n";
 
 	if (!empty($frr_conf['routerid'])) {
+		if (is_ipaddrv4($frr_conf['routerid'])) {
+			$integratedconffile .= "ip ";
+		} elseif (is_ipaddrv6($frr_conf['routerid'])) {
+			$integratedconffile .= "ipv6 ";
+		}
 		$integratedconffile .= "router-id {$frr_conf['routerid']}\n";
 		$integratedconffile .= "!\n";
 	}
@@ -721,9 +779,30 @@ function frr_generate_config_integrated() {
 	$integratedconffile .= "!\n";
 	$integratedconffile .= "end\n";
 
+	/* Remove sample configuration files */
+	array_map('unlink', glob("{$frr_config_base}/*.sample*"));
+
 	file_put_contents("{$frr_config_base}/frr.conf", $integratedconffile, LOCK_EX);
 	chown("{$frr_config_base}/frr.conf", 'frr');
 	chgrp("{$frr_config_base}/frr.conf", 'frr');
+}
+
+/* Upgrade the FRR configuration to the latest format */
+function frr_config_sort_route_map() {
+	global $config;
+
+	update_status("Sorting route-map configuration items");
+
+	init_config_arr(array('installedpackages', 'frrglobalroutemaps', 'config'));
+	$frr_routemap_conf = &$config['installedpackages']['frrglobalroutemaps']['config'];
+
+	$need_write = frr_array_name_seq_sort($frr_routemap_conf);
+
+	if ($need_write) {
+		update_status("Saving sorted route-map configuration items");
+		write_config('FRR: Sorted route-map configuration items');
+		update_status("Done.\n");
+	}
 }
 
 /* Upgrade the FRR configuration to the latest format */
@@ -746,6 +825,8 @@ function frr_package_config_upgrade() {
 	$ospf6d_conf = &$config['installedpackages']['frrospf6d']['config'][0];
 	init_config_arr(array('installedpackages', 'frrglobalacls', 'config'));
 	$frr_acls_conf = &$config['installedpackages']['frrglobalacls']['config'];
+	init_config_arr(array('installedpackages', 'frrglobalprefixes', 'config'));
+	$frr_prefixes_conf = &$config['installedpackages']['frrglobalprefixes']['config'];
 	init_config_arr(array('installedpackages', 'frrglobalroutemaps', 'config'));
 	$frr_routemap_conf = &$config['installedpackages']['frrglobalroutemaps']['config'];
 	init_config_arr(array('installedpackages', 'frrospfdinterfaces', 'config'));
@@ -888,6 +969,29 @@ function frr_package_config_upgrade() {
 		$need_write = true;
 	}
 
+	/* ACL and Prefix List add IP Type*/
+	foreach ($frr_acls_conf as $aclconf) {
+		if (empty($aclconf['iptype']) && !empty($aclconf['row'])) {
+			if (is_subnetv4($aclconf['row'][0]['source'])) {
+				$aclconf['iptype'] = 'IPv4';
+			} else {
+				$aclconf['iptype'] = 'IPv6';
+			}
+			$need_write = true;
+		}
+	}
+	foreach ($frr_prefixes_conf as $prefixconf) {
+		if (empty($prefixconf['iptype']) && !empty($prefixconf['row'])) {
+			if (is_subnetv4($aclconf['row'][0]['source'])) {
+				$aclconf['iptype'] = 'IPv4';
+			} else {
+				$aclconf['iptype'] = 'IPv6';
+			}
+			$need_write = true;
+		}
+	}
+	update_status("Done.\n");
+
 	/* Save Changes */
 	if ($need_write) {
 		update_status("Saving changes ... ");
@@ -896,11 +1000,30 @@ function frr_package_config_upgrade() {
 	} else {
 		update_status("Nothing to do.\n");
 	}
+}
 
+function frr_set_tunables() {
+	global $config;
+
+	init_config_arr(array('sysctl', 'item'));
+	$sysctl_conf = &$config['sysctl']['item'];
+	$sysctl_maxsockbuff = array('tunable' => 'kern.ipc.maxsockbuf', 'value' => 16777216, 'descr' => "Maximum socket buffer size - set by FRR package");
+
+	if (!in_array($sysctl_maxsockbuff, $sysctl_conf)) {
+		update_status("Installing maxsockbuf tunable ... ");
+		$sysctl_conf[] = $sysctl_maxsockbuff;
+		write_config('FRR: Installed maxsockbuf tunable.');
+		system_setup_sysctl();
+		update_status("Done.\n");
+	}
 }
 
 /* Install-time functions */
 function frr_package_install() {
 	/* Upgrade the configuration */
 	frr_package_config_upgrade();
+
+	/* Set tunable kern.ipc.maxsockbuf to FRR recommended */
+	/* OSPF and OSPF6 most likely won't work without this */
+	frr_set_tunables();
 }

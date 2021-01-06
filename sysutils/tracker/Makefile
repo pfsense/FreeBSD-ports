@@ -3,6 +3,7 @@
 
 PORTNAME=	tracker
 PORTVERSION=	2.3.4
+PORTREVISION=	1
 CATEGORIES=	sysutils gnome
 MASTER_SITES=	GNOME
 
@@ -40,5 +41,10 @@ GLIB_SCHEMAS=	org.freedesktop.Tracker.DB.gschema.xml \
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 PLIST_SUB=	LIBVER=0.304.0
+
+# This can be removed after 11.x is no longer supported
+.if exists(/usr/bin/ld.lld) && (${/usr/bin/ld:L:tA} != /usr/bin/ld.lld)
+LDFLAGS+=      -fuse-ld=lld
+.endif
 
 .include <bsd.port.mk>
