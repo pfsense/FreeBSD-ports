@@ -5,10 +5,10 @@
 	<copyright>
 	<![CDATA[
 /*
- * frr_bfd_peers.xml
+ * frr_bfd_profiles.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2020 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,10 +25,10 @@
  */
 	]]>
 	</copyright>
-	<name>frr_bfd_peers</name>
+	<name>frr_bfd_profiles</name>
 	<title>Services/FRR/BFD</title>
 	<include_file>/usr/local/pkg/frr.inc</include_file>
-	<aftersaveredirect>pkg.php?xml=frr/frr_bfd_peers.xml</aftersaveredirect>
+	<aftersaveredirect>pkg.php?xml=frr/frr_bfd_profiles.xml</aftersaveredirect>
 	<tabs>
 		<tab>
 			<text>BFD</text>
@@ -37,11 +37,11 @@
 		<tab>
 			<text>Peers</text>
 			<url>pkg.php?xml=frr/frr_bfd_peers.xml</url>
-			<active/>
 		</tab>
 		<tab>
 			<text>Profiles</text>
 			<url>pkg.php?xml=frr/frr_bfd_profiles.xml</url>
+			<active/>
 		</tab>
 		<tab>
 			<text>[Global Settings]</text>
@@ -66,33 +66,22 @@
 	</tabs>
 	<adddeleteeditpagefields>
 		<columnitem>
-			<fielddescr>Peer Address</fielddescr>
-			<fieldname>peer</fieldname>
+			<fielddescr>Name</fielddescr>
+			<fieldname>name</fieldname>
 		</columnitem>
 		<columnitem>
 			<fielddescr>Description</fielddescr>
 			<fieldname>descr</fieldname>
 		</columnitem>
-		<columnitem>
-			<fielddescr>Label</fielddescr>
-			<fieldname>label</fieldname>
-		</columnitem>
-		<columnitem>
-			<fielddescr>Shutdown</fielddescr>
-			<fieldname>shutdown</fieldname>
-		</columnitem>
 	</adddeleteeditpagefields>
 	<fields>
 		<field>
-			<name>Peer Configurations</name>
+			<name>Profile Configuration</name>
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Peer Address</fielddescr>
-			<fieldname>peer</fieldname>
-			<description>
-				<![CDATA[IP address of a peer]]>
-			</description>
+			<fielddescr>Name</fielddescr>
+			<fieldname>name</fieldname>
 			<type>input</type>
 			<size>20</size>
 			<required/>
@@ -102,45 +91,6 @@
 			<fieldname>descr</fieldname>
 			<size>50</size>
 			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>Label</fielddescr>
-			<fieldname>label</fieldname>
-			<description>
-				<![CDATA[
-				Label a peer with the provided word. This word can be referenced later on other daemons to refer to a specific peer.
-				]]>
-			</description>
-			<size>50</size>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>Profile</fielddescr>
-			<fieldname>Profile</fieldname>
-			<description>
-				<![CDATA[
-				Select the profile for peer take configuration from.
-				]]>
-			</description>
-			<type>select_source</type>
-			<source><![CDATA[frr_get_bfd_profiles()]]></source>
-			<source_name>name</source_name>
-			<source_value>value</source_value>
-		</field>
-		<field>
-			<name>Options</name>
-			<type>listtopic</type>
-		</field>
-		<field>
-			<fielddescr>Multihop</fielddescr>
-			<fieldname>multihop</fieldname>
-			<description>
-				<![CDATA[
-				 Expect packets with TTL less than 254 due to more than one hop between peer addresses and listen on the multihop port 4784.
-				 When using multi-hop mode echo-mode will not work, see RFC 5883 section 3.
-				]]>
-			</description>
-			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Shutdown</fielddescr>
@@ -154,34 +104,18 @@
 			<type>checkbox</type>
 		</field>
 		<field>
-			<name>Source Address/Interface</name>
-			<type>listtopic</type>
-		</field>
-		<field>
-			<fielddescr>Interface</fielddescr>
-			<fieldname>interface</fieldname>
-			<description>Select the interface which BFD will use as a packet source.</description>
-			<type>select_source</type>
-			<source><![CDATA[frr_get_interfaces()]]></source>
-			<source_name>name</source_name>
-			<source_value>value</source_value>
-		</field>
-		<field>
-			<fielddescr>Local Source Address</fielddescr>
-			<fieldname>local_address</fieldname>
+			<fielddescr>Passive</fielddescr>
+			<fieldname>passive</fieldname>
 			<description>
 				<![CDATA[
-				Provide a local address to bind the BFD peer listener to for participating in a BFD session.<br />
-				This option is mandatory for IPv6.
+				Mark session as passive.
+				A passive session will not attempt to start the connection and will wait for control packets from peer before it begins replying.
 				]]>
 			</description>
-			<type>select_source</type>
-			<source><![CDATA[frr_get_bfd_source_addresses()]]></source>
-			<source_name>name</source_name>
-			<source_value>value</source_value>
+			<type>checkbox</type>
 		</field>
 		<field>
-			<name>Advanced Options</name>
+			<name>Profile Options</name>
 			<type>listtopic</type>
 		</field>
 		<field>
@@ -227,13 +161,25 @@
 			<size>20</size>
 		</field>
 		<field>
+			<fielddescr>Minimum TTL</fielddescr>
+			<fieldname>minimumttl</fieldname>
+			<description>
+				<![CDATA[
+				    For multi hop sessions only, configure the minimum expected TTL for an incoming BFD control packet.<br />
+    				This feature serves the purpose of tightening the packet validation requirements to avoid receiving BFD control packets from other sessions.<br />
+    				The default value is 254 (which means we only expect one hop between this system and the peer).
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
 			<fielddescr>Echo Mode</fielddescr>
 			<fieldname>echomode</fieldname>
 			<description>
 				<![CDATA[
-				Enables or disables the echo transmission mode. This mode is disabled by default.
-				FRR documentation recommendeds that the transmission interval of control packets to be increased after enabling echo-mode to reduce bandwidth usage. For example: transmission-interval 2000.
-				Echo mode is not supported on multi-hop setups, see RFC 5883 section 3.
+					Enables or disables the echo transmission mode. This mode is disabled by default.
+					FRR documentation recommendeds that the transmission interval of control packets to be increased after enabling echo-mode to reduce bandwidth usage. For example: transmission-interval 2000.
+					Echo mode is not supported on multi-hop setups, see RFC 5883 section 3.
 				]]>
 			</description>
 			<type>checkbox</type>
@@ -246,6 +192,6 @@
 		frr_generate_config();
 	</custom_php_resync_config_command>
 	<custom_php_validation_command>
-		frr_bfd_peer_validate_input();
+		frr_bfd_profile_validate_input();
 	</custom_php_validation_command>
 </packagegui>

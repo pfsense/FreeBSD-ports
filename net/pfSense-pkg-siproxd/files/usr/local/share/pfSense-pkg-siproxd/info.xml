@@ -4,7 +4,7 @@
 		<name>siproxd</name>
 		<website>http://siproxd.sourceforge.net/</website>
 		<descr><![CDATA[Proxy for handling NAT of multiple SIP devices to a single public IP.]]></descr>
-		<pkginfolink>https://doc.pfsense.org/index.php/Siproxd_package</pkginfolink>
+		<pkginfolink>https://docs.netgate.com/pfsense/en/latest/packages/siproxd.html</pkginfolink>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>siproxd.xml</configurationfile>
 	</package>

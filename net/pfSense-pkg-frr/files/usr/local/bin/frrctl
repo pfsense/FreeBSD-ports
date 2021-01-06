@@ -146,7 +146,7 @@ bgp6*)
 	fi
 	case $2 in
 	rou*)
-		daemon_command "show bgp"
+		daemon_command "show bgp ipv6"
 		;;
 	esac ;;
 bgp*)
@@ -156,15 +156,15 @@ bgp*)
 	fi
 	case $2 in
 	rou*)
-		daemon_command "show ip bgp"
+		daemon_command "show bgp ipv4"
 		;;
 	nei*)
 		shift; shift;
-		daemon_command "show ip bgp neighbors $*"
+		daemon_command "show bgp neighbors $*"
 		;;
 	peer*)
 		shift; shift;
-		daemon_command "show ip bgp peer-group $*"
+		daemon_command "show bgp peer-group $*"
 		;;
 	sum*)
 		shift; shift;
@@ -172,11 +172,16 @@ bgp*)
 		;;
 	nexth*)
 		shift; shift;
-		daemon_command "show ip bgp nexthop detail $*"
+		daemon_command "show bgp nexthop detail $*"
 		;;
 	mem*)
 		shift; shift;
 		daemon_command "show bgp memory $*"
+		;;
+	cycleneighbor)
+		daemon_command "config terminal" "router bgp $3"  "neighbor $4 shutdown"
+		sleep 1;
+		daemon_command "config terminal" "router bgp $3"  "no neighbor $4 shutdown"
 		;;
 	esac ;;
 bfd*)

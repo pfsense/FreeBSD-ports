@@ -40,6 +40,10 @@
 			<url>pkg.php?xml=frr/frr_bfd_peers.xml</url>
 		</tab>
 		<tab>
+			<text>Profiles</text>
+			<url>pkg.php?xml=frr/frr_bfd_profiles.xml</url>
+		</tab>
+		<tab>
 			<text>[Global Settings]</text>
 			<url>pkg_edit.php?xml=frr.xml</url>
 		</tab>

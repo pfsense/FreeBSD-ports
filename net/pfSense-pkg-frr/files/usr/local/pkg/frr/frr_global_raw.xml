@@ -116,7 +116,6 @@
 				</rowhelperfield>
 			</rowhelper>
 		</field>
-
 		<field>
 			<name>RAW Configuration Management</name>
 			<type>listtopic</type>
@@ -131,7 +130,6 @@
 			</description>
 			<type>info</type>
 		</field>
-
 		<field>
 			<name>RAW Configuration Files</name>
 			<type>listtopic</type>
