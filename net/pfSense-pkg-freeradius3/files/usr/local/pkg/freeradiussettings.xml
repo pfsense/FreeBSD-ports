@@ -207,7 +207,7 @@
 			<description>
 				<![CDATA[
 				This enables logging of accepted or rejected authentication.
-				<span class="text-info">(Default: Disable)</span>
+				<span class="text-info">(Default: Enable)</span>
 				]]>
 			</description>
 			<type>select</type>
