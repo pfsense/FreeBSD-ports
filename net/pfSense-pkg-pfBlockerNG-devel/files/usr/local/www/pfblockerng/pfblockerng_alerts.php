@@ -1636,7 +1636,9 @@ if ($pfb['dnsbl'] == 'on') {
 			'9.9.9.9'		=> 'Quad9 9.9.9.9',
 			'149.112.112.112'	=> 'Quad9 149.112.112.112',
 			'1.1.1.1'		=> 'Cloudflare 1.1.1.1',
-			'1.0.0.1'		=> 'Cloudflare 1.0.0.1'
+			'1.0.0.1'		=> 'Cloudflare 1.0.0.1',
+			'77.88.8.8'		=> 'Yandex 77.88.8.8',
+			'77.88.8.1'		=> 'Yandex 77.88.8.1'
 		]
 	))->setHelp('Select the DNS server for the DNSBL Whitelist CNAME lookup')
 	  ->setAttribute('style', 'width: auto');
