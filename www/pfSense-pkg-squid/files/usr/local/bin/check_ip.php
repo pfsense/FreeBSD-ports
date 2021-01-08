@@ -34,31 +34,35 @@ if (!defined(STDOUT)) {
 }
 while (!feof(STDIN)) {
 	$check_ip = preg_replace('/[^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}]/', '', fgets(STDIN));
+	$status = '';
 
 	if (is_array($config['captiveportal'])) {
 		foreach ($config['captiveportal'] as $cpzone => $cp) {
 			if (isset($cp['enable'])) {
 				$db = "{$g['vardb_path']}/captiveportal{$cpzone}.db";
 				$status = squid_check_ip($db, $check_ip);
-				if (!$status && is_array($cp['allowedip'])) {
+				if ($status) {
+					break;
+				} elseif (is_array($cp['allowedip'])) {
 					foreach ($cp['allowedip'] as $ipent) {
 						if (ip_in_subnet($check_ip, "{$ipent['ip']}/{$ipent['sn']}") &&
 						    (($ipent['dir'] == 'from') || ($ipent['dir'] == 'both'))) {
 							$status = $check_ip;
-							break;
+							break 2;
 						}
 					}
 				}
 			}
-			if (isset($status)) {
-				fwrite(STDOUT, "OK user={$status}\n");
-				break 2;
-			}
 		}
 	}
 
-	fwrite(STDOUT, "ERR\n");
-	break;
+	if ($check_ip) {
+		if ($status) {
+			fwrite(STDOUT, "OK user={$status}\n");
+		} else {
+			fwrite(STDOUT, "ERR\n");
+		}
+	}
 }
 
 function squid_check_ip($db, $check_ip) {
