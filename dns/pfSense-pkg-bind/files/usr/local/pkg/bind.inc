@@ -240,6 +240,9 @@ EOD;
 
 	// Forwarder config
 	if ($bind_forwarder == 'on') {
+		if (!empty($forwarder_ips) && !strpos($forwarder_ips, ';', -1)) {
+			$forwarder_ips .= ';';
+		}
 		$bind_conf .= "\tforwarders { {$forwarder_ips} };\n";
 	}
 	if ($bind_notify == 'on') {
