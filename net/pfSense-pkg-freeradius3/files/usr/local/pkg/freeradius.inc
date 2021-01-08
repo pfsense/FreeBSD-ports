@@ -3750,6 +3750,7 @@ ATTRIBUTE 		MOTP-PIN 			901 	string
 ATTRIBUTE 		MOTP-Offset 			902 	string
 
 \$INCLUDE /usr/share/doc/radius/dictionary.pfsense
+\$INCLUDE /usr/local/pkg/dictionary.mpd
 
 EOD;
 
