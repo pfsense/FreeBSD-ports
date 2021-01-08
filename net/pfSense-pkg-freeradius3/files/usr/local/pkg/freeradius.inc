@@ -3750,6 +3750,7 @@ ATTRIBUTE 		MOTP-PIN 			901 	string
 ATTRIBUTE 		MOTP-Offset 			902 	string
 
 \$INCLUDE /usr/share/doc/radius/dictionary.pfsense
+\$INCLUDE /usr/local/pkg/dictionary.mpd
 
 EOD;
 
@@ -3773,6 +3774,9 @@ function freeradius_validate_users($post, &$input_errors) {
 	// Password
 	if (($post['varusersmotpenable'] == 'on') && ($post['varuserspassword'] != '')) {
 		$input_errors[] = "The 'Password' field must be left empty when 'Enable One-Time-Password for this user' is checked.";
+	}
+	if (!empty($post['varuserspassword']) && strpos($post['varuserspassword'], "\"")) {
+		$input_errors[] = "The '\"' character is not allowed in the Password field.";
 	}
 
 	// OTP method

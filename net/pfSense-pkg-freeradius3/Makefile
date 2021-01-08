@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-freeradius3
 PORTVERSION=	0.15.7
-PORTREVISION=	22
+PORTREVISION=	23
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -66,6 +66,8 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 	${INSTALL_SCRIPT} ${WRKSRC}${PREFIX}/pkg/googleauth.py \
+		${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_SCRIPT} ${WRKSRC}${PREFIX}/pkg/dictionary.mpd \
 		${STAGEDIR}${PREFIX}/pkg
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml
