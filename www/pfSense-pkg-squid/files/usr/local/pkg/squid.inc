@@ -182,41 +182,21 @@ function squid_get_server_certs() {
 	return $cert_arr;
 }
 
-/* Handle root CA certificates bundle */
-function squid_check_ca_hashes() {
-	global $config, $g;
+/* Handle extra CA certificates, see https://redmine.pfsense.org/issues/10605 */
+function squid_gen_extra_ca() {
+	global $config;
+	$capath = SQUID_LOCALBASE . '/share/certs';
 
-	// check certificates
-	$cert_count = 0;
-	if (is_dir(SQUID_LOCALBASE . '/share/certs')) {
-		if ($handle = opendir(SQUID_LOCALBASE . '/share/certs')) {
-			while (false !== ($file = readdir($handle))) {
-				if (preg_match ("/\d+.0/", $file)) {
-					$cert_count++;
-				}
-			}
-			closedir($handle);
-		}
-	}
-	if ($cert_count < 10) {
-		// create ca-root hashes from ca-root-nss package
-		log_error("[squid] Creating root certificate bundle hashes from the Mozilla Project...");
-		$cas = file(SQUID_LOCALBASE . '/share/certs/ca-root-nss.crt');
-		$cert = 0;
-		foreach ($cas as $ca) {
-			if (preg_match("/--BEGIN CERTIFICATE--/", $ca)) {
-				$cert = 1;
-			}
-			if ($cert == 1) {
-				$crt .= $ca;
-			}
-			if (preg_match("/-END CERTIFICATE-/", $ca)) {
-				file_put_contents("/tmp/cert.pem", $crt, LOCK_EX);
-				$cert_hash = array();
-				exec("/usr/bin/openssl x509 -hash -noout -in /tmp/cert.pem", $cert_hash);
-				file_put_contents(SQUID_LOCALBASE . "/share/certs/" . $cert_hash[0] . ".0", $crt, LOCK_EX);
-				$crt = "";
-				$cert = 0;
+	unlink_if_exists("{$capath}/*.0");
+
+	if (is_array($config['installedpackages']['squid']['config']) &&
+	    !empty($config['installedpackages']['squid']['config'][0]['extraca'])) {
+		$extraca = $config['installedpackages']['squid']['config'][0]['extraca'];
+		if ($extraca != 'none') {
+			$param = array('caref' => $extraca);
+			$cas = ca_chain_array($param);
+			foreach ($cas as $ca) {
+				ca_setup_capath($ca, $capath);
 			}
 		}
 	}
@@ -1234,7 +1214,7 @@ function squid_resync_general() {
 	$conf .= "# Do not edit manually !\n\n";
 	// Check ssl interception
 	if ($settings['ssl_proxy'] == 'on') {
-		squid_check_ca_hashes();
+		squid_gen_extra_ca();
 		$srv_cert = lookup_ca($settings["dca"]);
 		if ($srv_cert != false) {
 			if (base64_decode($srv_cert['prv'])) {
@@ -1257,6 +1237,7 @@ function squid_resync_general() {
 				// cert, key, version, cipher, options, clientca, cafile, capath, crlfile, tls-dh, sslflags, sslcontext
 				$crt_pk = SQUID_CONFBASE . "/serverkey.pem";
 				$crt_capath = SQUID_LOCALBASE . "/share/certs/";
+				$crt_cafile = SQUID_LOCALBASE . "/share/certs/ca-root-nss.crt";
 				$sslproxy_options = "NO_SSLv3";
 				/* XXX: Bug #4453, Bug #6592, Feature #6593, Bug #6563
 				 * http://wiki.squid-cache.org/ConfigExamples/Intercept/SslBumpExplicit#Modern_DH.2FEDH_ciphers_usage
@@ -1287,9 +1268,10 @@ function squid_resync_general() {
 				}
 				file_put_contents($crt_pk, unixnewlines(base64_decode($srv_cert['prv']) . "\n" . base64_decode($srv_cert['crt'])));
 				$sslcrtd_children = ($settings['sslcrtd_children'] ? $settings['sslcrtd_children'] : 5);
-				$ssl_interception .= "ssl-bump generate-host-certificates=on dynamic_cert_mem_cache_size=" . ($sslcrtd_children*2) . "MB cert={$crt_pk} capath={$crt_capath} cipher={$sslproxy_cipher} {$sslproxy_dhparams} options={$sslproxy_options}\n";
+				$ssl_interception .= "ssl-bump generate-host-certificates=on dynamic_cert_mem_cache_size=" . ($sslcrtd_children*2) . "MB cert={$crt_pk} cafile={$crt_cafile} capath={$crt_capath} cipher={$sslproxy_cipher} {$sslproxy_dhparams} options={$sslproxy_options}\n";
 				if ($squid4) {
 					$interception_checks = "sslcrtd_program " . SQUID_LOCALBASE . "/libexec/squid/security_file_certgen -s " . SQUID_SSL_DB . " -M 4MB -b 2048\n";
+					$interception_checks .= "tls_outgoing_options cafile={$crt_cafile}\n";
 					$interception_checks .= "tls_outgoing_options capath={$crt_capath}\n";
 					$interception_checks .= "tls_outgoing_options options={$sslproxy_options}\n";
 					$interception_checks .= "tls_outgoing_options cipher={$sslproxy_cipher}\n";
@@ -1298,6 +1280,7 @@ function squid_resync_general() {
 					}
 				} else {
 					$interception_checks = "sslcrtd_program " . SQUID_LOCALBASE . "/libexec/squid/ssl_crtd -s " . SQUID_SSL_DB . " -M 4MB -b 2048\n";
+					$interception_checks .= "sslproxy_cafile {$crt_cafile}\n";
 					$interception_checks .= "sslproxy_capath {$crt_capath}\n";
 					$interception_checks .= "sslproxy_options {$sslproxy_options}\n";
 					$interception_checks .= "sslproxy_cipher {$sslproxy_cipher}\n";

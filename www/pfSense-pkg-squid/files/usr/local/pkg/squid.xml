@@ -277,6 +277,23 @@
 			<size>70</size>
 		</field>
 		<field>
+			<fielddescr>Extra Trusted CA</fielddescr>
+			<fieldname>extraca</fieldname>
+			<description>
+				<![CDATA[
+				Select extra Trusted CA certificate in addition to the default root certificate bundle.<br/>
+				<strong><span class="text-danger">Warning:</span></strong> This option may only be required if the upstream proxy is using SSL/MITM mode and could be a security issue in other cases.
+				<div class="infoblock">You can also add CA certificate to the Operating System Trust Store in <a href="system_camanager.php" target="_blank">System &gt; Certificate Manager &gt; CAs</a>.</div>
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_ca_or_certs('ca', 'HTTPS', true, true)]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+			<show_disable_value>none</show_disable_value>
+			<default_value>none</default_value>
+		</field>
+		<field>
 			<name>Transparent Proxy Settings</name>
 			<type>listtopic</type>
 		</field>
