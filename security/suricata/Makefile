@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	suricata
-DISTVERSION=	5.0.4
-PORTREVISION=	1
+DISTVERSION=	5.0.5
 CATEGORIES=	security
 MASTER_SITES=	https://www.openinfosecfoundation.org/download/
 
@@ -15,7 +14,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	rustc:lang/${RUST_DEFAULT}
 
-LIB_DEPENDS=	libpcre.so:devel/pcre \
+LIB_DEPENDS=	libjansson.so:devel/jansson \
+		libpcre.so:devel/pcre \
 		libnet.so:net/libnet \
 		liblz4.so:archivers/liblz4 \
 		libyaml.so:textproc/libyaml
