@@ -4,7 +4,7 @@ diff -ruN ./daq-2.2.2.orig/os-daq-modules/daq_netmap.c ./daq-2.2.2/os-daq-module
 @@ -1,6 +1,7 @@
  /*
 -** Copyright (C) 2014 Cisco and/or its affiliates. All rights reserved.
-+** Copyright (C) 2020 Cisco and/or its affiliates. All rights reserved.
++** Copyright (C) 2021 Cisco and/or its affiliates. All rights reserved.
  ** Author: Michael R. Altizer <mialtize@cisco.com>
 +** Author: Bill Meeks <billmeeks8@gmail.com>
  **
@@ -442,7 +442,7 @@ diff -ruN ./daq-2.2.2.orig/os-daq-modules/daq_netmap.c ./daq-2.2.2/os-daq-module
                          rx_slot->flags |= NS_BUF_CHANGED;
  
 +                        /* copy the NS_MOREFRAG */
-+                        rx_slot->flags = (rx_slot->flags & ~NS_MOREFRAG) | (tx_slot->flags & NS_MOREFRAG);
++                        tx_slot->flags = (tx_slot->flags & ~NS_MOREFRAG) | (rx_slot->flags & NS_MOREFRAG);
 +
                          tx_ring->cur = nm_ring_next(tx_ring, tx_cur);
 -#if NETMAP_API >= 10
