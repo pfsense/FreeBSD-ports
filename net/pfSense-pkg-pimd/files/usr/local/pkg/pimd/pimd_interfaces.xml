@@ -91,7 +91,8 @@
 				<![CDATA[
 				Select the interface or address to bind.
 				Multiple entries may be added for the same interface to specify multiple values
-				for items such as Alternative Networks and Multicast Scope.
+				for items such as Alternative Networks and Multicast Scope. <br/>
+				<span class="text-info">Note: A firewall rule with enabled advanced option <strong>'Allow IP options'</strong> must exist to allow multicast traffic.
 				]]>
 			</description>
 			<type>select_source</type>
