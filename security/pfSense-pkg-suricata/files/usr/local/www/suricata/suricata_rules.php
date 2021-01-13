@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -856,6 +856,12 @@ elseif ($_POST['filterrules_submit']) {
 	$filterfieldsarray = array();
 	$filterfieldsarray['show_enabled'] = $_POST['filterrules_enabled'] ? $_POST['filterrules_enabled'] : null;
 	$filterfieldsarray['show_disabled'] = $_POST['filterrules_disabled'] ? $_POST['filterrules_disabled'] : null;
+	if ($a_rule[$id]['blockoffenders'] == 'on'){
+		$filterfieldsarray['show_drop'] = $_POST['filterrules_drop'] ? $_POST['filterrules_drop'] : null;
+	}
+	if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders'] == 'on') {
+		$filterfieldsarray['show_reject'] = $_POST['filterrules_reject'] ? $_POST['filterrules_reject'] : null;
+	}
 }
 elseif ($_POST['filterrules_clear']) {
 	$filterfieldsarray = array();
@@ -1069,33 +1075,55 @@ else {
 $group = new Form_Group('');
 $group->add(new Form_Checkbox(
 	'filterrules_enabled',
-	'Show Enabled Rules',
-	'Show enabled rules',
+	'Enabled Rules',
+	'Enabled Rules',
 	$filterfieldsarray['show_enabled'] == 'on' ? true:false,
 	'on'
 ));
 $group->add(new Form_Checkbox(
 	'filterrules_disabled',
-	'Show Disabled Rules',
-	'Show disabled rules',
+	'Disabled Rules',
+	'Disabled Rules',
 	$filterfieldsarray['show_disabled'] == 'on' ? true:false,
 	'on'
 ));
+
+// Show DROP and REJECT filters for Inline IPS Mode operation
+if ($a_rule[$id]['blockoffenders'] == 'on') {
+	$group->add(new Form_Checkbox(
+		'filterrules_drop',
+		'Drop Rules',
+		'Drop Rules',
+		$filterfieldsarray['show_drop'] == 'on' ? true:false,
+		'on'
+	));
+}
+if ($a_rule[$id]['ips_mode'] == 'ips_mode_inline' && $a_rule[$id]['blockoffenders'] == 'on') {
+	$group->add(new Form_Checkbox(
+		'filterrules_reject',
+		'Reject Rules',
+		'Reject Rules',
+		$filterfieldsarray['show_reject'] == 'on' ? true:false,
+		'on'
+	));
+}
+$section->add($group);
+
+// Add APPLY and CLEAR buttons
+$group = new Form_Group('');
 $group->add(new Form_Button(
 	'filterrules_submit',
-	'Filter',
+	'Apply Filter',
 	null,
 	'fa-filter'
-))->setHelp("Apply filter")
-  ->removeClass("btn-primary")
+))->removeClass("btn-primary")
   ->addClass("btn-sm btn-success");
 $group->add(new Form_Button(
 	'filterrules_clear',
-	'Clear',
+	'Clear Filter',
 	null,
 	'fa-trash-o'
-))->setHelp("Remove all filters")
-  ->removeclass("btn-primary")
+))->removeclass("btn-primary")
   ->addClass("btn-sm btn-danger no-confirm");
 $section->add($group);
 print($section);
@@ -1182,12 +1210,18 @@ print($section);
 								$ruleset = $currentruleset;
 								$style = "";
 
-								// Apply rule state filters if filtering is enabled
+								// Apply rule state and action filters if filtering is enabled
 								if ($filterrules) {
 									if (isset($filterfieldsarray['show_disabled']) && $v['disabled'] == 0) {
 										continue;
 									}
 									elseif (isset($filterfieldsarray['show_enabled']) && $v['disabled'] == 1) {
+										continue;
+									}
+									if (isset($filterfieldsarray['show_drop']) && $v['action'] != "drop") {
+										continue;
+									}
+									if (isset($filterfieldsarray['show_reject']) && $v['action'] != "reject") {
 										continue;
 									}
 								}
@@ -1545,6 +1579,14 @@ events.push(function() {
 
 	$('#filterrules_disabled').click(function() {
 		$('#filterrules_enabled').prop("checked", false);
+	});
+
+	$('#filterrules_drop').click(function() {
+		$('#filterrules_reject').prop("checked", false);
+	});
+
+	$('#filterrules_reject').click(function() {
+		$('#filterrules_drop').prop("checked", false);
 	});
 
 	<?php if (!empty($anchor)): ?>
