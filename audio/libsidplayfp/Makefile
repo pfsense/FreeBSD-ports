@@ -2,6 +2,7 @@
 
 PORTNAME=	libsidplayfp
 PORTVERSION=	2.0.5
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	SF/sidplay-residfp/libsidplayfp/${PORTVERSION:R}
 
@@ -15,7 +16,7 @@ BUILD_DEPENDS=	libgcrypt-config:security/libgcrypt
 LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 		libgpg-error.so:security/libgpg-error
 
-USES=		libtool pathfix pkgconfig
+USES=		compiler:c++11-lang libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

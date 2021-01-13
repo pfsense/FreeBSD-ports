@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	kodi-addon-pvr-hts
-PORTVERSION=	8.1.2
+PORTVERSION=	8.1.3
 DISTVERSIONSUFFIX=	-Matrix
 CATEGORIES=	multimedia
 
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libp8-platform.so:devel/p8-platform \
 		libpugixml.so:textproc/pugixml
 RUN_DEPENDS=	kodi:multimedia/kodi
 
-USES=		cmake:noninja
+USES=		cmake:noninja compiler:c++17-lang
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kodi-pvr

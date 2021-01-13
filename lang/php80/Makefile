@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	php80
-DISTVERSION=	8.0.0
-PORTREVISION?=	1
+DISTVERSION=	8.0.1
+PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=   PHP/distributions
 DISTNAME=	php-${DISTVERSION}
@@ -102,7 +102,7 @@ CONFIGURE_ARGS+=--with-apxs2=${APXS}
 PLIST=		${PKGDIR}/pkg-plist.mod
 PKGMESSAGE=	${PKGDIR}/pkg-message.mod
 MODULENAME=	libphp
-SHORTMODNAME=	php8
+SHORTMODNAME=	php
 WARNING=	"!!! If you have a threaded Apache, you must build ${PHP_PORT} with ZTS support to enable thread-safety in extensions !!!"
 .endif
 
