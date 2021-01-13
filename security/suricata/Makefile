@@ -13,6 +13,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	rustc:lang/${RUST_DEFAULT}
+
 LIB_DEPENDS=	libjansson.so:devel/jansson \
 		libpcre.so:devel/pcre \
 		libnet.so:net/libnet \
