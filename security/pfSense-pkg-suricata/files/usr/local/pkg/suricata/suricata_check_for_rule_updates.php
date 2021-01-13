@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2020 Bill Meeks
+ * Copyright (C) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -445,7 +445,7 @@ if ($snortdownload == 'on') {
 
 /*  Check for and download any new Snort GPLv2 Community Rules sigs */
 if ($snortcommunityrules == 'on') {
-	if (suricata_check_rule_md5("{$snort_community_rules_url}{$snort_community_rules_filename}/md5", "{$tmpfname}/{$snort_community_rules_filename_md5}", "Snort GPLv2 Community Rules")) {
+	if (suricata_check_rule_md5("{$snort_community_rules_url}{$snort_community_rules_filename_md5}", "{$tmpfname}/{$snort_community_rules_filename_md5}", "Snort GPLv2 Community Rules")) {
 		/* download Snort GPLv2 Community Rules file */
 		$file_md5 = trim(file_get_contents("{$tmpfname}/{$snort_community_rules_filename_md5}"));
 		if (!suricata_fetch_new_rules("{$snort_community_rules_url}{$snort_community_rules_filename}", "{$tmpfname}/{$snort_community_rules_filename}", $file_md5, "Snort GPLv2 Community Rules"))
