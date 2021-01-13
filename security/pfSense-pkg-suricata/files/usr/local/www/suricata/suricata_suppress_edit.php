@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -157,10 +157,10 @@ $section->addInput(new Form_Input(
 ))->setHelp('You may enter a description here for your reference.');
 $form->add($section);
 
-$content_help = gettext('Valid keywords are \'suppress\', \'event_filter\' and \'rate_filter\'.') . '<br />';
+$content_help = gettext('Valid keywords are \'suppress\', \'event_filter\' and \'threshold\'.') . '<br />';
 $content_help .= gettext('Example 1: suppress gen_id 1, sig_id 1852, track by_src, ip 10.1.1.54') . '<br />';
 $content_help .= gettext('Example 2: event_filter gen_id 1, sig_id 1851, type limit, track by_src, count 1, seconds 60') . '<br />';
-$content_help .= gettext('Example 3: rate_filter gen_id 135, sig_id 1, track by_src, count 100, seconds 1, new_action log, timeout 10');
+$content_help .= gettext('Example 3: threshold gen_id 135, sig_id 1, type threshold, track by_src, count 100, seconds 1');
 
 $section = new Form_Section('Suppression List Content');
 $section->addInput(new Form_Textarea (
