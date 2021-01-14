@@ -4,7 +4,7 @@
 PORTNAME=	midori
 PORTVERSION=	9.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	www xfce
 
 MAINTAINER=	xfce@FreeBSD.org
@@ -13,21 +13,20 @@ COMMENT=	Lightweight web browser using WebKit browser engine
 LICENSE=	LGPL21 MIT
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	rsvg-convert:graphics/librsvg2 \
-		valac:lang/vala
+BUILD_DEPENDS=	valac:lang/vala
 LIB_DEPENDS=	libnotify.so:devel/libnotify \
 		libjson-glib-1.0.so:devel/json-glib \
 		libsoup-2.4.so:devel/libsoup \
-		libsoup-gnome-2.4.so:devel/libsoup-gnome \
 		libp11-kit.so:security/p11-kit \
-		libgcr-3.so:security/gcr \
+		libgcr-base-3.so:security/gcr \
 		libpeas-1.0.so:devel/libpeas \
 		libwebkit2gtk-4.0.so:www/webkit2-gtk3
 RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
 USES=		cmake compiler:c++11-lang desktop-file-utils gettext gnome \
 		libarchive localbase:ldflags pkgconfig sqlite tar:bzip2 xorg
-USE_GNOME=	cairo glib20 gtk30 intltool introspection libxml2
+USE_GNOME=	cairo glib20 gtk30 intltool introspection librsvg2:build \
+		libxml2
 USE_XORG=	xscrnsaver
 
 CFLAGS+=	-Wno-return-type

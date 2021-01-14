@@ -3,7 +3,7 @@
 
 PORTNAME=	vlc
 DISTVERSION=	3.0.11
-PORTREVISION=	6
+PORTREVISION=	9
 PORTEPOCH=	4
 CATEGORIES=	multimedia audio net www
 MASTER_SITES=	http://download.videolan.org/pub/videolan/${PORTNAME}/${DISTVERSION:S/a$//}/ \
@@ -79,6 +79,11 @@ OPTIONS_DEFAULT=AVAHI DAV1D DBUS DVDREAD DVDNAV GNUTLS JPEG \
 OPTIONS_DEFAULT_powerpc=	ALTIVEC
 OPTIONS_DEFAULT_powerpc64=	ALTIVEC
 OPTIONS_SUB=	yes
+
+.if !defined(DEFAULT_VERSIONS) || ! ${DEFAULT_VERSIONS:Mssl=*}
+# Blocked by net/qt5-network: cannot use QT5 with default OpenSSL
+OPTIONS_EXCLUDE_FreeBSD_11+=	QT5
+.endif
 
 AOM_DESC=	AV1 video encoding/decoding via libaom
 ASS_DESC=	ASS/SSA subtitle rendering

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ibus
-PORTVERSION=	1.5.22
+PORTVERSION=	1.5.23
 PORTREVISION=	1
 CATEGORIES=	textproc
 
@@ -25,6 +25,8 @@ USES=		autoreconf compiler cpe gmake gnome libtool localbase pathfix pkgconfig p
 USE_GNOME=	glib20 intltool librsvg2 pygobject3
 USE_LDCONFIG=	yes
 USE_PYTHON=	py3kplist
+
+MAKE_JOBS_UNSAFE=yes
 
 SHEBANG_GLOB=	*.sh
 

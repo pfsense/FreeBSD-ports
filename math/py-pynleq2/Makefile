@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${PYNUMPY}
 
-USES=		fortran:flang python
+USES=		fortran:flang python:3.6+
 USE_PYTHON=	distutils autoplist
 USE_GITHUB=	nodefault
 GH_TUPLE=	PySCeS:pysces:0.9.6:fortran
@@ -35,6 +35,6 @@ pre-build: # compile fortran files into a static library because distutils fails
 		${AR} -qc libff.a ${FORTRAN_FILES:S/.f/.o/}
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}/nleq2.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}/nleq2*.so
 
 .include <bsd.port.mk>

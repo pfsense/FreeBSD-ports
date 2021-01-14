@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gp2c
-DISTVERSION=	0.0.11pl4
+DISTVERSION=	0.0.12
 CATEGORIES=	math
 MASTER_SITES=	http://pari.math.u-bordeaux.fr/pub/pari/GP2C/
 

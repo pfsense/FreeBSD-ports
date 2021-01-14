@@ -8,7 +8,7 @@
  * frr_bgp.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -145,7 +145,6 @@
 			<description>If checked, BGP will not assume IPv4 unicast by default.</description>
 			<type>checkbox</type>
 		</field>
-
 		<field>
 			<name>Modules</name>
 			<type>listtopic</type>
@@ -162,7 +161,22 @@
 			<description>Enable BGP Resource Public Key Infrastructure.</description>
 			<type>checkbox</type>
 		</field>
-
+		<field>
+			<name>Global Neighbor Shutdown</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Global Neighbor Shutdown</fielddescr>
+			<fieldname>shutdown</fieldname>
+			<description>Administratively shutdown ALL neighbors</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Message</fielddescr>
+			<fieldname>shutdownmessage</fieldname>
+			<description>Shutdown message (optional)</description>
+			<type>input</type>
+		</field>
 		<field>
 			<name>Graceful Restart/Shutdown</name>
 			<type>listtopic</type>
@@ -211,7 +225,6 @@
 			<description>If checked, enable BGP graceful shutdown.</description>
 			<type>checkbox</type>
 		</field>
-
 		<field>
 			<name>RPKI Timers</name>
 			<type>listtopic</type>
@@ -236,7 +249,6 @@
 			<type>input</type>
 			<combinefields>end</combinefields>
 		</field>
-
 		<field>
 			<name>Network Distribution</name>
 			<type>listtopic</type>

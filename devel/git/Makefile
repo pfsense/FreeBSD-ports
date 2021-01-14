@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	git
-DISTVERSION=	2.28.0
+DISTVERSION=	2.30.0
 CATEGORIES=	devel
 MASTER_SITES=	KERNEL_ORG/software/scm/git
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -12,14 +12,28 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX} \
 		${PORTNAME}-manpages-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	garga@FreeBSD.org
-COMMENT?=	Distributed source code management tool
+COMMENT=	Distributed source code management tool ${COMMENT_${FLAVOR}}
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+FLAVORS=	default gui lite tiny
+default_CONFLICTS_INSTALL=	git-gui git-lite git-tiny
+gui_CONFLICTS_INSTALL=		git git-lite git-tiny
+gui_DESCR=			${.CURDIR}/pkg-descr-gui
+gui_PKGNAMESUFFIX=		-gui
+lite_CONFLICTS_INSTALL=		git git-gui git-tiny
+lite_DESCR=			${.CURDIR}/pkg-descr-lite
+lite_PKGNAMESUFFIX=		-lite
+tiny_CONFLICTS_INSTALL=		git git-gui git-lite
+tiny_DESCR=			${.CURDIR}/pkg-descr-tiny
+tiny_PKGNAMESUFFIX=		-tiny
+
 USES=		autoreconf gmake iconv shebangfix ssl tar:xz
 
-CONFLICTS_INSTALL?=	git-gui-[0-9]* git-lite-[0-9]*
+COMMENT_gui=	(GUI enabled flavor)
+COMMENT_lite=	(lite flavor)
+COMMENT_tiny=	(tiny flavor)
 
 USERS=		git_daemon
 GROUPS=		git_daemon
@@ -45,7 +59,6 @@ SHEBANG_FILES=	*.perl */*.perl */*/*.perl */*.pl */*/*.pl */*/*/*.pl \
 		contrib/remote-helpers/git-remote-hg \
 		contrib/credential/netrc/git-credential-netrc.perl \
 		contrib/buildsystems/generate contrib/contacts/git-contacts \
-		contrib/svn-fe/svnrdump_sim.py \
 		templates/hooks--fsmonitor-watchman.sample
 TEST_TARGET=	test
 
@@ -57,7 +70,20 @@ OPTIONS_DEFINE=	GUI SVN GITWEB CONTRIB P4 CVS HTMLDOCS PERL ICONV CURL \
 		SEND_EMAIL NLS SUBTREE
 OPTIONS_DEFAULT=	CONTRIB P4 CVS PERL GITWEB ICONV CURL SEND_EMAIL PCRE \
 			SUBTREE SVN
+.if ${FLAVOR:U} == gui
+OPTIONS_SLAVE+=		GUI
+.elif ${FLAVOR:U} == lite
+OPTIONS_EXCLUDE=	GUI SVN GITWEB CONTRIB P4 CVS PERL
+.elif ${FLAVOR:U} == tiny
+OPTIONS_EXCLUDE:=	${OPTIONS_DEFINE:NCURL} ${OPTIONS_RADIO_PCRE_VERSION}
+OPTIONS_SLAVE=		CURL
+.endif
+
 OPTIONS_SUB=	yes
+
+.if !empty(FLAVOR) && ${FLAVOR:U} != default
+OPTIONS_FILE=		${PORT_DBDIR}/${OPTIONS_NAME}/${FLAVOR}-options
+.endif
 
 CONTRIB_DESC=	Install contributed scripts
 CURL_DESC=	Install curl support (provides HTTPS transport)
@@ -184,8 +210,6 @@ post-patch-GITWEB-off:
 
 post-patch-P4-off:
 	@${REINPLACE_CMD} -e '/^SCRIPT_PYTHON += git-p4.py$$/d' ${WRKSRC}/Makefile
-	@${REINPLACE_CMD} -e 's|/bin/bash|/bin/sh|' \
-		${WRKSRC}/contrib/subtree/git-subtree.sh
 
 .if ${PORT_OPTIONS:MP4} || ${PORT_OPTIONS:MCONTRIB}
 post-build:

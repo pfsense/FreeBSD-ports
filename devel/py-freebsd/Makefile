@@ -13,7 +13,7 @@ COMMENT=	Python interface to FreeBSD-specific system libraries
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-USES=		python
+USES=		python:3.6+
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist distutils
 
@@ -23,7 +23,7 @@ GH_PROJECT=	py-${PORTNAME}
 PYDISTUTILS_BUILD_TARGET=build_ext -i
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/freebsd.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/freebsd*.so
 
 do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} -m unittest discover tests -v

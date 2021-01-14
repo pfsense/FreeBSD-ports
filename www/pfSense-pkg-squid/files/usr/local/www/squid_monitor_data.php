@@ -3,7 +3,7 @@
  * squid_monitor_data.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2012-2014 Marcello Coutinho
  * Copyright (C) 2012-2014 Carlos Cesario <carloscesario@gmail.com>
  * All rights reserved.

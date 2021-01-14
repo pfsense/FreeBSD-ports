@@ -3,7 +3,7 @@
  * snort_interfaces_suppress_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya.
  * Copyright (c) 2019 Bill Meeks
  * All rights reserved.
@@ -173,10 +173,11 @@ $section->addInput(new Form_Input(
 ))->setHelp('You may enter a description here for your reference.');
 $form->add($section);
 
-$content_help = 'Valid keywords are \'suppress\', \'event_filter\' and \'rate_filter\'.' . '<br />';
+$content_help = 'Valid keywords are \'suppress\' and \'event_filter\'.' . '<br />';
+$content_help .= 'There are three types of event filters: (1) limit; (2) threshold; and (3) both.' . '<br />';
 $content_help .= 'Example 1: suppress gen_id 1, sig_id 1852, track by_src, ip 10.1.1.54' . '<br />';
 $content_help .= 'Example 2: event_filter gen_id 1, sig_id 1851, type limit, track by_src, count 1, seconds 60' . '<br />';
-$content_help .= 'Example 3: rate_filter gen_id 135, sig_id 1, track by_src, count 100, seconds 1, new_action log, timeout 10';
+$content_help .= 'Example 3: event_filter gen_id 135, sig_id 1, type threshold track by_src, count 100, seconds 1';
 $section = new Form_Section('Suppression List Content');
 $section->addInput(new Form_Textarea (
 	'suppresspassthru',

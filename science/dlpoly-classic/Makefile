@@ -4,7 +4,7 @@ PORTNAME=	dlpoly
 PORTVERSION=	1.8
 PORTREVISION=	19
 CATEGORIES=	science java
-MASTER_SITES=	http://ccpforge.cse.rl.ac.uk/gf/download/frsrelease/238/2028/
+MASTER_SITES=	# gone as of 20201014: http://ccpforge.cse.rl.ac.uk/gf/download/frsrelease/238/2028/
 PKGNAMESUFFIX=	classic
 DISTNAME=	dl_class_${PORTVERSION}
 
@@ -14,6 +14,9 @@ COMMENT=	Molecular dynamics simulation package
 # Later versions use 2 clause
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENCE.pdf
+
+DEPRECATED=	MASTERSITE gone; possibly replaced by https://gitlab.com/DL_POLY_Classic/dl_poly?
+EXPIRATION_DATE=	2021-01-14
 
 LIB_DEPENDS=	libmpi.so:net/openmpi3
 
@@ -33,6 +36,12 @@ GUI_USE=		JAVA=yes
 GUI_PLIST_FILES=	bin/dlpoly-gui \
 			${DATADIR_REL}/GUI.jar
 
+.include <bsd.port.options.mk>
+
+.if ${GCC_DEFAULT} >= 10
+BROKEN=		fails to build with GCC 10: Type mismatch between actual argument at (1) and actual argument at (2) (INTEGER(4)/REAL(4)).
+.endif
+
 post-patch:
 	${CP} ${WRKSRC}/build/MakePAR ${WRKSRC}/build/MakeSEQ ${BUILD_WRKSRC}
 	${REINPLACE_CMD} 's|gfortran|${FC}|g' ${BUILD_WRKSRC}/MakeSEQ
@@ -50,8 +59,6 @@ do-build:
 		${MAKE} clean && \
 		${CP} -f MakePAR Makefile && \
 		${MAKE} gfortran)
-
-.include <bsd.port.options.mk>
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/execute/dlpoly-classic ${STAGEDIR}${PREFIX}/bin

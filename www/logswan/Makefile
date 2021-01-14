@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	logswan
-PORTVERSION=	2.1.7
+PORTVERSION=	2.1.8
 CATEGORIES=	www
 
-MAINTAINER=	juraj@lutter.sk
+MAINTAINER=	otis@FreeBSD.org
 COMMENT=	Fast Web log analyzer
 
 LICENSE=	BSD2CLAUSE

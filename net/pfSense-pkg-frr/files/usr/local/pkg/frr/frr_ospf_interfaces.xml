@@ -8,7 +8,7 @@
  * frr_ospf_interfaces.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -100,7 +100,7 @@
 			<fieldname>interface</fieldname>
 			<description>Enter the desired participating interface here.</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_interfaces(false, false)]]></source>
+			<source><![CDATA[frr_get_interfaces(false, false, true)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<required/>
@@ -137,7 +137,6 @@
 			<description>Ignore MTU values for OSPF peers on this interface. Allows OSPF to form full adjacencies even when there is an MTU mismatch.</description>
 			<type>checkbox</type>
 		</field>
-
 		<field>
 			<name>OSPF Interface Handling</name>
 			<type>listtopic</type>
@@ -160,7 +159,6 @@
 			<description>Prevent routes for this interface subnet or IP address from being distributed by OSPF (Suggested for Multi-WAN environments).</description>
 			<type>checkbox</type>
 		</field>
-
 		<field>
 			<name>Authentication</name>
 			<type>listtopic</type>
@@ -198,7 +196,6 @@
 			</description>
 			<type>input</type>
 		</field>
-
 		<field>
 			<name>Advanced</name>
 			<type>listtopic</type>
@@ -241,7 +238,6 @@
 			</description>
 			<type>input</type>
 		</field>
-
 		<field>
 			<name>BFD</name>
 			<type>listtopic</type>
@@ -258,6 +254,9 @@
 			<type>checkbox</type>
 		</field>
 	</fields>
+	<custom_delete_php_command>
+		frr_generate_config();
+	</custom_delete_php_command>
 	<custom_php_resync_config_command>
 		frr_generate_config();
 	</custom_php_resync_config_command>

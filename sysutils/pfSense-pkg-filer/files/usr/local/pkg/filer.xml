@@ -6,7 +6,7 @@
  * filer.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012 Marcello Coutinho
  * Copyright (c) 2011 Brian Scholer
  * All rights reserved.
@@ -135,6 +135,6 @@
 		sync_package_filer();
 	</custom_delete_php_command> 
 	<custom_php_resync_config_command>
-		sync_package_filer();
+		sync_package_filer($_POST);
 	</custom_php_resync_config_command>
 </packagegui>

@@ -1,0 +1,15 @@
+TIMESTAMP = 1608652728
+SHA256 (tomwright-dasel-v1.10.0_GH0.tar.gz) = aa11c72a411cee897184a9fc3a227878307ffb3b2fe8b5ba5ac47e08ea8d9e9d
+SIZE (tomwright-dasel-v1.10.0_GH0.tar.gz) = 2689590
+SHA256 (clbanning-mxj-e937bdee5a3e_GH0.tar.gz) = dbf6c8c7110b9bffc4dec175aac439b1d25120f1002e656d0d030d3ddf57abdd
+SIZE (clbanning-mxj-e937bdee5a3e_GH0.tar.gz) = 1096313
+SHA256 (go-yaml-yaml-v2.2.2_GH0.tar.gz) = 42c3e4ef9eca2860d22b3c6c5582c6c13fb4b417e5ebc1acc56ee5e2c4ddcaff
+SIZE (go-yaml-yaml-v2.2.2_GH0.tar.gz) = 70656
+SHA256 (inconshreveable-mousetrap-v1.0.0_GH0.tar.gz) = 5edc7731c819c305623568e317aa253d342be3447def97f1fa9e10eb5ad819f6
+SIZE (inconshreveable-mousetrap-v1.0.0_GH0.tar.gz) = 2290
+SHA256 (pelletier-go-toml-v1.8.1_GH0.tar.gz) = 837b8407fb401deff36961ce32498a1145c5ef4bad0b0060a25e632c14621941
+SIZE (pelletier-go-toml-v1.8.1_GH0.tar.gz) = 98819
+SHA256 (spf13-cobra-v1.0.0_GH0.tar.gz) = 58dbfe1b4dbc6751575e94d1e62d073098e0b41790bc1c7a7a95ec6b870ac697
+SIZE (spf13-cobra-v1.0.0_GH0.tar.gz) = 128897
+SHA256 (spf13-pflag-v1.0.3_GH0.tar.gz) = 9e57f86f493f04d9077fccd04e7139ebf243dd544e917ab83d35729b3e54a124
+SIZE (spf13-pflag-v1.0.3_GH0.tar.gz) = 46002

@@ -1,11 +1,11 @@
---- setup.py.orig	2020-08-04 12:58:40.686680000 +0000
-+++ setup.py	2020-08-04 13:00:10.433547000 +0000
-@@ -31,8 +31,8 @@
+--- setup.py.orig	2020-10-01 17:52:08 UTC
++++ setup.py
+@@ -31,8 +31,8 @@ with open_relative("README.rst") as f:
 
  requires = [
      "certifi",
 -    "configparser==4.0.2",
--    "cryptography==2.8",
+-    "cryptography==3.2.1",
 +    "configparser>=3.5.3",
 +    "cryptography>=2.6",
      "pyOpenSSL>=17.5.0,<=19.1.0",

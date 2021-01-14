@@ -8,7 +8,7 @@
  * squid.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012-2014 Marcello Coutinho
  * All rights reserved.
  *
@@ -194,6 +194,20 @@
 			<multiple/>
 		</field>
 		<field>
+			<fielddescr>Outgoing Network Interface</fielddescr>
+			<fieldname>outgoing_interface</fieldname>
+			<description>
+				<![CDATA[
+				The interface the proxy server will use for outgoing connections.
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_interface_list(false, false, true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<default_value>lan</default_value>
+		</field>
+		<field>
 			<fielddescr>Proxy Port</fielddescr>
 			<fieldname>proxy_port</fieldname>
 			<description>
@@ -275,6 +289,23 @@
 			</description>
 			<type>input</type>
 			<size>70</size>
+		</field>
+		<field>
+			<fielddescr>Extra Trusted CA</fielddescr>
+			<fieldname>extraca</fieldname>
+			<description>
+				<![CDATA[
+				Select extra Trusted CA certificate in addition to the default root certificate bundle.<br/>
+				<strong><span class="text-danger">Warning:</span></strong> This option may only be required if the upstream proxy is using SSL/MITM mode and could be a security issue in other cases.
+				<div class="infoblock">You can also add CA certificate to the Operating System Trust Store in <a href="system_camanager.php" target="_blank">System &gt; Certificate Manager &gt; CAs</a>.</div>
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_ca_or_certs('ca', 'HTTPS', true, true)]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+			<show_disable_value>none</show_disable_value>
+			<default_value>none</default_value>
 		</field>
 		<field>
 			<name>Transparent Proxy Settings</name>
@@ -376,7 +407,7 @@
 				</span><br/><br/>
 				<strong><span class="text-info">Splice All: </span></strong><br/>
 				<span>
-				This configuration is suitable if you want to use the <a href="https://doc.pfsense.org/index.php/SquidGuard_package" target="_blank">SquidGuard package</a> for web filtering.</br>
+				This configuration is suitable if you want to use the <a href="https://docs.netgate.com/pfsense/en/latest/packages/cache-proxy/squidguard.html" target="_blank">SquidGuard package</a> for web filtering.</br>
 				All destinations will be spliced. SquidGuard can do its job of denying or allowing destinations according its rules, as it does with HTTP.<br/>
 				You do <em>not</em> need to install the CA certificate configured below on clients.<br/>
 				Content filtering (such as Antivirus) <em>will not</em> be available for SSL sites.

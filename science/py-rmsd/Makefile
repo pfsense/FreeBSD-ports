@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	rmsd
-DISTVERSION=	1.3.2
-PORTREVISION=	2
+DISTVERSION=	1.4
 CATEGORIES=	science
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +14,7 @@ LICENSE=	BSD2CLAUSE
 RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist concurrent
 
 .include <bsd.port.mk>

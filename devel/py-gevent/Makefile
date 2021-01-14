@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gevent
-PORTVERSION=	20.6.2
+PORTVERSION=	20.9.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,12 +20,12 @@ BUILD_DEPENDS=	c-ares>=1.15.0:dns/c-ares \
 LIB_DEPENDS=	libcares.so:dns/c-ares \
 		libev.so:devel/libev \
 		libuv.so:devel/libuv
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}greenlet>=0.4.16:devel/py-greenlet@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}greenlet>=0.4.17:devel/py-greenlet@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}zope.event>=0:devel/py-zope.event@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}zope.interface>=0:devel/py-zope.interface@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR}
 
-USES=		compiler:c11 localbase python
+USES=		compiler:c11 localbase python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 MAKE_ENV=	GEVENTSETUP_EMBED_CARES=0 GEVENTSETUP_EMBED_LIBEV=0 GEVENTSETUP_EMBED_LIBUV=0

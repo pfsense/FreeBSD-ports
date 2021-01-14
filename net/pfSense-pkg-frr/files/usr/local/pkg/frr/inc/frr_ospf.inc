@@ -3,7 +3,7 @@
  * frr_ospf.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,19 +22,19 @@
 function frr_generate_config_ospf_areas() {
 	global $config, $frr_config_base, $frr_auto_config_warning;
 	if (is_array($config['installedpackages']['frrospfd']['config'])) {
-		$ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
+		$frr_ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
 	}
 
 	$defined_areas = array();
 	$auto_areas = array();
-	$conffile = "";
+	$aconf = "";
 
 	/* Automatic Area: Default */
-	if (!isset($auto_areas[$ospfd_conf['defaultarea']]) || !is_array($auto_areas[$ospfd_conf['defaultarea']])) {
-		$auto_areas[$ospfd_conf['defaultarea']] = array();
+	if (!isset($auto_areas[$frr_ospfd_conf['defaultarea']]) || !is_array($auto_areas[$frr_ospfd_conf['defaultarea']])) {
+		$auto_areas[$frr_ospfd_conf['defaultarea']] = array();
 	}
-	$auto_areas[$ospfd_conf['defaultarea']]['area'] = $ospfd_conf['defaultarea'];
-	$auto_areas[$ospfd_conf['defaultarea']]['type'] = $ospfd_conf['defaultareatype'];
+	$auto_areas[$frr_ospfd_conf['defaultarea']]['area'] = $frr_ospfd_conf['defaultarea'];
+	$auto_areas[$frr_ospfd_conf['defaultarea']]['type'] = $frr_ospfd_conf['defaultareatype'];
 
 	/* Automatic Areas: Interfaces with Authentication */
 	init_config_arr(array('installedpackages', 'frrospfdinterfaces', 'config'));
@@ -45,7 +45,7 @@ function frr_generate_config_ospf_areas() {
 		}
 
 		/* Use default area if the interface area is empty */
-		$ifarea = (isset($conf['interfacearea']) && (strlen($conf['interfacearea']) > 0)) ? $conf['interfacearea'] : $ospfd_conf['defaultarea'];
+		$ifarea = (isset($conf['interfacearea']) && (strlen($conf['interfacearea']) > 0)) ? $conf['interfacearea'] : $frr_ospfd_conf['defaultarea'];
 
 		if (!isset($auto_areas[$ifarea]) || !is_array($auto_areas[$ifarea])) {
 			$auto_areas[$ifarea] = array();
@@ -100,26 +100,26 @@ function frr_generate_config_ospf_areas() {
 				$areatype = "";
 		}
 		if (!empty($areatype)) {
-			$conffile .= " area {$conf['area']} {$areatype}\n";
+			$aconf .= " area {$conf['area']} {$areatype}\n";
 		}
 
 		/* defaultcost */
 		if (!empty($conf['defaultcost'])) {
-			$conffile .= " area {$conf['area']} default-cost {$conf['defaultcost']}\n";
+			$aconf .= " area {$conf['area']} default-cost {$conf['defaultcost']}\n";
 		}
 
 		/* shortcut */
 		if (!empty($conf['shortcut'])) {
-			$conffile .= " area {$conf['area']} shortcut {$conf['shortcut']}\n";
+			$aconf .= " area {$conf['area']} shortcut {$conf['shortcut']}\n";
 		}
 
 		/* authentication */
 		switch ($conf['authtype']) {
 			case "digest":
-				$conffile .= " area {$conf['area']} authentication message-digest\n";
+				$aconf .= " area {$conf['area']} authentication message-digest\n";
 				break;
 			case "simple":
-				$conffile .= " area {$conf['area']} authentication\n";
+				$aconf .= " area {$conf['area']} authentication\n";
 				break;
 			default:
 				break;
@@ -131,46 +131,46 @@ function frr_generate_config_ospf_areas() {
 				if (empty($range['rangeprefix'])) {
 					continue;
 				}
-				$conffile .= " area {$conf['area']} range {$range['rangeprefix']}";
+				$aconf .= " area {$conf['area']} range {$range['rangeprefix']}";
 				if (!empty($range['rangenotadvertise'])) {
-					$conffile .= " not-advertise";
+					$aconf .= " not-advertise";
 				} elseif (!empty($range['rangecost'])) {
-					$conffile .= " cost {$range['rangecost']}";
+					$aconf .= " cost {$range['rangecost']}";
 				} elseif (!empty($range['subprefix'])) {
-					$conffile .= " substitute {$range['subprefix']}";
+					$aconf .= " substitute {$range['subprefix']}";
 				}
-				$conffile .= "\n";
+				$aconf .= "\n";
 			}
 		}
 
 		/* exportlist */
 		if (!empty($conf['exportlist']) && ($conf['exportlist'] != "none")) {
-			$conffile .= " area {$conf['area']} export-list {$conf['exportlist']}\n";
+			$aconf .= " area {$conf['area']} export-list {$conf['exportlist']}\n";
 		}
 
 		/* filterlist_out */
 		if (!empty($conf['filterlist_out']) && ($conf['filterlist_out'] != "none")) {
-			$conffile .= " area {$conf['area']} filter-list prefix {$conf['filterlist_out']} out\n";
+			$aconf .= " area {$conf['area']} filter-list prefix {$conf['filterlist_out']} out\n";
 		}
 
 		/* filterlist_in */
 		if (!empty($conf['filterlist_in']) && ($conf['filterlist_in'] != "none")) {
-			$conffile .= " area {$conf['area']} filter-list prefix {$conf['filterlist_in']} in\n";
+			$aconf .= " area {$conf['area']} filter-list prefix {$conf['filterlist_in']} in\n";
 		}
 
 		/* importlist */
 		if (!empty($conf['importlist']) && ($conf['importlist'] != "none")) {
-			$conffile .= " area {$conf['area']} import-list {$conf['importlist']}\n";
+			$aconf .= " area {$conf['area']} import-list {$conf['importlist']}\n";
 		}
 	}
 
-	return $conffile;
+	return $aconf;
 }
 
 function frr_generate_config_ospf_interfaces() {
 	global $config, $passive_interfaces, $frr_integrated_config;
 	init_config_arr(array('installedpackages', 'frrospfd', 'config'));
-	$ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
+	$frr_ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
 
 	/* Setup interface entries to define network types, costs, etc. */
 	init_config_arr(array('installedpackages', 'frrospfdinterfaces', 'config'));
@@ -243,49 +243,49 @@ function frr_generate_config_ospf_interfaces() {
 		if (empty($interface_ip)) {
 			continue;
 		}
-		$area = (strlen($conf['interfacearea']) > 0) ? $conf['interfacearea'] : $ospfd_conf['defaultarea'];
+		$area = (strlen($conf['interfacearea']) > 0) ? $conf['interfacearea'] : $frr_ospfd_conf['defaultarea'];
 		$frr_integrated_config['interfaces'][$realif] .= " ip ospf area {$area}\n";
 	}
 }
 
 function frr_generate_config_ospf_neighbors() {
 	global $config;
-	$conffile = "";
+	$neiconf= "";
 
 	init_config_arr(array('installedpackages', 'frrospfdneighbors', 'config'));
 	foreach ($config['installedpackages']['frrospfdneighbors']['config'] as $conf) {
-		$conffile .= "  neighbor {$conf['neighbor']}" ;
+		$neiconf .= " neighbor {$conf['neighbor']}" ;
 		if (!empty($conf['priority'])) {
-			$conffile .= " priority {$conf['priority']}";
+			$neiconf .= " priority {$conf['priority']}";
 		}
 		if (!empty($conf['pollinginterval'])) {
-			$conffile .= " poll-interval {$conf['pollinginterval']}";
+			$neiconf .= " poll-interval {$conf['pollinginterval']}";
 		}
-		$conffile .= "\n" ;
+		$neiconf .= "\n" ;
 	}
-	return $conffile;
+	return $neiconf;
 }
 
-function frr_generate_config_ospf_redistribute($ospfd_conf, $variablename, $sourcename) {
+function frr_generate_config_ospf_redistribute($frr_ospfd_conf, $variablename, $sourcename) {
 	$redistconf = "";
-	if ($ospfd_conf[$variablename]) {
+	if ($frr_ospfd_conf[$variablename]) {
 		$redistconf .= " redistribute {$sourcename}";
-		if (!empty($ospfd_conf[$variablename . '_routemap']) &&
-			($ospfd_conf[$variablename . '_routemap'] != 'none')) {
-			$redistconf .= " route-map {$ospfd_conf[$variablename . '_routemap']}";
+		if (!empty($frr_ospfd_conf[$variablename . '_routemap']) &&
+			($frr_ospfd_conf[$variablename . '_routemap'] != 'none')) {
+			$redistconf .= " route-map {$frr_ospfd_conf[$variablename . '_routemap']}";
 		}
-		if (!empty($ospfd_conf[$variablename . '_metric']) &&
-			($ospfd_conf[$variablename . '_metric'] != 'none')) {
-			$redistconf .= " metric {$ospfd_conf[$variablename . '_metric']}";
+		if (!empty($frr_ospfd_conf[$variablename . '_metric']) &&
+			($frr_ospfd_conf[$variablename . '_metric'] != 'none')) {
+			$redistconf .= " metric {$frr_ospfd_conf[$variablename . '_metric']}";
 		}
-		if (!empty($ospfd_conf[$variablename . '_metrictype']) &&
-			($ospfd_conf[$variablename . '_metrictype'] != 'none')) {
-			$redistconf .= " metric-type {$ospfd_conf[$variablename . '_metrictype']}";
+		if (!empty($frr_ospfd_conf[$variablename . '_metrictype']) &&
+			($frr_ospfd_conf[$variablename . '_metrictype'] != 'none')) {
+			$redistconf .= " metric-type {$frr_ospfd_conf[$variablename . '_metrictype']}";
 		}
 		$redistconf .= "\n";
-		if (!empty($ospfd_conf[$variablename . '_distlist']) &&
-			($ospfd_conf[$variablename . '_distlist'] != 'none')) {
-			$redistconf .= " distribute-list {$ospfd_conf[$variablename . '_distlist']} out {$sourcename}\n";
+		if (!empty($frr_ospfd_conf[$variablename . '_distlist']) &&
+			($frr_ospfd_conf[$variablename . '_distlist'] != 'none')) {
+			$redistconf .= " distribute-list {$frr_ospfd_conf[$variablename . '_distlist']} out {$sourcename}\n";
 		}
 	}
 	return $redistconf;
@@ -299,11 +299,12 @@ function frr_generate_config_ospf() {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
 	} else {
 		/* If FRR is not configured, stop. */
+		frr_package_log("FRR OSPFd: No FRR global config data found.");
 		return null;
 	}
 	/* Populate FRR OSPF Settings */
 	if (is_array($config['installedpackages']['frrospfd']['config'])) {
-		$ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
+		$frr_ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
 	}
 
 	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['ospfd']) &&
@@ -312,11 +313,16 @@ function frr_generate_config_ospf() {
 		$frr_integrated_config['ospfd'] = str_replace("\r", "", base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['ospfd']));
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
-		if (empty($ospfd_conf)) {
-			log_error("FRR OSPFd: No config data found.");
+		if (empty($frr_ospfd_conf)) {
+			frr_package_log("FRR OSPFd: No config data found.");
 			return;
-		} elseif (empty($frr_conf['enable']) || empty($ospfd_conf['enable'])) {
-			/* FRR is disabled or OSPF is not enabled. */
+		} elseif (empty($frr_ospfd_conf['enable'])) {
+			/* OSPF daemon is not enabled. */
+			frr_package_log("FRR OSPFd: OSPF disabled.");
+			return;
+		} elseif (empty($frr_conf['enable'])) {
+			/* FRR is disabled or BFD Daemon is not enabled. */
+			frr_package_log("FRR OSPFd: FRR master disabled.");
 			return;
 		}
 		$frr_integrated_config['ospfd'] = "";
@@ -324,12 +330,12 @@ function frr_generate_config_ospf() {
 		$redist = "";
 		$noredist = "";
 		/* Add entries for manually-defined networks */
-		if (is_array($ospfd_conf['row'])) {
-			foreach ($ospfd_conf['row'] as $redistr) {
+		if (is_array($frr_ospfd_conf['row'])) {
+			foreach ($frr_ospfd_conf['row'] as $redistr) {
 				if (empty($redistr['routevalue'])) {
 					continue;
 				}
-				$area = ($redistr['routearea'] == "") ? $ospfd_conf['defaultarea'] : $redistr['routearea'];
+				$area = ($redistr['routearea'] == "") ? $frr_ospfd_conf['defaultarea'] : $redistr['routearea'];
 				$redist .= " network {$redistr['routevalue']} area {$area}\n";
 			}
 		}
@@ -337,67 +343,67 @@ function frr_generate_config_ospf() {
 		$frr_integrated_config['ospfd'] .= "router ospf\n";
 		/* If the router ID is defined in BGP, use that, otherwise try to use
 		 * the global router ID, if one is set. */
-		if (is_ipaddrv4($ospfd_conf['routerid'])) {
-			$frr_integrated_config['ospfd'] .= " ospf router-id {$ospfd_conf['routerid']}\n";
+		if (is_ipaddrv4($frr_ospfd_conf['routerid'])) {
+			$frr_integrated_config['ospfd'] .= " ospf router-id {$frr_ospfd_conf['routerid']}\n";
 		} elseif (is_ipaddrv4($frr_conf['routerid'])) {
 			$frr_integrated_config['ospfd'] .= " ospf router-id {$frr_conf['routerid']}\n";
 		}
 
-		if ($frr_conf['logging'] && $ospfd_conf['adjacencylog']) {
+		if ($frr_conf['logging'] && $frr_ospfd_conf['adjacencylog']) {
 			$frr_integrated_config['ospfd'] .= " log-adjacency-changes detail\n";
 		}
 
 		/* Route Redistribution */
-		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($ospfd_conf, 'redistributeconnectedsubnets', 'connected');
-		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($ospfd_conf, 'redistributekernel', 'kernel');
-		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($ospfd_conf, 'redistributebgp', 'bgp');
-		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($ospfd_conf, 'redistributestatic', 'static');
-		if ($ospfd_conf['redistributedefaultroute']) {
+		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($frr_ospfd_conf, 'redistributeconnectedsubnets', 'connected');
+		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($frr_ospfd_conf, 'redistributekernel', 'kernel');
+		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($frr_ospfd_conf, 'redistributebgp', 'bgp');
+		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($frr_ospfd_conf, 'redistributestatic', 'static');
+		if ($frr_ospfd_conf['redistributedefaultroute']) {
 			$frr_integrated_config['ospfd'] .= " default-information originate";
-			if (!empty($ospfd_conf['redistributedefaultroute_routemap']) &&
-				($ospfd_conf['redistributedefaultroute_routemap'] != 'none')) {
-				$frr_integrated_config['ospfd'] .= " route-map {$ospfd_conf['redistributedefaultroute_routemap']}";
+			if (!empty($frr_ospfd_conf['redistributedefaultroute_routemap']) &&
+				($frr_ospfd_conf['redistributedefaultroute_routemap'] != 'none')) {
+				$frr_integrated_config['ospfd'] .= " route-map {$frr_ospfd_conf['redistributedefaultroute_routemap']}";
 			}
-			if (!empty($ospfd_conf['redistributedefaultroute_metric']) &&
-				($ospfd_conf['redistributedefaultroute_metric'] != 'none')) {
-				$frr_integrated_config['ospfd'] .= " metric {$ospfd_conf['redistributedefaultroute_metric']}";
+			if (!empty($frr_ospfd_conf['redistributedefaultroute_metric']) &&
+				($frr_ospfd_conf['redistributedefaultroute_metric'] != 'none')) {
+				$frr_integrated_config['ospfd'] .= " metric {$frr_ospfd_conf['redistributedefaultroute_metric']}";
 			}
-			if (!empty($ospfd_conf['redistributedefaultroute_metrictype']) &&
-				($ospfd_conf['redistributedefaultroute_metrictype'] != 'none')) {
-				$frr_integrated_config['ospfd'] .= " metric-type {$ospfd_conf['redistributedefaultroute_metrictype']}";
+			if (!empty($frr_ospfd_conf['redistributedefaultroute_metrictype']) &&
+				($frr_ospfd_conf['redistributedefaultroute_metrictype'] != 'none')) {
+				$frr_integrated_config['ospfd'] .= " metric-type {$frr_ospfd_conf['redistributedefaultroute_metrictype']}";
 			}
 			$frr_integrated_config['ospfd'] .= "\n";
 		}
 
-		if ($ospfd_conf['spfholdtime'] || $ospfd_conf['spfdelay']) {
-			$spf_minhold = ($ospfd_conf['spfholdtime']) ? $ospfd_conf['spfholdtime'] : 1000;
+		if ($frr_ospfd_conf['spfholdtime'] || $frr_ospfd_conf['spfdelay']) {
+			$spf_minhold = ($frr_ospfd_conf['spfholdtime']) ? $frr_ospfd_conf['spfholdtime'] : 1000;
 			$spf_maxhold = $spf_minhold * 10;
-			$spf_delay = ($ospfd_conf['spfdelay']) ? $ospfd_conf['spfdelay'] : 200;
+			$spf_delay = ($frr_ospfd_conf['spfdelay']) ? $frr_ospfd_conf['spfdelay'] : 200;
 			$frr_integrated_config['ospfd'] .= " timers throttle spf {$spf_delay} {$spf_minhold} {$spf_maxhold}\n";
 		}
-		if ($ospfd_conf['rfc1583']) {
+		if ($frr_ospfd_conf['rfc1583']) {
 			$frr_integrated_config['ospfd'] .= " ospf rfc1583compatibility\n";
 		}
-		if ($ospfd_conf['opaquelsa']) {
+		if ($frr_ospfd_conf['opaquelsa']) {
 			$frr_integrated_config['ospfd'] .= " capability opaque\n";
 		}
-		if (!empty($ospfd_conf['writemultiplier'])) {
-			$frr_integrated_config['ospfd'] .= " ospf write-multiplier {$ospfd_conf['writemultiplier']}\n";
+		if (!empty($frr_ospfd_conf['writemultiplier'])) {
+			$frr_integrated_config['ospfd'] .= " ospf write-multiplier {$frr_ospfd_conf['writemultiplier']}\n";
 		}
-		if (!empty($ospfd_conf['referencebandwidth'])) {
-			$frr_integrated_config['ospfd'] .= " auto-cost reference-bandwidth {$ospfd_conf['referencebandwidth']}\n";
+		if (!empty($frr_ospfd_conf['referencebandwidth'])) {
+			$frr_integrated_config['ospfd'] .= " auto-cost reference-bandwidth {$frr_ospfd_conf['referencebandwidth']}\n";
 		}
-		if ($ospfd_conf['max_metric_administrative']) {
+		if ($frr_ospfd_conf['max_metric_administrative']) {
 			$frr_integrated_config['ospfd'] .= " max-metric router-lsa administrative\n";
 		}
-		if (!empty($ospfd_conf['max_metric_startup'])) {
-			$frr_integrated_config['ospfd'] .= " max-metric router-lsa on-startup {$ospfd_conf['max_metric_startup']}\n";
+		if (!empty($frr_ospfd_conf['max_metric_startup'])) {
+			$frr_integrated_config['ospfd'] .= " max-metric router-lsa on-startup {$frr_ospfd_conf['max_metric_startup']}\n";
 		}
-		if (!empty($ospfd_conf['max_metric_shutdown'])) {
-			$frr_integrated_config['ospfd'] .= " max-metric router-lsa on-shutdown {$ospfd_conf['max_metric_shutdown']}\n";
+		if (!empty($frr_ospfd_conf['max_metric_shutdown'])) {
+			$frr_integrated_config['ospfd'] .= " max-metric router-lsa on-shutdown {$frr_ospfd_conf['max_metric_shutdown']}\n";
 		}
-		if (!empty($ospfd_conf['abrtype']) && ($ospfd_conf['abrtype'] <> 'cisco')) {
-			$frr_integrated_config['ospfd'] .= " ospf abr-type {$ospfd_conf['abrtype']}\n";
+		if (!empty($frr_ospfd_conf['abrtype']) && ($frr_ospfd_conf['abrtype'] <> 'cisco')) {
+			$frr_integrated_config['ospfd'] .= " ospf abr-type {$frr_ospfd_conf['abrtype']}\n";
 		}
 
 		if (is_array($passive_interfaces)) {
@@ -412,7 +418,11 @@ function frr_generate_config_ospf() {
 		/* Area Settings */
 		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_areas();
 
+		/* Neighbor Settings */
+		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_neighbors();
+
 		/* Interface Settings */
+		/* Interface settings do not return a string as they are an accumulation of all protocols */
 		$passive_interfaces = array();
 		global $passive_interfaces;
 		frr_generate_config_ospf_interfaces();

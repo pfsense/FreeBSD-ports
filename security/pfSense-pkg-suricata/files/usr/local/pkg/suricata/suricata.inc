@@ -3,11 +3,11 @@
  * suricata.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2020 Bill Meeks
+ * Copyright (C) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1604,7 +1604,7 @@ function suricata_get_set_flowbits($rules_map) {
 	return $set_flowbits;
 }
 
-function suricata_find_flowbit_required_rules($rules, $unchecked_flowbits) {
+function suricata_find_flowbit_required_rules($rules, $active_rules, $unchecked_flowbits) {
 
 	/********************************************************/
 	/* This function finds all rules that must be enabled   */
@@ -1613,6 +1613,8 @@ function suricata_find_flowbit_required_rules($rules, $unchecked_flowbits) {
 	/* of required rules in an array.                       */
 	/*                                                      */
 	/*           $rules     = rules_map array of all rules  */
+	/*        $active_rules = rules map array of active     */
+	/*			  rules.			*/
 	/*  $unchecked_flowbits = array of flowbit strings with */
 	/*                        unmatched set/isset pairings  */
 	/*                                                      */
@@ -1648,15 +1650,31 @@ function suricata_find_flowbit_required_rules($rules, $unchecked_flowbits) {
 						if (!is_array($required_flowbits_rules[$k1][$k2])) {
 							$required_flowbits_rules[$k1][$k2] = array();
 						}
+
+						$required_flowbits_rules[$k1][$k2]['noalert'] = $rule2['noalert'];
 						if ($rule2['disabled'] == 0) {
 							// If not disabled, just return the rule text "as is"
 							$required_flowbits_rules[$k1][$k2]['rule'] = ltrim($rule2['rule']);
 							$required_flowbits_rules[$k1][$k2]['disabled'] = $rule2['disabled'];
 						} else {
-							// If rule is disabled, remove leading '#' to enable it
+							// Rule is disabled, so remove leading '#' to enable it and add "flowbits:noalert;"
+							// tag to prevent alerts from the previously disabled rule if not already present.
 							$required_flowbits_rules[$k1][$k2]['rule'] = ltrim(substr($rule2['rule'], strpos($rule2['rule'], "#") + 1));
+							if ($rule2['noalert'] == 0) {
+								$required_flowbits_rules[$k1][$k2]['rule'] = substr($required_flowbits_rules[$k1][$k2]['rule'], 0, strrpos($required_flowbits_rules[$k1][$k2]['rule'], ")")) . " flowbits:noalert;)";
+								$required_flowbits_rules[$k1][$k2]['noalert'] = 1;
+							}
 							$required_flowbits_rules[$k1][$k2]['disabled'] = 0;
 						}
+
+						// If the required rule is not already part of the enabled rules,
+						// then add "flowbits:noalert" tag if not present to prevent alert
+						// from this rule added by flowbits resolution logic.
+						if (!isset($active_rules[$k1][$k2]) && $required_flowbits_rules[$k1][$k2]['noalert'] == 0) {
+								$required_flowbits_rules[$k1][$k2]['rule'] = substr($required_flowbits_rules[$k1][$k2]['rule'], 0, strrpos($required_flowbits_rules[$k1][$k2]['rule'], ")")) . " flowbits:noalert;)";
+							$required_flowbits_rules[$k1][$k2]['noalert'] = 1;
+						}
+
 						// Copy over the remaining rule_map entries for this rule
 						$required_flowbits_rules[$k1][$k2]['category'] = $rule2['category'];
 						$required_flowbits_rules[$k1][$k2]['action'] = $rule2['action'];
@@ -1717,7 +1735,7 @@ function suricata_resolve_flowbits($rules, $active_rules) {
 
 	// Now find all the needed "set flowbit" rules from
 	// the master list of all rules.
-	$required_rules = suricata_find_flowbit_required_rules($rules, $delta_flowbits);
+	$required_rules = suricata_find_flowbit_required_rules($rules, $active_rules, $delta_flowbits);
 
 	// Cleanup and release memory we no longer need.
 	unset($delta_flowbits);
@@ -3210,6 +3228,7 @@ function suricata_get_filtered_rules($rules, $filter) {
 				$filtered_map[$k1][$k2]['state_toggled'] = $tmp_map[$k1][$k2]['state_toggled'];
 				$filtered_map[$k1][$k2]['default_state'] = $tmp_map[$k1][$k2]['default_state'];
 				$filtered_map[$k1][$k2]['default_action'] = $tmp_map[$k1][$k2]['default_action'];
+				$filtered_map[$k1][$k2]['noalert'] = $tmp_map[$k1][$k2]['noalert'];
 			}
 		}
 	}
@@ -3255,12 +3274,12 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 	// if auto-SID Mgmt is enabled and conf files exist for the interface.
 	$cat_mods = suricata_sid_mgmt_auto_categories($suricatacfg, TRUE);
 
+	// Load up all the rules into a Rules Map array.
+	$all_rules = suricata_load_rules_map(SURICATA_RULES_DIR);
+
 	// Only rebuild rules if some are selected or an IPS Policy is enabled
 	if (!empty($suricatacfg['rulesets']) || $suricatacfg['ips_policy_enable'] == 'on' || !empty($cat_mods)) {
 		$no_rules_defined = false;
-
-		// Load up all the rules into a Rules Map array.
-		$all_rules = suricata_load_rules_map(SURICATA_RULES_DIR);
 
 		// Create an array with the filenames of the enabled
 		// rule category files if we have any.
@@ -3319,6 +3338,12 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 						$enabled_rules[$k1][$k2]['disabled'] = $v['disabled'];
 						$enabled_rules[$k1][$k2]['action'] = $v['action'];
 						$enabled_rules[$k1][$k2]['flowbits'] = $v['flowbits'];
+						$enabled_rules[$k1][$k2]['managed'] = $v['managed'];
+						$enabled_rules[$k1][$k2]['default_state'] = $v['default_state'];
+						$enabled_rules[$k1][$k2]['default_action'] = $v['default_action'];
+						$enabled_rules[$k1][$k2]['state_toggled'] = $v['state_toggled'];
+						$enabled_rules[$k1][$k2]['noalert'] = $v['noalert'];
+						$enabled_rules[$k1][$k2]['modified'] = $v['modified'];
 					}
 				}
 			}
@@ -3345,11 +3370,16 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 					if (!is_array($enabled_rules[$k1][$k2])) {
 						$enabled_rules[$k1][$k2] = array();
 					}
+					$enabled_rules[$k1][$k2]['rule'] = $p['rule'];
 					$enabled_rules[$k1][$k2]['category'] = $p['category'];
 					$enabled_rules[$k1][$k2]['disabled'] = $p['disabled'];
-					$enabled_rules[$k1][$k2]['flowbits'] = $p['flowbits'];
-					$enabled_rules[$k1][$k2]['rule'] = $p['rule'];
 					$enabled_rules[$k1][$k2]['action'] = $p['action'];
+					$enabled_rules[$k1][$k2]['flowbits'] = $p['flowbits'];
+					$enabled_rules[$k1][$k2]['managed'] = $p['managed'];
+					$enabled_rules[$k1][$k2]['default_state'] = $p['default_state'];
+					$enabled_rules[$k1][$k2]['default_action'] = $p['default_action'];
+					$enabled_rules[$k1][$k2]['state_toggled'] = $p['state_toggled'];
+					$enabled_rules[$k1][$k2]['noalert'] = $p['noalert'];
 					$enabled_rules[$k1][$k2]['modified'] = $p['modified'];
 				}
 			}
@@ -3379,7 +3409,6 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 			// Just put an empty file to always have the file present
 			suricata_write_flowbit_rules_file(array(), "{$suricatacfgdir}/rules/{$flowbit_rules_file}");
 		}
-		unset($all_rules);
 	}
 	// If no rule categories were enabled, then use auto-SID management if enabled, since it may enable some rules
 	elseif ($config['installedpackages']['suricata']['config'][0]['auto_manage_sids'] == 'on' &&
@@ -3402,14 +3431,13 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 				syslog(LOG_NOTICE, '[Suricata] Enabling any flowbit-required rules for: ' . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . '...');
 
 				// Load up all rules into a Rules Map array for flowbits assessment
-				$all_rules = suricata_load_rules_map(SURICATA_RULES_DIR);
 				$fbits = suricata_resolve_flowbits($all_rules, $enabled_rules);
 
 				// Check for and disable any flowbit-required rules the
 				// user has manually forced to a disabled state.
 				suricata_modify_sids($fbits, $suricatacfg);
 				suricata_write_flowbit_rules_file($fbits, "{$suricatacfgdir}/rules/{$flowbit_rules_file}");
-				unset($all_rules, $fbits);
+				unset($fbits);
 			} else {
 				// Just put an empty file to always have the file present
 				suricata_write_flowbit_rules_file(array(), "{$suricatacfgdir}/rules/{$flowbit_rules_file}");
@@ -3424,6 +3452,8 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 		suricata_write_enforcing_rules_file(array(), "{$suricatacfgdir}/rules/{$suricata_enforcing_rules_file}");
 		suricata_write_flowbit_rules_file(array(), "{$suricatacfgdir}/rules/{$flowbit_rules_file}");
 	}
+
+	unset($all_rules);
 
 	if (!empty($suricatacfg['customrules'])) {
 		@file_put_contents("{$suricatacfgdir}/rules/custom.rules", base64_decode($suricatacfg['customrules']));

@@ -2,8 +2,8 @@
 
 PORTNAME=	openethereum
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.0.1
-PORTREVISION=	5
+DISTVERSION=	3.1.0
+PORTREVISION=	1
 CATEGORIES=	net-p2p
 
 MAINTAINER=	ale@FreeBSD.org
@@ -11,11 +11,6 @@ COMMENT=	Fast and feature-rich multi-network Ethereum client
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_i386=		fails to build
-BROKEN_FreeBSD_11=	fails to build
-
-BUILD_DEPENDS=	${LOCALBASE}/bin/llvm-config90:devel/llvm90
 
 USES=		cargo
 
@@ -26,7 +21,7 @@ PLIST_FILES=	bin/${PORTNAME}
 CARGO_FEATURES=	final
 CARGO_TEST=	yes
 
-MAKE_ENV+=	LLVM_CONFIG_PATH="${LOCALBASE}/bin/llvm-config90"
+RUSTFLAGS+=	-C link-arg=-fuse-ld=lld
 
 .include "${.CURDIR}/Makefile.crates"
 

@@ -7,10 +7,11 @@ PORTREVISION=	1
 CATEGORIES=	shells
 MASTER_SITES=	SF/heirloom/${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	danielt@pilgerer.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable version of OpenSolaris' Bourne Shell
 
 BROKEN_aarch64=	Fails to link: missing sbrk
+BROKEN_riscv64=	Fails to link: missing sbrk
 
 USES=		tar:bzip2
 MAKEFILE=	makefile

@@ -8,7 +8,7 @@
  * darkstat.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -128,7 +128,7 @@
 				on the DNS server that the clients are using, or locally on the clients (using hosts file or similar) for 'Web Interface Hostname' to work for such clients.<br/><br/>
 				<strong><span class="text-info">Hint:</span></strong><br />
 				As an alternative, you may want to put the darkstat web interface behind haproxy. 
-				You can use the <a href="https://doc.pfsense.org/index.php/Haproxy_package" target="_blank">haproxy package</a> for this purpose.
+				You can use the <a href="https://docs.netgate.com/pfsense/en/latest/packages/haproxy.html" target="_blank">haproxy package</a> for this purpose.
 				In that way, you can continue using HTTPS <em>and</em> the pfSense webConfigurator FQDN to aceess darkstat, and can even make it accessible via IPv6.<br/>
 				See the <a href="https://github.com/PiBa-NL/pfsense-haproxy-package-doc/wiki" target="_blank">HAProxy pfSense Package Howto</a> for usage instructions.
 				</div>

@@ -3,7 +3,7 @@
  * frr_zebra.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,34 +19,43 @@
  * limitations under the License.
  */
 
-/* Fetch the list of access lists for use in selection lists */
-function frr_get_accesslist_list() {
-	global $config;
+/* Fetch a list of lists for use in selection lists */
+function frr_get_lists_list(&$listconfig, $ipv4 = true, $ipv6 = true) {
 	$list = array();
-	$list[] = array("name" => "None", "value" => "none");
-	if (is_array($config['installedpackages']['frrglobalacls']['config'])) {
-		foreach ($config['installedpackages']['frrglobalacls']['config'] as $acl) {
-			$name = empty($acl['descr']) ? $acl['name'] : "{$acl['name']} - {$acl['descr']}";
-			$list[] = array("name" => $name, "value" => $acl['name']);
+	$list[] = PKG_FRR_LIST_NONE_VALUE;
+
+	if (is_array($listconfig)) {
+		foreach ($listconfig as $lst) {
+			$name = empty($lst['descr']) ? "{$lst['iptype']}: {$lst['name']}" : "{$lst['iptype']}: {$lst['name']} - {$lst['descr']}";
+			if (($ipv4 && (strtolower($lst['iptype']) == 'ipv4')) || ($ipv6 && (strtolower($lst['iptype']) == 'ipv6'))) {
+				$list[] = array("name" => $name, "value" => $lst['name']);
+			}
 			unset($name);
 		}
 	}
 	return ($list);
 }
 
-/* Fetch the list of prefix lists for use in selection lists */
-function frr_get_prefixlist_list() {
+/* Fetch the list of access lists for use in selection lists */
+function frr_get_accesslist_list($ipv4 = true, $ipv6 = true) {
 	global $config;
-	$list = array();
-	$list[] = array("name" => "None", "value" => "none");
-	if (is_array($config['installedpackages']['frrglobalprefixes']['config'])) {
-		foreach ($config['installedpackages']['frrglobalprefixes']['config'] as $pl) {
-			$name = empty($pl['descr']) ? $pl['name'] : "{$pl['name']} - {$pl['descr']}";
-			$list[] = array("name" => $name, "value" => $pl['name']);
-			unset($name);
-		}
+
+	if (is_array($config['installedpackages']['frrglobalacls']['config'])) {
+		return (frr_get_lists_list($config['installedpackages']['frrglobalacls']['config'], $ipv4, $ipv6));
+	} else {
+		return array(PKG_FRR_LIST_NONE_VALUE);
 	}
-	return ($list);
+}
+
+/* Fetch the list of prefix lists for use in selection lists */
+function frr_get_prefixlist_list($ipv4 = true, $ipv6 = true) {
+	global $config;
+
+	if (is_array($config['installedpackages']['frrglobalprefixes']['config'])) {
+		return (frr_get_lists_list($config['installedpackages']['frrglobalprefixes']['config'], $ipv4, $ipv6));
+	} else {
+		return array(PKG_FRR_LIST_NONE_VALUE);
+	}
 }
 
 /* Fetch the list of route maps for use in selection lists */
@@ -62,7 +71,7 @@ function frr_get_routemap_list($exitaction = false, $yesno = false) {
 		$list[] = array("name" => "IPv6", "value" => "ipv6");
 		$list[] = array("name" => "IPv4+IPv6", "value" => "yes");
 	} else {
-		$list[] = array("name" => "None", "value" => "none");
+		$list[] = PKG_FRR_LIST_NONE_VALUE;
 	}
 
 	/* If this is an exit action, return 'next' as a possible choice. */
@@ -98,7 +107,7 @@ function frr_get_routemap_list($exitaction = false, $yesno = false) {
 function frr_get_routemap_nexthop_list() {
 	global $config;
 	$list = array();
-	$list[] = array("name" => "None", "value" => "none");
+	$list[] = PKG_FRR_LIST_NONE_VALUE;
 	$list[] = array("name" => "Local (match only)", "value" => "local");
 	$list[] = array("name" => "Unchanged (set only)", "value" => "unchanged");
 	$list[] = array("name" => "Peer Address (set only)", "value" => "peer-address");
@@ -106,67 +115,45 @@ function frr_get_routemap_nexthop_list() {
 	return $list;
 }
 
-/* Determine the ACL type based on the given name */
-function frr_get_acl_type($aclname) {
-	/* 0-99, 1300-1999: Standard
-	 * 100-199, 2000-2699: Extended
-	 * WORD: Zebra
-	 */
-	$acl_type = "";
-	if (is_numeric($aclname)) {
-		if ((($aclname > 0) && ($aclname < 100)) ||
-			(($aclname > 1299) && ($aclname < 2000))) {
-			$acl_type = "standard";
-		} elseif ((($aclname > 99) && ($aclname < 200)) ||
-			(($aclname > 1999) && ($aclname < 2700))) {
-			$acl_type = "extended";
-		}
-	} elseif (frr_validate_word($aclname)) {
-		$acl_type = "zebra";
-	}
-	return $acl_type;
-}
-
-function frr_generate_acl_hostspec($address, $acl_type) {
+function frr_generate_acl_hostspec($address, $any, $acl_type) {
 	$hostspec = "";
-	switch($acl_type) {
-		case "standard":
-		case "extended":
-			if (is_subnet($address)) {
-				/* Networks are:
-				 * "x.x.x.x y.y.y.y"
-				 * 'subnet id'<space>'wildcard bits'
-				 */
-				list($ip, $bits) = explode('/', $address);
-				$hostspec = gen_subnet($ip, $bits);
-				$hostspec .= " ";
-				$hostspec .= frr_cidr_to_wildcard_bits($bits);
-			} elseif (is_ipaddr($address)) {
-				/* Hosts are "host x.x.x.x" */
-				$hostspec = "host {$address}";
-			} elseif (($address == "any") ||
-				(empty($address) &&
-				($acl_type == "extended"))) {
-				/* "any" */
-				$hostspec = "any";
-			}
-			break;
-		case "zebra":
-			/* Networks are "x.x.x.x/YY" (CIDR) */
-			if (is_subnet($address) || ($address == "any")) {
-				$hostspec = $address;
-			} if ($address == "any6") {
-				$hostspec = "any";
-			}
-			break;
-		default:
-			$hostspec = "";
+
+	if ($any) {
+		$hostspec = "any";
+	} else {
+		switch($acl_type) {
+			case "standard":
+			case "extended":
+				if (is_subnet($address)) {
+					/* Networks are:
+					 * "x.x.x.x y.y.y.y"
+					 * 'subnet id'<space>'wildcard bits'
+					 */
+					list($ip, $bits) = explode('/', $address);
+					$hostspec = gen_subnet($ip, $bits);
+					$hostspec .= " ";
+					$hostspec .= frr_cidr_to_wildcard_bits($bits);
+				} elseif (is_ipaddr($address)) {
+					/* Hosts are "host x.x.x.x" */
+					$hostspec = "host {$address}";
+				}
+				break;
+			case "zebra":
+				/* Networks are "x.x.x.x/YY" (CIDR) */
+				if (is_subnet($address)) {
+					$hostspec = $address;
+				}
+				break;
+			default:
+				$hostspec = "";
+		}
 	}
+
 	return $hostspec;
 }
 
 /* Access lists for the zebra configuration based on GUI config */
-function frr_zebra_generate_accesslists() {
+function frr_zebra_generate_accesslists($ipv4 = true, $ipv6 = true) {
 	global $config, $frr_config_base;
 	/* Populate FRR Global Settings */
 	if (is_array($config['installedpackages']['frrglobalacls']['config'])) {
@@ -178,9 +165,12 @@ function frr_zebra_generate_accesslists() {
 	/* Section header */
 	$aclconf = "";
 	/* Loop through ACLs and process */
+	frr_array_name_seq_sort($frr_acls_conf);
 	foreach ($frr_acls_conf as $acl) {
-		/* Determine ACL type */
-		$acl_type = frr_get_acl_type($acl['name']);
+		/* Skip if IP version is disabled */
+		if ((!$ipv4 && (strtolower($acl['iptype']) == 'ipv4')) || (!$ipv6 && (strtolower($acl['iptype']) == 'ipv6'))) {
+			continue;
+		}
 		/* Once an ACL is marked IPv6, all of its directives must be IPv6. */
 		$ipv6 = "";
 
@@ -195,22 +185,22 @@ function frr_zebra_generate_accesslists() {
 				continue;
 			}
 			/* The ACL Type determines how the line is formed, what is valid, etc. */
-			switch($acl_type) {
+			switch($acl['type']) {
 				case "standard":
 					/* Source address only */
-					$hostspec = frr_generate_acl_hostspec($line['source'], $acl_type);
+					$hostspec = frr_generate_acl_hostspec($line['source'], $line['sourceany'], $acl['type']);
 					break;
 				case "extended":
 					/* Source and Destination addresses */
-					$hostspec = frr_generate_acl_hostspec($line['source'], $acl_type);
+					$hostspec = frr_generate_acl_hostspec($line['source'], $line['sourceany'], $acl['type']);
 					$hostspec .= " ";
-					$hostspec .= frr_generate_acl_hostspec($line['destination'], $acl_type);
+					$hostspec .= frr_generate_acl_hostspec($line['destination'], $line['destinationany'], $acl['type']);
 					break;
 				case "zebra":
 					/* Source address only */
-					$hostspec = frr_generate_acl_hostspec($line['source'], $acl_type);
+					$hostspec = frr_generate_acl_hostspec($line['source'], $line['sourceany'], $acl['type']);
 					/* If the source is IPv6, mark this ACL as being IPv6 */
-					if (is_subnetv6($line['source']) || ($line['source'] == "any6")) {
+					if (strtolower($acl['iptype']) == 'ipv6') {
 						$ipv6 = "ipv6 ";
 					}
 					break;
@@ -228,13 +218,13 @@ function frr_zebra_generate_accesslists() {
 			}
 			$aclconf .=  " {$line['action']} ";
 			/* Extended ACLs need "ip" before the src/dst specs */
-			if ($acl_type == "extended") {
+			if ($acl['type'] == "extended") {
 				$aclconf .= "ip ";
 			}
 			/* Add on the source/destination */
 			$aclconf .= $hostspec;
 			/* Add exact-match only for Zebra ACLs */
-			if (($acl_type == "zebra") && isset($line['exactmatch'])) {
+			if (($acl['type'] == "zebra") && isset($line['exactmatch'])) {
 				$aclconf .= " exact-match";
 			}
 			$aclconf .= "\n";
@@ -255,7 +245,7 @@ function frr_zebra_generate_accesslists() {
 }
 
 /* Prefix Lists for the zebra configuration based on GUI config */
-function frr_zebra_generate_prefixlists() {
+function frr_zebra_generate_prefixlists($ipv4 = true, $ipv6 = true) {
 	global $config, $frr_config_base;
 	/* Populate FRR Global Settings */
 	if (is_array($config['installedpackages']['frrglobalprefixes']['config'])) {
@@ -267,7 +257,13 @@ function frr_zebra_generate_prefixlists() {
 	$plconf = "";
 
 	/* Loop through Prefix Lists and process */
+	frr_array_name_seq_sort($frr_prefixlists_conf);
 	foreach ($frr_prefixlists_conf as $pl) {
+		/* Skip if IP version is disabled */
+		if ((!$ipv4 && (strtolower($pl['iptype']) == 'ipv4')) || (!$ipv6 && (strtolower($pl['iptype']) == 'ipv6'))) {
+			continue;
+		}
+
 		/* Once a Prefix List is marked IPv6, all of its directives must be IPv6. */
 		$iptype = "";
 
@@ -281,16 +277,18 @@ function frr_zebra_generate_prefixlists() {
 				continue;
 			}
 			/* If the source is IPv6, mark this ACL as being IPv6 */
-			if (is_subnetv6($line['source']) || ($line['source'] == "any6")) {
+			if (strtolower($pl['iptype']) == 'ipv6') {
 				$iptype = "ipv6";
-				if ($line['source'] == "any6") {
-					$line['source'] = "any";
-				}
-			} elseif (is_subnetv4($line['source']) || ($line['source'] == "any")) {
+			} elseif ((strtolower($pl['iptype']) == 'ipv4') || ($line['source'] == "any")) {
 				$iptype = "ip";
 			} else {
 				/* If the source is empty or not a subnet, the line is invalid so skip it. */
 				continue;
+			}
+
+			/* Override the source if the any checkbox is selected */
+			if ($line['any']) {
+				$line['source'] = "any";
 			}
 
 			$plconf .= "{$iptype} prefix-list {$pl['name']} ";
@@ -299,11 +297,11 @@ function frr_zebra_generate_prefixlists() {
 			}
 			$plconf .= "{$line['action']} {$line['source']} ";
 			/* Minimum Prefix (greater than or equal to) */
-			if ($line['ge']) {
+			if ($line['ge'] && !$line['any']) {
 				$plconf .= "ge {$line['ge']} ";
 			}
 			/* Maximum Prefix (less than or equal to) */
-			if ($line['le']) {
+			if ($line['le'] && !$line['any']) {
 				$plconf .= "le {$line['le']} ";
 			}
 			$plconf .= "\n";
@@ -368,15 +366,21 @@ function frr_zebra_generate_routemaps() {
 		}
 
 		/* Access List */
-		if (in_array($rm['acl_match'], frr_get_list_values(frr_get_accesslist_list())) &&
-			($rm['acl_match'] != "none")) {
-			$rmconf .= " match ip address {$rm['acl_match']}\n";
+		if (($rm['acl_match'] != "none")) {
+			if (in_array($rm['prefix_match'], frr_get_list_values(frr_get_prefixlist_list(true, false)))) {
+				$rmconf .= " match ip address {$rm['acl_match']}\n";
+			} elseif (in_array($rm['prefix_match'], frr_get_list_values(frr_get_prefixlist_list(false, true)))) {
+				$rmconf .= " match ipv6 address {$rm['acl_match']}\n";
+			}
 		}
 
 		/* Prefix List */
-		if (in_array($rm['prefix_match'], frr_get_list_values(frr_get_prefixlist_list())) &&
-			($rm['prefix_match'] != "none")) {
-			$rmconf .= " match ip address prefix-list {$rm['prefix_match']}\n";
+		if (($rm['prefix_match'] != "none")) {
+			if (in_array($rm['prefix_match'], frr_get_list_values(frr_get_prefixlist_list(true, false)))) {
+				$rmconf .= " match ip address prefix-list {$rm['prefix_match']}\n";
+			} elseif (in_array($rm['prefix_match'], frr_get_list_values(frr_get_prefixlist_list(false, true)))) {
+				$rmconf .= " match ipv6 address prefix-list {$rm['prefix_match']}\n";
+			}
 		}
 
 		/* Next Hop */
@@ -686,7 +690,7 @@ function frr_generate_config_zebra() {
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_conf)) {
-			log_error("FRR Zebra: No config data found.");
+			frr_package_log("FRR Zebra: No config data found.");
 			return;
 		}
 		if (empty($frr_conf['enable'])) {
@@ -695,10 +699,14 @@ function frr_generate_config_zebra() {
 		}
 
 		$frr_integrated_config['zebra'] = "";
-		/* Access Lists */
-		$frr_integrated_config['zebra'] .= frr_zebra_generate_accesslists();
-		/* Prefix Lists */
-		$frr_integrated_config['zebra'] .= frr_zebra_generate_prefixlists();
+		/* Access Lists IPv4*/
+		$frr_integrated_config['zebra'] .= frr_zebra_generate_accesslists(true, false);
+		/* Prefix Lists IPv4 */
+		$frr_integrated_config['zebra'] .= frr_zebra_generate_prefixlists(true, false);
+		/* Access Lists IPv6*/
+		$frr_integrated_config['zebra'] .= frr_zebra_generate_accesslists(false, true);
+		/* Prefix Lists IPv6 */
+		$frr_integrated_config['zebra'] .= frr_zebra_generate_prefixlists(false, true);
 		/* Route Maps */
 		$frr_integrated_config['zebra'] .= frr_zebra_generate_routemaps();
 		/* Default Accept Filters */
@@ -717,7 +725,7 @@ function frr_generate_config_zebra() {
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_conf)) {
-			log_error("FRR staticd: No config data found.");
+			frr_package_log("FRR staticd: No config data found.");
 			return;
 		}
 		if (empty($frr_conf['enable'])) {
@@ -737,7 +745,6 @@ function read_frr_running_config() {
 	global $config, $frr_config_base;
 
 	$frrRunningFile = "{$frr_config_base}/frr.conf";
-	log_error($frrRunningFile);
 	if (file_exists($frrRunningFile) && (filesize($frrRunningFile) > 0)) {
 		$moduleRunning = fopen("$frrRunningFile", "r");
 		$config['installedpackages']['frrglobalraw']['config'][0]["frrrunning"] = base64_encode(fread($moduleRunning, filesize($frrRunningFile)));

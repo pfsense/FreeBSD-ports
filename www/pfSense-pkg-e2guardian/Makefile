@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-e2guardian
 PORTVERSION=	0.4
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	# empty
 DISTFILES=	# empty

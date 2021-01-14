@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	hidapi
-PORTVERSION=	0.9.0
-DISTVERSIONSUFFIX=	.post2
+PORTVERSION=	0.10.1
 CATEGORIES=	comms python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,13 +14,13 @@ LICENSE=	GPLv3
 
 LIB_DEPENDS=	libhidapi.so:comms/hidapi
 
-USES=		python
-USE_PYTHON=	autoplist distutils cython
+USES=		python:3.6+
+USE_PYTHON=	autoplist cython distutils
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|usb-1.0|usb|g' ${WRKSRC}/setup.py
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/hid.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/hid*.so
 
 .include <bsd.port.mk>

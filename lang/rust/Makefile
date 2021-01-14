@@ -2,11 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	rust
-PORTVERSION?=	1.46.0
+PORTVERSION?=	1.48.0
 PORTREVISION?=	0
 CATEGORIES=	lang
 MASTER_SITES=	https://static.rust-lang.org/dist/:src \
 		https://dev-static.rust-lang.org/dist/:src \
+		LOCAL/bdragon/rust:bootstrap \
+		LOCAL/mikael/rust:bootstrap \
 		LOCAL/tobik/rust:bootstrap \
 		https://static.rust-lang.org/dist/:bootstrap
 DISTNAME?=	${PORTNAME}c-${PORTVERSION}-src
@@ -25,7 +27,7 @@ LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
 
 IGNORE_FreeBSD_11_powerpc64=	is missing a bootstrap for FreeBSD 11.x powerpc64
-ONLY_FOR_ARCHS?=	aarch64 amd64 armv6 armv7 i386 powerpc64
+ONLY_FOR_ARCHS?=	aarch64 amd64 armv6 armv7 i386 powerpc64 powerpc64le
 ONLY_FOR_ARCHS_REASON?=	requires prebuilt bootstrap compiler
 
 BUILD_DEPENDS=	cmake:devel/cmake \
@@ -35,7 +37,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libgit2.so:devel/libgit2 \
 		libssh2.so:security/libssh2
 
-USES=		pkgconfig python:3.3+,build ssl tar:xz
+USES=		pkgconfig python:3.6+,build ssl tar:xz
 
 MAKE_ENV=	DESTDIR=${STAGEDIR} \
 		LIBGIT2_SYS_USE_PKG_CONFIG=1 \
@@ -49,6 +51,10 @@ CONFLICTS_INSTALL?=	rust-nightly
 
 OPTIONS_DEFINE=		DOCS GDB SOURCES WASM
 OPTIONS_DEFAULT=	SOURCES WASM
+OPTIONS_EXCLUDE=	DOCS # https://github.com/rust-lang/rust/issues/76526
+.if defined(NIGHTLY_DATE)
+OPTIONS_EXCLUDE+=	SOURCES
+.endif
 
 GDB_DESC=	Install ports gdb (necessary for debugging rust programs)
 SOURCES_DESC=	Install source files
@@ -63,9 +69,9 @@ WASM_VARS=		_RUST_BUILD_WASM=true \
 WASM_VARS_OFF=		_RUST_BUILD_WASM=false
 
 # See WRKSRC/src/stage0.txt for the date and version values.
-BOOTSTRAPS_DATE?=		2020-08-03
-RUST_BOOTSTRAP_VERSION?=	1.45.2
-CARGO_BOOTSTRAP_VERSION?=	0.46.1
+BOOTSTRAPS_DATE?=		2020-10-08
+RUST_BOOTSTRAP_VERSION?=	1.47.0
+CARGO_BOOTSTRAP_VERSION?=	0.48.0
 
 BOOTSTRAPS_SUFFIX?=		${BOOTSTRAPS_SUFFIX_${ARCH}}
 BOOTSTRAPS_SUFFIX_powerpc64?=	-${PPC_ABI:tl}
@@ -173,8 +179,11 @@ do-configure:
 	@${ECHO_CMD} 'missing-tools=true' >> ${WRKSRC}/config.toml
 .endif
 	@${REINPLACE_CMD} 's,%CC%,${CC},g' \
-		${WRKSRC}/src/librustc_llvm/build.rs \
 		${WRKSRC}/src/bootstrap/native.rs
+# this reinplace_cmd is used for ppc64-elfv1, don't remove it
+# even if sed_checked.sh says it's unused
+	@${REINPLACE_CMD} 's,%CC%,${CC},g' \
+		${WRKSRC}/compiler/rustc_llvm/build.rs
 
 do-build:
 	@cd ${WRKSRC} && \

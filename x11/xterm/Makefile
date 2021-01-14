@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xterm
-PORTVERSION=	360
+PORTVERSION=	363
 CATEGORIES=	x11
 MASTER_SITES=	ftp://ftp.invisible-island.net/xterm/:src1 \
 		https://invisible-mirror.net/archives/xterm/:src1 \
@@ -48,7 +48,7 @@ NEXTAW_DESC=	Link with neXT Athena library
 SCRNDUMP_DESC=	Enable XHTML and SVG screen dumps
 TOOLBAR_DESC=	Enable pulldown menus with a toolbar
 
-OPTIONS_DEFAULT=WCHAR LUIT 256COLOR
+OPTIONS_DEFAULT=WCHAR LUIT 256COLOR SIXEL
 
 256COLOR_CONFIGURE_ENABLE=	256-color
 LUIT_BUILD_DEPENDS=		luit:x11/luit
@@ -77,6 +77,8 @@ XINERAMA_USE=			XORG=xinerama,xorgproto
 XINERAMA_CONFIGURE_OFF=		--without-xinerama
 
 LIB_DEPENDS+=	libfontconfig.so:x11-fonts/fontconfig
+
+CPPFLAGS+=	-DPIXMAP_ROOTDIR=${LOCALBASE}/share/pixmaps
 
 .include <bsd.port.options.mk>
 

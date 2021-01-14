@@ -3,7 +3,7 @@
 
 PORTNAME=	fluent-bit
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.6
+DISTVERSION=	1.6.7
 CATEGORIES=	sysutils
 
 MAINTAINER=	girgen@FreeBSD.org
@@ -11,14 +11,14 @@ COMMENT=	Fast and lightweight data forwarder
 
 LICENSE=	APACHE20
 
-USE_GITHUB=     yes
-GH_ACCOUNT=	fluent
-
 BROKEN_mips=		fails to build: conflicting types for 'restrict'
 BROKEN_mips64=		fails to build: conflicting types for 'restrict'
-BROKEN_powerpc64=	fails to build: cast from pointer to integer of different size
+BROKEN_riscv64=		fails to build: No support for this architecture (yet)
 
-USES=		cmake:noninja gmake bison
+USE_GITHUB=	yes
+GH_ACCOUNT=	fluent
+
+USES=		cmake:noninja compiler:c11 gmake bison compiler
 
 OPTIONS_DEFINE=		SSL PGSQL
 OPTIONS_DEFAULT=	SSL
@@ -27,7 +27,7 @@ CMAKE_ARGS=		-DFLB_DEBUG=Off -DFLB_TRACE=Off -DFLB_CORO_STACK_SIZE=24576
 
 SSL_USES=		ssl
 SSL_CMAKE_ON=		-DFLB_TLS=On
-SSL_CMAKE_OFF=		-DFLB_TLS=On
+SSL_CMAKE_OFF=		-DFLB_TLS=Off
 
 EXAMPLES_CMAKE_ON=	-DFLB_EXAMPLES=On
 EXAMPLES_CMAKE_OFF=	-DFLB_EXAMPLES=Off
@@ -37,6 +37,16 @@ PGSQL_CMAKE_ON=		-DFLB_OUT_PGSQL=On
 PGSQL_CMAKE_OFF=	-DFLB_OUT_PGSQL=Off
 
 USE_RC_SUBR=	${PORTNAME}
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200000
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-lib_luajit__src__lj_prng.c
+.endif
+
+.if ${ARCH} == powerpc64
+CMAKE_ARGS+=	-DFLB_LUAJIT:BOOL=OFF
+.endif
 
 post-install:
 	${MV} ${STAGEDIR}${ETCDIR}/${PORTNAME}.conf ${STAGEDIR}${ETCDIR}/${PORTNAME}.conf.sample

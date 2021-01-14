@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libtmux
-PORTVERSION=	0.8.3
+PORTVERSION=	0.8.5
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	tmux:sysutils/tmux
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

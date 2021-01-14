@@ -2,16 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	emacs
-DISTVERSION=	28.0.50.20200915
+DISTVERSION=	28.0.50.20210101
 PORTEPOCH=	2
 CATEGORIES=	editors
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	emacs@FreeBSD.org
-COMMENT=	GNU editing macros
-.if ${FLAVOR:U} == nox
-COMMENT+=	(No X flavor)
-.endif
+COMMENT=	GNU editing macros ${COMMENT_${FLAVOR}}
+COMMENT_nox=	(No X flavor)
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -28,7 +26,7 @@ USES=		autoreconf:build cpe gmake localbase:ldflags ncurses pkgconfig
 CPE_VENDOR=	gnu
 USE_GITHUB=	yes
 GH_ACCOUNT=	emacs-mirror
-GH_TAGNAME=	e408f2f
+GH_TAGNAME=	58bdfd7
 
 .if ${FLAVOR:U} != nox
 USES+=		desktop-file-utils gnome xorg
@@ -76,10 +74,10 @@ SUB_LIST=	EMACS_VER=${DISTVERSION:R}
 INFO=		auth autotype bovine calc ccmode cl dbus dired-x ebrowse ede \
 		ediff edt efaq eieio eintr elisp emacs emacs-gnutls emacs-mime \
 		epa erc ert eshell eudc eww flymake forms gnus htmlfontify \
-		idlwave ido info mairix-el message mh-e newsticker nxml-mode \
-		octave-mode org pcl-cvs pgg rcirc reftex remember sasl sc \
-		semantic ses sieve smtpmail speedbar srecode todo-mode tramp \
-		url vhdl-mode vip viper widget wisent woman
+		idlwave ido info mairix-el message mh-e modus-themes newsticker \
+		nxml-mode octave-mode org pcl-cvs pgg rcirc reftex remember \
+		sasl sc semantic ses sieve smtpmail speedbar srecode todo-mode \
+		tramp url vhdl-mode vip viper widget wisent woman
 INFO_PATH=	${DATADIR_REL}/info
 PLIST_SUB=	EMACS_VER=${DISTVERSION:R} \
 		GNU_HOST=${CONFIGURE_TARGET}

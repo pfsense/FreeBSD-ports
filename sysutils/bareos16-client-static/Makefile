@@ -6,8 +6,8 @@ PKGNAMESUFFIX=	16-client-static
 COMMENT=	Backup archiving recovery open sourced (static client)
 
 BROKEN_aarch64=	Fails to link: missing sbrk
-BROKEN_FreeBSD_13_powerpc64=	fails to compile: bsnprintf.c:621:16: static declaration of 'round' follows non-static declaration
- 
+BROKEN_riscv64=	Fails to link: missing sbrk
+
 CONFLICTS=	bareos-client-static-*
 
 PLIST=		${.CURDIR}/pkg-plist

@@ -5,7 +5,7 @@
 			"* pfblockerng_feeds.json",
 			"*",
 			"* part of pfSense (https://www.pfsense.org)",
-			"* Copyright (c) 2016-2020 Rubicon Communications, LLC (Netgate)",
+			"* Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)",
 			"* Copyright (c) 2015-2020 BBcan177@gmail.com",
 			"* All rights reserved.",
 			"*",
@@ -411,7 +411,7 @@
 			"feeds": [
 				{
 					"feed":		"BBcan177",
-					"website":	"https://forum.pfsense.org/index.php?action=profile;u=238481",
+					"website":	"https://forum.netgate.com/user/bbcan177",
 					"url":		"https://gist.githubusercontent.com/BBcan177/bf29d47ea04391cb3eb0/raw",
 					"header":	"MS_1"
 				}
@@ -1303,7 +1303,7 @@
 			"feeds": [
 				{
 					"feed":		"BBcan177",
-					"website":	"https://forum.pfsense.org/index.php?action=profile;u=238481",
+					"website":	"https://forum.netgate.com/user/bbcan177",
 					"url":		"https://gist.githubusercontent.com/BBcan177/4a8bf37c131be4803cb2/raw",
 					"header":	"MS_2"
 				}

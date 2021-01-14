@@ -3,7 +3,7 @@
  * filer.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012 Marcello Coutinho
  * Copyright (c) 2012 Brian Scholer
  * All rights reserved.
@@ -31,10 +31,9 @@ function filer_text_area_decode($text) {
 	return preg_replace('/\r\n/', "\n", base64_decode($text));
 }
 
-function sync_package_filer() {
+function sync_package_filer($post = array()) {
 	global $config, $g;
 	$update_conf = 0;
-
 
 	/* Loop on configured files. */
 	if ($config['installedpackages']['filer']['config'] != "") {
@@ -46,6 +45,9 @@ function sync_package_filer() {
 				$update_conf++;
 			}
 			$count++;
+			if (!empty($post) && ($post['id'] != ($count - 1))) {
+				continue;
+			}
 			if (preg_match("/0?[0-7]{3}/", $file['mod'])) {
 				$mod = octdec($file['mod']);
 			} else {
@@ -57,13 +59,15 @@ function sync_package_filer() {
 			chmod($file['fullfile'], $mod);
 
 			/* Check if there is a script to run after file save. */
-			if ($file['cmd'] != "") {
+			if (!empty($file['cmd'])) {
 				switch ($file['background']) {
 					case "background":
 						mwexec_bg($file['cmd']);
 						break;
 					case "foreground":
 						mwexec($file['cmd']);
+						break;
+					default:
 						break;
 				}
 			}
@@ -74,7 +78,6 @@ function sync_package_filer() {
 			write_config("Filer: Settings saved");
 		}
 	}
-
 	
 	filer_sync_on_changes();
 }

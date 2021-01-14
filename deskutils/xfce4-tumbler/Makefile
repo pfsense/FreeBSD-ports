@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tumbler
-PORTVERSION=	0.2.9
-PORTREVISION=	2
+PORTVERSION=	4.16.0
 CATEGORIES=	deskutils xfce
 MASTER_SITES=	XFCE
 PKGNAMEPREFIX=	xfce4-
@@ -18,8 +17,8 @@ LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		gettext-tools gmake gnome libtool localbase:ldflags pathfix \
-		pkgconfig tar:bzip2 xfce
+USES=		compiler:c11 gettext-tools gmake gnome libtool \
+		localbase:ldflags pathfix pkgconfig tar:bzip2 xfce
 USE_GNOME=	cairo gdkpixbuf2 glib20 intltool libgsf librsvg2
 USE_LDCONFIG=	yes
 
@@ -31,17 +30,23 @@ CONFIGURE_ARGS=	--enable-xdg-cache \
 		--disable-gtk-doc-html \
 		--without-html-dir
 
+PORTSCOUT=	limitw:1,even
+
 OPTIONS_DEFINE=	NLS FONTS JPEG FFMPEG POPPLER \
-		GSTREAMER ODF COVER
-OPTIONS_DEFAULT=	FONTS JPEG POPPLER GSTREAMER ODF
+		GSTREAMER ODF COVER EPUB
+OPTIONS_DEFAULT=	FONTS EPUB JPEG POPPLER GSTREAMER ODF
 OPTIONS_SUB=	yes
 
-FONTS_DESC=	Fonts thumbnailer plugin
 COVER_DESC=	Open Movie Database plugin (check pkg-message)
+EPUB_DESC=	EPUB thumbnailer plugin
+FONTS_DESC=	Fonts thumbnailer plugin
 GSTREAMER_DESC=	GStreamer thumbnailer plugin
 
 COVER_CONFIGURE_ENABLE=	cover-thumbnailer
 COVER_LIB_DEPENDS=	libcurl.so:ftp/curl
+
+EPUB_CONFIGURE_ENABLE=	gepub-thumbnailer
+EPUB_LIB_DEPENDS=	libgepub-0.6.so:textproc/libgepub
 
 FFMPEG_CONFIGURE_ENABLE=	ffmpeg-thumbnailer
 FFMPEG_LIB_DEPENDS=	libffmpegthumbnailer.so:multimedia/ffmpegthumbnailer

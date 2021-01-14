@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	rpy2
-PORTVERSION=	3.3.5
+PORTVERSION=	3.3.6
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -33,6 +34,6 @@ PLIST_FILES=	${PYTHON_SITELIBDIR}/__pycache__/_rinterface_cffi_abi.cpython-${PYT
 		${PYTHON_SITELIBDIR}/_rinterface_cffi_abi.py
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_rinterface_cffi_api.abi3.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_rinterface_cffi_api.abi3*.so
 
 .include <bsd.port.mk>

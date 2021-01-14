@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	maec
-PORTVERSION=	4.1.0.16
+PORTVERSION=	4.1.0.17
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -23,7 +23,7 @@ GH_ACCOUNT=	MAECProject
 GH_PROJECT=	python-${PORTNAME}
 
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	concurrent distutils autoplist
 USE_LOCALE=	en_US.UTF-8
 

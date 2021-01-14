@@ -3,6 +3,7 @@
 
 PORTNAME=	cartopy
 PORTVERSION=	0.18.0
+PORTREVISION=	2
 CATEGORIES=	graphics python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +16,7 @@ LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 
 BUILD_DEPENDS=	geos>=3.3.3:graphics/geos \
-		proj>=4.9.0:graphics/proj \
+		proj>=4.9.0,1:graphics/proj \
 		${PYNUMPY}
 LIB_DEPENDS=	libgeos.so:graphics/geos \
 		libproj.so:graphics/proj
@@ -24,7 +25,7 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}Shapely>=1.5.6:devel/py-shapely@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.3.0:devel/py-six@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent cython distutils
 
 CPPFLAGS+=	-DACCEPT_USE_OF_DEPRECATED_PROJ_API_H

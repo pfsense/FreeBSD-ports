@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	inotify-tools # new fork https://github.com/ericcurtin/inotify-tools
-DISTVERSION=	3.20.2.2
+DISTVERSION=	3.20.11.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libinotify.so:devel/libinotify
 
-USES=		autoreconf gmake libtool localbase
+USES=		autoreconf compiler:c11 gmake libtool localbase
 USE_GITHUB=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-doxygen

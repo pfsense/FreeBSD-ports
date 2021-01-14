@@ -3,7 +3,7 @@
 
 PORTNAME=	ldns
 PORTVERSION=	1.7.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	dns
 MASTER_SITES=	https://www.nlnetlabs.nl/downloads/ldns/ \
 		LOCAL/ehaupt
@@ -62,7 +62,7 @@ DRILL_INSTALL_TARGET=			install-drill
 EXAMPLES_INSTALL_TARGET=		install-examples
 
 .if defined(BUILD_PYLDNS)
-USES+=		python
+USES+=		python:3.6+
 USE_PYTHON=	flavors
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 ALL_TARGET=	pyldns

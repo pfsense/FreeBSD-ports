@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xfce4-taskmanager
-PORTVERSION=	1.2.3
+PORTVERSION=	1.4.0
 PORTREVISION=	1
 CATEGORIES=	x11 xfce
 MASTER_SITES=	XFCE/apps
@@ -22,8 +22,7 @@ USE_XORG=	ice sm x11 xmu xt
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
 
-CONFIGURE_ARGS+=	--disable-silent-rules --disable-gksu \
-			--enable-wnck3 --disable-wnck --disable-gtk2
+CONFIGURE_ARGS+=	--disable-silent-rules --disable-gksu --enable-wnck3
 
 OPTIONS_DEFINE=		NLS
 OPTIONS_SUB=		yes

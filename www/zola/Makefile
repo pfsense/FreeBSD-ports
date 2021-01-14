@@ -3,9 +3,10 @@
 PORTNAME=	zola
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.12.2
+PORTREVISION=	2
 CATEGORIES=	www
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	Fast static site generator
 
 LICENSE=	MIT

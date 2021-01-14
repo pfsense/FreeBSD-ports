@@ -1,5 +1,5 @@
 # $FreeBSD$
-PORTREVISION=	1
+PORTREVISION=	0
 
 .include "${.CURDIR}/Makefile.common"
 
@@ -224,6 +224,8 @@ TEST_ALL_TARGET=	build
 TEST_ALL_TARGET_OFF=	build-nocheck
 TEST_CONFIGURE_ENABLE=	cve-tests
 
+WEBDAV_CONFIGURE_ON=	--with-webdav=neon
+WEBDAV_CONFIGURE_OFF=	--with-webdav=no
 WEBDAV_CONFIGURE_ENABLE=	neon
 WEBDAV_LIB_DEPENDS=	libneon.so:www/neon
 
@@ -280,7 +282,7 @@ MAKE_ENV+=	verbose=1
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH:Mpowerpc*}
+.if ${ARCH} == powerpc || ${ARCH} == powerpcspe || ${ARCH} == powerpc64
 CONFIGURE_ARGS+=	--disable-skia
 .endif
 

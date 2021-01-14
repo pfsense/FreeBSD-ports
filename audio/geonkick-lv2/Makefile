@@ -2,8 +2,7 @@
 
 PORTNAME=	geonkick
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.3.8
-PORTREVISION=	1
+DISTVERSION=	2.6.1
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -27,11 +26,6 @@ GH_ACCOUNT=	iurie-sw
 USE_GNOME=	cairo
 USE_XORG=	x11
 
-.include <bsd.port.pre.mk>
+INSTALLS_ICONS=	yes
 
-.if ${CHOSEN_COMPILER_TYPE} == clang
-EXTRA_PATCHES=	${FILESDIR}/extra-patch-plugin_lv2_CMakeLists.txt \
-		${FILESDIR}/extra-patch-standalone_CMakeLists.txt
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

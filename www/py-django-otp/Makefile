@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	django-otp
-PORTVERSION=	0.9.0
+PORTVERSION=	1.0.1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ COMMENT=	Adding two-factor authentication to Django
 
 LICENSE=	BSD2CLAUSE
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

@@ -16,7 +16,7 @@ LICENSE=	MIT
 
 LIB_DEPENDS=	libportaudio.so:audio/portaudio
 
-USES=		python gmake
+USES=		python:3.6+ gmake
 USE_PYTHON=	distutils concurrent autoplist
 
 MAKE_ENV=	PYTHON=${PYTHON_CMD} \
@@ -39,6 +39,6 @@ post-install-DOCS-on:
 	(cd ${WRKSRC}/docs && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR} "! -name .buildinfo -and ! -path *doctrees*")
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_portaudio.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_portaudio*.so
 
 .include <bsd.port.mk>

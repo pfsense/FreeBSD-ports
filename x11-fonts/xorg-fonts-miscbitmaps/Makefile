@@ -4,31 +4,24 @@
 PORTNAME=	xorg-fonts-miscbitmaps
 PORTVERSION=	7.7
 CATEGORIES=	x11-fonts
-MASTER_SITES=	# none
-DISTFILES=	# none
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X.Org miscellaneous bitmap fonts
 
-RUN_DEPENDS=	${FONTDIR}/misc/arabic24.pcf.gz:x11-fonts/font-arabic-misc \
-		${FONTDIR}/misc/cursor.pcf.gz:x11-fonts/font-cursor-misc \
-		${FONTDIR}/misc/hanglg16.pcf.gz:x11-fonts/font-daewoo-misc \
-		${FONTDIR}/misc/deccurs.pcf.gz:x11-fonts/font-dec-misc \
-		${FONTDIR}/misc/gb16fs.pcf.gz:x11-fonts/font-isas-misc \
-		${FONTDIR}/misc/jiskan16.pcf.gz:x11-fonts/font-jis-misc \
-		${FONTDIR}/misc/micro.pcf.gz:x11-fonts/font-micro-misc \
-		${FONTDIR}/misc/10x20-ISO8859-1.pcf.gz:x11-fonts/font-misc-misc \
-		${FONTDIR}/misc/cu-alt12.pcf.gz:x11-fonts/font-mutt-misc \
-		${FONTDIR}/misc/clB6x10.pcf.gz:x11-fonts/font-schumacher-misc \
-		${FONTDIR}/misc/12x24.pcf.gz:x11-fonts/font-sony-misc \
-		${FONTDIR}/misc/olcursor.pcf.gz:x11-fonts/font-sun-misc \
-		${FONTDIR}/encodings/encodings.dir:x11-fonts/encodings
+RUN_DEPENDS=	font-arabic-misc>0:x11-fonts/font-arabic-misc \
+		font-cursor-misc>0:x11-fonts/font-cursor-misc \
+		font-daewoo-misc>0:x11-fonts/font-daewoo-misc \
+		font-dec-misc>0:x11-fonts/font-dec-misc \
+		font-isas-misc>0:x11-fonts/font-isas-misc \
+		font-jis-misc>0:x11-fonts/font-jis-misc \
+		font-micro-misc>0:x11-fonts/font-micro-misc \
+		font-misc-misc>0:x11-fonts/font-misc-misc \
+		font-mutt-misc>0:x11-fonts/font-mutt-misc \
+		font-schumacher-misc>0:x11-fonts/font-schumacher-misc \
+		font-sony-misc>0:x11-fonts/font-sony-misc \
+		font-sun-misc>0:x11-fonts/font-sun-misc \
+		encodings>0:x11-fonts/encodings
 
-CONFLICTS=	XFree86-fontDefaultBitmaps-*
-
-NO_BUILD=	# none
-NO_INSTALL=	yes
-NO_MTREE=	yes
-FONTDIR=	${LOCALBASE}/share/fonts
+USES=		metaport
 
 .include <bsd.port.mk>

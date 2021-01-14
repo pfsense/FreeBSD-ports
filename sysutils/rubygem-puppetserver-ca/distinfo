@@ -1,3 +1,3 @@
-TIMESTAMP = 1591137740
-SHA256 (rubygem/puppetserver-ca-1.8.0.gem) = 3783e2d89a8652726166b0768aabcca670119c7166465ce430cdc9a1853c3bce
-SIZE (rubygem/puppetserver-ca-1.8.0.gem) = 36352
+TIMESTAMP = 1608142069
+SHA256 (rubygem/puppetserver-ca-2.0.1.gem) = 1892321fc9a4d1cf5d6e7f5c91730a98cf20e2fe80cdad2794a2bab1635de444
+SIZE (rubygem/puppetserver-ca-2.0.1.gem) = 38400

@@ -3,6 +3,7 @@
 
 PORTNAME=	gnome3
 PORTVERSION=	3.36
+PORTREVISION=	3
 CATEGORIES?=	x11 gnome
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -12,6 +13,7 @@ FLAVORS=	full lite
 FLAVOR?=	full
 
 RUN_DEPENDS?=	dconf-editor:devel/dconf-editor \
+		gdm>=3.0.0:x11/gdm \
 		gnome-session>=3.0.0:x11/gnome-session \
 		gnome-themes-extra>=3.28:x11-themes/gnome-themes-extra \
 		gnome-icon-theme-extras>=3.0.0:misc/gnome-icon-theme-extras \
@@ -19,7 +21,6 @@ RUN_DEPENDS?=	dconf-editor:devel/dconf-editor \
 		gnome-keyring>=3.0.0:security/gnome-keyring \
 		gnome-power-manager>=3.0.0:sysutils/gnome-power-manager \
 		orca>=3.0.0:accessibility/orca \
-		gnome-mount:sysutils/gnome-mount \
 		gnome-shell>=3.0.0:x11/gnome-shell \
 		gnome-shell-extensions>=3.0.0:x11/gnome-shell-extensions \
 		gnome-tweaks:deskutils/gnome-tweaks \
@@ -68,11 +69,9 @@ RUN_DEPENDS+=	epiphany>=3.0.0:www/epiphany \
 		gnome-games>=3.0.0:games/gnome-games \
 		totem>=3.0.0:multimedia/totem \
 		gconf-editor>=3.0.0:sysutils/gconf-editor \
-		gdm>=3.0.0:x11/gdm \
 		gnome-color-manager>=0:graphics/gnome-color-manager \
 		evolution>=3.0.0:mail/evolution \
-		cheese>=3.0.0:multimedia/cheese \
-		ekiga:net-im/ekiga
+		cheese>=3.0.0:multimedia/cheese
 
 .endif # !gnome3-lite section
 

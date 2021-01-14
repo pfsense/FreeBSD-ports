@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME?=	wireshark
-PORTVERSION=	3.2.7
+PORTVERSION=	3.4.2
 PORTREVISION?=	0
 CATEGORIES=	net
 MASTER_SITES=	http://www.wireshark.org/download/src/ \
@@ -37,7 +37,8 @@ LIB_DEPENDS+=	libgpg-error.so:security/libgpg-error \
 		libgcrypt.so:security/libgcrypt \
 		liblz4.so:archivers/liblz4 \
 		libnghttp2.so:www/libnghttp2 \
-		libsnappy.so:archivers/snappy
+		libsnappy.so:archivers/snappy \
+		libcares.so:dns/c-ares
 
 #CFLAGS+=	-funit-at-a-time
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}
@@ -51,7 +52,7 @@ PLIST_SUB+=		${x:tu}="@comment $x not installed" \
 			${x:tu}_MAN="@comment $x not installed "
 CMAKE_ARGS+=		-DBUILD_$x=OFF
 EXTRA_PATCHES=		${FILESDIR}/extra-patch-doc_CMakeLists.txt
-OPTIONS_EXCLUDE+=	RTP SNMP LUA CARES ANDROIDDUMP CISCODUMP SSHDUMP
+OPTIONS_EXCLUDE+=	RTP SNMP LUA ANDROIDDUMP CISCODUMP SSHDUMP
 .else
 PLIST_SUB+=		${x:tu}=bin/$x \
 			${x:tu}_MAN="" \
@@ -59,7 +60,7 @@ PLIST_SUB+=		${x:tu}=bin/$x \
 .endif
 .endfor
 
-OPTIONS_DEFINE=		GUI RTP SNMP MAXMIND LUA DECRYPT ANDROIDDUMP CARES SSHDUMP CISCODUMP
+OPTIONS_DEFINE=		GUI RTP SNMP MAXMIND LUA DECRYPT ANDROIDDUMP SSHDUMP CISCODUMP OPUS
 
 OPTIONS_SINGLE=		GSSAPI
 
@@ -72,7 +73,6 @@ RTP_DESC=		Enable support for playing back RTP streams
 DECRYPT_DESC=		Decryption support for SSL and IPSec
 ANDROIDDUMP_DESC=	Build androiddump extcap tool
 MAXMIND_DESC=		Enable MaxMindDB-based GeoIP geolocation support
-CARES_DESC=		Enable support for asynchronous DNS via c-ares
 GSSAPI_DESC=		Kerberos dissection support
 GSSAPI_BASE_DESC=		Kerberos support via base system
 GSSAPI_HEIMDAL_DESC=	Kerberos support via security/heimdal
@@ -80,6 +80,7 @@ GSSAPI_MIT_DESC=		Kerberos support via security/krb5
 GSSAPI_NONE_DESC=		Disable Kerberos support
 SSHDUMP_DESC=		Build sshdump extcap tool
 CISCODUMP_DESC=		Build ciscodump extcap tool
+OPUS_DESC=		Build opus decoder plugin
 
 GUI_USES=		qt:5
 GUI_USE=	qt=core,gui,multimedia,widgets,printsupport,svg,buildtools_build,linguisttools_build,qmake_build
@@ -93,11 +94,12 @@ RTP_LIB_DEPENDS=	libspandsp.so:comms/spandsp
 RTP_CPPFLAGS=		-I${LOCALBASE}/include
 MAXMIND_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
 SNMP_LIB_DEPENDS=	libsmi.so:net-mgmt/libsmi
-CARES_LIB_DEPENDS=	libcares.so:dns/c-ares
 DECRYPT_LIB_DEPENDS=	libgnutls.so:security/gnutls \
 			libgcrypt.so:security/libgcrypt
 SSHDUMP_LIB_DEPENDS=	libssh.so:security/libssh
 CISCODUMP_LIB_DEPENDS=	libssh.so:security/libssh
+OPUS_LIB_DEPENDS=	libopus.so:audio/opus
+OPUS_CPPFLAGS=		-I${LOCALBASE}/include
 
 GSSAPI_NONE_CMAKE_ON=	-DENABLE_KERBEROS=OFF
 GSSAPI_NONE_CMAKE_OFF=	-DENABLE_KERBEROS=ON
@@ -109,8 +111,6 @@ RTP_CMAKE_ON=	-DENABLE_SPANDSP=ON
 RTP_CMAKE_OFF=	-DENABLE_SPANDSP=OFF
 SNMP_CMAKE_ON=	-DENABLE_SMI=ON
 SNMP_CMAKE_OFF=	-DENABLE_SMI=OFF
-CARES_CMAKE_ON=	-DENABLE_CARES=ON
-CARES_CMAKE_OFF=	-DENABLE_CARES=OFF
 DECRYPT_CMAKE_ON=	-DENABLE_GNUTLS=ON
 DECRYPT_CMAKE_OFF=	-DENABLE_GNUTLS=OFF
 ANDROIDDUMP_CMAKE_ON=-DBUILD_androiddump=ON
@@ -119,6 +119,8 @@ SSHDUMP_CMAKE_ON=-DBUILD_sshdump=ON
 SSHDUMP_CMAKE_OFF=-DBUILD_sshdump=OFF
 CISCODUMP_CMAKE_ON=-DBUILD_ciscodump=ON
 CISCODUMP_CMAKE_OFF=-DBUILD_ciscodump=OFF
+OPUS_CMAKE_ON=	-DENABLE_OPUS=ON
+OPUS_CMAKE_OFF=	-DENABLE_OPUS=OFF
 
 LUA_CPPFLAGS=		-I${LUA_INCDIR}
 
@@ -130,13 +132,15 @@ OPTIONS_SUB=		yes
 .if defined(LITE)
 CMAKE_ARGS+=	-DBUILD_androiddump=OFF \
 		-DBUILD_sshdump=OFF \
-		-DBUILD_ciscodump=OFF
+		-DBUILD_ciscodump=OFF \
+		-DENABLE_OPUS=OFF
 PLIST_SUB+=	ANDROIDDUMP_LIB="@comment " \
 		ANDROIDDUMP_MAN="@comment " \
 		SSHDUMP_LIB="@comment " \
 		SSHDUMP_MAN="@comment " \
 		CISCODUMP_LIB="@comment " \
-		CISCODUMP_MAN="@comment "
+		CISCODUMP_MAN="@comment " \
+		OPUS="@comment "
 .endif
 
 .include <bsd.port.options.mk>
@@ -177,6 +181,11 @@ PLIST_SUB+=	CISCODUMP_LIB="" \
 .else
 PLIST_SUB+=	CISCODUMP_LIB="@comment " \
 		CISCODUMP_MAN="@comment "
+.endif
+.if ${PORT_OPTIONS:MOPUS}
+PLIST_SUB+=	OPUS=""
+.else
+PLIST_SUB+=	OPUS="@comment "
 .endif
 .endif
 

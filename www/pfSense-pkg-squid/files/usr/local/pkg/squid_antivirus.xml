@@ -8,7 +8,7 @@
  * squid_antivirus.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2014 Marcello Coutinho
  * All rights reserved.
  *
@@ -143,21 +143,39 @@
 			
 		</field>
 		<field>
-			<fielddescr>Google Safe Browsing</fielddescr>
-			<fieldname>clamav_safebrowsing</fieldname>
-			<description>Enables Google Safe Browsing support.</description>
-			<sethelp>
+			<fielddescr>Scan Type</fielddescr>
+			<fieldname>clamav_scan_type</fieldname>
+			<description>
 				<![CDATA[
-				<a href="http://www.clamav.net/documents/safebrowsing" target="_blank">Google Safe Browsing</a> database includes information about websites that may be <a href="https://support.google.com/code/answer/70015" target="_blank">phishing sites or possible sources of malware</a>.<br/>
-				<strong><span class="text-danger">Warning:</span></strong> This option consumes significant amount of RAM.<br/>
+				What kind of data to scan:<br/>
+				<span class="text-info">All:</span> All data<br/>
+				<span class="text-info">Web:</span> Web pages, scripts, images and documents<br/>
+				<span class="text-info">Applications:</span> Executables, scripts, archives and documents<br/>
 				]]>
-			</sethelp>
-			<type>checkbox</type>
+			</description>
+			<type>select</type>
+			<options>
+				<option><value>all</value><name>All (default)</name></option>
+				<option><value>web</value><name>Web</name></option>
+				<option><value>app</value><name>Applications</name></option>
+			</options>
+			<default_value>all</default_value>
 		</field>
 		<field>
 			<fielddescr>Exclude Audio/Video Streams</fielddescr>
 			<fieldname>clamav_disable_stream_scanning</fieldname>
-			<description>This option disables antivirus scanning of streamed video and audio.</description>
+			<description>This option disables antivirus scanning of streamed video and audio for the default scan type.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Block PUA</fielddescr>
+			<fieldname>clamav_block_pua</fieldname>
+			<description>This option enables blocking of Potentially Unwanted Applications.</description>
+			<sethelp>
+				<![CDATA[
+				See <a href="https://www.clamav.net/documents/potentially-unwanted-applications-pua" target="_blank">https://www.clamav.net/documents/potentially-unwanted-applications-pua</a> for details.
+				]]>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -225,6 +243,67 @@
 				<span class="text-info">Separate entries by semi-colons (;)</span><br/>
 				<strong><span class="text-info">Note:</span></strong> For official update mirrors, use <span class="text-info">db.XY.clamav.net</span> format.
 				(Replace XY with your <a href="http://www.iana.org/domains/root/db" target="_blank">country code</a>.)
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<name>Unofficial Signatures</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>URLhaus</fielddescr>
+			<fieldname>urlhaus_sig</fieldname>
+			<description>Enables URLhaus active malware distribution sites DB support.</description>
+			<sethelp>
+				<![CDATA[
+				The signature file only contains active malware distribution sites or such that have been added to URLhaus in past 48 hours. The false positive rate should be very low. See <a href="https://urlhaus.abuse.ch/api/#clamav" target="_blank">URLhaus ClamAV signatures</a> for details.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>InterServer</fielddescr>
+			<fieldname>interserver_sig</fieldname>
+			<description>Enables InterServer.net malware DB support.</description>
+			<sethelp>
+				<![CDATA[
+				The signature file contains real time suspected malware list as detected by InterServer's InterShield protection system. See <a href="http://rbluri.interserver.net/usage.php" target="_blank">InterServer Real Time Malware Detection</a> for details.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>SecuriteInfo</fielddescr>
+			<fieldname>securiteinfo_sig</fieldname>
+			<description>Enables SecuriteInfo.com malware DB support.</description>
+			<sethelp>
+                                <![CDATA[
+				The signature files contains more that 4.000.000 signatures. At least free registration needed. See <a href="https://www.securiteinfo.com/services/anti-spam-anti-virus/improve-detection-rate-of-zero-day-malwares-for-clamav.shtml?lg=en">SecuriteInfo signatures info</a> for details.<br/>
+                                <strong><span class="text-danger">Warning:</span></strong> This option consumes significant amount of RAM.<br/>
+                                ]]>
+                        </sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>SecuriteInfo Premium</fielddescr>
+			<fieldname>securiteinfo_premium</fieldname>
+			<description>Enables SecuriteInfo.com 0-day malware DB support.</description>
+			<sethelp>
+                                <![CDATA[
+				A valid premium subscription ID required.
+                                ]]>
+                        </sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>SecuriteInfo ID</fielddescr>
+			<fieldname>securiteinfo_id</fieldname>
+			<description>
+				<![CDATA[
+				The unique 128 character identifier from one of the download links.<br/>
+				<span class="text-info">Example:</span> https://www.securiteinfo.com/get/signatures/your_unique_and_very_long_random_string_of_characters/securiteinfo.hdb
 				]]>
 			</description>
 			<type>input</type>

@@ -8,7 +8,7 @@
  * bind.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Juliano Oliveira
  * Copyright (c) 2013 Adriano Brancher
  * Copyright (c) 2016 Voleatech GmbH
@@ -315,7 +315,6 @@
 			<description>
 				<![CDATA[
 				Enter IPs of DNS servers to use for recursion. Separate by semi-colons (;).<br />
-				Please also add a semi-colon (;) behind the last entry<br />
 				Applies only if Enable Forwarding is chosen.
 				]]>
 			</description>
@@ -347,7 +346,7 @@
 			</description>
 			<type>input</type>
 			<size>5</size>
-			<default_value>953</default_value>
+			<default_value>8953</default_value>
 			<advancedfield/>
 		</field>
 		<field>

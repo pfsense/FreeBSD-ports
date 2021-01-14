@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	uwsgi
-PORTVERSION=	2.0.18
+PORTVERSION=	2.0.19.1
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	http://projects.unbit.it/downloads/
 
@@ -12,7 +13,7 @@ COMMENT=	Developer-friendly WSGI server which uses uwsgi protocol
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		pkgconfig python
+USES=		pkgconfig python:3.6+
 USE_PYTHON=	distutils concurrent optsuffix
 USE_RC_SUBR=	uwsgi
 
@@ -61,6 +62,8 @@ post-patch:
 .for var in JSON PCRE XML SSL
 	@${REINPLACE_CMD} -e '/^${var:tl} =/ s|= .*|= ${BUILDCONF_${var}:Ufalse}|' ${WRKSRC}/buildconf/base.ini
 .endfor
+	@${REINPLACE_CMD} -e '/ifdef/s,APPLE,${OPSYS},' \
+		${WRKSRC}/plugins/psgi/psgi_plugin.c
 
 post-patch-PSGI-on:
 	@${REINPLACE_CMD} -e 's/%(main_plugin)s,/%(main_plugin)s, psgi,/' ${WRKSRC}/buildconf/base.ini

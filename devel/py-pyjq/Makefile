@@ -15,13 +15,13 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libjq.so:textproc/jq \
 		libonig.so:devel/oniguruma
 
-USES=		localbase python
+USES=		localbase python:3.6+
 USE_PYTHON=	autoplist distutils
 
 post-patch:
 	@${RM} -r ${WRKSRC}/dependencies
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_pyjq.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_pyjq*.so
 
 .include <bsd.port.mk>

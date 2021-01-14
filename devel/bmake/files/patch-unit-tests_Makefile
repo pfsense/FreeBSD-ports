@@ -1,0 +1,17 @@
+--- unit-tests/Makefile.orig	2020-12-02 19:06:25 UTC
++++ unit-tests/Makefile
+@@ -311,12 +311,12 @@ TESTS+=		varmod-defined
+ TESTS+=		varmod-edge
+ TESTS+=		varmod-exclam-shell
+ TESTS+=		varmod-extension
+-TESTS+=		varmod-gmtime
++#TESTS+=		varmod-gmtime
+ TESTS+=		varmod-hash
+ TESTS+=		varmod-head
+ TESTS+=		varmod-ifelse
+ TESTS+=		varmod-l-name-to-value
+-TESTS+=		varmod-localtime
++#TESTS+=		varmod-localtime
+ TESTS+=		varmod-loop
+ TESTS+=		varmod-match
+ TESTS+=		varmod-match-escape

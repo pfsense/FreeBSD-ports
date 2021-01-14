@@ -3,7 +3,7 @@
  * backup.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -54,7 +54,7 @@ if ($_GET['a'] == "download") {
 		$i = 0;
 		if (count($a_backup) > 0) {
 			/* Do NOT remove the trailing space after / from $backup_cmd below!!! */
-			$backup_cmd = "/usr/bin/tar --create --verbose --gzip --file {$backup_path} --directory / ";
+			$backup_cmd = "/usr/bin/tar --create --verbose --gzip --file {$backup_path} --exclude {$backup_path} --directory / ";
 			foreach ($a_backup as $ent) {
 				if ($ent['enabled'] == "true") {
 					$backup_cmd .= escapeshellarg($ent['path']) . ' ';

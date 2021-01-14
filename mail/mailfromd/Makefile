@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mailfromd
-PORTVERSION=	8.8
+PORTVERSION=	8.9
 CATEGORIES=	mail
 MASTER_SITES=	http://download.gnu.org.ua/pub/release/${PORTNAME}/ \
 		http://download.gnu.org.ua/pub/alpha/${PORTNAME}/
@@ -21,7 +21,8 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	DEFAULT_STATE_DIR="${DATABASEDIR}" \
 		DEFAULT_SOCKET="unix:${MFD_RUN_DIR}/${PORTNAME}.sock" \
 		DEFAULT_USER=mailnull
-USE_RC_SUBR=	${PORTNAME}
+USE_RC_SUBR=	calloutd ${PORTNAME}
+TEST_TARGET=	check
 
 DATABASEDIR?=	/var/db/${PORTNAME}
 MFD_RUN_DIR?=	/var/run/${PORTNAME}

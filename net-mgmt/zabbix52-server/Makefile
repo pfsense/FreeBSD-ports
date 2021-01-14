@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	zabbix52
-PORTVERSION=	5.2.0
+PORTVERSION=	5.2.2
 PORTREVISION?=	0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://cdn.zabbix.com/zabbix/sources/stable/${PORTVERSION:R}/
@@ -127,6 +127,10 @@ NMAP_RUN_DEPENDS=	nmap:security/nmap \
 
 LIBXML2_CONFIGURE_WITH=	libxml2=${LOCALBASE}
 LIBXML2_LIB_DEPENDS=	libxml2.so:textproc/libxml2
+
+MODBUS_DESC=		Support for Modbus checks
+MODBUS_CONFIGURE_WITH=	libmodbus
+MODBUS_LIB_DEPENDS=	libmodbus.so:comms/libmodbus
 
 OPENSSL_CONFIGURE_WITH=	openssl
 OPENSSL_USES=		ssl

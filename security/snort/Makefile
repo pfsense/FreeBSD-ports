@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	snort
-PORTVERSION=	2.9.16.1
+PORTVERSION=	2.9.17
 CATEGORIES=	security
 MASTER_SITES=	https://snort.org/downloads/snort/
 PATCH_DIST_STRIP=	-p1
@@ -79,8 +79,6 @@ APPID_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
 APPID_CONFIGURE_ENV+=	luajit_CFLAGS="-I${LOCALBASE}/include/luajit-2.1" \
 			luajit_LIBS="-L${LOCALBASE}/lib -lluajit-5.1"
 
-.include <bsd.port.options.mk>
-
 CONFIG_FILES=	classification.config gen-msg.map reference.config \
 		snort.conf threshold.conf unicode.map file_magic.conf attribute_table.dtd
 
@@ -102,19 +100,18 @@ post-patch:
 		-e '/^# include .PREPROC_RULE/s/# include/include/' \
 		${WRKSRC}/etc/snort.conf
 
+post-patch-IPV6-off:
 # IPv6 is no longer a ./configure option!
-.if ! ${PORT_OPTIONS:MIPV6}
 	@${REINPLACE_CMD} -e '/normalize_ip6/s/^preprocessor/#preprocessor/' \
 		-e '/normalize_icmp6/s/^preprocessor/#preprocessor/' \
 		${WRKSRC}/etc/snort.conf
-.endif
 
 post-build:
 	@${FIND} ${WRKSRC}/src -name '*.0' -type f -exec ${STRIP_CMD} {} \;
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR} ${STAGEDIR}${RULES_DIR} ${STAGEDIR}${LOGS_DIR} \
-		${STAGEDIR}${PREPROC_RULE_DIR} ${STAGEDIR}${DOCSDIR}
+		${STAGEDIR}${PREPROC_RULE_DIR}
 
 .for f in ${CONFIG_FILES}
 	${INSTALL_DATA} ${WRKSRC}/etc/${f} ${STAGEDIR}${ETCDIR}/${f}-sample
@@ -123,6 +120,9 @@ post-install:
 .for f in ${PREPROC_RULES}
 	${INSTALL_DATA} ${WRKSRC}/preproc_rules/${f} ${STAGEDIR}${PREPROC_RULE_DIR}/${f}-sample
 .endfor
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${PREPROC_RULE_DIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

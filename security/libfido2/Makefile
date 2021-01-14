@@ -3,6 +3,7 @@
 
 PORTNAME=	libfido2
 PORTVERSION=	1.5.0
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://developers.yubico.com/libfido2/Releases/
 
@@ -27,7 +28,9 @@ OPTIONS_DEFINE=	DOCS
 .include <bsd.port.pre.mk>
 
 post-patch:
-	@${REINPLACE_CMD} -e '/libcrypto/d' ${WRKSRC}/CMakeLists.txt
-	@${REINPLACE_CMD} -e 's|endian.h|sys/&|' ${WRKSRC}/CMakeLists.txt ${WRKSRC}/openbsd-compat/openbsd-compat.h
+# we do not ship libcrypto.pc in base system
+.if ${SSL_DEFAULT} == base
+	@${REINPLACE_CMD} -e '/libcrypto/d' ${WRKSRC}/CMakeLists.txt ${WRKSRC}/src/libfido2.pc.in
+.endif
 
 .include <bsd.port.post.mk>

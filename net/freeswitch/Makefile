@@ -14,7 +14,7 @@ COMMENT=	Multi-protocol soft switch for telephony applications
 
 LICENSE=	MPL11
 
-ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS=	amd64 powerpc64 powerpc64le
 
 BUILD_DEPENDS=	gdiff:textproc/diffutils
 LIB_DEPENDS=	libsqlite3.so:databases/sqlite3 \
@@ -33,8 +33,8 @@ LIB_DEPENDS=	libsqlite3.so:databases/sqlite3 \
 		libtiff.so:graphics/tiff \
 		libuuid.so:misc/e2fsprogs-libuuid
 
-USES=		gmake iconv jpeg libedit autoreconf libtool lua perl5 \
-		pkgconfig shebangfix ssl
+USES=		compiler:c11 gmake iconv jpeg libedit autoreconf libtool lua \
+		perl5 pkgconfig shebangfix ssl
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	freeswitch
 BINARY_ALIAS=	diff=gdiff
@@ -56,7 +56,7 @@ GROUPS=		${USERS}
 
 SUB_FILES=	pkg-message
 
-OPTIONS_DEFINE=		ALL_MODULES X11 EXAMPLES PGSQL
+OPTIONS_DEFINE=		X11 EXAMPLES PGSQL
 OPTIONS_DEFAULT=	8K 16K ENGLISH PGSQL
 OPTIONS_MULTI=		BITRATE LANGUAGE
 OPTIONS_MULTI_BITRATE=	8K 16K 32K 48K
@@ -64,7 +64,6 @@ OPTIONS_MULTI_LANGUAGE=	CHINESE_HK CHINESE_SIM BRAZILIAN ENGLISH ENGLISH_CA FREN
 OPTIONS_SUB=		yes
 NO_OPTIONS_SORT=	yes
 
-ALL_MODULES_DESC=	Build all modules
 X11_DESC=		graphics/ImageMagick[-nox11] dependency
 8K_DESC=		8kHz Audio Files
 16K_DESC=		16kHz Audio Files
@@ -78,46 +77,6 @@ ENGLISH_CA_DESC=	Canadian English Language Sounds
 FRENCH_CA_DESC=		French Canadian Language Sounds
 RUSSIAN_DESC=		Russian Language Sounds
 SWEDISH_DESC=		Swedish Language Sounds
-
-ALL_MODULES_BUILD_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa \
-				${LOCALBASE}/bin/aclocal:devel/automake \
-				${LOCALBASE}/bin/erl:lang/erlang \
-				${LOCALBASE}/bin/bash:shells/bash \
-				${LOCALBASE}/bin/mariadb:databases/mariadb104-client
-ALL_MODULES_CONFLICTS_BUILD=	apr
-ALL_MODULES_EXTRA_PATCHES=	${FILESDIR}/extrapatch-modules.conf
-ALL_MODULES_LIB_DEPENDS=	libopencv_video.so:graphics/opencv \
-				libSoundTouch.so:audio/soundtouch \
-				libasound.so:audio/alsa-lib \
-				libcodec2.so:audio/codec2 \
-				libflite.so:audio/flite \
-				libh2o.so:www/h2o \
-				libh323.so:net/h323plus \
-				libhiredis.so:databases/hiredis \
-				libilbc.so:net/ilbc \
-				libmemcached.so:databases/libmemcached \
-				libmongoc-1.0.so:devel/mongo-c-driver \
-				libmp3lame.so:audio/lame \
-				libmp4v2.so:multimedia/mp4v2 \
-				libmpg123.so:audio/mpg123 \
-				libnetsnmp.so:net-mgmt/net-snmp \
-				libopencv_core.so:graphics/opencv-core \
-				libopusfile.so:audio/opusfile \
-				libportaudio.so:audio/portaudio \
-				libpt.so:devel/ptlib \
-				librabbitmq.so:net/rabbitmq-c \
-				libshout.so:audio/libshout \
-				libtheora.so:multimedia/libtheora \
-				libtonezone.so:misc/dahdi \
-				libvlc.so:multimedia/vlc \
-				libyaml.so:textproc/libyaml
-ALL_MODULES_RUN_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa
-ALL_MODULES_USE=		XORG=x11 OPENLDAP=yes JAVA=yes
-ALL_MODULES_USES=		python:2.7 xorg # required by mod_unimrcp
-ALL_MODULES_CFLAGS=		-I${LOCALBASE}/include/openh323/ \
-				-I${JAVA_HOME}/include/ \
-				-I${JAVA_HOME}/include/freebsd
-JAVA_VERSION=			11
 
 8K_VARS=	BITRATES+=8000
 16K_VARS=	BITRATES+=16000
@@ -134,14 +93,6 @@ PGSQL_CONFIGURE_ENV_OFF=	ac_cv_lib_pq_PQgetvalue=false
 # INSTALL_TARGET=		install-strip
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MALL_MODULES}
-.if ${PORT_OPTIONS:MX11}
-LIB_DEPENDS+=	libMagickWand-6.so:graphics/ImageMagick6
-.else
-LIB_DEPENDS+=	libMagickWand-6.so:graphics/ImageMagick6-nox11
-.endif
-.endif
 
 EDPRE=	freeswitch-sounds
 EDPOST=	1.0.51.tar.gz

@@ -3,7 +3,7 @@
  * apcupsd.conf.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2016 Danilo G. Baio <dbaio@bsd.com.br>
  * All rights reserved.
  *

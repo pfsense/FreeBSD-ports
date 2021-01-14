@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lxml
-PORTVERSION=	4.5.2
+PORTVERSION=	4.6.2
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,7 @@ COMMENT=	Pythonic binding for the libxml2 and libxslt libraries
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/doc/licenses/BSD.txt
 
-USES=		compiler gnome python uniquefiles:dirs
+USES=		compiler gnome python:3.6+ uniquefiles:dirs
 USE_GNOME=	libxml2 libxslt
 USE_PYTHON=	autoplist concurrent distutils
 

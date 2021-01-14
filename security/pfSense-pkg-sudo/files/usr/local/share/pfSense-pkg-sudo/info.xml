@@ -2,7 +2,7 @@
 <pfsensepkgs>
 	<package>
 		<name>sudo</name>
-		<pkginfolink>https://doc.pfsense.org/index.php/Sudo_Package</pkginfolink>
+		<pkginfolink>https://docs.netgate.com/pfsense/en/latest/packages/sudo.html</pkginfolink>
 		<descr><![CDATA[sudo allows delegation of privileges to users in the shell so commands can be run as other users, such as root.]]></descr>
 		<website>http://www.sudo.ws/</website>
 		<version>%%PKGVERSION%%</version>

@@ -3,7 +3,7 @@
  * status_monitoring.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2008-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2008-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2006 Peter Allgeyer
  * All rights reserved.

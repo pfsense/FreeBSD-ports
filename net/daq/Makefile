@@ -3,7 +3,7 @@
 
 PORTNAME=	daq
 PORTVERSION=	2.2.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	https://snort.org/downloads/snortplus/ \
 		ZI

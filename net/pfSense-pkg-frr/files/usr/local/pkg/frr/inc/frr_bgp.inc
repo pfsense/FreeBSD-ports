@@ -3,7 +3,7 @@
  * frr_bgp.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,14 +19,13 @@
  * limitations under the License.
  */
 
-/* Supported address famililes constant */
-define("FRR_BGP_ADDRESS_FAMILIES", array("ipv4 unicast", "ipv6 unicast"));
+define('PKG_FRR_BGP_ADDRESS_FAMILIES', array('ipv4 unicast', 'ipv6 unicast'));
 
 /* Fetch the list of BGP AS Paths for use in selection lists */
 function frr_get_bgp_aspath_list() {
 	global $config;
 	$list = array();
-	$list[] = array("name" => "None", "value" => "none");
+	$list[] = PKG_FRR_LIST_NONE_VALUE;
 	if (is_array($config['installedpackages']['frrbgpaspaths']['config'])) {
 		foreach ($config['installedpackages']['frrbgpaspaths']['config'] as $asp) {
 			$list[] = array("name" => "{$asp['name']} - {$asp['descr']}", "value" => $asp['name']);
@@ -39,7 +38,7 @@ function frr_get_bgp_aspath_list() {
 function frr_get_bgp_community_list() {
 	global $config, $frr_well_known_communities;
 	$list = array();
-	$list[] = array("name" => "None", "value" => "none");
+	$list[] = PKG_FRR_LIST_NONE_VALUE;
 
 	foreach ($frr_well_known_communities as $wkc) {
 		$tmp["name"] = $wkc;
@@ -189,6 +188,15 @@ function frr_bgp_generate_router() {
 		$bgpconf .= " bgp graceful-shutdown\n";
 	}
 
+	/* Global neighbors administrative shutdown */
+	if (!empty($frr_bgp_conf['shutdown'])) {
+		$bgpconf .= " bgp shutdown";
+		if (!empty($frr_bgp_conf['shutdownmessage'])) {
+			$bgpconf .= " message \"{$frr_bgp_conf['shutdownmessage']}\"";
+		}
+		$bgpconf .= "\n";
+	}
+
 	/* Timers */
 	/* Set keep-alive and holdtime, both MUST be set together */
 	if ((frr_validate_intrange($frr_bgp_conf['timers_keepalive'], 0, 65535)) &&
@@ -208,7 +216,7 @@ function frr_bgp_generate_router() {
 		$bgpconf .= "\n";
 	}
 	/* Address-family options */
-	foreach (FRR_BGP_ADDRESS_FAMILIES as $af) {
+	foreach (PKG_FRR_BGP_ADDRESS_FAMILIES as $af) {
 		$ipfamily = explode(" ", $af)[0];
 		$af_pre = $af . "-pre";
 
@@ -454,7 +462,7 @@ function frr_bgp_generate_neighbors() {
 	foreach ($frr_neighbor_conf as $neighbor) {
 		/* Per-neighbor address family enabled flag */
 		$nei_af_flag = array();
-		foreach (FRR_BGP_ADDRESS_FAMILIES as $af) {
+		foreach (PKG_FRR_BGP_ADDRESS_FAMILIES as $af) {
 			$nei_af_flag[$af] = false;
 		}
 
@@ -496,8 +504,23 @@ function frr_bgp_generate_neighbors() {
 			$nconf .= " neighbor {$neighbor['peer']} description {$neighbor['descr']}\n";
 		}
 
+		/* Neighbor administrative/automatic shutdown */
 		if (!empty($neighbor['shutdown'])) {
-			$nconf .= " neighbor {$neighbor['peer']} shutdown\n";
+			$nconf .= " neighbor {$neighbor['peer']} shutdown";
+			if (!empty($neighbor['shutdownmessage'])) {
+				$nconf .= " message \"{$neighbor['shutdownmessage']}\"";
+			}
+			$nconf .= "\n";
+		}
+
+		if (!empty($neighbor['shutdownautortt'])) {
+			$nconf .= " neighbor {$neighbor['peer']} shutdown rtt {$neighbor['shutdownautortt']}";
+			if (!empty($neighbor['shutdownautokeepalive'])) {
+				$nconf .= " count {$neighbor['shutdownautokeepalive']}";
+			} else {
+				$nconf .= " count 1";
+			}
+			$nconf .= "\n";
 		}
 
 		switch ($neighbor['grmode']) {
@@ -602,25 +625,12 @@ function frr_bgp_generate_neighbors() {
 			$nconf .= "\n";
 		}
 
-		if (frr_validate_ulong($neighbor['maximumprefix_num'], 1)) {
-			$nconf .= " neighbor {$neighbor['peer']} maximum-prefix {$neighbor['maximumprefix_num']}";
-			if (frr_validate_intrange($neighbor['maximumprefix_threshold'], 1, 100)) {
-				$nconf .= " {$neighbor['maximumprefix_threshold']}";
-			}
-			if (!empty($neighbor['maximumprefix_warnonly'])) {
-				$nconf .= " warning-only";
-			} elseif (frr_validate_intrange($neighbor['maximumprefix_restart'], 1, 65535)) {
-				$nconf .= " {$neighbor['maximumprefix_restart']}";
-			}
-			$nconf .= "\n";
-		}
-
 		if (!empty($neighbor['solo'])) {
 			$nconf .= " neighbor {$neighbor['peer']} solo\n";
 		}
 
 		/* Address family neighbor configuration items */
-		foreach(FRR_BGP_ADDRESS_FAMILIES as $af) {
+		foreach(PKG_FRR_BGP_ADDRESS_FAMILIES as $af) {
 			/* Check if neighbor is enabled for the current address family */
 			if (!($nei_af_flag[$af])) {
 				continue;
@@ -648,6 +658,26 @@ function frr_bgp_generate_neighbors() {
 					$frr_bgp_config_address_family[$af] .= "  neighbor {$neighbor['peer']} send-community {$neighbor['sendcommunity']}\n";
 					break;
 				default:
+			}
+
+			if (frr_validate_ulong($neighbor['maximumprefix_num'], 1)) {
+				$frr_bgp_config_address_family[$af] .= " neighbor {$neighbor['peer']} maximum-prefix {$neighbor['maximumprefix_num']}";
+				if (frr_validate_intrange($neighbor['maximumprefix_threshold'], 1, 100)) {
+					$frr_bgp_config_address_family[$af] .= " {$neighbor['maximumprefix_threshold']}";
+				}
+				if (!empty($neighbor['maximumprefix_warnonly'])) {
+					$frr_bgp_config_address_family[$af] .= " warning-only";
+				} elseif (frr_validate_intrange($neighbor['maximumprefix_restart'], 1, 65535)) {
+					$frr_bgp_config_address_family[$af] .= " restart {$neighbor['maximumprefix_restart']}";
+				}
+				if (!empty($neighbor['maximumprefix_force'])) {
+					$frr_bgp_config_address_family[$af] .= " force";
+				}
+				$frr_bgp_config_address_family[$af] .= "\n";
+			}
+
+			if (frr_validate_ulong($neighbor['maximumprefixout_num'], 1)) {
+				$frr_bgp_config_address_family[$af] .= " neighbor {$neighbor['peer']} maximum-prefix-out {$neighbor['maximumprefixout_num']}\n";
 			}
 
 			if ($neighbor['nexthopself'] == "enabled") {
@@ -904,7 +934,7 @@ function frr_bgp_generate_address_families() {
 
 	$afconf = "";
 
-	foreach (FRR_BGP_ADDRESS_FAMILIES as $af) {
+	foreach (PKG_FRR_BGP_ADDRESS_FAMILIES as $af) {
 		if (empty($frr_bgp_config_address_family["{$af}-pre"])) {
 			continue;
 		}
@@ -922,6 +952,7 @@ function frr_generate_config_bgp() {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
 	} else {
 		/* If FRR is not configured, stop. */
+		frr_package_log("FRR BGPd: No FRR global config data found.");
 		return null;
 	}
 	/* Populate FRR BGP Settings */
@@ -936,16 +967,22 @@ function frr_generate_config_bgp() {
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_bgp_conf)) {
-			log_error("FRR BGPd: No config data found.");
+			frr_package_log("FRR BGPd: No config data found.");
 			return;
-		} elseif (empty($frr_conf['enable']) || empty($frr_bgp_conf['enable'])) {
-			/* FRR is disabled or BGP is not enabled. */
+		} elseif (empty($frr_bgp_conf['enable'])) {
+			/* BGP daemon is not enabled. */
+			frr_package_log("FRR BGPd: BGP disabled.");
+			return;
+		} elseif (empty($frr_conf['enable'])) {
+			/* FRR is disabled or BFD Daemon is not enabled. */
+			frr_package_log("FRR BGPd: FRR master disabled.");
 			return;
 		}
+
 		$frr_integrated_config['bgpd'] = "";
 
 		$frr_bgp_config_address_family = array();
-		foreach (FRR_BGP_ADDRESS_FAMILIES as $af) {
+		foreach (PKG_FRR_BGP_ADDRESS_FAMILIES as $af) {
 			$frr_bgp_config_address_family[$af] = "";
 			$frr_bgp_config_address_family["{$af}-pre"] = "";
 		}

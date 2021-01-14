@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gdal
-PORTVERSION=	3.1.0
-PORTREVISION=	6
+PORTVERSION=	3.1.4
+PORTREVISION=	3
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://download.osgeo.org/gdal/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -15,7 +15,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
 BUILD_DEPENDS=	libgeotiff>=1.5.0:graphics/libgeotiff \
-		proj>=6:graphics/proj
+		proj>=6,1:graphics/proj
 LIB_DEPENDS=	libgeotiff.so:graphics/libgeotiff \
 		libgif.so:graphics/giflib \
 		libjson-c.so:devel/json-c \
@@ -24,20 +24,24 @@ LIB_DEPENDS=	libgeotiff.so:graphics/libgeotiff \
 		libqhull.so.7:math/qhull \
 		libtiff.so:graphics/tiff
 
-OPTIONS_DEFINE=	ARMADILLO CFITSIO CURL ECW EXPAT FREEXL GEOS GTA HDF5 JASPER \
-		KML LIBXML2 MYSQL NETCDF ODBC OPENJPEG PCRE PGSQL SFCGAL \
-		SPATIALITE SQLITE WEBP XERCES ZSTD
+OPTIONS_DEFINE=	ARMADILLO CFITSIO CHARLS CRYPTOPP CURL DODS ECW EXPAT EXR FREEXL GEOS GTA HDF5 JASPER KML LIBXML2 MYSQL NETCDF ODBC OPENJPEG PCRE PGSQL SFCGAL SPATIALITE SQLITE TILEDB WEBP XERCES ZSTD
 OPTIONS_RADIO=	PDF
 OPTIONS_RADIO_PDF=	PODOFO POPPLER
 OPTIONS_DEFAULT=JASPER
 OPTIONS_SUB=	yes
+CHARLS_DESC=	JPEG-Lossless support via charls
+CRYPTOPP_DESC=	Cryptopp support
+DODS_DESC=	DODS/OPeNDAP support
+EXR_DESC=	EXR support via OpenEXR library
 PCRE_DESC=	Regular expression support for SQLite
+TILEDB_DESC=	TileDB support
 
 USES=		compiler:c++11-lang gmake iconv jpeg localbase pkgconfig ssl tar:xz
 
 CFLAGS+=	-fPIC
 CONFIGURE_ARGS=	--datadir=${PREFIX}/share \
 		--enable-static=yes \
+		--with-crypto=yes \
 		--with-geotiff=yes \
 		--with-gif=yes \
 		--with-gnm=yes \
@@ -46,6 +50,8 @@ CONFIGURE_ARGS=	--datadir=${PREFIX}/share \
 		--with-liblzma=yes \
 		--with-libtiff=yes \
 		--with-libz=/usr \
+		--with-pcidsk=internal \
+		--with-pcraster=internal \
 		--with-png=yes \
 		--with-proj=yes \
 		--with-qhull=yes \
@@ -79,17 +85,28 @@ HEADER_FILES=	alg/gdalwarpkernel_opencl.h \
 		port/cpl_vsil_curl_priv.h \
 		port/cpl_worker_thread_pool.h
 
-ARMADILLO_CONFIGURE_WITH=	armadillo
+ARMADILLO_CONFIGURE_OFF=--with-armadillo=no
+ARMADILLO_CONFIGURE_ON=	--with-armadillo=${LOCALBASE}
 ARMADILLO_LIB_DEPENDS=	libarmadillo.so:math/armadillo
 CFITSIO_CONFIGURE_WITH=	cfitsio
 CFITSIO_LIB_DEPENDS=	libcfitsio.so:astro/cfitsio
+CHARLS_CONFIGURE_WITH=	charls
+CHARLS_LIB_DEPENDS=	libcharls.so:graphics/charls
+CRYPTOPP_CONFIGURE_OFF=	--with-cryptopp=no
+CRYPTOPP_CONFIGURE_ON=	--with-cryptopp=${LOCALBASE}
+CRYPTOPP_LIB_DEPENDS=	libcryptopp.so:security/cryptopp
 CURL_CONFIGURE_OFF=	--with-curl=no
 CURL_CONFIGURE_ON=	--with-curl=${LOCALBASE}/bin/curl-config
 CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
+DODS_CONFIGURE_OFF=	--with-dods-root=no
+DODS_CONFIGURE_ON=	--with-dods-root=${LOCALBASE}
+DODS_LIB_DEPENDS=	libdap.so:devel/libdap
 ECW_CONFIGURE_WITH=	ecw
 ECW_LIB_DEPENDS=	libNCSEcw.so:graphics/libecwj2
 EXPAT_CONFIGURE_WITH=	expat
 EXPAT_LIB_DEPENDS=	libexpat.so:textproc/expat2
+EXR_CONFIGURE_ON=	--with-exr
+EXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr
 FREEXL_CONFIGURE_WITH=	freexl
 FREEXL_LIB_DEPENDS=	libfreexl.so:textproc/freexl
 GEOS_CONFIGURE_OFF=	--with-geos=no
@@ -113,6 +130,7 @@ NETCDF_CONFIGURE_WITH=	netcdf
 NETCDF_LIB_DEPENDS=	libnetcdf.so:science/netcdf
 ODBC_CONFIGURE_WITH=	odbc
 ODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
+OPENJPEG_BUILD_DEPENDS=	openjpeg>=2.1.0:graphics/openjpeg
 OPENJPEG_CONFIGURE_WITH=openjpeg
 OPENJPEG_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
 PCRE_CONFIGURE_WITH=	pcre
@@ -130,6 +148,9 @@ SPATIALITE_CONFIGURE_WITH=	spatialite
 SPATIALITE_LIB_DEPENDS=	libspatialite.so:databases/spatialite
 SQLITE_CONFIGURE_WITH=	sqlite3
 SQLITE_USES=		sqlite
+TILEDB_CONFIGURE_OFF=	--with-tiledb=no
+TILEDB_CONFIGURE_ON=	--with-tiledb=${LOCALBASE}
+TILEDB_LIB_DEPENDS=	libtiledb.so:databases/tiledb
 WEBP_CONFIGURE_WITH=	webp
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
 XERCES_CONFIGURE_WITH=	xerces

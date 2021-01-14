@@ -3,18 +3,18 @@
 
 PORTNAME=	gcc
 PORTVERSION=	4.8.5
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	lang
 MASTER_SITES=	GCC
 PKGNAMESUFFIX=	${SUFFIX}
 
-MAINTAINER=	gerald@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNU Compiler Collection 4.8
 
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
 
-DEPRECATED=	Unsupported by upstream. Use GCC 9 or newer instead.
+DEPRECATED=	Unsupported by upstream since 2015. Use GCC 10 or newer instead.
 ONLY_FOR_ARCHS=	amd64 i386
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
@@ -22,23 +22,21 @@ LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpc.so:math/mpc
 BUILD_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
 RUN_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
-
 .if defined(MAINTAINER_MODE)
 BUILD_DEPENDS+=	runtest:misc/dejagnu
 .endif
+
+USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:bzip2
+USE_BINUTILS=	yes
+USE_PERL5=	build
 
 CPE_VENDOR=	gnu
 
 GCC_VERSION=	${PORTVERSION}
 SUFFIX=		${PORTVERSION:C/([0-9]+).([0-9]+).*/\1\2/}
-USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:bzip2
-USE_BINUTILS=	yes
-USE_PERL5=	build
 SSP_UNSAFE=	yes
-
-OPTIONS_DEFINE=		BOOTSTRAP
-OPTIONS_DEFAULT=	BOOTSTRAP
-BOOTSTRAP_DESC=		Build using a full bootstrap
+CFLAGS:=	${CFLAGS:N-march=haswell:N-march=ivybridge:N-march=westmere:N-mretpoline}
+CXXFLAGS:=	${CXXFLAGS:N-march=haswell:N-march=ivybridge:N-march=westmere:N-mretpoline}
 
 .include <bsd.port.pre.mk>
 
@@ -46,17 +44,13 @@ BOOTSTRAP_DESC=		Build using a full bootstrap
 CONFIGURE_TARGET=	x86_64-portbld-${OPSYS:tl}${OSREL}
 .endif
 
-LANGUAGES:=	c,c++,objc,fortran
+LANGUAGES:=	c,c++
 TARGLIB=	${PREFIX}/lib/gcc${SUFFIX}
 LIBEXEC=	${PREFIX}/libexec/gcc${SUFFIX}
 GNU_CONFIGURE=	yes
 CONFIGURE_OUTSOURCE=	yes
-.if empty(PORT_OPTIONS:MBOOTSTRAP)
-CONFIGURE_ARGS+=--disable-bootstrap
-.else
 CONFIGURE_ARGS+=--with-build-config=bootstrap-debug
 ALL_TARGET=	bootstrap-lean
-.endif
 INSTALL_TARGET=	install-strip
 .if ${UID} != 0
 BINMODE=	755
@@ -113,7 +107,8 @@ full-regression-test: build
 
 post-stage:
 	${RM} ${STAGEDIR}${PREFIX}/man/man7/*
-	${RM} -r ${STAGEDIR}${TARGLIB}/gcc/*/${GCC_VERSION}/include-fixed/
+	${RM} -r ${STAGEDIR}${TARGLIB}/gcc/*/${GCC_VERSION}/include-fixed/ \
+	         ${STAGEDIR}${TARGLIB}/gcc/*/${GCC_VERSION}/finclude
 	# Add target libraries and include files to packaging list.
 	${RM} ${WRKDIR}/PLIST.lib
 .for d in ${TARGLIB:S/^${PREFIX}\///} ${LIBEXEC:S/^${PREFIX}\///}

@@ -13,7 +13,7 @@ RUN_DEPENDS=	${PYNUMPY}
 TEST_DEPENDS=	sox:audio/sox \
 		${PYTHON_PKGNAMEPREFIX}nose2>=0.6.5:devel/py-nose2@${PY_FLAVOR}
 
-USES+=		python
+USES+=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${WRKSRC}/`ls -rtd build/lib.* | head -1`
@@ -28,6 +28,6 @@ pre-test:
 	@(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} create_test_sounds)
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}/_aubio.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}/_aubio*.so
 
 .include "${MASTERDIR}/Makefile"

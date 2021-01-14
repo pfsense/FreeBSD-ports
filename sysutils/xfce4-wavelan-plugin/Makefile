@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	xfce4-wavelan-plugin
-PORTVERSION=	0.6.1
+PORTVERSION=	0.6.2
+PORTREVISION=	1
 CATEGORIES=	sysutils xfce
 MASTER_SITES=	XFCE/panel-plugins
 DIST_SUBDIR=	xfce4

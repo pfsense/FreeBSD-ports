@@ -70,6 +70,7 @@ lib/libKF5PlasmaQuick.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_PLUGINDIR%%/kpackage/packagestructure/plasmatheme_packagestructure.so
 %%QT_PLUGINDIR%%/kpackage/packagestructure/plasmoid_packagestructure.so
 %%QT_PLUGINDIR%%/plasma/scriptengines/plasma_appletscript_declarative.so
+%%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/AbstractButton.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/BusyIndicator.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/Button.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/CheckBox.qml
@@ -88,8 +89,10 @@ lib/libKF5PlasmaQuick.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/Label.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/Menu.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/MenuItem.qml
+%%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/MenuSeparator.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/Page.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/PageIndicator.qml
+%%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/Pane.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/Popup.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/ProgressBar.qml
 %%QT_QMLDIR%%/QtQuick/Controls.2/Plasma/README.md
@@ -173,6 +176,7 @@ lib/libKF5PlasmaQuick.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/plasma/calendar/libcalendarplugin.so
 %%QT_QMLDIR%%/org/kde/plasma/calendar/plugins.qmltypes
 %%QT_QMLDIR%%/org/kde/plasma/calendar/qmldir
+%%QT_QMLDIR%%/org/kde/plasma/components.3/AbstractButton.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/BusyIndicator.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/Button.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/CheckBox.qml
@@ -191,8 +195,10 @@ lib/libKF5PlasmaQuick.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/plasma/components.3/Label.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/Menu.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/MenuItem.qml
+%%QT_QMLDIR%%/org/kde/plasma/components.3/MenuSeparator.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/Page.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/PageIndicator.qml
+%%QT_QMLDIR%%/org/kde/plasma/components.3/Pane.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/Popup.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/ProgressBar.qml
 %%QT_QMLDIR%%/org/kde/plasma/components.3/README.md
@@ -280,6 +286,7 @@ lib/libKF5PlasmaQuick.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/plasma/core/private/DefaultToolTip.qml
 %%QT_QMLDIR%%/org/kde/plasma/core/qmldir
 %%QT_QMLDIR%%/org/kde/plasma/extras/App.qml
+%%QT_QMLDIR%%/org/kde/plasma/extras/BasicPlasmoidHeading.qml
 %%QT_QMLDIR%%/org/kde/plasma/extras/ConditionalLoader.qml
 %%QT_QMLDIR%%/org/kde/plasma/extras/DescriptiveLabel.qml
 %%QT_QMLDIR%%/org/kde/plasma/extras/ExpandableListItem.qml
@@ -289,6 +296,7 @@ lib/libKF5PlasmaQuick.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/plasma/extras/Paragraph.qml
 %%QT_QMLDIR%%/org/kde/plasma/extras/PlaceholderMessage.qml
 %%QT_QMLDIR%%/org/kde/plasma/extras/PlasmoidHeading.qml
+%%QT_QMLDIR%%/org/kde/plasma/extras/Representation.qml
 %%QT_QMLDIR%%/org/kde/plasma/extras/ScrollArea.qml
 %%QT_QMLDIR%%/org/kde/plasma/extras/Title.qml
 %%QT_QMLDIR%%/org/kde/plasma/extras/animations/ActivateAnimation.qml
@@ -298,6 +306,8 @@ lib/libKF5PlasmaQuick.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/plasma/extras/animations/ReleasedAnimation.qml
 %%QT_QMLDIR%%/org/kde/plasma/extras/libplasmaextracomponentsplugin.so
 %%QT_QMLDIR%%/org/kde/plasma/extras/plugins.qmltypes
+%%QT_QMLDIR%%/org/kde/plasma/extras/private/BackgroundMetrics.qml
+%%QT_QMLDIR%%/org/kde/plasma/extras/private/qmldir
 %%QT_QMLDIR%%/org/kde/plasma/extras/qmldir
 %%QT_QMLDIR%%/org/kde/plasma/platformcomponents/libplatformcomponentsplugin.so
 %%QT_QMLDIR%%/org/kde/plasma/platformcomponents/plugins.qmltypes
@@ -314,10 +324,10 @@ man/pt_BR/man1/plasmapkg2.1.gz
 man/sv/man1/plasmapkg2.1.gz
 man/uk/man1/plasmapkg2.1.gz
 share/kdevappwizard/templates/cpp-plasmoid.tar.bz2
-share/kdevappwizard/templates/plasma-wallpaper.tar.bz2
 share/kdevappwizard/templates/plasma-wallpaper-with-qml-extension.tar.bz2
-share/kdevappwizard/templates/qml-plasmoid.tar.bz2
+share/kdevappwizard/templates/plasma-wallpaper.tar.bz2
 share/kdevappwizard/templates/qml-plasmoid-with-qml-extension.tar.bz2
+share/kdevappwizard/templates/qml-plasmoid.tar.bz2
 share/kservices5/plasma-scriptengine-applet-declarative.desktop
 share/kservicetypes5/plasma-applet.desktop
 share/kservicetypes5/plasma-containment.desktop
@@ -382,6 +392,7 @@ share/locale/tg/LC_MESSAGES/libplasma5.mo
 share/locale/tr/LC_MESSAGES/libplasma5.mo
 share/locale/ug/LC_MESSAGES/libplasma5.mo
 share/locale/uk/LC_MESSAGES/libplasma5.mo
+share/locale/vi/LC_MESSAGES/libplasma5.mo
 share/locale/zh_CN/LC_MESSAGES/libplasma5.mo
 share/locale/zh_TW/LC_MESSAGES/libplasma5.mo
 share/plasma/desktoptheme/air/colors
@@ -473,10 +484,10 @@ share/plasma/desktoptheme/air/widgets/translucentbackground.svgz
 share/plasma/desktoptheme/air/widgets/viewitem.svgz
 share/plasma/desktoptheme/breeze-dark/colors
 share/plasma/desktoptheme/breeze-dark/metadata.desktop
-share/plasma/desktoptheme/breeze-dark/plasmoidheading.svgz
+share/plasma/desktoptheme/breeze-dark/widgets/plasmoidheading.svgz
 share/plasma/desktoptheme/breeze-light/colors
 share/plasma/desktoptheme/breeze-light/metadata.desktop
-share/plasma/desktoptheme/breeze-light/plasmoidheading.svgz
+share/plasma/desktoptheme/breeze-light/widgets/plasmoidheading.svgz
 share/plasma/desktoptheme/default/dialogs/background.svgz
 share/plasma/desktoptheme/default/icons/akonadi.svgz
 share/plasma/desktoptheme/default/icons/akregator.svgz
@@ -515,9 +526,11 @@ share/plasma/desktoptheme/default/icons/kpackagekit.svgz
 share/plasma/desktoptheme/default/icons/kruler.svgz
 share/plasma/desktoptheme/default/icons/kteatime.svgz
 share/plasma/desktoptheme/default/icons/ktorrent.svgz
+share/plasma/desktoptheme/default/icons/kup.svgz
 share/plasma/desktoptheme/default/icons/list.svgz
 share/plasma/desktoptheme/default/icons/mail.svgz
 share/plasma/desktoptheme/default/icons/media.svgz
+share/plasma/desktoptheme/default/icons/mobile.svgz
 share/plasma/desktoptheme/default/icons/nepomuk.svgz
 share/plasma/desktoptheme/default/icons/network.svgz
 share/plasma/desktoptheme/default/icons/notification.svgz
@@ -569,6 +582,7 @@ share/plasma/desktoptheme/default/widgets/glowbar.svgz
 share/plasma/desktoptheme/default/widgets/line.svgz
 share/plasma/desktoptheme/default/widgets/lineedit.svgz
 share/plasma/desktoptheme/default/widgets/listitem.svgz
+share/plasma/desktoptheme/default/widgets/margins-highlight.svgz
 share/plasma/desktoptheme/default/widgets/media-delegate.svgz
 share/plasma/desktoptheme/default/widgets/monitor.svgz
 share/plasma/desktoptheme/default/widgets/notes.svgz

@@ -15,13 +15,13 @@ COMMENT=	Python Interface to the File Alteration Monitor
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python fam
+USES=		python:3.6+ fam
 USE_PYTHON=	distutils autoplist
 
 pre-patch:
 	${INSTALL_DATA} ${FILESDIR}/setup.py ${WRKSRC}
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_fam.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_fam*.so
 
 .include <bsd.port.mk>

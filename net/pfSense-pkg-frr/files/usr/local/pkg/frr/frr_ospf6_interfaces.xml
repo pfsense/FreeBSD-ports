@@ -8,7 +8,7 @@
  * frr_ospf6_interfaces.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -91,7 +91,7 @@
 			<fielddescr>Interface</fielddescr>
 			<fieldname>interface</fieldname>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_interfaces(false, false)]]></source>
+			<source><![CDATA[frr_get_interfaces(false, false, true)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<required/>
@@ -135,7 +135,6 @@
 			<description>Ignore MTU values for OSPF6 peers on this interface. Allows OSPF6 to form full adjacencies even when there is an MTU mismatch.</description>
 			<type>checkbox</type>
 		</field>
-
 		<field>
 			<name>OSPF6 Interface Handling</name>
 			<type>listtopic</type>
@@ -158,7 +157,6 @@
 			<description>Metric (cost) for this OSPF6 interface (leave blank for default).</description>
 			<type>input</type>
 		</field>
-
 		<field>
 			<name>Advanced</name>
 			<type>listtopic</type>
@@ -192,7 +190,6 @@
 			<description>Retransmit Interval this OSPF6 interface in seconds (Default 5).</description>
 			<type>input</type>
 		</field>
-
 		<field>
 			<name>BFD</name>
 			<type>listtopic</type>
@@ -209,6 +206,9 @@
 			<type>checkbox</type>
 		</field>
 	</fields>
+	<custom_delete_php_command>
+		frr_generate_config();
+	</custom_delete_php_command>
 	<custom_php_resync_config_command>
 		frr_generate_config();
 	</custom_php_resync_config_command>

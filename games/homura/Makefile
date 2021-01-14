@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	homura
-PORTVERSION=	5.1
-PORTREVISION=	1
+PORTVERSION=	5.2
 CATEGORIES=	games
 
 MAINTAINER=	Alexander88207@protonmail.com
@@ -21,13 +20,13 @@ RUN_DEPENDS=	zenity:x11/zenity \
 		7z:archivers/p7zip \
 		webfonts>=0:x11-fonts/webfonts \
 		winetricks:emulators/winetricks \
-		vulkaninfo:devel/vulkan-tools \
+		vulkaninfo:graphics/vulkan-tools \
 		glxinfo:graphics/mesa-demos
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	Alexander88207
 GL_PROJECT=	Homura
-GL_COMMIT=	d6270c8cc207e65073b743949274cacb84caf014
+GL_COMMIT=	e52176c0b1350add43846ba25816ecb90dc0d4b0
 
 NO_BUILD=	yes
 

@@ -3,7 +3,7 @@
  * haproxy_listeners_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2015 PiBa-NL
  * Copyright (c) 2008 Remco Hoef <remcoverhoef@pfsense.com>
  * Copyright (c) 2013 Marcello Coutinho <marcellocoutinho@gmail.com>
@@ -662,7 +662,7 @@ $section->addInput(new Form_StaticText(
 	<b>NOTE:</b> You must add a firewall rules permitting access to the listen ports above.<br/>
 
 	If you want this rule to apply to another IP address than the IP address of the interface chosen above,
-	select it here (you need to define <a href="firewall_virtual_ip.php">Virtual IP</a> addresses on the first).
+	select it here (you need to define <a href="/firewall_virtual_ip.php">Virtual IP</a> addresses on the first).
 	Also note that if you are trying to redirect connections on the LAN select the "any" option.
 	In the port to listen to, if you want to specify multiple ports, separate them with a comma (,). EXAMPLE: 80,8000
 	Or to listen on both 80 and 443 create 2 rows in the table where for the 443 you would likely want to check the SSL-offloading checkbox.

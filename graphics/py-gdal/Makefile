@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gdal
-PORTVERSION=	3.1.0
+PORTVERSION=	3.1.4
 CATEGORIES=	graphics python
 MASTER_SITES=	https://download.osgeo.org/gdal/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libgdal.so:graphics/gdal
 OPTIONS_DEFINE=	NUMPY
 NUMPY_DESC=	Enable array support via NumPy
 
-USES=		compiler:c++11-lang python shebangfix tar:xz
+USES=		compiler:c++11-lang python:3.6+ shebangfix tar:xz
 USE_PYTHON=	autoplist concurrent distutils
 
 USE_CXXSTD=	c++11

@@ -51,6 +51,7 @@
     SUBDIR += fantasque-sans-mono
     SUBDIR += fanwood
     SUBDIR += farsifonts
+    SUBDIR += fcft
     SUBDIR += fifteen
     SUBDIR += fira
     SUBDIR += firacode
@@ -100,9 +101,11 @@
     SUBDIR += font-xfree86-type1
     SUBDIR += fontconfig
     SUBDIR += fontmatrix
+    SUBDIR += fontobene
     SUBDIR += fontpreview
     SUBDIR += fonts-indic
     SUBDIR += fonttosfnt
+    SUBDIR += fpc-libfontconfig
     SUBDIR += freefont-ttf
     SUBDIR += freefonts
     SUBDIR += fslsfonts
@@ -233,6 +236,7 @@
     SUBDIR += tv-fonts
     SUBDIR += twemoji-color-font-ttf
     SUBDIR += ubuntu-font
+    SUBDIR += urw-core35-fonts
     SUBDIR += urwfonts
     SUBDIR += urwfonts-ttf
     SUBDIR += uw-ttyp0

@@ -3,9 +3,14 @@
 
 PORTNAME=	qgis
 DISTVERSIONPREFIX=	final-
-DISTVERSION=	3_10_10
+DISTVERSION=	3_10_13
 CATEGORIES=	graphics geography
 PKGNAMESUFFIX=	-ltr
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	33192f38bc7d.patch:-p1 \
+		12203f0ce527.patch:-p1 \
+		6e9d42d70099.patch:-p1
 
 MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	Free and Open Source Geographic Information System
@@ -20,7 +25,7 @@ BUILD_DEPENDS=	gpsbabel>=1.5.4:astro/gpsbabel \
 		${PYTHON_PKGNAMEPREFIX}future>=0.18.2:devel/py-future@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}httplib2>=0.17.3:www/py-httplib2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=2.10.1:devel/py-Jinja2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}MarkupSafe>=1.1.1:textproc/py-MarkupSafe@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}markupsafe>=1.1.1:textproc/py-markupsafe@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}matplotlib>=2.2.4:math/py-matplotlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mock>=3.0.5:devel/py-mock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}OWSLib>=0.20.0:graphics/py-OWSLib@${PY_FLAVOR} \
@@ -52,7 +57,8 @@ LIB_DEPENDS=	libexiv2.so:graphics/exiv2 \
 		libspatialite.so:databases/spatialite \
 		libsz.so:science/szip \
 		libxerces-c.so:textproc/xerces-c3 \
-		libzip.so:archivers/libzip
+		libzip.so:archivers/libzip \
+		libzstd.so:archivers/zstd
 RUN_DEPENDS=	astyle:devel/astyle \
 		opencl>=0:devel/opencl \
 		${PYTHON_PKGNAMEPREFIX}black>=19.10:devel/py-black@${PY_FLAVOR} \
@@ -65,7 +71,7 @@ RUN_DEPENDS=	astyle:devel/astyle \
 		${PYTHON_PKGNAMEPREFIX}httplib2>=0.17.3:www/py-httplib2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jedi>=0.12.1:devel/py-jedi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=2.10.1:devel/py-Jinja2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}MarkupSafe>=1.1.1:textproc/py-MarkupSafe@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}markupsafe>=1.1.1:textproc/py-markupsafe@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}matplotlib>=2.2.4:math/py-matplotlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mock>=3.0.5:devel/py-mock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}nbformat>=5.0.7:devel/py-nbformat@${PY_FLAVOR} \
@@ -84,7 +90,6 @@ RUN_DEPENDS=	astyle:devel/astyle \
 		${PYTHON_PKGNAMEPREFIX}pyproj>=2.1.3:graphics/py-pyproj@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyrsgis>=0.2.6:graphics/py-pyrsgis@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytz>=2020.1:devel/py-pytz@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}qt5-quick>=5.13.1:x11-toolkits/py-qt5-quick@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.22.0:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scikit-image>=0.14.3:graphics/py-scikit-image@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Shapely>=1.6.4:devel/py-shapely@${PY_FLAVOR} \
@@ -107,7 +112,7 @@ USE_QT=		3d buildtools_build core concurrent dbus declarative \
 		network printsupport qmake_build script serialport \
 		sql sql-pgsql sql-sqlite3 svg testlib uitools \
 		webengine widgets webkit xml
-USE_PYQT=	core gui network qml quickwidgets qscintilla2 \
+USE_PYQT=	core gui network qml quick quickwidgets qscintilla2 \
 		sip sql svg webkit_run webkitwidgets_run xml
 
 CONFLICTS_INSTALL=	qgis
@@ -145,6 +150,8 @@ GRASS_RUN_DEPENDS=	${GRASS_BUILD_DEPENDS}
 GRASS_CMAKE_BOOL=	WITH_GRASS7
 SERVER_LIB_DEPENDS=	libfcgi.so:www/fcgi
 SERVER_CMAKE_BOOL=	WITH_SERVER WITH_SERVER_PLUGINS WITH_QSPATIALITE
+
+SUB_FILES=	pkg-message
 
 PLIST_SUB=	DISTVERSION=${PORTVERSION}
 

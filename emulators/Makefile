@@ -15,6 +15,7 @@
     SUBDIR += bochs
     SUBDIR += bsvc
     SUBDIR += cannonball
+    SUBDIR += cemu
     SUBDIR += cinc
     SUBDIR += cingb
     SUBDIR += citra
@@ -34,7 +35,6 @@
     SUBDIR += elliott-803
     SUBDIR += emu64
     SUBDIR += emulationstation
-    SUBDIR += fceux
     SUBDIR += fmsx
     SUBDIR += frodo
     SUBDIR += fs-uae
@@ -43,7 +43,6 @@
     SUBDIR += fuse-roms
     SUBDIR += fuse-utils
     SUBDIR += gbe
-    SUBDIR += gem5
     SUBDIR += gens
     SUBDIR += gngb
     SUBDIR += gngeo
@@ -61,10 +60,13 @@
     SUBDIR += kcemu
     SUBDIR += klh10
     SUBDIR += lib765
+    SUBDIR += libc6-shim
     SUBDIR += libdsk
     SUBDIR += libretro-ppsspp
+    SUBDIR += libretro-vice
     SUBDIR += libspectrum
     SUBDIR += linux-c7
+    SUBDIR += linux-power10-functional-sim
     SUBDIR += linux-power9-functional-sim
     SUBDIR += linux_base-c7
     SUBDIR += lisaem
@@ -92,7 +94,6 @@
     SUBDIR += mupen64plus-video-z64
     SUBDIR += nemu
     SUBDIR += nestopia
-    SUBDIR += nonpareil
     SUBDIR += o2em
     SUBDIR += ods2reader
     SUBDIR += open-vm-tools
@@ -103,7 +104,6 @@
     SUBDIR += pcem
     SUBDIR += pcemu
     SUBDIR += pcsxr
-    SUBDIR += playonbsd
     SUBDIR += ppsspp
     SUBDIR += ppsspp-qt5
     SUBDIR += py-gns3-converter
@@ -112,7 +112,6 @@
     SUBDIR += qemu-cheri
     SUBDIR += qemu-devel
     SUBDIR += qemu-powernv
-    SUBDIR += qemu-sbruno
     SUBDIR += qemu-user-static
     SUBDIR += qemu-user-static-devel
     SUBDIR += qemu-utils
@@ -122,7 +121,6 @@
     SUBDIR += qemu50
     SUBDIR += qmc2
     SUBDIR += quasi88
-    SUBDIR += riscv-fesvr
     SUBDIR += riscv-isa-sim
     SUBDIR += rpcs3
     SUBDIR += rtc
@@ -140,6 +138,7 @@
     SUBDIR += tiemu3
     SUBDIR += tilem
     SUBDIR += tme
+    SUBDIR += tnylpo
     SUBDIR += tpm-emulator
     SUBDIR += tuxnes
     SUBDIR += uae
@@ -168,6 +167,7 @@
     SUBDIR += wine-gecko-devel
     SUBDIR += wine-mono
     SUBDIR += wine-mono-devel
+    SUBDIR += wine-proton
     SUBDIR += winetricks
     SUBDIR += x16-emulator
     SUBDIR += x16-rom

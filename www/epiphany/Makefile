@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	epiphany
-PORTVERSION=	3.38.0
+PORTVERSION=	3.38.2
 CATEGORIES=	www gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -18,9 +18,7 @@ BUILD_DEPENDS=	iso-codes>=0:misc/iso-codes \
 		gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas
 LIB_DEPENDS=	libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
 		libsoup-2.4.so:devel/libsoup \
-		libsoup-gnome-2.4.so:devel/libsoup-gnome \
-		libsoup-2.4.so:devel/libsoup \
-		libgcr-3.so:security/gcr \
+		libgcr-base-3.so:security/gcr \
 		libstartup-notification-1.so:x11/startup-notification \
 		libnss3.so:security/nss \
 		libjson-glib-1.0.so:devel/json-glib \
@@ -42,6 +40,7 @@ PORTSCOUT=	limitw:1,even
 USES=		compiler:c++11-lib cpe desktop-file-utils gettext gnome \
 		localbase:ldflags meson pkgconfig python:3.4+ shebangfix \
 		sqlite tar:xz xorg
+
 CPE_VENDOR=	gnome
 USE_GNOME=	cairo gnomedesktop3 intlhack libwnck3 libxml2 libxslt
 USE_XORG=	x11
@@ -56,4 +55,10 @@ SHEBANG_FILES=	post_install.py
 
 PLIST_SUB+=	EPHY_VERSION=${PORTVERSION:R}
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200000
+EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-lib_ephy-sync-utils.c
+.endif
+
+.include <bsd.port.post.mk>

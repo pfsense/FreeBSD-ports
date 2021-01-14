@@ -10,6 +10,82 @@ in the release notes and/or placed into UPDATING.
 
 All ports committers are allowed to commit to this file.
 
+20201120:
+AUTHOR: gnome@FreeBSD.org
+
+  New default version for librsvg2.
+
+  Current versions of graphics/librsvg2 are using parts written in rust.
+  For architectures that do not have support for rust, and for people
+  who prefer not to have, or are not able to compile rust software due
+  to hardware limitations, the version can be chosen via this new flag.
+
+  The default on almost all architectures is rust.
+
+  If you prefer no to use rust, add the following to your make.conf:
+
+  	DEFAULT_VERSIONS+=librsvg2=legacy
+
+20201120:
+AUTHOR: pauamma@gundo.com
+
+  New virtual category: education.
+
+  This category comprises ports that are mainly educational in nature or
+  purpose, such as:
+  * course-writing or course-delivery applications,
+  * classroom or school management applications (eg, scheduling classes),
+  * applications, utilities, or games primarily or substantially designed 
+    to help the user learn a specific topic or study in general, like typing 
+    tutors, flashcard applications, or educational games.
+
+20201110:
+AUTHOR: bapt@FreeBSD.org
+
+  Patents are a complicated topic, and their regulation varies depending on
+  jurisdiction. Patents are not necessarily related to the license and so
+  should not be connected to the license framework.
+
+  Patent limitations within the ports tree have been removed and left to the
+  user or consumer to deal with their local legislation to determine if they
+  can use the software without legal restrictions.
+
+20201022:
+AUTHOR: bapt@FreeBSD.org
+
+  New @rmempty keyword
+  Its purpose is to delete empty files at deinstallation time. It is meant
+  to be used for generated files/untracked by the package manager files.
+
+  It respects rootdir
+
+20201022:
+AUTHOR: bapt@FreeBSD.org
+
+  @shell has been rewritten in lua
+  It provides the exact same feature set as the previous version but it is now
+  sandboxed and rootdir compliant (see the pkg -r option).
+
+20201001:
+AUTHOR: manu@FreeBSD.org
+
+  The @sample keyword was rewritten in lua.
+  It behaves exactly like the previous one but it is sandboxed and
+  is rootdir compliant (see pkg -r option).
+
+20201001:
+AUTHOR: bapt@FreeBSD.org
+
+  packages scripts and keywords can both be written in lua (version 5.3), see
+  pkg-lua-script(5) for the API.
+
+  Note that all scripts written in lua will:
+
+  - run inside a capsicum sandbox,
+  - be rootdir compatible (see pkg -r option)
+  - be cross installation compatible example: installing packages in an arm64
+    rootdir on and amd64 host.
+
 20200531:
 AUTHOR: kde@FreeBSD.org
 
@@ -755,7 +831,7 @@ AUTHOR: bapt@FreeBSD.org
   @preunexec <command>: execute the <command> during pre-deinstall scripts
   @postunexec <command>: execute the <command> during post-deinstall scripts
 
-  @exec does not specify when if should be executed and is now considered as
+  @exec does not specify when it should be executed and is now considered as
   deprecated.
 
 20150914:
@@ -3672,7 +3748,7 @@ listed here, and it only starts on January 29, 2004.
 
 Copyright information:
 
-Copyright 2004-2019 FreeBSD Foundation All Rights Reserved.
+Copyright 2004-2020 FreeBSD Foundation All Rights Reserved.
 
 Redistribution, publication, translation and use, with or without
 modification, in full or in part, in any form or format of this

@@ -2,6 +2,7 @@
 
 PORTNAME=	yacreader
 DISTVERSION=	9.7.1
+PORTREVISION=	3
 CATEGORIES=	graphics
 
 MAINTAINER=	jbeich@FreeBSD.org

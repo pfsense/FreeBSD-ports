@@ -8,7 +8,7 @@
  * pfblockerng.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2016 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -475,7 +475,7 @@
 			<fielddescr>Credits</fielddescr>
 			<fieldname>credits</fieldname>
 			<description><![CDATA[<strong>pfBlockerNG </strong>
-				Created in 2015 by <a target="_blank" href="https://forum.pfsense.org/index.php?action=profile;u=238481">BBcan177.</a><br /><br />
+				Created in 2015 by <a target="_blank" href="https://forum.netgate.com/user/bbcan177">BBcan177.</a><br /><br />
 				Based upon pfBlocker by Marcello Coutinho and Tom Schaefer.<br />
 				GeoIP database GeoLite2 distributed under the Creative Commons Attribution-ShareAlike 4.0 International License by:
 				MaxMind Inc. @ <a target="_blank" href="http://www.maxmind.com">MaxMind.com</a>.

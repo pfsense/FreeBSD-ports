@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pdal
-DISTVERSION=	2.3.4
+DISTVERSION=	2.3.5
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -24,9 +24,9 @@ USES=		compiler:c++11-lang python:3.6+
 USE_PYTHON=	autoplist cython distutils
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpdal_plugin_filter_python.so
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/${PORTNAME}/libpdalpython.so
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpdal_plugin_reader_numpy.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpdal_plugin_filter_python*.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/${PORTNAME}/libpdalpython*.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpdal_plugin_reader_numpy*.so
 
 do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test

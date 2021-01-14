@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	libzim
-PORTVERSION=	6.2.2
+PORTVERSION=	6.3.0
 CATEGORIES=	devel
 
 MAINTAINER=	swills@FreeBSD.org

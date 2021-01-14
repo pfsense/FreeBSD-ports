@@ -9,7 +9,7 @@ MASTER_SITES=	http://www.a-k-r.org/htree/
 PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}
 DIST_SUBDIR=	ruby
 
-MAINTAINER=	knu@FreeBSD.org
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby library to manipulate HTML/XML tree data structure
 
 BUILD_DEPENDS=	rubygem-rdoc>=0.a:devel/rubygem-rdoc
@@ -29,7 +29,7 @@ PORTDOCS=	*
 
 do-build:
 .if ${PORT_OPTIONS:MDOCS}
-	cd ${BUILD_WRKSRC}; ${LOCALBASE}/bin/rdoc${RUBY_SUFFIX} ${LIB_FILES}
+	cd ${BUILD_WRKSRC}; ${LOCALBASE}/bin/rdoc ${LIB_FILES}
 .endif
 
 do-install:

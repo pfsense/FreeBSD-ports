@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	fpc
-PORTVERSION=	3.0.4
-PORTREVISION?=	4
+PORTVERSION=	3.2.0
+PORTREVISION?=	0
 CATEGORIES?=	lang
 MASTER_SITES=	ftp://ftp.freepascal.org/pub/fpc/dist/${PORTVERSION}/source/:source \
 		ftp://planetmirror.com/pub/fpc/dist/${PORTVERSION}/source/:source \
@@ -26,7 +26,7 @@ ONLY_FOR_ARCHS=	amd64 i386
 USES+=		gmake iconv
 USE_BINUTILS=	yes
 BOOTVER=	3.0.4
-MANVER=		3.0.4
+MANVER=		${PORTVERSION}
 
 FPC_LDPATH?=	"${LOCALBASE}/bin/ld.bfd"
 

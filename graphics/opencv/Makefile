@@ -3,10 +3,10 @@
 
 PORTNAME=	opencv
 PORTVERSION=	3.4.1
-PORTREVISION=	36
+PORTREVISION=	37
 CATEGORIES=	graphics
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	tcberner@FreeBSD.org
 COMMENT=	Open Source Computer Vision library
 
 LICENSE=	BSD3CLAUSE
@@ -179,7 +179,7 @@ EXAMPLES_CMAKE_BOOL=	INSTALL_C_EXAMPLES
 PERFORMANCE_DESC=	Performance enhancing libraries
 
 EIGEN3_DESC=		Eigen 3 support
-EIGEN3_BUILD_DEPENDS=	${LOCALBASE}/include/eigen3/Eigen/Eigen:math/eigen3
+EIGEN3_USES=		eigen:3
 EIGEN3_CMAKE_BOOL=	WITH_EIGEN
 
 OPENCL_DESC=		OpenCL support
@@ -293,7 +293,7 @@ LIB_DEPENDS+=	libopencv_core.so:graphics/opencv-core \
 		libopencv_ml.so:graphics/opencv
 BUILD_DEPENDS+=	${PYNUMPY}
 RUN_DEPENDS+=	${PYNUMPY}
-USES+=		python
+USES+=		python:3.6+
 USE_PYTHON=	flavors
 CMAKE_ARGS+=	-DBUILD_opencv_python${PYTHON_MAJOR_VER}:BOOL=ON
 . for module in apps java stitching superres videostab
@@ -303,7 +303,7 @@ INSTALL_WRKSRC=	${WRKDIR}/.build/modules/python${PYTHON_MAJOR_VER}
 .elif defined(OCV_JAVA)
 BUILD_DEPENDS+=	ant:devel/apache-ant
 LIB_DEPENDS+=	libopencv_ml.so:graphics/opencv
-USES+=		python:build
+USES+=		python:3.6+,build
 USE_JAVA=	yes
 CMAKE_ARGS+=	-DBUILD_opencv_java:BOOL=ON
 . for module in apps python stitching superres videostab

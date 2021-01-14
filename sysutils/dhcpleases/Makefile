@@ -3,6 +3,7 @@
 
 PORTNAME=	dhcpleases
 PORTVERSION=	0.5
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# none

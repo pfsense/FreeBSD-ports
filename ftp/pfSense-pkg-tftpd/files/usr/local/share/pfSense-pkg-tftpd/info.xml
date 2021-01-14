@@ -2,7 +2,6 @@
 <pfsensepkgs>
 	<package>
 		<name>tftpd</name>
-		<pkginfolink>https://forum.pfsense.org/</pkginfolink>
 		<descr><![CDATA[Installs a TFTP server, used for thin client booting and more.]]></descr>
 		<website>http://freecode.com/projects/tftp-hpa/</website>
 		<version>%%PKGVERSION%%</version>

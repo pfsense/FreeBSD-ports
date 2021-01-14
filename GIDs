@@ -208,8 +208,8 @@ meta1:*:264:
 sshout:*:265:
 step:*:266:
 odoo:*:267:
-# free: 268
-# free: 269
+tenshi:*:268:tenshi
+dendrite:*:269:
 _rpki-client:*:270:
 # free: 271
 # free: 272
@@ -420,7 +420,7 @@ gitlab-pages:*:476:
 fiche:*:477:
 prometheus:*:478:
 alertmanager:*:479:
-# free: 480
+datadog:*:480:
 # free: 481
 # free: 482
 # free: 483
@@ -747,7 +747,7 @@ clickhouse:*:800:
 # free: 804
 # free: 805
 # free: 806
-# free: 807
+bosun:*:807:
 clixon:*:808:
 # free: 809
 # free: 810
@@ -818,8 +818,8 @@ librespeed:*:874:
 # free: 875
 # free: 876
 # free: 877
-# free: 878
-# free: 879
+gerbera:*:878:
+_encrypted-dns:*:879:
 pyspf-milter:*:880:
 ultimaker:*:881:
 midpoint:*:882:
@@ -886,7 +886,6 @@ teamspeak:*:942:
 dnetfold:*:943:
 bbs:*:944:
 dbxml:*:945:
-mediatomb:*:946:
 gnokii:*:947:
 dnrd:*:948:
 _lldpd:*:949:

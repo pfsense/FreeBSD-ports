@@ -2,7 +2,9 @@
 
 PORTNAME=	cabal-install
 DISTVERSION=	3.2.0.0
+PORTREVISION=	1
 CATEGORIES=	devel haskell
+EXTRACT_ONLY=	${PORTNAME}-${PORTVERSION}${CABAL_EXTRACT_SUFX}
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Command-line interface for Cabal and Hackage

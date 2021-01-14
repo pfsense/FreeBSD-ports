@@ -15,7 +15,7 @@ COMMENT=	Module for Cyclic Redundancy Check (CRC) calculations
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 DOCSDIR=	${PREFIX}/share/doc/${PYTHON_PKGNAMEPREFIX}${PORTNAME}
@@ -27,6 +27,6 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${WRKSRC}/changelog ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/docs && ${COPYTREE_SHARE} html ${STAGEDIR}${DOCSDIR})
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/crcmod/_crcfunext.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/crcmod/_crcfunext*.so
 
 .include <bsd.port.mk>

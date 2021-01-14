@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mkvtoolnix
-PORTVERSION=	51.0.0
+PORTVERSION=	52.0.0
 CATEGORIES=	multimedia audio
 MASTER_SITES=	http://www.bunkus.org/videotools/mkvtoolnix/sources/ \
 		https://mkvtoolnix.download/sources/
@@ -43,6 +43,11 @@ ALL_TARGET=	#Empty
 OPTIONS_DEFINE=	DVDREAD FLAC NLS QT5 MANTRANS
 OPTIONS_DEFAULT=	FLAC QT5
 OPTIONS_SUB=	yes
+
+.if !defined(DEFAULT_VERSIONS) || ! ${DEFAULT_VERSIONS:Mssl=*}
+# Blocked by net/qt5-network: cannot use QT5 with default OpenSSL
+OPTIONS_EXCLUDE_FreeBSD_11+=	QT5
+.endif
 
 DVDREAD_DESC=		Support reading DVD chapters via libdvdread
 DVDREAD_LIB_DEPENDS=	libdvdread.so:multimedia/libdvdread

@@ -4,9 +4,8 @@ PORTNAME=	penrose
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1-737
 DISTVERSIONSUFFIX=	-gb336c8d
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math haskell
-EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Create diagrams by typing mathematical notation in plain text
@@ -68,7 +67,7 @@ USE_CABAL=	MonadRandom-0.5.1.2 \
 		happy-1.19.12 \
 		hashable-1.3.0.0_1 \
 		haskell-lexer-1.1 \
-		hmatrix-0.20.0.0 \
+		hmatrix-0.20.1 \
 		hourglass-0.2.12 \
 		hslogger-1.3.1.0_1 \
 		hsc2hs-0.68.7 \

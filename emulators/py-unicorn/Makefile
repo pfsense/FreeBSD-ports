@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	unicorn
-DISTVERSION=	1.0.2-rc4
+DISTVERSION=	1.0.2
 CATEGORIES=	emulators python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libunicorn.so:emulators/unicorn
 USE_GITHUB=	yes
 GH_ACCOUNT=	unicorn-engine
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 WRKSRC_SUBDIR=	bindings/python
 

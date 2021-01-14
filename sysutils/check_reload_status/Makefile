@@ -2,6 +2,7 @@
 
 PORTNAME=	check_reload_status
 PORTVERSION=	0.0.10
+PORTREVISION=	1
 CATEGORIES?=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# none

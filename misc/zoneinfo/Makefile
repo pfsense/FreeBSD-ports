@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	zoneinfo
-DISTVERSION=	2020a
+DISTVERSION=	2020f
 CATEGORIES=	misc
 MASTER_SITES=	https://data.iana.org/time-zones/releases/ \
 		ftp://ftp.iana.org/tz/releases/
@@ -25,7 +25,7 @@ BACKWARD_DESC=	Include backwards compatible zones
 BACKWARD_VARS=	tzfiles+=backward
 
 TZFILES=	africa antarctica asia australasia etcetera europe \
-		factory northamerica southamerica systemv
+		factory northamerica southamerica
 POSIXRULES=	America/New_York
 
 # Run both of:
@@ -97,9 +97,9 @@ do-install:
 
 test-pkgplist: check-plist
 	@(cd ${STAGEDIR} && ${FIND} . -type f -print) | \
-		${SED} -e 's:^[.]::' | sort | \
+		${SED} -e 's:^[.]::' | ${SORT} | \
 		${COMM} -23 -- - ${WRKDIR}/.plist-files-no-comments | \
-		while read -r f; do echo "MISSING FROM PLIST: $$f" >&2; echo fail; done | \
+		while read -r f; do ${ECHO_CMD} "MISSING FROM PLIST: $$f" >&2; ${ECHO_CMD} fail; done | \
 		! ${GREP} fail >/dev/null
 
 .include <bsd.port.mk>

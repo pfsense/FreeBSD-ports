@@ -1,9 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	aqbanking
-PORTVERSION=	6.2.1
+PORTVERSION=	6.2.5
+PORTREVISION=	1
 CATEGORIES=	finance
-MASTER_SITES=	https://www.aquamaniac.de/rdm/attachments/download/328/
+MASTER_SITES=	https://www.aquamaniac.de/rdm/attachments/download/342/
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Online banking interface and financial data framework
@@ -16,11 +17,10 @@ LIB_DEPENDS=	libgwenhywfar.so:devel/gwenhywfar \
 		libgmp.so:math/gmp \
 		libgnutls.so:security/gnutls
 
-USES=		gettext gmake libtool localbase pathfix pkgconfig
+USES=		gettext gmake libtool localbase:ldflags pathfix pkgconfig
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-release="yes"
-LIBS+=		-lintl
 INSTALL_TARGET=	install-strip
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes
@@ -54,6 +54,11 @@ LIB_DEPENDS+=	libktoblzcheck.so:finance/ktoblzcheck
 .if ${PORT_OPTIONS:MDOCS} && !${PORT_OPTIONS:MDOXYGEN}
 PORTDOCS=	*
 .endif
+
+post-patch:
+	@${REINPLACE_CMD} -e \
+	's|$$(top_builddir)/aqbanking6|$$(top_builddir)/*|g' \
+	${WRKSRC}/configure
 
 pre-configure-EBICS-on:
 	@(if [ ! -e ${LOCALBASE}/libdata/pkgconfig/xmlsec1-gnutls.pc ] ; then \

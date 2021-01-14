@@ -8,7 +8,7 @@
  * shellcmd.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -90,7 +90,7 @@
 					<span class="text-danger">Note:</span> Only one entry of this type can be configured!</dd>
 					<dt>disabled</dt><dd>Will save the command in package configuration but it will NOT run on boot.</dd>
 				</dl>
-				See <a href="https://doc.pfsense.org/index.php/Executing_commands_at_boot_time">Executing commands at boot time</a> for detailed explanation.
+				See <a href="https://docs.netgate.com/pfsense/en/latest/development/boot-commands.html">Executing commands at boot time</a> for detailed explanation.
 				</div>
 				]]>
 			</description>

@@ -3,7 +3,7 @@
  * suricata_alerts.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
@@ -255,7 +255,12 @@ if ($_POST['filterlogentries_submit']) {
 	$filterfieldsarray = array();
 	$filterfieldsarray['time'] = $_POST['filterlogentries_time'] ? $_POST['filterlogentries_time'] : null;
 	if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline') {
-		$filterfieldsarray['action'] = $_POST['filterlogentries_action'] ? $_POST['filterlogentries_action'] : null;
+		if ($_POST['filterlogentries_action_drop']) {
+			$filterfieldsarray['action'] = $_POST['filterlogentries_action_drop'] ? $_POST['filterlogentries_action_drop'] : null;
+		}
+		elseif ($_POST['filterlogentries_action_ndrop']) {
+			$filterfieldsarray['action'] = $_POST['filterlogentries_action_ndrop'] ? $_POST['filterlogentries_action_ndrop'] : null;
+		}
 	}
 	else {
 		$filterfieldsarray['action'] = null;
@@ -810,12 +815,20 @@ $group->add(new Form_Input(
 
 if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline') {
 	$group->add(new Form_Checkbox(
-		'filterlogentries_action',
+		'filterlogentries_action_drop',
 		'Dropped',
 		null,
 		$filterfieldsarray['action'] == "Drop" ? true:false,
 		'Drop'
 	))->setHelp('Dropped');
+
+	$group->add(new Form_Checkbox(
+		'filterlogentries_action_ndrop',
+		'Not Dropped',
+		null,
+		$filterfieldsarray['action'] == "!Drop" ? true:false,
+		'!Drop'
+	))->setHelp('Not Dropped');
 }
 
 $group->add(new Form_Checkbox(
@@ -826,23 +839,24 @@ $group->add(new Form_Checkbox(
 	'on'
 ))->setHelp('Exact Match');
 
+$section->add($group);
+
+$group = new Form_Group('');
 $group->add(new Form_Button(
 	'filterlogentries_submit',
-	'Filter',
+	'Apply Filter',
 	null,
 	'fa-filter'
-))->setHelp("Apply filter")
-  ->removeClass("btn-primary")
-  ->addClass("btn-success");
+))->removeClass("btn-primary btn-default")
+  ->addClass("btn-success btn-sm");
 
 $group->add(new Form_Button(
 	'filterlogentries_clear',
-	'Clear',
+	'Clear Filter',
 	null,
 	'fa-trash-o'
-))->setHelp("Remove all filters")
-  ->removeclass("btn-primary")
-  ->addClass("btn-danger no-confirm");
+))->removeclass("btn-primary btn-default")
+  ->addClass("btn-danger no-confirm btn-sm");
 
 $section->add($group);
 
@@ -1358,6 +1372,16 @@ events.push(function() {
 	//-- Click handlers ------------------------------------------------------
 	$('#instance').on('change', function() {
 		$('#formalert').submit();
+	});
+
+	// When 'filterlogentries_action_drop' is clicked, uncheck 'filterlogentries_action_ndrop' control
+	$('#filterlogentries_action_drop').click(function() {
+		$('#filterlogentries_action_ndrop').prop('checked', false);
+	});
+
+	// When 'filterlogentries_action_ndrop' is clicked, uncheck 'filterlogentries_action_drop' control
+	$('#filterlogentries_action_ndrop').click(function() {
+		$('#filterlogentries_action_drop').prop('checked', false);
 	});
 
 });

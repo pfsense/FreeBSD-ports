@@ -3,11 +3,12 @@
 
 PORTNAME=	pysal
 PORTVERSION=	1.14.4
-PORTREVISION=	2
+DISTVERSIONSUFFIX=	.post2
+PORTREVISION=	3
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTNAME=	PySAL-${PORTVERSION}
+DISTNAME=	PySAL-${PORTVERSION}${DISTVERSIONSUFFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Cross-platform library of spatial analysis functions
@@ -20,12 +21,9 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}scipy>=0.11:science/py-scipy@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=0:devel/py-nose@${PY_FLAVOR}
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
-
-post-patch:
-	@${REINPLACE_CMD} -e '/check_stable=/ s|True|False|' ${WRKSRC}/pysal/config.py
 
 .include <bsd.port.mk>

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	tortoisehg
-DISTVERSION=	5.5.1
+DISTVERSION=	5.5.2
 PORTREVISION=	1
 CATEGORIES=	devel
 
@@ -16,7 +16,7 @@ RUN_DEPENDS=	${PY_MERCURIAL} \
 		${PYTHON_PKGNAMEPREFIX}iniparse>=0.4:devel/py-iniparse@${PY_FLAVOR} \
 		${PY_PYGMENTS}
 
-USES=		pyqt:5 python
+USES=		pyqt:5 python:3.5+
 USE_PYQT=	core gui network qscintilla2 xml
 USE_PYTHON=	distutils autoplist
 
@@ -24,7 +24,7 @@ USE_GITLAB=	yes
 GL_SITE=	https://foss.heptapod.net
 GL_ACCOUNT=	mercurial/tortoisehg
 GL_PROJECT=	thg
-GL_COMMIT=	d72f36279016056b2cf5fa32857a48e1022841bd
+GL_COMMIT=	7969d3a9d90b1dab31c1d043096bbc85d21e6e6d
 
 OPTIONS_DEFINE=	NAUTILUS NLS
 NAUTILUS_DESC=	Install TortoiseHG Nautilus extension

@@ -1,13 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	shiboken2
-DISTVERSION=	5.15.0
+DISTVERSION=	5.15.2
 CATEGORIES=	devel
 MASTER_SITES=	QT/official_releases/QtForPython/shiboken2/PySide2-${DISTVERSION}-src
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	pyside-setup-opensource-src-${DISTVERSION}
 
-MAINTAINER=	cmt@FreeBSD.org
+MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Python binding generator for C++ libraries
 
 LICENSE=	GPLv2 LGPL21 LGPL3

@@ -73,6 +73,7 @@ include/openssl/ui.h
 include/openssl/ui_compat.h
 include/openssl/whrlpool.h
 include/openssl/x509.h
+include/openssl/x509_verify.h
 include/openssl/x509_vfy.h
 include/openssl/x509v3.h
 include/tls.h
@@ -2154,6 +2155,7 @@ man/man1/openssl.1.gz
 %%MAN3%%man/man3/SSL_peek.3.gz
 %%MAN3%%man/man3/SSL_pending.3.gz
 %%MAN3%%man/man3/SSL_read.3.gz
+%%MAN3%%man/man3/SSL_read_early_data.3.gz
 %%MAN3%%man/man3/SSL_renegotiate.3.gz
 %%MAN3%%man/man3/SSL_renegotiate_abbreviated.3.gz
 %%MAN3%%man/man3/SSL_renegotiate_pending.3.gz
@@ -2167,7 +2169,9 @@ man/man1/openssl.1.gz
 %%MAN3%%man/man3/SSL_set1_curves_list.3.gz
 %%MAN3%%man/man3/SSL_set1_groups.3.gz
 %%MAN3%%man/man3/SSL_set1_groups_list.3.gz
+%%MAN3%%man/man3/SSL_set1_host.3.gz
 %%MAN3%%man/man3/SSL_set1_param.3.gz
+%%MAN3%%man/man3/SSL_set_SSL_CTX.3.gz
 %%MAN3%%man/man3/SSL_set_accept_state.3.gz
 %%MAN3%%man/man3/SSL_set_alpn_protos.3.gz
 %%MAN3%%man/man3/SSL_set_bio.3.gz
@@ -3173,6 +3177,7 @@ man/man1/openssl.1.gz
 %%MAN3%%man/man3/tls_unload_file.3.gz
 %%MAN3%%man/man3/tls_write.3.gz
 %%MAN3%%man/man3/verify_callback.3.gz
+%%MAN3%%man/man3/x509_verify.3.gz
 man/man5/openssl.cnf.5.gz
 man/man5/x509v3.cnf.5.gz
 man/man8/ocspcheck.8.gz

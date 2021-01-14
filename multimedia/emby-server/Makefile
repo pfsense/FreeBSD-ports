@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	emby-server
-PORTVERSION=	4.5.1.0
+PORTVERSION=	4.5.4.0
+PORTREVISION=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	https://github.com/MediaBrowser/Emby.Releases/releases/download/${PORTVERSION}/ \
 		https://mediabrowser.github.io/embytools/
@@ -100,7 +101,7 @@ USERS=		emby
 GROUPS=		emby
 
 OPTIONS_DEFINE=		LAME SMB X11
-OPTIONS_DEFAULT=	SMB X11
+OPTIONS_DEFAULT=	LAME SMB X11
 
 LAME_LIB_DEPENDS=	libmp3lame.so:audio/lame
 LAME_CONFIGURE_ENABLE=	libmp3lame

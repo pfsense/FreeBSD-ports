@@ -2,6 +2,7 @@
 # $FreeBSD$
 #
 # PROVIDE: virtual_oss
+# REQUIRE: kld
 # BEFORE: LOGIN sndiod
 # KEYWORD: shutdown
 
@@ -34,6 +35,8 @@ rcvar=${name}_enable
 start_precmd="${name}_precmd"
 start_cmd="${name}_start"
 stop_cmd="${name}_stop"
+status_cmd="${name}_status"
+
 # required_modules="cuse"
 virtual_oss_default_args="\
   -T /dev/sndstat \
@@ -56,10 +59,23 @@ load_rc_config $name
 : ${virtual_oss_dsp:="$virtual_oss_default_args"}
 : ${virtual_oss_delay:=1}
 
-command="%%PREFIX%%/sbin/${name}"
+command=virtual_oss
 command_args="-B"
 
 pidpath="/var/run/${name}"
+
+virtual_oss()
+{
+  # When running early we need to pre-load some libraries
+  env LD_PRELOAD=%%LIBFFTW3%%%%LIBSAMPLERATE%% %%PREFIX%%/sbin/virtual_oss $*
+}
+
+virtual_oss_pids()
+{
+  pids=$(pgrep -d ' ' $name)
+  pids=${pids% }
+  printf "${pids}"
+}
 
 virtual_oss_precmd()
 {
@@ -89,7 +105,7 @@ stop_instance()
   if [ -z "${instance_args}" ]; then
     echo "No such config ${config}"
   elif [ -e "${pidpath}/${config}.pid" ]; then
-    pid=`check_pidfile ${pidpath}/${config}.pid ${command}`
+    pid=`check_pidfile ${pidpath}/${config}.pid %%PREFIX%%/sbin/virtual_oss`
     if [ ! -z "${pid}" ]; then
       echo -n "Stopping Virtual OSS config ${config} ... "
       kill $pid
@@ -117,6 +133,18 @@ virtual_oss_stop()
     stop_instance ${config}
     sleep ${virtual_oss_delay}
   done
+}
+
+virtual_oss_status()
+{
+  pids=$(virtual_oss_pids)
+
+  if [ "${pids}" ]; then
+    echo "${name} is running as pid ${pids}."
+  else
+    echo "${name} is not running."
+    return 1
+  fi
 }
 
 run_rc_command $*

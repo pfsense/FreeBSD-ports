@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bazel
-DISTVERSION=	3.5.0
+DISTVERSION=	3.7.0
 CATEGORIES=	devel java
 MASTER_SITES=	https://storage.googleapis.com/bazel/${PORTVERSION}/rc${FINALRC}/
 DISTNAME=	bazel-${PORTVERSION}rc${FINALRC}-dist
@@ -29,7 +29,7 @@ CONFLICTS_INSTALL=	bazel029
 # In bazel, a release is always code-wise identical to the final release candidate.
 # Hence we can also download that one and so have a simple way to also test earlier release
 # candidates.
-FINALRC=	4
+FINALRC=	1
 
 SHEBANG_REGEX=	.*(sh|txt|_stub|stub_.*|bazel|get_workspace_status|protobuf_support|_so)
 USE_JAVA=	yes
@@ -42,12 +42,6 @@ NO_WRKSUBDIR=	YES
 
 # The bazel binary is also a zip archive (extracted by the elf part), it must not be stripped
 STRIP=
-
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "i386"
-EXTRA_PATCHES+=	${FILESDIR}/extra-i386_tools_cpp_BUILD.static.freebsd
-.endif
 
 # Have the location of the system-wide rc file reside ${ETCDIR}.
 # Also adapt the sample file to disable persistent java workers as they
@@ -86,4 +80,4 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${WRKSRC}/scripts/packages/bazel.bazelrc ${STAGEDIR}${ETCDIR}/bazel.bazelrc.sample
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

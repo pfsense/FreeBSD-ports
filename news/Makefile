@@ -55,8 +55,8 @@
     SUBDIR += pgpmoose
     SUBDIR += plor
     SUBDIR += py-pynzb
-    SUBDIR += py-sabyenc
     SUBDIR += py-sabyenc3
+    SUBDIR += rntrack
     SUBDIR += s-news
     SUBDIR += sabnzbdplus
     SUBDIR += slrn

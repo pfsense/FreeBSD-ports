@@ -2,6 +2,7 @@
 
 PORTNAME=	colmap
 DISTVERSION=	3.6
+PORTREVISION=	2
 CATEGORIES=	graphics
 
 MAINTAINER=	jbeich@FreeBSD.org

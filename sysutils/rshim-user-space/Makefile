@@ -3,7 +3,7 @@
 
 PORTNAME=	rshim-user-space
 DISTVERSIONPREFIX=	rshim-
-DISTVERSION=		2.0.4
+DISTVERSION=		2.0.5-8
 
 MAINTAINER=	hselasky@FreeBSD.org
 COMMENT=	Userspace daemon for the Mellanox BlueField SoC
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim \
 		libpci.so:devel/libpci \
 		libpciaccess.so:devel/libpciaccess
 
-USES=		autoreconf localbase gmake pkgconfig tar:bzip2
+USES=		autoreconf compiler:c11 localbase gmake pkgconfig tar:bzip2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Mellanox

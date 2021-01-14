@@ -74,11 +74,14 @@ BOOT_SUB_LIST_OFF=	HSC2HS=${BOOT_HSC2HS}
 PROFILE_SUB_LIST=	WITH_PROFILE="YES"
 PROFILE_SUB_LIST_OFF=	WITH_PROFILE="NO"
 
-GHC_VERSION=		8.10.2
+GHC_VERSION=		8.10.3
+CABAL_VERSION=		3.2.1.0
 HSCOLOUR_VERSION=	1.24.4
 LLVM_VERSION=		90
 # LLVM version that bootstrap compiler uses
 BOOT_LLVM_VERSION=	60
+
+PLIST_SUB=		GHC_VERSION=${GHC_VERSION} CABAL_VERSION=${CABAL_VERSION}
 
 .include <bsd.port.pre.mk>
 
@@ -145,12 +148,18 @@ CONFIGURE_TARGET=	${ARCH}-unknown-freebsd${"${ARCH:Maarch64}" != "":?:-gnueabihf
 EXTRA_PATCHES+=		${PATCHDIR}/extra-patch-aclocal.m4
 BUILD_DEPENDS+=		llc${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
 RUN_DEPENDS+=		llc${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
+# Keep in sync with LLVM_VERSION
+BINARY_ALIAS=		llc-9.0=llc90 \
+			opt-9.0=opt90
 
 # When GHC being compiled and GHC used for bootstrapping support different
 # LLVM versions, we have to pull in both. Luckily, this is relatively rare.
 .  if ${BOOT_LLVM_VERSION} != ${LLVM_VERSION}
 BUILD_DEPENDS+=		llc${BOOT_LLVM_VERSION}:devel/llvm${BOOT_LLVM_VERSION}
 RUN_DEPENDS+=		llc${BOOT_LLVM_VERSION}:devel/llvm${BOOT_LLVM_VERSION}
+# Keep in sync with BOOT_LLVM_VERSION
+BINARY_ALIAS+=		llc-6.0=llc60 \
+			opt-6.0=opt60
 .  endif
 .endif
 

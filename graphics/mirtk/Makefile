@@ -2,9 +2,9 @@
 
 PORTNAME=	mirtk
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.0-42
-DISTVERSIONSUFFIX=	-g7390df6
-PORTREVISION=	3
+DISTVERSION=	2.0.0-122
+PORTREVISION=	1
+DISTVERSIONSUFFIX=	-g38210fa
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -22,8 +22,16 @@ GH_ACCOUNT=	BioMedIA
 GH_PROJECT=	${PORTNAME:tu}
 USE_LDCONFIG=	yes
 
-post-stage: # https://github.com/BioMedIA/MIRTK/issues/674
-	@${RM} ${STAGEDIR}${PREFIX}/bin/uninstall-mirtk
-	@${REINPLACE_CMD} -i '' 's|${STAGEDIR}||' ${STAGEDIR}${PREFIX}/lib/cmake/mirtk/MIRTKInstallManifest.txt
+OPTIONS_DEFINE=		TBB VTK
+OPTIONS_DEFAULT=	TBB VTK
+
+TBB_DESC=		Build with TBB
+TBB_CMAKE_BOOL=		WITH_TBB
+TBB_LIB_DEPENDS=	libtbb.so:devel/tbb
+
+VTK_DESC=		Build with the VTK toolkit
+VTK_CMAKE_BOOL=		WITH_VTK
+VTK_LIB_DEPENDS=	libvtkCommonCore-9.0.so:math/vtk9 \
+			libexpat.so:textproc/expat2
 
 .include <bsd.port.mk>

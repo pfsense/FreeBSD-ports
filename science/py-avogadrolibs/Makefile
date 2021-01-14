@@ -2,6 +2,7 @@
 
 PORTNAME=	avogadrolibs
 DISTVERSION=	1.93.0
+PORTREVISION=	1
 CATEGORIES=	science
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -10,6 +11,8 @@ COMMENT=	Python bindings for Avogadro2 chemistry libraries
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/../LICENSE
+
+BROKEN=		fails to configure
 
 BUILD_DEPENDS=	${LOCALBASE}/include/pybind11/pybind11.h:devel/pybind11
 LIB_DEPENDS=	libAvogadroCore.so:science/avogadrolibs

@@ -59,7 +59,6 @@ BAD_GST_ALL_PLUGINS+= \
 		sndfile \
 		soundtouch \
 		spc \
-		swfdec \
 		theoradec \
 		timidity \
 		vdpau \
@@ -501,10 +500,6 @@ gst_schroedinger_CONFIGURE_ARGS+=--enable-schro
 gst_schroedinger_PLIST_FILES=	${GST_LIB_DIR}/libgstschro.la \
 				${GST_LIB_DIR}/libgstschro.so
 gst_schroedinger_DIST=		bad
-
-# swfdec
-gst_swfdec_LIB_DEPENDS+=libswfdec-0.4.so:graphics/swfdec
-gst_swfdec_DIST=	bad
 
 # taglib
 gst_taglib_LIB_DEPENDS+=	libtag.so:audio/taglib

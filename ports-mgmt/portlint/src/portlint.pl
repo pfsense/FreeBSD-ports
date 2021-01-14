@@ -15,7 +15,7 @@
 # was removed.
 #
 # $FreeBSD$
-# $MCom: portlint/portlint.pl,v 1.515 2020/05/31 15:15:06 jclarke Exp $
+# $MCom: portlint/portlint.pl,v 1.522 2020/12/27 19:19:02 jclarke Exp $
 #
 
 use strict;
@@ -50,7 +50,7 @@ $portdir = '.';
 # version variables
 my $major = 2;
 my $minor = 19;
-my $micro = 2;
+my $micro = 4;
 
 # default setting - for FreeBSD
 my $portsdir = '/usr/ports';
@@ -596,6 +596,7 @@ sub checkplist {
 	my $owner_seen = 0;
 	my $group_seen = 0;
 	my $found_so = 0;
+	my $found_naked_so = 0;
 
 	# Variables that are allowed to be out-of-sync in the XXXDIR check.
 	# E.g., %%PORTDOCS%%%%RUBY_MODDOCDIR%% will be OK because there is
@@ -807,12 +808,14 @@ sub checkplist {
 				"into libdata/pkgconfig for them to be found by pkg-config.");
 		}
 
-		if ($_ =~ m|lib[^\/]+\.so(\.\d+)?$| &&
+		if ($_ =~ m|lib[^\/]+\.so\.\d+$| &&
 			$makevar{USE_LDCONFIG} eq '') {
 			&perror("WARN", $file, $., "installing shared libraries, ".
 				"please define USE_LDCONFIG as appropriate");
-		} elsif ($_ =~ m|lib[^\/]+\.so(\.\d+)?$|) {
+		} elsif ($_ =~ m|lib[^\/]+\.so\.\d+$|) {
 			$found_so++;
+		} elsif ($_ =~ m|lib[^\/]+\.so$|) {
+			$found_naked_so++;
 		}
 
 		if ($_ =~ m|^share/icons/.*/| &&
@@ -947,8 +950,14 @@ sub checkplist {
 	}
 
 	if ($makevar{USE_LDCONFIG} ne '' && !$found_so) {
-		&perror("WARN", $file, -1, "You have defined USE_LDCONFIG, but this ".
-			"port does not install any shared objects.");
+		if ($found_naked_so) {
+			&perror("WARN", $file, -1, "You have defined USE_LDCONFIG, but this ".
+				"port does not install shared objects in the format lib*.so.[0-9] ".
+				"which ldconfig(8) needs to register them in the hints file.");
+		} else {
+			&perror("WARN", $file, -1, "You have defined USE_LDCONFIG, but this ".
+				"port does not install any shared objects.");
+		}
 	}
 
 	close(IN);
@@ -1142,10 +1151,9 @@ sub check_depends_syntax {
 				if ($verbose);
 			next;
 		} elsif ($j ne 'DEPENDS' && $i =~ /^\$\{([A-Z_]+DEPENDS)}\s*$/ && !$seen_depends{$1}) {
-			# XXX: technically we don't need this elsif block (we could remove the seen_depends check above)
-			# but I don't like that one can use a variable before they've declared it.
-			#&perror("FATAL", $file, -1, "$j points to ${dtype}DEPENDS which has not yet been defined.");
-			print "OK: (kinda) $j refers to $1 (which hasn't been declared yet, but it will work), skipping checks.\n"
+			# make(1) does lazy variable evaluation, so we can use a variable before it is
+			# declared.  However, portlint scans line by line.  Allow this behavior.
+			print "OK: $j refers to $1 (which hasn't been declared yet, but it will work), skipping checks.\n"
 			    if ($verbose);
 			next;
 		}
@@ -1311,7 +1319,7 @@ sub check_depends_syntax {
 				&perror("FATAL", $file, -1, "do not depend on any apache ".
 					"port in *_DEPENDS directly.  ".
 					"Instead use USE_APACHE=VERSION, where VERSION can be ".
-					"found in \${PORTSDIR}/Mk/bsd.apache.mk.");
+					"found in \${PORTSDIR}/Mk/Uses/apache.mk.");
 			}
 
 			# Check for over-specific shared library dependencies
@@ -1790,14 +1798,24 @@ sub checkmakefile {
 		}
 		if (!grep(/^$i$/, (@mopt, @popt))) {
 			if ($whole !~ /\n${i}_($m)(_\w+)?(.)?=[^\n]+/ and $whole !~ /\n[-\w]+-${i}-(on|off):\n/) {
-				if (!$slaveport) {
-					&perror("WARN", $file, -1, "$i is listed in ".
-						"OPTIONS_DEFINE, but no PORT_OPTIONS:M$i appears.");
-				} else {
-					&perror("WARN", $file, -1, "$i is listed in ".
-						"OPTIONS_DEFINE, but no PORT_OPTIONS:M$i appears ".
-						"in this slave Makefile.  Make sure it appears in ".
-						"the master's Makefile.");
+				my $found_opt_use = 0;
+				foreach my $oarg ('BUILD_DEPENDS', 'RUN_DEPENDS', 'LIB_DEPENDS') {
+					my $oarg_var = &get_makevar("${i}_${oarg}");
+					if ($oarg_var ne "") {
+						$found_opt_use = 1;
+						last;
+					}
+				}
+				if (!$found_opt_use) {
+					if (!$slaveport) {
+						&perror("WARN", $file, -1, "$i is listed in ".
+							"OPTIONS_DEFINE, but no PORT_OPTIONS:M$i appears.");
+					} else {
+						&perror("WARN", $file, -1, "$i is listed in ".
+							"OPTIONS_DEFINE, but no PORT_OPTIONS:M$i appears ".
+							"in this slave Makefile.  Make sure it appears in ".
+							"the master's Makefile.");
+					}
 				}
 			}
 		}
@@ -1830,7 +1848,7 @@ sub checkmakefile {
 		my $lineno = &linenumber($`);
 		&perror("WARN", $file, $lineno, "is $1$2 a user-settable option? ".
 			"Consider using WITH_$2 instead.")
-		if ($1.$2 ne 'USE_GCC');
+		if ($1.$2 ne 'USE_GCC' && $1.$2 ne 'USE_LDCONFIG32');
 	}
 
 	#
@@ -2624,9 +2642,10 @@ xargs xmkmf
 		#$slaveport = 0;
 		print "OK: non-slave port detected, checking for anything after bsd.port(.post).mk.\n"
 			if ($verbose);
-		if ($whole !~ /\n\.include\s+<bsd\.port(?:\.post)?\.mk>\s*$/s) {
+		if ($whole !~ /\n\.include\s+<bsd\.port(?:\.post)?\.mk>\s*$/s &&
+		    $whole !~ /\n\.endif\s*$/s) {
 			&perror("FATAL", $file, -1, "the last line of Makefile has to be".
-				' .include <bsd.port(.post).mk>');
+				' .include <bsd.port(.post).mk> (or .endif in the case of a conditional)');
 		}
 		if ($whole =~ /^MASTERDIR\s*[+?:!]?\s*=/m) {
 			&perror("WARN", $file, -1, "non-slave ports may not define MASTERDIR");

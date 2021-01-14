@@ -25,6 +25,7 @@ pkg/frr/frr_global_prefixes.xml
 pkg/frr/frr_bgp.xml
 pkg/frr/frr_bfd.xml
 pkg/frr/frr_bfd_peers.xml
+pkg/frr/frr_bfd_profiles.xml
 pkg/frr/frr_bgp_rpki_cache_servers.xml
 bin/frrctl
 %%DATADIR%%/info.xml

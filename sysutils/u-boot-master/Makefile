@@ -71,8 +71,8 @@ UBOOT_PLIST_ALLWINNER64=${UBOOT_PLIST_ALLWINNER}
 UBOOT_ARCH_ALLWINNER64=aarch64
 UBOOT_METADATA_ALLWINNER64_FILES=	${UBOOT_PLIST_ALLWINNER64}
 UBOOT_METADATA_ALLWINNER64_METHOD=	raw
-UBOOT_METADATA_ALLWINNER64_RAW_OFFSET=	8
-UBOOT_METADATA_ALLWINNER64_RAW_BS=	1k
+UBOOT_METADATA_ALLWINNER64_RAW_OFFSET=	1
+UBOOT_METADATA_ALLWINNER64_RAW_BS=	128k
 
 # Overrides for Zynq 7000 family
 UBOOT_PLIST_ZYNQ_7000=u-boot.img boot.bin uEnv.txt
@@ -111,7 +111,7 @@ UBOOT_PLIST_QEMU=	u-boot.bin
 .if !defined(UBOOT_VERSION) && defined(UBOOT_VERSION_${FAMILY:tu})
 UBOOT_VERSION=${UBOOT_VERSION_${FAMILY:tu}}
 .endif
-UBOOT_VERSION?=	2020.07
+UBOOT_VERSION?=	2020.10
 
 # If a slave port defines a PORTREVISION use it
 .if defined(U_BOOT_SLAVE_PORTREVISION_${UBOOT_VERSION})
@@ -151,8 +151,13 @@ UBOOT_MOVE=${UBOOT_MOVE_${FAMILY:tu}}
 
 # Per family dependancies
 .if defined(FAMILY) && ${FAMILY} == allwinner64
+.if defined(SUBFAMILY) && ${SUBFAMILY} == h6
+BUILD_DEPENDS+=	${LOCALBASE}/share/atf-sun50i_h6/bl31.bin:sysutils/atf-sun50i_h6
+MAKE_ENV+=	BL31=${LOCALBASE}/share/atf-sun50i_h6/bl31.bin
+.else
 BUILD_DEPENDS+=	${LOCALBASE}/share/atf-sun50i_a64/bl31.bin:sysutils/atf-sun50i_a64
 MAKE_ENV+=	BL31=${LOCALBASE}/share/atf-sun50i_a64/bl31.bin
+.endif
 .endif
 
 .if defined(FAMILY) && ${FAMILY} == rk3328
@@ -173,6 +178,13 @@ PLIST_FILES+=	${UBOOT_DIR}/${i}
 .endfor
 PLIST_FILES+=	${UBOOT_DIR}/README
 
+.if defined(PLIST_EXTRAS)
+.for i in ${PLIST_EXTRAS}
+PLIST_FILES+=	${UBOOT_DIR}/${i}
+.endfor
+.endif
+
+.if !defined(NO_METADATA)
 .if defined(UBOOT_METADATA_${FAMILY:tu}_METHOD)
 METADATA_METHOD=${UBOOT_METADATA_${FAMILY:tu}_METHOD}
 METADATA_FILES=${UBOOT_METADATA_${FAMILY:tu}_FILES}
@@ -184,6 +196,7 @@ METADATA_BS=${UBOOT_METADATA_${FAMILY:tu}_RAW_BS}
 .elif ${METADATA_METHOD} == "file"
 .else
 .error "Unsupported METADATA_METHOD"
+.endif
 .endif
 .endif
 

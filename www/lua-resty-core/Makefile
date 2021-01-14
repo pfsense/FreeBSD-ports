@@ -1,8 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	lua-resty-core
-PORTVERSION=	0.1.19
-DISTVERSIONPREFIX=v
+PORTVERSION=	0.1.21
+PORTREVISION=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 
 MAINTAINER=	dmitry.wagin@ya.ru
@@ -11,7 +12,7 @@ COMMENT=	New FFI-based Lua API for OpenResty NGINX Lua modules
 LICENSE=	BSD2CLAUSE
 
 RUN_DEPENDS=	luajit-openresty>=2.1:lang/luajit-openresty \
-		lua-resty-lrucache>=0.09:www/lua-resty-lrucache
+		lua-resty-lrucache>=0.10:www/lua-resty-lrucache
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	openresty

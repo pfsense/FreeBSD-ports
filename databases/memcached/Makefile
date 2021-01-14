@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	memcached
-PORTVERSION=	1.6.7
+PORTVERSION=	1.6.9
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	http://www.memcached.org/files/ \
 		GENTOO
@@ -13,7 +14,6 @@ COMMENT=	High-performance distributed memory object cache system
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	as:devel/binutils
 LIB_DEPENDS=	libevent.so:devel/libevent
 
 USES=		autoreconf cpe shebangfix
@@ -33,6 +33,13 @@ OPTIONS_DEFINE=		DOCS SASL
 OPTIONS_DEFAULT=	SASL
 OPTIONS_DEFINE_amd64=	DTRACE
 OPTIONS_DEFAULT_amd64=	DTRACE
+OPTIONS_DEFINE_powerpc64=	DTRACE
+OPTIONS_DEFAULT_powerpc64=	DTRACE
+OPTIONS_EXCLUDE_powerpc64=	${OPTIONS_EXCLUDE_${ARCH}_${OSREL:R}}
+OPTIONS_EXCLUDE_powerpc64_11=	DTRACE
+OPTIONS_EXCLUDE_powerpc64_12=	DTRACE
+OPTIONS_DEFINE_powerpc64le=	DTRACE
+OPTIONS_DEFAULT_powerpc64le=	DTRACE
 
 .if !exists(/usr/sbin/dtrace)
 OPTIONS_EXCLUDE+=	DTRACE
@@ -61,13 +68,8 @@ CONFIGURE_ARGS+=	--enable-tls
 USES+=			ssl
 .endif
 
-.if ${ARCH} == amd64
+.if ${ARCH} == amd64 || ${ARCH:Mpowerpc64*}
 CONFIGURE_ARGS+=	--enable-64bit
-.endif
-
-# avoid triggering a bug in libdtrace, see illumos issue 6653
-.if ${PORT_OPTIONS:MDTRACE}
-CFLAGS+=	-no-integrated-as
 .endif
 
 post-install:

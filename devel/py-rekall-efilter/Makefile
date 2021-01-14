@@ -12,6 +12,9 @@ COMMENT=	EFILTER query language with Rekall specific modifications
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+DEPRECATED=	Unmaintained upstream
+EXPIRATION_DATE=	2021-01-27
+
 CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}efilter-[0-9]*
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>2:devel/py-dateutil@${PY_FLAVOR} \
@@ -20,7 +23,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>2:devel/py-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytz>=2011:devel/py-pytz@${PY_FLAVOR}
 
 NO_ARCH=	yes
-USES=		python zip
+USES=		python:3.6+ zip
 USE_PYTHON=	distutils autoplist
 
 post-extract:

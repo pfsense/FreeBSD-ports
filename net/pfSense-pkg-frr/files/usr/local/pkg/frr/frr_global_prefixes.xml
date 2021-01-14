@@ -8,7 +8,7 @@
  * frr_global_prefixes.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -74,6 +74,10 @@
 	</tabs>
 	<adddeleteeditpagefields>
 		<columnitem>
+			<fielddescr>IP Type</fielddescr>
+			<fieldname>iptype</fieldname>
+		</columnitem>
+		<columnitem>
 			<fielddescr>Name</fielddescr>
 			<fieldname>name</fieldname>
 		</columnitem>
@@ -83,6 +87,18 @@
 		</columnitem>
 	</adddeleteeditpagefields>
 	<fields>
+		<field>
+			<fielddescr>IP Type</fielddescr>
+			<fieldname>iptype</fieldname>
+			<description>Prefix list IP version.</description>
+			<type>select</type>
+			<default_value>IPv4</default_value>
+			<options>
+				<option><name>IPv4</name><value>IPv4</value></option>
+				<option><name>IPv6</name><value>IPv6</value></option>
+			</options>
+			<required/>
+		</field>
 		<field>
 			<fielddescr>Name</fielddescr>
 			<fieldname>name</fieldname>
@@ -143,6 +159,11 @@
 					<size>25</size>
 				</rowhelperfield>
 				<rowhelperfield>
+					<fielddescr>Any</fielddescr>
+					<fieldname>any</fieldname>
+					<type>checkbox</type>
+				</rowhelperfield>
+				<rowhelperfield>
 					<fielddescr>Minimum Prefix</fielddescr>
 					<fieldname>ge</fieldname>
 					<type>input</type>
@@ -157,6 +178,9 @@
 			</rowhelper>
 		</field>
 	</fields>
+	<custom_delete_php_command>
+		frr_generate_config();
+	</custom_delete_php_command>
 	<custom_php_resync_config_command>
 		frr_generate_config();
 	</custom_php_resync_config_command>

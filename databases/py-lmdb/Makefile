@@ -19,14 +19,14 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>0.8:devel/py-cffi@${PY_FLAVOR}
 LIB_DEPENDS=	liblmdb.so:databases/lmdb
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		localbase python
+USES=		localbase python:3.6+
 USE_PYTHON=	autoplist distutils
 
 MAKE_ENV=	LMDB_FORCE_SYSTEM=1 \
 		LMDB_FORCE_CFFI=1
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/lmdb/lmdb_cffi.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/lmdb/lmdb_cffi*.so
 
 do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest -rs -v

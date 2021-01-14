@@ -2,7 +2,8 @@
 
 PORTNAME=	step
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-CATEGORIES=	science kde kde-applications
+PORTREVISION=	1
+CATEGORIES=	science education kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE interactive physics simulator

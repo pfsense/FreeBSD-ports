@@ -1,9 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	nomacs
-PORTVERSION=	3.14.2
-PORTREVISION=	1
+PORTVERSION=	3.16
+DISTVERSIONSUFFIX=	.224
+PORTREVISION=	2
 CATEGORIES=	graphics
+
+PATCH_SITES=	https://github.com/nomacs/nomacs/commit/
+PATCHFILES=	8c44e10ae48a88ed2ea885f432c65a0859013011.patch:-p1
 
 MAINTAINER=	vidar@karlsen.tech
 COMMENT=	Small, fast, and free image viewer
@@ -14,7 +18,7 @@ LIB_DEPENDS=	libexiv2.so:graphics/exiv2 \
 		libopencv_highgui.so:graphics/opencv \
 		libopencv_core.so:graphics/opencv-core \
 		liblcms2.so:graphics/lcms2 \
-		libquazip5.so:archivers/quazip
+		libquazip1-qt5.so:archivers/quazip
 
 USES=		cmake compiler:c++11-lang desktop-file-utils \
 		dos2unix pkgconfig qt:5
@@ -43,7 +47,7 @@ TIFF_CMAKE_BOOL=	ENABLE_TIFF
 TRANSLATIONS_CMAKE_BOOL=	ENABLE_TRANSLATIONS
 TRANSLATIONS_DESC=		Install translations
 
-PLUGINS_GH_TUPLE=	nomacs:nomacs-plugins:3.14:plugins/ImageLounge/plugins
+PLUGINS_GH_TUPLE=	nomacs:nomacs-plugins:3.16:plugins/ImageLounge/plugins
 PLUGINS_CMAKE_ON=	ENABLE_PLUGINS
 
 .include <bsd.port.mk>

@@ -1,12 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	swaylock
-DISTVERSION=	1.5
-PORTREVISION=	2
+DISTVERSION?=	1.5
+PORTREVISION?=	2
 CATEGORIES=	x11
 
 MAINTAINER=	jbeich@FreeBSD.org
-COMMENT=	Screen locker for Wayland
+COMMENT?=	Screen locker for Wayland
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,9 +15,11 @@ BUILD_DEPENDS=	wayland-protocols>=1.14:graphics/wayland-protocols
 LIB_DEPENDS=	libwayland-client.so:graphics/wayland \
 		libxkbcommon.so:x11/libxkbcommon
 
+CONFLICTS_INSTALL=	${PORTNAME}-*
+
 USES=		compiler:c11 gnome meson pkgconfig
 USE_GITHUB=	yes
-GH_ACCOUNT=	swaywm
+GH_ACCOUNT?=	swaywm
 USE_GNOME=	cairo pango
 PLIST_FILES=	"@(,,4755) bin/${PORTNAME}" \
 		etc/pam.d/${PORTNAME} \

@@ -8,7 +8,7 @@
  * squidguard.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2006-2013 Sergey Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.
  *
@@ -88,7 +88,7 @@
 			<sethelp>
 				<![CDATA[
 				<strong><span class="errmsg">Important: </span></strong>Please set up at least one category on the 'Target Categories' tab before enabling.
-				See <a href="https://forum.pfsense.org/index.php?topic=94312.0">this link for details</a>.
+				See <a href="https://docs.netgate.com/pfsense/en/latest/packages/cache-proxy/squidguard.html">this link for details</a>.
 				]]>
 			</sethelp>
 			<type>checkbox</type>

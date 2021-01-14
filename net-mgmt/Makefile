@@ -21,6 +21,7 @@
     SUBDIR += bgpq4
     SUBDIR += bgpuma
     SUBDIR += blackbox_exporter
+    SUBDIR += bosun
     SUBDIR += bpft
     SUBDIR += braa
     SUBDIR += bsnmp-regex
@@ -49,7 +50,6 @@
     SUBDIR += ciscoconf
     SUBDIR += clog
     SUBDIR += cnagios
-    SUBDIR += cnagios4
     SUBDIR += collectd5
     SUBDIR += confregdecode
     SUBDIR += coovachilli
@@ -275,9 +275,10 @@
     SUBDIR += pandorafms_server
     SUBDIR += percona-monitoring-plugins
     SUBDIR += pftabled
-    SUBDIR += php72-snmp
     SUBDIR += php73-snmp
     SUBDIR += php74-snmp
+    SUBDIR += php80-snmp
+    SUBDIR += phpfpm_exporter
     SUBDIR += phpipam
     SUBDIR += phpweathermap
     SUBDIR += ping_exporter
@@ -330,6 +331,7 @@
     SUBDIR += rrdbot
     SUBDIR += rtrlib
     SUBDIR += rubygem-blimpy
+    SUBDIR += rubygem-checkson
     SUBDIR += rubygem-oxidized
     SUBDIR += rubygem-oxidized-script
     SUBDIR += rubygem-oxidized-web
@@ -371,6 +373,7 @@
     SUBDIR += unifi-lts
     SUBDIR += unifi-poller
     SUBDIR += unifi5
+    SUBDIR += unifi6
     SUBDIR += virt-viewer
     SUBDIR += wdiag
     SUBDIR += whatmask
@@ -389,11 +392,6 @@
     SUBDIR += zabbix4-java
     SUBDIR += zabbix4-proxy
     SUBDIR += zabbix4-server
-    SUBDIR += zabbix44-agent
-    SUBDIR += zabbix44-frontend
-    SUBDIR += zabbix44-java
-    SUBDIR += zabbix44-proxy
-    SUBDIR += zabbix44-server
     SUBDIR += zabbix5-agent
     SUBDIR += zabbix5-frontend
     SUBDIR += zabbix5-java

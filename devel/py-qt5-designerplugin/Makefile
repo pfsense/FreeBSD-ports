@@ -1,7 +1,6 @@
 # $FreeBSD$
 
 PORTNAME=	designerplugin
-PORTREVISION=	1
 CATEGORIES=	devel python
 
 MAINTAINER=	kde@FreeBSD.org
@@ -18,9 +17,9 @@ CONFIGURE_ARGS=	--enable QtDesigner
 
 PYQT_DIST=	yes
 
-USES=		gl python pyqt:5 qt:5
+USES=		gl python:3.5+ pyqt:5 qt:5
 USE_GL=		gl
-USE_PYQT=	sip_build
+USE_PYQT=	sip_build 
 USE_PYTHON=	concurrent flavors py3kplist
 USE_QT=		core designer gui xml widgets \
 		buildtools_build qmake_build

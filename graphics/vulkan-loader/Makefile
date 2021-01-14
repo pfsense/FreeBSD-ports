@@ -1,44 +1,43 @@
 # $FreeBSD$
 
 PORTNAME=	vulkan-loader
-DISTVERSIONPREFIX=sdk-
-DISTVERSION=	1.2.135.0
+DISTVERSIONPREFIX=v
+DISTVERSION=	1.2.165
 CATEGORIES=	graphics devel
 
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	8d2d49a9c89d.patch:-p1 # https://github.com/KhronosGroup/Vulkan-Loader/pull/419
-
-MAINTAINER=	greg@unrelenting.technology
+MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Driver loader for the Vulkan graphics API
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:devel/vulkan-headers
+BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers
 
 USES=		cmake compiler:${ARCH:Mi386:C/.+/gcc-/}c++11-lib pkgconfig python:3.4+,build
-USE_LDCONFIG=	yes
-
 USE_GITHUB=	yes
+USE_LDCONFIG=	yes
 GH_ACCOUNT=	KhronosGroup
 GH_PROJECT=	Vulkan-Loader
-
 CMAKE_ON=	CMAKE_SKIP_RPATH
 CMAKE_OFF=	BUILD_TESTS
 
-OPTIONS_DEFINE=	XLIB XCB WAYLAND
-OPTIONS_DEFAULT=XLIB XCB WAYLAND
+OPTIONS_DEFINE=	WAYLAND XCB XLIB
+OPTIONS_DEFAULT=WAYLAND XCB XLIB
 
-XLIB_DESC=	Build Xlib WSI (Window System Integration) support
-XCB_DESC=	Build XCB WSI (Window System Integration) support
-WAYLAND_DESC=	Build Wayland WSI (Window System Integration) support
-
-XLIB_CMAKE_BOOL=	BUILD_WSI_XLIB_SUPPORT
-XLIB_LIB_DEPENDS=	libX11.so:x11/libX11 \
-			libXrandr.so:x11/libXrandr
-XCB_CMAKE_BOOL=		BUILD_WSI_XCB_SUPPORT
-XCB_LIB_DEPENDS=	libX11-xcb.so:x11/libX11 \
-			libxcb.so:x11/libxcb
+WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland
 WAYLAND_CMAKE_BOOL=	BUILD_WSI_WAYLAND_SUPPORT
-WAYLAND_LIB_DEPENDS=	libwayland-egl.so:graphics/wayland
+
+XCB_DESC=		${X11_DESC} via libxcb
+XCB_USES=		xorg
+XCB_USE=		XORG=xcb
+XCB_CMAKE_BOOL=		BUILD_WSI_XCB_SUPPORT
+
+XLIB_DESC=		${X11_DESC} via libX11
+XLIB_USES=		xorg
+XLIB_USE=		XORG=x11,xrandr
+XLIB_CMAKE_BOOL=	BUILD_WSI_XLIB_SUPPORT
+
+post-patch:
+# _XOPEN_SOURCE enforces X/Open-compliance but alloca isn't there
+	@${REINPLACE_CMD} '/_XOPEN_SOURCE/d' ${WRKSRC}/loader/CMakeLists.txt
 
 .include <bsd.port.mk>

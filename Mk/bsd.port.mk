@@ -1047,7 +1047,7 @@ _FLAVOR:=	${FLAVOR}
 .if !defined(PORTS_FEATURES) && empty(${PORTS_FEATURES:MFLAVORS})
 PORTS_FEATURES+=	FLAVORS
 .endif
-MINIMAL_PKG_VERSION=	1.13.0
+MINIMAL_PKG_VERSION=	1.15.9
 
 _PORTS_DIRECTORIES+=	${PKG_DBDIR} ${PREFIX} ${WRKDIR} ${EXTRACT_WRKDIR} \
 						${STAGEDIR}${PREFIX} ${WRKDIR}/pkg ${BINARY_LINKDIR}
@@ -1177,7 +1177,7 @@ OSVERSION!=	${AWK} '/^\#define[[:blank:]]__FreeBSD_version/ {print $$3}' < ${SRC
 .endif
 _EXPORTED_VARS+=	OSVERSION
 
-.if (${OPSYS} == FreeBSD && (${OSVERSION} < 1103000 || (${OSVERSION} >= 1200000 && ${OSVERSION} < 1201000))) || \
+.if (${OPSYS} == FreeBSD && (${OSVERSION} < 1104000 || (${OSVERSION} >= 1200000 && ${OSVERSION} < 1201000))) || \
     (${OPSYS} == DragonFly && ${DFLYVERSION} < 400400)
 _UNSUPPORTED_SYSTEM_MESSAGE=	Ports Collection support for your ${OPSYS} version has ended, and no ports\
 								are guaranteed to build on this system. Please upgrade to a supported release.
@@ -1381,7 +1381,7 @@ USES+=	php
 .include "${PORTSDIR}/Mk/bsd.java.mk"
 .endif
 
-.if defined(USE_RUBY) || defined(USE_LIBRUBY)
+.if defined(USE_RUBY)
 .include "${PORTSDIR}/Mk/bsd.ruby.mk"
 .endif
 
@@ -2040,6 +2040,10 @@ STAGE_COOKIE?=		${WRKDIR}/.stage_done.${PORTNAME}.${PREFIX:S/\//_/g}
 
 # How to do nothing.  Override if you, for some strange reason, would rather
 # do something.
+# In general, however, DO_NADA is a relic of the past in the ports
+# infrastructure, and most of its usage has been removed. If you need to define
+# a target with DO_NADA, then there is a high chance that the ports
+# infrastructure should be fixed instead.
 DO_NADA?=		${TRUE}
 
 # Use this as the first operand to always build dependency.
@@ -2588,11 +2592,15 @@ check-categories:
 .else
 
 VALID_CATEGORIES+= accessibility afterstep arabic archivers astro audio \
-	benchmarks biology cad chinese comms converters databases \
-	deskutils devel dns docs editors elisp emulators enlightenment finance french ftp \
-	games geography german gnome gnustep graphics hamradio haskell hebrew hungarian \
-	irc japanese java kde ${_KDE_CATEGORIES_SUPPORTED} kld korean lang linux lisp \
-	mail mate math mbone misc multimedia net net-im net-mgmt net-p2p net-vpn news \
+	benchmarks biology cad chinese comms converters \
+	databases deskutils devel dns docs \
+	editors education elisp emulators enlightenment finance french ftp \
+	games geography german gnome gnustep graphics \
+	hamradio haskell hebrew hungarian irc japanese java \
+	kde ${_KDE_CATEGORIES_SUPPORTED} kld korean \
+	lang linux lisp \
+	mail mate math mbone misc multimedia \
+	net net-im net-mgmt net-p2p net-vpn news \
 	parallel pear perl5 plan9 polish ports-mgmt portuguese \
 	print python ruby rubygems russian \
 	scheme science security shells spanish sysutils \

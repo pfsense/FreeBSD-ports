@@ -18,7 +18,7 @@ LIB_DEPENDS=	libmilter.so:mail/libmilter
 CFLAGS+=	-I${LOCALBASE}/include
 .endif
 
-USES=	python
+USES=	python:3.6+
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	sdgathman
@@ -26,6 +26,6 @@ GH_PROJECT=	py${PORTNAME}
 USE_PYTHON=	distutils autoplist flavors
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/milter.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/milter*.so
 
 .include <bsd.port.mk>

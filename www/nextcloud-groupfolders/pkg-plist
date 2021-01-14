@@ -2,14 +2,14 @@
 %%WWWDIR%%/appinfo/app.php
 %%WWWDIR%%/appinfo/info.xml
 %%WWWDIR%%/appinfo/routes.php
-%%WWWDIR%%/build/2.js
-%%WWWDIR%%/build/2.js.map
-%%WWWDIR%%/build/3.js
-%%WWWDIR%%/build/3.js.map
 %%WWWDIR%%/build/files.js
 %%WWWDIR%%/build/files.js.map
 %%WWWDIR%%/build/settings.js
 %%WWWDIR%%/build/settings.js.map
+%%WWWDIR%%/build/sharing.js
+%%WWWDIR%%/build/sharing.js.map
+%%WWWDIR%%/build/vendors~sharing.js
+%%WWWDIR%%/build/vendors~sharing.js.map
 %%WWWDIR%%/img/app-dark.svg
 %%WWWDIR%%/img/deny.svg
 %%WWWDIR%%/img/folder-group.svg
@@ -230,6 +230,7 @@
 %%WWWDIR%%/lib/Command/Quota.php
 %%WWWDIR%%/lib/Command/Rename.php
 %%WWWDIR%%/lib/Command/Scan.php
+%%WWWDIR%%/lib/Command/Trashbin/Cleanup.php
 %%WWWDIR%%/lib/Controller/FolderController.php
 %%WWWDIR%%/lib/Controller/PageController.php
 %%WWWDIR%%/lib/DAV/ACLPlugin.php
@@ -243,6 +244,7 @@
 %%WWWDIR%%/lib/Migration/Version401001Date20190715092137.php
 %%WWWDIR%%/lib/Migration/Version501000Date20190927102434.php
 %%WWWDIR%%/lib/Migration/Version501000Date20191218182434.php
+%%WWWDIR%%/lib/Migration/Version802000Date20201119112624.php
 %%WWWDIR%%/lib/Mount/GroupFolderStorage.php
 %%WWWDIR%%/lib/Mount/GroupMountPoint.php
 %%WWWDIR%%/lib/Mount/MountProvider.php

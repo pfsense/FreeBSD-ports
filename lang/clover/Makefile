@@ -2,42 +2,43 @@
 
 PORTNAME=	clover
 PORTVERSION=	${MESAVERSION}
-PORTREVISION=	1
 CATEGORIES=	lang
 
 COMMENT=	Mesa OpenCL implementation for AMD GPUs
 
 BUILD_DEPENDS=	libclc>=0.3.0:devel/libclc \
 		opencl>=0:devel/opencl
-LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd
+LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd \
+		libzstd.so:archivers/zstd
 RUN_DEPENDS=	libclc>=0.3.0:devel/libclc \
 		opencl>=0:devel/opencl
 
 ONLY_FOR_ARCHS=		i386 amd64
 ONLY_FOR_ARCHS_REASON=	Clover needs a GPU supported by the Radeon KMS driver
+BROKEN_FreeBSD_11=	undefined reference to `vl_video_buffer_plane_order'
 
 .include <bsd.port.options.mk>
 .include "${.CURDIR:H:H}/graphics/mesa-dri/Makefile.common"
 
 MESON_ARGS+=	-Ddri-drivers="" \
-		-Dgallium-drivers=r600,radeonsi \
-		-Dvulkan-drivers="" \
 		-Dplatforms="" \
-		-Dgallium-vdpau=false \
-		-Dgallium-omx=disabled \
-		-Dgallium-va=false \
-		-Dgallium-opencl=disabled \
-		-Dgallium-xa=false \
-		-Dgallium-xvmc=false \
+		-Dvulkan-drivers="" \
 		-Dgallium-nine=false \
-		-Dgles1=false \
-		-Dgles2=false \
+		-Dgallium-omx=disabled \
+		-Dgallium-opencl=disabled \
+		-Dgallium-va=disabled \
+		-Dgallium-vdpau=disabled \
+		-Dgallium-xa=disabled \
+		-Dgallium-xvmc=disabled \
+		-Dgles1=disabled \
+		-Dgles2=disabled \
 		-Dopengl=false \
 		-Dglx=disabled \
-		-Degl=false \
-		-Dgbm=false \
+		-Degl=disabled \
+		-Dgbm=disabled \
+		-Dtools="" \
 		-Dgallium-opencl=icd \
-		-Dtools=""
+		-Dgallium-drivers=r600,radeonsi
 
 LDFLAGS_i386=		-Wl,-znotext
 

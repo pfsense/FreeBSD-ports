@@ -1,12 +1,8 @@
 %%WWWDIR%%/.drone.yml
 %%WWWDIR%%/CHANGELOG.md
 %%WWWDIR%%/LICENSE
-%%WWWDIR%%/appinfo/app.php
-%%WWWDIR%%/appinfo/autoload.php
 %%WWWDIR%%/appinfo/info.xml
 %%WWWDIR%%/appinfo/routes.php
-%%WWWDIR%%/composer.json
-%%WWWDIR%%/composer.lock
 %%WWWDIR%%/css/admin.css
 %%WWWDIR%%/css/files/circles.filelist.css
 %%WWWDIR%%/css/navigation.css
@@ -43,6 +39,7 @@
 %%WWWDIR%%/js/circles.v1.members.js
 %%WWWDIR%%/js/files/circles.files.app.js
 %%WWWDIR%%/js/files/circles.files.list.js
+%%WWWDIR%%/js/jquery.js
 %%WWWDIR%%/js/vendor/notyf.js
 %%WWWDIR%%/l10n/.gitkeep
 %%WWWDIR%%/l10n/af.js
@@ -127,6 +124,8 @@
 %%WWWDIR%%/l10n/hr.json
 %%WWWDIR%%/l10n/hu.js
 %%WWWDIR%%/l10n/hu.json
+%%WWWDIR%%/l10n/ia.js
+%%WWWDIR%%/l10n/ia.json
 %%WWWDIR%%/l10n/id.js
 %%WWWDIR%%/l10n/id.json
 %%WWWDIR%%/l10n/is.js
@@ -171,6 +170,8 @@
 %%WWWDIR%%/l10n/sr.json
 %%WWWDIR%%/l10n/sv.js
 %%WWWDIR%%/l10n/sv.json
+%%WWWDIR%%/l10n/th.js
+%%WWWDIR%%/l10n/th.json
 %%WWWDIR%%/l10n/tr.js
 %%WWWDIR%%/l10n/tr.json
 %%WWWDIR%%/l10n/uk.js
@@ -226,6 +227,9 @@
 %%WWWDIR%%/lib/Controller/TestController.php
 %%WWWDIR%%/lib/Cron/ContactsExistingShares.php
 %%WWWDIR%%/lib/Cron/GlobalSync.php
+%%WWWDIR%%/lib/Cron/Maintenance.php
+%%WWWDIR%%/lib/Db/AccountsRequest.php
+%%WWWDIR%%/lib/Db/AccountsRequestBuilder.php
 %%WWWDIR%%/lib/Db/CircleProviderRequest.php
 %%WWWDIR%%/lib/Db/CircleProviderRequestBuilder.php
 %%WWWDIR%%/lib/Db/CirclesRequest.php
@@ -245,7 +249,6 @@
 %%WWWDIR%%/lib/Db/SharingFrameRequestBuilder.php
 %%WWWDIR%%/lib/Db/TokensRequest.php
 %%WWWDIR%%/lib/Db/TokensRequestBuilder.php
-%%WWWDIR%%/lib/Events/UserEvents.php
 %%WWWDIR%%/lib/Exceptions/ApiVersionIncompatibleException.php
 %%WWWDIR%%/lib/Exceptions/BroadcasterIsNotCompatibleException.php
 %%WWWDIR%%/lib/Exceptions/CircleAlreadyExistsException.php
@@ -317,9 +320,10 @@
 %%WWWDIR%%/lib/GlobalScale/MemberUpdate.php
 %%WWWDIR%%/lib/GlobalScale/Test.php
 %%WWWDIR%%/lib/GlobalScale/UserDeleted.php
-%%WWWDIR%%/lib/Hooks/UserHooks.php
 %%WWWDIR%%/lib/IBroadcaster.php
 %%WWWDIR%%/lib/ISearch.php
+%%WWWDIR%%/lib/Listeners/GroupDeleted.php
+%%WWWDIR%%/lib/Listeners/UserDeleted.php
 %%WWWDIR%%/lib/Migration/ImportOwncloudCustomGroups.php
 %%WWWDIR%%/lib/Migration/RemoveDeadShares.php
 %%WWWDIR%%/lib/Migration/SetMemberTypeToDefault.php
@@ -328,6 +332,7 @@
 %%WWWDIR%%/lib/Migration/Version0019Date20200702124412.php
 %%WWWDIR%%/lib/Migration/Version0019Date20200713184401.php
 %%WWWDIR%%/lib/Migration/Version0019Date20200726125713.php
+%%WWWDIR%%/lib/Migration/Version0019Date20201106110741.php
 %%WWWDIR%%/lib/Model/BaseCircle.php
 %%WWWDIR%%/lib/Model/BaseMember.php
 %%WWWDIR%%/lib/Model/Circle.php
@@ -348,6 +353,7 @@
 %%WWWDIR%%/lib/Search/LocalUsers.php
 %%WWWDIR%%/lib/Service/BroadcastService.php
 %%WWWDIR%%/lib/Service/CirclesService.php
+%%WWWDIR%%/lib/Service/CleanService.php
 %%WWWDIR%%/lib/Service/ConfigService.php
 %%WWWDIR%%/lib/Service/DavService.php
 %%WWWDIR%%/lib/Service/EventsService.php
@@ -401,9 +407,17 @@
 %%WWWDIR%%/vendor/daita/my-small-php-tools/lib/IQueryRow.php
 %%WWWDIR%%/vendor/daita/my-small-php-tools/lib/Model/Cache.php
 %%WWWDIR%%/vendor/daita/my-small-php-tools/lib/Model/CacheItem.php
+%%WWWDIR%%/vendor/daita/my-small-php-tools/lib/Model/Nextcloud/NC19Request.php
+%%WWWDIR%%/vendor/daita/my-small-php-tools/lib/Model/Nextcloud/nc20/NC20Request.php
+%%WWWDIR%%/vendor/daita/my-small-php-tools/lib/Model/Nextcloud/nc20/NC20RequestResult.php
 %%WWWDIR%%/vendor/daita/my-small-php-tools/lib/Model/Request.php
 %%WWWDIR%%/vendor/daita/my-small-php-tools/lib/Model/SimpleDataStore.php
+%%WWWDIR%%/vendor/daita/my-small-php-tools/lib/Traits/Nextcloud/TNC19Request.php
 %%WWWDIR%%/vendor/daita/my-small-php-tools/lib/Traits/Nextcloud/TNCDataResponse.php
+%%WWWDIR%%/vendor/daita/my-small-php-tools/lib/Traits/Nextcloud/TNCRequest.php
+%%WWWDIR%%/vendor/daita/my-small-php-tools/lib/Traits/Nextcloud/nc20/TNC20Logger.php
+%%WWWDIR%%/vendor/daita/my-small-php-tools/lib/Traits/Nextcloud/nc20/TNC20Request.php
+%%WWWDIR%%/vendor/daita/my-small-php-tools/lib/Traits/Nextcloud/nc20/TNC20Setup.php
 %%WWWDIR%%/vendor/daita/my-small-php-tools/lib/Traits/TArrayTools.php
 %%WWWDIR%%/vendor/daita/my-small-php-tools/lib/Traits/TAsync.php
 %%WWWDIR%%/vendor/daita/my-small-php-tools/lib/Traits/TFileTools.php

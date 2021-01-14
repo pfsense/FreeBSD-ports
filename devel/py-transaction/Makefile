@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	transaction
-PORTVERSION=	3.0.0
+PORTVERSION=	3.0.1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,5 +17,7 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

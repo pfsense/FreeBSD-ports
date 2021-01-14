@@ -14,9 +14,11 @@
     SUBDIR += 7kaa
     SUBDIR += 90secondportraits
     SUBDIR += CaribbeanStud
+    SUBDIR += DDNet
     SUBDIR += HeroesOfMightAndMagic
     SUBDIR += KnightCap
     SUBDIR += NBlood
+    SUBDIR += OpenDiablo2
     SUBDIR += OpenTomb
     SUBDIR += abbayedesmorts
     SUBDIR += abe
@@ -65,6 +67,7 @@
     SUBDIR += atris
     SUBDIR += atris-sounds
     SUBDIR += auralquiz
+    SUBDIR += automuteus
     SUBDIR += avanor
     SUBDIR += avoision
     SUBDIR += avp
@@ -181,8 +184,6 @@
     SUBDIR += d2x
     SUBDIR += dMagnetic
     SUBDIR += dangen
-    SUBDIR += dangerdeep
-    SUBDIR += dangerdeep-data
     SUBDIR += darkplaces
     SUBDIR += defendguin
     SUBDIR += devilutionX
@@ -226,6 +227,7 @@
     SUBDIR += el
     SUBDIR += el-data
     SUBDIR += emptyepsilon
+    SUBDIR += endgame-singularity
     SUBDIR += endgame-singularity-music
     SUBDIR += endless-sky
     SUBDIR += endless-sky-high-dpi
@@ -236,6 +238,7 @@
     SUBDIR += epiphany-game
     SUBDIR += etracer
     SUBDIR += euchre
+    SUBDIR += eureka
     SUBDIR += evilfinder
     SUBDIR += evq3
     SUBDIR += excido
@@ -286,7 +289,6 @@
     SUBDIR += freeminer
     SUBDIR += freeminer-default
     SUBDIR += freeorion
-    SUBDIR += freera
     SUBDIR += freesweep
     SUBDIR += freesynd
     SUBDIR += freetennis
@@ -304,7 +306,6 @@
     SUBDIR += gbrainy
     SUBDIR += gcompris-qt
     SUBDIR += gemdropx
-    SUBDIR += gemrb
     SUBDIR += genact
     SUBDIR += gigalomania
     SUBDIR += gillo
@@ -315,7 +316,6 @@
     SUBDIR += glest-data
     SUBDIR += glightoff
     SUBDIR += glmaze
-    SUBDIR += glob2
     SUBDIR += glsfcave
     SUBDIR += gltron
     SUBDIR += gmastermind
@@ -480,6 +480,7 @@
     SUBDIR += libretro-beetle_gba
     SUBDIR += libretro-beetle_lynx
     SUBDIR += libretro-beetle_ngp
+    SUBDIR += libretro-beetle_pce
     SUBDIR += libretro-beetle_pce_fast
     SUBDIR += libretro-beetle_pcfx
     SUBDIR += libretro-beetle_psx
@@ -515,8 +516,10 @@
     SUBDIR += libretro-paralleln64
     SUBDIR += libretro-pcsx_rearmed
     SUBDIR += libretro-picodrive
+    SUBDIR += libretro-play
     SUBDIR += libretro-prboom
     SUBDIR += libretro-prosystem
+    SUBDIR += libretro-px68k
     SUBDIR += libretro-quicknes
     SUBDIR += libretro-scummvm
     SUBDIR += libretro-shaders-glsl
@@ -531,6 +534,7 @@
     SUBDIR += libretro-vbanext
     SUBDIR += libretro-vecx
     SUBDIR += libretro-virtualjaguar
+    SUBDIR += libretro-xrick
     SUBDIR += libretro-yabause
     SUBDIR += libshhcards
     SUBDIR += libtmcg
@@ -585,7 +589,6 @@
     SUBDIR += mancala
     SUBDIR += mangband
     SUBDIR += mari0
-    SUBDIR += marsnomercy
     SUBDIR += masterserver
     SUBDIR += maxr
     SUBDIR += meandmyshadow
@@ -625,6 +628,7 @@
     SUBDIR += narcissu2
     SUBDIR += nazghul
     SUBDIR += nehquake
+    SUBDIR += neo-cowsay
     SUBDIR += nethack32
     SUBDIR += nethack33
     SUBDIR += nethack33-nox11
@@ -633,7 +637,6 @@
     SUBDIR += nethack36
     SUBDIR += nethack36-nox11
     SUBDIR += netherearth
-    SUBDIR += netpanzer
     SUBDIR += netradiant
     SUBDIR += netrek-BRMH-bin
     SUBDIR += netrek-client-cow
@@ -676,6 +679,7 @@
     SUBDIR += openbor3979
     SUBDIR += openbor4432
     SUBDIR += openbubbles
+    SUBDIR += openbve
     SUBDIR += opencity
     SUBDIR += openclaw
     SUBDIR += openclonk
@@ -735,7 +739,6 @@
     SUBDIR += phlipple
     SUBDIR += picmi
     SUBDIR += pinball
-    SUBDIR += pingus
     SUBDIR += pink-pony
     SUBDIR += pioneer
     SUBDIR += pioneers
@@ -878,6 +881,7 @@
     SUBDIR += sjeng
     SUBDIR += ski
     SUBDIR += sl
+    SUBDIR += slade
     SUBDIR += slashem-tty
     SUBDIR += slump
     SUBDIR += sokoban

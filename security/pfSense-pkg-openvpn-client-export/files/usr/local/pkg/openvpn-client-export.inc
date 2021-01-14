@@ -3,7 +3,7 @@
  * openvpn-client-export.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008 Shrew Soft Inc
  * All rights reserved.
  *
@@ -193,8 +193,11 @@ EOF;
 		$conf .= "dev {$devmode}{$nl}";
 	}
 
-	/* TODO: This has been deprecated in OpenVPN 2.4 but does not yet cause a fatal error. */
-	if (!empty($settings['tunnel_networkv6']) && ($expformat != "inlinedroid") && ($expformat != "inlineios")) {
+	/* This has been deprecated in OpenVPN 2.4 and removed from OpenVPN 2.5. */
+	if ($legacy &&
+	    (!empty($settings['tunnel_networkv6']) &&
+	    ($expformat != "inlinedroid") &&
+	    ($expformat != "inlineios"))) {
 		$conf .= "tun-ipv6{$nl}";
 	}
 	$conf .= "persist-tun{$nl}";
@@ -852,10 +855,6 @@ function openvpn_client_export_sharedkey_config($srvid, $useaddr, $proxy, $nokey
 	// add basic settings
 	$conf = "dev tun\n";
 
-	/* TODO: This has been deprecated in OpenVPN 2.4 but does not yet cause a fatal error. */
-	if(! empty($settings['tunnel_networkv6'])) {
-		$conf .= "tun-ipv6\n";
-	}
 	$conf .= "persist-tun\n";
 	$conf .= "persist-key\n";
 	$conf .= "cipher {$cipher}\n";

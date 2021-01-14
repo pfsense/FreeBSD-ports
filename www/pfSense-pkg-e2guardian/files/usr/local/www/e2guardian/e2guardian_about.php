@@ -5,7 +5,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015-2017 Marcello Coutinho
- * Copyright (c) 2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2020-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -86,7 +86,7 @@ display_top_tabs($tab_array);
 					</tr>
 					<tr>
 						<td width="22%" valign="top" class="vncell"><?=gettext("Credits ");?></td>
-						<td width="78%" class="vtable"><?=gettext("Package Created by <a target=_new href='http://forum.pfsense.org/index.php?action=profile;u=4710'>Marcello Coutinho</a><br><br>");?></td>
+						<td width="78%" class="vtable"><?=gettext("Package Created by <a target=_new href='https://forum.netgate.com/user/marcelloc'>Marcello Coutinho</a><br><br>");?></td>
 					</tr>
 				</tbody>
 			</table>

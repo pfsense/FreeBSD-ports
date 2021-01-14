@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	spidermonkey
-DISTVERSION=	78.2.0
+DISTVERSION=	78.6.0
 CATEGORIES=	lang
 MASTER_SITES=	MOZILLA/firefox/releases/${DISTVERSION}esr/source
 PKGNAMESUFFIX=	${SP_VER}
@@ -13,8 +13,7 @@ COMMENT=	Standalone JavaScript based from Mozilla 78-esr
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT} \
-		${LOCALBASE}/bin/python${PYTHON3_DEFAULT}:lang/python${PYTHON3_DEFAULT:S/.//g} \
+BUILD_DEPENDS=	${LOCALBASE}/bin/python${PYTHON3_DEFAULT}:lang/python${PYTHON3_DEFAULT:S/.//g} \
 		${RUST_DEFAULT}>=1.35:lang/${RUST_DEFAULT} \
 		autoconf-2.13:devel/autoconf213 \
 		rust-cbindgen>=0.8.7:devel/rust-cbindgen
@@ -22,7 +21,7 @@ LIB_DEPENDS=	libffi.so:devel/libffi \
 		libicudata.so:devel/icu \
 		libnspr4.so:devel/nspr
 
-USES=		compiler gmake localbase pathfix pkgconfig python:build \
+USES=		compiler:c++17-lang gmake localbase pathfix pkgconfig python:build \
 		readline tar:xz
 USE_LDCONFIG=	yes
 SP_VER=		78
@@ -51,9 +50,6 @@ CONFIGURE_ARGS=	--disable-debug \
 CONFIGURE_ENV=	HOST_CC=${CC} \
 		HOST_CXX=${CXX}
 
-CONFIGURE_ENV+=	LLVM_CONFIG=llvm-config${LLVM_DEFAULT} \
-		LLVM_OBJDUMP=llvm-objdump${LLVM_DEFAULT}
-
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 PLIST_SUB=	SP_VER=${SP_VER}
 
@@ -64,12 +60,19 @@ CONFIGURE_TARGET=	x86_64-portbld-freebsd${OSREL}
 .endif
 
 # Require newer Clang than what's in base system unless user opted out
+# or the base system is new enough.
 .if ${CHOSEN_COMPILER_TYPE} == gcc
+CONFIGURE_ENV+=	LLVM_CONFIG=llvm-config${LLVM_DEFAULT} \
+		LLVM_OBJDUMP=llvm-objdump${LLVM_DEFAULT}
+BUILD_DEPENDS+=	${LOCALBASE}/bin/llvm-objdump${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 USE_GCC=	yes
-.elif ${CC} == cc && ${CXX} == c++ && exists(/usr/lib/libc++.so)
+.elif ${CC} == cc && ${CXX} == c++ && exists(/usr/lib/libc++.so) && \
+	${COMPILER_VERSION} < 80
 CPP=		${LOCALBASE}/bin/clang-cpp${LLVM_DEFAULT}
 CC=		${LOCALBASE}/bin/clang${LLVM_DEFAULT}
 CXX=		${LOCALBASE}/bin/clang++${LLVM_DEFAULT}
+CONFIGURE_ENV+=	LLVM_CONFIG=llvm-config${LLVM_DEFAULT} \
+		LLVM_OBJDUMP=llvm-objdump${LLVM_DEFAULT}
 BUILD_DEPENDS+=	${LOCALBASE}/bin/clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 .endif
 

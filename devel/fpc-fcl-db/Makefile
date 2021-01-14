@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTREVISION=	6
+PORTREVISION=	1
 CATEGORIES=	devel lang
 PKGNAMESUFFIX=	-fcl-db
 

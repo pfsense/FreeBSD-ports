@@ -3,9 +3,9 @@
 PORTNAME=	chart
 PORTVERSION=	${PYQT5_VERSION}
 CATEGORIES=	x11-toolkits devel python
-MASTER_SITES=	RIVERBANK/PyQtChart/${PYQT5_VERSION}/
+MASTER_SITES=	${MASTER_SITES_PYQTCHART}
 PKGNAMEPREFIX=	${PYQT_PY_RELNAME}-
-DISTNAME=	PyQtChart-${PYQT5_VERSION}
+DISTNAME=	${PYQTCHART_DISTNAME}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Python bindings for the Qt5 toolkit, QtChart module
@@ -15,7 +15,7 @@ LICENSE=	${PYQT5_LICENSE}
 BUILD_DEPENDS=	${PY_ENUM34}
 RUN_DEPENDS=	${PY_ENUM34}
 
-USES=		gl python pyqt:5 qt:5
+USES=		gl python:3.5+ pyqt:5 qt:5
 USE_GL=		gl
 USE_PYQT=	sip_build core gui widgets
 USE_PYTHON=	concurrent flavors py3kplist
@@ -40,10 +40,14 @@ API_CONFIGURE_OFF=	--no-qsci-api
 API_LIB_DEPENDS=	libqscintilla2_qt5.so:devel/qscintilla2-qt5
 DEBUG_CONFIGURE_ON=	--debug --trace
 
-.if !target(do-configure)
+post-patch:
+	${REINPLACE_CMD} -e "s/sip-module/sip-module-${PYTHON_VER}/" ${WRKSRC}/configure.py
+
 do-configure:
 	cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} \
 		${PYTHON_CMD} configure.py ${CONFIGURE_ARGS}
-.endif  # !target(do-configure)
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/PyQt5/QtChart.so
 
 .include <bsd.port.mk>

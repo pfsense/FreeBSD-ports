@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	elasticsearch
-PORTVERSION=	6.8.12
+PORTVERSION=	6.8.13
+PORTREVISION=	1
 CATEGORIES=	textproc java devel
 MASTER_SITES=	https://artifacts.elastic.co/downloads/${PORTNAME}/ \
 		https://ftp.sk.freebsd.org/pub/local/distfiles/

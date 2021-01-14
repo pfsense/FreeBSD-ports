@@ -3,7 +3,7 @@
  * frr_validation.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2017-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2017-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -149,6 +149,72 @@ function frr_sort_rows_by_seq() {
 function frr_global_acls_validate_input() {
 	global $config, $input_errors, $pkg;
 	frr_sort_rows_by_seq();
+
+	if (empty($_POST['name'])) {
+		$input_errors[] = "A name is required.";
+	}
+
+	switch ($_POST['type']) {
+		case "standard":
+			if (!is_numeric($_POST['name']) || !(frr_validate_intrange($_POST['name'], 1, 99) || frr_validate_intrange($_POST['name'], 1300, 1999))) {
+				$input_errors[] = "Standard type ACLs must have a numeric name in the range 1-99 or 1300-1999.";
+			}
+			if ($_POST["iptype"] != 'IPv4') {
+				$input_errors[] = "Standard type ACLs are only supported for IPv4.";
+			}
+			break;
+		case "extended":
+			if (!is_numeric($_POST['name']) || !(frr_validate_intrange($_POST['name'], 100, 199) || frr_validate_intrange($_POST['name'], 2000, 2699))) {
+				$input_errors[] = "Extended type ACLs must have a numeric name in the range 100-199 or 2000-2699.";
+			}
+			if ($_POST["iptype"] != 'IPv4') {
+				$input_errors[] = "Extended type ACLs are only supported for IPv4.";
+			}
+			break;
+		case "zebra":
+			if (is_numeric($_POST['name'])) {
+				$input_errors[] = "Zebra type ACLs must have a text name.";
+			}
+			break;
+	}
+
+	foreach ($_POST as $key => $value) {
+		$matches = array();
+		if (preg_match("/^seq(\d+)$/", $key, $matches)) {
+			if (!is_numeric($_POST["seq{$matches[1]}"])) {
+				$input_errors[] = "Sequence in row {$matches[1]} must be a number.";
+			}
+		}
+		if (preg_match("/^action(\d+)$/", $key, $matches)) {
+			if (!in_array($_POST["action{$matches[1]}"], array('deny', 'permit'))) {
+				$input_errors[] = "Action in row {$matches[1]} must be Deny or Permit.";
+			}
+		}
+		if (preg_match("/^source(\d+)$/", $key, $matches)) {
+			if (!is_subnet($_POST["source{$matches[1]}"]) && (($_POST["source{$matches[1]}"] != 'any') && !($_POST["sourceany{$matches[1]}"]))) {
+				$input_errors[] = "Source in row {$matches[1]} must be a subnet.";
+			}
+			if ((is_subnetv4($_POST["source{$matches[1]}"]) && ($_POST["iptype"] != 'IPv4')) ||
+				(is_subnetv6($_POST["source{$matches[1]}"]) && ($_POST["iptype"] != 'IPv6'))) {
+				$input_errors[] = "Source in row {$matches[1]} IP Type mismatch.";
+			}
+		}
+		if (preg_match("/^destination(\d+)$/", $key, $matches)) {
+			if ($_POST['type'] == 'extended') {
+				if (!is_subnet($_POST["destination{$matches[1]}"]) && (($_POST["destination{$matches[1]}"] != 'any')  && !($_POST["destinationany{$matches[1]}"])))  {
+					$input_errors[] = "Destination in row {$matches[1]} must be a subnet.";
+				}
+				if ((is_subnetv4($_POST["destination{$matches[1]}"]) && ($_POST["iptype"] != 'IPv4')) ||
+					(is_subnetv6($_POST["destination{$matches[1]}"]) && ($_POST["iptype"] != 'IPv6'))) {
+					$input_errors[] = "Destination in row {$matches[1]} IP Type mismatch.";
+				}
+			} else {
+				if (!empty($_POST["destination{$matches[1]}"]) || !empty($_POST["destinationany{$matches[1]}"])) {
+					$input_errors[] = "Destinations are only supported with Extended type ACLs.";
+				}
+			}
+		}
+	}
 }
 
 function frr_global_prefixes_validate_input() {
@@ -172,8 +238,12 @@ function frr_global_prefixes_validate_input() {
 			}
 		}
 		if (preg_match("/^source(\d+)$/", $key, $matches)) {
-			if (!is_subnet($_POST["source{$matches[1]}"]) && ($_POST["source{$matches[1]}"] != 'any')) {
+			if (!is_subnet($_POST["source{$matches[1]}"]) && (($_POST["source{$matches[1]}"] != 'any') && !($_POST["any{$matches[1]}"]))) {
 				$input_errors[] = "Network in row {$matches[1]} must be a subnet.";
+			}
+			if ((is_subnetv4($_POST["source{$matches[1]}"]) && ($_POST["iptype"] != 'IPv4')) ||
+				(is_subnetv6($_POST["source{$matches[1]}"]) && ($_POST["iptype"] != 'IPv6'))) {
+				$input_errors[] = "Network in row {$matches[1]} IP Type mismatch.";
 			}
 		}
 		if (preg_match("/^ge(\d+)$/", $key, $matches)) {
@@ -191,7 +261,6 @@ function frr_global_prefixes_validate_input() {
 			}
 		}
 	}
-
 }
 
 function frr_global_routemaps_validate_input() {
@@ -464,9 +533,9 @@ function frr_ospf6_validate_input() {
 			$input_errors[] = "Default Area must be a valid IP address or integer number.";
 		}
 	} else {
-		if (is_array($config['installedpackages']['frrospfd6interfaces'])) {
+		if (is_array($config['installedpackages']['frrospf6dinterfaces'])) {
 			$interfaces_no_area = array();
-			foreach ($config['installedpackages']['frrospfd6interfaces']['config'] as $interface) {
+			foreach ($config['installedpackages']['frrospf6dinterfaces']['config'] as $interface) {
 				if (strlen($interface['interfacearea']) == 0) { $interfaces_no_area[] = $interface['interface']; }
 			}
 			if (!empty($interfaces_no_area)) {
@@ -587,7 +656,7 @@ function frr_bfd_peer_validate_input() {
 			$input_errors[] = "Detect multiplier must be a number.";
 		}
 		/*detect-multiplier (2-255)*/
-		frr_validate_intrange_input("Detect multiplier", $_POST['receiveinterval'], 2, 255);
+		frr_validate_intrange_input("Detect multiplier", $_POST['detectmultiplier'], 2, 255);
 	}
 
 	if (!empty($_POST['receiveinterval'])) {
@@ -612,5 +681,57 @@ function frr_bfd_peer_validate_input() {
 		}
 		/*echo-interval (10-60000)*/
 		frr_validate_intrange_input("Echo interval", $_POST['echointerval'], 10, 60000);
+	}
+
+	if (!empty($_POST['minimumttl'])) {
+		if (!is_numeric($_POST['minimumttl'])) {
+			$input_errors[] = "Minimum TTL must be a number.";
+		}
+		/*minimum-ttl (1-254)*/
+		frr_validate_intrange_input("Minimum TTL", $_POST['minimumttl'], 1, 254);
+	}
+}
+
+function frr_bfd_profile_validate_input() {
+	global $config, $input_errors;
+
+	if (!empty($_POST['detectmultiplier'])) {
+		if (!is_numeric($_POST['detectmultiplier'])) {
+			$input_errors[] = "Detect multiplier must be a number.";
+		}
+		/*detect-multiplier (2-255)*/
+		frr_validate_intrange_input("Detect multiplier", $_POST['detectmultiplier'], 2, 255);
+	}
+
+	if (!empty($_POST['receiveinterval'])) {
+		if (!is_numeric($_POST['receiveinterval'])) {
+			$input_errors[] = "Receive interval must be a number.";
+		}
+		/*receive-interval (10-60000)*/
+		frr_validate_intrange_input("Receive interval", $_POST['receiveinterval'], 10, 60000);
+	}
+
+	if (!empty($_POST['transmitinterval'])) {
+		if (!is_numeric($_POST['transmitinterval'])) {
+			$input_errors[] = "Transmit interval must be a number.";
+		}
+		/*transmit-interval (10-60000)*/
+		frr_validate_intrange_input("Transmit interval", $_POST['transmitinterval'], 10, 60000);
+	}
+
+	if (!empty($_POST['echointerval'])) {
+		if (!is_numeric($_POST['echointerval'])) {
+			$input_errors[] = "Echo interval must be a number.";
+		}
+		/*echo-interval (10-60000)*/
+		frr_validate_intrange_input("Echo interval", $_POST['echointerval'], 10, 60000);
+	}
+
+	if (!empty($_POST['minimumttl'])) {
+		if (!is_numeric($_POST['minimumttl'])) {
+			$input_errors[] = "Minimum TTL must be a number.";
+		}
+		/*minimum-ttl (1-254)*/
+		frr_validate_intrange_input("Minimum TTL", $_POST['minimumttl'], 1, 254);
 	}
 }

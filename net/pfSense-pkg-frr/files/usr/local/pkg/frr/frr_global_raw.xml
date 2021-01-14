@@ -8,7 +8,7 @@
  * frr_global_raw.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2021 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -116,7 +116,6 @@
 				</rowhelperfield>
 			</rowhelper>
 		</field>
-
 		<field>
 			<name>RAW Configuration Management</name>
 			<type>listtopic</type>
@@ -131,7 +130,6 @@
 			</description>
 			<type>info</type>
 		</field>
-
 		<field>
 			<name>RAW Configuration Files</name>
 			<type>listtopic</type>

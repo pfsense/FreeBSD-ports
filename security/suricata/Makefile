@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	suricata
-DISTVERSION=	5.0.4
+DISTVERSION=	5.0.5
 CATEGORIES=	security
 MASTER_SITES=	https://www.openinfosecfoundation.org/download/
 
@@ -14,7 +14,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	rustc:lang/${RUST_DEFAULT}
 
-LIB_DEPENDS=	libpcre.so:devel/pcre \
+LIB_DEPENDS=	libjansson.so:devel/jansson \
+		libpcre.so:devel/pcre \
 		libnet.so:net/libnet \
 		liblz4.so:archivers/liblz4 \
 		libyaml.so:textproc/libyaml
@@ -34,10 +35,10 @@ CPE_VENDOR=	openinfosecfoundation
 INSTALL_TARGET=		install-strip
 TEST_TARGET=		check
 
-OPTIONS_DEFINE=		GEOIP IPFW JSON NETMAP NSS PORTS_PCAP PRELUDE \
+OPTIONS_DEFINE=		GEOIP IPFW NETMAP NSS PORTS_PCAP PRELUDE \
 			PYTHON REDIS TESTS
 OPTIONS_DEFINE_amd64=	HYPERSCAN
-OPTIONS_DEFAULT=	IPFW JSON NETMAP PYTHON
+OPTIONS_DEFAULT=	IPFW NETMAP PYTHON
 OPTIONS_SUB=		yes
 
 OPTIONS_RADIO=		SCRIPTS
@@ -46,7 +47,6 @@ OPTIONS_RADIO_SCRIPTS=	LUA LUAJIT
 GEOIP_DESC=		GeoIP support
 HYPERSCAN_DESC=		Hyperscan support
 IPFW_DESC=		IPFW and IP Divert support for inline IDP
-JSON_DESC=		JSON output support
 LUAJIT_DESC=		LuaJIT scripting support
 LUA_DESC=		LUA scripting support
 NETMAP_DESC=		Netmap support for inline IDP
@@ -66,10 +66,6 @@ HYPERSCAN_CONFIGURE_ON=		--with-libhs-includes=${LOCALBASE}/include \
 				--with-libhs-libraries=${LOCALBASE}/lib
 
 IPFW_CONFIGURE_ON=		--enable-ipfw
-
-JSON_LIB_DEPENDS=		libjansson.so:devel/jansson
-JSON_CONFIGURE_ON=		--with-libjansson-includes=${LOCALBASE}/include \
-				--with-libjansson-libraries=${LOCALBASE}/lib
 
 LUA_USES=			lua:51
 LUA_CONFIGURE_ON=		--enable-lua \
@@ -120,6 +116,8 @@ SUB_FILES=	pkg-message
 
 CONFIGURE_ARGS+=--enable-gccprotect \
 		--enable-bundled-htp \
+		--with-libjansson-includes=${LOCALBASE}/include \
+		--with-libjansson-libraries=${LOCALBASE}/lib \
 		--with-libpcre-includes=${LOCALBASE}/include \
 		--with-libpcre-libraries=${LOCALBASE}/lib \
 		--with-libyaml-includes=${LOCALBASE}/include \

@@ -2,7 +2,7 @@
 <pfsensepkgs>
 	<package>
 		<name>acme</name>
-		<pkginfolink>https://doc.pfsense.org/index.php/pfsense-pkg-acme</pkginfolink>
+		<pkginfolink>https://docs.netgate.com/pfsense/en/latest/packages/acme/index.html</pkginfolink>
 		<descr><![CDATA[Automated Certificate Management Environment, for automated use of LetsEncrypt certificates.]]></descr>
 		<website>https://letsencrypt.org/</website>
 		<version>%%PKGVERSION%%</version>

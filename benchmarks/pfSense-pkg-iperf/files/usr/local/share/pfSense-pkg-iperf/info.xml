@@ -5,7 +5,7 @@
 		<website>http://www.freshports.org/benchmarks/iperf/</website>
 		<descr><![CDATA[Iperf is a tool for testing network throughput, loss, and jitter.]]></descr>
 		<version>%%PKGVERSION%%</version>
-		<pkginfolink>https://doc.pfsense.org/index.php/Iperf_package</pkginfolink>
+		<pkginfolink>https://docs.netgate.com/pfsense/en/latest/packages/iperf.html</pkginfolink>
 		<configurationfile>iperf.xml</configurationfile>
 	</package>
 </pfsensepkgs>

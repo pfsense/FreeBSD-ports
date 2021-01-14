@@ -2,12 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	libvncserver
-PORTVERSION=	0.9.12
+PORTVERSION=	0.9.13
 DISTVERSIONPREFIX=	LibVNCServer-
-PORTREVISION=	2
+PORTREVISION=	1
 CATEGORIES=	net devel
 
-MAINTAINER=	araujo@FreeBSD.org
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	132c1389390c.patch:-p1 # https://github.com/LibVNC/libvncserver/pull/453
+PATCHFILES+=	0becaf749e83.patch:-p1 # https://github.com/LibVNC/libvncserver/pull/453
+
+MAINTAINER=	neel@neelc.org
 COMMENT=	Provide an easy API to a custom vnc server
 
 LICENSE=	GPLv2

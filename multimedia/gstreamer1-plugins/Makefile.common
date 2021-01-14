@@ -213,6 +213,7 @@ gst_aom_LIB_DEPENDS=	libaom.so:multimedia/aom
 
 # assrender
 gst_assrender_LIB_DEPENDS=	libass.so:multimedia/libass
+gst_assrender_USES=	compiler:c11
 
 # bs2b
 gst_bs2b_LIB_DEPENDS=	libbs2b.so:audio/libbs2b
@@ -489,8 +490,9 @@ gst_vdpau_GST_PLUGIN_DIR=	sys/vdpau
 
 # vulkan
 gst_vulkan_USE_GSTREAMER1=	gl
-gst_vulkan_BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:devel/vulkan-headers \
-				${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
+gst_vulkan_BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
+				${LOCALBASE}/include/libdrm/drm_fourcc.h:graphics/libdrm \
+				${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers \
 				wayland-protocols>=0:graphics/wayland-protocols
 gst_vulkan_LIB_DEPENDS=		libvulkan.so:graphics/vulkan-loader \
 				libwayland-client.so:graphics/wayland
@@ -500,7 +502,7 @@ gst_vulkan_CONFIGURE_ARGS=	--enable-wayland
 gst_webp_LIB_DEPENDS=	libwebp.so:graphics/webp
 
 # webrtcdsp
-gst_webrtcdsp_LIB_DEPENDS=	libwebrtc_audio_processing.so:audio/webrtc-audio-processing
+gst_webrtcdsp_LIB_DEPENDS=	libwebrtc_audio_processing.so:audio/webrtc-audio-processing0
 
 # X ximage and xvimage sinks aka output
 .if ${DIST} == base

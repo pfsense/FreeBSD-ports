@@ -13,5 +13,6 @@ pkg/freeradiussync.xml
 pkg/freeradiusmodulesldap.xml
 pkg/freeradiusauthorizedmacs.xml
 pkg/googleauth.py
+pkg/dictionary.mpd
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv

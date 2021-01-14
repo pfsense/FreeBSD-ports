@@ -12,10 +12,10 @@ COMMENT=	Python wrapper for curve25519 with ed25519 signatures
 
 LICENSE=	GPLv3
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/axolotl_curve25519.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/axolotl_curve25519*.so
 
 .include <bsd.port.mk>

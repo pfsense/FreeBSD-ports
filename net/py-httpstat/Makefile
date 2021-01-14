@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	httpstat
-PORTVERSION=	1.2.1
+PORTVERSION=	1.3.0
 CATEGORIES=	net python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	curl:ftp/curl
 
-USES=		python
+USES=		python:3.6+
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	reorx

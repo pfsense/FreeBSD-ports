@@ -3,7 +3,7 @@
  * bind.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Juliano Oliveira
  * Copyright (c) 2013 Adriano Brancher
  * Copyright (c) 2013 Marcello Coutinho
@@ -240,6 +240,9 @@ EOD;
 
 	// Forwarder config
 	if ($bind_forwarder == 'on') {
+		if (!empty($forwarder_ips) && !strpos($forwarder_ips, ';', -1)) {
+			$forwarder_ips .= ';';
+		}
 		$bind_conf .= "\tforwarders { {$forwarder_ips} };\n";
 	}
 	if ($bind_notify == 'on') {

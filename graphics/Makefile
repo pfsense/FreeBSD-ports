@@ -25,6 +25,7 @@
     SUBDIR += R-cran-ggrepel
     SUBDIR += R-cran-gridBase
     SUBDIR += R-cran-gridExtra
+    SUBDIR += R-cran-jpeg
     SUBDIR += R-cran-munsell
     SUBDIR += R-cran-pROC
     SUBDIR += R-cran-pixmap
@@ -46,6 +47,7 @@
     SUBDIR += agg
     SUBDIR += akira
     SUBDIR += alembic
+    SUBDIR += aloadimage
     SUBDIR += alpng
     SUBDIR += ampasACES-container
     SUBDIR += ampasCTL
@@ -55,6 +57,7 @@
     SUBDIR += apngasm
     SUBDIR += apngdis
     SUBDIR += argyllcms
+    SUBDIR += art
     SUBDIR += asciio
     SUBDIR += aseprite
     SUBDIR += atril
@@ -64,6 +67,7 @@
     SUBDIR += aview
     SUBDIR += avir
     SUBDIR += azpainter
+    SUBDIR += azpainterb
     SUBDIR += barbecue
     SUBDIR += barcode
     SUBDIR += batik
@@ -106,6 +110,7 @@
     SUBDIR += cuttlefish
     SUBDIR += darktable
     SUBDIR += dataplot
+    SUBDIR += dbow2
     SUBDIR += dc20pack
     SUBDIR += dcmtk
     SUBDIR += dcp2icc
@@ -136,7 +141,6 @@
     SUBDIR += drm-fbsd11.2-kmod
     SUBDIR += drm-fbsd12.0-kmod
     SUBDIR += drm-kmod
-    SUBDIR += drm-legacy-kmod
     SUBDIR += drm_info
     SUBDIR += dspdfviewer
     SUBDIR += dssim
@@ -196,6 +200,7 @@
     SUBDIR += fpc-proj4
     SUBDIR += fpc-rsvg
     SUBDIR += fpc-svgalib
+    SUBDIR += fpc-vcl-compat
     SUBDIR += fracplanet
     SUBDIR += fractgen
     SUBDIR += fraqtive
@@ -220,7 +225,6 @@
     SUBDIR += gdk-pixbuf2
     SUBDIR += gdtclft
     SUBDIR += geeqie
-    SUBDIR += geeqie-devel
     SUBDIR += gegl
     SUBDIR += generic_image_decoder
     SUBDIR += geoapi
@@ -234,6 +238,7 @@
     SUBDIR += giflib
     SUBDIR += gifmerge
     SUBDIR += gifsicle
+    SUBDIR += gifski
     SUBDIR += giftool
     SUBDIR += gimageview
     SUBDIR += gimmage
@@ -258,6 +263,7 @@
     SUBDIR += gliv
     SUBDIR += glosm
     SUBDIR += glpng
+    SUBDIR += glslang
     SUBDIR += gltt
     SUBDIR += glx-utils
     SUBDIR += gmic
@@ -274,7 +280,6 @@
     SUBDIR += goocanvasmm2
     SUBDIR += goom
     SUBDIR += gource
-    SUBDIR += goxel
     SUBDIR += gpaint
     SUBDIR += gphoto2
     SUBDIR += gpicview
@@ -372,8 +377,8 @@
     SUBDIR += jp
     SUBDIR += jp2a
     SUBDIR += jpatch
-    SUBDIR += jpeg
     SUBDIR += jpeg-turbo
+    SUBDIR += jpeg-xl
     SUBDIR += jpeginfo
     SUBDIR += jpegoptim
     SUBDIR += jpgtn
@@ -400,6 +405,7 @@
     SUBDIR += kludge3d
     SUBDIR += kmscube
     SUBDIR += kolourpaint
+    SUBDIR += kontrast
     SUBDIR += kooka
     SUBDIR += kphotoalbum
     SUBDIR += kqtquickcharts
@@ -494,7 +500,6 @@
     SUBDIR += libwmf
     SUBDIR += libwmf-nox11
     SUBDIR += libwpg03
-    SUBDIR += libxatracker
     SUBDIR += libyuv
     SUBDIR += libzmf
     SUBDIR += lightzone
@@ -535,6 +540,9 @@
     SUBDIR += mesa-demos
     SUBDIR += mesa-devel
     SUBDIR += mesa-dri
+    SUBDIR += mesa-gallium-va
+    SUBDIR += mesa-gallium-vdpau
+    SUBDIR += mesa-gallium-xa
     SUBDIR += mesa-libs
     SUBDIR += metacam
     SUBDIR += metapixel
@@ -585,6 +593,7 @@
     SUBDIR += openimageio
     SUBDIR += openjpeg
     SUBDIR += openjpeg15
+    SUBDIR += openjph
     SUBDIR += openjump
     SUBDIR += opennurbs
     SUBDIR += openorienteering-mapper
@@ -646,6 +655,11 @@
     SUBDIR += p5-GraphViz-Data-Structure
     SUBDIR += p5-GraphViz-Traverse
     SUBDIR += p5-GraphViz2
+    SUBDIR += p5-GraphViz2-DBI
+    SUBDIR += p5-GraphViz2-Data-Grapher
+    SUBDIR += p5-GraphViz2-Parse-ISA
+    SUBDIR += p5-GraphViz2-Parse-RecDescent
+    SUBDIR += p5-GraphViz2-Parse-XML
     SUBDIR += p5-Graphics-Color
     SUBDIR += p5-Graphics-ColorNames
     SUBDIR += p5-Graphics-ColorNames-WWW
@@ -735,12 +749,12 @@
     SUBDIR += phototonic
     SUBDIR += php-facedetect
     SUBDIR += php-geos
-    SUBDIR += php72-exif
-    SUBDIR += php72-gd
     SUBDIR += php73-exif
     SUBDIR += php73-gd
     SUBDIR += php74-exif
     SUBDIR += php74-gd
+    SUBDIR += php80-exif
+    SUBDIR += php80-gd
     SUBDIR += phplot
     SUBDIR += picpuz
     SUBDIR += piddle
@@ -790,8 +804,11 @@
     SUBDIR += py-PyOpenGL
     SUBDIR += py-PyOpenGL-accelerate
     SUBDIR += py-actdiag
+    SUBDIR += py-altair
+    SUBDIR += py-beziers
     SUBDIR += py-blockdiag
     SUBDIR += py-blockdiagcontrib-cisco
+    SUBDIR += py-box2d-py
     SUBDIR += py-cairo
     SUBDIR += py-cairocffi
     SUBDIR += py-cairosvg
@@ -821,13 +838,13 @@
     SUBDIR += py-hiplot
     SUBDIR += py-imageio
     SUBDIR += py-imageio-ffmpeg
-    SUBDIR += py-imageio24
     SUBDIR += py-imagesize
     SUBDIR += py-img2pdf
     SUBDIR += py-leather
     SUBDIR += py-mapclassify
     SUBDIR += py-mcomix
     SUBDIR += py-ming
+    SUBDIR += py-mpl-interactions
     SUBDIR += py-mpl-scatter-density
     SUBDIR += py-nwdiag
     SUBDIR += py-open3d-python
@@ -838,7 +855,6 @@
     SUBDIR += py-photocollage
     SUBDIR += py-piexif
     SUBDIR += py-pillow
-    SUBDIR += py-pillow6
     SUBDIR += py-pivy
     SUBDIR += py-plotly
     SUBDIR += py-png
@@ -849,6 +865,7 @@
     SUBDIR += py-pygal
     SUBDIR += py-pyganim
     SUBDIR += py-pygeoapi
+    SUBDIR += py-pygeos
     SUBDIR += py-pyglet
     SUBDIR += py-pyglet150
     SUBDIR += py-pygraphviz
@@ -876,8 +893,10 @@
     SUBDIR += py-svg.path
     SUBDIR += py-svgwrite
     SUBDIR += py-termtosvg
+    SUBDIR += py-tifffile
     SUBDIR += py-toyplot
     SUBDIR += py-traitsui
+    SUBDIR += py-utm
     SUBDIR += py-vecrec
     SUBDIR += py-visvis
     SUBDIR += py-wand
@@ -915,6 +934,7 @@
     SUBDIR += rayshade
     SUBDIR += reactphysics3d
     SUBDIR += reallyslick
+    SUBDIR += realsr-ncnn-vulkan
     SUBDIR += recoverjpeg
     SUBDIR += renrot
     SUBDIR += repng2jpeg
@@ -993,9 +1013,9 @@
     SUBDIR += silgraphite
     SUBDIR += simage
     SUBDIR += simpleviewer
-    SUBDIR += sk1libs
     SUBDIR += skanlite
     SUBDIR += spectacle
+    SUBDIR += spirv-tools
     SUBDIR += springgraph
     SUBDIR += squish
     SUBDIR += ssocr
@@ -1006,7 +1026,6 @@
     SUBDIR += svgalib
     SUBDIR += svgbob
     SUBDIR += swappy
-    SUBDIR += swfdec
     SUBDIR += swfmill
     SUBDIR += swftools
     SUBDIR += sxiv
@@ -1035,7 +1054,6 @@
     SUBDIR += tumble
     SUBDIR += tweeny
     SUBDIR += ufraw
-    SUBDIR += uniconvertor
     SUBDIR += unpaper
     SUBDIR += urho3d
     SUBDIR += urt
@@ -1053,7 +1071,10 @@
     SUBDIR += vp
     SUBDIR += vpaint
     SUBDIR += vulkan-caps-viewer
+    SUBDIR += vulkan-headers
     SUBDIR += vulkan-loader
+    SUBDIR += vulkan-tools
+    SUBDIR += vulkan-validation-layers
     SUBDIR += vv
     SUBDIR += waffle
     SUBDIR += waifu2x-converter-cpp

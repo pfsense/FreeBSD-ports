@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	cloudflared
-DISTVERSION=	2020.9.3
+DISTVERSION=	2020.11.11
 CATEGORIES=	net www
 
 MAINTAINER=	egypcio@FreeBSD.org

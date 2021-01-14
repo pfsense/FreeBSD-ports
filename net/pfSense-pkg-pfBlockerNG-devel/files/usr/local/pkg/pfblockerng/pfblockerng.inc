@@ -3,7 +3,7 @@
  * pfblockerng.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2020 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015-2020 BBcan177@gmail.com
  * All rights reserved.
  *
@@ -4487,7 +4487,7 @@ function pfb_daemon_filterlog() {
 		$skip_cnt = $filter_cnt = 0;
 	}
 
-	/* filter.log reference: URL: https://doc.pfsense.org/index.php/Filter_Log_Format_for_pfSense_2.2
+	/* filter.log reference: URL: https://docs.netgate.com/pfsense/en/latest/monitoring/logs/raw-filter-format.html
 
 		$line -> $f
 

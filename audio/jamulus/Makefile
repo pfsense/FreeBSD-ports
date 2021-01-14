@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	jamulus
-DISTVERSION=	3.5.11
-PORTREVISION=	1
+DISTVERSIONPREFIX=	r
+DISTVERSION=	3_6_2
 CATEGORIES=	audio
-MASTER_SITES=	SF/llcon/${NAME}/${DISTVERSION}/
+#MASTER_SITES=	SF/llcon/${NAME}/${DISTVERSION}/ # it is unclear whether SF or GH should be used because SF doesn't have 3.6.0, but README on GH claims that it is hosted on SF
 DISTNAME=	${NAME}-${PORTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -19,9 +19,10 @@ USES=		compiler:c++11-lang gl pkgconfig qmake qt:5
 USE_QT=		concurrent core gui network widgets xml buildtools_build linguisttools_build
 USE_GL=		gl
 
-NAME=		Jamulus
+USE_GITHUB=	yes
+GH_ACCOUNT=	corrados
 
-WRKSRC=		${WRKDIR}/${NAME}${PORTVERSION}
+NAME=		Jamulus
 
 DESKTOP_ENTRIES=	"${NAME}" "${COMMENT}" "${NAME}" \
 			"${PORTNAME}" "AudioVideo;Audio;Mixer;Qt;" true

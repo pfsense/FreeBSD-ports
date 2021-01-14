@@ -2,7 +2,7 @@
 
 PORTNAME=	fbthrift
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2020.09.14.00
+DISTVERSION=	2020.12.28.00
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -18,6 +18,7 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libfolly.so:devel/folly \
 		libgflags.so:devel/gflags \
 		libglog.so:devel/glog \
+		libsodium.so:security/libsodium \
 		libwangle.so:net/wangle \
 		libzstd.so:archivers/zstd
 
@@ -27,6 +28,8 @@ GH_ACCOUNT=	facebook
 USE_LDCONFIG=	yes
 
 CMAKE_ON=	BUILD_SHARED_LIBS
+
+CXXFLAGS+=	-fPIC # https://github.com/facebook/fbthrift/issues/399
 
 post-install: # https://github.com/facebook/fbthrift/issues/393
 	${FIND} ${STAGEDIR}${PREFIX}/include -type d -empty -delete

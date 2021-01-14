@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Netgate_Coreboot_Upgrade
 PORTVERSION=	0.29
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 
