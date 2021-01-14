@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-snort
-PORTVERSION=	4.1.2
-PORTREVISION=	5
+PORTVERSION=	4.1.3
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +12,7 @@ COMMENT=	pfSense package snort
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	snort>=2.9.16.1:security/snort
+RUN_DEPENDS=	snort>=2.9.17:security/snort
 
 NO_BUILD=	yes
 NO_MTREE=	yes
