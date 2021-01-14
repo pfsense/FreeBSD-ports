@@ -1218,10 +1218,10 @@ print($section);
 										if (($v['disabled'] == 0 || isset($enablesid[$gid][$sid])) && !isset($disablesid[$gid][$sid])) {
 											continue;
 										}
-										if (isset($filterfieldsarray['show_enabled'])) {
-											if ($v['disabled'] == 1 || isset($disablesid[$gid][$sid])) {
-												continue;
-											}
+									}
+									if (isset($filterfieldsarray['show_enabled'])) {
+										if ($v['disabled'] == 1 || isset($disablesid[$gid][$sid])) {
+											continue;
 										}
 									}
 								}
