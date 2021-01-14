@@ -194,6 +194,20 @@
 			<multiple/>
 		</field>
 		<field>
+			<fielddescr>Outgoing Network Interface</fielddescr>
+			<fieldname>outgoing_interface</fieldname>
+			<description>
+				<![CDATA[
+				The interface the proxy server will use for outgoing connections.
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_interface_list(false, false, true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<default_value>lan</default_value>
+		</field>
+		<field>
 			<fielddescr>Proxy Port</fielddescr>
 			<fieldname>proxy_port</fieldname>
 			<description>

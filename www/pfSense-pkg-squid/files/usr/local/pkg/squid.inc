@@ -797,6 +797,9 @@ function squid_validate_general($post, &$input_errors) {
 		if (!$int_proto_ok) {
 			$input_errors[] = "At least one interface with IPv4 address must be selected.";
 		}
+		if (($post['outgoing_interface'] != 'auto') && !get_interface_ip($post['outgoing_interface'])) {
+			$input_errors[] = "The Outgoing Network Interface must have an IPv4 address.";
+		}
 	} elseif ($post['listenproto'] == 'inet6') {
 		foreach ($post['active_interface'] as $a_int) {
 			if (get_interface_ipv6($a_int)) {
@@ -807,6 +810,9 @@ function squid_validate_general($post, &$input_errors) {
 		if (!$int_proto_ok) {
 			$input_errors[] = "At least one interface with IPv6 address must be selected.";
 		}
+		if (($post['outgoing_interface'] != 'auto') && !get_interface_ipv6($post['outgoing_interface'])) {
+			$input_errors[] = "The Outgoing Network Interface must have an IPv6 address.";
+		}
 	} else {
 		foreach ($post['active_interface'] as $a_int) {
 			if (get_interface_ip($a_int) || get_interface_ipv6($a_int)) {
@@ -816,6 +822,10 @@ function squid_validate_general($post, &$input_errors) {
 		}
 		if (!$int_proto_ok) {
 			$input_errors[] = "At least one interface with IPv4 or IPv6 address must be selected.";
+		}
+		if (($post['outgoing_interface'] != 'auto') && !get_interface_ip($post['outgoing_interface']) &&
+		    !get_interface_ipv6($post['outgoing_interface'])) {
+			$input_errors[] = "The Outgoing Network Interface must have an IPv4 or IPv6 address.";
 		}
 	}
 
@@ -1398,6 +1408,16 @@ function squid_resync_general() {
 					}
 				}
 			}
+		}
+	}
+	if (!empty($settings['outgoing_interface']) && ($settings['outgoing_interface'] != 'auto')) {
+		$outip = get_interface_ip($settings['outgoing_interface']);
+		$outipv6 = get_interface_ipv6($settings['outgoing_interface']);
+		if ($outip && ($listenproto != 'inet6')) {
+			$conf .= "tcp_outgoing_address {$outip}\n";
+		}
+		if ($outipv6 && ($listenproto != 'inet')) {
+			$conf .= "tcp_outgoing_address {$outipv6}\n";
 		}
 	}
 	$icp_port = ($settings['icp_port'] ? $settings['icp_port'] : 0);
@@ -2678,9 +2698,12 @@ function squid_get_ca_or_certs($type, $consumer = 'HTTPS', $noprv = false, $addn
 	return $c_arr;
 }
 
-function squid_get_interface_list($loopback=true) {
+function squid_get_interface_list($loopback=true,$gwgroups=false,$auto=false) {
 	$ifaces = array();
 	$carplist = get_configured_vip_list();
+	if ($auto) {
+		$ifaces[] = array("name" => "Default (auto)", "value" => "auto");
+	}
 	foreach ($carplist as $vid => $vaddr) {
 		$vip = get_configured_vip($vid);
 		$ifaces[] = array("name" => "$vaddr ({$vip['descr']})", "value" => $vid);
@@ -2690,6 +2713,11 @@ function squid_get_interface_list($loopback=true) {
 	}
 	if ($loopback) {
 		$ifaces[] = array("name" => "loopback", "value" => "lo0");
+	}
+	if ($gwgroups) {
+		foreach (return_gateway_groups_array() as $name => $group) {
+			$ifaces[] = array("name" => 'GW Group ' . $name, "value" => $name);
+		}
 	}
 	return ($ifaces);
 }
