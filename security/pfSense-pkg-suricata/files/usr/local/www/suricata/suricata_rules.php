@@ -1212,11 +1212,15 @@ print($section);
 
 								// Apply rule state and action filters if filtering is enabled
 								if ($filterrules) {
-									if (isset($filterfieldsarray['show_disabled']) && $v['disabled'] == 0) {
-										continue;
+									if (isset($filterfieldsarray['show_disabled'])) {
+										if (($v['disabled'] == 0 || isset($enablesid[$gid][$sid])) && !isset($disablesid[$gid][$sid])) {
+											continue;
+										}
 									}
-									elseif (isset($filterfieldsarray['show_enabled']) && $v['disabled'] == 1) {
-										continue;
+									if (isset($filterfieldsarray['show_enabled'])) {
+										if ($v['disabled'] == 1 || isset($disablesid[$gid][$sid])) {
+											continue;
+										}
 									}
 									if (isset($filterfieldsarray['show_drop']) && $v['action'] != "drop") {
 										continue;
