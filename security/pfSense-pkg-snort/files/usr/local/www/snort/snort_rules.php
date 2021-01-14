@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008-2009 Robert Zelaya
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1214,11 +1214,15 @@ print($section);
 
 								// Apply rule state filters if filtering is enabled
 								if ($filterrules) {
-									if (isset($filterfieldsarray['show_disabled']) && $v['disabled'] == 0) {
-										continue;
+									if (isset($filterfieldsarray['show_disabled'])) {
+										if (($v['disabled'] == 0 || isset($enablesid[$gid][$sid])) && !isset($disablesid[$gid][$sid])) {
+											continue;
+										}
 									}
-									elseif (isset($filterfieldsarray['show_enabled']) && $v['disabled'] == 1) {
-										continue;
+									if (isset($filterfieldsarray['show_enabled'])) {
+										if ($v['disabled'] == 1 || isset($disablesid[$gid][$sid])) {
+											continue;
+										}
 									}
 								}
 
@@ -1406,17 +1410,21 @@ print($section);
 								foreach ($rules_map as $k1 => $rulem) {
 									foreach ($rulem as $k2 => $v) {
 										$ruleset = $currentruleset;
-										$sid = snort_get_sid($v['rule']);
-										$gid = snort_get_gid($v['rule']);
+										$sid = $k2;
+										$gid = $k1;
 										$style = "";
 
 										// Apply rule state filters if filtering is enabled
 										if ($filterrules) {
-											if (isset($filterfieldsarray['show_disabled']) && $v['disabled'] == 0) {
-												continue;
+											if (isset($filterfieldsarray['show_disabled'])) {
+												if (($v['disabled'] == 0 || isset($enablesid[$gid][$sid])) && !isset($disablesid[$gid][$sid])) {
+													continue;
+												}
 											}
-											elseif (isset($filterfieldsarray['show_enabled']) && $v['disabled'] == 1) {
-												continue;
+											if (isset($filterfieldsarray['show_enabled'])) {
+												if ($v['disabled'] == 1 || isset($disablesid[$gid][$sid])) {
+													continue;
+												}
 											}
 										}
 

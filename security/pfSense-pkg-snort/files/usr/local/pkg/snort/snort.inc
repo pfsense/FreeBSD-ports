@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2020 Bill Meeks
+ * Copyright (c) 2013-2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1564,13 +1564,24 @@ function snort_get_set_flowbits($rules_map) {
 	return $set_flowbits;
 }
 
-function snort_find_flowbit_required_rules($rules, $unchecked_flowbits) {
+function snort_find_flowbit_required_rules($rules, $active_rules, $unchecked_flowbits) {
 
 	/********************************************************/
 	/* This function finds all rules that must be enabled   */
 	/* in order to satisfy the "checked flowbits" used by   */
 	/* the currently enabled rules.  It returns the list    */
 	/* of required rules in an array.                       */
+	/*                                                      */
+	/*           $rules     = rules_map array of all rules  */
+	/*        $active_rules = rules map array of active     */
+	/*			  rules.			*/
+	/*  $unchecked_flowbits = array of flowbit strings with */
+	/*                        unmatched set/isset pairings  */
+	/*                                                      */
+	/*              Returns = rules_map array consisting    */
+	/*                        of additional rules needed    */
+	/*                        to satisfy all set/isset      */
+	/*                        flowbit pairings              */
 	/********************************************************/
 
 	$required_flowbits_rules = array();
@@ -1593,15 +1604,39 @@ function snort_find_flowbit_required_rules($rules, $unchecked_flowbits) {
 							$required_flowbits_rules[$k1] = array();
 						if (!is_array($required_flowbits_rules[$k1][$k2]))
 							$required_flowbits_rules[$k1][$k2] = array();
-						$required_flowbits_rules[$k1][$k2]['category'] = $rule2['category'];
-						if ($rule2['disabled'] == 0)
-							/* If not disabled, just return the rule text "as is"   */
+						$required_flowbits_rules[$k1][$k2]['noalert'] = $rule2['noalert'];
+						if ($rule2['disabled'] == 0) {
+							// If not disabled, just return the rule text "as is"
 							$required_flowbits_rules[$k1][$k2]['rule'] = ltrim($rule2['rule']);
-						else {
-							/* If rule is disabled, remove leading '#' to enable it */
+							$required_flowbits_rules[$k1][$k2]['disabled'] = $rule2['disabled'];
+						} else {
+							// Rule is disabled, so remove leading '#' to enable it and add "flowbits:noalert;"
+							// tag to prevent alerts from the previously disabled rule if not already present.
 							$required_flowbits_rules[$k1][$k2]['rule'] = ltrim(substr($rule2['rule'], strpos($rule2['rule'], "#") + 1));
+							if ($rule2['noalert'] == 0) {
+								$required_flowbits_rules[$k1][$k2]['rule'] = substr($required_flowbits_rules[$k1][$k2]['rule'], 0, strrpos($required_flowbits_rules[$k1][$k2]['rule'], ")")) . " flowbits:noalert;)";
+								$required_flowbits_rules[$k1][$k2]['noalert'] = 1;
+							}
 							$required_flowbits_rules[$k1][$k2]['disabled'] = 0;
 						}
+
+						// If the required rule is not already part of the enabled rules,
+						// then add "flowbits:noalert" tag if not present to prevent alert
+						// from this rule added by flowbits resolution logic.
+						if (!isset($active_rules[$k1][$k2]) && $required_flowbits_rules[$k1][$k2]['noalert'] == 0) {
+							$required_flowbits_rules[$k1][$k2]['rule'] = substr($required_flowbits_rules[$k1][$k2]['rule'], 0, strrpos($required_flowbits_rules[$k1][$k2]['rule'], ")")) . " flowbits:noalert;)";
+							$required_flowbits_rules[$k1][$k2]['noalert'] = 1;
+						}
+
+						// Copy over the remaining rule_map entries for this rule
+						$required_flowbits_rules[$k1][$k2]['category'] = $rule2['category'];
+						$required_flowbits_rules[$k1][$k2]['action'] = $rule2['action'];
+						$required_flowbits_rules[$k1][$k2]['managed'] = $rule2['managed'];
+						$required_flowbits_rules[$k1][$k2]['modified'] = $rule2['modified'];
+						$required_flowbits_rules[$k1][$k2]['default_state'] = $rule2['default_state'];
+						$required_flowbits_rules[$k1][$k2]['default_action'] = $rule2['default_action'];
+						$required_flowbits_rules[$k1][$k2]['state_toggled'] = $rule2['state_toggled'];
+						$required_flowbits_rules[$k1][$k2]['flowbits'] = $rule2['flowbits'];
 					}
 				}
 			}
@@ -1653,7 +1688,7 @@ function snort_resolve_flowbits($rules, $active_rules) {
 
 	/* Now find all the needed "set flowbit" rules from   */
 	/* the master list of all rules.                      */
-	$required_rules = snort_find_flowbit_required_rules($rules, $delta_flowbits);
+	$required_rules = snort_find_flowbit_required_rules($rules, $active_rules, $delta_flowbits);
 
 	/* Cleanup and release memory we no longer need.      */
 	unset($delta_flowbits);
@@ -3141,6 +3176,7 @@ function snort_get_filtered_rules($rules, $filter) {
 				$filtered_map[$k1][$k2]['state_toggled'] = $tmp_map[$k1][$k2]['state_toggled'];
 				$filtered_map[$k1][$k2]['default_state'] = $tmp_map[$k1][$k2]['default_state'];
 				$filtered_map[$k1][$k2]['default_action'] = $tmp_map[$k1][$k2]['default_action'];
+				$filtered_map[$k1][$k2]['noalert'] = $tmp_map[$k1][$k2]['noalert'];
 			}
 		}
 	}
@@ -3379,11 +3415,12 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 	/* into the $enabled_rules array.                     */
 	$enabled_rules = snort_load_rules_map("{$snortcfgdir}/preproc_rules/");
 
+	/* Load up all the available text rules into a Rules */
+	/* Map array.                                        */
+	$all_rules = snort_load_rules_map("{$snortdir}/rules/");
+
 	/* Process CATEGORIES rules if some are selected or an IPS Policy is enabled  */
 	if (!empty($snortcfg['rulesets']) || $snortcfg['ips_policy_enable'] == 'on') {
-
-		/* Load up all the text rules into a Rules Map array. */
-		$all_rules = snort_load_rules_map("{$snortdir}/rules/");
 
 		/* Create an array with the filenames of the enabled  */
 		/* rule category files if we have any.                */
@@ -3434,6 +3471,12 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 						$enabled_rules[$k1][$k2]['disabled'] = $v['disabled'];
 						$enabled_rules[$k1][$k2]['action'] = $v['action'];
 						$enabled_rules[$k1][$k2]['flowbits'] = $v['flowbits'];
+						$enabled_rules[$k1][$k2]['managed'] = $v['managed'];
+						$enabled_rules[$k1][$k2]['default_state'] = $v['default_state'];
+						$enabled_rules[$k1][$k2]['default_action'] = $v['default_action'];
+						$enabled_rules[$k1][$k2]['state_toggled'] = $v['state_toggled'];
+						$enabled_rules[$k1][$k2]['noalert'] = $v['noalert'];
+						$enabled_rules[$k1][$k2]['modified'] = $v['modified'];
 					}
 				}
 			}
@@ -3463,6 +3506,12 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 					$enabled_rules[$k1][$k2]['disabled'] = $p['disabled'];
 					$enabled_rules[$k1][$k2]['action'] = $p['action'];
 					$enabled_rules[$k1][$k2]['flowbits'] = $p['flowbits'];
+					$enabled_rules[$k1][$k2]['managed'] = $p['managed'];
+					$enabled_rules[$k1][$k2]['default_state'] = $p['default_state'];
+					$enabled_rules[$k1][$k2]['default_action'] = $p['default_action'];
+					$enabled_rules[$k1][$k2]['state_toggled'] = $p['state_toggled'];
+					$enabled_rules[$k1][$k2]['noalert'] = $p['noalert'];
+					$enabled_rules[$k1][$k2]['modified'] = $p['modified'];
 				}
 			}
 			unset($policy_rules, $policy, $p);
@@ -3504,7 +3553,6 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 		} else
 			/* Just put an empty file to always have the file present */
 			snort_write_flowbit_rules_file(array(), "{$snortcfgdir}/rules/{$flowbit_rules_file}");
-		unset($all_rules);
 	}
 
 	// Process SID Management directives if enabled
@@ -3522,14 +3570,13 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 			syslog(LOG_NOTICE, '[Snort] Enabling any flowbit-required rules for: ' . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . '...');
 
 			// Load up all rules into a Rules Map array for flowbits assessment
-			$all_rules = snort_load_rules_map("{$snortdir}/rules/");
 			$fbits = snort_resolve_flowbits($all_rules, $enabled_rules);
 
 			// Check for and disable any flowbit-required rules the
 			// user has manually forced to a disabled state.
 			snort_modify_sids($fbits, $snortcfg);
 			snort_write_flowbit_rules_file($fbits, "{$snortcfgdir}/rules/{$flowbit_rules_file}");
-			unset($all_rules, $fbits);
+			unset($fbits);
 		} else
 			// Just put an empty file to always have the file present
 		snort_write_flowbit_rules_file(array(), "{$snortcfgdir}/rules/{$flowbit_rules_file}");
@@ -3538,6 +3585,8 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 		snort_write_enforcing_rules_file(array(), "{$snortcfgdir}/rules/{$snort_enforcing_rules_file}");
 		snort_write_flowbit_rules_file(array(), "{$snortcfgdir}/rules/{$flowbit_rules_file}");
 	}
+
+	unset($all_rules);
 
 	if (!empty($snortcfg['customrules'])) {
 		@file_put_contents("{$snortcfgdir}/rules/custom.rules", base64_decode($snortcfg['customrules']));
