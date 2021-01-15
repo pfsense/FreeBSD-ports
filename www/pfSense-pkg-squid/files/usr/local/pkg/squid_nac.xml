@@ -220,6 +220,56 @@
 			<size>60</size>
 			<default_value></default_value>
 		</field>
+		<field>
+			<name>Squid Advanced Filtering</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Google Accounts Domains</fielddescr>
+			<fieldname>google_accounts</fieldname>
+			<description>
+				<![CDATA[
+				A comma-separated list of domains allowed to log in to Google services.
+				<div class="infoblock">
+				<dl class="dl-horizontal responsive">
+				<dt>domain_name</dt><dd>for accounts on specific domains, such as altostrat.com and tenorstrat.com for accounts ending in @altostrat.com and tenorstrat.com</dd>
+				<dt>consumer_accounts</dt><dd>for consumer Google Accounts, such as @gmail.com and @googlemail.com</dd>
+				<dt>gserviceaccounts.com</dt><dd>for authenticated service accounts</dd>
+
+				</dl>
+				<strong><span class="text-danger">Important:</span></strong> To allow this feature to work, SSL/MITM interception must be enabled in <span class="text-info">Splice Whitelist, Bump Otherwise</span> mode.</br>
+				Read more on <a href="https://support.google.com/a/answer/1668854" target="_blank">https://support.google.com/a/answer/1668854</a>.
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+			<default_value></default_value>
+		</field>
+		<field>
+			<fielddescr>Youtube Restrictions</fielddescr>
+			<fieldname>youtube_restrict</fieldname>
+			<type>select</type>
+			<options>
+				<option><name>None</name><value>none</value></option>
+				<option><name>Moderate</name><value>moderate</value></option>
+				<option><name>Strict</name><value>strict</value></option>
+			</options>
+			<description>
+				<![CDATA[
+				YouTube SafeSearch Restrictions. You can check current restrictions by visiting: <a target="_blank" href="https://www.youtube.com/check_content_restrictions">Check Youtube Content Restrictions</a>.
+				<div class="infoblock">
+				<dl class="dl-horizontal responsive">
+				<dt>None</dt><dd>This setting means both Restricted Modes—Strict and Moderate—are off. Only apply this setting if you want to allow users in your organization to have unrestricted YouTube access.</dd>
+				<dt>Moderate</dt><dd>This setting is similar to Strict Restricted Mode but makes a much larger collection of videos available.</dd>
+				<dt>Strict</dt><dd>This setting is the most restrictive. Strict Restricted Mode does not block all videos, but works as a filter to screen out many videos based on an automated system, while leaving some videos still available for viewing. </dd>
+				</dl>
+				<strong><span class="text-danger">Important:</span></strong> To allow this feature to work, SSL/MITM interception must be enabled in <span class="text-info">Splice Whitelist, Bump Otherwise</span> mode.</br>
+				Read more on <a href="https://support.google.com/a/answer/6214622" target="_blank">https://support.google.com/a/answer/6214622</a>.
+				</div>
+				]]>
+			</description>
+		</field>
 	</fields>
 	<custom_php_validation_command>
 		squid_validate_nac($_POST, $input_errors);
