@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya
- * Copyright (c) 2013-2020 Bill Meeks
+ * Copyright (c) 2013-2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -281,8 +281,8 @@ function snort_check_rule_md5($file_url, $file_dst, $desc = "") {
 
 		// check md5 hash in new file against current file to see if new download is posted
 		if (file_exists("{$snortdir}/{$filename_md5}")) {
-			$md5_check_new = file_get_contents($file_dst);
-			$md5_check_old = file_get_contents("{$snortdir}/{$filename_md5}");
+			$md5_check_new = trim(file_get_contents($file_dst));
+			$md5_check_old = trim(file_get_contents("{$snortdir}/{$filename_md5}"));
 			snort_update_status(gettext(" done.") . "\n");
 			if ($md5_check_new == $md5_check_old) {
 				snort_update_status(gettext("{$desc} are current. No update required.") . "\n");
@@ -448,7 +448,7 @@ if ($snortdownload == 'on') {
 
 /*  Check for and download any new Snort OpenAppID detectors */
 if ($openappid_detectors == 'on') {
-	if (snort_check_rule_md5("{$snort_openappid_url}{$snort_openappid_filename}/md5", "{$tmpfname}/{$snort_openappid_filename_md5}","Snort OpenAppID detectors")) {
+	if (snort_check_rule_md5("{$snort_openappid_url}{$snort_openappid_filename_md5}", "{$tmpfname}/{$snort_openappid_filename_md5}","Snort OpenAppID detectors")) {
 		$file_md5 = trim(file_get_contents("{$tmpfname}/{$snort_openappid_filename_md5}"));
 		file_put_contents("{$tmpfname}/{$snort_openappid_filename_md5}", $file_md5);
 		/* download snort-openappid file */
@@ -460,7 +460,7 @@ if ($openappid_detectors == 'on') {
 }
 /*  Check for and download any new Snort AppID Open Text Rules */
 if ($openappid_rules_detectors == 'on') {
-        if (snort_check_rule_md5("{$snort_openappid_rules_url}{$snort_openappid_rules_filename}.md5", "{$tmpfname}/{$snort_openappid_rules_filename_md5}", "Snort AppID Open Text Rules")) {
+        if (snort_check_rule_md5("{$snort_openappid_rules_url}{$snort_openappid_rules_filename_md5}", "{$tmpfname}/{$snort_openappid_rules_filename_md5}", "Snort AppID Open Text Rules")) {
                 $file_md5 = trim(file_get_contents("{$tmpfname}/{$snort_openappid_rules_filename_md5}"));
                 file_put_contents("{$tmpfname}/{$snort_openappid_rules_filename_md5}", $file_md5);
                 /* download snort-openappid file rules */
@@ -473,7 +473,7 @@ if ($openappid_rules_detectors == 'on') {
 
 /*  Check for and download any new Snort GPLv2 Community Rules sigs */
 if ($snortcommunityrules == 'on') {
-	if (snort_check_rule_md5("{$snort_community_rules_url}{$snort_community_rules_filename}/md5", "{$tmpfname}/{$snort_community_rules_filename_md5}", "Snort GPLv2 Community Rules")) {
+	if (snort_check_rule_md5("{$snort_community_rules_url}{$snort_community_rules_filename_md5}", "{$tmpfname}/{$snort_community_rules_filename_md5}", "Snort GPLv2 Community Rules")) {
 		/* download Snort GPLv2 Community Rules file */
 		$file_md5 = trim(file_get_contents("{$tmpfname}/{$snort_community_rules_filename_md5}"));
 		if (!snort_fetch_new_rules("{$snort_community_rules_url}{$snort_community_rules_filename}", "{$tmpfname}/{$snort_community_rules_filename}", $file_md5, "Snort GPLv2 Community Rules"))
