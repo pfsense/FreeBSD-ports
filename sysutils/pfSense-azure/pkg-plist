@@ -4,3 +4,4 @@ sbin/add-pfsense-user
 sbin/set-pfsense-hostname
 sbin/set-pfsense-password
 sbin/set-pfsense-sshkey
+@dir /etc/ssh
