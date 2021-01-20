@@ -2,7 +2,6 @@
 
 PORTNAME=	pfSense-azure
 PORTVERSION=	0.12
-PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -24,7 +23,6 @@ do-extract:
 	${MKDIR} ${WRKSRC}
 
 do-install:
-	${MKDIR} ${STAGEDIR}/etc/ssh
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/rc.d
 	${MKDIR} ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/sbin/*-pfsense-* \
