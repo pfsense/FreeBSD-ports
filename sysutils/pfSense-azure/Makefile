@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-azure
 PORTVERSION=	0.12
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
