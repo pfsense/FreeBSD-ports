@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2019-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -112,7 +112,7 @@ function snort_check_dir_size_limit($snortloglimitsize) {
 
 			// Soft-restart Snort process to resync logging
 			if (file_exists("{$g['varrun_path']}/snort_{$snort_uuid}.pid")) {
-				syslog(LOG_NOTICE, gettext("[Snort] Restarting logging on {$value['descr']} ({$if_real})..."));
+				syslog(LOG_NOTICE, gettext("[Snort] Restarting logging on {$value['descr']} ({$if_real}) because configured logging directory size limit was exceeded and log files truncated to recover space."));
 				mwexec("/bin/pkill -HUP -F {$g['varrun_path']}/snort_{$snort_uuid}.pid -a");
 			}
 		}
@@ -137,18 +137,23 @@ function snort_check_rotate_log($log_file, $log_limit, $retention) {
 	 *           $retention -> retention period in hours    *
 	 *                         for rotated logs. Zero       *
 	 *                         means never remove.          *
+	 *                                                      *
+	 * Returns: TRUE if log was rotated, FALSE if not.      *
 	 ********************************************************/
+
+	$rotated = FALSE;
 
 	// Check the current log to see if it needs rotating.
 	// If it does, rotate it and put the current time
 	// on the end of the filename as UNIX timestamp.
 	if (!file_exists($log_file))
-		return;
+		return $rotated;
 	if (($log_limit > 0) && (filesize($log_file) >= $log_limit)) {
 		$newfile = $log_file . "." . strval(time());
 		try {
 			rename($log_file, $newfile);
 			touch($log_file);
+			$rotated = TRUE;
 		} catch (Exception $e) {
 			syslog(LOG_ERR, "[Snort] Failed to rotate file '{$log_file}' -- error was {$e->getMessage()}");
 		}
@@ -167,6 +172,8 @@ function snort_check_rotate_log($log_file, $log_limit, $retention) {
 		}
 		unset($rotated_files);
 	}
+
+	return $rotated;
 }
 
 
@@ -198,6 +205,7 @@ if (!is_array($config['installedpackages']['snortglobal']['rule']))
 // Check log limits and retention in the interface logging directories if enabled
 if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 	foreach ($config['installedpackages']['snortglobal']['rule'] as $value) {
+		$warm_restart = FALSE;
 		$if_real = get_real_interface($value['interface']);
 
 		// Skip instances where pfSense physical interface has been removed
@@ -209,7 +217,7 @@ if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 
 		// Check if any logs need to be rotated
 		foreach ($logs as $k => $p) {
-			snort_check_rotate_log("{$snort_log_dir}/{$k}", $p['limit']*1024, $p['retention']);
+			$warm_restart |= snort_check_rotate_log("{$snort_log_dir}/{$k}", $p['limit']*1024, $p['retention']);
 		}
 
 		// Prune aged-out rotated alert log files if any exist
@@ -311,6 +319,15 @@ if ($config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on') {
 			unset($files);
 			if ($prune_count > 0)
 				syslog(LOG_NOTICE, gettext("[Snort] AppID stats logs cleanup job removed {$prune_count} file(s) from {$snort_log_dir}/..."));
+		}
+
+		// If we rotated any logs for this interface, signal the Snort instance to
+		// reload its log files by sending the instance a "warm restart" command.
+		if ($warm_restart) {
+			if (file_exists("{$g['varrun_path']}/snort_{$value['uuid']}.pid")) {
+				syslog(LOG_NOTICE, gettext("[Snort] Restarting logging on {$value['descr']} ({$if_real}) because a log file was rotated."));
+				mwexec("/bin/pkill -HUP -F {$g['varrun_path']}/snort_{$value['uuid']}.pid -a");
+			}
 		}
 	}
 }
