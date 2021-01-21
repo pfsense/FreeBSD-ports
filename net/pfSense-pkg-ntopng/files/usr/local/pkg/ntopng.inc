@@ -61,8 +61,8 @@ function ntopng_write_cert_file($file, $cert) {
 	}
 	chmod($file, 0600);
 	/* newline to deal with certs/keys lacking newline at end */
-	fwrite($fd, base64_decode($cert['crt']) . "\n");
-	fwrite($fd, base64_decode($cert['prv']) . "\n");
+	fwrite($fd, base64_decode($cert['crt']) . "\n" . ca_chain($cert));
+	fwrite($fd, base64_decode($cert['prv']));
 	fclose($fd);
 }
 
