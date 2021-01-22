@@ -195,6 +195,7 @@
 				]]>
 			</description>
 			<type>input</type>
+			<required/>
 		</field>
 		<field>
 			<fielddescr>Update Source</fielddescr>
@@ -229,12 +230,27 @@
 		<field>
 			<fielddescr>Default Originate</fielddescr>
 			<fieldname>defaultoriginate</fieldname>
-			<description>Originate default route to this neighbor. Choose a Route Map to restrict origination.</description>
-			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
+			<description>Originate default route to this neighbor.</description>
+			<type>select</type>
+			<options>
+				<option><name>Disabled</name><value>no</value></option>
+				<option><name>IPv4</name><value>ipv4</value></option>
+				<option><name>IPv6</name><value>ipv6</value></option>
+				<option><name>IPv4 + IPv6</name><value>yes</value></option>
+			</options>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
-			<required/>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Default Originate Route Map</fielddescr>
+			<fieldname>defaultoriginateroutemap</fieldname>
+			<description>Choose a Route Map to restrict origination.</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list(false, false)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>end</combinefields>
 		</field>
 		<field>
 			<fielddescr>Send Community</fielddescr>
