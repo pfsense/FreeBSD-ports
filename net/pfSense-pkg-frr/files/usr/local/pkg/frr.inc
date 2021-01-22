@@ -32,8 +32,8 @@ define('PKG_FRR_LIST_NONE_VALUE', array('name' => 'None', 'value' => 'none'));
 global $frr_config_base;
 $frr_config_base = PKG_FRR_CONFIG_BASE;
 
-global $frr_modules;
-$frr_modules = array('zebra', 'staticd', 'bgpd', 'ospfd', 'ospf6d', 'bfdd');
+global $frr_daemons;
+$frr_daemons = array('zebra', 'staticd', 'bgpd', 'ospfd', 'ospf6d', 'bfdd');
 
 global $frr_well_known_communities;
 $frr_well_known_communities = array("internet", "no-export", "no-advertise", "local-as");
@@ -276,7 +276,7 @@ function frr_cidr_to_wildcard_bits($cidr) {
 
 /* Create the rc.d service control script for FRR */
 function frr_generate_config_rcfile() {
-	global $config, $frr_config_base, $frr_modules;
+	global $config, $frr_config_base, $frr_daemons;
 	/* If frr is not configured, then stop */
 	if (is_array($config['installedpackages']['frr']['config'])) {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
@@ -285,7 +285,7 @@ function frr_generate_config_rcfile() {
 	}
 
 	/* Config area to daemon name mapping */
-	$daemons = array(
+	$config_key_daemons = array(
 		'frr' => array('zebra', 'staticd'),
 		'frrbfd' => array('bfdd'),
 		'frrbgp' => array('bgpd'),
@@ -294,63 +294,31 @@ function frr_generate_config_rcfile() {
 	);
 
 	/* Get FRR daemons enabled */
-	$frrdaemons = array();
+	$frr_daemons_enabled = array();
 	if (!empty($config['installedpackages']['frr']['config'][0]['enable'])) {
-		foreach ($daemons as $config_key => $daemon) {
+		foreach ($config_key_daemons as $config_key => $daemon) {
 			if (!empty($config['installedpackages'][$config_key]['config'][0]['enable'])) {
-				$frrdaemons = array_merge($frrdaemons, $daemon);
+				$frr_daemons_enabled = array_merge($frr_daemons_enabled, $daemon);
 			}
 		}
 	}
-	$frr_daemons_string = implode(" ", $frrdaemons);
+	$frr_daemons_string = implode(" ", $frr_daemons_enabled);
 
 	/* Get FRR daemon modules to append to daemon commands */
-	$frrmodules = array();
+	$frr_daemon_modules = array();
 
 	/* SNMP */
-	foreach ($daemons as $config_key => $daemon) {
-		$frrmodules[$daemon[0]] = '';
+	foreach ($config_key_daemons as $config_key => $daemon) {
+		$frr_daemon_modules[$daemon[0]] = '';
 
 		if ($config['installedpackages'][$config_key]['config'][0]['enablesnmpagentx']) {
-			$frrmodules[$daemon[0]] .= ' -M snmp';
+			$frr_daemon_modules[$daemon[0]] .= ' -M snmp';
 		}
 	}
 	/* BGP RPKI */
 	if ($config['installedpackages']['frrbgp']['config'][0]['enablerpki']) {
-		$frrmodules['bgpd'] .= ' -M rpki';
+		$frr_daemon_modules['bgpd'] .= ' -M rpki';
 	}
-
-	/* Build the start command for enabled daemons */
-	$frr_daemons_start_cmd = "";
-	foreach ($frrdaemons as $daemon) {
-		$frr_daemons_start_cmd .= "	echo \"Starting {$daemon}\"\n";
-		$frr_daemons_start_cmd .= "	/bin/rm -f /var/run/frr/{$daemon}.pid\n";
-		$frr_daemons_start_cmd .= "	if /bin/pgrep -q {$daemon}; then\n";
-		$frr_daemons_start_cmd .= "		/usr/bin/killall {$daemon}\n";
-		$frr_daemons_start_cmd .= "		/usr/bin/killall -9 {$daemon} 2>/dev/null\n";
-		$frr_daemons_start_cmd .= "	fi\n";
-		$frr_daemons_start_cmd .= "	/usr/local/sbin/{$daemon} -d";
-
-		if (!empty($frrmodules[$daemon])) {
-			$frr_daemons_start_cmd .= $frrmodules[$daemon];
-		}
-		$frr_daemons_start_cmd .= "\n";
-	}
-
-	/* Check/Record the generated start command so that it can be compared to decide
-	 * whether FRR requires a restart or a configuration reload */
-	if (file_exists("/tmp/frr_start_command_last.txt")) {
-		$frr_daemons_start_cmd_last = file_get_contents("/tmp/frr_start_command_last.txt");
-	} else {
-		$frr_daemons_start_cmd_last = '';
-	}
-
-	if (strcmp($frr_daemons_start_cmd, $frr_daemons_start_cmd_last) == 0) {
-		$frr_restart_needed = false;
-	} else {
-		$frr_restart_needed = true;
-	}
-	file_put_contents("/tmp/frr_start_command_last.txt", $frr_daemons_start_cmd);
 
 	/* Setup a CARP VIP status check, if needed, so the service won't start
 	 * unless this node is in a MASTER state */
@@ -365,21 +333,20 @@ function frr_generate_config_rcfile() {
 	if [ \${CARP_STATUS} != "MASTER" ]; then
 		exit;
 	fi
+
 EOF;
 }
 
 	/* When stopping, stop all services and remove old PID files */
 	$rc_file_stop = <<<EOF
-frr_daemons="zebra staticd ospfd ospf6d bgpd bfdd watchfrr"
+echo "Stopping FRR"
+	/usr/local/etc/rc.d/frr stop
 
-	for daemon in \$frr_daemons; do
-		if [ -e /var/run/frr/\$daemon.pid ]; then
-		echo "Stopping \$daemon"
-		/bin/pkill -F /var/run/frr/\$daemon.pid
-		/bin/rm -f /var/run/frr/\$daemon.pid
-		fi
-	done
-
+	if [ -e /var/run/frr/\watchfrr.pid ]; then
+	echo "Stopping watchfrr"
+	/bin/pkill -F /var/run/frr/watchfrr.pid
+	/bin/rm -f /var/run/frr/watchfrr.pid
+	fi
 EOF;
 	/* When starting, cleanup first, then fix permissions and make sure no
 	 * other instances are running before starting back up. */
@@ -394,23 +361,18 @@ EOF;
 	/usr/sbin/chown -R frr:frr {$frr_config_base}
 	/usr/sbin/chown -R frr:frr /var/run/frr
 	/usr/sbin/chown -R frr:frr /var/log/frr
-
 	{$carp_ip_status_check}
-
 	# Perform configuration check
 	echo "Performing intergrated config test"
 	/usr/local/bin/vtysh -C
 
 	# Start Daemons
-{$frr_daemons_start_cmd}
-	[ -s {$frr_config_base}/frr_md5pw_add.conf ] && /sbin/setkey -f {$frr_config_base}/frr_md5pw_add.conf
+	echo "Starting FRR"
+	/usr/local/etc/rc.d/frr start
 
-	echo "Performing vtysh boot"
-	/usr/local/bin/vtysh -b --config_dir /var/etc/frr
-
+	# Start watchfrr
 	echo "Starting watchfrr"
 	/usr/local/sbin/watchfrr -d -r /usr/local/etc/rc.d/frrbBrestartbB%s -s /usr/local/etc/rc.d/frrbBstartbB%s -k /usr/local/etc/rc.d/frrbBstopbB%s -b bB -t 30 {$frr_daemons_string}
-
 EOF;
 
 	write_rcfile(array(
@@ -422,18 +384,53 @@ EOF;
 
 	/* Ensure files have correct ownership and permissions */
 	chmod("/usr/local/etc/rc.d/frr.sh", 0555);
-	foreach ($frr_modules as $module) {
-		$moduleRunningFile = "{$frr_config_base}/{$module}.conf";
-		if (file_exists($moduleRunningFile) && (filesize($moduleRunningFile) > 0)) {
-			chmod($moduleRunningFile, 0600);
+	foreach ($frr_daemons as $daemon) {
+		$daemon_config_file = "{$frr_config_base}/{$daemon}.conf";
+		if (file_exists($daemon_config_file) && (filesize($daemon_config_file) > 0)) {
+			chmod($daemon_config_file, 0600);
 		}
+	}
+
+	/* Set rc.conf.d/frr for watchfrr service control */
+	$frr_rc_conf = "";
+	if ($frr_conf['enable']) {
+		$frr_rc_conf = "frr_enable=\"YES\"\n";
+	} else {
+		$frr_rc_conf = "frr_enable=\"NO\"\n";
+	}
+	$frr_rc_conf .= "frr_vtysh_boot=\"YES\"\n";
+
+	foreach ($frr_daemons_enabled as $daemon) {
+		if (!empty($frr_daemon_modules[$daemon])) {
+			$modules = trim($frr_daemon_modules[$daemon]);
+			$frr_rc_conf .= "{$daemon}_flags=\"{$modules}\"\n";
+		}
+	}
+
+	if (!empty($frr_daemons_string)) {
+		$frr_rc_conf .= "frr_daemons=\"{$frr_daemons_string}\"\n";
+	}
+
+	/* Check the generated rc configuration to decide whether FRR requires a restart or a configuration reload */
+	if (file_exists("/usr/local/etc/rc.conf.d/frr")) {
+		$frr_rc_conf_last = file_get_contents("/usr/local/etc/rc.conf.d/frr");
+	} else {
+		$frr_rc_conf_last = "";
+	}
+
+	if ((strcmp($frr_rc_conf, $frr_rc_conf_last) == 0) && frr_daemons_running($frr_daemons_enabled)) {
+		$frr_restart_needed = false;
+	} else {
+		$frr_restart_needed = true;
+		safe_mkdir("/usr/local/etc/rc.conf.d");
+		file_put_contents("/usr/local/etc/rc.conf.d/frr", $frr_rc_conf);
 	}
 
 	return $frr_restart_needed;
 }
 
 function frr_service_action($restart_needed) {
-	global $config, $frr_config_base, $frr_modules;
+	global $config;
 	/* If frr is not configured, then stop */
 	if (is_array($config['installedpackages']['frr']['config'])) {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
@@ -449,7 +446,9 @@ function frr_service_action($restart_needed) {
 				// Stop the service if the VIP is in BACKUP or INIT state.
 				case "BACKUP":
 				case "INIT":
+					frr_package_log("FRR: Stopping services due to CARP status.");
 					mwexec_bg("/usr/local/etc/rc.d/frr.sh stop");
+					unlink_if_exists("/tmp/frr_start_command_last.txt");
 					break;
 				// Start the service if the VIP is MASTER state.
 				case "MASTER":
@@ -476,6 +475,33 @@ function frr_service_action($restart_needed) {
 	} else {
 		frr_package_log("FRR: Stopping services.");
 		mwexec_bg("/usr/local/etc/rc.d/frr.sh stop");
+		unlink_if_exists("/usr/local/etc/rc.conf.d/frr");
+	}
+}
+
+/* Check all supplied daemons are running */
+function frr_daemons_running($daemons) {
+	$frr_daemons_running = array();
+	foreach ($daemons as $daemon) {
+		if (is_process_running($daemon)) {
+			$frr_daemons_running[$daemon] = true;
+		} else {
+			$frr_daemons_running[$daemon] = false;
+		}
+	}
+
+	$logarr = array();
+	foreach ($frr_daemons_running as $daemon => $state) {
+		$s = $state ? "running" : "stopped";
+		array_push($logarr, "{$daemon}: {$s}");
+	}
+	$logstr = implode(" | ", $logarr);
+	frr_package_log("FRR: Daemon state: {$logstr}");
+
+	if (count(array_unique($frr_daemons_running)) === 1) {
+		return current($frr_daemons_running);
+	} else {
+		return false;
 	}
 }
 
@@ -642,12 +668,12 @@ function frr_generate_config() {
 	frr_generate_config_integrated();
 
 	/* Create the rc.d service control script and trigger restart/reload */
+	$restart_needed = frr_generate_config_rcfile();
 	if (!empty($_POST['service_force_restart'])) {
 		frr_package_log("FRR: Service restart forced.");
-		/* If force_restart is set, delete the previously generated start command file to force a service restart */
-		unlink_if_exists("/tmp/frr_start_command_last.txt");
+		/* If force_restart is set, override restart_needed to force a service restart */
+		$restart_needed = true;
 	}
-	$restart_needed = frr_generate_config_rcfile();
 	frr_service_action($restart_needed);
 }
 
@@ -721,15 +747,15 @@ function frr_generate_config_integrated() {
 
 	/* If there is no raw configuration and no GUI configuration, stop. */
 	if (empty($frr_conf)) {
-		frr_package_log("FRR Integrated: No config data found.");
+		frr_package_log("FRR: No config data found.");
 		return;
 	}
 	if (empty($frr_conf['enable'])) {
-		frr_package_log("FRR Integrated: FRR master switch is off.");
+		frr_package_log("FRR: FRR master switch is off.");
 		return;
 	}
 
-	frr_package_log("FRR Integrated: Rebuild configuration.");
+	frr_package_log("FRR: Rebuild configuration.");
 
 	$integratedconffile = $frr_auto_config_warning;
 	$integratedconffile .= "frr defaults traditional\n";
