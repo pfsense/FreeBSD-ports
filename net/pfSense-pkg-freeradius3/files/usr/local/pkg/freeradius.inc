@@ -3775,7 +3775,7 @@ function freeradius_validate_users($post, &$input_errors) {
 	if (($post['varusersmotpenable'] == 'on') && ($post['varuserspassword'] != '')) {
 		$input_errors[] = "The 'Password' field must be left empty when 'Enable One-Time-Password for this user' is checked.";
 	}
-	if (!empty($post['varuserspassword']) && strpos($post['varuserspassword'], "\"")) {
+	if (!empty($post['varuserspassword']) && strpos($post['varuserspassword'], "\"") !==false) {
 		$input_errors[] = "The '\"' character is not allowed in the Password field.";
 	}
 
