@@ -4,5 +4,7 @@ pkg/apcupsd.conf.php
 pkg/apcupsd_mail.php
 /etc/inc/priv/apcupsd.priv.inc
 www/apcupsd_status.php
+www/widgets/widgets/apcupsd.widget.php
+www/widgets/include/widget-apcupsd.inc
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
