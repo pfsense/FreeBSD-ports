@@ -35,6 +35,10 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/apcupsd_status.php \
 		${STAGEDIR}${PREFIX}/www
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/widgets/apcupsd.widget.php \
+		${STAGEDIR}${PREFIX}/www/widgets/windgets
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/include/apcupsd_inc.inc \
+		${STAGEDIR}${PREFIX}/www/widgets/include
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/apcupsd.conf.php \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/apcupsd_mail.php \
