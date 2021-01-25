@@ -1,4 +1,5 @@
 <?php
+
 /*
  * apcupsd.widget.php
  *
@@ -77,7 +78,7 @@ if (!function_exists('compose_apc_contents')) {
 			$nisip = (check_nis_ip_apcupsd() != ''? check_nis_ip_apcupsd() : "localhost");
 			$nisport = (check_nis_port_apcupsd() != '' ? check_nis_port_apcupsd() : "3551");
 
-			$ph = popen("apcaccess -h {$nisip}:{$nisport} 2>&1", "r" );
+			$ph = popen("/usr/local/sbin/apcaccess -h " . escapeshellarg($nisip) . ":" . escapeshellarg($nisport) . " 2>&1", "r" );
 			while ($v = fgets($ph)) {
 				$results[trim(explode(': ',$v)[0])]=trim(explode(': ',$v)[1]);
 			}
