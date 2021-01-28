@@ -238,6 +238,9 @@ SERVICENAME="radiusd"
 	LOCKFILE="/tmp/\${SERVICENAME}_start.lock"
 	PIDFILE="/var/run/\${SERVICENAME}.pid"
 
+	# Make sure library path cache is updated
+        /etc/rc.d/ldconfig start 2>/dev/null
+
 	# prevent this part of script from running in parallel
 	if ( set -o noclobber; echo "\$\$" > "\$LOCKFILE") 2> /dev/null; then
 		# make sure lock file is removed even if script is terminated
