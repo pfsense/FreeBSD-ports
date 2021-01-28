@@ -2265,9 +2265,15 @@ authorize {
 	}
 #	unix
 	files
-{$varsqlconfauthorize}
-#	smbpasswd
-{$varmodulesldapenableauthorize}
+	if (notfound || noop) {
+		{$varsqlconfauthorize}
+		if (notfound || noop) {
+			{$varmodulesldapenableauthorize}
+			if (notfound || noop) {
+				reject
+			}
+		}
+	}
 	# Formerly checkval
 	if (&request:Calling-Station-Id == &control:Calling-Station-Id) {
 		ok
