@@ -2170,106 +2170,119 @@ function sg_reconfigure_blacklist($source_filename, $opt = '')
 #     - background rebuild temp DB via sh script (longer proccess) and copy to work DB
 # ------------------------------------------------------------------------------
 
-function sg_update_blacklist($from_file)
-{
-    global $squidguard_config;
-    $dbhome  = SQUIDGUARD_DBHOME;
-    $workdir = SQUIDGUARD_WORKDIR;
-    $tmp_unpack_dir = SQUIDGUARD_TMP . SQUIDGUARD_BL_UNPACK;
-    $arc_db_dir     = SQUIDGUARD_TMP . SG_BLK_ARC;
-    $conf_path      = SQUIDGUARD_VAR . DB_REBUILD_BLK_CONF;
-    $blklist_file   = SQUIDGUARD_BLK_FILELISTPATH;
+function sg_update_blacklist($from_file) {
+	global $squidguard_config;
+	$dbhome  = SQUIDGUARD_DBHOME;
+	$workdir = SQUIDGUARD_WORKDIR;
+	$tmp_unpack_dir = SQUIDGUARD_TMP . SQUIDGUARD_BL_UNPACK;
+	$arc_db_dir     = SQUIDGUARD_TMP . SG_BLK_ARC;
+	$conf_path      = SQUIDGUARD_VAR . DB_REBUILD_BLK_CONF;
+	$blklist_file   = SQUIDGUARD_BLK_FILELISTPATH;
 
-    sg_addlog("sg_update_blacklist", "Begin with '{$from_file}'.", SQUIDGUARD_INFO);
+	sg_addlog("sg_update_blacklist", "Begin with '{$from_file}'.", SQUIDGUARD_INFO);
 
-    if (file_exists($from_file)) {
-        # check work and DB dir's
-        if (file_exists($squidguard_config[F_DBHOME]))  $dbhome  = $squidguard_config[F_DBHOME];
-        if (file_exists($squidguard_config[F_WORKDIR])) $workdir = $squidguard_config[F_WORKDIR];
+	if (file_exists($from_file)) {
+		# check work and DB dir's
+		if (file_exists($squidguard_config[F_DBHOME])) {
+			$dbhome  = $squidguard_config[F_DBHOME];
+		}
+		if (file_exists($squidguard_config[F_WORKDIR])) { 
+			$workdir = $squidguard_config[F_WORKDIR];
+		}
 
-        # delete old tmp dir's
-        if (file_exists($tmp_unpack_dir)) mwexec("/bin/rm -R {$tmp_unpack_dir}");
-        if (file_exists($arc_db_dir))     mwexec("/bin/rm -R {$arc_db_dir}");
-        squidguard_ramdisk(false);
+		# delete old tmp dir's
+		if (file_exists($tmp_unpack_dir)) {
+			mwexec("/bin/rm -R {$tmp_unpack_dir}");
+		}
+		if (file_exists($arc_db_dir)) {
+			mwexec("/bin/rm -R {$arc_db_dir}");
+		}
+		squidguard_ramdisk(false);
 
-        # create new tmp/arc dir's, use ramdisk for quick operations
-        squidguard_ramdisk(true);
-        mwexec("/bin/mkdir -p -m 0755 {$tmp_unpack_dir}");
-        mwexec("/bin/mkdir -p -m 0755 {$arc_db_dir}");
+		# create new tmp/arc dir's, use ramdisk for quick operations
+		squidguard_ramdisk(true);
+		mwexec("/bin/mkdir -p -m 0755 {$tmp_unpack_dir}");
+		mwexec("/bin/mkdir -p -m 0755 {$arc_db_dir}");
 
-        # 1. unpack archive
-        squidguard_update_log("Unpack archive");
-        mwexec("/usr/bin/tar zxvf $from_file -C {$tmp_unpack_dir}");
-        set_file_access($tmp_unpack_dir, OWNER_NAME, 0755);
-        sg_addlog("sg_update_blacklist", "Unpack uploaded file '{$from_file}' -> '{$tmp_unpack_dir}'.", SQUIDGUARD_INFO);
+		# 1. unpack archive
+		squidguard_update_log("Unpack archive");
+		mwexec("/usr/bin/tar zxvf $from_file -C {$tmp_unpack_dir}");
+		set_file_access($tmp_unpack_dir, OWNER_NAME, 0755);
+		sg_addlog("sg_update_blacklist", "Unpack uploaded file '{$from_file}' -> '{$tmp_unpack_dir}'.", SQUIDGUARD_INFO);
 
-        # 2. copy blacklist to TempDB base & create entries list
-        squidguard_update_log("Scan blacklist categories.");
-        if (file_exists($tmp_unpack_dir)) {
-            $blk_items = array();
-            $blk_list  = array();
+		# 2. copy blacklist to TempDB base & create entries list
+		squidguard_update_log("Scan blacklist categories.");
+		if (file_exists($tmp_unpack_dir)) {
+			$blk_items = array();
+			$blk_list  = array();
 
-            # scan blacklist items
-            scan_blacklist_cat($tmp_unpack_dir, "blk", $blk_items);
+			# scan blacklist items
+			scan_blacklist_cat($tmp_unpack_dir, "blk", $blk_items);
 
-            # move blacklist catalog structure to 'one level' (from tmp_DB to arch_DB)
-            foreach ($blk_items as $key => $val) {
-                $current_dbpath = "{$arc_db_dir}/{$key}";
-                if (count($val)) {
-                    # make blk_list for config file
-                    $blk_list[$key] = $key;
+			# move blacklist catalog structure to 'one level' (from tmp_DB to arch_DB)
+			foreach ($blk_items as $key => $val) {
+				$current_dbpath = "{$arc_db_dir}/{$key}";
+				if (count($val)) {
+					if (!file_exists($val['path'])) {
+						unset($blk_items[$key]);
+						continue;
+					}
+					# make blk_list for config file
+					$blk_list[$key] = $key;
 
-                    # delete '$current_dbpath' for correct moving
-                    # need moving $val['path'] to $current_dbpath
-                    # if $current_dbpath exists, then $val['path'] will created as subdir - !it's worng!
-                    if (file_exists($current_dbpath))
-                        mwexec("/bin/rm -R {$current_dbpath}");
-                    mwexec("/bin/mv -f {$val['path']}/ {$current_dbpath}");
-                    sg_addlog("sg_update_blacklist", "Move {$val['path']}/ -> {$current_dbpath}.", SQUIDGUARD_INFO);
-                }
-            }
-            set_file_access($arc_db_dir, OWNER_NAME, 0755);
+					# delete '$current_dbpath' for correct moving
+					# need moving $val['path'] to $current_dbpath
+					# if $current_dbpath exists, then $val['path'] will created as subdir - !it's worng!
+					if (file_exists($current_dbpath)) {
+						mwexec("/bin/rm -R {$current_dbpath}");
+					}
+					mwexec("/bin/mv -f {$val['path']}/ {$current_dbpath}");
+					sg_addlog("sg_update_blacklist", "Move {$val['path']}/ -> 
+						{$current_dbpath}.", SQUIDGUARD_INFO);
+				}
+			}
+			set_file_access($arc_db_dir, OWNER_NAME, 0755);
 
-            # create entries list
-            if (count($blk_items)) {
-                # save to temp DB
-                $cont = implode("\n", array_keys($blk_items));
+			# create entries list
+			if (count($blk_items)) {
+				# save to temp DB
+				$cont = implode("\n", array_keys($blk_items));
 
-                # temp blacklist files
-                $blklist_file = $arc_db_dir . SQUIDGUARD_BLK_FILELIST;
-                file_put_contents($blklist_file, $cont);
-                set_file_access  ($blklist_file, OWNER_NAME, 0755);
+				# temp blacklist files
+				$blklist_file = $arc_db_dir . SQUIDGUARD_BLK_FILELIST;
+				file_put_contents($blklist_file, $cont);
+				set_file_access  ($blklist_file, OWNER_NAME, 0755);
 
-                # system blacklist files
-                $blklist_file = SQUIDGUARD_BLK_FILELISTPATH;
-                file_put_contents($blklist_file, $cont);
-                set_file_access  ($blklist_file, OWNER_NAME, 0755);
+				# system blacklist files
+				$blklist_file = SQUIDGUARD_BLK_FILELISTPATH;
+				file_put_contents($blklist_file, $cont);
+				set_file_access  ($blklist_file, OWNER_NAME, 0755);
 
-                sg_addlog("sg_update_blacklist", "Create DB entries list '{$blklist_file}'.", SQUIDGUARD_INFO);
-                squidguard_update_log("Found " . count($blk_items) . " items.");
-            }
+				sg_addlog("sg_update_blacklist", "Create DB entries list '{$blklist_file}'.", SQUIDGUARD_INFO);
+				squidguard_update_log("Found " . count($blk_items) . " items.");
+			}
 
-            # rebuild db & save to work dir
-            squidguard_update_log("Start rebuild DB.");
-            squidguard_rebuild_db("blk_", $arc_db_dir, $blk_list);
+			# rebuild db & save to work dir
+			squidguard_update_log("Start rebuild DB.");
+			squidguard_rebuild_db("blk_", $arc_db_dir, $blk_list);
 
-            squidguard_update_log("Copy DB to workdir.");
-            $blklist_file = $arc_db_dir . SQUIDGUARD_BLK_FILELIST;
-            mwexec("/bin/cp -R -p {$arc_db_dir}/ {$dbhome}");
-            mwexec("/bin/cp -f -p {$blklist_file} " . SQUIDGUARD_WORKDIR);
-            set_file_access($dbhome, OWNER_NAME, 0755);
+			squidguard_update_log("Copy DB to workdir.");
+			$blklist_file = $arc_db_dir . SQUIDGUARD_BLK_FILELIST;
+			mwexec("/bin/cp -R -p {$arc_db_dir}/ {$dbhome}");
+			mwexec("/bin/cp -f -p {$blklist_file} " . SQUIDGUARD_WORKDIR);
+			set_file_access($dbhome, OWNER_NAME, 0755);
 
-            squidguard_update_log("Reconfigure Squid proxy.");
-            mwexec(SQUID_BASE . "/sbin/squid -k reconfigure");
+			squidguard_update_log("Reconfigure Squid proxy.");
+			mwexec(SQUID_BASE . "/sbin/squid -k reconfigure");
 
-            squidguard_update_log("Blacklist update complete.");
+			squidguard_update_log("Blacklist update complete.");
+		}
 
-        }
-
-        # free ramdisk
-        squidguard_ramdisk(false);
-    }
-    else sg_addlog("sg_update_blacklist", "File {$from_file} not found.", SQUIDGUARD_ERROR);
+		# free ramdisk
+		squidguard_ramdisk(false);
+	} else {
+		sg_addlog("sg_update_blacklist", "File {$from_file} not found.", SQUIDGUARD_ERROR);
+	}
 }
 
 # -----------------------------------------------------------------------------
