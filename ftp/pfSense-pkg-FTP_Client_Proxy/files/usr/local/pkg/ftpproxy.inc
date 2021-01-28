@@ -26,6 +26,7 @@ function sync_package_ftpproxy() {
 	/* Proxy is not enabled, kill the daemon and issue a filter reload. */
 	if ($cf["proxy_enable"] != "on") {
 		mwexec("/usr/bin/killall -9 ftp-proxy");
+		unlink_if_exists("/usr/local/etc/rc.d/ftp-proxy.sh");
 		filter_configure();
 		return;
 	}

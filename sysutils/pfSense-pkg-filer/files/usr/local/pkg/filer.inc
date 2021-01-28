@@ -55,6 +55,8 @@ function sync_package_filer($post = array()) {
 			}
 
 			/* Write file. */
+
+			safe_mkdir(dirname($file['fullfile']));
 			file_put_contents($file['fullfile'], filer_text_area_decode($file['filedata']), LOCK_EX);
 			chmod($file['fullfile'], $mod);
 

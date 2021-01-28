@@ -1406,6 +1406,8 @@ function squidguard_adt_safesrch_add(&$rewrite_item)
     # Extra search engines
     $rewrite_item[] = array(F_TARGETURL => '(rambler\..*/?.*query=.*)', F_REPLACETO => '\1\&adult=family', F_MODE => 'i');
     $rewrite_item[] = array(F_TARGETURL => '(qwant\..*/?.*q=.*)', F_REPLACETO => '\1\&s=2', F_MODE => 'i');
+    $rewrite_item[] = array(F_TARGETURL => '(ecosia\..*/search.*q=.*)', F_REPLACETO => '\1\&safesearch=2', F_MODE => 'i');
+    $rewrite_item[] = array(F_TARGETURL => '(onesearch\..*/yhs/search.*)', F_REPLACETO => '\1\&vm=r', F_MODE => 'i');
 
     return $rewrite_item;
 }

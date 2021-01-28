@@ -636,11 +636,12 @@ function frr_bgp_generate_neighbors() {
 				continue;
 			}
 
-			if (!empty($neighbor['defaultoriginate']) && ($neighbor['defaultoriginate'] != "no")) {
+			if (!empty($neighbor['defaultoriginate']) &&
+				((strpos($af, $neighbor['defaultoriginate']) !== false) || ($neighbor['defaultoriginate'] == "yes"))) {
 				$frr_bgp_config_address_family[$af]  .= "  neighbor {$neighbor['peer']} default-originate";
-				if (($neighbor['defaultoriginate'] != "yes") &&
-					in_array($neighbor['defaultoriginate'], frr_get_list_values(frr_get_routemap_list(false, true)))) {
-					$frr_bgp_config_address_family[$af] .= "  route-map {$neighbor['defaultoriginate']}";
+				if (!empty($neighbor['defaultoriginateroutemap']) && ($neighbor['defaultoriginateroutemap'] != "none") &&
+					in_array($neighbor['defaultoriginateroutemap'], frr_get_list_values(frr_get_routemap_list(false, false)))) {
+					$frr_bgp_config_address_family[$af] .= " route-map {$neighbor['defaultoriginateroutemap']}";
 				}
 				$frr_bgp_config_address_family[$af] .= "  \n";
 			}

@@ -238,6 +238,9 @@ SERVICENAME="radiusd"
 	LOCKFILE="/tmp/\${SERVICENAME}_start.lock"
 	PIDFILE="/var/run/\${SERVICENAME}.pid"
 
+	# Make sure library path cache is updated
+        /etc/rc.d/ldconfig start 2>/dev/null
+
 	# prevent this part of script from running in parallel
 	if ( set -o noclobber; echo "\$\$" > "\$LOCKFILE") 2> /dev/null; then
 		# make sure lock file is removed even if script is terminated
@@ -2262,9 +2265,15 @@ authorize {
 	}
 #	unix
 	files
-{$varsqlconfauthorize}
-#	smbpasswd
-{$varmodulesldapenableauthorize}
+	if (notfound || noop) {
+		{$varsqlconfauthorize}
+		if (notfound || noop) {
+			{$varmodulesldapenableauthorize}
+			if (notfound || noop) {
+				reject
+			}
+		}
+	}
 	# Formerly checkval
 	if (&request:Calling-Station-Id == &control:Calling-Station-Id) {
 		ok
@@ -3775,7 +3784,7 @@ function freeradius_validate_users($post, &$input_errors) {
 	if (($post['varusersmotpenable'] == 'on') && ($post['varuserspassword'] != '')) {
 		$input_errors[] = "The 'Password' field must be left empty when 'Enable One-Time-Password for this user' is checked.";
 	}
-	if (!empty($post['varuserspassword']) && strpos($post['varuserspassword'], "\"")) {
+	if (!empty($post['varuserspassword']) && strpos($post['varuserspassword'], "\"") !==false) {
 		$input_errors[] = "The '\"' character is not allowed in the Password field.";
 	}
 

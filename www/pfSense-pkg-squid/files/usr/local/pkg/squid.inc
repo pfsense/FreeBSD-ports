@@ -1091,6 +1091,15 @@ function squid_validate_nac($post, &$input_errors) {
 		}
 	}
 	unset($extmgr);
+
+	if (!empty($post['google_accounts'])) {
+		foreach (explode(",", $post['google_accounts']) as $dom) {
+			$dom = trim($dom);
+			if (!is_domain($dom)) {
+				$input_errors[] = "The '$dom' is not a valid Google Accounts Domain.";
+			}
+		}
+	}
 }
 
 /* Proxy server: Traffic Management input validation */
@@ -2017,6 +2026,18 @@ function squid_resync_auth() {
 			$conf .= "# Block access with mime type in the reply\n";
 			$conf .= "http_reply_access deny block_reply_mime_type\n";
 		}
+	}
+	if (!empty($settingsnac['google_accounts'])) {
+		$conf .= "# List of domains allowed to logging in to Google services\n";
+		$conf .= "request_header_access X-GoogApps-Allowed-Domains deny all\n";
+		$conf .= "request_header_add X-GoogApps-Allowed-Domains {$settingsnac['google_accounts']}\n";
+	}
+	if (!empty($settingsnac['youtube_restrict'])) {
+		$conf .= "# Set YouTube safesearch restriction\n";
+		$conf .= "acl youtubedst dstdomain -n www.youtube.com m.youtube.com ";
+	        $conf .= "youtubei.googleapis.com youtube.googleapis.com www.youtube-nocookie.com\n";
+		$conf .= "request_header_access YouTube-Restrict deny all\n";
+		$conf .= "request_header_add YouTube-Restrict {$settingsnac['youtube_restrict']} youtubedst\n";
 	}
 
 	// Include squidguard denied acl log in squid
