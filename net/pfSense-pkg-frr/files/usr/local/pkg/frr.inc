@@ -604,6 +604,8 @@ function frr_setkey() {
 	}
 	if (!empty($md5pw_add)) {
 		file_put_contents("{$frr_config_base}/frr_md5pw_add.conf", $md5pw_add);
+		/* set BGP MD5 keys, see https://redmine.pfsense.org/issues/11325 */
+		mwexec("/sbin/setkey -f {$frr_config_base}/frr_md5pw_add.conf");
 	}
 	if (!empty($md5pw_del)) {
 		file_put_contents("{$frr_config_base}/frr_md5pw_del.conf", $md5pw_del);
