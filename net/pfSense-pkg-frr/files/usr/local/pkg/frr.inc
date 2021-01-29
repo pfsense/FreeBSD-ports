@@ -358,6 +358,10 @@ EOF;
 		/sbin/setkey -f {$frr_config_base}/frr_md5pw_del.conf
 	fi
 
+	if [ -s {$frr_config_base}/frr_md5pw_add.conf ]; then
+		/sbin/setkey -f {$frr_config_base}/frr_md5pw_add.conf
+	fi
+
 	/usr/sbin/chown -R frr:frr {$frr_config_base}
 	/usr/sbin/chown -R frr:frr /var/run/frr
 	/usr/sbin/chown -R frr:frr /var/log/frr
@@ -506,17 +510,9 @@ function frr_daemons_running($daemons) {
 }
 
 /* Setup necessary setkey entries for TCP MD5 authentication. */
-function frr_setkey() {
+function frr_setkey($restart_needed) {
 	global $config, $frr_config_base;
 	$peers = array();
-
-	/* Clear existing md5 authentication sessions and remove any md5
-	 * config files if they exist. */
-	if (file_exists("{$frr_config_base}/frr_md5pw_del.conf")) {
-		mwexec("/sbin/setkey -f {$frr_config_base}/frr_md5pw_del.conf");
-		unlink_if_exists("{$frr_config_base}/frr_md5pw_del.conf");
-	}
-	unlink_if_exists("{$frr_config_base}/frr_md5pw_add.conf");
 
 	/* Build md5 password configuration files based on raw tab list */
 	if (is_array($config['installedpackages']['frrglobalraw']['config'][0]['row'])) {
@@ -602,13 +598,34 @@ function frr_setkey() {
 			$md5pw_del .= "delete {$peer['dst']} {$peer['src']} tcp 0x1001 ;\n";
 		}
 	}
-	if (!empty($md5pw_add)) {
-		file_put_contents("{$frr_config_base}/frr_md5pw_add.conf", $md5pw_add);
-		/* set BGP MD5 keys, see https://redmine.pfsense.org/issues/11325 */
-		mwexec("/sbin/setkey -f {$frr_config_base}/frr_md5pw_add.conf");
-	}
-	if (!empty($md5pw_del)) {
-		file_put_contents("{$frr_config_base}/frr_md5pw_del.conf", $md5pw_del);
+
+	/* restart setkey only if parameters have changed, see https://redmine.pfsense.org/issues/11325 */
+	if (!empty($md5pw_add) && !empty($md5pw_del)) {
+		if (is_service_running('bgpd') && file_exists("{$frr_config_base}/frr_md5pw_add.conf")) {
+			$existing_md5pw_add = file_get_contents("{$frr_config_base}/frr_md5pw_add.conf");
+			if ($md5pw_add != $existing_md5pw_add) {
+				/* setkey parameters changed, restart needed */
+				$restart_setkey = true;
+			}
+		} else {
+			$restart_setkey = true;
+		}
+		if ($restart_setkey) {
+			if (!$restart_needed && file_exists("{$frr_config_base}/frr_md5pw_del.conf")) {
+				/* do not run 'setkey' twice if $restart_needed is set */
+				mwexec("/sbin/setkey -f {$frr_config_base}/frr_md5pw_del.conf");
+			}
+			file_put_contents("{$frr_config_base}/frr_md5pw_del.conf", $md5pw_del);
+			file_put_contents("{$frr_config_base}/frr_md5pw_add.conf", $md5pw_add);
+			if (!$restart_needed) {
+				mwexec("/sbin/setkey -f {$frr_config_base}/frr_md5pw_add.conf");
+			}
+		}
+	} elseif (file_exists("{$frr_config_base}/frr_md5pw_add.conf") &&
+	    file_exists("{$frr_config_base}/frr_md5pw_del.conf")) {
+		mwexec("/sbin/setkey -f {$frr_config_base}/frr_md5pw_del.conf");
+		unlink_if_exists("{$frr_config_base}/frr_md5pw_del.conf");
+		unlink_if_exists("{$frr_config_base}/frr_md5pw_add.conf");
 	}
 }
 
@@ -663,9 +680,6 @@ function frr_generate_config() {
 	/* BFD Configuration */
 	frr_generate_config_bfd();
 
-	/* Setup TCP MD5 authentication */
-	frr_setkey();
-
 	/* Integrated configuration */
 	frr_generate_config_integrated();
 
@@ -676,6 +690,10 @@ function frr_generate_config() {
 		/* If force_restart is set, override restart_needed to force a service restart */
 		$restart_needed = true;
 	}
+
+	/* Setup TCP MD5 authentication */
+	frr_setkey($restart_needed);
+
 	frr_service_action($restart_needed);
 }
 

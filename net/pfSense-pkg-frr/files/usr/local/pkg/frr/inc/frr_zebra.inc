@@ -321,6 +321,43 @@ function frr_zebra_generate_prefixlists($ipv4 = true, $ipv6 = true) {
 	return $plconf;
 }
 
+/* Generate BGP Community List configuration lines */
+function frr_zebra_generate_communitylists() {
+	global $config, $frr_config_base, $frr_well_known_communities;
+	/* Populate FRR Community List Settings */
+	if (is_array($config['installedpackages']['frrbgpcommunities']['config'])) {
+		$frr_cls_conf = &$config['installedpackages']['frrbgpcommunities']['config'];
+	} else {
+		/* No CL config, stop. */
+		return null;
+	}
+
+	$clconf = "";
+	/* Loop through CLs and process */
+	foreach ($frr_cls_conf as $cl) {
+		/* Get the type, either by number or explicitly */
+		$cl_type = frr_get_community_type($cl['name'], $cl['listtype']);
+
+		/* Number community names can go in as-is, but text names must explicitly state the type. */
+		if (is_numeric($cl['name'])) {
+			$name = $cl['name'];
+		} elseif (frr_validate_word($cl['name'])) {
+			$name = "{$cl['listtype']} {$cl['name']}";
+		}
+		/* Sort by sequence if needed */
+		frr_array_seq_sort($cl['row']);
+		foreach ($cl['row'] as $line) {
+			/* This is a space-separated list, so check each entry. */
+			if (($cl_type == "standard") && !frr_validate_community_asval_list($line['community'])) {
+				/* If this list does not have a valid entry, skip the entire list definition */
+				continue 2;
+			}
+			$clconf .= "bgp community-list {$name} {$line['action']} {$line['community']}\n";
+		}
+	}
+	return $clconf;
+}
+
 /* Route Maps for the zebra configuration based on GUI config */
 function frr_zebra_generate_routemaps() {
 	global $config, $frr_config_base;
@@ -707,6 +744,8 @@ function frr_generate_config_zebra() {
 		$frr_integrated_config['zebra'] .= frr_zebra_generate_accesslists(false, true);
 		/* Prefix Lists IPv6 */
 		$frr_integrated_config['zebra'] .= frr_zebra_generate_prefixlists(false, true);
+		/* BGP Community Lists */
+		$frr_integrated_config['zebra'] .= frr_zebra_generate_communitylists();
 		/* Route Maps */
 		$frr_integrated_config['zebra'] .= frr_zebra_generate_routemaps();
 		/* Default Accept Filters */
