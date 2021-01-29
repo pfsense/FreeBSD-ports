@@ -292,7 +292,7 @@ function frr_generate_config_ospf_redistribute($frr_ospfd_conf, $variablename, $
 }
 
 function frr_generate_config_ospf() {
-	global $config, $frr_config_base, $frr_integrated_config;
+	global $config, $frr_config_base, $frr_integrated_config, $passive_interfaces;
 
 	/* Populate FRR Global Settings */
 	if (is_array($config['installedpackages']['frr']['config'])) {
@@ -406,6 +406,11 @@ function frr_generate_config_ospf() {
 			$frr_integrated_config['ospfd'] .= " ospf abr-type {$frr_ospfd_conf['abrtype']}\n";
 		}
 
+		/* Interface Settings */
+		/* Interface settings do not return a string as they are an accumulation of all protocols */
+		$passive_interfaces = array();
+		frr_generate_config_ospf_interfaces();
+
 		if (is_array($passive_interfaces)) {
 			foreach ($passive_interfaces as $pint)
 				$frr_integrated_config['ospfd'] .= " passive-interface {$pint}\n";
@@ -421,10 +426,5 @@ function frr_generate_config_ospf() {
 		/* Neighbor Settings */
 		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_neighbors();
 
-		/* Interface Settings */
-		/* Interface settings do not return a string as they are an accumulation of all protocols */
-		$passive_interfaces = array();
-		global $passive_interfaces;
-		frr_generate_config_ospf_interfaces();
 	}
 }
