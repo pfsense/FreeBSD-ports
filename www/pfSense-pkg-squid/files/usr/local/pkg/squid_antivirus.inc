@@ -521,7 +521,7 @@ EOF;
 				$clamd_m[1] = "@DatabaseDirectory /var/db/clamav@";
 				$clamd_r[1] = "DatabaseDirectory " . CLAMAV_DBDIR;
 				if ($antivirus_config['clamav_block_pua'] == "on") {
-					$clamd_m[2] = "@#DetectPUA";
+					$clamd_m[2] = "@#DetectPUA yes@";
 					$clamd_r[2] = "DetectPUA yes\n";
 				}
 				if (!file_put_contents("{$cf}", preg_replace($clamd_m, $clamd_r, $sample_file), LOCK_EX)) {
