@@ -789,7 +789,7 @@ function frr_bgp_generate_communitylists() {
 				/* If this list does not have a valid entry, skip the entire list definition */
 				continue 2;
 			}
-			$clconf .= "ip community-list {$name} {$line['action']} {$line['community']}\n";
+			$clconf .= "bgp community-list {$name} {$line['action']} {$line['community']}\n";
 		}
 	}
 	return $clconf;
