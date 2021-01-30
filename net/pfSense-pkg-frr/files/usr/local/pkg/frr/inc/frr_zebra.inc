@@ -720,62 +720,38 @@ function frr_generate_config_zebra() {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
 	}
 
-	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['zebra']) &&
-		!empty($config['installedpackages']['frrglobalraw']['config'][0]['zebra'])) {
-		// if there is a raw config specified in the config.xml use that instead of the assisted config
-		$zebraconffile = str_replace("\r", "", base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['zebra']));
-	} else {
-		/* If there is no raw configuration and no GUI configuration, stop. */
-		if (empty($frr_conf)) {
-			frr_package_log("FRR Zebra: No config data found.");
-			return;
-		}
-		if (empty($frr_conf['enable'])) {
-			/* FRR master switch is off. */
-			return;
-		}
-
-		$frr_integrated_config['zebra'] = "";
-		/* Access Lists IPv4*/
-		$frr_integrated_config['zebra'] .= frr_zebra_generate_accesslists(true, false);
-		/* Prefix Lists IPv4 */
-		$frr_integrated_config['zebra'] .= frr_zebra_generate_prefixlists(true, false);
-		/* Access Lists IPv6*/
-		$frr_integrated_config['zebra'] .= frr_zebra_generate_accesslists(false, true);
-		/* Prefix Lists IPv6 */
-		$frr_integrated_config['zebra'] .= frr_zebra_generate_prefixlists(false, true);
-		/* BGP Community Lists */
-		$frr_integrated_config['zebra'] .= frr_zebra_generate_communitylists();
-		/* Route Maps */
-		$frr_integrated_config['zebra'] .= frr_zebra_generate_routemaps();
-		/* Default Accept Filters */
-		$frr_integrated_config['zebra'] .= frr_zebra_generate_acceptfilters();
-
-		/* Trim trailing seperator */
-		if (strcmp(substr($frr_integrated_config['zebra'], -2), "!\n") == 0) {
-			$frr_integrated_config['zebra'] = substr($frr_integrated_config['zebra'],0, -2);
-		}
+	if (empty($frr_conf)) {
+		frr_package_log("FRR Zebra: No config data found.");
+		return;
+	}
+	if (empty($frr_conf['enable'])) {
+		/* FRR master switch is off. */
+		return;
 	}
 
-	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['staticd']) &&
-		!empty($config['installedpackages']['frrglobalraw']['config'][0]['staticd'])) {
-		// if there is a raw config specified in the config.xml use that instead of the assisted config
-		$frr_integrated_config['staticd'] = str_replace("\r", "", base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['staticd']));
-	} else {
-		/* If there is no raw configuration and no GUI configuration, stop. */
-		if (empty($frr_conf)) {
-			frr_package_log("FRR staticd: No config data found.");
-			return;
-		}
-		if (empty($frr_conf['enable'])) {
-			/* FRR master switch is off. */
-			return;
-		}
-		$frr_integrated_config['staticd'] = "";
-		/* Null Routes */
-		$frr_integrated_config['staticd'] .= frr_zebra_generate_nullroutes();
-		/* Static Routes */
-		$frr_integrated_config['staticd'] .= frr_zebra_generate_staticroutes();
+	$frr_integrated_config['zebra'] = "";
+	/* Access Lists IPv4*/
+	$frr_integrated_config['zebra'] .= frr_zebra_generate_accesslists(true, false);
+	/* Prefix Lists IPv4 */
+	$frr_integrated_config['zebra'] .= frr_zebra_generate_prefixlists(true, false);
+	/* Access Lists IPv6*/
+	$frr_integrated_config['zebra'] .= frr_zebra_generate_accesslists(false, true);
+	/* Prefix Lists IPv6 */
+	$frr_integrated_config['zebra'] .= frr_zebra_generate_prefixlists(false, true);
+	/* BGP Community Lists */
+	$frr_integrated_config['zebra'] .= frr_zebra_generate_communitylists();
+	/* Route Maps */
+	$frr_integrated_config['zebra'] .= frr_zebra_generate_routemaps();
+	/* Default Accept Filters */
+	$frr_integrated_config['zebra'] .= frr_zebra_generate_acceptfilters();
+	/* Null Routes */
+	$frr_integrated_config['staticd'] .= frr_zebra_generate_nullroutes();
+	/* Static Routes */
+	$frr_integrated_config['staticd'] .= frr_zebra_generate_staticroutes();
+
+	/* Trim trailing seperator */
+	if (strcmp(substr($frr_integrated_config['zebra'], -2), "!\n") == 0) {
+		$frr_integrated_config['zebra'] = substr($frr_integrated_config['zebra'],0, -2);
 	}
 }
 
