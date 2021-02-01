@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	wireguard-tools
-DISTVERSION=	20201216
+DISTVERSION=	20210201
 CATEGORIES=	security
 
 LICENSE=	GPLv2
@@ -19,7 +19,10 @@ USE_GITLAB=	yes
 GL_SITE=	https://gitlab.netgate.com
 GL_ACCOUNT=	pfSense
 GL_PROJECT=	wireguard-tools
-GL_COMMIT=	b252b4effb62f0a3a5727cc188cfa4ec7ea7ca59
+GL_COMMIT=	dca69a9314d96a31e2d7b3a6740da7eba6080d7c
 FETCH_BEFORE_ARGS=	--no-verify-peer
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/wg
 
 .include <bsd.port.mk>
