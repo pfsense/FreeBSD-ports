@@ -214,7 +214,7 @@
 			<fieldname>exportlist</fieldname>
 			<description>Uses this access list to filter summary route information transmitted to OSPF peers when acting as an ABR</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_accesslist_list(false, false)]]></source>
+			<source><![CDATA[frr_get_accesslist_list(true, false)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
@@ -223,7 +223,7 @@
 			<fieldname>importlist</fieldname>
 			<description>Uses this access list to filter summary route information received from OSPF peers when acting as an ABR</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_accesslist_list(false, false)]]></source>
+			<source><![CDATA[frr_get_accesslist_list(true, false)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
@@ -232,7 +232,7 @@
 			<fieldname>filterlist_out</fieldname>
 			<description>Uses a prefix list to filter summary route information transmitted to OSPF peers when acting as an ABR</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_prefixlist_list(false, false)]]></source>
+			<source><![CDATA[frr_get_prefixlist_list(true, false)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
@@ -241,7 +241,7 @@
 			<fieldname>filterlist_in</fieldname>
 			<description>Uses a prefix list to filter summary route information received from OSPF peers when acting as an ABR</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_prefixlist_list(false, false)]]></source>
+			<source><![CDATA[frr_get_prefixlist_list(true, false)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
