@@ -43,7 +43,7 @@ $key = $argv[2];
 $user_config['authorizedkeys'] = base64_encode($key);
 local_user_set($user_config);
 $a_user[$existing_id] = $user_config;
-write_config();
+write_config("Azure: Configured admin's SSH keys");
 
 exit(0);
 

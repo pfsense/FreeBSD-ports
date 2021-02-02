@@ -69,7 +69,7 @@ if ($public_ip && !is_private_ip($public_ip)) {
 }
 
 if ($config_changed) {
-	write_config();
+	write_config("Azure: Hostname configured");
 	system_hostname_configure();
 	system_hosts_generate();
 }

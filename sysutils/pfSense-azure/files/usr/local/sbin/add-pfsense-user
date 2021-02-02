@@ -88,7 +88,7 @@ if ($existing_id == -1) {
 		$a_user[$existing_id] = $user_config;
 	}
 
-	write_config();
+	write_config("Azure: added admin user");
 }
 
 exit(0);

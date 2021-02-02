@@ -502,7 +502,7 @@ function addVpcAlias($alias_name, $alias_cidrs, $alias_descr) {
 	else
 		$a_aliases[] = $alias;
 
-	write_config();
+	write_config("Created VPC aliases");
 }
 
 function cidrsToArray($cidrs) {
@@ -598,7 +598,7 @@ function addTunnelInsideAddresses($tunnel_cfgs, $vpc_id) {
 	}
 
 	$savemsg .= gettext("<br>Tunnel inside IP addresses $all_ip_addrs configured as virtual IPs");
-	write_config();
+	write_config("Configured tunnel inside IP addresses as virtual IPs");
 }
 
 
@@ -636,7 +636,7 @@ function addTunnelFirewallRules($tunnel_cfgs, $vpc_id) {
 	$a_filter[] = $filterent;
 
 	$savemsg .= gettext("<br>Firewall rule $rule_name added.");
-	write_config();
+	write_config("Added VPC Tunnel firewall rules");
 }
 
 function phase1Exists($descr) {
@@ -795,7 +795,7 @@ function addLocalIpsecCfg($vpc_id, $tunnel_cfgs, $loc_intf, $vpc_cidr, $loc_cidr
 		}
 	}
 	$savemsg .= gettext("<br>Configured IPsec VPN to remote peers $all_remote_peers");
-	write_config();
+	write_config("Configure IPsec VPN to remote peers");
 
 }
 
@@ -1092,7 +1092,7 @@ function configureBgpDaemon($vpc_id, $loc_cidrs, $tunnel_cfgs) {
 			$savemsg .= gettext("<br>Neighbor $neighbor_addr already exists. Manual verification of configuration is required.");
 		}
 	}
-	write_config();
+	write_config("BPG daemon configured");
 	return($install_status);
 }
 
