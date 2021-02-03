@@ -1,4 +1,4 @@
-# Created by: Ermal Luçi <eri@pfsense.org>
+# Created by: Ermal Luçi
 # $FreeBSD$
 
 PORTNAME=	dhcpleases
@@ -9,7 +9,7 @@ MASTER_SITES=	# empty
 DISTFILES=	# none
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	luiz@netgate.com
+MAINTAINER=	coreteam@pfsense.org
 COMMENT=	read dhpcd.lease file and add it to hosts file
 
 LICENSE=	APACHE20

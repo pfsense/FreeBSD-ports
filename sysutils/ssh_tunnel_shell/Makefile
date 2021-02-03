@@ -8,7 +8,7 @@ MASTER_SITES=	# empty
 DISTFILES=	# none
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	garga@pfsense.org
+MAINTAINER=	coreteam@pfsense.org
 COMMENT=	SSH tunnel shell
 
 WHERE=		sbin

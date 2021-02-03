@@ -6,7 +6,7 @@ MASTER_SITES=	# empty
 DISTFILES=	# none
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	luiz@netgate.com
+MAINTAINER=	coreteam@pfsense.org
 COMMENT=	filterdns
 
 LICENSE=	APACHE20
