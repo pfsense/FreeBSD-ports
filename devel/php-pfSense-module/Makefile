@@ -9,7 +9,7 @@ DISTFILES=	#
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	-module
 
-MAINTAINER=	garga@pfsense.org
+MAINTAINER=	coreteam@pfsense.org
 COMMENT=	Library for getting useful info
 
 LIB_DEPENDS=	libvici.so:security/strongswan
