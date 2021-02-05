@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2020 BBcan177@gmail.com
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -42,6 +42,7 @@ $default_tlds = array('arpa',$local_tld,'com','net','org','edu','ca','co','io');
 $pconfig = array();
 $pconfig['pfb_dnsbl']		= $pfb['dconfig']['pfb_dnsbl']				?: '';
 $pconfig['pfb_tld']		= $pfb['dconfig']['pfb_tld']				?: '';
+$pconfig['pfb_control']		= $pfb['dconfig']['pfb_control']			?: '';
 $pconfig['pfb_dnsvip']		= $pfb['dconfig']['pfb_dnsvip']				?: '10.10.10.1';
 $pconfig['pfb_dnsblv6']		= $pfb['dconfig']['pfb_dnsblv6']			?: '';
 $pconfig['pfb_dnsvip_type']	= $pfb['dconfig']['pfb_dnsvip_type']			?: 'ipalias';
@@ -54,6 +55,7 @@ $pconfig['pfb_dnsport_ssl']	= $pfb['dconfig']['pfb_dnsport_ssl']			?: '8443';
 $pconfig['dnsbl_interface']	= $pfb['dconfig']['dnsbl_interface']			?: 'lo0';
 $pconfig['pfb_dnsbl_rule']	= $pfb['dconfig']['pfb_dnsbl_rule']			?: '';
 $pconfig['dnsbl_allow_int']	= explode(',', $pfb['dconfig']['dnsbl_allow_int'])	?: array();
+$pconfig['global_log']		= $pfb['dconfig']['global_log']				?: '';
 $pconfig['dnsbl_webpage']	= $pfb['dconfig']['dnsbl_webpage']			?: 'dnsbl_default.php';
 $pconfig['pfb_cache']		= isset($pfb['dconfig']['pfb_cache'])			? $pfb['dconfig']['pfb_cache'] : 'on';
 $pconfig['pfb_dnsbl_sync']	= $pfb['dconfig']['pfb_dnsbl_sync']			?: '';
@@ -153,6 +155,7 @@ if ($_POST) {
 
 		$pfb['dconfig']['pfb_dnsbl']		= $_POST['pfb_dnsbl']				?: '';
 		$pfb['dconfig']['pfb_tld']		= $_POST['pfb_tld']				?: '';
+		$pfb['dconfig']['pfb_control']		= $_POST['pfb_control']				?: '';
 		$pfb['dconfig']['pfb_dnsvip']		= $_POST['pfb_dnsvip']				?: '10.10.10.1';
 		$pfb['dconfig']['pfb_dnsblv6']		= $_POST['pfb_dnsblv6']				?: '';
 		$pfb['dconfig']['pfb_dnsvip_type']	= $_POST['pfb_dnsvip_type']			?: 'ipalias';
@@ -187,6 +190,7 @@ if ($_POST) {
 		$pfb['dconfig']['dnsbl_interface']	= $_POST['dnsbl_interface']			?: 'lo0';
 		$pfb['dconfig']['pfb_dnsbl_rule']	= $_POST['pfb_dnsbl_rule']			?: '';
 		$pfb['dconfig']['dnsbl_allow_int']	= implode(',', (array)$_POST['dnsbl_allow_int'])?: '';
+		$pfb['dconfig']['global_log']		= $_POST['global_log']				?: '';
 		$pfb['dconfig']['dnsbl_webpage']	= $_POST['dnsbl_webpage']			?: 'dnsbl_default.php';
 		$pfb['dconfig']['pfb_cache']		= $_POST['pfb_cache']				?: '';
 		$pfb['dconfig']['pfb_dnsbl_sync']	= $_POST['pfb_dnsbl_sync']			?: '';
@@ -507,6 +511,37 @@ $section->addInput(new Form_Checkbox(
 ))->setHelp($dnsbl_text);
 
 $section->addInput(new Form_Checkbox(
+	'pfb_control',
+	gettext('Python Control') . '(py)',
+	'Enable',
+	$pconfig['pfb_control'] === 'on' ? true:false,
+	'on'
+))->setHelp('Enabling this option will allow sending python_control commands (via DNS TXT) to the Python integration.'
+	. '<div class="infoblock" style="width: 90%;">'
+	. 'The python_control feature is limited to DNS TXT records sent from pfSense localhost (127.0.0.1) only!<br />'
+	. 'These commands can be incorporated in CRON/Scheduler tasks or run manually as required<br />'
+	. 'All events are logged to the Reports Tab (Gear icon)<br /><br />'
+	. '<strong>Command Syntax:</strong><br />'
+	. '<table class="table table-bordered table-striped table-hover table-compact">'
+	. '	<thead>'
+	. '		<tr>'
+	. '			<th style="max-width: 10%">Description</th>'
+	. '			<th style="max-width: 85%">Command</th>'
+	. '			<th style="max-width: 5%">Notes</th>'
+	. '		</tr>'
+	. '	</thead>'
+	. '	<tbody>'
+	. '		<tr><td>Enable DNSBL</td><td>drill TXT python_control.enable</td><td></td></tr>'
+	. '		<tr><td>Disable DNSBL</td><td>drill TXT python_control.disable</td><td></td></tr>'
+	. '		<tr><td>Disable DNSBL for duration</td><td>drill TXT python_control.disable.seconds</td><td>Seconds: 1-3600</td></tr>'
+	. '		<tr><td>Add a Global bypass IP</td><td>drill TXT python_control.addbypass.1-2-3-4</td><td>Use "-" in place of "."</td></tr>'
+	. '		<tr><td>Add a Global bypass IP for duration</td><td>drill TXT python_control.addbypass.1-2-3-4.seconds</td><td>Seconds: 1-3600</td></tr>'
+	. '		<tr><td>Remove a Global bypass IP</td><td>;drill TXT python_control.removebypass.1-2-3-4</td><td>Use "-" in place of "."</td></tr>'
+	. '	</tbody>'
+	. '</table>'
+	. '</div>');
+
+$section->addInput(new Form_Checkbox(
 	'pfb_py_reply',
 	gettext('DNS Reply Logging') . '(py)',
 	'Enable',
@@ -550,7 +585,7 @@ $section->addInput(new Form_Checkbox(
 	. 'Blocked domains that are in the <a target=_"blank" href="https://hstspreload.org/">HSTS preload</a> browser'
 	. ' <a target=_"blank" href="https://raw.githubusercontent.com/chromium/chromium/master/net/http/transport_security_state_static.json">list</a>'
 	. ' will use the Null Block Mode which *may* prevent Browser Certificate Errors.<br />'
-	. '<span class="text-danger">Note:</span> This option will not block HSTS domains, unless those Domains are added via the Feeds/Cusomlists.'
+	. '<span class="text-danger">Note:</span> This option will not block HSTS domains, unless those Domains are added via the Feeds/Customlists.'
 );
 
 
@@ -1471,168 +1506,168 @@ $tld_list['ccTLD'] = array(
 );
 
 $tld_list['iTLD'] = array(
-'xn--p1ai' => '(cc) XN--P1AI [820,042]',
-'xn--ses554g' => '(cn) XN--SES554G [217,564]',
-'xn--fiqs8s' => '(cc) XN--FIQS8S [213,153]',
-'xn--fiqz9s' => '(cc) XN--FIQZ9S [211,520]',
-'xn--55qx5d' => '(cn) XN--55QX5D [50,003]',
-'xn--3ds443g' => '(cn) XN--3DS443G [49,765]',
-'xn--p1acf' => '(cc) XN--P1ACF [48,033]',
-'xn--j6w193g' => '(cc) XN--J6W193G [42,175]',
-'xn--kput3i' => '(cc) XN--KPUT3I [36,262]',
-'xn--6qq986b3xl' => '(cn) XN--6QQ986B3XL [34,592]',
-'xn--io0a7i' => '(cn) XN--IO0A7I [32,673]',
-'xn--czr694b' => '(cn) XN--CZR694B [25,144]',
-'xn--3e0b707e' => '(cc) XN--3E0B707E [19,233]',
-'xn--80adxhks' => '(cc) XN--80ADXHKS [17,346]',
-'xn--czru2d' => '(cn) XN--CZRU2D [16,581]',
-'xn--fiq228c5hs' => '(cn) XN--FIQ228C5HS [13,065]',
-'xn--90ais' => '(cc) XN--90AIS [10,706]',
-'xn--j1amh' => '(cc) XN--J1AMH [8,305]',
-'xn--mk1bu44c' => 'XN--MK1BU44C [6,580]',
-'xn--kpry57d' => '(cc) XN--KPRY57D [6,170]',
-'xn--tckwe' => 'XN--TCKWE [5,995]',
-'xn--hxt814e' => '(cc) XN--HXT814E [4,877]',
+'xn--p1ai' => '(cc) XN--P1AI - рф [820,042]',
+'xn--ses554g' => '(cn) XN--SES554G - 网址 [217,564]',
+'xn--fiqs8s' => '(cc) XN--FIQS8S - 中国 [213,153]',
+'xn--fiqz9s' => '(cc) XN--FIQZ9S - 中國 [211,520]',
+'xn--55qx5d' => '(cn) XN--55QX5D - 公司 [50,003]',
+'xn--3ds443g' => '(cn) XN--3DS443G - 在线 [49,765]',
+'xn--p1acf' => '(cc) XN--P1ACF - рус [48,033]',
+'xn--j6w193g' => '(cc) XN--J6W193G - 香港 [42,175]',
+'xn--kput3i' => '(cc) XN--KPUT3I - 手机 [36,262]',
+'xn--6qq986b3xl' => '(cn) XN--6QQ986B3XL - 我爱你 [34,592]',
+'xn--io0a7i' => '(cn) XN--IO0A7I - 网络 [32,673]',
+'xn--czr694b' => '(cn) XN--CZR694B - 商标 [25,144]',
+'xn--3e0b707e' => '(cc) XN--3E0B707E - 한국 [19,233]',
+'xn--80adxhks' => '(cc) XN--80ADXHKS - москва [17,346]',
+'xn--czru2d' => '(cn) XN--CZRU2D - 商城 [16,581]',
+'xn--fiq228c5hs' => '(cn) XN--FIQ228C5HS - 中文网 [13,065]',
+'xn--90ais' => '(cc) XN--90AIS - бел [10,706]',
+'xn--j1amh' => '(cc) XN--J1AMH - укр [8,305]',
+'xn--mk1bu44c' => 'XN--MK1BU44C - 닷컴 [6,580]',
+'xn--kpry57d' => '(cc) XN--KPRY57D - 台灣 [6,170]',
+'xn--tckwe' => 'XN--TCKWE - コム [5,995]',
+'xn--hxt814e' => '(cc) XN--HXT814E - 网店 [4,877]',
 'desi' => '(hin) DESI [4,484]',
-'xn--3bst00m' => '(cn) XN--3BST00M [4,369]',
-'xn--9dbq2a' => 'XN--9DBQ2A [3,597]',
-'xn--80asehdb' => '(cr) XN--80ASEHDB [3,576]',
-'xn--6frz82g' => '(Brand) XN--6FRZ82G [3,088]',
-'xn--vuq861b' => '(cc) XN--VUQ861B [2,671]',
-'xn--mgbaam7a8h' => '(cc) XN--MGBAAM7A8H [1,701]',
-'xn--t60b56a' => 'XN--T60B56A [1,605]',
-'xn--rhqv96g' => '(cn) XN--RHQV96G [1,554]',
-'xn--vhquv' => '(cc) XN--VHQUV [1,541]',
-'xn--g2xx48c' => '(cc) XN--G2XX48C [1,471]',
-'xn--80aswg' => '(cr) XN--80ASWG [1,287]',
-'xn--c1avg' => '(cr) XN--C1AVG [1,285]',
-'xn--d1acj3b' => '(cr) XN--D1ACJ3B [1,219]',
-'xn--q9jyb4c' => 'XN--Q9JYB4C [1,192]',
-'xn--90ae' => '(cc) XN--90AE [1,097]',
+'xn--3bst00m' => '(cn) XN--3BST00M - 集团 [4,369]',
+'xn--9dbq2a' => 'XN--9DBQ2A - קום [3,597]',
+'xn--80asehdb' => '(cr) XN--80ASEHDB - онлайн [3,576]',
+'xn--6frz82g' => '(Brand) XN--6FRZ82G - 移动 [3,088]',
+'xn--vuq861b' => '(cc) XN--VUQ861B - 信息 [2,671]',
+'xn--mgbaam7a8h' => '(cc) XN--MGBAAM7A8H - امارات [1,701]',
+'xn--t60b56a' => 'XN--T60B56A - 닷넷 [1,605]',
+'xn--rhqv96g' => '(cn) XN--RHQV96G - 世界 [1,554]',
+'xn--vhquv' => '(cc) XN--VHQUV - 企业 [1,541]',
+'xn--g2xx48c' => '(cc) XN--G2XX48C - 购物 [1,471]',
+'xn--80aswg' => '(cr) XN--80ASWG - сайт [1,287]',
+'xn--c1avg' => '(cr) XN--C1AVG - орг [1,285]',
+'xn--d1acj3b' => '(cr) XN--D1ACJ3B - дети [1,219]',
+'xn--q9jyb4c' => 'XN--Q9JYB4C - みんな [1,192]',
+'xn--90ae' => '(cc) XN--90AE - бг [1,097]',
 'shiksha' => '(hin) SHIKSHA [1,097]',
-'xn--ygbi2ammx' => '(cc) XN--YGBI2AMMX [1,084]',
-'xn--ngbc5azd' => '(ar) XN--NGBC5AZD [817]',
-'xn--80ao21a' => '(cc) XN--80AO21A [812]',
-'xn--90a3ac' => '(cc) XN--90A3AC [802]',
-'xn--h2brj9c' => '(cc) XN--H2BRJ9C [759]',
-'xn--czrs0t' => '(cc) XN--CZRS0T [643]',
-'xn--pgbs0dh' => '(cc) XN--PGBS0DH [632]',
-'xn--5tzm5g' => '(cn) XN--5TZM5G [522]',
-'xn--o3cw4h' => '(cc) XN--O3CW4H [502]',
-'xn--e1a4c' => '(cc) XN--E1A4C [446]',
-'xn--node' => '(cc) XN--NODE [425]',
-'xn--4gbrim' => '(ar) XN--4GBRIM [397]',
-'xn--wgbh1c' => '(cc) XN--WGBH1C [316]',
-'xn--nqv7f' => '(cn) XN--NQV7F [260]',
-'xn--l1acc' => '(cc) XN--L1ACC [231]',
-'xn--mgbayh7gpa' => '(cc) XN--MGBAYH7GPA [230]',
-'xn--fiq64b' => '(Brand) XN--FIQ64B [200]',
-'xn--fzc2c9e2c' => '(cc) XN--FZC2C9E2C [191]',
-'xn--yfro4i67o' => '(cc) XN--YFRO4I67O [184]',
-'xn--unup4y' => '(cc) XN--UNUP4Y [176]',
-'xn--kprw13d' => '(cc) XN--KPRW13D [174]',
-'xn--xhq521b' => '(cc) XN--XHQ521B [146]',
-'xn--cck2b3b' => 'XN--CCK2B3B [143]',
-'xn--fjq720a' => '(cc) XN--FJQ720A [121]',
-'xn--ogbpf8fl' => '(cc) XN--OGBPF8FL [120]',
-'xn--wgbl6a' => '(cc) XN--WGBL6A [110]',
-'xn--y9a3aq' => '(cc) XN--Y9A3AQ [109]',
-'xn--i1b6b1a6a2e' => 'XN--I1B6B1A6A2E [105]',
-'xn--1ck2e1b' => 'XN--1CK2E1B [105]',
-'xn--1qqw23a' => '(cc) XN--1QQW23A [98]',
-'xn--xkc2al3hye2a' => '(cc) XN--XKC2AL3HYE2A [93]',
-'xn--d1alf' => '(cc) XN--D1ALF [92]',
-'xn--zfr164b' => '(cc) XN--ZFR164B [91]',
-'xn--fct429k' => '(cc) XN--FCT429K [68]',
-'xn--gckr3f0f' => 'XN--GCKR3F0F [67]',
-'xn--jvr189m' => '(cc) XN--JVR189M [52]',
-'xn--45q11c' => '(cn) XN--45Q11C [46]',
-'xn--otu796d' => '(cc) XN--OTU796D [39]',
-'xn--bck1b9a5dre4c' => 'XN--BCK1B9A5DRE4C [38]',
-'xn--imr513n' => '(cc) XN--IMR513N [36]',
-'xn--mgbca7dzdo' => '(cc) XN--MGBCA7DZDO [34]',
-'xn--rovu88b' => '(cc) XN--ROVU88B [34]',
-'xn--nyqy26a' => '(cc) XN--NYQY26A [24]',
-'xn--xkc2dl3a5ee0h' => '(cc) XN--XKC2DL3A5EE0H [24]',
-'xn--55qw42g' => '(cn) XN--55QW42G [23]',
-'xn--lgbbat1ad8j' => '(cc) XN--LGBBAT1AD8J [13]',
-'xn--mgb9awbf' => '(cc) XN--MGB9AWBF [13]',
-'xn--kcrx77d1x4a' => '(Brand) XN--KCRX77D1X4A [9]',
-'xn--clchc0ea0b2g2a9gcd' => '(cc) XN--CLCHC0EA0B2G2A9GCD [9]',
-'xn--mgbpl2fh' => '(cc) XN--MGBPL2FH [4]',
-'xn--fpcrj9c3d' => '(cc) XN--FPCRJ9C3D [3]',
-'xn--mgberp4a5d4ar' => '(cc) XN--MGBERP4A5D4AR [2]',
-'xn--mgbc0a9azcg' => '(cc) XN--MGBC0A9AZCG [2]',
-'xn--5su34j936bgsg' => '(Brand) XN--5SU34J936BGSG [2]',
-'xn--s9brj9c' => '(cc) XN--S9BRJ9C [2]',
-'xn--8y0a063a' => '(Brand) XN--8Y0A063A [2]',
-'xn--mgba7c0bbn0a' => '(cc) XN--MGBA7C0BBN0A [2]',
-'xn--mgba3a4f16a' => '(cc) XN--MGBA3A4F16A [2]',
-'xn--mgba3a3ejt' => '(Brand) XN--MGBA3A3EJT [2]',
-'xn--80aqecdr1a' => '(cr) XN--80AQECDR1A [1]',
-'xn--nqv7fs00ema' => '(cc) XN--NQV7FS00EMA [1]',
-'xn--11b4c3d' => 'XN--11B4C3D [1]',
-'xn--ngbrx' => '(cc) XN--NGBRX [1]',
-'xn--ngbe9e0a' => '(ar) XN--NGBE9E0A [1]',
-'xn--w4rs40l' => '(Brand) XN--W4RS40L [1]',
-'xn--tiq49xqyj' => '(cc) XN--TIQ49XQYJ [1]',
-'xn--w4r85el8fhu5dnra' => '(Brand) XN--W4R85EL8FHU5DNRA [1]',
-'xn--30rr7y' => '(cn) XN--30RR7Y [1]',
-'xn--3oq18vl8pn36a' => '(Brand) XN--3OQ18VL8PN36A [1]',
-'xn--pbt977c' => '(cc) XN--PBT977C [1]',
-'xn--pssy2u' => '(cc) XN--PSSY2U [1]',
-'xn--qcka1pmc' => '(Brand) XN--QCKA1PMC [1]',
-'xn--vermgensberatung-pwb' => '(Brand) XN--VERMGENSBERATUNGPWB [1]',
-'xn--vermgensberater-ctb' => '(Brand) XN--VERMGENSBERATUNGCTB [1]',
-'xn--42c2d9a' => 'XN--42C2D9A [1]',
-'xn--3pxu8k' => '(cc) XN--3PXU8K [1]',
-'xn--mxtq1m' => '(cc) XN--MXTQ1M [1]',
-'xn--9et52u' => '(cc) XN--9ET52U [1]',
-'xn--flw351e' => '(Brand) XN--FLW351E [1]',
-'xn--9krt00a' => '(cn) XN--9KRT00A [1]',
-'xn--b4w605ferd' => '(Brand) XN--B4W605FERD [1]',
-'xn--fzys8d69uvgm' => '(Brand) XN--FZYS8D69UVGM [1]',
-'xn--fhbei' => '(ar) XN--FHBEI [1]',
-'xn--gk3at1e' => '(cc) XN--GK3AT1E [1]',
-'xn--estv75g' => '(Brand) XN--ESTV75G [1]',
-'xn--efvy88h' => '(cc) XN--EFVY88H [1]',
-'xn--j1aef' => '(cr) XN--J1AEF [1]',
-'xn--eckvdtc9d' => 'XN--ECKVDTC9D [1]',
-'xn--jlq61u9w7b' => '(Brand) XN--JLQ61U9W7B [1]',
-'xn--cg4bki' => '(Brand) XN--CG4BKI [1]',
-'xn--kpu716f' => '(cc) XN--KPU716F [1]',
-'xn--c2br7g' => 'XN--C2BR7G [1]',
-'xn--mgbaakc7dvf' => '(Brand) XN--MGBAAKC7DVF [1]',
-'xn--mgbt3dhd' => '(cc) XN--MGBT3DHD [1]',
-'xn--mgbb9fbpob' => '(ar) XN--MGBB9FBPOB [1]',
-'xn--mgbi4ecexp' => '(ar) XN--MGBI4ECEXP [1]',
-'xn--mgbbh1a71e' => '(cc) XN--MGBBH1A71E [1]',
-'xn--mix082f' => '(cc) XN--MIX082F [Unknown]',
-'xn--mgbx4cd0ab' => '(cc) XN--MGBX4CD0AB [Unknown]',
-'xn--gecrj9c' => '(cc) XN--GECRJ9C [Unknown]',
-'xn--nnx388a' => '(cc) XN--NNX388A [Unknown]',
-'xn--h2breg3eve' => '(cc) XN--H2BREG3EVE [Unknown]',
-'xn--h2brj9c8c' => '(cc) XN--H2BRJ9C8C [Unknown]',
-'xn--mgbtx2b' => '(cc) XN--MGBTX2B [Unknown]',
-'xn--mgbtf8fl' => '(cc) XN--MGBTF8FL [Unknown]',
-'xn--mgbqly7cvafr' => '(cc) XN--MGBQLY7CVAFR [Unknown]',
-'xn--mgbqly7c0a67fbc' => '(cc) XN--MGBQLY7C0A67FBC [Unknown]',
-'xn--2scrj9c' => '(cc) XN--2SCRJ9C [Unknown]',
-'xn--mgberp4a5d4a87g' => '(cc) XN--MGBERP4A5D4A87G [Unknown]',
-'xn--mgbgu82a' => '(cc) XN--MGBGU82A [Unknown]',
-'xn--mgbbh1a' => '(cc) XN--MGBBH1A [Unknown]',
-'xn--3hcrj9c' => '(cc) XN--3HCRJ9C [Unknown]',
-'xn--mgb2ddes' => '(cc) XN--MGB2DDES [Unknown]',
-'xn--mgba3a4fra' => '(cc) XN--MGBA3A4FRA [Unknown]',
-'xn--54b7fta0cc' => '(cc) XN--54B7FTA0CC [Unknown]',
-'xn--mgbab2bd' => '(ar) XN--MGBAB2BD [Unknown]',
-'xn--mix891f' => '(cc) XN--MIX891F [Unknown]',
-'xn--mgbai9a5eva00b' => '(cc) XN--MGBAI9A5EVA00B [Unknown]',
-'xn--45br5cyl' => '(cc) XN--45BR5CYL [Unknown]',
-'xn--qxam' => '(cc) XN--QXAM [Unknown]',
-'xn--mgbai9azgqp6j' => '(cc) XN--MGBAI9AZGQP6J [Unknown]',
-'xn--45brj9c' => '(cc) XN--45BRJ9C [Unknown]',
-'xn--rvc1e0am3e' => '(cc) XN--RVC1E0AM3E [Unknown]'
+'xn--ygbi2ammx' => '(cc) XN--YGBI2AMMX - فلسطين [1,084]',
+'xn--ngbc5azd' => '(ar) XN--NGBC5AZD - شبكة [817]',
+'xn--80ao21a' => '(cc) XN--80AO21A - қаз [812]',
+'xn--90a3ac' => '(cc) XN--90A3AC - срб [802]',
+'xn--h2brj9c' => '(cc) XN--H2BRJ9C - भारत [759]',
+'xn--czrs0t' => '(cc) XN--CZRS0T - 商店 [643]',
+'xn--pgbs0dh' => '(cc) XN--PGBS0DH - تونس [632]',
+'xn--5tzm5g' => '(cn) XN--5TZM5G - 网站 [522]',
+'xn--o3cw4h' => '(cc) XN--O3CW4H - ไทย [502]',
+'xn--e1a4c' => '(cc) XN--E1A4C - ею [446]',
+'xn--node' => '(cc) XN--NODE - გე [425]',
+'xn--4gbrim' => '(ar) XN--4GBRIM - موقع [397]',
+'xn--wgbh1c' => '(cc) XN--WGBH1C - مصر [316]',
+'xn--nqv7f' => '(cn) XN--NQV7F - 机构 [260]',
+'xn--l1acc' => '(cc) XN--L1ACC - мон [231]',
+'xn--mgbayh7gpa' => '(cc) XN--MGBAYH7GPA - الاردن [230]',
+'xn--fiq64b' => '(Brand) XN--FIQ64B - 中信 [200]',
+'xn--fzc2c9e2c' => '(cc) XN--FZC2C9E2C - ලංකා [191]',
+'xn--yfro4i67o' => '(cc) XN--YFRO4I67O - 新加坡 [184]',
+'xn--unup4y' => '(cc) XN--UNUP4Y - 游戏 [176]',
+'xn--kprw13d' => '(cc) XN--KPRW13D - 台湾 [174]',
+'xn--xhq521b' => '(cc) XN--XHQ521B - 广东 [146]',
+'xn--cck2b3b' => 'XN--CCK2B3B - ストア [143]',
+'xn--fjq720a' => '(cc) XN--FJQ720A - 娱乐 [121]',
+'xn--ogbpf8fl' => '(cc) XN--OGBPF8FL - سورية [120]',
+'xn--wgbl6a' => '(cc) XN--WGBL6A - قطر [110]',
+'xn--y9a3aq' => '(cc) XN--Y9A3AQ - հայ [109]',
+'xn--i1b6b1a6a2e' => 'XN--I1B6B1A6A2E - संगठन [105]',
+'xn--1ck2e1b' => 'XN--1CK2E1B - セール [105]',
+'xn--1qqw23a' => '(cc) XN--1QQW23A - 佛山 [98]',
+'xn--xkc2al3hye2a' => '(cc) XN--XKC2AL3HYE2A - இலங்கை [93]',
+'xn--d1alf' => '(cc) XN--D1ALF - мкд [92]',
+'xn--zfr164b' => '(cc) XN--ZFR164B - 政务 [91]',
+'xn--fct429k' => '(cc) XN--FCT429K - 家電 [68]',
+'xn--gckr3f0f' => 'XN--GCKR3F0F - クラウド [67]',
+'xn--jvr189m' => '(cc) XN--JVR189M - 食品 [52]',
+'xn--45q11c' => '(cn) XN--45Q11C - 八卦 [46]',
+'xn--otu796d' => '(cc) XN--OTU796D - 招聘 [39]',
+'xn--bck1b9a5dre4c' => 'XN--BCK1B9A5DRE4C - ファッション [38]',
+'xn--imr513n' => '(cc) XN--IMR513N - 餐厅 [36]',
+'xn--mgbca7dzdo' => '(cc) XN--MGBCA7DZDO - ابوظبي [34]',
+'xn--rovu88b' => '(cc) XN--ROVU88B - 書籍 [34]',
+'xn--nyqy26a' => '(cc) XN--NYQY26A - 健康 [24]',
+'xn--xkc2dl3a5ee0h' => '(cc) XN--XKC2DL3A5EE0H - இந்தியா [24]',
+'xn--55qw42g' => '(cn) XN--55QW42G - 公益 [23]',
+'xn--lgbbat1ad8j' => '(cc) XN--LGBBAT1AD8J - الجزائر [13]',
+'xn--mgb9awbf' => '(cc) XN--MGB9AWBF - عمان [13]',
+'xn--kcrx77d1x4a' => '(Brand) XN--KCRX77D1X4A - 飞利浦 [9]',
+'xn--clchc0ea0b2g2a9gcd' => '(cc) XN--CLCHC0EA0B2G2A9GCD - சிங்கப்பூர் [9]',
+'xn--mgbpl2fh' => '(cc) XN--MGBPL2FH - سودان [4]',
+'xn--fpcrj9c3d' => '(cc) XN--FPCRJ9C3D - భారత్ [3]',
+'xn--mgberp4a5d4ar' => '(cc) XN--MGBERP4A5D4AR - السعودية [2]',
+'xn--mgbc0a9azcg' => '(cc) XN--MGBC0A9AZCG - المغرب [2]',
+'xn--5su34j936bgsg' => '(Brand) XN--5SU34J936BGSG - 香格里拉 [2]',
+'xn--s9brj9c' => '(cc) XN--S9BRJ9C - ਭਾਰਤ [2]',
+'xn--8y0a063a' => '(Brand) XN--8Y0A063A - 联通 [2]',
+'xn--mgba7c0bbn0a' => '(cc) XN--MGBA7C0BBN0A - العليان [2]',
+'xn--mgba3a4f16a' => '(cc) XN--MGBA3A4F16A - ایران [2]',
+'xn--mgba3a3ejt' => '(Brand) XN--MGBA3A3EJT - ارامكو [2]',
+'xn--80aqecdr1a' => '(cr) XN--80AQECDR1A - католик [1]',
+'xn--nqv7fs00ema' => '(cc) XN--NQV7FS00EMA - 组织机构 [1]',
+'xn--11b4c3d' => 'XN--11B4C3D - कॉम [1]',
+'xn--ngbrx' => '(cc) XN--NGBRX - عرب [1]',
+'xn--ngbe9e0a' => '(ar) XN--NGBE9E0A - بيتك [1]',
+'xn--w4rs40l' => '(Brand) XN--W4RS40L - 嘉里 [1]',
+'xn--tiq49xqyj' => '(cc) XN--TIQ49XQYJ - 天主教 [1]',
+'xn--w4r85el8fhu5dnra' => '(Brand) XN--W4R85EL8FHU5DNRA - 嘉里大酒店 [1]',
+'xn--30rr7y' => '(cn) XN--30RR7Y - 慈善 [1]',
+'xn--3oq18vl8pn36a' => '(Brand) XN--3OQ18VL8PN36A - 大众汽车 [1]',
+'xn--pbt977c' => '(cc) XN--PBT977C - 珠宝 [1]',
+'xn--pssy2u' => '(cc) XN--PSSY2U - 大拿 [1]',
+'xn--qcka1pmc' => '(Brand) XN--QCKA1PMC - グーグル [1]',
+'xn--vermgensberatung-pwb' => '(Brand) XN--VERMGENSBERATUNGPWB - vermögensberatung [1]',
+'xn--vermgensberater-ctb' => '(Brand) XN--VERMGENSBERATUNGCTB - vermögensberater [1]',
+'xn--42c2d9a' => 'XN--42C2D9A - คอม [1]',
+'xn--3pxu8k' => '(cc) XN--3PXU8K - 点看 [1]',
+'xn--mxtq1m' => '(cc) XN--MXTQ1M - 政府 [1]',
+'xn--9et52u' => '(cc) XN--9ET52U - 时尚 [1]',
+'xn--flw351e' => '(Brand) XN--FLW351E - 谷歌 [1]',
+'xn--9krt00a' => '(cn) XN--9KRT00A - 微博 [1]',
+'xn--b4w605ferd' => '(Brand) XN--B4W605FERD - 淡马锡 [1]',
+'xn--fzys8d69uvgm' => '(Brand) XN--FZYS8D69UVGM - 電訊盈科 [1]',
+'xn--fhbei' => '(ar) XN--FHBEI - كوم [1]',
+'xn--gk3at1e' => '(cc) XN--GK3AT1E - 通販 [1]',
+'xn--estv75g' => '(Brand) XN--ESTV75G - 工行 [1]',
+'xn--efvy88h' => '(cc) XN--EFVY88H - 新闻 [1]',
+'xn--j1aef' => '(cr) XN--J1AEF - ком [1]',
+'xn--eckvdtc9d' => 'XN--ECKVDTC9D - ポイント [1]',
+'xn--jlq61u9w7b' => '(Brand) XN--JLQ61U9W7B - 诺基亚 [1]',
+'xn--cg4bki' => '(Brand) XN--CG4BKI - 삼성 [1]',
+'xn--kpu716f' => '(cc) XN--KPU716F - 手表 [1]',
+'xn--c2br7g' => 'XN--C2BR7G - नेट [1]',
+'xn--mgbaakc7dvf' => '(Brand) XN--MGBAAKC7DVF - اتصالات [1]',
+'xn--mgbt3dhd' => '(cc) XN--MGBT3DHD - همراه [1]',
+'xn--mgbb9fbpob' => '(ar) XN--MGBB9FBPOB - موبايلي [1]',
+'xn--mgbi4ecexp' => '(ar) XN--MGBI4ECEXP - كاثوليك [1]',
+'xn--mgbbh1a71e' => '(cc) XN--MGBBH1A71E - بھارت [1]',
+'xn--mix082f' => '(cc) XN--MIX082F - 澳门 [Unknown]',
+'xn--mgbx4cd0ab' => '(cc) XN--MGBX4CD0AB - مليسيا [Unknown]',
+'xn--gecrj9c' => '(cc) XN--GECRJ9C - ભારત [Unknown]',
+'xn--nnx388a' => '(cc) XN--NNX388A - 臺灣 [Unknown]',
+'xn--h2breg3eve' => '(cc) XN--H2BREG3EVE - भारतम् [Unknown]',
+'xn--h2brj9c8c' => '(cc) XN--H2BRJ9C8C - भारोत [Unknown]',
+'xn--mgbtx2b' => '(cc) XN--MGBTX2B - عراق [Unknown]',
+'xn--mgbtf8fl' => '(cc) XN--MGBTF8FL - سوريا [Unknown]',
+'xn--mgbqly7cvafr' => '(cc) XN--MGBQLY7CVAFR - السعوديه [Unknown]',
+'xn--mgbqly7c0a67fbc' => '(cc) XN--MGBQLY7C0A67FBC - السعودیۃ [Unknown]',
+'xn--2scrj9c' => '(cc) XN--2SCRJ9C - ಭಾರತ [Unknown]',
+'xn--mgberp4a5d4a87g' => '(cc) XN--MGBERP4A5D4A87G - السعودیة [Unknown]',
+'xn--mgbgu82a' => '(cc) XN--MGBGU82A - ڀارت [Unknown]',
+'xn--mgbbh1a' => '(cc) XN--MGBBH1A - بارت [Unknown]',
+'xn--3hcrj9c' => '(cc) XN--3HCRJ9C - ଭାରତ [Unknown]',
+'xn--mgb2ddes' => '(cc) XN--MGB2DDES - اليمن [Unknown]',
+'xn--mgba3a4fra' => '(cc) XN--MGBA3A4FRA - ايران [Unknown]',
+'xn--54b7fta0cc' => '(cc) XN--54B7FTA0CC - বাংলা [Unknown]',
+'xn--mgbab2bd' => '(ar) XN--MGBAB2BD - بازار [Unknown]',
+'xn--mix891f' => '(cc) XN--MIX891F - 澳門 [Unknown]',
+'xn--mgbai9a5eva00b' => '(cc) XN--MGBAI9A5EVA00B - پاكستان [Unknown]',
+'xn--45br5cyl' => '(cc) XN--45BR5CYL - ভাৰত [Unknown]',
+'xn--qxam' => '(cc) XN--QXAM - ελ [Unknown]',
+'xn--mgbai9azgqp6j' => '(cc) XN--MGBAI9AZGQP6J - پاکستان [Unknown]',
+'xn--45brj9c' => '(cc) XN--45BRJ9C - ভারত [Unknown]',
+'xn--rvc1e0am3e' => '(cc) XN--RVC1E0AM3E - ഭാരതം [Unknown]'
 );
 
 $tld_list['bgTLD'] = array(
@@ -2163,7 +2198,7 @@ foreach (array('gTLD', 'ccTLD', 'iTLD', 'bgTLD') as $key => $tld_type) {
 	$count = count($tld_list[$tld_type]);
 
 	if ($pconfig['pfb_pytld_sort'] == 'on') {
-		sort($tld_list[$tld_type]);
+		ksort($tld_list[$tld_type]);
 	}
 
 	$group->add(new Form_Select(
@@ -2227,13 +2262,13 @@ $form->add($section);
 
 $section = new Form_Section('Python Group Policy', 'Python_Group_Policy', COLLAPSIBLE|SEC_CLOSED);
 $section->addInput(new Form_StaticText(
-        NULL,
-        'This is a preliminary DNSBL Group Policy configuration that will bypass DNSBL for the defined LAN IPs.'));
+	NULL,
+	'This is a preliminary DNSBL Group Policy configuration that will bypass DNSBL for the defined LAN IPs.'));
 
 $section->addInput(new Form_Textarea(
-        'pfb_gp_bypass_list',
-        'Bypass IPs',
-        $pconfig['pfb_gp_bypass_list']
+	'pfb_gp_bypass_list',
+	'Bypass IPs',
+	$pconfig['pfb_gp_bypass_list']
 ))->removeClass('form-control')
   ->addClass('row-fluid col-sm-12')
   ->setAttribute('columns', '90')
@@ -2247,7 +2282,7 @@ $form->add($section);
 
 $regex_text = 'List of Python Regex\'s to block via DNSBL<br /><br />
 		Enter a single regex per line.<br /><br />
-		You may use "<strong>#</strong>" after each line for a Regex Description. IE:&emsp;/regex/ # Regex Description here<br /><br />
+		You may use "<strong>#</strong>" after each line for a Regex Description. IE:&emsp;regex (Regular Expression) # Regex Description<br /><br />
 		Ensure a space is entered before the # character. Keep the Regex description less than 15 characters as it will be used in<br />
 		the Alerts Tab. If no Description is entered a default Regex line number will be utilized.<br />
 		This List is stored as \'Base64\' format in the config.xml file.<br /><br />
@@ -2269,7 +2304,8 @@ $section->addInput(new Form_Textarea(
 $form->add($section);
 
 $noaaaa_text = 'List of no AAAA domains to block the (IPv6) AAAA DNS Resolution.<br /><br />
-		Enter a single domain per line.<br /><br />
+		Enter a single domain per line.<br />
+		Prefix domain with a "." to apply wildcard no AAAA to all Sub-Domains. &emsp;IE: (.example.com)<br /><br />
 		Any domain added to the no AAAA list, will never be filtered by any DNSBL python blocking.<br /><br />
 		This List is stored as \'Base64\' format in the config.xml file.<br /><br />
 		Changes to this option will require a Force Update to take effect.';
@@ -2291,16 +2327,6 @@ $form->add($section);
 
 $section = new Form_Section('DNSBL Webserver Configuration');
 
-$section->addInput(new Form_Select(
-	'pfb_dnsvip_type',
-	gettext('DNSBL VIP Type'),
-	$pconfig['pfb_dnsvip_type'],
-	[ 'ipalias' => 'IP Alias', 'carp' => 'CARP' ]
-))->setWidth(4)->setHelp('Select the DNSBL VIP type.<br />'
-			. 'Default: <strong>IP Alias</strong><br />'
-			. 'CARP: For High Availability (CARP Cluster Networks) only'
-);
-
 $section->addInput(new Form_Input(
 	'pfb_dnsvip',
 	gettext('Virtual IP Address'),
@@ -2313,6 +2339,24 @@ $section->addInput(new Form_Input(
 		. 'Rejected DNS Requests will be forwarded to this VIP (Virtual IP)<br />'
 		. 'RFC1918 Compliant - (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)<br />'
 		. 'Changes to the DNSBL VIP will require a Force Reload - DNSBL to take effect.'
+);
+
+$section->addInput(new Form_Checkbox(
+	'pfb_dnsblv6',
+	gettext('IPv6 DNSBL'),
+	'Enable',
+	$pconfig['pfb_dnsblv6'] === 'on' ? true:false,
+	'on'
+))->setHelp('Enable DNSBL for IPv6 DNS Resolution filtering. Default IPv6 Webserver address [ ::10.10.10.1 ] and ports [80/443]');
+
+$section->addInput(new Form_Select(
+	'pfb_dnsvip_type',
+	gettext('DNSBL VIP Type'),
+	$pconfig['pfb_dnsvip_type'],
+	[ 'ipalias' => 'IP Alias', 'carp' => 'CARP' ]
+))->setWidth(4)->setHelp('Select the DNSBL VIP type.<br />'
+			. 'Default: <strong>IP Alias</strong><br />'
+			. 'CARP: For High Availability (CARP Cluster Networks) only'
 );
 
 $group = new Form_Group('CARP Settings');
@@ -2352,13 +2396,17 @@ $section->addPassword(new Form_Input(
 	[ 'placeholder' => 'Enter Carp password' ]
 ))->setHelp('Password')->addClass('dnsvip_carp');
 
-$section->addInput(new Form_Checkbox(
-	'pfb_dnsblv6',
-	gettext('IPv6 DNSBL'),
-	'Enable',
-	$pconfig['pfb_dnsblv6'] === 'on' ? true:false,
-	'on'
-))->setHelp('Enable DNSBL for IPv6 DNS Resolution filtering. Default IPv6 Webserver address [ ::10.10.10.1 ] and ports [8081/8443]');
+$interface_list		= pfb_build_if_list(FALSE, FALSE);
+$interface_list_all	= array_merge(array('lo0' => 'Localhost'), $interface_list);
+$int_size		= count($interface_list) ?: '1';
+
+$section->addInput(new Form_Select(
+	'dnsbl_interface',
+	gettext('Web Server Interface'),
+	$pconfig['dnsbl_interface'],
+	$interface_list_all
+))->setHelp('Select the interface which DNSBL Web Server will Listen on.<br />'
+	. 'Default: <strong>Localhost (ports 80/443)</strong> - Selected Interface should be a Local Interface only.');
 
 $section->addInput(new Form_Input(
 	'pfb_dnsport',
@@ -2379,18 +2427,6 @@ $section->addInput(new Form_Input(
 ))->setHelp('Example ( 8443 )<br />Enter a &emsp;<strong>single PORT</strong> &emsp;that is in the range of 1 - 65535<br />'
 		. 'This Port must not be in use by any other process.'
 );
-
-$interface_list		= pfb_build_if_list(FALSE, FALSE);
-$interface_list_all	= array_merge(array('lo0' => 'Localhost'), $interface_list);
-$int_size		= count($interface_list) ?: '1';
-
-$section->addInput(new Form_Select(
-	'dnsbl_interface',
-	gettext('Web Server Interface'),
-	$pconfig['dnsbl_interface'],
-	$interface_list_all
-))->setHelp('Select the interface which DNSBL Web Server will Listen on.<br />'
-	. 'Default: <strong>Localhost</strong> - Selected Interface should be a Local Interface only.');
 
 // Add option to disable DNSBL logging in python and utilize the DNSBL Webserver (excluding nullblocking events)
 $section->addInput(new Form_Checkbox(
@@ -2447,6 +2483,38 @@ if (is_dir("{$indexdir}")) {
 	}
 }
 $list_size = count($lista) ?: '1';
+
+if ($pfb['dnsbl_py_blacklist']) {
+	$log_text = 'Default: <strong>No Global mode</strong><br />'
+			. 'Enabling this option will overide the individual DNSBL Group "Logging/Blocking" settings!<br /><br />'
+			. '&#8226 <strong>Null Block (logging)</strong>, Utilize \'0.0.0.0\' with logging.<br />'
+			. '&#8226 <strong>DNSBL WebServer/VIP</strong>, Domains are sinkholed to the DNSBL VIP and logged via the DNSBL WebServer.<br />'
+			. '&#8226 <strong>Null Block (no logging)</strong>, Utilize \'0.0.0.0\' with no logging.<br />'
+			. 'Blocked domains will be reported to the Alert/Python Block Table.<br /><br />'
+			. 'A \'Force Reload - DNSBL\' is required for changes to take effect';
+
+	$log_options = [''		=> 'No Global mode',
+			'disabled_log'	=> 'Null Block (logging)',
+			'enabled'	=> 'DNSBL WebServer/VIP',
+			'disabled'	=> 'Null Block (no logging)'];
+} else {
+	$log_text = 'Default: <strong>No Global mode</strong><br />'
+			. '&#8226 When \'Enabled\', Domains are sinkholed to the DNSBL VIP and logged via the DNSBL WebServer.<br />'
+			. '&#8226 When \'Disabled\', <strong>\'0.0.0.0\'</strong> will be used instead of the DNSBL VIP.<br />'
+			. 'A \'Force Reload - DNSBL\' is required for changes to take effect';
+
+	$log_options = [''		=> 'No Global mode',
+			'enabled'	=> 'DNSBL WebServer/VIP',
+			'disabled'	=> 'Null Block (no logging)'];
+}
+
+$section->addInput(new Form_Select(
+	'global_log',
+	'Global Logging/Blocking Mode',
+	$pconfig['global_log'],
+	$log_options
+))->setHelp($log_text)
+  ->setAttribute('style', 'width: auto');
 
 $section->addInput(new Form_Select(
 	'dnsbl_webpage',
@@ -2792,7 +2860,7 @@ $tld_whitelist_text = 'Enter <strong>each specific</strong> Domain and/or Sub-Do
 			</div>';
 
 if ($pfb['dnsbl_py_blacklist']) {
-	$tld_whitelist_text = "<span class=\"text-danger\">TLD Whitelist not utilized for Unbound python mode! Use DNSBL Whitelist instead.</span><br /><br />{$tld_whitelist_text}";
+	$tld_whitelist_text = "<span class=\"text-danger\">TLD Whitelist is not utilized for Unbound python mode! Use DNSBL Whitelist instead.</span><br /><br />{$tld_whitelist_text}";
 }
 
 $section->addInput(new Form_Textarea(
@@ -3014,6 +3082,16 @@ function enable_carp() {
 	}
 }
 
+function enable_ports() {
+	if ($('#dnsbl_interface').val() == 'lo0') {
+		hideInput('pfb_dnsport', true);
+		hideInput('pfb_dnsport_ssl', true);
+	} else {
+		hideInput('pfb_dnsport', false);
+		hideInput('pfb_dnsport_ssl', false);
+	}
+}
+
 function enable_python() {
 
 	var python = true;
@@ -3027,6 +3105,7 @@ function enable_python() {
 		hideCheckbox('pfb_dnsbl_sync', false);
 	}
 
+	hideCheckbox('pfb_control', !python);
 	hideCheckbox('pfb_py_reply', !python);
 	hideCheckbox('pfb_py_block', !python);
 	hideCheckbox('pfb_hsts', !python);
@@ -3123,6 +3202,11 @@ events.push(function(){
 		enable_carp();
 	});
 	enable_carp();
+
+	$('#dnsbl_interface').click(function() {
+		enable_ports();
+	});
+	enable_ports();
 
 	$('#dnsbl_mode').click(function() {
 		enable_python();

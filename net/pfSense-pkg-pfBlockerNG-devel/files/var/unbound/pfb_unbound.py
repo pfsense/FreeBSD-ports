@@ -3,7 +3,7 @@
 
 # part of pfSense (https://www.pfsense.org)
 # Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
-# Copyright (c) 2015-2020 BBcan177@gmail.com
+# Copyright (c) 2015-2021 BBcan177@gmail.com
 # All rights reserved.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,6 +40,15 @@ from collections import defaultdict
 
 # Import additional python modules
 try:
+    import threading
+    pfb['mod_threading'] = True
+    threads = list()
+except Exception as e:
+    pfb['mod_threading'] = False
+    pfb['mod_threading_e'] = e
+    pass
+
+try:
     import ipaddress
     pfb['mod_ipaddress'] = True
 except Exception as e:
@@ -65,7 +74,7 @@ except Exception as e:
 
 
 def init_standard(id, env):
-    global pfb, dataDB, zoneDB, regexDB, hstsDB, whiteDB, excludeDB, dnsblDB, noAAAADB, gpListDB, feedGroupIndexDB, maxmindReader
+    global pfb, rcodeDB, dataDB, zoneDB, regexDB, hstsDB, whiteDB, excludeDB, excludeAAAADB, dnsblDB, noAAAADB, gpListDB, safeSearchDB, feedGroupIndexDB, maxmindReader
 
     if not register_inplace_cb_reply(inplace_cb_reply, env, id):
         log_info('[pfBlockerNG]: Failed register_inplace_cb_reply')
@@ -111,15 +120,18 @@ def init_standard(id, env):
     sys.stderr = log_stderr(logging.getLogger('pfb_stderr'))
 
     # Validate write access to log files
-    for l_file in ('dnsbl', 'dns_reply'):
+    for l_file in ('dnsbl', 'dns_reply', 'unified'):
         try:
             lfile = '/var/log/pfblockerng/' + l_file + '.log'
             if os.path.isfile(lfile) and not os.access(lfile, os.W_OK):
-                new_file = '/var/log/pfblockerng/' + l_file + str(datetime.now().strftime("_%Y%m%d%H%M%S.log"))
+                new_file = '/var/log/pfblockerng/' + l_file + str(datetime.now().strftime("_%Y%m%-d%H%M%S.log"))
                 os.rename(lfile, new_file)
         except Exception as e:
             sys.stderr.write("[pfBlockerNG]: Failed to validate write permission: {}.log: {}" .format(l_file, e))
             pass
+
+    if not pfb['mod_threading']:
+        sys.stderr.write("[pfBlockerNG]: Failed to load python module 'threading': {}" .format(pfb['mod_threading_e']))
 
     if not pfb['mod_ipaddress']:
         sys.stderr.write("[pfBlockerNG]: Failed to load python module 'ipaddress': {}" .format(pfb['mod_ipaddress_e']))
@@ -135,6 +147,7 @@ def init_standard(id, env):
     pfb['dnsbl_ipv6'] = ''
     pfb['regexDB'] = False
     pfb['whiteDB'] = False
+    pfb['gpListDB'] = False
     pfb['noAAAADB'] = False
     pfb['python_idn'] = False
     pfb['python_ipv6'] = False
@@ -144,6 +157,7 @@ def init_standard(id, env):
     pfb['group_policy'] = False
     pfb['python_enable'] = False
     pfb['python_nolog'] = False
+    pfb['python_control'] = False
     pfb['python_maxmind'] = False
     pfb['python_blocking'] = False
     pfb['python_blacklist'] = False
@@ -156,9 +170,15 @@ def init_standard(id, env):
     pfb['pfb_py_zone'] = 'pfb_py_zone.txt'
     pfb['pfb_py_data'] = 'pfb_py_data.txt'
     pfb['pfb_py_hsts'] = 'pfb_py_hsts.txt'
+    pfb['pfb_py_ss'] = 'pfb_py_ss.txt'  
     pfb['pfb_py_dnsbl'] = 'pfb_py_dnsbl.sqlite'
+    pfb['pfb_py_cache'] = 'pfb_py_cache.sqlite'
     pfb['pfb_py_resolver'] = 'pfb_py_resolver.sqlite'
     pfb['maxminddb'] = '/usr/local/share/GeoIP/GeoLite2-Country.mmdb'
+
+    # Remove DNSBL cache file (For Reports tab query)
+    if os.path.isfile(pfb['pfb_py_cache']):
+        os.remove(pfb['pfb_py_cache'])
 
     # DNSBL validation on these RR_TYPES only
     pfb['rr_types'] = (RR_TYPE_A, RR_TYPE_AAAA, RR_TYPE_ANY, RR_TYPE_CNAME, RR_TYPE_DNAME, \
@@ -174,14 +194,17 @@ def init_standard(id, env):
     dataDB = defaultdict(list)
     zoneDB = defaultdict(list)
     dnsblDB = defaultdict(list)
+    safeSearchDB = defaultdict(list)
+    feedGroupIndexDB = defaultdict(list)
+
     regexDB = defaultdict(str)
     whiteDB = defaultdict(str)
     hstsDB = defaultdict(str)
     gpListDB = defaultdict(str)
     noAAAADB = defaultdict(str)
     feedGroupDB = defaultdict(str)
-    feedGroupIndexDB = defaultdict(list)
     excludeDB = []
+    excludeAAAADB = []
 
     # Read pfb_unbound.ini settings
     if os.path.isfile(pfb['pfb_unbound.ini']):
@@ -217,15 +240,22 @@ def init_standard(id, env):
                 pfb['python_nolog'] = config.getboolean('MAIN', 'python_nolog')
             if config.has_option('MAIN', 'python_cname'):
                 pfb['python_cname'] = config.getboolean('MAIN', 'python_cname')
+            if config.has_option('MAIN', 'python_control'):
+                pfb['python_control'] = config.getboolean('MAIN', 'python_control')
 
             if pfb['python_ipv6']:
                 pfb['dnsbl_ipv6'] = '::' + pfb['dnsbl_ipv4']
             else:
-                pfb['dnsbl_ipv6'] = '::1'
+                pfb['dnsbl_ipv6'] = '::/0'
 
-            # DNSBL IP/Log types
+            # DNSBL IP/Log types (0 = Null Blocking logging, 1 = DNSBL Web Server logging, 2 = Null Blocking no logging)
             pfb['dnsbl_ip'] = {'A': {'0': '0.0.0.0', '1': pfb['dnsbl_ipv4'], '2': '0.0.0.0'},
-                               'AAAA': {'0': '::1', '1': pfb['dnsbl_ipv6'], '2': '::1'} }
+                               'AAAA': {'0': '::/0', '1': pfb['dnsbl_ipv6'], '2': '::/0'} }
+
+            # List of DNS R_CODES
+            rcodeDB = {0: 'NoError', 1: 'FormErr', 2: 'ServFail', 3: 'NXDOMAIN', 4: 'NotImp', 5: 'Refused', 6: 'YXDomain',
+                       7: 'YXRRSet', 8: 'NXRRSet', 9: 'NotAuth', 10: 'NotZone', 11: 'DSOTYPENI', 16: 'BADVERS', 17: 'BADKEY',
+                       18: 'BADTIME', 19: 'BADMODE', 20: 'BADNAME', 21: 'BADALG', 22: 'BADTRUNC', 23: 'BADCOOKIE' }
 
         if pfb['python_enable']:
 
@@ -259,22 +289,50 @@ def init_standard(id, env):
                 if noaaaa_config:
                     try:
                         for row, line in noaaaa_config:
-                            noAAAADB[line.rstrip('\r\n')] = 0
-                            pfb['noAAAADB'] = True
+                            data = line.rstrip('\r\n').split(',')
+                            if data and len(data) == 2:
+                                if data[1] == '1':
+                                    wildcard = True
+                                else:
+                                    wildcard = False
+                                noAAAADB[data[0]] = wildcard
+                            else:
+                                sys.stderr.write("[pfBlockerNG]: Failed to parse: noAAAA: row:{} line:{}" .format(row, line))
+
+                        pfb['noAAAADB'] = True
                     except Exception as e:
                         sys.stderr.write("[pfBlockerNG]: Failed to load no AAAA domain list: {}" .format(e))
                         pass
 
+            # Collect user-defined Group Policy Global Bypass List
             if config.has_section('GP_Bypass_List'):
                 gp_bypass_list = config.items('GP_Bypass_List')
                 if gp_bypass_list:
                     try:
                         for row, line in gp_bypass_list:
                             gpListDB[line.rstrip('\r\n')] = 0
-                            pfb['group_policy'] = True
+
+                        pfb['gpListDB'] = True
                     except Exception as e:
                         sys.stderr.write("[pfBlockerNG]: Failed to load GP Bypass List: {}" .format(e))
                         pass 
+
+            # Collect SafeSearch Redirection list
+            pfb['safeSearchDB'] = False
+            if os.path.isfile(pfb['pfb_py_ss']):
+                try:
+                    with open(pfb['pfb_py_ss']) as csv_file:
+                        csv_reader = csv.reader(csv_file, delimiter=',')
+                        for row in csv_reader:
+                            if row and len(row) == 3:
+                                safeSearchDB[row[0]] = {'A': row[1], 'AAAA': row[2]}
+                            else:
+                                sys.stderr.write("[pfBlockerNG]: Failed to parse: {}: {}" .format(pfb['pfb_py_ss'], row))
+
+                        pfb['safeSearchDB'] = True
+                except Exception as e:
+                    sys.stderr.write("[pfBlockerNG]: Failed to load: {}: {}" .format(pfb['pfb_py_zone'], e))
+                    pass
 
             # While reading 'data|zone' CSV files: Replace 'Feed/Group' pairs with an index value (Memory performance)
             feedGroup_index = 0
@@ -476,8 +534,16 @@ def get_q_ip(qstate):
 
 def get_q_ip_comm(kwargs):
     q_ip = ''
-    if kwargs and kwargs is not None and kwargs['repinfo'] and kwargs['repinfo'].addr:
-        q_ip = kwargs['repinfo'].addr
+
+    try:
+        if kwargs and kwargs is not None and ('pfb_addr' in kwargs):
+            q_ip = kwargs['pfb_addr']
+        elif kwargs and kwargs is not None and kwargs['repinfo'] and kwargs['repinfo'].addr:
+            q_ip = kwargs['repinfo'].addr
+    except Exception as e:
+        for a in e:
+            sys.stderr.write("[pfBlockerNG]: Failed get_q_ip_comm: {}" .format(a))
+        pass
     return is_unknown(q_ip)
 
 
@@ -506,7 +572,7 @@ def get_rep_ttl(rep):
     ttl = ''
     if rep and rep.ttl:
         ttl = rep.ttl
-    return str(is_unknown(ttl))
+    return str(is_unknown(ttl)).replace('Unknown', 'Unk')
 
 
 def get_tld(qstate):
@@ -561,9 +627,11 @@ def convert_other(x):
                 i = '.'
             elif val == 13:
                 break
+            elif val == 32:
+                i = ' '
             elif val == 58:
                 i = ':'
-            elif val <= 32 or val > 126:
+            elif val <= 33 or val > 126:
                 continue
             else:
                 if pfb['py_v3']:
@@ -592,6 +660,8 @@ def write_sqlite(db, groupname, update):
         db_file = pfb['pfb_py_resolver']
     elif db == 2:
         db_file = pfb['pfb_py_dnsbl']
+    elif db == 3:
+        db_file = pfb['pfb_py_cache']
     else:
         return False
 
@@ -634,11 +704,21 @@ def write_sqlite(db, groupname, update):
                 if update:
                     sqlite3DbCursor.execute("UPDATE dnsbl SET counter = counter + 1 WHERE groupname = ?", (groupname,) )
 
+            elif db == 3:
+                sqlite3DbCursor.execute("CREATE TABLE IF NOT EXISTS dnsblcache ( type TEXT, domain TEXT, groupname TEXT, final TEXT, feed TEXT );")
+                sqlite3DbCursor.execute("INSERT INTO dnsblcache (type, domain, groupname, final, feed ) VALUES (?,?,?,?,?);", update)
+
             sqlite3Db.commit()
     except Exception as e:
         sys.stderr.write("[pfBlockerNG]: Failed to write to sqlite3 db {}: {}" .format(db_file, e))
         if sqlite3Db:
             sqlite3Db.close()
+
+        # Attempt to clear DNSBL Cache file on error
+        if db == 3 and os.path.isfile(pfb['pfb_py_cache']):
+            os.remove(pfb['pfb_py_cache'])
+            sys.stderr.write("[pfBlockerNG]: DNSBL Cache database cleared OK")
+
         return False
     finally:
         if sqlite3Db:
@@ -647,8 +727,8 @@ def write_sqlite(db, groupname, update):
     return True
 
 
-def get_details(m_type, qinfo, qstate, rep, kwargs):
-    global pfb, dnsblDB, maxmindReader
+def get_details_dnsbl(m_type, qinfo, qstate, rep, kwargs):
+    global pfb, rcodeDB, dnsblDB, noAAAADB, maxmindReader
 
     if qstate and qstate is not None:
         q_name = get_q_name_qstate(qstate)
@@ -666,7 +746,7 @@ def get_details(m_type, qinfo, qstate, rep, kwargs):
     if isDNSBL is not None:
 
         # If logging is disabled, do not log blocked DNSBL events (Utilize DNSBL Webserver) except for Python nullblock events
-        if pfb['python_nolog'] and not isDNSBL['b_ip'] in ('0.0.0.0', '::1'):
+        if pfb['python_nolog'] and not isDNSBL['b_ip'] in ('0.0.0.0', '::/0'):
             return True
 
         # Increment dnsblgroup counter
@@ -688,129 +768,190 @@ def get_details(m_type, qinfo, qstate, rep, kwargs):
             return True
 
         m_type = isDNSBL['b_type']
-        q_ip = get_q_ip(qstate)
 
-        log_name = 'DNSBL-python'
-        log_file = 'dnsbl.log'
+        q_ip = get_q_ip_comm(kwargs)
+        if q_ip == 'Unknown':
+            q_ip = '127.0.0.1'
 
+        for i in range(2):
+            try:
+                timestamp = datetime.now().strftime("%b %-d %H:%M:%S")
+            except TypeError:
+                pass
+                continue
+            break
+
+        csv_line = ','.join('{}'.format(v) for v in ('DNSBL-python', timestamp, q_name, q_ip, isDNSBL['p_type'], isDNSBL['b_type'], isDNSBL['group'], isDNSBL['b_eval'], isDNSBL['feed'], dupEntry))
+
+        # Write to dnsbl.log
+        with open('/var/log/pfblockerng/dnsbl.log', 'a') as append_log:
+            append_log.write(csv_line + '\n')
+
+        # Write to unified log
+        with open('/var/log/pfblockerng/unified.log', 'a') as append_log:
+            append_log.write(csv_line + '\n')
+
+    return True
+
+
+def get_details_reply(m_type, qinfo, qstate, rep, kwargs):
+    global pfb, rcodeDB, dnsblDB, noAAAADB, maxmindReader
+
+    if qstate and qstate is not None:
+        q_name = get_q_name_qstate(qstate)
+    elif qinfo and qinfo is not None:
+        q_name = get_q_name_qinfo(qinfo)
     else:
+        return True
 
-        # Do not log Replies, if disabled
-        if not pfb['python_reply']:
+    o_type = get_q_type(qstate, qinfo)
+    if m_type == 'cache' or o_type == 'PTR':
+        q_type = o_type
+    else:
+        q_type = get_o_type(qstate, rep)
+
+    # Collect 'python_control' and 'noAAAA' events from inplace_cb_reply
+    if m_type == 'reply-x':
+        is_reply = False
+        if q_name.startswith('python_control.'):
+            is_reply = True
+        if not is_reply and q_type == 'AAAA' and noAAAADB.get(q_name) is not None:
+            is_reply = True
+
+        if not is_reply:
             return True
+        m_type = 'reply'
 
-        log_name = 'DNS-reply'
-        log_file = 'dns_reply.log'
+    # Increment totalqueries counter
+    if pfb['sqlite3_resolver_con']:
+        write_sqlite(1, '', True)
 
-        r_addr = ''
-        if rep and rep is not None:
-            if rep.an_numrrsets and rep.an_numrrsets > 0:
-                for i in range(0, rep.an_numrrsets):
-                    if rep.rrsets[i].rk and rep.rrsets[i].entry.data:
-                        e = rep.rrsets[i].rk
-                        if e.type_str:
-                            d = rep.rrsets[i].entry.data
-                            if e.type_str == 'CNAME' and d.count > 1:
-                                continue
+    # Do not log Replies, if disabled
+    if not pfb['python_reply']:
+        return True
 
-                            for j in range(0, d.count):
-                                x = d.rr_data[j]
-                                if e.type_str == 'A':
-                                    r_addr = convert_ipv4(x)
-                                    break
-                                elif e.type_str == 'AAAA':
-                                    if pfb['mod_ipaddress']:
-                                        r_addr = convert_ipv6(x)
-                                        try:
-                                            if pfb['py_v3']:
-                                                r_addr = ipaddress.ip_address(r_addr).compressed
-                                            else:
-                                                r_addr = ipaddress.ip_address(unicode(r_addr)).compressed
-                                        except Exception as e:
-                                            sys.stderr.write("[pfBlockerNG]: Failed to compress IPv6: {}, {}" .format(r_addr, e))
-                                            pass
-                                    break
-                                elif e.type_str in ('DNSKEY', 'DS'):
-                                    r_addr = 'DNSSEC'
-                                    break
-                                else:
-                                    r_addr = r_addr + '|' + convert_other(x)
-                                    r_addr = r_addr.strip('|')
-                                if not r_addr:
-                                    r_addr = 'NXDOMAIN'
+    r_addr = ''
+    if rep and rep is not None:
+        if rep.an_numrrsets and rep.an_numrrsets > 0:
+            for i in range(0, rep.an_numrrsets):
+                if rep.rrsets[i].rk and rep.rrsets[i].entry.data:
+                    e = rep.rrsets[i].rk
+                    if e.type_str:
+                        d = rep.rrsets[i].entry.data
+                        if e.type_str == 'CNAME' and d.count > 1:
+                            continue
 
-            else:
-                # No Answer section found
-                r_addr = 'NXDOMAIN'
+                        for j in range(0, d.count):
+                            x = d.rr_data[j]
+                            if e.type_str == 'A':
+                                r_addr = convert_ipv4(x)
+                                break
+                            elif e.type_str == 'AAAA':
+                                if pfb['mod_ipaddress']:
+                                    r_addr = convert_ipv6(x)
+                                    try:
+                                        if pfb['py_v3']:
+                                            r_addr = ipaddress.ip_address(r_addr).compressed
+                                        else:
+                                            r_addr = ipaddress.ip_address(unicode(r_addr)).compressed
+                                    except Exception as e:
+                                        sys.stderr.write("[pfBlockerNG]: Failed to compress IPv6: {}, {}" .format(r_addr, e))
+                                        pass
+                                break
+                            elif e.type_str in ('DNSKEY', 'DS'):
+                                r_addr = 'DNSSEC'
+                                break
+                            else:
+                                r_addr = r_addr + '|' + convert_other(x)
+                                r_addr = r_addr.strip('|')
+                            if not r_addr:
+                                r_addr = 'NXDOMAIN'
 
-        r_addr = is_unknown(r_addr)
-        o_type = get_q_type(qstate, qinfo)
-        if m_type == 'cache' or o_type == 'PTR':
-            q_type = o_type
         else:
-            q_type = get_o_type(qstate, rep)
+            # No Answer section found
+            r_addr = 'NXDOMAIN'
 
-        # Determine NODATA replies
-        if q_type == 'SOA' and r_addr == 'NXDOMAIN':
-            r_addr = 'NODATA'
+    # Collect RCODE for non-NOError codes
+    try:
+        if qstate and qstate.return_rcode is not None and qstate.return_rcode != 0:
+            isrcode = rcodeDB.get(qstate.return_rcode)
+            if isrcode is not None:
+               r_addr = isrcode
+    except Exception as e:
+        sys.stderr.write("[pfBlockerNG]: RCODE {}: {}" .format(e, q_name))
+        pass
 
-        if pfb['python_maxmind'] and r_addr not in ('', 'Unknown', 'NXDOMAIN', 'NODATA'):
+    r_addr = is_unknown(r_addr)
+
+    if q_type == 'SOA' and r_addr == 'NXDOMAIN':
+        r_addr = 'SOA'
+
+    if q_type == 'NSEC3' and r_addr == 'NXDOMAIN':
+        r_addr = 'NSEC3'
+
+    if q_type == 'NS' and q_name == 'Unknown':
+        q_name = 'NS'
+
+    # Determine if domain was noAAAA blocked
+    if r_addr == 'NXDOMAIN' and q_type == 'AAAA' and noAAAADB.get(q_name) is not None:
+        r_addr = 'noAAAA'
+
+    if pfb['python_maxmind'] and r_addr not in ('', 'Unknown', 'NXDOMAIN', 'NODATA', 'DNSSEC', 'SOA', 'NS'):
+        try:
+            if pfb['py_v3']:
+                version = ipaddress.ip_address(r_addr).version
+            else:
+                version = ipaddress.ip_address(unicode(r_addr)).version
+
+        except Exception as e:
+            version = ''
+            pass
+
+        if version != '':
             try:
                 if pfb['py_v3']:
-                    version = ipaddress.ip_address(r_addr).version
+                    isPrivate = ipaddress.ip_address(r_addr).is_private
+                    isLoopback = ipaddress.ip_address(r_addr).is_loopback
                 else:
-                    version = ipaddress.ip_address(unicode(r_addr)).version
+                    isPrivate = ipaddress.ip_address(unicode(r_addr)).is_private
+                    isLoopback = ipaddress.ip_address(unicode(r_addr)).is_loopback
 
-            except Exception as e:
-                version = ''
-                pass
-
-            if version != '':
-                try:
-                    if pfb['py_v3']:
-                        isPrivate = ipaddress.ip_address(r_addr).is_private
-                        isLoopback = ipaddress.ip_address(r_addr).is_loopback
-                    else:
-                        isPrivate = ipaddress.ip_address(unicode(r_addr)).is_private
-                        isLoopback = ipaddress.ip_address(unicode(r_addr)).is_loopback
-
-                    if isPrivate:
-                        iso_code = 'prv'
-                    elif isLoopback:
-                        iso_code = 'l.b.'
-                    else:
-                        geoip = maxmindReader.get(r_addr)
-                        if geoip:
-                            if 'country' in geoip:
-                                country = geoip['country']
-                                if 'iso_code' in country:
-                                    iso_code = geoip['country']['iso_code']
-                                else:
-                                    iso_code = 'unk'
-                            elif 'continent' in geoip:
-                                continent = geoip['continent']
-                                if 'code' in continent:
-                                    iso_code = geoip['continent']['code']
-                                else:
-                                    iso_code = 'unk'
+                if isPrivate:
+                    iso_code = 'prv'
+                elif isLoopback:
+                    iso_code = 'l.b.'
+                else:
+                    geoip = maxmindReader.get(r_addr)
+                    if geoip:
+                        if 'country' in geoip:
+                            country = geoip['country']
+                            if 'iso_code' in country:
+                                iso_code = geoip['country']['iso_code']
+                            else:
+                                iso_code = 'unk'
+                        elif 'continent' in geoip:
+                            continent = geoip['continent']
+                            if 'code' in continent:
+                                iso_code = geoip['continent']['code']
                             else:
                                 iso_code = 'unk'
                         else:
                             iso_code = 'unk'
+                    else:
+                        iso_code = 'unk'
 
-                except Exception as e:
-                    sys.stderr.write("[pfBlockerNG]: MaxMind Reader failed: {}: IP: {}" .format(e, r_addr))
-                    iso_code = 'unk'
-                    pass
-            else:
+            except Exception as e:
+                sys.stderr.write("[pfBlockerNG]: MaxMind Reader failed: {}: IP: {}" .format(e, r_addr))
                 iso_code = 'unk'
+                pass
         else:
             iso_code = 'unk'
+    else:
+        iso_code = 'unk'
 
-        if m_type == 'reply':
-            q_ip = get_q_ip(qstate)
-        else:
-            q_ip = get_q_ip_comm(kwargs)
+    q_ip = get_q_ip_comm(kwargs)
+    if q_ip == 'Unknown':
+        q_ip = '127.0.0.1'
 
     ttl = get_rep_ttl(rep)
     # Cached TTLs are in unix timestamp (time remaining)
@@ -819,35 +960,109 @@ def get_details(m_type, qinfo, qstate, rep, kwargs):
 
     for i in range(2):
         try:
-            timestamp = datetime.now().strftime("%b %d %H:%M:%S")
+            timestamp = datetime.now().strftime("%b %-d %H:%M:%S")
         except TypeError:
             pass
             continue
         break
 
-    if log_name != 'DNSBL-python':
-        csv_line = ','.join('{}'.format(v) for v in (log_name, timestamp, m_type, o_type, q_type, ttl, q_name, q_ip, r_addr, iso_code))
-    else:
-        csv_line = ','.join('{}'.format(v) for v in (log_name, timestamp, q_name, q_ip, isDNSBL['p_type'], isDNSBL['b_type'], isDNSBL['group'], isDNSBL['b_eval'], isDNSBL['feed'], dupEntry))
+    csv_line = ','.join('{}'.format(v) for v in ('DNS-reply', timestamp, m_type, o_type, q_type, ttl, q_name, q_ip, r_addr, iso_code))
 
-    with open('/var/log/pfblockerng/' + log_file, 'a') as append_log:
+    # Write to dns_reply.log
+    with open('/var/log/pfblockerng/dns_reply.log', 'a') as append_log:
         append_log.write(csv_line + '\n')
+
+    # Write to unified log
+    with open('/var/log/pfblockerng/unified.log', 'a') as append_log:
+        append_log.write(csv_line + '\n')
+
     return True
 
+
+# Is sleep duration valid
+def python_control_duration(duration):
+
+    try:
+        if duration.isnumeric():
+            duration = int(duration)
+            if (0 < duration <= 3600):
+                return duration
+            return False
+    except Exception as e:
+        sys.stderr.write("[pfBlockerNG] python_control_duration: {}" .format(e))
+        pass
+    return False
+
+
+# Is thread still active
+def python_control_thread(tname):
+    global threads
+
+    try:
+        for t in threading.enumerate():
+            if t.name == tname:
+                return True
+    except Exception as e:
+        sys.stderr.write("[pfBlockerNG] python_control_thread: {}" .format(e))
+        pass
+    return False
+
+# Python_control Start Thread
+def python_control_start_thread(tname, fcall, arg1, arg2):
+    global threads
+
+    try:
+        t1 = threading.Thread(name=tname, target=fcall, args=(arg1, arg2), daemon=True)
+        threads.append(t1)
+        t1.start()
+        return True
+    except Exception as e:
+        sys.stderr.write("[pfBlockerNG] python_control_start_thread: {}" .format(e))
+        pass
+    return False
+
+
+# Python_control sleep timer
+def python_control_sleep(duration, arg):
+    global pfb
+
+    try:
+        time.sleep(duration)
+        pfb['python_blacklist'] = True;
+    except Exception as e:
+        sys.stderr.write("[pfBlockerNG] python_control_sleep: {}" .format(e))
+        pass
+    return True
+
+
+# Python_control Add Bypass IP for specified duration
+def python_control_addbypass(duration, b_ip):
+    global pfb, gpListDB
+
+    try:
+        time.sleep(duration)
+        if gpListDB.get(b_ip) is not None:
+            gpListDB.pop(b_ip)
+            return True
+    except Exception as e:
+        sys.stderr.write("[pfBlockerNG] python_control_addbypass: {}" .format(e))
+        pass
+    return False
+
 def inplace_cb_reply(qinfo, qstate, rep, rcode, edns, opt_list_out, region, **kwargs):
-    get_details('reply', qinfo, qstate, rep, kwargs)
+    get_details_reply('reply-x', qinfo, qstate, rep, kwargs)
     return True
 
 def inplace_cb_reply_cache(qinfo, qstate, rep, rcode, edns, opt_list_out, region, **kwargs):
-    get_details('cache', qinfo, qstate, rep, kwargs)
+    get_details_reply('cache', qinfo, qstate, rep, kwargs)
     return True
 
 def inplace_cb_reply_local(qinfo, qstate, rep, rcode, edns, opt_list_out, region, **kwargs):
-    get_details('local', qinfo, qstate, rep, kwargs)
+    get_details_reply('local', qinfo, qstate, rep, kwargs)
     return True
 
 def inplace_cb_reply_servfail(qinfo, qstate, rep, rcode, edns, opt_list_out, region, **kwargs):
-    get_details('servfail', qinfo, qstate, rep, kwargs)
+    get_details_reply('servfail', qinfo, qstate, rep, kwargs)
     return True
 
 def deinit(id):
@@ -863,37 +1078,240 @@ def inform_super(id, qstate, superqstate, qdata):
     return True
 
 def operate(id, event, qstate, qdata):
-    global pfb, dataDB, zoneDB, hstsDB, whiteDB, excludeDB, dnsblDB, noAAAADB, gpListDB, feedGroupIndexDB
+    global pfb, threads, dataDB, zoneDB, hstsDB, whiteDB, excludeDB, excludeAAAADB, dnsblDB, noAAAADB, gpListDB, safeSearchDB, feedGroupIndexDB
 
     qstate_valid = False
-    if qstate is not None and qstate.qinfo.qtype is not None:
-        qstate_valid = True
-        q_type = qstate.qinfo.qtype
-        q_name_original = get_q_name_qstate(qstate)
+    try:
+        if qstate is not None and qstate.qinfo.qtype is not None:
+            qstate_valid = True
+            q_type = qstate.qinfo.qtype
+            q_name_original = get_q_name_qstate(qstate)
+            q_ip = get_q_ip(qstate)
+        else:
+            sys.stderr.write("[pfBlockerNG] qstate is not None and qstate.qinfo.qtype is not None")
+    except Exception as e:
+        sys.stderr.write("[pfBlockerNG] qstate_valid: {}: {}" .format(event, e))
+        pass
 
-    #no AAAA validation
-    if qstate_valid and pfb['noAAAADB'] and q_type == RR_TYPE_AAAA:
-        isnoAAAA = noAAAADB.get(q_name_original)
-        if isnoAAAA is not None:
+    if (event == MODULE_EVENT_NEW) or (event == MODULE_EVENT_PASS):
+
+        # no AAAA validation
+        if qstate_valid and q_type == RR_TYPE_AAAA and pfb['noAAAADB'] and q_name_original not in excludeAAAADB:
+            isin_noAAAA = False
+
+            # Determine full domain match
+            isnoAAAA = noAAAADB.get(q_name_original)
+            if isnoAAAA is not None:
+                isin_noAAAA = True
+
+            # Wildcard verification of domain
+            if not isin_noAAAA:
+                q = q_name_original.split('.', 1)
+                q = q[-1]
+
+                # Validate to 2nd level TLD only
+                for x in range(q.count('.'), 0, -1):
+                    isnoAAAA = noAAAADB.get(q)
+
+                    # Determine if domain is a wildcard whitelist entry
+                    if isnoAAAA is not None and isnoAAAA:
+                        isin_noAAAA = True
+
+                        # Add sub-domain to noAAAA DB
+                        noAAAADB[q_name_original] = True
+
+                        break
+                    else:
+                        q = q.split('.', 1)
+                        q = q[-1]
 
             # Create FQDN Reply Message (AAAA -> A)
-            msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_A, RR_CLASS_IN, PKT_QR | PKT_RA | PKT_AA)
-            if msg is None or not msg.set_return_msg(qstate):
-                qstate.ext_state[id] = MODULE_ERROR
+            if isin_noAAAA:
+                msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_A, RR_CLASS_IN, PKT_QR | PKT_RA | PKT_AA)
+                if msg is None or not msg.set_return_msg(qstate):
+                    qstate.ext_state[id] = MODULE_ERROR
+                    return True
+
+                qstate.return_rcode = RCODE_NOERROR
+                qstate.return_msg.rep.security = 2
+                qstate.ext_state[id] = MODULE_FINISHED
                 return True
 
-            qstate.return_msg.rep.security = 2
+            # Add domain to excludeAAAADB to skip subsequent validation
+            else:
+                excludeAAAADB.append(q_name_original)
 
-            qstate.return_rcode = RCODE_NOERROR
-            qstate.ext_state[id] = MODULE_FINISHED
-            return True
+        # SafeSearch Redirection validation
+        if qstate_valid and pfb['safeSearchDB']:
+            isSafeSearch = safeSearchDB.get(q_name_original)
 
+            # Validate 'www.' Domains
+            if isSafeSearch is None and not q_name_original.startswith('www.'):
+                isSafeSearch = safeSearchDB.get('www.' + q_name_original)
+
+            if isSafeSearch is not None:
+
+                ss_found = False
+                if isSafeSearch['A'] == 'nxdomain':
+                    qstate.return_rcode = RCODE_NXDOMAIN
+                    qstate.ext_state[id] = MODULE_FINISHED
+                    return True
+
+                elif isSafeSearch['A'] == 'cname':
+                    if isSafeSearch['AAAA'] is not None:
+
+                        if q_type == RR_TYPE_A:
+                            cname_msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_A, RR_CLASS_IN, PKT_QR | PKT_RD | PKT_RA)
+                            cname_msg.answer.append("{} 3600 IN CNAME {}" .format(qstate.qinfo.qname_str, isSafeSearch['AAAA']))
+                            ss_found = True
+                        elif q_type == RR_TYPE_AAAA:
+                            cname_msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_AAAA, RR_CLASS_IN, PKT_QR | PKT_RD | PKT_RA | PKT_AA)
+                            cname_msg.answer.append("{} 3600 IN CNAME {}" .format(qstate.qinfo.qname_str, isSafeSearch['AAAA']))
+                            ss_found = True
+
+                        if ss_found:
+                            if cname_msg is None or not cname_msg.set_return_msg(qstate):
+                                qstate.ext_state[id] = MODULE_ERROR
+                                return True
+
+                            qstate.ext_state[id] = MODULE_WAIT_MODULE
+                            return True
+                else:
+                    if q_type == RR_TYPE_A or (q_type == RR_TYPE_AAAA and isSafeSearch['AAAA'] == ''):
+                        msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_A, RR_CLASS_IN, PKT_QR | PKT_RA | PKT_AA)
+                        msg.answer.append("{} 300 IN {} {}" .format(qstate.qinfo.qname_str, 'A', isSafeSearch['A']))
+                        ss_found = True
+                    elif q_type == RR_TYPE_AAAA and isSafeSearch['AAAA'] != '':
+                        msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_AAAA, RR_CLASS_IN, PKT_QR | PKT_RA | PKT_AA)
+                        msg.answer.append("{} 300 IN {} {}" .format(qstate.qinfo.qname_str, 'AAAA', isSafeSearch['AAAA']))
+                        ss_found = True
+
+                if ss_found:
+                    if msg is None or not msg.set_return_msg(qstate):
+                        qstate.ext_state[id] = MODULE_ERROR
+                        return True
+ 
+                    qstate.return_rcode = RCODE_NOERROR
+                    qstate.return_msg.rep.security = 2
+                    qstate.ext_state[id] = MODULE_FINISHED
+                    return True
+
+        # Python_control - Receive TXT commands from pfSense local IP
+        if qstate_valid and q_type == RR_TYPE_TXT and q_name_original.startswith('python_control.'):
+
+            control_rcd = False
+            if pfb['python_control'] and q_ip == '127.0.0.1':
+
+                control_command = q_name_original.split('.')
+                if (len(control_command) >= 2):
+
+                    if control_command[1] == 'disable':
+                        control_rcd = True
+                        control_msg = 'Python_control: DNSBL disabled'
+                        pfb['python_blacklist'] = False
+
+                        # If duration specified, disable DNSBL Blocking for specified time in seconds
+                        if pfb['mod_threading'] and len(control_command) == 3 and control_command[2] != '':
+
+                            # Validate Duration argument
+                            duration = python_control_duration(control_command[2])
+                            if duration:
+
+                                # Ensure thread is not active
+                                if not python_control_thread('sleep'):
+
+                                    # Start Thread
+                                    if not python_control_start_thread('sleep', python_control_sleep, duration, None):
+                                        control_rcd = False
+                                        control_msg = 'Python_control: DNSBL disabled: Thread failed'
+                                    else:
+                                        control_msg = "{} for {} second(s)" .format(control_msg, duration)
+                                else:
+                                    control_rcd = False
+                                    control_msg = 'Python_control: DNSBL disabled: Previous call still in progress'
+                            else:
+                                control_rcd = False
+                                control_msg = "Python_control: DNSBL disabled: duration [ {} ] out of range (1-3600sec)" .format(control_command[2])
+
+                    elif control_command[1] == 'enable':
+                        control_rcd = True
+                        control_msg = 'Python_control: DNSBL enabled'
+                        pfb['python_blacklist'] = True;
+
+                    elif control_command[1] == 'addbypass' or control_command[1] == 'removebypass':
+                        b_ip = (control_command[2]).replace('-', '.')
+                        if pfb['py_v3']:
+                            isIPValid = ipaddress.ip_address(b_ip)
+                        else:
+                            isIPValid = ipaddress.ip_address(unicode(b_ip))
+
+                        if isIPValid:
+                            if not pfb['gpListDB']:
+                                pfb['gpListDB'] = True
+
+                            control_rcd = True
+                            if control_command[1] == 'addbypass':
+                                control_msg = "Python_control: Add bypass for IP: [ {} ]" .format(b_ip)
+
+                                # If duration specified, disable DNSBL Blocking for specified time in seconds
+                                if pfb['mod_threading'] and len(control_command) == 4 and control_command[3] != '':
+
+                                    # Validate Duration argument
+                                    duration = python_control_duration(control_command[3])
+                                    if duration:
+
+                                        # Ensure thread is not active
+                                        if not python_control_thread('addbypass' + b_ip):
+
+                                            # Start Thread
+                                            if not python_control_start_thread('addbypass' + b_ip, python_control_addbypass, duration, b_ip):
+                                                control_rcd = False
+                                                control_msg = "Python_control: Add bypass for IP: [ {} ] thread failed" .format(b_ip)
+                                            else:
+                                                control_msg = "{} for {} second(s)" .format(control_msg, duration)
+                                        else:
+                                            control_rcd = False
+                                            control_msg = "Python_control: Add bypass for IP: [ {} ]: Previous call still in progress" .format(b_ip)
+                                    else:
+                                        control_rcd = False
+                                        control_msg = "Python_control: Add bypass for IP: [ {} ]: duration [ {} ] out of range (1-3600sec)" .format(b_ip, control_command[3])
+                                else:
+                                    # Add bypass called without duration
+                                    if control_rcd:
+                                        gpListDB[b_ip] = 0
+
+                            elif control_command[1] == 'removebypass':
+                                if gpListDB.get(b_ip) is not None:
+                                    control_msg = "Python_control: Remove bypass for IP: [ {} ]" .format(b_ip)
+                                    gpListDB.pop(b_ip)
+                                else:
+                                    control_msg = "Python_control: IP not in Group Policy: [ {} ]" .format(b_ip)
+
+                if control_rcd:
+                    q_reply = 'python_control'
+                else:
+                    if control_msg == '':
+                        control_msg = "Python_control: Command not authorized! [ {} ]" .format(q_name_original)
+                    q_reply = 'python_control_fail'
+
+                txt_msg = DNSMessage(qstate.qinfo.qname_str, RR_TYPE_TXT, RR_CLASS_IN, PKT_QR | PKT_RA | PKT_AA)
+                txt_msg.answer.append("{}. 0 IN TXT \"{}\"" .format(q_reply, control_msg))
+
+                if txt_msg is None or not txt_msg.set_return_msg(qstate):
+                     qstate.ext_state[id] = MODULE_ERROR
+                     return True
+
+                qstate.return_rcode = RCODE_NOERROR
+                qstate.return_msg.rep.security = 2
+                qstate.ext_state[id] = MODULE_FINISHED 
+                return True
+ 
     # DNSBL Validation for specific RR_TYPES only
     if qstate_valid and pfb['python_blacklist'] and q_type in pfb['rr_types']:
 
         # Group Policy - Bypass DNSBL Validation
         bypass_dnsbl = False
-        if pfb['group_policy']:
+        if pfb['gpListDB']:
             q_ip = get_q_ip(qstate)
 
             if q_ip != 'Unknown':
@@ -902,7 +1320,7 @@ def operate(id, event, qstate, qdata):
                 if isgpBypass is not None:
                     bypass_dnsbl = True
 
-	# Create list of Domain/CNAMES to be evaluated
+        # Create list of Domain/CNAMES to be evaluated
         validate = []
 
         # Skip 'in-addr.arpa' domains
@@ -969,7 +1387,7 @@ def operate(id, event, qstate, qdata):
                                     group = feedGroup['group']
 
                                 b_type = 'DNSBL'
-                                b_eval = q_name 
+                                b_eval = q_name
 
                         # Determine if domain is in DNSBL 'zone' database (log to dnsbl.log)
                         if not isFound and pfb['zoneDB']:
@@ -1004,7 +1422,7 @@ def operate(id, event, qstate, qdata):
                             group = 'DNSBL_TLD_Allow'
 
                         # Block IDN or 'xn--' Domains
-                        if not isFound and pfb['python_idn'] and q_name.startswith('xn--') or '.xn--' in q_name:
+                        if not isFound and pfb['python_idn'] and (q_name.startswith('xn--') or '.xn--' in q_name):
                             isFound = True
                             feed = 'IDN'
                             group = 'DNSBL_IDN'
@@ -1026,31 +1444,40 @@ def operate(id, event, qstate, qdata):
                     if isFound and pfb['whiteDB']:
                         # print q_name + ' w'
 
-                        # Determine full domain match
-                        isDomainInWhitelist = whiteDB.get(q_name)
-                        if isDomainInWhitelist is not None:
-                            isInWhitelist = True
-                        elif q_name.startswith('www.'):
-                            isDomainInWhitelist = whiteDB.get(q_name[4:])
+                        # Create list of Domain/CNAMES to be validated against Whitelist
+                        whitelist_validate = []
+                        whitelist_validate.append(q_name)
+
+                        if isCNAME:
+                            whitelist_validate.append(q_name_original)
+
+                        for w_q_name in whitelist_validate:
+
+                            # Determine full domain match
+                            isDomainInWhitelist = whiteDB.get(w_q_name)
                             if isDomainInWhitelist is not None:
                                 isInWhitelist = True
+                            elif w_q_name.startswith('www.'):
+                               isDomainInWhitelist = whiteDB.get(w_q_name[4:])
+                               if isDomainInWhitelist is not None:
+                                    isInWhitelist = True
 
-                        # Determine TLD segment matches
-                        if not isInWhitelist:
-                            q = q_name.split('.', 1)
-                            q = q[-1]
-                            for x in range(q.count('.') +1, 0, -1):
-                                if x >= pfb['python_tld_seg']:
-                                    isDomainInWhitelist = whiteDB.get(q)
+                            # Determine TLD segment matches
+                            if not isInWhitelist:
+                                q = w_q_name.split('.', 1)
+                                q = q[-1]
+                                for x in range(q.count('.') +1, 0, -1):
+                                    if x >= pfb['python_tld_seg']:
+                                        isDomainInWhitelist = whiteDB.get(q)
 
-                                    # Determine if domain is a wildcard whitelist entry
-                                    if isDomainInWhitelist is not None and isDomainInWhitelist:
-                                        isInWhitelist = True
-                                        break
-                                    else:
-                                        q = q.split('.', 1)
-                                        q = q[-1]
- 
+                                        # Determine if domain is a wildcard whitelist entry
+                                        if isDomainInWhitelist is not None and isDomainInWhitelist:
+                                            isInWhitelist = True
+                                            break
+                                        else:
+                                            q = q.split('.', 1)
+                                            q = q[-1]
+
                     # Add domain to excludeDB to skip subsequent blacklist validation
                     if not isFound or isInWhitelist:
                         #print "Add to Pass: " + q_name 
@@ -1112,12 +1539,22 @@ def operate(id, event, qstate, qdata):
                                 b_ip = pfb['dnsbl_ip']['A']['0']
 
 
-			# Add 'CNAME' suffix to Block type (CNAME Validation)
+                        # Add 'CNAME' suffix to Block type (CNAME Validation)
                         if isCNAME:
                             b_type = b_type + '_CNAME'
+                            q_name = q_name_original
 
-                        # Skip subsequent DNSBL validation for domain, and add domain to dict for get_details function
-                        dnsblDB[q_name] = {'qname': q_name, 'b_type': b_type, 'p_type': p_type, 'b_ip': b_ip, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval}
+                        # Add q_type to b_type (Block type)
+                        b_type = b_type + '_' + q_type_str
+
+                        # Skip subsequent DNSBL validation for domain, and add domain to dict for get_details_dnsbl function
+                        dnsblDB[q_name] = {'qname': q_name, 'b_type': b_type, 'p_type': p_type, 'b_ip': b_ip, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
+                        # Skip subsequent DNSBL validation for original domain (CNAME validation), and add domain to dict for get_details_dnsbl function
+                        if isCNAME and dnsblDB.get(q_name_original) is None:
+                            dnsblDB[q_name_original] = {'qname': q_name_original, 'b_type': b_type, 'p_type': p_type, 'b_ip': b_ip, 'log': log_type, 'feed': feed, 'group': group, 'b_eval': b_eval }
+
+                        # Add domain data to DNSBL cache for Reports tab
+                        write_sqlite(3, '', [b_type, q_name, group, b_eval, feed])
 
                 # Use previously blocked domain details
                 else:
@@ -1133,7 +1570,7 @@ def operate(id, event, qstate, qdata):
                         q_type = RR_TYPE_A
                         q_type_str = 'A'
 
-                    # print q_name + ' Blocked ' + b_ip + ' ' + q_type_str 
+                    # print q_name + ' Blocked ' + b_ip + ' ' + q_type_str
 
                     # Create FQDN Reply Message
                     msg = DNSMessage(qstate.qinfo.qname_str, q_type, RR_CLASS_IN, PKT_QR | PKT_RA | PKT_AA)
@@ -1143,22 +1580,32 @@ def operate(id, event, qstate, qdata):
                         qstate.ext_state[id] = MODULE_ERROR
                         return True
 
-                    qstate.return_msg.rep.security = 2
- 
+                    # Log entry
+                    kwargs = {'pfb_addr': q_ip}
+                    if qstate.return_msg:
+                        get_details_dnsbl('dnsbl', None, qstate, qstate.return_msg.rep, kwargs)
+                    else:
+                        get_details_dnsbl('dnsbl', None, qstate, None, kwargs)
+
                     qstate.return_rcode = RCODE_NOERROR
+                    qstate.return_msg.rep.security = 2
                     qstate.ext_state[id] = MODULE_FINISHED
                     return True
 
-    if event == MODULE_EVENT_NEW:
-        qstate.ext_state[id] = MODULE_WAIT_MODULE
+    if (event == MODULE_EVENT_NEW) or (event == MODULE_EVENT_PASS):
+        qstate.ext_state[id] = MODULE_WAIT_MODULE  
         return True
 
     if event == MODULE_EVENT_MODDONE:
-        qstate.ext_state[id] = MODULE_FINISHED
-        return True
 
-    if event == MODULE_EVENT_PASS:
-        qstate.ext_state[id] = MODULE_WAIT_MODULE
+        # Log entry
+        if qstate_valid and qstate.return_msg:
+            kwargs = {'pfb_addr': q_ip}
+            get_details_reply('reply', None, qstate, qstate.return_msg.rep, kwargs)
+        else:
+            get_details_reply('reply', None, qstate, None, None)
+
+        qstate.ext_state[id] = MODULE_FINISHED
         return True
 
     log_err('[pfBlockerNG]: BAD event')

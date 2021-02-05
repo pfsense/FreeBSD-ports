@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2020 BBcan177@gmail.com
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -94,6 +94,11 @@ $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblo
 					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://www.trustedsource.org/en/feedback/url">
 						<?=gettext("Trusted Score (McAfee)");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://opentip.kaspersky.com/<?=$host;?>/">
+						<?=gettext("Kaspersky Threat Intelligence");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
@@ -215,6 +220,16 @@ $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblo
 					<td><a target="_blank" href="https://onyphe.io/search/?query=<?=$host;?>">
 						<?=gettext("ONYPHE");?></a></td>
 				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="http://rbluri.interserver.net/ip.php?ip=<?=$host;?>">
+						<?=gettext("InterServer.net");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://spyse.com/target/ip/<?=$host;?>">
+						<?=gettext("SpySe.com");?></a></td>
+				</tr>
 
 				<br />
 
@@ -265,6 +280,11 @@ $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblo
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://opentip.kaspersky.com/<?=$domain;?>/">
+						<?=gettext("Kaspersky Threat Intelligence");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://www.herdprotect.com/domain-<?=$domain;?>.aspx">
 						<?=gettext("HerdProtect");?></a></td>
 				</tr>
@@ -279,15 +299,10 @@ $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblo
 						<?=gettext("DNSlytics");?></a></td>
 				</tr>
 				<tr>
-					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://www.google.com/safebrowsing/diagnostic?site=<?=$domain;?>">
-						<?=gettext("Google SafeBrowsing");?></a></td>
-				</tr>
-				<tr>
-					<td><i class="fa fa-globe pull-right"></i></td>
-					<td><a target="_blank" href="https://www.google.com/transparencyreport/safebrowsing/diagnostic/index.html#url=<?=$domain;?>">
-						<?=gettext("Google Transparency Report");?></a></td>
-				</tr>
+                                        <td><i class="fa fa-globe pull-right"></i></td>
+                                        <td><a target="_blank" href="https://transparencyreport.google.com/safe-browsing/search?url=<?=$domain;?>">
+                                                <?=gettext("Google SafeBrowsing");?></a></td>
+                                </tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://yandex.com/safety/?url=<?=$domain;?>">
@@ -402,6 +417,16 @@ $pglinks = array('', '/pfblockerng/pfblockerng_general.php', '/pfblockerng/pfblo
 					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://onyphe.io/search/?query=<?=$domain;?>">
 						<?=gettext("ONYPHE");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="http://rbluri.interserver.net/domain.php?domain=<?=$domain;?>">
+						<?=gettext("InterServer.net");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://spyse.com/target/domain/<?=$domain;?>">
+						<?=gettext("SpySe.com");?></a></td>
 				</tr>
 
 			<?php else: ?>

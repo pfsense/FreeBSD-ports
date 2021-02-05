@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-pfBlockerNG-devel
 PORTVERSION=	3.0.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -107,7 +107,7 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/ut1_global_usage \
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfb_dnsbl.firefoxdoh.conf \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfb_dnsbl.doh.conf \
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfb_dnsbl.safesearch.conf \
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng

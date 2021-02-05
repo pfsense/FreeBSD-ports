@@ -1,7 +1,7 @@
 /etc/inc/priv/pfblockerng.priv.inc
 pkg/pfblockerng.xml
 pkg/pfblockerng/dnsbl_tld
-pkg/pfblockerng/pfb_dnsbl.firefoxdoh.conf
+pkg/pfblockerng/pfb_dnsbl.doh.conf
 pkg/pfblockerng/pfb_dnsbl.safesearch.conf
 pkg/pfblockerng/pfb_dnsbl.youtube_restrict.conf
 pkg/pfblockerng/pfb_dnsbl.youtube_restrictmoderate.conf

@@ -1,6 +1,6 @@
 #!/bin/sh
 # pfBlockerNG Shell Function Script - By BBcan177@gmail.com - 04-12-14
-# Copyright (c) 2015-2020 BBcan177@gmail.com
+# Copyright (c) 2015-2021 BBcan177@gmail.com
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License Version 2 as
@@ -80,6 +80,8 @@ syncfile=/tmp/pfbtemp6_$rvar
 matchfile=/tmp/pfbtemp7_$rvar
 tempmatchfile=/tmp/pfbtemp8_$rvar
 domainmaster=/tmp/pfbtemp9_$rvar
+asntemp=/tmp/pfbtemp10_$rvar
+
 dnsbl_tld_remove=/tmp/dnsbl_tld_remove
 
 dnsbl_add=/tmp/dnsbl_add
@@ -753,7 +755,16 @@ whoisconvert() {
 			echo "### AS${asn}: ${host} ###" >> "${pfborig}${alias}.orig"
 
 			bgp_url="https://api.bgpview.io/asn/${asn}/prefixes"
-			"${pathcurl}" -s1 "${bgp_url}" | "${pathjq}" -r ".data.ipv${_bgp_type}_prefixes[].prefix" >> "${pfborig}${alias}.orig"
+			"${pathcurl}" -sS1 "${bgp_url}" > "${asntemp}"
+			if [ -e "${asntemp}" ] && [ -s "${asntemp}" ]; then
+				cat "${asntemp}" | "${pathjq}" -r ".data.ipv${_bgp_type}_prefixes[].prefix" >> "${pfborig}${alias}.orig"
+			fi
+
+			if [ ! -e "${pfborig}${alias}.orig" ]; then
+				echo "Failed to download ASN"
+				mv "${asntemp}" "${pfborig}${alias}.orig"
+				touch "${pfborig}${alias}.fail"
+			fi
 		fi
 	done
 }

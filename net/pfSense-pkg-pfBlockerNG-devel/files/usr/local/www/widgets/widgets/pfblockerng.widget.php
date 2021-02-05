@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2020 BBcan177@gmail.com
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Originally based Upon pfBlocker
@@ -226,7 +226,7 @@ function pfBlockerNG_update_table() {
 			$line = trim(str_replace(array( '[', ']' ), '', $line));
 			if (substr($line, 0, 1) == '-') {
 				$pfb_alias = trim(strstr($line, 'pfB', FALSE));
-				if (empty($pfb_alias)) {
+				if (empty($pfb_alias) || $pfb_alias == 'pfB_DNSBL_VIPs') {
 					unset($pfb_alias);
 					continue;
 				}
@@ -261,6 +261,11 @@ function pfBlockerNG_update_table() {
 	$pfb_packets = pfSense_get_pf_rules();
 	if (isset($config['filter']['rule'])) {
 		foreach ($config['filter']['rule'] as $rule) {
+
+			if ($rule['descr'] == 'pfB_DNSBL_Ping' || $rule['descr'] == 'pfB_DNSBL_Permit') {
+				continue;
+			}
+
 			if (isset($rule['source']['address']) && stripos($rule['source']['address'], 'pfb_') !== FALSE) {
 				foreach ($pfb_packets as $pkey => $prule) {
 					if ($rule['tracker'] == $prule['tracker']) {

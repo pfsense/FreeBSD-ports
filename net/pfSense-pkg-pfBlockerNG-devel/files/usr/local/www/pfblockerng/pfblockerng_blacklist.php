@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2020 BBcan177@gmail.com
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -419,8 +419,8 @@ foreach ($blacklist_types as $type => $setting) {
 
 	$group = new Form_Group(NULL);
 	$btnenableall = new Form_Button(
-        	'enableall[' . $type . ']',
-        	gettext('Enable All'),
+		'enableall[' . $type . ']',
+		gettext('Enable All'),
 		NULL,
 		'fa-toggle-on'
 	);
