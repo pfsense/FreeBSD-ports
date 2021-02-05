@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2020 BBcan177@gmail.com
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -111,13 +111,10 @@ if (!empty($gtype)) {
 
 if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_POST['save'])) {
 
-	// $rowid	= 0;
-
 	$pfb_found	= FALSE;
 	$disable_move	= TRUE;
 	init_config_arr(array('installedpackages', $conf_type, 'config'));
 	$rowdata	= $config['installedpackages'][$conf_type]['config'];
-	$rowid		= count($rowdata);
 	$all_group = $new_group = array();
 
 	$feed_info = convert_feeds_json();			// Load/convert Feeds (w/alternative aliasname(s), if user-configured
@@ -156,12 +153,14 @@ if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_PO
 					if ($action == 'add' && $atype == $feed['header']) {
 
 						// Find rowid
-						foreach ($rowdata as $rowid => $row) {
-							if ($row['aliasname'] == $aliasname) {
-								$pfb_found	= TRUE;
-								$a_url		= $feed['url'];
-								$a_header	= $feed['header'];
-								break 4;
+						if (!empty($rowdata)) {
+							foreach ($rowdata as $rowid => $row) {
+								if ($row['aliasname'] == $aliasname) {
+									$pfb_found	= TRUE;
+									$a_url		= $feed['url'];
+									$a_header	= $feed['header'];
+									break 4;
+								}
 							}
 						}
 
@@ -192,7 +191,10 @@ if (($action == 'add' || $action == 'addgroup') && !empty($atype) && !isset($_PO
 
 		// If not found, create new Alias/Group
 		if (!$pfb_found) {
-			$rowid++;			// Create new row
+
+			if (isset($rowdata[0]) && !empty($rowdata[0])) {
+				$rowid++;		// Create new row
+			}
 			$rowdata[$rowid]['aliasname']	= $a_aliasname;
 			$rowdata[$rowid]['description']	= $a_description;
 			$rowdata[$rowid]['cron']	= $a_cron;
@@ -1228,6 +1230,7 @@ else {
 				. '&#8226 <strong>Null Blocking (no logging)</strong>, Utilize \'0.0.0.0\' with no logging.<br />'
 				. '&#8226 <strong>Null Blocking (logging)</strong>, Utilize \'0.0.0.0\' with logging.<br /><br />'
 				. 'Blocked domains will be reported to the Alert/Python Block Table.<br />'
+				. 'Enabling the "Global Logging/Blocking mode" in the DNSBL Tab will override this setting!<br />'
 				. 'A \'Force Reload - DNSBL\' is required for changes to take effect';
 
 		$log_options = ['enabled'	=> 'DNSBL WebServer/VIP',
@@ -1237,6 +1240,7 @@ else {
 		$log_text = 'Default: <strong>Enabled</strong><br />'
 				. '&#8226 When \'Enabled\', Domains are sinkholed to the DNSBL VIP and logged via the DNSBL WebServer.<br />'
 				. '&#8226 When \'Disabled\', <strong>\'0.0.0.0\'</strong> will be used instead of the DNSBL VIP.<br />'
+				. 'Enabling the "Global Logging/Blocking mode" in the DNSBL Tab will override this setting!<br />'
 				. 'A \'Force Reload - DNSBL\' is required for changes to take effect';
 
 		$log_options = ['enabled'	=> 'DNSBL WebServer/VIP',

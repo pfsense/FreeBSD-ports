@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2020 BBcan177@gmail.com
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -240,7 +240,7 @@ if (is_array($config['installedpackages']['pfblockerng']['config'][0])) {
 
 		// pfBlockerNG IPSec interface selection upgrade
 		if (isset($pfb['config']['ipsec_action']) &&
-	    	    $pfb_interfaces['ipsec_action'] == 'on' &&
+		    $pfb_interfaces['ipsec_action'] == 'on' &&
 		    isset($config['ipsec']) &&
 		    !empty($config['ipsec']) &&
 		    strpos($pfb_interfaces['outbound_interface'], 'enc0') === FALSE) {
@@ -495,6 +495,31 @@ if (is_array($config['installedpackages']['pfblockerngdnsbleasylist']) &&
 
 	// Remove Previous EasyList configuration
 	unset($config['installedpackages']['pfblockerngdnsbleasylist']);
+}
+
+if ($ufound) {
+	update_status(" saving new changes ... done.\n");
+} else {
+	update_status(" no changes required ... done.\n");
+}
+
+// Firefox Doh settings to new DoH settings
+update_status(" Upgrading previous Firefox DoH to new format...");
+$ufound = FALSE;
+
+if (is_array($config['installedpackages']['pfblockerngsafesearch']) &&
+    !empty($config['installedpackages']['pfblockerngsafesearch'])) {
+
+	$doh_config = &$config['installedpackages']['pfblockerngsafesearch'];
+	if (isset($doh_config['safesearch_firefoxdoh'])) {
+		$ufound = TRUE;
+
+		$doh_config['safesearch_doh'] = $doh_config['safesearch_firefoxdoh'];
+		if ($doh_config['safesearch_firefoxdoh'] == 'Enable') {
+			$doh_config['safesearch_doh_list'] = 'use-application-dns.net';
+		}
+		unset($doh_config['safesearch_firefoxdoh']);
+	}
 }
 
 if ($ufound) {

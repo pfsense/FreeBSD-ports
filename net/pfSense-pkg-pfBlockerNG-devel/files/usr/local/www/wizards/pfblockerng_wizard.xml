@@ -6,7 +6,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2020 BBcan177@gmail.com
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -134,7 +134,7 @@
 		<div class="col-sm-11">
 			<br />
 			<p>Click&emsp;<a href="/pfblockerng/pfblockerng_general.php?wizard=skip">
-                	        <span style="color: red;">Here</span></a>&emsp;to exit this Wizard!</p>
+				<span style="color: red;">Here</span></a>&emsp;to exit this Wizard!</p>
 		</div>
 		]]>
 	</description>
@@ -246,7 +246,7 @@
 			<description>Enable a default DNSBL Domain Whitelist. This list can be removed and/or modified following wizard installation.</description>
 			<type>checkbox</type>
 			<value>enabled</value>
-		</field> 
+		</field>
 		<field>
 			<name>Back</name>
 			<type>submit</type>

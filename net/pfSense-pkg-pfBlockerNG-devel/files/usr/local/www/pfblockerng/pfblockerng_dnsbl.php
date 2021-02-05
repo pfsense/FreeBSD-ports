@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2020 BBcan177@gmail.com
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -42,6 +42,7 @@ $default_tlds = array('arpa',$local_tld,'com','net','org','edu','ca','co','io');
 $pconfig = array();
 $pconfig['pfb_dnsbl']		= $pfb['dconfig']['pfb_dnsbl']				?: '';
 $pconfig['pfb_tld']		= $pfb['dconfig']['pfb_tld']				?: '';
+$pconfig['pfb_control']		= $pfb['dconfig']['pfb_control']			?: '';
 $pconfig['pfb_dnsvip']		= $pfb['dconfig']['pfb_dnsvip']				?: '10.10.10.1';
 $pconfig['pfb_dnsblv6']		= $pfb['dconfig']['pfb_dnsblv6']			?: '';
 $pconfig['pfb_dnsvip_type']	= $pfb['dconfig']['pfb_dnsvip_type']			?: 'ipalias';
@@ -54,6 +55,7 @@ $pconfig['pfb_dnsport_ssl']	= $pfb['dconfig']['pfb_dnsport_ssl']			?: '8443';
 $pconfig['dnsbl_interface']	= $pfb['dconfig']['dnsbl_interface']			?: 'lo0';
 $pconfig['pfb_dnsbl_rule']	= $pfb['dconfig']['pfb_dnsbl_rule']			?: '';
 $pconfig['dnsbl_allow_int']	= explode(',', $pfb['dconfig']['dnsbl_allow_int'])	?: array();
+$pconfig['global_log']		= $pfb['dconfig']['global_log']				?: '';
 $pconfig['dnsbl_webpage']	= $pfb['dconfig']['dnsbl_webpage']			?: 'dnsbl_default.php';
 $pconfig['pfb_cache']		= isset($pfb['dconfig']['pfb_cache'])			? $pfb['dconfig']['pfb_cache'] : 'on';
 $pconfig['pfb_dnsbl_sync']	= $pfb['dconfig']['pfb_dnsbl_sync']			?: '';
@@ -153,6 +155,7 @@ if ($_POST) {
 
 		$pfb['dconfig']['pfb_dnsbl']		= $_POST['pfb_dnsbl']				?: '';
 		$pfb['dconfig']['pfb_tld']		= $_POST['pfb_tld']				?: '';
+		$pfb['dconfig']['pfb_control']		= $_POST['pfb_control']				?: '';
 		$pfb['dconfig']['pfb_dnsvip']		= $_POST['pfb_dnsvip']				?: '10.10.10.1';
 		$pfb['dconfig']['pfb_dnsblv6']		= $_POST['pfb_dnsblv6']				?: '';
 		$pfb['dconfig']['pfb_dnsvip_type']	= $_POST['pfb_dnsvip_type']			?: 'ipalias';
@@ -187,6 +190,7 @@ if ($_POST) {
 		$pfb['dconfig']['dnsbl_interface']	= $_POST['dnsbl_interface']			?: 'lo0';
 		$pfb['dconfig']['pfb_dnsbl_rule']	= $_POST['pfb_dnsbl_rule']			?: '';
 		$pfb['dconfig']['dnsbl_allow_int']	= implode(',', (array)$_POST['dnsbl_allow_int'])?: '';
+		$pfb['dconfig']['global_log']		= $_POST['global_log']				?: '';
 		$pfb['dconfig']['dnsbl_webpage']	= $_POST['dnsbl_webpage']			?: 'dnsbl_default.php';
 		$pfb['dconfig']['pfb_cache']		= $_POST['pfb_cache']				?: '';
 		$pfb['dconfig']['pfb_dnsbl_sync']	= $_POST['pfb_dnsbl_sync']			?: '';
@@ -507,6 +511,37 @@ $section->addInput(new Form_Checkbox(
 ))->setHelp($dnsbl_text);
 
 $section->addInput(new Form_Checkbox(
+	'pfb_control',
+	gettext('Python Control') . '(py)',
+	'Enable',
+	$pconfig['pfb_control'] === 'on' ? true:false,
+	'on'
+))->setHelp('Enabling this option will allow sending python_control commands (via DNS TXT) to the Python integration.'
+	. '<div class="infoblock" style="width: 90%;">'
+	. 'The python_control feature is limited to DNS TXT records sent from pfSense localhost (127.0.0.1) only!<br />'
+	. 'These commands can be incorporated in CRON/Scheduler tasks or run manually as required<br />'
+	. 'All events are logged to the Reports Tab (Gear icon)<br /><br />'
+	. '<strong>Command Syntax:</strong><br />'
+	. '<table class="table table-bordered table-striped table-hover table-compact">'
+	. '	<thead>'
+	. '		<tr>'
+	. '			<th style="max-width: 10%">Description</th>'
+	. '			<th style="max-width: 85%">Command</th>'
+	. '			<th style="max-width: 5%">Notes</th>'
+	. '		</tr>'
+	. '	</thead>'
+	. '	<tbody>'
+	. '		<tr><td>Enable DNSBL</td><td>drill TXT python_control.enable</td><td></td></tr>'
+	. '		<tr><td>Disable DNSBL</td><td>drill TXT python_control.disable</td><td></td></tr>'
+	. '		<tr><td>Disable DNSBL for duration</td><td>drill TXT python_control.disable.seconds</td><td>Seconds: 1-3600</td></tr>'
+	. '		<tr><td>Add a Global bypass IP</td><td>drill TXT python_control.addbypass.1-2-3-4</td><td>Use "-" in place of "."</td></tr>'
+	. '		<tr><td>Add a Global bypass IP for duration</td><td>drill TXT python_control.addbypass.1-2-3-4.seconds</td><td>Seconds: 1-3600</td></tr>'
+	. '		<tr><td>Remove a Global bypass IP</td><td>;drill TXT python_control.removebypass.1-2-3-4</td><td>Use "-" in place of "."</td></tr>'
+	. '	</tbody>'
+	. '</table>'
+	. '</div>');
+
+$section->addInput(new Form_Checkbox(
 	'pfb_py_reply',
 	gettext('DNS Reply Logging') . '(py)',
 	'Enable',
@@ -550,7 +585,7 @@ $section->addInput(new Form_Checkbox(
 	. 'Blocked domains that are in the <a target=_"blank" href="https://hstspreload.org/">HSTS preload</a> browser'
 	. ' <a target=_"blank" href="https://raw.githubusercontent.com/chromium/chromium/master/net/http/transport_security_state_static.json">list</a>'
 	. ' will use the Null Block Mode which *may* prevent Browser Certificate Errors.<br />'
-	. '<span class="text-danger">Note:</span> This option will not block HSTS domains, unless those Domains are added via the Feeds/Cusomlists.'
+	. '<span class="text-danger">Note:</span> This option will not block HSTS domains, unless those Domains are added via the Feeds/Customlists.'
 );
 
 
@@ -2163,7 +2198,7 @@ foreach (array('gTLD', 'ccTLD', 'iTLD', 'bgTLD') as $key => $tld_type) {
 	$count = count($tld_list[$tld_type]);
 
 	if ($pconfig['pfb_pytld_sort'] == 'on') {
-		sort($tld_list[$tld_type]);
+		ksort($tld_list[$tld_type]);
 	}
 
 	$group->add(new Form_Select(
@@ -2227,13 +2262,13 @@ $form->add($section);
 
 $section = new Form_Section('Python Group Policy', 'Python_Group_Policy', COLLAPSIBLE|SEC_CLOSED);
 $section->addInput(new Form_StaticText(
-        NULL,
-        'This is a preliminary DNSBL Group Policy configuration that will bypass DNSBL for the defined LAN IPs.'));
+	NULL,
+	'This is a preliminary DNSBL Group Policy configuration that will bypass DNSBL for the defined LAN IPs.'));
 
 $section->addInput(new Form_Textarea(
-        'pfb_gp_bypass_list',
-        'Bypass IPs',
-        $pconfig['pfb_gp_bypass_list']
+	'pfb_gp_bypass_list',
+	'Bypass IPs',
+	$pconfig['pfb_gp_bypass_list']
 ))->removeClass('form-control')
   ->addClass('row-fluid col-sm-12')
   ->setAttribute('columns', '90')
@@ -2247,7 +2282,7 @@ $form->add($section);
 
 $regex_text = 'List of Python Regex\'s to block via DNSBL<br /><br />
 		Enter a single regex per line.<br /><br />
-		You may use "<strong>#</strong>" after each line for a Regex Description. IE:&emsp;/regex/ # Regex Description here<br /><br />
+		You may use "<strong>#</strong>" after each line for a Regex Description. IE:&emsp;regex (Regular Expression) # Regex Description<br /><br />
 		Ensure a space is entered before the # character. Keep the Regex description less than 15 characters as it will be used in<br />
 		the Alerts Tab. If no Description is entered a default Regex line number will be utilized.<br />
 		This List is stored as \'Base64\' format in the config.xml file.<br /><br />
@@ -2269,7 +2304,8 @@ $section->addInput(new Form_Textarea(
 $form->add($section);
 
 $noaaaa_text = 'List of no AAAA domains to block the (IPv6) AAAA DNS Resolution.<br /><br />
-		Enter a single domain per line.<br /><br />
+		Enter a single domain per line.<br />
+		Prefix domain with a "." to apply wildcard no AAAA to all Sub-Domains. &emsp;IE: (.example.com)<br /><br />
 		Any domain added to the no AAAA list, will never be filtered by any DNSBL python blocking.<br /><br />
 		This List is stored as \'Base64\' format in the config.xml file.<br /><br />
 		Changes to this option will require a Force Update to take effect.';
@@ -2291,16 +2327,6 @@ $form->add($section);
 
 $section = new Form_Section('DNSBL Webserver Configuration');
 
-$section->addInput(new Form_Select(
-	'pfb_dnsvip_type',
-	gettext('DNSBL VIP Type'),
-	$pconfig['pfb_dnsvip_type'],
-	[ 'ipalias' => 'IP Alias', 'carp' => 'CARP' ]
-))->setWidth(4)->setHelp('Select the DNSBL VIP type.<br />'
-			. 'Default: <strong>IP Alias</strong><br />'
-			. 'CARP: For High Availability (CARP Cluster Networks) only'
-);
-
 $section->addInput(new Form_Input(
 	'pfb_dnsvip',
 	gettext('Virtual IP Address'),
@@ -2313,6 +2339,24 @@ $section->addInput(new Form_Input(
 		. 'Rejected DNS Requests will be forwarded to this VIP (Virtual IP)<br />'
 		. 'RFC1918 Compliant - (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)<br />'
 		. 'Changes to the DNSBL VIP will require a Force Reload - DNSBL to take effect.'
+);
+
+$section->addInput(new Form_Checkbox(
+	'pfb_dnsblv6',
+	gettext('IPv6 DNSBL'),
+	'Enable',
+	$pconfig['pfb_dnsblv6'] === 'on' ? true:false,
+	'on'
+))->setHelp('Enable DNSBL for IPv6 DNS Resolution filtering. Default IPv6 Webserver address [ ::10.10.10.1 ] and ports [80/443]');
+
+$section->addInput(new Form_Select(
+	'pfb_dnsvip_type',
+	gettext('DNSBL VIP Type'),
+	$pconfig['pfb_dnsvip_type'],
+	[ 'ipalias' => 'IP Alias', 'carp' => 'CARP' ]
+))->setWidth(4)->setHelp('Select the DNSBL VIP type.<br />'
+			. 'Default: <strong>IP Alias</strong><br />'
+			. 'CARP: For High Availability (CARP Cluster Networks) only'
 );
 
 $group = new Form_Group('CARP Settings');
@@ -2352,13 +2396,17 @@ $section->addPassword(new Form_Input(
 	[ 'placeholder' => 'Enter Carp password' ]
 ))->setHelp('Password')->addClass('dnsvip_carp');
 
-$section->addInput(new Form_Checkbox(
-	'pfb_dnsblv6',
-	gettext('IPv6 DNSBL'),
-	'Enable',
-	$pconfig['pfb_dnsblv6'] === 'on' ? true:false,
-	'on'
-))->setHelp('Enable DNSBL for IPv6 DNS Resolution filtering. Default IPv6 Webserver address [ ::10.10.10.1 ] and ports [8081/8443]');
+$interface_list		= pfb_build_if_list(FALSE, FALSE);
+$interface_list_all	= array_merge(array('lo0' => 'Localhost'), $interface_list);
+$int_size		= count($interface_list) ?: '1';
+
+$section->addInput(new Form_Select(
+	'dnsbl_interface',
+	gettext('Web Server Interface'),
+	$pconfig['dnsbl_interface'],
+	$interface_list_all
+))->setHelp('Select the interface which DNSBL Web Server will Listen on.<br />'
+	. 'Default: <strong>Localhost (ports 80/443)</strong> - Selected Interface should be a Local Interface only.');
 
 $section->addInput(new Form_Input(
 	'pfb_dnsport',
@@ -2379,18 +2427,6 @@ $section->addInput(new Form_Input(
 ))->setHelp('Example ( 8443 )<br />Enter a &emsp;<strong>single PORT</strong> &emsp;that is in the range of 1 - 65535<br />'
 		. 'This Port must not be in use by any other process.'
 );
-
-$interface_list		= pfb_build_if_list(FALSE, FALSE);
-$interface_list_all	= array_merge(array('lo0' => 'Localhost'), $interface_list);
-$int_size		= count($interface_list) ?: '1';
-
-$section->addInput(new Form_Select(
-	'dnsbl_interface',
-	gettext('Web Server Interface'),
-	$pconfig['dnsbl_interface'],
-	$interface_list_all
-))->setHelp('Select the interface which DNSBL Web Server will Listen on.<br />'
-	. 'Default: <strong>Localhost</strong> - Selected Interface should be a Local Interface only.');
 
 // Add option to disable DNSBL logging in python and utilize the DNSBL Webserver (excluding nullblocking events)
 $section->addInput(new Form_Checkbox(
@@ -2447,6 +2483,38 @@ if (is_dir("{$indexdir}")) {
 	}
 }
 $list_size = count($lista) ?: '1';
+
+if ($pfb['dnsbl_py_blacklist']) {
+	$log_text = 'Default: <strong>No Global mode</strong><br />'
+			. 'Enabling this option will overide the individual DNSBL Group "Logging/Blocking" settings!<br /><br />'
+			. '&#8226 <strong>Null Block (logging)</strong>, Utilize \'0.0.0.0\' with logging.<br />'
+			. '&#8226 <strong>DNSBL WebServer/VIP</strong>, Domains are sinkholed to the DNSBL VIP and logged via the DNSBL WebServer.<br />'
+			. '&#8226 <strong>Null Block (no logging)</strong>, Utilize \'0.0.0.0\' with no logging.<br />'
+			. 'Blocked domains will be reported to the Alert/Python Block Table.<br /><br />'
+			. 'A \'Force Reload - DNSBL\' is required for changes to take effect';
+
+	$log_options = [''		=> 'No Global mode',
+			'disabled_log'	=> 'Null Block (logging)',
+			'enabled'	=> 'DNSBL WebServer/VIP',
+			'disabled'	=> 'Null Block (no logging)'];
+} else {
+	$log_text = 'Default: <strong>No Global mode</strong><br />'
+			. '&#8226 When \'Enabled\', Domains are sinkholed to the DNSBL VIP and logged via the DNSBL WebServer.<br />'
+			. '&#8226 When \'Disabled\', <strong>\'0.0.0.0\'</strong> will be used instead of the DNSBL VIP.<br />'
+			. 'A \'Force Reload - DNSBL\' is required for changes to take effect';
+
+	$log_options = [''		=> 'No Global mode',
+			'enabled'	=> 'DNSBL WebServer/VIP',
+			'disabled'	=> 'Null Block (no logging)'];
+}
+
+$section->addInput(new Form_Select(
+	'global_log',
+	'Global Logging/Blocking Mode',
+	$pconfig['global_log'],
+	$log_options
+))->setHelp($log_text)
+  ->setAttribute('style', 'width: auto');
 
 $section->addInput(new Form_Select(
 	'dnsbl_webpage',
@@ -2792,7 +2860,7 @@ $tld_whitelist_text = 'Enter <strong>each specific</strong> Domain and/or Sub-Do
 			</div>';
 
 if ($pfb['dnsbl_py_blacklist']) {
-	$tld_whitelist_text = "<span class=\"text-danger\">TLD Whitelist not utilized for Unbound python mode! Use DNSBL Whitelist instead.</span><br /><br />{$tld_whitelist_text}";
+	$tld_whitelist_text = "<span class=\"text-danger\">TLD Whitelist is not utilized for Unbound python mode! Use DNSBL Whitelist instead.</span><br /><br />{$tld_whitelist_text}";
 }
 
 $section->addInput(new Form_Textarea(
@@ -3014,6 +3082,16 @@ function enable_carp() {
 	}
 }
 
+function enable_ports() {
+	if ($('#dnsbl_interface').val() == 'lo0') {
+		hideInput('pfb_dnsport', true);
+		hideInput('pfb_dnsport_ssl', true);
+	} else {
+		hideInput('pfb_dnsport', false);
+		hideInput('pfb_dnsport_ssl', false);
+	}
+}
+
 function enable_python() {
 
 	var python = true;
@@ -3027,6 +3105,7 @@ function enable_python() {
 		hideCheckbox('pfb_dnsbl_sync', false);
 	}
 
+	hideCheckbox('pfb_control', !python);
 	hideCheckbox('pfb_py_reply', !python);
 	hideCheckbox('pfb_py_block', !python);
 	hideCheckbox('pfb_hsts', !python);
@@ -3123,6 +3202,11 @@ events.push(function(){
 		enable_carp();
 	});
 	enable_carp();
+
+	$('#dnsbl_interface').click(function() {
+		enable_ports();
+	});
+	enable_ports();
 
 	$('#dnsbl_mode').click(function() {
 		enable_python();

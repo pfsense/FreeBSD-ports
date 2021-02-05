@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2020 BBcan177@gmail.com
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Originally based upon pfBlocker by
@@ -286,7 +286,7 @@ function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $for
 		// Determine if URL is Remote or Local
 		if (in_array($host['host'], array('127.0.0.1', $pfb['iplocal'], ''))) {
 			clearstatcache();
-			$remote_tds = gmdate('D, d M Y H:i:s T', @filemtime($list_url));
+			$remote_tds = gmdate('D, j M Y H:i:s T', @filemtime($list_url));
 		}
 		else {
 			// Download URL headers and compare previously downloaded file with remote timestamp
@@ -314,7 +314,7 @@ function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $for
 				}
 
 				if ($remote_stamp_raw != -1) {
-					$remote_tds = gmdate('D, d M Y H:i:s T', $remote_stamp_raw);
+					$remote_tds = gmdate('D, j M Y H:i:s T', $remote_stamp_raw);
 				}
 			}
 			curl_close($ch);
@@ -356,7 +356,7 @@ function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $for
 			$log = "  Remote timestamp: {$remote_tds}\n";
 			pfb_logger("{$log}", 1);
 			clearstatcache();
-			$local_tds = gmdate('D, d M Y H:i:s T', @filemtime($local_file));
+			$local_tds = gmdate('D, j M Y H:i:s T', @filemtime($local_file));
 			$log = "  Local  timestamp: {$local_tds}\t";
 			pfb_logger("{$log}", 1);
 	
@@ -577,7 +577,7 @@ function pfblockerng_uc_countries() {
 	}
 
 	// Save Date/Time stamp to MaxMind version file
-	$local_tds	 = @gmdate('D, d M Y H:i:s T', @filemtime($maxmind_cont));
+	$local_tds	 = @gmdate('D, j M Y H:i:s T', @filemtime($maxmind_cont));
 	$maxmind_ver	 = "MaxMind GeoLite2 Date/Time Stamp\n";
 	$maxmind_ver	.= "Last-Modified: {$local_tds}\n";
 	@file_put_contents("{$pfb['logdir']}/maxmind_ver", $maxmind_ver, LOCK_EX);
@@ -1068,7 +1068,7 @@ function pfblockerng_uc_countries() {
 						$pfb_file = "{$pfb['ccdir']}/Top_Spammers_v{$type}.info";
 
 						if (!file_exists($pfb_file)) {
-							$header  = '# Generated from MaxMind Inc. on: ' . date('m/d/y G:i:s', time()) . "\n";
+							$header  = '# Generated from MaxMind Inc. on: ' . date('m/j/y G:i:s', time()) . "\n";
 							$header .= "# Continent IPv{$type}: Top_Spammers\n";
 							$header .= "# Continent en: Top_Spammers\n";
 							@file_put_contents($pfb_file, $header, LOCK_EX);
@@ -1094,7 +1094,7 @@ function pfblockerng_uc_countries() {
 
 							$pfb_file = "{$pfb['ccdir']}/{$geoip['continent_en']}_v{$type}.txt";
 							if (!file_exists($pfb_file)) {
-								$header  = '# Generated from MaxMind Inc. on: ' . date('m/d/y G:i:s', time()) . "\n";
+								$header  = '# Generated from MaxMind Inc. on: ' . date('m/j/y G:i:s', time()) . "\n";
 								$header .= "# Continent IPv{$type}: {$geoip['continent']}\n";
 								$header .= "# Continent en: {$geoip['continent_en']}\n";
 								@file_put_contents($pfb_file, $header, LOCK_EX);
@@ -1318,7 +1318,7 @@ $php_data = <<<EOF
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2020 BBcan177@gmail.com
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -1839,7 +1839,7 @@ $php_rep = <<<'EOF'
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2020 BBcan177@gmail.com
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
