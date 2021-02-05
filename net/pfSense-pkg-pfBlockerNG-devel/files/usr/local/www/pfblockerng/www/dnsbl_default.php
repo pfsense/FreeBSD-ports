@@ -3,7 +3,7 @@
 
  part of pfSense (https://www.pfsense.org)
  Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
- Copyright (c) 2015-2020 BBcan177@gmail.com
+ Copyright (c) 2015-2021 BBcan177@gmail.com
  All rights reserved.
 
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -126,6 +126,11 @@
 		<div class="footer">
 			<table id="dnsbl_table">
 				<caption>This website <span style="color: #FF0000; font-weight: bold;"><?=$ptype['HTTP_HOST']?></span> has been blocked by the Network Administrator!</caption>
+
+				<?php if ($ts == 'M d'): ?>
+				<div>The Evaluated Domain is uncertain, refer to the DNSBL Reports tab for more details</div>
+				<?php endif; ?>
+
 				<thead>
 					<tr id="pfb_header">
 						<th>Referer</th>

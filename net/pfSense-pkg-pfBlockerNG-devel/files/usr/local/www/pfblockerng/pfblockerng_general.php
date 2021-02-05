@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2020 BBcan177@gmail.com
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -61,6 +61,7 @@ $pconfig['log_max_ip_matchlog']		= $pfb['gconfig']['log_max_ip_matchlog']		?: 20
 $pconfig['log_max_dnslog']		= $pfb['gconfig']['log_max_dnslog']			?: 20000;
 $pconfig['log_max_dnsbl_parse_err']	= $pfb['gconfig']['log_max_dnsbl_parse_err']		?: 20000;
 $pconfig['log_max_dnsreplylog']		= $pfb['gconfig']['log_max_dnsreplylog']		?: 20000;
+$pconfig['log_max_unilog']		= $pfb['gconfig']['log_max_unilog']			?: 20000;
 
 // Validate input fields and save
 if ($_POST) {
@@ -88,6 +89,7 @@ if ($_POST) {
 		$pfb['gconfig']['log_max_dnslog']		= $_POST['log_max_dnslog']		?: '';
 		$pfb['gconfig']['log_max_dnsbl_parse_err']	= $_POST['log_max_dnsbl_parse_err']	?: '';
 		$pfb['gconfig']['log_max_dnsreplylog']		= $_POST['log_max_dnsreplylog']		?: '';
+		$pfb['gconfig']['log_max_unilog']		= $_POST['log_max_unilog']		?: '';
 
 		if (!$input_errors) {
 			write_config('[pfBlockerNG] save General settings');
@@ -207,7 +209,7 @@ $section->addInput(new Form_Select(
 $form->add($section);
 
 $section = new Form_Section('Log Settings (max lines)');
-$log_types = array (	'General'	=> array('pfBlockerNG' => 'log', 'Error' => 'errlog', 'Extras' => 'extraslog'),
+$log_types = array (	'General'	=> array('pfBlockerNG' => 'log', 'Unified Log' => 'unilog', 'Error' => 'errlog', 'Extras' => 'extraslog'),
 			'IP'		=> array('IP Block' => 'ip_blocklog', 'IP Permit' => 'ip_permitlog', 'IP Match' => 'ip_matchlog'),
 			'DNSBL'		=> array('DNSBL' => 'dnslog', 'DNSBL Parse Error' => 'dnsbl_parse_err'),
 			'DNS Reply'	=> array('DNS Reply' => 'dnsreplylog')

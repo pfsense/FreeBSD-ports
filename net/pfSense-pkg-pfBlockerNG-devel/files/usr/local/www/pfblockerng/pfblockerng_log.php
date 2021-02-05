@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2020 BBcan177@gmail.com
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Portions of this code are based on original work done for the
@@ -78,8 +78,8 @@ function getlogs($logdir, $log_extentions = array('log')) {
 $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'logdir'	=> "{$pfb['logdir']}/",
 						'logs'		=> array('pfblockerng.log', 'error.log', 'ip_block.log', 'ip_permit.log', 'ip_match.log',
-									'dnsbl.log', 'extras.log', 'dnsbl_parsed_error.log', 'dns_reply.log', 'py_error.log',
-									'maxmind_ver', 'wizard.log'),
+									'dnsbl.log', 'unified.log', 'extras.log', 'dnsbl_parsed_error.log', 'dns_reply.log',
+									'py_error.log', 'maxmind_ver', 'wizard.log'),
 						'download'	=> TRUE,
 						'clear'		=> TRUE
 						),
@@ -186,9 +186,9 @@ $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 		);
 
 if ($pfb['dnsbl_py_blacklist']) {
-        unset($pfb_logtypes['unbound']);
+	unset($pfb_logtypes['unbound']);
 } else {
-        unset($pfb_logtypes['python']);
+	unset($pfb_logtypes['python']);
 }
 
 // Dynamically add any configured DNSBL Categeory Feeds
@@ -281,7 +281,7 @@ if ($_REQUEST['ajax']) {
 			}
 		}
 		else {
-			print ("|1|" . gettext('Failed to read log file') . "|IA==|");
+			print ("|0|" . gettext('Failed to read log file') . "|IA==|");
 		}
 		exit;
 	}
