@@ -9272,6 +9272,8 @@ function pfblockerng_php_pre_deinstall_command() {
 	unlink_if_exists('/usr/local/bin/php_pfb');
 	unlink_if_exists('/usr/local/sbin/clog_pfb');
 	unlink_if_exists('/usr/bin/tail_pfb');
+	unlink_if_exists('/usr/local/etc/rc.d/pfb_filter.sh');
+	unlink_if_exists('/usr/local/etc/rc.d/pfb_dnsbl.sh');
 
 	// Remove incorrect xml setting
 	if (isset($config['installedpackages']['pfblockerngantartica'])) {
