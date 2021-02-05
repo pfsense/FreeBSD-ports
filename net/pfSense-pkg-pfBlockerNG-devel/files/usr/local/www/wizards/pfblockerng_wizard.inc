@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2020 BBcan177@gmail.com
+ * Copyright (c) 2015-2021 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -67,7 +67,7 @@ function step2_submitphpaction() {
 }
 
 function step3_submitphpaction() {
-        global $config, $stepid, $input_errors;
+	global $config, $stepid, $input_errors;
 
 	if ($_POST) {
 		if ($_POST['back'] == 'Back') {
@@ -104,7 +104,7 @@ function step4_submitphpaction() {
 	if (json_last_error() !== JSON_ERROR_NONE || !is_array($feed_info_raw)) {
 		$input_errors[] = 'pfBlockerNG: Feeds database missing. Cannot continue - Reinstall package.';
 		return;
-        }
+	}
 
 	// Remove any pfBlockerNG settings and file/folder contents
 	pfb_remove_config_settings();
