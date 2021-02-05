@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	rust
-PORTVERSION=	1.48.0
+PORTVERSION=	1.49.0
 CATEGORIES=	lang
 MASTER_SITES=	https://static.rust-lang.org/dist/:rust \
 		LOCAL/mikael:armbase \
@@ -66,6 +66,7 @@ _RUST_FBSD_DIST_powerpc64_elfv1=	FreeBSD-${_RUST_FBSD_VER}-powerpc64-elfv1${EXTR
 _RUST_FBSD_DIST_powerpc64_elfv2=	FreeBSD-${_RUST_FBSD_VER}-powerpc64-elfv2-v1300123${EXTRACT_SUFX}:base
 _RUST_FBSD_DIST_powerpc64le=		FreeBSD-${_RUST_FBSD_VER}-powerpc64le-r366300${EXTRACT_SUFX}:ppc64lebase
 _RUST_FBSD_VER=				${_RUST_FBSD_VER_${FLAVOR}:U11.4-RELEASE}
+_RUST_FBSD_VER_aarch64=			12.1-RELEASE
 _RUST_FBSD_VER_armv7=			12.1-RELEASE
 _RUST_FBSD_VER_powerpc64_elfv1=		12.1-RELEASE
 _RUST_FBSD_VER_powerpc64_elfv2=		13.0-CURRENT
@@ -237,4 +238,3 @@ makesum:
 .endif
 
 .include <bsd.port.post.mk>
-RUN_DEPENDS:=	${RUN_DEPENDS:Ngcc*}
