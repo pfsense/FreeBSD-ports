@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-zeek
 PORTVERSION=	3.0.6
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	# none
 DISTFILES=	# none
