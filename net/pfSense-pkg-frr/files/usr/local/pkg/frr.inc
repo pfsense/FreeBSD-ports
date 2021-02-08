@@ -342,6 +342,10 @@ EOF;
 echo "Stopping FRR"
 	/usr/local/etc/rc.d/frr stop
 
+	if [ -s {$frr_config_base}/frr_md5pw_del.conf ]; then
+		/sbin/setkey -f {$frr_config_base}/frr_md5pw_del.conf
+	fi
+
 	if [ -e /var/run/frr/\watchfrr.pid ]; then
 	echo "Stopping watchfrr"
 	/bin/pkill -F /var/run/frr/watchfrr.pid
@@ -513,6 +517,16 @@ function frr_daemons_running($daemons) {
 function frr_setkey($restart_needed) {
 	global $config, $frr_config_base;
 	$peers = array();
+
+	if (is_array($config['installedpackages']['frr']['config']) &&
+	    empty($config['installedpackages']['frr']['config'][0]['enable'])) {
+		if (file_exists("{$frr_config_base}/frr_md5pw_del.conf")) {
+			mwexec("/sbin/setkey -f {$frr_config_base}/frr_md5pw_del.conf");
+		}
+		unlink_if_exists("{$frr_config_base}/frr_md5pw_del.conf");
+		unlink_if_exists("{$frr_config_base}/frr_md5pw_add.conf");
+		return;
+	}
 
 	/* Build md5 password configuration files based on raw tab list */
 	if (is_array($config['installedpackages']['frrglobalraw']['config'][0]['row'])) {
