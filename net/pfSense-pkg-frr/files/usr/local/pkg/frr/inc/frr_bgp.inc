@@ -495,7 +495,7 @@ function frr_bgp_generate_neighbors() {
 
 		/* Global neighbor configuration items */
 		/* remote-as must come first, except for peer-group def/member line! */
-		if (frr_validate_asnum($neighbor['asnum'])) {
+		if (frr_validate_asnum($neighbor['asnum']) || in_array($neighbor['asnum'], array('internal', 'external'))) {
 			$nconf .= " neighbor {$neighbor['peer']} remote-as {$neighbor['asnum']}\n";
 		}
 
