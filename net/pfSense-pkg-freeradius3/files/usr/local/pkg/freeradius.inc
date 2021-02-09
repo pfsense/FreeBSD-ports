@@ -2275,7 +2275,7 @@ authorize {
 	}
 #	unix
 	files
-	if ((notfound || noop) && (&control:Auth-Type != Accept)) {
+	if ((notfound || noop) && ("%{%{Control:Auth-Type}:-No-Accept}" != "Accept")) {
 		{$varsqlconfauthorize}
 			{$varmodulesldapenableauthorize}
 			if (notfound || noop) {
