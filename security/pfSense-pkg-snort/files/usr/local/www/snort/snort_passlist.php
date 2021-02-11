@@ -151,6 +151,7 @@ display_top_tabs($tab_array, true);
 			<tr>
 				<th>&nbsp;</th>
 				<th>List Name</th>
+				<th>Assigned</th>
 				<th>Description</th>
 				<th>Actions</th>
 			</tr>
@@ -160,10 +161,11 @@ display_top_tabs($tab_array, true);
 			<tr>
 				<td><input type="checkbox" id="frc<?=$i?>" name="del[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" /></td>
 				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';"><?=htmlspecialchars($list['name']);?></td>
+				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';"><?=snort_is_passlist_used($list['name']) ? gettext("Yes"):gettext("No");?></td>
 				<td ondblclick="document.location='snort_passlist_edit.php?id=<?=$i;?>';"><?=htmlspecialchars($list['descr']);?>&nbsp;</td>
-				<td style="cursor: pointer;"><a href="snort_passlist_edit.php?id=<?=$i;?>" class="fa fa-pencil" title="<?=gettext('Edit Pass List');?>"></a>
-				<a class="fa fa-trash no-confirm" id="Xcdel_<?=$i?>" title="<?=gettext('Delete Pass List'); ?>"></a>
-				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="cdel_<?=$i?>" name="cdel_<?=$i?>" value="cdel_<?=$i?>" title="<?=gettext('Delete Pass List'); ?>">Delete Pass List</button></td>
+				<td style="cursor: pointer;"><a href="snort_passlist_edit.php?id=<?=$i;?>" class="fa fa-pencil" title="<?=gettext('Edit this Pass List');?>"></a>
+				<a class="fa fa-trash no-confirm" id="Xcdel_<?=$i?>" title="<?=gettext('Delete this Pass List'); ?>"></a>
+				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="cdel_<?=$i?>" name="cdel_<?=$i?>" value="cdel_<?=$i?>" title="<?=gettext('Delete this Pass List'); ?>">Delete Pass List</button></td>
 			</tr>
 		<?php endforeach; ?>
 			</tbody>
