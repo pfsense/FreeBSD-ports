@@ -4917,7 +4917,7 @@ function select_whitelist(mode, permit_list) {
 									$('#dnsbl_customlist').val(val);
 								}
 								$(this).dialog('close');
-								add_description('dns_reply');
+								add_description(mode);
 							};
 	});
 	buttons['Cancel'] = function() { $(this).dialog('close'); };
