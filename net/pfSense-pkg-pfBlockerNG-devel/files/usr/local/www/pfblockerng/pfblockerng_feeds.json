@@ -155,6 +155,7 @@
 			"cron":		"01hour",
 			"feeds": [
 				{
+					"status":	"discontinued",
 					"feed":		"Autoshun",
 					"website":	"https://www.autoshun.org",
 					"contact":	"https://www.autoshun.org/contact/",

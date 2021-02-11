@@ -236,8 +236,10 @@ function pfBlockerNG_update_table() {
 				}
 				$pfb_table[$pfb_alias] = array('count' => $match[1], 'img' => $pfb['down']);
 				exec("{$pfb['ls']} -l -D'%b %d %T' {$pfb['aliasdir']}/{$pfb_alias}.txt | {$pfb['awk']} '{ print $6,$7,$8 }'", $update);
-				$pfb_table[$pfb_alias]['update'] = $update[0];
-				$pfb_table[$pfb_alias]['rule'] = 0;
+
+				$pfb_table[$pfb_alias]['update']	= $update[0];
+				$pfb_table[$pfb_alias]['rule']		= 0;
+				$pfb_table[$pfb_alias]['packets']	= 0;
 				unset($match, $update);
 				continue;
 			}
@@ -269,7 +271,12 @@ function pfBlockerNG_update_table() {
 			if (isset($rule['source']['address']) && stripos($rule['source']['address'], 'pfb_') !== FALSE) {
 				foreach ($pfb_packets as $pkey => $prule) {
 					if ($rule['tracker'] == $prule['tracker']) {
-						$pfb_table[$rule['source']['address']]['packets'] += $prule['packets'];
+						if (!isset($pfb_table[$rule['source']['address']]['packets'])) {
+							$pfb_table[$rule['source']['address']]['packets'] = 0;
+						}
+						if (isset($prule['packets']) && $prule['packets'] > 0) {
+							$pfb_table[$rule['source']['address']]['packets'] += $prule['packets'];
+						}
 						unset($pfb_packets[$pkey]);
 						break;
 					}
@@ -284,7 +291,12 @@ function pfBlockerNG_update_table() {
 			if (isset($rule['destination']['address']) && stripos($rule['destination']['address'], 'pfb_') !== FALSE) {
 				foreach ($pfb_packets as $pkey => $prule) {
 					if ($rule['tracker'] == $prule['tracker']) {
-						$pfb_table[$rule['destination']['address']]['packets'] += $prule['packets'];
+						if (!isset($pfb_table[$rule['destination']['address']]['packets'])) {
+							$pfb_table[$rule['destination']['address']]['packets'] = 0;
+						}
+						if (isset($prule['packets']) && $prule['packets'] > 0) {
+							$pfb_table[$rule['destination']['address']]['packets'] += $prule['packets'];
+						}
 						unset($pfb_packets[$pkey]);
 						break;
 					}
@@ -456,28 +468,55 @@ function pfBlockerNG_get_header($mode='') {
 	$pfb_table = pfBlockerNG_update_table();
 
 	$pfb_table['stats'] = $pfb_table['counts'] = array();
-	$types = array_flip(array('Deny', 'Pass', 'Match'));
+	$pfb_ip_types = array_flip(array('Deny', 'Pass', 'Match'));
 
 	if (!empty($pfb_table)) {
 		foreach ($pfb_table as $pfb_alias => $values) {
 
+			if (empty($values)) {
+				continue;
+			}
+
 			// TODO: Split Deny evaluations into Block and Reject
-			if ($values['type'] == 'Block' || $values['type'] == 'Reject') {
+			if (isset($values['type']) && ($values['type'] == 'Block' || $values['type'] == 'Reject')) {
 				$values['type'] = 'Deny';
 			}
 
 			if (!isset($values['id'])) {
-				$pfb_table['stats']['DNSBL']		+= $values['packets'];
-				$pfb_table['counts']['DNSBL']		+= $values['count'];
+				if (!isset($pfb_table['stats']['DNSBL'])) {
+					$pfb_table['stats']['DNSBL'] = 0;
+				}
+				if (!isset($pfb_table['counts']['DNSBL'])) {
+					$pfb_table['counts']['DNSBL'] = 0;
+				}
+
+				if (is_numeric($values['packets'])) {
+					$pfb_table['stats']['DNSBL']		+= $values['packets'];
+				}
+				if (is_numeric($values['count'])) {
+					$pfb_table['counts']['DNSBL']		+= $values['count'];
+				}
 			}
-			elseif (isset($values['id']) && isset($types[$values['type']])) {
-				$pfb_table['stats'][$values['type']]	+= $values['packets'];
-				$pfb_table['counts'][$values['type']]	+= $values['count'];
+			elseif (isset($values['id']) && isset($values['type']) && isset($pfb_ip_types[$values['type']])) {
+				if (!isset($pfb_table['stats'][$values['type']])) {
+					$pfb_table['stats'][$values['type']] = 0;
+				}
+
+				if (!isset($pfb_table['counts'][$values['type']])) {
+					$pfb_table['counts'][$values['type']] = 0;
+				}
+
+				if (is_numeric($values['packets'])) {
+					$pfb_table['stats'][$values['type']]	+= $values['packets'];
+				}
+				if (is_numeric($values['count'])) {
+					$pfb_table['counts'][$values['type']]	+= $values['count'];
+				}
 			}
 		}
 	}
 
-	foreach ($types as $key => $type) {
+	foreach ($pfb_ip_types as $key => $itype) {
 		if (!isset($pfb_table['stats'][$key])) {
 			$pfb_table['stats'][$key] = 0;
 		}
@@ -492,7 +531,7 @@ function pfBlockerNG_get_header($mode='') {
 		$pfb_msg	= 'pfBlockerNG is Active.';
 
 		// Check Masterfile Database Sanity
-		if ($pfb['config']['enable_dup'] == 'on') {
+		if (isset($pfb['config']['enable_dup']) && $pfb['config']['enable_dup'] == 'on') {
 			$db_sanity = exec("{$pfb['grep']} 'Sanity check' {$pfb['logdir']}/pfblockerng.log | tail -1 | {$pfb['grep']} -o 'PASSED'");
 			if ($db_sanity != 'PASSED') {
 				$pfb_status	= 'fa fa-exclamation-circle text-warning';
@@ -563,7 +602,7 @@ function pfBlockerNG_get_header($mode='') {
 
 			$stats[$key][$type] = 0;
 			if ($type == 'DNSBL') {
-				if ($pfb['dnsbl_missing']) {
+				if (isset($pfb['dnsbl_missing'])) {
 					$stats[$key][$type] = "<span title='*** SQLite database missing, Force Reload DNSBL to recover! ***'>Unknown</span>";
 				} else {
 					$stats[$key][$type] = $pfb_table['stats']['DNSBL'];

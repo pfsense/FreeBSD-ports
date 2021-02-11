@@ -134,6 +134,7 @@ $section->addInput(new Form_Select(
 	'security.cloudflare-dns.com' => 'CloudFlare Security',
 	'family.cloudflare-dns.com' => 'CloudFlare Family',
 	'dns.google' => 'Google',
+	'doh.dns.apple.com' => 'Apple',
 	'doh.opendns.com' => 'OpenDNS',
 	'doh.familyshield.opendns.com' => 'OpenDNS Family',
 	'dns.quad9.net' => 'Quad9',
