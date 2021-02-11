@@ -172,7 +172,7 @@ if ($_POST['save'] == "Save") {
 }
 
 $pglinks = array("", "/snort/snort_interfaces.php", "/snort/snort_passlist.php", "@self");
-$pgtitle = array("Services", "Snort", "Pass List", "Pass List Edit");
+$pgtitle = array("Services", "Snort", "Pass List", "Edit");
 include_once("head.inc");
 
 if ($input_errors)

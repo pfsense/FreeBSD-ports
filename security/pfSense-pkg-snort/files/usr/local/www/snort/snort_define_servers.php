@@ -6,7 +6,7 @@
  * Copyright (c) 2019-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya.
- * Copyright (c) 2014-2020 Bill Meeks
+ * Copyright (c) 2014-2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -158,7 +158,9 @@ if ($_POST['save']) {
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
 if (empty($if_friendly)) {
 	$if_friendly = "None";
-}$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Interface Servers and Ports Variables - {$if_friendly}"));
+}
+$pglinks = array("", "/snort/snort_interfaces.php", "/snort/snort_interfaces_edit.php?id={$id}", "@self");
+$pgtitle = array("Services", "Snort", "Interface Settings", "{$if_friendly} - Server and Port Variables");
 include("head.inc");
 
 /* Display Alert message */

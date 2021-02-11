@@ -938,7 +938,9 @@ elseif ($_POST['apply']) {
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_rule[$id]['interface']);
 if (empty($if_friendly)) {
 	$if_friendly = "None";
-}$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Rules"), gettext("{$if_friendly}"));
+}
+$pglinks = array("", "/snort/snort_interfaces.php", "/snort/snort_interfaces_edit.php?id={$id}", "@self");
+$pgtitle = array("Services", "Snort", "Interface Settings", "{$if_friendly} - Rules");
 include("head.inc");
 
 // Display error messages if we have any

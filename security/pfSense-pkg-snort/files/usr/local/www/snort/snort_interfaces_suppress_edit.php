@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya.
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -135,7 +135,8 @@ if ($_POST['save']) {
 // Finished with config array reference, so release it
 unset($a_suppress);
 
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Suppression List Edit"));
+$pglinks = array("", "/snort/snort_interfaces.php", "/snort/snort_interfaces_suppress.php", "@self");
+$pgtitle = array("Services", "Snort", "Suppression List", "Edit");
 include_once("head.inc");
 
 if ($input_errors)

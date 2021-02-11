@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -182,7 +182,8 @@ if (isset($_POST['save']) || isset($_POST['apply'])) {
 	}
 }
 
-$pgtitle = array(gettext('Services'), gettext('Snort'), gettext('Log Management'));
+$pglinks = array("", "/snort/snort_interfaces.php", "@self");
+$pgtitle = array('Services', 'Snort', 'Log Management');
 include_once("head.inc");
 
 /* Display Alert message, under form tag or no refresh */

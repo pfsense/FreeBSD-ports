@@ -6,7 +6,7 @@
  * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
  * All rights reserved.
  *
@@ -593,7 +593,8 @@ foreach ($a_instance as $id => $instance) {
 	$interfaces[$id] = convert_friendly_interface_to_friendly_descr($instance['interface']) . " (" . get_real_interface($instance['interface']) . ")";
 }
 
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Alerts"));
+$pglinks = array("", "/snort/snort_interfaces.php", "@self");
+$pgtitle = array("Services", "Snort", "Alerts");
 include("head.inc");
 
 /* refresh every 60 secs */

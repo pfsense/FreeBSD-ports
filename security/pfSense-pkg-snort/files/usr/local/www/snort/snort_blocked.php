@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014-2018 Bill Meeks
+ * Copyright (c) 2014-2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -120,8 +120,6 @@ if ($_POST['download'])
 			unlink_if_exists("{$g['tmp_path']}/{$file_name}");
 			rmdir_recursive("{$g['tmp_path']}/snort_blocked");
 
-//			header("Location: /snort/snort_blocked.php");
-//			exit;
 		} else
 			$savemsg = gettext("An error occurred while creating archive");
 	} else
@@ -143,7 +141,8 @@ if ($_POST['save'])
 
 }
 
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Blocked Hosts"));
+$pglinks = array("", "/snort/snort_interfaces.php", "@self");
+$pgtitle = array("Services", "Snort", "Blocked Hosts");
 include("head.inc");
 
 /* refresh every 60 secs */
