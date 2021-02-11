@@ -48,9 +48,8 @@ DOCS_PORTDOCS=		*
 
 OPENMP_USES=		compiler:openmp
 OPENMP_CMAKE_BOOL=	OPENMP_ENABLED
-.if ${MACHINE_ARCH} == i386 || !exists(/usr/include/omp.h)
-# XXX base/230888 via #pragma omp atomic
-# XXX ports/199603: LLVM openmp in base doesn't support aarch64, armv6, armv7 yet
+.if !exists(/usr/include/omp.h)
+# XXX ports/199603: LLVM openmp in base doesn't support armv6, armv7 yet
 OPENMP_VARS=		OPENMP=gcc-
 .endif
 
