@@ -227,6 +227,27 @@ if (empty($config['installedpackages']['snortglobal']['rule_update_starttime']) 
 }
 
 /**********************************************************/
+/* Add new multiple alias & custom IP assignment feature  */
+/* for Pass Lists by converting existing <address>        */
+/* element for existing entries into an array. Migrate    */
+/* any existing <address> to the new array structure.     */
+/**********************************************************/
+if (is_array($config['installedpackages']['snortglobal']['whitelist']['item'])) {
+	foreach ($config['installedpackages']['snortglobal']['whitelist']['item'] as &$wlisti) {
+		if (!is_array($wlisti['address']) && !is_array($wlisti['address']['item']) && !empty($wlisti['address'])) {
+			$tmp = $wlisti['address'];
+			$wlisti['address'] = array();
+			$wlisti['address']['item'] = array();
+			$wlisti['address']['item'][] = $tmp;
+			$updated_cfg = true;
+		}
+	}
+
+	// Release reference to whitelist array
+	unset($wlisti);
+}
+
+/**********************************************************/
 /* Migrate per interface settings if required.            */
 /**********************************************************/
 foreach ($config['installedpackages']['snortglobal']['rule'] as &$rule) {
