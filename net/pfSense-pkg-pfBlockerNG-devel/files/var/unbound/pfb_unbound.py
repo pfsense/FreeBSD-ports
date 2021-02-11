@@ -181,8 +181,8 @@ def init_standard(id, env):
         os.remove(pfb['pfb_py_cache'])
 
     # DNSBL validation on these RR_TYPES only
-    pfb['rr_types'] = (RR_TYPE_A, RR_TYPE_AAAA, RR_TYPE_ANY, RR_TYPE_CNAME, RR_TYPE_DNAME, \
-                       RR_TYPE_MX, RR_TYPE_NS, RR_TYPE_PTR, RR_TYPE_SRV, RR_TYPE_TXT)
+    pfb['rr_types'] = (RR_TYPE_A, RR_TYPE_AAAA, RR_TYPE_ANY, RR_TYPE_CNAME, RR_TYPE_DNAME, RR_TYPE_SIG, \
+                       RR_TYPE_MX, RR_TYPE_NS, RR_TYPE_PTR, RR_TYPE_SRV, RR_TYPE_TXT, 64, 65)
 
     pfb['rr_types2'] = ('A', 'AAAA')
 
@@ -782,16 +782,24 @@ def get_details_dnsbl(m_type, qinfo, qstate, rep, kwargs):
             break
 
         csv_line = ','.join('{}'.format(v) for v in ('DNSBL-python', timestamp, q_name, q_ip, isDNSBL['p_type'], isDNSBL['b_type'], isDNSBL['group'], isDNSBL['b_eval'], isDNSBL['feed'], dupEntry))
-
-        # Write to dnsbl.log
-        with open('/var/log/pfblockerng/dnsbl.log', 'a') as append_log:
-            append_log.write(csv_line + '\n')
-
-        # Write to unified log
-        with open('/var/log/pfblockerng/unified.log', 'a') as append_log:
-            append_log.write(csv_line + '\n')
+        log_entry(csv_line, '/var/log/pfblockerng/dnsbl.log')
+        log_entry(csv_line, '/var/log/pfblockerng/unified.log')
 
     return True
+
+
+def log_entry(line, log):
+    for i in range(1,5):
+        try:
+            with open(log, 'a') as append_log:
+                append_log.write(line + '\n')
+        except Exception as e:
+            if i == 4:
+                sys.stderr.write("[pfBlockerNG]: log_entry: {}: {}" .format(i, e))
+            time.sleep(0.25)
+            pass
+            continue
+        break
 
 
 def get_details_reply(m_type, qinfo, qstate, rep, kwargs):
@@ -967,14 +975,8 @@ def get_details_reply(m_type, qinfo, qstate, rep, kwargs):
         break
 
     csv_line = ','.join('{}'.format(v) for v in ('DNS-reply', timestamp, m_type, o_type, q_type, ttl, q_name, q_ip, r_addr, iso_code))
-
-    # Write to dns_reply.log
-    with open('/var/log/pfblockerng/dns_reply.log', 'a') as append_log:
-        append_log.write(csv_line + '\n')
-
-    # Write to unified log
-    with open('/var/log/pfblockerng/unified.log', 'a') as append_log:
-        append_log.write(csv_line + '\n')
+    log_entry(csv_line, '/var/log/pfblockerng/dns_reply.log')
+    log_entry(csv_line, '/var/log/pfblockerng/unified.log')
 
     return True
 

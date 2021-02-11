@@ -256,8 +256,12 @@ $section->addInput(new Form_Select(
 	'asn_reporting',
 	'ASN Reporting',
 	$pconfig['asn_reporting'],
-	[	'disabled' => 'Disabled', '24hour' => 'Enabled - ASN entries cached for 24 hours', '12hour' => 'Enabled - ASN entries cached for 12 hours',
-		'4hour' => 'Enabled - ASN entries cached for 4 hours', '1hour' => 'Enabled - ASN entries cached for 1 hour' ]
+	[	'disabled'	=> 'Disabled',
+		'week'		=> 'Enabled - ASN entries cached for 1 week',
+		'24hour'	=> 'Enabled - ASN entries cached for 24 hours',
+		'12hour'	=> 'Enabled - ASN entries cached for 12 hours',
+		'4hour'		=> 'Enabled - ASN entries cached for 4 hours',
+		'1hour'		=> 'Enabled - ASN entries cached for 1 hour' ]
 ))->setHelp('Query for the ASN (BGPview.io API) for each block/reject/permit/match IP entry. ASN values are cached as per the defined selection.')
   ->setAttribute('style', 'width: auto');
 
