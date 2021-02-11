@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2019-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -209,7 +209,9 @@ if ($_POST['save']) {
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
 if (empty($if_friendly)) {
 	$if_friendly = "None";
-}$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("IP Reputation Preprocessor"), gettext("{$if_friendly}"));
+}
+$pglinks = array("", "/snort/snort_interfaces.php", "/snort/snort_interfaces_edit.php?id={$id}", "@self");
+$pgtitle = array("Services", "Snort", "Interface Settings", "{$if_friendly} - IP Reputation");
 include("head.inc");
 
 /* Display Alert message */

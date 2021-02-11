@@ -6,7 +6,7 @@
  * Copyright (c) 2011-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya
- * Copyright (c) 2013-2020 Bill Meeks
+ * Copyright (c) 2013-2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -811,7 +811,8 @@ if ($pconfig['host_attribute_table'] == 'on' && empty($pconfig['host_attribute_d
 if (empty($if_friendly)) {
 	$if_friendly = "None";
 }
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Preprocessors and Flow"), gettext("{$if_friendly}"));
+$pglinks = array("", "/snort/snort_interfaces.php", "/snort/snort_interfaces_edit.php?id={$id}", "@self");
+$pgtitle = array("Services", "Snort", "Interface Settings", "{$if_friendly} - Preprocessors and Flow");
 include("head.inc");
 
 /* Display Alert message */
