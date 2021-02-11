@@ -4495,19 +4495,22 @@ function pfb_daemon_filterlog() {
 	if ($pfb['asn_reporting'] != 'disabled') {
 		switch ($pfb['asn_reporting']) {
 			case '1hour':
-				$asn_cache = '1 hours';
+				$asn_cache = '-1 hour';
 				break;
 			case '4hour':
-				$asn_cache = '4 hours';
+				$asn_cache = '-4 hours';
 				break;
 			case '12hour':
-				$asn_cache = '12 hours';
+				$asn_cache = '-12 hours';
 				break;
 			case '24hour':
-				$asn_cache = '24 hours';
+				$asn_cache = '-24 hours';
+				break;
+			case 'week':
+				$asn_cache = '-1 week';
 				break;
 			default:
-				$asn_cache = '24 hours';
+				$asn_cache = '-24 hours';
 		}
 	}
 
@@ -4835,7 +4838,7 @@ function pfb_daemon_filterlog() {
 					$asn = 'null';
 					if ($pfb['asn_reporting'] != 'disabled') {
 
-						$asn_cache = FALSE;
+						$is_asn_cache = FALSE;
 						$db_handle = pfb_open_sqlite(5, 'Query ASN cache');
 						if ($db_handle) {
 
@@ -4854,14 +4857,14 @@ function pfb_daemon_filterlog() {
 								$stmt->bindValue(':host', $ip, SQLITE3_TEXT);
 								$result = $stmt->execute();
 								if ($result) {
-									$asn_cache = $result->fetchArray(SQLITE3_ASSOC);
+									$is_asn_cache = $result->fetchArray(SQLITE3_ASSOC);
 								}
 							}
 						}
 						pfb_close_sqlite($db_handle);
 
 						// If Host IP is not in ASN cache, collect ASN from BGPview API
-						if (!$asn_cache) {
+						if (!$is_asn_cache) {
 
 							$asn		= '';
 							$bgp_url	= "https://api.bgpview.io/ip/{$ip}";
@@ -4918,7 +4921,7 @@ function pfb_daemon_filterlog() {
 
 						// Use cached ASN Entry
 						else {
-							$asn = "{$asn_cache['asn']}"	?: 'Unknown';
+							$asn = "{$is_asn_cache['asn']}"	?: 'Unknown';
 						}
 					}
 
