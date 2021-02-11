@@ -89,7 +89,7 @@ if (!defined("SNORT_OPENAPPID_DNLD_URL"))
 if (!defined("SNORT_OPENAPPID_DNLD_FILENAME"))
 	define("SNORT_OPENAPPID_DNLD_FILENAME", "snort-openappid.tar.gz");
 if (!defined("SNORT_OPENAPPID_RULES_URL"))
-	define("SNORT_OPENAPPID_RULES_URL", "https://files.pfsense.org/openappid/");
+	define("SNORT_OPENAPPID_RULES_URL", "https://files.netgate.com/openappid/");
 if (!defined("SNORT_OPENAPPID_RULES_FILENAME"))
 	define("SNORT_OPENAPPID_RULES_FILENAME", "appid_rules.tar.gz");
 if (!defined("SNORT_RULES_UPD_LOGFILE"))
