@@ -179,11 +179,8 @@ fetch_upgrade_packages() {
 	pkg_with_pb "upgrade -F" "Downloading upgrade packages"
 
 	# Workaround for pkg bug https://github.com/freebsd/pkg/issues/1613
-	if pkg-static upgrade -Unq 2>&1 | \
-	    sed '/ will be affected/,/ be REINSTALLED:/ {; d; };' | \
-	    egrep -q '^[[:blank:]]*pkg-[0-9]'; then
-		pkg_with_pb "upgrade -fF pkg" "Downloading pkg"
-	fi
+	# *ALWAYS* download pkg itself to avoid being bitten by it again
+	pkg_with_pb "upgrade -fF pkg" "Downloading pkg"
 }
 
 pkg_lock() {
