@@ -162,7 +162,7 @@ foreach (array('existing', 'actual') as $pftype) {
 }
 
 // Default cURL options
-$pfb['curl_defaults'] = array(  CURLOPT_USERAGENT	=> 'pfSense/pfBlockerNG cURL download agent',
+$pfb['curl_defaults'] = array(  CURLOPT_USERAGENT	=> 'pfSense/pfBlockerNG cURL download agent-' . system_get_uniqueid(),
 				CURLOPT_SSL_CIPHER_LIST	=> 'TLSv1.3, TLSv1.2',
 				CURLOPT_FOLLOWLOCATION	=> true,
 				CURLOPT_SSL_VERIFYPEER	=> true,
@@ -1165,6 +1165,20 @@ accesslog.filename		= "|/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblock
 
 EOF;
 }
+	// Lighttpd v1.4.58+ conditional error log with 'ssl.verifyclient.activate' to collect the domain name
+	$lighty_ver = exec('/usr/local/sbin/lighttpd -v 2>&1');
+	if (strpos($lighty_ver, 'lighttpd/1.4.58') !== FALSE ||
+	    strpos($lighty_ver, 'lighttpd/1.4.59') !== FALSE ||
+	    strpos($lighty_ver, 'lighttpd/1.4.60') !== FALSE ||
+	    strpos($lighty_ver, 'lighttpd/1.4.61') !== FALSE ||
+	    strpos($lighty_ver, 'lighttpd/1.5') !== FALSE) {
+
+		$pfb_conf .= <<<EOF
+ssl.verifyclient.activate	= "enable"
+
+EOF;
+	}
+
 	$pfb_conf .= <<<EOF
 
 \$HTTP["scheme"] == "http" {
@@ -5162,53 +5176,100 @@ function pfb_daemon_dnsbl() {
 		syslog(LOG_NOTICE, '[pfBlockerNG] DNSBL parser daemon started');
 
 		$lighty_47	= FALSE;
-		$checkpos	= 3;
+		$lighty_58	= FALSE;
+		$checkpos	= 3; 	// Pre Lighttpd v1.4.47
+
 		while (!feof($h_handle)) {
 			$pfb_buffer = @fgets($h_handle);
 
-			// Lighttpd v1.4.47 uses mod_openssl with a different conditional log formatting
-			if (strpos($pfb_buffer, 'global/HTTPscheme') !== FALSE) {
-				$lighty_47	= TRUE;
-				$checkpos	= 1;
-				continue;
-			}
+			if (!$lighty_58) {
 
-			// Parse only HTTP["xxx"] log lines
-			if (strpos($pfb_buffer, 'HTTP[') === FALSE) {
-				continue;
-			}
-
-			// Verify only HTTPS lines
-			if (strpos($pfb_buffer, '( https') !== FALSE) {
-				if ($lighty_47) {
+				// Lighttpd v1.4.58+ conditional error log with 'ssl.verifyclient.activate' to collect the domain name
+				if (!$lighty_47 &&
+				    (strpos($pfb_buffer, 'lighttpd/1.4.58') !== FALSE ||
+				    strpos($pfb_buffer, 'lighttpd/1.4.59') !== FALSE ||
+				    strpos($pfb_buffer, 'lighttpd/1.4.60') !== FALSE ||
+				    strpos($pfb_buffer, 'lighttpd/1.4.61') !== FALSE ||
+				    strpos($pfb_buffer, 'lighttpd/1.5') !== FALSE)) {
+					$lighty_58	= TRUE;
 					continue;
 				}
-				$checkpos = 0;
+
+				// Lighttpd v1.4.47 uses mod_openssl with a different conditional log formatting
+				elseif (strpos($pfb_buffer, 'global/HTTPscheme') !== FALSE) {
+					$lighty_47	= TRUE;
+					$checkpos	= 1;
+					continue;
+				}
+
 			}
 
-			// Verify HTTP["remoteip"]
-			if ($checkpos == 1 && strpos($pfb_buffer, '["re') !== FALSE) {
-				$src_ip = strstr($pfb_buffer, ' ) compare', TRUE);
-				$src_ip = ltrim(strstr($src_ip, '] ( ', FALSE), '] ( ');
-				$src_ip = (filter_var($src_ip, FILTER_VALIDATE_IP) !== FALSE) ? $src_ip : '';
-			}
+			if ($lighty_58) {
 
-			// Verify HTTP["host"]
-			elseif ($checkpos == 2 && strpos($pfb_buffer, '["ho') !== FALSE) {
-				$lighty_47	= FALSE;
-				$domain		= strstr($pfb_buffer, ' ) compare', TRUE);
-				$domain		= ltrim(strstr($domain, '] ( ', FALSE), '] ( ');
+				// Verify HTTP["remoteip"]
+				if (empty($src_ip)) {
+					if (strpos($pfb_buffer, '["re') !== FALSE) {
+						$src_ip = strstr($pfb_buffer, ') compare', TRUE);
+						$src_ip = ltrim(strstr($src_ip, '] (', FALSE), '] (');
+						$src_ip = (filter_var($src_ip, FILTER_VALIDATE_IP) !== FALSE) ? $src_ip : '';
+					}
+					continue;
+				}
 
-				// URL/Referer/URI/Agent String not available for HTTPS events
-				$req_agent	= 'Unknown';
-				$type		= 'DNSBL-HTTPS';
-
-				// Log event and Increment SQLite DNSBL Group counter
+				if (!empty($src_ip) && strpos($pfb_buffer, "SSL: ") === FALSE) {
+					continue;
+				}
+				if (empty($domain) && strpos($pfb_buffer, "SSL: can't verify client without ssl.ca-file") !== FALSE) {
+					$domain = str_replace(' server name ', '', strstr(trim($pfb_buffer), ' server name ', FALSE));
+				}
 				if (!empty($domain) && !empty($src_ip)) {
-				 	pfb_log_event($type, $domain, $src_ip, $req_agent);
+
+					// URL/Referer/URI/Agent String not available for HTTPS events
+					$req_agent	= 'Unknown';
+					$type		= 'DNSBL-HTTPS';
+
+					pfb_log_event($type, $domain, $src_ip, $req_agent);
+					$domain = $src_ip = '';
 				}
 			}
-			$checkpos++;
+			else {
+				// Parse only HTTP["xxx"] log lines
+				if (strpos($pfb_buffer, 'HTTP[') === FALSE) {
+					continue;
+				}
+
+				// Verify only HTTPS lines
+				if (strpos($pfb_buffer, '( https') !== FALSE) {
+					if ($lighty_47) {
+						continue;
+					}
+					$checkpos = 0;
+				}
+
+				// Verify HTTP["remoteip"]
+				if ($checkpos == 1 && strpos($pfb_buffer, '["re') !== FALSE) {
+					$src_ip = strstr($pfb_buffer, ' ) compare', TRUE);
+					$src_ip = ltrim(strstr($src_ip, '] ( ', FALSE), '] ( ');
+					$src_ip = (filter_var($src_ip, FILTER_VALIDATE_IP) !== FALSE) ? $src_ip : '';
+				}
+
+				// Verify HTTP["host"]
+				elseif ($checkpos == 2 && strpos($pfb_buffer, '["ho') !== FALSE) {
+					$lighty_47	= FALSE;
+					$domain		= strstr($pfb_buffer, ' ) compare', TRUE);
+					$domain		= ltrim(strstr($domain, '] ( ', FALSE), '] ( ');
+
+					// URL/Referer/URI/Agent String not available for HTTPS events
+					$req_agent	= 'Unknown';
+					$type		= 'DNSBL-HTTPS';
+
+					// Log event and Increment SQLite DNSBL Group counter
+					if (!empty($domain) && !empty($src_ip)) {
+					 	pfb_log_event($type, $domain, $src_ip, $req_agent);
+					}
+				}
+				$checkpos++;
+			}
 		}
 	}
 	else {
@@ -6697,6 +6758,13 @@ function sync_package_pfblockerng($cron='') {
 							);
 
 			$safesearch_update = $pfb_found = FALSE;
+
+			// Remove deprecated firefox conf file
+			if (file_exists("{$pfb['dnsbldir']}/pfb_dnsbl.firefoxdoh.conf")) {
+				unlink_if_exists("{$pfb['dnsbldir']}/pfb_dnsbl.firefoxdoh.conf");
+				$safesearch_update = TRUE;
+			}
+
 			foreach ($safesearch_types as $safe_type) {
 				if ($pfb[$safe_type[0]] == $safe_type[1]) {
 					$pfb_found = TRUE;
@@ -6800,7 +6868,8 @@ function sync_package_pfblockerng($cron='') {
 					if (isset($data['nxdomain'])) {
 						$line = "{$host},nxdomain,nxdomain\n";
 					} else {
-						$line = "{$host}," . ($data['A'] ?: '') . ',' . ($data['AAAA'] ?: '') . "\n";
+						$line = "{$host}," . ($data['A'] ?: '') . ',' . ($data['AAAA'] ?: '') . "\n"
+							. "www.{$host}," . ($data['A'] ?: '') . ',' . ($data['AAAA'] ?: '') . "\n";
 					}
 					@file_put_contents('/var/unbound/pfb_py_ss.raw', $line, FILE_APPEND);
 				}
@@ -9509,7 +9578,6 @@ function pfblockerng_php_pre_deinstall_command() {
 	unlink_if_exists("{$pfb['dnsbl_resolver']}");
 	unlink_if_exists("{$pfb['dnsbl_cache']}");
 	unlink_if_exists("/var/tmp/unbound_cache");
-	unlink_if_exists("{$pfb['asn_cache']}");
 	unlink_if_exists("{$pfb['ip_cache']}");
 
 	// Remove incorrect xml setting
