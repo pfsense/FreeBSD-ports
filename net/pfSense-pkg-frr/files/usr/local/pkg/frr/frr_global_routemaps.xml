@@ -501,6 +501,23 @@
 				The tag number to set or match, an integer 1-4294967295.
 			</description>
 		</field>
+		<field>
+			<name>RPKI</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Validate BGP Updates</fielddescr>
+			<fieldname>rpki_state</fieldname>
+			<description>Match RKPI State</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>None (Do not match)</name><value>none</value></option>
+				<option><name>Prefix not found</name><value>notfound</value></option>
+				<option><name>Invalid prefix</name><value>invalid</value></option>
+				<option><name>Valid prefix</name><value>valid</value></option>
+			</options>
+		</field>
 	</fields>
 	<custom_php_resync_config_command>
 		frr_config_sort_route_map();
