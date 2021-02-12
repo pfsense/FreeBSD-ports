@@ -1037,7 +1037,7 @@ function frr_package_config_upgrade() {
 	}
 
 	/* ACL and Prefix List add IP Type*/
-	foreach ($frr_acls_conf as $aclconf) {
+	foreach ($frr_acls_conf as & $aclconf) {
 		if (empty($aclconf['iptype']) && !empty($aclconf['row'])) {
 			if (is_subnetv4($aclconf['row'][0]['source'])) {
 				$aclconf['iptype'] = 'IPv4';
@@ -1047,12 +1047,12 @@ function frr_package_config_upgrade() {
 			$need_write = true;
 		}
 	}
-	foreach ($frr_prefixes_conf as $prefixconf) {
+	foreach ($frr_prefixes_conf as & $prefixconf) {
 		if (empty($prefixconf['iptype']) && !empty($prefixconf['row'])) {
-			if (is_subnetv4($aclconf['row'][0]['source'])) {
-				$aclconf['iptype'] = 'IPv4';
+			if (is_subnetv4($prefixconf['row'][0]['source'])) {
+				$prefixconf['iptype'] = 'IPv4';
 			} else {
-				$aclconf['iptype'] = 'IPv6';
+				$prefixconf['iptype'] = 'IPv6';
 			}
 			$need_write = true;
 		}
