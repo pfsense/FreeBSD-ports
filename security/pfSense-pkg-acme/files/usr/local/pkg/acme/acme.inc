@@ -453,6 +453,18 @@ $acme_domain_validation_method['dns_cn'] = array('name' => "DNS-Core-Networks",
 			'description' => "Core Networks Password"
 		)
 	));
+$acme_domain_validation_method['dns_cpaneldns'] = array('name' => "DNS-cPanel",
+        'fields' => array(
+                'CPANELDNS_AUTH_ID' => array('name' => "cpanel_username", 'columnheader' => "Username", 'type' => "textbox",
+                        'description' => "cPanel Username"
+                ),
+                'CPANELDNS_AUTH_PASSWORD' => array('name' => "cpanel_password", 'columnheader' => "Password", 'type' => "password",
+                        'description' => "cPanel Password"
+                ),
+                'CPANELDNS_API' => array('name' => "cpanel_api", 'columnheader' => "API URL", 'type' => "textbox",
+                        'description' => "cPanel API URL with protocol and port (ie: https://foo.com:2083)"
+                ),
+        ));
 $acme_domain_validation_method['dns_cyon'] = array('name' => "DNS-cyon.ch",
 	'fields' => array(
 		'CY_Username' => array('name' => "cy_username", 'columnheader' => "Username", 'type' => "textbox",
