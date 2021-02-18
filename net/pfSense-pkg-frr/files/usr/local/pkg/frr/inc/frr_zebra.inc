@@ -581,6 +581,11 @@ function frr_zebra_generate_routemaps() {
 			}
 		}
 
+		/* RPKI */
+		if (!empty($rm['rpki_state']) && ($rm['rpki_state'] != 'none')) {
+			$rmconf .= " match rpki {$rm['rpki_state']}\n";
+		}
+
 	}
 
 	/* Append section seperator if not empty */
