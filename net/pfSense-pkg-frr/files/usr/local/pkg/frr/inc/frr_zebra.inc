@@ -244,6 +244,30 @@ function frr_zebra_generate_accesslists($ipv4 = true, $ipv6 = true) {
 	return $aclconf;
 }
 
+/* Generate BGP AS Path configuration lines */
+function frr_zebra_generate_aspaths() {
+	global $config, $frr_config_base;
+	/* Populate FRR AS Path Settings */
+	if (is_array($config['installedpackages']['frrbgpaspaths']['config'])) {
+		$frr_asp_conf = &$config['installedpackages']['frrbgpaspaths']['config'];
+	} else {
+		/* No AS Path config, stop. */
+		return null;
+	}
+	/* Section header */
+	$aspconf = "";
+	/* Loop through AS Paths and process */
+	foreach ($frr_asp_conf as $asp) {
+		/* Sort by sequence if needed */
+		frr_array_seq_sort($asp['row']);
+		foreach ($asp['row'] as $line) {
+
+			$aspconf .= "bgp as-path access-list {$asp['name']} {$line['action']} {$line['regex']}\n";
+		}
+	}
+	return $aspconf;
+}
+
 /* Prefix Lists for the zebra configuration based on GUI config */
 function frr_zebra_generate_prefixlists($ipv4 = true, $ipv6 = true) {
 	global $config, $frr_config_base;
@@ -743,6 +767,8 @@ function frr_generate_config_zebra() {
 	$frr_integrated_config['zebra'] .= frr_zebra_generate_accesslists(false, true);
 	/* Prefix Lists IPv6 */
 	$frr_integrated_config['zebra'] .= frr_zebra_generate_prefixlists(false, true);
+	/* BGP AS Paths */
+	$frr_integrated_config['zebra'] .= frr_zebra_generate_aspaths();
 	/* BGP Community Lists */
 	$frr_integrated_config['zebra'] .= frr_zebra_generate_communitylists();
 	/* Route Maps */
