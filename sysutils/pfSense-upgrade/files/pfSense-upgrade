@@ -180,7 +180,7 @@ fetch_upgrade_packages() {
 
 	# Workaround for pkg bug https://github.com/freebsd/pkg/issues/1613
 	# *ALWAYS* download pkg itself to avoid being bitten by it again
-	pkg_with_pb "upgrade -fF pkg" "Downloading pkg"
+	pkg_with_pb "fetch -yU pkg" "Downloading pkg"
 }
 
 pkg_lock() {
