@@ -915,10 +915,10 @@ function sg_create_config() {
 						$sg_tag->items[] = "domain $sr";
 					} elseif (is_username($sr)) { 
 						$sg_tag->items[] = "user   " . str_replace("'", "", $sr);
-					} else {
-						$sg_tag->items[] = trim($src[F_SOURCE]);
 					}
 				}
+			} else {
+				$sg_tag->items[] = trim($src[F_SOURCE]);
 			}
 
 			if (($squidguard_config[F_ENABLELOG] == 'on') && $src[F_LOG]) {
