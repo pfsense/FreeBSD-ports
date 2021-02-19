@@ -2,7 +2,7 @@
 
 PORTNAME=	jpeg-xl
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.1
+DISTVERSION=	0.3.2
 CATEGORIES=	graphics
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -25,7 +25,7 @@ GH_TUPLE=	barmco:skcms:6437475:skcms/third_party/skcms \
 		webmproject:sjpeg:868ab55:sjpeg/third_party/sjpeg \
 		${NULL}
 GL_ACCOUNT=	wg1
-GL_COMMIT=	ef3f7a6254e09e6672d2f071b3f4da07c0436dbb
+GL_COMMIT=	e2b1e60f5fda02f5fb395b0b6113f64d33cbb91d
 CMAKE_ON=	JPEGXL_ENABLE_PLUGINS
 CMAKE_OFF=	JPEGXL_WARNINGS_AS_ERRORS ${BENCHMARK FUZZERS TCMALLOC:L:S/^/JPEGXL_ENABLE_/}
 CMAKE_OFF+=	${OpenGL GLUT:L:S/^/CMAKE_DISABLE_FIND_PACKAGE_/} # sjpeg
@@ -45,7 +45,6 @@ GIMP_LIB_DEPENDS=	libgegl-0.4.so:graphics/gegl \
 
 JPEG_USES=		jpeg
 JPEG_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_JPEG
-JPEG_BROKEN_OFF=	https://gitlab.com/wg1/jpeg-xl/-/issues/65
 
 OPENEXR_LIB_DEPENDS=	libHalf.so:graphics/ilmbase \
 			libIlmImf.so:graphics/openexr
