@@ -74,10 +74,6 @@
 			<fieldname>descr</fieldname>
 		</columnitem>
 		<columnitem>
-			<fielddescr>Label</fielddescr>
-			<fieldname>label</fieldname>
-		</columnitem>
-		<columnitem>
 			<fielddescr>Shutdown</fielddescr>
 			<fieldname>shutdown</fieldname>
 		</columnitem>
@@ -100,17 +96,6 @@
 		<field>
 			<fielddescr>Description</fielddescr>
 			<fieldname>descr</fieldname>
-			<size>50</size>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>Label</fielddescr>
-			<fieldname>label</fieldname>
-			<description>
-				<![CDATA[
-				Label a peer with the provided word. This word can be referenced later on other daemons to refer to a specific peer.
-				]]>
-			</description>
 			<size>50</size>
 			<type>input</type>
 		</field>
@@ -172,7 +157,6 @@
 			<description>
 				<![CDATA[
 				Provide a local address to bind the BFD peer listener to for participating in a BFD session.<br />
-				This option is mandatory for IPv6.
 				]]>
 			</description>
 			<type>select_source</type>
