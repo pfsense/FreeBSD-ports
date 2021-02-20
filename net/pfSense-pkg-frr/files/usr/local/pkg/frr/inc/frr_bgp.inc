@@ -338,6 +338,8 @@ function frr_bgp_generate_routeradvanced() {
 	}
 	if (!empty($frr_bgpadv_conf['networkimportcheck'])) {
 		$advconf .= " bgp network import-check\n";
+	} else {
+		$advconf .= " no bgp network import-check\n";
 	}
 	if (!empty($frr_bgpadv_conf['rejcectassetasconfedset'])) {
 		$advconf .= " bgp reject-as-sets\n";
