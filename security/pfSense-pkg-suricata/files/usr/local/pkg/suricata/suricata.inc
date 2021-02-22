@@ -4273,6 +4273,12 @@ function suricata_get_vpns_list() {
 			$vpns_arr[] = $l2tp_net;
 		}
 	}
+	/* WireGuard */
+	if (function_exists('wg_get_tunnel_networks')) {
+		foreach (wg_get_tunnel_networks() as $wgn) {
+			$vpns_arr[] = $wgn;
+		}
+	}
 
 	if (!empty($vpns_arr)) {
 		$vpns = implode(" ", array_diff($vpns_arr, array("0.0.0.0/0", "::/0")));
