@@ -27,6 +27,8 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}${PREFIX}/www
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/widgets
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/include
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/apcupsd.xml \
@@ -36,7 +38,7 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/apcupsd_status.php \
 		${STAGEDIR}${PREFIX}/www
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/widgets/apcupsd.widget.php \
-		${STAGEDIR}${PREFIX}/www/widgets/windgets
+		${STAGEDIR}${PREFIX}/www/widgets/widgets
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/include/apcupsd_inc.inc \
 		${STAGEDIR}${PREFIX}/www/widgets/include
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/apcupsd.conf.php \
