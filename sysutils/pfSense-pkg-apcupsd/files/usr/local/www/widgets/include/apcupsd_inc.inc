@@ -1,6 +1,6 @@
 <?php
 /*
- * apcupsd.widget.php
+ * apcupsd_inc.inc
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2021 Rubicon Communications, LLC (Netgate)
@@ -20,7 +20,7 @@
  */
 
 //set variable for custom title
-$apcupsd_title = gettext("Apcupsd Improved");
+$apcupsd_title = gettext("Apcupsd");
 $apcupsd_title_link = "apcupsd.widget.php";
 $apcupsd_allow_multiple_widget_copies = false;
 ?>
