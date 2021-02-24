@@ -26,7 +26,7 @@ require_once("service-utils.inc");
 const NODE_EXPORTER_CONFIG_FILE = "/usr/local/etc/rc.conf.d/node_exporter";
 const NODE_EXPORTER_RCFILE = "/usr/local/etc/rc.d/node_exporter.sh";
 const NODE_EXPORTER_SHARE_DIR = "/usr/local/share/pfSense-pkg-node_exporter";
-const NODE_EXPORTER_RCFILE_UPSTREAM = NODE_EXPORTER_SHARE_DIR . "/node_exporter.sh";
+const NODE_EXPORTER_RCFILE_UPSTREAM = "/usr/local/etc/rc.d/node_exporter";
 const NODE_EXPORTER_DEFAULT_COLLECTORS = "boottime,cpu,exec,filesystem,loadavg,meminfo,netdev,textfile,time";
 const NODE_EXPORTER_TEXTFILE_CRONTASK = "/usr/bin/nice -n20 /usr/local/bin/python2.7 ".NODE_EXPORTER_SHARE_DIR."/interface-collector.py";
 
