@@ -84,64 +84,68 @@ if (!function_exists('compose_apc_contents')) {
 			}
 			pclose($ph);
 
-			$rtnstr = "";
-
-			$rtnstr .= "<tr><td>Status</td><td colspan=\"3\">\n";
+			$rtnstr = "<tr><td>Status</td><td colspan=\"3\">\n";
 			
-			if($results != null) {
+			if ($results != null) {
+				$bchrg = str_replace(" Percent", "", $results['BCHARGE']);
 				switch ($results['STATUS']) {
-					default:
-					case 'ONBATT':
-						if (str_replace(" Percent", "", $results['BCHARGE']) <= 25) {
-							$rtnstr .= "<span class=\"fa fa-battery-empty\" style=\"color:red;font-size:2em;transform: rotate(270deg);\"/><span style=\"color:red;font-style:bold;font-size:2em\">\n";
-						} else if (str_replace(" Percent", "", $results['BCHARGE']) <= 50) {
-							$rtnstr .= "<span class=\"fa fa-battery-quarter\" style=\"color:red;font-size:2em;transform: rotate(270deg);\"/><span style=\"color:red;font-style:bold;font-size:2em\">\n";
-						} else if (str_replace(" Percent", "", $results['BCHARGE']) <= 75) {
-							$rtnstr .= "<span class=\"fa fa-battery-half\" style=\"color:red;font-size:2em;transform: rotate(270deg);\"/><span style=\"color:red;font-style:bold;font-size:2em\">\n";
-						} else if (str_replace(" Percent", "", $results['BCHARGE']) <= 99) {
-							$rtnstr .= "<span class=\"fa fa-battery-three-quarters\" style=\"color:red;font-size:2em;transform: rotate(270deg);\"/><span style=\"color:red;font-style:bold;font-size:2em\">\n";
-						} else {
-							$rtnstr .= "<span class=\"fa fa-battery-full\" style=\"color:red;font-size:2em;transform: rotate(270deg);\"/><span style=\"color:red;font-style:bold;font-size:2em\">\n";
-						}
+					case 'ONLINE':
+						$rtnstr .= "<span class=\"fa fa-plug\" style=\"color:green;font-size:2em;transform: rotate(45deg);\"></span><span style=\"color:green;font-style:bold;font-size:2em\">\n";
 						break;
 					case 'CHARGING':
-						if (str_replace(" Percent", "", $results['BCHARGE']) <= 25) {
-							$rtnstr .= "<span class=\"fa fa-battery-empty\" style=\"color:orange;font-size:2em;transform: rotate(270deg);\"/><span style=\"color:orange;font-style:bold;font-size:2em\">\n";
-						} else if (str_replace(" Percent", "", $results['BCHARGE']) <= 50) {
-							$rtnstr .= "<span class=\"fa fa-battery-quarter\" style=\"color:orange;font-size:2em;transform: rotate(270deg);\"/><span style=\"color:orange;font-style:bold;font-size:2em\">\n";
-						} else if (str_replace(" Percent", "", $results['BCHARGE']) <= 75) {
-							$rtnstr .= "<span class=\"fa fa-battery-half\" style=\"color:orange;font-size:2em;transform: rotate(270deg);\"/><span style=\"color:orange;font-style:bold;font-size:2em\">\n";
-						} else if (str_replace(" Percent", "", $results['BCHARGE']) <= 99) {
-							$rtnstr .= "<span class=\"fa fa-battery-three-quarters\" style=\"color:orange;font-size:2em;transform: rotate(270deg);\"/><span style=\"color:orange;font-style:bold;font-size:2em\">\n";
+						$bclr = "orange";
+						if ($bchrg <= 25) {
+							$bicn = "fa fa-battery-empty";
+						} elseif ($bchrg <= 50) {
+							$bicn = "fa fa-battery-quarter";
+						} elseif ($bchrg <= 75) {
+							$bicn = "fa fa-battery-half";
+						} elseif ($bchrg <= 99) {
+							$bicn = "fa fa-battery-three-quarters";
 						} else {
-							$rtnstr .= "<span class=\"fa fa-battery-full\" style=\"color:orange;font-size:2em;transform: rotate(270deg);\"/><span style=\"color:orange;font-style:bold;font-size:2em\">\n";
+							$bicn = "fa fa-battery-empty";
 						}
+						$rtnstr .= "<span class=\"" . $bicn . "\" style=\"color:" . $bclr . ";font-size:2em;transform: rotate(270deg);\"></span><span style=\"color:" . $bclr . ";font-style:bold;font-size:2em\">\n";
 						break;
-					case 'ONLINE':
-						$rtnstr .= "<span class=\"fa fa-plug\" style=\"color:green;font-size:2em;\"/><span style=\"color:green;font-style:bold;font-size:2em\">\n";
+					default:
+					case 'ONBATT':
+						$bclr = "red";
+						if ($bchrg <= 25) {
+							$bicn = "fa fa-battery-empty";
+						} elseif ($bchrg <= 50) {
+							$bicn = "fa fa-battery-quarter";
+						} elseif ($bchrg <= 75) {
+							$bicn = "fa fa-battery-half";
+						} elseif ($bchrg <= 99) {
+							$bicn = "fa fa-battery-three-quarters";
+						} else {
+							$bicn = "fa fa-battery-full";
+						}
+						$rtnstr .= "<span class=\"" . $bicn . "\" style=\"color:" . $bclr . ";font-size:2em;transform: rotate(270deg);\"></span><span style=\"color:" . $bclr . ";font-style:bold;font-size:2em\">\n";
 						break;
 				}
 				$rtnstr .= "&nbsp;" . $results['STATUS'] . (($user_settings["widgets"][$widgetkey]["apc_host_dis"] == "yes") ? " (" . $nisip . ":" . $nisport . ")" : "") . "</span>\n";
-				$rtnstr .= (($results['LASTXFER']!='') ? "<br /><span style=\"padding-left:1em\"/>Last Transfer: &nbsp;" . $results['LASTXFER'] . "\n" : '');
+				$rtnstr .= (($results['LASTXFER']!='') ? "<br />Last Transfer: &nbsp;" . $results['LASTXFER'] . "\n" : '');
 			
 				$rtnstr .= "</td></tr><tr><td>Line Voltage</td>\n";
-				$rtnstr .= "<td><span class=\"fa fa-bolt\"/>&nbsp;" . $results['LINEV'] . (($results['LINEFREQ']!='') ? ' (' . $results['LINEFREQ'] . ')' : "") . "</td>\n";
+				$rtnstr .= "<td><span class=\"fa fa-bolt\"></span>&nbsp;" . $results['LINEV'] . (($results['LINEFREQ']!="") ? " (" . $results['LINEFREQ'] . ")" : "") . "</td>\n";
 				$rtnstr .= "<td>Out Voltage</td>\n";
-				$rtnstr .= "<td><span class=\"fa fa-bolt\"/>&nbsp;" . $results['OUTPUTV'] . "</td>\n";
+				$rtnstr .= "<td><span class=\"fa fa-bolt\"></span>&nbsp;" . $results['OUTPUTV'] . "</td>\n";
 				$rtnstr .= "</tr><tr><td>Load</td><td colspan=\"3\">\n";
 				
 				$rtnstr .= "<div class=\"progress\">";
-				if (str_replace(" Percent", "", $results['LOADPCT']) >= $user_settings["widgets"][$widgetkey]["apc_load_critical_threshold"]) {
+				$loadpct = str_replace(" Percent", "", $results['LOADPCT']);
+				if ($loadpct >= $user_settings["widgets"][$widgetkey]["apc_load_critical_threshold"]) {
 					$rtnstr .= "<div id=\"apcupsd_load_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . $user_settings["widgets"][$widgetkey]["apc_load_warning_threshold"] . "%\"></div>\n";
 					$rtnstr .= "<div id=\"apcupsd_load_meter\" class=\"progress-bar progress-bar-striped progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . ($user_settings["widgets"][$widgetkey]["apc_load_critical_threshold"] - $user_settings["widgets"][$widgetkey]["apc_load_warning_threshold"]) . "%\"></div>\n";
-					$rtnstr .= "<div id=\"apcupsd_load_meter\" class=\"progress-bar progress-bar-striped progress-bar-danger\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . (str_replace(" Percent", "", $results['LOADPCT']) - $user_settings["widgets"][$widgetkey]["apc_load_critical_threshold"]) . "%\"></div>\n";
-				} else if (str_replace(" Percent", "", $results['LOADPCT']) >= $user_settings["widgets"][$widgetkey]["apc_load_warning_threshold"]) {
+					$rtnstr .= "<div id=\"apcupsd_load_meter\" class=\"progress-bar progress-bar-striped progress-bar-danger\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . ($loadpct - $user_settings["widgets"][$widgetkey]["apc_load_critical_threshold"]) . "%\"></div>\n";
+				} elseif ($loadpct >= $user_settings["widgets"][$widgetkey]["apc_load_warning_threshold"]) {
 					$rtnstr .= "<div id=\"apcupsd_load_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . $user_settings["widgets"][$widgetkey]["apc_load_warning_threshold"] . "%\"></div>\n";
-					$rtnstr .= "<div id=\"apcupsd_load_meter\" class=\"progress-bar progress-bar-striped progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . (str_replace(" Percent", "", $results['LOADPCT']) - $user_settings["widgets"][$widgetkey]["apc_load_warning_threshold"]) . "%\"></div>\n";
+					$rtnstr .= "<div id=\"apcupsd_load_meter\" class=\"progress-bar progress-bar-striped progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . ($loadpct - $user_settings["widgets"][$widgetkey]["apc_load_warning_threshold"]) . "%\"></div>\n";
 				} else {
-					$rtnstr .= "<div id=\"apcupsd_load_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . str_replace(" Percent", "%", $results['LOADPCT']) . "\"></div>\n";
+					$rtnstr .= "<div id=\"apcupsd_load_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . $loadpct . "\"></div>\n";
 				}
-				$rtnstr .= "</div><span class=\"fa fa-angle-double-down\"/>&nbsp;" . str_replace(" Percent", "%", $results['LOADPCT']) . "&nbsp;";
+				$rtnstr .= "</div><span class=\"fas fa-info-circle\"></span>&nbsp;" . str_replace(" Percent", "%", $results['LOADPCT']) . "&nbsp;";
 				
 				$rtnstr .= "</td></tr><tr><td>Temp</td><td colspan=\"3\">\n";
 				$degf = ((substr(($results['ITEMP']), -1, 1) === "C") ? (((substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2)))*(9/5))+(32)) : (substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2)))) . "°F";
@@ -153,72 +157,77 @@ if (!function_exists('compose_apc_contents')) {
 					$rtnstr .= "<div id=\"apcupsd_temp_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . (($user_settings["widgets"][$widgetkey]["apc_temp_warning_threshold"]/$tempmax)*100) . "%\"></div>\n";
 					$rtnstr .= "<div id=\"apcupsd_temp_meter\" class=\"progress-bar progress-bar-striped progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . ((($user_settings["widgets"][$widgetkey]["apc_temp_critical_threshold"] - $user_settings["widgets"][$widgetkey]["apc_temp_warning_threshold"])/$tempmax)*100) . "%\"></div>\n";
 					$rtnstr .= "<div id=\"apcupsd_temp_meter\" class=\"progress-bar progress-bar-striped progress-bar-danger\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . (((ceil(substr(($degc), 0, (strlen($degc)-2))) - $user_settings["widgets"][$widgetkey]["apc_temp_critical_threshold"])/$tempmax)*100) . "%\"></div>\n";
-				} else if (substr(($degc), 0, (strlen($degc)-2)) >= $user_settings["widgets"][$widgetkey]["apc_temp_warning_threshold"]) {
+				} elseif (substr(($degc), 0, (strlen($degc)-2)) >= $user_settings["widgets"][$widgetkey]["apc_temp_warning_threshold"]) {
 					$rtnstr .= "<div id=\"apcupsd_temp_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 50%\"></div>\n";
 					$rtnstr .= "<div id=\"apcupsd_temp_meter\" class=\"progress-bar progress-bar-striped progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . (((ceil(substr(($degc), 0, (strlen($degc)-2))) - $user_settings["widgets"][$widgetkey]["apc_temp_warning_threshold"])/$tempmax)*100) . "%\"></div>\n";
 				} else {
 					$rtnstr .= "<div id=\"apcupsd_temp_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . ((ceil(substr(($degc), 0, (strlen($degc)-2)))/$tempmax)*100) . "%\"></div>\n";
 				}
 				
-				$rtnstr .= "</div>\n";				
+				$rtnstr .= "</div>\n<span class=\"fas fa-thermometer-full\">&nbsp;&nbsp;";				
 				switch($user_settings['widgets'][$widgetkey]['apc_temp_dis_type']) {
-					default:
-					case 'degc':
-						$rtnstr .= "<span class=\"fa fa-bug\"/>&nbsp;&nbsp;" . $degc . "&nbsp;";
-						break;
 					case 'degf':
-						$rtnstr .= "<span class=\"fa fa-bug\"/>&nbsp;&nbsp;" . $degf . "&nbsp;";
+						$rtnstr .= $degf;
 						break;
 					case 'both_deg':
 						if ($user_settings["widgets"][$widgetkey]["apc_temp_dis_type_var"]=="1") {
-							$rtnstr .= "<span class=\"fa fa-bug\"/>&nbsp;&nbsp;" . $degc . "&nbsp;(" . $degf . ")&nbsp;";
+							$rtnstr .= $degc . "&nbsp;(" . $degf . ")";
 						} else {
-							$rtnstr .= "<span class=\"fa fa-bug\"/>&nbsp;&nbsp;" . $degf . "&nbsp;(" . $degc . ")&nbsp;";
+							$rtnstr .= $degf . "&nbsp;(" . $degc . ")";
 						}
 						break;
+					default:
+					case 'degc':
+						$rtnstr .= $degc;
+						break;
 				}
-				$rtnstr .= "</td></tr><tr><td>Battery Charge</td>\n";
+				$rtnstr .= "&nbsp;</span></td></tr><tr><td>Battery Charge</td>\n";
 				
-				if (str_replace(" Percent", "", $results['BCHARGE']) <= $user_settings["widgets"][$widgetkey]["apc_charge_critical_threshold"]) {
-					$rtnstr .= "<td colspan=\"3\"><div class=\"progress\"><div id=\"apcupsd_bcharge_meter\" class=\"progress-bar progress-bar-striped progress-bar-danger\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . str_replace(" Percent", "%", $results['BCHARGE']) . "\"></div></div>\n";
-				} else if (str_replace(" Percent", "", $results['BCHARGE']) <= $user_settings["widgets"][$widgetkey]["apc_charge_warning_threshold"]) {
-					$rtnstr .= "<td colspan=\"3\"><div class=\"progress\"><div id=\"apcupsd_bcharge_meter\" class=\"progress-bar progress-bar-striped progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . str_replace(" Percent", "%", $results['BCHARGE']) . "\"></div></div>\n";
+				if ($bchrg <= $user_settings["widgets"][$widgetkey]["apc_charge_critical_threshold"]) {
+					$bchrgpbstyle = "progress-bar-danger";
+				} elseif ($bchrg <= $user_settings["widgets"][$widgetkey]["apc_charge_warning_threshold"]) {
+					$bchrgpbstyle = "progress-bar-warning";
 				} else {
-					$rtnstr .= "<td colspan=\"3\"><div class=\"progress\"><div id=\"apcupsd_bcharge_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . str_replace(" Percent", "%", $results['BCHARGE']) . "\"></div></div>\n";
+					$bchrgpbstyle = "progress-bar-success";
 				}
-				$rtnstr .= "<span class=\"fa fa-battery-full\" />&nbsp;" . str_replace(" Percent", "%", $results['BCHARGE']) . "\n";
+				$rtnstr .= "<td colspan=\"3\"><div class=\"progress\"><div id=\"apcupsd_bcharge_meter\" class=\"progress-bar progress-bar-striped " . $bchrgpbstyle . "\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . $bchrg . "%\"></div></div>\n";
+				$rtnstr .= "<span class=\"fa fa-battery-full\" ></span>&nbsp;" . $bchrg . "%\n";
 				
-				$rtnstr .= "<span class=\"fa fa-bolt\" style=\"padding-left:1em\" />&nbsp;" . $results['BATTV'] . "</td>\n";
+				$rtnstr .= "<span class=\"fa fa-bolt\" style=\"padding-left:1em\" ></span>&nbsp;" . $results['BATTV'] . "</td>\n";
 				$rtnstr .= "</tr><tr><td>Time Remaining</td>";
-				$rtnstr .= "<td colspan=\"3\"><span class=\"fa fa-clock-o\"/>&nbsp;" . $results['TIMELEFT'] . "</td>\n";
+				$rtnstr .= "<td colspan=\"3\"><span class=\"fa fa-clock-o\"></span>&nbsp;" . $results['TIMELEFT'] . "</td>\n";
 				$rtnstr .= "</tr><tr><td>Battery Age</td>";
 				
 				$rtnstr .= "<td colspan=\"3\">\n";
 				$batt_org = (new DateTime($results['BATTDATE']));
 				$dtnow = (new DateTime());
-				//$batt_age_str = ($batt_org->diff($dtnow))->format("Year:%y;Month:%m;Day:%d;Hour:%h;Minute:%i;Second:%s");
-				$batt_age_str = ($batt_org->diff($dtnow))->format("Year:%y;Month:%m;Day:%d;Hour:%h");
-				$batt_age_fstr = '';
+				//$batt_age_str = ($batt_org->diff($dtnow))->format("Year:%y;Month:%m;Day:%d;Hour:%h;Minute:%i;Second:%s;TotalDays:%a");
+				$batt_age_str = ($batt_org->diff($dtnow))->format("Year:%y;Month:%m;Day:%d;Hour:%h;TotalDays:%a");
+				$batt_age_fstr = "";
 				$batt_age = array();
 				
 				foreach(explode(";", $batt_age_str) as $name=>$v) {
 					$batt_age[trim(explode(":",$v)[0])]=trim(explode(":",$v)[1]);
 					
-					if (trim(explode(":",$v)[1]) != 0) {
+					if ((trim(explode(":",$v)[1]) != 0) && (trim(explode(":",$v)[0]) != "TotalDays")) {
 						$batt_age_fstr .= (trim(explode(":",$v)[1])) . "&nbsp;" . (trim(explode(":",$v)[0])) . ((trim(explode(":",$v)[1]) != 1) ? "s" : "") . "&nbsp;";
 					}
 				}
 				
-				if($batt_age['Day'] >= $user_settings["widgets"][$widgetkey]["apc_bage_critical_threshold"]) {
-					$rtnstr .= "<span style=\"color:red;font-style:bold;font-size:1em;\"><span class=\"fa fa-calendar-times-o\"/>";
-				} else if ($batt_age['Day'] >= $user_settings["widgets"][$widgetkey]["apc_bage_warning_threshold"]) {
-					$rtnstr .= "<span style=\"color:orange;font-style:bold;font-size:1em;\"><span class=\"fa fa-calendar-minus-o\"/>";
+				if ($batt_age['TotalDays'] >= $user_settings["widgets"][$widgetkey]["apc_bage_critical_threshold"]) {
+					$bageclr = "red";
+					$bageicn = "fa fa-calendar-times-o";
+				} elseif ($batt_age['TotalDays'] >= $user_settings["widgets"][$widgetkey]["apc_bage_warning_threshold"]) {
+					$bageclr = "orange";
+					$bageicn = "fa fa-calendar-minus-o";
 				} else {
-					$rtnstr .= "<span style=\"color:green;font-style:bold;font-size:1em;\"><span class=\"fa fa-calendar-check-o\"/>";
+					$bageclr = "green";
+					$bageicn = "fa fa-calendar-check-o";
 				}
+				$rtnstr .= "<span style=\"color:" . $bageclr . ";font-style:bold;font-size:1em;\"><span class=\"" . $bageicn . "\"></span>";
 				$rtnstr .= "&nbsp;" . $batt_age_fstr . "&nbsp;(" . $batt_org->format("m/d/Y") . ")</span><br />\n";
 				
-				$rtnstr .= ((!$results['SELFTEST'] == 'OK') ? "<span style=\"color:orange;font-style:bold;font-size:0.9em;padding-left:1em\"/><span class=\"fa fa-exclamation-triangle\"/>" : "<span class=\"fa fa-check-square\" style=\"color:green;font-style:bold;font-size:0.9em;padding-left:1em\">\n");
+				$rtnstr .= ((!$results['SELFTEST'] == 'OK') ? "<span class=\"fa fa-exclamation-triangle\" style=\"color:orange;font-style:bold;font-size:0.9em;padding-left:1em\">" : "<span class=\"fa fa-check-square\" style=\"color:green;font-style:bold;font-size:0.9em;padding-left:1em\">\n");
 				$rtnstr .= "&nbsp;Last Test:&nbsp;" . $results['SELFTEST'] . "</span>\n";
 				$rtnstr .= "</td></tr>\n";
 			} else {
@@ -240,7 +249,7 @@ if (!function_exists('compose_apc_contents')) {
 }
 
 if ($_REQUEST && $_REQUEST['ajax']) {
-    print(compose_apc_contents($_REQUEST['widgetkey']));
+	print(compose_apc_contents($_REQUEST['widgetkey']));
 	exit;
 }
 
