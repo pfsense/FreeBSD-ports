@@ -427,7 +427,12 @@ if (!empty($results)) {
 // Define common variables and arrays for report tables
 $fields_array	= $pfb_local = $pfb_localsub = $dnsbl_int = $local_hosts = array();
 
-$pfblines	= exec("/usr/local/sbin/clog {$filter_logfile} | {$pfb['grep']} -c ^");
+if (substr(trim(file_get_contents('/etc/version')), 0, 3) > '2.5') {
+	$pfblines = exec("{$pfb['grep']} -c ^ {$filter_logfile}");
+} else {
+	$pfblines = exec("/usr/local/sbin/clog {$filter_logfile} | {$pfb['grep']} -c ^");
+}
+
 $fields_array	= conv_log_filter_lite($filter_logfile, $pfblines, $pfblines, $pfbdenycnt, $pfbpermitcnt, $pfbmatchcnt);
 $continents	= array('pfB_Africa', 'pfB_Antartica', 'pfB_Asia', 'pfB_Europe', 'pfB_NAmerica', 'pfB_Oceania', 'pfB_SAmerica', 'pfB_Top');
 
@@ -647,7 +652,11 @@ function conv_log_filter_lite($logfile, $nentries, $tail, $pfbdenycnt, $pfbpermi
 
 	if (file_exists($logfile)) {
 		// Collect filter.log entries
-		exec("/usr/local/sbin/clog {$logfile} | {$pfb['grep']} -v '\"CLOG\"\|\"\033\"' | {$pfb['grep']} 'filterlog:' | /usr/bin/tail -r -n {$tail}", $logarr);
+		if (substr(trim(file_get_contents('/etc/version')), 0, 3) > '2.5') {
+			exec("{$pfb['grep']} -v '\"CLOG\"\|\"\033\"' {$logfile} | {$pfb['grep']} 'filterlog:' | /usr/bin/tail -r -n {$tail}", $logarr);
+		} else {
+			exec("/usr/local/sbin/clog {$logfile} | {$pfb['grep']} -v '\"CLOG\"\|\"\033\"' | {$pfb['grep']} 'filterlog:' | /usr/bin/tail -r -n {$tail}", $logarr);
+		}
 	} else {
 		 return;
 	}
