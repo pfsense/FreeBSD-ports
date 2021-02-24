@@ -154,6 +154,10 @@ function frr_global_acls_validate_input() {
 		$input_errors[] = "A name is required.";
 	}
 
+	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name'])) {
+		$input_errors[] = "Access list name may only contain the characters a-z, A-Z, 0-9, '-', '_' and '.'";
+	}
+
 	switch ($_POST['type']) {
 		case "standard":
 			if (!is_numeric($_POST['name']) || !(frr_validate_intrange($_POST['name'], 1, 99) || frr_validate_intrange($_POST['name'], 1300, 1999))) {
@@ -225,6 +229,15 @@ function frr_global_prefixes_validate_input() {
 		$input_errors[] = "A name is required.";
 	}
 
+	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name'])) {
+		$input_errors[] = "Prefix List name may only contain the characters a-z, A-Z, 0-9, '-', '_' and '.'";
+	}
+
+	/* Do not allow a name of: ACCEPTFILTER */
+	if ($_POST['name'] == 'ACCEPTFILTER') {
+		$input_errors[] = "Prefix List name 'ACCEPTFILTER' is not allowed.";
+	}
+
 	foreach ($_POST as $key => $value) {
 		$matches = array();
 		if (preg_match("/^seq(\d+)$/", $key, $matches)) {
@@ -266,7 +279,18 @@ function frr_global_prefixes_validate_input() {
 function frr_global_routemaps_validate_input() {
 	global $config, $input_errors;
 
+	if (empty($_POST['name'])) {
+		$input_errors[] = "A name is required.";
+	}
+
+	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name'])) {
+		$input_errors[] = "Route map name may only contain the characters a-z, A-Z, 0-9, '-', '_' and '.'";
+	}
+
 	/* Do not allow a name of: ACCEPTFILTER */
+	if ($_POST['name'] == 'ACCEPTFILTER') {
+		$input_errors[] = "Route map name 'ACCEPTFILTER' is not allowed.";
+	}
 }
 
 function frr_global_raw_validate_input() {
