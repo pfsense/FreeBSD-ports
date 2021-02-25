@@ -88,42 +88,31 @@ if (!function_exists('compose_apc_contents')) {
 			
 			if ($results != null) {
 				$bchrg = str_replace(" Percent", "", $results['BCHARGE']);
-				switch ($results['STATUS']) {
-					case 'ONLINE':
-						$rtnstr .= "<span class=\"fa fa-plug\" style=\"color:green;font-size:2em;transform: rotate(45deg);\"></span><span style=\"color:green;font-style:bold;font-size:2em\">\n";
-						break;
-					case 'CHARGING':
+				if ($results['STATUS'] == "ONLINE") {
+					$bclr = "green";
+					$bicn = "fa fa-plug";
+					$brot = "45deg";
+				} else {
+					$brot = "270deg";
+					if ($results['STATUS'] == "CHARGING") {
 						$bclr = "orange";
-						if ($bchrg <= 25) {
-							$bicn = "fa fa-battery-empty";
-						} elseif ($bchrg <= 50) {
-							$bicn = "fa fa-battery-quarter";
-						} elseif ($bchrg <= 75) {
-							$bicn = "fa fa-battery-half";
-						} elseif ($bchrg <= 99) {
-							$bicn = "fa fa-battery-three-quarters";
-						} else {
-							$bicn = "fa fa-battery-empty";
-						}
-						$rtnstr .= "<span class=\"" . $bicn . "\" style=\"color:" . $bclr . ";font-size:2em;transform: rotate(270deg);\"></span><span style=\"color:" . $bclr . ";font-style:bold;font-size:2em\">\n";
-						break;
-					default:
-					case 'ONBATT':
+					} else {
 						$bclr = "red";
-						if ($bchrg <= 25) {
-							$bicn = "fa fa-battery-empty";
-						} elseif ($bchrg <= 50) {
-							$bicn = "fa fa-battery-quarter";
-						} elseif ($bchrg <= 75) {
-							$bicn = "fa fa-battery-half";
-						} elseif ($bchrg <= 99) {
-							$bicn = "fa fa-battery-three-quarters";
-						} else {
-							$bicn = "fa fa-battery-full";
-						}
-						$rtnstr .= "<span class=\"" . $bicn . "\" style=\"color:" . $bclr . ";font-size:2em;transform: rotate(270deg);\"></span><span style=\"color:" . $bclr . ";font-style:bold;font-size:2em\">\n";
-						break;
+					}
+					
+					if ($bchrg <= 25) {
+						$bicn = "fas fa-battery-empty";
+					} elseif ($bchrg <= 50) {
+						$bicn = "fas fa-battery-quarter";
+					} elseif ($bchrg <= 75) {
+						$bicn = "fas fa-battery-half";
+					} elseif ($bchrg <= 99) {
+						$bicn = "fas fa-battery-three-quarters";
+					} else {
+						$bicn = "fas fa-battery-empty";
+					}
 				}
+				$rtnstr .= "<span class=\"" . $bicn . "\" style=\"color:" . $bclr . ";font-size:2em;transform: rotate(" . $brot . ");\"></span><span style=\"color:" . $bclr . ";font-style:bold;font-size:2em\">\n";
 				$rtnstr .= "&nbsp;" . $results['STATUS'] . (($user_settings["widgets"][$widgetkey]["apc_host_dis"] == "yes") ? " (" . $nisip . ":" . $nisport . ")" : "") . "</span>\n";
 				$rtnstr .= (($results['LASTXFER']!='') ? "<br />Last Transfer: &nbsp;" . $results['LASTXFER'] . "\n" : '');
 			
@@ -143,9 +132,9 @@ if (!function_exists('compose_apc_contents')) {
 					$rtnstr .= "<div id=\"apcupsd_load_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . $user_settings["widgets"][$widgetkey]["apc_load_warning_threshold"] . "%\"></div>\n";
 					$rtnstr .= "<div id=\"apcupsd_load_meter\" class=\"progress-bar progress-bar-striped progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . ($loadpct - $user_settings["widgets"][$widgetkey]["apc_load_warning_threshold"]) . "%\"></div>\n";
 				} else {
-					$rtnstr .= "<div id=\"apcupsd_load_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . $loadpct . "\"></div>\n";
+					$rtnstr .= "<div id=\"apcupsd_load_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . $loadpct . "%\"></div>\n";
 				}
-				$rtnstr .= "</div><span class=\"fas fa-info-circle\"></span>&nbsp;" . str_replace(" Percent", "%", $results['LOADPCT']) . "&nbsp;";
+				$rtnstr .= "</div><span class=\"fas fa-info-circle\"></span>&nbsp;" . $loadpct . "%&nbsp;";
 				
 				$rtnstr .= "</td></tr><tr><td>Temp</td><td colspan=\"3\">\n";
 				$degf = ((substr(($results['ITEMP']), -1, 1) === "C") ? (((substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2)))*(9/5))+(32)) : (substr(($results['ITEMP']), 0, (strlen($results['ITEMP'])-2)))) . "°F";
@@ -164,7 +153,7 @@ if (!function_exists('compose_apc_contents')) {
 					$rtnstr .= "<div id=\"apcupsd_temp_meter\" class=\"progress-bar progress-bar-striped progress-bar-success\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . ((ceil(substr(($degc), 0, (strlen($degc)-2)))/$tempmax)*100) . "%\"></div>\n";
 				}
 				
-				$rtnstr .= "</div>\n<span class=\"fas fa-thermometer-full\">&nbsp;&nbsp;";				
+				$rtnstr .= "</div>\n<span class=\"fas fa-thermometer-full\"></span>&nbsp;&nbsp;";				
 				switch($user_settings['widgets'][$widgetkey]['apc_temp_dis_type']) {
 					case 'degf':
 						$rtnstr .= $degf;
@@ -181,7 +170,7 @@ if (!function_exists('compose_apc_contents')) {
 						$rtnstr .= $degc;
 						break;
 				}
-				$rtnstr .= "&nbsp;</span></td></tr><tr><td>Battery Charge</td>\n";
+				$rtnstr .= "&nbsp;</td></tr><tr><td>Battery Charge</td>\n";
 				
 				if ($bchrg <= $user_settings["widgets"][$widgetkey]["apc_charge_critical_threshold"]) {
 					$bchrgpbstyle = "progress-bar-danger";
@@ -191,7 +180,7 @@ if (!function_exists('compose_apc_contents')) {
 					$bchrgpbstyle = "progress-bar-success";
 				}
 				$rtnstr .= "<td colspan=\"3\"><div class=\"progress\"><div id=\"apcupsd_bcharge_meter\" class=\"progress-bar progress-bar-striped " . $bchrgpbstyle . "\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: " . $bchrg . "%\"></div></div>\n";
-				$rtnstr .= "<span class=\"fa fa-battery-full\" ></span>&nbsp;" . $bchrg . "%\n";
+				$rtnstr .= "<span class=\"fas fa-battery-full\" ></span>&nbsp;" . $bchrg . "%\n";
 				
 				$rtnstr .= "<span class=\"fa fa-bolt\" style=\"padding-left:1em\" ></span>&nbsp;" . $results['BATTV'] . "</td>\n";
 				$rtnstr .= "</tr><tr><td>Time Remaining</td>";
