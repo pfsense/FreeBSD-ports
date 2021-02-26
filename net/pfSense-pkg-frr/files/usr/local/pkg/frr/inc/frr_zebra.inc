@@ -529,7 +529,6 @@ function frr_zebra_generate_routemaps() {
 					$rmconf .= " match as-path {$rm['aspath_match']}\n";
 				}
 				break;
-			case "set":
 			case "setexclude":
 			case "setprepend":
 				/* When setting the AS, the following is a space-separated
@@ -540,13 +539,7 @@ function frr_zebra_generate_routemaps() {
 						break;
 					}
 				}
-
-				$rmconf .= " set as-path ";
-				/* Add the string for either 'exclude' or 'prepend' */
-				if ((strlen($rm['aspath_action']) > 3) && (substr($rm['aspath_action'], 0, 3) == 'set')) {
-					$rmconf .= substr($rm['aspath_action'], 3) . " ";
-				}
-				$rmconf .= "{$rm['aspath_value']}\n";
+				$rmconf .= " set as-path " . substr($rm['aspath_action'], 3) . " {$rm['aspath_value']}\n";
 				break;
 			case "setprependlast":
 				/* For Last-AS, the peer AS is prepended and only a single number is allowed
