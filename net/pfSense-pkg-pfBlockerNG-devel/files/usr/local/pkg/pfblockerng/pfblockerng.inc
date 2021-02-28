@@ -8002,7 +8002,13 @@ function sync_package_pfblockerng($cron='') {
 				$log = "\nMaxMind download already in process...\n";
 				pfb_logger("{$log}", 1);
 			}
+		} else {
+			$log = "\n\nGeoIP: files already exist! No action taken.\n";
+			pfb_logger("{$log}", 1);
 		}
+	} else {
+		$log = "\n\nGeoIP: maxmind_key is empty! No action taken.\n";
+		pfb_logger("{$log}", 1);
 	}
 
 	$maxmind_run_once = TRUE;
@@ -9446,9 +9452,9 @@ function sync_package_pfblockerng($cron='') {
 		// MaxMind GeoIP CRON hour is randomized between 0-23 Hour to minimize effect on MaxMind website
 		$pfb_gmin	= '0';
 		$pfb_ghour	= rand(0,23);
-		$pfb_gmday	= '4-10';
+		$pfb_gmday	= '*';
 		$pfb_gmonth	= '*';
-		$pfb_gwday	= '*';
+		$pfb_gwday	= 'Thu';
 		$pfb_gwho	= 'root';
 
 		// Determine if CRON job requires updating
