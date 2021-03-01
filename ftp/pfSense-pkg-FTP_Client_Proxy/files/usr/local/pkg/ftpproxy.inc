@@ -77,6 +77,8 @@ function sync_package_ftpproxy() {
 }
 
 function validate_form_ftpproxy($post, &$input_errors) {
+	alias_make_table();
+
 	if (empty($post["localints"])) {
 		$input_errors[] = 'One or more Local Interfaces must be selected';
 	}
