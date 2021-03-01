@@ -527,7 +527,7 @@ EOD;
 		}
 	}
 
-	if ((!$lcdproc_config['driver']) || (!$lcdproc_config['comport'])) {
+	if (!$lcdproc_config['enable'] || !$lcdproc_config['driver'] || !$lcdproc_config['comport']) {
 		/* No parameters - user does not want lcdproc running */
 		/* Let's stop the service and remove the rc file */
 		if (file_exists(LCDPROC_RCFILE)) {

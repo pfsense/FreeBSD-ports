@@ -20,13 +20,10 @@
  */
 
 /* Get a list of configured BFD peers */
-function frr_get_bfd_peers($includedefault = true) {
+function frr_get_bfd_peers() {
 	global $config;
 	$peers = array();
 
-	if ($includedefault) {
-		$peers[] = array('name' => 'Default', 'value' => 'default');
-	}
 	if (is_array($config['installedpackages']['frrbfdpeers']['config'])) {
 		foreach ($config['installedpackages']['frrbfdpeers']['config'] as $peer) {
 			$peer_name = $peer['peer'];
@@ -34,10 +31,6 @@ function frr_get_bfd_peers($includedefault = true) {
 				$peer_name .= " - {$peer['descr']}";
 			}
 			$peers[] = array("name" => "{$peer['peer']}", "value" => $peer['peer']);
-			/* If the peer has a label configured, make it available to select also. */
-			if (!empty($peer['label'])) {
-				$peers[] = array("name" => "Label: {$peer['label']} - {$peer['peer']}", "value" => $peer['label']);
-			}
 		}
 	}
 
@@ -171,9 +164,6 @@ function frr_bfd_generate_peers() {
 
 			/* Peer Options */
 			if ((empty($peer['profile'])) || ($peer['profile'] == 'none')) {
-				if (!empty($peer['label'])) {
-					$bfdpeerconf .= "  label {$peer['label']}\n";
-				}
 				if (frr_validate_intrange($peer['detectmultiplier'], 2, 255)) {
 					$bfdpeerconf .= "  detect-multiplier {$peer['detectmultiplier']}\n";
 				}

@@ -338,6 +338,8 @@ function frr_bgp_generate_routeradvanced() {
 	}
 	if (!empty($frr_bgpadv_conf['networkimportcheck'])) {
 		$advconf .= " bgp network import-check\n";
+	} else {
+		$advconf .= " no bgp network import-check\n";
 	}
 	if (!empty($frr_bgpadv_conf['rejcectassetasconfedset'])) {
 		$advconf .= " bgp reject-as-sets\n";
@@ -801,30 +803,6 @@ function frr_bgp_generate_neighbors() {
 	return $nconf;
 }
 
-/* Generate BGP AS Path configuration lines */
-function frr_bgp_generate_aspaths() {
-	global $config, $frr_config_base;
-	/* Populate FRR AS Path Settings */
-	if (is_array($config['installedpackages']['frrbgpaspaths']['config'])) {
-		$frr_asp_conf = &$config['installedpackages']['frrbgpaspaths']['config'];
-	} else {
-		/* No AS Path config, stop. */
-		return null;
-	}
-	/* Section header */
-	$aspconf = "";
-	/* Loop through AS Paths and process */
-	foreach ($frr_asp_conf as $asp) {
-		/* Sort by sequence if needed */
-		frr_array_seq_sort($asp['row']);
-		foreach ($asp['row'] as $line) {
-
-			$aspconf .= "bgp as-path access-list {$asp['name']} {$line['action']} {$line['regex']}\n";
-		}
-	}
-	return $aspconf;
-}
-
 /* Determine the Community List type based on the given name */
 function frr_get_community_type($clname, $type) {
 	/* 0-99: Standard
@@ -957,8 +935,6 @@ function frr_generate_config_bgp() {
 		$frr_integrated_config['bgpd'] .= frr_bgp_generate_routeradvanced();
 		/* BGP Neighbors */
 		$frr_integrated_config['bgpd'] .= frr_bgp_generate_neighbors();
-		/* BGP AS Paths */
-		$frr_integrated_config['bgpd'] .= frr_bgp_generate_aspaths();
 		/* BGP Address Families */
 		$frr_integrated_config['bgpd'] .= frr_bgp_generate_address_families();
 

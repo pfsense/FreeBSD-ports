@@ -248,6 +248,7 @@ $section->addInput(new Form_Input(
 	$pconfig['ip_placeholder'],
 	[ 'placeholder' => '127.1.7.7' ]
 ))->setHelp('Enter a single IPv4 placeholder address<br />'
+	. 'For IPv6 \'::\' will be prefixed to the placeholder IP.<br />'
 	. 'This address should be in an Isolated Range that is not used in your Network.<br />'
 	. 'This IP address will be used as a placeholder IP to avoid empty Feeds/Aliases.'
 );

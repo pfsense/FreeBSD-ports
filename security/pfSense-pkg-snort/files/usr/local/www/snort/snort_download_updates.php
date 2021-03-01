@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -188,7 +188,8 @@ if (isset($_POST['mode'])) {
 	}
 }
 
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Update Rules"));
+$pglinks = array("", "/snort/snort_interfaces.php", "@self");
+$pgtitle = array("Services", "Snort", "Updates");
 include("head.inc");
 
 if ($savemsg) {

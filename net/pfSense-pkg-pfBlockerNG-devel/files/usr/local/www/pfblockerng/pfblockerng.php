@@ -30,7 +30,7 @@
 
 if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' && $_REQUEST && $_REQUEST['pfb']) {
 
-	$query = htmlspecialchars($_REQUEST['pfb']);
+	$query = htmlspecialchars(trim(strstr($_REQUEST['pfb'], ' ', TRUE)));
 	if (file_exists("/var/db/aliastables/{$query}_v4.txt")) {
 		$type = '_v4';
 	} elseif (file_exists("/var/db/aliastables/{$query}_v6.txt")) {

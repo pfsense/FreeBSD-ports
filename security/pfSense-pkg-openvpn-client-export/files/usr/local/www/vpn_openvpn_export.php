@@ -141,7 +141,7 @@ global $simplefields;
 $simplefields = array('server','useaddr','useaddr_hostname','verifyservercn','blockoutsidedns','legacy','randomlocalport',
 	'usepkcs11','pkcs11providers',
 	'usetoken','usepass',
-	'useproxy','useproxytype','proxyaddr','proxyport','useproxypass','proxyuser');
+	'useproxy','useproxytype','proxyaddr','proxyport', 'silent','useproxypass','proxyuser');
 	//'pass','proxypass','advancedoptions'
 
 $openvpnexportcfg = &$config['installedpackages']['vpn_openvpn_export'];
@@ -787,6 +787,10 @@ function download_begin(act, i, j) {
 	var usepkcs11 = 0;
 	if (document.getElementById("usepkcs11").checked) {
 		usepkcs11 = 1;
+	}
+	var silent = 0;
+	if (document.getElementById("silent").checked) {
+		silent = 1;
 	}
 	var pkcs11providers = document.getElementById("pkcs11providers").value;
 	var pkcs11id = document.getElementById("pkcs11id").value;

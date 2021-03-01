@@ -268,7 +268,12 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
 
 	/***********************************************************/
 	/* The default is to build a HOME_NET variable unless      */
-	/* '$whitelist' is set to 'true' when calling.             */
+	/* '$whitelist' or '$externallist is set to TRUE when      */
+	/* calling.                                                */
+	/*                                                         */
+	/* When '$whitelist' is TRUE, a Pass List is built.        */
+	/* When '$externalist' is TRUE, the EXTERNAL_NET variable  */
+	/* is built.                                               */
 	/***********************************************************/
 
 	global $config, $g, $aliastable, $filterdns;
@@ -282,14 +287,39 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
                 if (empty($list))
                         return $list;
 		$localnet = $list['localnets'];
-//		$wanip = $list['wanips'];
 		$wanip = 'yes';
 		$wangw = $list['wangateips'];
 		$wandns = $list['wandnsips'];
 		$vips = $list['vips'];
 		$vpns = $list['vpnips'];
-		if (!empty($list['address']) && is_alias($list['address']))
-			$home_net = explode(" ", trim(filter_expand_alias($list['address'])));
+
+		// Process any custom IPs or aliases defined for the list.
+		// We allow dynamically updated aliases only for a Pass
+		// List. So for Pass Lists, we test for null strings from
+		// filter_expand_alias() and assume the passed alias is a
+		// FQDN or other dynamically updated alias.
+		if (is_array($list['address']['item']) && count($list['address']['item']) > 0) {
+			foreach ($list['address']['item'] as $addr) {
+				if (!$whitelist) {
+					if (is_alias($addr)) {
+						$home_net = array_merge($home_net, explode(" ", trim(filter_expand_alias($addr))));
+					} elseif (is_ipaddr($addr) || is_subnet($addr)) {
+						$home_net[] = $addr;
+					}
+				} elseif ($whitelist) {
+					if (is_alias($addr)) {
+						$tmp = trim(filter_expand_alias($addr));
+						if ($tmp <> "") {
+							$home_net = array_merge($home_net, explode(" ", $tmp));
+						} else {
+							$home_net[] = $addr;
+						}
+					} elseif (is_ipaddr($addr) || is_subnet($addr)) {
+						$home_net[] = $addr;
+					}
+				}
+			}
+		}
 	}
 
 	/* Always add loopback addresses to HOME_NET and whitelist */
@@ -4350,6 +4380,12 @@ function snort_get_vpns_list() {
 		$l2tp_net = "{$config['l2tp']['remoteip']}/{$config['l2tp']['l2tp_subnet']}";
 		if (is_subnetv4($l2tp_net)) {
 			$vpns_arr[] = $l2tp_net;
+		}
+	}
+	/* WireGuard */
+	if (function_exists('wg_get_tunnel_networks')) {
+		foreach (wg_get_tunnel_networks() as $wgn) {
+			$vpns_arr[] = $wgn;
 		}
 	}
 

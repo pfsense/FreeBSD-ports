@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2011-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008-2009 Robert Zelaya
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ $snortlogdir = SNORTLOGDIR;
 $netmapifs = array('cc', 'cxl', 'cxgbe', 'em', 'igb', 'em', 'lem', 'ix', 'ixgbe', 'ixl', 're', 'vtnet');
 if (pfs_version_compare(false, 2.4, $g['product_version'])) {
 	/* add FreeBSD 12 iflib(4) supported devices */
-	$netmapifs = array_merge($netmapifs, array('ice', 'bnxt', 'vmx'));
+	$netmapifs = array_merge($netmapifs, array('ena', 'ice', 'bnxt', 'vmx'));
 	sort($netmapifs);
 }
 
@@ -584,7 +584,8 @@ if (empty($if_friendly)) {
 // Finished with config array reference, so release it
 unset($a_rule);
 
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Edit Interface"), gettext("{$if_friendly}"));
+$pglinks = array("", "/snort/snort_interfaces.php", "@self");
+$pgtitle = array("Services", "Snort", "{$if_friendly} - Interface Settings");
 include("head.inc");
 
 if ($input_errors) {
