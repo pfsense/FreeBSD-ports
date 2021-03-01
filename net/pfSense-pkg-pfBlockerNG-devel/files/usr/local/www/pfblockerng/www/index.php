@@ -53,6 +53,14 @@ if (file_exists('/var/log/pfblockerng/dnsbl.log')) {
 			}
 			usleep(50000);
 		}
+
+		if ($i == 0) {
+			@require_once('util.inc');
+			if (is_ipaddr($ptype['HTTP_HOST'])) {
+				$ptype['type'] = "DNSBL VIP: {$ptype['HTTP_HOST']}";
+				break;
+			}
+		}
 	}
 }
 

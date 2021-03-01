@@ -264,7 +264,7 @@ function pfBlockerNG_update_table() {
 	if (isset($config['filter']['rule'])) {
 		foreach ($config['filter']['rule'] as $rule) {
 
-			if ($rule['descr'] == 'pfB_DNSBL_Ping' || $rule['descr'] == 'pfB_DNSBL_Permit') {
+			if (strpos($rule['descr'], 'pfB_DNSBL_Ping') !== FALSE || strpos($rule['descr'], 'pfB_DNSBL_Permit') !== FALSE) {
 				continue;
 			}
 
