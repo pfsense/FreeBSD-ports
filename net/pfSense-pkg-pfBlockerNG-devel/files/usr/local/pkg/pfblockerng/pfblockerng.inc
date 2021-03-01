@@ -943,10 +943,8 @@ function pfb_build_if_list($show_wan=FALSE, $show_groups=FALSE) {
 		$pfb_interfaces['l2tp'] = 'L2TP VPN';
 	}
 
-	if (function_exists('is_wg_enabled')) {
-		if (is_wg_enabled() && have_ruleint_access("wireguard")) {
-			$pfb_interfaces['wireguard'] = 'WireGuard';
-		}
+	if (function_exists('is_wg_enabled') && is_wg_enabled()) {
+		$pfb_interfaces['wireguard'] = 'WireGuard';
 	}
 
 	return $pfb_interfaces;
