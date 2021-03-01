@@ -135,18 +135,12 @@ if (isset($_GET) && isset($_GET['view']) || isset($_REQUEST) && isset($_REQUEST[
 if (!$alert_summary) {
 
 	$clists = array();
-	foreach (array('ipwhitelist4' => 4, 'ipwhitelist6' => 6, 'blacklist' => 'dnsbl', 'dnsbl' => 'dnsbl') as $type => $vtype) {
+	foreach (array('ipwhitelist4' => 4, 'ipwhitelist6' => 6, 'dnsbl' => 'dnsbl') as $type => $vtype) {
 		$c_config = $clists[$type] = array();
 
 		if ($vtype == 'dnsbl') {
-			if ($type == 'blacklist') {
-				$c_config['config'][0] = array( 'action' => 'unbound',
-								'custom' => $config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['blacklist']);
-			} else {
-				$c_config = $config['installedpackages']['pfblockerngdnsbl'];
-			}
-		}
-		else {
+			$c_config = $config['installedpackages']['pfblockerngdnsbl'];
+		} else {
 			$c_config = $config['installedpackages']['pfblockernglistsv' . $vtype];
 		}
 
@@ -155,10 +149,8 @@ if (!$alert_summary) {
 
 			foreach ($c_config['config'] as $row => $data) {
 				if (strpos($data['action'], 'Permit') !== FALSE || $data['action'] == 'unbound') {
-					if ($type == 'blacklist') {
-						$lname = 'DNSBL Blacklist';
-						$clists[$type][$lname]['base64'] = &$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['blacklist'];
-					} elseif ($type == 'dnsbl') {
+
+					if ($type == 'dnsbl') {
 						$lname = "DNSBL_{$data['aliasname']}";
 						$clists[$type][$lname]['base64'] = &$config['installedpackages']['pfblockerngdnsbl']['config'][$row]['custom'];
 
@@ -1212,7 +1204,7 @@ if (isset($_POST) && !empty($_POST)) {
 	// Unlock/Lock IP events
 	elseif (isset($_POST['ip_remove']) && !empty($_POST['ip_remove'])) {
 
-		$ip	= is_v4($_POST['ip']) ? $_POST['ip'] : '';
+		$ip	= is_ipaddr($_POST['ip']) ? $_POST['ip'] : '';
 		$table	= pfb_filter($_POST['table'], 1);
 
 		// If IP or table field is empty, exit.
@@ -1242,7 +1234,7 @@ if (isset($_POST) && !empty($_POST)) {
 	// Whitelist IP events
 	elseif (isset($_POST['ip_white']) && $_POST['ip_white'] == 'true') {
 
-		$ip	= is_v4($_POST['ip']) ? $_POST['ip'] : '';
+		$ip	= is_ipaddr($_POST['ip']) ? $_POST['ip'] : '';
 		$table	= pfb_filter($_POST['table'], 1);
 		$descr	= pfb_filter($_POST['descr'], 1);
 
@@ -1897,13 +1889,17 @@ function convert_dnsbl_log($mode, $fields) {
 		$fields[4] = '';
 	}
 
-	$isMatch = TRUE;
+	// Determine event parameters
 	list ( $isTLD, $isCNAME, $isPython, $isExclusion, $pfb_python, $qdomain, $wt_line ) = dnsbl_log_details($fields);
 
+	// Determine Whitelist type
+	list ( $supp_dom, $ex_dom, $isWhitelist_found ) = dnsbl_whitelist_type($fields, $clists, $isExclusion, $isTLD, $qdomain);
+
+	$isMatch = TRUE;
 	$p_group = $p_domain = $p_feed = $p_mode = '';
 
 	// Collect current details about domain
-	if (!$isPython) {
+	if (!$isPython && !$isWhitelist_found) {
 		$domain_details = pfb_dnsbl_parse('alerts', $qdomain, '', '');
 		$pfb_mode	= $domain_details['pfb_mode']	?: 'Unknown';
 		$pfb_group	= $domain_details['pfb_group']	?: 'Unknown';
@@ -1950,6 +1946,7 @@ function convert_dnsbl_log($mode, $fields) {
 	// On failed Match verification, re-evaluate parameters
 	if (!$isMatch) {
 		list ( $isTLD, $isCNAME, $isPython, $isExclusion, $pfb_python, $qdomain, $wt_line ) = dnsbl_log_details($fields);
+		list ( $supp_dom, $ex_dom, $isWhitelist_found ) = dnsbl_whitelist_type($fields, $clists, $isExclusion, $isTLD, $qdomain);
 	}
 
 	// Filter Field array
@@ -2118,8 +2115,8 @@ function convert_dnsbl_log($mode, $fields) {
 			if (!isset($dnsbl_unlock[$qdomain])) {
 				if ($isWhitelist_found) {
 					$s_txt = "\n\nNote:&emsp;The following Domain exists in the DNSBL Whitelist:\n\n"
-						. "Whitelisted:&emsp;[ {$w_line} ]\n\n"
-						. "This Domain can be Temporarily Relocked into DNSBL\n"
+						. "Whitelisted:&emsp;[ {$qdomain} ]\n\n"
+						. "This Domain can be temporarily Relocked into DNSBL\n"
 						. "by selecting the Unlock Icon!";
 
 					$unlock_dom = '<i class="fa fa-unlock icon-primary text-warning" id="DNSBL_RELCK|'
@@ -2172,7 +2169,7 @@ function convert_dnsbl_log($mode, $fields) {
 			<td>{$pfbalertdnsbl[99]}{$dup_cnt}</td>
 			<td>{$pfbalertdnsbl[2]}</td>
 			<td>{$pfbalertdnsbl[7]}<br /><small>{$pfbalertdnsbl[17]}</small></td>
-			<td>{$unlock_dom}&nbsp;{$alert_dom}&nbsp;{$supp_dom}{$ex_dom}</td>
+			<td style=\"white-space: nowrap;\">{$unlock_dom}&nbsp;{$alert_dom}&nbsp;{$supp_dom}{$ex_dom}</td>
 			<td title=\"{$domain_title}\">{$pfbalertdnsbl[8]}<small>&emsp;[ {$pfbalertdnsbl[20]} ]</small> {$pfb_https}{$pfb_python}
 				<br /><small>{$pfbalertdnsbl[19]}</small></td>
 			<td title=\"{$f_g_title}\">{$pfbalertdnsbl[15]}<br /><small>{$pfbalertdnsbl[13]}</small></td>
@@ -2909,7 +2906,7 @@ $group->add(new Form_Input(
 	'Unified',
 	'number',
 	$pfbunicnt,
-	['min' => 0, 'max' => 1000]
+	['min' => 0, 'max' => 5000]
 ))->setHelp('Unified')->setAttribute('title', 'Enter number of \'Unified\' log entries to view. Set to \'0\' to disable');
 
 $group->add(new Form_Input(
@@ -2917,7 +2914,7 @@ $group->add(new Form_Input(
 	'Deny',
 	'number',
 	$pfbdenycnt,
-	['min' => 0, 'max' => 1000]
+	['min' => 0, 'max' => 5000]
 ))->setHelp('IP Deny')->setAttribute('title', 'Enter number of \'Deny\' log entries to view. Set to \'0\' to disable');
 
 $group->add(new Form_Input(
@@ -2925,7 +2922,7 @@ $group->add(new Form_Input(
 	'DNSBL',
 	'number',
 	$pfbdnscnt,
-	['min' => 0, 'max' => 1000]
+	['min' => 0, 'max' => 5000]
 ))->setHelp('DNSBL')->setAttribute('title', 'Enter number of \'DNSBL\' log entries to view. Set to \'0\' to disable');
 
 $group->add(new Form_Input(
@@ -2933,7 +2930,7 @@ $group->add(new Form_Input(
 	'DNS Reply',
 	'number',
 	$pfbdnsreplycnt,
-	['min' => 0, 'max' => 1000]
+	['min' => 0, 'max' => 5000]
 ))->setHelp('DNS Reply')->setAttribute('title', 'Enter number of \'DNS Reply\' log entries to view. Set to \'0\' to disable');
 
 $group->add(new Form_Input(
@@ -2941,7 +2938,7 @@ $group->add(new Form_Input(
 	'Permit',
 	'number',
 	$pfbpermitcnt,
-	['min' => 0, 'max' => 1000]
+	['min' => 0, 'max' => 5000]
 ))->setHelp('IP Permit')->setAttribute('title', 'Enter number of \'Permit\' log entries to view. Set to \'0\' to disable');
 
 $group->add(new Form_Input(
@@ -2949,7 +2946,7 @@ $group->add(new Form_Input(
 	'Match',
 	'number',
 	$pfbmatchcnt,
-	['min' => 0, 'max' => 1000]
+	['min' => 0, 'max' => 5000]
 ))->setHelp('IP Match')->setAttribute('title', 'Enter number of \'Match\' log entries to view. Set to \'0\' to disable');
 
 $group->add(new Form_Checkbox(
