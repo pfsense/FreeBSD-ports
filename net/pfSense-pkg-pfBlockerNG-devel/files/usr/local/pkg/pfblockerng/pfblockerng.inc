@@ -384,8 +384,11 @@ function pfb_filter_service() {
 		exit
 	fi
 
-	# Ensure all processes are stopped
-	rc_stop
+	# clog is not required for pfSense 2.5 and above
+	filter_type='tail_pfb'
+	if [ -e "/usr/local/sbin/clog_pfb" ]; then
+		filter_type='clog_pfb'
+	fi
 
 	# Compare php/php_pfb versions
 	php_path='/usr/local/bin'
@@ -409,8 +412,9 @@ function pfb_filter_service() {
 
 	# Start pfBlockerNG Firewall filter Daemon
 	if [ -e '/var/log/filter.log' ]; then
-		# clog is not required for pfSense 2.5 and above
-		if [ -e "/usr/local/sbin/clog_pfb" ]; then
+		/usr/bin/logger -p daemon.info -t "\${filter_type}" "[pfBlockerNG] Firewall Filter Service started"
+
+		if [ "\${filter_type}" == 'clog_pfb' ]; then
 			/usr/local/sbin/clog_pfb -f /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
 		else
 			/usr/bin/tail_pfb -n0 -F /var/log/filter.log | /usr/local/bin/php_pfb -f /usr/local/pkg/pfblockerng/pfblockerng.inc filterlog &
@@ -420,8 +424,16 @@ function pfb_filter_service() {
 EOF;
 	$rc['stop']	= <<<EOF
 
+	# clog is not required for pfSense 2.5 and above
+	filter_type='tail_pfb'
+	if [ -e "/usr/local/sbin/clog_pfb" ]; then
+		filter_type='clog_pfb'
+	fi
+
 	# Terminate pfBlockerNG Firewall filter Daemon (clog) and filter Daemon, if found
-	pidnum="\$(/bin/ps -wax | /usr/bin/grep '[c]log_pfb -f /var/log/filter.log\|[t]ail_pfb -F /var/log/filter.log\|[p]fblockerng.inc filterlog' | /usr/bin/awk '{print \$1}')"
+	/usr/bin/logger -p daemon.info -t "\${filter_type}" "[pfBlockerNG] Firewall Filter Service stopped"
+	/usr/bin/logger -p daemon.info -t php_pfb "[pfBlockerNG] filterlog daemon stopped"
+	pidnum="\$(/bin/ps -wax | /usr/bin/grep '[c]log_pfb -f /var/log/filter.log\|[t]ail_pfb -n0 /var/log/filter.log\|[p]fblockerng.inc filterlog' | /usr/bin/awk '{print \$1}')"
 	if [ ! -z "\${pidnum}" ]; then
 		for i in \${pidnum}; do
 			/bin/kill -9 "\${i}"
@@ -446,9 +458,6 @@ function pfb_dnsbl_service() {
 		exit
 	fi
 
-	# Ensure all processes are stopped
-	rc_stop
-
 	# Start DNSBL Lighttpd webserver (Unbound/Python mode) and DNSBL HTTPS Daemon (Unbound mode only)
 	if [ -e '/var/unbound/pfb_dnsbl_lighty.conf' ]; then
 		/usr/bin/logger -p daemon.info -t lighttpd_pfb "[pfBlockerNG] DNSBL Webserver started"
@@ -467,6 +476,7 @@ EOF;
 	$rc['stop']	= <<<EOF
 
 	# Terminate DNSBL Lighttpd webserver, if found
+	/usr/bin/logger -p daemon.info -t lighttpd_pfb "[pfBlockerNG] DNSBL Webserver stopped"
 	pidnum="\$(/bin/pgrep lighttpd_pfb)"
 	if [ ! -z "\${pidnum}" ]; then
 		/usr/bin/killall lighttpd_pfb
@@ -933,6 +943,12 @@ function pfb_build_if_list($show_wan=FALSE, $show_groups=FALSE) {
 		$pfb_interfaces['l2tp'] = 'L2TP VPN';
 	}
 
+	if (function_exists('is_wg_enabled')) {
+		if (is_wg_enabled() && have_ruleint_access("wireguard")) {
+			$pfb_interfaces['wireguard'] = 'WireGuard';
+		}
+	}
+
 	return $pfb_interfaces;
 }
 
@@ -1167,11 +1183,12 @@ EOF;
 }
 	// Lighttpd v1.4.58+ conditional error log with 'ssl.verifyclient.activate' to collect the domain name
 	$lighty_ver = exec('/usr/local/sbin/lighttpd -v 2>&1');
-	if (strpos($lighty_ver, 'lighttpd/1.4.58') !== FALSE ||
+	if ((!$pfb['dnsbl_py_blacklist'] || $pfb['dnsbl_py_nolog'] == 'on') &&
+  	    (strpos($lighty_ver, 'lighttpd/1.4.58') !== FALSE ||
 	    strpos($lighty_ver, 'lighttpd/1.4.59') !== FALSE ||
 	    strpos($lighty_ver, 'lighttpd/1.4.60') !== FALSE ||
 	    strpos($lighty_ver, 'lighttpd/1.4.61') !== FALSE ||
-	    strpos($lighty_ver, 'lighttpd/1.5') !== FALSE) {
+	    strpos($lighty_ver, 'lighttpd/1.5') !== FALSE)) {
 
 		$pfb_conf .= <<<EOF
 ssl.verifyclient.activate	= "enable"
@@ -1931,11 +1948,6 @@ function pfb_unbound_python($mode) {
 			$python_idn = 'on';
 		}
 
-		$python_tld = 'off';
-		if ($pfb['dnsbl_pytld'] == 'on' && !empty($pfb['dnsblconfig']['pfb_pytlds_gtld'])) {
-			$python_tld = 'on';
-		}
-
 		$python_cname = 'off';
 		if ($pfb['dnsbl_cname'] == 'on') {
 			$python_cname = 'on';
@@ -1951,20 +1963,28 @@ function pfb_unbound_python($mode) {
 			$python_noaaaa = 'on';
 		}
 
-		$python_tlds = '';
-		if (!empty($pfb['dnsblconfig']['pfb_pytlds_gtld'])) {
-			$python_tlds = $pfb['dnsblconfig']['pfb_pytlds_gtld'];
+		$python_tld = 'off';
+		if ($pfb['dnsbl_pytld'] == 'on') {
+
+			$python_tlds = '';
+			if (!empty($pfb['dnsblconfig']['pfb_pytlds_gtld'])) {
+				$python_tld = 'on';
+				$python_tlds = $pfb['dnsblconfig']['pfb_pytlds_gtld'];
+			}
+			if (!empty($pfb['dnsblconfig']['pfb_pytlds_cctld'])) {
+				$python_tld = 'on';
+				$python_tlds .= ',' . $pfb['dnsblconfig']['pfb_pytlds_cctld'];
+			}
+			if (!empty($pfb['dnsblconfig']['pfb_pytlds_itld'])) {
+				$python_tld = 'on';
+				$python_tlds .= ',' . $pfb['dnsblconfig']['pfb_pytlds_itld'];
+			}
+			if (!empty($pfb['dnsblconfig']['pfb_pytlds_bgtld'])) {
+				$python_tld = 'on';
+				$python_tlds .= ',' . $pfb['dnsblconfig']['pfb_pytlds_bgtld'];
+			}
+			$python_tlds = ltrim($python_tlds, ',');
 		}
-		if (!empty($pfb['dnsblconfig']['pfb_pytlds_cctld'])) {
-			$python_tlds .= ',' . $pfb['dnsblconfig']['pfb_pytlds_cctld'];
-		}
-		if (!empty($pfb['dnsblconfig']['pfb_pytlds_itld'])) {
-			$python_tlds .= ',' . $pfb['dnsblconfig']['pfb_pytlds_itld'];
-		}
-		if (!empty($pfb['dnsblconfig']['pfb_pytlds_bgtld'])) {
-			$python_tlds .= ',' . $pfb['dnsblconfig']['pfb_pytlds_bgtld'];
-		}
-		$python_tlds = ltrim($python_tlds, ',');
 
 		$python_nolog = 'off';
 		if ($pfb['dnsbl_py_nolog'] == 'on') {
@@ -2464,11 +2484,11 @@ function tld_analysis() {
 				$s_info = trim($eparts[2]);
 
 				if ($pfb['dnsbl_v6'] == 'on') {
-					// Determine if DNSBL Logging is disabled and switch to '::'
+					// Determine if DNSBL Logging is disabled and switch to '::/0'
 					if (strpos($s_info, ' A 0.0.0.0') !== FALSE) {
-						$s_info6 = str_replace(' A 0.0.0.0', ' AAAA ::', $s_info);
+						$s_info6 = str_replace(' A 0.0.0.0', ' AAAA ::/0', $s_info);
 					} else {
-						$s_info6 = str_replace(' A ', ' AAAA ::', $s_info);
+						$s_info6 = str_replace(' A ', ' AAAA ::/0', $s_info);
 					}
 				}
 
@@ -3913,8 +3933,12 @@ function pfb_aliastables($mode) {
 				$files_to_backup = "{$pfb['aliasdir']}/pfB_*.txt";
 			}
 
-			if ($pfb['dnsbl'] == 'on' && file_exists("{$pfb['dnsbl_file']}.conf")) {
-				$files_to_backup .= " {$pfb['dnsbl_file']}.conf";
+			if ($pfb['dnsbl'] == 'on') {
+				if (file_exists("{$pfb['dnsbl_file']}.conf")) {
+					$files_to_backup .= " {$pfb['dnsbl_file']}.conf";
+				} else {
+					$files_to_backup .= " /var/unbound/pfb_unbound* /var/unbound/pfb_py_*";
+				}
 			}
 
 			// Archive IP Aliastables/Unbound DNSBL Database as required.
@@ -4001,6 +4025,7 @@ function pfb_filterrules() {
 	$rule_list		= array();
 	$rule_list['id']	= array();
 	$rule_list['other']	= array();
+	$rule_list['int']	= array();
 
 	exec("{$pfb['pfctl']} -vvsr 2>&1", $results);
 	if (!empty($results)) {
@@ -4026,6 +4051,11 @@ function pfb_filterrules() {
 					$rule_list['id'][]	= $id;
 					$rule_list[$id]['name']	= $descr;
 					$rule_list[$id]['type'] = $type;
+
+					$int = trim(strstr(trim(strstr(trim(strstr($r[1], ' on ', FALSE)), ' ', FALSE)), ' ', TRUE));
+					if (!empty($int)) {
+						 $rule_list['int'][$int] = '';
+					}
 				}
 
 				// All other non-pfBlockerNG Tracker IDs
@@ -4092,6 +4122,14 @@ function pfb_remove_states() {
 		}
 	}
 
+	if (!empty($pfb_local)) {
+		$pfb_local = array_flip($pfb_local);
+	}
+
+	// Collect Interface list that have pfB Rules assigned
+	$data		= pfb_filterrules();
+	$pfb_int	= $data['int'] ?: array();
+
 	// Collect local IPs
 	$data = pfb_collect_localip();
 	if (!empty($data[0])) {
@@ -4151,6 +4189,12 @@ function pfb_remove_states() {
 			if (!empty($sline)) {
 
 				$detail	= array_filter(explode(' ', $sline));
+
+				// Validate states for pfB Interfaces only
+				if (!isset($pfb_int[$detail[0]])) {
+					continue;
+				}
+
 				$count	= count($detail);
 				if ($count == 6) {
 					$orig_s_ip = $detail[2];
@@ -7202,10 +7246,10 @@ function sync_package_pfblockerng($cron='') {
 								$list['logging'] = 'enabled';
 							}
 
-							// If Null Blocking mode is selected, use '0.0.0.0|::', otherwise utilize DNSBL WebServer/DNSBL VIP
+							// If Null Blocking mode is selected, use '0.0.0.0|::/0', otherwise utilize DNSBL WebServer/DNSBL VIP
 							if ($list['logging'] == 'disabled') {
 								$sinkhole_type4 = '0.0.0.0';
-								$sinkhole_type6 = '::';
+								$sinkhole_type6 = '::/0';
 								$logging_type	= '2';	// Null Blocking no logging
 							}
 							elseif ($list['logging'] == 'disabled_log') {
@@ -7819,6 +7863,15 @@ function sync_package_pfblockerng($cron='') {
 			}
 			if ($pfb['dnsbl_pytld'] == 'on') {
 				$pytld_cnt = 0;
+				foreach (array('gtld', 'cctld', 'itld', 'bgtld') as $pytld) {
+					if (isset($pfb['dnsblconfig']['pfb_pytlds_' . $pytld]) && !empty($pfb['dnsblconfig']['pfb_pytlds_' . $pytld])) {
+						$p_cnt = count(explode(',', $pfb['dnsblconfig']['pfb_pytlds_' . $pytld]));
+						if (is_numeric($p_cnt) && $p_cnt > 0) {
+							$pytld_cnt += $p_cnt;
+						}
+					}
+				}
+
 				$pfb['alias_dnsbl_all'][] = 'DNSBL_TLD_Allow';
 				dnsbl_alias_update('update', 'DNSBL_TLD_Allow', '', '', $pytld_cnt);
 			}
@@ -8130,9 +8183,15 @@ function sync_package_pfblockerng($cron='') {
 								}
 
 								if ($file_chk <= 1) {
-									@file_put_contents("{$pfbfolder}/{$cc_alias}.txt", "{$pfb['ip_ph']}\n", LOCK_EX);
+									if ($vtype == '_v6') {
+                                                                                $p_ip = "::{$pfb['ip_ph']}";
+                                                                        } else {
+                                                                                $p_ip = $pfb['ip_ph'];
+                                                                        }
+
+									@file_put_contents("{$pfbfolder}/{$cc_alias}.txt", "{$p_ip}\n", LOCK_EX);
 									@copy("{$pfbfolder}/{$cc_alias}.txt", "{$pfb['aliasdir']}/{$cc_alias}.txt");
-									$log = "[ {$cc_alias} ] Found no unique IPs, adding '{$pfb['ip_ph']}' to avoid empty file\n";
+									$log = "[ {$cc_alias} ] Found no unique IPs, adding '{$p_ip}' to avoid empty file\n";
 									pfb_logger("{$log}", 1);
 								}
 							}
@@ -8547,7 +8606,13 @@ function sync_package_pfblockerng($cron='') {
 										// Auto IPv6 parser
 										if ($pftype == 'auto') {
 											if (strpos($line, ':') !== FALSE) {
-												if (is_ipaddrv6($line) || is_subnet($line)) {
+
+												// Remove any comments
+												if (strpos($line, '#') !== FALSE) {
+													$line = str_replace('#', '', strstr($line, '#', TRUE));
+												}
+
+												if (is_ipaddrv6($line) || is_subnetv6($line)) {
 													$ip_data .= $line . "\n";
 													continue;
 												}
@@ -8559,9 +8624,14 @@ function sync_package_pfblockerng($cron='') {
 											$matches = array_unique($matches[0]);
 											foreach ($matches as $match) {
 
+												// Remove any comments
+												if (strpos($match, '#') !== FALSE) {
+													$match = str_replace('#', '', strstr($match, '#', TRUE));
+												}
+
 												// Workaround to skip cloudflare error pages
 												if (strpos($oline, 'cf-footer-item') === FALSE) {
-													if (is_ipaddrv6($match) || is_subnet($match)) {
+													if (is_ipaddrv6($match) || is_subnetv6($match)) {
 														$ip_data .= $match . "\n";
 													}
 												}
@@ -8588,8 +8658,14 @@ function sync_package_pfblockerng($cron='') {
 								}
 
 								if ($file_chk == 0) {
-									$ip_data	= "{$pfb['ip_ph']}\n";
-									$log		= "  Empty file, Adding '{$pfb['ip_ph']}' to avoid download failure.\n";
+									if ($list['vtype'] == '_v6') {
+										$p_ip = "::{$pfb['ip_ph']}";
+									} else {
+										$p_ip = $pfb['ip_ph'];
+									}
+
+									$ip_data	= "{$p_ip}\n";
+									$log		= "  Empty file, Adding '{$p_ip}' to avoid download failure.\n";
 									pfb_logger("{$log}", 1);
 								}
 							}

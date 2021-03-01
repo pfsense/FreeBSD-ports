@@ -339,7 +339,6 @@
 			<options>
 				<option><name>None (Do Nothing)</name><value>none</value></option>
 				<option><name>Match AS Path</name><value>match</value></option>
-				<option><name>Set</name><value>set</value></option>
 				<option><name>Set Exclude</name><value>setexclude</value></option>
 				<option><name>Set Prepend</name><value>setprepend</value></option>
 				<option><name>Set Prepend Last-AS</name><value>setprependlast</value></option>

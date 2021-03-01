@@ -238,7 +238,7 @@
 			<fieldname>redistributeconnectedsubnets_routemap</fieldname>
 			<description>Route Map</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(false, false)]]></source>
+			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>end</combinefields>
@@ -264,7 +264,7 @@
 			<fieldname>redistributekernel_routemap</fieldname>
 			<description>Route Map</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(false, false)]]></source>
+			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>end</combinefields>
@@ -290,7 +290,7 @@
 			<fieldname>redistributebgp_routemap</fieldname>
 			<description>Route Map</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(false, false)]]></source>
+			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>end</combinefields>
@@ -316,7 +316,7 @@
 			<fieldname>redistributestatic_routemap</fieldname>
 			<description>Route Map</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(false, false)]]></source>
+			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>end</combinefields>
@@ -339,7 +339,7 @@
 			<fieldname>exportlist</fieldname>
 			<description>Uses this access list to filter route information transmitted to OSPF peers</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_accesslist_list(false, false)]]></source>
+			<source><![CDATA[frr_get_accesslist_list(false, true)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
@@ -348,7 +348,7 @@
 			<fieldname>importlist</fieldname>
 			<description>Uses this access list to filter route information received from OSPF peers</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_accesslist_list(false, false)]]></source>
+			<source><![CDATA[frr_get_accesslist_list(false, true)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
@@ -357,7 +357,7 @@
 			<fieldname>filterlist_out</fieldname>
 			<description>Uses a prefix list to filter route information transmitted to OSPF peers</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_prefixlist_list(false, false)]]></source>
+			<source><![CDATA[frr_get_prefixlist_list(false, true)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
@@ -366,7 +366,7 @@
 			<fieldname>filterlist_in</fieldname>
 			<description>Uses a prefix list to filter route information received from OSPF peers</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_prefixlist_list(false, false)]]></source>
+			<source><![CDATA[frr_get_prefixlist_list(false, true)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>

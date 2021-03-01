@@ -406,6 +406,10 @@ EOF;
 		$conf .= "passtos{$nl}";
 	}
 
+	if (stristr($settings['protocol'], "udp")) {
+		$conf .= "explicit-exit-notify{$nl}";
+	}
+
 	// add advanced options
 	$advancedoptions = str_replace("\r\n", "\n", $advancedoptions);
 	$advancedoptions = str_replace("\n", $nl, $advancedoptions);

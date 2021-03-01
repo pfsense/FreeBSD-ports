@@ -77,7 +77,25 @@ function pfb_python_mount($python_mode, $verbose, $type_mount, $type_umount, $ty
 	// Force Resolver path
 	$unbound_chroot_path = '/var/unbound';
 
-	$validate = exec("/sbin/mount | /usr/bin/grep '{$grep_string}' 2>&1");
+	exec("/sbin/mount | /usr/bin/grep '{$grep_string}' 2>&1", $validate, $retval);
+
+	// Temporary workaround for Redmine: https://redmine.pfsense.org/issues/11456
+	if ($type_umount == 'devfs' && is_array($validate) && count($validate) > 1) {
+		if ($verbose) {
+			pfb_logger("\n   Removing duplicate mounts (" . count($validate) . "): /{$folder}", 1);
+		}
+
+		foreach ($validate as $v) {
+			if (!empty($v)) {
+				exec("/sbin/umount -t {$type_umount} '{$unbound_chroot_path}/{$folder}' 2>&1", $output, $retval);
+				if ($retval != 0) {
+					break;
+				}
+			}
+		}
+		$validate = '';
+	}
+
 	if ($python_mode) {
 		// Add DNS Resolver python integration
 		if (empty($validate)) {
