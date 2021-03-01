@@ -812,6 +812,10 @@ def get_details_reply(m_type, qinfo, qstate, rep, kwargs):
     else:
         return True
 
+    q_ip = get_q_ip_comm(kwargs)
+    if q_ip == 'Unknown':
+        q_ip = '127.0.0.1'
+
     o_type = get_q_type(qstate, qinfo)
     if m_type == 'cache' or o_type == 'PTR':
         q_type = o_type
@@ -830,8 +834,8 @@ def get_details_reply(m_type, qinfo, qstate, rep, kwargs):
             return True
         m_type = 'reply'
 
-    # Increment totalqueries counter
-    if pfb['sqlite3_resolver_con']:
+    # Increment totalqueries counter (Don't include the Resolver DNS requests)
+    if pfb['sqlite3_resolver_con'] and q_ip != '127.0.0.1':
         write_sqlite(1, '', True)
 
     # Do not log Replies, if disabled
@@ -956,10 +960,6 @@ def get_details_reply(m_type, qinfo, qstate, rep, kwargs):
             iso_code = 'unk'
     else:
         iso_code = 'unk'
-
-    q_ip = get_q_ip_comm(kwargs)
-    if q_ip == 'Unknown':
-        q_ip = '127.0.0.1'
 
     ttl = get_rep_ttl(rep)
     # Cached TTLs are in unix timestamp (time remaining)
@@ -1418,7 +1418,7 @@ def operate(id, event, qstate, qdata):
                     if not isFound:
 
                         # Allow only approved TLDs
-                        if pfb['python_tld'] and tld != '' and tld not in pfb['python_tlds']:
+                        if pfb['python_tld'] and tld != '' and q_name not in (pfb['dnsbl_ipv4'], '::' + pfb['dnsbl_ipv4']) and tld not in pfb['python_tlds']:
                             isFound = True
                             feed = 'TLD_Allow'
                             group = 'DNSBL_TLD_Allow'

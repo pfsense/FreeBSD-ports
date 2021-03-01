@@ -108,7 +108,6 @@ $pconfig['aliasaddr_out']	= $pfb['dconfig']['aliasaddr_out']			?: '';
 $pconfig['autoproto_out']	= $pfb['dconfig']['autoproto_out']			?: '';
 $pconfig['agateway_out']	= $pfb['dconfig']['agateway_out']			?: 'default';
 
-$pconfig['blacklist']		= base64_decode($pfb['dconfig']['blacklist'])		?: '';
 $pconfig['suppression']		= base64_decode($pfb['dconfig']['suppression'])		?: '';
 
 $pconfig['alexa_enable']	= $pfb['dconfig']['alexa_enable']			?: '';
@@ -253,12 +252,6 @@ if ($_POST) {
 		$pfb['dconfig']['autoproto_out']	= $_POST['autoproto_out']			?: '';
 		$pfb['dconfig']['agateway_out']		= $_POST['agateway_out']			?: 'default';
 
-		// Set flag to update Blacklist CustomList on next Cron|Force update|Force reload
-		if (base64_decode($pfb['dconfig']['blacklist']) != $_POST['blacklist']) {
-			touch("{$pfb['dnsdir']}/DNSBL_custom.update");
-		}
-
-		$pfb['dconfig']['blacklist']		= base64_encode($_POST['blacklist'])		?: '';
 		$pfb['dconfig']['suppression']		= base64_encode($_POST['suppression'])		?: '';
 
 		$pfb['dconfig']['alexa_enable']		= $_POST['alexa_enable']			?: '';
