@@ -2486,7 +2486,7 @@ function tld_analysis() {
 					if (strpos($s_info, ' A 0.0.0.0') !== FALSE) {
 						$s_info6 = str_replace(' A 0.0.0.0', ' AAAA ::/0', $s_info);
 					} else {
-						$s_info6 = str_replace(' A ', ' AAAA ::/0', $s_info);
+						$s_info6 = str_replace(' A ', ' AAAA ::', $s_info);
 					}
 				}
 
