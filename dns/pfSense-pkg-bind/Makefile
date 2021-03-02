@@ -2,13 +2,13 @@
 
 PORTNAME=	pfSense-pkg-bind
 PORTVERSION=	9.16
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	dns net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-RUN_DEPENDS=	bind916>0:dns/bind916
+RUN_DEPENDS=	bind916>=9.16.12:dns/bind916
 
 MAINTAINER=	tech@voleatech.de
 COMMENT=	BIND DNS suite with updated DNSSEC and DNS64
