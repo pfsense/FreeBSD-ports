@@ -248,7 +248,7 @@
 			<fieldname>redistributeconnectedsubnets_routemap</fieldname>
 			<description>Route Map</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(true, false)]]></source>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>begin</combinefields>
@@ -258,7 +258,7 @@
 			<fieldname>redistributeconnectedsubnets_distlist</fieldname>
 			<description>Distribute List</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_accesslist_list(true, false)]]></source>
+			<source><![CDATA[frr_get_accesslist_list()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>end</combinefields>
@@ -297,7 +297,7 @@
 			<fieldname>redistributekernel_routemap</fieldname>
 			<description>Route Map</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(true, false)]]></source>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>begin</combinefields>
@@ -346,7 +346,7 @@
 			<fieldname>redistributebgp_routemap</fieldname>
 			<description>Route Map</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(true, false)]]></source>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>begin</combinefields>
@@ -395,7 +395,7 @@
 			<fieldname>redistributestatic_routemap</fieldname>
 			<description>Route Map</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(true, false)]]></source>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>begin</combinefields>
@@ -452,7 +452,7 @@
 			<fieldname>redistributedefaultroute_routemap</fieldname>
 			<description>Route Map used to filter default route redistribution.</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(true, false)]]></source>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 		</field>
