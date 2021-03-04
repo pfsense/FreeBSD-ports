@@ -436,7 +436,7 @@ EOF;
 	# Terminate pfBlockerNG Firewall filter Daemon (clog) and filter Daemon, if found
 	/usr/bin/logger -p daemon.info -t "\${filter_type}" "[pfBlockerNG] Firewall Filter Service stopped"
 	/usr/bin/logger -p daemon.info -t php_pfb "[pfBlockerNG] filterlog daemon stopped"
-	pidnum="\$(/bin/ps -wax | /usr/bin/grep '[c]log_pfb -f /var/log/filter.log\|[t]ail_pfb -n0 /var/log/filter.log\|[p]fblockerng.inc filterlog' | /usr/bin/awk '{print \$1}')"
+	pidnum="\$(/bin/ps -wax | /usr/bin/grep '[c]log_pfb -f /var/log/filter.log\|[t]ail_pfb -n0 -F /var/log/filter.log\|[p]fblockerng.inc filterlog' | /usr/bin/awk '{print \$1}')"
 	if [ ! -z "\${pidnum}" ]; then
 		for i in \${pidnum}; do
 			/bin/kill -9 "\${i}"
