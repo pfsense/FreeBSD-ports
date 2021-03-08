@@ -1402,7 +1402,7 @@ function haproxy_updateocsp_one($socketupdate, $filename, $name) {
 			// If cert does not have a ocsp_uri, it cannot be updated..
 			syslog(LOG_ERR, "HAProxy OCSP ERROR Cert does not have a ocsp_uri");
 		} else {
-			$retval = exec("openssl ocsp -issuer {$filename}.issuer -verify_other {$filename}.issuer -cert {$filename} -url {$ocsp_url} -header Host {$ocsp_host} -respout {$filename}.ocsp 2>&1", $output, $err);
+			$retval = exec("openssl ocsp -issuer {$filename}.issuer -verify_other {$filename}.issuer -cert {$filename} -url {$ocsp_url} -header Host={$ocsp_host} -respout {$filename}.ocsp 2>&1", $output, $err);
 			if ($socketupdate) {
 				$ocspresponse = base64_encode(file_get_contents("{$filename}.ocsp"));
 				$r = haproxy_socket_command("set ssl ocsp-response $ocspresponse");
