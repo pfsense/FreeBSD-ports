@@ -73,14 +73,16 @@ function arpwatch_install_command() {
 
 	$rc['stop'] = '/usr/bin/killall -q arpwatch';
 
-	write_rcfile($rc);
-
 	if ($arpwatch_config['enable']) {
+		write_rcfile($rc);
 		if (!platform_booting()) {
 			restart_service("arpwatch");
 		}
 	} else {
-		stop_service("arpwatch");
+		unlink_if_exists("/usr/local/etc/rc.d/arpwatch.sh");
+		if (is_process_running("arpwatch")) {
+			killbyname("arpwatch");
+		}
 	}
 }
 
