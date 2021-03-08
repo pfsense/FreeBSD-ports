@@ -238,7 +238,7 @@
 			<fieldname>redistributeconnectedsubnets_routemap</fieldname>
 			<description>Route Map</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>end</combinefields>
@@ -264,7 +264,7 @@
 			<fieldname>redistributekernel_routemap</fieldname>
 			<description>Route Map</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>end</combinefields>
@@ -290,7 +290,7 @@
 			<fieldname>redistributebgp_routemap</fieldname>
 			<description>Route Map</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>end</combinefields>
@@ -316,7 +316,7 @@
 			<fieldname>redistributestatic_routemap</fieldname>
 			<description>Route Map</description>
 			<type>select_source</type>
-			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>end</combinefields>

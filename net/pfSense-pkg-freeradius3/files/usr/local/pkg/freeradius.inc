@@ -1372,6 +1372,11 @@ EOD;
 	} else {
 		$vareapconfcheckcertissuer = '### check_cert_issuer = "/C=GB/ST=Berkshire/L=Newbury/O=My Company Ltd/emailAddress=test@mycomp.com/CN=myca" ###';
 	}
+	if (!empty($eapconf['vareapconftlsminversion'])) {
+		$vareapconftlsminversion = $eapconf['vareapconftlsminversion'];
+	} else {
+		$vareapconftlsminversion = '1.0';
+	}
 
 	$conf .= <<<EOD
 ### EAP
@@ -1411,6 +1416,7 @@ eap {
 		cipher_server_preference = no
 #		disable_tlsv1_2 = no
 		ecdh_curve = "prime256v1"
+		tls_min_version = "{$vareapconftlsminversion}"
 		cache {
 			enable = {$vareapconfcacheenablecache}
 			lifetime = {$vareapconfcachelifetime}
@@ -2567,9 +2573,14 @@ function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncpo
 
 	/* XML will hold the sections to sync. */
 	$xml = array();
-	$xml['freeradius'] = $config['installedpackages']['freeradius'];
-	$xml['freeradiusauthorizedmacs'] = $config['installedpackages']['freeradiusauthorizedmacs'];
-	$xml['freeradiusclients'] = $config['installedpackages']['freeradiusclients'];
+
+	$syncsections = array('freeradius', 'freeradiusauthorizedmacs', 'freeradiusclients', 'freeradiusinterfaces',
+	'freeradiussettings', 'freeradiuseapconf', 'freeradiussqlconf', 'freeradiusmodulesldap');
+	foreach ($syncsections as $section) {
+		if (is_array($config['installedpackages'][$section])) {
+			$xml[$section] = $config['installedpackages'][$section];
+		}
+	}
 
 	$execcmd  = "require_once('/usr/local/pkg/freeradius.inc');\n";
 	$execcmd .= "freeradius_all_after_XMLRPC_resync();";
