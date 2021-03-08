@@ -1705,6 +1705,7 @@ EOD;
 	chmod($filename, 0640);
 
 
+	freeradius_sync_on_changes();
 	if ($restart_svc === true) {
 		restart_service("radiusd");
 	}
@@ -1940,6 +1941,7 @@ EOD;
 
 	// We don't need a restart at this time because there are
 	// additional changes needed in freeradius_settings_resync()
+	freeradius_sync_on_changes();
 	freeradius_settings_resync();
 }
 
@@ -2671,6 +2673,9 @@ function freeradius_all_after_XMLRPC_resync() {
 	freeradius_users_resync(true);
 	// Do not restart service yet - $restart_svc = false, $via_rpc = true
 	freeradius_authorizedmacs_resync(false, true);
+	freeradius_sqlconf_resync();
+	freeradius_eapconf_resync(false);
+	freeradius_modulesldap_resync(false);
 	// Restart now when XMLRPC sync is completely finished
 	freeradius_clients_resync();
 
@@ -3342,6 +3347,7 @@ EOD;
 	// freeradius_serverdefault_resync() needs to restart other dependencies so
 	// we are pointing directly to freeradius_settings_resync()
 	freeradius_serverdefault_resync();
+	freeradius_sync_on_changes();
 	if ($restart_svc === true) {
 		restart_service("radiusd");
 	}
