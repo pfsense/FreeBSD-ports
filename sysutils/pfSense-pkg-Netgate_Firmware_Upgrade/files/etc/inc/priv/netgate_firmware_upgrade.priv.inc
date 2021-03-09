@@ -1,6 +1,6 @@
 <?php
 /*
- * netgate_coreboot_upgrade.priv.inc
+ * netgate_firmware_upgrade.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2017-2021 Rubicon Communications, LLC (Netgate)
@@ -21,10 +21,10 @@
 
 global $priv_list;
 
-$priv_list['page-system-netgate-coreboot-upgrade'] = array();
-$priv_list['page-system-netgate-coreboot-upgrade']['name'] = "System - Netgate Coreboot Upgrade";
-$priv_list['page-system-netgate-coreboot-upgrade']['descr'] = "Allow access to 'System: Netgate Coreboot Upgrade'";
-$priv_list['page-system-netgate-coreboot-upgrade']['match'] = array();
-$priv_list['page-system-netgate-coreboot-upgrade']['match'][] = "netgate_coreboot_upgrade.php*";
+$priv_list['page-system-netgate-firmware-upgrade'] = array();
+$priv_list['page-system-netgate-firmware-upgrade']['name'] = "System - Netgate Firmware Upgrade";
+$priv_list['page-system-netgate-firmware-upgrade']['descr'] = "Allow access to 'System: Netgate Firmware Upgrade'";
+$priv_list['page-system-netgate-firmware-upgrade']['match'] = array();
+$priv_list['page-system-netgate-firmware-upgrade']['match'][] = "netgate_firmware_upgrade.php*";
 
 ?>

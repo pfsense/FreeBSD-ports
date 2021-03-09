@@ -1,6 +1,6 @@
 <?php
 /*
- * netgate_coreboot_upgrade.inc
+ * netgate_firmware_upgrade.inc
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2017-2021 Rubicon Communications, LLC (Netgate)
@@ -22,7 +22,7 @@
 require_once("globals.inc");
 require_once("system.inc");
 
-function get_coreboot_model() {
+function get_firmware_model() {
 	$specplatform = system_identify_specific_platform();
 
 	switch($specplatform['name']) {
@@ -48,14 +48,14 @@ function get_coreboot_model() {
 }
 
 function is_netgate_hw() {
-	return !empty(get_coreboot_model());
+	return !empty(get_firmware_model());
 }
 
-function get_coreboot_details($coreboot) {
+function get_firmware_details($firmware) {
 	$details = array();
 
 	if (!preg_match('/^ADI_(RCC|RCCVE|DFF2|PLCC)-([\d.]{11})/',
-	    $coreboot, $matches)) {
+	    $firmware, $matches)) {
 		return $details;
 	}
 
@@ -69,14 +69,14 @@ function get_coreboot_details($coreboot) {
 	return $details;
 }
 
-function get_current_coreboot_details() {
-	$coreboot = exec("/bin/kenv -q smbios.bios.version 2>/dev/null");
+function get_current_firmware_details() {
+	$firmware = exec("/bin/kenv -q smbios.bios.version 2>/dev/null");
 
-	return get_coreboot_details($coreboot);
+	return get_firmware_details($firmware);
 }
 
-function get_new_coreboot_details() {
-	$coreboot_path = "%%DATADIR%%/roms/";
+function get_new_firmware_details() {
+	$firmware_path = "%%DATADIR%%/roms/";
 
 	$rom_names = array(
 	    'RCC' => '%%COREBOOT_RCC_ROM%%',
@@ -85,38 +85,38 @@ function get_new_coreboot_details() {
 	    'PLCC' => '%%COREBOOT_PLCCB_ROM%%',
 	);
 
-	$model = get_coreboot_model();
+	$model = get_firmware_model();
 	$details = array();
-	$path = $coreboot_path . $rom_names[$model];
+	$path = $firmware_path . $rom_names[$model];
 
 	if (empty($model) || empty($rom_names[$model]) ||
-	    !file_exists($coreboot_path . $rom_names[$model])) {
+	    !file_exists($firmware_path . $rom_names[$model])) {
 		return $details;
 	}
 
-	$details = get_coreboot_details($rom_names[$model]);
-	$details['rom_path'] = $coreboot_path . $rom_names[$model];
+	$details = get_firmware_details($rom_names[$model]);
+	$details['rom_path'] = $firmware_path . $rom_names[$model];
 
 	return $details;
 }
 
-function upgrade_coreboot($coreboot, &$output) {
+function upgrade_firmware($firmware, &$output) {
 	global $g;
 
 	putenv("PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:" .
 	    "/usr/local/sbin");
 
-	if ($coreboot['model'] == 'PLCC') {
+	if ($firmware['model'] == 'PLCC') {
 		$_gc = exec("/usr/local/sbin/adi_smbios_util -w -u " .
-		    $coreboot['rom_path'] . ' 2>&1', $output, $rc);
+		    $firmware['rom_path'] . ' 2>&1', $output, $rc);
 	} else {
 		$_gc = exec("/usr/local/sbin/adi_flash_util -u " .
-		    $coreboot['rom_path'] . ' 2>&1', $output, $rc);
+		    $firmware['rom_path'] . ' 2>&1', $output, $rc);
 	}
 
 	$output = implode("\n", $output);
 
-	@file_put_contents("{$g['conf_path']}/netgate_coreboot_upgrade.log",
+	@file_put_contents("{$g['conf_path']}/netgate_firmware_upgrade.log",
 	    $output);
 
 	return ($rc == 0);
