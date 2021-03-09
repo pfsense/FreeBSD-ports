@@ -5,7 +5,7 @@
 	<copyright>
 <![CDATA[
 /*
- * netgate_coreboot_upgrade.xml
+ * netgate_firmware_upgrade.xml
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2017-2021 Rubicon Communications, LLC (Netgate)
@@ -25,15 +25,15 @@
  */
 	]]>
 	</copyright>
-	<description>Provide a mechanism to upgrade Coreboot of Netgate hardware models</description>
-	<name>Netgate Coreboot Upgrade</name>
-	<title>System: Netgate Coreboot Upgrade</title>
-	<include_file>/usr/local/pkg/netgate_coreboot_upgrade.inc</include_file>
+	<description>Provide a mechanism to upgrade Firmware of Netgate hardware models</description>
+	<name>Netgate Firmware Upgrade</name>
+	<title>System: Netgate Firmware Upgrade</title>
+	<include_file>/usr/local/pkg/netgate_firmware_upgrade.inc</include_file>
 	<menu>
-		<name>Netgate Coreboot Upgrade</name>
-		<tooltiptext>Upgrade Coreboot of Netgate hardware models.</tooltiptext>
+		<name>Netgate Firmware Upgrade</name>
+		<tooltiptext>Upgrade Firmware of Netgate hardware models.</tooltiptext>
 		<section>System</section>
-		<url>/netgate_coreboot_upgrade.php</url>
+		<url>/netgate_firmware_upgrade.php</url>
 	</menu>
 	<custom_php_validation_command>
 		
