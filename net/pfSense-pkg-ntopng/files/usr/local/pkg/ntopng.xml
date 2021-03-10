@@ -198,7 +198,7 @@
 			<description>
 				<![CDATA[
 				Useful if you are running out of free disk space, or simply want to reset graphs and data.<br/>
-				<strong><span class="text-danger">WARNING:</span> This will delete all ntopng graphs, traffic data and dump flows!<br/><br/>
+				<strong><span class="text-danger">WARNING:</span> This will delete all ntopng customization, graphs, traffic data and dump flows!<br/><br/>
 				<button class="btn btn-warning btn-sm" name='Delete' id='remove_ntopng_data' type='submit' value='Delete Data'><i class="fa fa-trash icon-embed-btn"></i>Delete Data</button>
 				]]>
 			</description>
