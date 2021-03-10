@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense
-DISTVERSION=	2.5.0
+DISTVERSION=	2.5.1
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
