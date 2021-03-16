@@ -149,18 +149,26 @@ function frr_bfd_generate_peers() {
 	foreach ($frr_bfd_peers as $peer) {
 		if (is_ipaddr($peer['peer'])) {
 			/* Peer Definition */
-			$bfdpeerconf .= " peer {$peer['peer']}";
+			$bfdpeerdefconf = " peer {$peer['peer']}";
 			if (!empty($peer['multihop'])) {
-				$bfdpeerconf .= " multihop";
+				$bfdpeerdefconf .= " multihop";
 			}
 			if (!empty($peer['local_address']) && ($peer['interface'] <> 'default')) {
-				$bfdpeerconf .= " local-address {$peer['local_address']}";
+				if (!find_ip_interface($peer['local_address'])) {
+					frr_package_log("FRR BFDd: Source Address not found, skipping peer configuration.");
+					continue;
+				}
+				$bfdpeerdefconf .= " local-address {$peer['local_address']}";
 			}
 			if (!empty($peer['interface']) && ($peer['interface'] <> 'default')) {
 				$realif = get_real_interface($peer['interface']);
-				$bfdpeerconf .= " interface {$realif}";
+				if (!$realif) {
+					frr_package_log("FRR BFDd: Source Interface not found, skipping peer configuration.");
+					continue;
+				}
+				$bfdpeerdefconf .= " interface {$realif}";
 			}
-			$bfdpeerconf .= "\n";
+			$bfdpeerconf .= $bfdpeerdefconf . "\n";
 
 			/* Peer Options */
 			if ((empty($peer['profile'])) || ($peer['profile'] == 'none')) {
