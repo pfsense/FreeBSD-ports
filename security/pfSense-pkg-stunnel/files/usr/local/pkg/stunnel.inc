@@ -231,4 +231,29 @@ EOD;
 	    $synctimeout);
 }
 
+function stunnel_plugin_certificates($pluginparams) {
+	global $config;
+	$result = array();
+	init_config_arr(array('installedpackages', 'stunnel', 'config'));
+	$stunnelconfig = $config['installedpackages']['stunnel']['config'];
+
+	if (($pluginparams['type'] == 'certificates') && ($pluginparams['event'] == 'used_certificates') &&
+	    is_array($stunnelconfig)) {	
+		$result['pkgname'] = "STunnel";
+		$result['certificatelist'] = array();
+		// return a array of used certificates.
+		foreach ($stunnelconfig as $stunnel) {
+			if ($stunnel['certificate'] != 'default') {
+				$item = array();
+				$cert = $stunnel['certificate'];
+				$item['usedby'] = $stunnel['description'];
+				$result['certificatelist'][$cert][] = $item;
+			}
+		}
+	}
+	return $result;
+}
+
+
+
 ?>
