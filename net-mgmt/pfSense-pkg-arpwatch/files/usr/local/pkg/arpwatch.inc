@@ -233,7 +233,7 @@ $message = stream_get_contents($fd);
 fclose($fd);
 
 if ((false !== $message) && ((false === strpos($message, ': Cron ')) ||
-    ($config['installedpackages']['arpwatch']['config'][0]['cron_disable'] != 'on'))) {
+    ($config['installedpackages']['arpwatch']['config'][0]['disable_cron'] != 'on'))) {
 	$subject = array();
 	preg_match('/^Subject: (.*)$/m', $message, $subject);
 	init_config_arr(array('installedpackages', 'arpwatch', 'config', 0, 'row'));
