@@ -28,6 +28,7 @@
 	<name>stunnel</name>
 	<version>%%PKGVERSION%%</version>
 	<title>Services: Secure Tunnel</title>
+	<include_file>/usr/local/pkg/stunnel.inc</include_file>
 	<menu>
 		<name>STunnel</name>
 		<section>Services</section>
@@ -164,6 +165,11 @@
 			<encoding>base64</encoding>
 		</field>
 	</fields>
+	<plugins>
+                <item>
+                        <type>plugin_certificates</type>
+                </item>
+        </plugins>
 	<custom_add_php_command_late>
 		stunnel_save();
 	</custom_add_php_command_late>
