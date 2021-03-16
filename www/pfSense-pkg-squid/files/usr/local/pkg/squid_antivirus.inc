@@ -495,13 +495,13 @@ EOF;
 					$extra_sig .= "\n#SecuriteInfo signatures\n";
 					foreach ($securiteinfo_dbs as $db) {
 						$extra_sig .= "DatabaseCustomURL https://www.securiteinfo.com/get/signatures/";
-						$extra_sig .= $antivirus_config['securiteinfo_sig'] . "/" . $db . "\n" ;
+						$extra_sig .= $antivirus_config['securiteinfo_id'] . "/" . $db . "\n" ;
 					}
 					if ($antivirus_config['securiteinfo_premium'] == "on") {
 						$extra_sig = "\n#SecuriteInfo Premium signatures\n";
 						foreach ($securiteinfo_prem_dbs as $db) {
 							$extra_sig .= "DatabaseCustomURL https://www.securiteinfo.com/get/signatures/";
-							$extra_sig .= $antivirus_config['securiteinfo_sig'] . "/" . $db . "\n";
+							$extra_sig .= $antivirus_config['securiteinfo_id'] . "/" . $db . "\n";
 						}
 					}
 				}
