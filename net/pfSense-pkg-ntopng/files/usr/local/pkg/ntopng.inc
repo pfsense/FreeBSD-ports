@@ -159,7 +159,9 @@ function ntopng_sync_package() {
 		/usr/bin/killall ntopng
 		sleep 3
 	done
-	/usr/bin/killall redis-cli redis-server
+	/usr/bin/killall redis-cli
+	{$redis_path}/redis-cli shutdown save
+	/usr/bin/killall redis-server
 EOD;
 
 	$start = <<<EOD
