@@ -46,7 +46,7 @@ $a_pools = getarraybyref($config,'installedpackages','haproxy','ha_pools','item'
 uasort($a_pools, 'haproxy_compareByName');
 
 global $simplefields;
-$simplefields = array('name','desc','status','secondary','primary_frontend','type','forwardfor','httpclose','extaddr','backend_serverpool',
+$simplefields = array('name','descr','status','secondary','primary_frontend','type','forwardfor','httpclose','extaddr','backend_serverpool',
 	'max_connections','client_timeout','port','advanced_bind',
 	'ssloffloadcert','sslsnifilter','ssl_crtlist_advanced','dcertadv','ssloffload','ssloffloadacl','ssloffloadacl_an','ssloffloadacladditional','ssloffloadacladditional_an',
 	'sslclientcert-none','sslclientcert-invalid','sslocsp',
@@ -625,7 +625,7 @@ if ($pconfig['status'] == 'disable') {
 }
 
 $section->addInput(new Form_Input('name', 'Name', 'text', $pconfig['name']));
-$section->addInput(new Form_Input('desc', 'Description', 'text', $pconfig['desc']));
+$section->addInput(new Form_Input('descr', 'Description', 'text', $pconfig['descr']));
 
 $section->addInput(new Form_Select(
 	'status',
