@@ -1,6 +1,6 @@
 <?php
 /*
- * netgate_coreboot_upgrade.php
+ * netgate_firmware_upgrade.php
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2012-2021 Rubicon Communications, LLC (Netgate)
@@ -20,37 +20,37 @@
  */
 
 ##|+PRIV
-##|*IDENT=page-system-netgate-coreboot-upgrade
-##|*NAME=System: Netgate Coreboot Upgrade
-##|*DESCR=Allow access to the 'System: Netgate Coreboot Upgrade' page.
-##|*MATCH=netgate_coreboot_upgrade.php*
+##|*IDENT=page-system-netgate-firmware-upgrade
+##|*NAME=System: Netgate Firmware Upgrade
+##|*DESCR=Allow access to the 'System: Netgate Firmware Upgrade' page.
+##|*MATCH=netgate_firmware_upgrade.php*
 ##|-PRIV
 
 require_once("guiconfig.inc");
 require_once("system.inc");
-require_once("netgate_coreboot_upgrade.inc");
+require_once("netgate_firmware_upgrade.inc");
 
 $guitimeout = 90;	// Seconds to wait before reloading the page after reboot
 $guiretry = 20;		// Seconds to try again if $guitimeout was not long enough
 
 $input_errors = array();
 if (is_netgate_hw()) {
-	$current = get_current_coreboot_details();
+	$current = get_current_firmware_details();
 
 	if (empty($current['version'])) {
 		$current['version'] = gettext('Unknown');
 	}
 
-	$new = get_new_coreboot_details();
+	$new = get_new_firmware_details();
 
 	if (empty($new['version'])) {
 		$input_errors[] = gettext(
-		    "Unable to determine latest coreboot version");
+		    "Unable to determine latest firmware version");
 	}
 
 	if (empty($new['rom_path']) || !file_exists($new['rom_path'])) {
 		$input_errors[] = sprintf(gettext(
-		    "Unable to find new coreboot rom: %s"), $new['rom_path']);
+		    "Unable to find new firmware rom: %s"), $new['rom_path']);
 	}
 } else {
 	$input_errors[] = gettext(
@@ -60,17 +60,17 @@ if (is_netgate_hw()) {
 $show_log = false;
 $reboot = false;
 if (empty($input_errors) && isset($_POST['upgrade'])) {
-	if (upgrade_coreboot($new, $adi_flash_util_output)) {
+	if (upgrade_firmware($new, $adi_flash_util_output)) {
 		touch("/tmp/coreupdatecomplete");
 		$reboot = true;
 	} else {
-		$input_errors[] = gettext("Coreboot update failed.");
+		$input_errors[] = gettext("Firmware update failed.");
 	}
 
 	$show_log = true;
 }
 
-$pgtitle = array(gettext("System"), gettext("Netgate Coreboot Upgrade"));
+$pgtitle = array(gettext("System"), gettext("Netgate Firmware Upgrade"));
 include("head.inc");
 
 if ($input_errors) {
@@ -82,7 +82,7 @@ if ($input_errors) {
  * boot)
  */
 if (file_exists("/tmp/coreupdatecomplete")) {
-	$savemsg = gettext('Coreboot was successfully upgraded! The ' .
+	$savemsg = gettext('Firmware was successfully upgraded! The ' .
 	    'new version will take effect after reboot');
 
 	print_info_box($savemsg, 'success');
@@ -100,9 +100,9 @@ if (file_exists("/tmp/coreupdatecomplete")) {
 	}
 
 	if (empty($adi_flash_util_output) &&
-	    file_exists("{$g['conf_path']}/netgate_coreboot_upgrade.log")) {
+	    file_exists("{$g['conf_path']}/netgate_firmware_upgrade.log")) {
 		$adi_flash_util_output = file_get_contents(
-		    "{$g['conf_path']}/netgate_coreboot_upgrade.log");
+		    "{$g['conf_path']}/netgate_firmware_upgrade.log");
 		$show_log = true;
 	}
 }
@@ -114,19 +114,19 @@ if (empty($input_errors) && !file_exists("/tmp/coreupdatecomplete") &&
 }
 
 ?>
-<form action="netgate_coreboot_upgrade.php" method="post" class="form-horizontal">
+<form action="netgate_firmware_upgrade.php" method="post" class="form-horizontal">
 <?php
 	if (empty($input_errors) && !file_exists("/tmp/coreupdatecomplete")):
 
-		$section = new Form_Section("Netgate Coreboot details");
+		$section = new Form_Section("Netgate Firmware details");
 
 		$section->addInput(new Form_StaticText(
-			'Current Coreboot Version',
+			'Current Firmware Version',
 			$current['version']
 		));
 
 		$section->addInput(new Form_StaticText(
-			'Latest Coreboot Version',
+			'Latest Firmware Version',
 			$new['version']
 		));
 
@@ -136,7 +136,7 @@ if (empty($input_errors) && !file_exists("/tmp/coreupdatecomplete") &&
 				'Upgrade and Reboot',
 				null,
 				'fa-check'
-			))->setAttribute("title", "Upgrade coreboot and reboot the system")->addClass('btn-danger');
+			))->setAttribute("title", "Upgrade Firmware and reboot the system")->addClass('btn-danger');
 		}
 
 		print($section);
@@ -144,7 +144,7 @@ if (empty($input_errors) && !file_exists("/tmp/coreupdatecomplete") &&
 ?>
 		<div class="panel-heading">
 			<h2 class="panel-title">
-				<?=gettext("Netgate Coreboot update output")?>
+				<?=gettext("Netgate Firmware update output")?>
 			</h2>
 		</div>
 		<div class="panel-body">
