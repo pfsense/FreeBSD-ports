@@ -4,8 +4,11 @@ pkg/netgate_firmware_upgrade.xml
 sbin/adi_flash_util
 sbin/adi_powercycle
 sbin/adi_smbios_util
+sbin/blinkboot-upgrade.sh
 sbin/cbfstool
+sbin/dmistore
 %%DATADIR%%/info.xml
+%%DATADIR%%/roms/%%BLINKBOOT_NETGATE_6100%%
 %%DATADIR%%/roms/%%COREBOOT_DFF2_ROM%%
 %%DATADIR%%/roms/%%COREBOOT_PLCCB_ROM%%
 %%DATADIR%%/roms/%%COREBOOT_RCC_ROM%%
