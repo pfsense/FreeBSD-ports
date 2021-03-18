@@ -1106,7 +1106,13 @@ function refreshDirtyConfigs() {
 	 * by earlier steps.
 	 */
 
-	vpn_ipsec_configure();
+	/* see https://redmine.pfsense.org/issues/11695 */
+	if (function_exists('ipsec_configure')) {
+		ipsec_configure();
+	} else {
+		/* pre-2.5 */
+		vpn_ipsec_configure();
+	}
 	filter_configure();
 
 }
