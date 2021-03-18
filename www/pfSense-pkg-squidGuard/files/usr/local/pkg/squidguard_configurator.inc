@@ -898,7 +898,7 @@ function sg_create_config() {
 		foreach($squidguard_config[F_SOURCES][F_ITEM] as $src) {
 			foreach($squidguard_config[F_ACLS][F_ITEM] as $acl) {
 				if (($acl[F_NAME] == $src[F_NAME]) && $acl[F_DISABLED]) {
-					break 2;
+					continue 2;
 				}
 			}
 
