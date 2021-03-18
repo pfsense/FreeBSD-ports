@@ -42,6 +42,9 @@ function get_firmware_model() {
 	case 'PLCC-B':
 		return 'PLCC';
 		break;
+	case 'Netgate-6100':
+		return 'CORDOBA';
+		break;
 	default:
 		return '';
 	}
@@ -53,6 +56,10 @@ function is_netgate_hw() {
 
 function get_firmware_details($firmware) {
 	$details = array();
+
+	if (preg_match('/^(CORDOBA)-([\d.]{11}\w)/', $firmware, $matches)) {
+		return(array('model' => $matches[1], 'version' => $matches[2]));
+	}
 
 	if (!preg_match('/^ADI_(RCC|RCCVE|DFF2|PLCC)-([\d.]{11})/',
 	    $firmware, $matches)) {
@@ -83,6 +90,7 @@ function get_new_firmware_details() {
 	    'RCCVE' => '%%COREBOOT_RCCVE_ROM%%',
 	    'DFF2' => '%%COREBOOT_DFF2_ROM%%',
 	    'PLCC' => '%%COREBOOT_PLCCB_ROM%%',
+	    'CORDOBA' => '%%BLINKBOOT_NETGATE_6100%%',
 	);
 
 	$model = get_firmware_model();
@@ -106,7 +114,10 @@ function upgrade_firmware($firmware, &$output) {
 	putenv("PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:" .
 	    "/usr/local/sbin");
 
-	if ($firmware['model'] == 'PLCC') {
+	if ($firmware['model'] == 'CORDOBA') {
+		$_gc = exec("/usr/local/sbin/blinkboot-upgrade.sh " .
+		    $firmware['rom_path'] . ' 2>&1', $output, $rc);
+	} elseif ($firmware['model'] == 'PLCC') {
 		$_gc = exec("/usr/local/sbin/adi_smbios_util -w -u " .
 		    $firmware['rom_path'] . ' 2>&1', $output, $rc);
 	} else {
