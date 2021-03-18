@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Netgate_Firmware_Upgrade
-PORTVERSION=	0.29
-PORTREVISION=	1
+PORTVERSION=	0.30
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 
@@ -29,11 +28,13 @@ COREBOOT_DFF2_ROM=ADI_DFF2-01.00.00.17-nodebug.rom
 COREBOOT_RCC_ROM=ADI_RCC-01.00.00.18-nodebug-16m.rom
 COREBOOT_RCCVE_ROM=ADI_RCCVE-01.00.00.17-nodebug.rom
 COREBOOT_PLCCB_ROM=ADI_PLCC-01.00.00.11.bin
+BLINKBOOT_NETGATE_6100=CORDOBA-02.00.00.07t-uc-07.fd
 
 PLIST_SUB=	COREBOOT_DFF2_ROM=${COREBOOT_DFF2_ROM} \
 		COREBOOT_RCC_ROM=${COREBOOT_RCC_ROM} \
 		COREBOOT_RCCVE_ROM=${COREBOOT_RCCVE_ROM} \
-		COREBOOT_PLCCB_ROM=${COREBOOT_PLCCB_ROM}
+		COREBOOT_PLCCB_ROM=${COREBOOT_PLCCB_ROM} \
+		BLINKBOOT_NETGATE_6100=${BLINKBOOT_NETGATE_6100}
 
 SUB_FILES=	pkg-install pkg-deinstall
 SUB_LIST=	PORTNAME=${PORTNAME}
@@ -63,6 +64,7 @@ do-build:
 		${WRKSRC}/adi_smbios_util/adi_smbios_util.c
 	${GMAKE} -C ${CBFSTOOL_PATH} HOSTCC=${CC} HOSTCXX=${CXX} \
 		VBOOT_SOURCE=${WRKSRC_vboot}
+	${CC} ${CFLAGS} -o ${WRKSRC}/dmistore ${FILESDIR}/dmistore/dmistore.c
 
 do-install:
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
@@ -78,6 +80,7 @@ do-install:
 			-e "s|%%COREBOOT_RCC_ROM%%|${COREBOOT_RCC_ROM}|" \
 			-e "s|%%COREBOOT_RCCVE_ROM%%|${COREBOOT_RCCVE_ROM}|" \
 			-e "s|%%COREBOOT_PLCCB_ROM%%|${COREBOOT_PLCCB_ROM}|" \
+			-e "s|%%BLINKBOOT_NETGATE_6100%%|${BLINKBOOT_NETGATE_6100}|" \
 		${STAGEDIR}${PREFIX}/pkg/netgate_firmware_upgrade.inc
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/netgate_firmware_upgrade.xml \
 		${STAGEDIR}${PREFIX}/pkg
@@ -89,12 +92,14 @@ do-install:
 		${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml
-	${INSTALL_DATA} ${FILESDIR}/roms/*.rom ${STAGEDIR}${DATADIR}/roms
-	${INSTALL_DATA} ${FILESDIR}/roms/*.bin ${STAGEDIR}${DATADIR}/roms
+	${INSTALL_DATA} ${FILESDIR}/roms/* ${STAGEDIR}${DATADIR}/roms
 	${INSTALL_PROGRAM} ${WRKSRC}/adi_flash_util ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_PROGRAM} ${WRKSRC}/adi_powercycle ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_PROGRAM} ${WRKSRC}/adi_smbios_util/adi_smbios_util \
 		${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_PROGRAM} ${CBFSTOOL_PATH}/cbfstool ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_PROGRAM} ${WRKSRC}/dmistore ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_SCRIPT} ${FILESDIR}/usr/local/sbin/blinkboot-upgrade.sh \
+		${STAGEDIR}${PREFIX}/sbin
 
 .include <bsd.port.mk>
