@@ -164,7 +164,7 @@ if (!function_exists('compose_apc_contents')) {
 				
 				if ($user_settings["widgets"][$widgetkey]["apc_host_dis"] == "yes") {
 					$rtnstr .= "<tr><td>Apcupsd Host</td>\n";
-					$rtnstr .= "<td><span class=\"fa fa-bolt\"></span>&nbsp;(" . $nisip . ":" . $nisport . ")</td></tr>\n";
+					$rtnstr .= "<td><span class=\"fas fa-server\"></span>&nbsp;(" . $nisip . ":" . $nisport . ")</td></tr>\n";
 				}
 				
 				$rtnstr .= "</td></tr><tr><td>Line Voltage</td>\n";
