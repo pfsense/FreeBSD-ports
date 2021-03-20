@@ -75,8 +75,8 @@ if (!function_exists('compose_apc_contents')) {
 		}
 		
 		if (check_nis_running_apcupsd()) {
-			$nisip = (check_nis_ip_apcupsd() != ''? check_nis_ip_apcupsd() : "localhost");
-			$nisport = (check_nis_port_apcupsd() != '' ? check_nis_port_apcupsd() : "3551");
+			$nisip = ((check_nis_ip_apcupsd() != '') ? check_nis_ip_apcupsd() : "localhost");
+			$nisport = ((check_nis_port_apcupsd() != '') ? check_nis_port_apcupsd() : "3551");
 
 			$ph = popen("/usr/local/sbin/apcaccess -h " . escapeshellarg($nisip) . ":" . escapeshellarg($nisport) . " 2>&1", "r" );
 			while ($v = fgets($ph)) {
@@ -132,9 +132,10 @@ if (!function_exists('compose_apc_contents')) {
 						$brot = "45deg";
 						$bicn = "fa fa-plug";
 						$bclr = "orange";
-					} elseif (in_array("ONLINE", $statusarray)) {
+					} elseif (($bchrg != null) && (in_array("ONLINE", $statusarray))) {
 						$brot = "45deg";
 						$bicn = "fa fa-plug";
+						$bclr = "green";
 					} elseif ($bchrg != null) {
 						$brot = "270deg";
 						if ($bchrg <= 25) {
@@ -308,7 +309,7 @@ if (!function_exists('compose_apc_contents')) {
 						case "NO":
 							$stesticn = "fas fa-question-square";
 							$stestclr = "orange";
-							$steststr = "Unknown";
+							$steststr = "Unknown (No Recent Test)";
 						break;
 					}
 					$rtnstr .="<br /><span class=\"" . $stesticn . "\" style=\"color:" . $stestclr . ";font-style:bold;font-size:0.9em;padding-left:1em\">\n";
