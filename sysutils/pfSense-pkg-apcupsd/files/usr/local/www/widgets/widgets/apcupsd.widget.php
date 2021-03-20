@@ -90,9 +90,9 @@ if (!function_exists('compose_apc_contents')) {
 				$bchrg = (($results['BCHARGE'] != "") ? str_replace(" Percent", "", $results['BCHARGE']) : null);
 				
 				if ($results['STATUS'] != "") {
-					$mainstatarray = array("ONLINE", "ON-BATTERY", "OVERLOADED", "BATTERY-LOW", "REPLACE-BATTERY", "COMM-LOST", "NOBATT"); //Taken from apcupsd source
-					$substatarray = array("CALIBRATION", "TRIM", "BOOST", "SHUTDOWN", "SLAVE");  //Taken from apcupsd source
-					$statusarray = explode(" ", str_replace(array("ON BATTERY", "BATTERY LOW", "REPLACE BATTERY", "COMM LOST"), array("ON-BATTERY", "BATTERY-LOW", "REPLACE-BATTERY", "COMM-LOST"), $results['STATUS']));
+					$mainstatarray = array("ONLINE", "ON-BATTERY", "OVERLOADED", "BATTERY-LOW", "LOWBATT", "REPLACE-BATTERY", "REPLACEBATT", "COMM-LOST", "COMMLOST", "NOBATT"); //Taken from apcupsd source
+					$substatarray = array("CALIBRATION", "CAL", "TRIM", "BOOST", "SHUTDOWN", "SHUTTING-DOWN", "SLAVE", "SLAVEDOWN");  //Taken from apcupsd source
+					$statusarray = explode(" ", str_replace(array("ON BATTERY", "BATTERY LOW", "REPLACE BATTERY", "SHUTTING DOWN", "COMM LOST"), array("ON-BATTERY", "BATTERY-LOW", "REPLACE-BATTERY", "SHUTTING-DOWN", "COMM-LOST"), $results['STATUS']));
 					$statstr = "";
 					$statsubstr = "";
 					
@@ -104,13 +104,16 @@ if (!function_exists('compose_apc_contents')) {
 									$statstr .= $statusarray[$i] . " ";
 									break;
 								case "REPLACE-BATTERY":
+								case "REPLACEBATT":
 								case "COMM-LOST":
+								case "COMMLOST":
 								case "OVERLOADED":
 									$bclr = "orange";
 									$statstr .= str_replace("-" , " ", $statusarray[$i]) . " ";
 									break;
 								case "ON-BATTERY":
 								case "BATTERY-LOW":
+								case "LOWBATT":
 								case "NOBATT":
 									$bclr = "red";
 									$statstr .= str_replace("-" , " ", $statusarray[$i]) . " ";
@@ -386,7 +389,7 @@ $widgetperiod = isset($config['widgets']['period']) ? $config['widgets']['period
 ?>
 <table class="table table-hover table-striped table-condensed">
 	<tbody id="<?=htmlspecialchars($widgetkey)?>-apcupsdimpbody">
-		<?PHP gettext("Loading..."); ?>
+		<tr><td><?=gettext("Retrieving data...")?></td></tr>
 	</tbody>
 </table>
 <!-- <a id="apcupsd_apcaccess_refresh" href="#" class="fa fa-refresh" style="display: none;"></a> -->
