@@ -151,6 +151,14 @@ _exit() {
 	exit ${_rc}
 }
 
+notice() {
+	msg="$@"
+
+	/usr/local/bin/php -r \
+	    "require_once('notices.inc'); \
+	    file_notice('${product}-Upgrade', '${msg}', 'Upgrade', '', 1, true);"
+}
+
 pkg_with_pb() {
 	local _event_pipe=""
 	local _cmd="${1}"
@@ -583,6 +591,8 @@ pkg_upgrade() {
 	# Do not upgrade if there are enabled WireGuard tunnels on config
 	if sed -e '/<wireguard>/,/<\/wireguard>/!d' /cf/conf/config.xml \
 	    | grep -q '<enabled>yes'; then
+		notice "ERROR: There are WireGuard tunnels enabled on your" \
+		    "config.  Please remove or disable them before upgrade."
 		_echo "ERROR: There are WireGuard tunnels enabled on your" \
 		    "config.  Please remove or disable them before proceed."
 		_exit 1
@@ -991,6 +1001,13 @@ check_upgrade() {
 	local _meta_pkg=$(get_meta_pkg_name)
 	local _core_pkgs=$(pkg-static query -e \
 	    "%n ~ ${product}-kernel-* || %n ~ ${product}-base*" %n 2>/dev/null)
+
+	# Do not upgrade if there are enabled WireGuard tunnels on config
+	if sed -e '/<wireguard>/,/<\/wireguard>/!d' /cf/conf/config.xml \
+	    | grep -q '<enabled>yes'; then
+		notice "ERROR: There are WireGuard tunnels enabled on your" \
+		    "config.  Please remove or disable them before upgrade."
+	fi
 
 	[ -z "${_skip_update}" ] \
 	    && pkg_update "" mute
