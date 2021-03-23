@@ -96,6 +96,21 @@ if ($_POST) {
 		$input_errors[] = gettext("Invalid interface action");
 	}
 
+	$filter = array();
+	for ($x = 0; $x < 99; $x++) {
+		if (!empty($_POST["destination{$x}"])) {
+			if (!is_domain($_POST["destination{$x}"])) {
+				$input_errors[] = sprintf(gettext('%s is not valid Service name'),
+					htmlspecialchars($_POST["destination{$x}"]));
+			} else {
+				$filtering['rule'][] = array(
+					'destination' => $_POST["destination{$x}"],
+				);
+			}
+		}
+	}
+	$pconfig['filtering'] = $filtering;
+
 	if (!$input_errors) {
 		$avahi = array();
 
@@ -118,6 +133,8 @@ if ($_POST) {
 			$avahi['publish_ipv4_aaaa'] = $pconfig['publish_ipv4_aaaa'];
 			$avahi['publish_ipv6_a'] = $pconfig['publish_ipv6_a'];
 		}
+
+		$avahi['filtering'] = $filtering;
 
 		$a_avahi = $avahi;
 		write_config("Updated Avahi settings");
@@ -215,6 +232,57 @@ $section->addInput(new Form_Checkbox(
 
 $form->add($section);
 
+$section = new Form_Section('Reflection Filtering');
+$section->addClass('filtering');
+
+$section->addInput(new Form_StaticText(
+	null,
+	sprintf(gettext('List of allowed service names to be reflected. Each service that is ' .
+		'seen must match an entry in this list to be reflected to other networks.%1$s ' .
+		'This list can match the type of service or the name of the machine providing ' .
+		'the service. Defaults to allowing all services.%1$s%1$s'), '<br/>')
+))->setHelp('Example printer services: _printer._tcp.local, _ipp._tcp.local, _pdl-datastream._tcp.local');
+
+if (!$pconfig['filtering']) {
+	$pconfig['filtering'] = array();
+	$pconfig['filtering']['rule']  = array(array('destination' => ''));
+}
+
+$numrows = count($item) -1;
+$counter = 0;
+
+$numrows = count($pconfig['filtering']['rule']) -1;
+
+foreach ($pconfig['filtering']['rule'] as $rule) {
+	$group = new Form_Group(($counter == 0) ? 'Service':null);
+	$group->addClass('repeatable');
+
+	$group->add(new Form_IpAddress(
+		'destination' . $counter,
+		null,
+		$rule['destination']
+	));
+
+	$group->add(new Form_Button(
+		'deleterow' . $counter,
+		'Delete',
+		null,
+		'fa-trash'
+	))->addClass('btn-warning');
+
+	$section->add($group);
+
+	$counter++;
+}
+
+$section->addInput(new Form_Button(
+	'addrow',
+	'Add',
+	null,
+	'fa-plus'
+))->addClass('btn-success');
+
+$form->add($section);
 
 $section = new Form_Section('Publishing');
 
@@ -373,6 +441,15 @@ events.push(function() {
 		$('#advancedbutton').html('<i class="fa fa-cog"></i> ' + text);
 	}
 
+	function show_filtering() {
+		hide = !$('#reflection').prop('checked');
+		hideClass('filtering', hide);
+	}
+
+	$('#reflection').click(function () {
+		show_filtering();
+	});
+
 	// Show/Hide publish settings
 	$('#publishing').click(function() {
 		publishingChange();
@@ -395,6 +472,8 @@ events.push(function() {
 	IPv4Change();
 	IPv6Change();
 	advancedChange(true);
+	show_filtering();
+	checkLastRow();
 });
 //]]>
 </script>

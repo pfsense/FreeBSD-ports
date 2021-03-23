@@ -72,6 +72,15 @@ function avahi_write_config($avahi_config) {
 	$txt .= "\n[reflector]\n";
 	$txt .= "enable-reflector=" . ($avahi_config['reflection'] ? "yes" : "no") . "\n";
 
+	if (($avahi_config['reflection'] == 'yes') && is_array($avahi_config['filtering']['rule']) &&
+	    !empty($avahi_config['filtering']['rule'])) {
+		$filtering = array();
+		foreach ($avahi_config['filtering']['rule'] as $rule) {
+			$filtering[] = $rule['destination'];
+		}
+		$txt .= "reflect-filters=" . implode(',', $filtering) . "\n";
+	}
+
 	if (!file_put_contents(AVAHI_CONFIG_FILE, $txt)) {
 		log_error("ERROR: Could not open {" . AVAHI_CONFIG_FILE . "} for writing");
 		exit;
