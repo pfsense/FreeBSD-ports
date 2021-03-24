@@ -588,16 +588,6 @@ pkg_upgrade() {
 		_exit 0
 	fi
 
-	# Do not upgrade if there are enabled WireGuard tunnels on config
-	if sed -e '/<wireguard>/,/<\/wireguard>/!d' /cf/conf/config.xml \
-	    | grep -q '<enabled>yes'; then
-		notice "ERROR: There are WireGuard tunnels enabled on your" \
-		    "config.  Please remove or disable them before upgrade."
-		_echo "ERROR: There are WireGuard tunnels enabled on your" \
-		    "config.  Please remove or disable them before proceed."
-		_exit 1
-	fi
-
 	if [ -n "${booting}" -a -x /usr/local/sbin/${product}-led.sh ]; then
 		/usr/local/sbin/${product}-led.sh updating
 	fi
@@ -643,6 +633,18 @@ pkg_upgrade() {
 		# was upgraded together with pfSense-repo, exit 99
 		if [ -n "${_new_pfsense_upgrade}" ]; then
 			_exit 99
+		fi
+
+		# Do not upgrade if there are enabled WireGuard tunnels on config
+		if sed -e '/<wireguard>/,/<\/wireguard>/!d'
+		    /cf/conf/config.xml | grep -q '<enabled>yes'; then
+			notice "ERROR: There are WireGuard tunnels enabled" \
+			    "on your config.  Please remove or disable them" \
+			    "before upgrade."
+			_echo "ERROR: There are WireGuard tunnels enabled" \
+			    "on your config.  Please remove or disable them" \
+			    "before upgrade."
+			_exit 1
 		fi
 
 		# Old versions used to lock kernel and uboot, make sure we
