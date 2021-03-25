@@ -636,7 +636,7 @@ pkg_upgrade() {
 		fi
 
 		# Do not upgrade if there are enabled WireGuard tunnels on config
-		if sed -e '/<wireguard>/,/<\/wireguard>/!d'
+		if sed -e '/<wireguard>/,/<\/wireguard>/!d' \
 		    /cf/conf/config.xml | grep -q '<enabled>yes'; then
 			notice "ERROR: There are WireGuard tunnels enabled" \
 			    "on your config.  Please remove or disable them" \
