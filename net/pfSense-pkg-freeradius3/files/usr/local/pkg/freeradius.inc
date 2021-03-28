@@ -3243,6 +3243,7 @@ ldap ldap2 {
 		control:NT-Password		:= 'ntPassword'
 		control:LM-Password		:= 'sambaLmPassword'
 		control:NT-Password		:= 'sambaNtPassword'
+		control:NT-Password		:= 'ipaNTHash'
 		control:LM-Password		:= 'dBCSPwd'
 		control:Password-With-Header	+= 'userPassword'
 		control:SMB-Account-CTRL-TEXT	:= 'acctFlags'
