@@ -445,11 +445,6 @@ function squid_reconfigure($remove_only = '')
 	$conf[] = REDIRECTOR_PROGRAM_OPT . " $redirector_path -c $redirector_conf";
 	$conf[] = REDIRECT_BYPASS_OPT    . " off";
 	$conf[] = REDIRECT_CHILDREN_OPT  . " " . $rewrite_children . " startup=" . $rewrite_children_startup . " idle=" . $rewrite_children_idle . " concurrency=0";
-	/* correct redirection in SSL Bump mode, see https://redmine.pfsense.org/issues/8827 */
-	if ($config['installedpackages']['squid']['config'][0]['sslproxy_mitm_mode'] == 'splicewhitelist') {
-		$conf[] = "url_rewrite_access deny CONNECT";
-		$conf[] = "url_rewrite_access allow all";
-	}
 
 	sg_addlog("squid_reconfigure", "Add new redirector options to Squid config.", SQUIDGUARD_INFO);
     }
