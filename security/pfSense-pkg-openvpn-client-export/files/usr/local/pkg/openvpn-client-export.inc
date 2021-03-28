@@ -398,7 +398,8 @@ EOF;
 	}
 
 	/* If the server is set to push, don't put a compression line in the client config. */
-	if (!empty($compression) && !$settings['compression_push']) {
+	if (!empty($compression) && !$settings['compression_push'] &&
+	    ((($settings['allow_compression'] != 'no') && !$legacy) || $legacy)) {
 		$conf .= "{$compression}\n";
 	}
 
@@ -924,6 +925,7 @@ function openvpn_client_export_sharedkey_config($srvid, $useaddr, $proxy, $nokey
 		case 'lz4-v2':
 		case 'lzo':
 		case 'stub':
+		case 'stub-v2':
 			$compression .= "compress {$settings['compression']}";
 			break;
 		case 'noadapt':
