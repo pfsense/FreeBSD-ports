@@ -744,14 +744,13 @@ function frr_flatten_config_interfaces() {
 	$interfaces_config = "";
 	foreach (array_keys($frr_integrated_config['interfaces']) as $interface) {
 		$interfaces_config .= "interface {$interface}\n";
+		$interface_description = "";
 
 		foreach(array('ospfd', 'ospf6d') as $service) {
 			if (empty($frr_integrated_config['interfaces_descr'][$interface][$service])) {
 				continue;
 			}
-			if (!isset($interface_description)) {
-				$interface_description = "";
-			} else {
+			if (!empty($interface_description)) {
 				$interface_description .= " - ";
 			}
 			$interface_description .= "{$service}: {$frr_integrated_config['interfaces_descr'][$interface][$service]}";
