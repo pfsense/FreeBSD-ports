@@ -232,7 +232,7 @@ if ($pconfig['name'] <> "default") {
 	$btnaliases = new Form_Button(
 		'btnSelectAlias',
 		' ' . 'Aliases',
-		'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=host|network&varname=bind_to&act=import&multi_ip=yes&returl=' . urlencode($_SERVER['PHP_SELF']),
+		'snort_select_alias.php?id=' . $id . '&eng_id=' . $eng_id . '&type=host|network&varname=bind_to&act=import&multi_ip=yes&returl=' . urlencode($_SERVER['PHP_SELF']),
 		'fa-search-plus'
 	);
 	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
