@@ -65,11 +65,13 @@ if (empty($suricataglob['rule'][$id]['uuid'])) {
 	/* Adding new interface, so generate a new UUID and flag rules to build. */
 	$pconfig['uuid'] = suricata_generate_id();
 	$rebuild_rules = true;
+	$new_interface = true;
 }
 else {
 	$pconfig['uuid'] = $a_rule[$id]['uuid'];
 	$pconfig['descr'] = $a_rule[$id]['descr'];
 	$rebuild_rules = false;
+	$new_interface = false;
 }
 $suricata_uuid = $pconfig['uuid'];
 
@@ -87,6 +89,7 @@ $interfaces["Unassigned"] = gettext("Unassigned");
 // See if interface is already configured, and use its values
 if (isset($id) && isset($a_rule[$id])) {
 	/* old options */
+	$if_friendly = convert_friendly_interface_to_friendly_descr($a_rule[$id]['interface']);
 	$pconfig = $a_rule[$id];
 	if (!empty($pconfig['configpassthru']))
 		$pconfig['configpassthru'] = base64_decode($pconfig['configpassthru']);
@@ -107,8 +110,23 @@ elseif (isset($id) && !isset($a_rule[$id])) {
 	foreach ($ifaces as $i) {
 		if (!in_array($i, $ifrules)) {
 			$pconfig['interface'] = $i;
+			$if_friendly = convert_friendly_interface_to_friendly_descr($i);
+
+			// If the interface is a VLAN, use the VLAN description
+			// if set, otherwise default to the friendly description.
+			if ($vlan = interface_is_vlan(get_real_interface($i))) {
+				if (strlen($vlan['descr']) > 0) {
+					$pconfig['descr'] = $vlan['descr'];
+				}
+				else {
+					$pconfig['descr'] = convert_friendly_interface_to_friendly_descr($i);
+				}
+			}
+			else {
+				$pconfig['descr'] = convert_friendly_interface_to_friendly_descr($i);
+			}
+
 			$pconfig['enable'] = 'on';
-			$pconfig['descr'] = strtoupper($i);
 			$pconfig['inspect_recursion_limit'] = '3000';
 			break;
 		}
@@ -655,6 +673,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 
 		// Refresh page fields with just-saved values
 		$pconfig = $natent;
+		$new_interface = false;
 	} else
 		$pconfig = $_POST;
 }
@@ -674,8 +693,6 @@ function suricata_get_config_lists($lists) {
 
 	return(['default' => 'default'] + $list);
 }
-
-$if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
 
 $pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Edit Interface Settings - {$if_friendly}"));
 include_once("head.inc");
@@ -702,7 +719,13 @@ $tab_array = array();
 $tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
 $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
-$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
+
+if ($new_interface) {
+	$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php");
+} else {
+	$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
+}
+
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
@@ -716,12 +739,14 @@ display_top_tabs($tab_array, true);
 $tab_array = array();
 $menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
 $tab_array[] = array($menu_iface . gettext("Settings"), true, "/suricata/suricata_interfaces_edit.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("Categories"), false, "/suricata/suricata_rulesets.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_rules.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("App Parsers"), false, "/suricata/suricata_app_parsers.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
+if (!$new_interface) {
+	$tab_array[] = array($menu_iface . gettext("Categories"), false, "/suricata/suricata_rulesets.php?id={$id}");
+	$tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_rules.php?id={$id}");
+	$tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
+	$tab_array[] = array($menu_iface . gettext("App Parsers"), false, "/suricata/suricata_app_parsers.php?id={$id}");
+	$tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
+	$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
+}
 display_top_tabs($tab_array, true);
 
 $form = new Form;
