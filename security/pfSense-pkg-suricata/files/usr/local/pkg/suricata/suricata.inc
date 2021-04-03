@@ -70,12 +70,6 @@ function suricata_stop($suricatacfg, $if_real) {
 	if (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid")) {
 		syslog(LOG_NOTICE, "[Suricata] Suricata STOP for {$suricatacfg['descr']}({$if_real})...");
 		killbypid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
-		sleep(1);
-
-		// For some reason Suricata seems to need a double TERM signal to actually shutdown
-		if (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid")) {
-			killbypid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
-		}
 	}
 	// Make sure the PID file is actually deleted so Suricata will restart without error
 	unlink_if_exists("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
