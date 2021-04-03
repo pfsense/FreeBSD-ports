@@ -1083,13 +1083,19 @@ else
 
 // Configure IPS operational mode
 if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffenders'] == 'on') {
+	// Get 'netmap_threads' parameter, if set
+	$netmap_threads_param = 'auto';
+	if (intval($suricatacfg['ips_netmap_threads']) > 0) {
+		$netmap_threads_param = $suricatacfg['ips_netmap_threads'];
+	}
+
 	// Note -- Netmap promiscuous mode logic is backwards from pcap
 	$netmap_intf_promisc_mode = $intf_promisc_mode == 'yes' ? 'no' : 'yes';
 	$suricata_ips_mode = <<<EOD
 # Netmap
 netmap:
  - interface: default
-   threads: auto
+   threads: {$netmap_threads_param}
    copy-mode: ips
    disable-promisc: {$netmap_intf_promisc_mode}
    checksum-checks: auto
