@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -152,7 +152,9 @@ if (isset($_POST['iplist_edit_save']) && isset($_POST['iplist_data'])) {
 // so we can pick up any changes made to files in code above.
 $ipfiles = return_dir_as_array($iprep_path);
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("IP Reputation Lists"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "IP Lists Management");
+
 include_once("head.inc");
 
 if ($input_errors) {
