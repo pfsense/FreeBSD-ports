@@ -235,7 +235,9 @@ if (isset($_POST["save"])) {
 $cat_mods = suricata_sid_mgmt_auto_categories($a_nat[$id], FALSE);
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
-$pgtitle = array(gettext("Suricata IDS"), gettext(" Interface {$if_friendly} - Categories"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "/suricata/suricata_interfaces_edit.php?id={$id}", "@self");
+$pgtitle = array("Services", "Suricata", "Interface Settings", "{$if_friendly} - Categories");
+
 include_once("head.inc");
 
 if ($input_errors) {

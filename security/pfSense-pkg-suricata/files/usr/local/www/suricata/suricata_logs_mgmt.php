@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -198,7 +198,8 @@ if (isset($_POST['save']) || isset($_POST['apply'])) {
 	}
 }
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Logs Management"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "Logs Management");
 include_once("head.inc");
 
 /* Display Alert message, under form tag or no refresh */

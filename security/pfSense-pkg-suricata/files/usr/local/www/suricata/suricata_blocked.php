@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -137,7 +137,8 @@ if ($_POST['save'])
 
 }
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Blocked Hosts"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "Blocked Hosts");
 include_once("head.inc");
 
 /* refresh every 60 secs */
