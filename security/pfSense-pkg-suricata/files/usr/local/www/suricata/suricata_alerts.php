@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -600,8 +600,6 @@ if ($_POST['download']) {
 /* Load up an array with the current Suppression List GID,SID values */
 $supplist = suricata_load_suppress_sigs($a_instance[$instanceid], true);
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Alerts"));
-
 function build_instance_list() {
 	global $a_instance;
 
@@ -627,6 +625,8 @@ function build_logfile_list() {
 	return($list);
 }
 
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "Alerts");
 include_once("head.inc");
 
 

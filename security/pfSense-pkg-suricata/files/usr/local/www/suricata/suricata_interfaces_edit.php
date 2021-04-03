@@ -694,7 +694,8 @@ function suricata_get_config_lists($lists) {
 	return(['default' => 'default'] + $list);
 }
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Edit Interface Settings - {$if_friendly}"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "{$if_friendly} - Interface Settings");
 include_once("head.inc");
 
 /* Display Alert message */

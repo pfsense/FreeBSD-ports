@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -355,7 +355,8 @@ foreach ($sidmodlists as $list) {
 	$sidmodselections[] = $list['name'];
 }
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("SID Management"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "SID Management");
 include_once("head.inc");
 
 $tab_array = array();
