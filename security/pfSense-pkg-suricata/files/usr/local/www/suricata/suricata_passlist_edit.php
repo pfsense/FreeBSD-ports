@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2018 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -186,7 +186,8 @@ if ($_POST['save']) {
 	}
 }
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Pass List Edit"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "/suricata/suricata_passlist.php", "@self");
+$pgtitle = array("Services", "Suricata", "Pass List", "Edit");
 include_once("head.inc");
 
 if ($input_errors)
