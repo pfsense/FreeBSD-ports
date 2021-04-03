@@ -148,6 +148,8 @@ if (empty($pconfig['blockoffenderskill']))
 	$pconfig['blockoffenderskill'] = "on";
 if (empty($pconfig['ips_mode']))
 	$pconfig['ips_mode'] = 'ips_mode_legacy';
+if (empty($pconfig['ips_netmap_threads']))
+	$pconfig['ips_netmap_threads'] = 'auto';
 if (empty($pconfig['block_drops_only']))
 	$pconfig['block_drops_only'] = "off";
 if (empty($pconfig['runmode']))
@@ -443,6 +445,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['sgh_mpm_context']) $natent['sgh_mpm_context'] = $_POST['sgh_mpm_context']; else unset($natent['sgh_mpm_context']);
 		if ($_POST['blockoffenders'] == "on") $natent['blockoffenders'] = 'on'; else $natent['blockoffenders'] = 'off';
 		if ($_POST['ips_mode']) $natent['ips_mode'] = $_POST['ips_mode']; else unset($natent['ips_mode']);
+		if ($_POST['ips_netmap_threads']) $natent['ips_netmap_threads'] = $_POST['ips_netmap_threads']; else $natent['ips_netmap_threads'] = "auto";
 		if ($_POST['blockoffenderskill'] == "on") $natent['blockoffenderskill'] = 'on'; else $natent['blockoffenderskill'] = 'off';
 		if ($_POST['block_drops_only'] == "on") $natent['block_drops_only'] = 'on'; else $natent['block_drops_only'] = 'off';
 		if ($_POST['blockoffendersip']) $natent['blockoffendersip'] = $_POST['blockoffendersip']; else unset($natent['blockoffendersip']);
@@ -1410,6 +1413,14 @@ $group->setHelp('Legacy Mode uses the PCAP engine to generate copies of packets 
 		'hardware NIC driver does not support Netmap, using Inline Mode can result in a firewall system crash!  If problems are experienced with Inline Mode, switch to Legacy Mode instead.');
 $section->add($group);
 
+$section->addInput(new Form_Input(
+	'ips_netmap_threads',
+	'Netmap Threads',
+	'text',
+	$pconfig['ips_netmap_threads']
+))->setHelp('Enter the number of netmap threads to use. Default is "auto". When set to a value matching the netmap TX/RX queues registered by the NIC, performance can be greatly increased. ' . 
+	    'The NIC hosting this interface registered ' . suricata_get_supported_netmap_queues($if_real) . ' queue(s) with the kernel.');
+
 $section->addInput(new Form_Checkbox(
 	'blockoffenderskill',
 	'Kill States',
@@ -1715,6 +1726,7 @@ events.push(function(){
 		hideSelect('ips_mode', hide);
 		hideClass('passlist', hide);
 		if ($('#ips_mode').val() == 'ips_mode_inline') {
+			hideInput('ips_netmap_threads', hide);
 			hideCheckbox('blockoffenderskill', true);
 			hideCheckbox('block_drops_only', true);
 			hideSelect('blockoffendersip', true);
@@ -1730,6 +1742,7 @@ events.push(function(){
 		else {
 			$('#eve_log_drop').parent().hide();
 			hideInput('intf_snaplen', false);
+			hideInput('ips_netmap_threads', true);
 		}
 	}
 
@@ -1891,6 +1904,7 @@ events.push(function(){
 		disableInput('blockoffenderskill', disable);
 		disableInput('block_drops_only', disable);
 		disableInput('blockoffendersip', disable);
+		disableInput('ips_netmap_threads', disable);
 		disableInput('performance', disable);
 		disableInput('max_pending_packets', disable);
 		disableInput('detect_eng_profile', disable);
@@ -2154,6 +2168,7 @@ events.push(function(){
 			hideSelect('blockoffendersip', true);
 			hideClass('passlist', true);
 			hideInput('intf_snaplen', true);
+			hideInput('ips_netmap_threads', false);
 			$('#eve_log_drop').parent().show();
 			$('#ips_warn_dlg').modal('show');
 		}
@@ -2165,6 +2180,7 @@ events.push(function(){
 			hideClass('passlist', false);
 			$('#eve_log_drop').parent().hide();
 			$('#ips_warn_dlg').modal('hide');
+			hideInput('ips_netmap_threads', true);
 		}
 	});
 
