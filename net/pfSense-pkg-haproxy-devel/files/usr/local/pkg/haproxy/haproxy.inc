@@ -2322,16 +2322,28 @@ function haproxy_plugin_carp($pluginparams) {
 function haproxy_plugin_certificates($pluginparams) {
 	global $config;
 	$result = array();
-	if ($pluginparams['type'] == 'certificates' && $pluginparams['event'] == 'used_certificates') {
+	if ($pluginparams['type'] == 'certificates') {
 		$result['pkgname'] = "HAProxy";
 		$result['certificatelist'] = array();
 		// return a array of used certificates.
 		$a_frontends = getarraybyref($config,'installedpackages','haproxy','ha_backends','item');
 		foreach($a_frontends as &$frontend) {
-			if (get_frontend_uses_ssl($frontend)) {
-				if ($frontend['secondary'] != 'yes' || $frontend['ssloffload']) {
+			if (get_frontend_uses_ssl($frontend) && ($frontend['secondary'] != 'yes')) {
+				if ($pluginparams['event'] == 'used_certificates') {
+					$ssloffload = false;
+					if ($frontend['a_extaddr'] && is_array($frontend['a_extaddr']['item'])) {
+						foreach($frontend['a_extaddr']['item'] as $item) {
+							if ($item['extaddr_ssl']) {
+								$ssloffload = true;
+								break;
+							}
+						}
+					}
+					if (!$ssloffload) {
+						continue;
+					}
 					// primary or secondary with additional certs checkbox
-					if ($frontend['ssloffloadcert']){
+					if ($frontend['ssloffloadcert']) {
 						$item = array();
 						$cert = $frontend['ssloffloadcert'];
 						$item['usedby'] = $frontend['name'];
@@ -2347,6 +2359,26 @@ function haproxy_plugin_certificates($pluginparams) {
 							}
 						}
 					}
+				} elseif ($frontend['clientcert_ca'] && is_array($frontend['clientcert_ca']['item']) &&
+				    ($pluginparams['event'] == 'used_ca')) {
+					foreach($frontend['clientcert_ca']['item'] as $caref) {
+						if ($caref['cert_ca']) {
+							$item = array();
+							$cert = $caref['cert_ca'];
+							$item['usedby'] = $frontend['name'];
+							$result['certificatelist'][$cert][] = $item;
+						}
+					}
+				} elseif ($frontend['clientcert_crl'] && is_array($frontend['clientcert_crl']['item']) &&
+				    ($pluginparams['event'] == 'used_crl')) {
+					foreach($frontend['clientcert_crl']['item'] as $crlref) {
+						if ($crlref['cert_crl']) {
+							$item = array();
+							$cert = $crlref['cert_crl'];
+							$item['usedby'] = $frontend['name'];
+							$result['certificatelist'][$cert][] = $item;
+						}
+					}
 				}
 			}
 		}
@@ -2355,9 +2387,19 @@ function haproxy_plugin_certificates($pluginparams) {
 		foreach ($a_backends as $backend) {
 			$a_servers = getarraybyref($backend,'ha_servers','item');
 			foreach($a_servers as $srv) {
-				if ($srv['ssl-server-clientcert']) {
+				if ($srv['ssl-server-clientcert'] && ($pluginparams['event'] == 'used_certificates')) {
 					$item = array();
 					$cert = $srv['ssl-server-clientcert'];
+					$item['usedby'] = $backend['name']."/".$srv['name'];
+					$result['certificatelist'][$cert][] = $item;
+				} elseif ($srv['ssl-server-ca'] && ($pluginparams['event'] == 'used_ca')) {
+					$item = array();
+					$cert = $srv['ssl-server-ca'];
+					$item['usedby'] = $backend['name']."/".$srv['name'];
+					$result['certificatelist'][$cert][] = $item;
+				} elseif ($srv['ssl-server-crl'] && ($pluginparams['event'] == 'used_crl')) {
+					$item = array();
+					$cert = $srv['ssl-server-crl'];
 					$item['usedby'] = $backend['name']."/".$srv['name'];
 					$result['certificatelist'][$cert][] = $item;
 				}
