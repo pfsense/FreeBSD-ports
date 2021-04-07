@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/*
+ * squid_reverse_redir.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013 Gekkenhuis
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>squidreverseredir</name>
+	<title>Reverse Proxy Server: Redirects</title>
+	<include_file>/usr/local/pkg/squid.inc</include_file>
+	<tabs>
+	<tab>
+		<text>General</text>
+			<url>/pkg_edit.php?xml=squid_reverse_general.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Web Servers</text>
+			<url>/pkg.php?xml=squid_reverse_peer.xml</url>
+		</tab>
+		<tab>
+			<text>Mappings</text>
+			<url>/pkg.php?xml=squid_reverse_uri.xml</url>
+		</tab>
+		<tab>
+			<text>Redirects</text>
+			<url>/pkg.php?xml=squid_reverse_redir.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Real Time</text>
+			<url>/squid_monitor.php?menu=reverse</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=squid_reverse_sync.xml&amp;id=0</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Status</fielddescr>
+			<fieldname>enable</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Redirect Name</fielddescr>
+			<fieldname>name</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Redirect To</fielddescr>
+			<fieldname>redirurl</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<name>Squid Redirect Mappings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable This Redirect</fielddescr>
+			<fieldname>enable</fieldname>
+			<description>If checked, then this redirect will be available for reverse config.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Redirect Name</fielddescr>
+			<fieldname>name</fieldname>
+			<description>
+				<![CDATA[
+				Enter the name to identify this redirect in Squid reverse configuration.
+				<span class="text-info">Example: REDIR1</span>
+				]]>
+			</description>
+			<type>input</type>
+			<size>20</size>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Redirect Description (Optional)</fielddescr>
+			<fieldname>description</fieldname>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Redirect Protocol</fielddescr>
+			<fieldname>protocol</fieldname>
+			<description>
+				<![CDATA[
+				Select the protocol to redirect on.
+				<span class="text-info">Use CTRL + click to select multiple options.</span>
+				]]>
+			</description>
+			<type>select</type>
+			<multiple/>
+			<size>2</size>
+			<options>
+				<option><name>HTTP</name><value>HTTP</value></option>
+				<option><name>HTTPS</name><value>HTTPS</value></option>
+			</options>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Redirect Settings</fielddescr>
+			<type>info</type>
+			<description>
+				<![CDATA[
+				Use Redirect row(s) below to match domains or regular expressions to redirect for (one per row).
+				<div class="infoblock">
+					Do <strong>NOT</strong> enter http:// or https:// - only the hostname is required.<br/><br/>
+					<span class="text-info">Examples:</span><br/>
+					example.com<br/>
+					sub.example.com<br/>
+					www.example.com<br/><br />
+					</span>
+					<span class="text-info">Regular expressions examples:</span><br/>
+					(^|\.)example\.com$<br/>
+					^[^\.]*\.example\.*<br/>
+					.+\.www\.example\.com$<br/>
+					</span>
+				</div>
+				]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Redirect is Regular Expression</fielddescr>
+			<fieldname>dstdomregex</fieldname>
+			<description>
+				<![CDATA[
+				Select this check box if the fields below are a regular expressions,
+			       	otherwise they are domains.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Redirects</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fieldname>uri</fieldname>
+					<type>input</type>
+					<size>60</size>
+					<required/>
+					<fielddescr>
+						<![CDATA[
+						Enter the domains or regular expressions to match here.<br />
+						<span class="text-info">Click Info above for examples.</span>
+						]]>
+					</fielddescr>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+		<field>
+			<fielddescr>Path Regex</fielddescr>
+			<fieldname>pathregex</fieldname>
+			<description>
+				<![CDATA[
+				Enter the path regex to match here.
+				<span class="text-info">Hint: Enter ^/$ to match the domain only.</span>
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>URL to Redirect To</fielddescr>
+			<fieldname>redirurl</fieldname>
+			<description>Enter the URL to redirect to here.</description>
+			<type>input</type>
+			<size>60</size>
+			<required/>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+		squid_validate_reverse($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		squid_resync();
+	</custom_php_resync_config_command>
+</packagegui>

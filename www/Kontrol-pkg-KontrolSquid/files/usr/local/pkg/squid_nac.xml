@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/*
+ * squid_nac.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2014 Marcello Coutinho
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>squidnac</name>
+	<title>Proxy Server: Access Control</title>
+	<include_file>/usr/local/pkg/squid.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=squid.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Remote Cache</text>
+			<url>/pkg.php?xml=squid_upstream.xml</url>
+		</tab>
+		<tab>
+			<text>Local Cache</text>
+			<url>/pkg_edit.php?xml=squid_cache.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Antivirus</text>
+			<url>/pkg_edit.php?xml=squid_antivirus.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>ACLs</text>
+			<url>/pkg_edit.php?xml=squid_nac.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Traffic Mgmt</text>
+			<url>/pkg_edit.php?xml=squid_traffic.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Authentication</text>
+			<url>/pkg_edit.php?xml=squid_auth.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=squid_users.xml</url>
+		</tab>
+		<tab>
+			<text>Real Time</text>
+			<url>/squid_monitor.php</url>
+		</tab>
+		<tab>
+                        <text>Status</text>
+                        <url>/status_squid.php</url>
+                </tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=squid_sync.xml</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Squid Access Control Lists</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Allowed Subnets</fielddescr>
+			<fieldname>allowed_subnets</fieldname>
+			<description>
+				<![CDATA[
+				Enter subnets that are allowed to use the proxy in CIDR format.
+				All the other subnets won't be able to use the proxy.<br/>
+				<span class="text-info">Put each entry on a separate line.<br/>
+				<strong>When 'Allow Users on Interface' is checked on 'General' tab, there is no need to add the 'Proxy Interface(s)' subnet(s) to this list.</strong>
+				</span>
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>50</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Unrestricted IPs</fielddescr>
+			<fieldname>unrestricted_hosts</fieldname>
+			<description>
+				<![CDATA[
+				Enter unrestricted IP address(es) / network(s) in CIDR format.
+				Configured entries will NOT be filtered out by the other access control directives set in this page.<br/>
+				<span class="text-info">Put each entry on a separate line.</span>
+				<div class="infoblock">
+				<strong><span class="text-info">Note:</span></strong><br/>
+ 				These entries will also be exempt from proxy authentication unless 'Require Authentication for Unrestricted IPs' is checked on 'Authentication' tab.<br/>
+				These entries will also be exempt from bandwidth throttling unless 'Throttle Unrestricted IPs' is checked on 'Traffic Mgmt' tab.
+				</div>
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>50</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Banned Hosts Addresses</fielddescr>
+			<fieldname>banned_hosts</fieldname>
+			<description>
+				<![CDATA[
+				Enter IP address(es) / network(s) in CIDR format.
+				Configured entries will NOT be allowed to use the proxy.<br/>
+				<span class="text-info">Put each entry on a separate line.</span>
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>50</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Whitelist</fielddescr>
+			<fieldname>whitelist</fieldname>
+			<description>
+				<![CDATA[
+				Destination domains that will be accessible to the users that are allowed to use the proxy.<br/>
+				<span class="text-info">Put each entry on a separate line. You can also use regular expressions.</span>
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>50</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Blacklist</fielddescr>
+			<fieldname>blacklist</fieldname>
+			<description>
+				<![CDATA[
+				Destination domains that will be blocked for the users that are allowed to use the proxy.<br/>
+				<span class="text-info">Put each entry on a separate line. You can also use regular expressions.</span>
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>50</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Block User Agents</fielddescr>
+			<fieldname>block_user_agent</fieldname>
+			<description>
+				<![CDATA[
+				Enter user agents that will be blocked for the users that are allowed to use the proxy.<br/>
+				<span class="text-info">Put each entry on a separate line. You can also use regular expressions.</span>
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>50</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Block MIME Types (Reply Only)</fielddescr>
+			<fieldname>block_reply_mime_type</fieldname>
+			<description>
+				<![CDATA[
+				Enter <a href="http://www.iana.org/assignments/media-types/media-types.xhtml" target="_blank">MIME types</a> that will be blocked for the
+				users that are allowed to use the proxy. Useful to block javascript (application/javascript).<br/>
+				<span class="text-info">Put each entry on a separate line. You can also use regular expressions.</span>
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>50</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<name>Squid Allowed Ports</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>ACL SafePorts</fielddescr>
+			<fieldname>addtl_ports</fieldname>
+			<description>
+				<![CDATA[
+				This is a space-separated list of "safe ports" <strong>in addition</strong> to the predefined default list.<br/>
+				<span class="text-info">Default list: 21 70 80 210 280 443 488 563 591 631 777 901 1025-65535</span>
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+			<default_value></default_value>
+		</field>
+		<field>
+			<fielddescr>ACL SSLPorts</fielddescr>
+			<fieldname>addtl_sslports</fieldname>
+			<description>
+				<![CDATA[
+				This is a space-separated list of ports to allow SSL "CONNECT" to <strong>in addition</strong> to the predefined default list.<br/>
+				<span class="text-info">Default list: 443 563</span>
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+			<default_value></default_value>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+		squid_validate_nac($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		squid_resync();
+	</custom_php_resync_config_command>
+</packagegui>

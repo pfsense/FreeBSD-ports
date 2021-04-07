@@ -1,0 +1,52 @@
+#!/bin/sh
+
+if [ "${2}" != "POST-INSTALL" ]; then
+	exit 0
+fi
+
+#Checking the existing CA root certs and make it available for downloading
+		cp /cf/conf/config.xml /cf/conf/check.xml
+		awk  -vc=0 '/<ca>/{f=1; out="/cf/conf/file_"(++c)".xml"} f{print > out} /<\/ca>/{close(out); f=0}' /cf/conf/check.xml
+		certfile=`grep -Ril "kontrolproxy" /cf/conf/file_*.xml`
+
+		if [ $certfile ]; then
+			sed -n 's,.*<crt>\(.*\)</crt>.*,\1,p' $certfile > /conf/certificate_B64.txt
+			base64 -d /cf/conf/certificate_B64.txt > /usr/local/www/certificate.crt
+			rm /cf/conf/file_* 2> /dev/null
+			rm /cf/conf/check.xml /conf/certificate_B64.txt 2> /dev/null
+			echo " ### Prepared kontrolproxy certificate to be downloaded by the client ###"
+		else
+			echo " ### WARNING! kontrolproxy certificate NOT Available ###";
+			rm /cf/conf/check* /cf/conf/file* /cf/conf/certificate* 2> /dev/null
+		fi
+
+
+		#Deleting unused Samba files (reducing Security footprint) and setting the required permissions
+							rm /usr/local/sbin/nmbd 2> /dev/null # We don't need the NMBD - so Delete it.
+							rm /usr/local/sbin/smbd 2> /dev/null # We don't need the SMBD - so Delete it.
+							echo "Winbind Permissions Settings"
+							echo ""
+							mkdir -p /var/db/samba4/winbindd_privileged
+							mkdir -p /var/db/system/samba4/winbindd_privileged
+							chown root:proxy /var/db/samba4/winbindd_privileged
+							chmod -R 0770 /var/db/samba4/winbindd_privileged
+							chown root:proxy /var/db/system/samba4/winbindd_privileged
+							chmod -R 0770 /var/db/system/samba4/winbindd_privileged
+							rm -rf /usr/local/etc/pkg/repos/kontrolsso.conf
+							if grep -Fxq "TLS_REQCERT never" /usr/local/etc/openldap/ldap.conf ; then
+							echo ""
+								else
+							echo "TLS_REQCERT never" >> /usr/local/etc/openldap/ldap.conf
+							fi
+
+
+			#Checking the sqlite3 database file - Create if doesn't exist.
+										if [ ! -f /root/kontrolid.db ]
+										then
+											/usr/local/bin/sqlite3 /root/kontrolid.db "CREATE TABLE kontrolid (ip varchar(30) UNIQUE, username varchar(30) UNIQUE, timestamp varchar(30) UNIQUE);"
+										fi
+												chmod 0660 /root/kontrolid.db
+												chown squid:proxy /usr/local/bin/kontrolhelper /root/kontrolid.db
+echo "Before rc.packages cmd"												
+/usr/local/bin/php -f /etc/rc.packages %%PORTNAME%% ${2}
+echo "Post rc.packages cmd"

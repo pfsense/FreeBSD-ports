@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	sarg_users.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2012 Marcello Coutinho
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<name>sarguser</name>
+	<version>0.6.5</version>
+	<title>Status: Sarg User Settings</title>
+	<include_file>/usr/local/pkg/sarg.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=sarg.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg_edit.php?xml=sarg_users.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Schedule</text>
+			<url>/pkg.php?xml=sarg_schedule.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>View Report</text>
+			<url>/sarg_reports.php</url>
+		</tab>
+		<tab>
+			<text>XMLRPC Sync</text>
+			<url>/pkg_edit.php?xml=sarg_sync.xml&amp;id=0</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>User Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>User Sort Field</fielddescr>
+			<fieldname>user_sort_field</fieldname>
+			<description>Select the sort field for the User Report.</description>
+			<type>select</type>
+ 			<options>
+ 				<option><name>BYTES (default)</name><value>BYTES</value></option>
+ 				<option><name>SITE normal</name><value>SITE</value></option>
+ 				<option><name>CONNECT</name><value>CONNECT</value></option>
+ 				<option><name>TIME</name><value>TIME</value></option>
+ 			</options>
+			<default_value>BYTES</default_value>
+		</field>
+		<field>
+		 	<fielddescr>NTLM Users Format</fielddescr>
+			<fieldname>ntlm_user_format</fieldname>
+		 	<description>Select NTLM username format.</description>
+			<type>select</type>
+			<options>
+				<option><name>domainname+username (default)</name><value>domainname+username</value></option>
+				<option><name>username</name><value>user</value></option>
+			</options>
+			<default_value>domainname+username</default_value>
+		</field>
+		<field>
+			<fielddescr>Exclude Users</fielddescr>
+			<fieldname>exclude_userlist</fieldname>
+			<description>
+				<![CDATA[
+				Users within the file will be excluded from reports.<br />
+				<strong>Format: One user per line.</strong>
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>70</cols>
+			<rows>10</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Include Users</fielddescr>
+			<fieldname>include_userlist</fieldname>
+			<description>
+				<![CDATA[
+				Reports will be generated only for listed users.<br /> 
+				<strong>Format: user1:user2:...:userN</strong>
+				]]>
+			</description>
+			<type>input</type>
+			<size>70</size>
+		</field>
+		<field>
+			<fielddescr>Users Association</fielddescr>
+			<fieldname>usertab</fieldname>
+			<description>
+				<![CDATA[
+				You can change the "userid" or the "IP address" to be a real user name on the reports.<br />
+				If 'Convert IP address to DNS name' is active, the IP address is resolved before being looked up into this file.<br />
+				That is, if you want to map the IP address, be sure to set resolv_ip to no or the resolved name will be looked into the file instead of the IP address.<br />
+				Note that it can be used to resolve any IP address known to the dns and then map the unresolved IP addresses to a name found in the usertab file.<br />
+				<strong>Table syntax: 'userid name' or 'IP_address name'</strong><br /><br />
+				<strong>Examples:</strong><br />
+				SirIsaac Isaac Newton<br />
+				vinci Leonardo da Vinci<br />
+				192.168.10.1 Karol Wojtyla
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>70</cols>
+			<rows>10</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<name>LDAP Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable LDAP Search</fielddescr>
+			<fieldname>ldap_enable</fieldname>
+			<description>
+				<![CDATA[
+				Enable LDAP search for username replacement based on Active Directory information.<br />
+				This option is useful to show full usernames in Sarg reports instead of user logins.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>LDAP Hostname</fielddescr>
+			<fieldname>ldap_host</fieldname>
+			<description>FQDN or IP address of host with LDAP service or AD DC.</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>LDAP Port</fielddescr>
+			<fieldname>ldap_port</fieldname>
+			<description>
+				<![CDATA[
+				LDAP service port number.<br />
+				Default: 389
+				]]>
+			</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>389</default_value>
+		</field>
+		<field>
+			<fielddescr>LDAP Bind User DN</fielddescr>
+			<fieldname>ldap_bind_dn</fieldname>
+			<description>
+				<![CDATA[
+				DN of the LDAP user who is authorized to the search the LDAP database.<br />
+				<strong>Example:</strong> CN=username,OU=group,DC=mydomain,DC=com<br />
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>LDAP Bind Password</fielddescr>
+			<fieldname>ldap_bind_pw</fieldname>
+			<description>Input the password for 'LDAP Bind User DN' specified above.</description>
+			<type>password</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>LDAP Search Base DN</fielddescr>
+			<fieldname>ldap_base_search</fieldname>
+			<description>
+				<![CDATA[
+				Specify the LDAP search base DN. The search base is the place in the hierarchical LDAP structure where the search for user accounts starts.<br />
+				<strong>Example:</strong> OU=users,DC=mydomain,DC=com
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>LDAP Search Filter</fielddescr>
+			<fieldname>ldap_filter_search</fieldname>
+			<description>
+				<![CDATA[
+				Use this to filter the user login entries to be returned for a search operation in LDAP. First found record will be used.<br />
+				%s - will be changed to user logins from access.log file filter. Search filter string can have up to 5 '%s' tags.<br />
+				Default value: '(uid=%s)'
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+			<default_value>(uid=%s)</default_value>
+		</field>
+		<field>
+			<fielddescr>LDAP Username DN Attribute</fielddescr>
+			<fieldname>ldap_target_attr</fieldname>
+			<description>
+				<![CDATA[
+				Name of the attribute containing the login name of the user<br />
+				Default value is 'cn'. For Active Directory, use 'sAMAccountName'.
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+			<default_value>cn</default_value>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+		sarg_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		sync_package_sarg();
+	</custom_php_resync_config_command>
+</packagegui>

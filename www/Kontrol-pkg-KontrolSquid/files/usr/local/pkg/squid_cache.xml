@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/*
+ * squid_cache.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2014 Marcello Coutinho
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>squidcache</name>
+	<title>Proxy Server: Cache Management</title>
+	<include_file>/usr/local/pkg/squid.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=squid.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Remote Cache</text>
+			<url>/pkg.php?xml=squid_upstream.xml</url>
+		</tab>
+		<tab>
+			<text>Local Cache</text>
+			<url>/pkg_edit.php?xml=squid_cache.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Antivirus</text>
+			<url>/pkg_edit.php?xml=squid_antivirus.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>ACLs</text>
+			<url>/pkg_edit.php?xml=squid_nac.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Traffic Mgmt</text>
+			<url>/pkg_edit.php?xml=squid_traffic.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Authentication</text>
+			<url>/pkg_edit.php?xml=squid_auth.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=squid_users.xml</url>
+		</tab>
+		<tab>
+			<text>Real Time</text>
+			<url>/squid_monitor.php</url>
+		</tab>
+		<tab>
+                        <text>Status</text>
+                        <url>/status_squid.php</url>
+                </tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=squid_sync.xml</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Squid Cache General Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Disable Caching</fielddescr>
+			<fieldname>nocache</fieldname>
+			<description>Disable caching completely.</description>
+			<sethelp>
+				<![CDATA[
+				This may be required if Squid is only used as a proxy to audit website access.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Cache Replacement Policy</fielddescr>
+			<fieldname>cache_replacement_policy</fieldname>
+			<description>
+				<![CDATA[
+				The cache replacement policy decides which objects will remain in cache and which objects are replaced to create space for the new objects.
+				<span class="text-info">Default: heap LFUDA</span>
+				<div class="infoblock">
+				<dl class="dl-horizontal responsive">
+				<dt>Heap LFUDA</dt><dd>Keeps popular objects in cache regardless of their size and thus optimizes byte hit rate at the expense of hit rate.</dd>
+				<dt>Heap GDSF</dt><dd>Optimizes object-hit rate by keeping smaller, popular objects in cache.</dd>
+				<dt>Heap LRU</dt><dd>Works like LRU, but uses a heap instead.</dd>
+				<dt>LRU</dt><dd>Keeps recently referenced objects (i.e., replaces the object that has not been accessed for the longest time).</dd>
+				</dl>
+				Please see <a href="http://www.squid-cache.org/Doc/config/cache_replacement_policy/" target="_blank">cache_replacement_policy documentation</a> for additional details.
+				</div>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>heap LFUDA</default_value>
+			<options>
+				<option><name>Heap LFUDA</name><value>heap LFUDA</value></option>
+				<option><name>Heap GDSF</name><value>heap GDSF</value></option>
+				<option><name>Heap LRU</name><value>heap LRU</value></option>
+				<option><name>LRU</name><value>lru</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Low-Water Mark in %</fielddescr>
+			<fieldname>cache_swap_low</fieldname>
+			<description>
+				<![CDATA[
+				The low-water mark for AUFS/UFS/diskd cache object eviction by the cache_replacement_policy algorithm.
+				<div class="infoblock">
+				Cache replacement begins when the swap usage is above this low-water mark and attempts to maintain utilisation near the low-water mark.<br/>
+				Please see <a href="http://www.squid-cache.org/Doc/config/cache_swap_low/" target="_blank">cache_swap_low documentation</a> for additional details.
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>90</default_value>
+		</field>
+		<field>
+			<fielddescr>High-Water Mark in %</fielddescr>
+			<fieldname>cache_swap_high</fieldname>
+			<description>
+				<![CDATA[
+				The high-water mark for AUFS/UFS/diskd cache object eviction by the cache_replacement_policy algorithm.
+				<div class="infoblock">
+				As swap utilization increases towards this high-water mark, object eviction becomes more agressive.<br/>
+				Please see <a href="http://www.squid-cache.org/Doc/config/cache_swap_high/" target="_blank">cache_swap_high documentation</a> for additional details.
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>95</default_value>
+		</field>
+		<field>
+			<fielddescr>Do Not Cache</fielddescr>
+			<fieldname>donotcache</fieldname>
+			<description>
+				<![CDATA[
+				Enter domain(s) and/or IP address(es) that should never be cached.
+				<span class="text-info">Put each entry on a separate line.</span>
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>60</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Enable Offline Mode</fielddescr>
+			<fieldname>enable_offline</fieldname>
+			<description>Enable this option and the proxy server will never try to validate cached objects.</description>
+			<sethelp>
+				<![CDATA[
+				Offline mode gives access to more cached information than normally allowed (e.g., expired cached versions where the origin server should have been contacted otherwise).
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>External Cache Managers</fielddescr>
+			<fieldname>ext_cachemanager</fieldname>
+			<description>
+				<![CDATA[
+				Enter the IPs for the external <a href="http://wiki.squid-cache.org/Features/CacheManager" target="_blank">Cache Managers</a> to be granted access to this proxy.
+				<span class="text-info">Separate entries by semi-colons (;)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<name>Squid Hard Disk Cache Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Hard Disk Cache Size</fielddescr>
+			<fieldname>harddisk_cache_size</fieldname>
+			<description>Amount of disk space (in megabytes) to use for cached objects.</description>
+			<type>input</type>
+			<required/>
+			<size>10</size>
+			<default_value>100</default_value>
+		</field>
+		<field>
+			<fielddescr>Hard Disk Cache System</fielddescr>
+			<fieldname>harddisk_cache_system</fieldname>
+			<description>
+				<![CDATA[
+				This specifies the kind of storage system to use.
+				<div class="infoblock">
+				<dl class="dl-horizontal responsive">
+				<dt>ufs</dt><dd>The old well-known Squid storage format that has always been there.</dd>
+			 	<dt>aufs</dt><dd>Uses POSIX threads to avoid blocking the main Squid process on disk I/O. (Formerly known as async-io.)</dd>
+			 	<dt>diskd</dt><dd>Uses a separate process to avoid blocking the main Squid process on disk I/O.</dd>
+				<dt>null</dt><dd>Does not use any storage. Ideal for embedded.</dd>
+				</dl>
+				Please see <a href="http://www.squid-cache.org/Doc/config/cache_dir/" target="_blank">cache_dir documentation</a> for additional details.
+				</div>
+			 	]]>
+			</description>
+			<type>select</type>
+			<default_value>ufs</default_value>
+			<options>
+				<option><name>ufs</name><value>ufs</value></option>
+				<option><name>aufs</name><value>aufs</value></option>
+				<option><name>diskd</name><value>diskd</value></option>
+				<option><name>null</name><value>null</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Clear Disk Cache NOW</fielddescr>
+			<description>
+				<![CDATA[
+				Hard Disk Cache is automatically managed by swapstate_check.php script which is scheduled to run daily via cron.
+				<div class="infoblock">
+				The script will only clear the disk cache on the following conditions:<br/>
+				- if the swap.state file is taking up more than 75% of disk space;<br/>
+				- or the drive is 90% full and swap.state is larger than 1GB.
+				</div><br/>
+				If you wish to clear cache <strong>immediately,</strong> click this button <strong>once</strong>:
+				<button class="btn btn-warning" name="clear_cache" id="clear_cache" type="submit" value="Clear Disk Cache NOW"><i class="fa fa-trash icon-embed-btn"></i>Clear Disk Cache NOW</button>
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Level 1 Directories</fielddescr>
+			<fieldname>level1_subdirs</fieldname>
+			<description>
+				<![CDATA[
+				Specifies the number of Level 1 directories for the hard disk cache.
+				<div class="infoblock">
+				Each level-1 directory contains 256 subdirectories, so a value of 256 level-1 directories will use a total of 65536 directories for the hard disk cache.<br/>
+				This will <strong>significantly</strong> slow down the startup process of the proxy service, but can speed up the caching under certain conditions.
+				</div>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>16</default_value>
+			<options>
+				<option><name>4</name><value>4</value></option>
+				<option><name>8</name><value>8</value></option>
+				<option><name>16</name><value>16</value></option>
+				<option><name>32</name><value>32</value></option>
+				<option><name>64</name><value>64</value></option>
+				<option><name>128</name><value>128</value></option>
+				<option><name>256</name><value>256</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Hard Disk Cache Location</fielddescr>
+			<fieldname>harddisk_cache_location</fieldname>
+			<description>
+				<![CDATA[
+				This is the directory where the cache will be stored.
+				<span class="text-info">Default: /var/squid/cache</span>
+				<div class="infoblock">
+				If you change this location, Squid needs to make a new cache, this could take a while.<br/>
+				<strong><span class="text-danger">Important:</span></strong> Do NOT include the trailing / when setting a custom location.
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+			<required/>
+			<default_value>/var/squid/cache</default_value>
+		</field>
+		<field>
+			<fielddescr>Minimum Object Size</fielddescr>
+			<fieldname>minimum_object_size</fieldname>
+			<description>
+				<![CDATA[
+				Objects smaller than the size specified (in kilobytes) will not be saved on disk.
+				<span class="text-info">Default: 0</span> (meaning there is no minimum)
+				]]>
+			</description>
+			<type>input</type>
+			<required />
+			<size>10</size>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>Maximum Object Size</fielddescr>
+			<fieldname>maximum_object_size</fieldname>
+			<description>
+				<![CDATA[
+				Objects larger than the size specified (in megabytes) will not be saved on disk.
+				<span class="text-info">Default: 4 (MB)</span>
+				<div class="infoblock">
+				<strong><span class="text-info">Hint:</span></strong></strong> If increased speed is more important than saving bandwidth, this should be set to a low value.
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+			<required/>
+			<size>10</size>
+			<default_value>4</default_value>
+		</field>
+		<field>
+			<name>Squid Memory Cache Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Memory Cache Size</fielddescr>
+			<fieldname>memory_cache_size</fieldname>
+			<description>
+				<![CDATA[
+				Specifies the ideal amount of physical RAM (in megabytes) to be used for In-Transit objects, Hot Objects and Negative-Cached objects.<br/>
+				<span class="text-info">Minimum value: 1 (MB). Default: 64 (MB)</span>
+				<div class="infoblock">
+				Please see <a href="http://www.squid-cache.org/Doc/config/cache_mem/" target="_blank">cache_mem documentation</a> for additional details.<br/>
+				This value should not exceed 50% of the installed RAM.
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+			<size>10</size>
+			<required/>
+			<default_value>64</default_value>
+		</field>
+		<field>
+			<fielddescr>Maximum Object Size in RAM</fielddescr>
+			<fieldname>maximum_objsize_in_mem</fieldname>
+			<description>
+				<![CDATA[
+				Objects greater than this size (in kilobytes) will not be attempted to kept in the memory cache.
+				<span class="text-info">Default: 256 (KB)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<size>10</size>
+			<required/>
+			<default_value>256</default_value>
+		</field>
+		<field>
+			<fielddescr>Memory Replacement Policy</fielddescr>
+			<fieldname>memory_replacement_policy</fieldname>
+			<description>
+				<![CDATA[
+				The memory replacement policy determines which objects are purged from memory when space is needed.
+				<span class="text-info">Default: heap GDSF</span>
+				<div class="infoblock">
+				<dl class="dl-horizontal responsive">
+				<dt>Heap GDSF</dt><dd>Optimizes object-hit rate by keeping smaller, popular objects in cache.</dd>
+				<dt>Heap LFUDA</dt><dd>Keeps popular objects in cache regardless of their size and thus optimizes byte hit rate at the expense of hit rate.</dd>
+				<dt>Heap LRU</dt><dd>Works like LRU, but uses a heap instead.</dd>
+				<dt>LRU</dt><dd>Keeps recently referenced objects (i.e., replaces the object that has not been accessed for the longest time).</dd>
+				</dl>
+				Please see <a href="http://www.squid-cache.org/Doc/config/cache_replacement_policy/" target="_blank">cache_replacement_policy documentation</a> for additional details.
+				</div>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>heap GDSF</default_value>
+			<options>
+				<option><name>Heap GDSF</name><value>heap GDSF</value></option>
+				<option><name>Heap LFUDA</name><value>heap LFUDA</value></option>
+				<option><name>Heap LRU</name><value>heap LRU</value></option>
+				<option><name>LRU</name><value>lru</value></option>
+			</options>
+		</field>
+		<field>
+			<name>Dynamic and Update Content</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Cache Dynamic Content</fielddescr>
+			<fieldname>cache_dynamic_content</fieldname>
+			<description>Select to enable caching of dynamic content.</description>
+			<sethelp>
+				<![CDATA[
+				With <a href="http://wiki.squid-cache.org/ConfigExamples/DynamicContent" target="_blank">dynamic cache</a> enabled, you can also apply refresh_patterns to sites like <a href="http://wiki.squid-cache.org/SquidFaq/WindowsUpdate" target="_blank">Windows Updates</a>.
+				<div class="infoblock">
+				Squid wiki suggests setting 'Finish transfer if less than x KB remaining' on 'Traffic Mgmt' tab to -1 (but you can apply your own values to control cache).<br/>
+				Set 'Maximum Download Size' on 'Traffic Mgmt' tab to a value that fits patterns your are applying.
+				</div>
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+			<size>10</size>
+		</field>
+		<field>
+			<fielddescr>Custom refresh_patterns</fielddescr>
+			<fieldname>custom_refresh_patterns</fieldname>
+			<description>
+				<![CDATA[
+				Enter custom refresh_patterns for better dynamic cache usage.<br/>
+				<strong><span class="text-info">Note:</span> These refresh_patterns will only be included if 'Cache Dynamic Content' is enabled.</strong>
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>60</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+	</fields>
+	<custom_php_command_before_form>
+	<![CDATA[
+		global $oldcachedir;
+		// do not leave orphaned cachedirs if harddisk_cache_location changed
+		if ($_POST['harddisk_cache_location'] != $config['installedpackages']['squidcache']['config'][0]['harddisk_cache_location']) {
+			$oldcachedir = $config['installedpackages']['squidcache']['config'][0]['harddisk_cache_location'];
+			if ($oldcachedir != "") {
+				$cachedir_changed = true;
+			}
+		}
+	]]>
+	</custom_php_command_before_form>
+	<custom_php_validation_command>
+		squid_validate_cache($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		<![CDATA[
+		if ($cachedir_changed) {
+			// only delete directories under sane paths automatically
+			if (substr($oldcachedir, 0, 11) === "/var/squid/") {
+				log_error("[squid] Deleting Squid cache dir '{$oldcachedir}' since 'Hard Disk Cache Location' changed to '{$_POST['harddisk_cache_location']}'.");
+				// cannot nuke disk cache while Squid is running
+				squid_stop_monitor();
+				if (is_service_running('squid')) {
+					stop_service("squid");
+				}
+				rename($oldcachedir, "{$oldcachedir}.old");
+				mwexec_bg("/bin/rm -rf {$oldcachedir}.old");
+				// new cachedir will be created on squid_resync() below which calls squid_dash_z()
+				// also the services will get restarted there
+			} else {
+				log_error("[squid] 'Hard Disk Cache Location' changed to '{$_POST['harddisk_cache_location']}'.");
+				log_error("[squid] Will NOT delete Squid cache dir '{$oldcachedir}' since it is not located under /var/squid. Delete manually if required.");
+			}
+		}
+		squid_resync();
+	]]>
+	</custom_php_resync_config_command>
+</packagegui>

@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/*
+ * squid_reverse_general.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2014 Marcello Coutinho
+ * Copyright (c) 2015 Gekkenhuis
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>squidreversegeneral</name>
+	<title>Reverse Proxy Server: General</title>
+	<include_file>/usr/local/pkg/squid.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=squid_reverse_general.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Web Servers</text>
+			<url>/pkg.php?xml=squid_reverse_peer.xml</url>
+		</tab>
+		<tab>
+			<text>Mappings</text>
+			<url>/pkg.php?xml=squid_reverse_uri.xml</url>
+		</tab>
+		<tab>
+			<text>Redirects</text>
+			<url>/pkg.php?xml=squid_reverse_redir.xml</url>
+		</tab>
+		<tab>
+			<text>Real Time</text>
+			<url>/squid_monitor.php?menu=reverse</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=squid_reverse_sync.xml&amp;id=0</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Squid Reverse Proxy General Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Listen IP Version</fielddescr>
+			<fieldname>reverse_listenproto</fieldname>
+			<description>Select the IP version Squid Reverse Proxy will use to bind to.</description>
+			<type>select</type>
+			<options>
+				<option><name>IPv4</name><value>inet</value></option>
+				<option><name>IPv6</name><value>inet6</value></option>
+				<option><name>IPv4+IPv6</name><value>any</value></option>
+			</options>
+			<size>1</size>
+			<default_value>inet</default_value>
+		</field>
+		<field>
+			<fielddescr>Reverse Proxy Interface(s)</fielddescr>
+			<fieldname>reverse_interface</fieldname>
+			<description>
+				<![CDATA[
+				The interface(s) the reverse-proxy server will bind to (usually WAN).
+				<span class="text-info">Use CTRL + click to select multiple interfaces.</span>
+				<div class="infoblock">
+				<strong><span class="text-danger">Usage Instructions:</span></strong><br/>
+				<span class="text-info">To use Squid as a reverse proxy ONLY:</span><br/>
+				After saving configuration here, you must tick the 'Enable Squid Proxy' checkbox under Services - Squid Proxy Server - General and click Save there.<br/><br/>
+				<span class="text-info">To disable the reverse proxy ONLY (without disabling Squid completely):</span><br/>
+				Unselect all 'Reverse Proxy Interface(s)', uncheck both 'Enable HTTP Reverse Proxy' and 'Enable HTTPS Reverse Proxy' below and click Save.
+				</div>
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_interface_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<default_value>wan</default_value>
+			<multiple/>
+		</field>
+		<field>
+			<fielddescr>User Defined Reverse Proxy IPs</fielddescr>
+			<fieldname>reverse_ip</fieldname>
+			<description>
+				<![CDATA[
+				Squid will additionally bind to these user-defined IPs for reverse proxy operation.
+				<span class="text-info">Separate entries by semi-colons (;)</span>
+				<div class="infoblock">
+				<strong><span class="text-danger">Important:</span></strong> Any entry here must be a valid, locally configured IP address.<br/>
+				Useful for virtual IPs such as CARP, or for binding to IPv6 configured on an above-selected interface.
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+			<size>70</size>
+		</field>
+		<field>
+			<fielddescr>External FQDN</fielddescr>
+			<fieldname>reverse_external_fqdn</fieldname>
+			<description>The external fully qualified domain name of the WAN IP address.</description>
+			<type>input</type>
+			<size>70</size>
+		</field>
+		<field>
+			<fielddescr>Reset TCP Connections on Unauthorized Requests</fielddescr>
+			<fieldname>deny_info_tcp_reset</fieldname>
+			<description>If checked, the reverse proxy will reset the TCP connection if the request is unauthorized.</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<name>Squid Reverse HTTP Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable HTTP Reverse Proxy</fielddescr>
+			<fieldname>reverse_http</fieldname>
+			<description>If checked, the proxy server will act in HTTP reverse mode.</description>
+			<sethelp>
+				<![CDATA[
+				<strong><span class="text-danger">Important:</span></strong> You must add a proper firewall rule with destination matching the 'Reverse Proxy Interface(s)' address.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+			<enablefields>reverse_http_port,reverse_http_defsite</enablefields>
+			<default_value>off</default_value>
+		</field>
+		<field>
+			<fielddescr>Reverse HTTP Port</fielddescr>
+			<fieldname>reverse_http_port</fieldname>
+			<description>
+				<![CDATA[
+				This is the port the HTTP reverse proxy will listen on.
+				<span class="text-info">Default: 80</span>
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>80</default_value>
+		</field>
+		<field>
+			<fielddescr>Reverse HTTP Default Site</fielddescr>
+			<fieldname>reverse_http_defsite</fieldname>
+			<description>
+				<![CDATA[
+				This is the HTTP reverse proxy default site.
+				<span class="text-info">Leave empty to use 'External FQDN' value specified above.</span>
+				]]>
+			</description>
+			<type>input</type>
+			<size>70</size>
+		</field>
+		<field>
+			<name>Squid Reverse HTTPS Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable HTTPS Reverse Proxy</fielddescr>
+			<fieldname>reverse_https</fieldname>
+			<description>If checked, the proxy server will act in HTTPS reverse mode.</description>
+			<sethelp>
+				<![CDATA[
+				<strong><span class="text-danger">Important:</span></strong> You must add a proper firewall rule with destination matching the 'Reverse Proxy Interface(s)' address.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+			<enablefields>reverse_https_port,reverse_https_defsite,reverse_ssl_cert,reverse_int_ca,reverse_ignore_ssl_valid,reverse_check_clientca,reverse_owa</enablefields>
+			<default_value>off</default_value>
+		</field>
+		<field>
+			<fielddescr>Reverse HTTPS Port</fielddescr>
+			<fieldname>reverse_https_port</fieldname>
+			<description>
+				<![CDATA[
+				This is the port the HTTPS reverse proxy will listen on.
+				<span class="text-info">Default: 443</span>
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>443</default_value>
+		</field>
+		<field>
+			<fielddescr>Reverse HTTPS Default Site</fielddescr>
+			<fieldname>reverse_https_defsite</fieldname>
+			<description>
+				<![CDATA[
+				This is the HTTPS reverse proxy default site.
+				<div class="infoblock">
+				<span class="text-info">Note:</span> Leave empty to use 'External FQDN' value specified in 'Squid Reverse Proxy General Settings'.
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+			<size>70</size>
+		</field>
+		<field>
+			<fielddescr>Reverse SSL Certificate</fielddescr>
+			<fieldname>reverse_ssl_cert</fieldname>
+			<description>Choose the SSL Server Certificate here.</description>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_ca_or_certs('cert')]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+			<show_disable_value>none</show_disable_value>
+			<default_value>none</default_value>
+		</field>
+		<field>
+			<fielddescr>Intermediate CA Certificate (If Needed)</fielddescr>
+			<fieldname>reverse_int_ca</fieldname>
+			<description>
+				<![CDATA[
+				Paste a signed certificate in X.509 <strong>PEM format</strong> here.
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>75</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Ignore Internal Certificate Validation</fielddescr>
+			<fieldname>reverse_ignore_ssl_valid</fieldname>
+			<description>If checked, internal certificate validation will be ignored.</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<fielddescr>Check Client Certificate</fielddescr>
+			<fieldname>reverse_check_clientca</fieldname>
+			<description>If checked, clients need a client certificate to authenticate.</description>
+			<type>checkbox</type>
+			<default_value>off</default_value>
+		</field>
+		<field>
+			<fielddescr>Client Certificate CA</fielddescr>
+			<fieldname>reverse_ssl_clientca</fieldname>
+			<description>Choose the CA used to issue client authentication certificates.</description>
+			<type>select_source</type>
+			<source><![CDATA[squid_get_ca_or_certs('ca', 'HTTPS', true)]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+			<show_disable_value>none</show_disable_value>
+			<default_value>none</default_value>
+		</field>
+		<field>
+			<fielddescr>Client Certificate Revocation List</fielddescr>
+			<fieldname>reverse_ssl_clientcrl</fieldname>
+			<description>
+				<![CDATA[
+				Choose the CRL used for client certificates revocation. If set to 'none', no CRL validation will be performed.<br/>
+				<strong><span class="text-danger">Important:</span></strong>
+				This must match the 'Client Certificate CA' selected above!<br/><br/>
+				After updating the CRL in System - Cert Manager - Certificate Revocation, remember to press the 'Refresh CRL' button below.
+				Otherwise, the updated CRL will not have any effect on Squid reverse proxy users!<br/><br/>
+				<button class="btn btn-primary btn-sm" name='refresh_crl' id='refresh_crl' type='submit' value='Refresh CRL'><i class="fa fa-refresh icon-embed-btn"></i>Refresh CRL</button>
+				]]>
+			</description>
+			<type>select_source</type>
+			<source><![CDATA[$config['crl']]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+			<show_disable_value>none</show_disable_value>
+			<default_value>none</default_value>
+		</field>
+		<field>
+			<name>Squid Reverse Security Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Compatibility mode</fielddescr>
+			<fieldname>reverse_compatibility_mode</fieldname>
+			<description>
+				<![CDATA[
+				The compatibility mode determines which ciphersuite and TLS versions are supported.
+				<div class="infoblock">
+				Modern is for modern clients only (FF &gt;27, Chrome &gt;22, IE 11, etc.). If you need to support older clients, use the Intermediate setting.<br/>
+				The compatibility mode settings are based on <a href="https://wiki.mozilla.org/Security/Server_Side_TLS" target="_blank">Mozilla's documentation.</a><br/>
+				<strong><span class="text-danger">Warning: </span>Clients like IE 6 and Java 6 are not supported anymore!</strong>
+				</div>
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option>
+					<name>Modern</name>
+					<value>modern</value>
+				</option>
+				<option>
+					<name>Intermediate</name>
+					<value>intermediate</value>
+				</option>
+			</options>
+			<size>1</size>
+			<default_value>modern</default_value>
+		</field>
+		<field>
+			<fielddescr>DHParams key size</fielddescr>
+			<fieldname>dhparams_size</fieldname>
+			<description>
+				<![CDATA[
+				DH parameters are used for temporary/ephemeral DH key exchanges. They improve security by enabling the use of DHE ciphers.<br/>
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option>
+					<name>2048</name>
+					<value>2048</value>
+				</option>
+				<option>
+					<name>4096</name>
+					<value>4096</value>
+				</option>
+			</options>
+			<size>1</size>
+			<default_value>2048</default_value>
+		</field>
+		<field>
+			<fielddescr>Disable session resumption (caching)</fielddescr>
+			<fieldname>disable_session_reuse</fieldname>
+			<description>Don't allow session reuse.</description>
+			<sethelp>
+				<![CDATA[
+				<div class="infoblock">
+				The current recommendation for web servers is to enable session resumption and benefit from the performance improvement, but to restart servers daily when possible. This ensure that sessions get purged and ticket keys get renewed on a regular basis.<br/>
+				<strong><span class="text-info">Note: </span></strong>Disabling session resumption will increase the clients latency and the server load but can improve security for Perfect Forward Secrecy (DHE and ECDH).
+				</div>
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+			<default_value>off</default_value>
+		</field>
+		<field>
+			<name>OWA Reverse Proxy General Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable OWA Reverse Proxy</fielddescr>
+			<fieldname>reverse_owa</fieldname>
+			<description>If checked, Squid will act as an accelerator/SSL offloader for Outlook Web App.</description>
+			<type>checkbox</type>
+			<enablefields>reverse_owa_ip,reverse_owa_activesync,reverse_owa_rpchttp,reverse_owa_mapihttp,reverse_owa_webservice,reverse_owa_autodiscover</enablefields>
+		</field>
+		<field>
+			<fielddescr>CAS-Array / OWA Frontend IP Address(es)</fielddescr>
+			<fieldname>reverse_owa_ip</fieldname>
+			<description>
+				<![CDATA[
+				These are the internal IPs of the CAS-Array (OWA frontend servers).
+				<span class="text-info">Separate entries by semi-colons (;)</span>
+				]]>
+			</description>
+			<type>input</type>
+			<size>70</size>
+		</field>
+		<field>
+			<fielddescr>Enable ActiveSync</fielddescr>
+			<fieldname>reverse_owa_activesync</fieldname>
+			<description>If checked, ActiveSync will be enabled.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Enable Outlook Anywhere</fielddescr>
+			<fieldname>reverse_owa_rpchttp</fieldname>
+			<description>If checked, RPC over HTTP will be enabled.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Enable MAPI HTTP</fielddescr>
+			<fieldname>reverse_owa_mapihttp</fieldname>
+			<description>If checked, MAPI over HTTP will be enabled.</description>
+			<sethelp>
+				<![CDATA[
+				<span class="text-info">
+				This feature is only available with at least Microsoft Exchange 2013 SP1
+				</span>
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Enable Exchange WebServices</fielddescr>
+			<fieldname>reverse_owa_webservice</fieldname>
+			<description>If checked, Exchange WebServices will be enabled.</description>
+			<sethelp>
+				<![CDATA[
+				<span class="text-danger">There are potential DoS side effects to the use of this feature.</span> Please avoid unless really required.</strong>
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Enable AutoDiscover</fielddescr>
+			<fieldname>reverse_owa_autodiscover</fieldname>
+			<description>If checked, AutoDiscover will be enabled.</description>
+			<sethelp>
+				<![CDATA[
+				<span class="text-info">You also should set up the autodiscover DNS record to point to you WAN IP.</span>
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+		<![CDATA[
+		if (!empty($_POST) && !squid_enabled()) {
+			$errmsg = "Squid is disabled. You must enable Squid proxy under Services - Squid Proxy Server - General.";
+			file_notice("squidreversegeneral", $errmsg, "Squid Reverse Proxy", "");
+		}
+		squid_validate_reverse($_POST, $input_errors);
+		]]>
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		squid_resync();
+	</custom_php_resync_config_command>
+</packagegui>
