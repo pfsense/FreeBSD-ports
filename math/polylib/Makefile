@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	polylib
 DISTVERSION=	5.22.5
 CATEGORIES=	math

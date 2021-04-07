@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	generand
 DISTVERSION=	0.1.2
 CATEGORIES=	biology

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sfeed
 PORTVERSION=	0.9.19
 CATEGORIES=	www

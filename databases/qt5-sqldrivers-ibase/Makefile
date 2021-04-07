@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 
 DB=		IBase
 DB_DESC=	InterBase/Firebird

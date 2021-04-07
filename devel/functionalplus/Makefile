@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	functionalplus
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.13-p0

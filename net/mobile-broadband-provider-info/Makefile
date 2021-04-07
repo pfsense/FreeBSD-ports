@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mobile-broadband-provider-info
 PORTVERSION=	20201225
 CATEGORIES=	net gnome

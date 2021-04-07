@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Plack-Middleware-JSConcat
 PORTVERSION=	0.29
 PORTREVISION=	1

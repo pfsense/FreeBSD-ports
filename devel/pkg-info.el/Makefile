@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pkg-info.el
 PORTVERSION=	0.6
 PORTREVISION=	5

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pathtools
 PORTVERSION=	0.1.2
 PORTREVISION=	5

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dune-common
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.7.1

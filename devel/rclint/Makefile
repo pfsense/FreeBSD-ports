@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rclint
 PORTVERSION=	1.1.0
 CATEGORIES=	devel textproc python

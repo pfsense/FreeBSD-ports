@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	postgis
 PORTVERSION=	3.1.1
 PORTREVISION=	1

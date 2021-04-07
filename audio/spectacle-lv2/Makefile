@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	spectacle
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	GLee
 DISTVERSION=	5.4.0
 CATEGORIES=	graphics

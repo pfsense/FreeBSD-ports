@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gmic
 DISTVERSION=	2.9.6
 CATEGORIES=	graphics

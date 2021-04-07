@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	courier-analog
 PORTVERSION=	0.17
 CATEGORIES=	mail

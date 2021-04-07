@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	seatd
 DISTVERSION=	0.5.0
 CATEGORIES=	sysutils

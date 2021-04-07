@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ngs
 DISTVERSION=	2.11.0
 CATEGORIES=	biology

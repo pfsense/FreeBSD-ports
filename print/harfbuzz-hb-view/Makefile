@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	0
 PKGNAMESUFFIX=	-hb-view
 

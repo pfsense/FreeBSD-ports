@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	html-pipeline
 PORTVERSION=	2.13.2
 PORTREVISION=	0

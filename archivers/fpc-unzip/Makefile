@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	archivers lang
 PKGNAMESUFFIX=	-unzip
 

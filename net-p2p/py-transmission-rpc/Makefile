@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	transmission-rpc
 PORTVERSION=	2.0.4
 CATEGORIES=	net-p2p python

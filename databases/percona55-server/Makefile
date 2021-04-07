@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME?=	percona
 DISTVERSION=	5.5.61-38.13
 PORTREVISION?=	4

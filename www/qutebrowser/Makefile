@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qutebrowser
 DISTVERSION=	2.1.0
 PORTREVISION=	1

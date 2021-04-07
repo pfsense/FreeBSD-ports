@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tailscale
 PORTVERSION=	1.6.0
 DISTVERSIONPREFIX=	v

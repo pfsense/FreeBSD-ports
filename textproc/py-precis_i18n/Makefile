@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	precis_i18n
 DISTVERSION=	1.0.3
 CATEGORIES=	textproc devel python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libvmod-digest
 DISTVERSION=	1.0.2-6
 DISTVERSIONSUFFIX=	-g1793bea

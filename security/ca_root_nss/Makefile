@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ca_root_nss
 PORTVERSION=	${VERSION_NSS}
 CATEGORIES=	security

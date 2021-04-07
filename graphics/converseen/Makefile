@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	converseen
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.9.0

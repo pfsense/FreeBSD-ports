@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rtorrent
 PORTVERSION=	0.9.8
 CATEGORIES=	net-p2p

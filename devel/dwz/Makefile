@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dwz
 DISTVERSION=	0.14
 CATEGORIES=	devel

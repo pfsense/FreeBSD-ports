@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	aspectr
 PORTVERSION=	0.3.7
 CATEGORIES=	devel rubygems

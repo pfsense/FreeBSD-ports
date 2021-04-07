@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mpich
 PORTVERSION=	3.4.1
 CATEGORIES=	net parallel

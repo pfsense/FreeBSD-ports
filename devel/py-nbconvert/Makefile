@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nbconvert
 PORTVERSION=	6.0.7
 PORTREVISION=	1

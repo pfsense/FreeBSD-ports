@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	aranym
 DISTVERSION=	1.1.0
 CATEGORIES=	emulators

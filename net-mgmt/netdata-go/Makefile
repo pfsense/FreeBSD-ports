@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	netdata-go
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.28.1

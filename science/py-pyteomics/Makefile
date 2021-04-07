@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pyteomics
 PORTVERSION=	4.4.1
 CATEGORIES=	science python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openggsn
 PORTVERSION=	0.94
 CATEGORIES=	net

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-viewer
 CATEGORIES=	net
 

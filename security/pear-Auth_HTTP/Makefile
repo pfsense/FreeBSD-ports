@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Auth_HTTP
 PORTVERSION=	2.1.8
 CATEGORIES=	security www pear

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mkdesktop
 PORTVERSION=	4.3
 CATEGORIES=	sysutils

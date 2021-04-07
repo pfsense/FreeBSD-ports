@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	neomutt
 PORTVERSION=	20210205
 CATEGORIES=	mail

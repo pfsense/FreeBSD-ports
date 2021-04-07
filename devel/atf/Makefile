@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	atf
 PORTVERSION=	0.21
 CATEGORIES=	devel

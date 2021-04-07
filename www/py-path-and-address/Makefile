@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	path-and-address
 PORTVERSION=	2.0.1
 CATEGORIES=	www python

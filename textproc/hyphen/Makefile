@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hyphen
 PORTVERSION=	2.8.8
 CATEGORIES=	textproc

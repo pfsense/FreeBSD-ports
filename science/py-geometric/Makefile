@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	geometric
 DISTVERSION=	0.9.7.2
 CATEGORIES=	science python # chemistry

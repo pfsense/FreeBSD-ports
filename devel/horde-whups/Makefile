@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	whups
 DISTVERSION=	3.0.12
 CATEGORIES=	devel www pear

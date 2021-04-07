@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xoscope
 PORTVERSION=	2.0
 PORTREVISION=	2

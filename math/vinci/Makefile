@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	vinci
 DISTVERSION=	1.0.5
 CATEGORIES=	math

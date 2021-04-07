@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jsonpickle
 DISTVERSION=	2.0.0
 CATEGORIES=	devel python

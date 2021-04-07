@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	git-absorb
 DISTVERSION=	0.5.0
-PORTREVISION=	20
+PORTREVISION=	21
 CATEGORIES=	devel
 
 MAINTAINER=	greg@unrelenting.technology

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pytest-factoryboy
 PORTVERSION=	2.1.0
 CATEGORIES=	devel python

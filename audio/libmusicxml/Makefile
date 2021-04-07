@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libmusicxml
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.18

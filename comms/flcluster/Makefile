@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	flcluster
 PORTVERSION=	1.0.4
 PORTREVISION=	3

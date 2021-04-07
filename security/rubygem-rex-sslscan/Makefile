@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rex-sslscan
 PORTVERSION=	0.1.5
 CATEGORIES=	security rubygems

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	App-Nopaste
 PORTVERSION=	1.013
 CATEGORIES=	www perl5

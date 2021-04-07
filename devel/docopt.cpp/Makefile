@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	docopt.cpp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.6.3

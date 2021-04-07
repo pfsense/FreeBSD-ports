@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pysolfc
 DISTVERSION=	2.6.4
 PORTREVISION=	1

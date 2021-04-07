@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libsixel
 PORTVERSION=	1.8.6
 PORTEPOCH=	1

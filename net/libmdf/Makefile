@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libmdf
 PORTVERSION=	1.0.21
 CATEGORIES=	net finance

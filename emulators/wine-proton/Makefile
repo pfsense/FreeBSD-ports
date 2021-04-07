@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wine-proton
 DISTVERSION=	5.13-4
 CATEGORIES=	emulators

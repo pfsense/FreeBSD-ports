@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xcscope.el
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.5

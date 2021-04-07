@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	raylib
 DISTVERSION=	3.5.0
 CATEGORIES=	devel education

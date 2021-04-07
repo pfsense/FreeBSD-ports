@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pum
 DISTVERSION=	0.9.12
 CATEGORIES=	databases python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fbprophet
 PORTVERSION=	0.5
 PORTREVISION=	1

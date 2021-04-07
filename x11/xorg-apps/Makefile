@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xorg-apps
 PORTVERSION=	7.7
 PORTREVISION=	4

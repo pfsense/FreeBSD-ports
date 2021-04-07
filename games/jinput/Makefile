@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jinput
 DISTVERSION=	2.0.10
 PORTEPOCH=	1

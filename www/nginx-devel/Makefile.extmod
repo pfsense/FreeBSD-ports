@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 ### External modules
 AJP_GH_TUPLE=		yaoweibin:nginx_ajp_module:a964a0b:ajp
 AJP_VARS=		DSO_EXTMODS+=ajp
@@ -231,7 +229,7 @@ NAXSI_NGINX_VER=	1.3
 NAXSI_GH_TUPLE=		nbs-system:naxsi:${NAXSI_NGINX_VER}:naxsi
 NAXSI_VARS=		DSO_EXTMODS+=naxsi NAXSI_SUBDIR=/naxsi_src
 
-NJS_GH_TUPLE=		nginx:njs:0.5.2:njs
+NJS_GH_TUPLE=		nginx:njs:0.5.3:njs
 NJS_VARS=		DSO_EXTMODS+=njs NJS_SUBDIR=/nginx
 NJS_USES=		libedit
 
@@ -240,7 +238,7 @@ OPENTRACING_LIB_DEPENDS=	libopentracing.so:devel/libopentracing
 OPENTRACING_VARS=		DSO_EXTMODS+=opentracing OPENTRACING_SUBDIR=/opentracing
 OPENTRACING_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-nginx-opentracing-opentracing-config
 
-PASSENGER_NGINX_VER=	6.0.7
+PASSENGER_NGINX_VER=	6.0.8
 PASSENGER_CATEGORIES=	ruby
 PASSENGER_USE=		ruby=yes
 PASSENGER_BUILD_DEPENDS=${LOCALBASE}/bin/rake:devel/rubygem-rake

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libretro-snes9x2005
 PORTVERSION=	0.20210214
 CATEGORIES=	games

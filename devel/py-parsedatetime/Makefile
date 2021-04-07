@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	parsedatetime
 PORTVERSION=	2.6
 CATEGORIES=	devel python

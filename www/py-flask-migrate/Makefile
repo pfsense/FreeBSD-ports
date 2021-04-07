@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	flask-migrate
 PORTVERSION=	2.7.0
 CATEGORIES=	www python

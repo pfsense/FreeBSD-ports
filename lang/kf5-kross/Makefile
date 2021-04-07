@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kross
 DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
 CATEGORIES=	lang kde kde-frameworks

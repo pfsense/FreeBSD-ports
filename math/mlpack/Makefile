@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mlpack
 DISTVERSION=	3.4.1
 PORTREVISION=	1

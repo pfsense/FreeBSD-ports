@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	faustlive
 DISTVERSION=	2.5.5
 CATEGORIES=	audio

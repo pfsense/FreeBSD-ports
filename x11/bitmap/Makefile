@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bitmap
 PORTVERSION=	1.0.9
 CATEGORIES=	x11

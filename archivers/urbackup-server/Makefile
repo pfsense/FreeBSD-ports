@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	urbackup-server
 DISTVERSION=	2.4.13
 PORTREVISION=	1

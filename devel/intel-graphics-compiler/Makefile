@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	intel-graphics-compiler
 DISTVERSIONPREFIX=	igc-
 DISTVERSION=	1.0.6812

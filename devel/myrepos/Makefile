@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	myrepos
 PORTVERSION=	1.20180726
 CATEGORIES=	devel

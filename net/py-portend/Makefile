@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	portend
 PORTVERSION=	2.5
 PORTREVISION=	1

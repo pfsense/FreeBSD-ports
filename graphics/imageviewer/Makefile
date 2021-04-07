@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	imageviewer
 PORTVERSION=	0.6.3
 PORTREVISION=	11

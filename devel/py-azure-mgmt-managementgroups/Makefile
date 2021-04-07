@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	azure-mgmt-managementgroups
 PORTVERSION=	0.2.0
 CATEGORIES=	devel python

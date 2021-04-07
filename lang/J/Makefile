@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	J
 PORTVERSION=	${JVERSION:S/^j//:S/-release//}
 DISTVERSIONPREFIX=	j

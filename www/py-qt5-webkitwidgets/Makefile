@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	webkitwidgets
 CATEGORIES=	www devel python
 

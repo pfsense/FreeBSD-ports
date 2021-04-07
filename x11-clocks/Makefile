@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = X11 clocks
 
     SUBDIR += abclock

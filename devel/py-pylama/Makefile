@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pylama
 PORTVERSION=	7.7.1
 CATEGORIES=	devel python

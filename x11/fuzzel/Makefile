@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fuzzel
 DISTVERSION=	1.5.1
 CATEGORIES=	x11

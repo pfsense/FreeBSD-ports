@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	perl
 # XXX Remove second line, uncomment first
 #DISTVERSION=	${PERL_VERSION}
@@ -33,7 +31,7 @@ USES=		cpe
 USE_GITHUB=	yes
 GH_ACCOUNT=	Perl
 GH_PROJECT=	perl5
-GH_TAGNAME=	v5.33.8-12-g99155265b6
+GH_TAGNAME=	v5.33.8-26-g60eec70fe6
 
 # Give a hint of where libperl.so can be found.
 USE_LDCONFIG=	${PREFIX}/${_ARCH_LIB}/CORE

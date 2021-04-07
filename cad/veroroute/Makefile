@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	veroroute
 DISTVERSION=	2.12
 PORTEPOCH=	1

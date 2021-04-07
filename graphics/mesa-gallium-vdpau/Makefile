@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mesa-gallium-vdpau
 PORTVERSION=	${MESAVERSION}
 CATEGORIES=	graphics

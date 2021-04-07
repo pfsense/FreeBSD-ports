@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 # Also update devel/libgit2-glib, devel/rubygem-rugged, devel/py-pygit2
 # Make sure you bump revision of depending ports, if SONAME changes
 # objdump -p libgit2.so |grep SONAME
 # Tools/scripts/search_lib_depends_and_bump.sh devel/libgit2
 
 PORTNAME=	libgit2
-PORTVERSION=	1.0.1
+PORTVERSION=	1.1.0
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/libgit2/libgit2/releases/download/v${PORTVERSION}/
 
@@ -37,7 +35,7 @@ THREADS_CMAKE_BOOL=	THREADSAFE
 .if ${SSL_DEFAULT} == base
 post-patch:
 	@${REINPLACE_CMD} -e "/LIBGIT2_PC_REQUIRES.*openssl/ d" \
-		${WRKSRC}/cmake/Modules/SelectHTTPSBackend.cmake
+		${WRKSRC}/cmake/SelectHTTPSBackend.cmake
 .endif
 
 do-test:

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		go-carbon
 DISTVERSIONPREFIX=	v
 DISTVERSION=		0.12.0

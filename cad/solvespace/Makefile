@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	solvespace
 PORTVERSION=	2.3
 DISTVERSIONPREFIX=	v

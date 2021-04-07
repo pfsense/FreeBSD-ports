@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kensa
 PORTVERSION=	3.1.0
 CATEGORIES=	www rubygems

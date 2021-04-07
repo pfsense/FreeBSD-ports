@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dbfread
 PORTVERSION=	2.0.7
 CATEGORIES=	textproc python

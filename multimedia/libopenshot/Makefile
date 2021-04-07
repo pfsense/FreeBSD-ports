@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libopenshot
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.5-517

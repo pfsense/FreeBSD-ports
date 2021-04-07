@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	skrooge
 DISTVERSION=	2.24.6
 PORTREVISION=	1

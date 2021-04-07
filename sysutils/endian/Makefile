@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	endian
 PORTVERSION=	1.1
 CATEGORIES=	sysutils

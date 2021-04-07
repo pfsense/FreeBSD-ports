@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	portmaster
 PORTVERSION=	3.19
 PORTREVISION=	27

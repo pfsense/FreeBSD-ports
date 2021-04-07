@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	plasma-workspace
 DISTVERSION=	${KDE_PLASMA_VERSION}
 PORTREVISION=	1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-Net-LDAP
 PORTVERSION=	0.07
 CATEGORIES=	devel perl5

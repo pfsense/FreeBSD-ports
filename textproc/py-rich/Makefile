@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rich
 PORTVERSION=	10.0.0
 CATEGORIES=	textproc python

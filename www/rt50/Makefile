@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rt
 DISTVERSION=	5.0.1
 CATEGORIES=	www

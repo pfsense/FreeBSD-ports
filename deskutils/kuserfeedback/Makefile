@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kuserfeedback
 DISTVERSION=	1.0.0
 CATEGORIES=	deskutils kde

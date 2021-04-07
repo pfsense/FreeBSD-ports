@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	YAML
 PORTVERSION=	1.30
 CATEGORIES=	textproc perl5

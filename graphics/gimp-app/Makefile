@@ -1,9 +1,7 @@
 # Created by: erich@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME?=	gimp-app
-PORTVERSION=	2.10.22
-PORTREVISION=	3
+PORTVERSION=	2.10.24
 PORTEPOCH?=	1
 CATEGORIES?=	graphics gnome
 MASTER_SITES=	GIMP/gimp/v${PORTVERSION:R}

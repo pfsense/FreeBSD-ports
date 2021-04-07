@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kdeplasma-addons
 DISTVERSION=	${KDE_PLASMA_VERSION}
 CATEGORIES=	x11-toolkits kde kde-plasma

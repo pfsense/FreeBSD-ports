@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	innerspace
 PORTVERSION=	0.2.0
 PORTREVISION=	10

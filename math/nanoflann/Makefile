@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nanoflann
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.3.2

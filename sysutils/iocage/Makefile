@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	iocage
 PORTVERSION=	1.2
 PORTREVISION=	6

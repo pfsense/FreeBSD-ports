@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DBIx-TransactionManager
 PORTVERSION=	1.13
 PORTREVISION=	1

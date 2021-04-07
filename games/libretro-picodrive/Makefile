@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libretro-picodrive
 PORTVERSION=	0.20200504
 CATEGORIES=	games

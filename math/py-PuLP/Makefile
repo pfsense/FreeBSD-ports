@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	PuLP
 DISTVERSION=	2.4
 CATEGORIES=	math python

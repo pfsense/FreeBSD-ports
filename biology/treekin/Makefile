@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	treekin
 DISTVERSION=	0.5.1
 PORTREVISION=	2

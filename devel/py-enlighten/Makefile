@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	enlighten
 DISTVERSION=	1.8.0
 CATEGORIES=	devel python

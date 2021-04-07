@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pkgconf
 PORTVERSION=	1.7.4
 PORTEPOCH=	1

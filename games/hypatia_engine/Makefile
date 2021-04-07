@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hypatia_engine
 PORTVERSION=	0.3.1
 PORTREVISION=	4

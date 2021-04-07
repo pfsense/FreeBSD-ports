@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kstars
 DISTVERSION=	3.5.2
 PORTEPOCH=	1

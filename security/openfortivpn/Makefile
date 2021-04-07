@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openfortivpn
 PORTVERSION=	1.16.0
 DISTVERSIONPREFIX=	v

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Teng
 PORTVERSION=	0.28
 CATEGORIES=	databases perl5

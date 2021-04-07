@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	forcats
 DISTVERSION=	0.5.0
 PORTREVISION=	1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	modules2tuple
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.2.3

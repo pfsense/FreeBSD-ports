@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	simple-mtpfs
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.4.0

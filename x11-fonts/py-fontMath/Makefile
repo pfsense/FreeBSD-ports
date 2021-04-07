@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fontMath
 PORTVERSION=	0.4.9
 PORTREVISION=	1

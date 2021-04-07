@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	marblemarcher
 DISTVERSION=	1.4.5
 CATEGORIES=	games

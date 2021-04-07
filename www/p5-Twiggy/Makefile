@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Twiggy
 PORTVERSION=	0.1025
 CATEGORIES=	www perl5

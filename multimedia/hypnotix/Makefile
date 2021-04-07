@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hypnotix
 DISTVERSION=	1.4
 PORTREVISION=	1

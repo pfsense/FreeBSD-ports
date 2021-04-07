@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	grape-entity
 PORTVERSION=	0.8.1
 PORTEPOCH=	1

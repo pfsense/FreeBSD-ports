@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	deco
 PORTVERSION=	1.6.4
 CATEGORIES=	archivers

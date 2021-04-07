@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	logisim
 PORTVERSION=	2.7.1
 CATEGORIES=	cad education java

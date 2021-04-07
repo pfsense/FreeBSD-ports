@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	transmission-remote-gui
 PORTVERSION=	5.18.0
 PORTREVISION=	6

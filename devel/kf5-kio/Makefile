@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kio
 DISTVERSION=	5.80.1 # ${KDE_FRAMEWORKS_VERSION}
 CATEGORIES=	devel kde kde-frameworks

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lua-resty-string
 DISTVERSIONPREFIX=v
 DISTVERSION=	0.13

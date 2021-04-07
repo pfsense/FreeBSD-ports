@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 MASTERDIR=	${.CURDIR}/../zetacoin
 PKGNAMESUFFIX=	-utils
 

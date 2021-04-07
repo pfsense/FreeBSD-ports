@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		subread
 DISTVERSION=		2.0.2
 DISTVERSIONSUFFIX=	-source

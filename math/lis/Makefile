@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lis
 DISTVERSION=	2.0.30
 CATEGORIES=	math

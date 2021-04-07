@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pydecor
 DISTVERSION=	2.0.1
 CATEGORIES=	devel python

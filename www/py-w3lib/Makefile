@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	w3lib
 PORTVERSION=	1.21.0
 CATEGORIES=	www python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Date_Holidays_Iceland
 PORTVERSION=	0.1.2
 CATEGORIES=	devel www pear

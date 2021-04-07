@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	evans
 DISTVERSION=	0.9.1
 CATEGORIES=	net

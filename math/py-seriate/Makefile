@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	seriate
 DISTVERSION=	1.1.2
 CATEGORIES=	math python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pypa-docs-theme
 DISTVERSION=	g20180622
 CATEGORIES=	textproc python

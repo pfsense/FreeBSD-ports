@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	1
 PKGNAMEPREFIX=	mips64-
 

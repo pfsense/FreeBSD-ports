@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kfloppy
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	sysutils kde kde-applications

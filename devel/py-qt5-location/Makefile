@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	location
 CATEGORIES=	devel python
 

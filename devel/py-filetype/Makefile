@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	filetype
 DISTVERSION=	1.0.7
 CATEGORIES=	devel python

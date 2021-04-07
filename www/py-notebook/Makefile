@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	notebook
 PORTVERSION=	6.3.0
 CATEGORIES=	www python

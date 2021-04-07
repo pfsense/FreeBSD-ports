@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nanoc-checking
 PORTVERSION=	1.0.0
 CATEGORIES=	www rubygems

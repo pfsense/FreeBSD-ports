@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jbig2dec
 PORTVERSION=	0.19
 CATEGORIES=	graphics devel

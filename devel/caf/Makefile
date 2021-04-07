@@ -1,8 +1,8 @@
 # Created by: vanilla@
-# $FreeBSD$
 
 PORTNAME=	caf
 PORTVERSION=	0.18.2
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org

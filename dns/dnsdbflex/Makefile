@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dnsdbflex
 PORTVERSION=	1.0.5
 DISTVERSIONPREFIX=	v

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	inlets
 DISTVERSION=	3.0.1
 CATEGORIES=	net

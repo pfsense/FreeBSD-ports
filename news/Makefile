@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Network news
 
     SUBDIR += atp

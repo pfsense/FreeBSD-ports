@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tinyobjloader
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.0.0rc8-3

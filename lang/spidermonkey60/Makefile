@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	spidermonkey
 DISTVERSION=	60.9.0
 PORTREVISION=	5

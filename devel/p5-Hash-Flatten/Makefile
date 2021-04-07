@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Hash-Flatten
 PORTVERSION=	1.19
 PORTREVISION=	2

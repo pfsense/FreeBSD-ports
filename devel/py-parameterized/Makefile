@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	parameterized
 PORTVERSION=	0.8.1
 CATEGORIES=	devel python

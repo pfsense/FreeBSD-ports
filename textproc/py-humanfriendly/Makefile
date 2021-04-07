@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	humanfriendly
 PORTVERSION=	9.1
 CATEGORIES=	textproc python

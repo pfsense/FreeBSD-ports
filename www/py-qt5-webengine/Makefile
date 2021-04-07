@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	webengine
 DISTVERSION=	${PYQT_VERSION}
 CATEGORIES=	www devel python

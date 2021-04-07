@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	neo-cowsay
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.1

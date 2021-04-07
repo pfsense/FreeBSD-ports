@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gbrainy
 PORTREVISION=	1
 DISTVERSION=	2.4.3

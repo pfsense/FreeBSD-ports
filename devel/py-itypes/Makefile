@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	itypes
 DISTVERSION=	1.1.0
 CATEGORIES=	devel python

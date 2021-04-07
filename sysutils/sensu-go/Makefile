@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		sensu-go
 DISTVERSION=		5.11.1
 PORTREVISION=		1

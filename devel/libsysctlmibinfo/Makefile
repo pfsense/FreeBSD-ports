@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libsysctlmibinfo
 DISTVERSION=	1.0.2
 CATEGORIES=	devel

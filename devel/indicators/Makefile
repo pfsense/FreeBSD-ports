@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	indicators
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.0

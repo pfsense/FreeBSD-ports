@@ -1,9 +1,7 @@
 # Created by: Bernhard Froehlich <decke@bluelife.at>
-# $FreeBSD$
 
 PORTNAME=	phpvirtualbox
-DISTVERSION=	5.2-1
-PORTREVISION=	1
+DISTVERSION=	6.1
 CATEGORIES=	www
 
 MAINTAINER=	vbox@FreeBSD.org
@@ -18,12 +16,14 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 
 USE_GITHUB=	yes
+GH_TAGNAME=	cf82d58f2
 
 DOS2UNIX_REGEX=	.*\.(php|txt|js|css|html)
 ETCDIR=		${WWWDIR}
 
 post-patch:
-	@${REINPLACE_CMD} -e 's#/usr/share/phpvirtualbox#${WWWDIR}#g' ${WRKSRC}/phpvirtualbox.conf
+	@${REINPLACE_CMD} -e 's#/usr/share/phpvirtualbox#${WWWDIR}#g' \
+		${WRKSRC}/phpvirtualbox.conf
 
 do-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR}

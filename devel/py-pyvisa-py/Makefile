@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pyvisa-py
 PORTVERSION=	0.5.2
 CATEGORIES=	devel python

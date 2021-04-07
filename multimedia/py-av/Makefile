@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	av
 PORTVERSION=	8.0.3
 CATEGORIES=	multimedia python

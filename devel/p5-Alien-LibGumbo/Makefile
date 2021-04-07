@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Alien-LibGumbo
 PORTVERSION=	0.05
 PORTREVISION=	1

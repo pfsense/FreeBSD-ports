@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	icingaweb2-module-pdfexport
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.0

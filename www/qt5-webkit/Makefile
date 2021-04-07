@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		webkit
 DISTVERSION=		5.212.0-alpha4
 PORTREVISION=		4

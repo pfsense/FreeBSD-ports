@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xf86-video-ast
 PORTVERSION=	1.1.5
 PORTREVISION=	3

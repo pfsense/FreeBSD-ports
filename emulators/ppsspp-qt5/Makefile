@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	1
 PKGNAMESUFFIX=	-qt5
 

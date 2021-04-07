@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	msitools
 PORTVERSION=	0.100
 CATEGORIES=	devel

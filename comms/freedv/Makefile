@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	freedv
 DISTVERSION=	1.3.1
 PORTREVISION=	5

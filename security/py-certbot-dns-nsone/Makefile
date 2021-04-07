@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	certbot-dns-nsone
 PORTVERSION=	${ACME_VERSION}
 CATEGORIES=	security python

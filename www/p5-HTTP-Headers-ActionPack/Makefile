@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	HTTP-Headers-ActionPack
 PORTVERSION=	0.09
 CATEGORIES=	www perl5

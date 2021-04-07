@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	greenbone-security-assistant
 DISTVERSIONPREFIX=	v
 DISTVERSION=	20.8.1

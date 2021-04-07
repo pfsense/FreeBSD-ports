@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	webencodings
 DISTVERSION=	0.5.1
 CATEGORIES=	converters www python

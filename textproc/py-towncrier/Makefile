@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	towncrier
 PORTVERSION=	19.2.0
 PORTREVISION=	1

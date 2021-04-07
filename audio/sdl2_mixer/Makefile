@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sdl2_mixer
 PORTVERSION=	2.0.4
 PORTREVISION=	2

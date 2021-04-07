@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Types-UUID
 PORTVERSION=	0.004
 CATEGORIES=	devel perl5

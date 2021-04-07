@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qtchooser
 PORTVERSION=	66
 PORTREVISION=	4

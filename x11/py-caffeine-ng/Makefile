@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	caffeine-ng
 DISTVERSION=	3.5.1
 PORTREVISION=	1

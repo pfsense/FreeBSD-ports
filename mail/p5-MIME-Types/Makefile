@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MIME-Types
 PORTVERSION=	2.18
 CATEGORIES=	mail perl5

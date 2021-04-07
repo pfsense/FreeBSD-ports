@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-mutt
 

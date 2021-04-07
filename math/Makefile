@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Mathematics
 
     SUBDIR += 4ti2

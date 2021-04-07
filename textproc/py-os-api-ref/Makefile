@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	os-api-ref
 DISTVERSION=	1.5.0
 PORTREVISION=	1

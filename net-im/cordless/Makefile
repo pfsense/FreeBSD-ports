@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cordless
 DISTVERSION=	2020-10-24
 CATEGORIES=	net-im

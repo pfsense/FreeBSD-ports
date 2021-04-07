@@ -1,9 +1,7 @@
 # Created by: Matthias Fechner <mfechner@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gitlab-sidekiq-fetcher
-PORTVERSION=	0.5.2
-PORTREVISION=	1
+PORTVERSION=	0.5.5
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

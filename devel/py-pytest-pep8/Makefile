@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pytest-pep8
 PORTVERSION=	1.0.6
 CATEGORIES=	devel python

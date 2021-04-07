@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	django-bootstrap3
 PORTVERSION=	14.2.0
 CATEGORIES=	www python

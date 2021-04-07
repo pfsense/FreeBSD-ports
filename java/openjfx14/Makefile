@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openjfx
 DISTVERSION=	14.0.2.1+1
 PORTREVISION=	1

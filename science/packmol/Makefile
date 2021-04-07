@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	packmol
 DISTVERSION=	18.169
 CATEGORIES=	science

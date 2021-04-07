@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xauth
 PORTVERSION=	1.1
 CATEGORIES=	x11

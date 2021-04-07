@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	subversion-book
 DISTVERSION=	4515
 CATEGORIES=	devel misc

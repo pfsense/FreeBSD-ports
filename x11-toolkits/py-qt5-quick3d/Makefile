@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	quick3d
 CATEGORIES=	x11-toolkits devel python
 

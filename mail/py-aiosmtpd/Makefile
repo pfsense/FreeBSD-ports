@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	aiosmtpd
 PORTVERSION=	1.2
 PORTREVISION=	1

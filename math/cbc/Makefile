@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cbc
 DISTVERSIONPREFIX=	releases/
 DISTVERSION=	2.10.5

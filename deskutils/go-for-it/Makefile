@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	go-for-it
 DISTVERSION=	1.9.2
 CATEGORIES=	deskutils

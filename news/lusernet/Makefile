@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lusernet
 PORTVERSION=	0.4.2
 PORTREVISION=	11

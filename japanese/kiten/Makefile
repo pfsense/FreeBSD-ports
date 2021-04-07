@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kiten
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	japanese education kde kde-applications

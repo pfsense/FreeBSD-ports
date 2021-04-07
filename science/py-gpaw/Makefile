@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gpaw
 DISTVERSION=	21.1.0
 CATEGORIES=	science python

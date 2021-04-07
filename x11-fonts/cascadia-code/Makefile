@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cascadia-code
 PORTVERSION=	2102.25
 CATEGORIES=	x11-fonts

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mochiweb
 PORTVERSION=	2.9.0p2
 CATEGORIES=	www devel

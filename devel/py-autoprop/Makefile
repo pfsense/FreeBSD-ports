@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	autoprop
 PORTVERSION=	1.0.1
 CATEGORIES=	devel python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	seabios
 PORTVERSION=	1.14.0
 PORTREVISION=	0

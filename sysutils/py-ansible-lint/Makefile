@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ansible-lint
 PORTVERSION=	5.0.6
 CATEGORIES=	sysutils python

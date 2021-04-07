@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Authen-Simple-Kerberos
 PORTVERSION=	0.1
 CATEGORIES=	security perl5

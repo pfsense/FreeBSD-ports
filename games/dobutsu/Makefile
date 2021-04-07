@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dobutsu
 DISTVERSION=	2
 CATEGORIES=	games

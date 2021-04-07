@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pandas-charm
 DISTVERSION=	0.3.0
 PORTREVISION=	1

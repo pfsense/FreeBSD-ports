@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	upt-freebsd
 DISTVERSION=	0.3
 CATEGORIES=	sysutils ports-mgmt python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-MicroMason
 PORTVERSION=	2.13
 PORTREVISION=	1

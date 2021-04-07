@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	scikit-image
 PORTVERSION=	0.18.1
 DISTVERSIONPREFIX=	v

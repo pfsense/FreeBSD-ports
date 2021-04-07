@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	oslo.utils
 PORTVERSION=	4.8.0
 CATEGORIES=	devel python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cryptoballot
 DISTVERSION=	g20181015
 PORTREVISION=	2

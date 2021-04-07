@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	emulationstation
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.9.4

@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Archivers
 
     SUBDIR += 9e

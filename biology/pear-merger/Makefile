@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 # Newer versions require registration to download and the site is unreliable.
 
 PORTNAME=	pear
@@ -14,16 +12,17 @@ COMMENT=	Memory-efficient and highly accurate paired-end read merger
 
 LICENSE=	CC-BY-NC-SA-3.0
 
-BROKEN_aarch64=		fails to compile: invokes x86 assembler
-BROKEN_armv6=		fails to compile: invokes x86 assembler
-BROKEN_armv7=		fails to compile: invokes x86 assembler
-BROKEN_riscv64=		fails to compile: invokes x86 assembler
-
 GNU_CONFIGURE=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-src
 
 PLIST_FILES=	bin/pearRM man/man1/pearRM.1.gz
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} != amd64 && ${ARCH} != i386
+USE_GCC=	yes
+.endif
 
 do-install:
 	@${CP} ${WRKSRC}/man/pear.1 ${WRKSRC}/man/pearRM.1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	python-picard
 DISTVERSION=	0.4
 CATEGORIES=	math python

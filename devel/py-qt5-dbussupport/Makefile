@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dbussupport
 CATEGORIES=	devel python
 

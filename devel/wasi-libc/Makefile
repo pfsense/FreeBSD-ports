@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wasi-libc
 DISTVERSION=	g20201005
 CATEGORIES=	devel

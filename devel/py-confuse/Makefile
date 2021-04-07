@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	confuse
 PORTVERSION=	1.1.0
 CATEGORIES=	devel python

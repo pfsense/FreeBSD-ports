@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lidarr
 PORTVERSION=	0.7.2.1878
 CATEGORIES=	net-p2p

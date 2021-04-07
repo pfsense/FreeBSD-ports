@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	elk
 DISTVERSION=	7.1.14
 CATEGORIES=	science

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	google-cloud-cpp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.21.0

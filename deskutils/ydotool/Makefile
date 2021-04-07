@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ydotool
 PORTVERSION=	0.1.8
 PORTREVISION=	2

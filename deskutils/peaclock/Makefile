@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	peaclock
 DISTVERSION=	0.4.3
 PORTREVISION=	1

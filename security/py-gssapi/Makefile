@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gssapi
 DISTVERSION=	1.6.9
 CATEGORIES=	security python

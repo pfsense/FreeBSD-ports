@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cpp-hocon
 PORTVERSION=	0.3.0
 CATEGORIES=	devel

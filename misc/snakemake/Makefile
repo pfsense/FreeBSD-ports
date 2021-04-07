@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	snakemake
 DISTVERSION=	5.32.2
 CATEGORIES=	misc python

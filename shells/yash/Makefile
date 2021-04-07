@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	yash
 DISTVERSION=	2.51
 CATEGORIES=	shells

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Flask-Compress
 PORTVERSION=	1.9.0
 CATEGORIES=	www python

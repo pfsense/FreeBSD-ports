@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kotlin
 PORTVERSION=	1.4.20
 CATEGORIES=	lang

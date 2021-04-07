@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	glfw
 PORTVERSION=	2.1.0
 CATEGORIES=	graphics python

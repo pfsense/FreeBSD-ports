@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	git-chglog
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.14.0

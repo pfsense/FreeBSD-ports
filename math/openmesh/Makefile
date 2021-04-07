@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openmesh
 DISTVERSION=	8.1
 CATEGORIES=	math

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libcxx
 DISTVERSION=	11.0.0
 CATEGORIES=	devel lang

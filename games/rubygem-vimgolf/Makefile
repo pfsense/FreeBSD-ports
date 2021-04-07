@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	vimgolf
 PORTVERSION=	0.4.9
 CATEGORIES=	games rubygems

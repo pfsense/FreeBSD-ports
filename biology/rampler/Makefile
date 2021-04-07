@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rampler
 DISTVERSION=	2.0.0
 CATEGORIES=	biology

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kontact
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	deskutils kde kde-applications

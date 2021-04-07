@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hpipm
 DISTVERSION=	0.1.1
 CATEGORIES=	math

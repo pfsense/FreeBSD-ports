@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	web-console
 PORTVERSION=	4.1.0
 CATEGORIES=	devel rubygems

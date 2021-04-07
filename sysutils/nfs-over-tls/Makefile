@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nfs-over-tls
 DISTVERSION=	1.1
 CATEGORIES=	sysutils

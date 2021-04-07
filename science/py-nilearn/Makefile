@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nilearn
 DISTVERSION=	0.7.0
 CATEGORIES=	science python

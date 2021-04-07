@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cbsd
 DISTVERSION=	13.0.3
 CATEGORIES=	sysutils

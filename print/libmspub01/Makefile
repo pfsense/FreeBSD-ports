@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libmspub
 PORTVERSION=	0.1.4
 PORTREVISION=	17

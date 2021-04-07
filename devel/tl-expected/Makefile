@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		tl-expected
 DISTVERSIONPREFIX=	v
 DISTVERSION=		1.0.0

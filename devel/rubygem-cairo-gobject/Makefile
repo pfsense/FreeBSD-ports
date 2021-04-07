@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cairo-gobject
 PORTVERSION=	3.4.3
 CATEGORIES=	devel rubygems

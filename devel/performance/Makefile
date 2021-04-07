@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	performance
 PORTVERSION=	0.5.0
 PORTREVISION=	7

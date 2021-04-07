@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xdrawchem
 DISTVERSION=	1.11.0-2
 CATEGORIES=	science

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ktextwidgets
 DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
 CATEGORIES=	x11-toolkits kde kde-frameworks

@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Network management tools
 
     SUBDIR += 2ping

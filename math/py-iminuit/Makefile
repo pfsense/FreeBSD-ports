@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	iminuit
 DISTVERSION=	2.4.0
 CATEGORIES=	math python

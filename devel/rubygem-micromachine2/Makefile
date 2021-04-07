@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	micromachine
 PORTVERSION=	2.1.0
 CATEGORIES=	devel rubygems

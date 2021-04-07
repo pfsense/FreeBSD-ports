@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	virtboard
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.0.6

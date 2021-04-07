@@ -28,8 +28,6 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# $FreeBSD: head/Tools/scripts/chkversion.pl 562503 2021-01-24 18:42:29Z adamw $
-#
 # MAINTAINER=   portmgr@FreeBSD.org
 #
 # PORTVERSION and PKGORIGIN auditing script
@@ -53,7 +51,6 @@
 # and enter something like
 #
 #  BLAME=yes (git specific)
-#  SVNBLAME=yes   # XXX: SVN specific
 #  ALLPORTS=yes
 #  RCPT_ORIGIN=you@domain.example
 #  RCPT_VERSION=you@domain.example
@@ -63,10 +60,6 @@
 #
 # If the environment variable BLAME is set and the ports tree is checked
 # out by git, every entry is listed with a record of the last git commit.
-#
-# XXX: SVN specific:
-# If the environment variable SVNBLAME is set and the ports tree is checked
-# out by SVN, every entry is listed with a record of the last SVN commit.
 #
 
 use v5.20;
@@ -83,7 +76,6 @@ use POSIX;
 
 my $portsdir    = $ENV{PORTSDIR}        // '/usr/ports';
 my $versiondir  = $ENV{VERSIONDIR}      // '/var/db/chkversion';
-my $svnblame    = exists $ENV{SVNBLAME};  # XXX: SVN specific
 my $blame       = exists $ENV{BLAME};
 my $allports    = exists $ENV{ALLPORTS};
 
@@ -100,7 +92,6 @@ my $cc_author   = exists $ENV{CC_AUTHOR};
 my $cc_mntnr    = exists $ENV{CC_MAINTAINER};
 
 my $make        = '/usr/bin/make';
-my $svn         = '/usr/local/bin/svn';  # XXX: SVN specific
 my $git         = '/usr/local/bin/git';
 my $sendmail    = '/usr/sbin/sendmail';
 my $pkg         = first { -x $_ } ($ENV{PKG} // '', '/usr/local/sbin/pkg', '/usr/sbin/pkg');
@@ -151,7 +142,6 @@ sub wanted() {
     # Skip directories we shouldn't descend into
     # if (/^.git$/
     if (/^\.git$/
-        || /^\.svn$/   # XXX: SVN specific
         || $File::Find::name =~ m"^$portsdir/(?:Mk|Templates|Tools|distfiles|packages)$"os
         || $File::Find::name =~ m"^$portsdir/[^/]+/pkg$"os)
     {
@@ -303,15 +293,6 @@ sub printlog($fh, $portdir, $rev) {
     if ($blame && -d "$portsdir/.git") {
         my @log = readfrom $portdir, $git, 'log', "${rev}^..HEAD", 'Makefile';
         print $fh "   | $_\n" for @log;
-    }
-    # XXX: SVN specific:
-    elsif ($svnblame && -d "$portsdir/.svn") {
-        my @svnlog = readfrom $portdir, $svn, 'log', ($rev ? "-r$rev" : ''), 'Makefile';
-        for (@svnlog) {
-            my $in_log = /^-{20,}$/ ... /^(-{20,}|={70,})$/;
-            print $fh "   | $_\n"
-              if ($in_log && $in_log ne 1 && $in_log !~ /E0$/);
-        }
     }
 }
 

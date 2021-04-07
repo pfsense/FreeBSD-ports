@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	todoman
 DISTVERSION=	3.9.0
 CATEGORIES=	deskutils python

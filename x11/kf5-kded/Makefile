@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kded
 DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
 CATEGORIES=	x11 kde kde-frameworks

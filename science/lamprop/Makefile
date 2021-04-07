@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lamprop
 PORTVERSION=	2020.12.28
 CATEGORIES=	science python

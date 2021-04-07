@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	matterircd
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.24.0

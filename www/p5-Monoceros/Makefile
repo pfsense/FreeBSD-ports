@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Monoceros
 PORTVERSION=	0.27
 PORTREVISION=	1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	calendar
 PORTVERSION=	3.5.5
 CATEGORIES=	mail

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	flex-sdk
 PORTVERSION=	4.6.0.23201
 CATEGORIES=	devel java

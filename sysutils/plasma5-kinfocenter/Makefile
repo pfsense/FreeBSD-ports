@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kinfocenter
 DISTVERSION=	${KDE_PLASMA_VERSION}
 CATEGORIES=	sysutils kde kde-plasma

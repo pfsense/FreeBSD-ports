@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	catgirl
 DISTVERSION=	1.7
 CATEGORIES=	irc

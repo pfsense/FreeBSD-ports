@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jsonsir
 PORTVERSION=	0.0.2
 CATEGORIES=	devel python

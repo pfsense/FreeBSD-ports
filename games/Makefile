@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Games and related software
 
     SUBDIR += 0ad

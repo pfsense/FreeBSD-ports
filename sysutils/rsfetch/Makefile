@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rsfetch
 DISTVERSION=	2.0.0
 PORTREVISION=	12

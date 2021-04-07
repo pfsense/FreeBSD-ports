@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	http_accept_language
 PORTVERSION=	2.1.1
 CATEGORIES=	devel rubygems

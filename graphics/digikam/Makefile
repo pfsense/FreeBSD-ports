@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	digikam
 DISTVERSION=	7.1.0
 PORTREVISION=	4

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	azure-mgmt-servicefabric
 PORTVERSION=	0.5.0
 CATEGORIES=	devel python

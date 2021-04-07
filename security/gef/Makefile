@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gef
 DISTVERSION=	2021.01
 CATEGORIES=	security python

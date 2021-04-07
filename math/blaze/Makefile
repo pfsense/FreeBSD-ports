@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	blaze
 DISTVERSION=	3.8
 CATEGORIES=	math

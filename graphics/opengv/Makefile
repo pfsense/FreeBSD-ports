@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	opengv
 DISTVERSION=	g20200806
 CATEGORIES=	graphics

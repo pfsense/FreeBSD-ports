@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	docbook2mdoc
 PORTVERSION=	1.1.0
 CATEGORIES=	textproc

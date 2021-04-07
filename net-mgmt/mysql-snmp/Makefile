@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mysql-snmp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2-17

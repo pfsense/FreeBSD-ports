@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pyjsparser
 DISTVERSION=	2.7.1
 CATEGORIES=	devel python

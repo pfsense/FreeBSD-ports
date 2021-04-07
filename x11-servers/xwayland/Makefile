@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xwayland
 PORTREVISION=	2
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	oksh
 DISTVERSION=	6.8.1
 PORTEPOCH=	1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	List-UtilsBy
 PORTVERSION=	0.11
 CATEGORIES=	devel perl5

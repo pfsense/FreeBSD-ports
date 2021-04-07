@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	serverfiles
 DISTVERSION=	0.3.1
 CATEGORIES=	misc python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Horde_Mail_Autoconfig
 PORTVERSION=	1.0.3
 CATEGORIES=	mail www pear

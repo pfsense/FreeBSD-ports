@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wesnoth
 PORTVERSION=	1.14.15
 PORTEPOCH=	1

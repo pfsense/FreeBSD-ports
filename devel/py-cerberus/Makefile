@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Cerberus
 PORTVERSION=	1.3.2
 CATEGORIES=	devel python

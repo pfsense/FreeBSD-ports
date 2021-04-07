@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libapreq2
 PORTVERSION=	2.16
 CATEGORIES=	www perl5 devel

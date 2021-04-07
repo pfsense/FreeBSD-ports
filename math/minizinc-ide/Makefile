@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	minizinc-ide
 DISTVERSION=	2.5.5
 CATEGORIES=	math lang

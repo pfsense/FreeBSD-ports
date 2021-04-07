@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tensorflow
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.14.0

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mpsolve
 DISTVERSION=	3.2.1
 CATEGORIES=	math

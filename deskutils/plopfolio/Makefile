@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	plopfolio
 PORTVERSION=	0.1.0
 PORTREVISION=	11

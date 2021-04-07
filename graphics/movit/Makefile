@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	movit
 PORTVERSION=	1.6.3
 CATEGORIES=	graphics

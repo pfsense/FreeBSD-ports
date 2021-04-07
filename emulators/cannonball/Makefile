@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cannonball
 DISTVERSION=	0.32
 CATEGORIES=	emulators games

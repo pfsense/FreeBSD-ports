@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cloudflare-scrape
 DISTVERSION=	2.1.1
 CATEGORIES=	net python

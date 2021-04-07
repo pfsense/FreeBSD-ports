@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pouetchess
 PORTVERSION=	0.1.1
 PORTREVISION=	14

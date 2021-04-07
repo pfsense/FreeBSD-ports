@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kleopatra
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	security kde kde-applications

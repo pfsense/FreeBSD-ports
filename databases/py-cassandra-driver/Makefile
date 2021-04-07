@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cassandra-driver
 DISTVERSION=	3.18.0
 CATEGORIES=	databases python

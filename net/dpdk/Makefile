@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dpdk
 DISTVERSION=	19.11.7
 CATEGORIES=	net

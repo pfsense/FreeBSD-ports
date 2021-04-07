@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	uperf
 DISTVERSION=	1.0.7
 PORTEPOCH=	1

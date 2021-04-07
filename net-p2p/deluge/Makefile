@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	deluge
 PORTVERSION=	2.0.3
 PORTREVISION=	1

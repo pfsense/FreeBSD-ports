@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	liborcus
 PORTVERSION=	0.16.1
 PORTREVISION=	1

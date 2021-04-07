@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	molsketch
 DISTVERSION=	0.7.1
 DISTVERSIONSUFFIX=	-src

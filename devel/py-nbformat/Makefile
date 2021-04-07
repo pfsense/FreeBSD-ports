@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nbformat
 PORTVERSION=	5.1.2
 CATEGORIES=	devel python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libretro-fbneo
 PORTVERSION=	0.20210218
 CATEGORIES=	games

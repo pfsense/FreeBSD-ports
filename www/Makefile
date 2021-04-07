@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Ports related to the World Wide Web
 
     SUBDIR += R-cran-RgoogleMaps
@@ -104,7 +101,6 @@
     SUBDIR += davix
     SUBDIR += dddbl
     SUBDIR += ddgr
-    SUBDIR += decss
     SUBDIR += demoroniser
     SUBDIR += deno
     SUBDIR += devd
@@ -223,7 +219,6 @@
     SUBDIR += groupoffice
     SUBDIR += grr
     SUBDIR += gstreamer1-plugins-neon
-    SUBDIR += gtkhtml3
     SUBDIR += gtkhtml4
     SUBDIR += guacamole-client
     SUBDIR += guile-www
@@ -997,6 +992,7 @@
     SUBDIR += p5-MediaWiki-API
     SUBDIR += p5-Mobile-UserAgent
     SUBDIR += p5-ModPerl-VersionUtil
+    SUBDIR += p5-Mojo-IOLoop-Delay
     SUBDIR += p5-Mojo-IOLoop-ForkCall
     SUBDIR += p5-Mojo-Server-FastCGI
     SUBDIR += p5-Mojo-Weixin
@@ -1383,6 +1379,7 @@
     SUBDIR += phprecipebook
     SUBDIR += phpsysinfo
     SUBDIR += phpvirtualbox
+    SUBDIR += phpvirtualbox-legacy
     SUBDIR += piwigo
     SUBDIR += plasma5-plasma-browser-integration
     SUBDIR += plugger

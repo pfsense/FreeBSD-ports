@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fricas
 DISTVERSION=	1.3.6
 DISTVERSIONSUFFIX=	-full

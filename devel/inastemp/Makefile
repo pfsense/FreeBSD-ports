@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	inastemp
 DISTVERSION=	0.2.4
 CATEGORIES=	devel

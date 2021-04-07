@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Astronomical ports
 
     SUBDIR += R-cran-maptools

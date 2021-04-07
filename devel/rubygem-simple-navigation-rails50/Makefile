@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	simple-navigation
 PORTVERSION=	4.0.5
 PORTREVISION=	1

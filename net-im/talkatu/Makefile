@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	talkatu
 PORTVERSION=	g2019031701
 CATEGORIES=	net-im

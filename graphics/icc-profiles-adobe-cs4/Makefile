@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	icc-profiles-adobe-cs4
 PORTVERSION=	1
 CATEGORIES=	graphics

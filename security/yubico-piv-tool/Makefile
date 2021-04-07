@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	yubico-piv-tool
 PORTVERSION=	2.2.0
 #PORTREVISION=	0

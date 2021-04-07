@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	webchannel
 CATEGORIES=	www devel python
 

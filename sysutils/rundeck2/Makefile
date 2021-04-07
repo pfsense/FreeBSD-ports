@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rundeck
 DISTVERSION=	2.11.14
 CATEGORIES=	sysutils java

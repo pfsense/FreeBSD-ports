@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	threadscope
 PORTVERSION=	0.2.14
 CATEGORIES=	devel haskell

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mmh
 PORTVERSION=	0.4
 CATEGORIES=	mail

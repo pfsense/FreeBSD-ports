@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pytest-helpers-namespace
 PORTVERSION=	2019.1.8
 CATEGORIES=	devel python

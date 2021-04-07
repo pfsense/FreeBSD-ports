@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pkginfo
 DISTVERSION=	1.7.0
 CATEGORIES=	sysutils python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	syncthingtray
 PORTVERSION=	1.1.2
 DISTVERSIONPREFIX=	v

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tinytex
 DISTVERSION=	0.30
 CATEGORIES=	print

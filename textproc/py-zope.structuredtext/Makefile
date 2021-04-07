@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zope.structuredtext
 PORTVERSION=	3.5.1
 PORTREVISION=	1

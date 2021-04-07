@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	purple-mattermost
 PORTVERSION=	g20210121
 CATEGORIES=	net-im

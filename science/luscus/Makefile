@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	luscus
 DISTVERSION=	0.8.6
 PORTREVISION=	2

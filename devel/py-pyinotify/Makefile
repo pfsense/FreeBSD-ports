@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pyinotify
 PORTVERSION=	0.9.6
 CATEGORIES=	devel

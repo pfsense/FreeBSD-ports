@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	biolibc
 DISTVERSION=	0.1.1
 CATEGORIES=	biology

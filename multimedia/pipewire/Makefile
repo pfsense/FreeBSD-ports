@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pipewire
 DISTVERSION=	0.3.23
 PORTREVISION=	1

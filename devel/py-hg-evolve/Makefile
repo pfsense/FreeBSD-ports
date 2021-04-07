@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hg-evolve
 DISTVERSION=	10.2.0
 DISTVERSIONSUFFIX=	.post1

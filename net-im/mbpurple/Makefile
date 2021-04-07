@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mbpurple
 PORTVERSION=	0.3.0
 PORTREVISION=	5

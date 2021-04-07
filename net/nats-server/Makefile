@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nats-server
 PORTVERSION=	2.2.0
 DISTVERSIONPREFIX=	v

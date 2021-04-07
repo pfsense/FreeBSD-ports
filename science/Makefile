@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Scientific ports
 
     SUBDIR += 2d-rewriter

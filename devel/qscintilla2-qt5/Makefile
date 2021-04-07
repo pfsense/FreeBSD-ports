@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qscintilla2-qt5
 PORTVERSION=	${QSCI2_VERSION}
 CATEGORIES=	devel

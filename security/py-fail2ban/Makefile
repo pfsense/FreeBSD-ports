@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fail2ban
 PORTVERSION=	0.11.2
 CATEGORIES=	security python

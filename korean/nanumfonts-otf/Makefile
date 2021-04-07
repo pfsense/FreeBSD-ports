@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nanumfonts
 PORTVERSION=	20170921
 CATEGORIES=	korean

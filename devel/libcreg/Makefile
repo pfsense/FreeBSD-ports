@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libcreg
 DISTVERSION=	experimental-20200725
 CATEGORIES=	devel

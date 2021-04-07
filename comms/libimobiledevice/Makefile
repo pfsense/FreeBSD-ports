@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libimobiledevice
 PORTVERSION=	1.3.0
 PORTREVISION?=	0

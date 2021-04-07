@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pymtbl
 PORTVERSION=	0.5.0
 #PORTREVISION=	1

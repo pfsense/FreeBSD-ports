@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wayfire-plugins-extra
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.7.0

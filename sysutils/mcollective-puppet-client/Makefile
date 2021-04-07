@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mcollective-puppet-client
 
 COMMENT=	MCollective client to manage the Puppet Agent

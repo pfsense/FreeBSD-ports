@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	syntax
 PORTVERSION=	1.2.2
 CATEGORIES=	textproc rubygems

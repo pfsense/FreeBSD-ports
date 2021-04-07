@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	minecraft-server
 PORTVERSION=	1.16.5
 CATEGORIES=	games java

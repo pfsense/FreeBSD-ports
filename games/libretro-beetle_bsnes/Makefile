@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libretro-beetle_bsnes
 PORTVERSION=	0.20210101
 CATEGORIES=	games

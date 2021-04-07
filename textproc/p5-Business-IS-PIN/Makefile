@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Business-IS-PIN
 DISTVERSION=	0.06
 CATEGORIES=	textproc perl5

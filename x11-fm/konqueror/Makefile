@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	konqueror
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	x11-fm www kde kde-applications

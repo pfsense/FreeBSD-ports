@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	PyMetis
 DISTVERSION=	2020.1
 CATEGORIES=	math python

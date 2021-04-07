@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	webargs
 PORTVERSION=	7.0.1
 CATEGORIES=	www devel python

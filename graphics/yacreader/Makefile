@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	yacreader
 DISTVERSION=	9.7.1
 PORTREVISION=	6

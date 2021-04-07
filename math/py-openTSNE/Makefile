@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openTSNE
 DISTVERSION=	0.5.1
 CATEGORIES=	math python # statistics

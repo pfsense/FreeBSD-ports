@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cmake
 DISTVERSION=	3.19.6
 CATEGORIES=	devel

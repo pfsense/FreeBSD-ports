@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mattermost-webapp
 PORTVERSION=	5.32.1
 DISTVERSIONPREFIX=	v

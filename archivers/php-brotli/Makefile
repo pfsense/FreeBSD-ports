@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	brotli
 DISTVERSION=	0.13.1
 CATEGORIES=	archivers

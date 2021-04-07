@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	websockify
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.0

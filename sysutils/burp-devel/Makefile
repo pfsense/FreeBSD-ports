@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	burp
 PORTVERSION=	2.3.38
 CATEGORIES=	sysutils

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ttrv
 DISTVERSION=	1.27.3
 CATEGORIES=	www

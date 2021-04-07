@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cbindgen
 DISTVERSION=	0.18.0
 PORTREVISION=	1

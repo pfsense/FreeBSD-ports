@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	opcodes
 DISTVERSION=	0.3.14
 CATEGORIES=	devel python

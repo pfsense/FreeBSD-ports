@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Communication utilities
 
     SUBDIR += acfax

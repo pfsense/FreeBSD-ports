@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	subsync
 DISTVERSION=	g20190702
 CATEGORIES=	multimedia python

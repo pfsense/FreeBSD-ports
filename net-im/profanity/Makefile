@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	profanity
 PORTVERSION=	0.10.0
 PORTREVISION=	1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	regex
 PORTVERSION=	2020.7.14
 CATEGORIES=	textproc python

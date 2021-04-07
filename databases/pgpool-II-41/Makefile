@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pgpool-II
 PORTVERSION=	4.1.2
 CATEGORIES=	databases

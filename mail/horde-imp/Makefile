@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	imp
 PORTVERSION=	6.2.27
 CATEGORIES=	mail www pear

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	transitions
 DISTVERSION=	0.8.7
 CATEGORIES=	devel python

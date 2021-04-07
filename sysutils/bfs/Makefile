@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bfs
 DISTVERSION=	2.2
 CATEGORIES=	sysutils

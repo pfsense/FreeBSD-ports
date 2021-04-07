@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	2
 CATEGORIES=	databases lang
 PKGNAMESUFFIX=	-sqlite

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	semi_semantic
 PORTVERSION=	1.2.0
 CATEGORIES=	devel rubygems

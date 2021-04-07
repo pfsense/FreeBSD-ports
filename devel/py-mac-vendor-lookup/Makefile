@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mac-vendor-lookup
 PORTVERSION=	0.1.11
 CATEGORIES=	devel python

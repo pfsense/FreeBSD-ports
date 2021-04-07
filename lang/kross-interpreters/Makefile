@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kross-interpreters
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	lang kde kde-applications

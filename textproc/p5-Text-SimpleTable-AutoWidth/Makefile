@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-SimpleTable-AutoWidth
 PORTVERSION=	0.09
 CATEGORIES=	textproc perl5

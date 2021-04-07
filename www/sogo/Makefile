@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		sogo
 PORTVERSION=		5.0.1
 PORTREVISION=		1

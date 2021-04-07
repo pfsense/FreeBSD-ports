@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cloudscraper
 DISTVERSION=	1.2.56
 CATEGORIES=	net python

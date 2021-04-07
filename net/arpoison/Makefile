@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	arpoison
 DISTVERSION=	0.7
 CATEGORIES=	net

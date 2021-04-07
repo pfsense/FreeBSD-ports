@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openntpd
 PORTVERSION=	6.8p1
 PORTREVISION=	2

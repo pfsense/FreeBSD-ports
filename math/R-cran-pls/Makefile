@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pls
 DISTVERSION=	2.7-3
 CATEGORIES=	math

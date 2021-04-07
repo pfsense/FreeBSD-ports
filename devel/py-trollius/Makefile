@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	trollius
 PORTVERSION=	2.2
 CATEGORIES=	devel python

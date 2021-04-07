@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qmidictl
 DISTVERSION=	0.9.2
 CATEGORIES=	audio

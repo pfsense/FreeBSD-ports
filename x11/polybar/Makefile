@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	polybar
-DISTVERSION=	3.5.4
+DISTVERSION=	3.5.5
 CATEGORIES=	x11
 MASTER_SITES=	https://github.com/polybar/polybar/releases/download/${DISTVERSION}/
 

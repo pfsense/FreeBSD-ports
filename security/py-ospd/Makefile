@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ospd
 DISTVERSION=	20.8.2
 CATEGORIES=	security net python

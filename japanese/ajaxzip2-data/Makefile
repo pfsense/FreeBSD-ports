@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ajaxzip2
 PORTVERSION=	20200831
 CATEGORIES=	japanese

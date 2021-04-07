@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	byacc
 PORTVERSION=	20210109
 CATEGORIES=	devel

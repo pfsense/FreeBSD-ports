@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	intel-undervolt
 DISTVERSION=	1.5-7
 DISTVERSIONSUFFIX=	-g66cfb65

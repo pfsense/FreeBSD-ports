@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pandas-datareader
 DISTVERSION=		0.9.0
 CATEGORIES=	math finance python

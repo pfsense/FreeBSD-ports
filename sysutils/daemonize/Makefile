@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	daemonize
 DISTVERSION=	1.7.8
 DISTVERSIONPREFIX=	release-

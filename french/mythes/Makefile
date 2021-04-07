@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mythes
 PORTVERSION=	2.3
 CATEGORIES=	french textproc

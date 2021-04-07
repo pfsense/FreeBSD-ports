@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	smoldyn
 DISTVERSION=	2.64
 CATEGORIES=	science

@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	chef-utils
-PORTVERSION=	16.9.29
+PORTVERSION=	16.11.7
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 

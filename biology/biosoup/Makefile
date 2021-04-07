@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	biosoup
 DISTVERSION=	g20201216
 CATEGORIES=	biology devel

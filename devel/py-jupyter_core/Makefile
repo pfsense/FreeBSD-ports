@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jupyter_core
 PORTVERSION=	4.7.1
 CATEGORIES=	devel python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	korganizer
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	deskutils kde kde-applications

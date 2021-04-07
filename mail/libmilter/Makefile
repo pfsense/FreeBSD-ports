@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libmilter
 PORTVERSION=	8.16.1
 PORTREVISION=	0

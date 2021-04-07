@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	paperless
 PORTVERSION=	2.7.0
 PORTREVISION=	9

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dragonfly-reverb
 DISTVERSION=	3.2.5
 CATEGORIES=	audio multimedia

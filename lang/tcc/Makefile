@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tcc
 DISTVERSIONPREFIX=	release_
 DISTVERSION=	0_9_26

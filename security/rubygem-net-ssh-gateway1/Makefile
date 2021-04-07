@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	net-ssh-gateway
 PORTVERSION=	1.3.0
 CATEGORIES=	security rubygems

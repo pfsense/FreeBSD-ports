@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	signal-cli
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.8.1

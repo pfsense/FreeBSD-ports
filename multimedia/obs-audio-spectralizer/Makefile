@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	obs-audio-spectralizer
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.3.4

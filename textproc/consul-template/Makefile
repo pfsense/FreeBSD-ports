@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	consul-template
 PORTVERSION=	0.25.2
 DISTVERSIONPREFIX=	v

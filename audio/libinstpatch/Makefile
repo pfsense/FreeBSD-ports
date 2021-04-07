@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libinstpatch
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.1.6

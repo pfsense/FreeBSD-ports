@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dsr-pdb
 DISTVERSION=	1.0.3
 PORTREVISION=	5

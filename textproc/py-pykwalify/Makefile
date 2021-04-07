@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pykwalify
 DISTVERSION=	1.8.0
 CATEGORIES=	textproc python

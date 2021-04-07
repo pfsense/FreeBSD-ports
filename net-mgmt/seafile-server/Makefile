@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	seafile-server
 DISTVERSIONPREFIX=	v
 DISTVERSION=	${SEAFILE_VER}

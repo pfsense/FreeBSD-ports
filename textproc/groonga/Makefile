@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	groonga
 PORTVERSION=	11.0.0
 CATEGORIES=	textproc

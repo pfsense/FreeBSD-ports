@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	prometheus-collectd-exporter
 PORTVERSION=	0.5.0
 DISTVERSIONPREFIX=	v

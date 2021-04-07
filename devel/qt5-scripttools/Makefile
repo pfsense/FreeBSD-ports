@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	scripttools
 DISTVERSION=	${QT5_VERSION}
 PORTREVISION=	1

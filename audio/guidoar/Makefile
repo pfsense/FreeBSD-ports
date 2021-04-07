@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	guidoar
 PORTVERSION=	g20210127
 CATEGORIES=	audio

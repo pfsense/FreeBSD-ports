@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libretro-vice
 PORTVERSION=	0.20201218
 CATEGORIES=	emulators games

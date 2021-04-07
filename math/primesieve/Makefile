@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	primesieve
 DISTVERSIONPREFIX=	v
 DISTVERSION=	7.6

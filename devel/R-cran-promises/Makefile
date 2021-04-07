@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	promises
 PORTVERSION=	1.2.0.1
 CATEGORIES=	devel

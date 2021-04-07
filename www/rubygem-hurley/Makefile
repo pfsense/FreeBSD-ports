@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hurley
 PORTVERSION=	0.2
 CATEGORIES=	www rubygems

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xdot
 PORTVERSION=	1.2
 CATEGORIES=	x11 python

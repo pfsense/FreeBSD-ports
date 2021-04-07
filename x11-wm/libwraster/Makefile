@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libwraster
 PORTVERSION=	0.95.9
 PORTREVISION=	1

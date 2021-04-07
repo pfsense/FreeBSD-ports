@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libgltf
 PORTVERSION=	0.0.2
 PORTREVISION=	22

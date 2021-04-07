@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	find-cursor
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6

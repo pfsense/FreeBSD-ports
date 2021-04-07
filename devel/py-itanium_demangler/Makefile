@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	itanium_demangler
 DISTVERSION=	1.0
 CATEGORIES=	devel python

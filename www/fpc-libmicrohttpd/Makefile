@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	www lang
 PKGNAMESUFFIX=	-libmicrohttpd
 

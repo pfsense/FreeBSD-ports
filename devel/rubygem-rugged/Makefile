@@ -1,10 +1,10 @@
 # Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
 
 # Also update devel/libgit2, devel/libgit2-glib, devel/py-pygit2
 
 PORTNAME=	rugged
-PORTVERSION=	1.0.1
+PORTVERSION=	1.1.0
+PORTREVISION=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

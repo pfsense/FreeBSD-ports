@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	universal
 DISTVERSION=	3.0.0
 CATEGORIES=	math

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	texstudio
 DISTVERSION=	3.1.1
 PORTREVISION=	1

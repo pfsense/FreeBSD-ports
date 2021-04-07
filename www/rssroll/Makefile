@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rssroll
 PORTVERSION=	0.6.2
 CATEGORIES=	www

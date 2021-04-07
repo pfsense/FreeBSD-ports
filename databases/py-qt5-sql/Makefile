@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sql
 CATEGORIES=	databases devel python
 

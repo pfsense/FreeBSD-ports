@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	systempreferences
 PORTVERSION=	1.2.0
 PORTREVISION=	8

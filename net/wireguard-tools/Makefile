@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wireguard-tools
 PORTVERSION=	1.0.20210315
 PORTREVISION=	3

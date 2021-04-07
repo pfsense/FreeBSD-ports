@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	easyprocess
 PORTVERSION=	0.2.3
 CATEGORIES=	devel python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	linphone
 PORTVERSION=	4.1.1
 PORTREVISION=	6

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gmines
 PORTVERSION=	0.2
 PORTREVISION=	8

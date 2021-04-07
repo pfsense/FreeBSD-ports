@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	husky-hpt
 
 COMMENT=	Husky FTN tosser

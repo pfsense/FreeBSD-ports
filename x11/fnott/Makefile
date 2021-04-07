@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fnott
 DISTVERSION=	1.0.1
 CATEGORIES=	x11

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Alien-Base-ModuleBuild
 PORTVERSION=	1.15
 CATEGORIES=	devel perl5

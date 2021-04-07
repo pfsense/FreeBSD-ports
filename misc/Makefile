@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Miscellaneous utilities
 
     SUBDIR += R-cran-mime

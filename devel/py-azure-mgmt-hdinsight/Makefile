@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	azure-mgmt-hdinsight
 PORTVERSION=	2.2.0
 CATEGORIES=	devel python

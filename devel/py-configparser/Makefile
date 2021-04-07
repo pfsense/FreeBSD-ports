@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	configparser
 PORTVERSION=	3.5.3
 PORTREVISION=	1

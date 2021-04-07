@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		sope4
 PORTVERSION=		4.3.2
 PORTREVISION=		1

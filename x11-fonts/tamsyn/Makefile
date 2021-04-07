@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tamsyn-font
 DISTVERSION=	1.11
 PORTREVISION=	1

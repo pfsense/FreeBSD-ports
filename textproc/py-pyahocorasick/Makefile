@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pyahocorasick
 DISTVERSION=	1.4.1
 CATEGORIES=	textproc python

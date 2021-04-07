@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	regoth
 DISTVERSIONPREFIX=	nightly-
 DISTVERSION=	0.4.189

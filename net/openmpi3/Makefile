@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openmpi
 PORTVERSION=	3.1.6
 PORTREVISION=	1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tftp-hpa
 PORTVERSION=	5.2
 PORTREVISION=	1

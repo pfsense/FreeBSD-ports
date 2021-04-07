@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ExtUtils-CBuilder
 PORTVERSION=	0.280236
 PORTEPOCH=	1

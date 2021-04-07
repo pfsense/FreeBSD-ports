@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	coppermine
 PORTVERSION=	1.6.10
 DISTVERSIONPREFIX=	v

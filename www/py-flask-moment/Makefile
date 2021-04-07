@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Flask-Moment
 PORTVERSION=	0.11.0
 CATEGORIES=	www python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	guile-gnome-platform
 DISTVERSION=	2.16.5
 CATEGORIES=	x11-toolkits

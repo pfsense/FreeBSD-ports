@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sks
 PORTVERSION=	1.1.6
 CATEGORIES=	security

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libecpint
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.5
@@ -13,7 +11,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libpugixml.so:textproc/pugixml
 
-USES=		cmake compiler:c++11-lang
+USES=		cmake compiler:c++11-lang python:build
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes

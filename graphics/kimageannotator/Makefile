@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kImageAnnotator
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.4.2

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	erlang-riak
 PORTVERSION=	16.b.02
 CATEGORIES=	lang

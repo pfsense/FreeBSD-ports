@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	udpbroadcastrelay
 DISTVERSIONPREFIX=v
 DISTVERSION=	0.3-beta

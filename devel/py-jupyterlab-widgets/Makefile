@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jupyterlab-widgets
 DISTVERSION=	1.0.0
 CATEGORIES=	devel python

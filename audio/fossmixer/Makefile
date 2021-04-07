@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fossmixer
 PORTVERSION=	0.0.3
 CATEGORIES=	audio

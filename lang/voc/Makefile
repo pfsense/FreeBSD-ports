@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		voc
 PORTVERSION=	g20191119
 CATEGORIES=		lang

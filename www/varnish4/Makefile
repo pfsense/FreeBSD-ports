@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	varnish
 PORTVERSION=	4.1.11
 DISTVERSIONPREFIX=	varnish-

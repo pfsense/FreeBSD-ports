@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	orange3-datafusion
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1.11-7

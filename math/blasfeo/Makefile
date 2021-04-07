@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	blasfeo
 DISTVERSION=	0.1.2
 CATEGORIES=	math

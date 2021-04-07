@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openicc-config
 PORTVERSION=	0.1.0
 CATEGORIES=	graphics

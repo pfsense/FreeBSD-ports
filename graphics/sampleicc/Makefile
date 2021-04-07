@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sampleicc
 PORTVERSION=	1.6.8
 PORTREVISION=	1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gdk3
 PORTVERSION=	3.4.3
 CATEGORIES=	x11-toolkits rubygems

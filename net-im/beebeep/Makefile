@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	beebeep
 DISTVERSIONPREFIX=code-
 DISTVERSION=	5.8.4

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	transwarp
 DISTVERSION=	2.2.1-4
 DISTVERSIONSUFFIX=	-ge5ce19e

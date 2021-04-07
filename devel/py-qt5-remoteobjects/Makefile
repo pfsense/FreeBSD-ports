@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	remoteobjects
 CATEGORIES=	devel python
 

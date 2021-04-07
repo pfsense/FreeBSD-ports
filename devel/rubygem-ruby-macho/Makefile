@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ruby-macho
 PORTVERSION=	2.5.0
 CATEGORIES=	devel rubygems

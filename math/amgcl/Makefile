@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	amgcl
 DISTVERSION=	1.4.0
 CATEGORIES=	math

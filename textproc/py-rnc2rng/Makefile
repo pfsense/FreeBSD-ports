@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rnc2rng
 DISTVERSION=	2.6.5
 CATEGORIES=	textproc python

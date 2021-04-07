@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cplanet
 PORTVERSION=	0.9
 PORTREVISION=	2

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	azure-mgmt-synapse
 DISTVERSION=	0.7.0
 CATEGORIES=	devel python

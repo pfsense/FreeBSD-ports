@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tabletext
 PORTVERSION=	0.1
 CATEGORIES=	textproc python

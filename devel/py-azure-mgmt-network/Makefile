@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	azure-mgmt-network
 DISTVERSION=	18.0.0
 CATEGORIES=	devel python

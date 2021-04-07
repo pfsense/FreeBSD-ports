@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	plasma-sdk
 DISTVERSION=	${KDE_PLASMA_VERSION}
 CATEGORIES=	devel kde kde-plasma

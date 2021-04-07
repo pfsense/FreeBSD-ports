@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libphonenumber
 DISTVERSIONPREFIX=	v
 DISTVERSION=	8.12.20

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 VOICE=	cmu_us_clb_arctic
 
 COMMENT=	CMU US English female voice for festival

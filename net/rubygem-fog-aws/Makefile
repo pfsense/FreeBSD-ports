@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	fog-aws
-PORTVERSION=	3.8.0
+PORTVERSION=	3.9.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 

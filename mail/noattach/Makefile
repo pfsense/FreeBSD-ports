@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	noattach
 PORTVERSION=	1.2
 PORTREVISION=	4

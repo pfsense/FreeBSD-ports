@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ipyparallel
 PORTVERSION=	6.3.0
 CATEGORIES=	devel python

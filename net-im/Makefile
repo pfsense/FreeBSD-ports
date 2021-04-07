@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Instant messaging
 
     SUBDIR += 6cord

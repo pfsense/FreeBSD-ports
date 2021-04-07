@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		nsupdate
 PORTVERSION=		9.16.5
 PORTREVISION=		0

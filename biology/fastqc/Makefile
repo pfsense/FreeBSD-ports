@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fastqc
 DISTVERSION=	0.11.9
 CATEGORIES=	biology java perl5

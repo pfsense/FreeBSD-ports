@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dnsrecon
 DISTVERSION=	0.8.13
 PORTREVISION=	2

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	feedbackd
 PORTVERSION=	s20210125
 CATEGORIES=	accessibility

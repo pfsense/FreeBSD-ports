@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jenkins
 PORTVERSION=	2.286
 CATEGORIES=	devel java

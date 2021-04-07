@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	orange-widget-base
 DISTVERSION=	4.12.0
 CATEGORIES=	devel python

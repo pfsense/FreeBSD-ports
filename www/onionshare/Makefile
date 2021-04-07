@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	onionshare
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.2

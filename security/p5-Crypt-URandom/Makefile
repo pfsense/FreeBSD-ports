@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Crypt-URandom
 PORTVERSION=	0.36
 CATEGORIES=	security perl5

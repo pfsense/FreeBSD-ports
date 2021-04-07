@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	arabic2kansuji
 PORTVERSION=	0.1.1
 CATEGORIES=	converters

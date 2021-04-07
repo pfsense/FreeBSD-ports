@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	clover
 PORTVERSION=	${MESAVERSION}
 CATEGORIES=	lang

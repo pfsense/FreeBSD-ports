@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	peazip
 PORTVERSION=	7.0.1
 PORTREVISION=	4

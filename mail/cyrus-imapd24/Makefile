@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cyrus-imapd
 PORTVERSION=	2.4.22
 #PORTREVISION=	0

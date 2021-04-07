@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	lang
 PKGNAMESUFFIX=	-rtl-console
 

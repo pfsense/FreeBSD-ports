@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cervisia
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	devel kde kde-applications

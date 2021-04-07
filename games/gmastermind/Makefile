@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gmastermind
 PORTVERSION=	0.6
 PORTREVISION=	8

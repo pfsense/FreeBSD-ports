@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libretro-beetle_supergrafx
 PORTVERSION=	0.20210214
 CATEGORIES=	games

@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Audio tools
 
     SUBDIR += GxSwitchlessWah-lv2
@@ -50,6 +47,7 @@
     SUBDIR += avldrums-lv2
     SUBDIR += aylet
     SUBDIR += bambootracker
+    SUBDIR += bamp-lv2
     SUBDIR += baresip
     SUBDIR += baudline
     SUBDIR += bcg729
@@ -60,9 +58,11 @@
     SUBDIR += bjumblr-lv2
     SUBDIR += bliss
     SUBDIR += blop
+    SUBDIR += boops-lv2
     SUBDIR += bristol
     SUBDIR += bsequencer-lv2
     SUBDIR += bshapr-lv2
+    SUBDIR += bschaffl-lv2
     SUBDIR += bslizr-lv2
     SUBDIR += cadence
     SUBDIR += calf-lv2

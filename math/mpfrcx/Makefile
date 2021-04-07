@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mpfrcx
 DISTVERSION=	0.6
 PORTREVISION=	1

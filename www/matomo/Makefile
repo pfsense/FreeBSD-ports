@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	matomo
 DISTVERSION=	4.1.0
 PORTREVISION=	1

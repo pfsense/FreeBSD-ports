@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libopenbsd
 PORTVERSION=	r298107
 CATEGORIES=	devel

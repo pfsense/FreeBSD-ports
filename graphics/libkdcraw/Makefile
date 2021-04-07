@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libkdcraw
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	graphics kde kde-applications

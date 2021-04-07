@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gsequencer
 DISTVERSION=	3.7.50
 CATEGORIES=	audio

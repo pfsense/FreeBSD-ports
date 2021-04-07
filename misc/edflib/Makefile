@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	edflib
 DISTVERSION=	1.19
 CATEGORIES=	misc # medicine

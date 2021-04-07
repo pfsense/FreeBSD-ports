@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hackgen
 PORTVERSION=	2.2.3
 #PORTREVISION=	0

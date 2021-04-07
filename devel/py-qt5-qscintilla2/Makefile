@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qscintilla2
 PORTVERSION=	${QSCI2_VERSION}
 CATEGORIES=	devel python

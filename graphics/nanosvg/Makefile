@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nanosvg
 DISTVERSION=	g20190422
 CATEGORIES=	graphics

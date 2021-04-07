@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	select2-rails
 PORTVERSION=	4.0.13
 CATEGORIES=	www rubygems

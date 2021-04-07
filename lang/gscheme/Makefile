@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gscheme
 PORTVERSION=	0.6
 PORTREVISION=	9

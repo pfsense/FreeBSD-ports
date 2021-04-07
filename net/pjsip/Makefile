@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pjsip
 DISTVERSION=	2.11
 CATEGORIES=	net

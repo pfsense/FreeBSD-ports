@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	i3ipc
 PORTVERSION=	2.2.1
 CATEGORIES=	x11 python

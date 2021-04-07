@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	launchpadlib
 PORTVERSION=	1.10.13
 CATEGORIES=	devel python

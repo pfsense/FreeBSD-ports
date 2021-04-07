@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lumina-pdf
 DISTVERSION=	1.6.0
 PORTREVISION=	13

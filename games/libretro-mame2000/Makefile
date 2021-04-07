@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libretro-mame2000
 PORTVERSION=	0.20210214
 CATEGORIES=	games

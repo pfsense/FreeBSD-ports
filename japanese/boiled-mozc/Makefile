@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	boiled-mozc
 PORTVERSION=	0.7
 DISTVERSIONPREFIX=v

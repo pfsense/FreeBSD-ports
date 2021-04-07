@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dune-geometry
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.7.1

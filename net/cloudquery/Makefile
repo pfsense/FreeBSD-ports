@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cloudquery
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.11.6

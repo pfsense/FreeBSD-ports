@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	librespeed
 DISTVERSION=	5.2.4
 CATEGORIES=	www net

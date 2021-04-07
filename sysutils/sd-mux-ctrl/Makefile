@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sd-mux-ctrl
 DISTVERSION=	g20200217
 CATEGORIES=	sysutils

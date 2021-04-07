@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	azure-multiapi-storage
 PORTVERSION=	0.6.0
 CATEGORIES=	devel python

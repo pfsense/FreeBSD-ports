@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	redisdesktopmanager
 PORTVERSION=	2021.2
 CATEGORIES=	databases

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	seed-fu
 PORTVERSION=	2.3.9
 PORTREVISION=	2

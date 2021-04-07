@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ansible
 PORTVERSION?=	2.9.7
 PORTREVISION?=	0

@@ -1,8 +1,7 @@
 # Created by: Piotr Florczyk <p.florczyk@adminworkshop.pl>
-# $FreeBSD$
 
 PORTNAME=	construct
-PORTVERSION=	2.10.63
+PORTVERSION=	2.10.66
 PORTEPOCH=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	povray-meta
 PORTVERSION=	0.1
 PORTREVISION=	1

@@ -1,10 +1,6 @@
-#
 # bsd.ruby.mk - Utility definitions for Ruby related ports.
 #
 # Created by: Akinori MUSHA <knu@FreeBSD.org>
-#
-# $FreeBSD$
-#
 
 .if !defined(Ruby_Include)
 
@@ -15,7 +11,7 @@ Ruby_Include_MAINTAINER=	ruby@FreeBSD.org
 # [variables that a user may define]
 #
 # RUBY_VER		- (See below)
-# RUBY_DEFAULT_VER	- Set to (e.g.) "2.5" if you want to refer to "ruby25"
+# RUBY_DEFAULT_VER	- Set to (e.g.) "2.7" if you want to refer to "ruby27"
 #			  just as "ruby".
 # RUBY_ARCH		- (See below)
 #
@@ -144,21 +140,12 @@ RUBY?=			${LOCALBASE}/bin/${RUBY_NAME}
 .if defined(RUBY_VER)
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-. if ${RUBY_VER} == 2.5
-#
-# Ruby 2.5
-#
-RUBY_VERSION=		2.5.8
-RUBY_PORTREVISION=	2
-RUBY_PORTEPOCH=		1
-RUBY25=			""	# PLIST_SUB helpers
-
-. elif ${RUBY_VER} == 2.6
+. if ${RUBY_VER} == 2.6
 #
 # Ruby 2.6
 #
-RUBY_VERSION=		2.6.6
-RUBY_PORTREVISION=	2
+RUBY_VERSION=		2.6.7
+RUBY_PORTREVISION=	0
 RUBY_PORTEPOCH=		1
 RUBY26=			""	# PLIST_SUB helpers
 
@@ -166,8 +153,8 @@ RUBY26=			""	# PLIST_SUB helpers
 #
 # Ruby 2.7
 #
-RUBY_VERSION=		2.7.2
-RUBY_PORTREVISION=	1
+RUBY_VERSION=		2.7.3
+RUBY_PORTREVISION=	0
 RUBY_PORTEPOCH=		1
 RUBY27=			""	# PLIST_SUB helpers
 
@@ -186,7 +173,7 @@ RUBY30=			""	# PLIST_SUB helpers
 #
 # Other versions
 #
-IGNORE=	Only ruby 2.5, 2.6, 2.7 and 3.0 are supported
+IGNORE=	Only ruby 2.6, 2.7 and 3.0 are supported
 _INVALID_RUBY_VER=	1
 . endif
 .endif # defined(RUBY_VER)
@@ -203,7 +190,6 @@ RUBY_DISTVERSION=	${RUBY_VERSION}
 
 .if !defined(_INVALID_RUBY_VER)
 
-RUBY25?=		"@comment "
 RUBY26?=		"@comment "
 RUBY27?=		"@comment "
 RUBY30?=		"@comment "
@@ -316,7 +302,6 @@ PLIST_SUB+=		${PLIST_RUBY_DIRS:C,DIR="(${LOCALBASE}|${PREFIX})/,DIR=",} \
 			RUBY_SUFFIX="${RUBY_SUFFIX}" \
 			RUBY_NAME="${RUBY_NAME}" \
 			RUBY_DEFAULT_SUFFIX="${RUBY_DEFAULT_SUFFIX}" \
-			RUBY25=${RUBY25} \
 			RUBY26=${RUBY26} \
 			RUBY27=${RUBY27} \
 			RUBY30=${RUBY30}

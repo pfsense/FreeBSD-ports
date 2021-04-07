@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openfx-arena
 PORTVERSION=	2.3.14
 DISTVERSIONPREFIX=	Natron-

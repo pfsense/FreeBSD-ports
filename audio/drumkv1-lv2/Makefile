@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	drumkv1
 DISTVERSION=	0.9.21
 CATEGORIES=	audio multimedia

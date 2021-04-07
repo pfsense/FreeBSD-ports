@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mohawk
 PORTVERSION=	2.0.20
 CATEGORIES=	www

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kmymoney
 PORTVERSION=	5.1.1
 PORTREVISION=	3

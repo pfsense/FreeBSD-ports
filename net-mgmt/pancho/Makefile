@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pancho
 PORTVERSION=	9.3.9
 PORTREVISION=	1

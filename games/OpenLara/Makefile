@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	OpenLara
 DISTVERSION=	g20210226
 CATEGORIES=	games

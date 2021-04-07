@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Lingua-ZH-Romanize-Pinyin
 PORTVERSION=	0.23
 CATEGORIES=	chinese perl5

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mpl-interactions
 DISTVERSION=	0.17.6
 CATEGORIES=	graphics python

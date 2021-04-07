@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	doorkeeper
 PORTVERSION=	5.5.0
 CATEGORIES=	security rubygems

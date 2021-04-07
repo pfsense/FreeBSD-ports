@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gammaray
 PORTVERSION=	2.11.2
 PORTREVISION=	1

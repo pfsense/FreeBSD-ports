@@ -1,5 +1,4 @@
 # Created by: David Mackay <davidjx8p@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	virtualgl
 PORTVERSION=	2.6.3
@@ -15,7 +14,7 @@ LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
 		libturbojpeg.so:graphics/libjpeg-turbo \
 		libxcb-keysyms.so:x11/xcb-util-keysyms
 
-ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS=	amd64 i386 powerpc64 powerpc64le
 
 CMAKE_INSTALL_PREFIX=	${LOCALBASE}/VirtualGL
 DOCSDIR=	${LOCALBASE}/VirtualGL/doc

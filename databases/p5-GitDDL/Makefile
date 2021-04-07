@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	GitDDL
 PORTVERSION=	0.03
 CATEGORIES=	databases perl5

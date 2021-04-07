@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	matterbridge
 PORTVERSION=	1.22.0
 DISTVERSIONPREFIX=	v

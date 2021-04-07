@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	obexapp
 PORTVERSION=	1.4.15
 PORTREVISION=	4

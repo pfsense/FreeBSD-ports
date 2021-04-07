@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	network
 CATEGORIES=	net devel python
 

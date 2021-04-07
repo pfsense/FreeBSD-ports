@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mcollective-service-client
 
 COMMENT=	MCollective client to manage the OS Services

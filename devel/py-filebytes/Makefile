@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	filebytes
 DISTVERSION=	0.10.2
 CATEGORIES=	devel python security

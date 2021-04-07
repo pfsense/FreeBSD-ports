@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ubuntu-keyring
 PORTVERSION=	2020.06.17.1
 CATEGORIES=	security

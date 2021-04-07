@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	seaweedfs
 DISTVERSION=	2.35
 CATEGORIES=	net sysutils

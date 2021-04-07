@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		canu
 DISTVERSION=		2.1
 PORTREVISION=		1

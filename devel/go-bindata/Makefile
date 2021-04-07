@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	go-bindata
 PORTVERSION=	3.1.3
 DISTVERSIONPREFIX=	v

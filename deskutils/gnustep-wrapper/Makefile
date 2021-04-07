@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wrapper
 PORTVERSION=	0.1.0
 PORTREVISION=	10

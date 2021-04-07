@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tablib
 PORTVERSION=	3.0.0
 CATEGORIES=	textproc python

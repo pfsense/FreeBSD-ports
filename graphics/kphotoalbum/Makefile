@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kphotoalbum
 DISTVERSION=	5.7.0
 CATEGORIES=	graphics kde

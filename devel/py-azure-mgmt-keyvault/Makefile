@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	azure-mgmt-keyvault
 DISTVERSION=	8.0.0
 CATEGORIES=	devel python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	parser
 PORTVERSION=	3.0.0.0
 CATEGORIES=	devel ruby

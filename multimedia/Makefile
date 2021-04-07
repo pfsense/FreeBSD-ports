@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Multimedia software
 
     SUBDIR += Bento4
@@ -81,7 +78,6 @@
     SUBDIR += gmp-api
     SUBDIR += gmtk
     SUBDIR += gnome-mplayer
-    SUBDIR += gnome-subtitles
     SUBDIR += gnome-twitch
     SUBDIR += gpac-libgpac
     SUBDIR += gpac-mp4box

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	delayer
 PORTVERSION=	1.1.2
 CATEGORIES=	devel rubygems

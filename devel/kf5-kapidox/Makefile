@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kapidox
 DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
 CATEGORIES=	devel kde kde-frameworks

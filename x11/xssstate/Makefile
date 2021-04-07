@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xssstate
 PORTVERSION=	1.1
 CATEGORIES=	x11

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	youtube_dlc
 DISTVERSION=	2021.02.19
 CATEGORIES=	www

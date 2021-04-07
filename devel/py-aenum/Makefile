@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	aenum
 PORTVERSION=	2.2.4
 CATEGORIES=	devel python

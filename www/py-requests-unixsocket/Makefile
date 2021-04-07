@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	requests-unixsocket
 PORTVERSION=	0.2.0
 CATEGORIES=	www python

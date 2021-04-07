@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	loompy
 DISTVERSION=	3.0.6
 CATEGORIES=	biology python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	webrtc-audio-processing
 DISTVERSION=	1.0
 PORTREVISION=	1

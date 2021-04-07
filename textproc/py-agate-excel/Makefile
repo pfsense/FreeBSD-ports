@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	agate-excel
 PORTVERSION=	0.2.3
 CATEGORIES=	textproc python

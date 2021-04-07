@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	IPC-System-Simple
 PORTVERSION=	1.30
 CATEGORIES=	devel perl5

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	py-cpuinfo
 DISTVERSION=	7.0.0
 CATEGORIES=	sysutils python

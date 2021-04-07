@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sphinxcontrib-napoleon
 DISTVERSION=	0.7
 CATEGORIES=	textproc

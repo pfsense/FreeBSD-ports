@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kde-telepathy
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	net-im kde

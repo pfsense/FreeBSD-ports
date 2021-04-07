@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xpra
 PORTVERSION=	4.1.1
 CATEGORIES=	x11

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gworkspace
 PORTVERSION=	0.9.4
 PORTREVISION=	4

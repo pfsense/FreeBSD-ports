@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nagnu
 PORTVERSION=	1.1.3
 CATEGORIES=	net-mgmt

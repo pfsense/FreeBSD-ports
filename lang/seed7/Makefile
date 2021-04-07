@@ -1,5 +1,4 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	seed7
 DISTVERSION=	05_20210106
@@ -17,7 +16,7 @@ COMMENT=	High-level, extensible programming language
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-ONLY_FOR_ARCHS=	amd64 i386 sparc64
+ONLY_FOR_ARCHS=	amd64 i386 powerpc64 powerpc64le sparc64
 
 LIB_DEPENDS=	libodbc.so:databases/unixODBC
 

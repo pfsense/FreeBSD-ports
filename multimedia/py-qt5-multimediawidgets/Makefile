@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	multimediawidgets
 CATEGORIES=	multimedia devel python
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	azure-agent
 PORTVERSION=	2.2.45
 DISTVERSIONPREFIX=	v

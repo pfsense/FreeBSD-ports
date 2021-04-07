@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	django-taggit-serializer
 DISTVERSION=	0.1.7
 CATEGORIES=	www python

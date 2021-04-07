@@ -47,8 +47,6 @@ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
 OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-  $FreeBSD$
-
 
 QUICK GUIDE TO ADDING A NEW ENTRY
 
@@ -78,6 +76,232 @@ Notes:
   * Do not forget port variants (linux-f10-libxml2, libxml2, etc.)
 -->
 <vuxml xmlns="http://www.vuxml.org/apps/vuxml-1">
+  <vuln vid="a7b97d26-9792-11eb-b87a-901b0ef719ab">
+    <topic>FreeBSD -- jail escape possible by mounting over jail root</topic>
+    <affects>
+      <package>
+	<name>FreeBSD-kernel</name>
+	<range><ge>12.2</ge><lt>12.2_6</lt></range>
+	<range><ge>11.4</ge><lt>11.4_9</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>Due to a race condition between lookup of ".." and remounting a filesystem,
+	a process running inside a jail might access filesystem hierarchy outside
+	of jail.</p>
+	<h1>Impact:</h1>
+	<p>A process with superuser privileges running inside a jail configured
+	with the allow.mount permission (not enabled by default) could change the root
+	directory outside of the jail, and thus gain full read and write access
+	to all files and directories in the system.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2020-25584</cvename>
+      <freebsdsa>SA-21:10.jail_mount</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2021-04-06</discovery>
+      <entry>2021-04-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f8e1e2a6-9791-11eb-b87a-901b0ef719ab">
+    <topic>FreeBSD -- double free in accept_filter(9) socket configuration interface</topic>
+    <affects>
+      <package>
+	<name>FreeBSD-kernel</name>
+	<range><ge>12.2</ge><lt>12.2_6</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>An unprivileged process can configure an accept filter on a listening
+	socket.  This is done using the setsockopt(2) system call.  The process
+	supplies the name of the accept filter which is to be attached to the
+	socket, as well as a string containing filter-specific information.</p>
+	<p>If the filter implements the accf_create callback, the socket option
+	handler attempts to preserve the process-supplied argument string.  A
+	bug in the socket option handler caused this string to be freed
+	prematurely, leaving a dangling pointer.  Additional operations on the
+	socket can turn this into a double free or a use-after-free.</p>
+	<h1>Impact:</h1>
+	<p>The bug may be exploited to trigger local privilege escalation or
+	kernel memory disclosure.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-29627</cvename>
+      <freebsdsa>SA-21:09.accept_filter</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2021-04-06</discovery>
+      <entry>2021-04-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="13d37672-9791-11eb-b87a-901b0ef719ab">
+    <topic>FreeBSD -- Memory disclosure by stale virtual memory mapping</topic>
+    <affects>
+      <package>
+	<name>FreeBSD-kernel</name>
+	<range><ge>12.2</ge><lt>12.2_6</lt></range>
+	<range><ge>11.4</ge><lt>11.4_9</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>A particular case of memory sharing is mishandled in the virtual memory
+	system.  It is possible and legal to establish a relationship where
+	multiple descendant processes share a mapping which shadows memory of an
+	ancestor process.  In this scenario, when one process modifies memory
+	through such a mapping, the copy-on-write logic fails to invalidate
+	other mappings of the source page.  These stale mappings may remain even
+	after the mapped pages have been reused for another purpose.</p>
+	<h1>Impact:</h1>
+	<p>An unprivileged local user process can maintain a mapping of a page
+	after it is freed, allowing that process to read private data belonging
+	to other processes or the kernel.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-29626</cvename>
+      <freebsdsa>SA-21:08.vm</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2021-04-06</discovery>
+      <entry>2021-04-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="dec7e4b6-961a-11eb-9c34-080027f515ea">
+    <topic>ruby -- XML round-trip vulnerability in REXML</topic>
+    <affects>
+      <package>
+	<name>ruby</name>
+	<range><ge>2.5.0,1</ge><lt>2.5.9,1</lt></range>
+	<range><ge>2.6.0,1</ge><lt>2.6.7,1</lt></range>
+	<range><ge>2.7.0,1</ge><lt>2.7.3,1</lt></range>
+	<range><ge>3.0.0.p1,1</ge><lt>3.0.1,1</lt></range>
+      </package>
+      <package>
+	<name>rubygem-rexml</name>
+	<range><lt>3.2.5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Juho Nurminen  reports:</p>
+	<blockquote cite="https://www.ruby-lang.org/en/news/2021/04/05/xml-round-trip-vulnerability-in-rexml-cve-2021-28965/">
+	  <p>
+	    When parsing and serializing a crafted XML document, REXML gem
+	    (including the one bundled with Ruby) can create a wrong XML
+	    document whose structure is different from the original one.
+	    The impact of this issue highly depends on context, but it may
+	    lead to a vulnerability in some programs that are using REXML.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-28965</cvename>
+      <url>https://www.ruby-lang.org/en/news/2021/04/05/xml-round-trip-vulnerability-in-rexml-cve-2021-28965/</url>
+    </references>
+    <dates>
+      <discovery>2021-04-05</discovery>
+      <entry>2021-04-05</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="bddadaa4-9227-11eb-99c5-e09467587c17">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>89.0.4389.114</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Chrome Releases reports:</p>
+	<blockquote cite="https://chromereleases.googleblog.com/2021/03/stable-channel-update-for-desktop_30.html">
+	  <p>This update contains 8 security fixes, including:</p>
+	  <ul>
+	    <li>[1181228] High CVE-2021-21194: Use after free in screen capture.
+	      Reported by Leecraso and Guang Gong of 360 Alpha Lab on
+	      2021-02-23</li>
+	    <li>[1182647] High CVE-2021-21195: Use after free in V8.
+	      Reported by Bohan Liu (@P4nda20371774) and Moon Liang of Tencent
+	      Security Xuanwu Lab on 2021-02-26</li>
+	    <li>[1175992] High CVE-2021-21196: Heap buffer overflow in
+	      TabStrip. Reported by Khalil Zhani on 2021-02-08</li>
+	    <li>[1173903] High CVE-2021-21197: Heap buffer overflow in
+	      TabStrip. Reported by Abdulrahman Alqabandi, Microsoft Browser
+	      Vulnerability Research on 2021-02-03</li>
+	    <li>[1184399] High CVE-2021-21198: Out of bounds read in IPC.
+	      Reported by Mark Brand of Google Project Zero on 2021-03-03</li>
+	    <li>[1179635] High CVE-2021-21199: Use Use after free in Aura.
+	      Reported by Weipeng Jiang (@Krace) from Codesafe Team of
+	      Legendsec at Qi'anxin Group and Evangelos Foutras</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-21194</cvename>
+      <cvename>CVE-2021-21195</cvename>
+      <cvename>CVE-2021-21196</cvename>
+      <cvename>CVE-2021-21197</cvename>
+      <cvename>CVE-2021-21198</cvename>
+      <cvename>CVE-2021-21199</cvename>
+      <url>https://chromereleases.googleblog.com/2021/03/stable-channel-update-for-desktop_30.html</url>
+    </references>
+    <dates>
+      <discovery>2021-03-31</discovery>
+      <entry>2021-03-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="56abf87b-96ad-11eb-a218-001b217b3468">
+    <topic>Gitlab -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<range><ge>13.10.0</ge><lt>13.10.1</lt></range>
+	<range><ge>13.9.0</ge><lt>13.9.5</lt></range>
+	<range><ge>9</ge><lt>13.8.7</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2021/03/31/security-release-gitlab-13-10-1-released/">
+	  <p>Arbitrary File Read During Project Import</p>
+	  <p>Kroki Arbitrary File Read/Write</p>
+	  <p>Stored Cross-Site-Scripting in merge requests</p>
+	  <p>Access data of an internal project through a public project fork as an anonymous user</p>
+	  <p>Incident metric images can be deleted by any user</p>
+	  <p>Infinite Loop When a User Access a Merge Request</p>
+	  <p>Stored XSS in scoped labels</p>
+	  <p>Admin CSRF in System Hooks Execution Through API</p>
+	  <p>Update OpenSSL dependency</p>
+	  <p>Update PostgreSQL dependency</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://about.gitlab.com/releases/2021/03/31/security-release-gitlab-13-10-1-released/</url>
+    </references>
+    <dates>
+      <discovery>2021-03-31</discovery>
+      <entry>2021-04-06</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="1f6d97da-8f72-11eb-b3f1-005056a311d1">
     <topic>samba -- Multiple Vulnerabilities</topic>
     <affects>
@@ -175,6 +399,10 @@ Notes:
 	<name>openssl</name>
 	<range><lt>1.1.1k,1</lt></range>
       </package>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>12.2</ge><lt>12.2_5</lt></range>
+      </package>
     </affects>
     <description>
       <body xmlns="http://www.w3.org/1999/xhtml">
@@ -199,10 +427,12 @@ Notes:
       <url>https://www.openssl.org/news/secadv/20210325.txt</url>
       <cvename>CVE-2021-3449</cvename>
       <cvename>CVE-2021-3450</cvename>
+      <freebsdsa>SA-21:07.openssl</freebsdsa>
     </references>
     <dates>
       <discovery>2021-03-25</discovery>
       <entry>2021-03-26</entry>
+      <modified>2021-04-07</modified>
     </dates>
   </vuln>
 

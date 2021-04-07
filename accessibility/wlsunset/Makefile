@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wlsunset
 DISTVERSION=	0.1.0
 CATEGORIES=	accessibility

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libretro-mgba
 PORTVERSION=	0.20210128
 CATEGORIES=	games

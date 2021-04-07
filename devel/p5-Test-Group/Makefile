@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-Group
 PORTVERSION=	0.20
 CATEGORIES=	devel perl5

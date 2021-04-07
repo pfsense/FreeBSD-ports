@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nats-streaming-server
 PORTVERSION=	0.21.1
 DISTVERSIONPREFIX=	v

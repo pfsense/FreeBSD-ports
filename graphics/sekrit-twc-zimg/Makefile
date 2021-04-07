@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zimg
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	3.0.1

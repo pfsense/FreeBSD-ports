@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = FTP client and server utilities
 
     SUBDIR += R-cran-RCurl

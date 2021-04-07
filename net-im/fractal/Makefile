@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fractal
 DISTVERSION=	4.2.2
 PORTREVISION=	15

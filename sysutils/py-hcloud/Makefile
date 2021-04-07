@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hcloud
 DISTVERSION=	1.11.0
 CATEGORIES=	sysutils python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fxdiv
 PORTVERSION=	g20181121
 CATEGORIES=	devel

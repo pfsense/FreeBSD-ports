@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hv_kvp_cmd
 DISTVERSION=	1.4
 CATEGORIES=	emulators

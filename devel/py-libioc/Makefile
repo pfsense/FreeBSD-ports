@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libioc
 PORTVERSION=	0.8.2
 CATEGORIES=	devel python

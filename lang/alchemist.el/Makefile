@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	alchemist.el
 PORTVERSION=	1.8.2
 DISTVERSIONPREFIX=	v

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	scikit-bio
 PORTVERSION=	0.5.6
 CATEGORIES=	biology education python

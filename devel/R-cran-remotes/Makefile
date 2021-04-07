@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	remotes
 DISTVERSION=	2.2.0
 CATEGORIES=	devel

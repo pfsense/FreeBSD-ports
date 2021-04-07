@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openkim-models
 DISTVERSION=	2021-01-28
 CATEGORIES=	science

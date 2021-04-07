@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Plack
 PORTVERSION=	1.0047
 CATEGORIES=	www perl5

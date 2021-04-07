@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lfcxml
 PORTVERSION=	1.3.2
 CATEGORIES=	devel

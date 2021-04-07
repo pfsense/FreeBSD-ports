@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	verilator
 DISTVERSION=	4.200
 CATEGORIES=	cad

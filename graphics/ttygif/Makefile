@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ttygif
 PORTVERSION=	1.4.0
 PORTREVISION=	1

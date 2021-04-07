@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fluxengine
 DISTVERSION=	572
 CATEGORIES=	sysutils

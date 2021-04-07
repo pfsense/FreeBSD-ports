@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zc.buildout
 PORTVERSION=	2.11.3
 CATEGORIES=	devel python

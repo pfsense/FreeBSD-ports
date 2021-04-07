@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gsocket
 PORTVERSION=	1.4.25
 CATEGORIES=	net

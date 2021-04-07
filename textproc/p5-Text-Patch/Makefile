@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-Patch
 PORTVERSION=	1.8
 PORTREVISION=	1

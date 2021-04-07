@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	funcy
 DISTVERSION=	1.15
 CATEGORIES=	devel python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	coolreader
 DISTVERSIONPREFIX=	cr
 DISTVERSION=	3.2.55

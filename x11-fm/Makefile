@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = X11 file managers
 
     SUBDIR += caja

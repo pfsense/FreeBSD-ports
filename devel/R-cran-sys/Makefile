@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sys
 PORTVERSION=	3.4
 CATEGORIES=	devel

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cwm
 DISTVERSION=	6.7
 CATEGORIES=	x11-wm

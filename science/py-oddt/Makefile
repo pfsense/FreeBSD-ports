@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	oddt
 DISTVERSION=	0.7
 CATEGORIES=	science python

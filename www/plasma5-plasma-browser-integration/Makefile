@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	plasma-browser-integration
 DISTVERSION=	${KDE_PLASMA_VERSION}
 CATEGORIES=	www kde kde-plasma

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hp3000
 DISTVERSION=	3.11-0.8
 CATEGORIES=	emulators

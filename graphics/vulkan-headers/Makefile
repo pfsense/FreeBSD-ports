@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	vulkan-headers
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.174

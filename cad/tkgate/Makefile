@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tkgate
 PORTVERSION=	2.1
 CATEGORIES=	cad

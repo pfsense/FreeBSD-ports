@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qr
 DISTVERSION=	g20200216
 CATEGORIES=	textproc graphics

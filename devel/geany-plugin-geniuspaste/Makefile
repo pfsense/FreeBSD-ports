@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	geany-plugin-geniuspaste
 PORTVERSION=	${GEANY_VER}
 CATEGORIES=	devel

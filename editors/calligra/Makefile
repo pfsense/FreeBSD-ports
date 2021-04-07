@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	calligra
 DISTVERSION=	3.2.1
 PORTREVISION=	16

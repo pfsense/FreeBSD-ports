@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	halibut
 DISTVERSION=	1.2
 CATEGORIES=	textproc

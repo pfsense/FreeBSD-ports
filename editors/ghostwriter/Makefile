@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ghostwriter
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.8.1

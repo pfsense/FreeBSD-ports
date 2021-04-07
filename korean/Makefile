@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Korean support
 
     SUBDIR += FreeWnn-lib

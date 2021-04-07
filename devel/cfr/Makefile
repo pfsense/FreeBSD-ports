@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cfr
 DISTVERSION=	0.151
 CATEGORIES=	devel java

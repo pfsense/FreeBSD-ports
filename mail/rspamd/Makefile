@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rspamd
 PORTVERSION=	2.7
 CATEGORIES=	mail

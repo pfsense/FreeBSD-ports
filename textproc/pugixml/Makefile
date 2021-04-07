@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pugixml
 DISTVERSION=	1.11.4
 CATEGORIES=	textproc

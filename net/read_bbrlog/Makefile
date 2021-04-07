@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	read_bbrlog
 PORTVERSION=	0.1.2
 DISTVERSIONPREFIX=	v

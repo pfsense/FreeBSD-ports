@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kdegraphics
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	graphics kde

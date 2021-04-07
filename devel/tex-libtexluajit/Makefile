@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libtexluajit
 PORTVERSION=	2.0.3
 CATEGORIES=	devel

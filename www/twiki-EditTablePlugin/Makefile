@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	EditTablePlugin
 SVNREV=		17542
 

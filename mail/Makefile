@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Electronic mail utilities
 
     SUBDIR += abook

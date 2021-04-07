@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tinyldap
 PORTVERSION=	0.0.${SNAPSHOT}
 CATEGORIES=	net

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jsobfu
 PORTVERSION=	0.4.2
 CATEGORIES=	www rubygems

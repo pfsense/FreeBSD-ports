@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	stressdisk
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.12

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hyphy
 DISTVERSION=	2.5.29
 CATEGORIES=	biology

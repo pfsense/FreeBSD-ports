@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	WsgiDAV
 DISTVERSION=	3.1.0
 CATEGORIES=	www python

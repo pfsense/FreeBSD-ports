@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	flexfloat
 DISTVERSION=	g20190814
 CATEGORIES=	math

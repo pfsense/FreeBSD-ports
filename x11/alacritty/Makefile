@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	alacritty
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.7.2

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	encodings
 PORTVERSION=	1.0.5
 PORTEPOCH=	1

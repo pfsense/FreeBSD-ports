@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kafka
 PORTVERSION=	2.7.0
 CATEGORIES=	net java

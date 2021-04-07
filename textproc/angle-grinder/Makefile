@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	angle-grinder
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.16

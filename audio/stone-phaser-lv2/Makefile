@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	stone-phaser
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1.2-5

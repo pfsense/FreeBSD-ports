@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tqdm
 PORTVERSION=	4.58.0
 CATEGORIES=	misc

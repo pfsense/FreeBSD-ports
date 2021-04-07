@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	minder
 PORTVERSION=	1.12.0
 CATEGORIES=	graphics

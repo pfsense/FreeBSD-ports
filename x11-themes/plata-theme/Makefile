@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	plata-theme
 PORTVERSION=	0.9.9
 CATEGORIES=	x11-themes

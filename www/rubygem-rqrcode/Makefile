@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rqrcode
 PORTVERSION=	0.10.1
 CATEGORIES=	www rubygems

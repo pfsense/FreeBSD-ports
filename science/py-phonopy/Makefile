@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	phonopy
 DISTVERSION=	2.9.3
 CATEGORIES=	science python

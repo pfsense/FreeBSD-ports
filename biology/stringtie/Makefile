@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	stringtie
 DISTVERSION=	2.1.1
 CATEGORIES=	biology

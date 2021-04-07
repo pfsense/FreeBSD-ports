@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test2-Plugin-NoWarnings
 PORTVERSION=	0.09
 CATEGORIES=	devel perl5

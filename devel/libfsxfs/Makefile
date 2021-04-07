@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libfsxfs
 # If/When moving from experimental to alpha, switch to DISTVERSIONPREFIX to prevent PORTEPOCH
 DISTVERSION=	experimental-20201117

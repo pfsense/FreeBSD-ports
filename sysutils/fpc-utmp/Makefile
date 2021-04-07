@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	sysutils lang
 PKGNAMESUFFIX=	-utmp
 

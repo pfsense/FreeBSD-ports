@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Regexp-Common-time
 PORTVERSION=	0.16
 CATEGORIES=	textproc perl5

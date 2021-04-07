@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	digest-crc
 PORTVERSION=	0.4.1
 CATEGORIES=	security rubygems

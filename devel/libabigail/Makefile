@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libabigail
 DISTVERSION=	1.8.2
 CATEGORIES=	devel

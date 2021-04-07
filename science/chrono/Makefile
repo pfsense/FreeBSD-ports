@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	chrono
 DISTVERSION=	6.0.0
 CATEGORIES=	science devel

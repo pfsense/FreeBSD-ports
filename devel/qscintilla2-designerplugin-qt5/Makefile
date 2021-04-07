@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	designerplugin-qt5
 PORTVERSION=	${QSCI2_VERSION}
 CATEGORIES=	devel

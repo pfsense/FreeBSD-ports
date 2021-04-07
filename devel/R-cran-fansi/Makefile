@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fansi
 PORTVERSION=	0.4.2
 CATEGORIES=	devel

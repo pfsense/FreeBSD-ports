@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ganv
 PORTVERSION=	1.8.0
 CATEGORIES=	audio

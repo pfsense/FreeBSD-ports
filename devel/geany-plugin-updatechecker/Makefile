@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	geany-plugin-updatechecker
 PORTVERSION=	${GEANY_VER}
 CATEGORIES=	devel

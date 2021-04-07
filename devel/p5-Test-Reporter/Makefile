@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-Reporter
 PORTVERSION=	1.62
 PORTREVISION=	1

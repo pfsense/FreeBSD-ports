@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Ports for managing, installing, and developing FreeBSD ports and packages
 
     SUBDIR += bsdadminscripts2

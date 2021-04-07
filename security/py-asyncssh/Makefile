@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	asyncssh
 PORTVERSION=	2.5.0
 PORTREVISION=	1

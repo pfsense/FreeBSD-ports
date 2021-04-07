@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kdsoap
 DISTVERSION=	1.9.0
 CATEGORIES=	www

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	desktop-installer
 DISTVERSION=	0.7.1
 CATEGORIES=	sysutils

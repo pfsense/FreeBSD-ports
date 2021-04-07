@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	onionbalance
 PORTVERSION=	0.2.1
 CATEGORIES=	www python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	heimer
 DISTVERSION=	2.2.0
 CATEGORIES=	graphics

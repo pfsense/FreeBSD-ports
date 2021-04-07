@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wf-recorder
 DISTVERSION=	0.2.1
 CATEGORIES=	multimedia wayland

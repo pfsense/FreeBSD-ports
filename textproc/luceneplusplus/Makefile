@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lucene++
 PORTVERSION=	3.0.8
 DISTVERSIONPREFIX=	rel_

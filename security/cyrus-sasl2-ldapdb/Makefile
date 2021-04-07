@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-ldapdb
 
 COMMENT=	SASL LDAPDB auxprop plugin

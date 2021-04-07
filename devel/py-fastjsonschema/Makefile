@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fastjsonschema
 DISTVERSION=	2.15.0
 CATEGORIES=	devel python

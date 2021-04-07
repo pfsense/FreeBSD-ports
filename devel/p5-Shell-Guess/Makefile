@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Shell-Guess
 PORTVERSION=	0.09
 CATEGORIES=	devel perl5

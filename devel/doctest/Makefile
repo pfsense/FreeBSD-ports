@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	doctest
 DISTVERSION=	2.4.5
 CATEGORIES=	devel

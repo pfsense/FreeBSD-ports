@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME?=	arcanist
 PORTVERSION?=	20210113
 CATEGORIES?=	devel

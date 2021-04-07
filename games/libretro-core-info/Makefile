@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libretro-core-info
 DISTVERSIONPREFIX=v
 DISTVERSION=	1.9.0

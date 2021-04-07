@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sly-quicklisp
 PORTVERSION=	20200707
 PORTREVISION=	1

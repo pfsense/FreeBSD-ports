@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zrythm
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.0-alpha.13.1.1

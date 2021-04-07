@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xf86-input-elographics
 PORTVERSION=	1.4.2
 PORTREVISION=	1

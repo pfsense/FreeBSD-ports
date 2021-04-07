@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wcmatch
 PORTVERSION=	8.1.2
 CATEGORIES=	textproc python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openethereum
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.2.1

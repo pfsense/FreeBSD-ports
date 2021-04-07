@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	spatialite-tools
 PORTVERSION=	5.0.0
 PORTREVISION=	2

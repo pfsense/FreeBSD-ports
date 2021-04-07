@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pypugjs
 PORTVERSION=	5.9.8
 CATEGORIES=	devel lang python

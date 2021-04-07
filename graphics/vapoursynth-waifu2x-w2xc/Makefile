@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	waifu2x-w2xc
 DISTVERSION=	r8
 CATEGORIES=	graphics

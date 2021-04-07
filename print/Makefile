@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Desktop publishing
 
     SUBDIR += R-cran-knitr

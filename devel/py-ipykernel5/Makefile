@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ipykernel
 PORTVERSION=	5.5.0
 CATEGORIES=	devel python

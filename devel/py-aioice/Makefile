@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	aioice
 PORTVERSION=	0.7.5
 CATEGORIES=	devel python

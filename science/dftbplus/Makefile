@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dftbplus
 DISTVERSION=	19.1
 PORTREVISION=	1

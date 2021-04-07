@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Devel-StrictMode
 PORTVERSION=	0.003
 CATEGORIES=	devel perl5

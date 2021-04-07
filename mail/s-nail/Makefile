@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	s-nail
 PORTVERSION=	14.9.22
 CATEGORIES=	mail

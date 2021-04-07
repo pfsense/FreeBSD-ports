@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zbackup
 PORTVERSION=	1.4.4
 PORTREVISION=	18

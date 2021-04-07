@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	klayout
 PORTVERSION=	0.25.8
 PORTREVISION=	1

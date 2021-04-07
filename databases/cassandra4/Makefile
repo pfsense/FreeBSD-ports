@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cassandra
 DISTVERSION=	4.0-beta2
 CATEGORIES=	databases java

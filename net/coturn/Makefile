@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	coturn
 DISTVERSION=	4.5.2
 PORTREVISION=	2

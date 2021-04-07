@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	oslo.serialization
 PORTVERSION=	2.29.3
 CATEGORIES=	devel python

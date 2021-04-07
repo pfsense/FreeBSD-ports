@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	apitrace
 DISTVERSION=	9.0
 CATEGORIES=	devel

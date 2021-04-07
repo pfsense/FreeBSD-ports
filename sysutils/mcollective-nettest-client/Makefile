@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mcollective-nettest-client
 
 COMMENT=	MCollective client to test ICMP and TCP connectivity

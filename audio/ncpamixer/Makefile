@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ncpamixer
 DISTVERSION=	1.3.3.1
 PORTREVISION=	1

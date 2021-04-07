@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	core
 CATEGORIES=	devel python
 

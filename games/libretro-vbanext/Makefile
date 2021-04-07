@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libretro-vbanext
 PORTVERSION=	0.20210214
 CATEGORIES=	games

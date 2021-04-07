@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	orange3-single-cell
 DISTVERSION=	0.8.2
 PORTREVISION=	3

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Lingua-JA-Romanize-Japanese
 PORTVERSION=	0.23
 CATEGORIES=	japanese perl5

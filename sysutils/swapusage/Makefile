@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	swapusage
 PORTVERSION=	1.0.0
 CATEGORIES=	sysutils

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lagrange
 DISTVERSION=	1.2.2
 CATEGORIES=	www

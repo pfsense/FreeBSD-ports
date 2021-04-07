@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lograge
 PORTVERSION=	0.10.0
 CATEGORIES=	www rubygems

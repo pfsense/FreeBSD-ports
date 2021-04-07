@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	coreutils
 PORTVERSION=	8.32
 CATEGORIES=	sysutils textproc

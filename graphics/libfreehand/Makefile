@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libfreehand
 PORTVERSION=	0.1.2
 PORTREVISION=	19

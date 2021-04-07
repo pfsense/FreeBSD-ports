@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	QtAwesome
 DISTVERSION=	1.0.2
 CATEGORIES=	x11-fonts graphics python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	${ORIGNAME:tl}
 DISTVERSION=	2.0
 CATEGORIES=	devel

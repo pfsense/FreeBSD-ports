@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kio-gdrive
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	net kde kde-applications

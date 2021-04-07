@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	djangoql
 PORTVERSION=	0.14.3
 CATEGORIES=	www python

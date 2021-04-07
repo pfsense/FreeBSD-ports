@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ejabberd
 PORTVERSION=	21.01
 CATEGORIES=	net-im

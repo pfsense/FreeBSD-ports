@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ipympl
 DISTVERSION=	0.7.0
 CATEGORIES=	devel python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openjk
 PORTVERSION=	g20200823
 CATEGORIES=	games

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	q
 DISTVERSION=	2.6
 CATEGORIES=	devel python

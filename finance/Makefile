@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Monetary, financial, and related applications
 
     SUBDIR += R-cran-AER

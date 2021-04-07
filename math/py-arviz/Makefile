@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	arviz
 DISTVERSION=	0.11.2
 CATEGORIES=	math python

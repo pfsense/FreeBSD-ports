@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	semaphore
 PORTVERSION=	2.6.8
 DISTVERSIONPREFIX=	v

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	azure-mgmt-compute
 PORTVERSION=	19.0.0
 CATEGORIES=	devel python

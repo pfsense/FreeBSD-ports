@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ghostscript
 PORTVERSION=	9.52
 PORTREVISION=	15

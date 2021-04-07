@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	django-cors-headers
 PORTVERSION=	3.7.0
 CATEGORIES=	www python

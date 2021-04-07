@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	django-bootstrap-pagination
 DISTVERSION=	1.7.1
 CATEGORIES=	www python

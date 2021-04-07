@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	color
 DISTVERSION=	g20210207
 CATEGORIES=	devel

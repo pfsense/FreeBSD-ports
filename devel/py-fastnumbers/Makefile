@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fastnumbers
 DISTVERSION=	3.1.0
 CATEGORIES=	devel python

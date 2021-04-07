@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dune-typetree
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.7.1

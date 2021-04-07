@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	OWSLib
 PORTVERSION=		0.22.0
 CATEGORIES=	graphics geography python

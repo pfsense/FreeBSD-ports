@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pyqrcode
 PORTVERSION=	1.2.1
 CATEGORIES=	graphics python

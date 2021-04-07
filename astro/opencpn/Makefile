@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	opencpn
 PORTVERSION=	5.2.4
 PORTREVISION=	1

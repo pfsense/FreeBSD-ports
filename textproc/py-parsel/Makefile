@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	parsel
 PORTVERSION=	1.5.1
 CATEGORIES=	textproc python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	RedisDB-Parser
 PORTVERSION=	2.22
 #PORTREVISION=	0

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	minipot
 PORTVERSION=	0.2.3
 CATEGORIES=	sysutils

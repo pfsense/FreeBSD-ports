@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	telegram-desktop
 DISTVERSION=	2.6.1
 CATEGORIES=	net-im

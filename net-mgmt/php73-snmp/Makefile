@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	net-mgmt
 
 MASTERDIR=	${.CURDIR}/../../lang/php73

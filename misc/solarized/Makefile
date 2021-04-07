@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	solarized
 PORTVERSION=	1.0.0
 CATEGORIES=	misc

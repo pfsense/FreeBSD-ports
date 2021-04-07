@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	yadm
 PORTVERSION=	3.0.2
 CATEGORIES=	sysutils

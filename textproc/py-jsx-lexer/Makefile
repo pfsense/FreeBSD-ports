@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jsx-lexer
 PORTVERSION=	0.0.7
 PORTREVISION=	1

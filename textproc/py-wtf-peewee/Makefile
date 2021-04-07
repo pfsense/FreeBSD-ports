@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wtf-peewee
 PORTVERSION=	3.0.2
 CATEGORIES=	textproc devel python

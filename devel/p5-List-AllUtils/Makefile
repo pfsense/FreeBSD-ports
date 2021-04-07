@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	List-AllUtils
 PORTVERSION=	0.18
 CATEGORIES=	devel perl5

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	husky-htick
 
 COMMENT=	Husky FTN file ticker

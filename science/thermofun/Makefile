@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	thermofun
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.3.7

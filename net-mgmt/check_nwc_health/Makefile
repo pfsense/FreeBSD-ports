@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	check_nwc_health
 PORTVERSION=	8.0.0.2
 CATEGORIES=	net-mgmt

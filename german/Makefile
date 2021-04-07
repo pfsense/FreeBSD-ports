@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = German support
 
     SUBDIR += BBBike

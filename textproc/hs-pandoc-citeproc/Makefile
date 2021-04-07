@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pandoc-citeproc
 PORTVERSION=	0.17.0.1
 PORTREVISION=	1

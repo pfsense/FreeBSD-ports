@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	php80
 PORTVERSION=	1.0
 CATEGORIES=	lang

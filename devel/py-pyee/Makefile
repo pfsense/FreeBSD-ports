@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pyee
 PORTVERSION=	6.0.0
 CATEGORIES=	devel python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cutadapt
 DISTVERSION=	3.3
 CATEGORIES=	biology python

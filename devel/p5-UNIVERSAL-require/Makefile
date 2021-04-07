@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	UNIVERSAL-require
 PORTVERSION=	0.18
 CATEGORIES=	devel perl5

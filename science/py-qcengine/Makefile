@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qcengine
 DISTVERSION=	0.18.0
 CATEGORIES=	science python # chemistry

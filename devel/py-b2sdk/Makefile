@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	b2sdk
 DISTVERSION=	1.1.4
 CATEGORIES=	devel python

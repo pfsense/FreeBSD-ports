@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	obhttpd
 PORTVERSION=	6.6.20191023
 CATEGORIES=	www

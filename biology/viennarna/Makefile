@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	viennarna
 DISTVERSION=	2.4.17
 CATEGORIES=	biology

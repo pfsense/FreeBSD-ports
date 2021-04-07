@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	simpleagenda
 PORTVERSION=	0.43
 PORTREVISION=	12

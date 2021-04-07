@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	berry
 PORTVERSION=	0.1.7
 CATEGORIES=	x11-wm

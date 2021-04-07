@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Biology
 
     SUBDIR += abyss

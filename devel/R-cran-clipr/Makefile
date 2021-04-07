@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	clipr
 PORTVERSION=	0.7.1
 CATEGORIES=	devel

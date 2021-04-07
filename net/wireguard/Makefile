@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wireguard
 PORTVERSION=	2
 PORTEPOCH=	1
