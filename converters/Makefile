@@ -1,9 +1,9 @@
-# $FreeBSD$
 #
 
     COMMENT = Character code converters
 
     SUBDIR += R-cran-RJSONIO
+    SUBDIR += R-cran-arabic2kansuji
     SUBDIR += R-cran-base64enc
     SUBDIR += R-cran-jsonlite
     SUBDIR += R-cran-rjson
@@ -157,6 +157,8 @@
     SUBDIR += rcctools
     SUBDIR += recode
     SUBDIR += rubygem-base32
+    SUBDIR += rubygem-base64
+    SUBDIR += rubygem-iconv
     SUBDIR += rubygem-json-ld
     SUBDIR += rubygem-json-ld-preloaded
     SUBDIR += rubygem-po_to_json

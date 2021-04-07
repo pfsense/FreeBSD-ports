@@ -1,5 +1,4 @@
 # Created by: Yoichi Asai <yatt@luna2.org>
-# $FreeBSD$
 
 PORTNAME=	timidity++
 PORTVERSION=	2.15.0
@@ -11,6 +10,8 @@ MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	Software MIDI player
 
 LICENSE=	GPLv2+
+
+BROKEN_riscv64=	fails to compile: needs FP_X_INV from empty sys/riscv/include/ieeefp.h
 
 LIB_DEPENDS=	libarc.so:archivers/libarc
 .if !defined(PKGNAMESUFFIX)

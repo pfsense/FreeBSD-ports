@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Template-Alloy
 PORTVERSION=	1.020
 PORTREVISION=	1

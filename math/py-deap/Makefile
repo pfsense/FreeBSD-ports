@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	deap
 DISTVERSION=	1.3.1
 CATEGORIES=	math biology science devel python

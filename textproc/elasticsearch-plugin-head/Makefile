@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	head
 PORTVERSION=	2015.12.16
 CATEGORIES=	textproc

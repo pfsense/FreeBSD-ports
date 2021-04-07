@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Search-QueryParser-SQL
 PORTVERSION=	0.010
 CATEGORIES=	textproc perl5

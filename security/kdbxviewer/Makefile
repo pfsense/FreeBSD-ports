@@ -1,5 +1,4 @@
 # Created by: Ben Woods <woodsb02@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	kdbxviewer
 PORTVERSION=	0.1
@@ -11,6 +10,9 @@ COMMENT=	ncurses GUI and command-line tool for KeePass2 Database files
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: trail
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: trail
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libgcrypt.so:security/libgcrypt \

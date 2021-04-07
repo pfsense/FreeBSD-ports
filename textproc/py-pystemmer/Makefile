@@ -1,5 +1,4 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	pystemmer
 PORTVERSION=	2.0.0.1
@@ -15,7 +14,7 @@ COMMENT=	Snowball Stemming Algorithms for Information Retrieval
 LICENSE=	MIT BSD3CLAUSE
 LICENSE_COMB=	dual
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist cython distutils
 
 post-install:

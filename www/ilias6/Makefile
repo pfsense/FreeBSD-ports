@@ -1,8 +1,7 @@
 # Created by: Bartlomiej Rutkowski <r@robakdesign.com>
-# $FreeBSD$
 
 PORTNAME=	ilias
-PORTVERSION=	6.6
+PORTVERSION=	6.8
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www education
 PKGNAMESUFFIX=	6${PHP_PKGNAMESUFFIX}

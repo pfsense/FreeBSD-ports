@@ -1,8 +1,7 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jsch
-PORTVERSION=	0.1.54
+PORTVERSION=	0.1.55
 CATEGORIES=	net java security
 MASTER_SITES=	SF
 

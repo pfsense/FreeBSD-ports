@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libsidplayfp
 PORTVERSION=	2.0.5
 PORTREVISION=	1

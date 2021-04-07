@@ -1,9 +1,8 @@
 # Created by: Michael Ranner <michael@ranner.eu>
-# $FreeBSD$
 
 PORTNAME=	pdfgrep
 PORTVERSION=	2.1.1
-PORTREVISION=	23
+PORTREVISION=	26
 CATEGORIES=	textproc
 MASTER_SITES=	https://pdfgrep.org/download/
 

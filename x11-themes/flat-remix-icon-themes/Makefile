@@ -1,13 +1,12 @@
 # Created by: Alexander Vereeken <Alexander88207@protonmail.com>
-# $FreeBSD$
 
 PORTNAME=	flat-remix
-PORTVERSION=	20201217
+PORTVERSION=	20210322
 CATEGORIES=	x11-themes
 PKGNAMESUFFIX=	-icon-themes
 
 MAINTAINER=	Alexander88207@protonmail.com
-COMMENT=	Flat Remix is an icon theme inspired by material design
+COMMENT=	Icon theme inspired by material design
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

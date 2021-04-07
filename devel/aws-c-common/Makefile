@@ -1,8 +1,7 @@
 # Created by: Danilo Egea Gondolfo <danilo@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	aws-c-common
-PORTVERSION=	0.4.59
+PORTVERSION=	0.4.64
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	devel

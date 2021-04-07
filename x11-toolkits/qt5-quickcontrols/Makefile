@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	quickcontrols
 DISTVERSION=	${QT5_VERSION}
 PORTREVISION=	1

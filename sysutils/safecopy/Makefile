@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	safecopy
 PORTVERSION=	1.7
 CATEGORIES=	sysutils

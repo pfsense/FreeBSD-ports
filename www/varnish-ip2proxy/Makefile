@@ -1,8 +1,7 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ip2proxy
-PORTVERSION=	1.1.0
+PORTVERSION=	1.2.0
 CATEGORIES=	www
 PKGNAMEPREFIX=	varnish-
 

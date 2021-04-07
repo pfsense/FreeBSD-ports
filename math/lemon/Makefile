@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lemon
 DISTVERSION=	1.3.1
 CATEGORIES=	math

@@ -1,5 +1,4 @@
 # Created by: Radim Kolar
-# $FreeBSD$
 
 PORTNAME=	slony1v2
 PORTVERSION=	2.2.10
@@ -11,6 +10,9 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 
 MAINTAINER=	dgilbert@eicat.ca
 COMMENT=	PostgreSQL master to multiple replicas replication system
+
+LICENSE=	PostgreSQL
+LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex
 
@@ -37,8 +39,6 @@ PERLTOOLS_CONFIGURE_ON=		--with-perltools=${LOCALBASE}/sbin
 PERLTOOLS_BUILD_DEPENDS=	p5-DBD-Pg>=0:databases/p5-DBD-Pg
 PERLTOOLS_RUN_DEPENDS=		p5-DBD-Pg>=0:databases/p5-DBD-Pg
 
-.include <bsd.port.options.mk>
-
 # let configure find postgres stuff in non-standard places
 CONFIGURE_ARGS+=--with-pgconfigdir=${LOCALBASE}/bin \
 		--with-pgbindir=${LOCALBASE}/bin \
@@ -50,7 +50,7 @@ CONFIGURE_ARGS+=--with-pgconfigdir=${LOCALBASE}/bin \
 
 PORTDOCS=	*
 
-DOCS=		COPYRIGHT INSTALL README README.Unicode RELEASE \
+DOCS=		README README.Unicode RELEASE \
 		SAMPLE TODO UPGRADING
 
 post-install:

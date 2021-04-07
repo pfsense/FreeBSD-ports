@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fastentrypoints
 PORTVERSION=	0.9
 PORTREVISION=	1

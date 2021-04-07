@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mstch
 DISTVERSION=	1.0.2-1
 DISTVERSIONSUFFIX=	-g0fde1cf

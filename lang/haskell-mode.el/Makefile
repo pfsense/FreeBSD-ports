@@ -1,10 +1,9 @@
 # Created by: Josh Elsasser <jre@vineyard.net>
-# $FreeBSD$
 
 PORTNAME=	haskell-mode
 DISTVERSIONPREFIX=v
 DISTVERSION=	16.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	lang elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 

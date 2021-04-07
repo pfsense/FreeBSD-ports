@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	narcissu2
 PORTVERSION=	1.1
 CATEGORIES=	games

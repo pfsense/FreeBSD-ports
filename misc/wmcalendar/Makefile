@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@regency.nsu.ru>
-# $FreeBSD$
 
 PORTNAME=	wmcalendar
 PORTVERSION=	0.5.2
@@ -9,6 +8,9 @@ MASTER_SITES=	SF
 
 MAINTAINER=	xride@FreeBSD.org
 COMMENT=	Dockable calendar with interface to iCalendar based calendars
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: appicon
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: appicon
 
 LIB_DEPENDS=	libical.so:devel/libical
 

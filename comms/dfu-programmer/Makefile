@@ -1,5 +1,4 @@
 # Created by: elbarto@ArcadeBSD.org
-# $FreeBSD$
 
 PORTNAME=	dfu-programmer
 PORTVERSION=	0.7.2
@@ -10,6 +9,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Device Firmware Update based USB programmer for Atmel chips
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
 LIBS+=		-lusb

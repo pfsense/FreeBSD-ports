@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	plasma-pa
 DISTVERSION=	${KDE_PLASMA_VERSION}
 CATEGORIES=	audio kde kde-plasma

@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	hostctl
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.14
 CATEGORIES=	sysutils
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Command-line tool to manage your hosts file
 
 LICENSE=	MIT

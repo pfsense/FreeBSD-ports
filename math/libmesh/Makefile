@@ -1,10 +1,8 @@
 # Created by: Yuri Victorovich <yuri@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libmesh
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.6.0
-PORTREVISION=	2
+DISTVERSION=	1.6.1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org

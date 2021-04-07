@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	setuptools_scm
 PORTVERSION=	4.1.2
 PORTREVISION=	1
@@ -18,7 +16,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
 		git:devel/git \
 		${PY_MERCURIAL}
 
-USES=		python
+USES=		python:2.7+
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes

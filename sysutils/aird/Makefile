@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	aird
 PORTVERSION=	1.0
 CATEGORIES=	sysutils

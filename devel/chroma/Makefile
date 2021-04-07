@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	chroma
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.1
+DISTVERSION=	0.8.2
 CATEGORIES=	devel
 PKGNAMESUFFIX=	-syntax-highlighter
 

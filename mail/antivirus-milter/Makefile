@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	antivirus
 PORTVERSION=	3.30
 PORTREVISION=	10

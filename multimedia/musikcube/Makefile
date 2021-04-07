@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	musikcube
-DISTVERSION=	0.96.3
+DISTVERSION=	0.96.5
+PORTREVISION=	1
 CATEGORIES=	multimedia audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -23,12 +22,21 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libtag.so:audio/taglib \
 		libvorbis.so:audio/libvorbis
 
-USES=		cmake:noninja compiler:c++14-lang ncurses:port pkgconfig ssl
+USES=		cmake:noninja compiler:c++14-lang pkgconfig ssl
+
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	clangen
+LDFLAGS+=	-lncursesw -lpanelw -ltinfow
 
-CMAKE_ARGS=	-DNCURSES_LIBRARIES="cursesw;tinfow;panelw"
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == "FreeBSD" && ${OSVERSION} >= 1300079
+USES+=		ncurses
+.else
+USES+=		ncurses:port
+CFLAGS+=	-I${LOCALBASE}/include/ncurses
+.endif
 
 .include <bsd.port.mk>

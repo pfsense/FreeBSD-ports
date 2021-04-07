@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jshon
 DISTVERSION=	20170302.1
 CATEGORIES=	textproc

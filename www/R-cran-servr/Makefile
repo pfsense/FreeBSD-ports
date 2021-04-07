@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	servr
 PORTVERSION=	0.21
 CATEGORIES=	www

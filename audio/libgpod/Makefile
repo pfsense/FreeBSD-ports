@@ -1,9 +1,8 @@
 # Created by: Devon Ryan <dpryan@dpryan.com>
-# $FreeBSD$
 
 PORTNAME=	libgpod
 PORTVERSION=	0.8.3
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	audio
 MASTER_SITES=	SF/gtkpod/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}
 
@@ -12,7 +11,7 @@ COMMENT?=	Library for direct access to iPod contents
 
 LICENSE=	LGPL20
 
-LIB_DEPENDS=	libplist.so:devel/libplist \
+LIB_DEPENDS=	libplist-2.0.so:devel/libplist \
 		libtag.so:audio/taglib \
 		libsgutils2.so:sysutils/sg3_utils
 
@@ -34,7 +33,7 @@ OPTIONS_SUB=	yes
 
 IMOBILE_DESC=	Apple iPhone/iPod Touch support
 
-IMOBILE_LIB_DEPENDS=	libimobiledevice.so:comms/libimobiledevice
+IMOBILE_LIB_DEPENDS=	libimobiledevice-1.0.so:comms/libimobiledevice
 IMOBILE_CONFIGURE_WITH=	libimobiledevice
 
 MONO_USE=		GNOME=gtksharp20
@@ -48,8 +47,12 @@ PORTDOCS=	ChangeLog NEWS README*
 COMMENT:=	${COMMENT:S,iPod,&/iPhone,}
 .endif
 
+post-patch:
+	@${REINPLACE_CMD} -e 's|libplist >= 1\.0|libplist-2.0 >= 2.0|g' \
+		${WRKSRC}/configure
+
 post-patch-MONO-on:
-	${REINPLACE_CMD} 's/gmcs/mcs/g' ${WRKSRC}/configure ${WRKSRC}/m4/mono.m4
+	@${REINPLACE_CMD} 's/gmcs/mcs/g' ${WRKSRC}/configure ${WRKSRC}/m4/mono.m4
 
 .if ${SLAVE_PORT} == no
 post-install:

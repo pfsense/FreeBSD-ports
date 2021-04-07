@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	python-gist
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.2

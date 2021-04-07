@@ -1,8 +1,7 @@
 # Created by: R.I.Pienaar <rip@devco.net>
-# $FreeBSD$
 
 PORTNAME=	msmtp
-PORTVERSION=	1.8.14
+PORTVERSION=	1.8.15
 CATEGORIES=	mail
 MASTER_SITES=	https://marlam.de/msmtp/releases/
 

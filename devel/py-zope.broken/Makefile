@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zope.broken
 PORTVERSION=	3.6.0
 PORTREVISION=	1

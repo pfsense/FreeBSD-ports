@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	falkon
 DISTVERSION=	3.1.0
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	KDE/stable/falkon/${DISTVERSION:R}/
 
@@ -10,6 +9,9 @@ COMMENT=	Web browser based on Webengine and Qt Framework
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
 
 USES=		cmake desktop-file-utils kde:5 qt:5 ssl tar:xz xorg
 USE_KDE=	ecm_build i18n
@@ -24,7 +26,10 @@ CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_PySide2
 
 FLAVORS=	default qtonly
 FLAVOR?=	default
-qtonly_PKGNAMESUFFIX=	-qtonly
+
+default_CONFLICTS_INSTALL=	${PORTNAME}-qtonly
+qtonly_PKGNAMESUFFIX=		-qtonly
+qtonly_CONFLICTS_INSTALL=	${PORTNAME}
 
 .if ${FLAVOR} != qtonly
 CMAKE_ON+=	ENABLE_KDE_FRAMEWORKS_INTEGRATION_PLUGIN
@@ -32,6 +37,7 @@ USE_KDE+=	completion config coreaddons crash jobwidgets kio purpose service wall
 PLIST_SUB=	KDEINTEGRATION=""
 .else
 PLIST_SUB=	KDEINTEGRATION="@comment "
+COMMENT=	Web browser based on WebEngine (no integration with KDE Plasma)
 .endif
 
 OPTIONS_DEFINE=	GNOMEKEYRING

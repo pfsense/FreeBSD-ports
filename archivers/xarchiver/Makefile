@@ -1,5 +1,4 @@
 # Created by: Andreev Maxim
-# $FreeBSD$
 
 PORTNAME=	xarchiver
 PORTVERSION=	0.5.4.15
@@ -40,7 +39,6 @@ OPTIONS_SUB=	yes
 
 FORMATS_DESC=	Additional compression formats support
 ARJ_DESC=	ARJ compression support
-LZO_DESC=	LZO compression support
 RAR_DESC=	RAR compression support
 
 ARJ_RUN_DEPENDS=	arj:archivers/arj

@@ -1,9 +1,7 @@
 # Created by: Gleb Smirnoff <glebius@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gpxloggerd
-PORTVERSION=	0.2.3
-PORTREVISION=	1
+PORTVERSION=	0.2.4
 CATEGORIES=	astro
 USE_GITHUB=	yes
 GH_ACCOUNT=	glebius
@@ -18,7 +16,6 @@ PLIST_FILES=	sbin/${PORTNAME} \
 		man/man8/${PORTNAME}.8.gz
 
 LDFLAGS+=	-lm
-MAKE_ARGS=	NO_WERROR=yes
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/sbin/

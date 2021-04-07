@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gnutls
 PORTVERSION=	3.1.2
 CATEGORIES=	security python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libdcadec
 PORTVERSION=	0.2.0
 PORTREVISION=	1

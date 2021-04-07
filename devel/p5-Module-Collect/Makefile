@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Module-Collect
 PORTVERSION=	0.06
 PORTREVISION=	2

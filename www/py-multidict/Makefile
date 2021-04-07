@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	multidict
 PORTVERSION=	5.1.0
 CATEGORIES=	www python

@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	pugixml
-DISTVERSION=	1.11.1
+DISTVERSION=	1.11.4
 CATEGORIES=	textproc
 MASTER_SITES=	https://github.com/zeux/pugixml/releases/download/v${DISTVERSION}/
 

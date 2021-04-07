@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	processx
 DISTVERSION=	3.4.5
 CATEGORIES=	sysutils

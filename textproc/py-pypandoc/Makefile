@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pypandoc
 DISTVERSION=	1.5
 CATEGORIES=	textproc python

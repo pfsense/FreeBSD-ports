@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libinput
 PORTVERSION=	1.16.4
 CATEGORIES=	x11

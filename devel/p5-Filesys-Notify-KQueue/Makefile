@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Filesys-Notify-KQueue
 PORTVERSION=	0.11
 CATEGORIES=	devel perl5

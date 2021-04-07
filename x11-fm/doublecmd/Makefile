@@ -1,5 +1,4 @@
 # Created by: Beñat Gonzalez Etxepare <bbtruk@users.sourceforge.net>
-# $FreeBSD$
 
 PORTNAME=	doublecmd
 PORTVERSION=	0.9.10
@@ -105,7 +104,7 @@ WLX_MPLAYER_DESC=	Use MPlayer for multimedia files
 DSX_DESC=	Search plugins
 DSX_LOCATE_DESC=	Support locate command
 
-WCX_UNRAR_LIB_DEPENDS=	libunrar.so.5:archivers/libunrar5
+WCX_UNRAR_LIB_DEPENDS=	libunrar.so.6:archivers/libunrar6
 WFX_SAMBA_USES=		samba:lib
 WLX_MPLAYER_RUN_DEPENDS=	mplayer:multimedia/mplayer
 

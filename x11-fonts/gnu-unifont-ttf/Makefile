@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 MASTERDIR=	${.CURDIR}/../gnu-unifont
 
 PKGNAMESUFFIX=	-ttf

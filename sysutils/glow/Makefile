@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	glow
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.4.0
 CATEGORIES=	sysutils
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Render markdown on the CLI, with pizzazz!
 
 LICENSE=	MIT

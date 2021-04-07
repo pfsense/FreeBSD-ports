@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	delve
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.0
+DISTVERSION=	1.6.0
 CATEGORIES=	devel
 
 MAINTAINER=	dmitry.wagin@ya.ru

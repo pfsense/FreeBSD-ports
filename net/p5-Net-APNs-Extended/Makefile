@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-APNs-Extended
 PORTVERSION=	0.10
 PORTREVISION=	1

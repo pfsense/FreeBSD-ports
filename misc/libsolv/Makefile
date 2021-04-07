@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	libsolv
-DISTVERSION=	0.7.16
+DISTVERSION=	0.7.17
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org

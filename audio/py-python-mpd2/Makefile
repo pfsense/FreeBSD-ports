@@ -1,8 +1,7 @@
 # Created by: rene@FreeBSD.org (repocopied from audio/py-mpd)
-# $FreeBSD$
 
 PORTNAME=	python-mpd2
-PORTVERSION=	2.0.1
+PORTVERSION=	3.0.4
 CATEGORIES=	audio python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,7 +17,10 @@ USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS TWISTED
+TWISTED_DESC=	Twisted support
+
+TWISTED_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}twisted>=0:devel/py-twisted@${PY_FLAVOR}
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

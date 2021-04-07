@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Version-Next
 PORTVERSION=	1.000
 CATEGORIES=	textproc perl5

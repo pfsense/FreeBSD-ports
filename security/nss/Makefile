@@ -1,8 +1,7 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	nss
-PORTVERSION=	3.62
+PORTVERSION=	3.63
 CATEGORIES=	security
 MASTER_SITES=	MOZILLA/security/${PORTNAME}/releases/${DISTNAME:tu:C/[-.]/_/g}_RTM/src
 
@@ -58,6 +57,10 @@ MAKE_ENV+=	BUILD_OPT=1
 BINS=		${DIST}/${OPSYS}${OSREL}_OPT.OBJ
 .else
 BINS=		${DIST}/${OPSYS}${OSREL}_DBG.OBJ
+.endif
+
+.if ${ARCH} == armv6
+MAKE_ENV+=	NSS_DISABLE_ARM32_NEON=1
 .endif
 
 .if ${ARCH} == powerpc64 || ${ARCH} == powerpc

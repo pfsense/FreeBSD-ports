@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xdg-user-dirs
 DISTVERSION=	0.17
 CATEGORIES=	devel

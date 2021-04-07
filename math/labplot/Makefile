@@ -1,9 +1,8 @@
 # Created by: Kay Lehmann <kay_lehmann@web.de>
-# $FreeBSD$
 
 PORTNAME=	labplot
 DISTVERSION=	2.8.1
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	math kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}
 

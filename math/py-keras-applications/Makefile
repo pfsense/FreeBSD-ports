@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	keras-applications
 DISTVERSION=	1.0.8
 CATEGORIES=	math python

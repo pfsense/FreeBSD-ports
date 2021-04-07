@@ -1,9 +1,7 @@
 # Created by: Jacob Atzen <jatzen@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	passenger
-PORTVERSION=	6.0.7
-PORTREVISION=	1
+PORTVERSION=	6.0.8
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 

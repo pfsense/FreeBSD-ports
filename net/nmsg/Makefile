@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nmsg
 PORTVERSION=	0.15.1
 CATEGORIES=	net

@@ -1,5 +1,4 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tkinter
 PORTVERSION=	${PYTHON_PORTVERSION}
@@ -16,7 +15,7 @@ LICENSE=	PSFL
 
 PORTSCOUT=	ignore:1
 
-USES=		compiler:c11 python tar:xz tk
+USES=		compiler:c11 python:2.7+ tar:xz tk
 USE_PYTHON=	distutils autoplist allflavors
 
 DIST_SUBDIR=	python

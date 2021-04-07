@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xkeyboard-config
 PORTVERSION=	2.31
 CATEGORIES=	x11

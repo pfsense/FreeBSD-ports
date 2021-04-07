@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	aws-sdk-imagebuilder
-PORTVERSION=	1.17.0
+PORTVERSION=	1.19.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -11,7 +10,7 @@ COMMENT=	Official AWS Ruby gem for EC2 Image Builder (imagebuilder)
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	rubygem-aws-sdk-core>=3.109.0<4:devel/rubygem-aws-sdk-core \
+RUN_DEPENDS=	rubygem-aws-sdk-core>=3.112.0<4:devel/rubygem-aws-sdk-core \
 		rubygem-aws-sigv4>=1.1<2:devel/rubygem-aws-sigv4
 
 USES=		gem

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openjdk
 PORTVERSION=	${JDK_MAJOR_VERSION}.${JDK_UPDATE_VERSION}.${JDK_BUILD_NUMBER}.${BSD_JDK_VERSION}
 CATEGORIES=	java devel
@@ -51,8 +49,8 @@ INSTALLDIR=	${PREFIX}/${PKGBASE}
 NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	8
-JDK_UPDATE_VERSION=	275
-JDK_BUILD_NUMBER=	01
+JDK_UPDATE_VERSION=	282
+JDK_BUILD_NUMBER=	08
 BSD_JDK_VERSION=	1
 JTREG_VERSION=		4.1
 JTREG_BUILD_NUMBER=	b08
@@ -294,15 +292,15 @@ do-install:
 	${FIND} bin jre/bin -type f -exec ${CHMOD} ${BINMODE} {} \; && \
 	${CHMOD} ${BINMODE} jre/${JDK_JVMDIR}/jexec \
 	    jre/${JDK_JVMDIR}/jspawnhelper ${JDK_JVMDIR}/jexec
-	@${ECHO} "@dir ${INSTALLDIR}/jre/lib/applet" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${INSTALLDIR}/jre/lib/applet" >> ${TMPPLIST}
 .else
 	@cd ${JRE_IMAGEDIR} && ${COPYTREE_SHARE} . ${STAGEDIR}${INSTALLDIR}
 	@cd ${STAGEDIR}${INSTALLDIR} && \
 	${FIND} bin -type f -exec ${CHMOD} ${BINMODE} {} \; && \
 	${CHMOD} ${BINMODE} ${JDK_JVMDIR}/jexec ${JDK_JVMDIR}/jspawnhelper
-	@${ECHO} "@dir ${INSTALLDIR}/lib/applet" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${INSTALLDIR}/lib/applet" >> ${TMPPLIST}
 .endif
-	@${ECHO} "@javavm ${INSTALLDIR}/bin/java" >> ${TMPPLIST}
+	@${ECHO_CMD} "@javavm ${INSTALLDIR}/bin/java" >> ${TMPPLIST}
 	@${FIND} ${STAGEDIR}${INSTALLDIR} -not -type d | ${SORT} | \
 	    ${SED} -e 's|^${STAGEDIR}${PREFIX}/||' >> ${TMPPLIST}
 

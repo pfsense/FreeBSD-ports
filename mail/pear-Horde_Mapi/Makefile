@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Horde_Mapi
 PORTVERSION=	1.0.10
 CATEGORIES=	mail www pear

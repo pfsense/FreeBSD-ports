@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	khelpcenter
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	sysutils kde kde-applications # kde kde-applications-plasma

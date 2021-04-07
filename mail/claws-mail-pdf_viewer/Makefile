@@ -1,8 +1,7 @@
 # Created by: Pawel Pekala <c0rn@o2.pl>
-# $FreeBSD$
 
 PORTNAME=	pdf_viewer
-PORTREVISION=	1
+PORTREVISION=	4
 
 COMMENT=	PDF and PostScript viewer plugin for Claws Mail
 

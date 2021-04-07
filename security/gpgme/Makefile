@@ -1,8 +1,7 @@
 # Created by: teramoto@comm.eng.osaka-u.ac.jp
-# $FreeBSD$
 
 PORTNAME=	gpgme
-PORTVERSION=	1.15.0
+PORTVERSION=	1.15.1
 PORTREVISION?=	0
 CATEGORIES?=	security
 MASTER_SITES=	GNUPG/gpgme

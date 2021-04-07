@@ -1,8 +1,7 @@
 # Created by: Ron van Daal
-# $FreeBSD$
 
 PORTNAME=	GraphicsMagick
-PORTVERSION=	1.3.35
+PORTVERSION=	1.3.36
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	SF \

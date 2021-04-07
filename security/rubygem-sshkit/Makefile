@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sshkit
-PORTVERSION=	1.21.1
+PORTVERSION=	1.21.2
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 

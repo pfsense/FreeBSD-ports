@@ -1,9 +1,8 @@
 # Created by: Chuck Robey <chuckr@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	a2ps
 PORTVERSION=	4.13b
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	print
 MASTER_SITES=	GNU LOCAL/hrs/a2ps/:i18n
 

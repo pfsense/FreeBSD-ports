@@ -1,9 +1,8 @@
 # Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
 
 PORTNAME=	eaglemode
 PORTVERSION=	0.95.0
-PORTREVISION=	5
+PORTREVISION=	9
 CATEGORIES=	x11
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 

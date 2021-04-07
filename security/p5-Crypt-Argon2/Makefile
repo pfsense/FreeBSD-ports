@@ -1,8 +1,7 @@
 # Created by: Sergei Vyshenski <svysh.fbsd@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	Crypt-Argon2
-PORTVERSION=	0.007
+PORTVERSION=	0.010
 CATEGORIES=	security
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

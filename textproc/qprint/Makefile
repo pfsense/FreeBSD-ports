@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qprint
 PORTVERSION=	1.1
 CATEGORIES=	textproc

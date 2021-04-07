@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qtkeychain
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.12.0

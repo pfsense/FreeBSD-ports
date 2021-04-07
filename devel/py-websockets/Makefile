@@ -1,5 +1,4 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	websockets
 PORTVERSION=	8.1
@@ -8,7 +7,7 @@ MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ehaupt@FreeBSD.org
-COMMENT=	Implementation of the WebSocket Protocol (RFC 6455 & 7692)
+COMMENT=	Implementation of the WebSocket Protocol (RFC 6455 and 7692)
 
 LICENSE=	BSD3CLAUSE
 

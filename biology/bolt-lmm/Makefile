@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bolt-lmm
 DISTVERSION=	2.3.4
 PORTREVISION=	4

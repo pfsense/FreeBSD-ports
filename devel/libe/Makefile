@@ -1,5 +1,4 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=		libe
 PORTVERSION=		0.11.0
@@ -7,7 +6,7 @@ DISTVERSIONPREFIX=	releases/
 CATEGORIES=		devel
 
 MAINTAINER=	egypcio@FreeBSD.org
-COMMENT=	High-performance datastructures and utilities for C++
+COMMENT=	High-performance data structures and utilities for C++
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

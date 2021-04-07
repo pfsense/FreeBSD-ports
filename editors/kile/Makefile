@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	kile
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.0b3
-PORTREVISION=	13
+PORTREVISION=	16
 CATEGORIES=	editors kde
 
 MAINTAINER=	kde@FreeBSD.org
@@ -26,8 +24,7 @@ USE_QT=		concurrent core dbus gui network script widgets xml \
 		buildtools_build qmake_build
 SHEBANG_FILES=	*.pl
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	kde
+KDE_INVENT=	09ee4ef0417165b93da82c1fc057b9e1713a0c05 office
 
 OPTIONS_DEFINE=	DOCS
 

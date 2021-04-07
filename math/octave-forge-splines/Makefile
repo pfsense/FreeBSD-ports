@@ -1,8 +1,7 @@
 # Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
-# $FreeBSD$
 
 PORTNAME=	octave-forge-splines
-PORTVERSION=	1.3.3
+PORTVERSION=	1.3.4
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org

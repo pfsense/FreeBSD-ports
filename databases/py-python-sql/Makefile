@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	python-sql
 PORTVERSION=	0.9
 CATEGORIES=	databases python

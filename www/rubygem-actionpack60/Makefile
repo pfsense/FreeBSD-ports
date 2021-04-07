@@ -1,8 +1,7 @@
 # Created by: Jonathan Weiss (<jw@innerewut.de>)
-# $FreeBSD$
 
 PORTNAME=	actionpack
-PORTVERSION=	6.0.3.4
+PORTVERSION=	6.0.3.5
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	60

@@ -1,9 +1,9 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	redis
-PORTVERSION=	6.0.8.20200910
+PORTVERSION=	6.2.1
 CATEGORIES=	databases
+MASTER_SITES=	https://download.redis.io/releases/
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	osa@FreeBSD.org
@@ -13,8 +13,6 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES+=		compiler:c11 gmake
-USE_GITHUB=	yes
-GH_TUPLE= 	redis:${PORTNAME}:03b59cd
 
 OPTIONS_DEFINE=	JEMALLOC TESTS TLS TRIB
 OPTIONS_RADIO=	EXTLUA
@@ -71,7 +69,7 @@ LDFLAGS=	-Wl,-E
 
 LDFLAGS+=	-lpthread -lm -lexecinfo
 
-CONFLICTS?=	redis4-4.* redis-5.*
+CONFLICTS?=	redis4-4.* redis5-5.* redis-6.*
 
 USE_RC_SUBR=	redis sentinel
 BIN_FILES=	redis-benchmark redis-check-aof redis-check-rdb \
@@ -96,6 +94,9 @@ PLIST_SUB+=	REDIS_USER=${USERS} \
 	REDIS_LOGDIR=${REDIS_LOGDIR} \
 	REDIS_DBDIR=${REDIS_DBDIR} \
 	REDIS_RUNDIR=${REDIS_RUNDIR}
+
+post-patch:
+	${REINPLACE_CMD} '77s!malloc.h!stdlib.h!' ${WRKSRC}/src/zmalloc.h
 
 post-patch-JEMALLOC-on:
 	@${REINPLACE_CMD} '35s!Linux!FreeBSD!g' ${WRKSRC}/src/Makefile

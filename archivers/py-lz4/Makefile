@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lz4
 PORTVERSION=	2.1.10
 CATEGORIES=	archivers python
@@ -20,7 +18,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psutil>=0:sysutils/py-psutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest@${PY_FLAVOR}
 
 USES=		python:3.6+
-USE_PYTHON=	distutils py3kplist
+USE_PYTHON=	distutils
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/${PORTNAME}/_version*.so \
@@ -30,10 +28,4 @@ post-install:
 do-test:
 	cd ${WRKSRC} && ${PYTHON_CMD} -m pytest
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3000
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}future>=0:devel/py-future@${PY_FLAVOR}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

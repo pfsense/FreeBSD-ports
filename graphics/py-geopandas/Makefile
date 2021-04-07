@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	geopandas
 PORTVERSION=	0.8.1
 CATEGORIES=	graphics python
@@ -18,7 +16,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pandas>0:math/py-pandas@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyproj>=1.9.3:graphics/py-pyproj@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.3.0:devel/py-six@${PY_FLAVOR}
 
-USES=		python:3.5+
+USES=		python:3.7+
 USE_PYTHON=	autoplist cython distutils
 
 NO_ARCH=	yes

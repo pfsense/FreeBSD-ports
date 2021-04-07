@@ -1,8 +1,7 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	openbve
-PORTVERSION=	1.7.2.3
+PORTVERSION=	1.7.2.4
 CATEGORIES=	games
 
 MAINTAINER=	danfe@FreeBSD.org

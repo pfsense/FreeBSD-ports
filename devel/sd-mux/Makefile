@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sd-mux
 PORTVERSION=	g20201028
 CATEGORIES=	devel

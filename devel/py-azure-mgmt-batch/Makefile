@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	azure-mgmt-batch
 PORTVERSION=	9.0.0
 CATEGORIES=	devel python

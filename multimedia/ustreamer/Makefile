@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	ustreamer
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2
+DISTVERSION=	3.25
 CATEGORIES=	multimedia net
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -19,11 +17,14 @@ USES=		compiler:c11 gmake jpeg localbase:ldflags
 USE_GITHUB=	yes
 GH_ACCOUNT=	pikvm
 
-CFLAGS+=	-DWITH_PTHREAD_NP=0 # src/threading.h:101:4: error: thread_get_name() not implemented, you can disable it using WITH_PTHREAD_NP=0
+MAKE_ARGS=	WITH_PTHREAD_NP=0
 
 INSTALL_TARGET=	install-strip
 
-PLIST_FILES=	bin/ustreamer
+PLIST_FILES=	bin/ustreamer \
+		bin/ustreamer-dump \
+		man1/ustreamer-dump.1.gz \
+		man1/ustreamer.1.gz
 
 BROKEN_FreeBSD_11=	error: thread_get_name() not implemented, you can disable it using WITH_PTHREAD_NP=0
 

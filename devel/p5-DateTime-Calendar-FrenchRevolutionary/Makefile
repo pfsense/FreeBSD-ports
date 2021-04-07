@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DateTime-Calendar-FrenchRevolutionary
 PORTVERSION=	0.15
 CATEGORIES=	devel perl5

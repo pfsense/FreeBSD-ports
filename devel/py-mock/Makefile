@@ -1,5 +1,4 @@
 # Created by: jessekempf@gmail.com
-# $FreeBSD$
 
 PORTNAME=	mock
 PORTVERSION=	3.0.5
@@ -23,13 +22,7 @@ NO_ARCH=	yes
 
 GH_ACCOUNT=	testing-cabal
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_VER} < 3.3
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}funcsigs>=1:devel/py-funcsigs@${PY_FLAVOR}
-.endif
-
 do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest -v -rs -o addopts=
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

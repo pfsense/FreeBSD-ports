@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fingerprints
 DISTVERSION=	1.0.1
 CATEGORIES=	textproc python

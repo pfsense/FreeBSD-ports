@@ -1,9 +1,8 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mosh
 PORTVERSION=	1.3.2
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	net
 MASTER_SITES=	https://mosh.org/ \
 		ZI

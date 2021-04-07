@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	azure-common
 PORTVERSION=	1.1.25
 CATEGORIES=	www python

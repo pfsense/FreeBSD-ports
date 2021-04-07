@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	HTTP-Thin
 PORTVERSION=	0.006
 CATEGORIES=	www perl5

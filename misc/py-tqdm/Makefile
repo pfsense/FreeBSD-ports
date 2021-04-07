@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	tqdm
-PORTVERSION=	4.54.1
+PORTVERSION=	4.58.0
 CATEGORIES=	misc
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,9 +13,14 @@ LICENSE_FILE_MIT=	${WRKSRC}/LICENCE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>=3.4:devel/py-setuptools_scm@${PY_FLAVOR}
 
-USES=		python
+USES=		python:2.7+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
+
+OPTIONS_DEFINE=	TELEGRAM
+TELEGRAM_DESC=	Telegram support
+
+TELEGRAM_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${PY_FLAVOR}
 
 .include <bsd.port.mk>

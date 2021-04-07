@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	potnet
 DISTVERSION=	0.4.4
-PORTREVISION=	8
+PORTREVISION=	11
 CATEGORIES=	sysutils
 
 MAINTAINER=	pizzamig@FreeBSD.org

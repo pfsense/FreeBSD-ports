@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	azure-mgmt-servicebus
 PORTVERSION=	0.6.0
 CATEGORIES=	devel python

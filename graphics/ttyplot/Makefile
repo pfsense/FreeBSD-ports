@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ttyplot
 DISTVERSION=	1.4
 CATEGORIES=	graphics

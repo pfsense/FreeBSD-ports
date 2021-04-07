@@ -1,5 +1,4 @@
 # Created by: Jordi Haarman
-# $FreeBSD$
 
 PORTNAME=	simpletal
 PORTVERSION=	4.3
@@ -10,7 +9,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	SimpleTAL-${PORTVERSION}
 
 MAINTAINER=	ayu@commun.jp
-COMMENT=	Stand alone TAL Python implementation to power HTML & XML templates
+COMMENT=	Stand-alone TAL Python implementation to power HTML and XML templates
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

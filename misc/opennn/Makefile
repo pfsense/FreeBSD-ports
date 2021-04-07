@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	opennn
 DISTVERSION=	4.0
 CATEGORIES=	misc # machine-learning

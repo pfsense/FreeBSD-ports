@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	fbthrift
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2020.12.28.00
+DISTVERSION=	2021.04.05.00
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,12 +11,16 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libdouble-conversion.so:devel/double-conversion \
+		libevent.so:devel/libevent \
 		libfizz.so:security/fizz \
 		libfmt.so:devel/libfmt \
 		libfolly.so:devel/folly \
 		libgflags.so:devel/gflags \
 		libglog.so:devel/glog \
+		liblz4.so:archivers/liblz4 \
+		libsnappy.so:archivers/snappy \
 		libsodium.so:security/libsodium \
+		libunwind.so:devel/libunwind \
 		libwangle.so:net/wangle \
 		libzstd.so:archivers/zstd
 

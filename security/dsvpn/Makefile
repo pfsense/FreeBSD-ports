@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dsvpn
 PORTVERSION=	0.1.4
 CATEGORIES=	security net net-vpn

@@ -1,8 +1,7 @@
 # Created by: Janni
-# $FreeBSD$
 
 PORTNAME=	gxemul
-PORTVERSION=	0.6.2
+PORTVERSION=	0.6.3
 CATEGORIES=	emulators
 MASTER_SITES=	http://gavare.se/gxemul/src/
 

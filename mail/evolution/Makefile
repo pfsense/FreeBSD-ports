@@ -1,8 +1,7 @@
 # Created by: Ade Lovett <ade@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	evolution
-PORTVERSION=	3.38.2
+DISTVERSION=	3.38.4
 CATEGORIES=	mail gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome

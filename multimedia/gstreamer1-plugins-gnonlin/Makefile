@@ -1,5 +1,4 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gstreamer1-plugins-gnonlin
 PORTVERSION=	1.4.0
@@ -8,7 +7,7 @@ MASTER_SITES=	http://gstreamer.freedesktop.org/src/gnonlin/
 DISTNAME=	gnonlin-${PORTVERSION}
 
 MAINTAINER=	multimedia@FreeBSD.org
-COMMENT=	GStreamer lib for writing non-linear audio and video
+COMMENT=	GStreamer library for writing non-linear audio and video
 
 USES=		libtool pkgconfig python:3.4+,build tar:xz
 GNU_CONFIGURE=	yes

@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	sendmail
 PORTVERSION=	8.16.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	mail
 MASTER_SITES=	ftp://ftp.sendmail.org/pub/sendmail/
 DISTNAME=	${PORTNAME}.${PORTVERSION}
@@ -159,6 +157,9 @@ SED_SCRIPT=	-e "s|\`-O'|\`${CFLAGS}'|" \
 .if ! ${PORT_OPTIONS:MNIS}
 SED_SCRIPT+=	-e "s;-DNIS ;;"
 .endif
+
+post-patch:
+	@cd ${WRKSRC} && ${FIND} cf -type f -name "*.orig" -print0 | ${XARGS} -0 ${RM}
 
 do-configure:
 .if ${PORT_OPTIONS:MGDBM}

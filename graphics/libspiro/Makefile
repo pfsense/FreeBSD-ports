@@ -1,8 +1,7 @@
 # Created by: Naram Qashat <cyberbotx@cyberbotx.com>
-# $FreeBSD$
 
 PORTNAME=	libspiro
-DISTVERSION=	20190731
+DISTVERSION=	20200505
 PORTEPOCH=	1
 CATEGORIES=	graphics
 

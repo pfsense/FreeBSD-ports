@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	deployer
 DISTVERSION=	6.4.3
 CATEGORIES=	devel

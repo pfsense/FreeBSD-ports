@@ -1,5 +1,4 @@
 # Created by: William Grzybowski <wg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libzfs
 PORTVERSION=	1.0.2020090900
@@ -10,8 +9,6 @@ MAINTAINER=	freqlabs@FreeBSD.org
 COMMENT=	Python libzfs bindings
 
 LICENSE=	BSD2CLAUSE
-
-RUN_DEPENDS=	${PY_ENUM34}
 
 USE_GITHUB=     yes
 GH_ACCOUNT=	freenas

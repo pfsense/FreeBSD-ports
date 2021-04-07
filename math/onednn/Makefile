@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	onednn
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.7
-PORTREVISION=	3
+DISTVERSION=	2.1.2
 CATEGORIES=	math # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,6 +9,7 @@ COMMENT=	Intel(R) Math Kernel Library for Deep Neural Networks
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_aarch64=	error: sys/prctl.h file not found
 BROKEN_i386=	error: shift count >= width of type (and other errors), see https://github.com/intel/mkl-dnn/issues/315
 
 TEST_DEPENDS=	bash:shells/bash \

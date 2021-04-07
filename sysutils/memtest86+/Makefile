@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	memtest86+
 PORTVERSION=	5.01
 PORTREVISION=	4
@@ -17,7 +15,7 @@ USES=	gmake
 ALL_TARGET=	all
 PORTDOCS=	*
 
-USE_GCC=	yes
+USE_GCC=	yes:build
 
 # Please provide absolute path below (cannot be root)
 BOOT_DIR?=	/boot/opt
@@ -75,4 +73,3 @@ do-install:
 .endif
 
 .include <bsd.port.mk>
-RUN_DEPENDS:=	${RUN_DEPENDS:Ngcc*}

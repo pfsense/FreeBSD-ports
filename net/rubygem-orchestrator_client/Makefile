@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	orchestrator_client
-PORTVERSION=	0.4.3
-PORTREVISION=	1
+PORTVERSION=	0.5.1
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 

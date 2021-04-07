@@ -1,9 +1,7 @@
 # Created by: Gustau Perez <gustau.perez@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	gnome-photos
-PORTVERSION=	3.38.0
-PORTREVISION=	1
+DISTVERSION=	3.38.1
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome

@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	cs
 PORTVERSION=	0.9.6
@@ -16,7 +15,7 @@ RUN_DEPENDS=	${PY_PILLOW}
 
 NO_BUILD=	yes
 
-USES=		python:run shebangfix tar:tgz
+USES=		python:run,3.6+ shebangfix tar:tgz
 SHEBANG_FILES=	xs.py
 
 PLIST_FILES=	bin/xs

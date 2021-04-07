@@ -1,8 +1,7 @@
 # Created by: Hammurabi Mendes <hmendes@brturbo.com>
-# $FreeBSD$
 
 PORTNAME=	proxytunnel
-PORTVERSION=	1.10.20200907
+PORTVERSION=	1.10.20210128
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 

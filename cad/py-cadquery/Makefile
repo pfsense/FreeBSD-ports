@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cadquery
 DISTVERSION=	2.0.1
 CATEGORIES=	cad

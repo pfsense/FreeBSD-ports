@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	libgcrypt
-PORTVERSION=	1.8.7
+PORTVERSION=	1.9.2
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	GNUPG
 
@@ -36,6 +35,10 @@ OPTIONS_DEFINE=	DOCS
 
 .if ${ARCH} == "powerpc"
 CONFIGURE_ARGS+=	--disable-asm
+.endif
+
+.if ${ARCH} == "armv6" || ${ARCH} == "armv7"
+CONFIGURE_ARGS+=	--disable-jent-support
 .endif
 
 post-patch:

@@ -1,12 +1,10 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	jftp
-PORTVERSION=	1.56
+PORTVERSION=	1.60
 CATEGORIES=	ftp java
 MASTER_SITES=	SF/j-ftp/${PORTNAME}/${PORTVERSION}
 DISTNAME=	j-ftp-${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java Network Browser
@@ -14,6 +12,7 @@ COMMENT=	Java Network Browser
 LICENSE=	GPLv2
 
 NO_BUILD=	yes
+NO_ARCH=	yes
 USE_JAVA=	yes
 WRKSRC=		${WRKDIR}/j-ftp
 

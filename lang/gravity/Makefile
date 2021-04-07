@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gravity
 DISTVERSION=	0.8.1
 CATEGORIES=	lang

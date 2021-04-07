@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kdialog
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	sysutils kde kde-applications

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	polynom
 DISTVERSION=	1.4-0
 PORTREVISION=	2

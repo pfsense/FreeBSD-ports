@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Project-Libs
 PORTVERSION=	0.02
 PORTREVISION=	1

@@ -1,8 +1,7 @@
 # Created by: Bernard Spil <brnrd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME?=	mariadb
-PORTVERSION=	10.4.17
+PORTVERSION=	10.4.18
 PORTREVISION?=	0
 CATEGORIES=	databases
 MASTER_SITES=	http://mirrors.supportex.net/${SITESDIR}/ \
@@ -22,6 +21,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_i386=	compile error: undeclared identifier 'my_atomic_add32'
+BROKEN_riscv64=	fails to compile: needs FP_X_INV from empty sys/riscv/include/ieeefp.h
 
 USES=		bison:build cmake:insource,noninja compiler:c++11-lib cpe iconv:translit libedit ncurses shebangfix ssl
 
@@ -39,7 +39,7 @@ MARIADB_USER?=	mysql
 MARIADB_GROUP?=	mysql
 
 MARIADB_RUNDIR?=	/var/run/mysql
-MARIADB_SOCK?=		mysql.sock		
+MARIADB_SOCK?=		mysql.sock
 MARIADB_LOGDIR?=	/var/log/mysql
 
 OPTIONS_SINGLE=		GSSAPI

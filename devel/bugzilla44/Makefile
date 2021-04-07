@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bugzilla
 PORTVERSION=	4.4.13
 PORTREVISION=	1

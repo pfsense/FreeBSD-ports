@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qr-code-generator
 PORTVERSION=	1.6.0
 DISTVERSIONPREFIX=	v

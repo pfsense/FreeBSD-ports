@@ -1,9 +1,8 @@
 # Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
 
 PORTNAME=	WinFF
 PORTVERSION=	1.5.5
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	multimedia
 MASTER_SITES=	LOCAL/thierry
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}

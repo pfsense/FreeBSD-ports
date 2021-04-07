@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	azure-mgmt-iothub
 PORTVERSION=	0.12.0
 CATEGORIES=	devel python

@@ -1,7 +1,4 @@
-# $FreeBSD$
-
 PORTNAME=	couchdb3
-PORTREVISION=	1
 DISTVERSION=	3.1.1
 PORTREVISION=	1
 CATEGORIES=	databases
@@ -13,6 +10,9 @@ COMMENT=	JSON document database with HTTP API and scalable multi-master sync
 
 LICENSE=	APACHE20 BSD3CLAUSE ISCL WTFPL OFL11
 LICENSE_COMB=	multi
+
+DEPRECATED=	Uses EOL Python 2.7 via lang/spidermonkey60
+EXPIRATION_DATE=2021-06-23
 
 BUILD_DEPENDS=	rebar:devel/rebar \
 		erlang-runtime22>=22.0:lang/erlang-runtime22

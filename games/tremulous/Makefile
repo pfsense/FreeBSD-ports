@@ -1,5 +1,4 @@
 # Created by: Alejandro Pulver <alepulver@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tremulous
 PORTVERSION=	1.1.0
@@ -70,7 +69,7 @@ MAKE_ENV+=	USE_SDL_VIDEO=1
 .  else
 USES+=		gl xorg
 USE_GL=		gl
-USE_XORG=	x11 xxf86dga
+USE_XORG=	x11 xxf86dga xxf86vm
 .  endif
 # Vorbis
 .  if ${PORT_OPTIONS:MVORBIS}

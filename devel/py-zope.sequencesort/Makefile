@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zope.sequencesort
 PORTVERSION=	3.4.0
 PORTREVISION=	1

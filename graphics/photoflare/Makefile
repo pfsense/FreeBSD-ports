@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	photoflare
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.6

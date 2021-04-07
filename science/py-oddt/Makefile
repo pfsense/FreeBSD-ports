@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	oddt
 DISTVERSION=	0.7
 CATEGORIES=	science python
@@ -19,7 +17,7 @@ BUILD_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		python:3.5+
+USES=		python:3.7+
 USE_GITHUB=	yes
 USE_PYTHON=	distutils concurrent autoplist
 

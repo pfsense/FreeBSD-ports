@@ -1,5 +1,4 @@
 # Created by: MANTANI Nobutaka <nobutaka@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	uim
 PORTVERSION=	1.8.8
@@ -16,6 +15,8 @@ COMMENT?=	Input method library
 LICENSE=	BSD3CLAUSE GPLv2+ GPLv3+ LGPL21+ PD
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_riscv64=		fails to configure: ./include/private/gcconfig.h:492:5: The collector has not been ported to this machine/OS combination
 
 USES+=		gettext gmake gnome iconv libedit libtool pathfix pkgconfig perl5 sqlite tar:bzip2
 USE_LDCONFIG=	yes

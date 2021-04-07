@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	android-tools-adb
 DISTVERSIONPREFIX=	platform-tools-
 DISTVERSION?=	29.0.6

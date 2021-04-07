@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pyotherside
 DISTVERSION=	1.5.9
 CATEGORIES=	devel

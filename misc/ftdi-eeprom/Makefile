@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ftdi-eeprom
 PORTVERSION=	1.1
 PORTREVISION=	1

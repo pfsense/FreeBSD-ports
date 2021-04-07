@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	cglm
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.9
+DISTVERSION=	0.8.0
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,9 +10,10 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cmake compiler:c11
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	recp
-USE_LDCONFIG=	yes
 
 do-test:
 	@cd ${BUILD_WRKSRC} && \

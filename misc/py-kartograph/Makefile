@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kartograph
 DISTVERSION=	0.6.8
 PORTREVISION=	1

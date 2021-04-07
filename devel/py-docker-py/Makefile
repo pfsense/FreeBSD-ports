@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	docker-py
 PORTVERSION=	1.7.2
 PORTREVISION=	1

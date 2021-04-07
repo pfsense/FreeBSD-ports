@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	arduino-builder
 PORTVERSION=	1.3.25
 PORTREVISION=	2

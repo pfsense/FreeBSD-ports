@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	repoze.xmliter
 PORTVERSION=	0.6
 CATEGORIES=	devel python

@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	google-cloud-pubsub
-PORTVERSION=	2.3.0
+PORTVERSION=	2.3.2
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 

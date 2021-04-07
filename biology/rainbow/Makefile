@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rainbow
 DISTVERSION=	2.0.4
 CATEGORIES=	biology

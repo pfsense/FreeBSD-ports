@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openxlsx
 DISTVERSION=	4.2.3
 CATEGORIES=	textproc

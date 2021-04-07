@@ -1,8 +1,7 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gvolwheel
-PORTVERSION=	1.0.2
+PORTVERSION=	1.0.3
 CATEGORIES=	audio
 
 MAINTAINER=	ports@FreeBSD.org

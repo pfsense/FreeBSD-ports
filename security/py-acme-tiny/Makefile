@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	acme-tiny
 DISTVERSION=	4.1.0
 CATEGORIES=	security python

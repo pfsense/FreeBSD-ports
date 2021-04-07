@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		llbuild
 DISTVERSIONPREFIX=	swift-DEVELOPMENT-
 DISTVERSION=		SNAPSHOT-2017-12-10
@@ -14,6 +12,7 @@ LICENSE_COMB=	multi
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE.txt
 
 BROKEN_aarch64=		fails to link: undefined symbol: sbrk
+BROKEN_riscv64=		fails to link: undefined symbol: sbrk
 BROKEN_FreeBSD_11_powerpc64=	fails to build on powerpc64 elfv1: unrecognized command line option "-Wdocumentation"
 BROKEN_FreeBSD_12_powerpc64=	fails to build on powerpc64 elfv1: unrecognized command line option "-Wdocumentation"
 

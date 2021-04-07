@@ -1,8 +1,7 @@
 # Created by: Rong-En Fan <rafan@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	PAR-Packer
-PORTVERSION=	1.051
+PORTVERSION=	1.052
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

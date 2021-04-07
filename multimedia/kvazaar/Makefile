@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	kvazaar
 DISTVERSIONPREFIX=	v
 DISTVERSION?=	2.0.0
+PORTREVISION=	1
 CATEGORIES=	multimedia
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/

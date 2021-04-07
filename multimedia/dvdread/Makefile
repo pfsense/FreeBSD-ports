@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	dvdread
 DISTVERSION=	g20160701
+PORTREVISION=	1
 CATEGORIES=	multimedia
 
 PATCH_SITES=	https://github.com/silum/dvdread/commit/
@@ -32,9 +31,7 @@ PORTDOCS=	README
 
 OPTIONS_DEFINE=	DOCS REGION
 
-OPTIONS_DEFAULT=	REGION
-
-REGION_DESC=	Automatically remove region lock set in IFO files
+REGION_DESC=	Disable automatic removal of region lock in IFO files
 REGION_EXTRA_PATCHES=	${FILESDIR}/extrapatch-region
 
 do-install:

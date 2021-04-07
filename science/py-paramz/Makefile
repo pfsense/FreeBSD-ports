@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	paramz
 DISTVERSION=	0.9.5
 PORTREVISION=	1

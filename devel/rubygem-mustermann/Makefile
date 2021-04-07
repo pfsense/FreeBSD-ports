@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mustermann
 PORTVERSION=	1.1.1
@@ -7,7 +6,7 @@ CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Lbrary implementing patterns that behave like regular expressions
+COMMENT=	Library implementing patterns that behave like regular expressions
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	user_agent
 PORTVERSION=	0.1.9
 CATEGORIES=	www python

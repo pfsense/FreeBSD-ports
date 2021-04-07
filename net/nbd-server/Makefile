@@ -1,8 +1,7 @@
 # Created by: Christian Laursen <xi@borderworlds.dk>
-# $FreeBSD$
 
 PORTNAME=	nbd
-PORTVERSION=	3.20
+PORTVERSION=	3.21
 PORTEPOCH=	1
 CATEGORIES=	net
 MASTER_SITES=	SF

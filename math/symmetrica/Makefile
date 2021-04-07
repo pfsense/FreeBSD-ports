@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	symmetrica
 DISTVERSION=	3.0.1
 CATEGORIES=	math

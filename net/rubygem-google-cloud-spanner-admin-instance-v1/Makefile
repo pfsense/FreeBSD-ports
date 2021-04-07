@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	google-cloud-spanner-admin-instance-v1
-PORTVERSION=	0.1.3
+PORTVERSION=	0.2.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 

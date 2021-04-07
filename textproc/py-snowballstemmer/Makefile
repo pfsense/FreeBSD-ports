@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	snowballstemmer
 PORTVERSION=	1.2.1
 CATEGORIES=	textproc python
@@ -11,7 +9,7 @@ COMMENT=	Snowball stemming library collection for Python
 
 LICENSE=	BSD2CLAUSE
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes

@@ -1,5 +1,4 @@
 # Created by: netchild@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	icc
 PORTVERSION=	8.1.038
@@ -12,7 +11,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 # netchild@FreeBSD.org is willing to review patches and to provide background
 # infos regarding this port
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Intels C/C++ compiler, set up to produce native FreeBSD binaries
+COMMENT=	Intel C/C++ compiler, set up to produce native FreeBSD binaries
 
 LICENSE=	EPL LGPL21
 LICENSE_COMB=	multi

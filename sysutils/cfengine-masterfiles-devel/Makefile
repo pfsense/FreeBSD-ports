@@ -1,12 +1,11 @@
 # Created by: cy@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	cfengine-masterfiles
 PORTVERSION=	3.${CFENGINE_COMMIT_DATE}
 CATEGORIES=	sysutils
 PKGNAMESUFFIX=	-devel
-HASH=		e2b3e56f
-CFENGINE_COMMIT_DATE=	2020.11.30
+HASH=		2803b9ac
+CFENGINE_COMMIT_DATE=	2021.04.05
 
 MAINTAINER=	cy@FreeBSD.org
 #		gjb@FreeBSD.org is also committer for this port
@@ -29,11 +28,13 @@ RUN_DEPENDS=	cf-agent:sysutils/cfengine${PKGNAMESUFFIX}
 FETCH_BEFORE_ARGS=	-o ${DISTDIR}/${DISTFILES}
 
 MAKE_JOBS_UNSAFE=	yes
-USES=		autoreconf:build cpe gmake python:build
+USES=		autoreconf:build cpe gmake python:build shebangfix
 HAS_CONFIGURE=	yes
 EXAMPLESDIR=	${PREFIX}/share/examples/cfengine-masterfiles
 CONFIGURE_SCRIPT=	./autogen.sh
 CONFIGURE_ARGS=	--prefix=${EXAMPLESDIR}
 CONFIGURE_ENV=	EXPLICIT_VERSION=${PORTVERSION}-${HASH}
+
+SHEBANG_FILES=	modules/packages/snap
 
 .include <bsd.port.mk>

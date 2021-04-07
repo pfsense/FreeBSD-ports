@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	welle.io
 DISTVERSION=	2.2
 CATEGORIES=	audio hamradio
@@ -32,7 +30,6 @@ SOAPY_DESC=	SoapySDR support
 FFTW_DESC=	Use FFTW3 instead of KISSFFT
 CLI_DESC=	Build the welle-cli tool
 
-RTLSDR_DEPENDS=		rtl-sdr:comms/rtl-sdr
 RTLSDR_LIB_DEPENDS=	librtlsdr.so:comms/rtl-sdr
 RTLSDR_CMAKE_BOOL=	RTLSDR
 

@@ -1,5 +1,4 @@
 # Created by: gmarco@giovannelli.it
-# $FreeBSD$
 
 PORTNAME=	abs
 PORTVERSION=	0908
@@ -9,7 +8,7 @@ MASTER_SITES=	http://utenti.gufi.org/~gmarco/files/distfiles/ \
 		http://fresh.t-systems-sfr.com/unix/src/privat2/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
-MAINTAINER=	gmarco@gufi.org
+MAINTAINER=	gmarco@giovannelli.it
 COMMENT=	Free spreadsheet with graphical user interface
 
 PLIST_FILES=	bin/abs

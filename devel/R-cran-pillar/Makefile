@@ -1,15 +1,14 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pillar
-PORTVERSION=	1.4.7
+PORTVERSION=	1.5.1
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Coloured Formatting for Columns
 
-LICENSE=	GPLv3
+LICENSE=	MIT
 
 CRAN_DEPENDS=	R-cran-cli>0:devel/R-cran-cli \
 		R-cran-crayon>=1.3.4:devel/R-cran-crayon \

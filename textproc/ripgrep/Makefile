@@ -1,9 +1,8 @@
 # Created by: Petteri Valkonen <petteri.valkonen@iki.fi>
-# $FreeBSD$
 
 PORTNAME=	ripgrep
 DISTVERSION=	12.1.1
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	textproc
 
 MAINTAINER=	petteri.valkonen@iki.fi

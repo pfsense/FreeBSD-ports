@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	nzbhydra2
-DISTVERSION=	2.29.1
+DISTVERSION=	3.13.1
 DISTVERSIONSUFFIX=	-linux
 CATEGORIES=	news java
 MASTER_SITES=	https://github.com/theotherp/${PORTNAME}/releases/download/v${DISTVERSION}/
@@ -12,7 +10,7 @@ COMMENT=	Usenet meta search
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	amd64 powerpc64
+ONLY_FOR_ARCHS=	amd64 powerpc64 powerpc64le
 
 USES=		python:3.5+ shebangfix zip
 USE_JAVA=	yes

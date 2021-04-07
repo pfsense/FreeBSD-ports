@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Devel-Cover
 PORTVERSION=	1.36
 CATEGORIES=	devel perl5

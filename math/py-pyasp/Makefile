@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pyasp
 DISTVERSION=	1.4.4
 CATEGORIES=	math python
@@ -10,6 +8,9 @@ MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Convenience wrapper for the ASP tools gringo and clasp
 
 LICENSE=	GPLv3
+
+DEPRECATED=	Uses EOL Python 2.7 via math/gringo
+EXPIRATION_DATE=2021-06-23
 
 RUN_DEPENDS=	clasp:math/clasp \
 		gringo:math/gringo

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cf-uaa-lib
 PORTVERSION=	3.13.0
 PORTREVISION=	1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xfs
 PORTVERSION=	1.2.0
 PORTEPOCH=	1

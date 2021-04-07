@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	carData
 DISTVERSION=	3.0-4
 CATEGORIES=	math

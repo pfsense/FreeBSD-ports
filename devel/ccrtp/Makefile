@@ -1,9 +1,7 @@
 # Created by: Jose Alonso Cardenas Marquez <acardenas@bsd.org.pe>
-# $FreeBSD$
 
 PORTNAME=	ccrtp
-PORTVERSION=	2.0.9
-PORTREVISION=	8
+PORTVERSION=	2.1.2
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -28,6 +26,6 @@ post-configure:
 		${REINPLACE_CMD} -e 's|-l-pthread|-pthread|g'
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libccrtp.so.2.0.6
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libccrtp.so.3.0.1
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	purple-facebook
 PORTVERSION=	0.9.6
 CATEGORIES=	net-im

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libXpresent
 PORTVERSION=	1.0.0
 CATEGORIES=	x11

@@ -1,8 +1,7 @@
 # Created by: Jimmy Olgeni <olgeni@uli.it>
-# $FreeBSD$
 
 PORTNAME=	eGroupware
-PORTVERSION=	20.1.20201202
+PORTVERSION=	20.1.20201217
 CATEGORIES=	deskutils
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${PORTNAME:tl}/releases/download/${PORTVERSION}/
 DISTNAME=	${PORTNAME:tl}-docker-${PORTVERSION}

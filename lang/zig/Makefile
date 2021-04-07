@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	zig
 DISTVERSION=	0.7.1
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	https://ziglang.org/download/${DISTVERSION}/ \
 		https://ziglang.org/builds/

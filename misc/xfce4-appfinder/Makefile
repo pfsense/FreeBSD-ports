@@ -1,8 +1,7 @@
 # Created by: Oliver Lehmann <oliver@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xfce4-appfinder
-PORTVERSION=	4.16.0
+PORTVERSION=	4.16.1
 CATEGORIES=	misc xfce
 MASTER_SITES=	XFCE
 DIST_SUBDIR=	xfce4

@@ -1,8 +1,7 @@
 # Created by: Nikola Lecic <nikola.lecic@anthesphoria.net>
-# $FreeBSD$
 
 PORTNAME=	ibus-m17n
-DISTVERSION=	1.4.3
+DISTVERSION=	1.4.4
 CATEGORIES=	textproc
 
 MAINTAINER=	yuri@FreeBSD.org

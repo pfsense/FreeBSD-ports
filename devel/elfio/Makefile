@@ -1,8 +1,7 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	elfio
-PORTVERSION=	3.6
+PORTVERSION=	3.8
 CATEGORIES=	devel
 MASTER_SITES=	SF/elfio/ELFIO-sources/ELFIO-${PORTVERSION}
 

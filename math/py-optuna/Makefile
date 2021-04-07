@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	optuna
-DISTVERSION=	2.3.0
+DISTVERSION=	2.6.0
 CATEGORIES=	math # machine-learning
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Hyperparameter optimization framework
 
 LICENSE=	MIT

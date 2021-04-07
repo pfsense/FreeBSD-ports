@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Selenium-Remote-Driver
 PORTVERSION=	1.37
 CATEGORIES=	www perl5

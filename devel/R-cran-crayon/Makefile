@@ -1,9 +1,7 @@
 # Created by: Pedro Giffuni
-# $FreeBSD$
 
 PORTNAME=	crayon
-DISTVERSION=	1.3.4
-PORTREVISION=	4
+DISTVERSION=	1.4.1
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

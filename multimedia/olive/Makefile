@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	olive
 DISTVERSION=	0.1.2
 CATEGORIES=	multimedia

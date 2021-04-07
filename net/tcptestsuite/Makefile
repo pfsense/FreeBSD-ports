@@ -1,10 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	tcptestsuite
-PORTVERSION=	0.0.2
+DISTVERSION=	g20210322
+PORTEPOCH=	1
 CATEGORIES=	net
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	gnn@FreeBSD.org
 COMMENT=	Network stack test suite
 
 LICENSE=	BSD2CLAUSE
@@ -14,14 +13,19 @@ RUN_DEPENDS=	packetdrill:net/packetdrill
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd-net
 GH_PROJECT=	tcp-testsuite
-GH_TAGNAME=	dcf5c31
+GH_TAGNAME=	30b7eb8
 
 NO_ARCH=	yes
 NO_BUILD=	yes
 
+_TEST_DIR=	${STAGEDIR}${PREFIX}/tests/${PORTNAME}
+
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/run-all-tests ${STAGEDIR}${PREFIX}/bin
 	(cd ${WRKSRC} && \
-		${COPYTREE_SHARE} "snd-syn socket-api rcv-icmp snippets state-event-engine" ${STAGEDIR}${DATADIR})
+		${COPYTREE_SHARE} "fast-open snd-syn socket-api rcv-data-segments rcv-icmp snippets state-event-engine" ${STAGEDIR}${DATADIR})
+	${MKDIR} ${_TEST_DIR}
+	${INSTALL_SCRIPT} ${FILESDIR}/tcptestsuite_atf_test ${_TEST_DIR}
+	${INSTALL_DATA} ${FILESDIR}/Kyuafile ${_TEST_DIR}
 
 .include <bsd.port.mk>

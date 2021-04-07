@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	netgen
-DISTVERSION=	1.5.161
+DISTVERSION=	1.5.173
 CATEGORIES=	cad
 PKGNAMESUFFIX=	-lvs
 
@@ -14,10 +12,12 @@ LICENSE_FILE=	${WRKSRC}/Copying
 RUN_DEPENDS=	bash:shells/bash
 
 USES=		gmake python:3.6+ shebangfix tar:tgz tcl tk xorg
+USE_XORG=	x11
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	RTimothyEdwards
+
 SHEBANG_FILES=	tcltk/netgen.sh.in
-USE_XORG=	x11
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	HAVE_PYTHON3=yes

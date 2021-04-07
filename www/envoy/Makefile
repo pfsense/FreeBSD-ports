@@ -1,10 +1,9 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	envoy
 PORTVERSION=	1.10.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	16
+PORTREVISION=	19
 CATEGORIES=	www
 
 MAINTAINER=	danfe@FreeBSD.org

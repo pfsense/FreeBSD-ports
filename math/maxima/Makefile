@@ -1,9 +1,8 @@
 # Created by: Scott Flatman <sf@dsinw.com>
-# $FreeBSD$
 
 PORTNAME=	maxima
 PORTVERSION=	5.44.0
-PORTREVISION=	8
+PORTREVISION=	11
 CATEGORIES=	math lisp tk
 MASTER_SITES=	SF/maxima/Maxima-source/${PORTVERSION}-source
 

@@ -1,5 +1,4 @@
 # Created by: truckman
-# $FreeBSD$
 
 PORTNAME=	chrootuid
 PORTVERSION=	1.3
@@ -9,7 +8,7 @@ MASTER_SITES=	ftp://ftp.porcupine.org/pub/security/ \
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Simple wrapper that combines chroot(8) and su(1) into  one  program
+COMMENT=	Simple wrapper that combines chroot(8) and su(1) into one program
 
 LICENSE=	MIT # MIT-like actually
 LICENSE_FILE=	${WRKSRC}/chrootuid_license

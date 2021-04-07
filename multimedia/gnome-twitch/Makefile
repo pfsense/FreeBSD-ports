@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gnome-twitch
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.4.1-155

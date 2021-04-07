@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	CHI
 PORTVERSION=	0.600
 CATEGORIES=	devel perl5

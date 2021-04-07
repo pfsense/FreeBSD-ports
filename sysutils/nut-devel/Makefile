@@ -1,5 +1,4 @@
 # Created by: Boris Popov <bp@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	nut
 PORTVERSION=	${NUT_COMMIT_DATE}
@@ -14,8 +13,8 @@ COMMENT=	Network UPS Tools
 
 USE_GITHUB=	yes
 GH_ACCOUNT=     networkupstools 
-GH_TAGNAME=     503f6eae
-NUT_COMMIT_DATE=	2020.11.30
+GH_TAGNAME=     03c3bbe8
+NUT_COMMIT_DATE=	2021.03.30
 
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

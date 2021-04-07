@@ -1,39 +1,37 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	frei0r
-PORTVERSION=	1.6.1
-DISTVERSIONPREFIX=	plugins-
+DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
-MASTER_SITES?=	https://files.dyne.org/frei0r/releases/
-
+DISTVERSION=	1.7.0-18
+DISTVERSIONSUFFIX=	-g86475d3
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT?=	Minimalistic plugin API for video effects
 
 .if !defined(BUILDING_FREI0R_METAPORT)
 
 LICENSE=	GPLv2+
-LICENSE_FILE=	${WRKSRC}/COPYING.txt
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake pkgconfig
+USES=		cmake compiler:c++11-lang pkgconfig
+USE_GITHUB=	yes
+GH_ACCOUNT=	dyne
 
 .if defined(BUILDING_FREI0R_OPENCV) && defined(BUILDING_FREI0R_GAVL)
 IGNORE=		cannot build OpenCV and gavl plugins simultaneously
 .endif
 
 .if defined(BUILDING_FREI0R_OPENCV) || defined(BUILDING_FREI0R_GAVL)
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-frei0r-plugins \
-		${PATCHDIR}/extra-patch-src_filter_facedetect_CMakeLists.txt \
-		${PATCHDIR}/extra-patch-src_filter_facebl0r_facebl0r.cpp
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-frei0r-plugins
 
 USES+=		localbase
 .endif
 
 .if defined(BUILDING_FREI0R_OPENCV)
-PORTREVISION=	1
+PORTREVISION=	0
 COMMENT=	Frei0r OpenCV plugins
 PKGNAMESUFFIX=	-plugins-opencv
-LIB_DEPENDS+=	libopencv_core.so:graphics/opencv-core \
+LIB_DEPENDS+=	libopencv_core.so:graphics/opencv \
 		libopencv_video.so:graphics/opencv
 FREI0R_PLUGINS=	facebl0r facedetect
 
@@ -66,6 +64,15 @@ PLIST_FILES+=	lib/frei0r-1/${FILE}.so
 . endfor
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+# work around regression seen in GCC 10 but not in GCC 9:
+# src/filter/elastic_scale/elastic_scale.cpp:152: error: ISO C++ forbids initialization of member 'm_transformationCalculations'
+CFLAGS+=	-Wno-error
+CXXFLAGS+=	-Wno-error
+.endif
+
+.include <bsd.port.post.mk>
 
 .endif # !defined(BUILDING_FREI0R_METAPORT)

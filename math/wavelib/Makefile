@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wavelib
 DISTVERSION=	g20200528
 CATEGORIES=	math

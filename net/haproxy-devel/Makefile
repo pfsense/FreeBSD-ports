@@ -1,8 +1,7 @@
 # Created by: Hugo Saro <hugo@barafranca.com>
-# $FreeBSD$
 
 PORTNAME=	haproxy
-DISTVERSION=	2.4-dev4
+DISTVERSION=	2.4-dev14
 CATEGORIES=	net www
 MASTER_SITES=	http://www.haproxy.org/download/2.4/src/devel/
 PKGNAMESUFFIX=	-devel

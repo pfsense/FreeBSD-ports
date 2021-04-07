@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pinocchio
 PORTVERSION=	0.4.2
 CATEGORIES=	devel python

@@ -1,9 +1,8 @@
 # Created by: Jun Kuriyama <kuriyama@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	magit
 PORTVERSION=	2.90.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel elisp
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${PORTVERSION}/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
@@ -26,6 +25,8 @@ RUN_DEPENDS=	dash.el${EMACS_PKGNAMESUFFIX}>=2.14.1:devel/dash.el@${EMACS_FLAVOR}
 		with-editor${EMACS_PKGNAMESUFFIX}>=2.8.0:editors/with-editor@${EMACS_FLAVOR}
 
 USES=		emacs gmake makeinfo
+
+CONFLICTS_INSTALL=	magit-devel-emacs*
 
 INFO=		magit
 PORTDOCS=	AUTHORS.md

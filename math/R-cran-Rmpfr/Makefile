@@ -1,8 +1,7 @@
 # Created by: Jukka A. Ukkonen <jau@iki.fi>
-# $FreeBSD$
 
 PORTNAME=	Rmpfr
-DISTVERSION=	0.8-2
+DISTVERSION=	0.8-3
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

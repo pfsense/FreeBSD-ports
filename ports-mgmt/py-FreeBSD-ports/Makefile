@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	FreeBSD-ports
 PORTVERSION=	0.0.9
 CATEGORIES=	ports-mgmt python

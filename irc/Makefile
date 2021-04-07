@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Internet Relay Chat utilities
 
     SUBDIR += anope
@@ -15,6 +12,7 @@
     SUBDIR += bitlbee-steam
     SUBDIR += bnc
     SUBDIR += bopm
+    SUBDIR += catgirl
     SUBDIR += cgiirc
     SUBDIR += ctrlproxy
     SUBDIR += cwirc

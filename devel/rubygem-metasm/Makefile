@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	metasm
 PORTVERSION=	1.0.4
 CATEGORIES=	devel rubygems

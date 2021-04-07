@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sphinxcontrib-jsmath
 PORTVERSION=	1.0.1
 CATEGORIES=	textproc python

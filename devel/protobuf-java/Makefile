@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	protobuf-java
 DISTVERSION=	3.11.1
 CATEGORIES=	devel java

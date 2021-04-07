@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	verboselogs
 PORTVERSION=	1.7
 CATEGORIES=	devel python

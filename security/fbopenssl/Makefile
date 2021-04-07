@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fbopenssl
 PORTVERSION=	0.0.4
 PORTREVISION=	1

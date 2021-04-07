@@ -1,5 +1,4 @@
 # Created by: alepulver
-# $FreeBSD$
 
 PORTNAME?=	mame
 PORTVERSION=	0.226
@@ -10,8 +9,8 @@ COMMENT=	Multi Arcade Machine Emulator
 
 LICENSE=	GPLv2
 
-ONLY_FOR_ARCHS=		amd64 i386 powerpc64
-ONLY_FOR_ARCHS_REASON=	not yet ported to any arch other than x86 and powerpc64
+ONLY_FOR_ARCHS=		amd64 i386 powerpc64 powerpc64le
+ONLY_FOR_ARCHS_REASON=	not yet ported to any arch other than x86 and powerpc64(le)
 
 LIB_DEPENDS=	libFLAC.so:audio/flac \
 		libexpat.so:textproc/expat2 \
@@ -61,7 +60,7 @@ MTARGET?=	mame
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == amd64 || ${ARCH} == powerpc64
+.if ${ARCH} == amd64 || ${ARCH:Mpowerpc64*}
 MAKE_ARGS+=	PTR64=1
 EMULATOR=	${MSUBTARGET}64
 .else

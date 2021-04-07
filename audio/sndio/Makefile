@@ -1,10 +1,9 @@
 # Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
 
 PORTNAME=	sndio
 PORTVERSION=	1.7.0
 CATEGORIES=	audio
-MASTER_SITES=	http://www.sndio.org/
+MASTER_SITES=	https://sndio.org/
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Small audio and MIDI framework from the OpenBSD project

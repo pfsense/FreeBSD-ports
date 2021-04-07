@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME?=	alpine
 DISTVERSION=	2.24
 CATEGORIES?=	mail news

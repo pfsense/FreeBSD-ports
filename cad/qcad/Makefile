@@ -1,8 +1,7 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	qcad
-PORTVERSION=	3.25.2.4
+PORTVERSION=	3.26.1.0
 #PORTREVISION=
 DISTVERSIONPREFIX=	v
 CATEGORIES=	cad
@@ -19,8 +18,6 @@ LICENSE=	GPLv3
 
 BUILD_DEPENDS=	bash:shells/bash	\
 		${LOCALBASE}/lib/libopenNURBS.a:graphics/opennurbs
-
-MAKE_JOBS_UNSAFE=yes
 
 USES=		compiler:c++11-lang gl gmake qmake qt:5
 USE_GITHUB=	yes
@@ -55,6 +52,18 @@ OPTIONS_DEFINE=	EXAMPLES
 CFLAGS_i386= -fPIC
 CXXFLAGS_i386= -fPIC
 LDFLAGS_i386= -Wl,-z,notext
+
+.include <bsd.port.options.mk>
+
+.if defined(WITH_DEBUG)
+ALL_TARGET=     debug
+PLIST_SUB+=     DEBUG_LIB_SUFFIX="_debug"
+RESDIR=         ${WRKSRC}/debug
+.else
+ALL_TARGET=     release
+PLIST_SUB+=     DEBUG_LIB_SUFFIX=""
+RESDIR=         ${WRKSRC}/release
+.endif
 
 pre-configure:
 	${MKDIR} ${WRKSRC}/src/3rdparty/qt-labs-qtscriptgenerator-${_QT_VERSION}

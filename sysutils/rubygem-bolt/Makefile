@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	bolt
-PORTVERSION=	2.40.2
-PORTREVISION=	1
+PORTVERSION=	3.4.0
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
@@ -15,6 +12,7 @@ RUN_DEPENDS=	r10k:sysutils/rubygem-r10k \
 		rubygem-addressable>=2.5:www/rubygem-addressable \
 		rubygem-aws-sdk-ec2>1:devel/rubygem-aws-sdk-ec2 \
 		rubygem-CFPropertyList>=2.2:devel/rubygem-CFPropertyList \
+		rubygem-ffi>=1.13:devel/rubygem-ffi \
 		rubygem-concurrent-ruby>=1.0:devel/rubygem-concurrent-ruby \
 		rubygem-hiera-eyaml>=3:sysutils/rubygem-hiera-eyaml \
 		rubygem-jwt>=2.2:www/rubygem-jwt \
@@ -22,7 +20,7 @@ RUN_DEPENDS=	r10k:sysutils/rubygem-r10k \
 		rubygem-net-scp>=1.2:security/rubygem-net-scp \
 		rubygem-net-ssh>=4.0:security/rubygem-net-ssh \
 		rubygem-net-ssh-krb>=0.5:security/rubygem-net-ssh-krb \
-		rubygem-orchestrator_client>=0.4:net/rubygem-orchestrator_client \
+		rubygem-orchestrator_client>=0.5:net/rubygem-orchestrator_client \
 		rubygem-paint>=2.2:devel/rubygem-paint \
 		rubygem-puppet-resource_api>=1.8.1:devel/rubygem-puppet-resource_api \
 		rubygem-puppet-strings>=2.3:textproc/rubygem-puppet-strings \
@@ -41,14 +39,12 @@ SHEBANG_FILES=	libexec/*
 PLIST_FILES=	bin/bolt
 
 OPTIONS_SINGLE= PUPPET
-OPTIONS_SINGLE_PUPPET=PUPPET5 PUPPET6 PUPPET7
-OPTIONS_DEFAULT=PUPPET6
+OPTIONS_SINGLE_PUPPET=PUPPET6 PUPPET7
+OPTIONS_DEFAULT=PUPPET7
 
-PUPPET5_DESC=   Depend on sysutils/puppet5
 PUPPET6_DESC=   Depend on sysutils/puppet6
 PUPPET7_DESC=   Depend on sysutils/puppet7
 
-PUPPET5_RUN_DEPENDS=puppet:sysutils/puppet5
 PUPPET6_RUN_DEPENDS=puppet:sysutils/puppet6
 PUPPET7_RUN_DEPENDS=puppet:sysutils/puppet7
 

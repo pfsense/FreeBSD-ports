@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fnord
 PORTVERSION=	1.11
 CATEGORIES=	www

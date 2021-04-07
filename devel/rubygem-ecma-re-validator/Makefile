@@ -1,5 +1,4 @@
 # Created by: Matthias Fechner <mfechner@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ecma-re-validator
 PORTVERSION=	0.2.1
@@ -7,7 +6,7 @@ CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	mfechner@FreeBSD.org
-COMMENT=	Regular expresionn validator against ECMA-262
+COMMENT=	Regular expression validator against ECMA-262
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

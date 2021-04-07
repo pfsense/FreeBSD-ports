@@ -1,10 +1,9 @@
 # Created by: cartola (Carlos E. G. Carvalho)
-# $FreeBSD$
 
 PORTNAME=	vigra
 DISTVERSIONPREFIX=v
 DISTVERSION=	1.11.1
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	graphics
 
 MAINTAINER=	ports@FreeBSD.org

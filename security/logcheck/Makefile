@@ -1,8 +1,7 @@
 # Created by: Dan Langille <dan@freebsddiary.org>
-# $FreeBSD$
 
 PORTNAME=	logcheck
-PORTVERSION=	1.3.20
+PORTVERSION=	1.3.22
 CATEGORIES=	security
 MASTER_SITES=	DEBIAN_POOL
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -32,9 +31,7 @@ RUNDIR=		${BASEDIR}/var/run/${PORTNAME}
 
 OPTIONS_DEFINE=	CRON DOCS EXAMPLES
 CRON_DESC=	Install cron script automatically
-.if !defined(BATCH)
 OPTIONS_DEFAULT=CRON
-.endif
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 BINMODE=	755

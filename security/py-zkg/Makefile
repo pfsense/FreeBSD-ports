@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	zkg
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2.1
-PORTREVISION=	1
+DISTVERSION=	2.7.1
 CATEGORIES=	security python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -20,11 +17,10 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}GitPython>=2.1.8:devel/py-gitpython@${PY_FLA
 		git:devel/git
 
 USES=		python:3.6+
-USE_PYTHON=	distutils autoplist concurrent
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	zeek
 GH_PROJECT=	package-manager
+USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
 

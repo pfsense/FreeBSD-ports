@@ -1,9 +1,7 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	libsemigroups
-PORTVERSION=	1.3.4
-PORTREVISION=	1
+PORTVERSION=	1.3.7
 DISTVERSIONPREFIX=	v
 CATEGORIES=	math
 

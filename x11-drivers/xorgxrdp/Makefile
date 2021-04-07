@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xorgxrdp
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.15
@@ -23,8 +21,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 
 GH_ACCOUNT=	neutrinolabs
-GH_PROJECT=	xrdp:xrdp
-GH_TAGNAME=	v0.9.15:xrdp
+GH_TUPLE=	neutrinolabs:xrdp:v0.9.15:xrdp
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 

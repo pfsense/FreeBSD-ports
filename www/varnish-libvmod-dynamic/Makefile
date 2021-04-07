@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libvmod-dynamic
 PORTVERSION=	20201026
 CATEGORIES=	www
@@ -10,6 +8,9 @@ COMMENT=	Varnish Module (vmod) for dynamic backends
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: objects
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: objects
 
 LIB_DEPENDS=	libgetdns.so:dns/getdns
 BUILD_DEPENDS=	rst2man:textproc/py-docutils@${PY_FLAVOR}

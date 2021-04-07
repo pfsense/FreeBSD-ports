@@ -1,5 +1,4 @@
 # Created by: alanp@unixpower.org
-# $FreeBSD$
 
 PORTNAME=	xaric
 PORTVERSION=	0.13.7
@@ -8,7 +7,7 @@ CATEGORIES=	irc
 MASTER_SITES=	http://xaric.org/software/xaric/releases/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	IRC Client similer to BitchX or ircII
+COMMENT=	IRC client similar to BitchX or ircII
 
 GNU_CONFIGURE=	yes
 USES=		gmake ncurses pathfix ssl

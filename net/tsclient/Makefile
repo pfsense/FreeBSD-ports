@@ -1,5 +1,4 @@
 # Created by: Koop Mast <einekoai@chello.nl>
-# $FreeBSD$
 
 PORTNAME=	tsclient
 PORTVERSION=	0.150
@@ -10,10 +9,13 @@ MASTER_SITES=	SF
 MAINTAINER=	ports@thepentagon.org
 COMMENT=	GNOME 2 frontend for rdesktop and vncviewer
 
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: gConnect
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: gConnect
+
 RUN_DEPENDS=	rdesktop:net/rdesktop
 
-USE_GNOME=	gtk20 intltool
 USES=		gettext gmake gnome libtool pathfix pkgconfig
+USE_GNOME=	gtk20 intltool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-gnome
 CPPFLAGS+=	-I${LOCALBASE}/include `pkg-config --cflags libgnomeui-2.0`

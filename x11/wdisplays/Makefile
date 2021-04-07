@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wdisplays
 DISTVERSION=	1.0
 PORTREVISION=	1

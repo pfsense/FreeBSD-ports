@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	benchmark
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.5.2

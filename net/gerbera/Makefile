@@ -1,15 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	gerbera
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.6.4
+DISTVERSION=	1.7.0
+PORTREVISION=	1
 CATEGORIES=	net multimedia
 
 MAINTAINER=	daniel.engberg.lists@pyret.net
 COMMENT=	Media server compatible with DLNA and UPnP
 
 LICENSE=	GPLv2
-LICENSE_FILE=   ${WRKSRC}/LICENSE.md
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 LIB_DEPENDS=	libfmt.so:devel/libfmt \
 		libspdlog.so:devel/spdlog \

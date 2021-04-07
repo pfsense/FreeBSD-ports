@@ -1,5 +1,4 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnome-screenshot
 PORTVERSION=	3.38.0
@@ -8,7 +7,7 @@ MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	GNOME 3 utility for making picutures of your screen
+COMMENT=	GNOME 3 utility for making pictures of your screen
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

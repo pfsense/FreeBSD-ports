@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 WANT_PGSQL_VER=	9.6
 
 INSTALL_DIRS=	src/pl/plpython contrib/hstore_plpython contrib/ltree_plpython

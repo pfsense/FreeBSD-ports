@@ -1,5 +1,4 @@
 # Created by: Masaki TAGAWA <masaki@club.kyutech.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	chrony
 DISTVERSION=	4.0
@@ -7,13 +6,15 @@ CATEGORIES=	net
 MASTER_SITES=	https://download.tuxfamily.org/chrony/ \
 		LOCAL/mandree
 
-MAINTAINER=	mandree@FreeBSD.org
-COMMENT=	System clock synchronization client and server
+MAINTAINER?=	mandree@FreeBSD.org
+COMMENT?=	System clock synchronization client and server
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		cpe gmake libedit pkgconfig
+
+CONFLICTS_INSTALL?=	chrony-lite
 
 CPE_VENDOR=	tuxfamily
 

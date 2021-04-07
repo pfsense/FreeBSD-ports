@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	SoapyPlutoSDR
 DISTVERSIONPREFIX=	soapy-plutosdr-
-DISTVERSION=	0.2.0
-PORTREVISION=	1
+DISTVERSION=	0.2.1
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	yuri@FreeBSD.org

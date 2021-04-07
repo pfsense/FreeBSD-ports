@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	vbsfilter
 PORTVERSION=	1.15
 PORTREVISION=	4

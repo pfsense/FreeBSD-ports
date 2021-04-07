@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	threema-web
 PORTVERSION=	2.3.7
 CATEGORIES=	www net-im

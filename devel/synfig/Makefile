@@ -1,10 +1,9 @@
 # Created by: Yinghong.Liu <relaxbsd@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	synfig
 PORTVERSION=	1.2.2
 DISTVERSIONPREFIX=v
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	devel graphics multimedia
 
 MAINTAINER=	woodsb02@FreeBSD.org

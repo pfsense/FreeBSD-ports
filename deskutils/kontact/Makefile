@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kontact
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	deskutils kde kde-applications
@@ -8,6 +6,9 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE Personal Information Manager
 
 LICENSE=	LGPL21
+
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
 
 USES=		cmake compiler:c++11-lib gettext kde:5 qt:5 tar:xz
 USE_KDE=	auth codecs completion config configwidgets coreaddons crash \
@@ -21,8 +22,6 @@ USE_QT=		concurrent core dbus declarative gui location network  \
 USE_LDCONFIG=	yes
 
 DESCR=		${.CURDIR:H:H}/deskutils/kdepim/pkg-descr
-
-
 
 OPTIONS_DEFINE=	DOCS
 

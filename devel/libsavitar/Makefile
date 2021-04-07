@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	libSavitar
 DISTVERSION=	4.5.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	devel cad
 DIST_SUBDIR=	Ultimaker
 

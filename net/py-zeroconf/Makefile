@@ -1,8 +1,7 @@
 # Created by: John Hixson <jhixson@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	zeroconf
-PORTVERSION=	0.28.5
+PORTVERSION=	0.28.8
 CATEGORIES=	net python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 

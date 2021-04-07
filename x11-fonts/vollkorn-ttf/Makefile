@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	vollkorn-ttf
 PORTVERSION=	4.105
 PORTREVISION=	1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DateTime-Event-Random
 PORTVERSION=	0.03
 PORTREVISION=	1

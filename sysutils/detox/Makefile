@@ -1,12 +1,11 @@
 # Created by: Doug Harple
-# $FreeBSD$
 
 PORTNAME=	detox
-PORTVERSION=	1.3.0
+PORTVERSION=	1.4.2
 DISTVERSIONPREFIX=v
 CATEGORIES=	sysutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	krion@FreeBSD.org
 COMMENT=	Removes non-standard characters from filenames
 
 LICENSE=	BSD3CLAUSE

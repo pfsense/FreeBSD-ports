@@ -1,8 +1,7 @@
 # Created by: marcus@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	poppler
-DISTVERSION=	20.12.1
+DISTVERSION=	21.03.0
 CATEGORIES=	graphics print
 MASTER_SITES=	https://poppler.freedesktop.org/
 
@@ -47,7 +46,7 @@ CMAKE_OFF+=	${_POPPLER_SLAVES:N${_SLAVE_PORT}:tu:S/^/ENABLE_/}
 PORTSCOUT=	limitw:1,even
 USES+=		iconv
 CMAKE_ON+=	ENABLE_CPP
-PLIST_SUB+=	SHLIB_VER=105
+PLIST_SUB+=	SHLIB_VER=108
 
 OPTIONS_DEFINE=		CURL OPENJPEG
 OPTIONS_DEFAULT=	OPENJPEG

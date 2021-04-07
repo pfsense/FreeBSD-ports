@@ -1,5 +1,4 @@
 # Created by: Pedro Giffuni
-# $FreeBSD$
 
 PORTNAME=	ccx
 PORTVERSION=	2.17
@@ -53,6 +52,11 @@ FFLAGS+=	-fPIC
 .else
 CFLAGS+=	-fpic
 FFLAGS+=	-fpic
+.endif
+
+.if ${GCC_DEFAULT} >= 10
+# workaround for Missing actual argument for argument '_formal_15' at (1)
+FFLAGS+=	-fallow-argument-mismatch
 .endif
 
 pre-build:

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libgrading
 PORTVERSION=	0.1.8
 PORTREVISION=	1

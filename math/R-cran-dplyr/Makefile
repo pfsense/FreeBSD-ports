@@ -1,8 +1,7 @@
 # Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dplyr
-DISTVERSION=	1.0.2
+DISTVERSION=	1.0.4
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

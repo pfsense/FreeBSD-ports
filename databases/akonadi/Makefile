@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	akonadi
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	databases kde kde-applications

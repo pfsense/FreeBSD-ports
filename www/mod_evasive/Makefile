@@ -1,11 +1,9 @@
 # Created by: Xavier Beaudouin <kiwi@oav.net>
-# $FreeBSD$
 
 PORTNAME=	mod_evasive
 PORTVERSION=	1.10.1
 PORTREVISION=	2
 CATEGORIES=	www security
-DISTNAME=	mod_evasive_${PORTVERSION}
 DIST_SUBDIR=	apache2
 
 MAINTAINER=	kiwi@oav.net

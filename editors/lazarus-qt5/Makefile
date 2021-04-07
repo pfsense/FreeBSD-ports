@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PKGNAMESUFFIX?=  -qt5
 
 COMMENT=	Portable Delphi-like IDE for the FreePascal compiler (QT5)

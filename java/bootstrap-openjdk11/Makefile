@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openjdk11
 PORTVERSION=	11.0.5.10.1
 CATEGORIES=	java devel

@@ -1,8 +1,7 @@
 # Created by: Devon H. O'Dell <devon.odell@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	go
-PORTVERSION?=	1.15.9
+PORTVERSION?=	1.16.3
 PORTREVISION?=	0
 PORTEPOCH?=	1
 CATEGORIES=	lang
@@ -46,11 +45,11 @@ EXTRACT_CMD=	${SETENV} LC_ALL=en_US.UTF-8 ${TAR}
 WRKSRC=		${WRKDIR}/go
 .endif
 
-OPTIONS_DEFINE_i386=	GO387
+OPTIONS_DEFINE_i386=	SOFTFLOAT
 
-GO387_DESC=	Do not generate code with SSE2 (for old x86 CPU)
+SOFTFLOAT_DESC=	Use soft float on non-SSE2 processors (Pentium 4 and older)
 
-GO387_VARS=	GO386=387
+SOFTFLOAT_VARS=	GO386=softfloat
 
 BINARIES=	go gofmt
 BOOTSTRAP_TAG=	go1.14

@@ -1,5 +1,4 @@
 # Created by: Joseph Koshy <jkoshy@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	racket
 PORTVERSION=	7.9
@@ -19,6 +18,9 @@ COMMENT=	Interactive, integrated, graphical Scheme programming environment
 LICENSE=	APACHE20 MIT
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+NOT_FOR_ARCHS=		riscv64
+NOT_FOR_ARCHS_REASON=	unsupported platform
 
 LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libffi.so:devel/libffi \

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gdt
 PORTVERSION=	4.0.4
 CATEGORIES=	cad

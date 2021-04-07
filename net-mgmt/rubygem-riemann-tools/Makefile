@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	riemann-tools
 DISTVERSION=	0.2.14
 CATEGORIES=	net-mgmt rubygems

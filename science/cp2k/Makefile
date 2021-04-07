@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cp2k
 DISTVERSIONPREFIX=	v
 DISTVERSION=	7.1.0-20200518
@@ -64,6 +62,10 @@ pre-configure:
 	  ${ECHO_MSG} "to be built and installed with the OPENMP option ON" ; \
 	  exit 1; \
 	fi
+.endif
+
+.if ${GCC_DEFAULT} >= 10
+BROKEN=		fails to build with GCC 10: Element of assumed-shape or pointer array as actual argument at (1) cannot correspond to actual argument at (2)
 .endif
 
 post-patch:

@@ -1,5 +1,4 @@
 # Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	redshift
 PORTVERSION=	1.12
@@ -11,7 +10,7 @@ PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 PATCHFILES+=	60f45972a543.patch:-p1 # avoid patch conflict
 PATCHFILES+=	7da875d34854.patch:-p1 # wayland, see #663
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Adjusts the color temperature of your screen
 
 LICENSE=	GPLv3

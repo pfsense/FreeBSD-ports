@@ -1,8 +1,8 @@
 # Created by: Patrick Li <pat@databits.net>
-# $FreeBSD$
 
 PORTNAME=	radvd
 PORTVERSION=	2.19
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://www.litech.org/radvd/dist/
 

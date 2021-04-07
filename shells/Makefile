@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Shells
 
     SUBDIR += 44bsd-csh
@@ -11,6 +8,7 @@
     SUBDIR += bash
     SUBDIR += bash-completion
     SUBDIR += bash-static
+    SUBDIR += bashc
     SUBDIR += bicon
     SUBDIR += ch
     SUBDIR += dash
@@ -30,6 +28,7 @@
     SUBDIR += ksh93
     SUBDIR += ksh93-devel
     SUBDIR += mksh
+    SUBDIR += modernish
     SUBDIR += nologinmsg
     SUBDIR += ohmyzsh
     SUBDIR += oksh
@@ -41,6 +40,7 @@
     SUBDIR += pear-PHP_Shell
     SUBDIR += psh
     SUBDIR += rc
+    SUBDIR += rubygem-shellwords
     SUBDIR += rush
     SUBDIR += sash
     SUBDIR += scponly

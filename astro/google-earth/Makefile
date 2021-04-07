@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	google-earth
 PORTVERSION=	7.1.7.2606
 PORTREVISION=	1

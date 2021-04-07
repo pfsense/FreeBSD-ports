@@ -1,5 +1,4 @@
 # Created by: MANTANI Nobutaka <nobutaka@nobutaka.com>
-# $FreeBSD$
 
 PORTNAME=	w3m
 PORTVERSION=	0.5.3.${SNAPDATE}
@@ -22,10 +21,10 @@ USE_GITHUB=	yes
 
 GH_ACCOUNT=	tats
 GH_PROJECT=	w3m
-GH_TAGNAME=	e4da76a
+GH_TAGNAME=	06f0cec
 
 MAKE_JOBS_UNSAFE=	yes
-SNAPDATE=	20201112
+SNAPDATE=	20210306
 
 CONFLICTS?=	ja-w3m-0.5.* ja-w3m-img-0.5.* w3m-img-0.5.*
 GNU_CONFIGURE=	yes

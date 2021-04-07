@@ -1,9 +1,8 @@
 # Created by: Edwin Groothuis <edwin@mavetju.org>
-# $FreeBSD$
 
 PORTNAME=	rpcalc
 PORTVERSION=	0.8.2
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 

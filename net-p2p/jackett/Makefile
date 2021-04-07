@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	jackett
-PORTVERSION=	0.16.2142
+PORTVERSION=	0.17.568
+PORTREVISION=	1
 CATEGORIES=	net-p2p
 MASTER_SITES=	https://github.com/Jackett/Jackett/releases/download/
 DISTNAME=	v${PORTVERSION}/Jackett.Binaries.Mono
@@ -13,23 +12,22 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
-RUN_DEPENDS=	mono>0:lang/mono
+
+USES=		mono
 
 USE_RC_SUBR=	jackett
 
-NO_BUILD=	YES
+NO_ARCH=	yes
+NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/Jackett
 
-USERS=	jackett
-GROUPS=	jackett
-
-.include <bsd.port.options.mk>
+USERS=		jackett
+GROUPS=		jackett
 
 post-patch:
 	@${RM} ${WRKSRC}/install_service_macos ${WRKSRC}/install_service_systemd.sh
 
 do-install:
-	${INSTALL} -d -m 755 ${STAGEDIR}/${DATADIR}
-	cd ${WRKSRC} && ${COPYTREE_SHARE} \* ${STAGEDIR}/${DATADIR}
+	cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}/${DATADIR}
 
 .include <bsd.port.mk>

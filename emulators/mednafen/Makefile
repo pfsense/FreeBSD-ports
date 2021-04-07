@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mednafen
 PORTVERSION=	1.26.1
 PORTEPOCH=	1

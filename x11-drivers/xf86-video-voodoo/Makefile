@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xf86-video-voodoo
 PORTVERSION=	1.2.5
 PORTREVISION=	11

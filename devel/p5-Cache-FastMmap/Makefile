@@ -1,8 +1,7 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	Cache-FastMmap
-PORTVERSION=	1.53
+PORTVERSION=	1.56
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN CPAN/Cache
 MASTER_SITE_SUBDIR=	CPAN:ROBM
@@ -13,6 +12,8 @@ COMMENT=	Uses an mmap'ed file to act as a shared memory interprocess cache #'
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+
+TEST_DEPENDS=	p5-Test-Deep>=0:devel/p5-Test-Deep
 
 USES=		perl5
 USE_PERL5=	configure

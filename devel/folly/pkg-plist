@@ -14,6 +14,7 @@ include/folly/CancellationToken.h
 include/folly/Chrono.h
 include/folly/ClockGettimeWrappers.h
 include/folly/ConcurrentBitSet.h
+include/folly/ConcurrentLazy.h
 include/folly/ConcurrentSkipList-inl.h
 include/folly/ConcurrentSkipList.h
 include/folly/ConstexprMath.h
@@ -140,6 +141,7 @@ include/folly/container/HeterogeneousAccess.h
 include/folly/container/Iterator.h
 include/folly/container/Merge.h
 include/folly/container/SparseByteSet.h
+include/folly/container/View.h
 include/folly/container/detail/BitIteratorDetail.h
 include/folly/container/detail/F14Defaults.h
 include/folly/container/detail/F14IntrinsicsAvailability.h
@@ -155,9 +157,9 @@ include/folly/detail/AsyncTrace.h
 include/folly/detail/AtFork.h
 include/folly/detail/AtomicHashUtils.h
 include/folly/detail/AtomicUnorderedMapUtils.h
-include/folly/detail/Demangle.h
 include/folly/detail/DiscriminatedPtrDetail.h
 include/folly/detail/FileUtilDetail.h
+include/folly/detail/FileUtilVectorDetail.h
 include/folly/detail/FingerprintPolynomial.h
 include/folly/detail/Futex-inl.h
 include/folly/detail/Futex.h
@@ -268,12 +270,14 @@ include/folly/experimental/coro/Accumulate.h
 include/folly/experimental/coro/AsyncGenerator.h
 include/folly/experimental/coro/AsyncPipe.h
 include/folly/experimental/coro/AsyncScope.h
+include/folly/experimental/coro/AsyncStack.h
 include/folly/experimental/coro/Baton.h
 include/folly/experimental/coro/BlockingWait.h
 include/folly/experimental/coro/Collect-inl.h
 include/folly/experimental/coro/Collect.h
 include/folly/experimental/coro/Concat-inl.h
 include/folly/experimental/coro/Concat.h
+include/folly/experimental/coro/Coroutine.h
 include/folly/experimental/coro/CurrentExecutor.h
 include/folly/experimental/coro/Dematerialize-inl.h
 include/folly/experimental/coro/Dematerialize.h
@@ -294,6 +298,7 @@ include/folly/experimental/coro/Multiplex.h
 include/folly/experimental/coro/Mutex.h
 include/folly/experimental/coro/Result.h
 include/folly/experimental/coro/Retry.h
+include/folly/experimental/coro/RustAdaptors.h
 include/folly/experimental/coro/SharedLock.h
 include/folly/experimental/coro/SharedMutex.h
 include/folly/experimental/coro/Sleep-inl.h
@@ -306,7 +311,6 @@ include/folly/experimental/coro/Traits.h
 include/folly/experimental/coro/Transform-inl.h
 include/folly/experimental/coro/Transform.h
 include/folly/experimental/coro/UnboundedQueue.h
-include/folly/experimental/coro/Utils.h
 include/folly/experimental/coro/ViaIfAsync.h
 include/folly/experimental/coro/Wait.h
 include/folly/experimental/coro/WithAsyncStack.h
@@ -519,6 +523,8 @@ include/folly/io/async/test/TestSSLServer.h
 include/folly/io/async/test/TimeUtil.h
 include/folly/io/async/test/UndelayedDestruction.h
 include/folly/io/async/test/Util.h
+include/folly/io/coro/ServerSocket.h
+include/folly/io/coro/Transport.h
 include/folly/json.h
 include/folly/json_patch.h
 include/folly/json_pointer.h
@@ -534,6 +540,7 @@ include/folly/lang/Cast.h
 include/folly/lang/CheckedMath.h
 include/folly/lang/CustomizationPoint.h
 include/folly/lang/Exception.h
+include/folly/lang/Extern.h
 include/folly/lang/Keep.h
 include/folly/lang/Launder.h
 include/folly/lang/Ordering.h
@@ -542,6 +549,8 @@ include/folly/lang/PropagateConst.h
 include/folly/lang/RValueReferenceWrapper.h
 include/folly/lang/SafeAssert.h
 include/folly/lang/StaticConst.h
+include/folly/lang/Thunk.h
+include/folly/lang/ToAscii.h
 include/folly/lang/TypeInfo.h
 include/folly/lang/UncaughtExceptions.h
 include/folly/logging/AsyncFileWriter.h
@@ -590,6 +599,7 @@ include/folly/memory/detail/MallocImpl.h
 include/folly/memory/not_null-inl.h
 include/folly/memory/not_null.h
 include/folly/net/NetOps.h
+include/folly/net/NetOpsDispatcher.h
 include/folly/net/NetworkSocket.h
 include/folly/net/detail/SocketFileDescriptorMap.h
 include/folly/poly/Nullable.h
@@ -602,6 +612,8 @@ include/folly/portability/Constexpr.h
 include/folly/portability/Dirent.h
 include/folly/portability/Event.h
 include/folly/portability/Fcntl.h
+include/folly/portability/Filesystem.h
+include/folly/portability/FmtCompile.h
 include/folly/portability/GFlags.h
 include/folly/portability/GMock.h
 include/folly/portability/GTest.h
@@ -658,6 +670,7 @@ include/folly/stats/MultiLevelTimeSeries-inl.h
 include/folly/stats/MultiLevelTimeSeries.h
 include/folly/stats/QuantileEstimator-inl.h
 include/folly/stats/QuantileEstimator.h
+include/folly/stats/StreamingStats.h
 include/folly/stats/TDigest.h
 include/folly/stats/TimeseriesHistogram-inl.h
 include/folly/stats/TimeseriesHistogram.h
@@ -679,6 +692,7 @@ include/folly/synchronization/AtomicUtil-inl.h
 include/folly/synchronization/AtomicUtil.h
 include/folly/synchronization/Baton.h
 include/folly/synchronization/CallOnce.h
+include/folly/synchronization/DelayedInit.h
 include/folly/synchronization/DistributedMutex-inl.h
 include/folly/synchronization/DistributedMutex.h
 include/folly/synchronization/DistributedMutexSpecializations.h

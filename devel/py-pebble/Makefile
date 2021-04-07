@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pebble
-PORTVERSION=	4.5.3
+PORTVERSION=	4.6.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,8 +12,6 @@ COMMENT=	Threading and multiprocessing eye-candy
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-RUN_DEPENDS=	${PY_FUTURES}
 
 USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils

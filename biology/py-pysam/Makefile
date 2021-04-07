@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pysam
 DISTVERSION=	0.16.0.1
 CATEGORIES=	biology python

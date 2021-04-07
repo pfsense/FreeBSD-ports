@@ -1,5 +1,4 @@
 # Created by: Matthias Fechner <mfechner@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jsonpath
 PORTVERSION=	1.0.6
@@ -7,7 +6,7 @@ CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	mfechner@FreeBSD.org
-COMMENT=	JsonPath is a way of addressing elements within a JSON object
+COMMENT=	Way of addressing elements within a JSON object
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

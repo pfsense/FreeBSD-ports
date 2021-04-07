@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	markdownpart
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	textproc kde kde-applications

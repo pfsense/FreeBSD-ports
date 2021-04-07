@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pyfaidx
 DISTVERSION=	0.5.9.2
 CATEGORIES=	biology python

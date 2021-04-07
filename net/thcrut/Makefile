@@ -1,5 +1,4 @@
 # Created by: Kris Kennaway <kris@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	thcrut
 PORTVERSION=	1.2.5
@@ -9,6 +8,9 @@ MASTER_SITES=	http://thc.org/releases/ \
 
 MAINTAINER=	lx@FreeBSD.org
 COMMENT=	Local network discovery tool
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: ip_tcp_sync_addr
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: ip_tcp_sync_addr
 
 GNU_CONFIGURE=	yes
 

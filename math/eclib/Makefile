@@ -1,10 +1,7 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	eclib
-PORTVERSION=	20190909
-PORTREVISION=	2
-DISTVERSIONPREFIX=	v
+PORTVERSION=	20210318
 CATEGORIES=	math
 
 MAINTAINER=	thierry@FreeBSD.org

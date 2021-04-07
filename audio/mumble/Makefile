@@ -1,9 +1,8 @@
 # Created by: marius nuennerich
-# $FreeBSD$
 
 PORTNAME=	mumble
 PORTVERSION=	1.3.3
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	feld@FreeBSD.org

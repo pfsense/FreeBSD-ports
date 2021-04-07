@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	vvdec
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.2.0
+DISTVERSION=	1.0.0
 CATEGORIES=	multimedia python
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -21,5 +19,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	fraunhoferhhi
 
 CMAKE_ON=	BUILD_SHARED_LIBS
+CMAKE_OFF=	FREEBSD_VVDEC_ENABLE_X86_SIMD
+
+BROKEN_FreeBSD_11=	/usr/bin/ld: unrecognized option '-plugin'
 
 .include <bsd.port.mk>

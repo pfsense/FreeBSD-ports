@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	debtcollector
 PORTVERSION=	1.20.0
 CATEGORIES=	devel python

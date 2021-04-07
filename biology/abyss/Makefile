@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	abyss
 DISTVERSION=	2.2.5
 CATEGORIES=	biology
@@ -33,5 +31,7 @@ CONFIGURE_ARGS=	--without-sparsehash # configure fails to find std::hash, report
 OPTIONS_DEFINE=	DOCS
 
 PORTDOCS=	*
+
+PORTSCOUT=	limit:^[0-9\.]*$$ # to ignore alpha-numeric tags
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bugzilla
 PORTVERSION=	5.0.2
 CATEGORIES=	japanese

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jdcal
 PORTVERSION=	1.4.1
 CATEGORIES=	devel python

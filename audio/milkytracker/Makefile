@@ -1,5 +1,4 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	milkytracker
 PORTVERSION=	1.03.00
@@ -26,6 +25,9 @@ GH_PROJECT=	MilkyTracker
 ICONS=		carton.ico carton.png
 
 OPTIONS_DEFINE=	DOCS
+
+# ci pipeline creates transient tags
+PORTSCOUT=	ignore:1
 
 post-install:
 .for f in ${ICONS}

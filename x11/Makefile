@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Ports to support the X window system
 
     SUBDIR += 3ddesktop
@@ -90,6 +87,7 @@
     SUBDIR += grabc
     SUBDIR += grim
     SUBDIR += gromit
+    SUBDIR += gromit-mpx
     SUBDIR += gskrab
     SUBDIR += gstreamer1-plugins-x
     SUBDIR += gstreamer1-plugins-ximagesrc
@@ -176,6 +174,7 @@
     SUBDIR += libsynaptics
     SUBDIR += libwacom
     SUBDIR += libxcb
+    SUBDIR += libxcvt
     SUBDIR += libxdg-basedir
     SUBDIR += libxfce4menu
     SUBDIR += libxfce4util
@@ -233,6 +232,7 @@
     SUBDIR += mrxvt
     SUBDIR += mrxvt-devel
     SUBDIR += multi-aterm
+    SUBDIR += mxascii
     SUBDIR += mxico
     SUBDIR += nezd
     SUBDIR += numlockx
@@ -292,6 +292,7 @@
     SUBDIR += rofi
     SUBDIR += rofi-calc
     SUBDIR += rofi-pass
+    SUBDIR += rofi-wayland
     SUBDIR += roxterm
     SUBDIR += rsibreak
     SUBDIR += rubygem-gnome
@@ -299,6 +300,7 @@
     SUBDIR += sakura
     SUBDIR += sbxkb
     SUBDIR += screen-message
+    SUBDIR += screengrab
     SUBDIR += screenkey
     SUBDIR += scripts
     SUBDIR += sddm
@@ -314,6 +316,7 @@
     SUBDIR += slop
     SUBDIR += slurp
     SUBDIR += smproxy
+    SUBDIR += sprop
     SUBDIR += squeekboard
     SUBDIR += sselp
     SUBDIR += stalonetray
@@ -340,6 +343,7 @@
     SUBDIR += tint
     SUBDIR += trayer
     SUBDIR += tycoon
+    SUBDIR += ulauncher
     SUBDIR += urxvt-font-size
     SUBDIR += urxvt-perls
     SUBDIR += vdesk
@@ -436,7 +440,6 @@
     SUBDIR += xfce4-clipman-plugin
     SUBDIR += xfce4-conf
     SUBDIR += xfce4-dashboard
-    SUBDIR += xfce4-embed-plugin
     SUBDIR += xfce4-goodies
     SUBDIR += xfce4-screensaver
     SUBDIR += xfce4-screenshooter-plugin
@@ -517,6 +520,7 @@
     SUBDIR += xskyroot
     SUBDIR += xsm
     SUBDIR += xsnow
+    SUBDIR += xssstate
     SUBDIR += xstarroll
     SUBDIR += xstdcmap
     SUBDIR += xstroke

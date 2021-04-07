@@ -1,9 +1,5 @@
-# $FreeBSD$
-#
-
     COMMENT = Programming languages
 
-    SUBDIR += Gofer
     SUBDIR += J
     SUBDIR += abcl
     SUBDIR += adacontrol
@@ -69,6 +65,7 @@
     SUBDIR += expect
     SUBDIR += f2c
     SUBDIR += fasm
+    SUBDIR += fennel
     SUBDIR += ferite
     SUBDIR += ficl
     SUBDIR += fpc
@@ -105,6 +102,7 @@
     SUBDIR += gforth
     SUBDIR += ghc
     SUBDIR += gjs
+    SUBDIR += gleam
     SUBDIR += gnat_util
     SUBDIR += gnatcross-binutils-aarch64
     SUBDIR += gnatcross-sysroot-aarch64
@@ -126,7 +124,6 @@
     SUBDIR += guile1
     SUBDIR += guile2
     SUBDIR += halide
-    SUBDIR += harbour
     SUBDIR += haskell-mode.el
     SUBDIR += hermes
     SUBDIR += hla
@@ -176,6 +173,7 @@
     SUBDIR += maude
     SUBDIR += mawk
     SUBDIR += mdk
+    SUBDIR += mecrisp-stellaris
     SUBDIR += micropython
     SUBDIR += mit-scheme
     SUBDIR += mixal
@@ -302,7 +300,6 @@
     SUBDIR += rexx-regutil
     SUBDIR += rexx-wrapper
     SUBDIR += rhino
-    SUBDIR += ruby25
     SUBDIR += ruby26
     SUBDIR += ruby27
     SUBDIR += ruby30
@@ -327,6 +324,7 @@
     SUBDIR += sketchy
     SUBDIR += slib
     SUBDIR += slib-guile
+    SUBDIR += slib-guile1
     SUBDIR += slib-guile2
     SUBDIR += slisp
     SUBDIR += smalltalk
@@ -335,7 +333,6 @@
     SUBDIR += solidity
     SUBDIR += spidermonkey17
     SUBDIR += spidermonkey185
-    SUBDIR += spidermonkey52
     SUBDIR += spidermonkey60
     SUBDIR += spidermonkey78
     SUBDIR += spl

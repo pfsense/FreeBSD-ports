@@ -1,9 +1,8 @@
 # Created by: bart <lbartoletti@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pdal
 DISTVERSION=	2.2.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math databases graphics
 
 MAINTAINER=	lbartoletti@FreeBSD.org

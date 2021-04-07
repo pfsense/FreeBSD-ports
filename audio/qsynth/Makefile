@@ -1,12 +1,11 @@
 # Created by: lazyklimm <lazyklimm@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	qsynth
-PORTVERSION=	0.6.3
+PORTVERSION=	0.9.2
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	adridg@FreeBSD.org
 COMMENT=	Qt fluidsynth front-end application
 
 LICENSE=	GPLv2+

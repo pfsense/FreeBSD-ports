@@ -1,14 +1,15 @@
 # Created by: Andrew <andrew@ugh.net.au>, Iain Templeton <iain@ugh.net.au>
-# $FreeBSD$
 
 PORTNAME=	doinkd
-PORTVERSION=	0.01
-PORTREVISION=	6
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.02
 CATEGORIES=	sysutils
-MASTER_SITES=	SF/idled/${PORTNAME}/${PORTVERSION}/
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Daemon that logs out idle users and those users hogging resources
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	cschuber
 
 LICENSE=	GPLv2
 

@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Benchmarking tools
 
     SUBDIR += ali

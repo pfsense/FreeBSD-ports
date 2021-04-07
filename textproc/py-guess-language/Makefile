@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	guess-language
 PORTVERSION=	0.2
 CATEGORIES=	textproc python

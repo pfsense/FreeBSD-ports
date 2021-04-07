@@ -1,9 +1,8 @@
 # Created by: Kyle Martin <mkm@ieee.org>
-# $FreeBSD$
 
 PORTNAME=	cmake
 # Remember to update devel/cmake-doc and devel/cmake-gui as well.
-DISTVERSION=	3.19.2
+DISTVERSION=	3.19.6
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/Kitware/CMake/releases/download/v${DISTVERSION}/ \
 		https://www.cmake.org/files/v${PORTVERSION}/

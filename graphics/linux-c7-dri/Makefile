@@ -1,10 +1,9 @@
 # Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
 
 PORTNAME=	dri
 PORTVERSION=	18.3.4
-DISTVERSIONSUFFIX=	-7.el7_8.1
-PORTREVISION=	3
+DISTVERSIONSUFFIX=	-12.el7_9
+PORTREVISION=	4
 CATEGORIES=	graphics linux
 
 MAINTAINER=	emulation@FreeBSD.org

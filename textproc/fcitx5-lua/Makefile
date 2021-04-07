@@ -1,8 +1,7 @@
 # Created by: Ka Ho Ng <khng300@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fcitx5-lua
-DISTVERSION=	5.0.1
+DISTVERSION=	5.0.2
 CATEGORIES=	textproc
 
 MAINTAINER=	khng300@gmail.com

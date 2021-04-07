@@ -1,9 +1,7 @@
 # Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	highlight
-PORTVERSION=	3.43
-PORTREVISION=	8
+PORTVERSION=	4.0
 PORTEPOCH=	3
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.andre-simon.de/zip/
@@ -27,18 +25,10 @@ PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 
-post-patch:
-	@${REINPLACE_CMD} \
-		-e 's|^PREFIX =|PREFIX ?=|' \
-		-e 's|^conf_dir =.*|conf_dir = $${PREFIX}/etc/highlight/|' \
-		${WRKSRC}/${MAKEFILE}
-	@${REINPLACE_CMD} -e 's|^CXX=|CXX?=|' \
-		-e 's|%%LOCALBASE%%|${LOCALBASE}|' \
-		${WRKSRC}/src/${MAKEFILE}
-
 post-install:
-	@cd ${STAGEDIR}${PREFIX}/etc/highlight && ${MV} filetypes.conf \
-		filetypes.conf.sample
+.for cfg in filetypes lsp
+	@cd ${STAGEDIR}${ETCDIR} && ${MV} ${cfg}.conf ${cfg}.conf.sample
+.endfor
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/highlight
 
 .include <bsd.port.mk>

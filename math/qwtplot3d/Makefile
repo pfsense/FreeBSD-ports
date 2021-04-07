@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qwtplot3d
 PORTVERSION=	0.2.7
 PORTREVISION=	2

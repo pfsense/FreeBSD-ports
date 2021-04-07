@@ -1,9 +1,8 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	nagstamon
 PORTVERSION=	3.4.1
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	net-mgmt python
 MASTER_SITES=	https://nagstamon.ifw-dresden.de/files/stable/ \
 		LOCAL/ehaupt
@@ -22,12 +21,12 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4.2.1:www/py-beautifulsoup@${
 		${PYTHON_PKGNAMEPREFIX}psutil>0:sysutils/py-psutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests-kerberos>0:security/py-requests-kerberos@${PY_FLAVOR}
 
-USES=		cpe python:3.6+ pyqt:5
-USE_PYTHON=	autoplist distutils noflavors
+USES=		cpe pyqt:5 python:3.6+
+CPE_VENDOR=	henri_wahl
 USE_PYQT=	core_run dbus_run gui_run multimedia_run network_run sip_run \
 		svg_run widgets_run
+USE_PYTHON=	autoplist distutils noflavors
 
-CPE_VENDOR=	henri_wahl
 NO_ARCH=	yes
 
 WRKSRC=		${WRKDIR}/Nagstamon

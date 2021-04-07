@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kmailtransport
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	net kde kde-applications
@@ -8,6 +6,9 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE library to managing mail transport
 
 LICENSE=	LGPL21
+
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
 
 LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	checkbashisms
 DISTVERSION=	2.19.6
 CATEGORIES=	devel perl5

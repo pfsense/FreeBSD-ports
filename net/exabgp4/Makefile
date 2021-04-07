@@ -1,5 +1,4 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	exabgp
 PORTVERSION=	4.2.11
@@ -14,8 +13,6 @@ COMMENT=	BGP engine and route injector
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENCE.txt
-
-RUN_DEPENDS=	${PY_IPADDRESS}
 
 USES=		python:3.6+ shebangfix
 USE_PYTHON=	distutils autoplist

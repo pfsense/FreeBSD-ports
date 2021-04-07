@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	printsupport
 DISTVERSION=	${QT5_VERSION}
 PORTREVISION=	1

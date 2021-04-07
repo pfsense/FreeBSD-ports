@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pixeltool
 DISTVERSION=	${QT5_VERSION}
 CATEGORIES=	graphics

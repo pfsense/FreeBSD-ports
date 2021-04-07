@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rtaudio
 DISTVERSION=	5.1.0
 PORTREVISION=	1

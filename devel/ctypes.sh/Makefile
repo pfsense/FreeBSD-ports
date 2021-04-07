@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ctypes.sh
 PORTVERSION=	1.2
 CATEGORIES=	devel

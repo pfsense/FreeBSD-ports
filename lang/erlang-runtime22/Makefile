@@ -1,9 +1,8 @@
 # Created by: ruslan@shevchenko.kiev.ua
-# $FreeBSD$
 
 PORTNAME=	erlang
 DISTVERSIONPREFIX=	OTP-
-DISTVERSION=	22.3.4.13
+DISTVERSION=	22.3.4.16
 CATEGORIES=	lang parallel java
 PKGNAMESUFFIX=	-runtime22
 DIST_SUBDIR=	erlang

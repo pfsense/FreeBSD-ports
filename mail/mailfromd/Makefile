@@ -1,8 +1,7 @@
 # Created by: Zeus Panchenko <zeus@gnu.org.ua>
-# $FreeBSD$
 
 PORTNAME=	mailfromd
-PORTVERSION=	8.9
+PORTVERSION=	8.10
 CATEGORIES=	mail
 MASTER_SITES=	http://download.gnu.org.ua/pub/release/${PORTNAME}/ \
 		http://download.gnu.org.ua/pub/alpha/${PORTNAME}/
@@ -14,7 +13,9 @@ LICENSE=	GPLv3+
 
 LIB_DEPENDS=	libmailutils.so:mail/mailutils \
 		libadns.so:dns/adns \
-		libgnutls.so:security/gnutls
+		libgmp.so:math/gmp \
+		libgnutls.so:security/gnutls \
+		libnettle.so:security/nettle
 
 USES=		gmake localbase readline tar:xz
 GNU_CONFIGURE=	yes

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rbibutils
 PORTVERSION=	2.0
 CATEGORIES=	textproc

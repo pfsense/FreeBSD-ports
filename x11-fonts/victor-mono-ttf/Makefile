@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	victor-mono
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.4.2
@@ -8,7 +6,7 @@ MASTER_SITES=	https://github.com/rubjo/victor-mono/raw/${DISTVERSIONFULL}/public
 PKGNAMESUFFIX=	-ttf
 DISTNAME=	VictorMonoAll
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Programming font with cursive italics and ligatures
 
 LICENSE=	MIT

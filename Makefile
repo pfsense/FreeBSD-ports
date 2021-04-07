@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
 SUBDIR += accessibility
 SUBDIR += arabic
 SUBDIR += archivers

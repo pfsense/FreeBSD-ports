@@ -1,9 +1,8 @@
 # Created by: Pedro Giffuni
-# $FreeBSD$
 
 PORTNAME=	mumps
 DISTVERSION=	5.1.2-aster7
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math
 PKGNAMESUFFIX=	-edf
 
@@ -28,23 +27,28 @@ MUMPSVERSION=	${PORTVERSION:R}
 LIBS=	cmumps dmumps mumps_common pord smumps zmumps
 PLIST_SUB=	VE=${VEM} MUMPSVERSION=${MUMPSVERSION}
 
-OPTIONS_DEFINE=	DOCS EXAMPLES MPI
+OPTIONS_DEFINE=	DOCS EXAMPLES MPICH
 
-MPI_LIB_DEPENDS_OFF=	libscotch.so:cad/scotch
-MPI_LIB_DEPENDS=	libmpi.so:net/mpich		\
-			libparmetis.so:math/parmetis	\
+MPICH_USES=		mpi:mpich
+MPICH_LIB_DEPENDS_OFF=	libscotch.so:cad/scotch
+MPICH_LIB_DEPENDS=	libparmetis.so:math/parmetis	\
 			libptscotch.so:cad/scotch	\
 			libscalapack.so:math/scalapack
-MPI_PLIST_SUB=		WITH_LIBSEQ="@comment "
-MPI_PLIST_SUB_OFF=	WITH_LIBSEQ=""
-MPI_LIBS_OFF=		mpiseq
+MPICH_PLIST_SUB=	WITH_LIBSEQ="@comment "
+MPICH_PLIST_SUB_OFF=	WITH_LIBSEQ=""
+MPICH_LIBS_OFF=		mpiseq
 
 MAKE_JOBS_UNSAFE=yes
 
 .include <bsd.port.pre.mk>
 .include "${.CURDIR}/../../french/aster/bsd.aster.mk"
 
-.ifdef WITH_MPI
+.if ${GCC_DEFAULT} >= 10
+# workaround for Type mismatch in argument 's' at (1); passed INTEGER(4) to LOGICAL(4)
+FCFLAGS+=	-fallow-argument-mismatch
+.endif
+
+.ifdef WITH_MPICH
 PKGNAMESUFFIX+=		-mpich
 .endif
 
@@ -52,11 +56,11 @@ PKGNAMESUFFIX+=		-mpich
 FCFLAGS+=	-fallow-argument-mismatch
 .endif
 
-post-patch-MPI-on:
+post-patch-MPICH-on:
 	${INSTALL_DATA} ${WRKSRC}/Make.inc/Makefile.FREEBSD10.PAR \
 		${WRKSRC}/Makefile.inc
 
-post-patch-MPI-off:
+post-patch-MPICH-off:
 	${INSTALL_DATA} ${WRKSRC}/Make.inc/Makefile.FREEBSD10.SEQ \
 		${WRKSRC}/Makefile.inc
 
@@ -75,12 +79,13 @@ pre-configure:
 	s+@LOCALBASE@+${LOCALBASE}+g;' \
 		${WRKSRC}/${MF}
 .endfor
-.ifdef WITH_MPI
+
+pre-configure-MPICH-on:
 	${REINPLACE_CMD} -e '/lptscotch/s|#LSCOTCH|LSCOTCH|'	\
 		-e 's|^LMETIS|##LMETIS|;s|^#LMETIS|LMETIS|' ${WRKSRC}/Makefile.inc
-.else
+
+pre-configure-MPICH-off:
 	${REINPLACE_CMD} -e '/lscotch/s|#LSCOTCH|LSCOTCH|' ${WRKSRC}/Makefile.inc
-.endif
 
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/include/*.h ${STAGEDIR}${PREFIX}/include
@@ -100,7 +105,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/examples/${ex} ${STAGEDIR}${EXAMPLESDIR}
 .endfor
 
-do-install-MPI-off:
+do-install-MPICH-off:
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/mumps_seq
 	${INSTALL_DATA} ${WRKSRC}/libseq/mpi.h ${STAGEDIR}${PREFIX}/include/mumps_seq/mpi.h
 	${INSTALL_DATA} ${WRKSRC}/libseq/libmpiseq.a ${STAGEDIR}${PREFIX}/lib
@@ -112,8 +117,8 @@ do-install-MPI-off:
 . endfor
 .endfor
 
-regression-test:	install
-.if defined (WITH_MPI) && defined(MAINTAINER_MODE)
+test:	install
+.if defined (WITH_MPICH) && defined(MAINTAINER_MODE)
 .  if !exists(${HOME}/.mpd.conf)
 	@${ECHO_CMD} "MPD_SECRETWORD=change_on_install" > ${HOME}/.mpd.conf
 	${CHMOD} go-r ${HOME}/.mpd.conf

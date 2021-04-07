@@ -1,15 +1,11 @@
 # Created by: Frerich Raabe <frerich.raabe@gmx.de>
-# $FreeBSD$
 #   $MCom: ports/devel/distcc/Makefile,v 1.3 2007/10/21 02:46:13 ahze Exp $
 
 PORTNAME=	distcc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.3.3
-PORTREVISION=	2
+DISTVERSION=	3.3.5
+PORTREVISION=	0
 CATEGORIES=	devel
-
-PATCH_SITES=	https://github.com/distcc/distcc/commit/
-PATCHFILES=	307f6cfe58ff3fb7e4b3ef1044a5dfc2006f95f5.patch:-p1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Distribute compilation of C(++) code across machines on a network

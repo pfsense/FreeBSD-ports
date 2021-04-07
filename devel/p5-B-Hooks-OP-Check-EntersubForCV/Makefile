@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	B-Hooks-OP-Check-EntersubForCV
 PORTVERSION=	0.09
 PORTREVISION=	1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	misc
 
 MASTERDIR=	${.CURDIR}/../../lang/php73

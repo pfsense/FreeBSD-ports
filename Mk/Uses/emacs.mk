@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # Provide support for ports requiring Emacs.  This includes flavors with proper
 # dependencies and useful variables.
 #
@@ -106,7 +104,7 @@ EMACS_FLAVOR=	full
 EMACS_VER=			28.0.50
 EMACS_PORTDIR=		editors/emacs-devel
 .else
-EMACS_VER=		27.1
+EMACS_VER=		27.2
 EMACS_PORTDIR=		editors/emacs
 .endif
 

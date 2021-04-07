@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	multimc
 DISTVERSION=	0.6.11
 CATEGORIES=	games java

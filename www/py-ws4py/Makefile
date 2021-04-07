@@ -1,10 +1,9 @@
 # Created by: rene@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	ws4py
 PORTVERSION=	0.3.4
 CATEGORIES=	www python
-MASTER_SITES=	http://www.defuze.org/oss/${PORTNAME}/
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	wg@FreeBSD.org

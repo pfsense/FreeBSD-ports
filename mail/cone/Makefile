@@ -1,8 +1,8 @@
 # Created by: Matthias Andree <matthias.andree@gmx.de>
-# $FreeBSD$
 
 PORTNAME=	cone
 PORTVERSION=	1.1
+PORTREVISION=	1
 CATEGORIES=	mail
 # This is for beta versions, leave it in please:
 #MASTER_SITES=	http://www.courier-mta.org/beta/${PORTNAME}/ \

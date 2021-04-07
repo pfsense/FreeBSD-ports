@@ -1,10 +1,9 @@
 # Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
 
 PORTNAME=	libsndfile
 PORTVERSION=	1.0.25
-DISTVERSIONSUFFIX=	-11.el7
-PORTREVISION=	5
+DISTVERSIONSUFFIX=	-12.el7
+PORTREVISION=	6
 CATEGORIES=	audio linux
 
 MAINTAINER=	emulation@FreeBSD.org

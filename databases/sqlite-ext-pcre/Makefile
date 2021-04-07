@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sqlite-ext-pcre
 PORTVERSION=	20100208
 PORTREVISION=	2

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 MASTERDIR=	${.CURDIR}/../litecoin
 PKGNAMESUFFIX=	-utils
 

@@ -1,5 +1,4 @@
 # Created by: dpejesh@yahoo.com
-# $FreeBSD$
 
 PORTNAME=	tinyrpc
 PORTVERSION=	1.0.4
@@ -11,11 +10,12 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Small, modular, transport and protocol neutral RPC library
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${PY_FLAVOR}
 
 USES=		python:3.5+
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
 

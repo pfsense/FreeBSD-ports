@@ -1,5 +1,4 @@
 # Created by: Simon Barner <barner@gmx.de>
-# $FreeBSD$
 
 PORTNAME=	valgrind
 PORTVERSION=	3.10.1.20160113
@@ -18,6 +17,8 @@ BB_ACCOUNT=	stass
 BB_PROJECT=	valgrind-freebsd
 
 LICENSE=	GPLv2
+
+BROKEN=		fails at runtime: valgrind: mmap(0x200000, 45056) failed in UME with error 22 (Invalid argument)
 
 CONFLICTS=	valgrind-devel-[0-9]*
 

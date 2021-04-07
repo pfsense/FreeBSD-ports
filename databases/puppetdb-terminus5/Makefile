@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	puppetdb-terminus
 PORTVERSION=	5.2.19
 CATEGORIES=	databases ruby
@@ -11,6 +9,9 @@ MAINTAINER=	puppet@FreeBSD.org
 COMMENT=	PuppetDB storeconfigs backend terminus module
 
 LICENSE=	APACHE20
+
+DEPRECATED=	Puppet 5 has reached EOL
+EXPIRATION_DATE=2021-07-01
 
 BUILD_DEPENDS=	puppet5>=0:sysutils/puppet5
 

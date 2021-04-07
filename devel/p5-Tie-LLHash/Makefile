@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Tie-LLHash
 PORTVERSION=	1.004
 CATEGORIES=	devel perl5

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libqsbr
 PORTVERSION=	g2020082801
 CATEGORIES=	devel

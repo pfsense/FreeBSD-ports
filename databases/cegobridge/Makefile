@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cegobridge
 PORTVERSION=	1.6.0
 CATEGORIES=	databases

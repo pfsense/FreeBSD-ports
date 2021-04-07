@@ -1,8 +1,7 @@
 # Created by: meka
-# $FreeBSD$
 
 PORTNAME=	serd
-PORTVERSION=	0.30.6
+PORTVERSION=	0.30.10
 CATEGORIES=	devel
 MASTER_SITES=	http://download.drobilla.net/
 

@@ -1,5 +1,4 @@
 # Created by: mi@aldan.algebra.com
-# $FreeBSD$
 
 PORTNAME=	tcltls
 PORTVERSION=	1.7.18
@@ -8,7 +7,7 @@ MASTER_SITES=	http://core.tcl.tk/tcltls/uv/ \
 		http://tcltls.rkeene.org/uv/
 
 MAINTAINER=	mi@aldan.algebra.com
-COMMENT=	SSL extensions for TCL; dynamicly loadable
+COMMENT=	Dynamically loadable SSL extensions for TCL
 
 LICENSE=	TclTk
 LICENSE_NAME=	Tcl/Tk License

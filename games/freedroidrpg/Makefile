@@ -1,5 +1,4 @@
 # Created by: Travis Poppe <tlp@liquidx.org>
-# $FreeBSD$
 
 PORTNAME=	freedroidrpg
 PORTVERSION=	0.16.1
@@ -15,9 +14,10 @@ COMMENT=	Modification of the classical Freedroid engine into an RPG
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpng.so:graphics/png
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: tux_rendering
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: tux_rendering
 
-BROKEN_sparc64=	does not configure
+LIB_DEPENDS=	libpng.so:graphics/png
 
 GNU_CONFIGURE=	yes
 USES=		jpeg gmake localbase lua:52+ python sdl xorg

@@ -1,8 +1,8 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	iohexperimenter
-PORTVERSION=	0.2.8.7
+PORTVERSION=	0.2.9
+PORTREVISION=	1
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -22,5 +22,11 @@ USE_PYTHON=	autoplist concurrent distutils
 USE_CXXSTD=	c++14
 
 WRKSRC=		${WRKDIR}/IOHexperimenter-${PORTVERSION}
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|%%PORTVERSION%%|${PORTVERSION}|' ${WRKSRC}/setup.py
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/IOHexperimenter/_IOHprofiler*.so
 
 .include <bsd.port.mk>

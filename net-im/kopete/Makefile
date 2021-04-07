@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kopete
 PORTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	net-im kde kde-applications

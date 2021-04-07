@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	horcrux
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2
 CATEGORIES=	security
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Split files into encrypted fragments
 
 LICENSE=	MIT

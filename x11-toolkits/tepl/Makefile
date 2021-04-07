@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tepl
 DISTVERSION=	5.1.1
 CATEGORIES=	x11-toolkits

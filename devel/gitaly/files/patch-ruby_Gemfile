@@ -1,16 +1,18 @@
---- ruby/Gemfile.orig	2020-12-10 15:14:51 UTC
+--- ruby/Gemfile.orig	2021-03-17 18:58:25 UTC
 +++ ruby/Gemfile
-@@ -1,6 +1,6 @@
- source 'https://rubygems.org'
+@@ -13,21 +13,11 @@ gem 'faraday', '~> 1.0'
+ gem 'rbtrace', require: false
  
--gem 'rugged', '~> 0.28'
-+gem 'rugged', '~> 1.0'
- gem 'github-linguist', '~> 7.12', require: 'linguist'
- gem 'gitlab-markup', '~> 1.7.1'
- gem 'activesupport', '~> 6.0.3.3'
-@@ -21,13 +21,3 @@ gem 'licensee', '~> 8.9.0'
+ # Labkit provides observability functionality
+-gem 'gitlab-labkit', '~> 0.15.0'
++gem 'gitlab-labkit', '~> 0.16.1'
  
- gem 'google-protobuf', '~> 3.12'
+ # Detects the open source license the repository includes
+ # This version needs to be in sync with GitLab CE/EE
+ gem 'licensee', '~> 9.14.1'
+ 
+-gem 'google-protobuf', '~> 3.12'
++gem 'google-protobuf', '~> 3.14.0'
  
 -group :development, :test do
 -  gem 'rubocop', '~> 0.69', require: false

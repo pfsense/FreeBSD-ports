@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	yasm
 PORTVERSION=	1.3.0
 CATEGORIES=	devel lang

@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	azure_mgmt_operational_insights
-PORTVERSION=	0.19.3
+PORTVERSION=	0.20.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

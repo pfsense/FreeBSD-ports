@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	waylandpp
 DISTVERSION=	0.2.8
 CATEGORIES=	graphics

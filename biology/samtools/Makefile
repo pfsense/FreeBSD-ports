@@ -1,8 +1,7 @@
 # Created by: Reed A. Cartwright <cartwright@asu.edu>
-# $FreeBSD$
 
 PORTNAME=	samtools
-DISTVERSION=	1.11
+DISTVERSION=	1.12
 CATEGORIES=	biology
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -11,7 +10,7 @@ COMMENT=	Tools for manipulating next-generation sequencing data
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libhts.so.3:biology/htslib
+LIB_DEPENDS=	libhts.so:biology/htslib
 TEST_DEPENDS=	bash:shells/bash
 
 USES=		autoreconf gmake localbase ncurses perl5 python:env shebangfix

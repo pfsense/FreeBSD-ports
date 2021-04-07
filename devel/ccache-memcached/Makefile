@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-memcached
 
 MASTERDIR=	${.CURDIR}/../ccache

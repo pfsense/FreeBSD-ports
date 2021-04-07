@@ -1,8 +1,7 @@
 # Created by: Neal Nelson <ports@nicandneal.net>
-# $FreeBSD$
 
 PORTNAME=	nim
-PORTVERSION=	1.4.2
+PORTVERSION=	1.4.4
 CATEGORIES=	lang
 MASTER_SITES=	https://nim-lang.org/download/
 

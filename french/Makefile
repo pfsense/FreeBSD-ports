@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = French support
 
     SUBDIR += aspell

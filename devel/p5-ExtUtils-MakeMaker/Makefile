@@ -1,8 +1,7 @@
 # Created by: Michael Johnson <ahze@ahze.net>
-# $FreeBSD$
 
 PORTNAME=	ExtUtils-MakeMaker
-PORTVERSION=	7.56
+PORTVERSION=	7.58
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

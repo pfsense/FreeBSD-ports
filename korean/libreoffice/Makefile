@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	korean
 LO_I18N=	ko
 LO_HAS_HELPPACK=	yes

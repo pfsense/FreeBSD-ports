@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	print-manager
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	print kde kde-applications

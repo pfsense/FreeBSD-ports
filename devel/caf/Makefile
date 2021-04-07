@@ -1,8 +1,8 @@
 # Created by: vanilla@
-# $FreeBSD$
 
 PORTNAME=	caf
-PORTVERSION=	0.17.6
+PORTVERSION=	0.18.2
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
@@ -11,7 +11,7 @@ COMMENT=	C++ actor framework
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake compiler:c++11-lang
+USES=		cmake compiler:c++11-lang ssl
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes

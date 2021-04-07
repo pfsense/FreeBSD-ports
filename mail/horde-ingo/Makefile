@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ingo
 PORTVERSION=	3.2.16
 CATEGORIES=	mail www pear

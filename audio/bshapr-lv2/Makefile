@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	bshapr
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9
+DISTVERSION=	0.12
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-lv2
 
@@ -23,6 +21,8 @@ USE_GNOME=	cairo
 USE_XORG=	x11
 
 MAKEFILE=	makefile
+
+MAKE_JOBS_UNSAFE=	yes # workaround for intermittent build failures: https://github.com/sjaehn/BShapr/issues/18
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lv2/BShapr.lv2/*.so

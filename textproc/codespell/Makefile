@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	codespell
 PORTVERSION=	2.0.0
 CATEGORIES=	textproc

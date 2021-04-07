@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	automatic_addressbook
 PORTVERSION=	0.4.3
 CATEGORIES=	mail
@@ -14,6 +12,7 @@ LICENSE=	GPLv3
 RUN_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=0.8:mail/roundcube@${PHP_FLAVOR}
 
 USES=		php:flavors
+IGNORE_WITH_PHP=80
 USE_GITHUB=	yes
 GH_ACCOUNT=	sblaisot
 

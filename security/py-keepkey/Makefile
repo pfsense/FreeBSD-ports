@@ -1,10 +1,9 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	keepkey
-PORTVERSION=	6.3.1
+PORTVERSION=	6.6.0
 CATEGORIES=	security
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	https://github.com/${PORTNAME}/python-${PORTNAME}/releases/download/v${PORTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ehaupt@FreeBSD.org

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	doctest-ignore-unicode
 DISTVERSION=	0.1.2
 CATEGORIES=	devel python

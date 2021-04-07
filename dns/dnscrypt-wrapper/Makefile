@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	dnscrypt-wrapper
 PORTVERSION=	0.4.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	dns
 
 MAINTAINER=	freebsd@toyingwithfate.com
@@ -23,7 +21,8 @@ ETCDNSCRYPTWRAPPER=	${PREFIX}/etc/${PORTNAME}
 SUB_LIST+=	ETCDNSCRYPTWRAPPER="${ETCDNSCRYPTWRAPPER}" USERS="${USERS}"
 USE_RC_SUBR=	${PORTNAME}
 
-USES=		gmake localbase:ldflags
+USES=		gmake localbase:ldflags autoreconf
+GNU_CONFIGURE=	yes
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/*

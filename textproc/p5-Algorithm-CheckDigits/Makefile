@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Algorithm-CheckDigits
 PORTVERSION=	1.3.5
 DISTVERSIONPREFIX=	v

@@ -1,9 +1,8 @@
 # Created by: Henrik Motakef <henrik.motakef@web.de>
-# $FreeBSD$
 
 PORTNAME=	meta
 PORTVERSION=	0.1
-PORTREVISION=	53
+PORTREVISION=	56
 PORTEPOCH=	1
 CATEGORIES=	textproc lisp
 PKGNAMEPREFIX=	cl-

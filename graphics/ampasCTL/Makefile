@@ -1,9 +1,8 @@
 # Created by: nork@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	ampasCTL
 PORTVERSION=	1.5.2
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	graphics devel
 
 MAINTAINER=	ports@FreeBSD.org

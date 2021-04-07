@@ -1,9 +1,7 @@
 # Created by: Pawel Pekala <pawel@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	smtube
-PORTVERSION=	18.9.0
-PORTREVISION=	3
+DISTVERSION=	20.6.0
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/smtube/SMTube/${PORTVERSION}/
 
@@ -12,6 +10,8 @@ COMMENT=	SMPlayer YouTube browser
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/Copying.txt
+
+RUN_DEPENDS=	youtube-dl:www/youtube_dl
 
 USES=		gl gmake qt:5 tar:bzip2
 USE_GL=		gl

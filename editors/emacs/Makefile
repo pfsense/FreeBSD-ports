@@ -1,15 +1,10 @@
 # Created by: MANTANI Nobutaka <nobutaka@nobutaka.com>
-# $FreeBSD$
 
 PORTNAME=	emacs
-DISTVERSION=	27.1
-PORTREVISION=	4
+DISTVERSION=	27.2
 PORTEPOCH=	3
 CATEGORIES=	editors
 MASTER_SITES=	GNU
-
-PATCH_SITES=	https://github.com/emacs-mirror/emacs/commit/:upstream
-PATCHFILES=	43a1b79f56cb1ac6530e8b41f3c329890a00a8f6.patch:-p1:upstream
 
 .if ${FLAVOR:U} == canna
 PATCH_SITES+=		https://www.gentei.org/~yuuji/software/emacs27canna/:canna
@@ -128,7 +123,6 @@ GRAPHICS_DESC=		Graphics support
 GSETTINGS_DESC=		GSettings API for application settings
 HARFBUZZ_DESC=		HarfBuzz for text shaping
 KQUEUE_DESC=		File notification via kqueue
-#LTO_DESC=		Enable link-time optimization
 M17N_DESC=		M17N support for text-shaping [implies XFT]
 MAGICK_DESC=		ImageMagick image processing support (deprecated)
 MAILUTILS_DESC=		Mail framework via GNU Mailutils
@@ -229,6 +223,10 @@ XWIDGETS_USE=			XORG=xcomposite
 XWIDGETS_CONFIGURE_WITH=	xwidgets
 
 .include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc64le
+USE_GCC=	yes
+.endif
 
 .if !${PORT_OPTIONS:MGTK2} && !${PORT_OPTIONS:MGTK3} && !${PORT_OPTIONS:MMOTIF} \
 	&& !${PORT_OPTIONS:MXAW} && !${PORT_OPTIONS:MXAW3D}

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	festival-freebsoft-utils
 PORTVERSION=	0.10
 PORTREVISION=	4

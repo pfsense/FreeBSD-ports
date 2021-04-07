@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	alexandria
 DISTVERSION=	1.2
 PORTEPOCH=	1
@@ -16,8 +14,6 @@ USE_ASDF=	yes
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.common-lisp.net
 GL_COMMIT=	f35e232ceb2ada8d10e7fdf27ccac07f781eea0e
-
-NO_ARCH=	yes
 
 OPTIONS_DEFINE=	DOCS
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 # Note to committers:
 # With each version update, a new maven repository must be created and distributed
 # so build is repeatable and cluster-safe.

@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	libbigwig
-DISTVERSION=	0.4.4
+DISTVERSION=	0.4.6
 CATEGORIES=	biology
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,10 +11,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
 USES=		gmake localbase:ldflags
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	dpryan79
 GH_PROJECT=	libBigWig
-USE_LDCONFIG=	yes
 
 MAKE_ARGS=	LDFLAGS=-L${LOCALBASE}/lib
 

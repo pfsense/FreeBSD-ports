@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@regency.nsu.ru>
-# $FreeBSD$
 
 PORTNAME=	wmqstat
 PORTVERSION=	0.0.4
@@ -11,6 +10,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dockapp for monitoring of various Internet game servers
 
 LICENSE=	GPLv2
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: display
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: display
 
 RUN_DEPENDS=	qstat:games/qstat
 

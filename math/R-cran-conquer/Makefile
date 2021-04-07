@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	conquer
 PORTVERSION=	1.0.2
 CATEGORIES=	math

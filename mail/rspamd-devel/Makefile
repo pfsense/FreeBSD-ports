@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	rspamd
-PORTVERSION=	2.6.a1.20200929
-PORTREVISION=	2
+PORTVERSION=	2.8.a2.20210324
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-devel
 
@@ -18,7 +15,7 @@ LIB_DEPENDS=	libpcre.so:devel/pcre \
 BUILD_DEPENDS=	ragel:devel/ragel
 RUN_DEPENDS=	ca_root_nss>=3.*:security/ca_root_nss
 
-USES=		cmake gnome perl5 pkgconfig sqlite ssl
+USES=		cmake gnome perl5 pkgconfig sqlite ssl compiler:c++17-lang
 USE_LDCONFIG=	yes
 USE_PERL5=	build run
 USE_GNOME=	glib20
@@ -58,7 +55,7 @@ CMAKE_ARGS+=	-DCONFDIR=${PREFIX}/etc/rspamd \
 		-DDEBUG=ON \
 		-DGIT_ID=${GH_TAGNAME}
 USE_GITHUB=	yes
-GH_TAGNAME=	80b8f0e
+GH_TAGNAME=	f66453cf8
 
 DEBUG_FLAGS=	-g -O0
 
@@ -89,8 +86,6 @@ CGP_RUN_DEPENDS+=	\
 .if ${ARCH:Mpowerpc*}
 LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
 USES+=		compiler:gcc-c++11-lib
-.else
-USES+=		compiler:c11
 .endif
 
 post-install:

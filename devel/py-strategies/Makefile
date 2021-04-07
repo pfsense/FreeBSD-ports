@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	strategies
 DISTVERSION=	0.2.3
 CATEGORIES=	devel python

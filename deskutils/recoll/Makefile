@@ -1,9 +1,8 @@
 # Created by: J.F. Dockes <jean-francois.dockes@wanadoo.fr>
-# $FreeBSD$
 
 PORTNAME=	recoll
 PORTVERSION=	1.27.3
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	deskutils
 MASTER_SITES=	https://www.lesbonscomptes.com/recoll/
 

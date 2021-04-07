@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	importlib-metadata
 PORTVERSION=	3.3.0
 PORTREVISION=	1

@@ -1,9 +1,8 @@
 # Created by: Henrik Motakef <henrik.motakef@web.de>
-# $FreeBSD$
 
 PORTNAME=	lml
 PORTVERSION=	2.5.7
-PORTREVISION=	50
+PORTREVISION=	53
 CATEGORIES=	www textproc
 PKGNAMEPREFIX=	cl-
 DISTFILES=	# none

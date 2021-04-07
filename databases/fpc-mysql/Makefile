@@ -1,7 +1,6 @@
 # Created by: John Merryweather Cooper
-# $FreeBSD$
 
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases lang
 PKGNAMESUFFIX=	-mysql
 

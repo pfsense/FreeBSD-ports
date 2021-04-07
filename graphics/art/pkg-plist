@@ -11,6 +11,7 @@ share/ART/dcpprofiles/CANON EOS R.dcp
 share/ART/dcpprofiles/CANON EOS R5.dcp
 share/ART/dcpprofiles/CANON EOS R6.dcp
 share/ART/dcpprofiles/CANON EOS RP.dcp
+share/ART/dcpprofiles/CANON EOS-1D X MARK III.dcp
 share/ART/dcpprofiles/CANON POWERSHOT G1 X MARK II.dcp
 share/ART/dcpprofiles/Canon EOS 100D.dcp
 share/ART/dcpprofiles/Canon EOS 1300D.dcp
@@ -38,16 +39,19 @@ share/ART/dcpprofiles/Canon PowerShot S110.dcp
 share/ART/dcpprofiles/FUJIFILM FinePix F600EXR.dcp
 share/ART/dcpprofiles/FUJIFILM GFX 50R.dcp
 share/ART/dcpprofiles/FUJIFILM X-A5.dcp
+share/ART/dcpprofiles/FUJIFILM X-A7.dcp
 share/ART/dcpprofiles/FUJIFILM X-E3.dcp
 share/ART/dcpprofiles/FUJIFILM X-H1.dcp
 share/ART/dcpprofiles/FUJIFILM X-PRO3.dcp
 share/ART/dcpprofiles/FUJIFILM X-Pro2.dcp
 share/ART/dcpprofiles/FUJIFILM X-S1.dcp
+share/ART/dcpprofiles/FUJIFILM X-S10.dcp
 share/ART/dcpprofiles/FUJIFILM X-T1.dcp
 share/ART/dcpprofiles/FUJIFILM X-T2.dcp
 share/ART/dcpprofiles/FUJIFILM X-T20.dcp
 share/ART/dcpprofiles/FUJIFILM X-T3.dcp
 share/ART/dcpprofiles/FUJIFILM X-T30.dcp
+share/ART/dcpprofiles/FUJIFILM X-T4.dcp
 share/ART/dcpprofiles/FUJIFILM X100S.dcp
 share/ART/dcpprofiles/FUJIFILM X100T.dcp
 share/ART/dcpprofiles/Fujifilm FinePix S9500.dcp
@@ -58,6 +62,7 @@ share/ART/dcpprofiles/Leaf Aptus 75.dcp
 share/ART/dcpprofiles/MINOLTA DYNAX 7D.dcp
 share/ART/dcpprofiles/NIKON COOLPIX P7800.dcp
 share/ART/dcpprofiles/NIKON D300.dcp
+share/ART/dcpprofiles/NIKON D3300.dcp
 share/ART/dcpprofiles/NIKON D50.dcp
 share/ART/dcpprofiles/NIKON D500.dcp
 share/ART/dcpprofiles/NIKON D5000.dcp
@@ -66,6 +71,7 @@ share/ART/dcpprofiles/NIKON D5600.dcp
 share/ART/dcpprofiles/NIKON D600.dcp
 share/ART/dcpprofiles/NIKON D610.dcp
 share/ART/dcpprofiles/NIKON D700.dcp
+share/ART/dcpprofiles/NIKON D7000.dcp
 share/ART/dcpprofiles/NIKON D70s.dcp
 share/ART/dcpprofiles/NIKON D7100.dcp
 share/ART/dcpprofiles/NIKON D7200.dcp
@@ -79,14 +85,15 @@ share/ART/dcpprofiles/NIKON D850.dcp
 share/ART/dcpprofiles/NIKON Z 5.dcp
 share/ART/dcpprofiles/NIKON Z 50.dcp
 share/ART/dcpprofiles/NIKON Z 6.dcp
+share/ART/dcpprofiles/NIKON Z 6_2.dcp
 share/ART/dcpprofiles/NIKON Z 7.dcp
 share/ART/dcpprofiles/Nikon D200.dcp
 share/ART/dcpprofiles/Nikon D3000.dcp
 share/ART/dcpprofiles/Nikon D3100.dcp
 share/ART/dcpprofiles/Nikon D3S.dcp
 share/ART/dcpprofiles/Nikon D5100.dcp
-share/ART/dcpprofiles/Nikon D7000.dcp
 share/ART/dcpprofiles/OLYMPUS E-510.dcp
+share/ART/dcpprofiles/OLYMPUS E-M1.dcp
 share/ART/dcpprofiles/OLYMPUS E-M10.dcp
 share/ART/dcpprofiles/OLYMPUS E-M1MarkII.dcp
 share/ART/dcpprofiles/OLYMPUS E-M5MARKII.dcp
@@ -94,6 +101,7 @@ share/ART/dcpprofiles/Olympus E-1.dcp
 share/ART/dcpprofiles/Olympus E-520.dcp
 share/ART/dcpprofiles/Olympus E-P2.dcp
 share/ART/dcpprofiles/Olympus XZ-1.dcp
+share/ART/dcpprofiles/PANASONIC DMC-LX100.dcp
 share/ART/dcpprofiles/PENTAX K-5 II.dcp
 share/ART/dcpprofiles/PENTAX K-5.dcp
 share/ART/dcpprofiles/PENTAX K-50.dcp
@@ -122,10 +130,12 @@ share/ART/dcpprofiles/SONY ILCE-6000.dcp
 share/ART/dcpprofiles/SONY ILCE-6400.dcp
 share/ART/dcpprofiles/SONY ILCE-6500.dcp
 share/ART/dcpprofiles/SONY ILCE-6600.dcp
+share/ART/dcpprofiles/SONY ILCE-7C.dcp
 share/ART/dcpprofiles/SONY ILCE-7M2.dcp
 share/ART/dcpprofiles/SONY ILCE-7M3.dcp
 share/ART/dcpprofiles/SONY ILCE-7RM3.dcp
 share/ART/dcpprofiles/SONY ILCE-7RM4.dcp
+share/ART/dcpprofiles/SONY ILCE-7SM3.dcp
 share/ART/dcpprofiles/SONY ILCE-9.dcp
 share/ART/dcpprofiles/SONY SLT-A99V.dcp
 share/ART/dcpprofiles/Sony DSLR-A700.dcp
@@ -221,6 +231,7 @@ share/ART/images/arrow-updown.svg
 share/ART/images/arrow2-left.svg
 share/ART/images/arrow2-right.svg
 share/ART/images/atom.svg
+share/ART/images/az-sort.svg
 share/ART/images/bayer.svg
 share/ART/images/beforeafter.svg
 share/ART/images/bidirectional-arrow-horizontal-hicontrast.svg
@@ -422,6 +433,7 @@ share/ART/images/panel-to-left.svg
 share/ART/images/panel-to-right.svg
 share/ART/images/panel-to-top.svg
 share/ART/images/paste.svg
+share/ART/images/pen-ocra-small.svg
 share/ART/images/perspective-aspect-horizontal-small.svg
 share/ART/images/perspective-aspect-vertical-small.svg
 share/ART/images/perspective-horizontal-left-small.svg
@@ -557,6 +569,8 @@ share/ART/images/wb-tungsten.svg
 share/ART/images/wb-water-small.svg
 share/ART/images/wb-water.svg
 share/ART/images/window-add.svg
+share/ART/languages/Catala
+share/ART/languages/Espanol
 share/ART/languages/Francais
 share/ART/languages/LICENSE
 share/ART/languages/Nederlands
@@ -569,6 +583,7 @@ share/ART/profiles/Noise Reduction High.arp
 share/ART/profiles/Noise Reduction Low.arp
 share/ART/profiles/Sharpening.arp
 share/ART/profiles/Simple Film Curve.arp
+share/ART/profiles/Standard Film Curve.arp
 share/ART/rt.json
 share/ART/sounds/BatchComplete.wav
 share/ART/sounds/Empty.wav

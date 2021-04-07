@@ -1,5 +1,4 @@
 # Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
 
 PORTNAME=	imv
 DISTVERSIONPREFIX=	v
@@ -7,7 +6,7 @@ DISTVERSION=	4.1.0
 PORTREVISION=	4
 CATEGORIES=	graphics
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Simple image viewer
 
 LICENSE=	MIT

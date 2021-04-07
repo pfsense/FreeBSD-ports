@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	firebird
 PORTVERSION=	2.5.8
 PORTREVISION=	7

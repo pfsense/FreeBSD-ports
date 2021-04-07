@@ -1,9 +1,7 @@
 # Created by: Matthew Hunt <mph@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	intercal
-PORTVERSION=	0.30
-PORTREVISION=	2
+PORTVERSION=	0.31
 CATEGORIES=	lang
 MASTER_SITES=	http://www.catb.org/~esr/intercal/
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pyte
 PORTVERSION=	0.8.0
 CATEGORIES=	devel python

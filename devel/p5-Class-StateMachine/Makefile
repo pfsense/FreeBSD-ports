@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Class-StateMachine
 PORTVERSION=	0.24
 PORTREVISION=	1

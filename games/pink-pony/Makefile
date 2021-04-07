@@ -1,9 +1,8 @@
 # Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pink-pony
 PORTVERSION=	1.4.1
-PORTREVISION=	26
+PORTREVISION=	28
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org

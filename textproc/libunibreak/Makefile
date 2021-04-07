@@ -1,8 +1,7 @@
 # Created by: Yuri Pankov <yuri.pankov@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	libunibreak
-PORTVERSION=	4.0
+PORTVERSION=	4.3
 PORTEPOCH=	1
 CATEGORIES=	textproc
 MASTER_SITES=	https://github.com/adah1972/${PORTNAME}/releases/download/${PORTNAME}_${PORTVERSION:C/\./_/}/

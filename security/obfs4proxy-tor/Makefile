@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	obfs4proxy
 DISTVERSION=	0.0.11
 PORTREVISION=	2

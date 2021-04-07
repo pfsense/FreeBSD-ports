@@ -1,5 +1,4 @@
 # Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	aggregate6
 PORTVERSION=	1.0.12
@@ -23,14 +22,7 @@ USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3000
-BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}future>0:devel/py-future@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}ipaddress>0:net/py-ipaddress@${PY_FLAVOR}
-.endif
-
 do-test:
 	@(cd ${WRKSRC} && ${SETENV} ${PYTHON_CMD} ${PYSETUP} nosetests --with-coverage)
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

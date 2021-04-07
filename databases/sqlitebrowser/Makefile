@@ -1,8 +1,8 @@
 # Created by: loïc bartoletti <lbartoletti@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sqlitebrowser
 PORTVERSION=	3.12.1
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 

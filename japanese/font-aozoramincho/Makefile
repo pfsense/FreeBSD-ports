@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	aozoramincho
 PORTVERSION=	0.1
 PORTREVISION=	2

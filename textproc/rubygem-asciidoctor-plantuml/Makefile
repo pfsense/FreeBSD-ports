@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	asciidoctor-plantuml
-PORTVERSION=	0.0.12
+PORTVERSION=	0.0.13
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 

@@ -1,9 +1,8 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rabbit
 PORTVERSION=	2.2.1
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	misc rubygems
 MASTER_SITES=	RG
 

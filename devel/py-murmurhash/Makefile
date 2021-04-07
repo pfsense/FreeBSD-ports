@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	murmurhash
 PORTVERSION=	1.0.5
 CATEGORIES=	devel python

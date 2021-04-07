@@ -1,5 +1,4 @@
 # Created by: Sebastien Petit <spe@phear.org>
-# $FreeBSD$
 
 PORTNAME=	freevrrpd
 PORTVERSION=	1.1
@@ -18,6 +17,9 @@ DISTVERSIONPREFIX=	v
 
 MAKE_ENV=	PTHREAD_CFLAGS="${PTHREAD_CFLAGS}" \
 		PTHREAD_LIBS="${PTHREAD_LIBS}"
+
+# XXX static PIE is not yet supported by the base system
+MAKE_ENV+=	WITHOUT_PIE=true
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/freevrrpd ${STAGEDIR}${PREFIX}/sbin

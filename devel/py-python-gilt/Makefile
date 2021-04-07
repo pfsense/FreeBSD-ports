@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	python-gilt
 PORTVERSION=	1.2.2
 CATEGORIES=	devel python

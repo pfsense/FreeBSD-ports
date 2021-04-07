@@ -1,11 +1,10 @@
 # Created by: Alex Hayward <xelah@xelah.com>
-# $FreeBSD$
 
 PORTNAME=	pngquant
-PORTVERSION=	2.12.5
+PORTVERSION=	2.13.1
 DISTVERSIONSUFFIX=	-src
 CATEGORIES=	graphics
-MASTER_SITES=	http://pngquant.org/
+MASTER_SITES=	https://pngquant.org/
 
 MAINTAINER=	ak@FreeBSD.org
 COMMENT=	Converts 32-bit RGBA PNGs into 8-bit RGBA-palette PNGs

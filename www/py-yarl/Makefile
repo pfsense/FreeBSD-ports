@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	yarl
 PORTVERSION=	1.6.3
 CATEGORIES=	www python

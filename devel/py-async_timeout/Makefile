@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	async_timeout
 PORTVERSION=	3.0.1
 CATEGORIES=	devel python

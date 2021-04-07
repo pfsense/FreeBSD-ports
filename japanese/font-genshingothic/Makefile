@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	genshingothic
 PORTVERSION=	20150607
 PORTREVISION=	3

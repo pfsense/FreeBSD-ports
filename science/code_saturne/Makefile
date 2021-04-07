@@ -1,8 +1,8 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	code_saturne
 PORTVERSION=	6.1.3
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	science parallel
 
@@ -43,8 +43,8 @@ BINARY_ALIAS=	python=${PYTHON_CMD} \
 		pyrcc5=pyrcc5-${PYTHON_VER} \
 		pyuic5=pyuic5-${PYTHON_VER}
 
-OPTIONS_DEFINE=		DOCS EXAMPLES BATCH BLAS MPI SCOTCH
-OPTIONS_DEFAULT=	BATCH BLAS MPI SCOTCH METIS
+OPTIONS_DEFINE=		DOCS EXAMPLES BATCH BLAS MPICH SCOTCH
+OPTIONS_DEFAULT=	BATCH BLAS MPICH SCOTCH METIS
 OPTIONS_RADIO=		METIS
 OPTIONS_RADIO_METIS=	METIS PARMETIS
 BLAS_DESC=		Support of OpenBLAS
@@ -53,10 +53,10 @@ BLAS_CONFIGURE_ON=	--with-blas=yes --with-blas-lib=${LOCALBASE}/lib --with-blas-
 BLAS_LIB_DEPENDS=	libopenblas.so:math/openblas
 BATCH_DESC=		Use Torque to submit batches
 BATCH_RUN_DEPENDS=	pbs-config:sysutils/torque
-MPI_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mpi4py>0:net/py-mpi4py@${PY_FLAVOR}
-MPI_LIB_DEPENDS=	libmpi.so:net/mpich
-MPI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mpi4py>0:net/py-mpi4py@${PY_FLAVOR}
-MPI_CONFIGURE_WITH=	mpi
+MPICH_USES=		mpi
+MPICH_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mpi4py>0:net/py-mpi4py@${PY_FLAVOR}
+MPICH_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mpi4py>0:net/py-mpi4py@${PY_FLAVOR}
+MPICH_CONFIGURE_WITH=	mpi
 METIS_DESC=		Support of METIS
 METIS_LIB_DEPENDS=	libmetis.so:math/metis
 METIS_CONFIGURE_ON=	--with-metis-include="${LOCALBASE}/include"
@@ -91,7 +91,7 @@ USE_TEX=	tex:build
 BUILD_DEPENDS+=	fig2dev:print/fig2dev		\
 		doxygen:devel/doxygen		\
 		dot:graphics/graphviz		\
-		${PY_SPHINX}
+		${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
 BINARY_ALIAS+=	sphinx-build=sphinx-build-${PYTHON_VER}
 ALL_TARGET=	all pdf
 DOCS=		AUTHORS ChangeLog README

@@ -1,6 +1,3 @@
-# $FreeBSD$
-
-PORTREVISION=	1
 PKGNAMESUFFIX=	-plugins
 
 COMMENT=	Frei0r meta-port

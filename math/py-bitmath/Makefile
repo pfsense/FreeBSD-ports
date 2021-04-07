@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bitmath
 DISTVERSION=	1.3.3.1
 CATEGORIES=	math python

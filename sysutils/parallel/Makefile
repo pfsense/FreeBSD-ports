@@ -1,8 +1,7 @@
 # Created by: Chris Howey <howeyc@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	parallel
-PORTVERSION=	20201222
+PORTVERSION=	20210222
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU
 
@@ -23,6 +22,7 @@ SHEBANG_FILES=	src/env_parallel src/niceload src/parcat src/parsort src/sql
 OPTIONS_DEFINE=	DOCS
 
 DOCS_BUILD_DEPENDS=	pod2pdf:textproc/p5-pod2pdf \
+			pod2rst:textproc/p5-Pod-POM-View-Restructured \
 			pod2texi:print/texinfo
 
 .include <bsd.port.mk>

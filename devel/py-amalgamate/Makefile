@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	amalgamate
 PORTVERSION=	0.1.3
 CATEGORIES=	devel python

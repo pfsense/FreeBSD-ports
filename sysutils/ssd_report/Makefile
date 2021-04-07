@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ssd_report
 DISTVERSION=	0.4
 CATEGORIES=	sysutils

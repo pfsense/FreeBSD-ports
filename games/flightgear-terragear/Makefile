@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	flightgear-terragear
 PORTVERSION=	20171007
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	games
 
 MAINTAINER=	ports@FreeBSD.org

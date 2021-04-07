@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	meteo
 PORTVERSION=	0.9.8
 CATEGORIES=	deskutils

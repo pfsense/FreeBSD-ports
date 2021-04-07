@@ -1,9 +1,8 @@
 # Created by: cartola@openit.com.br
-# $FreeBSD$
 
 PORTNAME=	enblend
 PORTVERSION=	4.2
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	graphics
 MASTER_SITES=	SF/enblend/enblend-enfuse/enblend-enfuse-${PORTVERSION}
 DISTNAME=	enblend-enfuse-${PORTVERSION}

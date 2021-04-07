@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	k40-whisperer
 DISTVERSION=	0.55
 CATEGORIES=	cad python
@@ -16,7 +14,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyusb>0:devel/py-pyusb@${PY_FLAVOR} \
 		${PY_PILLOW}
 
-USES=		python:run,-3.7 shebangfix zip
+USES=		python:run,3.6+ shebangfix zip
 SHEBANG_FILES=	*.py
 
 DESKTOP_ENTRIES=	"K40 Whisperer" \

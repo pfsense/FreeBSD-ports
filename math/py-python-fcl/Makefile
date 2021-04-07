@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	python-fcl
 PORTVERSION=	0.0.12
 PORTREVISION=	1

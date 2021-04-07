@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	yakuake
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	x11 kde kde-applications

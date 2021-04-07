@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	TablePlugin
 SVNREV=		17558
 

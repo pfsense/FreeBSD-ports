@@ -1,8 +1,8 @@
 # Created by: rene
-# $FreeBSD$
 
 PORTNAME=	fuse-utils
 DISTVERSION=	1.4.3
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/fuse-emulator/${PORTNAME}/${PORTVERSION}
 

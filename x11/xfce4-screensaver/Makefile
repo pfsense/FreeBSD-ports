@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xfce4-screensaver
 PORTVERSION=	4.16.0
 PORTREVISION=	1
@@ -37,8 +35,6 @@ SCREENSAVER_DIR=	share/applications/screensavers
 
 OPTIONS_DEFINE=	NLS PAM
 OPTIONS_DEFAULT=PAM
-PAM_DESC=	Pluggable Authentication Module support
-
 OPTIONS_SUB=	yes
 
 NLS_CONFIGURE_ENABLE=	nls

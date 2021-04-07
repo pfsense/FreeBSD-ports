@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pluggaloid
 PORTVERSION=	1.4.1
 CATEGORIES=	devel rubygems

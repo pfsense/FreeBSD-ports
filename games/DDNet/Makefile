@@ -1,8 +1,7 @@
 # Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
 
 PORTNAME=	DDNet
-PORTVERSION=	15.2.4
+PORTVERSION=	15.4
 CATEGORIES=	games
 MASTER_SITES=	https://ddnet.tw/downloads/
 

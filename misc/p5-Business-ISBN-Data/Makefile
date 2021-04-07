@@ -1,8 +1,7 @@
 # Created by: Yen-Ming Lee <leeym@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Business-ISBN-Data
-PORTVERSION=	20191107
+PORTVERSION=	20210112.001
 CATEGORIES=	misc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

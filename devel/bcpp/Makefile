@@ -1,8 +1,7 @@
 # Created by: Mike Buchanon <buchanon@msu.edu>
-# $FreeBSD$
 
 PORTNAME=	bcpp
-PORTVERSION=	20200922
+PORTVERSION=	20210108
 CATEGORIES=	devel
 MASTER_SITES=	ftp://ftp.invisible-island.net/${PORTNAME}/ \
 		https://invisible-mirror.net/archives/${PORTNAME}/

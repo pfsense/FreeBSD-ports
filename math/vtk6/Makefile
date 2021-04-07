@@ -1,5 +1,4 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	vtk
 PORTVERSION=	6.2.0
@@ -56,8 +55,6 @@ $g_DESC=	Build the $g group
 .for w in ${VTK_WRAPS}
 $w_DESC=	$w wrapping
 .endfor
-
-QT5_DESC=	Qt 5 toolkit support
 
 CMAKE_ARGS+=	-DVTK_INSTALL_LIBRARY_DIR=lib/vtk-${VTK_SHORT_VER} \
 		-DVTK_INSTALL_ARCHIVE_DIR=lib/vtk-${VTK_SHORT_VER} \

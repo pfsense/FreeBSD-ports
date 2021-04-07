@@ -1,9 +1,9 @@
 # Created by: Andrey Cherkashin <andoriyu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fd
 DISTVERSIONPREFIX=	v
 DISTVERSION=	8.2.1
+PORTREVISION=	3
 CATEGORIES=	sysutils
 PKGNAMESUFFIX=	-find
 

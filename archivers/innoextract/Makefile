@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	innoextract
-PORTVERSION=	1.8
-PORTREVISION=	1
+PORTVERSION=	1.9
 CATEGORIES=	archivers
 MASTER_SITES=	http://constexpr.org/innoextract/files/
 

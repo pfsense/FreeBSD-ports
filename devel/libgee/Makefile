@@ -1,10 +1,10 @@
 # Created by: Frank Steinborn <steinex@nognu.de>
-# $FreeBSD$
 
 PORTNAME=	libgee
-PORTVERSION=	0.20.1
+PORTVERSION=	0.20.3
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	GObject collection library

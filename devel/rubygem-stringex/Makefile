@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	stringex
 PORTVERSION=	2.8.5
 PORTEPOCH=	1

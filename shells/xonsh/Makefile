@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xonsh
 PORTVERSION=	0.7.9
 CATEGORIES=	shells python

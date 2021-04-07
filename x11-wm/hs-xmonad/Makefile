@@ -1,9 +1,8 @@
 # Created by: Matthieu Guegan <matt.guegan@free.fr>
-# $FreeBSD$
 
 PORTNAME=	xmonad
 PORTVERSION=	0.15
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	x11-wm haskell
 
 MAINTAINER=	haskell@FreeBSD.org

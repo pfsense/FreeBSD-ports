@@ -1,10 +1,9 @@
 # Created by: Diego Depaoli <trebestie@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	texworks
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	0.6.2
-PORTREVISION=	24
+PORTREVISION=	27
 CATEGORIES=	editors
 
 MAINTAINER=	hrs@FreeBSD.org

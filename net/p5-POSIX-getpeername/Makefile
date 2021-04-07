@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	POSIX-getpeername
 PORTVERSION=	0.01
 PORTREVISION=	1

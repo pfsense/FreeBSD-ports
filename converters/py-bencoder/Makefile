@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bencoder
 PORTVERSION=	0.2.1
 CATEGORIES=	converters

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Object-Import
 PORTVERSION=	1.005
 CATEGORIES=	devel perl5

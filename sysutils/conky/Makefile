@@ -1,10 +1,8 @@
 # Created by: Roman Bogorodskiy <novel@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	conky
-PORTVERSION=	1.11.6
+PORTVERSION=	1.12.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	madpilot@FreeBSD.org

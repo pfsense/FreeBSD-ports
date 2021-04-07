@@ -1,5 +1,4 @@
 # Created by: Hendrik Scholz <hendrik@scholz.net>
-# $FreeBSD$
 
 PORTNAME=	transcode
 PORTVERSION=	1.1.7
@@ -34,7 +33,6 @@ OPTIONS_DEFAULT=	LAME DVDREAD JPEG ICONV
 BKTR_DESC=		Bktr capture card support
 POSTPROC_DESC=		Libpostproc support
 DVDREAD_DESC=		Libdvdread support
-LZO_DESC=		LZO compression support
 
 X11_USES=			xorg
 X11_USE=			xorg=xv,xaw,xpm

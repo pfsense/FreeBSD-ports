@@ -1,8 +1,7 @@
 # Created by: DarwinSurvivor <darwinsurvivor@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	notmuch
-PORTVERSION=	0.31.3
+PORTVERSION=	0.31.4
 PORTREVISION?=	0
 CATEGORIES?=	mail
 MASTER_SITES=	https://notmuchmail.org/releases/

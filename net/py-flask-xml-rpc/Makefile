@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Flask-XML-RPC
 PORTVERSION=	0.1.2
 CATEGORIES=	net python

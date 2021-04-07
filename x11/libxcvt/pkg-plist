@@ -1,0 +1,6 @@
+@comment bin/cvt
+include/libxcvt/libxcvt.h
+include/libxcvt/libxcvt_mode.h
+lib/libxcvt.so
+libdata/pkgconfig/libxcvt.pc
+@comment man/man1/cvt.1.gz

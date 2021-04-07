@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cmdliner
 PORTVERSION=	0.9.8
 CATEGORIES=	devel

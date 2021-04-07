@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	phprecipebook
 PORTVERSION=	3.01
 PORTREVISION=	5

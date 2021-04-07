@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	obhttpd
 PORTVERSION=	6.6.20191023
 CATEGORIES=	www
@@ -26,6 +24,9 @@ CFLAGS+=	-Wall -fcommon
 CFLAGS+=	-I${WRKDIR}/libressl-${SSL_VERSION}/include
 
 MAKE_ARGS+=	MANDIR=${PREFIX}/man/man
+
+# XXX Static libraries with PIE are currently unsupported.
+MAKE_ARGS+=	WITHOUT_PIE=true
 
 USERS=		www
 GROUPS=		www

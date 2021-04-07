@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	debug_inspector
 PORTVERSION=	0.0.3
 CATEGORIES=	devel rubygems

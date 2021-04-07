@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	milou
 DISTVERSION=	${KDE_PLASMA_VERSION}
 CATEGORIES=	deskutils kde kde-plasma

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Crypt-SMIME
 PORTVERSION=	0.27
 CATEGORIES=	security perl5

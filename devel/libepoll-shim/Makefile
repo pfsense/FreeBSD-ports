@@ -1,8 +1,8 @@
 # Created by: Johannes Lundberg <johalun0@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	libepoll-shim
-PORTVERSION=	0.0.20200602
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.0.20210322
 CATEGORIES=	devel
 
 MAINTAINER=	x11@FreeBSD.org
@@ -16,7 +16,7 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	jiixyj
 GH_PROJECT=	epoll-shim
-GH_TAGNAME=	3840e9c
+PLIST_SUB=	SHIM_EVENTFD="${exists(/usr/include/sys/eventfd.h):?@comment :}"
 
 do-test:
 	# Exclude certain tests in resource restricted environments

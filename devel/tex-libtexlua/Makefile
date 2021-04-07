@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libtexlua
 PORTVERSION=	5.2.4
 CATEGORIES=	devel

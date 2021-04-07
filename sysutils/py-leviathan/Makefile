@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	leviathan
 PORTVERSION=	0.1.1
 PORTREVISION=	1

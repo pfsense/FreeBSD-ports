@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	mimemagic
-PORTVERSION=	0.3.5
+PORTVERSION=	0.3.10
 CATEGORIES=	misc rubygems
 MASTER_SITES=	RG
 
@@ -10,6 +8,10 @@ COMMENT=	MIME detection by extension or content in pure ruby
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+RUN_DEPENDS=	shared-mime-info>0:misc/shared-mime-info \
+		rubygem-nokogiri>=1<2:textproc/rubygem-nokogiri \
+		rubygem-rake>=0:devel/rubygem-rake
 
 USES=		gem
 USE_RUBY=	yes

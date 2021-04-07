@@ -1,9 +1,8 @@
 # Created by: Hans Petter Selasky <hselasky@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	hpsjam
 DISTVERSIONPREFIX=	v
-DISTVERSION=		1.0.9
+DISTVERSION=		1.0.12
 CATEGORIES=	audio
 
 MAINTAINER=	hselasky@FreeBSD.org

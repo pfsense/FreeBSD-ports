@@ -1,9 +1,7 @@
 # Created by: Roman Bogorodskiy
-# $FreeBSD$
 
 PORTNAME=	scanlogd
-PORTVERSION=	2.2.7
-PORTREVISION=	2
+PORTVERSION=	2.2.8
 CATEGORIES=	security
 MASTER_SITES=	http://openwall.com/scanlogd/ \
 		ftp://ftp.openwall.com/pub/projects/scanlogd/ \

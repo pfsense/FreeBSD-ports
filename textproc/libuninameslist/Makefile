@@ -1,8 +1,7 @@
 # Created by: KANOU Hiroki <kanou@khdd.net>
-# $FreeBSD$
 
 PORTNAME=	libuninameslist
-PORTVERSION=	20190701
+PORTVERSION=	20200413
 CATEGORIES=	textproc
 
 MAINTAINER=	cyberbotx@cyberbotx.com
@@ -15,9 +14,11 @@ USES=		autoreconf gmake libtool
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	fontforge
+USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-USE_LDCONFIG=	yes
+
+MAKE_JOBS_UNSAFE=	yes
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	FRENCH

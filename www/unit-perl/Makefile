@@ -1,5 +1,4 @@
 # Created by: Sergey Osokin <osa@FreeBSD.org>
-# $FreeBSD$
 
 PKGNAMESUFFIX=	-${UNIT_MODNAME}
 
@@ -28,5 +27,9 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/libexec/unit/modules/
 	${INSTALL_LIB} ${WRKSRC}/build/${UNIT_MODNAME}.unit.so \
 		${STAGEDIR}${PREFIX}/libexec/unit/modules/
+
+# Overwrite the target in the ${MASTERDIR}/Makefile
+post-install:
+	@${DO_NADA}
 
 .include "${MASTERDIR}/Makefile"

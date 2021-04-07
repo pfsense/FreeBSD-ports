@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	seabattle
 PORTVERSION=	1.0
@@ -10,6 +9,9 @@ MASTER_SITES=	SUNSITE/games/strategy/ \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Curses based battleship type game
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: current_player
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: current_player
 
 USES=		ncurses
 

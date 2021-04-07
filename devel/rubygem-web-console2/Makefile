@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	web-console
 PORTVERSION=	2.3.0
 PORTREVISION=	1

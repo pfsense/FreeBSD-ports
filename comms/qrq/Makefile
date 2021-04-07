@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qrq
 PORTVERSION=	0.3.3
 CATEGORIES=	comms hamradio

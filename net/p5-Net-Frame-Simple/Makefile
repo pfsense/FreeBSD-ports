@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-Frame-Simple
 PORTVERSION=	1.09
 CATEGORIES=	net perl5

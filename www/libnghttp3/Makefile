@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	nghttp3
-PORTVERSION=	0.1.0.g20201116
+PORTVERSION=	0.1.0.g20210222
 CATEGORIES=	www net
 PKGNAMEPREFIX=	lib
 
@@ -21,7 +20,7 @@ USE_CXXSTD=	c++17
 USE_LDCONFIG=	yes
 
 GH_ACCOUNT=	ngtcp2
-GH_TAGNAME=	bbeab68
+GH_TAGNAME=	66ad30f
 USE_GITHUB=	yes
 
 post-patch:

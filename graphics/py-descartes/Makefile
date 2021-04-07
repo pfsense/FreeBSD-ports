@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	descartes
 PORTVERSION=	1.1.0
 PORTREVISION=	1

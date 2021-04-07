@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	lsd
 DISTVERSION=	0.17.0
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	sysutils
 
 MAINTAINER=	andoriyu@gmail.com

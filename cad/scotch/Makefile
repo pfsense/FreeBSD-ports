@@ -1,5 +1,4 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	scotch
 DISTVERSION=	6.0.4-aster7
@@ -14,13 +13,15 @@ LICENSE_NAME=	CeCILL-C
 LICENSE_FILE=	${WRKSRC}/doc/CeCILL-C_V1-en.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-CONFLICTS=	gbase-0.* gmap-2015.*
-
 USES=		bison:alias gmake localbase
+
+CONFLICTS=	gbase-0.* gmap-2015.*
 
 MAKE_JOBS_UNSAFE=yes
 
-OPTIONS_DEFINE=	DOCS EXAMPLES
+OPTIONS_DEFINE=	DOCS EXAMPLES MPICH
+OPTIONS_DEFAULT=MPICH
+OPTIONS_SUB=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:R}
 BUILD_WRKSRC=	${WRKSRC}/src
@@ -36,18 +37,10 @@ DOCVER=		${PORTVERSION:R:R}
 PORTDOCS=	ptscotch_user${DOCVER}.pdf scotch_user${DOCVER}.pdf scotch_example.f
 LIBS=		esmumps scotch scotcherr scotcherrexit scotchmetis
 
-.if !defined(WITHOUT_MPI)
-LIB_DEPENDS+=	libmpi.so:net/mpich
-
-ALL_TARGET+=	ptesmumps
-TEST_TARGET+=	ptcheck
-
-LIBS+=		ptesmumps ptscotch ptscotcherr ptscotcherrexit ptscotchparmetis
-
-PLIST_SUB+=	MPI=""
-.else
-PLIST_SUB+=	MPI="@comment "
-.endif
+MPICH_USES=		mpi:mpich
+MPICH_ALL_TARGET=	ptesmumps
+MPICH_TEST_TARGET=	ptcheck
+MPICH_LIBS+=	ptesmumps ptscotch ptscotcherr ptscotcherrexit ptscotchparmetis
 
 .include <bsd.port.options.mk>
 
@@ -58,7 +51,7 @@ MF=	x86-64
 .endif
 
 pre-everything::
-.if !defined(WITHOUT_MPI)
+.if !defined(WITHOUT_MPICH)
 	@${ECHO_MSG}
 	@${ECHO_MSG} "Define WITHOUT_MPI if PT-Scotch is not wanted."
 	@${ECHO_MSG}

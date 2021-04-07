@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		talloc
 PORTVERSION=		2.3.1
 PORTREVISION=		0

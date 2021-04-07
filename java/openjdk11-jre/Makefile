@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PKGNAMESUFFIX=	${JDK_MAJOR_VERSION}-jre
 
 COMMENT=	Java Runtime Environment ${JDK_MAJOR_VERSION}

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	yarn
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.22.10
@@ -55,5 +53,17 @@ do-install:
 do-install-HADOOPCOMPAT-off:
 	${RLN} ${STAGEDIR}${PREFIX}/lib/node_modules/yarn/bin/yarn \
 		${STAGEDIR}${PREFIX}/bin/yarn
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MNODE10}
+DEPRECATED=	Uses EOL Python 2.7 via www/node10
+EXPIRATION_DATE=2021-06-23
+.endif
+.if ${PORT_OPTIONS:MNODE12}
+DEPRECATED=	Uses EOL Python 2.7 via www/node12
+EXPIRATION_DATE=2021-06-23
+.endif
+
 
 .include <bsd.port.mk>

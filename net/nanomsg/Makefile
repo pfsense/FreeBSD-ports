@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=			nanomsg
 PORTVERSION=			1.1.5
 PORTREVISION=			1

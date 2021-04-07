@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	first-server
 PORTVERSION=	0.0.7
 DISTVERSIONPREFIX=	v

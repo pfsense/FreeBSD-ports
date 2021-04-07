@@ -1,8 +1,7 @@
 # Created by: Alexander Moisseev <moiseev@mezonplus.ru>
-# $FreeBSD$
 
 PORTNAME=	thunderbird_labels
-PORTVERSION=	1.4.8
+PORTVERSION=	1.4.10
 DISTVERSIONPREFIX=	v
 CATEGORIES=	mail
 PKGNAMEPREFIX=	roundcube-
@@ -17,6 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 RUN_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=1.4.0:mail/roundcube@${PHP_FLAVOR}
 
 USES=	php:flavors
+IGNORE_WITH_PHP=80
 
 NO_BUILD=	yes
 NO_ARCH=	yes

@@ -1,9 +1,7 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	sqlitestudio
-DISTVERSION=	3.2.1-1268
-DISTVERSIONSUFFIX=	-g6daa3511
+DISTVERSION=	3.3.2
 CATEGORIES=	databases
 
 MAINTAINER=	yuri@FreeBSD.org

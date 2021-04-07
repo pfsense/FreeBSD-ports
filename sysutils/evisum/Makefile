@@ -1,8 +1,7 @@
 # Created by: Peter TKATHENKO <peter@flytrace.com>
-# $FreeBSD$
 
 PORTNAME=	evisum
-PORTVERSION=	0.5.8
+PORTVERSION=	0.5.10
 CATEGORIES=	sysutils enlightenment
 MASTER_SITES=	http://download.enlightenment.org/rel/apps/${PORTNAME}/
 

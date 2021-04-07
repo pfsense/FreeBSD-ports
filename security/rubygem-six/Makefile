@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	six
 PORTVERSION=	0.2.1
 CATEGORIES=	security rubygems

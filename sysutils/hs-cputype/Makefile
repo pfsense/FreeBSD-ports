@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cputype
 PORTVERSION=	0.2.1
 CATEGORIES=	sysutils haskell

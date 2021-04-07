@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	aws-sdk-budgets
-PORTVERSION=	1.36.0
+PORTVERSION=	1.37.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -11,7 +10,7 @@ COMMENT=	Official AWS Ruby gem for AWS Budgets (AWSBudgets)
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	rubygem-aws-sdk-core>=3.109.0<4:devel/rubygem-aws-sdk-core \
+RUN_DEPENDS=	rubygem-aws-sdk-core>=3.112.0<4:devel/rubygem-aws-sdk-core \
 		rubygem-aws-sigv4>=1.1<2:devel/rubygem-aws-sigv4
 
 USES=		gem

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	leather
 PORTVERSION=	0.3.3
 CATEGORIES=	graphics python

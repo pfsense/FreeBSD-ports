@@ -1,5 +1,4 @@
 # Created by: Matthew Seaman
-# $FreeBSD$
 
 # Note: the Sphinx Storage Engine MySQL plugin is not supported by
 # this port.  You need a patched version of mysql server for that.
@@ -7,7 +6,7 @@
 
 PORTNAME=	sphinxsearch
 PORTVERSION=	2.2.11
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	textproc databases
 MASTER_SITES=	http://sphinxsearch.com/files/ \
 		http://snowball.tartarus.org/dist/:libstemmer

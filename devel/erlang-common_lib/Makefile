@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	common_lib
 PORTVERSION=	3.3.4
 CATEGORIES=	devel

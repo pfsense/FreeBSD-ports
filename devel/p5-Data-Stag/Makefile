@@ -1,5 +1,4 @@
 # Created by: Fernan Aguero <fernan@iib.unsam.edu.ar>
-# $FreeBSD$
 
 PORTNAME=	Data-Stag
 PORTVERSION=	0.14
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	culot@FreeBSD.org
-COMMENT=	Structured Tags datastructures
+COMMENT=	Structured Tags data structures
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	ultralist
 DISTVERSION=	1.7.0
 CATEGORIES=	deskutils
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Simple, powerful, task management system for the command line
 
 LICENSE=	MIT

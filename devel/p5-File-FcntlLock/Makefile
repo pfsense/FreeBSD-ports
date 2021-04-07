@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	File-FcntlLock
 PORTVERSION=	0.22
 CATEGORIES=	devel perl5

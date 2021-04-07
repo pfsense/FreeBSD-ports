@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	x16-emulator
 DISTVERSION=	r38
 CATEGORIES=	emulators

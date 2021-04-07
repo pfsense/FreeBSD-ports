@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	feedgnuplot
 PORTVERSION=	1.55
 CATEGORIES=	graphics perl5

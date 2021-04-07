@@ -1,5 +1,4 @@
 # Created by: Aragon Gouveia <aragon@phat.za.net>
-# $FreeBSD$
 
 PORTNAME=	alsa-utils
 PORTVERSION=	1.1.2
@@ -9,7 +8,7 @@ MASTER_SITES=	ftp://ftp.alsa-project.org/pub/utils/ \
 		GENTOO
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	ALSA compatibility utils
+COMMENT=	ALSA compatibility utilities
 
 LICENSE=	GPLv2+
 

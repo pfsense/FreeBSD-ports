@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xlsatoms
 PORTVERSION=	1.1.3
 CATEGORIES=	x11

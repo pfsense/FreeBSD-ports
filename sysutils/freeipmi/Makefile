@@ -1,8 +1,7 @@
 # Created by: Dmitry Frolov <frol@nov.net>
-# $FreeBSD$
 
 PORTNAME=	freeipmi
-PORTVERSION=	1.6.6
+PORTVERSION=	1.6.7
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU
 

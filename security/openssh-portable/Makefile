@@ -1,9 +1,8 @@
 # Created by: dwcjr@inethouston.net
-# $FreeBSD$
 
 PORTNAME=	openssh
 DISTVERSION=	8.4p1
-PORTREVISION=	3
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	security
 MASTER_SITES=	OPENBSD/OpenSSH/portable

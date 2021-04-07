@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openapi-codec
 DISTVERSION=	1.3.2
 CATEGORIES=	devel python

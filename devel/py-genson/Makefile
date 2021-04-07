@@ -1,5 +1,4 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	genson
 PORTVERSION=	1.2.2
@@ -8,7 +7,7 @@ MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ehaupt@FreeBSD.org
-COMMENT=	GenSON is a powerful, user-friendly JSON Schema generator
+COMMENT=	Powerful, user-friendly JSON Schema generator
 
 LICENSE=	MIT
 

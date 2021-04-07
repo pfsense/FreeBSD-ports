@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	charls
-PORTVERSION=	2.1.0
+PORTVERSION=	2.2.0
 CATEGORIES=	graphics
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -15,6 +14,8 @@ USES=		cmake compiler:c++14-lang
 
 CMAKE_ON=	BUILD_SHARED_LIBS BUILD_TESTING
 USE_LDCONFIG=	yes
+
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 GH_ACCOUNT=	team-charls
 USE_GITHUB=	yes

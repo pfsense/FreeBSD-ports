@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	expiringdict
 PORTVERSION=	1.2.1
 CATEGORIES=	devel python
@@ -11,8 +9,6 @@ COMMENT=	Dictionary with auto-expiring values for caching purposes
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-RUN_DEPENDS=	${PY_TYPING}
 
 NO_ARCH=	yes
 USES=		python:3.6+

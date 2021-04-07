@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	OpenDiablo2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1-g20201219
+DISTVERSION=	0.1-g20210312
 CATEGORIES=	games
 
-MAINTAINER=	ed.arrakis@gmail.com
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Open source re-implementation of Diablo 2
 
 LICENSE=	GPLv3
@@ -14,13 +12,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libglfw.so:graphics/glfw
 
 USES=		gl go:modules openal pkgconfig xorg
-USE_GL=		gl
-USE_XORG=	x11 xcursor xi xinerama xrandr xxf86vm
 USE_GITHUB=	yes
-GH_TAGNAME=	5409dc4
-
-PLIST_FILES=	bin/${PORTNAME}
-
+GH_TAGNAME=	536233f
 GH_TUPLE=	\
 		JoshVarga:blast:681c804fb9f0:joshvarga_blast/vendor/github.com/JoshVarga/blast \
 		alecthomas:template:fb15b899a751:alecthomas_template/vendor/github.com/alecthomas/template \
@@ -43,6 +36,17 @@ GH_TUPLE=	\
 		pmezard:go-difflib:v1.0.0:pmezard_go_difflib/vendor/github.com/pmezard/go-difflib \
 		robertkrimen:otto:ef014fd054ac:robertkrimen_otto/vendor/github.com/robertkrimen/otto \
 		stretchr:testify:v1.4.0:stretchr_testify/vendor/github.com/stretchr/testify
+USE_GL=		gl
+USE_XORG=	x11 xcursor xi xinerama xrandr xxf86vm
 
+PLIST_FILES=	bin/${PORTNAME}
+
+PORTDOCS=	README.md
+
+OPTIONS_DEFINE=	DOCS
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

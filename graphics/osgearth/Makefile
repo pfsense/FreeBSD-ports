@@ -1,10 +1,9 @@
 # Created by: lbartoletti <lbartoletti@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	osgearth
 PORTVERSION=	2.10.1
 DISTVERSIONPREFIX=	${PORTNAME}-
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	graphics geography
 
 MAINTAINER=	lbartoletti@FreeBSD.org

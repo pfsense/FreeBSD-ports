@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bcal
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.2
@@ -11,7 +9,7 @@ COMMENT=	Storage expression, unit conversion & address offset CLI calculator
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	amd64 powerpc64
+ONLY_FOR_ARCHS=	amd64 powerpc64 powerpc64le
 
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
 

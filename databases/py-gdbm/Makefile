@@ -1,5 +1,4 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gdbm
 PORTVERSION=	${PYTHON_PORTVERSION}
@@ -27,13 +26,7 @@ DIST_SUBDIR=	python
 DISTINFO_FILE=	${PORTSDIR}/lang/python${PYTHON_SUFFIX}/distinfo
 WRKSRC=		${WRKDIR}/Python-${PORTVERSION}/Modules
 
-.include <bsd.port.pre.mk>
-
 post-extract:
-.if ${PYTHON_REL} < 3000
-	@${CP} ${FILESDIR}/setup.py ${WRKSRC}
-.else
 	@${CP} ${FILESDIR}/setup3.py ${WRKSRC}/setup.py
-.endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

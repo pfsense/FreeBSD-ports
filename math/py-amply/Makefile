@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	amply
 DISTVERSION=	0.1.4
 CATEGORIES=	math python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Crypt-Format
 PORTVERSION=	0.07
 CATEGORIES=	security perl5

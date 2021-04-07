@@ -1,5 +1,4 @@
 # Created by: igor@zynaps.ru
-# $FreeBSD$
 
 PORTNAME=	trafshow
 PORTVERSION=	5.2.3
@@ -18,8 +17,6 @@ USES=		ncurses tar:tgz
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	PTHREAD_LIBS="-lpthread"
 ALL_TARGET=	trafshow
-
-CONFLICTS=	trafshow-4.* trafshow3-*
 
 OPTIONS_DEFINE=	IPV6
 IPV6_CFLAGS=	-DINET6

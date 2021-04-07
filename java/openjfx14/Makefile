@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openjfx
 DISTVERSION=	14.0.2.1+1
 PORTREVISION=	1
@@ -24,7 +22,7 @@ COMMENT=	JavaFX SDK overlay for OpenJDK 11
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64
+ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64 powerpc64le
 
 BUILD_DEPENDS=	zip:archivers/zip \
 		apache-ant>0:devel/apache-ant \

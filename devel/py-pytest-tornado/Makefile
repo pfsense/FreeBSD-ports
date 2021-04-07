@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pytest-tornado
 PORTVERSION=	0.8.0
 CATEGORIES=	devel python

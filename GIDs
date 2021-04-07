@@ -1,4 +1,3 @@
-# $FreeBSD$
 # Please keep this file sorted by GID!
 # Please pick an empty slot when available and also consider base values from
 # /usr/src/etc/group
@@ -211,13 +210,13 @@ odoo:*:267:
 tenshi:*:268:tenshi
 dendrite:*:269:
 _rpki-client:*:270:
-# free: 271
-# free: 272
-# free: 273
-# free: 274
+signaling:*:271:
+gvm:*:272:
+seaweedfs:*:273:
+usbmuxd:*:274:
 haclient:*:275:
 frontbase:*:276:
-# free: 277
+unifi-poller:*:277:
 rtg:*:278:
 mrtg:*:279:
 xymon:*:280:
@@ -227,7 +226,7 @@ devmon:*:283:
 vnstat:*:284:
 exaddos:*:285:exaddos
 rancid:*:286:
-# free: 287
+webdis:*:287:
 ntopng:*:288:
 # free: 289
 # free: 290
@@ -500,7 +499,8 @@ messagebus:*:556:
 pulse-rt:*:557:
 avahi:*:558:
 tacacs:*:559:
-haldaemon:*:560:
+# Unused since hald has been removed from the ports tree
+# haldaemon:*:560:
 distcc:*:561:
 polkit:*:562:
 pulse:*:563:

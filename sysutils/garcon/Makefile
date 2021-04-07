@@ -1,9 +1,7 @@
 # Created by: Oliver Lehmann <oliver@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	garcon
-PORTVERSION=	0.8.0
-PORTREVISION=	1
+PORTVERSION=	4.16.1
 CATEGORIES=	sysutils xfce
 MASTER_SITES=	XFCE
 DIST_SUBDIR=	xfce4

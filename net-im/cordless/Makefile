@@ -1,14 +1,16 @@
-# $FreeBSD$
-
 PORTNAME=	cordless
 DISTVERSION=	2020-10-24
 CATEGORIES=	net-im
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Discord TUI client
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+# See: https://github.com/Bios-Marcel/cordless#i-am-closing-down-the-cordless-project
+DEPRECATED=	Unmaintained and dead upstream, uses the old Discord API which notably has got users banned
+EXPIRATION_DATE=	2021-04-22
 
 USES=		go:modules
 USE_GITHUB=	yes

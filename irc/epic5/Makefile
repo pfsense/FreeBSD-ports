@@ -1,8 +1,7 @@
 # Created by: Josh Paetzel <josh@tcbug.org>
-# $FreeBSD$
 
 PORTNAME=	epic5
-PORTVERSION=	2.1.2
+PORTVERSION=	2.1.4
 CATEGORIES=	irc
 MASTER_SITES=	http://ftp.epicsol.org/pub/epic/EPIC5-PRODUCTION/
 

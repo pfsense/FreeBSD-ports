@@ -1,5 +1,4 @@
 # Created by: Daniel Solsona <daniel@ish.com.au>, Guido Falsi <madpilot@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	logstash
 PORTVERSION=	6.8.13
@@ -8,7 +7,7 @@ MASTER_SITES=	http://artifacts.elastic.co/downloads/logstash/
 PKGNAMESUFFIX=	6
 
 MAINTAINER=	elastic@FreeBSD.org
-COMMENT=	Server-side data ingest and transfomation tool
+COMMENT=	Server-side data ingestion and transformation tool
 
 LICENSE=	APACHE20
 

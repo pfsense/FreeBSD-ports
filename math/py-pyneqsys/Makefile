@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pyneqsys
 DISTVERSION=	0.5.6
 PORTREVISION=	2

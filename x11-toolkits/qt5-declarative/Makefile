@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	declarative
 DISTVERSION=	${QT5_VERSION}
 CATEGORIES=	x11-toolkits

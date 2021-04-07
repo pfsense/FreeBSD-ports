@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Data-SExpression
 PORTVERSION=	0.41
 PORTREVISION=	1

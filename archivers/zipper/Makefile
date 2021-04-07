@@ -1,9 +1,8 @@
 # Created by: gurkan@phys.ethz.ch
-# $FreeBSD$
 
 PORTNAME=	zipper
 PORTVERSION=	1.5
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	archivers gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	Zipper-${PORTVERSION}

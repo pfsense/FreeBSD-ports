@@ -1,9 +1,8 @@
 # Created by: John McAree <john@mcaree.org>
-# $FreeBSD$
 
 PORTNAME=	comical
 PORTVERSION=	0.8
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
@@ -14,7 +13,7 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libminizip.so:archivers/minizip \
-		libunrar.so.5:archivers/libunrar5
+		libunrar.so.6:archivers/libunrar6
 
 USES=		compiler:c++11-lang gmake
 USE_WX=		2.8+

@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	oneshot
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.1
+DISTVERSION=	1.4.1
 CATEGORIES=	www
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	First-come-first-serve single-fire HTTP server
 
 LICENSE=	MIT
@@ -59,4 +57,3 @@ post-install-MANPAGES-on:
 	${INSTALL_MAN} ${GO_WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
 
 .include <bsd.port.mk>
-

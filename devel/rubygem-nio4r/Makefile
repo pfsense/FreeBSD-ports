@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	nio4r
-PORTVERSION=	2.5.4
+PORTVERSION=	2.5.5
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

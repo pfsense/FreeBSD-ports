@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	JSCalendarContrib
 SVNREV=		17493
 

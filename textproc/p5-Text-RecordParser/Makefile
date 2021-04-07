@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-RecordParser
 PORTVERSION=	1.6.5
 PORTREVISION=	1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	easygui
 PORTVERSION=	0.98.1
 PORTREVISION=	1

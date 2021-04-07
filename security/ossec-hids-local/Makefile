@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PKGNAMESUFFIX?=	-${OSSEC_TYPE}
 COMMENT?=	Security tool to monitor and check logs and intrusions - local (standalone) installation
 OSSEC_TYPE?=	local

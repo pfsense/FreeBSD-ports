@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	LV
 PORTVERSION=	0.006
@@ -18,7 +17,9 @@ LICENSE_COMB=	dual
 TEST_DEPENDS=	p5-Sentinel>=0:devel/p5-Sentinel \
 		p5-Variable-Magic>=0:devel/p5-Variable-Magic
 
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

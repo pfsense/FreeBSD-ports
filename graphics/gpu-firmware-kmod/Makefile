@@ -1,8 +1,7 @@
 # Created by: Johannes Dieterich <jmd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gpu-firmware-kmod
-PORTVERSION=	g20201213
+PORTVERSION=	g20210224
 CATEGORIES=	graphics
 
 MAINTAINER=	jmd@FreeBSD.org
@@ -22,6 +21,6 @@ USES=		kmod uidfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
 GH_PROJECT=	drm-kmod-firmware
-GH_TAGNAME=	efe0d9f
+GH_TAGNAME=	d15ea6e
 
 .include <bsd.port.mk>

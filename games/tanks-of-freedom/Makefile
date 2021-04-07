@@ -1,5 +1,4 @@
 # Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tanks-of-freedom
 PORTVERSION=	0.7.0
@@ -13,6 +12,9 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 RUN_DEPENDS=	godot2:devel/godot2
+
+DEPRECATED=	Uses EOL Python 2.7 via devel/godot2
+EXPIRATION_DATE=2021-06-23
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	w84death

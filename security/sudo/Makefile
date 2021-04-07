@@ -1,8 +1,7 @@
 # Created by: erich@rrnet.com
-# $FreeBSD$
 
 PORTNAME=	sudo
-PORTVERSION=	1.9.5p2
+PORTVERSION=	1.9.6p1
 CATEGORIES=	security
 MASTER_SITES=	SUDO
 

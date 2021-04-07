@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tcprtt
 DISTVERSION=	g20191022
 CATEGORIES=	net

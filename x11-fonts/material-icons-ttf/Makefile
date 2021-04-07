@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	material-icons
 DISTVERSION=	5.0.1
 CATEGORIES=	x11-fonts

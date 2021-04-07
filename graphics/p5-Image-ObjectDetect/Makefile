@@ -1,9 +1,8 @@
 # Created by: Anes Mukhametov <anes@anes.su>
-# $FreeBSD$
 
 PORTNAME=	Image-ObjectDetect
 PORTVERSION=	0.12
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -13,6 +12,8 @@ COMMENT=	Detects objects from picture using opencv
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+
+BROKEN=		OpenCV4 no longer ships OpencCV-1.0 headers
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/opencv.pc:graphics/opencv

@@ -1,8 +1,7 @@
 # Created by: Ben Woods <woodsb02@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	icdiff
-PORTVERSION=	1.9.5
+PORTVERSION=	2.0.0
 DISTVERSIONPREFIX=	release-
 CATEGORIES=	textproc
 

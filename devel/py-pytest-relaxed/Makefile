@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pytest-relaxed
 PORTVERSION=	1.1.5
 CATEGORIES=	devel python

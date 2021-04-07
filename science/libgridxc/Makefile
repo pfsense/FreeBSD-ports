@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libgridxc
 DISTVERSION=	0.8.5
 PORTREVISION=	3
@@ -37,6 +35,12 @@ LIBXC_MAKE_ENV=		WITH_LIBXC=1
 LIBXC_LIB_DEPENDS=	libxc.so:science/libxc
 LIBXC_BROKEN=		Fails to build with libxc-5.0.0: https://bugs.launchpad.net/libgridxc/+bug/1899578
 
+.include <bsd.port.pre.mk>
+
+.if ${GCC_DEFAULT} >= 10
+BROKEN=		fails to build with GCC 10: Type mismatch between actual argument at (1) and actual argument at (2) (INTEGER(8)/INTEGER(4)).
+.endif
+
 post-patch:
 	@${MKDIR} ${BUILD_WRKSRC}
 	@${CAT} ${WRKSRC}/../extra/fortran.mk \
@@ -56,4 +60,4 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/mk && ${MV} ${STAGEDIR}${PREFIX}/*.mk ${STAGEDIR}${PREFIX}/share/mk
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libGridXC.so
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

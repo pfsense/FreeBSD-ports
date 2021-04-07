@@ -1,8 +1,7 @@
 # Created by: jabley@automagic.org
-# $FreeBSD$
 
 PORTNAME=	xml2rfc
-PORTVERSION=	3.3.0
+PORTVERSION=	3.5.0
 CATEGORIES=	textproc
 MASTER_SITES=	http://tools.ietf.org/tools/xml2rfc2/cli/
 

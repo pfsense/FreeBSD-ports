@@ -1,8 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lubridate
-PORTVERSION=	1.7.9.2
+PORTVERSION=	1.7.10
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

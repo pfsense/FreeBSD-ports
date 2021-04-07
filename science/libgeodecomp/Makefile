@@ -1,5 +1,4 @@
 # Created by: Kurt Kanzenbach <kurt@kmk-computers.de>
-# $FreeBSD$
 
 PORTNAME=		libgeodecomp
 PORTVERSION=		0.4.0
@@ -8,7 +7,7 @@ CATEGORIES=		science devel
 MASTER_SITES=		http://www.libgeodecomp.org/archive/
 
 MAINTAINER=		kurt@kmk-computers.de
-COMMENT=		LibGeoDecomp is an auto-parallelizing library for computer simulations
+COMMENT=		Auto-parallelizing library for computer simulations
 
 LICENSE=		BSL
 LICENSE_FILE=		${WRKSRC}/LICENSE

@@ -1,5 +1,4 @@
 # Created by: Vidar Karlsen <vidar@karlsen.tech>
-# $FreeBSD$
 
 PORTNAME=	yubikey_auth
 PORTVERSION=	g20180404
@@ -16,6 +15,7 @@ BUILD_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=1.0:mail/roundcube@${PHP_FLAVOR}
 RUN_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=1.0:mail/roundcube@${PHP_FLAVOR}
 
 USES=		php:flavors
+IGNORE_WITH_PHP=80
 
 USE_PHP=	curl
 

@@ -1,9 +1,8 @@
 # Created by: Dryice Liu <dryice@dryice.name>
-# $FreeBSD$
 
 PORTNAME=	muse
 PORTVERSION=	3.20
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	textproc elisp
 MASTER_SITES=	http://download.gna.org/muse-el/ \
 		LOCAL/dryice \

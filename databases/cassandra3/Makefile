@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cassandra
 DISTVERSION=	3.11.10
 CATEGORIES=	databases java
@@ -51,7 +49,7 @@ OPTIONS_DEFAULT=	SIGAR
 OPTIONS_SUB=		yes
 
 SIGAR_DESC=		Use SIGAR to collect system information
-DOCS_BUILD_DEPENDS=	${PY_SPHINX} \
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}sphinx_rtd_theme>0:textproc/py-sphinx_rtd_theme@${PY_FLAVOR}
 SIGAR_RUN_DEPENDS=	java-sigar>=1.6.4:java/sigar
 

@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# $FreeBSD$
-#
 # PROVIDE: routinator
 # REQUIRE: DAEMON
 # BEFORE:  LOGIN
@@ -29,6 +27,14 @@ check_init() {
 	if [ ! -d ${wrkdir}/tals ]; then
 		echo
 		echo -n "Need to initialize routinator with tals, "
+		echo "see man routinator"
+		echo
+		exit 1
+	fi
+	if [ ! -d ${wrkdir} ]; then
+		echo
+		echo -n "Need to create repository ${wrkdir}"
+		echo  "and populate with tals, "
 		echo "see man routinator"
 		echo
 		exit 1

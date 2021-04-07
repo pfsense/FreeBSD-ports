@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	SoapyHackRF
 DISTVERSIONPREFIX=	soapy-hackrf-
 DISTVERSION=	0.3.3

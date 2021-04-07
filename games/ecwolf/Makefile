@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ecwolf
 PORTVERSION=	1.3.3
 PORTREVISION=	1

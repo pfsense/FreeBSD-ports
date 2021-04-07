@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	slgrace
 PORTVERSION=	0.2.2
 PORTREVISION=	10

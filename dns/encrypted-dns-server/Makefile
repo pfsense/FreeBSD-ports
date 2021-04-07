@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	encrypted-dns-server
 DISTVERSION=	0.3.21
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	dns
 
 MAINTAINER=	felix@userspace.com.au

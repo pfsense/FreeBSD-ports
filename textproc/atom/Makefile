@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	atom
 PORTVERSION=	1.0
 CATEGORIES=	textproc

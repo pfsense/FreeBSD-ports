@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 CATEGORIES=	devel lang
 PKGNAMESUFFIX=	-fcl-json
 
-COMMENT=	Free Pascal JavaScript Object Notation implemenation (FCL)
+COMMENT=	Free Pascal JavaScript Object Notation implementation (FCL)
 
 USES=		fpc
 USE_FPC=	fcl-base rtl-objpas fcl-res

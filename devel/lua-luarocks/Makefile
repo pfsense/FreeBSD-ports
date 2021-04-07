@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	luarocks
 PORTVERSION=	3.5.0
 CATEGORIES=	devel

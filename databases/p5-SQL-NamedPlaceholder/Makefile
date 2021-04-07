@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	SQL-NamedPlaceholder
 PORTVERSION=	0.10
 CATEGORIES=	databases perl5

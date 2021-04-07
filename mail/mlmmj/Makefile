@@ -1,12 +1,12 @@
 # Created by: Christian Laursen <xi@borderworlds.dk>
-# $FreeBSD$
 
 PORTNAME=	mlmmj
 PORTVERSION=	1.3.0
+PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	http://mlmmj.org/releases/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Simple and slim mailing list manager
 
 LICENSE=	MIT

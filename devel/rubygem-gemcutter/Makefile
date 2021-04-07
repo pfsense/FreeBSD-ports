@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gemcutter
 PORTVERSION=	0.7.1
 PORTREVISION=	1

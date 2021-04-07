@@ -1,7 +1,7 @@
-# $FreeBSD$
+# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
 
 PORTNAME=	xapp
-PORTVERSION=	2.0.4
+PORTVERSION=	2.0.7
 CATEGORIES=	x11 gnome
 DIST_SUBDIR=	gnome
 
@@ -12,37 +12,29 @@ LICENSE=	LGPL3
 LICENSE_FILE?=	${WRKSRC}/COPYING.LESSER
 
 BUILD_DEPENDS=	vapigen:lang/vala
-LIB_DEPENDS=	libxklavier.so:x11/libxklavier \
+LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libdbusmenu-gtk3.so:devel/libdbusmenu
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		gettext-tools:build gnome meson pkgconfig python:3.5+ \
-		shebangfix xorg
-
+USES=		gnome meson pkgconfig python:3.5+ shebangfix xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	linuxmint
-
-SHEBANG_FILES=	data libxapp meson-scripts schemas scripts status-applets \
-		test-scripts
-BINARY_ALIAS=	python3=${PYTHON_CMD}
-
-USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 introspection intltool \
+USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 introspection:build intltool \
 		libgnomekbd pygobject3
-
+USE_LDCONFIG=	yes
+USE_XORG=	x11
 GLIB_SCHEMAS=	org.x.apps.gschema.xml
 INSTALLS_ICONS=	yes
-
-USE_XORG=	x11
-
-USE_LDCONFIG=	yes
-
-PORTSCOUT=	limit:^[0-9.]+$$	# ignore master.mint* tags
+SHEBANG_FILES=	data libxapp meson-scripts schemas scripts status-applets \
+		test-scripts
 
 PLIST_SUB+=	LIBVERSION=${PORTVERSION}
 
+PORTSCOUT=	limit:^[0-9.]+$$	# ignore master.mint* tags
+
 OPTIONS_DEFINE=	DOCS
 
-DOCS_BUILD_DEPENDS=	gtkdocize:textproc/gtk-doc
-DOCS_MESON_TRUE=	docs
+DOCS_BUILD_DEPENDS=	gtkdoc-scan:textproc/gtk-doc
+DOCS_MESON_ON=		-Ddocs=true
 
 .include <bsd.port.mk>

@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Ports to help disabled users
 
     SUBDIR += accerciser

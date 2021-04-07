@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	picard
 DISTVERSION=	2.22.9
 CATEGORIES=	biology java

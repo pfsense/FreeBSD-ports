@@ -1,5 +1,4 @@
 # Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sphinxcontrib-bitbucket
 PORTVERSION=	1.0
@@ -14,7 +13,7 @@ COMMENT=	Sphinx/BitBucket integration
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PY_SPHINX} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0.6,1:textproc/py-sphinx@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}docutils>=0.6:textproc/py-docutils@${PY_FLAVOR}
 
 USES=		python:3.6+

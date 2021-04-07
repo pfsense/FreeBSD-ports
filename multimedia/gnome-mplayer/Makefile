@@ -1,5 +1,4 @@
 # Created by: Alexander Logvinov <ports@logvinov.com>
-# $FreeBSD$
 
 PORTNAME=	gnome-mplayer
 PORTVERSION=	1.0.9
@@ -40,7 +39,6 @@ WRKSRC=		${WRKDIR}/gnome-mplayer-${PORTVERSION}
 
 OPTIONS_DEFINE=	ALSA DOCS GIO GPOD GTK3 NOTIFY PULSEAUDIO
 
-GIO_DESC=	Use GIO for file I/O
 GPOD_DESC=	Add support for libgpod
 
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib

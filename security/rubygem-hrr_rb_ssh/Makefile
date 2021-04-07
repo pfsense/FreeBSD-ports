@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hrr_rb_ssh
 DISTVERSION=	0.3.0.pre2
 CATEGORIES=	security rubygems

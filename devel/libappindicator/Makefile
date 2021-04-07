@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libappindicator
 PORTVERSION=	${MAJOR_VER}.${SNAPSHOT_VER:S/.//g}.${PATCH_VER:S/ubuntu//}
 PORTREVISION=	1
@@ -46,6 +44,10 @@ CONFIGURE_ENV+=	ac_cv_path_SED=${LOCALBASE}/bin/gsed
 MAJOR_VER=	12.10.1
 SNAPSHOT_VER=	18.04.20180322.1
 PATCH_VER=	0ubuntu5
+
+post-patch:
+	@${REINPLACE_CMD} -e 's,has_mono=true,has_mono=disabled,' \
+		${WRKSRC}/configure.ac
 
 pre-configure:
 	cd ${WRKSRC} && ${SETENV} NOCONFIGURE=yes ${SH} ./autogen.sh

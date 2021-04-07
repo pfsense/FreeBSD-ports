@@ -1,9 +1,8 @@
 # Created by: Pedro F Giffuni
-# $FreeBSD$
 
 PORTNAME=	infix
 PORTVERSION=	19960628
-PORTREVISION=	55
+PORTREVISION=	58
 CATEGORIES=	devel lisp
 PKGNAMEPREFIX=	cl-
 DISTFILES=	# none

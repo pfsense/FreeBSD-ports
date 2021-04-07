@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Pod-Coverage
 PORTVERSION=	0.23
 PORTREVISION=	1

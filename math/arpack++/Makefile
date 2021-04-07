@@ -1,12 +1,12 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	arpack++
 PORTVERSION=	2.3.0
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	ARPACK++ is an object-oriented version of the ARPACK package
+COMMENT=	Object-oriented version of the ARPACK package
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -36,11 +36,16 @@ GH_PROJECT=	arpackpp
 USES=		fortran gmake localbase
 
 NO_BUILD=	yes
+NO_ARCH=	yes
+
 REINPLACE_ARGS=	-i ""
 
 DOCS=		README.md doc/README doc/arpackpp.pdf doc/structure.txt
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
+
+PORTDOCS=	*
+PORTEXAMPLES=	*
 
 pre-configure:
 	${REINPLACE_CMD} -e "s|%%LOCALBASE%%|${LOCALBASE}|g"	\
@@ -54,11 +59,15 @@ do-install:
 	for inc in `${LS} ${WRKSRC}/include` ; do \
 		${INSTALL_DATA} ${WRKSRC}/include/$$inc ${STAGEDIR}${PREFIX}/include/ARPACK++; \
 	done
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for doc in ${DOCS}
 	${INSTALL_DATA} ${WRKSRC}/${doc} ${STAGEDIR}${DOCSDIR}
 .endfor
 	@${ECHO_MSG} "===> Documentation installed in ${DOCSDIR}."
+
+do-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/Makefile.inc ${STAGEDIR}${EXAMPLESDIR}
 	${CP} -R ${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}

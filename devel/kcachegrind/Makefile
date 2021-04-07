@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kcachegrind
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	devel kde kde-applications

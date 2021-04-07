@@ -1,5 +1,4 @@
 # Created by: Tilman Linneweh <arved@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	swhplugins
 PORTVERSION=	0.4.17
@@ -36,6 +35,7 @@ SSE_DESC=	use SSE instructions
 NLS_USES=	gettext
 NLS_LDFLAGS=	-lintl
 NLS_CONFIGURE_ENABLE=	nls
+NLS_USES_OFF=	gettext-tools
 
 3DNOW_CONFIGURE_ENABLE=	3dnow
 

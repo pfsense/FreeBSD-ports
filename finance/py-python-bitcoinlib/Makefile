@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	python-bitcoinlib
 PORTVERSION=	0.11.0
 CATEGORIES=	finance python

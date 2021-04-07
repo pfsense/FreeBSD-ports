@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Japanese support
 
     SUBDIR += ASCIIdates98-fpw
@@ -70,6 +67,7 @@
     SUBDIR += font-genjyuugothic
     SUBDIR += font-genshingothic
     SUBDIR += font-hackgen
+    SUBDIR += font-hackgen-nerd
     SUBDIR += font-ipa
     SUBDIR += font-ipa-uigothic
     SUBDIR += font-ipaex

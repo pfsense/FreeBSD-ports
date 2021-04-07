@@ -1,10 +1,9 @@
 # Created by: glocke@bsdstammtisch.at
-# $FreeBSD$
 
 PORTNAME=	retroshare
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.6.4
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net-p2p
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -24,7 +23,6 @@ LIB_DEPENDS=	libsqlcipher.so:databases/sqlcipher \
 		libgnome-keyring.so:security/libgnome-keyring \
 		libgpgme.so:security/gpgme \
 		libopencv_highgui.so:graphics/opencv \
-		libopencv_imgproc.so:graphics/opencv-core \
 		libavcodec.so:multimedia/ffmpeg \
 		libcurl.so:ftp/curl \
 		libmicrohttpd.so:www/libmicrohttpd \

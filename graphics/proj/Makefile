@@ -1,8 +1,7 @@
 # Created by: jedgar@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	proj
-PORTVERSION=	7.2.0
+PORTVERSION=	7.2.1
 PORTEPOCH=	1
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://download.osgeo.org/proj/

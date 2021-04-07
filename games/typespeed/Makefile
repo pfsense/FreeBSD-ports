@@ -1,5 +1,4 @@
 # Created by: refugee
-# $FreeBSD$
 
 PORTNAME=	typespeed
 PORTVERSION=	0.6.5
@@ -12,6 +11,9 @@ COMMENT=	Test your typing speed and get your fingers' CPS
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: now
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: now
 
 USES=		ncurses
 GNU_CONFIGURE=	yes

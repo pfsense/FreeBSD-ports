@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lsyncd
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	2.2.3

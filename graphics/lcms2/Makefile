@@ -1,10 +1,9 @@
 # Created by: Stanislav Sedov <stas@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lcms2
-PORTVERSION=	2.11
-PORTREVISION=	1
+PORTVERSION=	2.12
 CATEGORIES=	graphics
+MASTER_SITES=	https://github.com/mm2/Little-CMS/releases/download/lcms${PORTVERSION}/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Accurate, fast, and small-footprint color management engine
@@ -20,10 +19,6 @@ TEST_TARGET=	check
 USE_LDCONFIG=	yes
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	mm2
-GH_PROJECT=	Little-CMS
 
 OPTIONS_DEFINE=	DOCS JPEGICC TIFFICC
 OPTIONS_DEFAULT=JPEGICC TIFFICC
@@ -41,6 +36,6 @@ post-install:
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/
-	${INSTALL_DATA} ${WRKSRC}/doc/*.odt ${STAGEDIR}${DOCSDIR}/
+	${INSTALL_DATA} ${WRKSRC}/doc/*.pdf ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	moviepy
 PORTVERSION=	1.0.3
 CATEGORIES=	multimedia python

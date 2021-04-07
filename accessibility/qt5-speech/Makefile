@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	speech
 DISTVERSION=	${QT5_VERSION}
 CATEGORIES=	accessibility

@@ -1,5 +1,4 @@
 # Created by: Dima Sivachenko
-# $FreeBSD$
 
 PORTNAME=	webcrawl
 PORTVERSION=	1.10
@@ -14,6 +13,8 @@ USES=		tar:tgz
 ALL_TARGET=
 
 PLIST_FILES=	bin/webcrawl man/man1/webcrawl.1.gz
+
+CFLAGS+=	-fcommon
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/webcrawl ${STAGEDIR}${PREFIX}/bin

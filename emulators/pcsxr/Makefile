@@ -1,9 +1,8 @@
 # Created by: Ganael Laplanche <ganael.laplanche@martymac.org>
-# $FreeBSD$
 
 PORTNAME=	pcsxr
 PORTVERSION=	1.9.95.20180604
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	emulators
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -33,6 +32,8 @@ USE_GL=	gl
 INSTALLS_ICONS=	yes
 
 WRKSRC_SUBDIR=	${PORTNAME}
+
+CFLAGS+=	-I${LOCALBASE}/include/harfbuzz
 
 CMAKE_ARGS+=	-DDL_LIB:STRING="" \
 		-DMANPREFIX:STRING="${MANPREFIX}" \

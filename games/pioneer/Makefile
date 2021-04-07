@@ -1,5 +1,4 @@
 # Created by: lightside <lightside@gmx.com>
-# $FreeBSD$
 
 PORTNAME=	pioneer
 DISTVERSION=	0.0.${GH_TAGNAME}
@@ -32,6 +31,7 @@ LICENSE_PERMS_SIL=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 BROKEN_powerpc=		fails to build: contrib/profiler/Profiler.h:158:51: inconsistent operand constraints in an 'asm'
 BROKEN_powerpc64=	fails to build: contrib/profiler/Profiler.h:158:51: inconsistent operand constraints in an 'asm'
 BROKEN_powerpcspe=	fails to build: contrib/profiler/Profiler.h:158:51: inconsistent operand constraints in an 'asm'
+BROKEN_riscv64=		fails to build: contrib/profiler/Profiler.h:158:28: inconsistent operand constraints in an 'asm'
 
 LIB_DEPENDS=	libassimp.so:multimedia/assimp \
 		libfreetype.so:print/freetype2 \

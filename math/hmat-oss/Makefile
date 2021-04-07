@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hmat-oss
 DISTVERSION=	1.6.1
 PORTREVISION=	1

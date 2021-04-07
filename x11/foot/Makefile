@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	foot
-DISTVERSION=	1.6.4
+DISTVERSION=	1.7.1
 CATEGORIES=	x11
 MASTER_SITES=	https://codeberg.org/dnkl/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 
@@ -24,12 +22,25 @@ LIB_DEPENDS=	libepoll-shim.so:devel/libepoll-shim \
 USES=		compiler:c11 meson pkgconfig xorg
 USE_XORG=	pixman
 WRKSRC=		${WRKDIR}/${PORTNAME}
-MESON_ARGS=	-Dterminfo=disabled
 
-# XXX Drop after FreeBSD 12.1 EOL
-.if exists(/usr/lib/clang/8.0.1)
-# prompt.c:45:21: error: suggest braces around initialization of subobject [-Werror,-Wmissing-braces]
-CFLAGS+=	-Wno-error=missing-braces
+OPTIONS_DEFINE=	NOTIFY XDG
+OPTIONS_DEFAULT=NOTIFY XDG
+
+NOTIFY_RUN_DEPENDS=	notify-send:devel/libnotify
+
+XDG_DESC=		Open files with xdg-open
+XDG_RUN_DEPENDS=	xdg-open:devel/xdg-utils
+
+.if exists(/usr/bin/tic)
+PKGMESSAGE=	${NONEXISTENT}
+PLIST_FILES+=	share/site-terminfo/f/${PORTNAME} \
+		share/site-terminfo/f/${PORTNAME}-direct
+.else
+MESON_ARGS+=	-Dterminfo=disabled
 .endif
+
+post-patch:
+# Chase default TERMINFO_DIRS on FreeBSD, see lib/ncurses/ncurses/ncurses_cfg.h
+	@${REINPLACE_CMD} '/datadir/s/terminfo/site-&/' ${WRKSRC}/meson.build
 
 .include <bsd.port.mk>

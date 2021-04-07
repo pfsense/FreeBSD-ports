@@ -1,6 +1,6 @@
---- src/vs/workbench/contrib/extensions/browser/extensionEditor.ts.orig	2020-05-05 21:48:19 UTC
+--- src/vs/workbench/contrib/extensions/browser/extensionEditor.ts.orig	2021-03-30 12:04:46 UTC
 +++ src/vs/workbench/contrib/extensions/browser/extensionEditor.ts
-@@ -1396,7 +1396,8 @@ export class ExtensionEditor extends BaseEditor {
+@@ -1542,7 +1542,8 @@ export class ExtensionEditor extends EditorPane {
  
  		switch (platform) {
  			case 'win32': key = rawKeyBinding.win; break;

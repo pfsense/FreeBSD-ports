@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	VM-EC2-Security-CredentialCache
 PORTVERSION=	0.25
@@ -8,7 +7,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Cache credentials respecting expriation time for IAM roles
+COMMENT=	Cache credentials respecting expiration time for IAM roles
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

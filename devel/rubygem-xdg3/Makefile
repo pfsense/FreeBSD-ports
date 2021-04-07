@@ -1,5 +1,4 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xdg
 PORTVERSION=	3.1.1
@@ -12,8 +11,6 @@ COMMENT=	XDG Base Directory Standard Library for Ruby
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
-
-BROKEN_RUBY25=	yes
 
 USES=		gem
 USE_RUBY=	yes

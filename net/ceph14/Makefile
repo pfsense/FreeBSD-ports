@@ -1,10 +1,9 @@
 # Created by: Willem Jan Withagen <wjw@digiware.nl>
-# $FreeBSD$
 
 PORTNAME=	ceph
 DISTVERSIONPREFIX=	v
 DISTVERSION=	14.2.11
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 PKGNAMESUFFIX=	14
 
@@ -22,7 +21,7 @@ BUILD_DEPENDS=	\
 	git:devel/git \
 	gperf:devel/gperf \
 	yasm:devel/yasm \
-	${PY_SPHINX} \
+	${PYTHON_PKGNAMEPREFIX}sphinx>=2.1.2,1:textproc/py-sphinx@${PY_FLAVOR} \
 	${LOCALBASE}/lib/libatomic_ops.a:devel/libatomic_ops \
 	${LOCALBASE}/bin/ld:devel/binutils
 LIB_DEPENDS=	\
@@ -109,7 +108,7 @@ GROUPS=		ceph
 
 BINARY_ALIAS=	sphinx-build=sphinx-build-${PYTHON_VER}
 
-# PLIST_SUB=CMAKE_BUILD_TYPE_regex="\bdebug\b"
+# PLIST_SUB=CMAKE_BUILD_TYPE_regex="[[:<:]]debug[[:>:]]"
 
 .include <bsd.port.options.mk>
 

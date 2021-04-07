@@ -1,8 +1,7 @@
 # Created by: Wen Heping<wen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Astro-App-Satpass2
-PORTVERSION=	0.045
+PORTVERSION=	0.046
 CATEGORIES=	astro perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

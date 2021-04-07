@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Games and related software
 
     SUBDIR += 0ad
@@ -19,6 +16,7 @@
     SUBDIR += KnightCap
     SUBDIR += NBlood
     SUBDIR += OpenDiablo2
+    SUBDIR += OpenLara
     SUBDIR += OpenTomb
     SUBDIR += abbayedesmorts
     SUBDIR += abe
@@ -192,6 +190,7 @@
     SUBDIR += digger-vgl
     SUBDIR += divide-and-succeed
     SUBDIR += dmjava
+    SUBDIR += dobutsu
     SUBDIR += dodgindiamond2
     SUBDIR += domination
     SUBDIR += dontspace
@@ -252,6 +251,7 @@
     SUBDIR += falconseye
     SUBDIR += fargoal
     SUBDIR += fbg2
+    SUBDIR += fheroes2
     SUBDIR += fightorperish
     SUBDIR += fillets-ng
     SUBDIR += filters
@@ -442,6 +442,11 @@
     SUBDIR += knetwalk
     SUBDIR += knights
     SUBDIR += kobodeluxe
+    SUBDIR += kodi-addon-game.libretro
+    SUBDIR += kodi-addon-game.libretro.beetle-psx
+    SUBDIR += kodi-addon-game.libretro.genplus
+    SUBDIR += kodi-addon-game.libretro.pcsx-rearmed
+    SUBDIR += kodi-addon-game.libretro.picodrive
     SUBDIR += kolf
     SUBDIR += kollision
     SUBDIR += konquest
@@ -588,6 +593,7 @@
     SUBDIR += manaplus
     SUBDIR += mancala
     SUBDIR += mangband
+    SUBDIR += marblemarcher
     SUBDIR += mari0
     SUBDIR += masterserver
     SUBDIR += maxr
@@ -604,6 +610,7 @@
     SUBDIR += minerbold
     SUBDIR += minetest
     SUBDIR += minetest_game
+    SUBDIR += minetestmapper
     SUBDIR += minilens
     SUBDIR += mirrormagic
     SUBDIR += miscom
@@ -739,6 +746,7 @@
     SUBDIR += phlipple
     SUBDIR += picmi
     SUBDIR += pinball
+    SUBDIR += pingus
     SUBDIR += pink-pony
     SUBDIR += pioneer
     SUBDIR += pioneers
@@ -816,6 +824,7 @@
     SUBDIR += r1q2
     SUBDIR += railroad-rampage
     SUBDIR += rawgl
+    SUBDIR += re3
     SUBDIR += redeclipse
     SUBDIR += redeclipse-data
     SUBDIR += redorblack

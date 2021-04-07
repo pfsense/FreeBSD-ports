@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	anydesk
 DISTVERSION=	6.0.1
 CATEGORIES=	deskutils

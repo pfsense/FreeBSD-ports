@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	thrill
 DISTVERSION=	g20200406
 CATEGORIES=	misc

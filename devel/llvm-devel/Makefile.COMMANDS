@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 LLVM_COMMANDS=	\
 		bugpoint \
 		dsymutil \
@@ -41,6 +39,7 @@ LLVM_COMMANDS=	\
 		llvm-opt-report \
 		llvm-pdbutil \
 		llvm-profdata \
+		llvm-profgen \
 		llvm-ranlib \
 		llvm-rc \
 		llvm-readelf \
@@ -94,6 +93,7 @@ EXTRAS_COMMANDS= \
 FLANG_COMMANDS=	\
 		f18 \
 		f18-parse-demo \
+		fir-opt \
 		flang \
 		tco
 
@@ -105,6 +105,8 @@ LIT_COMMANDS=	\
 LLD_COMMANDS=	\
 		ld.lld \
 		ld64.lld \
+		ld64.lld.darwinnew \
+		ld64.lld.darwinold \
 		lld \
 		lld-link \
 		wasm-ld

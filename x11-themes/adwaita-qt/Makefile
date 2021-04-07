@@ -1,8 +1,7 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	adwaita-qt
-DISTVERSION=	1.2.0
+DISTVERSION=	1.2.1
 CATEGORIES=	x11-themes
 PKGNAMESUFFIX=	5
 

@@ -1,10 +1,9 @@
 # Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
 
 PORTNAME=	libtiff
 PORTVERSION=	4.0.3
-DISTVERSIONSUFFIX=	-32.el7
-PORTREVISION=	4
+DISTVERSIONSUFFIX=	-35.el7
+PORTREVISION=	5
 CATEGORIES=	graphics linux
 
 MAINTAINER=	emulation@FreeBSD.org

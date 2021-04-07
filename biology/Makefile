@@ -1,9 +1,7 @@
-# $FreeBSD$
-#
-
     COMMENT = Biology
 
     SUBDIR += abyss
+    SUBDIR += ad2vcf
     SUBDIR += artemis
     SUBDIR += avida
     SUBDIR += babel
@@ -12,6 +10,9 @@
     SUBDIR += bedtools
     SUBDIR += bioawk
     SUBDIR += biococoa
+    SUBDIR += biolibc
+    SUBDIR += bioparser
+    SUBDIR += biosoup
     SUBDIR += bolt-lmm
     SUBDIR += bowtie
     SUBDIR += bowtie2
@@ -27,6 +28,7 @@
     SUBDIR += ddocent
     SUBDIR += diamond
     SUBDIR += dsr-pdb
+    SUBDIR += edlib
     SUBDIR += emboss
     SUBDIR += exonerate
     SUBDIR += fasta
@@ -45,12 +47,14 @@
     SUBDIR += gatk
     SUBDIR += gcta
     SUBDIR += gemma
+    SUBDIR += generand
     SUBDIR += gff2ps
     SUBDIR += gmap
     SUBDIR += gperiodic
     SUBDIR += graphlan
     SUBDIR += grappa
     SUBDIR += groopm
+    SUBDIR += haplohseq
     SUBDIR += hhsuite
     SUBDIR += hisat2
     SUBDIR += hmmer
@@ -127,7 +131,6 @@
     SUBDIR += py-cutadapt
     SUBDIR += py-dnaio
     SUBDIR += py-ete3
-    SUBDIR += py-fastTSNE
     SUBDIR += py-gffutils
     SUBDIR += py-gtfparse
     SUBDIR += py-hits
@@ -144,6 +147,7 @@
     SUBDIR += pyfasta
     SUBDIR += python-nexus
     SUBDIR += rainbow
+    SUBDIR += rampler
     SUBDIR += recombine
     SUBDIR += ruby-bio
     SUBDIR += rubygem-bio
@@ -161,6 +165,7 @@
     SUBDIR += sim4
     SUBDIR += slclust
     SUBDIR += smithwaterman
+    SUBDIR += spoa
     SUBDIR += stacks
     SUBDIR += star
     SUBDIR += stringtie
@@ -172,6 +177,8 @@
     SUBDIR += trimadap
     SUBDIR += trimmomatic
     SUBDIR += ugene
+    SUBDIR += vcf-split
+    SUBDIR += vcf2hap
     SUBDIR += vcflib
     SUBDIR += vcftools
     SUBDIR += velvet

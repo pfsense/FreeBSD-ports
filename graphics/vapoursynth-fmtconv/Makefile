@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fmtconv
 PORTVERSION=	r22
 CATEGORIES=	graphics

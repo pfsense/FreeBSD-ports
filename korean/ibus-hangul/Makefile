@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ibus-hangul
 PORTVERSION=	1.5.1
 CATEGORIES=	korean

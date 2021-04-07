@@ -1,9 +1,7 @@
 # Created by: Dan Langille <dvl@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	elasticsearch-dsl
-PORTVERSION=	6.4.0
-PORTREVISION=	1
+PORTVERSION=	7.3.0
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,11 +13,10 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>=0:devel/py-dateutil@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}elasticsearch6>=6.2.1:textproc/py-elasticsearch6@${PY_FLAVOR} \
-		${PY_IPADDRESS} \
+		${PYTHON_PKGNAMEPREFIX}elasticsearch>=7.0.5:textproc/py-elasticsearch@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.10.0:devel/py-six@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python:3.5+
 USE_PYTHON=	autoplist concurrent distutils
 NO_ARCH=	yes
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	revealrk
 PORTVERSION=	1.2.2
 CATEGORIES=	security

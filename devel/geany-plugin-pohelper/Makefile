@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	geany-plugin-pohelper
 PORTVERSION=	${GEANY_VER}
 CATEGORIES=	devel

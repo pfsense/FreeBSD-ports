@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	www devel
 PKGNAMEPREFIX=	mod_
 

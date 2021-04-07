@@ -1,5 +1,4 @@
 # Created by: Sergey Osokin <osa@FreeBSD.org>
-# $FreeBSD$
 
 MASTER_SITES=	https://unit.nginx.org/download/:unit \
 	https://repo1.maven.org/maven2/io/github/classgraph/classgraph/${CLASSGRAPH_VERSION}/:classgraph \
@@ -42,11 +41,10 @@ COMMENT=	Java module for NGINX Unit
 RUN_DEPENDS=	unitd:www/unit
 
 UNIT_MODNAME=	java${JAVA_PORT_VERSION}
-CLASSGRAPH_VERSION=	4.8.90
-ECJ_VERSION=	3.23.0
-JETTY_VERSION=	9.4.33.v20201020
-TOMCAT_VERSION=	9.0.39
-UNIT_VERSION=	1.21.0
+CLASSGRAPH_VERSION=	4.8.102
+ECJ_VERSION=	3.25.0
+JETTY_VERSION=	9.4.38.v20210224
+TOMCAT_VERSION=	9.0.44
 
 PLIST_FILES=	%%JAVAJARDIR%%/classgraph-${CLASSGRAPH_VERSION}.jar \
 		%%JAVAJARDIR%%/ecj-${ECJ_VERSION}.jar \

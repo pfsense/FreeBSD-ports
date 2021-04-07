@@ -1,5 +1,4 @@
 # Created by: James Howard <howardj@wam.umd.edu>
-# $FreeBSD$
 
 PORTNAME=	cursive
 PORTVERSION=	0.11
@@ -8,7 +7,7 @@ CATEGORIES=	games
 MASTER_SITES=	https://www.unixpapa.com/software/
 DISTNAME=	${PORTNAME}
 
-MAINTAINER=	ed.arrakis@gmail.com
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Create ASCII character cursive handwriting
 
 USES=		tar:tgz

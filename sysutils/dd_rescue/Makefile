@@ -1,9 +1,7 @@
 # Created by: MANTANI Nobutaka <nobutaka@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dd_rescue
-PORTVERSION=	1.99.8
-PORTREVISION=	1
+PORTVERSION=	1.99.10
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.garloff.de/kurt/linux/ddrescue/ \
 		http://fossies.org/unix/privat/

@@ -1,6 +1,3 @@
-# $FreeBSD$
-
-PORTREVISION=	0
 CATEGORIES=	lang
 PKGNAMESUFFIX=	-rtl-generics
 

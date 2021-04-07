@@ -1,9 +1,7 @@
 # Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
-# $FreeBSD$
 
 PORTNAME=	gromacs
-DISTVERSION=	2020.4
-PORTREVISION=	2
+DISTVERSION=	2021.1
 CATEGORIES=	science
 MASTER_SITES=	ftp://ftp.gromacs.org/pub/gromacs/
 
@@ -16,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BROKEN_i386=	undefined reference to `__atomic_load' and `__atomic_compare_exchange'
 
 BUILD_DEPENDS=	boost-libs>=1.44:devel/boost-libs
-LIB_DEPENDS=	libhwloc.so:devel/hwloc
+LIB_DEPENDS=	libhwloc.so:devel/hwloc2
 
 USES=		cmake compiler:c++14-lang fortran gnome perl5 pkgconfig shebangfix xorg
 SHEBANG_FILES=	admin/*.sh scripts/*.pl scripts/*.sh src/gromacs/selection/*.sh
@@ -52,7 +50,9 @@ FLOAT_PLIST_SUB_OFF=	SUFFIX_D="_d"
 LEGACY_DESC=		Install legacy API # expected by science/votca
 LEGACY_CMAKE_BOOL=	GMX_INSTALL_LEGACY_API
 
-OPENCL_CMAKE_BOOL=	GMX_USE_OPENCL GMX_GPU
+OPENCL_CMAKE_BOOL=	GMX_USE_OPENCL
+OPENCL_CMAKE_ON=	-DGMX_GPU:STRING=OpenCL # one of: OFF, CUDA, OpenCL, SYCL
+OPENCL_CMAKE_OFF=	-DGMX_GPU:STRING=OFF
 OPENCL_LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd
 
 OPENMP_CMAKE_ON=	-DGMX_CXX11:BOOL=OFF

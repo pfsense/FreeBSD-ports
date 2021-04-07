@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	texlive
 DISTVERSION=	20150521
 CATEGORIES=	print

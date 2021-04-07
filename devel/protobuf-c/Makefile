@@ -1,10 +1,9 @@
 # Created by: Aaron Hurt <ahurt@anbcs.com>
-# $FreeBSD$
 
 PORTNAME=		protobuf-c
 PORTVERSION=		1.3.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=		devel
 
 MAINTAINER=	truckman@FreeBSD.org

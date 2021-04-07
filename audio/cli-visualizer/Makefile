@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cli-visualizer
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.8-27

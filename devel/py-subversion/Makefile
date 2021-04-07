@@ -1,5 +1,4 @@
 # Created by: thinker@branda.to
-# $FreeBSD$
 
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -8,7 +7,7 @@ COMMENT=	Python bindings for version control system
 
 BUILD_DEPENDS=	${LOCALBASE}/include/py3c.h:devel/py3c
 
-USES=		python
+USES=		python:2.7+
 USE_PYTHON=	flavors py3kplist
 
 # There is bug in python bindings Makefile

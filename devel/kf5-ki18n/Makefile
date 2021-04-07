@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ki18n
 DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
 CATEGORIES=	devel kde kde-frameworks

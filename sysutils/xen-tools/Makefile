@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	xen
 PKGNAMESUFFIX=	-tools
-PORTVERSION=	4.14.0
+PORTVERSION=	4.14.1
 PORTREVISION=	1
 CATEGORIES=	sysutils emulators
 MASTER_SITES=	http://downloads.xenproject.org/release/xen/${PORTVERSION}/
@@ -20,7 +18,6 @@ LIB_DEPENDS=	libyajl.so:devel/yajl \
 		libxml2.so:textproc/libxml2
 BUILD_DEPENDS=	seabios>0:misc/seabios
 RUN_DEPENDS=	seabios>0:misc/seabios
-DOCS_BUILD_DEPENDS=markdown:textproc/markdown
 
 OPTIONS_DEFINE=		DOCS SPICE
 OPTIONS_DEFAULT=	DOCS
@@ -57,9 +54,6 @@ ALL_TARGET=		tools
 DOCS_ALL_TARGET=	docs
 INSTALL_TARGET=		install-tools
 DOCS_INSTALL_TARGET=	install-docs
-
-# Fix build with clang 11
-EXTRA_PATCHES+= ${PATCHDIR}/0001-x86-use-constant-flags-for-section-.init.rodata.patch:-p1
 
 .include <bsd.port.options.mk>
 

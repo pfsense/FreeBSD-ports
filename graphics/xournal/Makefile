@@ -1,9 +1,8 @@
 # Created by: Jan Henrik Sylvester <me@janh.de>
-# $FreeBSD$
 
 PORTNAME=	xournal
 PORTVERSION=	0.4.8.2016
-PORTREVISION=	20
+PORTREVISION=	23
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 

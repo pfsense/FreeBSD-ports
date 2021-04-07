@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	janet
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.12.2
+DISTVERSION=	1.15.4
 CATEGORIES=	lang
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Functional embeddable lisp with C interop, & performant data types
 
 LICENSE=	MIT

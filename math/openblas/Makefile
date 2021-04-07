@@ -1,9 +1,9 @@
 # Created by: Eijiro Shibusawa <ej-sib@ice.uec.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	openblas
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.12
+DISTVERSION=	0.3.13
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	math
 MASTER_SITES=	NL/lapack/timing/:lapack_tmg
@@ -17,7 +17,7 @@ COMMENT=	Optimized BLAS library based on GotoBLAS2
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		fortran gmake perl5 pkgconfig
+USES=		compiler:c11 fortran gmake perl5 pkgconfig
 
 CONFLICTS_INSTALL=	cblas lapacke
 
@@ -39,6 +39,7 @@ OPTIONS_DEFINE=			DYNAMIC_ARCH INTERFACE64 OPENMP
 OPTIONS_DEFAULT=		OPENMP
 OPTIONS_DEFINE_i386=		AVX AVX2
 OPTIONS_DEFINE_amd64=		AVX AVX2
+OPTIONS_EXCLUDE_powerpc64le=	OPENMP
 OPTIONS_EXCLUDE_powerpc64=	OPENMP
 OPTIONS_EXCLUDE_powerpc=	OPENMP
 OPTIONS_RADIO=	${OPTIONS_RADIO_${ARCH}}
@@ -52,7 +53,7 @@ OPTIONS_DEFAULT_amd64=	DYNAMIC_ARCH
 OPTIONS_DEFAULT_powerpc64le=	DYNAMIC_ARCH
 .endif
 
-DYNAMIC_ARCH_DESC=	Support multiple CPU types on i386 and amd64
+DYNAMIC_ARCH_DESC=	Optimize for multiple CPU types, otherwise for this CPU
 INTERFACE64_DESC=	Use 8 byte integers on 64-bit architectures
 OPENMP_DESC=		Use OpenMP for threading
 AVX_DESC=		Support Advanced Vector Extensions (AVX)
@@ -84,23 +85,7 @@ USE_GCC=		yes
 
 MAXTHREADS?=	64
 
-.if ! ${PORT_OPTIONS:MDYNAMIC_ARCH} && ( ${ARCH} == "amd64" || ${ARCH} == "i386" || ${ARCH} == "powerpc64le")
-MANUAL_PACKAGE_BUILD=	Optimizes for the build machine.
-.endif
-
-.if ${PORT_OPTIONS:MOPENMP}
-USES+=		compiler:openmp
-.else
-USES+=		compiler:c11
-.endif
-
 .include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MOPENMP}
-.if ${CHOSEN_COMPILER_TYPE} == gcc
-USE_GCC=	yes
-.endif
-.endif
 
 post-extract:
 	cd ${DISTDIR}/${DIST_SUBDIR} ; \

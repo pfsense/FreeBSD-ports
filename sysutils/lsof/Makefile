@@ -1,12 +1,10 @@
 # Created by: David O'Brien <obrien@FreeBSD.org>
-# $FreeBSD$
 
 # note: If someone has a fix for a particular ARCH please feel free
 #       to commit it.  I (ler) don't have access to all the ARCH's
 
 PORTNAME=	lsof
-DISTVERSION=	4.93.2
-PORTREVISION=	14
+DISTVERSION=	4.94.0
 PORTEPOCH=	8
 CATEGORIES=	sysutils
 
@@ -33,7 +31,6 @@ AIM_CFLAGS=	-DAIM
 BOOKE_DESC=	Set for BOOKE hardware
 BOOKE_CFLAGS=	-DBOOKE
 
-CFLAGS+=	-fcommon
 CFLAGS_powerpc=	-DAIM
 CFLAGS_powerpcspe=	-DBOOKE
 

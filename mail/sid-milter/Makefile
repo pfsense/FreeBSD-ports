@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sid-milter
 PORTVERSION=	1.0.0
 PORTREVISION=	8

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 SLAVE=		kf5
 MASTERDIR=	${.CURDIR}/../../audio/kid3-qt5
 

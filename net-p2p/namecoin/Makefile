@@ -1,10 +1,9 @@
 # Created by: Chad J. Milios <milios@ccsys.com>
-# $FreeBSD$
 
 PORTNAME=	namecoin
 PORTVERSION=	0.19.1
 DISTVERSIONPREFIX=	nc
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	net-p2p dns
 

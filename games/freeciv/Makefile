@@ -1,8 +1,7 @@
 # Created by: ada@bsd.org
-# $FreeBSD$
 
 PORTNAME=	freeciv
-PORTVERSION=	2.6.3
+PORTVERSION=	2.6.4
 CATEGORIES=	games
 MASTER_SITES=	SF/freeciv/Freeciv%20${PORTVERSION:R}/${PORTVERSION}
 
@@ -97,9 +96,6 @@ PLIST_SUB+=	${_FREECIV_CLIENTS:S/$/="@comment "/} \
 CONFLICTS=	freeciv-nox11
 PLIST_SUB+=	CLIENT=""
 .endif
-
-# Avoid annoying and too general LUA_LIBDIR=lib sub from USES=lua
-PLIST_SUB:=	${PLIST_SUB:NLUA_LIBDIR=*}
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libfreeciv*.so

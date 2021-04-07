@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	get_process_mem
 PORTVERSION=	0.2.5
 CATEGORIES=	devel rubygems

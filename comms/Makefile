@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Communication utilities
 
     SUBDIR += acfax
@@ -62,6 +59,7 @@
     SUBDIR += gstreamer1-plugins-spandsp
     SUBDIR += gtkmmorse
     SUBDIR += hackrf
+    SUBDIR += hackrf-devel
     SUBDIR += hamlib
     SUBDIR += hcidump
     SUBDIR += hidapi
@@ -137,6 +135,7 @@
     SUBDIR += py-adafruit-ampy
     SUBDIR += py-esptool
     SUBDIR += py-hidapi
+    SUBDIR += py-libimobiledevice
     SUBDIR += py-lirc
     SUBDIR += py-pyserial
     SUBDIR += py-qt5-sensors

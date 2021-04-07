@@ -1,9 +1,8 @@
 # Created by: Anish Mistry
-# $FreeBSD$
 
 PORTNAME=	fusefs
 DISTVERSION=	2.9.9
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/libfuse/libfuse/releases/download/fuse-${DISTVERSION}/
 PKGNAMESUFFIX=	-libs

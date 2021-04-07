@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	textproc
 
 MASTERDIR=	${.CURDIR}/../../lang/php80

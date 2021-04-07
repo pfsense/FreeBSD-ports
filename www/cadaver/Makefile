@@ -1,5 +1,4 @@
 # Created by: Alex Povolotsky <tarkhil@over.ru>
-# $FreeBSD$
 
 PORTNAME=	cadaver
 PORTVERSION=	0.23.3
@@ -8,7 +7,7 @@ CATEGORIES=	www
 MASTER_SITES=	http://www.webdav.org/cadaver/ \
 		http://www.tcbug.org/
 
-MAINTAINER=	jpaetzel@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Commandline client for DAV
 
 LIB_DEPENDS=	libneon.so:www/neon

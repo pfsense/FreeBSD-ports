@@ -1,9 +1,8 @@
 # Created by: Stephen Montgomery-Smith <stephen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	octave-forge-ltfat
 PORTVERSION=	2.3.1
-PORTREVISION=	8
+PORTREVISION=	10
 PORTEPOCH=	1
 CATEGORIES=	math
 

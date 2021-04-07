@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xcrysden
 DISTVERSION=	1.6.2
 CATEGORIES=	science

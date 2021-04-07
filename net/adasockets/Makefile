@@ -1,8 +1,7 @@
 # Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	adasockets
-DISTVERSION=	1.11.1
+DISTVERSION=	1.12
 CATEGORIES=	net
 MASTER_SITES=	http://www.rfc1149.net/download/adasockets/
 

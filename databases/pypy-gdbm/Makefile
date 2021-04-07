@@ -1,5 +1,4 @@
 # Created by: David Naylor <dbn@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gdbm
 PORTREVISION=	1
@@ -9,6 +8,9 @@ MAINTAINER=	python@FreeBSD.org
 COMMENT=	PyPy bindings to the GNU dbm library
 
 LICENSE=	GPLv2+
+
+DEPRECATED=	Uses EOL Python 2.7 via lang/pypy
+EXPIRATION_DATE=2021-06-23
 
 LIB_DEPENDS=	libgdbm.so:databases/gdbm
 

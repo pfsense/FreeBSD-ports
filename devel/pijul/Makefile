@@ -1,9 +1,8 @@
 # Created by: Carlo Strub
-# $FreeBSD$
 
 PORTNAME=	pijul
 PORTVERSION=	0.12.0
-PORTREVISION=	21
+PORTREVISION=	24
 CATEGORIES=	devel
 MASTER_SITES=	https://pijul.org/releases/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}

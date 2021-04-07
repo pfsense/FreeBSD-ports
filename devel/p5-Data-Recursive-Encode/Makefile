@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Data-Recursive-Encode
 PORTVERSION=	0.06
 PORTREVISION=	1

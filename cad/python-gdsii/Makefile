@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	python-gdsii
 PORTVERSION=	0.2.1
 CATEGORIES=	cad python

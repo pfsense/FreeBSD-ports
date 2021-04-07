@@ -1,8 +1,6 @@
 #
 # MOVED -- A list of (recently) moved or removed ports
 #
-# $FreeBSD$
-#
 # Each entry consists of a single line containing the following four
 # fields in the order named, separated with the pipe (`|') character:
 #
@@ -6868,8 +6866,6 @@ databases/p5-DBD-FrontBase||2014-09-07|Cascade removal (databases/frontbase)
 databases/ruby-frontbase||2014-09-07|Cascade removal (databases/frontbase)
 devel/flex-sdk2||2014-09-07|Not staged
 devel/flex_compiler_shell||2014-09-07|Cascade removal (devel/flex-sdk2)
-emulators/virtualbox-ose-legacy||2014-09-09|Not staged
-emulators/virtualbox-ose-kmod-legacy||2014-09-09|No purpose after removal of virtualbox-ose-legacy
 devel/arm-eabi-gcc||2014-09-09|Not staged
 devel/cross-gcc||2014-09-09|Not staged
 devel/arm-eabi-binutils||2014-09-09|No purpose after removal of arm-eabi-gcc
@@ -7843,7 +7839,6 @@ audio/scmpc||2015-11-28|Has expired: Broken for more than 6 months
 ftp/gnusget||2015-11-28|Has expired: Broken for more than 6 months
 comms/gpsk31||2015-11-28|Has expired: Broken for more than 6 months
 cad/geda-gschem||2015-11-28|Has expired: Broken for more than 6 months
-audio/ampache||2015-11-28|Has expired: Broken for more than 6 months
 cad/slffea||2015-11-28|Has expired: Broken for more than 6 months
 audio/cripple||2015-11-28|Has expired: Broken for more than 6 months
 cad/geda-gattrib||2015-11-28|Has expired: Broken for more than 6 months
@@ -9370,7 +9365,6 @@ security/openvas-libraries|security/openvas8-libraries|2017-08-03|Renamed to inc
 security/openvas-cli|security/openvas8-cli|2017-08-03|Renamed to include openvas 9 ports. It reflects a better name
 security/openvas-manager|security/openvas8-manager|2017-08-03|Renamed to include openvas 9 ports. It reflects a better name
 security/openvas-scanner|security/openvas8-scanner|2017-08-03|Renamed to include openvas 9 ports. It reflects a better name
-security/greenbone-security-assistant|security/greenbone-security-assistant8|2017-08-03|Renamed to include openvas 9 ports. It reflects a better name
 sysutils/consolekit|sysutils/consolekit2|2017-08-05|Continuation of the consolekit project
 mail/dovecot2|mail/dovecot|2017-08-07|Renamed to mail/dovecot
 mail/dovecot2-pigeonhole|mail/dovecot-pigeonhole|2017-08-07|Renamed to mail/dovecot-pigeonhole
@@ -12657,10 +12651,8 @@ games/tinymux||2019-05-09|Has expired: Broken for more than 6 months
 games/voxelands||2019-05-09|Has expired: Broken for more than 6 months
 games/voxelands-server||2019-05-09|Has expired: Broken for more than 6 months
 games/warsow||2019-05-09|Has expired: Broken for more than 6 months
-graphics/appleseed||2019-05-09|Has expired: Broken for more than 6 months
 graphics/apvlv||2019-05-09|Has expired: Broken for more than 6 months
 graphics/qslim||2019-05-09|Has expired: Broken for more than 6 months
-graphics/rawstudio||2019-05-09|Has expired: Broken for more than 6 months
 graphics/tulip||2019-05-09|Has expired: Broken for more than 6 months
 lang/qore||2019-05-09|Has expired: Broken for more than 6 months
 math/goblin||2019-05-09|Has expired: Broken for more than 6 months
@@ -12778,7 +12770,6 @@ devel/rubygem-fastthread||2019-06-30|Has expired: Does not build for all support
 www/rubygem-responders-rails50|www/rubygem-responders|2019-06-30|Has expired: Use www/rubygem-responders (depends on Rails 5.0) instead
 emulators/xen-kernel47|emulators/xen-kernel|2019-07-01|Has expired: This port is about to be removed, please update to a newer Xen version
 sysutils/xen-tools47|sysutils/xen-tools|2019-07-01|Has expired: This port is about to be removed, please update to a newer Xen version
-www/palemoon||2019-07-03|Not maintained and full of security holes
 www/seamonkey||2019-07-03|2.49.* is not maintained upstream and full of security holes
 www/tomcat8||2019-07-06|Has expired: EoL since 2018-06-30
 devel/libevent-hiphop||2019-07-10|Has expired: Obsoleted with removal of lang/hiphop-php
@@ -12869,17 +12860,13 @@ irc/irssi-otr||2019-09-05|Has expired: Broken for more than 6 months
 mail/p5-Mail-ClamAV||2019-09-05|Has expired: Broken for more than 6 months
 mail/qmail-ldap||2019-09-05|Has expired: Broken for more than 6 months
 math/fityk||2019-09-05|Has expired: Broken for more than 6 months
-math/octave-forge-parallel||2019-09-05|Has expired: Broken for more than 6 months
-math/octave-forge-strings||2019-09-05|Has expired: Broken for more than 6 months
 math/octave-forge-tisean||2019-09-05|Has expired: Broken for more than 6 months
-math/octave-forge-video||2019-09-05|Has expired: Broken for more than 6 months
 misc/gnustep-examples||2019-09-05|Has expired: Broken for more than 6 months
 net/turses||2019-09-05|Has expired: Depends on expiring net/py-tweepy
 security/clamcour||2019-09-05|Has expired: Broken for more than 6 months
 security/honeybadger||2019-09-05|Has expired: Broken for more than 6 months
 sysutils/freefilesync||2019-09-05|Has expired: Broken for more than 6 months
 sysutils/log-courier||2019-09-05|Has expired: Broken for more than 6 months
-textproc/py-orange3-text||2019-09-05|Has expired: Broken for more than 6 months
 www/feedjack||2019-09-05|Has expired: Upstream gone
 www/havp||2019-09-05|Has expired: Broken for more than 6 months
 www/rubygem-webpack-rails-rails5|devel/rubygem-webpacker-rails5|2019-09-05|Has expired: Upstream no longer maintained, use devel/rubygem-webpacker-rails* instead
@@ -13264,7 +13251,6 @@ security/ranpwd||2019-10-16|Has expired: Unfetchable, unmaintained
 security/rdigest||2019-10-16|Has expired: Unfetchable, unmaintained
 security/smap||2019-10-16|Has expired: Unfetchable, unmaintained
 security/sshblock||2019-10-16|Has expired: Unfetchable, unmaintained
-shells/bashc||2019-10-16|Has expired: Unfetchable, unmaintained
 shells/flash||2019-10-16|Has expired: Unfetchable, unmaintained
 sysutils/cotty||2019-10-16|Has expired: Unfetchable, unmaintained
 sysutils/dt||2019-10-16|Has expired: Unfetchable, unmaintained
@@ -13650,7 +13636,6 @@ x11-toolkits/linux-c6-pango|x11-toolkits/linux-c7-pango|2019-12-31|Has expired: 
 x11-toolkits/linux-c6-qt47-x11|x11-toolkits/linux-c7-qt-x11|2019-12-31|Has expired: Superseded by CentOS 7
 x11-toolkits/linux-c6-tk85|x11-toolkits/linux-c7-tk85|2019-12-31|Has expired: Superseded by CentOS 7
 lang/gnatdroid-x86||2019-12-31|Has expired: Unfetchable, unmaintained
-net/py-tweepy||2019-12-31|Has expired: Broken for more than 6 months
 archivers/squeeze|archivers/xarchiver|2020-01-01|Removed, dead upstream and depends on expired x11-fm/thunar-vfs
 x11-fm/thunar-vfs||2020-01-01|Has expired: Functionality included in Thunar
 sysutils/ansible1||2020-01-01|Has expired: please upgrade to sysutils/ansible
@@ -13692,7 +13677,6 @@ sysutils/u-boot-zybo||2020-01-10|Has expired: Broken for more than 6 months
 x11-themes/kde-icons-kool-gorilla||2020-01-10|Has expired: Broken for more than 3 months, unmaintained
 sysutils/docker-freebsd||2020-01-11|Has expired: Broken for more than 9 months
 science/molden|biology/molden|2020-01-12|The duplicate port was removed in rev.505268
-www/web2ldap||2020-01-13|Broken: unfechable and missing dependencies
 net-mgmt/flow-extract||2020-01-14|Has expired: marked BROKEN for more than 6 months
 textproc/pootle||2020-01-14|Has expired: Unamaintained, marked BROKEN for more than 5 months
 cad/elmerfem|science/elmerfem|2020-01-15|Move to a proper category
@@ -13725,7 +13709,6 @@ biology/pycogent||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 biology/unanimity||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 cad/pythoncad||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 chinese/bg5pdf||2020-01-27|Has expired: Unmaintained, uses EOLed python27
-comms/py-libimobiledevice||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 converters/py-bcode||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 converters/py-iconv||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 databases/gadfly||2020-01-27|Has expired: Unmaintained, uses EOLed python27
@@ -14418,7 +14401,6 @@ deskutils/syncthing-gtk||2020-03-07|Has expired: Old, uses EOLed python27
 x11-wm/compiz-fusion||2020-03-07|Has expired: Old, uses EOLed python27
 x11/run_scaled||2020-03-07|Has expired: Old, uses EOLed python27
 databases/pgworksheet||2020-03-07|Has expired: Old, uses EOLed python27
-x11-fonts/font-manager||2020-03-07|Has expired: Old, uses EOLed python27
 x11-toolkits/py-gtksourceview||2020-03-07|Has expired: Old, uses EOLed python27
 devel/py-hgsubversion||2020-03-08|Has expired: Unmaintained, uses EOLed python27
 devel/py-gamin||2020-03-08|Has expired: Old, uses EOLed python27
@@ -14442,7 +14424,6 @@ textproc/py-ltxml||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 x11-toolkits/flowcanvas||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 audio/py-vorbis||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 databases/py-cdb||2020-03-20|Has expired: Unmaintained, uses EOLed python27
-devel/py-libplist||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 devel/py-mwlib||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 graphics/py-soya3d||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 irc/py-supybot||2020-03-20|Has expired: Unmaintained, uses EOLed python27
@@ -14677,7 +14658,6 @@ mail/poppassd||2020-05-05|Has expired: Broken for more than 6 months
 mail/prayer||2020-05-05|Has expired: Broken for more than 6 months
 mail/py-cyruslib||2020-05-05|Has expired: Broken for more than 6 months
 mail/qmail-auditor||2020-05-05|Has expired: Broken for more than 6 months
-mail/qmailmrtg7||2020-05-05|Has expired: Broken for more than 6 months
 mail/qmqtool||2020-05-05|Has expired: Broken for more than 6 months
 mail/relaydb||2020-05-05|Has expired: Broken for more than 6 months
 mail/rftp||2020-05-05|Has expired: Broken for more than 6 months
@@ -15218,7 +15198,6 @@ devel/py-protocols||2020-08-15|Has expired: Uses deprecated version of python
 devel/py-ptrace||2020-08-15|Has expired: Uses deprecated version of python
 devel/py-pydoop||2020-08-15|Has expired: Uses deprecated version of python
 devel/py-pyke||2020-08-15|Has expired: Uses deprecated version of python
-devel/py-pymtbl||2020-08-15|Has expired: Uses deprecated version of python
 devel/py-pyshapelib||2020-08-15|Has expired: Uses deprecated version of python
 devel/py-pytemplate||2020-08-15|Has expired: Uses deprecated version of python
 devel/py-python2-pythondialog||2020-08-15|Has expired: Uses deprecated version of python
@@ -15271,7 +15250,6 @@ multimedia/py-flvlib||2020-08-15|Has expired: Uses deprecated version of python
 net/py-gspreadsheet||2020-08-15|Has expired: Uses deprecated version of python
 net/py-libnet||2020-08-15|Has expired: Uses deprecated version of python
 net/py-netlib||2020-08-15|Has expired: Uses deprecated version of python
-net/py-pynmsg||2020-08-15|Has expired: Uses deprecated version of python
 net/py-rainbowstream||2020-08-15|Has expired: Uses deprecated version of python
 net/py-wolframalpha||2020-08-15|Has expired: Uses deprecated version of python
 net-im/empathy||2020-08-15|Has expired: Uses deprecated version of python
@@ -15369,8 +15347,6 @@ games/xminesweep||2020-08-27|Has expired: Broken for more than 6 months
 graphics/backfract||2020-08-27|Has expired: Broken for more than 6 months
 japanese/kanjipad||2020-08-27|Has expired: Broken for more than 6 months
 japanese/xdtp||2020-08-27|Has expired: Broken for more than 6 months
-math/openmesh||2020-08-27|Has expired: Broken for more than 6 months
-math/rehearse||2020-08-27|Has expired: Broken for more than 6 months
 net/hinfo||2020-08-27|Has expired: Broken for more than 6 months
 science/fleur||2020-08-27|Has expired: Broken for more than 6 months
 science/lm||2020-08-27|Has expired: Broken for more than 6 months
@@ -15445,7 +15421,6 @@ audio/ardour5|audio/ardour6|2020-09-19|Has expired: Uses deprecated version of p
 audio/cplay||2020-09-19|Has expired: Uses deprecated version of python
 audio/cpp-xmms2||2020-09-19|Has expired: Uses deprecated version of python
 audio/p5-xmms2||2020-09-19|Has expired: Uses deprecated version of python
-biology/haplohseq||2020-09-19|Has expired: Uses deprecated version of python
 biology/tophat||2020-09-19|Has expired: Uses deprecated version of python
 chinese/ibus-array||2020-09-19|Has expired: Uses deprecated version of python
 comms/congruity||2020-09-19|Has expired: Uses deprecated version of python
@@ -15468,7 +15443,6 @@ devel/apr2||2020-09-19|Has expired: Uses deprecated version of python
 devel/bbfreeze-loader||2020-09-19|Has expired: Uses deprecated version of python
 devel/bicyclerepair||2020-09-19|Has expired: Uses deprecated version of python
 devel/bzrtools||2020-09-19|Has expired: Uses deprecated version of python
-devel/codeville||2020-09-19|Has expired: Uses deprecated version of python
 devel/cvs2svn||2020-09-19|Has expired: Uses deprecated version of python
 devel/cx_Freeze||2020-09-19|Has expired: Uses deprecated version of python
 devel/euca2ools||2020-09-19|Has expired: Uses deprecated version of python
@@ -15505,17 +15479,14 @@ graphics/cloudcompare||2020-09-19|Has expired: Uses deprecated version of python
 graphics/kudu||2020-09-19|Has expired: Uses deprecated version of python
 graphics/pecomato||2020-09-19|Has expired: Uses deprecated version of python
 graphics/py-editobj||2020-09-19|Has expired: Uses deprecated version of python
-graphics/py-mayavi||2020-09-19|Has expired: Uses deprecated version of python
 graphics/pymorph||2020-09-19|Has expired: Uses deprecated version of python
 graphics/tilecache||2020-09-19|Has expired: Uses deprecated version of python
 japanese/mailman||2020-09-19|Has expired: Uses deprecated version of python
-java/eclipse-pydev||2020-09-19|Has expired: Uses deprecated version of python
 lang/cdent||2020-09-19|Has expired: Uses deprecated version of python
 lang/julia06|lang/julia10|2020-09-19|Has expired: Uses deprecated version of python
 lang/julia07|lang/julia10|2020-09-19|Has expired: Uses deprecated version of python
 lang/julia11||2020-09-19|Has expired: Uses deprecated version of python
 lang/tinypy||2020-09-19|Has expired: Uses deprecated version of python
-mail/cleanup-maildir||2020-09-19|Has expired: Uses deprecated version of python
 mail/courier-pythonfilter||2020-09-19|Has expired: Uses deprecated version of python
 mail/muttils||2020-09-19|Has expired: Uses deprecated version of python
 mail/nohtml||2020-09-19|Has expired: Uses deprecated version of python
@@ -15603,7 +15574,7 @@ deskutils/logjam||2020-09-19|Abandonware does not work anymore
 mail/squirrelmail-tmda-plugin||2020-09-19|Removed, unmaintained and depends on expired mail/tmda
 mail/tmda||2020-09-19|Has expired: Uses EOL Python 2.7
 devel/storm||2020-09-19|Has expired: Uses deprecated version of python
-dns/dnsmasq-devel|dns/dnsmasq|2020-09-24|Has expired: use dns/dnsmasq instead, which is newer
+#dns/dnsmasq-devel|dns/dnsmasq|2020-09-24|Has expired: use dns/dnsmasq instead, which is newer
 shells/poshinit|shells/switchBashZsh|2020-09-24|Tracking upstream name change
 net-im/corebird||2020-09-25|Stopped working in august 2018
 devel/py-pyqi||2020-09-25|No longer developed, use devel/py-click instead
@@ -15932,7 +15903,6 @@ www/trac-defaultcc||2021-01-01|Has expired: Uses Python 2.7 which is EOLed upstr
 www/trac-discussion||2021-01-01|Has expired: Uses Python 2.7 which is EOLed upstream
 www/trac-email2trac||2021-01-01|Has expired: Uses Python 2.7 which is EOLed upstream
 www/trac-downloads||2021-01-01|Has expired: Uses Python 2.7 which is EOLed upstream
-www/trac-devel||2021-01-01|Has expired: Uses Python 2.7 which is EOLed upstream
 www/trac-email2trac-postfix||2021-01-01|Has expired: Uses Python 2.7 which is EOLed upstream
 www/trac-estimator||2021-01-01|Has expired: Uses Python 2.7 which is EOLed upstream
 www/trac-fivestarvote||2021-01-01|Has expired: Uses Python 2.7 which is EOLed upstream
@@ -15986,7 +15956,6 @@ games/freera||2021-01-02|Has expired: Uses Python 2.7 version of scons, and Pyth
 games/glob2||2021-01-02|Has expired: Uses Python 2.7 version of scons, and Python 2.7 which is EOLed upstream
 games/marsnomercy||2021-01-02|Has expired: Uses Python 2.7 version of scons, and Python 2.7 which is EOLed upstream
 games/netpanzer||2021-01-02|Has expired: Uses Python 2.7 version of scons, and Python 2.7 which is EOLed upstream
-games/pingus||2021-01-02|Has expired: Uses Python 2.7 version of scons, and Python 2.7 which is EOLed upstream
 graphics/goxel||2021-01-02|Has expired: Uses Python 2.7 version of scons, and Python 2.7 which is EOLed upstream
 graphics/sk1libs||2021-01-02|Has expired: Uses Python 2.7 which is EOLed upstream
 graphics/uniconvertor||2021-01-02|Has expired: Uses deprecated version of python
@@ -16006,10 +15975,239 @@ www/trac-accountmanager||2021-01-02|Has expired: Uses Python 2.7 which is EOLed 
 print/xfce4-print||2021-01-02|Unmaintained, depends on dropped XFCE GTK2 support
 x11/xfce4-quicklauncher-plugin||2021-01-02|Unmaintained, depends on dropped XFCE GTK2 support
 x11/xfce4-wmdock-plugin||2021-01-02|Unmaintained, depends on dropped XFCE GTK2 support
-x11-toolkits/libxfce4gui||2012-01-02|Unmaintained, depends on dropped XFCE GTK2 support
-devel/py-backports.functools_lru_cache||2020-01-02|Uses Python 2.7 which is EOLed upstream
-devel/py-backports_abc||2020-01-02|Uses Python 2.7 which is EOLed upstream
-devel/py-futures||2020-01-02|Uses Python 2.7 which is EOLed upstream
-devel/py-singledispatch||2020-01-02|Uses Python 2.7 which is EOLed upstream
-graphics/py-pillow6|graphics/pillow|2020-01-02|Uses Python 2.7 which is EOLed upstream
 sysutils/pfSense-pkg-Netgate_Coreboot_Upgrade|sysutils/pfSense-pkg-Netgate_Firmware_Upgrade|2021-03-09|Renamed
+x11-toolkits/libxfce4gui||2021-01-02|Unmaintained, depends on dropped XFCE GTK2 support
+devel/py-backports.functools_lru_cache||2021-01-02|Uses Python 2.7 which is EOLed upstream
+devel/py-backports_abc||2021-01-02|Uses Python 2.7 which is EOLed upstream
+devel/py-futures||2021-01-02|Uses Python 2.7 which is EOLed upstream
+devel/py-singledispatch||2021-01-02|Uses Python 2.7 which is EOLed upstream
+graphics/py-pillow6|graphics/py-pillow|2021-01-02|Uses Python 2.7 which is EOLed upstream
+www/wt3|www/wt|2021-01-03|Has expired: Upstream end of life, switch to www/wt instead
+archivers/ecm|archivers/cmdpack|2021-01-04|ECM is now included in cmdpack
+math/qhull5|math/qhull|2021-01-04|Has expired: Legacy version of port no longer required by math/octave
+devel/py-typing||2021-01-12|Python 2 only, backport of Python 3
+net/py-ipaddress||2021-01-12|Uses Python 2.7 which is EOLed upstream
+graphics/gif2png||2021-01-13|Has expired: Uses Python 2.7 which is EOLed upstream
+lang/harbour||2021-01-15|BROKEN, needs ancient version of openssl, upstream will not fix it
+net-im/telegram|net-im/telegram-cli|2021-01-17|Has expired: Upstream unmaintained; please migrate to net-im/telegram-cli
+science/dlpoly-classic||2021-01-17|Has expired: MASTERSITE gone; possibly replaced by https://gitlab.com/DL_POLY_Classic/dl_poly ?
+security/py-gtts-token|audio/py-gtts|2021-01-17|Has expired: Obsolete, please use audio/py-gtts instead
+graphics/qt-avif-image-plugin|graphics/kf5-kimageformats|2021-01-18|Part of kimageformats since KDE Frameworks 5.78.0
+archivers/libunrar5|archivers/libunrar6|2021-01-19|Renamed to match current major version of libunrar
+devel/electron7|devel/electron9|2021-01-21|EOLed upstream, switch to newer major version
+www/riot-web|www/element-web|2021-01-22|Project renamed
+sysutils/bareos16-client|sysutils/bareos18-client|2021-01-24|Has expired: Unmaintained, please migrate to a newer version of bareos
+sysutils/bareos16-client-static|sysutils/bareos18-client|2021-01-24|Has expired: Unmaintained, please migrate to a newer version of bareos
+sysutils/bareos16-server|sysutils/bareos18-server|2021-01-24|Has expired: Unmaintained, please migrate to a newer version of bareos
+www/bareos16-webui|www/bareos18-webui|2021-01-24|Has expired: Unmaintained, please migrate to a newer version of bareos
+www/sogo4|www/sogo|2021-01-28|Has expired: Unmaintained, please migrate to a newer version of sogo
+www/sogo4-activesync|www/sogo-activesync|2021-01-28|Has expired: Unmaintained, please migrate to a newer version of sogo
+security/py-rekall_lib||2021-01-28|Has expired: Unmaintained upstream
+devel/py-rekall-efilter||2021-01-28|Has expired: Unmaintained upstream
+security/py-rekall|security/py-volatility3|2021-01-28|Has expired: Unmaintained upstream, use security/py-volatility3 instead
+security/py-rekall-core||2021-01-28|Has expired: Unmaintained upstream
+www/kurly||2021-01-28|Has expired: Upstream is gone
+security/regripper||2021-01-28|Has expired: Upstream repo disappeared
+ftp/bbftp||2021-01-30|Was split into client and server ports, install as needed
+graphics/opencv-core|graphics/opencv|2021-01-30|Reintegrated into a simple, maintainable port
+graphics/py-opencv|graphics/opencv|2021-01-30|Reintegrated into a simple, maintainable port
+graphics/opencv-java|graphics/opencv|2021-01-30|Reintegrated into a simple, maintainable port
+devel/py-automaton1|devel/py-automaton|2021-01-31|Has expired: Use devel/py-automaton instead
+devel/py-jaraco.functools2|devel/py-jaraco.functools|2021-01-31|Has expired: Use devel/py-jaraco.functools instead
+math/py-statsmodels010|math/py-statsmodels|2021-01-31|Has expired: Use math/py-statsmodels instead
+www/py-tornado6|www/py-tornado|2021-01-31|Has expired: Use www/py-tornado instead
+deskutils/orage||2021-02-01|Has expired: Unsupported upstream, cannot work with XFCE 4.16
+sysutils/rubygem-chef-config12|sysutils/rubygem-chef-config|2021-02-01|Has expired
+mail/openwebmail||2021-02-01|Has expired: Does not use modern Perl syntax and no development activity since 2006
+sysutils/rubygem-ohai8|sysutils/rubygem-ohai|2021-02-01|Has expired
+deskutils/xfce4-volumed||2021-02-01|Has expired: Unsupported upstream, cannot work with XFCE 4.16
+sysutils/rubygem-chef12|sysutils/rubygem-chef|2021-02-01|Has expired: Please use sysutils/rubygem-chef instead
+x11/xfce4-embed-plugin||2021-02-01|Has expired: Unsupported upstream, cannot work with XFCE 4.16
+net-p2p/py-transmissionrpc|net-p2p/py-transmission-rpc|2021-02-01|Has expired: Unmaintained and dead upstream, use net-p2p/py-transmission-rpc instead
+science/xfce4-equake-plugin||2021-02-01|Has expired: Unsupported upstream, cannot work with XFCE 4.16
+sysutils/xfce4-kbdleds-plugin||2021-02-01|Has expired: Unsupported upstream, cannot work with XFCE 4.16
+textproc/py-gfm|textproc/py-cmarkgfm|2021-02-01|Has expired: No longer maintained by upstream, please use textproc/py-cmarkgfm instead
+devel/godep||2021-02-02|Has expired: Unmaintained and dead upstream
+security/titus||2021-02-02|Has expired: Development has officially ceased
+www/p5-RT-Authen-ExternalAuth||2021-02-02|Removed, part of RT44
+www/p5-RT-Extension-QuickAssign||2021-02-02|Removed, only compatible with expired RT42
+www/p5-RT-Extension-SLA||2021-02-02|Removed, only compatible with expired RT42
+www/p5-RT-Extension-CommandByMail@rt42||2021-02-02|Removed, currently only supported with www/rt44
+www/p5-RT-Extension-CommandByMail@rt44|www/p5-RT-Extension-CommandByMail|2021-02-02|Unflavor, currently only supported with www/rt44
+www/p5-RT-Extension-Gravatar@rt42||2021-02-02|Removed, currently only supported with www/rt44
+www/p5-RT-Extension-Gravatar@rt44|www/p5-RT-Extension-Gravatar|2021-02-02|Unflavor, currently only supported with www/rt44
+www/p5-RT-Extension-LDAPImport@rt42||2021-02-02|Removed, currently only supported with www/rt44
+www/p5-RT-Extension-LDAPImport@rt44|www/p5-RT-Extension-LDAPImport|2021-02-02|Unflavor, currently only supported with www/rt44
+www/p5-RT-Extension-MandatoryOnTransition@rt42||2021-02-02|Removed, currently only supported with www/rt44
+www/p5-RT-Extension-RepeatTicket@rt42||2021-02-02|Removed, currently only supported with www/rt44
+www/p5-RT-Extension-RepeatTicket@rt44|www/p5-RT-Extension-RepeatTicket|2021-02-02|Unflavor, currently only supported with www/rt44
+www/p5-RTx-Calendar@rt42||2021-02-02|Removed, currently only supported with www/rt44
+www/p5-RTx-Calendar@rt44|www/p5-RTx-Calendar|2021-02-02|Unflavor, currently only supported with www/rt44
+www/rt42|www/rt44|2021-02-02|Has expired: Upstream support is ending; please migrate to RT-5.0 (www/rt50)
+www/opera||2021-02-04|Abandonware since 2013
+www/opera-linuxplugins||2021-02-04|Depends on opera browser
+sysutils/fusefs-gstfs||2021-02-04|Depends on the deprecated gstreamer 0.x
+audio/gstreamer-plugins-a52dec|audio/gstreamer1-plugins-a52dec|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-amrnb|audio/gstreamer1-plugins-amrnb|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-amrwbdec|audio/gstreamer1-plugins-amrwbdec|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-cdaudio||2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-cdparanoia|audio/gstreamer1-plugins-cdparanoia|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-faac|audio/gstreamer1-plugins-faac|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-faad|audio/gstreamer1-plugins-faad|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-flac|audio/gstreamer1-plugins-flac|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-flite|audio/gstreamer1-plugins-flite|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-fluendo-mp3||2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-gme|audio/gstreamer1-plugins-gme|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-gsm|audio/gstreamer1-plugins-gsm|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-jack|audio/gstreamer1-plugins-jack|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-ladspa|audio/gstreamer1-plugins-ladspa|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-lame|audio/gstreamer1-plugins-lame|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-mad||2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-mp3||2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-musepack|audio/gstreamer1-plugins-musepack|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-nas||2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-ogg|audio/gstreamer1-plugins-ogg|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-opus|audio/gstreamer1-plugins-opus|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-pulse|audio/gstreamer1-plugins-pulse|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-shout2|audio/gstreamer1-plugins-shout2|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-sidplay|audio/gstreamer1-plugins-sidplay|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-sndfile|audio/gstreamer1-plugins-sndfile|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-sndio|audio/gstreamer1-plugins-sndio|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-soundtouch|audio/gstreamer1-plugins-soundtouch|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-spc||2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-speex|audio/gstreamer1-plugins-speex|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-taglib|audio/gstreamer1-plugins-taglib|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-twolame|audio/gstreamer1-plugins-twolame|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-vorbis|audio/gstreamer1-plugins-vorbis|2021-02-04|Replaced by gstreamer1
+audio/gstreamer-plugins-wavpack|audio/gstreamer1-plugins-wavpack|2021-02-04|Replaced by gstreamer1
+devel/gstreamer-plugins-gconf||2021-02-04|Replaced by gstreamer1
+devel/gstreamer-plugins-gio||2021-02-04|Replaced by gstreamer1
+devel/gstreamer-plugins-gnomevfs||2021-02-04|Replaced by gstreamer1
+devel/gstreamer-plugins-sdl||2021-02-04|Replaced by gstreamer1
+devel/gstreamer-plugins-soup|devel/gstreamer1-plugins-soup|2021-02-04|Replaced by gstreamer1
+graphics/gstreamer-plugins-aalib|graphics/gstreamer1-plugins-aalib|2021-02-04|Replaced by gstreamer1
+graphics/gstreamer-plugins-cairo|graphics/gstreamer1-plugins-cairo|2021-02-04|Replaced by gstreamer1
+graphics/gstreamer-plugins-gdkpixbuf|graphics/gstreamer1-plugins-gdkpixbuf|2021-02-04|Replaced by gstreamer1
+graphics/gstreamer-plugins-gl|graphics/gstreamer1-plugins-gl|2021-02-04|Replaced by gstreamer1
+graphics/gstreamer-plugins-jpeg|graphics/gstreamer1-plugins-jpeg|2021-02-04|Replaced by gstreamer1
+graphics/gstreamer-plugins-libcaca|graphics/gstreamer1-plugins-libcaca|2021-02-04|Replaced by gstreamer1
+graphics/gstreamer-plugins-libpng|graphics/gstreamer1-plugins-png|2021-02-04|Replaced by gstreamer1
+graphics/gstreamer-plugins-libvisual|graphics/gstreamer1-plugins-libvisual|2021-02-04|Replaced by gstreamer1
+graphics/gstreamer-plugins-opencv|graphics/gstreamer1-plugins-opencv|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-ffmpeg|multimedia/gstreamer1-libav|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-all|multimedia/gstreamer1-plugins-all|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-annodex||2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-bad|multimedia/gstreamer1-plugins-bad|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-bz2||2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-core|multimedia/gstreamer1-plugins-core|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-dts|multimedia/gstreamer1-plugins-dts|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-dvd|multimedia/gstreamer1-plugins-dvdread|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-dv|multimedia/gstreamer1-plugins-dv|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-fluendo-mpegdemux||2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-gnonlin|multimedia/gstreamer1-plugins-gnonlin|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-good|multimedia/gstreamer1-plugins-good|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-mpeg2dec|multimedia/gstreamer1-plugins-mpeg2dec|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-mpeg2enc|multimedia/gstreamer1-plugins-mpeg2enc|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-resindvd|multimedia/gstreamer1-plugins-resindvd|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-schroedinger||2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-theora|multimedia/gstreamer1-plugins-theora|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-ugly|multimedia/gstreamer1-plugins-ugly|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-v4l2|multimedia/gstreamer1-plugins-v4l2|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-vdpau||2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-vp8||2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-x264|multimedia/gstreamer1-plugins-x264|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins-xvid||2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer-plugins|multimedia/gstreamer1-plugins|2021-02-04|Replaced by gstreamer1
+multimedia/gstreamer|multimedia/gstreamer1|2021-02-04|Replaced by gstreamer1
+net/gstreamer-plugins-libmms|net/gstreamer1-plugins-libmms|2021-02-04|Replaced by gstreamer1
+sysutils/gstreamer-plugins-cdio|sysutils/gstreamer1-plugins-cdio|2021-02-04|Replaced by gstreamer1
+sysutils/gstreamer-plugins-hal||2021-02-04|Replaced by gstreamer1
+www/gstreamer-plugins-neon|www/gstreamer1-plugins-neon|2021-02-04|Replaced by gstreamer1
+x11-toolkits/gstreamer-plugins-pango|x11-toolkits/gstreamer1-plugins-pango|2021-02-04|Replaced by gstreamer1
+x11-themes/gnome-themes-extras|x11-themes/gnome-themes-extra|2021-02-04|Gnome2 desktop has been removed long ago
+math/why3||2021-02-04|Depends on deprecated gnome2 library, very outdated and unmaintained
+www/syndigator||2021-02-05|Abandon upstream, does not work with recent perl5 use deprecated Gnome2 libraries
+x11-toolkits/p5-Gtk2-Html2||2021-02-05|Deprecated upstream, not depended on, dpeends on deprecated Gnome2 libraries
+www/libgtkhtml||2021-02-05|Deprecated upstream, not depended on
+net/twitux||2021-02-06|Does not work with actually twitter
+devel/grpc_old|devel/grpc|2021-02-06|Added by accident in r564200 and removed in r564203
+net-mgmt/ccnet-server||2021-02-07|Removed
+x11-toolkits/c++-gtk-utils||2021-02-07|Abandoned library not depended on
+textproc/xml-i18n-tools|textproc/intltool|2021-02-07|Has been replaced by intltools long ago
+sysutils/hal||2021-02-08|Has been abandonned upstream long ago, replacement have now hit the ports tree almost everywhere
+sysutils/hal-info||2021-02-08|Has no use without hal which has been removed
+devel/electron9|devel/electron11|2021-02-08|VSCode update requires a newer major version
+security/openvas8|security/gvm|2021-02-08|Has expired: End of life, please migrate to security/gvm port
+security/openvas8-cli||2021-02-08|Has expired: End of life
+security/openvas8-libraries|security/gvm-libs|2021-02-08|Has expired: End of life, please migrate to security/gvm-libs port
+security/openvas8-manager|security/gvmd|2021-02-08|Has expired: End of life, please migrate to security/gvmd port
+security/openvas8-scanner|security/openvas|2021-02-08|Has expired: End of life, please migrate to security/openvas port
+security/openvas9|security/gvm|2021-02-08|Has expired: End of life, please migrate to security/gvm port
+security/openvas9-cli||2021-02-08|Has expired: End of life
+security/openvas9-libraries|security/gvm-libs|2021-02-08|Has expired: End of life, please migrate to security/gvm-libs port
+security/openvas9-manager|security/gvmd|2021-02-08|Has expired: End of life, please migrate to security/gvmd port
+security/openvas9-scanner|security/openvas|2021-02-08|Has expired: End of life, please migrate to security/openvas port
+security/greenbone-security-assistant8|security/greenbone-security-assistant|2021-02-08|Has expired: End of life, please migrate to new version of greenbone-security-assistant
+security/greenbone-security-assistant9|security/greenbone-security-assistant|2021-02-08|Has expired: End of life, please migrate to new version of greenbone-security-assistant
+misc/pnpids|misc/hwdata|2021-02-14|Rename package to upstreams name
+misc/cdcollect||2021-02-14|Has expired: Unmaintained and dead upstream (12+ years) depends on  deprecated libraries as www/gtkhtml3
+security/krb5-116|security/krb5-118|2021-02-14|Has expired: EOL one year after the release of krb5 1.18
+www/palemoon||2021-02-15|Depends on expired version of python
+www/rtv||2021-02-17|Has expired: Abandoned, use www/py-ttrv or www/py-tuir instead
+textproc/py-sphinxcontrib-websupport11|textproc/py-sphinxcontrib-websupport|2021-02-17|Has expired: Use textproc/py-sphinxcontrib-websupport instead
+textproc/py-sphinx18|textproc/py-sphinx|2021-02-17|Has expired: Old version, use textproc/py-sphinx instead
+audio/herrie||2021-02-17|Removed
+sysutils/uefi-edk2-bhyve-devel|sysutils/uefi-edk2-bhyve|2021-02-17|Development version no longer necessary
+graphics/py-graph-core|graphics/py-pygraph|2021-02-19|Is outdated and broken with python3, use graphics/py-pygraph instead
+devel/allegro-devel|devel/allegro5|2021-02-20|Rename to better match upstream name
+www/py-djangorestframework311||2021-02-26|Removed: Used as a transitional package for www/seahub, please use www/py-djangorestframework instead
+editors/mg-static|editors/mg@static|2021-02-28|Flavored
+devel/snorenotify||2021-02-28|Has expired: Unmaintained upstream
+multimedia/kodi-addon-pvr-iptvsimple|multimedia/kodi-addon-pvr.iptvsimple|2021-03-01|Renamed to match upstream name
+multimedia/kodi-addon-pvr-hts|multimedia/kodi-addon-pvr.hts|2021-03-01|Renamed to match upstream name
+audio/beatslash-lv2||2021-03-01|Has expired: Unmaintained and doesn't build with the latest audio/lvtk version 2.x
+multimedia/kodi-addon-vfs.libarchive-devel||2021-03-01|Has expired: Depends on deprecated multimedia/kodi-devel
+multimedia/kodi-addon-peripheral.joystick-devel||2021-03-01|Has expired: Depends on deprecated multimedia/kodi-devel
+multimedia/kodi-devel|multimedia/kodi|2021-03-01|Has expired: Deprecated. Please use multimedia/kodi instead
+multimedia/kodi-addon-inputstream.adaptive-devel||2021-03-01|Has expired: Depends on deprecated multimedia/kodi-devel
+print/cloud-print-connector||2021-03-01|Has expired: Google Cloud Print has been shut down by Google as of December 31, 2020
+dns/knot2|dns/knot3|2021-03-01|Has expired: Use knot3, it is functionally compatible with 2.9.x
+print/cups-cloud-print||2021-03-01|Has expired: Google Cloud Print has been shut down by Google as of December 31, 2020
+www/helma||2021-03-01|Has expired: Upstream is basically dead and recommends ringojs.org
+multimedia/kodi-addon-peripheral-joystick|multimedia/kodi-addon-peripheral.joystick|2021-03-01|Renamed to match upstream name
+sysutils/py-salt-2019|sysutils/py-salt|2021-03-02|Has expired: Deprecated. Please use sysutils/py-salt instead
+www/rubygem-gitlab-puma_worker_killer|www/rubygem-puma_worker_killer|2021-03-03|Obsolete, use www/rubygem-puma_worker_killer instead
+www/rubygem-gitlab-puma|www/rubygem-puma|2021-03-03|Obsolete, use www/rubygem-puma instead
+korean/man-doc||2021-03-03|Has expired: Poor quality, severely outdated and undermaintained
+devel/relx||2021-03-03|Has expired: Script removed upstream, library included in devel/rebar3
+sysutils/synergy-1|sysutils/synergy|2021-03-03|Current version is 1.x.x, 2.x.x was tagged by the upstream by mistake
+www/moodle35|www/moodle39|2021-03-04|Has expired: Deprecated by upstream
+www/moodle38|www/moodle39|2021-03-04|Has expired: Deprecated by upstream
+devel/llvm60|devel/llvm80|2021-03-06|Has expired: Uses Python 2.7 which is EOLed upstream
+audio/fplib||2021-03-07|Dead service since 2015
+sysutils/prelink||2021-03-11|Has expired: Have no users in the ports tree
+x11-fonts/vtfontcvt-ng||2021-03-12|no longer useful on any supported releases; use vtfontcvt(8) instead
+biology/py-fastTSNE|math/py-openTSNE|2021-03-13|project renamed/reimplemented under a different name
+emulators/open-vm-tools-nox11|emulators/open-vm-tools@nox11|2021-03-17|Moved to a flavored, generic, version
+math/s2geometry|graphics/s2|2021-03-22|Remove duplicate port
+net-p2p/sonarr-devel|net-p2p/sonarr|2021-03-23|Removed, use net-p2p/sonarr instead
+www/py-django-jsonfield||2021-03-24|Removed: This port will be deleted in the future, please switch to use www/py-jsonfield or www/py-jsonfield2
+devel/hs-c2hs||2021-03-27|Has expired: Was used as BUILD_DEPENDS, not useful on its own
+x11-toolkits/tile||2021-03-27|Has expired: The Tile widget set is part of Tk 8.5 and above, see TIP 248
+security/apg||2021-03-28|Has expired: Abandonware. Please try security/makepasswd or security/rndpassw instead
+lang/Gofer||2021-03-28|Has expired: Old, unmaintained language
+net/libsignal|net/libsignal-protocol-c|2021-03-30|Rename to match upstream naming
+databases/redis4|databases/redis|2021-03-06|Has expired: End of life, please use modern version
+lang/ruby25|lang/ruby27|2021-04-06|Has expired: Use newer version, e.g. lang/ruby27 or above. Ruby 2.5 is in security maintenance phase and planned for EOL on March 31, 2021
+www/gtkhtml3|www/gtkhtml4|2021-04-06|Has expired: Obsolete by upstream, doesn't build with recent versions of pango
+deskutils/tomboy||2021-04-06|Has expired: Unmaintained and dead upstream, depends on deprecated libraries  such as www/gtkhtml3. Upstream project is now called tomboy-ng.
+deskutils/tomboy-plugin-reminder||2021-04-06|Removed, part of deskutils/tomboy
+devel/monodevelop||2021-04-06|Has expired: outdated, depends on deprecated library www/gtkhtml3
+sysutils/syslog-ng327|sysutils/syslog-ng|2021-04-06|Has expired: Not officially supported by upstream
+sysutils/logstash5|sysutils/logstash6|2021-04-06|Has expired: End of life since release of 7.3.0
+www/decss||2021-04-06|Has expired: Abandonware
+textproc/elasticsearch5|textproc/elasticsearch6|2021-04-06|Has expired: End of life since release of 7.3.0
+textproc/elasticsearch5-search-guard||2021-04-06|Has expired: textproc/elasticsearch5 is scheduled for removal
+multimedia/gnome-subtitles||2021-04-06|Has expired: outdated, depends on deprecated library www/gtkhtml3
+net/libproxy-mozjs||2021-04-06|Has expired: Uses EOL Python 2.7 via lang/spidermonkey52
+lang/spidermonkey52|lang/spidermonkey78|2021-04-06|Has expired: Uses Python 2.7 which is EOLed upstream

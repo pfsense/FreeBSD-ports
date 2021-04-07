@@ -1,5 +1,4 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	torcs
 DISTVERSION=	1.3.7
@@ -8,7 +7,7 @@ CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/all-in-one/${PORTVERSION}
 
 MAINTAINER=	monwarez@mailoo.org
-COMMENT=	Free  open source racing car simulator
+COMMENT=	Free, open-source racing car simulator
 
 LICENSE=	GPLv2
 

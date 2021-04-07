@@ -1,15 +1,13 @@
 # Created by: Kevin Bowling <kbowling@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=		ltfs
 DISTVERSIONPREFIX=	v
-DISTVERSION=		2.4.2.0
-DISTVERSIONSUFFIX=	-10418
-PORTREVISION=		2
+DISTVERSION=		2.4.3.1
+DISTVERSIONSUFFIX=	-10461
 CATEGORIES=		sysutils
 
 MAINTAINER=	kbowling@FreeBSD.org
-COMMENT=	Reference implementation of LTFS for stand alone tape drive
+COMMENT=	Reference implementation of LTFS for stand-alone tape drive
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE =	${WRKSRC}/LICENSE

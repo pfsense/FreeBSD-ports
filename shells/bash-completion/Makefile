@@ -1,5 +1,4 @@
 # Created by: kirk@strauser.com
-# $FreeBSD$
 
 PORTNAME=	bash-completion
 PORTVERSION=	2.11
@@ -49,12 +48,6 @@ BASH_STATIC_RUN_DEPENDS=bash:shells/bash-static
 
 # See PR 248829 for details
 MAKE_CMD=	${LOCALBASE}/bin/gmake
-
-post-patch:
-	@${REINPLACE_CMD} \
-		-e '/^profiledir =/ s|(sysconfdir)/profile.d|(prefix)/share/bash-completion|' \
-		-e 's|\((datadir)/cmake\)|\1/Modules|' \
-			${WRKSRC}/Makefile.am
 
 post-configure:
 	@${REINPLACE_CMD} \

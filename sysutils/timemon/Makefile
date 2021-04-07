@@ -1,9 +1,8 @@
 # Created by: gurkan@phys.ethz.ch
-# $FreeBSD$
 
 PORTNAME=	timemon
 PORTVERSION=	4.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	TimeMon-${PORTVERSION}

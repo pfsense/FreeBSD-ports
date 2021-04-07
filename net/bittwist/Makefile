@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bittwist
 PORTVERSION=	1.1
 CATEGORIES=	net

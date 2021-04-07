@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	persistent
 DISTVERSION=	4.6.4
 CATEGORIES=	devel python

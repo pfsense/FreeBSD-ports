@@ -1,5 +1,4 @@
 # Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	inifiled
 PORTVERSION=	1.3.1
@@ -8,7 +7,7 @@ DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
 MAINTAINER=	acm@FreeBSD.org
-COMMENT=	Compile time ini file parser and writter generator for D
+COMMENT=	Compile-time .ini file parser and writer generator for D
 
 LICENSE=	BSL
 

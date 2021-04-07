@@ -1,5 +1,4 @@
 # Created by: frankch@waru.life.nthu.edu.tw
-# $FreeBSD$
 
 PORTNAME=	seaview
 PORTVERSION=	5.0.4
@@ -12,6 +11,9 @@ MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Multiple DNA/protein sequence alignment editor
 
 LICENSE=	GPLv3
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: progname
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: progname
 
 LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
 		libfontconfig.so:x11-fonts/fontconfig \

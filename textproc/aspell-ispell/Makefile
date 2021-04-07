@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	aspell
 PORTVERSION=	0.60.8
 CATEGORIES=	textproc

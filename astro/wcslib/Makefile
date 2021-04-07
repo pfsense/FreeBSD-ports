@@ -1,8 +1,8 @@
 # Created by: Tony Maher <tonymaher@optusnet.com.au>
-# $FreeBSD$
 
 PORTNAME=	wcslib
 PORTVERSION=	7.3.1
+PORTREVISION=	1
 CATEGORIES=	astro
 MASTER_SITES=	ftp://ftp.atnf.csiro.au/pub/software/wcslib/
 

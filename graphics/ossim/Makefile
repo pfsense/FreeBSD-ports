@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ossim
 DISTVERSIONPREFIX=	OrchidIsland-
 DISTVERSION=	2.11.1

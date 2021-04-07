@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	amsynth
 DISTVERSION=	1.11.0
 PORTREVISION=	1

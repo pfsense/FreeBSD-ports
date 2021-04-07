@@ -1,8 +1,7 @@
 # Created by: alepulver
-# $FreeBSD$
 
 PORTNAME=	javaservicewrapper
-PORTVERSION=	3.5.43
+PORTVERSION=	3.5.45
 CATEGORIES=	sysutils java
 MASTER_SITES=	https://wrapper.tanukisoftware.com/download/${PORTVERSION}/
 DISTNAME=	wrapper_${PORTVERSION}_src
@@ -35,6 +34,14 @@ MAKE_ARGS+=	-Dbits=32
 CFLAGS+=	-fPIC
 .endif
 
+.include <bsd.port.pre.mk>
+
+.if ${JAVA_PORT_VERSION} >= 15
+PLIST_SUB+=	JS_ENGINE="@comment "
+.else
+PLIST_SUB+=	JS_ENGINE=""
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|gcc|${CC} ${CFLAGS}| ; \
 			s|/usr/local|${ICONV_PREFIX}|g ; \
@@ -58,4 +65,4 @@ do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/* ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

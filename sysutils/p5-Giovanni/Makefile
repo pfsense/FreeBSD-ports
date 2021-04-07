@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Giovanni
 PORTVERSION=	1.12
 CATEGORIES=	sysutils perl5

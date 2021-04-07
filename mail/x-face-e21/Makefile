@@ -1,9 +1,8 @@
 # Created by: Hajimu UMEMOTO <ume@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	x-face-e21
 PORTVERSION=	20070306
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	mail elisp
 MASTER_SITES=	http://www.jpl.org/elips/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}

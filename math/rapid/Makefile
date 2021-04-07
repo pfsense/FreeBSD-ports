@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rapid
 PORTVERSION=	2.01
 CATEGORIES=	math science graphics

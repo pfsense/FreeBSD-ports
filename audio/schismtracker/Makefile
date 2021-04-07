@@ -1,5 +1,4 @@
 # Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
 
 PORTNAME=	schismtracker
 PORTVERSION=	20200412
@@ -10,7 +9,7 @@ COMMENT=	Module tracker editor/player resembling impulse tracker
 
 LICENSE=	GPLv2
 
-ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS=	amd64 i386 powerpc64le
 
 USES=		autoreconf compiler:c++11-lib desktop-file-utils python sdl \
 		xorg

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Gtk3
 PORTVERSION=	0.034
 CATEGORIES=	x11-toolkits lang perl5

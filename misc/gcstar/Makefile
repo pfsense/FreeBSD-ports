@@ -1,5 +1,4 @@
 # Created by: Dominique Goncalves <dominique.goncalves@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	gcstar
 PORTVERSION=	1.7.0
@@ -13,6 +12,9 @@ COMMENT=	Open source application for managing your collections
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Depends on expired x11-toolkits/p5-Gnome2-VFS
+EXPIRATION_DATE=2021-05-01
 
 RUN_DEPENDS=	p5-Gtk2>=0:x11-toolkits/p5-Gtk2 \
 		p5-XML-LibXML>=0:textproc/p5-XML-LibXML \

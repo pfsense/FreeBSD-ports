@@ -1,62 +1,50 @@
-# $FreeBSD$
-
-PORTNAME=		libheif
+PORTNAME=	libheif
 DISTVERSIONPREFIX=	v
-DISTVERSION=		1.6.2
-PORTREVISION=		1
-CATEGORIES=		graphics
+DISTVERSION=	1.10.0
+PORTREVISION=	2
+CATEGORIES=	graphics
 
-MAINTAINER=		freebsd@sebastiansteinmetz.ch
-COMMENT=		Libheif is an ISO/IEC 23008-12:2017 HEIF file format de- and encoder
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	b7caef96e012f6e516fee2e50a836b07b7c5a8fc.patch:-p1
 
-# N.B., subsequent revisions in Git relicense examples from GPL3+ to MIT.
-LICENSE=		LGPL3+
-LICENSE_FILE_LGPL3+ =	${WRKSRC}/COPYING
+MAINTAINER=	freebsd@sebastiansteinmetz.ch
+COMMENT=	ISO/IEC 23008-12:2017 HEIF file format de- and encoder
 
-USES=			autoreconf compiler:c++11-lang libtool localbase pkgconfig \
-			shebangfix
-USE_GITHUB=		yes
-GH_ACCOUNT=		strukturag
-GH_PROJECT=		libheif
-GNU_CONFIGURE=		yes
-USE_LDCONFIG=		yes
-SHEBANG_GLOB=		*.sh
-INSTALL_TARGET=		install-strip
+LICENSE=	LGPL3+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-OPTIONS_DEFINE=	EXAMPLES JPEG LIBDE265 PNG THREADS X265
-OPTIONS_DEFAULT=EXAMPLES JPEG LIBDE265 PNG THREADS X265
-OPTIONS_SUB=	yes
+USES=		cmake compiler:c++11-lang gettext-runtime gnome \
+		localbase:ldflags pkgconfig
+USE_GNOME=	gdkpixbuf2 glib20
+USE_LDCONFIG=	yes
 
-EXAMPLES_DESC=	Install example programs (heif-convert, heif-enc, heif-info, heif-thumbnailer)
-LIBDE265_DESC=	Use libde265 (support for HEVC decoding)
-X265_DESC=	Use x265 (support for HEVC encoding)
+CMAKE_OFF=	WITH_EXAMPLES
 
-THREADS_CONFIGURE_OFF=	--disable-multithreading
+USE_GITHUB=	yes
+GH_ACCOUNT=	strukturag
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=		AOM DAV1D LIBDE265 RAV1E X265
+OPTIONS_DEFAULT=	AOM DAV1D LIBDE265 RAV1E X265
+OPTIONS_SUB=		yes
 
-.if ${PORT_OPTIONS:MEXAMPLES}
-LICENSE+=		GPLv3+
-LICENSE_COMB=		multi
-LICENSE_FILE_GPLv3+ =	${WRKSRC}/examples/COPYING
-USES+=			shared-mime-info
-CONFIGURE_ARGS+=	--disable-go
-.endif
+AOM_DESC=		AV1 encoding/decoding via libaom
+AOM_CMAKE_BOOL=		WITH_AOM
+AOM_LIB_DEPENDS=	libaom.so:multimedia/aom
 
-.if ${PORT_OPTIONS:MJPEG}
-USES+=			jpeg
-.endif
+DAV1D_DESC=		Build dav1e decoder
+DAV1D_CMAKE_BOOL=	WITH_DAV1D
+DAV1D_LIB_DEPENDS=	libdav1d.so:multimedia/dav1d
 
-.if ${PORT_OPTIONS:MLIBDE265}
-LIB_DEPENDS+=		libde265.so:multimedia/libde265
-.endif
+LIBDE265_DESC=		Use libde265 (support for HEVC decoding)
+LIBDE265_CMAKE_BOOL=	WITH_LIBDE265
+LIBDE265_LIB_DEPENDS=	libde265.so:multimedia/libde265
 
-.if ${PORT_OPTIONS:MPNG}
-LIB_DEPENDS+=		libpng.so:graphics/png
-.endif
+RAV1E_DESC=		Build rav1e encoder
+RAV1E_CMAKE_BOOL=	WITH_RAV1E
+RAV1E_LIB_DEPENDS=	librav1e.so:multimedia/librav1e
 
-.if ${PORT_OPTIONS:MX265}
-LIB_DEPENDS+=		libx265.so:multimedia/x265
-.endif
+X265_DESC=		Use x265 (support for HEVC encoding)
+X265_CMAKE_BOOL=	WITH_X265
+X265_LIB_DEPENDS=	libx265.so:multimedia/x265
 
 .include <bsd.port.mk>

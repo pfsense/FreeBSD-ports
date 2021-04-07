@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qtermwidget
 PORTVERSION=	0.16.0
 CATEGORIES=	x11-toolkits

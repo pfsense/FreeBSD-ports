@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Emulators for other operating systems
 
     SUBDIR += adamem
@@ -10,6 +7,7 @@
     SUBDIR += almostti
     SUBDIR += anese
     SUBDIR += aqemu
+    SUBDIR += aranym
     SUBDIR += atari800
     SUBDIR += bfe
     SUBDIR += bochs
@@ -51,6 +49,7 @@
     SUBDIR += hercules
     SUBDIR += higan
     SUBDIR += hugo
+    SUBDIR += hv_kvp_cmd
     SUBDIR += i386-wine
     SUBDIR += i386-wine-devel
     SUBDIR += ines
@@ -97,7 +96,6 @@
     SUBDIR += o2em
     SUBDIR += ods2reader
     SUBDIR += open-vm-tools
-    SUBDIR += open-vm-tools-nox11
     SUBDIR += openmsx
     SUBDIR += p5-Acme-6502
     SUBDIR += parallels-tools
@@ -111,6 +109,7 @@
     SUBDIR += qemu
     SUBDIR += qemu-cheri
     SUBDIR += qemu-devel
+    SUBDIR += qemu-guest-agent
     SUBDIR += qemu-powernv
     SUBDIR += qemu-user-static
     SUBDIR += qemu-user-static-devel
@@ -125,6 +124,7 @@
     SUBDIR += rpcs3
     SUBDIR += rtc
     SUBDIR += rubygem-fission
+    SUBDIR += sameboy
     SUBDIR += simh
     SUBDIR += simh-hp2100
     SUBDIR += simh-hp3000
@@ -152,9 +152,14 @@
     SUBDIR += vice
     SUBDIR += virtualbox-ose
     SUBDIR += virtualbox-ose-additions
+    SUBDIR += virtualbox-ose-additions-legacy
     SUBDIR += virtualbox-ose-additions-nox11
+    SUBDIR += virtualbox-ose-additions-nox11-legacy
     SUBDIR += virtualbox-ose-kmod
+    SUBDIR += virtualbox-ose-kmod-legacy
+    SUBDIR += virtualbox-ose-legacy
     SUBDIR += virtualbox-ose-nox11
+    SUBDIR += virtualbox-ose-nox11-legacy
     SUBDIR += visualboyadvance-m
     SUBDIR += vmips
     SUBDIR += vmsbackup

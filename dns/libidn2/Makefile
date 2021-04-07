@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libidn2
 PORTVERSION=	2.3.0
@@ -25,11 +24,5 @@ INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
 INFO=		libidn2
-
-post-patch:
-	@${REINPLACE_CMD} -e '/^TMPDIR = /d' ${WRKSRC}/Makefile.in
-
-post-configure:
-	@${REINPLACE_CMD} -e '/HAVE_SYMVER_ALIAS_SUPPORT/d' ${WRKSRC}/config.h
 
 .include <bsd.port.mk>

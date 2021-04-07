@@ -1,10 +1,8 @@
 # Created by: Alan Eldridge <alane@geeksrus.net>
-# $FreeBSD$
 
 PORTNAME=	cups
-PORTVERSION=	2.3.3
+PORTVERSION=	2.3.3op2
 DISTVERSIONPREFIX=v
-PORTREVISION=	1
 CATEGORIES=	print
 
 MAINTAINER=	tijl@FreeBSD.org
@@ -16,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 CONFLICTS=	LPRng-[0-9]*
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	apple
+GH_ACCOUNT=	OpenPrinting
 
 DESTDIRNAME=	DSTROOT
 GNU_CONFIGURE=	yes

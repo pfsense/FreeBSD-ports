@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	gitlab-pages
-PORTVERSION=	1.32.0
+PORTVERSION=	1.36.0
 CATEGORIES=	www
 
 MAINTAINER=	swills@FreeBSD.org
@@ -17,7 +15,7 @@ USE_GITHUB=	nodefault
 
 GL_ACCOUNT=	gitlab-org
 # Find the here: https://gitlab.com/gitlab-org/gitlab-pages/tags
-GL_COMMIT=	21066de52d7f7af759bdf2395694c935110da1bb
+GL_COMMIT=	3d68f89c6ef3c7d3cd13838e4ab521301ac5754e
 
 # Build with: make gomod-vendor
 # 62dd
@@ -82,7 +80,7 @@ GH_TUPLE=	\
 		wadey:gocovmerge:b5bfa59ec0ad:wadey_gocovmerge/vendor/github.com/wadey/gocovmerge
 
 GL_TUPLE=	gitlab-org:go-mimedb:e7aae885685d3b4c73716eae321d8486e914ad74:gitlab_org_go_mimedb/vendor/gitlab.com/gitlab-org/go-mimedb \
-		gitlab-org:labkit:f2d7fb209ecad2eaddb5fb9c4ab03eb8eaa82811:gitlab_org_labkit/vendor/gitlab.com/gitlab-org/labkit
+		gitlab-org:labkit:949268af2aa8352c644cb1cbc63cf4112972d2c9:gitlab_org_labkit/vendor/gitlab.com/gitlab-org/labkit
 
 GO_BUILDFLAGS=	-ldflags="-X main.VERSION=${PORTVERSION} -X main.REVISION=${GITHASH}"
 GO_PKGNAME=	gitlab.com/gitlab-org/gitlab-pages

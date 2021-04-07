@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	miller
 DISTVERSION=	5.4.0
 CATEGORIES=	textproc

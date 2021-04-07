@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fbprophet
 PORTVERSION=	0.5
 PORTREVISION=	1
@@ -13,7 +11,7 @@ COMMENT=	Forecasting time series data based on an additive model
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		compiler:c11 python:3.6+
+USES=		compiler:c11 python:3.7+
 USE_PYTHON=	autoplist distutils
 
 BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}pystan>2.14:math/py-pystan@${PY_FLAVOR}

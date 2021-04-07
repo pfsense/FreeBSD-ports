@@ -1,13 +1,13 @@
 # Created by: Carlos J Puga Medina <cpm@fbsd.es>
-# $FreeBSD$
 
 PORTNAME=	dnsdist
 DISTVERSION=	1.5.1
+PORTREVISION=	4
 CATEGORIES=	dns net
 MASTER_SITES=	https://downloads.powerdns.com/releases/
 
 MAINTAINER=	tremere@cainites.net
-COMMENT=	Highly DNS-, DoS- and abuse-aware loadbalancer
+COMMENT=	Highly DNS-, DoS-, and abuse-aware load balancer
 
 LICENSE=	GPLv2 UNLICENSE
 LICENSE_COMB=	multi

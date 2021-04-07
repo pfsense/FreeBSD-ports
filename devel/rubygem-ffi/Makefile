@@ -1,13 +1,12 @@
 # Created by: Christoph Kick
-# $FreeBSD$
 
 PORTNAME=	ffi
-PORTVERSION=	1.14.0
+PORTVERSION=	1.14.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Extension for dynamic libraries & binding functions
+COMMENT=	Extension for dynamic libraries and binding functions
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

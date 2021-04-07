@@ -1,10 +1,8 @@
 # Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	trackballs
-PORTVERSION=	1.3.1
+PORTVERSION=	1.3.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
 CATEGORIES=	games
 
 MAINTAINER=	martymac@FreeBSD.org

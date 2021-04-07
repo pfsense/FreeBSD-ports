@@ -1,13 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	core
 CATEGORIES=	devel python
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Python bindings for the Qt5 toolkit, QtCore module
-
-BUILD_DEPENDS=	${PY_ENUM34}
-RUN_DEPENDS=	${PY_ENUM34}
 
 PYQT_MODULE=	QtCore
 CONFIGURE_ARGS=	${PYQT5_MODULES_ALL:N${PYQT_MODULE}:C/.*/--disable=&/} \
@@ -33,16 +28,9 @@ DEBUG_CONFIGURE_ON=	--debug --trace
 
 .include <bsd.port.pre.mk>
 
-# Bug 180467: We need to remove the port_v${VERSION} directory that does not
-# correspond to the Python version being used to avoid failures in the
-# bytecompilation calls in post-install.
 PLIST_SUB+=	PYTHON_MAJOR_VER="${PYTHON_MAJOR_VER}"
 post-patch:
-.if ${PYTHON_MAJOR_VER} == "2"
-	${RM} -r ${WRKSRC}/pyuic/uic/port_v3
-.elif ${PYTHON_MAJOR_VER} == "3"
 	${RM} -r ${WRKSRC}/pyuic/uic/port_v2
-.endif
 
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/Qt.py ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/PyQt5

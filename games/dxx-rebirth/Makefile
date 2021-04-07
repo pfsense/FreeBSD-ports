@@ -1,8 +1,7 @@
 # Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
 
 PORTNAME=	dxx-rebirth
-PORTVERSION=	20201216
+PORTVERSION=	20210326
 DISTVERSIONSUFFIX=	-src
 CATEGORIES=	games
 MASTER_SITES=	https://www.dxx-rebirth.com/download/dxx/rebirth/
@@ -22,7 +21,7 @@ BUILD_DEPENDS=	as:devel/binutils
 LIB_DEPENDS=	libphysfs.so:devel/physfs \
 		libpng.so:graphics/png
 
-USES=		compiler:c++14-lang gl localbase:ldflags pkgconfig scons sdl \
+USES=		compiler:c++17-lang gl localbase:ldflags pkgconfig scons sdl \
 		tar:xz
 USE_GL=		gl glu
 USE_SDL=	image2 mixer2 sdl2

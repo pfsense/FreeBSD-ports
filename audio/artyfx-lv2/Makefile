@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	artyfx
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	1.3-24

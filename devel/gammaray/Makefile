@@ -1,12 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	gammaray
 PORTVERSION=	2.11.2
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Debugging tool for Qt-application
+
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
 
 USES=		cmake kde:5 pkgconfig qt:5
 
@@ -20,7 +22,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	KDAB
 GH_PROJECT=	GammaRay
 
-PLIST_SUB+=	ARCH=${ARCH} \
+PLIST_SUB+=	ARCH=${ARCH:S/amd64/x86_64/} \
 		PORTMAJMIN=${PORTVERSION:C/(.*)\..*/\1/} \
 		PORTVERSION=${PORTVERSION} \
 		QTVER=${QT5_VERSION:C/\./_/:C/\..*//}

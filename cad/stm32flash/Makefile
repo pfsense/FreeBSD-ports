@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	stm32flash
-DISTVERSION=	0.5
+DISTVERSION=	0.6
 CATEGORIES=	cad
 MASTER_SITES=	SF/${PORTNAME}/
 
@@ -11,7 +9,7 @@ COMMENT=	Flash program for STM32 using the ST serial bootloader
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/gpl-2.0.txt
 
-WRKSRC=		${WRKDIR}/${PORTNAME}
+USES=		gmake
 
 PLIST_FILES=	bin/stm32flash \
 		share/man/man1/stm32flash.1.gz

@@ -1,8 +1,7 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	thrift
-PORTVERSION=	${THRIFT_PORTVERSION}.0 # to keep in sync with ../thrift
+PORTVERSION=	${THRIFT_PORTVERSION} # to keep in sync with ../thrift
 PORTEPOCH=	1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	edown
 PORTVERSION=	0.8.1
 CATEGORIES=	textproc

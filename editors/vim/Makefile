@@ -1,8 +1,7 @@
 # Created by: David O'Brien <obrien@cs.ucdavis.edu>
-# $FreeBSD$
 
 PORTNAME=	vim
-PORTVERSION=	8.2.2263
+PORTVERSION=	8.2.2725
 DISTVERSIONPREFIX=	v
 CATEGORIES=	editors
 
@@ -21,7 +20,7 @@ CONFLICTS_INSTALL?=	vim-console vim-tiny
 
 CONFIGURE_ARGS=	--enable-gui=${GUI} \
 		--enable-multibyte \
-		--with-tlib=ncurses
+		--with-tlib=ncursesw
 MAKE_ARGS=	STRIP="${STRIP_CMD}" \
 		VIMRCLOC=${ETCDIR} \
 		VIMRUNTIMEDIR=${PREFIX}/share/vim/${VIM_VER}

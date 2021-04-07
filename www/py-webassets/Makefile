@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	webassets
 PORTVERSION=	2.0
 CATEGORIES=	www python

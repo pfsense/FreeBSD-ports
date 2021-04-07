@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	docker-pycreds
 PORTVERSION=	0.4.0
 CATEGORIES=	security python

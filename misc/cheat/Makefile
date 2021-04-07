@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cheat
 DISTVERSION=	4.2.0
 CATEGORIES=	misc

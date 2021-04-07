@@ -1,5 +1,4 @@
 # Created by: Lewis Thompson (purple@lewiz.net)
-# $FreeBSD$
 
 PORTNAME=	lirc
 PORTVERSION=	0.0.5
@@ -11,6 +10,9 @@ DISTNAME=	pylirc-${PORTVERSION}
 
 MAINTAINER=	lewiz@compsoc.man.ac.uk
 COMMENT=	Lirc support library for Python
+
+DEPRECATED=	No longer maintained and not compatible with Python 3
+EXPIRATION_DATE=	2021-04-15
 
 LIB_DEPENDS=	liblirc_client.so:comms/lirc
 

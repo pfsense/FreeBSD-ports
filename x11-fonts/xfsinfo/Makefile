@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xfsinfo
 PORTVERSION=	1.0.6
 CATEGORIES=	x11-fonts

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	URI-Based
 PORTVERSION=	1.03
 CATEGORIES=	net perl5

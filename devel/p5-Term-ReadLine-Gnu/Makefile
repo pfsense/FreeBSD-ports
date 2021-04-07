@@ -1,9 +1,7 @@
 # Created by: Matthew Hunt <mph@pobox.com>
-# $FreeBSD$
 
 PORTNAME=	Term-ReadLine-Gnu
-PORTVERSION=	1.36
-PORTREVISION=	1
+PORTVERSION=	1.37
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mariadb-connector-c
 PORTVERSION=	3.1.10
 CATEGORIES=	databases

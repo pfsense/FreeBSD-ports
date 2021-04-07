@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	ansible-kld
 DISTVERSION=	0.1
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Ansible module to load kernel modules or update /boot/loader.conf
 
 LICENSE=	MIT

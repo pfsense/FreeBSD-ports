@@ -1,9 +1,8 @@
 # Created by: Dmitry Sivachenko <demon@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	puppet-mode.el
 PORTVERSION=	0.2
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	sysutils elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 

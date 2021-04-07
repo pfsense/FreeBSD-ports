@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	remoteobjects
 DISTVERSION=	${QT5_VERSION}
 PORTREVISION=	1

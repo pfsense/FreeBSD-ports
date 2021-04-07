@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	luppp
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	1.2.1

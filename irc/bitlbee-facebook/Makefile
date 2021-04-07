@@ -1,9 +1,9 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	bitlbee-facebook
 PORTVERSION=	1.2.1
 DISTVERSIONPREFIX=v
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	irc
 

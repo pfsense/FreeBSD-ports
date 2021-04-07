@@ -1,5 +1,4 @@
 # Created by: Stijn Hoop <stijn@win.tue.nl>
-# $FreeBSD$
 #
 # For those wondering why this port is not under `x11-drivers' category,
 # have a look at https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=121930.
@@ -11,9 +10,9 @@
 # or `x11/nvidia-driver-304').
 
 PORTNAME=	nvidia-driver
-DISTVERSION?=	440.100
+DISTVERSION?=	460.67
 # Always try to set PORTREVISION as it can be overridden by the slave ports
-PORTREVISION?=	1
+PORTREVISION?=	0
 CATEGORIES=	x11
 MASTER_SITES=	NVIDIA/XFree86/FreeBSD-${ARCH_SUFX}/${DISTVERSION}
 DISTNAME=	NVIDIA-FreeBSD-${ARCH_SUFX}-${DISTVERSION}
@@ -47,9 +46,7 @@ SUB_FILES+=	pkg-deinstall pkg-install
 SUB_PATCHES=	extra-patch-src-Makefile \
 		extra-patch-src-nv-freebsd.h \
 		extra-patch-src-nv-misc.h \
-		extra-patch-src-nvidia_ctl.c \
 		extra-patch-src-nvidia_dev.c \
-		extra-patch-src-nvidia_linux.c \
 		extra-patch-src-nvidia_pci.c
 DOCSDIR=	${PREFIX}/share/doc/NVIDIA_GLX-1.0
 MODULESDIR=	lib/xorg/modules
@@ -67,11 +64,17 @@ NVSRC=		.
 NVSRC=		nvidia
 .endif
 
-.if ${NVVERSION} >= 358.009
-# Initialize memory allocations to avoid spurious "lock re-initialization"
-# errors.  A little more detail can be found in bug 201340 starting around
-# comment #50.
+.if ${NVVERSION} < 460.039
+.  if ${NVVERSION} >= 358.009
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-src_nvidia-modeset_nvidia-modeset-freebsd.c
+.  endif
+SUB_PATCHES+=	extra-patch-src-nvidia_ctl.c \
+		extra-patch-src-nvidia_linux.c
+.else
+EXTRA_PATCHES+=	${FILESDIR}/460-patch-lib-libGLX_nvidia-Makefile \
+		${FILESDIR}/460-patch-src-nvidia-nvidia_ctl.c \
+		${FILESDIR}/460-patch-src-nvidia-nvidia_linux.c \
+		${FILESDIR}/460-patch-src_nvidia-modeset_nvidia-modeset-freebsd.c
 .endif
 
 OPTIONS_DEFINE=	ACPI_PM LINUX WBINVD DOCS
@@ -101,8 +104,10 @@ EXTRA_PATCHES+=	${WRKDIR}/${p}
 .endfor
 
 post-patch: .SILENT
-# We should support -CURRENT: kill the check
-	${REINPLACE_CMD} -e '24,26d' ${WRKSRC}/src/${NVSRC}/nv-freebsd.h
+# We should support -CURRENT: kill the check (first #if __FreeBSD_version)
+	linenum=$$(${SED} -ne '/^#if __FreeBSD_version/ { = ; q ; }' \
+		${WRKSRC}/src/${NVSRC}/nv-freebsd.h) ; ${REINPLACE_CMD} \
+		-e "$$linenum,+2d" ${WRKSRC}/src/${NVSRC}/nv-freebsd.h
 # Adjust Linux headers #include's after FreeBSD src r246085
 	${REINPLACE_CMD} -E '/#include "machine\/\.\.\/linux(32)?\/linux.h"/ \
 		{ x ; s/.*/#include "machine\/..\/..\/compat\/linux\/linux_ioctl.h"/ ; H ; x ; }' \
@@ -214,6 +219,10 @@ post-install: .SILENT
 	${INSTALL_SCRIPT} ${WRKSRC}/obj/nvidia-bug-report.sh \
 		${STAGEDIR}${PREFIX}/bin
 # pkg-plist is already overbloated, so use these hacks instead of PLIST_SUB's
+.if ${NVVERSION:R} < 460
+	${REINPLACE_CMD} -e '/libnvidia-glvkspirv\.so/d ; \
+		/nvidia_icd\.json/d ; /nvidia_layers\.json/d' ${TMPPLIST}
+.endif
 .if ${NVVERSION} >= 304.128 && ${NVVERSION} < 310.019 || ${NVVERSION} >= 361.016
 	${REINPLACE_CMD} -E '/libvdpau(_trace)?\.so/d' ${TMPPLIST}
 .endif

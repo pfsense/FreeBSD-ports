@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kio-gdrive
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	net kde kde-applications
@@ -9,6 +7,9 @@ COMMENT=	KDE IOSlave for accessing gdrive
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
 
 LIB_DEPENDS=	libqt5keychain.so:security/qtkeychain \
 		libaccounts-qt5.so:net-im/libaccounts-qt5 \

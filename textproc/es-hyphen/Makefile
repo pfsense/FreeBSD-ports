@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hyphen
 PORTVERSION=	2013.09.01	# 0.7
 PORTEPOCH=	1

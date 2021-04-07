@@ -1,8 +1,7 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	fpylll
-PORTVERSION=	0.5.4
+PORTVERSION=	0.5.5
 CATEGORIES=	math python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -28,9 +27,12 @@ GH_ACCOUNT=	fplll
 
 USES=		compiler:c++11-lang python:3.6+
 USE_PYTHON=	distutils
+.if !defined(WITH_DEBUG)
+LDFLAGS+=	-s
+.endif
 
 OPTIONS_DEFINE=		DOCS
-DOCS_BUILD_DEPENDS=	${PY_SPHINX}
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=1.6,1:textproc/py-sphinx@${PY_FLAVOR}
 DOCS_USES=		gmake
 PORTDOCS=		*
 

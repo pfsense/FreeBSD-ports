@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	BuildStream
 DISTVERSION=	1.2.8
 PORTREVISION=	1

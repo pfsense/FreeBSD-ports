@@ -1,5 +1,3 @@
-# $FreeBSD
-
 PORTNAME=	zanshin
 DISTVERSION=	0.5.71
 CATEGORIES=	deskutils kde
@@ -7,6 +5,9 @@ MASTER_SITES=	KDE/stable/${PORTNAME}/
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Daily organizer for KDE
+
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
 
 LIB_DEPENDS=	libical.so:devel/libical
 

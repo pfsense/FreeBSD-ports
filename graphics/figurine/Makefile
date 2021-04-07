@@ -1,5 +1,4 @@
 # Created by: Marc Fonvieille <blackend@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	figurine
 PORTVERSION=	1.0.5
@@ -12,9 +11,12 @@ COMMENT=	Drawing program for X11
 
 LICENSE=	GPLv2
 
-OPTIONS_DEFINE=	DOCS
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: numfontnames
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: numfontnames
 
 RUN_DEPENDS=	fig2dev:print/transfig
+
+OPTIONS_DEFINE=	DOCS
 
 GNU_CONFIGURE=	yes
 USES=		xorg

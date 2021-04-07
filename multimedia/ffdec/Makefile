@@ -1,8 +1,7 @@
 # Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ffdec
-DISTVERSION=	11.3.0
+DISTVERSION=	14.3.0
 CATEGORIES=	multimedia java
 MASTER_SITES=	https://github.com/jindrapetrik/jpexs-decompiler/releases/download/version${PORTVERSION}/
 DISTNAME=	${PORTNAME}_${DISTVERSION}
@@ -16,10 +15,11 @@ LICENSE_FILE=	${WRKSRC}/license.txt
 USES=		zip
 USE_JAVA=	yes
 JAVA_VERSION=	1.8
-NO_BUILD=	yes
-NO_WRKSUBDIR=	yes
 
+NO_BUILD=	yes
 SUB_FILES=	${PORTNAME}
+
+NO_WRKSUBDIR=	yes
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

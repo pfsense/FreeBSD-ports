@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	atomiclong
 PORTVERSION=	0.1.1
 PORTREVISION=	2

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Horde_Rpc
 DISTVERSION=	2.1.9
 CATEGORIES=	net www pear

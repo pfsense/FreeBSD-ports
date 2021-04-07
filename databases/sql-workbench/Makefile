@@ -1,8 +1,8 @@
 # Created by: Aldis Berjoza <graudeejs@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	sql-workbench
 PORTVERSION=	127
+PORTEPOCH=	1
 CATEGORIES=	databases java
 MASTER_SITES=	http://www.sql-workbench.net/ \
 	http://www.sql-workbench.net/archive/

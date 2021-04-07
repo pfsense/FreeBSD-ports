@@ -1,11 +1,10 @@
 # Created by: Markus Brueffer <brueffer@phoenix-systems.de>
-# $FreeBSD$
 
 PORTNAME=	basket
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.49a-46
 DISTVERSIONSUFFIX=	-g60e38c6
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	deskutils kde
 
 MAINTAINER=	ports@FreeBSD.org

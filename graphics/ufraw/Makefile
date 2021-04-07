@@ -1,9 +1,8 @@
 # Created by: Mark Murray <markm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ufraw
 PORTVERSION=	0.22
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	graphics
 
 MAINTAINER=	rodrigo@FreeBSD.org

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	1
 
 USES=	qt:5 xorg

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libioc
 PORTVERSION=	0.8.2
 CATEGORIES=	devel python
@@ -10,6 +8,8 @@ COMMENT=	Library to manage jails with iocage and iocell
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pip>0:devel/py-pip@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}GitPython>0:devel/py-gitpython@${PY_FLAVOR} \

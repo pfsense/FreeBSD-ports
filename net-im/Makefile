@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Instant messaging
 
     SUBDIR += 6cord
@@ -61,6 +58,7 @@
     SUBDIR += libqmatrixclient
     SUBDIR += libqtelegram-ae
     SUBDIR += libquotient
+    SUBDIR += libsignal-client
     SUBDIR += libsignon-glib
     SUBDIR += libstrophe
     SUBDIR += licq
@@ -78,6 +76,7 @@
     SUBDIR += mikutter
     SUBDIR += mtxclient
     SUBDIR += neochat
+    SUBDIR += nextcloud-spreed-signaling
     SUBDIR += nextcloud-talk
     SUBDIR += nheko
     SUBDIR += openfire
@@ -116,6 +115,7 @@
     SUBDIR += purple-discord
     SUBDIR += purple-facebook
     SUBDIR += purple-hangouts
+    SUBDIR += purple-mattermost
     SUBDIR += purple-plugin-pack
     SUBDIR += purple-rocketchat
     SUBDIR += purple-slack
@@ -133,6 +133,7 @@
     SUBDIR += quaternion
     SUBDIR += qxmpp-qt5
     SUBDIR += ricochet
+    SUBDIR += rubygem-discordrb-webhooks
     SUBDIR += rubygem-discordrb-webhooks-blackst0ne
     SUBDIR += rubygem-hipchat
     SUBDIR += rubygem-lita
@@ -150,7 +151,6 @@
     SUBDIR += sshout
     SUBDIR += talkatu
     SUBDIR += teamwords
-    SUBDIR += telegram
     SUBDIR += telegram-cli
     SUBDIR += telegram-desktop
     SUBDIR += telegram-purple
@@ -166,6 +166,7 @@
     SUBDIR += telepathy-qt
     SUBDIR += telepathy-salut
     SUBDIR += telepathy-sofiasip
+    SUBDIR += tg_owt
     SUBDIR += tkabber
     SUBDIR += tkabber-plugins
     SUBDIR += toot

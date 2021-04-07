@@ -1,10 +1,9 @@
 # Created by: jbacon
-# $FreeBSD$
 
 PORTNAME=	minc
 PORTVERSION=	2.2.00
 DISTVERSIONPREFIX=	release-
-PORTREVISION=	9
+PORTREVISION=	10
 PORTEPOCH=	1
 CATEGORIES=	science biology
 PKGNAMESUFFIX=	2
@@ -14,6 +13,9 @@ COMMENT=	Medical Imaging NetCDF
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: matrix_errno
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: matrix_errno
 
 LIB_DEPENDS=	libhdf5.so:science/hdf5 \
 		libnetcdf.so:science/netcdf

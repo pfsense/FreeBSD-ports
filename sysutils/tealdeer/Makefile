@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	tealdeer
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.4.1
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	sysutils
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Fast tldr client written in Rust
 
 LICENSE=	APACHE20 MIT

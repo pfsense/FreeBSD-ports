@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	scs
 DISTVERSION=	2.1.2
 CATEGORIES=	math python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ng_mikrotik_eoip
 PORTVERSION=	1.0
 CATEGORIES=	net kld

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gstreamer1
 PORTVERSION=	1.2.0
 PORTREVISION=	24

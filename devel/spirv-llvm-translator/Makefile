@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	spirv-llvm-translator
 DISTVERSIONPREFIX=	v
 DISTVERSION=	11.0.0

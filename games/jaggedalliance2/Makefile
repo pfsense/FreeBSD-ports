@@ -1,13 +1,12 @@
 # Created by: Christoph Mallon <christoph.mallon@gmx.de>
-# $FreeBSD$
 
 PORTNAME=	ja2
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.17.0
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	games
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	timp87@gmail.com
 COMMENT=	Port of "Jagged Alliance 2" using SDL
 
 LICENSE=		PD SFI-SCLA

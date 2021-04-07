@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	redis-rack
 PORTVERSION=	1.6.0
 PORTREVISION=	1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	poly2tri
 DISTVERSION=	g20191130
 CATEGORIES=	math

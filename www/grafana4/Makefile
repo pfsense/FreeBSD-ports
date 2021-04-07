@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	grafana
 PORTVERSION=	4.6.5
 DISTVERSIONPREFIX=	v
@@ -9,8 +7,11 @@ PKGNAMESUFFIX=	${PORTVERSION:C/([0-9]).*/\1/1}
 DISTFILES=	grafana-${PORTVERSION}.linux-x64${EXTRACT_SUFX}:public
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dashboard and graph editor for Graphite, InfluxDB & OpenTSDB
+
+DEPRECATED=	Upstream end of life
+EXPIRATION_DATE=	2021-04-14
 
 LICENSE=	APACHE20
 

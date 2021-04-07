@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	urxvt-font-size
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.3

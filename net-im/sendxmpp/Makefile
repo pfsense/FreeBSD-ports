@@ -1,5 +1,4 @@
 # Created by: Max E. Kuznecov <mek@mek.uz.ua>
-# $FreeBSD$
 
 PORTNAME=	sendxmpp
 PORTVERSION=	1.24
@@ -8,7 +7,7 @@ PORTREVISION=	1
 CATEGORIES=	net-im perl5
 
 MAINTAINER=	mek@mek.uz.ua
-COMMENT=	Perl-script to send xmpp (jabber) messages
+COMMENT=	Perl script to send XMPP (Jabber) messages
 
 LICENSE=	GPLv2
 

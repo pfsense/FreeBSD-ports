@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	crossplane
 DISTVERSION=	0.5.7
 DISTVERSIONPREFIX=	v

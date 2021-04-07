@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nxapi-plumbing
 DISTVERSION=	0.5.2
 CATEGORIES=	net-mgmt python

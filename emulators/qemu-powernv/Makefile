@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qemu-powernv
 PORTVERSION=	3.0.50
 PORTREVISION=	2
@@ -10,6 +8,8 @@ MAINTAINER=	kbowling@FreeBSD.org
 COMMENT=	Fork of QEMU with experimental PowerNV emulation support
 
 LICENSE=	GPLv2
+
+BROKEN_riscv64=		fails to build: qemu-powernv-3.0.50_2.log: Unsupported CPU = riscv, try --enable-tcg-interpreter
 
 BUILD_DEPENDS=		${LOCALBASE}/lib/libfdt.so:sysutils/dtc
 

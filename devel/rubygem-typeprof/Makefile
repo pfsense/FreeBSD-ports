@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	typeprof
-PORTVERSION=	0.10.0
+PORTVERSION=	0.12.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -12,7 +11,7 @@ COMMENT=	Type analysis tool for Ruby code
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-rbs>=0.20.1:devel/rubygem-rbs
+RUN_DEPENDS=	rubygem-rbs>=1.0.0:devel/rubygem-rbs
 
 USES=		gem
 USE_RUBY=	yes

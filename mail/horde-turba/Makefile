@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	turba
 PORTVERSION=	4.2.25
 CATEGORIES=	mail www pear

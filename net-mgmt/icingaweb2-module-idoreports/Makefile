@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	icingaweb2-module-idoreports
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.0

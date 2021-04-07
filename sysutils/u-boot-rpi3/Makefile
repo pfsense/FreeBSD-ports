@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 MASTERDIR=	${.CURDIR}/../u-boot-master
 
 EXTRA_PATCHES?=	${.CURDIR}/files/

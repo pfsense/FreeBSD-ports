@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	ufetch
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2
 CATEGORIES=	sysutils
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Tiny system info for Unix-like operating systems
 
 LICENSE=	ISCL

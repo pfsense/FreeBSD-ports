@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kookbook
 DISTVERSION=	0.2.1
 PORTREVISION=	1

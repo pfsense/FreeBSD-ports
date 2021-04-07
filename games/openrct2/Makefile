@@ -1,9 +1,8 @@
 # Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
 
 PORTNAME=	openrct2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.2
+DISTVERSION=	0.3.3
 CATEGORIES=	games
 
 MAINTAINER=	pkubaj@FreeBSD.org
@@ -12,8 +11,8 @@ COMMENT=	Open source re-implementation of RollerCoaster Tycoon 2
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/licence.txt
 
-BROKEN_FreeBSD_12_powerpc64=	fails to build: src/openrct2/util/Endian.h:9:24: error: unused function 'ORCT_Swapu16'
-BROKEN_FreeBSD_13_powerpc64=	fails to build: openrct2/common.h:96:10: error: #error Unknown endianess!
+NOT_FOR_ARCHS=	mips mips64 powerpc powerpc64 powerpcspe sparc64
+NOT_FOR_ARCHS_REASON=	Only for little-endian architectures
 
 BUILD_DEPENDS=	nlohmann-json>0:devel/nlohmann-json
 LIB_DEPENDS=	libpng.so:graphics/png \
@@ -23,7 +22,7 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libcurl.so:ftp/curl \
 		libfreetype.so:print/freetype2 \
 		libicuuc.so:devel/icu \
-		libbenchmark.so:devel/grpc \
+		libbenchmark.so:devel/benchmark \
 		libduktape.so:lang/duktape-lib
 
 USES=		cmake compiler:c++17-lang desktop-file-utils gnome gl iconv \
@@ -31,7 +30,7 @@ USES=		cmake compiler:c++17-lang desktop-file-utils gnome gl iconv \
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenRCT2
 GH_PROJECT=	OpenRCT2
-GH_TUPLE=	OpenRCT2:objects:v1.0.18:objects \
+GH_TUPLE=	OpenRCT2:objects:v1.0.21:objects \
 		OpenRCT2:title-sequences:v0.1.2c:title_sequences
 USE_GL=		gl
 USE_LDCONFIG=	yes

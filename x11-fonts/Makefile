@@ -1,14 +1,13 @@
-# $FreeBSD$
-#
-
     COMMENT = X11 fonts and font utilities
 
     SUBDIR += 3270font
     SUBDIR += Hasklig
+    SUBDIR += agave
     SUBDIR += alef
     SUBDIR += alegreya
     SUBDIR += alegreya-sans
     SUBDIR += alfont
+    SUBDIR += amigafonts
     SUBDIR += andika
     SUBDIR += anomaly-mono
     SUBDIR += anonymous-pro
@@ -19,6 +18,7 @@
     SUBDIR += artwiz-fonts
     SUBDIR += averiagwf
     SUBDIR += b612
+    SUBDIR += bdf2sfd
     SUBDIR += bdfresize
     SUBDIR += bdftopcf
     SUBDIR += bitstream-vera
@@ -46,12 +46,14 @@
     SUBDIR += doulos
     SUBDIR += doulos-compact
     SUBDIR += droid-fonts-ttf
+    SUBDIR += dseg
     SUBDIR += encodings
     SUBDIR += exo
     SUBDIR += fantasque-sans-mono
     SUBDIR += fanwood
     SUBDIR += farsifonts
     SUBDIR += fcft
+    SUBDIR += ferrite-core
     SUBDIR += fifteen
     SUBDIR += fira
     SUBDIR += firacode
@@ -82,6 +84,7 @@
     SUBDIR += font-ibm-type1
     SUBDIR += font-isas-misc
     SUBDIR += font-jis-misc
+    SUBDIR += font-manager
     SUBDIR += font-micro-misc
     SUBDIR += font-misc-cyrillic
     SUBDIR += font-misc-ethiopic
@@ -183,6 +186,7 @@
     SUBDIR += oldschool-pc-fonts
     SUBDIR += open-sans
     SUBDIR += orbitron
+    SUBDIR += otf2bdf
     SUBDIR += ots
     SUBDIR += oxygen-fonts
     SUBDIR += p5-Font-AFM
@@ -242,7 +246,6 @@
     SUBDIR += uw-ttyp0
     SUBDIR += victor-mono-ttf
     SUBDIR += vollkorn-ttf
-    SUBDIR += vtfontcvt-ng
     SUBDIR += webfonts
     SUBDIR += wqy
     SUBDIR += xfontsel

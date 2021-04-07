@@ -4,8 +4,6 @@
 # Date created:		12 Nov 2005
 # Whom:			Michael Johnson <ahze@FreeBSD.org>
 #
-# $FreeBSD$
-#
 # 4 column tabs prevent hair loss and tooth decay!
 
 # bsd.gecko.mk abstracts the selection of gecko-based backends. It allows users
@@ -78,7 +76,7 @@ BUNDLE_LIBS=	yes
 
 BUILD_DEPENDS+=	llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT} \
 				rust-cbindgen>=0.16.0:devel/rust-cbindgen \
-				${RUST_DEFAULT}>=1.43:lang/${RUST_DEFAULT} \
+				${RUST_DEFAULT}>=1.51.0:lang/${RUST_DEFAULT} \
 				node:www/node
 LIB_DEPENDS+=	libdrm.so:graphics/libdrm
 MOZ_EXPORT+=	${CONFIGURE_ENV} \
@@ -238,6 +236,14 @@ LIB_DEPENDS+=	libproxy.so:net/libproxy
 MOZ_OPTIONS+=	--enable-libproxy
 .else
 MOZ_OPTIONS+=	--disable-libproxy
+.endif
+
+.if ${PORT_OPTIONS:MLTO}
+.if ${ARCH} == powerpc64le
+MOZ_OPTIONS+=	--enable-lto=thin
+.else
+MOZ_OPTIONS+=	--enable-lto=cross
+.endif
 .endif
 
 .if ${PORT_OPTIONS:MALSA}

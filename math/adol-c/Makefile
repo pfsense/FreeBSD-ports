@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	adol-c
 DISTVERSION=	2.7.2
 CATEGORIES=	math

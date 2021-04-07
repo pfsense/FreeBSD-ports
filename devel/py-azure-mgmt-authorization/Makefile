@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	azure-mgmt-authorization
 PORTVERSION=	0.61.0
 CATEGORIES=	devel python

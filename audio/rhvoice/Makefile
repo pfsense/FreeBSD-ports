@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	RHVoice
 DISTVERSION=	1.2.3
 CATEGORIES=	audio

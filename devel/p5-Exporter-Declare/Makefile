@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Exporter-Declare
 PORTVERSION=	0.114
 CATEGORIES=	devel perl5

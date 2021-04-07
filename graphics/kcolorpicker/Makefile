@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	kColorPicker
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.4
+DISTVERSION=	0.1.5
 CATEGORIES=	graphics kde
 
 MAINTAINER=	kde@FreeBSD.org

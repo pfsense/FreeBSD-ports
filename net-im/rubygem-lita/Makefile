@@ -1,9 +1,8 @@
 # Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lita
 PORTVERSION=	4.7.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net-im rubygems
 MASTER_SITES=	RG
 

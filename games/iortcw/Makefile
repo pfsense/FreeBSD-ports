@@ -1,5 +1,4 @@
 # Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
 
 PORTNAME=	iortcw
 PORTVERSION=	1.51c
@@ -11,7 +10,7 @@ COMMENT=	Game engine for Return to Castle Wolfenstein
 
 LICENSE=	GPLv3
 
-NOT_FOR_ARCHS=		aarch64 armv6 armv7
+NOT_FOR_ARCHS=		aarch64 armv6 armv7 riscv64
 NOT_FOR_ARCHS_REASON=	fails to configure: Architecture not supported
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \

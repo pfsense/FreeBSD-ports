@@ -1,5 +1,4 @@
 # Created by: Alan Eldridge <alane@geeksrus.net>
-# $FreeBSD$
 
 PORTNAME=	ex
 PORTVERSION=	1.0.6
@@ -9,7 +8,7 @@ MASTER_SITES=	OSSP/lib/${PORTNAME}
 PKGNAMEPREFIX=	ossp-
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	OSSP ex is a small exception handling library for use in C
+COMMENT=	Small exception handling library for use in C
 
 USES=		libtool
 GNU_CONFIGURE=	yes

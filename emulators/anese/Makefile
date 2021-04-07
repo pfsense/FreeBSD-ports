@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	anese
 PORTVERSION=	0.9.1
 CATEGORIES=	emulators

@@ -1,5 +1,4 @@
 # Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	veximaccountadmin
 PORTVERSION=	0.1
@@ -18,6 +17,7 @@ LICENSE=	GPLv3
 RUN_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=0.9:mail/roundcube@${PHP_FLAVOR}
 
 USES=	php:flavors
+IGNORE_WITH_PHP=80
 NO_BUILD=	yes
 
 PLIST_SUB+=	PLUGINDIR="${PLUGINDIR}"

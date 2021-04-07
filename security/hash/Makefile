@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hash
 DISTVERSION=	g20200929
 CATEGORIES=	security

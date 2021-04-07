@@ -1,8 +1,7 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	spotify-qt
-PORTVERSION=	3.3
+PORTVERSION=	3.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	audio
 
@@ -12,7 +11,7 @@ COMMENT=	Lightweight Spotify client using Qt
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/license
 
-RUN_DEPENDS=	librespot:multimedia/librespot
+RUN_DEPENDS=	spotifyd:audio/spotifyd
 
 USES=		cmake compiler:c++11-lang qt:5
 USE_GITHUB=	yes

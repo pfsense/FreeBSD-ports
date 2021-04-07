@@ -11,9 +11,9 @@ bin/named-journalprint
 @sample etc/mtree/BIND.chroot.dist.sample
 @sample etc/mtree/BIND.chroot.local.dist.sample
 %%ETCDIR%%/bind.keys
-%%ETCDIR%%/master/empty.db
-%%ETCDIR%%/master/localhost-forward.db
-%%ETCDIR%%/master/localhost-reverse.db
+%%ETCDIR%%/primary/empty.db
+%%ETCDIR%%/primary/localhost-forward.db
+%%ETCDIR%%/primary/localhost-reverse.db
 @sample %%ETCDIR%%/named.conf.sample
 %%ETCDIR%%/named.root
 %%ETCDIR%%/rndc.conf.sample
@@ -105,6 +105,7 @@ include/dns/tcpmsg.h
 include/dns/time.h
 include/dns/timer.h
 include/dns/tkey.h
+include/dns/transport.h
 include/dns/tsec.h
 include/dns/tsig.h
 include/dns/ttl.h
@@ -192,7 +193,6 @@ include/isc/quota.h
 include/isc/radix.h
 include/isc/random.h
 include/isc/ratelimiter.h
-include/isc/readline.h
 include/isc/refcount.h
 include/isc/regex.h
 include/isc/region.h
@@ -219,8 +219,10 @@ include/isc/taskpool.h
 include/isc/thread.h
 include/isc/time.h
 include/isc/timer.h
+include/isc/tls.h
 include/isc/tm.h
 include/isc/types.h
+include/isc/url.h
 include/isc/utf8.h
 include/isc/util.h
 include/isccc/alist.h
@@ -261,29 +263,22 @@ include/pk11/pk11.h
 include/pk11/result.h
 include/pk11/site.h
 include/pkcs11/pkcs11.h
+lib/bind/filter-a.so
 lib/bind/filter-aaaa.so
 lib/libbind9.so
-lib/libbind9.so.1701
-lib/libbind9.so.1701.0.3
+lib/libbind9-9.17.11.so
 lib/libdns.so
-lib/libdns.so.1707
-lib/libdns.so.1707.0.0
+lib/libdns-9.17.11.so
 lib/libirs.so
-lib/libirs.so.1701
-lib/libirs.so.1701.0.0
+lib/libirs-9.17.11.so
 lib/libisc.so
-lib/libisc.so.1706
-lib/libisc.so.1706.0.0
+lib/libisc-9.17.11.so
 lib/libisccc.so
-lib/libisccc.so.1703
-lib/libisccc.so.1703.0.0
+lib/libisccc-9.17.11.so
 lib/libisccfg.so
-lib/libisccfg.so.1702
-lib/libisccfg.so.1702.0.2
+lib/libisccfg-9.17.11.so
 lib/libns.so
-lib/libns.so.1705
-lib/libns.so.1705.0.0
-@comment lib/named/filter-aaaa.so
+lib/libns-9.17.11.so
 @comment man/man1/arpaname.1.gz
 @comment man/man1/delv.1.gz
 @comment man/man1/dig.1.gz
@@ -301,6 +296,7 @@ lib/libns.so.1705.0.0
 @comment man/man1/mdig.1.gz
 %%MANPAGES%%man/man1/named-checkconf.1.gz
 %%MANPAGES%%man/man1/named-checkzone.1.gz
+%%MANPAGES%%man/man1/named-compilezone.1.gz
 %%MANPAGES%%man/man1/named-journalprint.1.gz
 %%MANPAGES%%%%LMDB%%man/man1/named-nzd2nzf.1.gz
 @comment man/man1/named-rrchecker.1.gz
@@ -313,6 +309,8 @@ lib/libns.so.1705.0.0
 %%MANPAGES%%%%NATIVE_PKCS11%%man/man1/pkcs11-tokens.1.gz
 %%MANPAGES%%man/man5/named.conf.5.gz
 %%MANPAGES%%man/man5/rndc.conf.5.gz
+%%MANPAGES%%man/man8/ddns-confgen.8.gz
+%%MANPAGES%%man/man8/filter-a.8.gz
 %%MANPAGES%%man/man8/filter-aaaa.8.gz
 %%MANPAGES%%man/man8/named.8.gz
 %%MANPAGES%%man/man8/rndc-confgen.8.gz
@@ -324,5 +322,5 @@ sbin/rndc
 sbin/rndc-confgen
 sbin/tsig-keygen
 @dir(bind,bind,) %%ETCDIR%%/dynamic
-@dir(bind,bind,) %%ETCDIR%%/slave
+@dir(bind,bind,) %%ETCDIR%%/secondary
 @dir(bind,bind,) %%ETCDIR%%/working

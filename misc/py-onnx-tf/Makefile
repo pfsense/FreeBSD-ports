@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	onnx-tf
 DISTVERSION=	1.6.0
 CATEGORIES=	misc python # machine-learning

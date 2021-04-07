@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	netpgp
 PORTVERSION=	20140220
 CATEGORIES=	security

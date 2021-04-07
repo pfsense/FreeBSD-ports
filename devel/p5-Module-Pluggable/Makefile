@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Module-Pluggable
 PORTVERSION=	5.2
 CATEGORIES=	devel perl5

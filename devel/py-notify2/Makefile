@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	notify2
 DISTVERSION=	0.3.1
 CATEGORIES=	devel python

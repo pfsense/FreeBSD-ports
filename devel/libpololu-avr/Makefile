@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libpololu-avr
 PORTVERSION=	151002
 PORTREVISION=	1

@@ -1,5 +1,4 @@
 # Created by: Vladimir Kondratiev <wulf@cicgroup.ru>
-# $FreeBSD$
 
 PORTNAME=	cataclysm-dda
 DISTVERSION=	0.E
@@ -59,8 +58,6 @@ CXXFLAGS+=	-Wno-inconsistent-missing-override
 .if ${CHOSEN_COMPILER_TYPE} == gcc
 CPPFLAGS+=	-DCATA_NO_CPP11_STRING_CONVERSIONS
 .endif
-
-.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e \

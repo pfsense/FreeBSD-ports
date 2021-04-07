@@ -1,9 +1,8 @@
 # Created by: Thomas Hurst <tom@hur.st>
-# $FreeBSD$
 
 PORTNAME=	jdupes
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.16.0
+DISTVERSION=	1.19.2
 CATEGORIES=	sysutils
 
 MAINTAINER=	tom@hur.st
@@ -22,7 +21,7 @@ PLIST_FILES=	bin/jdupes \
 
 OPTIONS_DEFINE=		LOW_MEMORY
 LOW_MEMORY_DESC=	Build for lower memory usage instead of speed
-LOW_MEMORY_MAKE_ENV=	CFLAGS_EXTRA=-DLOW_MEMORY
+LOW_MEMORY_MAKE_ENV=	LOW_MEMORY=1
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin

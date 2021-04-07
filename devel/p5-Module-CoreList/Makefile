@@ -1,8 +1,7 @@
 # Created by: Autrijus Tang <autrijus@autrijus.org>
-# $FreeBSD$
 
 PORTNAME=	Module-CoreList
-PORTVERSION=	5.20201220
+PORTVERSION=	5.20210220
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

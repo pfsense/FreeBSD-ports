@@ -1,10 +1,9 @@
 # Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
 
 PORTNAME=	openldap
 PORTVERSION=	2.4.44
-DISTVERSIONSUFFIX=	-21.el7_6
-PORTREVISION=	1
+DISTVERSIONSUFFIX=	-22.el7
+PORTREVISION=	2
 CATEGORIES=	net linux
 
 MAINTAINER=	emulation@FreeBSD.org

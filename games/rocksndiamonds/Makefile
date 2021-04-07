@@ -1,5 +1,4 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rocksndiamonds
 PORTVERSION=	3.3.1.2
@@ -25,6 +24,9 @@ COMMENT=	Colorful Boulderdash'n'Emerald Mine'n'Sokoban'n'Stuff
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: setup
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: setup
 
 LIB_DEPENDS=	libsmpeg.so:multimedia/smpeg
 EXTRACT_DEPENDS=${UNZIP_CMD}:archivers/unzip

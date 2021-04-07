@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-Wrapper
 PORTVERSION=	1.05
 CATEGORIES=	textproc perl5

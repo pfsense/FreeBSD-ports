@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bats-core
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.1.0

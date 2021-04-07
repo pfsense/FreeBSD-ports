@@ -1,9 +1,8 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	SciPlot
 PORTVERSION=	1.36
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	graphics math
 MASTER_SITES=	XCONTRIB/widgets
 

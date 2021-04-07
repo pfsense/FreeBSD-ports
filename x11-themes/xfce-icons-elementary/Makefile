@@ -1,8 +1,7 @@
 # Created by: Matthias Petermann <matthias@petermann-it.de>
-# $FreeBSD$
 
 PORTNAME=	elementary
-PORTVERSION=	0.15.1
+PORTVERSION=	0.15.2
 DISTVERSIONPREFIX=v
 CATEGORIES=	x11-themes xfce
 PKGNAMEPREFIX=	xfce-icons-

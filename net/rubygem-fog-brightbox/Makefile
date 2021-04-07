@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	fog-brightbox
-PORTVERSION=	1.3.0
+PORTVERSION=	1.4.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 

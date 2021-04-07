@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sessreg
 PORTVERSION=	1.1.2
 CATEGORIES=	x11

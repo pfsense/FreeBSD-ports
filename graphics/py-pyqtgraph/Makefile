@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pyqtgraph
 DISTVERSION=	0.11.1
 CATEGORIES=	graphics science python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pygeoapi
 PORTVERSION=		0.9.0
 CATEGORIES=	graphics geography python

@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Astronomical ports
 
     SUBDIR += R-cran-maptools
@@ -28,6 +25,7 @@
     SUBDIR += jday
     SUBDIR += josm
     SUBDIR += kosmindoormap
+    SUBDIR += kosmorro
     SUBDIR += kstars
     SUBDIR += libgal
     SUBDIR += libnova
@@ -83,14 +81,22 @@
     SUBDIR += py-astropy-helpers
     SUBDIR += py-ephem
     SUBDIR += py-horoscopegenerator
+    SUBDIR += py-jplephem
     SUBDIR += py-metar
     SUBDIR += py-metpy
+    SUBDIR += py-pykep
     SUBDIR += py-pymeeus
     SUBDIR += py-pymetar
     SUBDIR += py-pysofa
     SUBDIR += py-pywapi
     SUBDIR += py-ro
+    SUBDIR += py-sgp4
+    SUBDIR += py-skyfield
+    SUBDIR += py-skyfield-data
     SUBDIR += py-spacetrack
+    SUBDIR += py-spktype01
+    SUBDIR += py-spktype21
+    SUBDIR += pykep
     SUBDIR += pyweather
     SUBDIR += qmapshack
     SUBDIR += readosm

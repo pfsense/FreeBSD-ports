@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	erb
-PORTVERSION=	2.2.0
+PORTVERSION=	2.2.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -12,6 +11,8 @@ COMMENT=	Easy to use but powerful templating system for Ruby
 LICENSE=	BSD2CLAUSE RUBY
 LICENSE_COMB=	dual
 LICENSE_FILE_BSD2CLAUSE=${WRKSRC}/LICENSE.txt
+
+RUN_DEPENDS=	rubygem-cgi>=0:www/rubygem-cgi
 
 USES=		gem
 USE_RUBY=	yes

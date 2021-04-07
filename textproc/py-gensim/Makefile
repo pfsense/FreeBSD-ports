@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gensim
 DISTVERSION=	3.8.3
 CATEGORIES=	textproc python

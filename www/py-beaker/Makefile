@@ -1,5 +1,4 @@
 # Created by: Dryice Liu <dryice@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	beaker
 PORTVERSION=	1.11.0
@@ -18,10 +17,4 @@ USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} <= 3200
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}funcsigs>=0:devel/py-funcsigs@${PY_FLAVOR}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

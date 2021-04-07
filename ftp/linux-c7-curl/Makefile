@@ -1,10 +1,9 @@
 # Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
 
 PORTNAME=	curl
 PORTVERSION=	7.29.0
-DISTVERSIONSUFFIX=	-57.el7_8.1
-PORTREVISION=	11
+DISTVERSIONSUFFIX=	-59.el7_9.1
+PORTREVISION=	12
 CATEGORIES=	ftp linux
 
 MAINTAINER=	emulation@FreeBSD.org

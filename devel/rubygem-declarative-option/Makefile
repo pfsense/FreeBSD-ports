@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	declarative-option
 PORTVERSION=	0.1.0
 CATEGORIES=	devel rubygems

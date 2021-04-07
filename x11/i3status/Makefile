@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	i3status
 PORTVERSION=	2.13
 CATEGORIES=	x11

@@ -1,5 +1,4 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	brpoplpush-redis_script
 PORTVERSION=	0.1.1
@@ -18,6 +17,6 @@ RUN_DEPENDS=	rubygem-concurrent-ruby>=1.0.5<2:devel/rubygem-concurrent-ruby \
 USES=		gem
 USE_RUBY=	yes
 
-#NO_ARCH=	yes
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

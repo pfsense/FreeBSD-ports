@@ -1,5 +1,4 @@
 # Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	arouteserver
 PORTVERSION=	0.26.0
@@ -29,12 +28,6 @@ USE_PYTHON=	autoplist concurrent distutils
 SHEBANG_FILES=	pierky/arouteserver/config.d/rtt_getter.sh
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3300
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}ipaddr>=2.1.11:devel/py-ipaddr@${PY_FLAVOR}
-.endif
-
 post-patch:
 	${REINPLACE_CMD} -e 's|#bgpq3_path: "bgpq3"|bgpq3_path: "bgpq4"|' \
 		${WRKSRC}/pierky/arouteserver/config.d/arouteserver.yml
@@ -42,4 +35,4 @@ post-patch:
 do-test:
 	@(cd ${WRKSRC} && ${SETENV} nosetests -vs --tests=tests/external_resources/)
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

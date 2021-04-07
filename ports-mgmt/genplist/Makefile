@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	genplist
 PORTVERSION=	1.2
 CATEGORIES=	ports-mgmt

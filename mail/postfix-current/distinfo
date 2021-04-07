@@ -1,3 +1,3 @@
-TIMESTAMP = 1607819580
-SHA256 (postfix/postfix-3.6-20201212.tar.gz) = 5ecd8517a86684bacee1642841d797d152b5207b0aef8d43ec03b8e15327036c
-SIZE (postfix/postfix-3.6-20201212.tar.gz) = 4683741
+TIMESTAMP = 1614196945
+SHA256 (postfix/postfix-3.6-20210224.tar.gz) = 2bdfcf3fa11841353adb8ae4c7d0d34ecc1d5c3b0c5e1173cb28b4b229ed5529
+SIZE (postfix/postfix-3.6-20210224.tar.gz) = 4736857

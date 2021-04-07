@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	xi-core
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.3.0
-PORTREVISION=	10
+PORTREVISION=	13
 CATEGORIES=	editors
 
-MAINTAINER=	ed.arrakis@gmail.com
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Modern editor backend written in Rust
 
 LICENSE=	APACHE20

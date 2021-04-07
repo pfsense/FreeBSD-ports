@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	siesta
 DISTVERSION=	4.0.2
 PORTREVISION=	3

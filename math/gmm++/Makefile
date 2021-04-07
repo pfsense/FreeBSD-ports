@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gmm++
 PORTVERSION=	5.4
 CATEGORIES=	math

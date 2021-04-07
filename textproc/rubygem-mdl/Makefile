@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	mdl
 PORTVERSION=	0.11.0
+PORTREVISION=	2
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 

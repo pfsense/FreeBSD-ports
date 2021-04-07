@@ -1,5 +1,4 @@
 # Created by: Rob Evers <rob@debank.tv>
-# $FreeBSD$
 
 PORTNAME=	postfixadmin
 DISTVERSIONPREFIX=	postfixadmin-
@@ -46,7 +45,7 @@ SQLITE_USE=	php=sqlite3
 .include <bsd.port.options.mk>
 
 .if ${FLAVOR} != php80
-USE_PHP_=	xmlrpc
+USE_PHP+=	xmlrpc
 .endif
 
 do-install:

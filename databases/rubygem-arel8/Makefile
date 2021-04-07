@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	arel
 PORTVERSION=	8.0.0
 PORTEPOCH=	1

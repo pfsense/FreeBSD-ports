@@ -1,9 +1,8 @@
 # Created by: M. L. Dodson, <bdodson@scms.utmb.edu>
-# $FreeBSD$
 
 PORTNAME=	gri
 PORTVERSION=	2.12.23
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	math
 MASTER_SITES=	SF
 

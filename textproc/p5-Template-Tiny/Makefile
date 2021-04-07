@@ -1,9 +1,7 @@
 # Created by: ports@c0decafe.net
-# $FreeBSD$
 
 PORTNAME=	Template-Tiny
-PORTVERSION=	1.12
-PORTREVISION=	1
+PORTVERSION=	1.13
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

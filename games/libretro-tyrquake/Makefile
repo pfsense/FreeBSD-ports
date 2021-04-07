@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	libretro-tyrquake
-PORTVERSION=	0.20200504
+PORTVERSION=	0.20210214
 CATEGORIES=	games
 
 MAINTAINER=	menelkir@itroll.org
@@ -16,7 +14,7 @@ USE_GL=		gl
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	tyrquake
-GH_TAGNAME=	8c6ec56
+GH_TAGNAME=	e76477d
 
 PLIST_FILES=	lib/libretro/tyrquake_libretro.so
 

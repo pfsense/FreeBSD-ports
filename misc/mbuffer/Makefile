@@ -1,8 +1,7 @@
 # Created by: Rong-En Fan <rafan@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mbuffer
-PORTVERSION=	20200505
+PORTVERSION=	20200929
 CATEGORIES=	misc
 MASTER_SITES=	http://www.maier-komor.de/software/mbuffer/
 

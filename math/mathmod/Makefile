@@ -1,8 +1,7 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	MathMod
-PORTVERSION=	10.1
+PORTVERSION=	11.0
 CATEGORIES=	math graphics
 
 MAINTAINER=	thierry@FreeBSD.org

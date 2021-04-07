@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nbdkit
 PORTVERSION=	1.20.4
 PORTREVISION=	1
@@ -15,7 +13,8 @@ COMMENT=	Network Block Device server toolkit with stable ABI and permissive lice
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	bash:shells/bash
+BUILD_DEPENDS=	bash:shells/bash \
+		bash-completion>0:shells/bash-completion
 
 USES=		compiler:c11 gmake libtool pkgconfig
 

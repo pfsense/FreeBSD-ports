@@ -1,8 +1,7 @@
 # Created by: Leinier Cruz Salfran <salfrancl@yahoo.es>
-# $FreeBSD$
 
 PORTNAME=	fet
-DISTVERSION=	5.48.1
+DISTVERSION=	5.49.0
 CATEGORIES=	deskutils education
 MASTER_SITES=	https://lalescu.ro/liviu/fet/download/ \
 		https://lalescu.ro/liviu/fet/download/old/ \

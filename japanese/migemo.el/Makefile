@@ -1,9 +1,8 @@
 # Created by: MANTANI Nobutaka <nobutaka@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	migemo.el
 PORTVERSION=	1.9.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	japanese elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 

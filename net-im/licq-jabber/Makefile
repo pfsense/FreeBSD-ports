@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jabber
 PORTVERSION=	1.9.0
 PORTREVISION=	4

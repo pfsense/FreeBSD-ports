@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	chisel
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.7.2
+DISTVERSION=	1.7.6
 CATEGORIES=	www
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Fast TCP tunnel over HTTP
 
 LICENSE=	MIT

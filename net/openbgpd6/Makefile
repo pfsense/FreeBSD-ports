@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openbgpd
 PORTVERSION=	6.8p0
 CATEGORIES=	net

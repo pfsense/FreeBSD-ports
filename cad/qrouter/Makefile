@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	qrouter
-DISTVERSION=	1.4.83
-PORTREVISION=	1
+DISTVERSION=	1.4.84
 CATEGORIES=	cad
 MASTER_SITES=	http://opencircuitdesign.com/${PORTNAME}/archive/
 

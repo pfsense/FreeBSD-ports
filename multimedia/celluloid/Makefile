@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	celluloid
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.20
+DISTVERSION=	0.21
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org

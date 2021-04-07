@@ -1,9 +1,8 @@
 # Created by: erikhb@bgnett.no
-# $FreeBSD$
 
 PORTNAME=	libiodbc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.52.13
+DISTVERSION=	3.52.14
 CATEGORIES=	databases
 
 MAINTAINER=	kde@FreeBSD.org

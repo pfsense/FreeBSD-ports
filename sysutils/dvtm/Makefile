@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dvtm
 PORTVERSION=	0.15
 CATEGORIES=	sysutils

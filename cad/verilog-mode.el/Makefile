@@ -1,9 +1,8 @@
 # Created by: stas
-# $FreeBSD$
 
 PORTNAME=	verilog-mode.el
 PORTVERSION=	801
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	cad elisp
 MASTER_SITES=	http://www.veripool.org/ftp/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}

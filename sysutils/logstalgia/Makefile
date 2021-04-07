@@ -1,10 +1,9 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	logstalgia
 DISTVERSIONPREFIX=	${PORTNAME}-
 DISTVERSION=	1.1.2
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	sysutils www
 
 MAINTAINER=	ehaupt@FreeBSD.org

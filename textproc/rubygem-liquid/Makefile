@@ -1,8 +1,7 @@
 # Created by: peter.schuller@infidyne.com
-# $FreeBSD$
 
 PORTNAME=	liquid
-PORTVERSION=	4.0.3
+PORTVERSION=	5.0.0
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 

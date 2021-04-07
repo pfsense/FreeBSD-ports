@@ -1,9 +1,7 @@
 # Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dhewm3
-PORTVERSION=	1.5.0
-PORTREVISION=	2
+PORTVERSION=	1.5.1
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -21,6 +19,7 @@ GH_ACCOUNT=	dhewm
 
 USES=		cmake compiler:c++11-lang jpeg openal:al sdl
 USE_SDL=	sdl2
+CMAKE_ON=	REPRODUCIBLE_BUILD
 
 LDFLAGS_i386=	-Wl,-znotext
 

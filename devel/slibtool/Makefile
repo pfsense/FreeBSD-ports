@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	slibtool
-PORTVERSION=	0.5.31
+PORTVERSION=	0.5.33
 CATEGORIES=	devel
 MASTER_SITES=	http://dl.midipix.org/${PORTNAME}/
 

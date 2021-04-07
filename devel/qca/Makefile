@@ -1,9 +1,7 @@
 # Created by: Vsevolod Stakhov <vsevolod@highsecure.ru>
-# $FreeBSD$
 
 PORTNAME=	qca
-DISTVERSION=	2.3.1
-PORTREVISION=	1
+DISTVERSION=	2.3.2
 CATEGORIES=	devel
 MASTER_SITES=	KDE/stable/qca/${PORTVERSION}
 PKGNAMESUFFIX=	-qt5

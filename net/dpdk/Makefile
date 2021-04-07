@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	dpdk
-DISTVERSION=	19.11.4
+DISTVERSION=	19.11.7
 CATEGORIES=	net
 MASTER_SITES=	http://fast.dpdk.org/rel/
 

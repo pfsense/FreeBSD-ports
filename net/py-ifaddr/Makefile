@@ -1,5 +1,4 @@
 # Created by: John Hixson<jhixson@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ifaddr
 PORTVERSION=	0.1.7
@@ -11,8 +10,6 @@ COMMENT=	Python Library to enumerate all network interfaces
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
-
-RUN_DEPENDS=	${PY_IPADDRESS}
 
 USES=		python:3.6+
 

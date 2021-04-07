@@ -1,35 +1,36 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sqlite3
-DISTVERSION=	3.34.0
-PORTREVISION=	0
+DISTVERSION=	3.34.1
 PORTEPOCH=	1
 CATEGORIES=	databases
-MASTER_SITES=	https://www.sqlite.org/2020/ http://www2.sqlite.org/2020/ http://www3.sqlite.org/2020/
-DISTNAME=	sqlite-autoconf-${PORTVERSION:C/\.([[:digit:]])[[:>:]]/0\1/g:S/.//g}00
+MASTER_SITES=	https://www.sqlite.org/2021/ https://www2.sqlite.org/2021/ https://www3.sqlite.org/2021/
+DISTNAME=	sqlite-src-${PORTVERSION:C/\.([[:digit:]])[[:>:]]/0\1/g:S/.//g}00
 
 MAINTAINER=	pavelivolkov@gmail.com
 COMMENT=	SQL database engine in a C library
 
 LICENSE=	PD
 
-USES=		libtool pathfix
+USES=		libtool pathfix zip
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
-INSTALL_TARGET=	install-strip
+ALL_TARGET=	all
+CONFIGURE_ENV=	TCLSH_CMD="${TCLSH}"
+PLIST_SUB=	TCL_VER="${TCL_VER}"
 
 # Compilation Options For SQLite https://www.sqlite.org/compile.html
 OPTIONS_DEFINE=		FTS4 URI URI_AUTHORITY METADATA \
 			DIRECT_READ MEMMAN SECURE_DELETE UNLOCK_NOTIFY THREADS \
 			EXTENSION ARMOR STMT DBPAGE DBSTAT FTS5 RBU NULL_TRIM \
 			LIKENOTBLOB STSHELL FTS3_TOKEN UNKNOWN_SQL SORT_REF \
-			NORMALIZE DQS TRUSTED_SCHEMA
+			NORMALIZE DQS TRUSTED_SCHEMA TCL
 OPTIONS_SINGLE=		RAMT
 OPTIONS_RADIO=		STAT RL
 OPTIONS_GROUP=		OPT_EXT OPT_FUNC UNICODE RTREEG
+OPTIONS_SUB=		yes
 
 OPTIONS_GROUP_OPT_EXT=	JSON1 SESSION
 OPTIONS_GROUP_OPT_FUNC=	OFFSET SER1 SOUNDEX
@@ -47,6 +48,7 @@ UNLOCK_NOTIFY_DESC=	Enable notification on unlocking
 EXTENSION_DESC=		Allow loadable extensions
 STSHELL_DESC=		Statically link libsqlite3 into shell
 NORMALIZE_DESC=		Enable normalized sql function
+TCL_DESC=		Enable tcl extension and sqlite_analyzer
 
 # https://www.sqlite.org/compile.html#dqs
 DQS_DESC=		Double-quoted String Literals
@@ -120,7 +122,6 @@ DBSTAT_DESC=		Enable DBSTAT Virtual Table
 
 # https://www.sqlite.org/fts3.html#tokenizer
 OPTIONS_GROUP_UNICODE=	ICU UNICODE61
-UNICODE_DESC=		Unicode support
 UNICODE61_DESC=		Unicode Version 6.1 tokenizer
 
 # https://www.sqlite.org/rtree.html
@@ -143,11 +144,6 @@ OPTIONS_DEFAULT=	FTS4 URI METADATA SECURE_DELETE UNLOCK_NOTIFY THREADS \
 # FTS3_TOKEN used by audio/clementine-player, mail/thunderbird, www/seamonkey
 # FTS5 used by sysutils/tracker
 # JSON1 used by net-im/py-matrix-synapse
-
-PLIST_FILES=	bin/sqlite3 include/sqlite3.h include/sqlite3ext.h \
-		lib/libsqlite3.a lib/libsqlite3.so lib/libsqlite3.so.0 \
-		lib/libsqlite3.so.0.8.6 libdata/pkgconfig/sqlite3.pc \
-		man/man1/sqlite3.1.gz
 
 # The default numeric file permissions for newly created database files under unix.
 # If not specified, the default is 0644 which means that the files is globally
@@ -231,6 +227,11 @@ NORMALIZE_CPPFLAGS=	-DSQLITE_ENABLE_NORMALIZE=1
 DQS_CPPFLAGS=	-DSQLITE_DQS=3
 DQS_CPPFLAGS_OFF=	-DSQLITE_DQS=0
 
+TCL_CONFIGURE_ENABLE=	tcl
+TCL_ALL_TARGET=		sqlite3_analyzer
+TCL_USES=		tcl
+TCL_USES_OFF=		tcl:build
+
 .include <bsd.port.options.mk>
 
 # Platform Configuration
@@ -253,8 +254,12 @@ post-stage:
 	${SETENV} LD_LIBMAP_DISABLE=1 ldd -a "${STAGEDIR}${PREFIX}/bin/${PORTNAME}"
 
 post-install:
+	${INSTALL_MAN} ${WRKSRC}/sqlite3.1 ${STAGEDIR}${PREFIX}/man/man1
 	${RM} ${STAGEDIR}${PREFIX}/include/msvc.h
 	${SETENV} LD_LIBMAP_DISABLE=1 ldd -a "${STAGEDIR}${PREFIX}/bin/${PORTNAME}" "${STAGEDIR}${PREFIX}/lib/lib${PORTNAME}.so"
+
+post-install-TCL-on:
+	${INSTALL_PROGRAM} ${WRKSRC}/sqlite3_analyzer ${STAGEDIR}${PREFIX}/bin
 
 # for compares with checksum from of the site
 sha1: checksum

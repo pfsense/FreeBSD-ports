@@ -1,8 +1,7 @@
 # Created by: Torsten Zuehlsdorff <tz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	hamlit
-PORTVERSION=	2.11.0
+PORTVERSION=	2.14.4
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 

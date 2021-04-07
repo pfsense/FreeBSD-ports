@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	commonmark
 DISTVERSION=	1.7
 CATEGORIES=	textproc

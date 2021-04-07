@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mp3unicode
 PORTVERSION=	1.2.1
 PORTREVISION=	2

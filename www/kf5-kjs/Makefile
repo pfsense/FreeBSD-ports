@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kjs
 DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
 CATEGORIES=	www kde kde-frameworks

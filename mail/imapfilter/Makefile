@@ -1,8 +1,7 @@
 # Created by: Lefteris Chatzibarbas <lefcha@hellug.gr>
-# $FreeBSD$
 
 PORTNAME=	imapfilter
-PORTVERSION=	2.6.16
+PORTVERSION=	2.7.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	mail
 
@@ -13,7 +12,7 @@ LICENSE=	MIT
 
 BROKEN_FreeBSD_11=Requires openssl111 to build
 
-LIB_DEPENDS=	libpcre.so:devel/pcre
+LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 
 USES=		lua ssl
 

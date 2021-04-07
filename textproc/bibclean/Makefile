@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bibclean
 DISTVERSION=	3.04
 CATEGORIES=	textproc

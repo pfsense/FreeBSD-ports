@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Multimedia software
 
     SUBDIR += Bento4
@@ -64,6 +61,7 @@
     SUBDIR += ffmpeg2theora
     SUBDIR += ffmpegthumbnailer
     SUBDIR += ffms2
+    SUBDIR += filebot
     SUBDIR += flvmeta
     SUBDIR += flvstreamer
     SUBDIR += flvtool++
@@ -80,38 +78,12 @@
     SUBDIR += gmp-api
     SUBDIR += gmtk
     SUBDIR += gnome-mplayer
-    SUBDIR += gnome-subtitles
     SUBDIR += gnome-twitch
     SUBDIR += gpac-libgpac
     SUBDIR += gpac-mp4box
     SUBDIR += gpodder
     SUBDIR += grake
     SUBDIR += gst123
-    SUBDIR += gstreamer
-    SUBDIR += gstreamer-ffmpeg
-    SUBDIR += gstreamer-plugins
-    SUBDIR += gstreamer-plugins-all
-    SUBDIR += gstreamer-plugins-annodex
-    SUBDIR += gstreamer-plugins-bad
-    SUBDIR += gstreamer-plugins-bz2
-    SUBDIR += gstreamer-plugins-core
-    SUBDIR += gstreamer-plugins-dts
-    SUBDIR += gstreamer-plugins-dv
-    SUBDIR += gstreamer-plugins-dvd
-    SUBDIR += gstreamer-plugins-fluendo-mpegdemux
-    SUBDIR += gstreamer-plugins-gnonlin
-    SUBDIR += gstreamer-plugins-good
-    SUBDIR += gstreamer-plugins-mpeg2dec
-    SUBDIR += gstreamer-plugins-mpeg2enc
-    SUBDIR += gstreamer-plugins-resindvd
-    SUBDIR += gstreamer-plugins-schroedinger
-    SUBDIR += gstreamer-plugins-theora
-    SUBDIR += gstreamer-plugins-ugly
-    SUBDIR += gstreamer-plugins-v4l2
-    SUBDIR += gstreamer-plugins-vdpau
-    SUBDIR += gstreamer-plugins-vp8
-    SUBDIR += gstreamer-plugins-x264
-    SUBDIR += gstreamer-plugins-xvid
     SUBDIR += gstreamer1
     SUBDIR += gstreamer1-editing-services
     SUBDIR += gstreamer1-libav
@@ -158,6 +130,7 @@
     SUBDIR += gxine
     SUBDIR += handbrake
     SUBDIR += harvid
+    SUBDIR += hypnotix
     SUBDIR += imagination
     SUBDIR += intel-media-sdk
     SUBDIR += iriverter
@@ -171,13 +144,16 @@
     SUBDIR += kf5-kmediaplayer
     SUBDIR += kmplayer
     SUBDIR += kodi
-    SUBDIR += kodi-addon-inputstream.adaptive-devel
-    SUBDIR += kodi-addon-peripheral-joystick
-    SUBDIR += kodi-addon-peripheral.joystick-devel
-    SUBDIR += kodi-addon-pvr-hts
-    SUBDIR += kodi-addon-pvr-iptvsimple
-    SUBDIR += kodi-addon-vfs.libarchive-devel
-    SUBDIR += kodi-devel
+    SUBDIR += kodi-addon-inputstream.adaptive
+    SUBDIR += kodi-addon-peripheral.joystick
+    SUBDIR += kodi-addon-pvr.hts
+    SUBDIR += kodi-addon-pvr.iptvsimple
+    SUBDIR += kodi-addon-screensaver.biogenesis
+    SUBDIR += kodi-addon-screensaver.matrixtrails
+    SUBDIR += kodi-addon-screensaver.stars
+    SUBDIR += kodi-addon-visualization.fishbmc
+    SUBDIR += kodi-addon-visualization.shadertoy
+    SUBDIR += kodi-addon-visualization.spectrum
     SUBDIR += kvazaar
     SUBDIR += l-smash
     SUBDIR += libaacs
@@ -216,6 +192,7 @@
     SUBDIR += libquvi09
     SUBDIR += librav1e
     SUBDIR += librespot
+    SUBDIR += librist
     SUBDIR += librtmp
     SUBDIR += libtheora
     SUBDIR += libtuner
@@ -249,6 +226,7 @@
     SUBDIR += mediainfo
     SUBDIR += mencoder
     SUBDIR += mimms
+    SUBDIR += minisatip
     SUBDIR += minitube
     SUBDIR += mjpegtools
     SUBDIR += mkclean
@@ -357,6 +335,7 @@
     SUBDIR += quodlibet
     SUBDIR += quvi
     SUBDIR += quvi09
+    SUBDIR += qwinff
     SUBDIR += rage
     SUBDIR += rav1e
     SUBDIR += recmpeg
@@ -381,6 +360,7 @@
     SUBDIR += smplayer-themes
     SUBDIR += sms1xxx-kmod
     SUBDIR += smtube
+    SUBDIR += snapcast
     SUBDIR += snappy
     SUBDIR += spigot
     SUBDIR += spook
@@ -398,6 +378,7 @@
     SUBDIR += tautulli
     SUBDIR += tcmplex-panteltje
     SUBDIR += termplay
+    SUBDIR += tinyobjloader
     SUBDIR += tivodecode
     SUBDIR += totem
     SUBDIR += totem-pl-parser

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	yoshimi
 DISTVERSION=	1.7.3
 CATEGORIES=	audio

@@ -1,5 +1,4 @@
 # Created by: Juergen Lock <nox@jelal.kn-bremen.de>
-# $FreeBSD$
 
 PORTNAME=	qemu
 PORTVERSION=	5.0.1
@@ -26,7 +25,7 @@ PATCHFILES+=	55765822804f.patch:-p1
 PATCHFILES+=	aa4d30f6618d.patch:-p1
 
 .if !defined(PKGNAMESUFFIX) || (${PKGNAMESUFFIX} != "-utils" && ${PKGNAMESUFFIX} != "-guest-agent")
-ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64
+ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 powerpc64le
 USES=		bison compiler:c11 cpe gmake gnome iconv:wchar_t perl5 \
 		pkgconfig python:build tar:xz xorg
 USE_XORG=	pixman

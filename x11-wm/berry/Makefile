@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	berry
 PORTVERSION=	0.1.7
 CATEGORIES=	x11-wm
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Byte-sized, Xlib-based window manager
 
 LICENSE=	MIT

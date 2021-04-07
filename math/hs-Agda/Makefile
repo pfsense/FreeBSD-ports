@@ -1,9 +1,7 @@
 # Created by: Giuseppe Pilichi aka Jacula Modyun <jacula@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	Agda
-PORTVERSION=	2.6.1
-PORTREVISION=	5
+PORTVERSION=	2.6.1.3
 CATEGORIES=	math haskell
 
 MAINTAINER=	haskell@FreeBSD.org

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	ftp lang
 PKGNAMESUFFIX=	-libcurl
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pass-update
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.1

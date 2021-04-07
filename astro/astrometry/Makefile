@@ -1,9 +1,8 @@
 # Created by: Sébastien Santoro <dereckson@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	astrometry
 PORTVERSION=	0.80
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	astro
 MASTER_SITES=	http://astrometry.net/downloads/
 DISTNAME=	${PORTNAME}.net-${PORTVERSION}

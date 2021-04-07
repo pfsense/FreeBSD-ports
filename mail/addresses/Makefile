@@ -1,9 +1,8 @@
 # Created by: Miguel Mendez <flynn@energyhq.es.eu.org>
-# $FreeBSD$
 
 PORTNAME=	addresses
 PORTVERSION=	0.4.8
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	mail gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	Addresses-${PORTVERSION}

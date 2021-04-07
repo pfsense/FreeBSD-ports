@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	azure-mgmt-trafficmanager
 PORTVERSION=	0.51.0
 CATEGORIES=	devel python

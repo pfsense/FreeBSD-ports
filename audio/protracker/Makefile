@@ -1,8 +1,7 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	protracker
-PORTVERSION=	1.27
+PORTVERSION=	1.29
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	2
 CATEGORIES=	audio

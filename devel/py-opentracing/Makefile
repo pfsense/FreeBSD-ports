@@ -1,5 +1,4 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	opentracing
 PORTVERSION=	2.4.0
@@ -12,8 +11,6 @@ COMMENT=	OpenTracing API for Python
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-RUN_DEPENDS=	${PY_FUTURES}
 
 USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils

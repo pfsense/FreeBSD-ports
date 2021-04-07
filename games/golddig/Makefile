@@ -1,9 +1,8 @@
 # Created by: jmz
-# $FreeBSD$
 
 PORTNAME=	golddig
 PORTVERSION=	3.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	http://www.NetBSD.org/~chuck/gz/
 DISTNAME=	${PORTNAME}C${PORTVERSION}

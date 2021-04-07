@@ -1,8 +1,7 @@
 # Created by: Stefan Jahn <stefan.jahn@nemesis-sektor.de>
-# $FreeBSD$
 
 PORTNAME=	k4dirstat
-PORTVERSION=	3.2.1
+PORTVERSION=	3.2.2
 CATEGORIES=	sysutils kde
 
 MAINTAINER=	danilo@FreeBSD.org

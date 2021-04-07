@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	horde
 PORTVERSION=	5.2.23
 CATEGORIES=	www pear

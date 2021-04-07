@@ -1,8 +1,7 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Perl-Tidy
-PORTVERSION=	20201207
+PORTVERSION=	20210111
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

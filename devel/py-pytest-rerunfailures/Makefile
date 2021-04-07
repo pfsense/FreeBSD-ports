@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pytest-rerunfailures
 PORTVERSION=	9.1
 CATEGORIES=	devel python

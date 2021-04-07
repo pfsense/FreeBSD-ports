@@ -1,9 +1,7 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	cypari2
-DISTVERSION=	2.1.1
-PORTREVISION=	2
+DISTVERSION=	2.1.2b1
 CATEGORIES=	math python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -25,9 +23,11 @@ USE_PERL5=	build
 USE_PYTHON=	cython distutils
 
 OPTIONS_DEFINE=		DOCS
-DOCS_BUILD_DEPENDS=	${PY_SPHINX}
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
 DOCS_USES=		gmake
 PORTDOCS=		*
+
+PLIST_SUB+=	VER=${DISTVERSION}
 
 pre-configure-DOCS-on:
 	${REINPLACE_CMD} -e 's|python -m|${PYTHON_CMD} -m|'	\

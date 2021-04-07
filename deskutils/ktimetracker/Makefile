@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ktimetracker
 DISTVERSION=	5.0.1
 CATEGORIES=	deskutils kde

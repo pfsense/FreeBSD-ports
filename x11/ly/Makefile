@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	ly
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.0
+DISTVERSION=	0.5.0
 CATEGORIES=	x11
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	TUI (ncurses-like) display manager for X and Wayland
 
 LICENSE=	WTFPL

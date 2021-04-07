@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libosip2
 PORTVERSION=	5.2.0
 CATEGORIES=	net

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	shrinkpdf
 PORTVERSION=	20191221
 CATEGORIES=	print graphics

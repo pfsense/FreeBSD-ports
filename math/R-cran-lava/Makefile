@@ -1,8 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lava
-DISTVERSION=	1.6.8.1
+DISTVERSION=	1.6.9
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	cmaes
 DISTVERSION=	0.7.0
 CATEGORIES=	math # machine-learning
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Lightweight CMA Evolution Strategy implementation for Python
 
 LICENSE=	MIT

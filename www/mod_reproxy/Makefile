@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mod_reproxy
 PORTVERSION=	0.02.20110826
 CATEGORIES=	www

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	signatures
 PORTVERSION=	0.14
 CATEGORIES=	lang perl5

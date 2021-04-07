@@ -1,5 +1,4 @@
 # Created by: Sean Greven <sean.greven@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fwknop
 PORTVERSION=	2.6.10
@@ -11,6 +10,9 @@ MAINTAINER=	sean.greven@gmail.com
 COMMENT=	SPA implementation for Linux and FreeBSD
 
 LICENSE=	GPLv2
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: log_level_t
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: log_level_t
 
 BUILD_DEPENDS= wget:ftp/wget
 RUN_DEPENDS=   wget:ftp/wget

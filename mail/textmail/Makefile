@@ -1,9 +1,8 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	textmail
 PORTVERSION=	20070803
-PORTREVISION=	21
+PORTREVISION=	24
 CATEGORIES=	mail
 MASTER_SITES=	http://raf.org/textmail/
 

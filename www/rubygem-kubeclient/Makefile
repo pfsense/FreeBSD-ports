@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kubeclient
 PORTVERSION=	4.9.1
 PORTREVISION=	0

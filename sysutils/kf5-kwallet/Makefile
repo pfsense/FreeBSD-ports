@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kwallet
 DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
 CATEGORIES=	sysutils kde kde-frameworks

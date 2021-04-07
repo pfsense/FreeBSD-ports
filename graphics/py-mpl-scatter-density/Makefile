@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mpl-scatter-density
 PORTVERSION=	0.7
 CATEGORIES=	graphics python

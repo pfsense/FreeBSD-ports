@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	h323plus
 DISTVERSIONPREFIX=      v
-DISTVERSION=    1_27_0
+DISTVERSION=    1_27_2
 CATEGORIES=	net multimedia
 
 MAINTAINER=	ports@FreeBSD.org

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	phpunit
 DISTVERSION=	7.5.20
 CATEGORIES=	devel www

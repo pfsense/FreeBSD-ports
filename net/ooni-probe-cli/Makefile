@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		ooni-probe-cli
 DISTVERSIONPREFIX=	v
 DISTVERSION=		3.0.8
@@ -113,7 +111,7 @@ post-configure:
 	${MV} ${WRKSRC}/go.mod ${WRKDIR}/go.mod-${PORTNAME} && \
 	cd ${WRKSRC}/vendor/github.com/shuLhan/go-bindata && \
 	${RLN} ${WRKSRC}/vendor vendor && ${RLN} ${WRKSRC}/vendor src && \
-	${SETENV} GOPATH=${WRKSRC}:${WRKSRC}/vendor/github.com/shuLhan/go-bindata ${GO_CMD} \
+	${SETENV} GOPATH=${WRKSRC}:${WRKSRC}/vendor/github.com/shuLhan/go-bindata GO111MODULE=off ${GO_CMD} \
 		build -v -o ${WRKDIR}/go-bindata-ooni ./go-bindata && \
 	${STRIP_CMD} ${WRKDIR}/go-bindata-ooni && \
 	cd ${WRKSRC} && \

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	vici
 DISTVERSION=	5.8.4
 CATEGORIES=	security net-vpn python

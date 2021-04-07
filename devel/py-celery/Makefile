@@ -1,8 +1,7 @@
 # Created by: Alexandros Kosiaris <akosiaris+ports@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	celery
-PORTVERSION=	4.4.2
+PORTVERSION=	4.4.7
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

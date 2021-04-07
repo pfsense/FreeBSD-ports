@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Databases and related software
 
     SUBDIR += R-cran-DBI
@@ -8,6 +5,7 @@
     SUBDIR += R-cran-RPostgreSQL
     SUBDIR += R-cran-RSQLite
     SUBDIR += R-cran-RSQLite.extfuns
+    SUBDIR += R-cran-cachem
     SUBDIR += R-cran-fastmap
     SUBDIR += R-cran-sqldf
     SUBDIR += WWWdb
@@ -152,6 +150,7 @@
     SUBDIR += libmemcache
     SUBDIR += libmemcached
     SUBDIR += libmongo-client
+    SUBDIR += libmswstr
     SUBDIR += libnvpair
     SUBDIR += libodbc++
     SUBDIR += libpbl
@@ -163,8 +162,10 @@
     SUBDIR += linux-oracle-instantclient-basic
     SUBDIR += linux-oracle-instantclient-sdk
     SUBDIR += liquibase
+    SUBDIR += litestream
     SUBDIR += lmdb
     SUBDIR += lua-lsqlite3
+    SUBDIR += lua-pgsql
     SUBDIR += lua-resty-redis
     SUBDIR += lua-xapian
     SUBDIR += luadbi
@@ -194,6 +195,7 @@
     SUBDIR += mongodb42
     SUBDIR += mongodb42-tools
     SUBDIR += mongodb44
+    SUBDIR += mongodb49
     SUBDIR += mroonga
     SUBDIR += mtop
     SUBDIR += mydumper
@@ -478,6 +480,7 @@
     SUBDIR += p5-SQL-Abstract-Classic
     SUBDIR += p5-SQL-Abstract-Limit
     SUBDIR += p5-SQL-Abstract-More
+    SUBDIR += p5-SQL-Abstract-Pg
     SUBDIR += p5-SQL-Abstract-Plugin-InsertMulti
     SUBDIR += p5-SQL-Interp
     SUBDIR += p5-SQL-Maker
@@ -562,6 +565,7 @@
     SUBDIR += pg_citus
     SUBDIR += pg_dirtyread
     SUBDIR += pg_ed25519
+    SUBDIR += pg_hashids
     SUBDIR += pg_partman
     SUBDIR += pg_qualstats
     SUBDIR += pg_reorg
@@ -733,12 +737,14 @@
     SUBDIR += py-Pyrseas
     SUBDIR += py-aesqlapius
     SUBDIR += py-agate-sql
+    SUBDIR += py-aiomysql
     SUBDIR += py-aiopg
     SUBDIR += py-aioredis
     SUBDIR += py-aiosqlite
     SUBDIR += py-alembic
     SUBDIR += py-apsw
     SUBDIR += py-asyncpg
+    SUBDIR += py-berkeleydb
     SUBDIR += py-bsddb3
     SUBDIR += py-carbon
     SUBDIR += py-cassandra-driver
@@ -773,6 +779,7 @@
     SUBDIR += py-pgdbconn
     SUBDIR += py-pglast
     SUBDIR += py-pglite
+    SUBDIR += py-pgmigrate
     SUBDIR += py-pgspecial
     SUBDIR += py-pgxnclient
     SUBDIR += py-pickledb
@@ -800,6 +807,7 @@
     SUBDIR += py-rb
     SUBDIR += py-redis
     SUBDIR += py-redis2
+    SUBDIR += py-rrdtool
     SUBDIR += py-sispy
     SUBDIR += py-south
     SUBDIR += py-sqlalchemy-json
@@ -840,7 +848,7 @@
     SUBDIR += recutils
     SUBDIR += redis
     SUBDIR += redis-devel
-    SUBDIR += redis4
+    SUBDIR += redis5
     SUBDIR += redis_exporter
     SUBDIR += redisdesktopmanager
     SUBDIR += retcl
@@ -862,6 +870,7 @@
     SUBDIR += rubygem-activemodel50
     SUBDIR += rubygem-activemodel52
     SUBDIR += rubygem-activemodel60
+    SUBDIR += rubygem-activemodel61
     SUBDIR += rubygem-activerecord-explain-analyze
     SUBDIR += rubygem-activerecord-import
     SUBDIR += rubygem-activerecord-jdbc-adapter
@@ -872,6 +881,7 @@
     SUBDIR += rubygem-activerecord50
     SUBDIR += rubygem-activerecord52
     SUBDIR += rubygem-activerecord60
+    SUBDIR += rubygem-activerecord61
     SUBDIR += rubygem-after_commit_queue
     SUBDIR += rubygem-amalgalite
     SUBDIR += rubygem-arel
@@ -923,6 +933,7 @@
     SUBDIR += rubygem-globalid-rails50
     SUBDIR += rubygem-globalid-rails52
     SUBDIR += rubygem-globalid-rails60
+    SUBDIR += rubygem-globalid-rails61
     SUBDIR += rubygem-her
     SUBDIR += rubygem-hiredis
     SUBDIR += rubygem-influxdb
@@ -941,6 +952,7 @@
     SUBDIR += rubygem-pg0
     SUBDIR += rubygem-pg018
     SUBDIR += rubygem-pg_array_parser
+    SUBDIR += rubygem-pg_query
     SUBDIR += rubygem-pghero
     SUBDIR += rubygem-pghero-rails5
     SUBDIR += rubygem-pghero-rails50
@@ -957,6 +969,7 @@
     SUBDIR += rubygem-redis-namespace
     SUBDIR += rubygem-redis-namespace16
     SUBDIR += rubygem-redis-namespace17
+    SUBDIR += rubygem-sdbm
     SUBDIR += rubygem-seed-fu
     SUBDIR += rubygem-sqlite3
     SUBDIR += rubygem-sqlite3-ruby
@@ -1013,6 +1026,7 @@
     SUBDIR += virtualpg
     SUBDIR += virtuoso
     SUBDIR += vsqlite
+    SUBDIR += webdis
     SUBDIR += wfb2sql
     SUBDIR += xapian-bindings
     SUBDIR += xapian-bindings12

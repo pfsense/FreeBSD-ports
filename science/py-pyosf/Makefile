@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pyosf
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.5
@@ -7,7 +5,7 @@ CATEGORIES=	science python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
-COMMENT=	Python lib for synching with OpenScienceFramework projects
+COMMENT=	Python library for synching with OpenScienceFramework projects
 
 LICENSE=	MIT
 

@@ -1,8 +1,7 @@
 # Created by: Wen heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	mysqltuner
-PORTVERSION=	1.7.17
+PORTVERSION=	1.7.21
 CATEGORIES=	databases
 
 MAINTAINER=	pi@FreeBSD.org

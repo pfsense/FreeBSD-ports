@@ -1,13 +1,12 @@
 # Created by: ache
-# $FreeBSD$
 
 PORTNAME=	unrar
-PORTVERSION=	6.00.beta2
+PORTVERSION=	6.00
 PORTEPOCH=	6
 CATEGORIES+=	archivers
 MASTER_SITES=	https://rarlab.com/rar/ \
 		LOCAL/sunpoet
-DISTNAME=	unrarsrc-6.0.2
+DISTNAME=	unrarsrc-6.0.3
 
 MAINTAINER?=	sunpoet@FreeBSD.org
 COMMENT=	Extract, view & test RAR archives

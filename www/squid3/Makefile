@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	squid
 PORTVERSION=	3.5.28
 PORTREVISION=	4
@@ -9,16 +7,7 @@ MASTER_SITES=	http://www.squid-cache.org/Versions/v3/${PORTVERSION:R}/ \
 		http://www1.at.squid-cache.org/Versions/v3/${PORTVERSION:R}/ \
 		http://www.eu.squid-cache.org/Versions/v3/${PORTVERSION:R}/ \
 		http://www1.jp.squid-cache.org/Versions/v3/${PORTVERSION:R}/
-PKGNAMESUFFIX=  3
-DIST_SUBDIR=	squid${PORTVERSION:R}
-
-PATCH_SITES=	http://www.squid-cache.org/%SUBDIR%/ \
-		http://www2.us.squid-cache.org/%SUBDIR%/ \
-		http://www1.at.squid-cache.org/%SUBDIR%/ \
-		http://www.eu.squid-cache.org/%SUBDIR%/ \
-		http://www1.jp.squid-cache.org/%SUBDIR%/ \
-		http://master.squid-cache.org/~amosjeffries/patches/:nosid
-PATCH_SITE_SUBDIR=	Versions/v3/${PORTVERSION:R}/changesets
+PKGNAMESUFFIX=	3
 
 MAINTAINER=	timp87@gmail.com
 COMMENT=	HTTP Caching Proxy
@@ -283,7 +272,7 @@ WITH_DEBUG?=		yes
 CONFIGURE_ARGS+=	${SQUID_CONFIGURE_ARGS}
 
 .if ${PORT_OPTIONS:MSSL} && ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200085 && ${SSL_DEFAULT} == base
-BROKEN=		Does not build on FreeBSD 12 with OpenSSL 1.1. You may add DEFAULT_VERSIONS+=ssl=openssl to /etc/make.conf as a workaround
+BROKEN=		does not build with OpenSSL 1.1; you may add DEFAULT_VERSIONS+=ssl=libressl to /etc/make.conf as a workaround
 .endif
 
 post-patch:

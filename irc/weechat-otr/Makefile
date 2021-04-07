@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	weechat-otr
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.9.2

@@ -1,9 +1,8 @@
 # Created by: Grzegorz Blach <gblach@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	efl
 DISTVERSION=	1.25.1
-PORTREVISION=	2
+PORTREVISION=	6
 CATEGORIES=	devel enlightenment
 MASTER_SITES=	http://download.enlightenment.org/rel/libs/${PORTNAME}/
 DIST_SUBDIR=	enlightenment
@@ -60,11 +59,7 @@ OPTIONS_SINGLE_LUAL=	LUAJIT LUALANG
 OPTIONS_DEFAULT=	FRIBIDI HARFBUZZ PULSEAUDIO EXAMPLES GSTREAMER V4L SCIM XIM \
 			OPENSSL OPENJPEG PDF PS RAW SVG WEBP XCF OPENGL LUAJIT CXX
 OPTIONS_DEFAULT_aarch64=	LUALANG
-OPTIONS_DEFAULT_powerpc64=	LUALANG
-OPTIONS_DEFAULT_powerpc64le=	LUALANG
 OPTIONS_EXCLUDE_aarch64=	LUAJIT
-OPTIONS_EXCLUDE_powerpc64=	LUAJIT
-OPTIONS_EXCLUDE_powerpc64le=	LUAJIT
 OPTIONS_SUB=		yes
 
 HARFBUZZ_DESC=		OpenType text shaping engine
@@ -331,8 +326,13 @@ MESON_ARGS+=		-Degl=true
 USE_GL=			egl
 .endif
 
-.if (${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH} == aarch64)
+.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH} == powerpc64 || ${ARCH} == powerpc64le
 LIB_DEPENDS+=	libunwind.so:devel/libunwind
+.endif
+
+.if ${ARCH:Mpowerpc64*}
+LUAJIT_BUILD_DEPENDS=		luajit:lang/luajit-openresty
+LUAJIT_RUN_DEPENDS=		luajit:lang/luajit-openresty
 .endif
 
 post-install:

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	URI-Template-Restrict
 PORTVERSION=	0.06
 PORTREVISION=	1

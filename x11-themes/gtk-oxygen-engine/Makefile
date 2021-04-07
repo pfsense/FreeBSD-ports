@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	oxygen
 PORTVERSION=	1.4.6
 PORTREVISION=	3

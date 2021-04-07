@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	ceres-solver
 DISTVERSION=	2.0.0
 PORTREVISION=	1
 CATEGORIES=	math
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Nonlinear least squares minimizer
 
 LICENSE=	BSD3CLAUSE
@@ -38,7 +36,8 @@ OPTIONS_GROUP_SPARSE=	CXSPARSE EIGENSPARSE SUITESPARSE
 CUSTOM_BLAS_DESC=	Handcoded BLAS routines instead of Eigen
 CUSTOM_BLAS_CMAKE_BOOL=	CUSTOM_BLAS
 
-DOCS_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx18
+DOCS_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx \
+			${PYTHON_PKGNAMEPREFIX}sphinx_rtd_theme>0:textproc/py-sphinx_rtd_theme@${PY_FLAVOR}
 DOCS_USES=		python:build
 DOCS_CMAKE_BOOL=	BUILD_DOCUMENTATION
 
@@ -66,9 +65,6 @@ TEST_IMPLIES=		GFLAGS
 
 LAPACK_DESC=		Linear Algebra PACKage
 LAPACK_CMAKE_BOOL=	LAPACK
-# Avoid conflict with Ceres threading by using single-threaded BLAS library.
-# BLASLIB from USES=blaslapack cannot be used as it's multi-threaded.
-# https://github.com/xianyi/OpenBLAS/wiki/faq#multi-threaded
 ATLAS_USES=		blaslapack:atlas
 ATLAS_CMAKE_ON=		-DBLA_VENDOR:STRING="ATLAS" \
 			-DBLAS_LIBRARIES:FILEPATH="${LOCALBASE}/lib/libcblas.so" \

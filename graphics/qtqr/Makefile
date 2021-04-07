@@ -1,9 +1,8 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	qtqr
 DISTVERSION=	2.0.bzr39
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	graphics python
 MASTER_SITES=	LOCAL/ehaupt
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

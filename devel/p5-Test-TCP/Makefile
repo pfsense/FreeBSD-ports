@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-TCP
 PORTVERSION=	2.19
 CATEGORIES=	devel perl5

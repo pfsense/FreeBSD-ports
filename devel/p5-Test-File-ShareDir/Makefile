@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-File-ShareDir
 PORTVERSION=	1.001002
 CATEGORIES=	devel perl5

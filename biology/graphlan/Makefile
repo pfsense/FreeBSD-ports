@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	graphlan
 DISTVERSION=	1.1.3
 PORTREVISION=	1

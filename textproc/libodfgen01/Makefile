@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libodfgen
 PORTVERSION=	0.1.7
 PORTREVISION=	3

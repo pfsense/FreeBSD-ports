@@ -1,8 +1,7 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gedkeeper
-PORTVERSION=	2.16.2
+PORTVERSION=	2.17.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	misc
 

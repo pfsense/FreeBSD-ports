@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zam-plugins
 DISTVERSION=	3.14
 CATEGORIES=	audio

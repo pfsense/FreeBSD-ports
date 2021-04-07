@@ -1,8 +1,7 @@
 # Created by: Eric Freeman <freebsdports@chillibear.com>
-# $FreeBSD$
 
 PORTNAME=	holidays
-PORTVERSION=	8.3.0
+PORTVERSION=	8.4.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

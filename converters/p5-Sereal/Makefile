@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME?=	Sereal
 PORTVERSION=	4.018
 CATEGORIES=	converters perl5

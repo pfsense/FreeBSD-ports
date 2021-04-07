@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pandoc-citeproc
 PORTVERSION=	0.17.0.1
 PORTREVISION=	1
@@ -9,6 +7,9 @@ MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Supports using pandoc with citeproc
 
 LICENSE=	BSD3CLAUSE
+
+DEPRECATED=	Integrated into textproc/hs-pandoc
+EXPIRATION_DATE=2021-04-02
 
 USES=		cabal
 

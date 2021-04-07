@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Math-SigFigs
 PORTVERSION=	1.21
 CATEGORIES=	math perl5
