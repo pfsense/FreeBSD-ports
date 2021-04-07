@@ -111,10 +111,10 @@ CONFLICTS_INSTALL=	apache-openoffice-devel-*
 
 AOOVERSION1=	4
 AOOVERSION2=	1
-AOOVERSION3=	8
+AOOVERSION3=	9
 # From solenv/inc/minor.mk SOURCEREVISION LAST_MINOR BUILD
-AOOTAG=		AOO418m3\(Build:9803\)
-GITREVISION=	18848f57b6
+AOOTAG=		AOO419m1\(Build:9805\)
+GITREVISION=	561082130a
 EXTSRC=		ApacheOpenOffice.ext_sources.${AOOVERSION1}.x.x.20150707.tar.gz
 
 AOOVERSION=	${AOOVERSION1}.${AOOVERSION2}.${AOOVERSION3}
@@ -135,14 +135,13 @@ WITHOUT_CPU_CFLAGS=	true
 CPE_PRODUCT=	${PORTNAME:S|apache-||}
 CPE_VENDOR=	apache
 
-OPTIONS_DEFINE=		CRASHDUMP CUPS DBGUTIL DEBUG GNOME GNOMEVFS \
+OPTIONS_DEFINE=		CRASHDUMP CUPS DBGUTIL DEBUG GNOME \
 			SDK WIKI_PUBLISHER
-OPTIONS_DEFAULT=	CUPS GNOME GNOMEVFS WIKI_PUBLISHER
+OPTIONS_DEFAULT=	CUPS GNOME WIKI_PUBLISHER
 CRASHDUMP_DESC=		Enable crashdumps, you also need to set WITH_DEBUG_PORTS+=${PKGORIGIN}
 DBGUTIL_DESC=		Enable assertions, object counting. (non-production)
 DEBUG_DESC=		Compile with -O0, you also need to set WITH_DEBUG_PORTS+=${PKGORIGIN}
-GNOME_DESC=		GConf + screensaver presentation control via DBUS
-GNOMEVFS_DESC=		GNOME Virtual File System
+GNOME_DESC=		Screensaver presentation control via DBUS
 SDK_DESC=		Build and install software development kit
 WIKI_PUBLISHER_DESC=	Build and install Wiki Publisher extension
 
@@ -155,15 +154,9 @@ DBGUTIL_CONFIGURE_ENABLE=	dbgutil
 
 DEBUG_CONFIGURE_ENABLE=		debug
 
-GNOME_CONFIGURE_ENABLE=		dbus gconf lockdown
+GNOME_CONFIGURE_ENABLE=		dbus lockdown
 GNOME_LIB_DEPENDS=		libdbus-1.so:devel/dbus \
 				libdbus-glib-1.so:devel/dbus-glib
-GNOME_USE=			GNOME=gconf2
-
-GNOMEVFS_CONFIGURE_ENABLE=	gnome-vfs
-GNOMEVFS_CONFIGURE_OFF=		--enable-gio
-GNOMEVFS_CONFIGURE_ON=		--disable-gio
-GNOMEVFS_USE=			GNOME=gnomevfs2
 
 SDK_CONFIGURE_ENABLE=		odk
 SDK_DISTFILES=			unowinreg.dll:unoreg
@@ -243,6 +236,9 @@ SUB_LIST=	EXECBASE=${EXECBASE} AOOTAG=${AOOTAG} AOOUDIR=${AOOUDIR} \
 		PRINSTALLATION_BASEDIR=${PRINSTALLATION_BASEDIR}
 
 CONFIGURE_ARGS+=							\
+			--disable-gconf					\
+			--enable-gio					\
+			--disable-gnome-vfs				\
 			--with-unix-wrapper=${EXECBASE}			\
 			--with-alloc=system				\
 			--with-ant-home=${LOCALBASE}/share/java/apache-ant \

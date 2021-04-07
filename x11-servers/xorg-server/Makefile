@@ -3,7 +3,7 @@
 
 PORTNAME?=	xorg-server
 PORTVERSION?=	1.20.9
-PORTREVISION?=	1
+PORTREVISION?=	3
 PORTEPOCH?=	1
 CATEGORIES=	x11-servers
 MASTER_SITES=	XORG/individual/xserver
@@ -31,6 +31,7 @@ OPTIONS_DEFAULT=	SUID
 OPTIONS_DEFAULT_FreeBSD_11=	DEVD
 OPTIONS_DEFAULT_FreeBSD_12=	UDEV
 OPTIONS_DEFAULT_FreeBSD_13=	UDEV
+OPTIONS_DEFAULT_FreeBSD_14=	UDEV
 OPTIONS_DEFAULT+=	${OPTIONS_DEFAULT_${OPSYS}_${OSREL:R}}
 
 SUID_DESC=	Install setuid wrapper to allow startx as non-root
@@ -101,7 +102,7 @@ PLIST=		${.CURDIR}/pkg-plist
 CONFIGURE_ENV=	SHA1_LIB="-L/usr/lib -lcrypto" SHA1_CFLAGS="-I/usr/include"
 .endif
 
-.if ${ARCH} == "i386" || ${ARCH} == "amd64"
+.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH} == powerpc64 || ${ARCH} == powerpc64le
 LIB_DEPENDS+=	libunwind.so:devel/libunwind
 .endif
 

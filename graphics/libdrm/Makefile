@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libdrm
-PORTVERSION=	2.4.103
+PORTVERSION=	2.4.104
 PORTEPOCH=	1
 CATEGORIES=	graphics x11
 MASTER_SITES=	https://dri.freedesktop.org/libdrm/
@@ -11,8 +11,7 @@ MAINTAINER=	x11@FreeBSD.org
 COMMENT=	Userspace interface to kernel Direct Rendering Module services
 
 PATCH_SITES=	https://gitlab.freedesktop.org/manu/drm/-/commit/
-PATCHFILES+=	e41ca0a00f88ef8.diff:-p1 \
-		329297f9c450d7b.diff:-p1
+PATCHFILES+=	e41ca0a00f88ef8.diff:-p1
 
 LICENSE=	MIT
 
@@ -31,8 +30,7 @@ TESTS_DESC=	Install test programs (which are always built)
 OPTIONS_DEFAULT+=	MANPAGES
 .endif
 
-MANPAGES_BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl
-MANPAGES_USE=		GNOME=libxslt:build
+MANPAGES_BUILD_DEPENDS=	rst2man:textproc/py-docutils
 MANPAGES_MESON_TRUE=	man-pages
 
 TESTS_MESON_TRUE=	install-test-programs

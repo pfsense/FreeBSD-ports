@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	moodle
-PORTVERSION=	3.9.5
+PORTVERSION=	3.9.6
 CATEGORIES=	www education
 MASTER_SITES=	SF/moodle/Moodle/stable39/
 PKGNAMESUFFIX=	${PKGORIGIN:T:S/moodle//}${PHP_PKGNAMESUFFIX}
@@ -19,6 +19,8 @@ USE_PHP=	ctype curl dom fileinfo filter gd hash iconv intl json mbstring \
 		opcache openssl pcre session simplexml soap spl tokenizer \
 		xml xmlreader zip zlib
 WRKSRC=		${WRKDIR}/moodle
+
+IGNORE_WITH_PHP=	80
 
 OPTIONS_SINGLE=		BACKEND
 OPTIONS_SINGLE_BACKEND=	MYSQL PGSQL MSSQL

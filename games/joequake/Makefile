@@ -16,6 +16,9 @@ COMMENT=	Improved NQ engine with ZQuake and FuhQuake graphical effects
 
 LICENSE=	GPLv2+
 
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: com_searchpaths
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: com_searchpaths
+
 LIB_DEPENDS=	libpng.so:graphics/png
 
 WRKSRC=		${WRKDIR}/src
@@ -39,8 +42,9 @@ X86_ASM_DESC= Enable x86 assembly code
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MOPENGL}
-USES+=		gl jpeg
-USE_GL=		yes
+USES+=		gl jpeg xorg
+USE_GL+=	gl
+USE_XORG+=	x11 xext xxf86dga xxf86vm
 ALL_TARGET+=	glx
 PLIST_SUB+=	GLX=""
 .else
@@ -77,7 +81,7 @@ MAKE_ENV+=	USE_${f}=NO
 
 .if ${PORT_OPTIONS:MX11}
 USES+=		xorg
-USE_XORG=	xxf86dga
+USE_XORG+=	x11 xext
 ALL_TARGET+=	x11
 PLIST_SUB+=	X11=""
 .else

@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	sratom
-PORTVERSION=	0.6.6
+PORTVERSION=	0.6.8
 CATEGORIES=	audio
 MASTER_SITES=	http://download.drobilla.net/
 
-MAINTAINER=	beerml@sigma6audio.de
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for serialising LV2 atoms to/from RDF
 
 LICENSE=	ISCL

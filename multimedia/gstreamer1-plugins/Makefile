@@ -45,7 +45,6 @@ UGLY_DISTFILE=		${UGLY_DISTNAME}${EXTRACT_SUFX}
 DIST?=		base
 
 USES+=		gettext gmake gnome libtool pathfix pkgconfig python tar:xz
-WANT_GSTREAMER=	yes
 USE_GNOME+=	glib20 introspection:build libxml2
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
@@ -142,6 +141,9 @@ post-patch:
 # Fix dependency on neon-0.31
 	${REINPLACE_CMD} -e '/neon/s|0.30.99|0.31.99|g' \
 		${WRKSRC}/configure
+# Fix build against OpenCV 4.5.1
+	 ${REINPLACE_CMD} '/opencv/s|4\.2\.0|4.6.0|g' \
+		 ${WRKSRC}/configure
 
 .endif
 .if ${DIST} != ugly

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	emacs
-DISTVERSION=	28.0.50.20210101
+DISTVERSION=	28.0.50.20210315
 PORTEPOCH=	2
 CATEGORIES=	editors
 PKGNAMESUFFIX=	-devel
@@ -26,7 +26,7 @@ USES=		autoreconf:build cpe gmake localbase:ldflags ncurses pkgconfig
 CPE_VENDOR=	gnu
 USE_GITHUB=	yes
 GH_ACCOUNT=	emacs-mirror
-GH_TAGNAME=	58bdfd7
+GH_TAGNAME=	068fdb2c
 
 .if ${FLAVOR:U} != nox
 USES+=		desktop-file-utils gnome xorg
@@ -94,12 +94,12 @@ OPTIONS_GROUP_GRAPHICS=		CAIRO GIF JPEG MAGICK PNG SVG TIFF XPM
 OPTIONS_RADIO=			FILENOTIFY SOUND X11TOOLKIT
 OPTIONS_RADIO_FILENOTIFY=	GFILE KQUEUE
 OPTIONS_RADIO_SOUND=		ALSA OSS
-OPTIONS_RADIO_X11TOOLKIT=	GTK2 GTK3 MOTIF XAW XAW3D
+OPTIONS_RADIO_X11TOOLKIT=	GTK2 GTK3 XAW XAW3D
 .if ${FLAVOR:U} == nox
 OPTIONS_EXCLUDE=		ALSA CAIRO DBUS GCONF GFILE GIF GSETTINGS GTK2 \
-				GTK3 HARFBUZZ JPEG LCMS2 M17N MAGICK MOTIF OSS \
-				OTF PNG SCROLLBARS SVG TIFF XAW XAW3D XFT XIM \
-				XPM XWIDGETS
+				GTK3 HARFBUZZ JPEG LCMS2 M17N MAGICK OSS OTF \
+				PNG SCROLLBARS SVG TIFF XAW XAW3D XFT XIM XPM \
+				XWIDGETS
 .endif
 OPTIONS_SUB=			YES
 
@@ -111,7 +111,6 @@ GRAPHICS_DESC=		Graphics support
 GSETTINGS_DESC=		GSettings API for application settings
 HARFBUZZ_DESC=		HarfBuzz for text shaping
 KQUEUE_DESC=		File notification via kqueue
-#LTO_DESC=		Enable link-time optimization
 M17N_DESC=		M17N support for text-shaping [implies XFT]
 MAGICK_DESC=		ImageMagick image processing support (deprecated)
 MAILUTILS_DESC=		Mail framework via GNU Mailutils
@@ -170,8 +169,6 @@ MAILUTILS_CONFIGURE_WITH=	mailutils
 MAILUTILS_CONFIGURE_ENV_OFF=	ac_cv_lib_lockfile_maillock=no \
 				ac_cv_prog_liblockfile=no
 MODULES_CONFIGURE_WITH=		modules
-MOTIF_USES=			motif
-MOTIF_CONFIGURE_ON=		--with-x-toolkit=motif
 OSS_CONFIGURE_ON=		--with-sound=oss
 OTF_IMPLIES=			XFT
 OTF_LIB_DEPENDS=		libotf.so:print/libotf
@@ -209,8 +206,11 @@ XWIDGETS_CONFIGURE_WITH=	xwidgets
 
 .include <bsd.port.options.mk>
 
-.if !${PORT_OPTIONS:MGTK2} && !${PORT_OPTIONS:MGTK3} && !${PORT_OPTIONS:MMOTIF} \
-	&& !${PORT_OPTIONS:MXAW} && !${PORT_OPTIONS:MXAW3D}
+.if ${ARCH} == powerpc64le
+USE_GCC=	yes
+.endif
+
+.if !${PORT_OPTIONS:MGTK2} && !${PORT_OPTIONS:MGTK3} && !${PORT_OPTIONS:MXAW} && !${PORT_OPTIONS:MXAW3D}
 CONFIGURE_ARGS+=	--with-x-toolkit=no
 .endif
 

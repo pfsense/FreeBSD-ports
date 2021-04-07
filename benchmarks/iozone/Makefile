@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	iozone
-DISTVERSION=	3_487
-PORTREVISION=	1
+DISTVERSION=	3_491
+PORTREVISION=	0
 CATEGORIES=	benchmarks
 MASTER_SITES=	http://www.iozone.org/src/current/
 DISTNAME=	${PORTNAME}${DISTVERSION}
 
-MAINTAINER=	jpaetzel@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Performance Test of Sequential File I/O
 
 USES=		gmake tar
@@ -34,6 +34,9 @@ THREADS_CFLAGS_OFF=	-DNO_THREADS
 post-patch-SSH-on:
 	@${REINPLACE_CMD} -e 's|shell\,\"rsh\"|shell\,\"ssh\"|' \
 		${WRKSRC}/iozone.c
+
+pre-build:
+	@cd ${WRKSRC} && ${GMAKE} clean
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/iozone ${STAGEDIR}${PREFIX}/bin

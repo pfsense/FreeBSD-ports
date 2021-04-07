@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	go-for-it
-DISTVERSION=	1.9.0
+DISTVERSION=	1.9.2
 CATEGORIES=	deskutils
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Stylish to-do list with built-in productivity timer
 
 LICENSE=	GPLv3+

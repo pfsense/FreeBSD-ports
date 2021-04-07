@@ -3,7 +3,7 @@
 
 PORTNAME=	beets
 PORTVERSION=	1.4.9
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	audio python
 MASTER_SITES=	CHEESESHOP
 
@@ -15,15 +15,14 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}confuse>=1.0.0:devel/py-confuse@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jellyfish>=0:devel/py-jellyfish@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}munkres10>=0:math/py-munkres10@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}munkres>=0:math/py-munkres@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}musicbrainzngs>=0.4:audio/py-musicbrainzngs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mutagen>=1.33:audio/py-mutagen@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyacoustid>=0:audio/py-pyacoustid@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.9:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}unidecode>=0:converters/py-unidecode@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>=0:devel/py-yaml@${PY_FLAVOR} \
-		${PY_ENUM34}
+		${PYTHON_PKGNAMEPREFIX}yaml>=0:devel/py-yaml@${PY_FLAVOR}
 
 USES=		python:3.6+
 USE_PYTHON=	autoplist distutils optsuffix
@@ -84,8 +83,7 @@ REPLAYGAIN_RUN_DEPENDS=	mp3gain>=0:audio/mp3gain \
 			aacgain>=0:audio/aacgain
 SONOS_UPDATE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}soco>=0:multimedia/py-soco@${PY_FLAVOR}
 SPOTIFY_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests@${PY_FLAVOR}
-THUMBNAILS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>=0:devel/py-xdg@${PY_FLAVOR} \
-			${PY_PATHLIB}
+THUMBNAILS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>=0:devel/py-xdg@${PY_FLAVOR}
 WEB_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Flask>=0:www/py-flask@${PY_FLAVOR}
 WEB_CORS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Flask-Cors>=0:www/py-flask-cors@${PY_FLAVOR}
 

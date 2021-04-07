@@ -3,7 +3,7 @@
 
 PORTNAME=	sage
 PORTVERSION=	9.2
-PORTREVISION=	5
+PORTREVISION=	10
 CATEGORIES=	math
 MASTER_SITES=	https://mirrors.xmission.com/sage/src/		\
 		http://mirrors.xmission.com/sage/src/		\
@@ -341,7 +341,7 @@ RUN_DEPENDS=	bash:shells/bash		\
 
 USES=		autoreconf blaslapack:openblas compiler:c++11-lib fortran	\
 		gettext gmake gnome iconv jpeg libtool localbase ncurses perl5	\
-		pkgconfig python:3.6+ readline shebangfix sqlite tk xorg
+		pkgconfig python:3.7+ readline shebangfix sqlite tk xorg
 USE_TEX=	latex:build pdftex:build tex:build
 USE_XORG=	x11 xext xscrnsaver
 USE_GNOME=	cairo glib20 pango

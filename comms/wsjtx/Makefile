@@ -36,6 +36,13 @@ PLIST_SUB+=	PORTVERSION="${PORTVERSION}"
 
 _PATCHES=	wsjtx.patch hamlib.patch
 
+.include <bsd.port.pre.mk>
+
+.if ${GCC_DEFAULT} >= 10
+# workaround for More actual than formal arguments in procedure call at (1)
+FFLAGS+=	-fallow-argument-mismatch
+.endif
+
 post-patch:
 .  for _patch in ${_PATCHES}
 	# Keep a copy of the blank patch for the post-build target below
@@ -60,4 +67,4 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${f}
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

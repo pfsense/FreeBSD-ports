@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	passwordsafe
-DISTVERSION=	1.03BETA
-PORTREVISION=	3
+DISTVERSION=	1.12.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	brnrd@FreeBSD.org
@@ -13,14 +12,15 @@ LICENSE=	ART20
 NOT_FOR_ARCHS=		aarch64 armv6 armv7
 NOT_FOR_ARCHS_REASON=	Cannot determine whether the target CPU is big or little endian - please fix PwsPlatform.h
 
-LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libuuid.so:misc/e2fsprogs-libuuid \
 		libxerces-c.so:textproc/xerces-c3 \
 		libqrencode.so:graphics/libqrencode
 BUILD_DEPENDS=	zip:archivers/zip
 
 CONFLICTS=	pwsafe-[0-9]*
 
-USES=		gmake xorg
+USES=		gmake pkgconfig xorg
 USE_GITHUB=	yes
 USE_WX=		3.0+
 USE_XORG=	x11 xtst
@@ -32,6 +32,8 @@ OPTIONS_SUB=	yes
 NLS_USES=		gettext
 YUBIKEY_LIB_DEPENDS=	libykpers-1.so:security/ykpers
 YUBIKEY_MAKE_ENV_OFF=	NO_YUBI=yes
+
+MAKE_ENV=	NO_QR=yes
 
 GH_ACCOUNT=	pwsafe
 GH_PROJECT=	${GH_ACCOUNT}
@@ -53,8 +55,7 @@ USES+=		compiler:c++11-lang
 
 post-patch:
 .	for f in Makefile.freebsd help/Makefile.freebsd src/os/unix/Makefile \
-		src/os/unix/dir.cpp src/ui/wxWidgets/pwsafeapp.cpp \
-		src/ui/wxWidgets/Makefile
+		src/os/unix/dir.cpp src/ui/wxWidgets/Makefile
 		${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' ${WRKSRC}/$f
 .	endfor
 

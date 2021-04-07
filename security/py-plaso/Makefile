@@ -3,6 +3,7 @@
 
 PORTNAME=	plaso
 PORTVERSION=	20201228
+PORTREVISION=	2
 CATEGORIES=	security python
 MASTER_SITES=	https://github.com/log2timeline/plaso/releases/download/${PORTVERSION}/ \
 		LOCAL/antoine

@@ -3,7 +3,7 @@
 
 PORTNAME=	anubis
 PORTVERSION=	4.2
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	mail
 MASTER_SITES=	GNU
 
@@ -65,7 +65,7 @@ GSASL_LIB_DEPENDS=	libgsasl.so:security/libgsasl
 GSASL_CONFIGURE_WITH=	gsasl
 
 GUILE_LIB_DEPENDS=	libltdl.so:devel/libltdl \
-			libguile.so:lang/guile \
+			libguile.so:lang/guile1 \
 			libgmp.so:math/gmp
 GUILE_CONFIGURE_WITH=	guile
 GUILE_PORTEXAMPLES=	anubis.scm anubisrc.guile
@@ -91,7 +91,6 @@ PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_WITH=	postgres
 PGSQL_VARS=		REQUIRE+=postgresql
 
-SOCKS_DESC=		SOCKS proxy support
 SOCKS_CONFIGURE_WITH=	socks-proxy
 
 .include <bsd.port.options.mk>

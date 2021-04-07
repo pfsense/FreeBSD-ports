@@ -3,7 +3,7 @@
 
 PORTNAME=	mh
 PORTVERSION=	${VERSION}.j${JP_VERSION}
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	japanese mail
 MASTER_SITES=	ftp://ftp.laic.u-hyogo.ac.jp/pub/net/mh/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -11,6 +11,9 @@ DISTNAME=	${PORTNAME}-${VERSION}-JP-${JP_VERSION}
 
 MAINTAINER=	CQG00620@nifty.ne.jp
 COMMENT=	Rand MH mail handling system + Japanese patches
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: wantcomp
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: wantcomp
 
 BUILD_DEPENDS=	jless:japanese/less
 RUN_DEPENDS=	jless:japanese/less

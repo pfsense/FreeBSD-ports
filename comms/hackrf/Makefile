@@ -10,6 +10,8 @@ COMMENT=	Low cost open source hardware software radio platform
 
 LICENSE=	GPLv2
 
+CONFLICTS=	hackrf-devel
+
 USE_GITHUB=	YES
 GH_ACCOUNT=	mossmann
 GH_TAGNAME=	31a37bd

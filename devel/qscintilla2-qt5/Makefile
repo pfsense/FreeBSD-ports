@@ -2,7 +2,6 @@
 
 PORTNAME=	qscintilla2-qt5
 PORTVERSION=	${QSCI2_VERSION}
-PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	${MASTER_SITES_QSCI2}
 DISTNAME=	${QSCI2_DISTNAME}
@@ -16,7 +15,7 @@ USE_PYQT=	#
 USE_QT=		buildtools_build core gui printsupport widgets
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
-BUILD_WRKSRC=		${WRKSRC}/Qt4Qt5
+BUILD_WRKSRC=		${WRKSRC}/src
 CONFIGURE_WRKSRC=	${BUILD_WRKSRC}
 INSTALL_WRKSRC=		${BUILD_WRKSRC}
 
@@ -38,9 +37,9 @@ post-install:
 	cd ${WRKSRC} &&\
 		${MKDIR} ${STAGEDIR}${DOCSDIR}/html ${STAGEDIR}${DOCSDIR}/Scintilla &&\
 		${INSTALL_DATA} NEWS ${STAGEDIR}${DOCSDIR} &&\
-		${INSTALL_DATA} doc/html-Qt4Qt5/* ${STAGEDIR}${DOCSDIR}/html &&\
+		${INSTALL_DATA} doc/html/* ${STAGEDIR}${DOCSDIR}/html &&\
 		${INSTALL_DATA} doc/Scintilla/* ${STAGEDIR}${DOCSDIR}/Scintilla
-	cd ${WRKSRC}/example-Qt4Qt5 &&\
+	cd ${WRKSRC}/example &&\
 		${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/images &&\
 		${INSTALL_DATA} *.* ${STAGEDIR}${EXAMPLESDIR} &&\
 		${INSTALL_DATA} images/* ${STAGEDIR}${EXAMPLESDIR}/images

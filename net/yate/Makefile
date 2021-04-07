@@ -2,13 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	yate
-PORTVERSION=	6.1.0
-PORTREVISION=	2
+PORTVERSION=	6.3.0
 CATEGORIES=	net
 MASTER_SITES=	http://yate.null.ro/tarballs/yate6/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-1
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Yet Another Telephony Engine
 
 LICENSE=	GPLv2
@@ -52,7 +51,6 @@ DAHDI_DESC=	Dahdi support
 H323_DESC=	H323 software channel/protocol support
 ILBC_DESC=	iLBC narrowband speech codec support
 SCTP_DESC=	Stream Control Transmission Protocol support
-SPANDSP_DESC=	Spandsp faxing support
 
 OPTIONS_SUB=	yes
 

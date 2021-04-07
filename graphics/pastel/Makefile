@@ -3,10 +3,10 @@
 PORTNAME=	pastel
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.8.0
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	graphics
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Command-line tool to generate, analyze, convert and manipulate colors
 
 LICENSE=	APACHE20 MIT

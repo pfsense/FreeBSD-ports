@@ -28,7 +28,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# $FreeBSD$
+# $FreeBSD: head/Tools/scripts/chkversion.pl 562503 2021-01-24 18:42:29Z adamw $
 #
 # MAINTAINER=   portmgr@FreeBSD.org
 #
@@ -52,7 +52,8 @@
 #  chown -R ports /var/db/chkversion
 # and enter something like
 #
-#  SVNBLAME=yes
+#  BLAME=yes (git specific)
+#  SVNBLAME=yes   # XXX: SVN specific
 #  ALLPORTS=yes
 #  RCPT_ORIGIN=you@domain.example
 #  RCPT_VERSION=you@domain.example
@@ -60,44 +61,52 @@
 #
 # into `crontab -u ports -e', or run the script by hand if you can spare the time.
 #
+# If the environment variable BLAME is set and the ports tree is checked
+# out by git, every entry is listed with a record of the last git commit.
+#
+# XXX: SVN specific:
 # If the environment variable SVNBLAME is set and the ports tree is checked
 # out by SVN, every entry is listed with a record of the last SVN commit.
 #
 
-require 5.005;
+use v5.20;
 use strict;
 use warnings;
-use POSIX;
-use File::Find;
+
+use feature qw(signatures);
+no warnings qw(experimental::signatures);
+
 use Cwd 'abs_path';
+use File::Find;
+use List::Util qw(first);
+use POSIX;
 
-my $portsdir    = $ENV{PORTSDIR}        ? $ENV{PORTSDIR}        : '/usr/ports';
-my $versiondir  = $ENV{VERSIONDIR}      ? $ENV{VERSIONDIR}      : '/var/db/chkversion';
-my $svnblame    = $ENV{SVNBLAME}        ? 1                     : 0;
-my $allports    = $ENV{ALLPORTS}        ? 1                     : 0;
+my $portsdir    = $ENV{PORTSDIR}        // '/usr/ports';
+my $versiondir  = $ENV{VERSIONDIR}      // '/var/db/chkversion';
+my $svnblame    = exists $ENV{SVNBLAME};  # XXX: SVN specific
+my $blame       = exists $ENV{BLAME};
+my $allports    = exists $ENV{ALLPORTS};
 
-my $watchre     = $ENV{WATCH_REGEX}     ? $ENV{WATCH_REGEX}     : '';
-my $watchmre    = $ENV{WATCHM_REGEX}    ? $ENV{WATCHM_REGEX}    : '';
-my $returnpath  = $ENV{RETURNPATH}      ? $ENV{RETURNPATH}      : '';
-my $h_from      = $ENV{HEADER_FROM}     ? $ENV{HEADER_FROM}     : "$ENV{USER}\@$ENV{HOST}";
-my $h_replyto   = $ENV{HEADER_REPLYTO}  ? $ENV{HEADER_REPLYTO}  : $h_from;
-my $rcpt_watch  = $ENV{RCPT_WATCH}      ? $ENV{RCPT_WATCH}      : '';
-my $rcpt_watchm = $ENV{RCPT_WATCHM}     ? $ENV{RCPT_WATCHM}     : '';
-my $rcpt_orig   = $ENV{RCPT_ORIGIN}     ? $ENV{RCPT_ORIGIN}     : '';
-my $rcpt_vers   = $ENV{RCPT_VERSION}    ? $ENV{RCPT_VERSION}    : '';
-my $cc_author   = $ENV{CC_AUTHOR}       ? 1                     : 0;
-my $cc_mntnr    = $ENV{CC_MAINTAINER}   ? 1                     : 0;
+my $watch_re    = $ENV{WATCH_REGEX}     // '';
+my $watchm_re   = $ENV{WATCHM_REGEX}    // '';
+my $returnpath  = $ENV{RETURNPATH}      // '';
+my $h_from      = $ENV{HEADER_FROM}     // $ENV{USER} . '@' . ($ENV{HOST} // `/bin/hostname`);
+my $h_replyto   = $ENV{HEADER_REPLYTO}  // $h_from;
+my $rcpt_watch  = $ENV{RCPT_WATCH}      // '';
+my $rcpt_watchm = $ENV{RCPT_WATCHM}     // '';
+my $rcpt_orig   = $ENV{RCPT_ORIGIN}     // '';
+my $rcpt_vers   = $ENV{RCPT_VERSION}    // '';
+my $cc_author   = exists $ENV{CC_AUTHOR};
+my $cc_mntnr    = exists $ENV{CC_MAINTAINER};
 
 my $make        = '/usr/bin/make';
-my $svn         = '/usr/local/bin/svn';
-my $pkg_version =
-    $ENV{PKG_VERSION} && -x $ENV{PKG_VERSION} ? $ENV{PKG_VERSION}
-  : -x '/usr/local/sbin/pkg_version' ? '/usr/local/sbin/pkg_version'
-  : '/usr/sbin/pkg_version';
+my $svn         = '/usr/local/bin/svn';  # XXX: SVN specific
+my $git         = '/usr/local/bin/git';
 my $sendmail    = '/usr/sbin/sendmail';
+my $pkg         = first { -x $_ } ($ENV{PKG} // '', '/usr/local/sbin/pkg', '/usr/sbin/pkg');
 
-my $watch_re    = join '|', split ' ', $watchre;
-my $watchm_re   = join '|', split ' ', $watchmre;
+$watch_re  =~ s/ /|/g;
+$watchm_re =~ s/ /|/g;
 
 -d $portsdir or die "Can't find ports tree at $portsdir.\n";
 $portsdir = abs_path($portsdir);
@@ -105,42 +114,45 @@ $portsdir = abs_path($portsdir);
 my $versionfile = "$versiondir/VERSIONS";
 my $useindex    = !-w $versiondir;
 
-my $starttime = strftime("%a %b %e %G %k:%M:%S %Z",localtime);
+my $starttime = strftime "%a %b %e %G %k:%M:%S %Z", localtime;
 
-sub readfrom {
-    my $dir = shift;
-
-    if (!open CHILD, '-|') {
-        open STDERR, '>/dev/null';
+# @output_lines = readfrom(dir, cmd, arg1, arg2, ...)
+sub readfrom($dir, @cmd) {
+    my $CHILD;
+    if (!open $CHILD, '-|') {
+        open STDERR, '>', '/dev/null';
         chdir $dir if $dir;
-        exec @_;
+        exec @cmd;
         die;
     }
-    my @childout = <CHILD>;
-    close CHILD;
+    my @childout = <$CHILD>;
+    close $CHILD;
 
     map chomp, @childout;
 
     return wantarray ? @childout : $childout[0];
 }
 
-foreach (qw(ARCH OPSYS OSREL OSVERSION UID)) {
-    my @cachedenv = readfrom $portsdir, $make, "-V$_";
+for (qw(ARCH OPSYS OSREL OSVERSION UID)) {
+    my @cachedenv = readfrom($portsdir, $make, "-V$_");
     $ENV{$_} = $cachedenv[0];
 }
 
+# These map a 2-dir path (editors/vim) to variables set in
+# that port's Makefile
 my %pkgname;
 my %pkgorigin;
 my %masterdir;
 my %pkgmntnr;
 
-sub wanted {
-    return
-      if !-d;
+sub wanted() {
+    return unless -d;
 
-    if (/^.svn$/
-        || $File::Find::name =~
-          m"^$portsdir/(?:Mk|Templates|Tools|distfiles|packages)$"os
+    # Skip directories we shouldn't descend into
+    # if (/^.git$/
+    if (/^\.git$/
+        || /^\.svn$/   # XXX: SVN specific
+        || $File::Find::name =~ m"^$portsdir/(?:Mk|Templates|Tools|distfiles|packages)$"os
         || $File::Find::name =~ m"^$portsdir/[^/]+/pkg$"os)
     {
         $File::Find::prune = 1;
@@ -148,14 +160,15 @@ sub wanted {
     elsif ($File::Find::name =~ m"^$portsdir/([^/]+/[^/]+)$"os) {
         $File::Find::prune = 1;
         if (-f "$File::Find::name/Makefile") {
-            my @makevar = readfrom $File::Find::name,
-              $make, '-VPKGORIGIN', '-VPKGNAME', '-VMAINTAINER', '-VMASTERDIR';
+            my @makevar = readfrom $File::Find::name, $make, qw(-VPKGORIGIN -VPKGNAME -VMAINTAINER -VMASTERDIR);
 
+            # $1 is the current 2-dir path
             if ($#makevar == 3 && $makevar[1]) {
-                $pkgorigin{$1} = $makevar[0]
-                  if $1 ne $makevar[0];
-                $pkgname{$1} = $makevar[1];
-                $pkgmntnr{$1} = $makevar[2];
+                # %pkgorigin is the list of dirs that gets monitored. Only monitor a
+                # path if it matches the PKGORIGIN.
+                $pkgorigin{$1} = $makevar[0] if $1 ne $makevar[0];
+                $pkgname{$1}   = $makevar[1];
+                $pkgmntnr{$1}  = $makevar[2];
                 $masterdir{$1} = $makevar[3];
             }
         }
@@ -166,23 +179,20 @@ if ($allports) {
     find(\&wanted, $portsdir);
 }
 else {
-    my @categories = split ' ', readfrom $portsdir, $make, '-VSUBDIR';
+    my @categories = split ' ' => readfrom($portsdir, $make, '-VSUBDIR');
 
-    foreach my $category (@categories) {
-        -f "$portsdir/$category/Makefile" || next;
-        my @ports = split ' ',
-          readfrom "$portsdir/$category", $make, '-VSUBDIR';
-        foreach (map "$category/$_", @ports) {
-            -f "$portsdir/$_/Makefile" || next;
+    for my $category (@categories) {
+        next unless -f "$portsdir/$category/Makefile";
+        my @ports = split ' ' => readfrom("$portsdir/$category", $make, '-VSUBDIR');
+        for (map "$category/$_", @ports) {
+            next unless -f "$portsdir/$_/Makefile";
 
-            my @makevar = readfrom "$portsdir/$_",
-              $make, '-VPKGORIGIN', '-VPKGNAME', '-VMAINTAINER', '-VMASTERDIR';
+            my @makevar = readfrom "$portsdir/$_", $make, qw(-VPKGORIGIN -VPKGNAME -VMAINTAINER -VMASTERDIR);
 
             next if $#makevar != 3 || ! $makevar[1];
-            $pkgorigin{$_} = $makevar[0]
-              if $_ ne $makevar[0];
-            $pkgname{$_} = $makevar[1];
-            $pkgmntnr{$_} = $makevar[2];
+            $pkgorigin{$_} = $makevar[0] if $_ ne $makevar[0];
+            $pkgname{$_}   = $makevar[1];
+            $pkgmntnr{$_}  = $makevar[2];
             $masterdir{$_} = $makevar[3];
         }
     }
@@ -197,14 +207,18 @@ if ($useindex) {
     $versionfile = "$portsdir/$indexname";
 }
 
-open VERSIONS, "<$versionfile";
-
-while (<VERSIONS>) {
+# Read in the old (expected) values
+open my $VERSIONS, '<', $versionfile;
+while (<$VERSIONS>) {
     chomp;
     next if /^(#|$)/;
+
+    # These are the old (expected) values
     my ($origin, $version, $maintainer);
+
     if ($useindex) {
-        ($origin, $version, $maintainer) = (split /\|/)[1,0,5];
+        ($origin, $version, $maintainer) = (split '|')[1,0,5];
+        # Only keep the 2-dir path (editors/vim)
         $origin =~ s,^.*/([^/]+/[^/]+)/?$,$1,;
     }
     else {
@@ -217,8 +231,9 @@ while (<VERSIONS>) {
         $newversion =~ s/^.*-//;
         $oldversion =~ s/^.*-//;
 
-        my $result = $newversion eq $oldversion ? '=' : readfrom '',
-          $pkg_version, '-t', $newversion, $oldversion;
+        # If the two values differ, use `pkg version` to find which one is bigger
+        my $result = $newversion eq $oldversion ? '='
+                   : readfrom '', $pkg, 'version', '-t', $newversion, $oldversion;
 
         $watched{$origin} = "$version -> $pkgname{$origin}"
           if ($watch_re && $result ne '=' && $origin =~ /^(?:$watch_re)$/o);
@@ -237,44 +252,40 @@ while (<VERSIONS>) {
         $pkgmntnr{$origin} = $maintainer;
     }
 }
-close VERSIONS;
+close $VERSIONS;
 
 if (!$useindex) {
-    system 'mv', '-f', $versionfile, "$versionfile.bak";
+    rename $versionfile, "$versionfile.bak";
 
-    open VERSIONS, ">$versionfile";
-    foreach (sort keys %pkgname) {
-        print VERSIONS "$_\t$pkgname{$_}\t$pkgmntnr{$_}\n";
+    open my $VERSIONS, '>', $versionfile;
+    for (sort keys %pkgname) {
+        print $VERSIONS "$_\t$pkgname{$_}\t$pkgmntnr{$_}\n";
     }
-    close VERSIONS;
+    close $VERSIONS;
 }
 
 my %revision;
 
-sub parsemakefile {
-    my ($portdir) = @_;
-    my ($r, $d, $a);
-
-    open MAKEFILE, "<$portdir/Makefile";
-    while (<MAKEFILE>) {
-        if (m'\$FreeBSD\: [^\$ ]+,v (\d+(?:\.\d+)+) (\d{4}(?:[/-]\d{2}){2} \d{2}(?::\d{2}){2}) (\w+) [\w ]+\$') {
-            ($r, $d, $a) = ($1, $2, $3);
+# Parses the $FreeBSD$ line to return revision, date, author
+sub parsemakefile($portdir) {
+    open my $MAKEFILE, '<', "$portdir/Makefile";
+    while (<$MAKEFILE>) {
+        if (m/^# \$FreeBSD: [^ ]+ (?<rev>\d{6}) (?<date>\d{4}-\d\d-\d\d) [\d:]+Z (?<author>\w+) \$$/) {
+            close $MAKEFILE;
+            return ($+{rev}, $+{date}, $+{author});
         }
     }
-    close MAKEFILE;
-
-    return ($r, $d, $a);
+    close $MAKEFILE;
 }
 
-sub getauthors {
-    my ($ports) = @_;
-
+sub getauthors($ports) {
     my %author;
-    foreach my $origin (keys %{$ports}) {
+    for my $origin (keys %{$ports}) {
         if (!$revision{$origin}) {
             my ($r, $d, $a) = parsemakefile "$portsdir/$origin";
             push @{$revision{$origin}}, $r;
             push @{$author{$origin}}, $a;
+
             if ($masterdir{$origin} ne "$portsdir/$origin") {
                 ($r, $d, $a) = parsemakefile $masterdir{$origin};
                 push @{$revision{$origin}}, $r;
@@ -287,31 +298,36 @@ sub getauthors {
     return %author;
 }
 
-sub printlog {
-    my ($fh, $portdir, $r) = @_;
-
-    if ($svnblame && -d "$portsdir/.svn") {
-        my @svnlog = readfrom $portdir,
-          $svn, 'log', '-r' . ($r ? $r : '.'), 'Makefile';
-        foreach (@svnlog) {
-            my $in_log = /^-{28}$/ ... /^(-{28}|={77})$/;
+# Gets the Makefile log starting from the last known rev for a port
+sub printlog($fh, $portdir, $rev) {
+    if ($blame && -d "$portsdir/.git") {
+        my @log = readfrom $portdir, $git, 'log', "${rev}^..HEAD", 'Makefile';
+        print $fh "   | $_\n" for @log;
+    }
+    # XXX: SVN specific:
+    elsif ($svnblame && -d "$portsdir/.svn") {
+        my @svnlog = readfrom $portdir, $svn, 'log', ($rev ? "-r$rev" : ''), 'Makefile';
+        for (@svnlog) {
+            my $in_log = /^-{20,}$/ ... /^(-{20,}|={70,})$/;
             print $fh "   | $_\n"
-              if ($in_log && $in_log != 1 && $in_log !~ /E0$/);
+              if ($in_log && $in_log ne 1 && $in_log !~ /E0$/);
         }
     }
 }
 
-sub blame {
-    my ($fh, $ports) = @_;
+# Git version:
+# sub printlog($fh, $portdir, $rev) {
+# }
 
+sub blame($fh, $ports) {
     if (%{$ports}) {
-        foreach my $origin (sort keys %{$ports}) {
+        for my $origin (sort keys %{$ports}) {
             print $fh "- *$origin* <$pkgmntnr{$origin}>: $ports->{$origin}\n";
             printlog $fh, "$portsdir/$origin", $revision{$origin}[0];
             if ($masterdir{$origin} ne "$portsdir/$origin") {
                 my $master = $masterdir{$origin};
-                $master =~ s/^$portsdir\///o;
-                while ($master =~ s/(^|\/)[^\/]+\/\.\.(?:\/|$)/$1/) {}
+                $master =~ s|^$portsdir/||o;
+                while ($master =~ s!(^|/)[^/]+/\.\.(?:/|$)!$1!) {}
                 print $fh "  (master: $master)\n";
                 printlog $fh, $masterdir{$origin}, $revision{$origin}[1];
             }
@@ -321,10 +337,8 @@ sub blame {
     }
 }
 
-sub template {
-    my ($from, $rcpt, $replyto, $starttime, $ports) = @_;
-
-    my $portlist = join ', ', sort keys %{$ports};
+sub template($from, $rcpt, $replyto, $starttime, $ports) {
+    my $portlist = join ', ' => sort keys %{$ports};
     substr($portlist, 32) = '...'
         if length $portlist > 35;
 
@@ -332,45 +346,45 @@ sub template {
     my %author = getauthors $ports;
 
     if ($cc_author) {
-        foreach (map @{$author{$_} ? $author{$_} : []}, keys %{$ports}) {
+        for (map @{$author{$_} ? $author{$_} : []}, keys %{$ports}) {
             $cclist{"$_\@FreeBSD.org"} = 1
                 if $_;
         }
     }
     if ($cc_mntnr) {
-        foreach (map $pkgmntnr{$_}, keys %{$ports}) {
+        for (map $pkgmntnr{$_}, keys %{$ports}) {
             $cclist{$_} = 1
                 if $_;
         }
     }
-    my $cc = join ', ', sort keys %cclist;
+    my $cc = join ', ' => sort keys %cclist;
 
     my $header = '';
     while (<main::DATA>) {
         last if /^\.\n?$/;
-        $_ =~ s/%%FROM%%/$from/og;
-        $_ =~ s/%%RCPT%%/$rcpt/og;
-        $_ =~ s/%%CC%%/$cc/og;
-        $_ =~ s/%%REPLYTO%%/$replyto/og;
-        $_ =~ s/%%SUBJECT%%/$portlist/og;
-	$_ =~ s/%%STARTTIME%%/$starttime/og;
-        $header .= $_;
+        $header .= $_
+          =~ s/%%FROM%%/$from/ogr
+          =~ s/%%RCPT%%/$rcpt/ogr
+          =~ s/%%CC%%/$cc/ogr
+          =~ s/%%REPLYTO%%/$replyto/ogr
+          =~ s/%%SUBJECT%%/$portlist/ogr
+          =~ s/%%STARTTIME%%/$starttime/ogr;
     }
     return $header;
 }
 
-sub mail {
-    my ($template, $rcpt, $ports) = @_;
-
+sub mail($template, $rcpt, $ports) {
     if (%{$ports}) {
+        # If the RCPT_* variables are empty, just print the mail to STDOUT
         if ($rcpt) {
-            if (!open MAIL, '|-') {
-                exec $sendmail, '-oi', '-t', '-f', $returnpath;
+            my $MAIL;
+            if (!open $MAIL, '|-') {
+                exec $sendmail, qw(-oi -t -f), $returnpath;
                 die;
             }
-            print MAIL $template;
-            blame *MAIL, $ports;
-            close MAIL;
+            print $MAIL $template;
+            blame $MAIL, $ports;
+            close $MAIL;
         } else {
             $template =~ s/^.*?\n\n//os;
             print $template;

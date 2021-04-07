@@ -2,6 +2,7 @@
 
 PORTNAME=	kea
 PORTVERSION=	${ISCVERSION:S/-P/P/:S/-beta/b/:S/a/.a/:S/rc/.rc/}
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	ISC/kea/${ISCVERSION}
 DISTNAME=	${PORTNAME}-${ISCVERSION}
@@ -18,7 +19,7 @@ LIB_DEPENDS=	liblog4cplus.so:devel/log4cplus \
 USES=		autoreconf compiler:c++11-lang iconv libtool pathfix ssl cpe
 
 # ISC releases things like 1.4.0-P1, which our versioning doesn't like
-ISCVERSION=	1.8.1
+ISCVERSION=	1.8.2
 
 CPE_VENDOR=	isc
 CPE_VERSION=	${ISCVERSION:C/-.*//}
@@ -44,11 +45,15 @@ PORTDOCS=	AUTHORS COPYING ChangeLog README \
 OPTIONS_DEFINE=	DOCS MYSQL PGSQL
 OPTIONS_SUB=	yes
 MYSQL_USES=	mysql
-MYSQL_CONFIGURE_ON=	--with-dhcp-mysql=${LOCALBASE}/bin/mysql_config
-MYSQL_CONFIGURE_OFF=	--without-dhcp-mysql
+MYSQL_CONFIGURE_ON=	--with-mysql=${LOCALBASE}/bin/mysql_config
+MYSQL_CONFIGURE_OFF=	--without-mysql
+MYSQL_SUB_LIST=		REQ_MYSQL=mysql
+MYSQL_SUB_LIST_OFF=	REQ_MYSQL=""
 PGSQL_USES=	pgsql
 WANT_PGSQL=	client
-PGSQL_CONFIGURE_ON=	--with-dhcp-pgsql=${LOCALBASE}/bin/pg_config
-PGSQL_CONFIGURE_OFF=	--without-dhcp-pgsql
+PGSQL_CONFIGURE_ON=	--with-pgsql=${LOCALBASE}/bin/pg_config
+PGSQL_CONFIGURE_OFF=	--without-pgsql
+PGSQL_SUB_LIST=		REQ_PGSQL=postgresql
+PGSQL_SUB_LIST_OFF=	REQ_PGSQL=""
 
 .include <bsd.port.mk>

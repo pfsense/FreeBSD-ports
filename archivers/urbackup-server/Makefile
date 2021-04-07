@@ -2,10 +2,11 @@
 
 PORTNAME=	urbackup-server
 DISTVERSION=	2.4.13
+PORTREVISION=	1
 CATEGORIES=	archivers
 MASTER_SITES=	https://hndl.urbackup.org/Server/${DISTVERSION}/
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Server component of the UrBackup backup system
 
 LICENSE=	AGPLv3

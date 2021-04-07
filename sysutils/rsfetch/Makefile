@@ -2,10 +2,10 @@
 
 PORTNAME=	rsfetch
 DISTVERSION=	2.0.0
-PORTREVISION=	9
+PORTREVISION=	12
 CATEGORIES=	sysutils
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Minimal fetch program written in Rust
 
 LICENSE=	MIT

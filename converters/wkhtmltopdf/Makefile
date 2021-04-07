@@ -20,8 +20,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libpng.so:graphics/png
 
-USES=		gmake iconv jpeg perl5 pkgconfig ssl xorg
-USE_GCC=	8
+USES=		compiler gmake iconv jpeg perl5 pkgconfig ssl xorg
 USE_XORG=	x11 xext xrender
 USE_PERL5=	build
 USE_LDCONFIG=	yes
@@ -54,6 +53,12 @@ CONFIGURE_ARGS=	-prefix ${WRKSRC}/build/qt \
 	-no-neon
 
 MAKE_ARGS=	INSTALL_ROOT="${STAGEDIR}${PREFIX}"
+
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == "i386" || ${CHOSEN_COMPILER_TYPE} == gcc
+USE_GCC=	8
+.endif
 
 pre-patch:
 	${RMDIR} ${WRKSRC}/qt
@@ -88,4 +93,4 @@ post-install:
 		${STAGEDIR}${PREFIX}/bin/wkhtmltopdf \
 		${STAGEDIR}${PREFIX}/lib/libwkhtmltox.so.${PORTVERSION}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

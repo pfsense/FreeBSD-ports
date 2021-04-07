@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	ardour6
-PORTVERSION=	6.3.0
-PORTREVISION=	3
+PORTVERSION=	6.5.0
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/beerml/ardour_releases/raw/master/
 # The original master side points to the latest release only:
 # MASTER_SITES=	https://community.ardour.org/srctar/
 DISTNAME=	Ardour-${PORTVERSION}
 
-MAINTAINER=	beerml@sigma6audio.de
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multichannel digital audio workstation
 
 LICENSE=	GPLv2
@@ -57,7 +57,7 @@ BINARY_ALIAS+=	gas=${CC}
 PLIST_SUB=	ARDOURVERSION=${PORTVERSION}
 
 CONFIGURE_ARGS=	--optimize --ptformat --freedesktop --no-phone-home \
-		--with-backends=jack,dummy --internal-shared-libs
+		--with-backends=jack,dummy --internal-shared-libs --no-vst3
 
 post-patch:
 	@${REINPLACE_CMD} -e 's/obj\.use            = '\''libsmf libpbd'\''/obj\.use            = '\''libsmf_internal libpbd'\''/g' ${WRKSRC}/libs/evoral/wscript

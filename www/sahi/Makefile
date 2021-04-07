@@ -27,16 +27,20 @@ NO_BUILD=	yes
 OPTIONS_DEFINE=	DOCS
 OPTIONS_DEFAULT=	CHROME
 OPTIONS_SINGLE=	BROWSER
-OPTIONS_SINGLE_BROWSER=	CHROME FIREFOX OPERA
+OPTIONS_SINGLE_BROWSER=	CHROME FIREFOX
 
 CHROME_DESC=	Use Chrome as default browser
 FIREFOX_DESC=	Use Firefox as default browser
-OPERA_DESC=	Use Opera as default browser
 
 USES=		dos2unix zip
 DOS2UNIX_GLOB=	linux.xml os.properties sahi.properties
 
 .include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MCHROME}
+DEPRECATED=	Uses EOL Python 2.7 via www/chromium
+EXPIRATION_DATE=2021-06-23
+.endif
 
 SAHI_BUILD=	2011.07.19
 
@@ -88,11 +92,6 @@ RUN_DEPENDS+=	chrome:www/chromium
 .if ${PORT_OPTIONS:MFIREFOX}
 BROWSER=	firefox
 RUN_DEPENDS+=	firefox:www/firefox
-.endif
-
-.if ${PORT_OPTIONS:MOPERA}
-BROWSER=	opera
-RUN_DEPENDS+=	opera:www/opera
 .endif
 
 .include <bsd.port.post.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	decss
-PORTVERSION=	1.0
+PORTVERSION=	1.1
 CATEGORIES=	www perl5
 MASTER_SITES=	http://www.pigdog.org/decss/
 DISTNAME=	${PORTNAME}
@@ -11,6 +11,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Strip cascading style sheets from webpages
 
 LICENSE=	ART10
+
+DEPRECATED=	Abandonware
+EXPIRATION_DATE=	2021-03-31
 
 WRKSRC=		${WRKDIR}/source
 

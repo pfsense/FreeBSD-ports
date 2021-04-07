@@ -2,33 +2,36 @@
 # $FreeBSD$
 
 PORTNAME=	adodb
-DISTVERSION=	5.20.17
+PORTVERSION=	5.21.0
+DISTVERSIONPREFIX=	v
 CATEGORIES=	databases www
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-php5-only/${PORTNAME}-520-for-php5
 PKGNAMESUFFIX=	5${PHP_PKGNAMESUFFIX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	Database library for PHP
 
 LICENSE=	BSD3CLAUSE LGPL21+
 LICENSE_COMB=	dual
 
-CONFLICTS=	adodb-4.*
-
 USES=		php:flavors
 USE_PHP=	pcre
 
-WRKSRC=		${WRKDIR}/${PORTNAME}5
+USE_GITHUB=	yes
+GH_PROJECT=	ADOdb
+
+CONFLICTS=	adodb-4.*
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 SUB_FILES=	pkg-message
 
-ADODB_SUBDIRS=	contrib datadict drivers lang pear perf session xsl
+ADODB_SUBDIRS=	datadict drivers lang pear perf session xsl
 
-OPTIONS_DEFINE=	TESTS DOCS
+OPTIONS_DEFINE=	DOCS
 OPTIONS_SUB=	yes
 
-TESTS_DESC=	Install tests
+# 5.21.0 have not contains test suite
+#TESTS_DESC=	Install tests
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
@@ -39,18 +42,16 @@ do-install:
 	cd ${WRKSRC} && ${FIND} ${ADODB_SUBDIRS} -type f \
 		-exec ${INSTALL_DATA} ${WRKSRC}/{} ${STAGEDIR}${DATADIR}/{} \;
 
-do-install-TESTS-on:
-	@${MKDIR} ${STAGEDIR}${DATADIR}/tests
-	cd ${WRKSRC} && ${FIND} tests -type f \
-		-exec ${INSTALL_DATA} ${WRKSRC}/{} ${STAGEDIR}${DATADIR}/{} \;
+#do-install-TESTS-on:
+#	@${MKDIR} ${STAGEDIR}${DATADIR}/tests
+#	cd ${WRKSRC} && ${FIND} tests -type f \
+#		-exec ${INSTALL_DATA} ${WRKSRC}/{} ${STAGEDIR}${DATADIR}/{} \;
 
 do-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR} ${STAGEDIR}${DOCSDIR}/cute_icons_for_site
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${FIND} . ! -path './*/*' -type f -name '*.txt' \
-		-exec ${INSTALL_DATA} ${WRKSRC}/{} ${STAGEDIR}${DOCSDIR}/{} \;
-	cd ${WRKSRC}/docs && ${FIND} . -type f \
-		-exec ${INSTALL_DATA} ${WRKSRC}/docs/{} ${STAGEDIR}${DOCSDIR}/{} \;
-	cd ${WRKSRC} && ${FIND} cute_icons_for_site -type f \
-		-exec ${INSTALL_DATA} ${WRKSRC}/{} ${STAGEDIR}${DOCSDIR}/{} \;
+		-exec ${INSTALL_DATA} ${WRKSRC}/{} ${STAGEDIR}${DOCSDIR} \;
+	cd ${WRKSRC} && ${FIND} docs -type f \
+		-exec ${INSTALL_DATA} ${WRKSRC}/{} ${STAGEDIR}${DOCSDIR} \;
 
 .include <bsd.port.mk>

@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pathspec
-PORTVERSION=	0.2.1
-PORTREVISION=	1
+PORTVERSION=	1.0.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -14,6 +13,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		gem
 USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 PLIST_FILES=	bin/pathspec-rb
 

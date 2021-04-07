@@ -2,11 +2,11 @@
 
 PORTNAME=	authelia
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.27.2
-PORTREVISION=	1
+DISTVERSION=	4.27.4
 CATEGORIES=	www
-DISTFILES=	${PORTNAME}-public-html-${DISTVERSION}${EXTRACT_SUFX}:public_html # html root directory needs to be built in a special way
-MASTER_SITES=	LOCAL/yuri:public_html
+MASTER_SITES=	https://github.com/authelia/authelia/releases/download/v${DISTVERSION}/:public_html
+DISTFILES=	authelia-public_html${EXTRACT_SUFX}:public_html # html root directory needs to be built in a special way
+DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Single sign-on multi-factor portal for web apps
@@ -20,7 +20,7 @@ GH_TUPLE=	\
 		Azure:go-ntlmssp:66371956d46c:azure_go_ntlmssp/vendor/github.com/Azure/go-ntlmssp \
 		DATA-DOG:go-sqlmock:v1.5.0:data_dog_go_sqlmock/vendor/github.com/DATA-DOG/go-sqlmock \
 		Gurpartap:logrus-stack:89c00d8a28f4:gurpartap_logrus_stack/vendor/github.com/Gurpartap/logrus-stack \
-		Workiva:go-datastructures:v1.0.52:workiva_go_datastructures/vendor/github.com/Workiva/go-datastructures \
+		Workiva:go-datastructures:v1.0.53:workiva_go_datastructures/vendor/github.com/Workiva/go-datastructures \
 		andybalholm:brotli:v1.0.1:andybalholm_brotli/vendor/github.com/andybalholm/brotli \
 		asaskevich:govalidator:7a23bdc65eef:asaskevich_govalidator/vendor/github.com/asaskevich/govalidator \
 		blang:semver:v3.5.1:blang_semver/vendor/github.com/blang/semver \
@@ -32,7 +32,7 @@ GH_TUPLE=	\
 		dgryski:go-rendezvous:9f7001d12a5f:dgryski_go_rendezvous/vendor/github.com/dgryski/go-rendezvous \
 		duosecurity:duo_api_golang:0e07e9f869e3:duosecurity_duo_api_golang/vendor/github.com/duosecurity/duo_api_golang \
 		facebookgo:stack:751773369052:facebookgo_stack/vendor/github.com/facebookgo/stack \
-		fasthttp:router:v1.3.9:fasthttp_router/vendor/github.com/fasthttp/router \
+		fasthttp:router:v1.3.10:fasthttp_router/vendor/github.com/fasthttp/router \
 		fasthttp:session:v2.3.0:fasthttp_session_v2/vendor/github.com/fasthttp/session/v2 \
 		fsnotify:fsnotify:v1.4.9:fsnotify_fsnotify/vendor/github.com/fsnotify/fsnotify \
 		go-asn1-ber:asn1-ber:v1.5.1:go_asn1_ber_asn1_ber/vendor/github.com/go-asn1-ber/asn1-ber \
@@ -42,21 +42,20 @@ GH_TUPLE=	\
 		go-sql-driver:mysql:v1.5.0:go_sql_driver_mysql/vendor/github.com/go-sql-driver/mysql \
 		go-yaml:yaml:9f266ea9e77c:go_yaml_yaml_1/vendor/gopkg.in/yaml.v3 \
 		go-yaml:yaml:v2.4.0:go_yaml_yaml/vendor/gopkg.in/yaml.v2 \
-		golang:crypto:5ea612d1eb83:golang_crypto/vendor/golang.org/x/crypto \
+		golang:crypto:0c34fe9e7dc2:golang_crypto/vendor/golang.org/x/crypto \
 		golang:mock:v1.5.0:golang_mock/vendor/github.com/golang/mock \
 		golang:sys:a50acf3fe073:golang_sys/vendor/golang.org/x/sys \
 		golang:text:v0.3.5:golang_text/vendor/golang.org/x/text \
-		golang:xerrors:5ec99f83aff1:golang_xerrors/vendor/golang.org/x/xerrors \
 		hashicorp:hcl:v1.0.0:hashicorp_hcl/vendor/github.com/hashicorp/hcl \
 		inconshreveable:mousetrap:v1.0.0:inconshreveable_mousetrap/vendor/github.com/inconshreveable/mousetrap \
 		jackc:chunkreader:v2.0.1:jackc_chunkreader_v2/vendor/github.com/jackc/chunkreader/v2 \
-		jackc:pgconn:v1.8.0:jackc_pgconn/vendor/github.com/jackc/pgconn \
+		jackc:pgconn:v1.8.1:jackc_pgconn/vendor/github.com/jackc/pgconn \
 		jackc:pgio:v1.0.0:jackc_pgio/vendor/github.com/jackc/pgio \
 		jackc:pgpassfile:v1.0.0:jackc_pgpassfile/vendor/github.com/jackc/pgpassfile \
 		jackc:pgproto3:v2.0.6:jackc_pgproto3_v2/vendor/github.com/jackc/pgproto3/v2 \
 		jackc:pgservicefile:2b9c44734f2b:jackc_pgservicefile/vendor/github.com/jackc/pgservicefile \
-		jackc:pgtype:v1.6.2:jackc_pgtype/vendor/github.com/jackc/pgtype \
-		jackc:pgx:v4.10.1:jackc_pgx_v4/vendor/github.com/jackc/pgx/v4 \
+		jackc:pgtype:v1.7.0:jackc_pgtype/vendor/github.com/jackc/pgtype \
+		jackc:pgx:v4.11.0:jackc_pgx_v4/vendor/github.com/jackc/pgx/v4 \
 		klauspost:compress:v1.11.8:klauspost_compress/vendor/github.com/klauspost/compress \
 		magiconair:properties:v1.8.1:magiconair_properties/vendor/github.com/magiconair/properties \
 		mattn:go-sqlite3:v1.14.6:mattn_go_sqlite3/vendor/github.com/mattn/go-sqlite3 \
@@ -83,8 +82,12 @@ GH_TUPLE=	\
 		tinylib:msgp:v1.1.5:tinylib_msgp/vendor/github.com/tinylib/msgp \
 		tstranex:u2f:v1.0.0:tstranex_u2f/vendor/github.com/tstranex/u2f \
 		valyala:bytebufferpool:v1.0.0:valyala_bytebufferpool/vendor/github.com/valyala/bytebufferpool \
-		valyala:fasthttp:v1.22.0:valyala_fasthttp/vendor/github.com/valyala/fasthttp
+		valyala:fasthttp:v1.23.0:valyala_fasthttp/vendor/github.com/valyala/fasthttp
 GO_TARGET=	./cmd/${PORTNAME}
+
+USER=		root # 'nobody' doesn't work well because authelia attempts to remove files, etc.
+SUB_LIST=	USER=${USER}
+USE_RC_SUBR=	${PORTNAME}
 
 post-extract: # extract -public-html
 	@${RM} -r ${WRKSRC}/internal/server/public_html

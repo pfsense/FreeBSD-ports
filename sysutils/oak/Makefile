@@ -15,6 +15,8 @@ GNU_CONFIGURE=	yes
 ALL_TARGET=	oak
 PLIST_FILES=	bin/oak
 
+CFLAGS+=	-fcommon
+
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/oak ${STAGEDIR}${PREFIX}/bin
 

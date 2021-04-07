@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sigil
-PORTVERSION=	1.4.3
+PORTVERSION=	1.5.1
 CATEGORIES=	textproc
 
 MAINTAINER=	jonc@chen.org.nz
@@ -10,6 +10,9 @@ COMMENT=	WYSIWYG ePub editor
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
+
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
 
 LIB_DEPENDS=	libminizip.so:archivers/minizip \
 		libpcre.so:devel/pcre \
@@ -19,9 +22,6 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dulwich>=0.15.0:devel/dulwich@${PY_FLAVOR} \
 
 USES=		cmake compiler:c++11-lib desktop-file-utils \
 		pkgconfig python:3.4+ qt:5 shebangfix
-
-SHEBANG_FILES=	src/Resource_Files/plugin_launchers/python/*.py \
-		src/Resource_Files/python3lib/*.py
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Sigil-Ebook
@@ -33,6 +33,9 @@ USE_QT=		concurrent core declarative gui location network printsupport \
 		svg webchannel webengine widgets xml xmlpatterns \
 		buildtools_build linguisttools_build qmake_build \
 		imageformats_run
+
+SHEBANG_FILES=	src/Resource_Files/plugin_launchers/python/*.py \
+		src/Resource_Files/python3lib/*.py
 
 CMAKE_ARGS=	-DUSE_SYSTEM_LIBS:BOOL=1
 

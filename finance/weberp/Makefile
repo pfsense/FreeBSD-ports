@@ -11,6 +11,7 @@ MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Open-Source Web-Based ERP System
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/doc/LICENSE.txt
 
 PORTSCOUT=	skipv:3.12
 

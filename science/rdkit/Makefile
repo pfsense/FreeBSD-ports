@@ -2,7 +2,8 @@
 
 PORTNAME=	rdkit
 DISTVERSIONPREFIX=	Release_
-DISTVERSION=	2020_09_3
+DISTVERSION=	2020_09_5
+PORTREVISION=	1
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -19,7 +20,7 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libfreetype.so:print/freetype2 \
 		libmaeparser.so:science/maeparser
 
-USES=		bison:build cmake compiler:c++11-lang eigen:3 python
+USES=		bison:build cmake compiler:c++11-lang eigen:3 python:3.6+
 USE_GITHUB=	yes
 GH_TUPLE=	rareylab:RingDecomposerLib:v1.1.3_rdkit:RingDecomposerLib/External/RingFamilies/RingDecomposerLib
 USE_LDCONFIG=	yes
@@ -28,16 +29,23 @@ CMAKE_OFF=	RDK_INSTALL_INTREE RDK_USE_FLEXBISON \
 		RDK_INSTALL_STATIC_LIBS RDK_SWIG_STATIC RDK_PGSQL_STATIC \
 		RDK_OPTIMIZE_NATIVE \
 		RDK_BUILD_CPP_TESTS
-CMAKE_ARGS=	-DFREEBSD_DOCSDIR:PATH=${DOCSDIR} -DCATCH_DIR=${LOCALBASE}/include/catch2
+CMAKE_ARGS=	-DCATCH_DIR=${LOCALBASE}/include/catch2
 
 DATADIR=	${PREFIX}/share/RDKit
 DOCSDIR=	${PREFIX}/share/doc/RDKit
 
 PLIST_SUB=	SHLIB_VER=${PORTVERSION}
 
-OPTIONS_DEFINE=		PYTHON DOCS
+OPTIONS_DEFINE=		DOCS PGSQL PYTHON
 OPTIONS_DEFAULT=	PYTHON
 OPTIONS_SUB=		yes
+
+DOCS_CMAKE_BOOL=	FREEBSD_INSTALL_DOCS
+DOCS_CMAKE_ON=		-DFREEBSD_DOCSDIR:PATH=${DOCSDIR}
+
+PGSQL_USES=		pgsql
+PGSQL_DESC=		Build the PostgreSQL cartridge
+PGSQL_CMAKE_BOOL=	RDK_BUILD_PGSQL
 
 PYTHON_CMAKE_BOOL=	RDK_BUILD_PYTHON_WRAPPERS
 PYTHON_BUILD_DEPENDS=	${PYNUMPY}

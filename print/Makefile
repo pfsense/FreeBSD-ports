@@ -20,10 +20,8 @@
     SUBDIR += c2ps
     SUBDIR += catdvi
     SUBDIR += cdlabelgen
-    SUBDIR += cloud-print-connector
     SUBDIR += cups
     SUBDIR += cups-bjnp
-    SUBDIR += cups-cloud-print
     SUBDIR += cups-filters
     SUBDIR += cups-fxlinuxprint
     SUBDIR += cups-pdf
@@ -107,6 +105,7 @@
     SUBDIR += libspectre
     SUBDIR += lilypond
     SUBDIR += lilypond-devel
+    SUBDIR += limereport
     SUBDIR += linux-c7-cups-libs
     SUBDIR += linux-c7-freetype
     SUBDIR += linux-c7-harfbuzz
@@ -164,6 +163,7 @@
     SUBDIR += pkfonts400
     SUBDIR += pkfonts600
     SUBDIR += pnm2ppa
+    SUBDIR += posterazor
     SUBDIR += print-manager
     SUBDIR += ps2eps
     SUBDIR += pscal
@@ -202,6 +202,7 @@
     SUBDIR += rubygem-color
     SUBDIR += rubygem-color-tools
     SUBDIR += rubygem-pdf-core
+    SUBDIR += rubygem-pdf-core07
     SUBDIR += rubygem-pdf-reader
     SUBDIR += rubygem-pdf-writer
     SUBDIR += rubygem-prawn

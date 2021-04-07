@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	eventlet
-PORTVERSION=	0.30.0
+PORTVERSION=	0.30.1
 CATEGORIES=	net python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -23,13 +23,7 @@ USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3500
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}monotonic>=1.4:devel/py-monotonic@${PY_FLAVOR}
-.endif
-
 do-test:
 	cd ${WRKSRC} && ${PYTHON_CMD} -m nose -v
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

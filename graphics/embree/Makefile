@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	embree
-PORTVERSION=	3.12.1
+PORTVERSION=	3.12.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
 
@@ -39,10 +39,10 @@ EXAMPLES_USES=		gl jpeg xorg
 EXAMPLES_USE=		GL=gl,glu,glut XORG=x11,xau,xcb,xdmcp
 EXAMPLES_CMAKE_OFF=	-DEMBREE_TUTORIALS:BOOL=OFF
 
-TBB_DESC=	Use Intel TBB (optimal performance)
-TBB_LIB_DEPENDS=	libtbb.so:devel/tbb
-TBB_VARS=	_ETS=TBB
-TBB_VARS_OFF=	_ETS=INTERNAL
+TBB_DESC=		Use Intel TBB (optimal performance)
+TBB_LIB_DEPENDS=	libtbb.so:devel/onetbb
+TBB_VARS=		_ETS=TBB
+TBB_VARS_OFF=		_ETS=INTERNAL
 
 .include <bsd.port.pre.mk>
 
@@ -64,5 +64,8 @@ post-patch:
 		${WRKSRC}/common/cmake/check_globals.cmake \
 		${WRKSRC}/common/cmake/check_stack_frame_size.cmake
 .endif
+
+do-test:
+	${TEST_WRKSRC}/${PORTNAME}_verify
 
 .include <bsd.port.post.mk>

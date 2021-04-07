@@ -40,7 +40,9 @@ LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 LIB_DEPENDS=	libuv.so:devel/libuv \
+		libnghttp2.so:www/libnghttp2 \
 		libxml2.so:textproc/libxml2
+
 .if !defined(BIND_TOOLS_SLAVE)
 RUN_DEPENDS=	bind-tools>0:dns/bind-tools
 .endif
@@ -48,13 +50,13 @@ RUN_DEPENDS=	bind-tools>0:dns/bind-tools
 # XXX: remove tar:bz2
 USES=		autoreconf compiler:c11 cpe libedit libtool pkgconfig ssl tar:bz2
 # ISC releases things like 9.8.0-P1, which our versioning doesn't like
-ISCVERSION=	9.17.7a0.2020.11.27
+ISCVERSION=	9.17.11a0.2021.03.26
 # XXX: Remove gitlab
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.isc.org
 GL_ACCOUNT=	isc-projects
 GL_PROJECT=	bind9
-GL_COMMIT=	90298dfc18376ff514ddfbded93c249c4063d7d4
+GL_COMMIT=	99ff8f285c83de095788eb4f66e7347f9811fa4f
 
 CPE_VENDOR=	isc
 CPE_VERSION=	${ISCVERSION:C/-.*//}
@@ -69,6 +71,7 @@ CONFIGURE_ARGS=	--disable-linux-caps \
 		--with-dlopen=yes \
 		--with-libxml2 \
 		--with-openssl=${OPENSSLBASE} \
+		--enable-dnsrps \
 		--with-readline=libedit
 CONFIGURE_ENV=	READLINE_CFLAGS="-L${LOCALBASE}/lib"
 ETCDIR=		${PREFIX}/etc/namedb
@@ -247,14 +250,14 @@ post-patch-PORTREVISION-on:
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/mtree
 	${MKDIR} ${STAGEDIR}${ETCDIR}
-.  for i in dynamic master slave working
+.  for i in dynamic primary secondary working
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/$i
 .  endfor
 	${INSTALL_DATA} ${WRKDIR}/named.conf ${STAGEDIR}${ETCDIR}/named.conf.sample
 	${INSTALL_DATA} ${FILESDIR}/named.root ${STAGEDIR}${ETCDIR}
-	${INSTALL_DATA} ${FILESDIR}/empty.db ${STAGEDIR}${ETCDIR}/master
-	${INSTALL_DATA} ${FILESDIR}/localhost-forward.db ${STAGEDIR}${ETCDIR}/master
-	${INSTALL_DATA} ${FILESDIR}/localhost-reverse.db ${STAGEDIR}${ETCDIR}/master
+	${INSTALL_DATA} ${FILESDIR}/empty.db ${STAGEDIR}${ETCDIR}/primary
+	${INSTALL_DATA} ${FILESDIR}/localhost-forward.db ${STAGEDIR}${ETCDIR}/primary
+	${INSTALL_DATA} ${FILESDIR}/localhost-reverse.db ${STAGEDIR}${ETCDIR}/primary
 	${INSTALL_DATA} ${FILESDIR}/BIND.chroot.dist ${STAGEDIR}${PREFIX}/etc/mtree/BIND.chroot.dist.sample
 	${INSTALL_DATA} ${FILESDIR}/BIND.chroot.local.dist ${STAGEDIR}${PREFIX}/etc/mtree/BIND.chroot.local.dist.sample
 	${INSTALL_DATA} ${WRKSRC}/bin/rndc/rndc.conf \

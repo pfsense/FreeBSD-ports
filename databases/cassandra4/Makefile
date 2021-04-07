@@ -23,7 +23,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 RUN_DEPENDS=	snappyjava>=0:archivers/snappy-java \
 		netty>0:java/netty
 
-USES=		python:3.7
+USES=		python:3.7+
 USE_JAVA=	yes
 USE_ANT=	yes
 USE_RC_SUBR=	cassandra
@@ -77,7 +77,7 @@ OPTIONS_SUB=		yes
 SIGAR_DESC=		Use SIGAR to collect system information
 SIGAR_RUN_DEPENDS=	java-sigar>=1.6.4:java/sigar
 
-DOCS_BUILD_DEPENDS=	${PY_SPHINX} \
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}sphinx_rtd_theme>0:textproc/py-sphinx_rtd_theme@${PY_FLAVOR}
 
 PORTDOCS=		*

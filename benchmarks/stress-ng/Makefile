@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	stress-ng
-PORTVERSION=	0.12.01
+PORTVERSION=	0.12.06
+PORTREVISION=	0
 CATEGORIES=	benchmarks
 MASTER_SITES=	http://kernel.ubuntu.com/~cking/tarballs/stress-ng/
 
@@ -18,6 +19,14 @@ USES=		compiler:c11 gmake tar:xz
 ALL_TARGET=	# empty
 
 PLIST_FILES=	bin/stress-ng man/man1/stress-ng.1.gz
+
+OPTIONS_DEFINE=	LIBINOTIFY
+OPTIONS_DEFAULT=	LIBINOTIFY
+LIBINOTIFY_DESC=	Install the kevent based libinotify to enable its stress
+
+LIBINOTIFY_CFLAGS	+=	-I${LOCALBASE}/include
+LIBINOTIFY_LDFLAGS	+=	-L${LOCALBASE}/lib -linotify
+LIBINOTIFY_LIB_DEPENDS=	libinotify.so:devel/libinotify
 
 post-patch:
 	${REINPLACE_CMD} -e \

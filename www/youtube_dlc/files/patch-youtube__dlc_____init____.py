@@ -1,27 +1,27 @@
---- youtube_dlc/__init__.py.orig	2020-10-24 05:32:48 UTC
+--- youtube_dlc/__init__.py.orig	2021-02-19 21:44:01 UTC
 +++ youtube_dlc/__init__.py
-@@ -36,7 +36,6 @@ from .utils import (
+@@ -38,7 +38,6 @@ from .utils import (
+     std_headers,
      write_string,
-     render_table,
  )
 -from .update import update_self
  from .downloader import (
      FileDownloader,
  )
-@@ -452,17 +451,13 @@ def _real_main(argv=None):
-     }
- 
-     with YoutubeDL(ydl_opts) as ydl:
--        # Update version
--        if opts.update_self:
--            update_self(ydl.to_screen, opts.verbose, ydl._opener)
--
-         # Remove cache dir
+@@ -556,17 +555,9 @@ def _real_main(argv=None):
          if opts.rm_cachedir:
              ydl.cache.remove()
  
+-        # Update version
+-        if opts.update_self:
+-            # If updater returns True, exit. Required for windows
+-            if update_self(ydl.to_screen, opts.verbose, ydl._opener):
+-                if actual_use:
+-                    sys.exit('ERROR: The program must exit for the update to complete')
+-                sys.exit()
+-
          # Maybe do nothing
-         if (len(all_urls) < 1) and (opts.load_info_filename is None):
+         if not actual_use:
 -            if opts.update_self or opts.rm_cachedir:
 +            if opts.rm_cachedir:
                  sys.exit()

@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	texstudio
-DISTVERSION=	3.0.3
+DISTVERSION=	3.1.1
+PORTREVISION=	1
 CATEGORIES=	editors
 
 MAINTAINER=	rigoletto@FreeBSD.org

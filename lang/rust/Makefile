@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	rust
-PORTVERSION?=	1.49.0
+PORTVERSION?=	1.51.0
 PORTREVISION?=	0
 CATEGORIES=	lang
 MASTER_SITES=	https://static.rust-lang.org/dist/:src \
 		https://dev-static.rust-lang.org/dist/:src \
-		LOCAL/bdragon/rust:bootstrap \
-		LOCAL/mikael/rust:bootstrap \
 		LOCAL/tobik/rust:bootstrap \
+		LOCAL/mikael/rust:bootstrap \
 		https://static.rust-lang.org/dist/:bootstrap
 DISTNAME?=	${PORTNAME}c-${PORTVERSION}-src
 DISTFILES?=	${NIGHTLY_DATE:D${NIGHTLY_DATE}/}${DISTNAME}${EXTRACT_SUFX}:src \
@@ -31,17 +30,12 @@ ONLY_FOR_ARCHS?=	aarch64 amd64 armv6 armv7 i386 powerpc64 powerpc64le
 ONLY_FOR_ARCHS_REASON?=	requires prebuilt bootstrap compiler
 
 BUILD_DEPENDS=	cmake:devel/cmake \
-		libgit2>=1.0.0:devel/libgit2 \
 		ninja:devel/ninja
-LIB_DEPENDS=	libcurl.so:ftp/curl \
-		libgit2.so:devel/libgit2 \
-		libssh2.so:security/libssh2
+LIB_DEPENDS=	libcurl.so:ftp/curl
 
 USES=		pkgconfig python:3.6+,build ssl tar:xz
 
 MAKE_ENV=	DESTDIR=${STAGEDIR} \
-		LIBGIT2_SYS_USE_PKG_CONFIG=1 \
-		LIBSSH2_SYS_USE_PKG_CONFIG=1 \
 		OPENSSL_DIR="${OPENSSLBASE}" \
 		RUST_BACKTRACE=1
 TEST_ENV=	${MAKE_ENV} \
@@ -51,10 +45,6 @@ CONFLICTS_INSTALL?=	rust-nightly
 
 OPTIONS_DEFINE=		DOCS GDB SOURCES WASM
 OPTIONS_DEFAULT=	SOURCES WASM
-OPTIONS_EXCLUDE=	DOCS # https://github.com/rust-lang/rust/issues/76526
-.if defined(NIGHTLY_DATE)
-OPTIONS_EXCLUDE+=	SOURCES
-.endif
 
 GDB_DESC=	Install ports gdb (necessary for debugging rust programs)
 SOURCES_DESC=	Install source files
@@ -69,8 +59,8 @@ WASM_VARS=		_RUST_BUILD_WASM=true \
 WASM_VARS_OFF=		_RUST_BUILD_WASM=false
 
 # See WRKSRC/src/stage0.txt for the date and version values.
-BOOTSTRAPS_DATE?=		2020-11-19
-RUST_BOOTSTRAP_VERSION?=	1.48.0
+BOOTSTRAPS_DATE?=		2021-02-11
+RUST_BOOTSTRAP_VERSION?=	1.50.0
 
 BOOTSTRAPS_SUFFIX?=		${BOOTSTRAPS_SUFFIX_${ARCH}}
 BOOTSTRAPS_SUFFIX_powerpc64?=	-${PPC_ABI:tl}
@@ -101,8 +91,9 @@ BUILD_DEPENDS+=	gcc9:lang/gcc9
 USE_GCC=	yes
 .endif
 
-.if ${ARCH} == aarch64 && ${OSVERSION} < 1200502
-IGNORE=	fails to run due to a bug in rtld, update to 12-STABLE r342847 or 13-CURRENT r342113
+# remove when 11.4 is EOL
+.if ${ARCH} == aarch64 && ${OSVERSION} < 1202000
+IGNORE=	fails to run due to a bug in rtld, update to 12.2-RELEASE or newer
 .endif
 
 .ifdef QEMU_EMULATING
@@ -117,6 +108,11 @@ post-patch:
 # Disable vendor checksums
 	@${REINPLACE_CMD} 's,"files":{[^}]*},"files":{},' \
 		${CARGO_VENDOR_DIR}/*/.cargo-checksum.json
+.if defined(PPC_ABI) && ${PPC_ABI} == ELFv1 && ${LOCALBASE} != /usr/local
+	@${REINPLACE_CMD} 's,/usr/local/,${LOCALBASE}/,g' \
+		${WRKSRC}/compiler/rustc_llvm/build.rs \
+		${WRKSRC}/src/bootstrap/native.rs
+.endif
 
 do-configure:
 # Check that the running kernel has COMPAT_FREEBSD11 required by lang/rust post-ino64
@@ -124,10 +120,13 @@ do-configure:
 		${SH} ${SCRIPTSDIR}/rust-compat11-canary.sh
 .for _component in cargo rust-std rustc
 	@cd ${WRKDIR}/${_component}-*-${OPSYS:tl} && \
-		${SH} install.sh --prefix=${WRKDIR}/bootstrap \
-		--verbose
+		${SH} install.sh --prefix=${WRKDIR}/bootstrap --verbose
 .endfor
-	@${ECHO_CMD} '[build]' > ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'changelog-seen=2' > ${WRKSRC}/config.toml
+	@${ECHO_CMD} '[build]' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'build-stage=2' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'doc-stage=2' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'test-stage=2' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'vendor=true' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'extended=true' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'python="${PYTHON_CMD}"' >> ${WRKSRC}/config.toml
@@ -146,6 +145,7 @@ do-configure:
 	@${ECHO_CMD} '[rust]' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'channel="${PKGNAMESUFFIX:Ustable:S/^-//}"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'default-linker="${CC}"' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'deny-warnings=false' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'verbose-tests=true' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'lld=${_RUST_BUILD_WASM}' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} '[llvm]' >> ${WRKSRC}/config.toml
@@ -201,11 +201,18 @@ do-install:
 		${STAGEDIR}${PREFIX}/lib/rustlib/install.log \
 		${STAGEDIR}${PREFIX}/lib/rustlib/manifest-* \
 		${STAGEDIR}${PREFIX}/lib/rustlib/uninstall.sh
-	@${FIND} ${STAGEDIR}${PREFIX}/bin ${STAGEDIR}${PREFIX}/lib -exec ${FILE} -i {} + | \
+	@${FIND} ${STAGEDIR}${PREFIX}/bin ${STAGEDIR}${PREFIX}/lib \
+		${STAGEDIR}${PREFIX}/libexec -exec ${FILE} -i {} + | \
 		${AWK} -F: '/executable|sharedlib/ { print $$1 }' | ${XARGS} ${STRIP_CMD}
 	@${FIND} ${STAGEDIR}${PREFIX} -not -type d | \
 		${SED} -E -e 's,^${STAGEDIR}${PREFIX}/,,' \
 			-e 's,(share/man/man[1-9]/.*\.[0-9]),\1.gz,' >> ${TMPPLIST}
+
+post-install-DOCS-on:
+# Ignore any left behind empty directories in case some docs fail
+# to build (failures are ignored due to deny-warnings=false).
+	@${FIND} ${STAGEDIR}${DOCSDIR}/html -empty -type d | \
+		${SED} 's,^${STAGEDIR},@comment @dir ,' >> ${TMPPLIST}
 
 post-install-SOURCES-on:
 # Silence stage-qa warnings by sanitizing permissions on sources

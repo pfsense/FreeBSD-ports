@@ -2,10 +2,10 @@
 
 PORTNAME=	dasel
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.10.0
+DISTVERSION=	1.13.3
 CATEGORIES=	textproc
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Query and update data structures from the command line
 
 LICENSE=	MIT

@@ -5,7 +5,7 @@ DISTVERSION=	3.6
 PORTREVISION=	2
 CATEGORIES=	graphics
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Structure from motion and multi-view stereo
 
 LICENSE=	BSD2CLAUSE BSD3CLAUSE CC-BY-3.0 GPLv3+ MIT SIFTGPU
@@ -43,7 +43,8 @@ CGAL_BUILD_DEPENDS=	cgal>0:math/cgal
 CGAL_CMAKE_BOOL=	CGAL_ENABLED
 
 DOCS_BUILD_DEPENDS=	gmake:devel/gmake \
-			sphinx-build:textproc/py-sphinx18
+			sphinx-build:textproc/py-sphinx \
+			${NONEXISTENT}:textproc/py-sphinx_rtd_theme
 DOCS_PORTDOCS=		*
 
 OPENMP_USES=		compiler:openmp

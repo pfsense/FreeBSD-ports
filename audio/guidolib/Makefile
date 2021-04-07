@@ -2,31 +2,32 @@
 
 PORTNAME=	guidolib
 DISTVERSIONPREFIX=	v
-DISTVERSION=	164-61
-DISTVERSIONSUFFIX=	-gbcd5705d
-PORTREVISION=	2
+DISTVERSION=	168
 CATEGORIES=	audio graphics print
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	713a205a6e57.patch:-p1
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Library for graphic rendering of music scores
 
 LICENSE=	MPL20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	cmake:devel/cmake
+LIB_DEPENDS=	libmidisharelight.so:audio/midisharelight
 
-USES=		compiler:c++11-lang gl gmake gnome pkgconfig qt:5 xorg
+USES=		compiler:c++11-lang gl gmake gnome localbase:ldflags pkgconfig qt:5 xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	grame-cncm
 USE_QT=		core gui widgets printsupport xml buildtools_build qmake_build
 USE_GL=		gl
 USE_GNOME=	cairo
 USE_LDCONFIG=	yes
+
 BUILD_WRKSRC=	${WRKSRC}/build
+INSTALL_WRKSRC=	${WRKSRC}/build
 
 MAKE_ARGS=	LINUXMIDI=no
+
+LDFLAGS+=	-lmidisharelight
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 PORTDOCS=	*
@@ -62,42 +63,10 @@ post-patch:
 		s|/usr|$$(DESTDIR)$$(PREFIX)|; \
 		s|libGuidoQt.a|libGuidoQt.*|' \
 		${WRKSRC}/environments/Qt/libs/Makefile
-	@${REINPLACE_CMD} -i '' -e ' \
-		s|SET(CMAKE_INSTALL_PREFIX /usr )|SET(CMAKE_INSTALL_PREFIX ${PREFIX} )|' \
-		${WRKSRC}/build/CMakeLists.txt \
-		${WRKSRC}/src/tools/build/CMakeLists.txt
 
-do-install:
-	${INSTALL_PROGRAM} \
-		${WRKSRC}/environments/Qt/apps/GuidoEditor/GuidoEditor \
-		${WRKSRC}/environments/Qt/apps/GuidoSceneComposer/GuidoSceneComposer \
-		${WRKSRC}/environments/Qt/apps/guido2image/guido2image \
-		${WRKSRC}/src/tools/build/linux/midi2proll \
-		${WRKSRC}/src/tools/build/linux/guido* \
-		${STAGEDIR}${PREFIX}/bin
-	@${MKDIR} ${STAGEDIR}${PREFIX}/include/guido
-	${INSTALL_DATA} \
-		${WRKSRC}/src/engine/include/*.h \
-		${WRKSRC}/platforms/linux/src/Cairo*.h \
-		${WRKSRC}/environments/Qt/libs/GuidoQt/include/*.h \
-		${STAGEDIR}${PREFIX}/include/guido
-	${INSTALL_LIB} \
-		${WRKSRC}/build/libGUIDOEngine.* \
-		${WRKSRC}/environments/Qt/libs/libGuidoQt.* \
-		${STAGEDIR}${PREFIX}/lib
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/fonts/guido
-	${INSTALL_DATA} \
-		${WRKSRC}/src/guido2.ttf \
-		${STAGEDIR}${PREFIX}/share/fonts/guido
-.for sz in 48 128
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${sz}x${sz}/apps
-	${INSTALL_DATA} \
-		${WRKSRC}/environments/Qt/package/debianbase/usr/share/icons/hicolor/${sz}x${sz}/apps/* \
-		${STAGEDIR}${PREFIX}/share/icons/hicolor/${sz}x${sz}/apps
-.endfor
-	${INSTALL_DATA} \
-		${WRKSRC}/environments/Qt/package/debianbase/usr/share/applications/*.desktop \
-		${STAGEDIR}${DESKTOPDIR}
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/* ${STAGEDIR}${PREFIX}/lib/libGUIDOEngine.so.*
+	${RM} -r ${STAGEDIR}${DATADIR}/python
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -5,7 +5,7 @@ DISTVERSION=	5.1.1
 PORTREVISION=	1
 CATEGORIES=	deskutils
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Desktop calendar app designed for elementary OS
 
 LICENSE=	GPLv3+

@@ -2,10 +2,10 @@
 
 PORTNAME=	hblock
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.1.1
+DISTVERSION=	3.2.1
 CATEGORIES=	net
 
-MAINTAINER=	vulcan@wired.sh
+MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Adblocker using automatically generated hosts file
 
 LICENSE=	MIT
@@ -19,16 +19,20 @@ GH_ACCOUNT=	hectorm
 NO_ARCH=	yes
 NO_BUILD=	yes
 
-PLIST_FILES=		bin/${PORTNAME}
-MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz
-PORTDOCS=		PACKAGES.md README.md SOURCES.md
+PLIST_FILES=	bin/${PORTNAME}
+PORTDOCS=	PACKAGES.md README.md SOURCES.md
 
 OPTIONS_DEFINE=		DOCS MANPAGES
 OPTIONS_DEFAULT=	MANPAGES
 OPTIONS_SUB=		yes
 
+MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz
+
 post-patch:
-	@${REINPLACE_CMD} -e '/hosts/!s|/etc|${PREFIX}/etc|g' ${WRKSRC}/${PORTNAME} ${WRKSRC}/${PORTNAME}.1
+	@${REINPLACE_CMD} \
+		-e 's,$${ETCDIR?}\/hosts,/etc/hosts,g' \
+		-e '/hosts/!s,/etc,${PREFIX}/etc,g' \
+		${WRKSRC}/${PORTNAME} ${WRKSRC}/${PORTNAME}.1
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin

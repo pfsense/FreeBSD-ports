@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lilypond
-DISTVERSION=	2.21.82
+DISTVERSION=	2.22.0
 CATEGORIES=	print audio
 MASTER_SITES=	http://lilypond.org/download/source/v${DISTVERSION:R}/
 
@@ -25,7 +25,6 @@ BUILD_DEPENDS=	bash:shells/bash \
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libgmp.so:math/gmp \
-		libguile.so:lang/guile1 \
 		libltdl.so:devel/libltdl
 RUN_DEPENDS=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans-Bold.ttf:x11-fonts/dejavu \
 		mftrace:print/mftrace
@@ -49,8 +48,7 @@ ALL_TARGET=	all
 
 BINARY_ALIAS=	python=${PYTHON_VERSION}
 
-INFO=		internals \
-				lilypond-changes \
+INFO=		lilypond-changes \
 				lilypond-contributor \
 				lilypond-essay \
 				lilypond-extending \
@@ -59,14 +57,18 @@ INFO=		internals \
 				lilypond-notation \
 				lilypond-snippets \
 				lilypond-usage \
-				lilypond-web \
 				music-glossary
 PLIST_SUB=	DISTVERSION=${DISTVERSION}
 
-OPTIONS_DEFINE=	URW NLS
+OPTIONS_DEFINE=	GUILE2 NLS URW
 OPTIONS_SUB=	yes
 
+GUILE2_DESC=	Use guile2 (will incur some performance penalty)
 URW_DESC=	Use bundled URW fonts
+
+GUILE2_LIB_DEPENDS=	libgc-threaded.so:devel/boehm-gc-threaded \
+			libguile-2.2.so:lang/guile2
+GUILE2_LIB_DEPENDS_OFF=	libguile.so:lang/guile1
 
 NLS_USES=	gettext
 

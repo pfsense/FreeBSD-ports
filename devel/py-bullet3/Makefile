@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	bullet3
-DISTVERSION=	3.08
+DISTVERSION=	3.09
 CATEGORIES=	devel
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -12,13 +12,11 @@ LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 USES=		compiler:c++11-lang gl localbase python:3.6+
-USE_GITHUB=	yes
-GH_ACCOUNT=	bulletphysics
 USE_PYTHON=	autoplist distutils
 USE_GL=		gl glew
 
-post-patch: # remove examples because they fail: https://github.com/bulletphysics/bullet3/issues/1510, and they shouldn't be built anyway
-	@${REINPLACE_CMD} -E 's,"examples/.*\.(cpp|c|m)",,' ${WRKSRC}/setup.py
+USE_GITHUB=	yes
+GH_ACCOUNT=	bulletphysics
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pybullet*.so

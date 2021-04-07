@@ -1,0 +1,8 @@
+# $FreeBSD$
+#
+# MAINTAINER:	portmgr@FreeBSD.org
+actions: []
+preformat_arguments: true
+pre-install: <<EOS
+%@
+EOS

@@ -3,7 +3,7 @@
 
 PORTNAME=		sogo2
 PORTVERSION=		2.3.23
-PORTREVISION=	6
+PORTREVISION=		7
 CATEGORIES=		www gnustep
 MASTER_SITES=		http://www.sogo.nu/files/downloads/SOGo/Sources/
 DISTNAME=		SOGo-${PORTVERSION}
@@ -12,6 +12,9 @@ MAINTAINER=		acm@FreeBSD.org
 COMMENT=		Groupware server with a focus on scalability and open standards
 
 LICENSE=		GPLv2
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: SOGoMailCoreInfoKeys
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: SOGoMailCoreInfoKeys
 
 LIB_DEPENDS=		libmemcached.so:databases/libmemcached \
 			libcurl.so:ftp/curl \

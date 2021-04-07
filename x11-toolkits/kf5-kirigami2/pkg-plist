@@ -33,11 +33,13 @@ lib/libKF5Kirigami2.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/kirigami.2/CardsGridView.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/CardsLayout.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/CardsListView.qml
+%%QT_QMLDIR%%/org/kde/kirigami.2/CheckableListItem.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/ContextDrawer.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/FlexColumn.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/FormLayout.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/GlobalDrawer.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/Heading.qml
+%%QT_QMLDIR%%/org/kde/kirigami.2/Hero.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/InlineMessage.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/ItemViewHeader.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/Label.qml
@@ -57,7 +59,6 @@ lib/libKF5Kirigami2.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/kirigami.2/Separator.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/ShadowedImage.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/SwipeListItem.qml
-%%QT_QMLDIR%%/org/kde/kirigami.2/Theme.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/ToolBarApplicationHeader.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/Units.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/UrlButton.qml
@@ -95,7 +96,6 @@ lib/libKF5Kirigami2.so.%%KDE_FRAMEWORKS_VERSION%%
 %%QT_QMLDIR%%/org/kde/kirigami.2/styles/Material/Theme.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/styles/org.kde.desktop/AbstractApplicationHeader.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/styles/org.kde.desktop/AbstractListItem.qml
-%%QT_QMLDIR%%/org/kde/kirigami.2/styles/org.kde.desktop/ApplicationWindow.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/styles/org.kde.desktop/SwipeListItem.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/styles/org.kde.desktop/Theme.qml
 %%QT_QMLDIR%%/org/kde/kirigami.2/styles/org.kde.desktop/Units.qml
@@ -151,6 +151,7 @@ share/locale/lt/LC_MESSAGES/libkirigami2plugin_qt.qm
 share/locale/ml/LC_MESSAGES/libkirigami2plugin_qt.qm
 share/locale/nl/LC_MESSAGES/libkirigami2plugin_qt.qm
 share/locale/nn/LC_MESSAGES/libkirigami2plugin_qt.qm
+share/locale/pa/LC_MESSAGES/libkirigami2plugin_qt.qm
 share/locale/pl/LC_MESSAGES/libkirigami2plugin_qt.qm
 share/locale/pt/LC_MESSAGES/libkirigami2plugin_qt.qm
 share/locale/pt_BR/LC_MESSAGES/libkirigami2plugin_qt.qm

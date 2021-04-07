@@ -2,6 +2,7 @@
 
 PORTNAME=	phabricator
 PORTVERSION=	20201119
+PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
@@ -19,7 +20,6 @@ RUN_DEPENDS=	arcanist-lib${PHP_PKGNAMESUFFIX}>=20200514:devel/arcanist-lib@${PHP
 
 USES=		php:flavors shebangfix
 
-REINPLACE_ARGS=	-i ""
 SHEBANG_FILES=	resources/timezones/*.php \
 		scripts/*.php \
 		scripts/almanac/*.php \

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME?=	arcanist
-PORTVERSION?=	20201016
+PORTVERSION?=	20210113
 CATEGORIES?=	devel
 PKGNAMESUFFIX=	${SLAVE_PKGNAMESUFFIX}${PHP_PKGNAMESUFFIX}
 
@@ -32,7 +32,7 @@ NO_BUILD=	yes
 NO_ARCH=	yes
 PORTSCOUT=	ignore:1
 GH_ACCOUNT=	phacility
-GH_TAGNAME=	4b3baca
+GH_TAGNAME=	b2e715f
 PLIST=		${.CURDIR}/pkg-plist
 
 .if ${SLAVEPORT} == lib
@@ -84,6 +84,7 @@ do-install:
 		${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/src/workflow/ArcanistAnoidWorkflow.php
 	${RLN} ${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/support/shell/hooks/bash-completion.sh \
 		 ${STAGEDIR}${PREFIX}/share/bash-completion/completions/arc
+	${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/bin/arc shell-complete --generate
 .endif
 
 .include <bsd.port.mk>

@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	wine
-DISTVERSION=	6.0-rc4
+DISTVERSION=	6.4
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/Source \
-		http://mirrors.ibiblio.org/wine/source/5.x/
+		http://mirrors.ibiblio.org/wine/source/6.x/
 PKGNAMESUFFIX?=	-devel
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -24,6 +24,7 @@ LIB_DEPENDS=	libFAudio.so:audio/faudio \
 		libxml2.so:textproc/libxml2
 
 USES=		bison desktop-file-utils gmake localbase pkgconfig shebangfix tar:xz
+USE_GCC=	yes
 
 CONFLICTS_INSTALL=	wine-[0-9]* i386-wine-[0-9]* i386-wine-devel-[0-9]*
 
@@ -58,8 +59,8 @@ SUB_FILES=	pkg-message
 
 PORTDATA=	wine.inf
 
-OPTIONS_DEFINE=	CUPS DOCS DOSBOX GCC GNUTLS HAL LDAP LIBXSLT MPG123 OPENAL SDL STAGING V4L VKD3D VULKAN WINEMAKER X11 GECKO MONO
-OPTIONS_DEFAULT=GCC GNUTLS X11
+OPTIONS_DEFINE=	CUPS DOCS DOSBOX GNUTLS LDAP LIBXSLT MPG123 OPENAL SDL STAGING V4L VKD3D VULKAN WINEMAKER X11 GECKO MONO
+OPTIONS_DEFAULT=GNUTLS X11
 OPTIONS_SUB=	yes
 
 DOSBOX_DESC=	Use DOSBox to run MS-DOS programs
@@ -77,16 +78,10 @@ CUPS_LIB_DEPENDS=	libcups.so:print/cups
 
 DOSBOX_RUN_DEPENDS=	dosbox:emulators/dosbox
 
-GCC_USE=		gcc=yes
-GCC_USES_OFF=		compiler:c11
-
 GECKO_RUN_DEPENDS=	${DATADIR}/gecko/wine-gecko-2.47.2-x86.msi:emulators/wine-gecko-devel
 
 GNUTLS_CONFIGURE_WITH=	gnutls
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
-
-HAL_CONFIGURE_WITH=	hal
-HAL_LIB_DEPENDS=	libhal.so:sysutils/hal
 
 LDAP_CONFIGURE_WITH=	ldap
 LDAP_USE=		OPENLDAP=yes
@@ -94,7 +89,7 @@ LDAP_USE=		OPENLDAP=yes
 LIBXSLT_CONFIGURE_WITH=	xslt
 LIBXSLT_LIB_DEPENDS=	libxslt.so:textproc/libxslt
 
-MONO_RUN_DEPENDS=	${DATADIR}/mono/wine-mono-5.1.1-x86.msi:emulators/wine-mono-devel
+MONO_RUN_DEPENDS=	${DATADIR}/mono/wine-mono-6.0.0-x86.msi:emulators/wine-mono-devel
 
 MPG123_CONFIGURE_WITH=	mpg123
 MPG123_LIB_DEPENDS=	libmpg123.so:audio/mpg123

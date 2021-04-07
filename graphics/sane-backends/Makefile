@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	sane-backends
-PORTVERSION=	1.0.31
-PORTREVISION=	2
+DISTVERSION=	1.0.32
+PORTREVISION=	1
 CATEGORIES=	graphics
-MASTER_SITES=	https://gitlab.com/sane-project/backends/uploads/8bf1cae2e1803aefab9e5331550e5d5d/
+MASTER_SITES=	https://gitlab.com/sane-project/backends/uploads/104f09c07d35519cc8e72e604f11643f/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	vvd@unislabs.com
 COMMENT=	API for accessing scanners, digital cameras, frame grabbers, etc
 
 LICENSE=	GPLv2+
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
 USES=		compiler:c++11-lang gmake gnome jpeg libtool localbase:ldflags \
-		pathfix pkgconfig
+		pathfix pkgconfig python:build
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	saned
@@ -33,7 +33,7 @@ SUB_FILES=	pkg-message
 USERS=		saned
 GROUPS=		saned
 
-PLIST_SUB=	SOVERSION=${PORTVERSION}
+PLIST_SUB=	SOVERSION=${DISTVERSION}
 
 OPTIONS_DEFINE=		AVAHI DOCS GPHOTO IEEE1284 IPV6 NLS SNMP USB V4L
 OPTIONS_DEFAULT=	AVAHI GPHOTO USB

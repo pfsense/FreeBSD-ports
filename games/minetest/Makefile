@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	minetest
-PORTVERSION=	5.3.0
-PORTREVISION=	2
+PORTVERSION=	5.4.0
+PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -67,7 +67,7 @@ NCURSES_USES=		ncurses
 
 LUAJIT_DESC=		LuaJIT support
 LUAJIT_CMAKE_BOOL=	ENABLE_LUAJIT REQUIRE_LUAJIT
-LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
+LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
 
 PGSQL_USES=		pgsql
 PGSQL_CMAKE_BOOL=	ENABLE_POSTGRESQL
@@ -86,10 +86,6 @@ NLS_USES=		gettext
 NLS_LDFLAGS=		-L${LOCALBASE}/lib
 
 .include <bsd.port.options.mk>
-
-.if ${ARCH} == powerpc64
-LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
-.endif
 
 .if ${PORT_OPTIONS:MCLIENT} && ${PORT_OPTIONS:MSOUND}
 USES+=		openal

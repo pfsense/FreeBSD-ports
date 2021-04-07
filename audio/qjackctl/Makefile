@@ -3,7 +3,7 @@
 
 PORTNAME=	qjackctl
 DISTVERSIONPREFIX=	qjackctl_
-DISTVERSION=	0_9_0
+DISTVERSION=	0_9_2
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -16,11 +16,12 @@ LIB_DEPENDS=	libjack.so:audio/jack
 
 USES=		autoreconf compiler:c++11-lib gl gmake localbase pkgconfig qt:5
 GNU_CONFIGURE=	yes
-USE_GITHUB=	yes
-GH_ACCOUNT=	rncbc
 USE_QT=		core gui network widgets x11extras xml buildtools_build linguisttools_build qmake_build
 USE_GL=		gl
 USE_CXXSTD=	c++11
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	rncbc
 
 BINARY_ALIAS=	qmake=${QMAKE}
 

@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	jna
-PORTVERSION=	5.5.0
+PORTVERSION=	5.7.0
 CATEGORIES=	devel java
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	ports@markdixon.name
 COMMENT=	Java access to native shared libraries
 
 LICENSE=	LGPL21+ APACHE20
@@ -15,6 +15,8 @@ LICENSE_FILE_APACHE20=	${WRKSRC}/AL2.0
 
 BROKEN_armv6=		fails to compile: build.xml: compilation failed
 BROKEN_armv7=		fails to compile: build.xml: compilation failed
+
+BUILD_DEPENDS=	makeinfo:print/texinfo
 
 USES=		autoreconf:build gmake libtool xorg
 USE_ANT=	yes
@@ -40,7 +42,7 @@ ANT_ARCH=	${ARCH:S/amd64/x86-64/:S/i386/x86/:S/powerpc64/ppc64/}
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == powerpc64
+.if ${ARCH:Mpowerpc64*}
 USE_GCC=	any
 .endif
 

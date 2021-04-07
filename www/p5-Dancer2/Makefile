@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Dancer2
-PORTVERSION=	0.300004
+PORTVERSION=	0.301001
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -16,8 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	p5-File-ShareDir-Install>=0.06:devel/p5-File-ShareDir-Install \
 		${RUN_DEPENDS}
-RUN_DEPENDS=	p5-App-Cmd>=0:devel/p5-App-Cmd \
-		p5-Capture-Tiny>=0.12:devel/p5-Capture-Tiny \
+RUN_DEPENDS=	p5-Capture-Tiny>=0.12:devel/p5-Capture-Tiny \
 		p5-Clone>=0:devel/p5-Clone \
 		p5-Crypt-URandom>=0:security/p5-Crypt-URandom \
 		p5-Config-Any>=0:devel/p5-Config-Any \
@@ -25,7 +24,7 @@ RUN_DEPENDS=	p5-App-Cmd>=0:devel/p5-App-Cmd \
 		p5-Hash-Merge-Simple>=0:devel/p5-Hash-Merge-Simple \
 		p5-HTTP-Date>=0:www/p5-HTTP-Date \
 		p5-HTTP-Headers-Fast>=0.21:www/p5-HTTP-Headers-Fast \
-		p5-HTTP-XSCookies>=0.000007:www/p5-HTTP-XSCookies \
+		p5-HTTP-XSCookies>=0.000015:www/p5-HTTP-XSCookies \
 		p5-Import-Into>=0:devel/p5-Import-Into \
 		p5-JSON>=0:converters/p5-JSON \
 		p5-JSON-MaybeXS>=0:converters/p5-JSON-MaybeXS \

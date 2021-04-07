@@ -11,24 +11,25 @@ DISTNAME=	${PORTNAME}_${BITS}-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Optimizing Oberon-2 compiler of University of Kaiserslautern, Germany
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	xsltproc:textproc/libxslt
 RUN_DEPENDS=	libtool:devel/libtool
 LIB_DEPENDS=	libgc.so:devel/boehm-gc
 
-ONLY_FOR_ARCHS=		amd64 i386
-
 DOCSDIR=	lib/${PORTNAME}
-USES=		gmake libtool:build tar:bzip2
+USES=		gmake libtool:build localbase:ldflags tar:bzip2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 USE_CSTD=	gnu89
 USE_GCC=	any
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS THREADS
+OPTIONS_SUB=	yes
+
+THREADS_DESC=	Build thread support
+THREADS_CONFIGURE_ON=	--enable-threads=pthreads
 
 post-patch:
 	@${REINPLACE_CMD} 's/dir=@/dir=$${DESTDIR}@/' \
@@ -42,6 +43,10 @@ post-patch:
 BITS=		32
 .else
 BITS=		64
+.endif
+
+.if defined(PPC_ABI) && ${PPC_ABI} == ELFv1
+CFLAGS+=	-fnested-functions
 .endif
 
 .include <bsd.port.post.mk>

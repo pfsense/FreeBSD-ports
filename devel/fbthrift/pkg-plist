@@ -33,6 +33,7 @@ include/thrift/lib/cpp/concurrency/Mutex-impl.h
 include/thrift/lib/cpp/concurrency/Mutex-portability.h
 include/thrift/lib/cpp/concurrency/Mutex.h
 include/thrift/lib/cpp/concurrency/PosixThreadFactory.h
+include/thrift/lib/cpp/concurrency/SFQThreadManager.h
 include/thrift/lib/cpp/concurrency/Thread.h
 include/thrift/lib/cpp/concurrency/ThreadManager.h
 include/thrift/lib/cpp/concurrency/TimerManager.h
@@ -97,6 +98,7 @@ include/thrift/lib/cpp/util/PausableTimer.h
 include/thrift/lib/cpp/util/THttpParser.h
 include/thrift/lib/cpp/util/VarintUtils-inl.h
 include/thrift/lib/cpp/util/VarintUtils.h
+include/thrift/lib/cpp2/Adapt.h
 include/thrift/lib/cpp2/BadFieldAccess.h
 include/thrift/lib/cpp2/CloneableIOBuf.h
 include/thrift/lib/cpp2/FieldRef.h
@@ -105,7 +107,6 @@ include/thrift/lib/cpp2/Flags.h
 include/thrift/lib/cpp2/GeneratedCodeHelper.h
 include/thrift/lib/cpp2/GeneratedHeaderHelper.h
 include/thrift/lib/cpp2/IndirectionWrapper.h
-include/thrift/lib/cpp2/OptionalField.h
 include/thrift/lib/cpp2/PluggableFunction.h
 include/thrift/lib/cpp2/SerializationSwitch.h
 include/thrift/lib/cpp2/Thrift.h
@@ -131,11 +132,13 @@ include/thrift/lib/cpp2/async/Interaction.h
 include/thrift/lib/cpp2/async/MessageChannel.h
 include/thrift/lib/cpp2/async/PooledRequestChannel.h
 include/thrift/lib/cpp2/async/ReconnectingRequestChannel.h
+include/thrift/lib/cpp2/async/ReplyInfo.h
 include/thrift/lib/cpp2/async/RequestCallback.h
 include/thrift/lib/cpp2/async/RequestChannel.h
 include/thrift/lib/cpp2/async/ResponseChannel.h
 include/thrift/lib/cpp2/async/RetryingRequestChannel.h
 include/thrift/lib/cpp2/async/RocketClientChannel.h
+include/thrift/lib/cpp2/async/RocketClientTestChannel.h
 include/thrift/lib/cpp2/async/RpcTypes.h
 include/thrift/lib/cpp2/async/ServerChannel.h
 include/thrift/lib/cpp2/async/ServerGeneratorStream-inl.h
@@ -155,10 +158,12 @@ include/thrift/lib/cpp2/async/tests/util/TestSinkService.h
 include/thrift/lib/cpp2/async/tests/util/TestStreamService.h
 include/thrift/lib/cpp2/async/tests/util/Util.h
 include/thrift/lib/cpp2/detail/meta.h
+include/thrift/lib/cpp2/frozen/FixedSizeStringHash.h
 include/thrift/lib/cpp2/frozen/Frozen.h
 include/thrift/lib/cpp2/frozen/FrozenAssociative-inl.h
 include/thrift/lib/cpp2/frozen/FrozenBool-inl.h
 include/thrift/lib/cpp2/frozen/FrozenEnum-inl.h
+include/thrift/lib/cpp2/frozen/FrozenFixedSizeString-inl.h
 include/thrift/lib/cpp2/frozen/FrozenHashTable-inl.h
 include/thrift/lib/cpp2/frozen/FrozenIntegral-inl.h
 include/thrift/lib/cpp2/frozen/FrozenMacros.h
@@ -214,6 +219,7 @@ include/thrift/lib/cpp2/protocol/SimpleJSONProtocol-inl.h
 include/thrift/lib/cpp2/protocol/SimpleJSONProtocol.h
 include/thrift/lib/cpp2/protocol/TableBasedForwardTypes.h
 include/thrift/lib/cpp2/protocol/TableBasedSerializer.h
+include/thrift/lib/cpp2/protocol/TableBasedSerializerImpl.h
 include/thrift/lib/cpp2/protocol/Traits.h
 include/thrift/lib/cpp2/protocol/VirtualProtocol.h
 include/thrift/lib/cpp2/protocol/detail/protocol_methods.h
@@ -228,8 +234,6 @@ include/thrift/lib/cpp2/protocol/nimble/Encoder.h
 include/thrift/lib/cpp2/protocol/nimble/NimbleTypes.h
 include/thrift/lib/cpp2/protocol/nimble/Vectorization.h
 include/thrift/lib/cpp2/protocol/nimble/test/BufferingEncoderDecoderBenchmarksCommon.h
-include/thrift/lib/cpp2/reflection/container_traits.h
-include/thrift/lib/cpp2/reflection/container_traits_folly.h
 include/thrift/lib/cpp2/reflection/debug.h
 include/thrift/lib/cpp2/reflection/demo/json_print.h
 include/thrift/lib/cpp2/reflection/diff.h
@@ -252,7 +256,6 @@ include/thrift/lib/cpp2/reflection/internal/pretty_print-inl-pre.h
 include/thrift/lib/cpp2/reflection/internal/reflection-inl-post.h
 include/thrift/lib/cpp2/reflection/internal/reflection-inl-pre.h
 include/thrift/lib/cpp2/reflection/internal/test_helpers.h
-include/thrift/lib/cpp2/reflection/internal/traits_test_helpers-inl.h
 include/thrift/lib/cpp2/reflection/legacy_reflection.h
 include/thrift/lib/cpp2/reflection/merge.h
 include/thrift/lib/cpp2/reflection/populator.h
@@ -260,7 +263,6 @@ include/thrift/lib/cpp2/reflection/pretty_print.h
 include/thrift/lib/cpp2/reflection/reflection.h
 include/thrift/lib/cpp2/reflection/serializer.h
 include/thrift/lib/cpp2/reflection/testing.h
-include/thrift/lib/cpp2/reflection/traits_test_helpers.h
 include/thrift/lib/cpp2/reflection/variant.h
 include/thrift/lib/cpp2/security/FizzPeeker.h
 include/thrift/lib/cpp2/security/SSLUtil.h
@@ -273,7 +275,9 @@ include/thrift/lib/cpp2/server/BaseThriftServer.h
 include/thrift/lib/cpp2/server/Cpp2ConnContext.h
 include/thrift/lib/cpp2/server/Cpp2Connection.h
 include/thrift/lib/cpp2/server/Cpp2Worker.h
+include/thrift/lib/cpp2/server/IOWorkerContext.h
 include/thrift/lib/cpp2/server/LoggingEvent.h
+include/thrift/lib/cpp2/server/LoggingEventHelper.h
 include/thrift/lib/cpp2/server/MonitoringServerInterface.h
 include/thrift/lib/cpp2/server/QIAdmissionController.h
 include/thrift/lib/cpp2/server/RequestDebugLog.h
@@ -293,7 +297,6 @@ include/thrift/lib/cpp2/server/admission_strategy/PriorityAdmissionStrategy.h
 include/thrift/lib/cpp2/server/admission_strategy/WhitelistAdmissionStrategy.h
 include/thrift/lib/cpp2/server/peeking/PeekingManager.h
 include/thrift/lib/cpp2/server/peeking/TLSHelper.h
-include/thrift/lib/cpp2/server/proxygen/ProxygenThriftServer.h
 include/thrift/lib/cpp2/test/IndirectionWrapperTest.h
 include/thrift/lib/cpp2/test/ProtoBufStructs-inl.h
 include/thrift/lib/cpp2/test/Structs.h
@@ -303,11 +306,11 @@ include/thrift/lib/cpp2/test/util/TestClientChannelFactory.h
 include/thrift/lib/cpp2/test/util/TestHTTPClientChannelFactory.h
 include/thrift/lib/cpp2/test/util/TestHeaderClientChannelFactory.h
 include/thrift/lib/cpp2/test/util/TestInterface.h
-include/thrift/lib/cpp2/test/util/TestProxygenThriftServerFactory.h
 include/thrift/lib/cpp2/test/util/TestServerFactory.h
 include/thrift/lib/cpp2/test/util/TestThriftServerFactory.h
 include/thrift/lib/cpp2/transport/core/ClientConnectionIf.h
 include/thrift/lib/cpp2/transport/core/EnvelopeUtil.h
+include/thrift/lib/cpp2/transport/core/RequestStateMachine.h
 include/thrift/lib/cpp2/transport/core/RpcMetadataUtil.h
 include/thrift/lib/cpp2/transport/core/ThriftChannelIf.h
 include/thrift/lib/cpp2/transport/core/ThriftClient.h
@@ -333,8 +336,6 @@ include/thrift/lib/cpp2/transport/http2/common/testutil/ChannelTestFixture.h
 include/thrift/lib/cpp2/transport/http2/common/testutil/FakeProcessors.h
 include/thrift/lib/cpp2/transport/http2/common/testutil/FakeResponseHandler.h
 include/thrift/lib/cpp2/transport/http2/server/ThriftRequestHandler.h
-include/thrift/lib/cpp2/transport/inmemory/InMemoryChannel.h
-include/thrift/lib/cpp2/transport/inmemory/InMemoryConnection.h
 include/thrift/lib/cpp2/transport/rocket/PayloadUtils.h
 include/thrift/lib/cpp2/transport/rocket/RocketException.h
 include/thrift/lib/cpp2/transport/rocket/Types.h
@@ -374,6 +375,7 @@ include/thrift/lib/cpp2/util/DebugString.h
 include/thrift/lib/cpp2/util/Ewma.h
 include/thrift/lib/cpp2/util/EwmaRate.h
 include/thrift/lib/cpp2/util/Frozen2ViewHelpers.h
+include/thrift/lib/cpp2/util/ManagedStringView.h
 include/thrift/lib/cpp2/util/ScopedServerInterfaceThread-inl.h
 include/thrift/lib/cpp2/util/ScopedServerInterfaceThread.h
 include/thrift/lib/cpp2/util/ScopedServerThread.h
@@ -399,6 +401,20 @@ include/thrift/lib/py3/test/stream/server.h
 include/thrift/lib/py3/types.h
 include/thrift/lib/thrift/RpcMetadata_extra.h
 include/thrift/lib/thrift/SerializableDynamic.h
+include/thrift/lib/thrift/gen-cpp2/RocketUpgrade.h 
+include/thrift/lib/thrift/gen-cpp2/RocketUpgrade.tcc
+include/thrift/lib/thrift/gen-cpp2/RocketUpgradeAsyncClient.h
+include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_constants.h
+include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_custom_protocol.h
+include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_data.h
+include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_for_each_field.h
+include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_metadata.h
+include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_types.h
+include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_types.tcc
+include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_types_custom_protocol.h
+include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_visit_by_thrift_field_metadata.h
+include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_visit_union.h
+include/thrift/lib/thrift/gen-cpp2/RocketUpgrade_visitation.h
 include/thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h
 include/thrift/lib/thrift/gen-cpp2/RpcMetadata_data.h
 include/thrift/lib/thrift/gen-cpp2/RpcMetadata_for_each_field.h

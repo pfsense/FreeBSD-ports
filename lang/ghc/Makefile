@@ -3,6 +3,7 @@
 
 PORTNAME=	ghc
 PORTVERSION=	${GHC_VERSION}
+PORTREVISION=	1
 CATEGORIES=	lang haskell
 MASTER_SITES=	https://www.haskell.org/ghc/dist/${PORTVERSION}/:source \
 		LOCAL/arrowd/:boot \
@@ -74,14 +75,16 @@ BOOT_SUB_LIST_OFF=	HSC2HS=${BOOT_HSC2HS}
 PROFILE_SUB_LIST=	WITH_PROFILE="YES"
 PROFILE_SUB_LIST_OFF=	WITH_PROFILE="NO"
 
-GHC_VERSION=		8.10.3
+GHC_VERSION=		8.10.4
 CABAL_VERSION=		3.2.1.0
 HSCOLOUR_VERSION=	1.24.4
 LLVM_VERSION=		90
 # LLVM version that bootstrap compiler uses
-BOOT_LLVM_VERSION=	60
+BOOT_LLVM_VERSION=	90
 
 PLIST_SUB=		GHC_VERSION=${GHC_VERSION} CABAL_VERSION=${CABAL_VERSION}
+
+PORTDOCS=		*
 
 .include <bsd.port.pre.mk>
 
@@ -94,13 +97,10 @@ BUILD_DEPENDS+=	${LOCALBASE}/lib/compat/libncursesw.so.8:misc/compat12x
 CONFIGURE_ARGS+=	--enable-dtrace=0
 .endif
 
-.if ${ARCH} == i386
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-libraries_ghc-prim_cbits_atomic.c \
-		${PATCHDIR}/extra-patch-rts_posix_TTY.c
-.endif
-
 .if defined(PPC_ABI) && ${PPC_ABI} == ELFv1
 BOOT_GHC_VERSION=      8.6.3
+.elif ${ARCH} == aarch64 || ${ARCH:Marmv*}
+BOOT_GHC_VERSION=	8.10.4
 .else
 BOOT_GHC_VERSION=	8.6.5
 .endif
@@ -131,8 +131,6 @@ _EXECUTABLES+=	${GHC_LIBDIR}/bin/ghc-iserv-prof
 _EXECUTABLES+=	${GHC_LIBDIR}/bin/ghc-iserv-dyn
 .endif
 
-.include <bsd.port.options.mk>
-
 .if empty(PORT_OPTIONS:MBOOT)
 BOOTSTRAPS_SUFFIX?=		${BOOTSTRAPS_SUFFIX_${ARCH}}
 BOOTSTRAPS_SUFFIX_powerpc64?=	-${PPC_ABI:tl}
@@ -142,30 +140,31 @@ ELEVEN_SUFX=		11
 DISTFILES+=		ghc-${BOOT_GHC_VERSION}-boot-${ARCH}-freebsd${BOOTSTRAPS_SUFFIX}${ELEVEN_SUFX}${EXTRACT_SUFX}:boot
 .endif # MBOOT
 
-.if ${ARCH} == aarch64 || ${ARCH} == armv6 || ${ARCH} == armv7
+.if ${ARCH} == aarch64 || ${ARCH:Marmv*}
+# ghc-8.10.x on arm requires devel/llvm90
 # CONFIGURE_TARGET must to be the same as the llvm triple
 CONFIGURE_TARGET=	${ARCH}-unknown-freebsd${"${ARCH:Maarch64}" != "":?:-gnueabihf}
 EXTRA_PATCHES+=		${PATCHDIR}/extra-patch-aclocal.m4
 BUILD_DEPENDS+=		llc${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
 RUN_DEPENDS+=		llc${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
-# Keep in sync with LLVM_VERSION
-BINARY_ALIAS=		llc-9.0=llc90 \
-			opt-9.0=opt90
+CONFIGURE_ENV+=		LLC=llc${LLVM_VERSION} \
+			OPT=opt${LLVM_VERSION} \
+			CLANG=clang${LLVM_VERSION} \
+			CC=clang${LLVM_VERSION}
 
 # When GHC being compiled and GHC used for bootstrapping support different
 # LLVM versions, we have to pull in both. Luckily, this is relatively rare.
 .  if ${BOOT_LLVM_VERSION} != ${LLVM_VERSION}
 BUILD_DEPENDS+=		llc${BOOT_LLVM_VERSION}:devel/llvm${BOOT_LLVM_VERSION}
-RUN_DEPENDS+=		llc${BOOT_LLVM_VERSION}:devel/llvm${BOOT_LLVM_VERSION}
 # Keep in sync with BOOT_LLVM_VERSION
-BINARY_ALIAS+=		llc-6.0=llc60 \
-			opt-6.0=opt60
+BINARY_ALIAS+=		llc-9.0=llc90 \
+			opt-9.0=opt90
 .  endif
 .endif
 
-.if ${ARCH} == aarch64 || ${ARCH} == armv6 || ${ARCH} == armv7 || ${ARCH} == powerpc64
-.  if ${OSVERSION} < 1201000
-IGNORE=	lang/ghc requires at least FreeBSD 12.1-RELEASE
+.if ${ARCH} == aarch64 || ${ARCH:Marmv*} || ${ARCH} == powerpc64
+.  if ${OSVERSION} < 1202000
+IGNORE=	lang/ghc requires at least FreeBSD 12.2-RELEASE
 .  endif
 .  ifdef QEMU_EMULATING
 IGNORE=	qemu-user-static isn't able to build lang/ghc, but it builds fine on a real hardware
@@ -246,6 +245,7 @@ fixup-plist:
 	${BOOT_DIR}/bin/runhaskell ${PATCHDIR}/fixup-plist.hs ${.CURDIR}/pkg-plist
 
 # Create a bootstrap compiler tar ball: run this in an interactive poudriere jail
+# Set all OPTIONS to OFF when generating bootstraps
 .PHONY: create-bootstrap
 create-bootstrap:
 	cd ${WRKSRC} \
@@ -261,6 +261,7 @@ create-bootstrap:
 		&& ${STAT} -f %z ghc-${GHC_VERSION}-boot-${ARCH}-freebsd.tar.xz
 
 # Much like create-bootstrap, just different naming and output format
+# Set DYNAMIC, GMP and PROFILE to ON, and DOCS to OFF when generating Stack bindist
 .PHONY: create-stack-bindist
 create-stack-bindist:
 	${REINPLACE_CMD} -e '/^mandir/d' \

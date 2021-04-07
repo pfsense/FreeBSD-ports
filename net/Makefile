@@ -79,6 +79,7 @@
     SUBDIR += cf
     SUBDIR += charm
     SUBDIR += chrony
+    SUBDIR += chrony-lite
     SUBDIR += citrix_ica
     SUBDIR += cjdns
     SUBDIR += clash
@@ -166,6 +167,7 @@
     SUBDIR += freerdp
     SUBDIR += freeswitch
     SUBDIR += freevrrpd
+    SUBDIR += frp
     SUBDIR += frr7
     SUBDIR += frr7-pythontools
     SUBDIR += fspclient
@@ -213,7 +215,6 @@
     SUBDIR += gsocket
     SUBDIR += gspoof
     SUBDIR += gssdp
-    SUBDIR += gstreamer-plugins-libmms
     SUBDIR += gstreamer1-plugins-libmms
     SUBDIR += gstreamer1-plugins-srtp
     SUBDIR += gtk-vnc
@@ -240,6 +241,7 @@
     SUBDIR += hlmaster
     SUBDIR += honeyd
     SUBDIR += hostapd
+    SUBDIR += hostapd-devel
     SUBDIR += hping
     SUBDIR += hping3
     SUBDIR += hsflowd
@@ -297,6 +299,7 @@
     SUBDIR += kdenetwork
     SUBDIR += kdenetwork-filesharing
     SUBDIR += kea
+    SUBDIR += keycloak
     SUBDIR += kf5-kcalendarcore
     SUBDIR += kf5-kcontacts
     SUBDIR += kf5-kdav
@@ -387,6 +390,7 @@
     SUBDIR += libproxy-gnome3
     SUBDIR += libproxy-kde
     SUBDIR += libproxy-mozjs
+    SUBDIR += libproxy-pacrunner
     SUBDIR += libproxy-perl
     SUBDIR += libproxy-python
     SUBDIR += libproxy-webkit3
@@ -394,7 +398,7 @@
     SUBDIR += librespeed-cli
     SUBDIR += librespeed-go
     SUBDIR += librsync
-    SUBDIR += libsignal
+    SUBDIR += libsignal-protocol-c
     SUBDIR += libsrtp2
     SUBDIR += libstorj
     SUBDIR += libtnl
@@ -521,6 +525,7 @@
     SUBDIR += nyancat
     SUBDIR += nylon
     SUBDIR += ocserv
+    SUBDIR += oha
     SUBDIR += olsrd
     SUBDIR += omnitty
     SUBDIR += onedrive
@@ -543,6 +548,7 @@
     SUBDIR += opennx
     SUBDIR += openpgm
     SUBDIR += openradius
+    SUBDIR += openrsync
     SUBDIR += openslp
     SUBDIR += opentracker
     SUBDIR += openvswitch
@@ -634,6 +640,11 @@
     SUBDIR += p5-Net-CascadeCopy
     SUBDIR += p5-Net-Cassandra
     SUBDIR += p5-Net-Cassandra-Easy
+    SUBDIR += p5-Net-Connection
+    SUBDIR += p5-Net-Connection-Match
+    SUBDIR += p5-Net-Connection-Sort
+    SUBDIR += p5-Net-Connection-lsof
+    SUBDIR += p5-Net-Connection-ncnetstat
     SUBDIR += p5-Net-DAV-Server
     SUBDIR += p5-Net-DHCP
     SUBDIR += p5-Net-DHCP-Watch
@@ -947,6 +958,7 @@
     SUBDIR += pecl-radius
     SUBDIR += pecl-rdkafka
     SUBDIR += pecl-smbclient
+    SUBDIR += pecl-xmlrpc
     SUBDIR += pecl-zmq
     SUBDIR += pen
     SUBDIR += pfinger
@@ -1009,6 +1021,7 @@
     SUBDIR += py-eventlet
     SUBDIR += py-flask-xml-rpc
     SUBDIR += py-gdown
+    SUBDIR += py-geopy
     SUBDIR += py-gntp
     SUBDIR += py-gspread
     SUBDIR += py-h11
@@ -1017,7 +1030,6 @@
     SUBDIR += py-httpstat
     SUBDIR += py-ifaddr
     SUBDIR += py-impacket
-    SUBDIR += py-ipaddress
     SUBDIR += py-iplib
     SUBDIR += py-iptools
     SUBDIR += py-kafka-python
@@ -1053,6 +1065,7 @@
     SUBDIR += py-pygeoip
     SUBDIR += py-pyicap
     SUBDIR += py-pynamecheap
+    SUBDIR += py-pynmsg
     SUBDIR += py-pynsq
     SUBDIR += py-pypcap
     SUBDIR += py-pyroute2
@@ -1111,6 +1124,7 @@
     SUBDIR += py-tofu
     SUBDIR += py-transip
     SUBDIR += py-trio
+    SUBDIR += py-tweepy
     SUBDIR += py-twitter-tools
     SUBDIR += py-txamqp
     SUBDIR += py-txrestapi
@@ -1176,6 +1190,7 @@
     SUBDIR += rtptools
     SUBDIR += rubygem-activestorage52
     SUBDIR += rubygem-activestorage60
+    SUBDIR += rubygem-activestorage61
     SUBDIR += rubygem-amazon-ec2
     SUBDIR += rubygem-amq-protocol
     SUBDIR += rubygem-amqp
@@ -1236,6 +1251,7 @@
     SUBDIR += rubygem-gitaly
     SUBDIR += rubygem-gitaly-proto
     SUBDIR += rubygem-gitlab-fog-azure-rm
+    SUBDIR += rubygem-gitlab-fog-google
     SUBDIR += rubygem-gitlab_omniauth-ldap
     SUBDIR += rubygem-google-cloud-bigquery
     SUBDIR += rubygem-google-cloud-bigtable
@@ -1255,6 +1271,7 @@
     SUBDIR += rubygem-google-cloud-storage
     SUBDIR += rubygem-grpc
     SUBDIR += rubygem-grpc124
+    SUBDIR += rubygem-grpc130
     SUBDIR += rubygem-hangouts-chat
     SUBDIR += rubygem-http-parser
     SUBDIR += rubygem-http_parser.rb
@@ -1270,8 +1287,10 @@
     SUBDIR += rubygem-net-netrc
     SUBDIR += rubygem-net-ntp
     SUBDIR += rubygem-net-ping
+    SUBDIR += rubygem-net-protocol
     SUBDIR += rubygem-netrc
     SUBDIR += rubygem-network_interface
+    SUBDIR += rubygem-nkf
     SUBDIR += rubygem-oauth
     SUBDIR += rubygem-oauth2
     SUBDIR += rubygem-octokit
@@ -1279,6 +1298,7 @@
     SUBDIR += rubygem-omniauth-auth0
     SUBDIR += rubygem-omniauth-auth014
     SUBDIR += rubygem-omniauth-authentiq
+    SUBDIR += rubygem-omniauth-azure-activedirectory-v2
     SUBDIR += rubygem-omniauth-azure-oauth2
     SUBDIR += rubygem-omniauth-facebook
     SUBDIR += rubygem-omniauth-facebook4
@@ -1293,6 +1313,7 @@
     SUBDIR += rubygem-omniauth-twitter
     SUBDIR += rubygem-omniauth-ultraauth
     SUBDIR += rubygem-omniauth_openid_connect
+    SUBDIR += rubygem-open-uri
     SUBDIR += rubygem-open-uri-cached
     SUBDIR += rubygem-openid_connect
     SUBDIR += rubygem-opennebula
@@ -1354,6 +1375,7 @@
     SUBDIR += sctplib
     SUBDIR += sdl2_net
     SUBDIR += sdl_net
+    SUBDIR += seaweedfs
     SUBDIR += seda
     SUBDIR += self-service-password
     SUBDIR += sems
@@ -1468,7 +1490,6 @@
     SUBDIR += tsocks
     SUBDIR += tunneller
     SUBDIR += turnserver
-    SUBDIR += twitux
     SUBDIR += u6rd
     SUBDIR += ucarp
     SUBDIR += udpbroadcastrelay
@@ -1512,6 +1533,8 @@
     SUBDIR += widentd
     SUBDIR += wireguard
     SUBDIR += wireguard-go
+    SUBDIR += wireguard-kmod
+    SUBDIR += wireguard-tools
     SUBDIR += wireshark
     SUBDIR += wireshark-lite
     SUBDIR += wlan2eth

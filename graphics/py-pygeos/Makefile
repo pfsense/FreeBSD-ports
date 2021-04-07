@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pygeos
-PORTVERSION=	0.8
+PORTVERSION=	0.9
 CATEGORIES=	graphics python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,11 +14,11 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	geos>=3.5:graphics/geos \
-		${PYNUMPY}
+		${PYTHON_PKGNAMEPREFIX}numpy>=1.13,1:math/py-numpy@${PY_FLAVOR}
 LIB_DEPENDS=	libgeos.so:graphics/geos
-RUN_DEPENDS=	${PYNUMPY}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.13,1:math/py-numpy@${PY_FLAVOR}
 
 USES=		python:3.6+
-USE_PYTHON=	autoplist concurrent distutils
+USE_PYTHON=	autoplist concurrent cython distutils
 
 .include <bsd.port.mk>

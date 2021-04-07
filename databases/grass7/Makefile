@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	grass
-PORTVERSION=	7.8.4
-PORTREVISION=	2
+PORTVERSION=	7.8.5
+PORTREVISION=	3
 CATEGORIES=	databases geography
 MASTER_SITES=	https://grass.osgeo.org/%SUBDIR%/ \
 		http://grass.cict.fr/%SUBDIR%/ \
@@ -66,10 +66,10 @@ CONFIGURE_ARGS=	--with-includes=${LOCALBASE}/include \
 		--with-readline \
 		--enable-largefile \
 		--with-wxwidgets=${WX_CONFIG} \
-		--with-proj=${LOCALBASE}/bin/proj \
 		--with-proj-share=${LOCALBASE}/share/proj \
 		--with-proj-includes=${LOCALBASE}/include \
 		--with-proj-libs=${LOCALBASE}/lib \
+		--with-proj=${LOCALBASE}/bin/proj \
 		--with-geos=${LOCALBASE}/bin/geos-config \
 		--with-gdal=${LOCALBASE}/bin/gdal-config \
 		--with-pthread=yes \
@@ -135,12 +135,6 @@ ZSTD_CONFIGURE_WITH=	zstd
 ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
 
 .include <bsd.port.pre.mk>
-
-.if ${ARCH} == "aarch64" || ${ARCH} == "riscv64"
-PLIST_SUB+=	WOSBRK="@comment "
-.else
-PLIST_SUB+=	WOSBRK=""
-.endif
 
 .if ${ARCH} == "i386" && ${OSVERSION} < 1200000
 # clang 7.x and 8.x do not build properly on 11i386

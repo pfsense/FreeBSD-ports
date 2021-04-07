@@ -2,13 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	librime
-PORTVERSION=	1.6.1
+PORTVERSION=	1.7.2
 CATEGORIES=	chinese textproc
 
 MAINTAINER=	khng300@gmail.com
 COMMENT=	Rime Input Method Engine, the core library
 
-LICENSE=	GPLv3
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libcapnp.so:devel/capnproto \

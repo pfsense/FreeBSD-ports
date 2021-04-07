@@ -2,41 +2,38 @@
 # $FreeBSD$
 
 PORTNAME=	valgrind
-PORTVERSION=	3.17.0.g20200723
+PORTVERSION=	3.18.0.g20210323
 DISTVERSIONPREFIX=	freebsd-
 #PORTREVISION=	0
 PORTEPOCH=	1
 CATEGORIES=	devel
+MASTER_SITES=	https://valgrind.org/
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	pjfloyd@wanadoo.fr
 COMMENT=	Memory debugging and profiling tool
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-DOCS_BUILD_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl \
-		xsltproc:textproc/libxslt
-MANPAGES_BUILD_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl \
-		xsltproc:textproc/libxslt
-MPI_LIB_DEPENDS=	libmpich.so:net/mpich
-
 USES=		pathfix pkgconfig gmake perl5 shebangfix autoreconf
 USE_PERL5=	build
+
 GNU_CONFIGURE=	yes
-USE_LDCONFIG=	yes
-OPTIONS_SUB=	yes
 SHEBANG_FILES=	callgrind/callgrind_annotate.in callgrind/callgrind_control.in
-SSP_UNSAFE=		yes
-LIB32_PATH?=	${DESTDIR}/usr/lib32/libc.so
+SSP_UNSAFE=	yes
+LIB32_PATH?=	/usr/lib32/libc.so
 
 CONFLICTS=	valgrind-[0-9]*
 
 USE_GITHUB=	yes
-GH_TAGNAME=	d4fba6a
 GH_ACCOUNT=	paulfloyd
 GH_PROJECT=	freebsd_valgrind
+GH_TAGNAME=	bd87bbc
+
+CONFIGURE_ENV+=	ac_cv_path_PERL=${PERL}
 
 PORTDOCS=	html
 
@@ -46,15 +43,21 @@ OPTIONS_DEFAULT=	MANPAGES
 .if exists(${LIB32_PATH})
 OPTIONS_DEFAULT_amd64=	32BIT
 .endif
+OPTIONS_SUB=	yes
+
 32BIT_DESC=	Enable debugging of 32-bit programs (requires lib32)
 MPI_DESC=	Enable build of MPI wrappers
 
-CONFIGURE_ENV+=	ac_cv_path_PERL=${PERL}
+DOCS_BUILD_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl \
+			xsltproc:textproc/libxslt
+MANPAGES_BUILD_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl \
+			xsltproc:textproc/libxslt
+MPI_LIB_DEPENDS=	libmpich.so:net/mpich
 
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == "amd64"
-PLIST_SUB+=	AMD64="" ARCH=amd64
+PLIST_SUB+=	AMD64=""
 . if !${PORT_OPTIONS:M32BIT}
 CONFIGURE_ARGS+=	--enable-only64bit
 PLIST_SUB+=	X86="@comment "
@@ -66,8 +69,8 @@ distribution or run 'make config' and uncheck 32BIT option
 PLIST_SUB+=	X86=""
 . endif
 .else
-PLIST_SUB+=	X86="" ARCH=x86
 PLIST_SUB+=	AMD64="@comment "
+PLIST_SUB+=	X86=""
 .endif
 
 .if !${PORT_OPTIONS:MDOCS}

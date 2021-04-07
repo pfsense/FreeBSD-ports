@@ -12,7 +12,7 @@ PATCHFILES+=	bbdb86c8be1b.patch:-p2 # https://github.com/letoram/arcan/pull/230
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Display Server, Multimedia Framework, Game Engine
 
-LICENSE=	BSD3CLAUSE GPLv2+ LGPL21
+LICENSE=	BSD3CLAUSE GPLv2+ LGPL21+
 LICENSE_COMB=	multi
 LICENSE_FILE_BSD3CLAUSE=${WRKSRC:H}/data/distr/LICENSE.BSD
 LICENSE_FILE_GPLv2+ =	${WRKSRC:H}/data/distr/LICENSE.GPL

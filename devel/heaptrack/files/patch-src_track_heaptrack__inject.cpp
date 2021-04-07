@@ -1,4 +1,4 @@
---- src/track/heaptrack_inject.cpp.orig	2020-06-01 22:47:27 UTC
+--- src/track/heaptrack_inject.cpp.orig        2020-06-01 22:47:27 UTC
 +++ src/track/heaptrack_inject.cpp
 @@ -66,8 +66,18 @@ using Dyn = ElfW(Dyn);
  using Rel = ElfW(Rel);

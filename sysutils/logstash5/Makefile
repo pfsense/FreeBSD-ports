@@ -8,9 +8,12 @@ MASTER_SITES=	http://artifacts.elastic.co/downloads/logstash/
 PKGNAMESUFFIX=	5
 
 MAINTAINER=	elastic@FreeBSD.org
-COMMENT=	Server-side data ingest and transfomation tool
+COMMENT=	Server-side data ingestion and transformation tool
 
 LICENSE=	APACHE20
+
+DEPRECATED=	End of life since release of 7.3.0
+EXPIRATION_DATE=	2021-03-31
 
 RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash
 

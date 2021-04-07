@@ -3,7 +3,7 @@
 PORTNAME=	openjdk
 DISTVERSIONPREFIX=	jdk-
 DISTVERSION=	${JDK_MAJOR_VERSION}.${JDK_MINOR_VERSION}.${JDK_PATCH_VERSION}+${JDK_BUILD_NUMBER}-${BSD_JDK_VERSION}
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	java devel
 PKGNAMESUFFIX?=	${JDK_MAJOR_VERSION}
 
@@ -12,7 +12,7 @@ COMMENT=	Java Development Kit ${JDK_MAJOR_VERSION}
 
 LICENSE=	GPLv2
 
-ONLY_FOR_ARCHS=	amd64 i386 powerpc64
+ONLY_FOR_ARCHS=	amd64 i386 powerpc64 powerpc64le
 
 BUILD_DEPENDS=	zip:archivers/zip \
 		autoconf>0:devel/autoconf \
@@ -138,11 +138,13 @@ CONFIGURE_ARGS+=	--with-extra-ldflags="-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFA
 MAKE_ENV+=	USE_CLANG=true
 .endif
 
-.if ${ARCH} == aarch64 || ${ARCH} == powerpc64
-CONFIGURE_ARGS+=	--disable-warnings-as-errors \
-			--disable-dtrace
+.if ${ARCH} == aarch64 || ${ARCH:Mpowerpc64*}
+CONFIGURE_ARGS+=	--disable-warnings-as-errors
 .endif
-.if defined(PPC_ABI) && ${PPC_ABI} == ELFv2
+.if ${ARCH} == aarch64 || (defined(PPC_ABI) && ${PPC_ABI} == ELFv1)
+CONFIGURE_ARGS+=	--disable-dtrace
+.endif
+.if (defined(PPC_ABI) && ${PPC_ABI} == ELFv2) || ${ARCH} == powerpc64le
 CONFIGURE_ARGS+=	--disable-precompiled-headers
 .endif
 .if ${ARCH} != amd64

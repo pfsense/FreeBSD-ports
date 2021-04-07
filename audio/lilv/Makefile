@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	lilv
-PORTVERSION=	0.24.10
+PORTVERSION=	0.24.12
 CATEGORIES=	audio
 MASTER_SITES=	https://download.drobilla.net/
 
-MAINTAINER=	beerml@sigma6audio.de
-COMMENT=	Lilv makes the use of LV2 plugins as simple as possible
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Make use of LV2 plugins as simple as possible
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/COPYING

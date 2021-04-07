@@ -55,15 +55,17 @@ PLIST_SUB=	ARCH=${ARCH:S/amd/x86_/}
 LDFLAGS+=	-fuse-ld=lld
 .endif
 
-OPTIONS_DEFINE=		${OPTIONS_MULTI} LIBUNWIND LLVM VAAPI VDPAU WAYLAND X11 ZSTD
-OPTIONS_DEFAULT=	${OPTIONS_MULTI} LIBUNWIND LLVM VAAPI VDPAU WAYLAND X11 ZSTD
-OPTIONS_MULTI=		DRI GALLIUM VULKAN
-OPTIONS_MULTI_DRI=	i965
-OPTIONS_MULTI_GALLIUM=	iris r600 radeonsi
-OPTIONS_MULTI_VULKAN=	anv radv
+OPTIONS_DEFINE=		LIBUNWIND LLVM LTO VAAPI VDPAU VKLAYERS WAYLAND X11 ZSTD
+OPTIONS_DEFAULT=	LIBUNWIND LLVM LTO VAAPI VDPAU VKLAYERS WAYLAND X11 ZSTD
+OPTIONS_GROUP=		DRI GALLIUM VULKAN
+OPTIONS_GROUP_DRI=	i965
+OPTIONS_GROUP_GALLIUM=	iris r600 radeonsi
+OPTIONS_GROUP_VULKAN=	anv radv
 OPTIONS_EXCLUDE_DragonFly=	LIBUNWIND anv
+OPTIONS_EXCLUDE_i386=	LTO # anv: vkcube fails on vkCreateSwapchainKHR
+OPTIONS_EXCLUDE_powerpc64=	${"${/usr/bin/ld:L:tA}"==/usr/bin/ld.lld:?LTO:} # LLVM bug 47353
 OPTIONS_EXCLUDE+=	${ARCH:Namd64:Ni386:Nx86_64:C/.+/anv i965 iris/}
-OPTIONS_EXCLUDE+=	${ARCH:Naarch64:Namd64:Ni386:Npowerpc64:Nx86_64:C/.+/LIBUNWIND/}
+OPTIONS_EXCLUDE+=	${ARCH:Naarch64:Namd64:Ni386:Npowerpc64:Npowerpc64le:Nx86_64:C/.+/LIBUNWIND/}
 OPTIONS_EXCLUDE+=	${"${GL_DEFAULT:S/,/ /g:[-1]}"==${.CURDIR:T}:?COINST:}
 OPTIONS_EXCLUDE+=	${"${GL_DEFAULT:S/,/ /g:[1]}"!=libglvnd:?GLVND:}
 OPTIONS_SLAVE+=		${"${GL_DEFAULT:S/,/ /g:[-1]}"!=${.CURDIR:T}:?COINST:}
@@ -71,9 +73,9 @@ OPTIONS_SLAVE+=		${"${GL_DEFAULT:S/,/ /g:[1]}"==libglvnd:?GLVND:}
 OPTIONS_SUB=		yes
 
 # Convert options to -D<type>-drivers=<driver1,driver2,etc>
-.for i in ${OPTIONS_MULTI}
+.for i in ${OPTIONS_GROUP}
 MESON_ARGS+=		-D${i:tl}-drivers=${${i}_DRIVERS:ts,}
-. for j in ${OPTIONS_MULTI_${i}}
+. for j in ${OPTIONS_GROUP_${i}}
 OPTIONS_DEFAULT+=	${j}
 ${j}_VARS+=		${i}_DRIVERS+=${j:S/anv/intel/:S/radv/amd/}
 . endfor
@@ -84,8 +86,12 @@ i965_DESC=		GMA 3000 (Gen4) and newer
 
 GALLIUM_DESC=		Unified OpenGL drivers
 iris_DESC=		Broadwell and newer
-r600_DESC=		R600, R700, Evergreen, Northern Islands
-radeonsi_DESC=		Southern Islands and newer
+r600_DESC=		R600, R700, Evergreen, Northern Islands (implies LLVM)
+radeonsi_DESC=		Southern Islands and newer (implies LLVM)
+
+VULKAN_DESC=		Vulkan drivers
+anv_DESC=		Haswell and newer
+radv_DESC=		Southern Islands and newer (implies LLVM)
 
 COINST_DESC=		Allow co-installation with another Mesa port
 COINST_VARS=		LLVM_DEFAULT=10 # chase mesa-dri
@@ -103,25 +109,29 @@ LIBUNWIND_DESC=		Use libunwind for stacktraces
 LIBUNWIND_LIB_DEPENDS=	libunwind.so:devel/libunwind
 LIBUNWIND_MESON_ENABLED=	libunwind
 
-LLVM_DESC=		Build with LLVM support
-LLVM_LIB_DEPENDS=	libLLVM-${LLVM_DEFAULT:C/^([6-9])0/\1/:S/-devel/12/}.so:devel/llvm${LLVM_DEFAULT}
+LLVM_DESC=		Build with LLVM support (see implies)
+LLVM_LIB_DEPENDS=	libLLVM-${LLVM_DEFAULT:C/^([6-9])0/\1/:S/-devel/13git/}.so:devel/llvm${LLVM_DEFAULT}
 LLVM_MESON_ENABLED=	llvm
 LLVM_BINARY_ALIAS=	llvm-config=llvm-config${LLVM_DEFAULT}
 .for i in r600 radeonsi radv
 ${i}_IMPLIES+=		LLVM
 .endfor
 
+LTO_MESON_TRUE=		b_lto
+
+VAAPI_DESC=		Hardware encoding/decoding (only r600, radeonsi)
 VAAPI_BUILD_DEPENDS=	libva>0:multimedia/libva
 VAAPI_MESON_ENABLED=	gallium-va
 
+VDPAU_DESC=		Hardware decoding (only r600, radeonsi) (implies X11)
 VDPAU_BUILD_DEPENDS=	libvdpau>0:multimedia/libvdpau
 VDPAU_MESON_ENABLED=	gallium-vdpau
+VDPAU_IMPLIES=		X11
 
-VULKAN_DESC=		Vulkan drivers and layers
-VULKAN_BUILD_DEPENDS=	glslangValidator:graphics/glslang
-VULKAN_MESON_ON=	-Dvulkan-layers=device-select,overlay
-anv_DESC=		Haswell and newer
-radv_DESC=		Southern Islands and newer
+VKLAYERS_DESC=		Vulkan layers: ${VKLAYERS_MESON_ON:C/.*=//} (implies ${VKLAYERS_IMPLIES})
+VKLAYERS_BUILD_DEPENDS=	glslangValidator:graphics/glslang
+VKLAYERS_MESON_ON=	-Dvulkan-layers=device-select,overlay
+VKLAYERS_IMPLIES=	${"${PORT_OPTIONS:Mradv}":?radv:anv} # any from OPTIONS_GROUP_VULKAN
 
 WAYLAND_BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols
 WAYLAND_LIB_DEPENDS=	libwayland-server.so:graphics/wayland

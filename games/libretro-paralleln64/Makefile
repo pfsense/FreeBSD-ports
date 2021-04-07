@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	libretro-paralleln64
-PORTVERSION=	0.20201129
+PORTVERSION=	0.20210127
 CATEGORIES=	games
 
 MAINTAINER=	menelkir@itroll.org
@@ -28,7 +28,7 @@ MAKE_ARGS=	WITH_DYNAREC=${DYNAREC}
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
 GH_PROJECT=	parallel-n64
-GH_TAGNAME=	29e7f39
+GH_TAGNAME=	6e26fbb
 
 PLIST_FILES=	lib/libretro/parallel_n64_libretro.so
 

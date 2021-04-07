@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mc
-PORTVERSION=	4.8.24
+PORTVERSION=	4.8.26
 CATEGORIES=	misc shells
 MASTER_SITES=	http://ftp.midnight-commander.org/ \
 		https://ftp.osuosl.org/pub/midnightcommander/
@@ -39,6 +39,7 @@ ICONV_USES=		iconv
 ICONV_CONFIGURE_ENABLE=	charset
 
 NCURSES_CONFIGURE_ON=	--with-screen=ncurses
+NCURSES_CFLAGS+=	-DNCURSES_WIDECHAR
 
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext

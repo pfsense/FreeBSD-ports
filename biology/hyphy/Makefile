@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	hyphy
-DISTVERSION=	2.5.24
+DISTVERSION=	2.5.29
 CATEGORIES=	biology
 
 MAINTAINER=	jrm@FreeBSD.org
@@ -14,7 +14,7 @@ ONLY_FOR_ARCHS=	amd64 i386
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
-USES=		cmake compiler:openmp localbase:ldflags ssl
+USES=		cmake localbase:ldflags ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	veg
 

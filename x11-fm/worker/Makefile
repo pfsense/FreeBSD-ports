@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	worker
-PORTVERSION=	4.6.1
+PORTVERSION=	4.7.0
 CATEGORIES=	x11-fm
 MASTER_SITES=	http://www.boomerangsworld.de/cms/worker/downloads/
 
@@ -22,32 +22,31 @@ SHEBANG_FILES=	${WRKSRC}/scripts/*.sh \
 		${WRKSRC}/scripts/xeditor \
 		${WRKSRC}/scripts/find_file_by_chksum.py
 
-OPTIONS_DEFINE=	AVFS HAL INOTIFY LUA SSL XFT
-OPTIONS_DEFAULT=	AVFS INOTIFY SSL XFT
+OPTIONS_DEFINE=	AVFS DBUS INOTIFY LUA SSL XFT
+OPTIONS_DEFAULT=	AVFS DBUS INOTIFY SSL XFT
 OPTIONS_EXCLUDE_DragonFly=	AVFS
 
 INOTIFY_DESC=	Monitor directory changes via libinotify
 AVFS_DESC=	Use AVFS library to access archives
+SSL_DESC=	SHA-256 checksum support via OpenSSL
 
 AVFS_LIB_DEPENDS=	libavfs.so:sysutils/avfs
+AVFS_CONFIGURE_OFF=	--without-avfs
 
-HAL_LIB_DEPENDS=	libhal-storage.so:sysutils/hal \
-			libdbus-glib-1.so:devel/dbus-glib \
-			libdbus-1.so:devel/dbus
-HAL_USE=	gnome=glib20 xorg=sm,ice
-HAL_USES=	gettext-runtime gnome
+DBUS_LIB_DEPENDS=	libdbus-1.so:devel/dbus
+DBUS_CONFIGURE_OFF=	--without-dbus
 
 INOTIFY_LIB_DEPENDS=	libinotify.so:devel/libinotify
+INOTIFY_CONFIGURE_OFF=	--disable-inotify
 
+LUA_USES=		lua
 LUA_CONFIGURE_OFF=	--disable-lua
-LUA_USES=	lua
 
-SSL_DESC=	SHA-256 checksum support via OpenSSL
+SSL_USES=		ssl
 SSL_CONFIGURE_ENV=	OPENSSL_CFLAGS="-I${OPENSSLINC}" \
 			OPENSSL_LIBS="-L${OPENSSLLIB} -lcrypto"
-SSL_USES=	ssl
 
+XFT_USE=		xorg=xft
 XFT_CONFIGURE_OFF=	--disable-xft
-XFT_USE=	xorg=xft
 
 .include <bsd.port.mk>

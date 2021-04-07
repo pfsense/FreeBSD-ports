@@ -9,10 +9,11 @@ PORTEPOCH=	1
 CATEGORIES=	dns
 MASTER_SITES=	https://www.thekelleys.org.uk/dnsmasq/ \
 		LOCAL/mandree/
-PATCH_STRIP=	-p1
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	Lightweight DNS forwarder, DHCP, and TFTP server
+
+CONFLICTS_INSTALL=	dnsmasq-devel-*
 
 LICENSE=	GPLv2
 
@@ -34,6 +35,7 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 
 CONFLICTS_INSTALL=	dnsmasq-devel-*
 
+PATCH_STRIP=	-p1
 SUB_FILES=	pkg-message
 
 PORTDOCS=	CHANGELOG CHANGELOG.archive FAQ doc.html setup.html

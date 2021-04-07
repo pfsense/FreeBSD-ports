@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pkg
-DISTVERSION=	1.15.99.8
+DISTVERSION=	1.16.99.4
 _PKG_VERSION=	${DISTVERSION}
 CATEGORIES=	ports-mgmt
 PKGNAMESUFFIX=	-devel
@@ -13,7 +13,7 @@ LICENSE=	BSD2CLAUSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
-GH_TAGNAME=	32023df7
+GH_TAGNAME=	0d0ab01f
 
 CFLAGS+=	-O0 -g -Wno-error
 USE_LDCONFIG=	${PREFIX}/lib/compat/pkg
@@ -34,6 +34,11 @@ EXTRA_PATCHES=	${FILESDIR}/extra-patch-docs_pkg.8
 .endif
 
 .include <bsd.port.pre.mk>
+
+# TODO: activate in april 2021
+#.if ${OPSYS} == FreeBSD && ${OSVERSION} > 1400000
+#CONFIGURE_ARGS+=	--default-format=tzst
+#.endif
 
 .if !exists(/usr/libdata/pkgconfig/liblzma.pc)
 LIBLZMA_LIBS=	-llzma

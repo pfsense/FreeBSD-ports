@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	cffi
-PORTVERSION=	1.14.4
+PORTVERSION=	1.14.5
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,9 +15,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libffi.so:devel/libffi
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycparser>=0:devel/py-pycparser@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest@${PY_FLAVOR}
 
-USES=		compiler:c11 localbase python
+USES=		compiler:c11 localbase python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 .include <bsd.port.pre.mk>
@@ -30,7 +30,6 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_cffi_backend*.so
 
 do-test:
-	cd ${TEST_WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} build_ext -i
-	cd ${TEST_WRKSRC} && ${PYTHON_CMD} -m pytest -rs -v
+	cd ${WRKSRC} && ${SETENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR} ${PYTHON_CMD} -m pytest -rs -v
 
 .include <bsd.port.post.mk>

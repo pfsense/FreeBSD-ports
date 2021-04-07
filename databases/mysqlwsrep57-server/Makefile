@@ -5,7 +5,7 @@ PORTNAME=	mysqlwsrep
 PORTVERSION?=	5.7.31
 DISTVERSIONPREFIX?=	wsrep_
 DISTVERSIONSUFFIX?=	-25.23
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES=	databases
 MASTER_SITES+=	SF/boost/boost/1.59.0:boost
 PKGNAMESUFFIX=	57-server
@@ -188,7 +188,7 @@ CXXFLAGS+=	-Wno-c++11-narrowing
 
 # Plugin innodb_memcached requires -fcommon to avoid duplicate symbol linker
 # error with llmv11.
-.if ${CHOSEN_COMPILER_TYPE} == clang && ${OPSYS} == FreeBSD && ${OSVERSION} >= 1300109
+.if (${OPSYS} == FreeBSD && ${OSVERSION} >= 1300109) || ${CHOSEN_COMPILER_TYPE} == gcc
 CFLAGS+=	-fcommon
 .endif
 

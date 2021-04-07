@@ -1,15 +1,26 @@
---- gtk/build-intel-lib.sh.orig	2017-11-20 03:58:50 UTC
+--- gtk/build-intel-lib.sh.orig	2021-03-05 01:52:42 UTC
 +++ gtk/build-intel-lib.sh
-@@ -1,10 +1,10 @@
- #!/bin/sh
- if [ -f gcc111libbid.a ]; then exit 0; fi
--tar xvfz ../inteldecimal/IntelRDFPMathLib20U1.tar.gz
-+#tar xvfz ../inteldecimal/IntelRDFPMathLib20U1.tar.gz
+@@ -43,6 +43,8 @@ fi
+ 
+ tar xvfz ../inteldecimal/IntelRDFPMathLib20U1.tar.gz
  cd IntelRDFPMathLib20U1
++sed -i '' -e 's/\r//g' LIBRARY/src/bid_functions.h
++patch -p0 <../intel-lib-freebsd.patch
  patch -p0 <../intel-lib-linux.patch
- cd LIBRARY
--make CC=gcc CALL_BY_REF=1 GLOBAL_RND=1 GLOBAL_FLAGS=1 UNCHANGED_BINARY_FLAGS=0
-+gmake CC=cc CALL_BY_REF=1 GLOBAL_RND=1 GLOBAL_FLAGS=1 UNCHANGED_BINARY_FLAGS=0
- mv libbid.a ../../gcc111libbid.a
- cd ../..
- ( echo '#ifdef FREE42_FPTEST'; echo 'const char *readtest_lines[] = {'; tr -d '\r' < IntelRDFPMathLib20U1/TESTS/readtest.in | sed 's/^\(.*\)$/"\1",/'; echo '0 };'; echo '#endif' ) > readtest_lines.cc
+ 
+ # When building for architectures other than x86 or x86_64, I remove the
+@@ -55,11 +58,11 @@ patch -p0 <../intel-lib-linux.patch
+ # it to x86_64 works when targeting arm64, a 64-bit platform.
+ # Of course, proceed with caution. Your mileage may vary.
+ 
+-case `uname -m` in
+-  armv7|armv7l|ppc)
++case `uname -p` in
++  armv6|armv7|armv7l|ppc|powerpc|powerpcspe|mips)
+     patch -p0 <../intel-lib-unknown-32bit.patch
+     ;;
+-  aarch64|arm64|i86pc)
++  aarch64|arm64|i86pc|powerpc64|powerpc64le|mips64|riscv64)
+     patch -p0 <../intel-lib-unknown-64bit.patch
+     ;;
+ esac

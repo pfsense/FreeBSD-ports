@@ -1,0 +1,3 @@
+bin/fennel
+lib/fennelview.lua
+man/man1/fennel.1.gz

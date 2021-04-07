@@ -160,7 +160,10 @@ make-use-cabal-revs:
 .  if !defined(CABAL_BOOTSTRAP)
 
 cabal-post-extract:
+	@/bin/test ! -f ${WRKSRC}/cabal.project || (echo "cabal.project file already present in WRKSRC!" && false)
+	echo -n "packages: . " > ${WRKSRC}/cabal.project
 .    for package in ${_use_cabal}
+	echo -n "${package:C/_[0-9]+//} " >> ${WRKSRC}/cabal.project
 .      if ${package:C/[^_]*//:S/_//} != ""
 		cp ${DISTDIR}/${DIST_SUBDIR}/${package:C/_[0-9]+//}/revision/${package:C/[^_]*//:S/_//}.cabal `find ${WRKDIR}/${package:C/_[0-9]+//} -name '*.cabal' -depth 1`
 .      endif
@@ -168,7 +171,7 @@ cabal-post-extract:
 		mv ${package:C/_[0-9]+//} ${WRKSRC}/
 .    endfor
 	mkdir -p ${CABAL_HOME}/.cabal
-	touch ${CABAL_HOME}/.cabal/config
+	echo "jobs: ${MAKE_JOBS_NUMBER}" > ${CABAL_HOME}/.cabal/config
 
 cabal-post-patch:
 .    if ${cabal_ARGS:Mhpack}

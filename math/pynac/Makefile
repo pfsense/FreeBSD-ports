@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	pynac
-PORTVERSION=	0.7.26
-PORTREVISION=	2
+PORTVERSION=	0.7.27
+PORTREVISION=	1
 CATEGORIES=	math python
-MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${DISTNAME}/
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/archive/
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Symbolic computation with Python objects, Sage Math support library
@@ -14,10 +14,12 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libgmp.so:math/gmp		\
 		libntl.so:math/ntl		\
+		libmpfr.so:math/mpfr		\
 		libflint.so:math/flint2		\
 		libSingular.so:math/singular
 
-USES=		compiler:c++11-lang libtool localbase pkgconfig python:3.6+ tar:bz2
+USES=		autoreconf compiler:c++11-lang libtool localbase pkgconfig	\
+		python:3.6+
 
 OPTIONS_DEFINE=		GIAC
 OPTIONS_DEFAULT=
@@ -28,11 +30,9 @@ GIAC_CONFIGURE_OFF=	--without-giac
 GIAC_LIBS=		"-lm"
 
 GNU_CONFIGURE=	yes
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTNAME}-${PORTVERSION}
 USE_LDCONFIG=	yes
 TEST_TARGET=	check
-
-pre-configure-GIAC-on:
-	${REINPLACE_CMD} -e 's|-lpynac|-lpynac -lgiac|' ${WRKSRC}/pynac.pc.in
 
 .include <bsd.port.options.mk>
 

@@ -11,6 +11,7 @@
     SUBDIR += R-cran-ROAuth
     SUBDIR += R-cran-askpass
     SUBDIR += R-cran-digest
+    SUBDIR += R-cran-gitcreds
     SUBDIR += R-cran-openssl
     SUBDIR += acme.sh
     SUBDIR += acmed
@@ -28,11 +29,13 @@
     SUBDIR += amavisd-milter
     SUBDIR += amavisd-new
     SUBDIR += apache-xml-security-c
-    SUBDIR += apg
+    SUBDIR += apkid
     SUBDIR += arirang
     SUBDIR += arpCounterattack
     SUBDIR += asignify
+    SUBDIR += assh
     SUBDIR += autossh
+    SUBDIR += aws-c-cal
     SUBDIR += aws-iam-authenticator
     SUBDIR += aws-vault
     SUBDIR += axTLS
@@ -103,6 +106,7 @@
     SUBDIR += cracklib
     SUBDIR += crackpkcs12
     SUBDIR += create-cert
+    SUBDIR += crowdsec
     SUBDIR += cryptlib
     SUBDIR += cryptopp
     SUBDIR += ct-submit
@@ -190,18 +194,21 @@
     SUBDIR += gost-engine
     SUBDIR += govpn
     SUBDIR += gpa
+    SUBDIR += gpg-gui
     SUBDIR += gpgdir
     SUBDIR += gpgme
     SUBDIR += gpgme-cpp
     SUBDIR += gpgme-qt5
     SUBDIR += gputty
-    SUBDIR += greenbone-security-assistant8
-    SUBDIR += greenbone-security-assistant9
+    SUBDIR += greenbone-security-assistant
     SUBDIR += gringotts
     SUBDIR += gsasl
     SUBDIR += gss
     SUBDIR += gstreamer1-plugins-dtls
     SUBDIR += gtkpasman
+    SUBDIR += gvm
+    SUBDIR += gvm-libs
+    SUBDIR += gvmd
     SUBDIR += gwee
     SUBDIR += hackbot
     SUBDIR += hardening-check
@@ -263,9 +270,9 @@
     SUBDIR += kpkpass
     SUBDIR += kpmenu
     SUBDIR += krb5
-    SUBDIR += krb5-116
     SUBDIR += krb5-117
     SUBDIR += krb5-118
+    SUBDIR += krb5-119
     SUBDIR += krb5-appl
     SUBDIR += krb5-devel
     SUBDIR += kripp
@@ -308,6 +315,7 @@
     SUBDIR += libpwstor
     SUBDIR += libressl
     SUBDIR += libressl-devel
+    SUBDIR += libretls
     SUBDIR += libscep
     SUBDIR += libscrypt
     SUBDIR += libsecret
@@ -407,18 +415,10 @@
     SUBDIR += openssh-portable
     SUBDIR += openssl
     SUBDIR += openssl-devel
+    SUBDIR += openssl-quictls
     SUBDIR += openssl-unsafe
     SUBDIR += openssl_tpm_engine
-    SUBDIR += openvas8
-    SUBDIR += openvas8-cli
-    SUBDIR += openvas8-libraries
-    SUBDIR += openvas8-manager
-    SUBDIR += openvas8-scanner
-    SUBDIR += openvas9
-    SUBDIR += openvas9-cli
-    SUBDIR += openvas9-libraries
-    SUBDIR += openvas9-manager
-    SUBDIR += openvas9-scanner
+    SUBDIR += openvas
     SUBDIR += openvpn
     SUBDIR += openvpn-admin
     SUBDIR += openvpn-auth-ldap
@@ -798,6 +798,7 @@
     SUBDIR += pidgin-otr
     SUBDIR += pinentry
     SUBDIR += pinentry-curses
+    SUBDIR += pinentry-efl
     SUBDIR += pinentry-fltk
     SUBDIR += pinentry-gnome3
     SUBDIR += pinentry-gtk2
@@ -846,6 +847,9 @@
     SUBDIR += py-artifacts
     SUBDIR += py-asyncssh
     SUBDIR += py-authlib
+    SUBDIR += py-azure-keyvault-certificates
+    SUBDIR += py-azure-keyvault-keys
+    SUBDIR += py-azure-keyvault-secrets
     SUBDIR += py-bcrypt
     SUBDIR += py-btchip-python
     SUBDIR += py-cerealizer
@@ -898,7 +902,7 @@
     SUBDIR += py-gpgme
     SUBDIR += py-gpsoauth
     SUBDIR += py-gssapi
-    SUBDIR += py-gtts-token
+    SUBDIR += py-gvm-tools
     SUBDIR += py-hkdf
     SUBDIR += py-htpasswd
     SUBDIR += py-itsdangerous
@@ -922,6 +926,7 @@
     SUBDIR += py-onlykey
     SUBDIR += py-openssl
     SUBDIR += py-ospd
+    SUBDIR += py-ospd-openvas
     SUBDIR += py-paramiko
     SUBDIR += py-paramiko1
     SUBDIR += py-pass-audit
@@ -954,6 +959,7 @@
     SUBDIR += py-python-axolotl
     SUBDIR += py-python-axolotl-curve25519
     SUBDIR += py-python-gnupg
+    SUBDIR += py-python-gvm
     SUBDIR += py-python-jose
     SUBDIR += py-python-nss
     SUBDIR += py-python-openid
@@ -964,9 +970,6 @@
     SUBDIR += py-python3-saml
     SUBDIR += py-pyvex
     SUBDIR += py-pywinrm
-    SUBDIR += py-rekall
-    SUBDIR += py-rekall-core
-    SUBDIR += py-rekall_lib
     SUBDIR += py-requests-credssp
     SUBDIR += py-requests-kerberos
     SUBDIR += py-ropper
@@ -1028,7 +1031,6 @@
     SUBDIR += razorback-virusTotal
     SUBDIR += razorback-yaraNugget
     SUBDIR += rcracki_mt
-    SUBDIR += regripper
     SUBDIR += reop
     SUBDIR += retranslator
     SUBDIR += revealrk
@@ -1037,6 +1039,7 @@
     SUBDIR += rifiuti2
     SUBDIR += rkhunter
     SUBDIR += rndpassw
+    SUBDIR += rnp
     SUBDIR += ruby-bitwarden
     SUBDIR += rubygem-acme-client
     SUBDIR += rubygem-aes_key_wrap
@@ -1046,6 +1049,7 @@
     SUBDIR += rubygem-bcrypt
     SUBDIR += rubygem-bcrypt-ruby
     SUBDIR += rubygem-bcrypt_pbkdf
+    SUBDIR += rubygem-bcrypt_pbkdf10
     SUBDIR += rubygem-cose
     SUBDIR += rubygem-devise-two-factor
     SUBDIR += rubygem-devise-two-factor-rails5
@@ -1139,6 +1143,7 @@
     SUBDIR += rubygem-safety_net_attestation
     SUBDIR += rubygem-scrypt
     SUBDIR += rubygem-securecompare
+    SUBDIR += rubygem-securerandom
     SUBDIR += rubygem-signet
     SUBDIR += rubygem-six
     SUBDIR += rubygem-sshkey
@@ -1250,7 +1255,6 @@
     SUBDIR += tinc
     SUBDIR += tinc-devel
     SUBDIR += tinyca
-    SUBDIR += titus
     SUBDIR += tls-check
     SUBDIR += tlswrap
     SUBDIR += tor
@@ -1268,6 +1272,8 @@
     SUBDIR += truecrypt
     SUBDIR += tthsum
     SUBDIR += u2f-devd
+    SUBDIR += uacme
+    SUBDIR += ubuntu-keyring
     SUBDIR += unhide
     SUBDIR += unicornscan
     SUBDIR += vanguards-tor
@@ -1291,6 +1297,7 @@
     SUBDIR += wolfssh
     SUBDIR += wolfssl
     SUBDIR += wpa_supplicant
+    SUBDIR += wpa_supplicant-devel
     SUBDIR += xca
     SUBDIR += xinetd
     SUBDIR += xml-security

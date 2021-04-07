@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	abinit
-DISTVERSION=	9.2.2
+DISTVERSION=	9.4.1
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +11,7 @@ COMMENT=	Full-featured atomic-scale first-principles simulation software
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS=	amd64 powerpc64 powerpc64le
 
 BUILD_DEPENDS=	gm4:devel/m4	\
 		${PYNUMPY}	\
@@ -34,7 +34,7 @@ TEST_DEPENDS=	${PYNUMPY}	\
 		libyaml>0:textproc/libyaml
 
 USES=		autoreconf:build blaslapack:netlib fortran gmake gnome localbase:ldflags	\
-		python:3.6+ shebangfix
+		python:3.7+ shebangfix
 USE_GITHUB=	yes
 USE_GNOME=	libxml2
 SHEBANG_FILES=	config/scripts/* doc/tutorial/paral_gspw_assets/abinit.sub.*

@@ -59,6 +59,7 @@ lib/calibre/calibre/db/cli/main.py
 lib/calibre/calibre/db/cli/tests.py
 lib/calibre/calibre/db/cli/utils.py
 lib/calibre/calibre/db/copy_to_library.py
+lib/calibre/calibre/db/covers.py
 lib/calibre/calibre/db/delete_service.py
 lib/calibre/calibre/db/errors.py
 lib/calibre/calibre/db/fields.py
@@ -372,6 +373,7 @@ lib/calibre/calibre/ebooks/metadata/sources/test.py
 lib/calibre/calibre/ebooks/metadata/sources/update.py
 lib/calibre/calibre/ebooks/metadata/sources/worker.py
 lib/calibre/calibre/ebooks/metadata/tag_mapper.py
+lib/calibre/calibre/ebooks/metadata/test_author_sort.py
 lib/calibre/calibre/ebooks/metadata/toc.py
 lib/calibre/calibre/ebooks/metadata/topaz.py
 lib/calibre/calibre/ebooks/metadata/txt.py
@@ -823,6 +825,7 @@ lib/calibre/calibre/gui2/dialogs/smartdevice.py
 lib/calibre/calibre/gui2/dialogs/smartdevice_ui.py
 lib/calibre/calibre/gui2/dialogs/tag_categories.py
 lib/calibre/calibre/gui2/dialogs/tag_categories_ui.py
+lib/calibre/calibre/gui2/dialogs/template_dialog_box_layout.py
 lib/calibre/calibre/gui2/dialogs/tag_editor.py
 lib/calibre/calibre/gui2/dialogs/tag_editor_ui.py
 lib/calibre/calibre/gui2/dialogs/tag_list_editor.py
@@ -978,7 +981,6 @@ lib/calibre/calibre/gui2/store/stores/ebookpoint_plugin.py
 lib/calibre/calibre/gui2/store/stores/ebooks_com_plugin.py
 lib/calibre/calibre/gui2/store/stores/ebooksgratuits_plugin.py
 lib/calibre/calibre/gui2/store/stores/ebookshoppe_uk_plugin.py
-lib/calibre/calibre/gui2/store/stores/eknigi_plugin.py
 lib/calibre/calibre/gui2/store/stores/empik_plugin.py
 lib/calibre/calibre/gui2/store/stores/feedbooks_plugin.py
 lib/calibre/calibre/gui2/store/stores/google_books_plugin.py
@@ -1078,6 +1080,7 @@ lib/calibre/calibre/gui2/tweak_book/editor/widget.py
 lib/calibre/calibre/gui2/tweak_book/file_list.py
 lib/calibre/calibre/gui2/tweak_book/function_replace.py
 lib/calibre/calibre/gui2/tweak_book/job.py
+lib/calibre/calibre/gui2/tweak_book/jump_to_class.py
 lib/calibre/calibre/gui2/tweak_book/live_css.py
 lib/calibre/calibre/gui2/tweak_book/main.py
 lib/calibre/calibre/gui2/tweak_book/manage_fonts.py
@@ -1157,6 +1160,7 @@ lib/calibre/calibre/plugins/_patiencediff_c.so
 lib/calibre/calibre/plugins/bzzdec.so
 lib/calibre/calibre/plugins/cPalmdoc.so
 lib/calibre/calibre/plugins/certgen.so
+lib/calibre/calibre/plugins/fast_css_transform.so
 lib/calibre/calibre/plugins/freetype.so
 lib/calibre/calibre/plugins/html_as_json.so
 lib/calibre/calibre/plugins/html_syntax_highlighter.so
@@ -1212,13 +1216,13 @@ lib/calibre/calibre/srv/pool.py
 lib/calibre/calibre/srv/pre_activated.py
 lib/calibre/calibre/srv/render_book.py
 lib/calibre/calibre/srv/routes.py
-lib/calibre/calibre/srv/sendfile.py
 lib/calibre/calibre/srv/standalone.py
 lib/calibre/calibre/srv/tests/__init__.py
 lib/calibre/calibre/srv/tests/ajax.py
 lib/calibre/calibre/srv/tests/auth.py
 lib/calibre/calibre/srv/tests/base.py
 lib/calibre/calibre/srv/tests/content.py
+lib/calibre/calibre/srv/tests/fast_css_transform.py
 lib/calibre/calibre/srv/tests/http.py
 lib/calibre/calibre/srv/tests/loop.py
 lib/calibre/calibre/srv/tests/main.py
@@ -1327,6 +1331,7 @@ lib/calibre/calibre/utils/run_tests.py
 lib/calibre/calibre/utils/search_query_parser.py
 lib/calibre/calibre/utils/search_query_parser_test.py
 lib/calibre/calibre/utils/serialize.py
+lib/calibre/calibre/utils/seven_zip.py
 lib/calibre/calibre/utils/shared_file.py
 lib/calibre/calibre/utils/short_uuid.py
 lib/calibre/calibre/utils/smartypants.py
@@ -1422,6 +1427,13 @@ lib/calibre/polyglot/reprlib.py
 lib/calibre/polyglot/smtplib.py
 lib/calibre/polyglot/socketserver.py
 lib/calibre/polyglot/urllib.py
+lib/calibre/qt/__init__.py
+lib/calibre/qt/__main__.py
+lib/calibre/qt/core.py
+lib/calibre/qt/core_name_map.py
+lib/calibre/qt/loader.py
+lib/calibre/qt/webengine.py
+lib/calibre/qt/webengine_name_map.py
 lib/calibre/sgmllib.py
 lib/calibre/templite/__init__.py
 lib/calibre/tinycss/__init__.py
@@ -1708,6 +1720,7 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/images/snippets.png
 %%DATADIR%%/images/sort.png
 %%DATADIR%%/images/spell-check.png
+%%DATADIR%%/images/split.png
 %%DATADIR%%/images/store.png
 %%DATADIR%%/images/subset-fonts.png
 %%DATADIR%%/images/swap.png
@@ -1738,7 +1751,6 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/images/wizard.png
 %%DATADIR%%/jacket/stylesheet.css
 %%DATADIR%%/jacket/template.xhtml
-%%DATADIR%%/jquery.simulate.js
 %%DATADIR%%/localization/iso3166.calibre_msgpack
 %%DATADIR%%/localization/iso639.calibre_msgpack
 %%DATADIR%%/localization/locales.zip

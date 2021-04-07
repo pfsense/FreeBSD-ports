@@ -2,17 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	leveldb
-PORTVERSION=	1.22
-PORTREVISION=	1
+PORTVERSION=	1.23
 CATEGORIES=	databases
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Fast and lightweight key/value database library by Google
 
 LICENSE=	BSD3CLAUSE
-
-OPTIONS_DEFINE=	GPERFTOOLS SNAPPY
-OPTIONS_DEFAULT=SNAPPY
 
 USES=		cmake compiler:c++11-lang localbase
 
@@ -29,6 +25,9 @@ SHLIB_MINOR=	${PORTVERSION:E}
 
 GH_ACCOUNT=	google
 USE_GITHUB=	yes
+
+OPTIONS_DEFINE=	GPERFTOOLS SNAPPY
+OPTIONS_DEFAULT=SNAPPY
 
 GPERFTOOLS_LIB_DEPENDS=	libtcmalloc.so:devel/google-perftools
 SNAPPY_LIB_DEPENDS=	libsnappy.so:archivers/snappy

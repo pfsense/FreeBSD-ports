@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	picard
-PORTVERSION=	2.5.5
+PORTVERSION=	2.5.6
+PORTREVISION=	2
 CATEGORIES=	audio python
 MASTER_SITES=	http://ftp.musicbrainz.org/pub/musicbrainz/picard/ \
 		ftp://ftp.musicbrainz.org/pub/musicbrainz/picard/ \
@@ -37,6 +38,6 @@ PLUGINS_DESC=		Install various plugins to extend functionality
 PLUGINS_RUN_DEPENDS=	picard-plugins>=2.0:audio/picard-plugins
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/picard/util/_astrcmp.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/picard/util/_astrcmp*.so
 
 .include <bsd.port.mk>

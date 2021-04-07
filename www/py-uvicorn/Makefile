@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	uvicorn
-PORTVERSION=	0.13.2
+PORTVERSION=	0.13.4
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,7 +21,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>=7<8:devel/py-click@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}uvloop>=0.14.0:devel/py-uvloop@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}websockets>=8<9:devel/py-websockets@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python:3.7+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
@@ -29,7 +29,7 @@ NO_ARCH=	yes
 OPTIONS_DEFINE=	WATCHGODRELOAD
 WATCHGODRELOAD_DESC=	Reload automatically with watchgod
 
-WATCHGODRELOAD_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}watchgod>=0.6<0.7:devel/py-watchgod@${PY_FLAVOR}
+WATCHGODRELOAD_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}watchgod>=0.6:devel/py-watchgod@${PY_FLAVOR}
 
 .include <bsd.port.pre.mk>
 

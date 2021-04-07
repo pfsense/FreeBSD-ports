@@ -1,11 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	nmrpflash
-DISTVERSION=	0.9.15-rc3
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.9.15
 CATEGORIES=	sysutils
 
 MAINTAINER=	se@FreeBSD.org
-COMMENT=	Inofficial flash tool for Netgear network devices
+COMMENT=	Unofficial flash tool for Netgear network devices
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -14,7 +15,6 @@ USES=		gmake
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	jclehner
-GH_TAGNAME=	v${DISTVERSION}
 
 MAKE_FLAGS=	VERSION=${DISTVERSION}
 

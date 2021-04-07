@@ -3,6 +3,7 @@
 
 PORTNAME=	jekyll
 PORTVERSION=	4.2.0
+PORTREVISION=	2
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -20,12 +21,12 @@ RUN_DEPENDS=	rubygem-addressable>=2.4<3:www/rubygem-addressable \
 		rubygem-jekyll-watch>=2.0<3:www/rubygem-jekyll-watch \
 		rubygem-kramdown>=2.3<3:textproc/rubygem-kramdown \
 		rubygem-kramdown-parser-gfm>=1.0<2:textproc/rubygem-kramdown-parser-gfm \
-		rubygem-liquid>=4.0<5:textproc/rubygem-liquid \
+		rubygem-liquid4>=4.0<5:textproc/rubygem-liquid4 \
 		rubygem-mercenary>=0.4.0<0.5:devel/rubygem-mercenary \
 		rubygem-pathutil>=0.9<1:devel/rubygem-pathutil \
 		rubygem-rouge>=3.0<4:textproc/rubygem-rouge \
 		rubygem-safe_yaml>=1.0<2:devel/rubygem-safe_yaml \
-		rubygem-terminal-table>=2.0<3:textproc/rubygem-terminal-table
+		rubygem-terminal-table>=2.0:textproc/rubygem-terminal-table
 
 USES=		gem
 USE_RUBY=	yes

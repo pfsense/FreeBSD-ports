@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	swoole
-PORTVERSION=	4.5.9
+PORTVERSION=	4.6.4
 CATEGORIES=	devel net
 
 MAINTAINER=	vanilla@FreeBSD.org
-COMMENT=	Asynchronous & concurrent & distributed networking framework
+COMMENT=	Asynchronous, concurrent, and distributed networking framework
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,11 +16,13 @@ USE_PHP=	hash:build pcre
 
 CONFIGURE_ARGS+=	--enable-mysqlnd
 
-OPTIONS_DEFINE=	HTTP2 SOCKETS
-HTTP2_LIB_DEPENDS=	libnghttp2.so:www/libnghttp2
+OPTIONS_DEFINE=	HTTP2 SOCKETS JSON CURL
 HTTP2_CONFIGURE_ON=	--enable-http2 --enable-openssl
 SOCKETS_USE=	PHP=sockets:build
 SOCKETS_DESC=	Use native php sockets extension
 SOCKETS_CONFIGURE_ON=	--enable-sockets
+CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
+CURL_CONFIGURE_ON=	--enable-swoole-curl
+JSON_CONFIGURE_ON=	--enable-swoole-json
 
 .include <bsd.port.mk>

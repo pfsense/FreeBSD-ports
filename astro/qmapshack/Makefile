@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	qmapshack
-PORTVERSION=	1.15.0
+PORTVERSION=	1.15.2
+PORTREVISION=	1
 DISTVERSIONPREFIX=	V_
-PORTREVISION=	3
 CATEGORIES=	astro
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -12,6 +12,11 @@ COMMENT=	Ultimate outdoor aficionado's tool
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
+
+BROKEN_FreeBSD_11=	Requires OpenSSL 1.1.0+
 
 LIB_DEPENDS=	libgdal.so:graphics/gdal \
 		libproj.so:graphics/proj \

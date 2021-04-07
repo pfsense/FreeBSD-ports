@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	gnome-calendar
-PORTVERSION=	3.38.1
+PORTVERSION=	3.38.2
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	Simple and beatiful calendar application for GNOME
+COMMENT=	Simple and beautiful calendar application for GNOME
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -2,7 +2,7 @@
 
 PORTNAME=	zrythm
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.0-alpha.7.0.1
+DISTVERSION=	1.0.0-alpha.13.1.1
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +11,8 @@ COMMENT=	Modern music production system, also known as DAW
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	help2man:misc/help2man \
+BUILD_DEPENDS=	bash:shells/bash \
+		help2man:misc/help2man \
 		kf5-breeze-icons>0:x11-themes/kf5-breeze-icons
 LIB_DEPENDS=	libaudec.so:audio/libaudec \
 		libavcodec.so:multimedia/ffmpeg \

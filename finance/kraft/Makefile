@@ -2,13 +2,13 @@
 
 PORTNAME=	kraft
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.95
+DISTVERSION=	0.96
 CATEGORIES=	finance kde
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Manage invoices and documents for small companies
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	bash:shells/bash

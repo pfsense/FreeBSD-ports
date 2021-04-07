@@ -15,6 +15,8 @@ ALL_TARGET=
 
 PLIST_FILES=	bin/webcrawl man/man1/webcrawl.1.gz
 
+CFLAGS+=	-fcommon
+
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/webcrawl ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/webcrawl.1 ${STAGEDIR}${MANPREFIX}/man/man1

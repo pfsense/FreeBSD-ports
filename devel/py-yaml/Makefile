@@ -3,12 +3,13 @@
 
 PORTNAME=	yaml
 PORTVERSION=	5.3.1
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	PyYAML-${PORTVERSION}
 
-MAINTAINER=	jpaetzel@FreeBSD.org
+MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Python YAML parser
 
 LICENSE=	MIT
@@ -18,6 +19,8 @@ USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 OPTIONS_DEFINE=	LIBYAML EXAMPLES
+OPTIONS_DEFAULT=	LIBYAML
+
 LIBYAML_DESC=	Use textproc/libyaml for faster parsing
 
 LIBYAML_LIB_DEPENDS=	libyaml.so:textproc/libyaml

@@ -216,13 +216,13 @@ odoo:*:267:267::0:0:Odoo ERP:/nonexistent:/usr/sbin/nologin
 tenshi:*:268:268::0:0:Tenshi user:/var/lib/tenshi:/usr/sbin/nologin
 dendrite:*:269:269::0:0:Dendrite user:/nonexistent:/usr/sbin/nologin
 _rpki-client:*:270:270::0:0:rpki-client user:/nonexistent:/usr/sbin/nologin
-# free: 271
-# free: 272
-# free: 273
-# free: 274
+signaling:*:271:271::0:0:Signaling server:/nonexistent:/usr/sbin/nologin
+gvm:*:272:272::0:0:Greenbone Vulnerability Management:/nonexistent:/usr/sbin/nologin
+seaweedfs:*:273:273::0:0:seaweedfs user:/var/db/seaweedfs:/usr/sbin/nologin
+usbmuxd:*:274:274::0:0:USB multiplexing daemon:/nonexistent:/usr/sbin/nologin
 hacluster:*:275:275::0:0:Heartbeat cluster user:/nonexistent:/usr/sbin/nologin
 frontbase:*:276:276::0:0:FrontBase Daemon:/usr/local/FrontBase/Databases:/bin/sh
-# free: 277
+unifi-poller:*:277:277::0:0:unifi-poller daemon:/nonexistent:/usr/sbin/nologin
 rtg:*:278:278::0:0:RTG daemon:/nonexistent:/usr/sbin/nologin
 mrtg:*:279:279::0:0:MRTG daemon:/nonexistent:/usr/sbin/nologin
 xymon:*:280:280::0:0:Xymon Monitor:/nonexistent:/usr/sbin/nologin
@@ -505,7 +505,8 @@ messagebus:*:556:556::0:0:D-BUS Daemon User:/nonexistent:/usr/sbin/nologin
 # free: 557
 avahi:*:558:558::0:0:Avahi Daemon User:/nonexistent:/usr/sbin/nologin
 tacacs:*:559:559::0:0:TACACS+ Daemon User:/nonexistent:/usr/sbin/nologin
-haldaemon:*:560:560::0:0:HAL Daemon User:/nonexistent:/usr/sbin/nologin
+# Unused since hald has been removed from the ports tree
+# haldaemon:*:560:560::0:0:HAL Daemon User:/nonexistent:/usr/sbin/nologin
 distcc:*:561:561::0:0:Distcc user:/nonexistent:/usr/sbin/nologin
 polkit:*:562:562::0:0:PolicyKit User:/nonexistent:/usr/sbin/nologin
 pulse:*:563:563::0:0:PulseAudio System User:/nonexistent:/usr/sbin/nologin

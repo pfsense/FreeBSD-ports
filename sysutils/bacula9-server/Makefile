@@ -3,6 +3,7 @@
 
 PORTNAME=	bacula
 PORTVERSION=	9.6.7
+PORTREVISION=	1
 CATEGORIES?=	sysutils
 MASTER_SITES=	SF/bacula/bacula/${PORTVERSION}
 PKGNAMEPREFIX?=	#
@@ -17,7 +18,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES+=		libtool readline shebangfix ssl
 SHEBANG_FILES=	src/cats/make_catalog_backup.pl.in
 
-CONFLICTS?=	bacula5-server-* bacula-server-*
+CONFLICTS?=	bacula11-server-* bacula5-server-* bacula-server-*
 
 LIB_DEPENDS+=	liblzo2.so:archivers/lzo2
 

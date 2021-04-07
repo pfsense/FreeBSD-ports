@@ -11,8 +11,10 @@ COMMENT=	C++ Standard Library for Parallelism and Concurrency
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE_1_0.txt
 
+BROKEN_riscv64=		fails to compile: hpx/util/hardware/timestamp.hpp:43:6: error: Unsupported platform
+
 LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
-		libhwloc.so:devel/hwloc
+		libhwloc.so.15:devel/hwloc2
 
 USES=		cmake compiler:c++17-lang python shebangfix
 USE_GITHUB=	yes

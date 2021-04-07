@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	db
-PORTVERSION=	1.14
+PORTVERSION=	1.16
 PORTEPOCH=	2
 CATEGORIES=	databases
 MASTER_SITES=	http://www.mavetju.org/download/

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tig
-PORTVERSION=	2.5.1
+PORTVERSION=	2.5.3
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/jonas/tig/releases/download/${DISTNAME}/
 
@@ -21,8 +21,14 @@ MAKE_ARGS=	V=1
 
 INSTALL_TARGET=	install install-doc-man
 
+# Tests fail when running as part of a non-interactive Poudriere
+# build, but using script(1) seems to be a good enough workaround and
+# allows them to run successfully anyway.
+TEST_TARGET=	test
+DO_MAKE_TEST=	/usr/bin/script -q /dev/null ${SETENV} ${TEST_ENV} ${GMAKE}
+
 PLIST_FILES=	bin/tig \
-		etc/tigrc \
+		'@sample etc/tigrc.sample' \
 		man/man1/tig.1.gz \
 		man/man5/tigrc.5.gz \
 		man/man7/tigmanual.7.gz
@@ -35,13 +41,7 @@ GIT_RUN_DEPENDS=	git:devel/git
 GIT_VARS_OFF=	PKGMESSAGE="${.CURDIR}/pkg-message-git"
 
 post-install:
+	${MV} ${STAGEDIR}${PREFIX}/etc/tigrc ${STAGEDIR}${PREFIX}/etc/tigrc.sample
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/tig
-
-do-test:
-# Tests fail when running as part of a non-interactive Poudriere
-# build, but using script(1) seems to be a good enough workaround and
-# allows them to run successfully anyway.
-	@/usr/bin/script -q /dev/null \
-		${SETENV} SHELL=/bin/sh ${GMAKE} -C ${WRKSRC} test
 
 .include <bsd.port.mk>

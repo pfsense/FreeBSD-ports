@@ -2,9 +2,7 @@
 
 PORTNAME=	amarok
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.9.70
-PKGVERSIONSUFFIX=	-g${GH_TAGNAME}
-PORTREVISION=	2
+DISTVERSION=	2.9.71
 CATEGORIES=	audio kde
 
 MAINTAINER=	kde@FreeBSD.org
@@ -34,16 +32,14 @@ USE_KDE=	archive auth attica bookmarks codecs config configwidgets \
 		guiaddons i18n iconthemes itemviews jobwidgets kdeclarative \
 		kcmutils kio kirigami2 newstuff notifications notifyconfig \
 		package parts service solid sonnet texteditor textwidgets \
-		threadweaver widgetsaddons windowsystem xmlgui \
+		threadweaver wallet widgetsaddons windowsystem xmlgui \
 		ecm_build
 USE_XORG=	ice sm x11 xext
 USE_LDCONFIG=	yes
 
-CONFIGURE_ENV=	MYSQL_DIR=${LOCALBASE}
+KDE_INVENT=	3e11ccdd1417e70486eaaa84d8475182eec44c20 multimedia
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	kde
-GH_TAGNAME=	0aa6ae0c77
+CONFIGURE_ENV=	MYSQL_DIR=${LOCALBASE}
 
 SHEBANG_FILES=	src/kconf_update/amarok-2.4.1-tokens_syntax_update.pl
 CMAKE_ARGS=	-DOPENSSL_ROOT_DIR=${OPENSSLBASE}
@@ -60,8 +56,8 @@ OPTIONS_SUB=		yes
 
 IPOD_DESC=		Apple iPod support
 IPOD_LIB_DEPENDS=	libgpod.so:audio/libgpod \
-			libimobiledevice.so:comms/libimobiledevice \
-			libplist.so:devel/libplist
+			libimobiledevice-1.0.so:comms/libimobiledevice \
+			libplist-2.0.so:devel/libplist
 IPOD_USE=		GNOME=gdkpixbuf2,glib20
 IPOD_USES=		gnome
 IPOD_CMAKE_BOOL=	WITH_IPOD
@@ -71,7 +67,7 @@ MP3TUNES_LIB_DEPENDS=	libloudmouth-1.so:net-im/loudmouth \
 			libcurl.so:ftp/curl
 MP3TUNES_LIB_DEPENDS_OFF=	libgcrypt.so:security/libgcrypt
 MP3TUNES_USE=		GNOME=glib20,libxml2
-MP3TUNES_USES=		gnome ssl
+MP3TUNES_USES=		gnome
 
 MP3TUNES_CMAKE_BOOL=	WITH_MP3Tunes
 MP3TUNES_CMAKE_BOOL_OFF=	WITH_Libgcrypt
@@ -89,5 +85,12 @@ post-patch:
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/mime/packages
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MQTWEBENGINE}
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
+.endif
 
 .include <bsd.port.mk>

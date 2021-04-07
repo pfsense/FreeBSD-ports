@@ -2,12 +2,13 @@
 
 PORTNAME=	paperless
 PORTVERSION=	2.7.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	deskutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 PATCHFILES+=	b122931185fb.patch:-p1 # https://github.com/the-paperless-project/paperless/pull/712
+PATCHFILES+=	b131c97d1d85.patch:-p1 # https://github.com/the-paperless-project/paperless/pull/716
 
 MAINTAINER=	grembo@FreeBSD.org
 COMMENT=	Index and archive scanned paper documents
@@ -66,7 +67,7 @@ IMAGICK6_X11_DESC=	ImageMagick6 with X11 support
 IMAGICK7_NOX11_DESC=	ImageMagick7 without X11 support
 IMAGICK7_X11_DESC=	ImageMagick7 with X11 support
 
-DOCS_BUILD_DEPENDS=	${PY_SPHINX}
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=1.8.3,1:textproc/py-sphinx@${PY_FLAVOR}
 DOCS_USES=		gmake
 
 IMAGICK6_X11_RUN_DEPENDS=	convert:graphics/ImageMagick6

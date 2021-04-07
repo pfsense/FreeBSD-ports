@@ -21,7 +21,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 # Tests also need bzr, git, otherwise they fail
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=0:security/py-cryptography@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}csv23>=0:devel/py-csv23@${PY_FLAVOR} \
-		${PY_ENUM34} \
 		${PYTHON_PKGNAMEPREFIX}freezegun>=0:devel/py-freezegun@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}invoke>=0:devel/py-invoke@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mock>=0:devel/py-mock@${PY_FLAVOR} \
@@ -41,7 +40,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=0:security/py-cryptography@${
 		git:devel/git \
 		svn:devel/subversion
 
-USES=		python shebangfix
+USES=		python:3.6+ shebangfix
 USE_PYTHON=	autoplist concurrent distutils
 
 MAKE_ENV=	PYTHONPATH=${WRKSRC}/src/
@@ -55,7 +54,7 @@ SHEBANG_FILES=	src/pip/__init__.py
 OPTIONS_DEFINE=	DOCS
 
 DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pypa-docs-theme>=g20180622:textproc/py-pypa-docs-theme@${PY_FLAVOR} \
-			${PY_SPHINX}
+			${PYTHON_PKGNAMEPREFIX}sphinx>=2.4.3,1:textproc/py-sphinx@${PY_FLAVOR}
 DOCS_PORTDOCS=		*
 DOCS_VARS=		PYDISTUTILS_BUILD_TARGET=build_sphinx \
 			PYDISTUTILS_BUILDARGS="-n --all-files --fresh-env"

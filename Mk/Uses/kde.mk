@@ -25,6 +25,24 @@
 #		this will then set default values for MASTER_SITES and DIST_SUBDIR
 #		as well as CPE_VENDOR and LICENSE.
 #
+# KDE_INVENT	If the port does not have a regular release, and should
+#		be fetched from KDE Invent (a GitLab instance) it can set
+#		KDE_INVENT to 3 space-separated values:
+#		* a full 40-character commit hash
+#		* a category name inside KDE Invent
+#		* a repository name inside KDE Invent
+#		Default values for category and name are:
+#		* the first item in CATEGORIES that is not "kde"; this
+#		  is useful when the FreeBSD ports category and the KDE
+#		  category are the same (which happens sometimes)
+#		* PORTNAME, often the FreeBSD port name is the same
+#		  as the upstream name and it will not need to be specified.
+#		Sometimes `KDE_INVENT=<hash>` will do and often
+#		`KDE_INVENT=<hash> <category>` is enough.
+#
+#		Setting KDE_INVENT is the equivalent of a handful of USE_GITLAB
+#		and related settings.
+#
 # MAINTAINER:	kde@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_KDE_MK)
@@ -54,16 +72,16 @@ _KDE_RELNAME=		KDE${_KDE_VERSION}
 
 # === VERSIONS OF THE DIFFERENT COMPONENTS =====================================
 # Current KDE desktop.
-KDE_PLASMA_VERSION?=		5.20.4
+KDE_PLASMA_VERSION?=		5.20.5
 KDE_PLASMA_BRANCH?=		stable
 
 # Current KDE frameworks.
-KDE_FRAMEWORKS_VERSION?=	5.77.0
+KDE_FRAMEWORKS_VERSION?=	5.80.0
 KDE_FRAMEWORKS_BRANCH?= 	stable
 
 # Current KDE applications.
-KDE_APPLICATIONS_VERSION?=	20.12.0
-KDE_APPLICATIONS_SHLIB_VER?=	5.16.0
+KDE_APPLICATIONS_VERSION?=	20.12.3
+KDE_APPLICATIONS_SHLIB_VER?=	5.16.3
 KDE_APPLICATIONS_BRANCH?=	stable
 # Upstream moves old software to Attic/. Specify the newest applications release there.
 # Only the major version is used for the comparison.
@@ -91,6 +109,32 @@ IGNORE?=	cannot be installed: multiple kde-<...> categories specified via CATEGO
 .        endif
 .      endif
 .    endfor
+
+# Doing source-selection if the sources are on KDE invent
+.    if defined(KDE_INVENT)
+_invent_hash=		${KDE_INVENT:[1]}
+_invent_category=	${KDE_INVENT:[2]}
+_invent_name=		${KDE_INVENT:[3]}
+
+# Fill in default values if bits are missing
+.      if empty(_invent_category)
+_invent_category=	${CATEGORIES:Nkde:[1]}
+.      endif
+.      if empty(_invent_name)
+_invent_name=		${PORTNAME}
+.      endif
+
+# If valid, use it for GitLab
+.      if empty(_invent_hash) || empty(_invent_category) || empty(_invent_name)
+IGNORE?=		invalid KDE_INVENT value '${KDE_INVENT}'
+.      else
+USE_GITLAB=		yes
+GL_SITE=		https://invent.kde.org
+GL_ACCOUNT=		${_invent_category}
+GL_PROJECT=		${_invent_name}
+GL_COMMIT=		${_invent_hash}
+.      endif
+.    endif
 
 .    if defined(_KDE_CATEGORY)
 # KDE is normally licensed under the LGPL 2.0.
@@ -144,33 +188,33 @@ IGNORE?=		unknown CATEGORY value '${_KDE_CATEGORY}' #'
 
 # ==============================================================================
 
-# ==== SETUP CMAKE ENVIRONMENT =================================================
+# === SET UP CMAKE ENVIRONMENT =================================================
 # Help cmake to find files when testing ports with non-default PREFIX.
 CMAKE_ARGS+=	-DCMAKE_PREFIX_PATH="${LOCALBASE}"
 
-.    if ${_KDE_VERSION:M*5*}
 # We set KDE_INSTALL_USE_QT_SYS_PATHS to install mkspecs files, plugins and
 # imports to the Qt 5 install directory.
-CMAKE_ARGS+=   -DBUILD_TESTING:BOOL=OFF \
-               -DCMAKE_MODULE_PATH="${LOCALBASE};${KDE_PREFIX}" \
-               -DCMAKE_INSTALL_PREFIX="${KDE_PREFIX}" \
-               -DKDE_INSTALL_USE_QT_SYS_PATHS:BOOL=TRUE
-.    endif
+CMAKE_ARGS+=	-DCMAKE_MODULE_PATH="${LOCALBASE};${KDE_PREFIX}" \
+		-DCMAKE_INSTALL_PREFIX="${KDE_PREFIX}" \
+		-DKDE_INSTALL_USE_QT_SYS_PATHS:BOOL=true
 
 # Set man-page installation prefix.
 CMAKE_ARGS+=	-DKDE_INSTALL_MANDIR:PATH="${KDE_PREFIX}/man" \
 		-DMAN_INSTALL_DIR:PATH="${KDE_PREFIX}/man"
+
+# Disable autotests unless TEST_TARGET is defined.
+.    if !defined(TEST_TARGET)
+CMAKE_ARGS+=	-DBUILD_TESTING:BOOL=false
+.    endif
 # ==============================================================================
 
-# === SET-UP PLIST_SUB =========================================================
+# === SET UP PLIST_SUB =========================================================
 # Prefix and include directory.
 PLIST_SUB+=		KDE_PREFIX="${KDE_PREFIX}"
 # KDE Applications version.
-PLIST_SUB+=		KDE_APPLICATIONS_VERSION="${KDE_APPLICATIONS_VERSION}"
-.    if ${_KDE_VERSION:M*5*}
-PLIST_SUB+=		KDE_PLASMA_VERSION="${KDE_PLASMA_VERSION}" \
-			KDE_FRAMEWORKS_VERSION="${KDE_FRAMEWORKS_VERSION}"
-.    endif
+PLIST_SUB+=		KDE_APPLICATIONS_VERSION="${KDE_APPLICATIONS_VERSION}" \
+			KDE_FRAMEWORKS_VERSION="${KDE_FRAMEWORKS_VERSION}" \
+			KDE_PLASMA_VERSION="${KDE_PLASMA_VERSION}"
 # ==============================================================================
 
 _USE_KDE_BOTH=		akonadi attica libkcddb libkcompactdisc libkdcraw libkdegames \

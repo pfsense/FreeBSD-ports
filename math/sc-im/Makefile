@@ -2,9 +2,7 @@
 
 PORTNAME=		sc-im
 DISTVERSIONPREFIX=	v
-DISTVERSION=		0.7.0-81
-DISTVERSIONSUFFIX=	-g9beb5c0
-PORTREVISION=		1
+DISTVERSION=		0.8.0
 CATEGORIES=		math
 
 MAINTAINER=	bapt@FreeBSD.org
@@ -27,7 +25,8 @@ LIBS+=		-lxlsreader -lxlsxwriter
 MAKE_ENV+=	LDLIBS="${LIBS}"
 MAKE_ARGS+=	CC="${CC}" prefix="${PREFIX}" MANDIR="${MANPREFIX}/man/man1"
 
+.include <bsd.port.pre.mk>
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/sc-im
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

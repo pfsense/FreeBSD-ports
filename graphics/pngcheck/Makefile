@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pngcheck
-PORTVERSION=	3.0.1
+PORTVERSION=	3.0.2
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.libpng.org/pub/png/src/ \
 		https://www.cyberbotx.com/pngcheck/
@@ -15,10 +15,7 @@ LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2+ =	${WRKSRC}/gpl/COPYING
 
 MAKEFILE=	Makefile.unx
-MAKE_ARGS=	CC="${CC}" \
-		CFLAGS="${CFLAGS} -DUSE_ZLIB" \
-		LD="${CC}" \
-		LIBS="-lz"
+MAKE_ARGS=	CC="${CC}" LD="${CC}" CFLAGS="${CFLAGS} -DUSE_ZLIB" LIBS="-lz"
 
 PLIST_FILES=	bin/png-fix-IDAT-windowsize \
 		bin/pngcheck \

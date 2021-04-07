@@ -17,13 +17,13 @@
     SUBDIR += bzip2
     SUBDIR += c-blosc
     SUBDIR += cabextract
+    SUBDIR += cmdpack
     SUBDIR += dact
     SUBDIR += deb2targz
     SUBDIR += deco
     SUBDIR += deutex
     SUBDIR += dpkg
     SUBDIR += dzip
-    SUBDIR += ecm
     SUBDIR += engrampa
     SUBDIR += erlang-snappy
     SUBDIR += fastjar
@@ -36,6 +36,7 @@
     SUBDIR += grzip
     SUBDIR += gtar
     SUBDIR += gzip
+    SUBDIR += gzip-hpp
     SUBDIR += gzrecover
     SUBDIR += ha
     SUBDIR += hlextract
@@ -65,7 +66,7 @@
     SUBDIR += libpar2
     SUBDIR += librtfcomp
     SUBDIR += libunrar
-    SUBDIR += libunrar5
+    SUBDIR += libunrar6
     SUBDIR += libzip
     SUBDIR += linux-c7-lz4
     SUBDIR += lizard
@@ -256,6 +257,7 @@
     SUBDIR += zoo
     SUBDIR += zopfli
     SUBDIR += zstd
+    SUBDIR += zstr
     SUBDIR += zutils
 
 .include <bsd.port.subdir.mk>

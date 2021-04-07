@@ -3,7 +3,7 @@
 
 PORTNAME=	luminance-hdr
 DISTVERSION=	2.5.1
-PORTREVISION=	12
+PORTREVISION=	15
 CATEGORIES=	graphics
 MASTER_SITES=	SF/qtpfsgui/luminance/${DISTVERSION}
 PKGNAMESUFFIX=	-qt5
@@ -12,6 +12,9 @@ MAINTAINER=	h2+fbsdports@fsfe.org
 COMMENT=	Complete open source solution for HDR photography
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
 
 BUILD_DEPENDS=	${LOCALBASE}/include/fftw3.h:math/fftw3
 LIB_DEPENDS=	libcfitsio.so:astro/cfitsio \

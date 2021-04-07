@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	iichid
-DISTVERSION=	0.0.3
+DISTVERSION=	0.0.6
 CATEGORIES=	sysutils
 
 MAINTAINER=	wulf@FreeBSD.org
@@ -12,8 +12,8 @@ LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 IGNORE_FreeBSD_11=	Requires FreeBSD 12.1 or later
-ONLY_FOR_ARCHS=		aarch64 amd64 i386
-ONLY_FOR_ARCHS_REASON=	I2C transport requires architecture supporting ACPI
+IGNORE_FreeBSD_13=	Is a part of base system
+IGNORE_FreeBSD_14=	Is a part of base system
 
 USES=	kmod uidfix
 
@@ -21,18 +21,19 @@ USE_GITHUB=	yes
 
 GH_ACCOUNT=	wulf7
 
-# Strip -Werror from sys/conf/kmod.mk
-MAKE_ENV=	WERROR=""
-
 PLIST_FILES=	${KMODDIR}/iichid.ko
 
 # USB backend is disabled by default as it interferes with existing USB drivers
+# I2C transport requires architecture supporting ACPI
 OPTIONS_DEFINE=		DEBUG I2C USB
-OPTIONS_DEFAULT=	I2C
+OPTIONS_DEFAULT_amd64=	I2C
+OPTIONS_DEFAULT_i386=	I2C
+OPTIONS_DEFAULT_aarch64=I2C
+
 I2C_DESC=		HID over I2C support
 USB_DESC=		HID over USB support
 
-I2C_MAKE_ARGS_OFF=	-DDISABLE_I2CHID
+I2C_MAKE_ARGS_OFF=	-DDISABLE_IICHID
 USB_MAKE_ARGS_OFF=	-DDISABLE_USBHID
 
 post-patch-DEBUG-off:

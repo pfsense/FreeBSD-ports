@@ -21,8 +21,6 @@ CONFLICTS_INSTALL=	drm-devel-kmod
 
 OPTIONS_DEFINE=	DEBUG SOURCE
 
-OPTIONS_DEFAULT=	SOURCE
-
 SOURCE_DESC=	Install kernel module sources
 
 OPTIONS_SUB=	yes

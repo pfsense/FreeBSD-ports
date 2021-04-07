@@ -3,12 +3,13 @@
 
 PORTNAME=	bacula
 PORTVERSION=	9.6.7
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	SF
 PKGNAMESUFFIX=	9-docs
 DISTNAME=	${PORTNAME}-docs-${PORTVERSION}
 
-CONFLICTS=	bacula-* bacula5-*
+CONFLICTS=	bacula-* bacula5-* bacula11-*
 
 MAINTAINER=	dvl@FreeBSD.org
 COMMENT=	Bacula document set

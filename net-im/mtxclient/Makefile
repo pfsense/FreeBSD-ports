@@ -2,8 +2,7 @@
 
 PORTNAME=		mtxclient
 DISTVERSIONPREFIX=	v
-DISTVERSION=		0.3.1
-PORTREVISION=	3
+DISTVERSION=		0.4.1
 CATEGORIES=		net-im
 
 MAINTAINER=	adridg@FreeBSD.org
@@ -12,8 +11,9 @@ COMMENT=	Client API library for the Matrix protocol
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	nlohmann-json>=3:devel/nlohmann-json \
-		googletest>0:devel/googletest
+IGNORE_FreeBSD_11=	unsupported SSL in base
+
+BUILD_DEPENDS=	nlohmann-json>=3:devel/nlohmann-json
 LIB_DEPENDS=	libsodium.so:security/libsodium \
 		libboost_date_time.so:devel/boost-libs \
 		libboost_chrono.so:devel/boost-libs \
@@ -26,8 +26,11 @@ LIB_DEPENDS=	libsodium.so:security/libsodium \
 
 USES=		cmake compiler:c++17-lang pkgconfig ssl \
 		tar:xz
+CMAKE_OFF=	BUILD_LIB_TESTS
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Nheko-Reborn
+
+PLIST_SUB=	SOVER=${DISTVERSION}
 
 .include <bsd.port.mk>

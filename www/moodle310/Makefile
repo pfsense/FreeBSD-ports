@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	moodle
-PORTVERSION=	3.10.2
+PORTVERSION=	3.10.3
 CATEGORIES=	www education
 MASTER_SITES=	SF/moodle/Moodle/stable310/
 PKGNAMESUFFIX=	${PKGORIGIN:T:S/moodle//}${PHP_PKGNAMESUFFIX}
@@ -19,6 +19,8 @@ USE_PHP=	ctype curl dom fileinfo filter gd hash iconv intl json mbstring \
 		opcache openssl pcre session simplexml soap spl tokenizer \
 		xml xmlreader zip zlib
 WRKSRC=		${WRKDIR}/moodle
+
+IGNORE_WITH_PHP=	80
 
 OPTIONS_SINGLE=		BACKEND
 OPTIONS_SINGLE_BACKEND=	MYSQL PGSQL MSSQL
@@ -43,7 +45,7 @@ MOODLEDATADIR?=	moodledata
 .include <bsd.port.options.mk>
 
 .if ${FLAVOR} != php80
-USE_PHP+=       xmlrpc
+USE_PHP+=	xmlrpc
 .endif
 
 pre-install:

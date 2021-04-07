@@ -2,7 +2,7 @@
 
 PORTNAME=	digikam
 DISTVERSION=	7.1.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	graphics kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}
 DIST_SUBDIR=	KDE/digikam/${PORTVERSION}
@@ -24,8 +24,7 @@ LIB_DEPENDS=	libKF5Sane.so:graphics/libksane \
 		liblcms2.so:graphics/lcms2 \
 		liblensfun.so:graphics/lensfun \
 		liblqr-1.so:graphics/liblqr-1 \
-		libopencv_video.so:graphics/opencv \
-		libopencv_core.so:graphics/opencv-core \
+		libopencv_core.so:graphics/opencv \
 		libpgf.so:graphics/libpgf \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff \
@@ -74,6 +73,7 @@ KDEPIM_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_KF5AkonadiContact
 MEDIAPLAYER_DESC=	Enable mediaplayer
 MEDIAPLAYER_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 				libQtAV.so:multimedia/QtAV
+MEDIAPLAYER_CMAKE_BOOL=		ENABLE_MEDIAPLAYER
 MEDIAPLAYER_CMAKE_BOOL_OFF=	CMAKE_DISABLE_FIND_PACKAGE_FFmpeg \
 				CMAKE_DISABLE_FIND_PACKAGE_QtAV
 
@@ -100,5 +100,12 @@ WEBENGINE_USE_OFF=	QT=webkit
 WEBENGINE_CMAKE_BOOL=	ENABLE_QWEBENGINE
 
 PLIST_SUB=		SHLIB_VER=${DISTVERSION}
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MWEBENGINE}
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
+.endif
 
 .include <bsd.port.mk>

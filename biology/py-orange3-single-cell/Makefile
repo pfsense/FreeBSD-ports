@@ -11,6 +11,9 @@ COMMENT=	Orange add-on for gene expression of single cell data
 
 LICENSE=	AGPLv3+
 
+DEPRECATED=	Uses EOL Python 2.7 via misc/orange3
+EXPIRATION_DATE=2021-06-23
+
 RUN_DEPENDS=	orange3>0:misc/orange3 \
 		${PYTHON_PKGNAMEPREFIX}orange3-bioinformatics>0:biology/py-orange3-bioinformatics@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}astropy>0:astro/py-astropy@${PY_FLAVOR} \
@@ -23,7 +26,7 @@ RUN_DEPENDS=	orange3>0:misc/orange3 \
 		${PYNUMPY}
 
 # Supports 3.4+ but loompy 3.6+ only.
-USES=		python:3.6+
+USES=		python:3.7+
 USE_GITHUB=	yes
 GH_ACCOUNT=	biolab
 USE_PYTHON=	distutils autoplist
@@ -31,7 +34,7 @@ USE_PYTHON=	distutils autoplist
 OPTIONS_DEFINE=	DOCS
 
 DOCS_BUILD_DEPENDS=	gmake:devel/gmake \
-			${PY_SPHINX}
+			${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
 
 pre-build-DOCS-on:
 	@cd ${WRKSRC}/doc && ${SETENV} ${MAKE_ENV} ${GMAKE} html htmlhelp SPHINXBUILD=${LOCALBASE}/bin/sphinx-build-${PYTHON_VER}

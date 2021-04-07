@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	semantik
-DISTVERSION=	1.2.5
+DISTVERSION=	1.2.6
 CATEGORIES=	deskutils kde
 MASTER_SITES=	https://waf.io/
 
@@ -10,6 +10,9 @@ COMMENT=	Mind mapping tool
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
 
 USES=		kde:5 pkgconfig python:3.6+ qt:5 shebangfix tar:bzip2 waf \
 		desktop-file-utils gettext shared-mime-info
@@ -42,10 +45,21 @@ PLIST_SUB=	PORTVERSION="${PORTVERSION}"
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes
 
+post-patch:
+	@${REINPLACE_CMD} -e 's+@@LOCALBASE@@+${LOCALBASE}+' \
+		${WRKSRC}/wscript
+
 post-patch-NLS-off:
 	@${REINPLACE_CMD} -e '/langs/ d' \
 		${WRKSRC}/wscript
 
+post-configure:
+	# Waf injects some bizzarre 3- and 4-level ../ stacks into the include
+	# paths, which don't match how KDE includes are organized, and in a
+	# poudriere build don't necessarily reach /usr/local/include either.
+	@${REINPLACE_CMD} -e "s+..PWD............/include+${LOCALBASE}/include+g" \
+		${WRKSRC}/build/c4che/_cache.py
+		
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME} \
 		${STAGEDIR}${PREFIX}/bin/${PORTNAME}-d \

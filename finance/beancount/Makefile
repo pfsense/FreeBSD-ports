@@ -1,9 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	beancount
-PORTVERSION=	2.3.2
+PORTVERSION=	2.3.3
 CATEGORIES=	finance
-DISTNAME=	${PORTVERSION}
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	nivit@FreeBSD.org
@@ -34,6 +33,6 @@ USE_GITHUB=	yes
 USE_PYTHON=	autoplist distutils noflavors
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}/parser/_parser.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/${PORTNAME}/parser/_parser*.so
 
 .include <bsd.port.mk>

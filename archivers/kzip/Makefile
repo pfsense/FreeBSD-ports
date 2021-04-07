@@ -2,30 +2,35 @@
 # $FreeBSD$
 
 PORTNAME=	kzip
-DISTVERSION=	20150319
-CATEGORIES=	archivers linux
+DISTVERSION=	20200115
+PORTREVISION=	1
+CATEGORIES=	archivers
 MASTER_SITES=	http://static.jonof.id.au/dl/kenutils/
-DISTNAME=	kzipmix-${DISTVERSION}-linux-static
+DISTNAME=	kzipmix-${DISTVERSION}-bsd-static
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	PKZIP-compatible compressor focusing on space over speed
 
-NO_CDROM=	License does not allow redistribution
-NO_PACKAGE=	${NO_CDROM}
-RESTRICTED=	${NO_CDROM}
+LICENSE=		KZIP
+LICENSE_NAME=	KZIP License
+LICENSE_FILE=   ${FILESDIR}/license.txt
+LICENSE_PERMS=	pkg-mirror no-dist-sell no-pkg-sell auto-accept
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-USES=		linux
 NO_BUILD=	yes
+
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == "amd64"
+WRKSRC_SUBDIR=	${ARCH}
+.else
 WRKSRC_SUBDIR=	i686
+.endif
 
 PLIST_FILES=	bin/kzip
-
-post-extract:
-	@${BRANDELF} -t Linux ${WRKSRC}/kzip-static
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/kzip-static ${STAGEDIR}${PREFIX}/bin/kzip
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

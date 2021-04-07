@@ -98,18 +98,19 @@ load_rc_config $name
 devd_device=${2}
 devd_interface=${3-0}
 
-command=webcamd
+command=%%PREFIX%%/sbin/webcamd
 command_args="-B -U ${webcamd_user} -G ${webcamd_group}"
 
 start_cmd="${name}_start"
 stop_cmd="${name}_stop"
 status_cmd="${name}_status"
 
-webcamd()
-{
-  # When running early we need to pre-load some libraries
-  env LD_PRELOAD=%%LIBHAL%% %%PREFIX%%/sbin/webcamd $*
-}
+#
+# The following pidfile should not exist and
+# allows multiple instances of webcamd to be
+# started.
+#
+pidfile="/var/run/${name}.dummy.pid"
 
 webcamd_pids()
 {
@@ -166,11 +167,6 @@ webcamd_start_devd()
 
 webcamd_start()
 {
-  # Check if we should attach to the "hald" service
-  if checkyesno hald_enable ; then
-    command_args="$command_args -H"
-  fi
-
   # If this rc.d script was invoked by devd
   if [ "$devd_device" ]; then
     # Then start the device ugenX.X, as provied in the argv $2, $3

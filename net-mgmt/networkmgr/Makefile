@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	networkmgr
-DISTVERSION=	4.2
+DISTVERSION=	4.5
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	ericbsd@FreeBSD.org
-COMMENT=	FreeBSD/GhostBSD network conection manager
+COMMENT=	FreeBSD/GhostBSD network connection manager
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

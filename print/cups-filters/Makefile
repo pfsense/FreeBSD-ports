@@ -2,7 +2,7 @@
 
 PORTNAME=	cups-filters
 PORTVERSION=	1.28.6
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	print
 MASTER_SITES=	https://www.openprinting.org/download/cups-filters/
 
@@ -61,7 +61,7 @@ BRAILLE_DESC=			Braille embosser support
 BRAILLE_BUILD_DEPENDS=		bash:shells/bash
 BRAILLE_LIB_DEPENDS=		liblouis.so:devel/liblouis \
 #				liblouisutdml.so:devel/liblouisutdml
-BRAILLE_RUN_DEPENDS=		convert:graphics/ImageMagick6 \
+BRAILLE_RUN_DEPENDS=		convert:graphics/ImageMagick${IMAGEMAGICK_DEFAULT} \
 				pdftotext:graphics/poppler-utils \
 				bash:shells/bash
 

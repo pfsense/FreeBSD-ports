@@ -1,15 +1,18 @@
 # $FreeBSD$
 
+# Once the bootstraps are available on pkg.FreeBSD.org run sync.sh
+# to upload them to ~/public_distfiles on freefall in preparation
+# for the next lang/rust update.
 PORTNAME=	rust
-PORTVERSION=	1.49.0
+PORTVERSION=	1.51.0
 CATEGORIES=	lang
 MASTER_SITES=	https://static.rust-lang.org/dist/:rust \
 		LOCAL/mikael:armbase \
 		LOCAL/mikael:base \
 		LOCAL/bdragon:ppc64lebase \
 		https://download.freebsd.org/ftp/${_RUST_FBSD_SUBDIR_${FLAVOR}}/:base \
-		LOCAL/tobik:powerpc64_gcc
-#		http://pkg.freebsd.org/FreeBSD:12:powerpc64/quarterly/All/gcc9-9.2.0.txz?dummy=/:powerpc64_gcc
+		LOCAL/mikael:powerpc64_gcc
+#		http://pkg.freebsd.org/FreeBSD:12:powerpc64/quarterly/All/gcc9-9.3.0_1.txz?dummy=/:powerpc64_gcc
 PKGNAMESUFFIX=	-bootstrap
 DISTNAME=	${PORTNAME}c-${PORTVERSION}-src
 DISTFILES=	rust/${DISTNAME}${EXTRACT_SUFX}:rust \
@@ -35,6 +38,7 @@ FLAVORS=	aarch64 amd64 armv6 armv7 i386 powerpc64_elfv1 powerpc64_elfv2 powerpc6
 FLAVOR?=	${FLAVORS:[1]}
 
 aarch64_PKGNAMEPREFIX=		aarch64-
+aarch64_BUILD_DEPENDS=		llvm90>0:devel/llvm90
 amd64_PKGNAMEPREFIX=		amd64-
 armv6_PKGNAMEPREFIX=		armv6-
 armv7_PKGNAMEPREFIX=		armv7-
@@ -44,12 +48,16 @@ powerpc64_elfv1_BUILD_DEPENDS=	powerpc64-gcc9>0:devel/freebsd-gcc9@powerpc64
 powerpc64_elfv2_PKGNAMEPREFIX=	powerpc64-elfv2-
 powerpc64le_PKGNAMEPREFIX=	powerpc64le-
 
-USES=		perl5 python:3.3+,build tar:xz
+USES=		perl5 python:3.6+,build tar:xz
 .if ${FLAVOR} == powerpc64_elfv1
-USE_GCC=	9
+USE_GCC=	9:build
 .endif
 # for openssl-src crate
 USE_PERL5=	build
+.if ${FLAVOR} == aarch64
+CC=		clang90
+CXX=		clang++90
+.endif
 PATCHDIR=	${.CURDIR}/../rust/files
 # Resulting packages are not specific to amd64
 NO_ARCH=	yes
@@ -62,13 +70,13 @@ _RUST_FBSD_DIST_armv6=			FreeBSD-${_RUST_FBSD_VER}-arm-armv6${EXTRACT_SUFX}:armb
 _RUST_FBSD_DIST_armv7=			FreeBSD-${_RUST_FBSD_VER}-arm-armv7${EXTRACT_SUFX}:armbase
 _RUST_FBSD_DIST_i386=			FreeBSD-${_RUST_FBSD_VER}-i386${EXTRACT_SUFX}:base
 _RUST_FBSD_DIST_powerpc64_elfv1=	FreeBSD-${_RUST_FBSD_VER}-powerpc64-elfv1${EXTRACT_SUFX}:base \
-					FreeBSD-${_RUST_FBSD_VER}-powerpc64-elfv1-gcc9-9.2.0${EXTRACT_SUFX}:powerpc64_gcc
+					FreeBSD-${_RUST_FBSD_VER}-powerpc64-elfv1-gcc9-9.3.0${EXTRACT_SUFX}:powerpc64_gcc
 _RUST_FBSD_DIST_powerpc64_elfv2=	FreeBSD-${_RUST_FBSD_VER}-powerpc64-elfv2-v1300123${EXTRACT_SUFX}:base
 _RUST_FBSD_DIST_powerpc64le=		FreeBSD-${_RUST_FBSD_VER}-powerpc64le-r366300${EXTRACT_SUFX}:ppc64lebase
 _RUST_FBSD_VER=				${_RUST_FBSD_VER_${FLAVOR}:U11.4-RELEASE}
-_RUST_FBSD_VER_aarch64=			12.1-RELEASE
-_RUST_FBSD_VER_armv7=			12.1-RELEASE
-_RUST_FBSD_VER_powerpc64_elfv1=		12.1-RELEASE
+_RUST_FBSD_VER_aarch64=			12.2-RELEASE
+_RUST_FBSD_VER_armv7=			12.2-RELEASE
+_RUST_FBSD_VER_powerpc64_elfv1=		12.2-RELEASE
 _RUST_FBSD_VER_powerpc64_elfv2=		13.0-CURRENT
 _RUST_FBSD_VER_powerpc64le=		13.0-CURRENT
 _RUST_FBSD_SUBDIR_aarch64=		releases/arm64/${_RUST_FBSD_VER}/base.txz?dummy=

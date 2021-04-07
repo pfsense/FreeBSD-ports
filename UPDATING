@@ -5,12 +5,228 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20210328:
+  AFFECTS: users of www/caddy
+  AUTHOR: adamw@FreeBSD.org
+
+  The default locations for caddy runtime files have changed.
+
+  - Caddy's runtime log is now /var/log/caddy/caddy.log
+    (was /var/log/caddy.log)
+
+  - Automatic SSL certs are now stored in /var/db/caddy/data/caddy
+    (was /root/.local/share/caddy)
+
+  - Configuration autosaves are now stored in /var/db/caddy/config/caddy
+    (was /root/.config/caddy)
+
+  You can change these defaults. See /usr/local/etc/rc.d/caddy for the
+  list of settings.
+
+20210322:
+  AFFECTS: users of net/wireguard
+  AUTHOR: decke@FreeBSD.org
+
+  A wireguard kernel implementation supporting FreeBSD 12.1 and newer was
+  added as net/wireguard-kmod recently.
+
+  The new default for users of net/wireguard is the kernel module.
+
+  If you experience problems with it you can switch back to wireguard-go
+  by removing net/wireguard-kmod and making sure net/wireguard-go is
+  installed.
+  The userland tools wg-quick(8) and wg(8) try to use kernel support if
+  the kernel module is available and otherwise fall back to wireguard-go
+  automatically. Config files are fully compatible.
+
+20210317:
+  AFFECTS: users of security/strongswan
+  AUTHOR: driesm.michiels@gmail.com
+
+  The stroke starter interface has been deprecated by upstream
+  for some time now.  The default interface for controlling the charon
+  daemon has switched from stroke to vici. Users still using the
+  legacy config files such as ipsec.conf and ipsec.secret (stroke, starter)
+  can easily revert to the old behavior by:
+
+  # sysrc strongswan_interface="stroke"
+
+  It is recommended to use the vici interface which is configured by swanctl.conf.
+  Check : https://wiki.strongswan.org/projects/strongswan/wiki/Fromipsecconf
+  to ease the transition from ipsec.* to swanctl.conf
+
+20210313:
+  AFFECTS: users of net-mgmt/phpipam
+  AUTHOR: marko.cupac@mimar.rs
+
+  ipaddresses table in phpipam database is likely to contain incorrect datetime
+  values which prevent successful upgrade.  Make sure to create backup of
+  phpipam database.  Before starting upgrade wizard in web interface run the
+  following SQL query on phpipam database:
+
+    UPDATE ipaddresses SET lastSeen='1970-01-01 00:00:01' WHERE lastSeen < '0000-01-01 00:00:00';
+
+20210310:
+  AFFECTS: users of textproc/redisearch
+  AUTHOR: osa@FreeBSD.org
+
+  The textproc/redisearch port has been updated to the recent stable
+  release - v2.0.  Users wanting to stay on v1.6 can replace
+  textproc/redisearch with textproc/redisearch16 with one of the
+  following commands:
+
+  # pkg install textproc/redisearch16
+    or
+  # portmaster -o textproc/redisearch16 textproc/redisearch
+    or
+  # portupgrade -o textproc/redisearch16 textproc/redisearch
+
+  NOTE: The textproc/redisearch16 brings a new name for the module,
+  i.e. redisearch16.so, so be careful.
+
+20210309:
+  AFFECTS: users of emulators/virtualbox-ose
+  AUTHOR: madpilot@FreeBSD.org
+
+  emulators/virtualbox-ose has been updated to 6.1.18. This new
+  version only works on amd64 hardware.
+
+  Previous version 5.x of the virtualbox ports have been preserved
+  as emulators/virtualbox-ose-legacy and similarly named ports for
+  the other parts.
+
+  If you can't run the latest version or wish to stay with the old
+  version, please install the legacy ports.
+
+  Also the additions at present build successfully only for amd64.
+  If you need i386 additions you can fallback to the old legacy
+  ones.
+
+  NOTE: There is no support for moving saved running machine states 
+  across major updates of virtualbox. It is recommended to properly 
+  shutdown all virtual machines before upgrading. Otherwise the saved 
+  state can simply be discarded after the upgrade, if it's not 
+  important to preserve it.
+
+  It should also be possible to downgrade to the legacy ports and
+  shutdown the machine properly from the saved state and then upgrade
+  back again.
+
+20210302:
+  AFFECTS: users of editors/emacs-devel
+  AUTHOR: jrm@FreeBSD.org
+
+  If you get the error "Symbol's value as variable is void: minor-modes",
+  rebuild the offending Emacs packages.  See
+  https://lists.gnu.org/archive/html/emacs-devel/2021-02/msg01164.html
+  for details.
+
+20210220:
+  AFFECTS: users of math/py-mathics
+  AUTHOR: thierry@FreeBSD.org
+
+  math/py-mathics has been split into several ports, and Mathics Core
+  only provides a rudimentary command-line shell called mathics.
+  To get the same functionality as in 1.x, you need to install either
+  mathicsscript or Mathics-Django.
+
+20210219:
+  AFFECTS: users of games/mangband
+  AUTHOR: adridg@FreeBSD.org
+
+  The client has updated from 1.1.3 (which has a single public server
+  left) to the current 1.5.3 (which has more public servers). If you
+  update, you can NOT connect to the old server any more. Remember
+  to finish your game before updating.
+
+20210210:
+  AFFECTS: users of audio/spotifyd
+  AUTHOR: rodrigo@FreeBSD.org
+
+  The configuration format for audio/spotifyd is now TOML, make
+  sure to update your configuration file after upgrading the port.
+  Look at the sample configuration file for a working example.
+  https://github.com/Spotifyd/spotifyd/blob/master/docs/src/config/File.md
+
+20210208:
+  AFFECTS: users of mail/mailscanner
+  AUTHOR: crees@FreeBSD.org
+
+  The clamavmodule has finally been removed after a long deprecation
+  period.  Please remove all references to it in your mailscanner.conf as
+  it will now count as a syntax error and may stop MailScanner starting!
+
+20210204:
+  AFFECTS: users of www/unit
+  AUTHOR: osa@FreeBSD.org
+
+  The default location for NGINX Unit's state directory has changed.  It
+  was moved from /usr/local/libexec/unit to /var/db/unit in order to
+  avoid write operations on /usr/local filesystem.
+
+20210130:
+  AFFECTS: users of graphics/opencv-core
+  AUTHOR: tcberner@FreeBSD.org
+
+  graphics/opencv-core has been reintegrated into graphics/opencv.
+  So there is no longer a circular dependency
+     opencv-core -> ffmpeg -> opencv
+
+  If you experience problems updating the packages, try
+      pkg delete -f opencv-core
+
+20210124:
+  AFFECTS: users of net-mgmt/netbox
+  AUTHOR: kai@FreeBSD.org
+
+  The Django templating language (DTL) is no longer supported for export
+  templates.  Please ensure that all export templates use Jinja2 before
+  upgrading.
+
+  Also the support for embedded graphs was completely removed and several
+  changes to the REST API were made.  Please check the changelogs for
+  further details.
+
+20210114:
+  AFFECTS: users of net-im/matterircd
+  AUTHOR: norrland@nullbyte.se
+
+  Commandline switches
+
+  Switched to viper for cmdline parsing, which does not support "short" flags.
+  You'll need to use --flag instead of -flag. Eg ./matterircd --debug
+  Bridge specific configuration is now only in configuration file. This means
+  the following flags have been removed: -restrict,-mmteam,-mmserver,
+  -mminsecure,-mmskiptlsverify.
+  You can set those in matterircd.toml, see the example file.
+
+  Config changes
+
+  BlacklistUser feature for slack has been renamed to DenyUsers.
+  JoinMpImOnTalk feature has been renamed to JoinDM and is available for
+  slack/mattermost
+  JoinInclude, JoinExclude now support regexp (see matterircd.toml.example)
+
+20210113:
+  AFFECTS: users of databases/redis[-devel]
+  AUTHOR: osa@FreeBSD.org
+
+  The databases/redis port has been updated to the recent stable release.
+  Users wanting to stay on v5.x can replace databases/redis with
+  databases/redis5 with one of the following commands:
+
+  # pkg install databases/redis5
+    or
+  # portmaster -o databases/redis5 databases/redis
+    or
+  # portupgrade -o databases/redis5 databases/redis
+
 20210106:
   AFFECTS: mail/dovecot
   AUTHOR: pi@FreeBSD.org
 
   The VPOPMAIL option was removed, because it was dropped upstream,
-  so please check your config bevor upgrading.
+  so please check your config before upgrading.
 
 20210106:
   AFFECTS: sysutils/graylog
@@ -273,7 +489,7 @@ you update your ports collection, before attempting any port upgrades.
   AUTHOR: cy@FreeBSD.org
 
   rc.conf variables syslog_ng_config and syslog_ng_pid have been replaced
-  by syslog_ng_flags and syslog_ng_pidfile respecively, making them
+  by syslog_ng_flags and syslog_ng_pidfile respectively, making them
   consistent with the rest of the ports tree. syslog_ng_config and
   syslog_ng_pid will continue to work until syslog-ng331 has been
   released and imported into ports.
@@ -508,7 +724,7 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of www/baikal
   AUTHOR: gahr@FreeBSD.org
 
-  The www/baikal has been upated to 0.7.1. With the 0.7.0 release, our
+  The www/baikal has been updated to 0.7.1. With the 0.7.0 release, our
   configuration format was updated to use YAML files. You need to go through
   the installer again but we pre-fill most values with the ones from your old
   installation. We recommend that you make a full backup of your data, as a
@@ -579,7 +795,7 @@ you update your ports collection, before attempting any port upgrades.
   AUTHOR: brnrd@FreeBSD.org
 
   The ports now add sample configuration files to /usr/local/etc/mysql. You
-  must merge your client configation with the conf.d/client.cnf and your
+  must merge your client configuration with the conf.d/client.cnf and your
   server configuration with conf.d/server.cnf.
 
 20200518:
@@ -1048,7 +1264,7 @@ you update your ports collection, before attempting any port upgrades.
   are too limiting and omit the Samba supplimentary libraries, which do
   have Python bindings to the default Python 3.x version. With the update
   of the default Python3 version you also need to rebuild all the
-  supplimentary Samba libraries and samba410 itself.
+  supplementary Samba libraries and samba410 itself.
 
   For portmaster users it would be enough to run:
 

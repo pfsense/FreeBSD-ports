@@ -20,8 +20,8 @@ _INCLUDE_BSD_DEFAULT_VERSIONS_MK=	yes
 LOCALBASE?=	/usr/local
 
 .for lang in APACHE BDB COROSYNC EMACS FIREBIRD FORTRAN FPC GCC GHOSTSCRIPT \
-	JAVA JULIA LAZARUS LIBRSVG2 LINUX LLVM LUA MYSQL PERL5 PGSQL PHP PYTHON PYTHON2 \
-	PYTHON3 RUBY RUST SAMBA SSL TCLTK VARNISH
+	IMAGEMAGICK JAVA LAZARUS LIBRSVG2 LINUX LLVM LUA MYSQL PERL5 \
+	PGSQL PHP PYTHON PYTHON2 PYTHON3 RUBY RUST SAMBA SSL TCLTK VARNISH
 .if defined(${lang}_DEFAULT)
 ERROR+=	"The variable ${lang}_DEFAULT is set and it should only be defined through DEFAULT_VERSIONS+=${lang:tl}=${${lang}_DEFAULT} in /etc/make.conf"
 .endif
@@ -50,17 +50,15 @@ FPC_DEFAULT?=		3.2.0
 # Possible values: 8, 9 (powerpcspe was dropped with GCC 9), 10
 .if ${ARCH} == "powerpcspe"
 GCC_DEFAULT?=		8
-.elif ${ARCH} == "powerpc64le"
-GCC_DEFAULT?=		10
 .else
-GCC_DEFAULT?=		9
+GCC_DEFAULT?=		10
 .endif
 # Possible values: 7, 8, 9, agpl
 GHOSTSCRIPT_DEFAULT?=	agpl
-# Possible values: 7, 8, 11, 12, 13, 14, 15
+# Possible values: 6, 7
+IMAGEMAGICK_DEFAULT?=	7
+# Possible values: 7, 8, 11, 12, 13, 14, 15, 16
 JAVA_DEFAULT?=		8
-# Possible values: 0.6, 0.7, 1.0, 1.1
-JULIA_DEFAULT?=		1.0
 # Possible values: 2.0.10
 LAZARUS_DEFAULT?=	2.0.10
 # Possible values: rust legacy
@@ -71,10 +69,14 @@ LIBRSVG2_DEFAULT?=	legacy
 .endif
 # Possible values: c7
 LINUX_DEFAULT?=		c7
-# Possible values: 60, 70, 80, 90, -devel (to be used when non-base compiler is required)
-# Please give notice to the Graphics Team (x11@FreeBSD.org) in advance before 
+# Possible values: 70, 80, 90, 10, 11, -devel (to be used when non-base compiler is required)
+# Please give notice to the Graphics Team (x11@FreeBSD.org) in advance before
 # bumping the LLVM version.
+.if ${ARCH} == powerpc
+LLVM_DEFAULT?=		10
+.else
 LLVM_DEFAULT?=		90
+.endif
 # Possible values: 5.1, 5.2, 5.3, 5.4
 LUA_DEFAULT?=		5.2
 # Possible values: 5.10, 5.20, 6.8
@@ -98,7 +100,7 @@ PERL5_DEFAULT:=		${_PERL5_FROM_BIN:R}
 .endif
 # Possible values: 9.5, 9.6, 10, 11, 12, 13
 PGSQL_DEFAULT?=		12
-# Possible values: 7.3, 7.4 8.0
+# Possible values: 7.3, 7.4, 8.0
 PHP_DEFAULT?=		7.4
 # Possible values: 2.7, 3.6, 3.7, 3.8, 3.9
 PYTHON_DEFAULT?=	3.7

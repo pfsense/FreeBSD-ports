@@ -3,13 +3,12 @@
 
 PORTNAME=	zcad
 PORTVERSION=	0.9.8.5
+PORTREVISION=	1
 CATEGORIES=	cad
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Simple CAD program
-
-BROKEN=		fails to patch
 
 USES=		dos2unix fpc lazarus:flavors tar:xz
 USE_GITHUB=	yes

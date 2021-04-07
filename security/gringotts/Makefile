@@ -3,7 +3,7 @@
 
 PORTNAME=	gringotts
 PORTVERSION=	1.2.10
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	security
 MASTER_SITES=	BERLIOS
 
@@ -14,10 +14,12 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpopt.so:devel/popt \
-		libgringotts.so:security/libgringotts
+		libgringotts.so:security/libgringotts \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
 
 USES=		gettext gnome localbase pkgconfig
-USE_GNOME=	gtk20
+USE_GNOME=	cairo gdkpixbuf2 gtk20
 GNU_CONFIGURE=	yes
 
 OPTIONS_DEFINE=	DOCS
