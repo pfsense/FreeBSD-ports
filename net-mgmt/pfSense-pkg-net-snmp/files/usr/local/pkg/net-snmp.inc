@@ -710,7 +710,7 @@ function netsnmp_resync_snmptrapd() {
 
 	/* Agent address list is comma-separated, no spaces: a:b:c,d:e:f,g:h:i */
 	if (!empty($agentaddresses)) {
-		$snmptrapd_config .= "agentaddress " . implode(',', $agentaddresses) . "\n";
+		$snmptrapd_config .= "snmpTrapdAddr " . implode(',', $agentaddresses) . "\n";
 	}
 
 	if (!empty($nsettings['donotretainnotificationlogs'])) {
