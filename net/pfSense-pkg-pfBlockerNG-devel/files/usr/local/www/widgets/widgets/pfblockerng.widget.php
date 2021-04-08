@@ -544,15 +544,17 @@ function pfBlockerNG_get_header($mode='') {
 	}
 
 	$unbound_validate = FALSE;
-	if ($pfb['dnsbl_mode'] == 'dnsbl_python') {
-		$py_mode = '(Python mode)';
-		if (strpos(file_get_contents("{$pfb['dnsbldir']}/unbound.conf"), 'pfb_unbound.py') !== FALSE) {
-			$unbound_validate = TRUE;
-		}
-	} else {
-		$py_mode = '(Unbound mode)';
-		if (strpos(file_get_contents("{$pfb['dnsbldir']}/unbound.conf"), 'pfb_dnsbl') !== FALSE) {
-			$unbound_validate = TRUE;
+	if (file_exists("{$pfb['dnsbldir']}/unbound.conf")) {
+		if ($pfb['dnsbl_mode'] == 'dnsbl_python') {
+			$py_mode = '(Python mode)';
+			if (strpos(file_get_contents("{$pfb['dnsbldir']}/unbound.conf"), 'pfb_unbound.py') !== FALSE) {
+				$unbound_validate = TRUE;
+			}
+		} else {
+			$py_mode = '(Unbound mode)';
+			if (strpos(file_get_contents("{$pfb['dnsbldir']}/unbound.conf"), 'pfb_dnsbl') !== FALSE) {
+				$unbound_validate = TRUE;
+			}
 		}
 	}
 
