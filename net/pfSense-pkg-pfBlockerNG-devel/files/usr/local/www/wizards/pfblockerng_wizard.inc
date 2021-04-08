@@ -155,12 +155,7 @@ yIChwYnMudHdpbWcuY29tKQ==";
 	$new = array();
 	$new['pfblockernglistsv4']		= $new['pfblockerngdnsbl'] = $new['pfblockerngdnsbl'] = array();
 	$new['pfblockernglistsv4']['PRI1']	= $feed_info_raw['ipv4']['PRI1'];
-	$new['pfblockerngdnsbl']['EasyList']	= $feed_info_raw['dnsbl']['EasyList'];
-	$new['pfblockerngdnsbl']['ADs']		= $feed_info_raw['dnsbl']['ADs'];
-	$new['pfblockerngdnsbl']['Malicious']	= $feed_info_raw['dnsbl']['Malicious'];
-
-	// Use only EasyList/EasyPrivacy configuration 
-	$new['pfblockerngdnsbl']['EasyList']['feeds'] = array_slice($new['pfblockerngdnsbl']['EasyList']['feeds'], 0, 2);
+	$new['pfblockerngdnsbl']['ADs_Basic']	= $feed_info_raw['dnsbl']['ADs_Basic'];
 
 	foreach ($new as $key => $data) {
 		foreach ($data as $alias => $info) {
