@@ -313,7 +313,7 @@ if ($pconfig['logFile'] && ($pconfig['download'] || $pconfig['clear'])) {
 
 				touch($s_logfile);
 				@chown($s_logfile, 'unbound');
-                                @chgrp($s_logfile, 'unbound');
+				@chgrp($s_logfile, 'unbound');
 			}
 		}
 	}
