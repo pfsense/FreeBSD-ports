@@ -30,6 +30,15 @@ if [ ! -f "${rom_path}" ]; then
 	exit 1
 fi
 
+unset tmp_dir
+
+_exit() {
+	if [ -n "${tmp_dir}" -a -d "${tmp_dir}" ]; then
+		rm -rf ${tmp_dir}
+	fi
+	umount /mnt >/dev/null 2>&1
+}
+
 image=$(basename ${rom_path})
 version="${image%-uc-*}"
 cur_version=$(kenv -q smbios.bios.version 2>/dev/null)
@@ -45,6 +54,21 @@ if [ "${cur_version}" = "${version}" ]; then
 	exit 0
 fi
 
+# Figure out EFI partition
+efi_part=$(efibootmgr -v | grep -A1 '^\+' 2>/dev/null | tail -n 1 \
+    | sed 's/^[[:blank:]]*//; s/:.*//')
+
+if [ -z "${efi_part}" ]; then
+	efi_part="mmcsd0p1"
+fi
+
+if [ ! -e /dev/${efi_part} ]; then
+	echo "EFI partition not found"
+	exit 1
+fi
+
+trap _exit 1 2 15 EXIT
+
 # Read and save the current DMI values
 tmp_dir=$(mktemp -d 2>/dev/null)
 
@@ -57,11 +81,17 @@ fi
 ( cd ${tmp_dir} && ${base_dir}/dmistore )
 
 # Mount the EFI partition
-if ! mount -t msdosfs /dev/mmcsd0p1 /mnt; then
+if ! mount -t msdosfs /dev/${efi_part} /mnt; then
 	echo "Error mounting EFI partition"
-	rm -rf ${tmp_dir}
 	exit 1
 fi
+
+# Check if /efi is present on filesystem
+if [ ! -d "/mnt/efi" ]; then
+	echo "EFI filesystem does not contain /efi"
+	exit 1
+fi
+
 mkdir -p /mnt/efi/UpdateCapsule
 
 # Copy the BlinkBoot image
