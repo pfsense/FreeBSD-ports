@@ -121,13 +121,17 @@ def init_standard(id, env):
 
     # Validate write access to log files
     for l_file in ('dnsbl', 'dns_reply', 'unified'):
+        lfile = '/var/log/pfblockerng/' + l_file + '.log'
+
         try:
-            lfile = '/var/log/pfblockerng/' + l_file + '.log'
             if os.path.isfile(lfile) and not os.access(lfile, os.W_OK):
                 new_file = '/var/log/pfblockerng/' + l_file + str(datetime.now().strftime("_%Y%m%-d%H%M%S.log"))
                 os.rename(lfile, new_file)
         except Exception as e:
             sys.stderr.write("[pfBlockerNG]: Failed to validate write permission: {}.log: {}" .format(l_file, e))
+            if os.path.isfile(lfile):
+                new_file = '/var/log/pfblockerng/' + l_file + str(datetime.now().strftime("_%Y%m%-d%H%M%S.log"))
+                os.rename(lfile, new_file)
             pass
 
     if not pfb['mod_threading']:
@@ -145,6 +149,10 @@ def init_standard(id, env):
     # Initialize default settings
     pfb['dnsbl_ipv4'] = ''
     pfb['dnsbl_ipv6'] = ''
+    pfb['dataDB'] = False
+    pfb['zoneDB'] = False
+    pfb['hstsDB'] = False
+    pfb['whiteDB'] = False
     pfb['regexDB'] = False
     pfb['whiteDB'] = False
     pfb['gpListDB'] = False
@@ -154,6 +162,7 @@ def init_standard(id, env):
     pfb['python_hsts'] = False
     pfb['python_reply'] = False
     pfb['python_cname'] = False
+    pfb['safeSearchDB'] = False
     pfb['group_policy'] = False
     pfb['python_enable'] = False
     pfb['python_nolog'] = False
@@ -246,11 +255,11 @@ def init_standard(id, env):
             if pfb['python_ipv6']:
                 pfb['dnsbl_ipv6'] = '::' + pfb['dnsbl_ipv4']
             else:
-                pfb['dnsbl_ipv6'] = '::/0'
+                pfb['dnsbl_ipv6'] = '::'
 
             # DNSBL IP/Log types (0 = Null Blocking logging, 1 = DNSBL Web Server logging, 2 = Null Blocking no logging)
             pfb['dnsbl_ip'] = {'A': {'0': '0.0.0.0', '1': pfb['dnsbl_ipv4'], '2': '0.0.0.0'},
-                               'AAAA': {'0': '::/0', '1': pfb['dnsbl_ipv6'], '2': '::/0'} }
+                               'AAAA': {'0': '::', '1': pfb['dnsbl_ipv6'], '2': '::'} }
 
             # List of DNS R_CODES
             rcodeDB = {0: 'NoError', 1: 'FormErr', 2: 'ServFail', 3: 'NXDOMAIN', 4: 'NotImp', 5: 'Refused', 6: 'YXDomain',
@@ -277,9 +286,8 @@ def init_standard(id, env):
                             regexDB[name] = re.compile(pattern)
                             pfb['regexDB'] = True
                             pfb['python_blacklist'] = True
-                        except re.error as e:
-                            for a in e:
-                                sys.stderr.write("[pfBlockerNG]: Regex [ {} ] compile error pattern [  {}  ] on line #{}: {}" .format(name, pattern, r_count, a))
+                        except Exception as e:
+                            sys.stderr.write("[pfBlockerNG]: Regex [ {} ] compile error pattern [  {}  ] on line #{}: {}" .format(name, pattern, r_count, e))
                             pass
                         r_count += 1
 
@@ -318,7 +326,6 @@ def init_standard(id, env):
                         pass 
 
             # Collect SafeSearch Redirection list
-            pfb['safeSearchDB'] = False
             if os.path.isfile(pfb['pfb_py_ss']):
                 try:
                     with open(pfb['pfb_py_ss']) as csv_file:
@@ -338,7 +345,6 @@ def init_standard(id, env):
             feedGroup_index = 0
 
             # Zone dicts
-            pfb['zoneDB'] = False
             if os.path.isfile(pfb['pfb_py_zone']):
                 try:
                     with open(pfb['pfb_py_zone']) as csv_file:
@@ -370,7 +376,6 @@ def init_standard(id, env):
                     pass
 
             # Data dicts
-            pfb['dataDB'] = False
             if os.path.isfile(pfb['pfb_py_data']):
                 try:
                     with open(pfb['pfb_py_data']) as csv_file:
@@ -407,7 +412,6 @@ def init_standard(id, env):
             if pfb['python_blacklist']:
 
                 # Collect user-defined Whitelist
-                pfb['whiteDB'] = False
                 if os.path.isfile(pfb['pfb_py_whitelist']):
                     try:
                         with open(pfb['pfb_py_whitelist']) as csv_file:
@@ -428,7 +432,6 @@ def init_standard(id, env):
                         pass
 
                 # HSTS dicts
-                pfb['hstsDB'] = False
                 if pfb['python_hsts'] and os.path.isfile(pfb['pfb_py_hsts']):
                     try:
                         with open(pfb['pfb_py_hsts']) as hsts:
@@ -680,49 +683,63 @@ def write_sqlite(db, groupname, update):
                 continue
         break
 
-    try:
-        if sqlite3Db:
-            sqlite3DbCursor = sqlite3Db.cursor()
+    isException = False
+    for i in range(1,5):
+        try:
+            if sqlite3Db:
+                sqlite3DbCursor = sqlite3Db.cursor()
 
-            if db == 1:
-                sqlite3DbCursor.execute("CREATE TABLE IF NOT EXISTS resolver (row integer, totalqueries integer, queries integer)")
+                if db == 1:
+                    sqlite3DbCursor.execute("CREATE TABLE IF NOT EXISTS resolver (row integer, totalqueries integer, queries integer)")
 
-                # Create row if not found
-                sqlite3DbCursor.execute("SELECT COUNT(*) FROM resolver")
-                py_validate = sqlite3DbCursor.fetchone()
-                if py_validate[0] == 0:
-                    sqlite3DbCursor.execute("INSERT INTO resolver ( row, totalqueries, queries ) VALUES ( 0, 0, 0 )")
+                    # Create row if not found
+                    sqlite3DbCursor.execute("SELECT COUNT(*) FROM resolver")
+                    py_validate = sqlite3DbCursor.fetchone()
+                    if py_validate[0] == 0:
+                        sqlite3DbCursor.execute("INSERT INTO resolver ( row, totalqueries, queries ) VALUES ( 0, 0, 0 )")
 
-                # Increment resolver totalqueries
-                if update:
-                    sqlite3DbCursor.execute("UPDATE resolver SET totalqueries = totalqueries + 1 WHERE row = 0")
+                    # Increment resolver totalqueries
+                    if update:
+                        sqlite3DbCursor.execute("UPDATE resolver SET totalqueries = totalqueries + 1 WHERE row = 0")
 
-            elif db == 2:
-                sqlite3DbCursor.execute("CREATE TABLE IF NOT EXISTS dnsbl ( groupname TEXT, timestamp TEXT, entries INTEGER, counter INTEGER )")
+                elif db == 2:
+                    sqlite3DbCursor.execute("CREATE TABLE IF NOT EXISTS dnsbl ( groupname TEXT, timestamp TEXT, entries INTEGER, counter INTEGER )")
 
-                # Increment DNSBL Groupname counter
-                if update:
-                    sqlite3DbCursor.execute("UPDATE dnsbl SET counter = counter + 1 WHERE groupname = ?", (groupname,) )
+                    # Increment DNSBL Groupname counter
+                    if update:
+                        sqlite3DbCursor.execute("UPDATE dnsbl SET counter = counter + 1 WHERE groupname = ?", (groupname,) )
 
-            elif db == 3:
-                sqlite3DbCursor.execute("CREATE TABLE IF NOT EXISTS dnsblcache ( type TEXT, domain TEXT, groupname TEXT, final TEXT, feed TEXT );")
-                sqlite3DbCursor.execute("INSERT INTO dnsblcache (type, domain, groupname, final, feed ) VALUES (?,?,?,?,?);", update)
+                elif db == 3:
+                    sqlite3DbCursor.execute("CREATE TABLE IF NOT EXISTS dnsblcache ( type TEXT, domain TEXT, groupname TEXT, final TEXT, feed TEXT );")
+                    sqlite3DbCursor.execute("INSERT INTO dnsblcache (type, domain, groupname, final, feed ) VALUES (?,?,?,?,?);", update)
 
-            sqlite3Db.commit()
-    except Exception as e:
-        sys.stderr.write("[pfBlockerNG]: Failed to write to sqlite3 db {}: {}" .format(db_file, e))
-        if sqlite3Db:
-            sqlite3Db.close()
+                sqlite3Db.commit()
+                isException = False
 
-        # Attempt to clear DNSBL Cache file on error
-        if db == 3 and os.path.isfile(pfb['pfb_py_cache']):
-            os.remove(pfb['pfb_py_cache'])
-            sys.stderr.write("[pfBlockerNG]: DNSBL Cache database cleared OK")
+        except Exception as e:
+            if i == 4:
+                if sqlite3Db:
+                    sqlite3Db.close()
 
-        return False
-    finally:
-        if sqlite3Db:
-            sqlite3Db.close()
+                sys.stderr.write("[pfBlockerNG]: Failed to write to sqlite3 db {}: {}" .format(db_file, e))
+
+                # Attempt to clear DNSBL Cache file on error
+                if db == 3 and os.path.isfile(pfb['pfb_py_cache']):
+                    os.remove(pfb['pfb_py_cache'])
+                    sys.stderr.write("[pfBlockerNG]: DNSBL Cache database cleared OK")
+
+                pass
+                return False
+
+            else:
+                time.sleep(0.25)
+                isException = True
+                continue
+
+        finally:
+            if not isException and sqlite3Db:
+                sqlite3Db.close()
+            break
 
     return True
 
@@ -746,7 +763,7 @@ def get_details_dnsbl(m_type, qinfo, qstate, rep, kwargs):
     if isDNSBL is not None:
 
         # If logging is disabled, do not log blocked DNSBL events (Utilize DNSBL Webserver) except for Python nullblock events
-        if pfb['python_nolog'] and not isDNSBL['b_ip'] in ('0.0.0.0', '::/0'):
+        if pfb['python_nolog'] and not isDNSBL['b_ip'] in ('0.0.0.0', '::'):
             return True
 
         # Increment dnsblgroup counter
@@ -813,8 +830,9 @@ def get_details_reply(m_type, qinfo, qstate, rep, kwargs):
         return True
 
     q_ip = get_q_ip_comm(kwargs)
-    if q_ip == 'Unknown':
+    if q_ip == 'Unknown' or q_ip == '127.0.0.1':
         q_ip = '127.0.0.1'
+        m_type = 'resolver'
 
     o_type = get_q_type(qstate, qinfo)
     if m_type == 'cache' or o_type == 'PTR':
@@ -1087,7 +1105,7 @@ def operate(id, event, qstate, qdata):
         if qstate is not None and qstate.qinfo.qtype is not None:
             qstate_valid = True
             q_type = qstate.qinfo.qtype
-            q_name_original = get_q_name_qstate(qstate)
+            q_name_original = get_q_name_qstate(qstate).lower()
             q_ip = get_q_ip(qstate)
         else:
             sys.stderr.write("[pfBlockerNG] qstate is not None and qstate.qinfo.qtype is not None")
@@ -1340,7 +1358,7 @@ def operate(id, event, qstate, qdata):
                             continue
 
                         for j in range(0, rr.entry.data.count):
-                            domain = convert_other(rr.entry.data.rr_data[j])
+                            domain = convert_other(rr.entry.data.rr_data[j]).lower()
                             if domain != 'Unknown':
                                 validate.append(domain)
 

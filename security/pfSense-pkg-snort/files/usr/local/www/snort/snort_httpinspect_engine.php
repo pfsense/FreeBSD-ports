@@ -140,11 +140,9 @@ if ($_POST['cancel']) {
 // Check for returned "selected alias" if action is import
 if ($_GET['act'] == "import") {
 	session_start();
-	if (($_GET['varname'] == "bind_to" || $_GET['varname'] == "ports") 
-	     && !empty($_GET['varvalue'])) {
+	if (($_GET['varname'] == "bind_to" || $_GET['varname'] == "ports") && !empty($_GET['varvalue'])) {
 		$pconfig[$_GET['varname']] = htmlspecialchars($_GET['varvalue']);
-			$_SESSION['http_inspect_import'] = array();
-
+		$_SESSION['http_inspect_import'] = array();
 		$_SESSION['http_inspect_import'][$_GET['varname']] = $_GET['varvalue'];
 		if (isset($_SESSION['http_inspect_import']['bind_to']))
 			$pconfig['bind_to'] = $_SESSION['http_inspect_import']['bind_to'];
@@ -343,7 +341,7 @@ if ($pconfig['name'] <> "default") {
 	$btnaliases = new Form_Button(
 		'btnSuppressList',
 		' ' . 'Aliases',
-		'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=host|network&varname=bind_to&act=import&multi_ip=yes&returl=' . urlencode($_SERVER['PHP_SELF']),
+		'snort_select_alias.php?id=' . $id . '&eng_id=' . $eng_id . '&type=host|network&varname=bind_to&act=import&multi_ip=yes&returl=' . urlencode($_SERVER['PHP_SELF']),
 		'fa-search-plus'
 	);
 	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
@@ -374,7 +372,7 @@ $bind_to->setHelp('Specify which ports to check for HTTP data.  Default value is
 $btnaliases = new Form_Button(
 	'btnSelectAlias',
 	' ' . 'Aliases',
-	'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=port&varname=ports&act=import&returl=' . urlencode($_SERVER['PHP_SELF']),
+	'snort_select_alias.php?id=' . $id . '&eng_id=' . $eng_id . '&type=port&varname=ports&act=import&returl=' . urlencode($_SERVER['PHP_SELF']),
 	'fa-search-plus'
 );
 $btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
