@@ -306,6 +306,15 @@ if ($pconfig['logFile'] && ($pconfig['download'] || $pconfig['clear'])) {
 			@fclose($fp);
 		} else {
 			unlink_if_exists($s_logfile);
+
+			if (strpos($s_logfile, 'dnsbl.log') !== FALSE ||
+			    strpos($s_logfile, 'unified.log') !== FALSE ||
+			    strpos($s_logfile, 'dns_reply.log') !== FALSE) {
+
+				touch($s_logfile);
+				@chown($s_logfile, 'unbound');
+				@chgrp($s_logfile, 'unbound');
+			}
 		}
 	}
 
@@ -413,7 +422,7 @@ if ($downloadable) {
 	$logbtns .= '&emsp;<i class="fa fa-download icon-pointer icon-primary" name="download[]" id="downloadicon" title="Download current logfile."></i>';
 }
 if ($clearable) {
-	$logbtns .= '&emsp;<i class="fa fa-trash icon-pointer icon-primary" name="clear[]" id="clearicon" title="Clear selected logfile."></i>';
+	$logbtns .= '&emsp;<i class="fa fa-trash icon-pointer icon-primary no-confirm" name="clear[]" id="clearicon" title="Clear selected logfile."></i>';
 }
 
 $section = new Form_Section('Log/File Details');
@@ -534,16 +543,20 @@ events.push(function() {
 
 	// Download selected logfile 
 	$('[id^=downloadicon]').click(function(event) {
-		$('#download').val('download');
-		$('#fileContent').val('');
-		$('form').submit();
+		if (confirm(event.target.title)) {
+			$('#download').val('download');
+			$('#fileContent').val('');
+			$('form').submit();
+		}
 	});
 
 	// Clear selected logfile
 	$('[id^=clearicon]').click(function(event) {
-		$('#clear').val('clear');
-		$('#fileContent').val('');
-		$('form').submit();
+		if (confirm(event.target.title)) {
+			$('#clear').val('clear');
+			$('#fileContent').val('');
+			$('form').submit();
+		}
 	});
 });
 //]]>

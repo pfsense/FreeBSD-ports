@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2011-2021 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008-2009 Robert Zelaya
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ $snortlogdir = SNORTLOGDIR;
 $netmapifs = array('cc', 'cxl', 'cxgbe', 'em', 'igb', 'em', 'lem', 'ix', 'ixgbe', 'ixl', 're', 'vtnet');
 if (pfs_version_compare(false, 2.4, $g['product_version'])) {
 	/* add FreeBSD 12 iflib(4) supported devices */
-	$netmapifs = array_merge($netmapifs, array('ice', 'bnxt', 'vmx'));
+	$netmapifs = array_merge($netmapifs, array('ena', 'ice', 'bnxt', 'vmx'));
 	sort($netmapifs);
 }
 
@@ -104,14 +104,16 @@ else
 
 $pconfig = array();
 if (empty($config['installedpackages']['snortglobal']['rule'][$id]['uuid'])) {
-	/* Adding new interface, so flag rules to build. */
+	/* Adding new interface, so generate a UUID and flag the rules to build. */
 	$pconfig['uuid'] = snort_generate_id();
 	$rebuild_rules = true;
+	$new_interface = true;
 }
 else {
 	$pconfig['uuid'] = $a_rule[$id]['uuid'];
 	$pconfig['descr'] = $a_rule[$id]['descr'];
 	$rebuild_rules = false;
+	$new_interface = false;
 }
 $snort_uuid = $pconfig['uuid'];
 
@@ -129,6 +131,7 @@ $interfaces["Unassigned"] = gettext("Unassigned");
 // See if interface is already configured, and use its values
 if (isset($id) && $a_rule[$id]) {
 	/* old options */
+	$if_friendly = convert_friendly_interface_to_friendly_descr($a_rule[$id]['interface']);
 	$pconfig = $a_rule[$id];
 	if (!empty($pconfig['configpassthru']))
 		$pconfig['configpassthru'] = base64_decode($pconfig['configpassthru']);
@@ -148,6 +151,7 @@ elseif (isset($id) && !isset($a_rule[$id])) {
 	foreach ($ifaces as $i) {
 		if (!in_array($i, $ifrules)) {
 			$pconfig['interface'] = $i;
+			$if_friendly = convert_friendly_interface_to_friendly_descr($i);
 
 			// If the interface is a VLAN, use the VLAN description
 			// if set, otherwise default to the friendly description.
@@ -557,6 +561,7 @@ if ($_POST['save'] && !$input_errors) {
 		}
 
 		$pconfig = $natent;
+		$new_interface = false;
 	} else
 		$pconfig = $_POST;
 }
@@ -576,15 +581,11 @@ function snort_get_config_lists($lists) {
 	return $result;
 }
 
-$if_friendly = convert_friendly_interface_to_friendly_descr($a_rule[$id]['interface']);
-if (empty($if_friendly)) {
-	$if_friendly = "None";
-}
-
 // Finished with config array reference, so release it
 unset($a_rule);
 
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Edit Interface"), gettext("{$if_friendly}"));
+$pglinks = array("", "/snort/snort_interfaces.php", "@self");
+$pgtitle = array("Services", "Snort", "{$if_friendly} - Interface Settings");
 include("head.inc");
 
 if ($input_errors) {
@@ -940,7 +941,11 @@ $tab_array = array();
 	$tab_array[] = array(gettext("Snort Interfaces"), true, "/snort/snort_interfaces.php");
 	$tab_array[] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
 	$tab_array[] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
-	$tab_array[] = array(gettext("Alerts"), false, "/snort/snort_alerts.php?instance={$id}");
+	if ($new_interface) {
+		$tab_array[] = array(gettext("Alerts"), false, "/snort/snort_alerts.php");
+	} else {
+		$tab_array[] = array(gettext("Alerts"), false, "/snort/snort_alerts.php?instance={$id}");
+	}
 	$tab_array[] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
 	$tab_array[] = array(gettext("Pass Lists"), false, "/snort/snort_passlist.php");
 	$tab_array[] = array(gettext("Suppress"), false, "/snort/snort_interfaces_suppress.php");
@@ -953,12 +958,14 @@ display_top_tabs($tab_array, true);
 $tab_array = array();
 	$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
 	$tab_array[] = array($menu_iface . gettext("Settings"), true, "/snort/snort_interfaces_edit.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Categories"), false, "/snort/snort_rulesets.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Rules"), false, "/snort/snort_rules.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Variables"), false, "/snort/snort_define_servers.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Preprocs"), false, "/snort/snort_preprocessors.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/snort/snort_ip_reputation.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Logs"), false, "/snort/snort_interface_logs.php?id={$id}");
+	if (!$new_interface) {
+		$tab_array[] = array($menu_iface . gettext("Categories"), false, "/snort/snort_rulesets.php?id={$id}");
+		$tab_array[] = array($menu_iface . gettext("Rules"), false, "/snort/snort_rules.php?id={$id}");
+		$tab_array[] = array($menu_iface . gettext("Variables"), false, "/snort/snort_define_servers.php?id={$id}");
+		$tab_array[] = array($menu_iface . gettext("Preprocs"), false, "/snort/snort_preprocessors.php?id={$id}");
+		$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/snort/snort_ip_reputation.php?id={$id}");
+		$tab_array[] = array($menu_iface . gettext("Logs"), false, "/snort/snort_interface_logs.php?id={$id}");
+	}
 display_top_tabs($tab_array, true, 'nav nav-tabs');
 
 print($form);
