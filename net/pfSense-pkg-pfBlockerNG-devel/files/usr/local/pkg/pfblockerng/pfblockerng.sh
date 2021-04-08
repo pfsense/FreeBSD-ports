@@ -732,7 +732,7 @@ whoisconvert() {
 
 	vtype="${max}"
 	custom_list="$(echo ${dedup} | tr ',' ' ')"
-	rm -f "${pfborig}${alias}.orig"
+	multiple="$(echo ${dedup} | tr -cd , | wc -c | tr -d ' ')"
 
 	if [ "${vtype}" == '_v4' ]; then
 		_type=A
@@ -744,29 +744,76 @@ whoisconvert() {
 		_ip_type=':'
 	fi
 
+	# Backup previous orig file
+	if [ -e "${pfborig}${alias}.orig" ]; then
+		mv "${pfborig}${alias}.orig" "${pfborig}${alias}.bk"
+	fi
+
+	echo
+	found=false
+
 	for host in ${custom_list}; do
 		# Determine if host is a Domain or an AS
 		host_check="$(echo ${host} | grep '\.')"
 		if [ ! -z "${host_check}" ]; then
+			found=true
+			printf "  Collecting host IP: ${host}"
 			echo "### Domain: ${host} ###" >> "${pfborig}${alias}.orig"
 			"${pathhost}" -t ${_type} ${host} | sed 's/^.* //' >> "${pfborig}${alias}.orig"
+			echo "... completed"
 		else
 			asn="$(echo ${host} | tr -d 'AaSs')"
-			echo "### AS${asn}: ${host} ###" >> "${pfborig}${alias}.orig"
+			printf "  Downloading ASN: ${asn}"
+
+			ua="pfSense/pfBlockerNG cURL download agent-"
+			guid="$(/usr/sbin/gnid)"
+			ua_final="${ua}${guid}"
 
 			bgp_url="https://api.bgpview.io/asn/${asn}/prefixes"
-			"${pathcurl}" -sS1 "${bgp_url}" > "${asntemp}"
-			if [ -e "${asntemp}" ] && [ -s "${asntemp}" ]; then
-				cat "${asntemp}" | "${pathjq}" -r ".data.ipv${_bgp_type}_prefixes[].prefix" >> "${pfborig}${alias}.orig"
+			unavailable=''
+			for i in 1 2 3 4 5; do
+				printf "."
+				"${pathcurl}" -H "${ua_final}" -sS1 "${bgp_url}" > "${asntemp}"
+
+				if [ -e "${asntemp}" ] && [ -s "${asntemp}" ]; then
+					printf "."
+					unavailable="$(grep 'Service Temporarily Unavailable' ${asntemp})"
+					if [ -z "${unavailable}" ]; then
+						found=true
+						echo ". completed"
+						echo "### AS${asn}: ${host} ###" >> "${pfborig}${alias}.orig"
+						cat "${asntemp}" | "${pathjq}" -r ".data.ipv${_bgp_type}_prefixes[].prefix" >> "${pfborig}${alias}.orig"
+						break
+					else
+						sleep_val="$((i * 2))"
+						sleep "${sleep_val}"
+					fi
+				fi
+			done
+
+			if [ ! -z "${unavailable}" ]; then
+				echo ". Failed to download ASN"
+				touch "${pfborig}${alias}.fail"
 			fi
 
-			if [ ! -e "${pfborig}${alias}.orig" ]; then
-				echo "Failed to download ASN"
-				mv "${asntemp}" "${pfborig}${alias}.orig"
-				touch "${pfborig}${alias}.fail"
+			if [ "${multiple}" -gt 0 ]; then
+				sleep 1
 			fi
 		fi
 	done
+
+	# Restore previous orig file
+	if [ "${found}" == false ]; then
+		if [ -e "${pfborig}${alias}.bk" ]; then
+			mv "${pfborig}${alias}.bk" "${pfborig}${alias}.orig"
+		else
+			echo > "${pfborig}${alias}.orig"
+		fi
+	else
+		if [ -e "${pfborig}${alias}.bk" ]; then
+			rm -f "${pfborig}${alias}.bk"
+		fi
+	fi
 }
 
 
