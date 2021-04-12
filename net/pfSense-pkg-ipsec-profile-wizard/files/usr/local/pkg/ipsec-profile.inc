@@ -275,15 +275,19 @@ function iex_parameter_check($type) {
 	$p1_ok = false;
 
 	/* Check each P1 encryption configuration line */
-	foreach ($mobile_p1['encryption']['item'] as $mp1e) {
-		$p1err = iex_check_p1($type, $mp1e);
-		/* If this entry is OK, mark that we have at least one usable
-		 * encryption configuration and stop */
-		if (empty($p1err)) {
-			$p1_ok = true;
-			break;
-		} else {
-			$p1errors = array_merge($p1errors, $p1err);
+	if (isset($mobile_p1['encryption']['item'])) {
+		foreach ($mobile_p1['encryption']['item'] as $mp1e) {
+			$p1err = iex_check_p1($type, $mp1e);
+			/*
+			 * If this entry is OK, mark that we have at least one
+			 * usable encryption configuration and stop
+			 */
+			if (empty($p1err)) {
+				$p1_ok = true;
+				break;
+			} else {
+				$p1errors = array_merge($p1errors, $p1err);
+			}
 		}
 	}
 
@@ -325,7 +329,7 @@ function iex_parameter_convert($type, $phases = array(1, 2)) {
 	}
 
 	/* Check each P1 encryption configuration line and attempt conversion */
-	if (in_array('1', $phases)) {
+	if (in_array('1', $phases) && isset($mobile_p1['encryption']['item'])) {
 		foreach ($mobile_p1['encryption']['item'] as $mp1e) {
 			/* Attempt to convert this P1 encryption line */
 			$p1opt = iex_check_p1($type, $mp1e, true);
