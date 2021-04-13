@@ -1176,6 +1176,20 @@
 				}
 			]
 		},
+		"ADs_Basic": {
+			"info":		"ADs Basic is a minimal collection of ADvertisement Domain Feeds.",
+			"description":	"ADs Basic - Collection of ADvertisement Domain Feeds.", 
+			"action":	"block",
+			"cron":		"EveryDay",
+			"feeds": [
+				{
+					"feed":		"Steven Black",
+					"website":	"https://github.com/StevenBlack/hosts",
+					"url":		"https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
+					"header":	"StevenBlack_ADs"
+				}
+			]
+		},
 		"Email": {
 			"info":		"List of email providers. If not filtered by 'TOP1M Whitelist' may block many websites.",
 			"description":	"Email - List of email providers domains.",

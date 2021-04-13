@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2018-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2018 Bill Meeks
+ * Copyright (c) 2013-2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -195,7 +195,8 @@ if ($_POST['save']) {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($config['installedpackages']['snortglobal']['rule'][$id]['interface']);
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Frag3 Preprocessor Engine"), gettext("{$if_friendly}"));
+$pglinks = array("", "/snort/snort_interfaces.php", "/snort/snort_interfaces_edit.php?id={$id}", "@self");
+$pgtitle = array("Services", "Snort", "Interface Settings", "{$if_friendly} - Frag3 Preprocessor Engine");
 include("head.inc");
 
 if ($input_errors) print_input_errors($input_errors);
@@ -231,7 +232,7 @@ if ($pconfig['name'] <> "default") {
 	$btnaliases = new Form_Button(
 		'btnSelectAlias',
 		' ' . 'Aliases',
-		'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=host|network&varname=bind_to&act=import&multi_ip=yes&returl=' . urlencode($_SERVER['PHP_SELF']),
+		'snort_select_alias.php?id=' . $id . '&eng_id=' . $eng_id . '&type=host|network&varname=bind_to&act=import&multi_ip=yes&returl=' . urlencode($_SERVER['PHP_SELF']),
 		'fa-search-plus'
 	);
 	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');

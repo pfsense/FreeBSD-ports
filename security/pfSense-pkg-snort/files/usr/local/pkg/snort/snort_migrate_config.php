@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2019-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2020 Bill Meeks
+ * Copyright (c) 2013-2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -224,6 +224,27 @@ if (empty($config['installedpackages']['snortglobal']['rule_update_starttime']) 
 	  strlen($config['installedpackages']['snortglobal']['rule_update_starttime']) < 5 ) {
 	$config['installedpackages']['snortglobal']['rule_update_starttime'] = "00:" . str_pad(strval(random_int(0,59)), 2, "00", STR_PAD_LEFT);
 	$updated_cfg = true;
+}
+
+/**********************************************************/
+/* Add new multiple alias & custom IP assignment feature  */
+/* for Pass Lists by converting existing <address>        */
+/* element for existing entries into an array. Migrate    */
+/* any existing <address> to the new array structure.     */
+/**********************************************************/
+if (is_array($config['installedpackages']['snortglobal']['whitelist']['item'])) {
+	foreach ($config['installedpackages']['snortglobal']['whitelist']['item'] as &$wlisti) {
+		if (!is_array($wlisti['address']) && !is_array($wlisti['address']['item']) && !empty($wlisti['address'])) {
+			$tmp = $wlisti['address'];
+			$wlisti['address'] = array();
+			$wlisti['address']['item'] = array();
+			$wlisti['address']['item'][] = $tmp;
+			$updated_cfg = true;
+		}
+	}
+
+	// Release reference to whitelist array
+	unset($wlisti);
 }
 
 /**********************************************************/
@@ -687,34 +708,34 @@ foreach ($config['installedpackages']['snortglobal']['rule'] as &$rule) {
 	/* Migrate any enabled Unified logging from Barnyard2 to  */
 	/* the new snort_xxxx.u2 log interface logging.           */
 	/**********************************************************/
-	if (!isset($pconfig['unified2_logging_enable'])) {
+	if (!isset($rule['unified2_logging_enable'])) {
 		// Continue U2 logging if Barnyard2 was enabled
-		if (isset($pconfig['barnyard_enable']) && $pconfig['barnyard_enable'] == 'on') {
-			$pconfig['unified2_logging_enable'] = 'on';
+		if (isset($rule['barnyard_enable']) && $rule['barnyard_enable'] == 'on') {
+			$rule['unified2_logging_enable'] = 'on';
 		}
 		else {
-			$pconfig['unified2_logging_enable'] = 'off';
+			$rule['unified2_logging_enable'] = 'off';
 		}
 
 		// Check if VLAN or MPLS events logging is enabled
-		if (isset($pconfig['barnyard_log_vlan_events']) && $pconfig['barnyard_log_vlan_events'] == 'on') {
-			$pconfig['unified2_log_vlan_events'] = 'on';
+		if (isset($rule['barnyard_log_vlan_events']) && $rule['barnyard_log_vlan_events'] == 'on') {
+			$rule['unified2_log_vlan_events'] = 'on';
 		}
 		else {
-			$pconfig['unified2_log_vlan_events'] = 'off';
+			$rule['unified2_log_vlan_events'] = 'off';
 		}
-		if (isset($pconfig['barnyard_log_mpls_events']) && $pconfig['barnyard_log_mpls_events'] == 'on') {
-			$pconfig['unified2_log_mpls_events'] = 'on';
+		if (isset($rule['barnyard_log_mpls_events']) && $rule['barnyard_log_mpls_events'] == 'on') {
+			$rule['unified2_log_mpls_events'] = 'on';
 		}
 		else {
-			$pconfig['unified2_log_mpls_events'] = 'off';
+			$rule['unified2_log_mpls_events'] = 'off';
 		}
 
-		if (!isset($pconfig['unified2_log_limit'])) {
-			$pconfig['unified2_log_limit'] = '500';
+		if (!isset($rule['unified2_log_limit'])) {
+			$rule['unified2_log_limit'] = '500';
 		}
-		if (!isset($pconfig['u2_archived_log_retention'])) {
-			$pconfig['u2_archived_log_retention'] = '336';
+		if (!isset($rule['u2_archived_log_retention'])) {
+			$rule['u2_archived_log_retention'] = '336';
 		}
 		$updated_cfg = true;
 	}
@@ -723,116 +744,116 @@ foreach ($config['installedpackages']['snortglobal']['rule'] as &$rule) {
 	/* Remove deprecated Barnyard2 configuration parameters   */
 	/* from this interface if any are present.                */
 	/**********************************************************/
-	if (isset($pconfig['barnyard_enable'])) {
-		unset($pconfig['barnyard_enable']);
+	if (isset($rule['barnyard_enable'])) {
+		unset($rule['barnyard_enable']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_show_year'])) {
-		unset($pconfig['barnyard_show_year']);
+	if (isset($rule['barnyard_show_year'])) {
+		unset($rule['barnyard_show_year']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_archive_enable'])) {
-		unset($pconfig['barnyard_archive_enable']);
+	if (isset($rule['barnyard_archive_enable'])) {
+		unset($rule['barnyard_archive_enable']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_dump_payload'])) {
-		unset($pconfig['barnyard_dump_payload']);
+	if (isset($rule['barnyard_dump_payload'])) {
+		unset($rule['barnyard_dump_payload']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_obfuscate_ip'])) {
-		unset($pconfig['barnyard_obfuscate_ip']);
+	if (isset($rule['barnyard_obfuscate_ip'])) {
+		unset($rule['barnyard_obfuscate_ip']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_log_vlan_events'])) {
-		unset($pconfig['barnyard_log_vlan_events']);
+	if (isset($rule['barnyard_log_vlan_events'])) {
+		unset($rule['barnyard_log_vlan_events']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_log_mpls_events'])) {
-		unset($pconfig['barnyard_log_mpls_events']);
+	if (isset($rule['barnyard_log_mpls_events'])) {
+		unset($rule['barnyard_log_mpls_events']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_mysql_enable'])) {
-		unset($pconfig['barnyard_mysql_enable']);
+	if (isset($rule['barnyard_mysql_enable'])) {
+		unset($rule['barnyard_mysql_enable']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_syslog_enable'])) {
-		unset($pconfig['barnyard_syslog_enable']);
+	if (isset($rule['barnyard_syslog_enable'])) {
+		unset($rule['barnyard_syslog_enable']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_syslog_local'])) {
-		unset($pconfig['']);
+	if (isset($rule['barnyard_syslog_local'])) {
+		unset($rule['']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_syslog_local'])) {
-		unset($pconfig['']);
+	if (isset($rule['barnyard_syslog_local'])) {
+		unset($rule['']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_bro_ids_enable'])) {
-		unset($pconfig['barnyard_bro_ids_enable']);
+	if (isset($rule['barnyard_bro_ids_enable'])) {
+		unset($rule['barnyard_bro_ids_enable']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_disable_sig_ref_tbl'])) {
-		unset($pconfig['barnyard_disable_sig_ref_tbl']);
+	if (isset($rule['barnyard_disable_sig_ref_tbl'])) {
+		unset($rule['barnyard_disable_sig_ref_tbl']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_syslog_opmode'])) {
-		unset($pconfig['barnyard_syslog_opmode']);
+	if (isset($rule['barnyard_syslog_opmode'])) {
+		unset($rule['barnyard_syslog_opmode']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_syslog_payload_encoding'])) {
-		unset($pconfig['barnyard_syslog_payload_encoding']);
+	if (isset($rule['barnyard_syslog_payload_encoding'])) {
+		unset($rule['barnyard_syslog_payload_encoding']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_syslog_proto'])) {
-		unset($pconfig['barnyard_syslog_proto']);
+	if (isset($rule['barnyard_syslog_proto'])) {
+		unset($rule['barnyard_syslog_proto']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_sensor_name'])) {
-		unset($pconfig['barnyard_sensor_name']);
+	if (isset($rule['barnyard_sensor_name'])) {
+		unset($rule['barnyard_sensor_name']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_dbhost'])) {
-		unset($pconfig['barnyard_dbhost']);
+	if (isset($rule['barnyard_dbhost'])) {
+		unset($rule['barnyard_dbhost']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_dbname'])) {
-		unset($pconfig['barnyard_dbname']);
+	if (isset($rule['barnyard_dbname'])) {
+		unset($rule['barnyard_dbname']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_dbuser'])) {
-		unset($pconfig['barnyard_dbuser']);
+	if (isset($rule['barnyard_dbuser'])) {
+		unset($rule['barnyard_dbuser']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_dbpwd'])) {
-		unset($pconfig['barnyard_dbpwd']);
+	if (isset($rule['barnyard_dbpwd'])) {
+		unset($rule['barnyard_dbpwd']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_syslog_rhost'])) {
-		unset($pconfig['barnyard_syslog_rhost']);
+	if (isset($rule['barnyard_syslog_rhost'])) {
+		unset($rule['barnyard_syslog_rhost']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_syslog_dport'])) {
-		unset($pconfig['barnyard_syslog_dport']);
+	if (isset($rule['barnyard_syslog_dport'])) {
+		unset($rule['barnyard_syslog_dport']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_syslog_facility'])) {
-		unset($pconfig['barnyard_syslog_facility']);
+	if (isset($rule['barnyard_syslog_facility'])) {
+		unset($rule['barnyard_syslog_facility']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_syslog_priority'])) {
-		unset($pconfig['barnyard_syslog_priority']);
+	if (isset($rule['barnyard_syslog_priority'])) {
+		unset($rule['barnyard_syslog_priority']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_bro_ids_rhost'])) {
-		unset($pconfig['barnyard_bro_ids_rhost']);
+	if (isset($rule['barnyard_bro_ids_rhost'])) {
+		unset($rule['barnyard_bro_ids_rhost']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnyard_bro_ids_dport'])) {
-		unset($pconfig['barnyard_bro_ids_dport']);
+	if (isset($rule['barnyard_bro_ids_dport'])) {
+		unset($rule['barnyard_bro_ids_dport']);
 		$updated_cfg = true;
 	}
-	if (isset($pconfig['barnconfigpassthru'])) {
-		unset($pconfig['barnconfigpassthru']);
+	if (isset($rule['barnconfigpassthru'])) {
+		unset($rule['barnconfigpassthru']);
 		$updated_cfg = true;
 	}
 	/**********************************************************/

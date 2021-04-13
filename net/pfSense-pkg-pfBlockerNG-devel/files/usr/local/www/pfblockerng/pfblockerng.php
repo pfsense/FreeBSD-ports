@@ -2093,7 +2093,7 @@ $section->addInput(new Form_StaticText(
 	. 'The URL must include the name <strong>iprepdata.txt</strong><br />'
 	. 'ET IQRisk Blocklist URL must be entered in the IPv4 Lists Tab using the following example:'
 	. '<ul>https://rules.emergingthreatspro.com/XXXXXXXXXXXXXXXX/reputation/iprepdata.txt.gz</ul>'
-	. 'Select the <strong>ET IQRisk</strong> format. The URL should use the .gz File type.<br />'
+	. 'Select the <strong>Auto</strong> format. The URL should use the .gz File type.<br />'
 	. 'Enter your "ETPRO" code in URL. Further information can be found @ '
 	. '<a target="_blank" href="https://www.proofpoint.com/us/solutions/products/threat-intelligence">Proofpoint IQRisk</a><br /><br />'
 	. 'To use <strong>Match</strong> Lists, Create a new Alias and select one of the <strong>'
