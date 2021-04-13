@@ -446,7 +446,7 @@ domaintld() {
 
 	# 'Redirect zone'
 	# Collect DNSBL TLD files (by smallest line count first) and merge
-	dnsbl_tmp_files="$(grep -c ^ ${dnsbl_tmp}DNSBL_*.txt | sort -t : -k 2,2n | cut -d':' -f1)"
+	dnsbl_tmp_files="$(grep -Hc ^ ${dnsbl_tmp}DNSBL_*.txt | sort -t : -k 2,2n | cut -d':' -f1)"
 	if [ ! -z "${dnsbl_tmp_files}" ]; then
 
 		for file in ${dnsbl_tmp_files}; do
