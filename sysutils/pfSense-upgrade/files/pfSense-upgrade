@@ -635,15 +635,25 @@ pkg_upgrade() {
 			_exit 99
 		fi
 
+		# Do not upgrade while wg interfaces are assigned
+		if sed '/<interfaces>/,/<\/interfaces>/!d' /cf/conf/config.xml \
+		    | grep -q '<if>wg'; then
+		notice "ERROR: Remove all assigned WireGuard tunnel" \
+		    "interfaces and all WireGuard tunnels before upgrading."
+			notice "ERROR: Remove all assigned WireGuard tunnel" \
+			    "interfaces before upgrading."
+			_echo "ERROR: Remove all assigned WireGuard tunnel" \
+			    "interfaces before upgrading."
+			_exit 1
+		fi
+
 		# Do not upgrade if there are enabled WireGuard tunnels on config
 		if sed -e '/<wireguard>/,/<\/wireguard>/!d' \
 		    /cf/conf/config.xml | grep -q '<enabled>yes'; then
-			notice "ERROR: There are WireGuard tunnels enabled" \
-			    "on your config.  Please remove or disable them" \
-			    "before upgrade."
-			_echo "ERROR: There are WireGuard tunnels enabled" \
-			    "on your config.  Please remove or disable them" \
-			    "before upgrade."
+			notice "ERROR: Remove all WireGuard tunnels before" \
+			    "upgrading."
+			_echo "ERROR: Remove all WireGuard tunnels before" \
+			    "upgrading."
 			_exit 1
 		fi
 
@@ -1004,11 +1014,17 @@ check_upgrade() {
 	local _core_pkgs=$(pkg-static query -e \
 	    "%n ~ ${product}-kernel-* || %n ~ ${product}-base*" %n 2>/dev/null)
 
+	# Do not upgrade while wg interfaces are assigned
+	if sed '/<interfaces>/,/<\/interfaces>/!d' /cf/conf/config.xml \
+	    | grep -q '<if>wg'; then
+		notice "ERROR: Remove all assigned WireGuard tunnel" \
+		    "interfaces and all WireGuard tunnels before upgrading."
+	fi
 	# Do not upgrade if there are enabled WireGuard tunnels on config
 	if sed -e '/<wireguard>/,/<\/wireguard>/!d' /cf/conf/config.xml \
 	    | grep -q '<enabled>yes'; then
-		notice "ERROR: There are WireGuard tunnels enabled on your" \
-		    "config.  Please remove or disable them before upgrade."
+		notice "ERROR: Remove all WireGuard tunnels before" \
+		    "upgrading."
 	fi
 
 	[ -z "${_skip_update}" ] \
