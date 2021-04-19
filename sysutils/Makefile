@@ -43,6 +43,7 @@
     SUBDIR += ansible
     SUBDIR += ansible-iocage
     SUBDIR += ansible-kld
+    SUBDIR += ansible-sshjail
     SUBDIR += ansible-sysrc
     SUBDIR += ansible27
     SUBDIR += ansible28
@@ -211,7 +212,6 @@
     SUBDIR += coreos-ct
     SUBDIR += coreutils
     SUBDIR += cpdup
-    SUBDIR += cpu
     SUBDIR += cpu-x
     SUBDIR += cpuburn
     SUBDIR += cpuid
@@ -480,6 +480,8 @@
     SUBDIR += healthd
     SUBDIR += heirloom
     SUBDIR += helm
+    SUBDIR += helmfile
+    SUBDIR += herbe
     SUBDIR += hexpeek
     SUBDIR += hextools
     SUBDIR += hexyl
@@ -607,6 +609,7 @@
     SUBDIR += linux-c7-lttng-ust
     SUBDIR += linux-c7-numactl-libs
     SUBDIR += linux-c7-userspace-rcu
+    SUBDIR += linux-miniconda-installer
     SUBDIR += linux-rkbin
     SUBDIR += linuxfdisk
     SUBDIR += lizardfs
@@ -1101,6 +1104,7 @@
     SUBDIR += roct
     SUBDIR += rovclock
     SUBDIR += rpi-firmware
+    SUBDIR += rset
     SUBDIR += rsfetch
     SUBDIR += rshim-user-space
     SUBDIR += rsnapshot
@@ -1119,7 +1123,6 @@
     SUBDIR += rubygem-capistrano-ext
     SUBDIR += rubygem-capistrano-harrow
     SUBDIR += rubygem-chef
-    SUBDIR += rubygem-chef15
     SUBDIR += rubygem-chef-api
     SUBDIR += rubygem-chef-bin
     SUBDIR += rubygem-chef-config
@@ -1130,6 +1133,7 @@
     SUBDIR += rubygem-chef-utils15
     SUBDIR += rubygem-chef-vault
     SUBDIR += rubygem-chef-zero
+    SUBDIR += rubygem-chef15
     SUBDIR += rubygem-choria-mcorpc-support
     SUBDIR += rubygem-facter
     SUBDIR += rubygem-fluent-mixin-plaintextformatter
@@ -1235,7 +1239,6 @@
     SUBDIR += screenie
     SUBDIR += scterc
     SUBDIR += sd-agent
-    SUBDIR += sd-mux-ctrl
     SUBDIR += sdparm
     SUBDIR += seatd
     SUBDIR += seatools

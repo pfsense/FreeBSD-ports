@@ -13856,7 +13856,6 @@ net-im/py-jabber||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 net-im/py-jabberbot||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 net-im/py-libturpial||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 net-im/py-xmpppy-irc||2020-01-27|Has expired: Unmaintained, uses EOLed python27
-net-mgmt/pdagent-integrations||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 net-p2p/tribler||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 news/papercut||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 print/pkipplib||2020-01-27|Has expired: Unmaintained, uses EOLed python27
@@ -13915,7 +13914,6 @@ www/ljdump||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 www/monast||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 www/py-django-paging||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 www/py-fcgi||2020-01-27|Has expired: Unmaintained, uses EOLed python27
-www/py-http-parser||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 www/py-meld||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 www/py-mt||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 www/py-rhodecode||2020-01-27|Has expired: Unmaintained, uses EOLed python27
@@ -14427,7 +14425,6 @@ databases/py-cdb||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 devel/py-mwlib||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 graphics/py-soya3d||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 irc/py-supybot||2020-03-20|Has expired: Unmaintained, uses EOLed python27
-net-mgmt/py-pdagent||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 textproc/pychm||2020-03-20|Has expired: Unmaintained, uses EOLed python27
 x11/rxvt|x11/rxvt-unicode|2020-03-20|Has expired: Abandonware: stable release 2.6.4 / November 1, 2001 and no maintainer
 x11-wm/clementine-wm||2020-03-20|Removed, unmaintained and depends on expired x11/rxvt
@@ -15516,7 +15513,6 @@ net/splatd||2020-09-19|Has expired: Uses deprecated version of python
 net-im/centerim-devel||2020-09-19|Has expired: Uses deprecated version of python
 net-im/fugu||2020-09-19|Has expired: Uses deprecated version of python
 net-im/proxy65||2020-09-19|Has expired: Uses deprecated version of python
-net-mgmt/crmsh||2020-09-19|Has expired: Uses deprecated version of python
 net-mgmt/librenms-agent||2020-09-19|Has expired: Uses deprecated version of python
 net-p2p/couchpotato||2020-09-19|Has expired: Uses deprecated version of python
 news/rawdog||2020-09-19|Has expired: Uses deprecated version of python
@@ -15574,7 +15570,6 @@ deskutils/logjam||2020-09-19|Abandonware does not work anymore
 mail/squirrelmail-tmda-plugin||2020-09-19|Removed, unmaintained and depends on expired mail/tmda
 mail/tmda||2020-09-19|Has expired: Uses EOL Python 2.7
 devel/storm||2020-09-19|Has expired: Uses deprecated version of python
-#dns/dnsmasq-devel|dns/dnsmasq|2020-09-24|Has expired: use dns/dnsmasq instead, which is newer
 shells/poshinit|shells/switchBashZsh|2020-09-24|Tracking upstream name change
 net-im/corebird||2020-09-25|Stopped working in august 2018
 devel/py-pyqi||2020-09-25|No longer developed, use devel/py-click instead
@@ -16009,6 +16004,7 @@ security/py-rekall-core||2021-01-28|Has expired: Unmaintained upstream
 www/kurly||2021-01-28|Has expired: Upstream is gone
 security/regripper||2021-01-28|Has expired: Upstream repo disappeared
 ftp/bbftp||2021-01-30|Was split into client and server ports, install as needed
+devel/rubygem-brpoplpush-redis_script|databases/rubygem-brpoplpush-redis_script|2021-01-30|Remove duplicate port
 graphics/opencv-core|graphics/opencv|2021-01-30|Reintegrated into a simple, maintainable port
 graphics/py-opencv|graphics/opencv|2021-01-30|Reintegrated into a simple, maintainable port
 graphics/opencv-java|graphics/opencv|2021-01-30|Reintegrated into a simple, maintainable port
@@ -16188,19 +16184,19 @@ audio/fplib||2021-03-07|Dead service since 2015
 sysutils/prelink||2021-03-11|Has expired: Have no users in the ports tree
 x11-fonts/vtfontcvt-ng||2021-03-12|no longer useful on any supported releases; use vtfontcvt(8) instead
 biology/py-fastTSNE|math/py-openTSNE|2021-03-13|project renamed/reimplemented under a different name
+misc/py-XlsxWriter|textproc/py-xlsxwriter|2021-03-13|Remove duplicate
 emulators/open-vm-tools-nox11|emulators/open-vm-tools@nox11|2021-03-17|Moved to a flavored, generic, version
 math/s2geometry|graphics/s2|2021-03-22|Remove duplicate port
 net-p2p/sonarr-devel|net-p2p/sonarr|2021-03-23|Removed, use net-p2p/sonarr instead
 www/py-django-jsonfield||2021-03-24|Removed: This port will be deleted in the future, please switch to use www/py-jsonfield or www/py-jsonfield2
 devel/hs-c2hs||2021-03-27|Has expired: Was used as BUILD_DEPENDS, not useful on its own
 x11-toolkits/tile||2021-03-27|Has expired: The Tile widget set is part of Tk 8.5 and above, see TIP 248
-security/apg||2021-03-28|Has expired: Abandonware. Please try security/makepasswd or security/rndpassw instead
 lang/Gofer||2021-03-28|Has expired: Old, unmaintained language
 net/libsignal|net/libsignal-protocol-c|2021-03-30|Rename to match upstream naming
-databases/redis4|databases/redis|2021-03-06|Has expired: End of life, please use modern version
+databases/redis4|databases/redis|2021-04-06|Has expired: End of life, please use modern version
 lang/ruby25|lang/ruby27|2021-04-06|Has expired: Use newer version, e.g. lang/ruby27 or above. Ruby 2.5 is in security maintenance phase and planned for EOL on March 31, 2021
 www/gtkhtml3|www/gtkhtml4|2021-04-06|Has expired: Obsolete by upstream, doesn't build with recent versions of pango
-deskutils/tomboy||2021-04-06|Has expired: Unmaintained and dead upstream, depends on deprecated libraries  such as www/gtkhtml3. Upstream project is now called tomboy-ng.
+deskutils/tomboy||2021-04-06|Has expired: Unmaintained and dead upstream, depends on deprecated libraries  such as www/gtkhtml3. Upstream project is now called tomboy-ng
 deskutils/tomboy-plugin-reminder||2021-04-06|Removed, part of deskutils/tomboy
 devel/monodevelop||2021-04-06|Has expired: outdated, depends on deprecated library www/gtkhtml3
 sysutils/syslog-ng327|sysutils/syslog-ng|2021-04-06|Has expired: Not officially supported by upstream
@@ -16211,3 +16207,87 @@ textproc/elasticsearch5-search-guard||2021-04-06|Has expired: textproc/elasticse
 multimedia/gnome-subtitles||2021-04-06|Has expired: outdated, depends on deprecated library www/gtkhtml3
 net/libproxy-mozjs||2021-04-06|Has expired: Uses EOL Python 2.7 via lang/spidermonkey52
 lang/spidermonkey52|lang/spidermonkey78|2021-04-06|Has expired: Uses Python 2.7 which is EOLed upstream
+ftp/wzdftpd||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+astro/roadmap||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+games/cosmo||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+games/bomberinstinct||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+games/drm||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+games/bygfoot||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+games/cre||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+irc/hybserv||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+irc/xaric||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+mail/elmo||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+misc/cave||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+security/bugs||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+security/dmitry||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+security/doorman||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+shells/esh||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+sysutils/cpu||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+textproc/libcrm114||2021-04-07|Has expired: No known users, dead upstream
+x11/wmmatrix||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+x11/wmxss||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+x11/tycoon||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+x11/xgrab||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+x11/xbanner||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+x11/bricons||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+x11/xmon||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+games/cavezofphear||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+astro/saoimage||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+audio/ksmp3play||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+audio/jamin||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+audio/musicbox-tag-editor||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+audio/nspmod||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+audio/cdplay||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+audio/gimmix||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+audio/ghostess||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+audio/wmrecord||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+audio/toolame||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+audio/shout||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+biology/grappa||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+biology/phylip||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+biology/lagan||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+cad/varkon||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+cad/transcalc||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+comms/seyon||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+comms/efax||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+converters/vda2fbd||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+converters/shftool||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+devel/openzz||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+devel/sourcenav||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+devel/gb||2021-04-07|Has expired: Unmaintained and dead upstream
+dns/checkdns||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+dns/inadyn-mt||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+editors/gate||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+editors/thoteditor||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+emulators/cinc||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+emulators/e-uae||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+emulators/dtcyber||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+ftp/jftpgw||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+ftp/pureadmin||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+textproc/hs-pandoc-citeproc||2021-04-07|Has expired: Integrated into textproc/hs-pandoc
+devel/buildtool-doc||2021-04-07|Removed, depends on expired devel/buildtool
+devel/buildtool||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+misc/floatator||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+finance/wmstock||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+ftp/frox||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+databases/couchdb2|databases/couchdb3|2021-04-07|No longer supported upstream, uses spidermonkey68 & python2; move to databases/couchdb3
+security/pidentd||2021-04-07|Removed: Unmaintained, abandoned, does not build with recent OS versions
+dns/dnsmasq-devel|dns/dnsmasq|2021-04-08|Has expired: use dns/dnsmasq instead, which is newer
+net/coturn|net/turnserver|2021-04-09|Remove duplicate port: coturn is another name for turnserver
+databases/percona55-server||2021-04-11|EOL upstream
+databases/percona55-client||2021-04-11|EOL upstream
+graphics/ilmbase|math/Imath|2021-04-10|Ilmbase was split out into Imath and OpenEXR.
+www/xshttpd||2021-04-12|Unmaintained and dead upstream
+www/xshttpd-devel||2021-04-12|Unmaintained and dead upstream
+dns/credns||2021-04-12|Broken 12+, unmaintained upstream
+www/youtube_dlc|www/yt-dlp|2021-04-12|Upstream have made a complete transition to new project name
+security/netpgp||2021-04-12|Broken 12+, unmaintained upstream
+net/freenet6||2021-04-12|Broken 12+, service discontinued
+devel/sd-mux|devel/sd-mux-ctrl|2021-04-13|Renamed to match upstream naming
+sysutils/sd-mux-ctrl|devel/sd-mux-ctrl|2021-04-13|Remove duplicate port
+net/traefik2|net/traefik|2021-04-14|Superseded by net/traefik update
+net-mgmt/pdagent-integrations|net-mgmt/py-pdagent-integrations|2021-04-15|Restored and renamed
+www/grafana4|www/grafana6|2021-04-17|Has expired: Upstream end of life
+www/grafana5|www/grafana6|2021-04-17|Has expired: Upstream end of life
+comms/py-lirc||2021-04-17|Has expired: No longer maintained and not compatible with Python 3
+x11-toolkits/qt5-gtkplatform||2021-04-17|Has expired: Archived upstream

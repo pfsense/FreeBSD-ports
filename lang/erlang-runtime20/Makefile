@@ -3,7 +3,7 @@
 PORTNAME=	erlang
 DISTVERSIONPREFIX=	OTP-
 DISTVERSION=	20.3.8.26
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	lang parallel java
 PKGNAMESUFFIX=	-runtime20
 DIST_SUBDIR=	erlang
@@ -21,16 +21,31 @@ GH_PROJECT=	otp
 USE_PERL5=	build
 
 GNU_CONFIGURE=	yes
-MAKE_JOBS_UNSAFE=yes
+CONFIGURE_ARGS=	--enable-smp-support
+
+MAKE_JOBS_UNSAFE=	yes
 
 SUB_FILES=	pkg-message
 SUB_LIST=	ERLANG_LIB=${ERLANG_LIB}
 
 ERLANG_LIB=	${PORTNAME}${PORTVERSION:C/\..*//}
 
-OPTIONS_DEFINE=	DIRTY DTRACE HIPE JAVA KQUEUE NATIVE ODBC OPENSSL SCTP THREADS WX
-OPTIONS_DEFAULT=DIRTY DTRACE HIPE KQUEUE OPENSSL SCTP THREADS
+OPTIONS_DEFINE=		DIRTY DTRACE HIPE JAVA KQUEUE NATIVE ODBC OPENSSL SCTP \
+			THREADS WX
+OPTIONS_DEFAULT=	DIRTY DTRACE HIPE KQUEUE OPENSSL SCTP THREADS
+
+.if !exists(/usr/sbin/dtrace)
+OPTIONS_EXCLUDE+=	DTRACE
+.endif
+
+OPTIONS_EXCLUDE_DragonFly=	HIPE NATIVE SCTP
+# ld(1) fails to link probes: missing __dtrace_erlang___* symbols
+OPTIONS_EXCLUDE_aarch64=	DTRACE
+OPTIONS_EXCLUDE_armv6=	DTRACE
+OPTIONS_EXCLUDE_armv7=	DTRACE
+OPTIONS_EXCLUDE_i386=	DTRACE HIPE NATIVE
 OPTIONS_EXCLUDE_powerpc64=	HIPE
+OPTIONS_EXCLUDE_powerpc64le=	HIPE
 OPTIONS_EXCLUDE_riscv64=	DTRACE
 
 DIRTY_DESC=	Enable Dirty schedulers
@@ -40,46 +55,35 @@ NATIVE_DESC=	Enable native libraries
 SCTP_DESC=	Enable SCTP support
 WX_DESC=	Enable WX application
 
-NATIVE_IMPLIES=	HIPE
-
-.if !exists(/usr/sbin/dtrace)
-OPTIONS_EXCLUDE+=	DTRACE
-.endif
-
-OPTIONS_EXCLUDE_DragonFly=	HIPE NATIVE SCTP
-# ld(1) fails to link probes: missing __dtrace_erlang___* symbols
-OPTIONS_EXCLUDE_aarch64=	DTRACE
-OPTIONS_EXCLUDE_armv6=		DTRACE
-OPTIONS_EXCLUDE_armv7=		DTRACE
-OPTIONS_EXCLUDE_i386=		DTRACE NATIVE HIPE
-
-OPENSSL_VARS=	BROKEN_SSL=openssl
-
 # If you run Erlang and get a message resembling "WARNING: number of
 # probes fixed does not match the number of defined probes (54 != 132,
 # respectively)" you probably misconfigured DTrace in some way.
 
-CONFIGURE_ENABLE=	smp-support
-
-DIRTY_CONFIGURE_ENABLE=	dirty-schedulers
-DTRACE_CFLAGS=		-fno-omit-frame-pointer
-DTRACE_CONFIGURE_WITH=	dynamic-trace=dtrace
-DTRACE_VARS=		STRIP=""
-HIPE_CONFIGURE_ENABLE=	hipe
-JAVA_CONFIGURE_ENV=	ac_cv_prog_JAVAC="${JAVAC}"
-JAVA_CONFIGURE_WITH=	javac
-JAVA_VARS=		USE_JAVA=yes
-KQUEUE_CONFIGURE_ENABLE=kernel-poll
-NATIVE_CONFIGURE_ENABLE=native-libs
-ODBC_CONFIGURE_WITH=	odbc
-ODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
-OPENSSL_CONFIGURE_WITH=	ssl=${OPENSSLBASE}
-OPENSSL_USES=		ssl
-SCTP_CONFIGURE_ENABLE=	sctp
+DIRTY_CONFIGURE_ENABLE=		dirty-schedulers
+DTRACE_CONFIGURE_WITH=		dynamic-trace=dtrace
+DTRACE_CFLAGS=			-fno-omit-frame-pointer
+DTRACE_VARS=			STRIP=""
+HIPE_CONFIGURE_ENABLE=		hipe
+JAVA_CONFIGURE_WITH=		javac
+JAVA_CONFIGURE_ENV=		ac_cv_prog_JAVAC="${JAVAC}"
+JAVA_VARS=			USE_JAVA=yes
+KQUEUE_CONFIGURE_ENABLE=	kernel-poll
+NATIVE_IMPLIES=			HIPE
+NATIVE_CONFIGURE_ENABLE=	native-libs
+ODBC_LIB_DEPENDS=		libodbc.so:databases/unixODBC
+ODBC_CONFIGURE_WITH=		odbc
+ODBC_CFLAGS=			-I/usr/local/include
+ODBC_LDFLAGS=			-L/usr/local/lib
+OPENSSL_USES=			ssl
+OPENSSL_CONFIGURE_WITH=		ssl=${OPENSSLBASE}
+OPENSSL_VARS=			BROKEN_SSL=openssl
+SCTP_CONFIGURE_ENABLE=		sctp
 THREADS_CONFIGURE_ENABLE=	threads
-WX_CONFIGURE_WITH=	wx-config=${WX_CONFIG}
-WX_USES=		gl
-WX_VARS=		USE_WX=2.8+ WX_COMPS="wx contrib" USE_GL="gl glu"
+WX_USES=			gl
+WX_CONFIGURE_WITH=		wx-config=${WX_CONFIG}
+WX_VARS=			USE_GL="gl glu" \
+				USE_WX=2.8+ \
+				WX_COMPS="wx contrib"
 
 .include <bsd.port.pre.mk>
 

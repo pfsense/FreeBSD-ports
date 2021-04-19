@@ -1,7 +1,7 @@
 # Created by: Eric van Gyzen <vangyzen@stat.duke.edu>
 
 PORTNAME=	libRmath
-DISTVERSION=	4.0.4
+DISTVERSION=	4.0.5
 CATEGORIES=	math lang
 MASTER_SITES=	CRAN/src/base/R-${PORTVERSION:C|\..*||}
 DISTNAME=	R-${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}
@@ -44,8 +44,8 @@ OPTIONS_EXCLUDE_armv7=		FLANG
 OPTIONS_EXCLUDE_i386=		FLANG
 
 FLANG_DESC=	Use experimental flang instead of default Fortran compiler
-FLANG_USES_OFF=	fortran
 FLANG_USES=	fortran:flang
+FLANG_USES_OFF=	fortran
 
 _RMATH_SOVERSION=	${DISTVERSION:R}
 

@@ -80,6 +80,7 @@
     SUBDIR += cyrus-imapd25
     SUBDIR += cyrus-imapd30
     SUBDIR += cyrus-imapd32
+    SUBDIR += cyrus-imapd34
     SUBDIR += cyrus2courier
     SUBDIR += cyrus2dovecot
     SUBDIR += davmail
@@ -98,7 +99,6 @@
     SUBDIR += dspam
     SUBDIR += ecartis
     SUBDIR += elm
-    SUBDIR += elmo
     SUBDIR += emailrelay
     SUBDIR += emil
     SUBDIR += enma
@@ -234,6 +234,7 @@
     SUBDIR += minimalist
     SUBDIR += missey
     SUBDIR += mlmmj
+    SUBDIR += mlmmj-webview
     SUBDIR += mls
     SUBDIR += mmh
     SUBDIR += mmr
@@ -487,6 +488,7 @@
     SUBDIR += py-alot
     SUBDIR += py-authheaders
     SUBDIR += py-authres
+    SUBDIR += py-django-mailbox
     SUBDIR += py-django-mailman3
     SUBDIR += py-dkimpy
     SUBDIR += py-email-validator

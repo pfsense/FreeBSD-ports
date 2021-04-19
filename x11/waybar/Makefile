@@ -1,5 +1,5 @@
 PORTNAME=	waybar
-DISTVERSION=	0.9.5
+DISTVERSION=	0.9.7
 CATEGORIES=	x11
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -29,7 +29,6 @@ PLIST_FILES=	bin/${PORTNAME} \
 .if exists(${.CURDIR}/files/date.pc.in)
 CONFIGURE_ENV+=	PKG_CONFIG_PATH="${WRKDIR}"
 SUB_FILES+=	date.pc
-post-patch:	apply-slist
 .endif
 
 OPTIONS_DEFINE=	DBUS GLS ICONSFONT MANPAGES MPD PULSEAUDIO SNDIO UDEV
@@ -62,6 +61,7 @@ MANPAGES_PLIST_FILES=	man/man5/${PORTNAME}-backlight.5.gz \
 			man/man5/${PORTNAME}-river-tags.5.gz \
 			man/man5/${PORTNAME}-sndio.5.gz \
 			man/man5/${PORTNAME}-states.5.gz \
+			man/man5/${PORTNAME}-sway-language.5.gz \
 			man/man5/${PORTNAME}-sway-mode.5.gz \
 			man/man5/${PORTNAME}-sway-window.5.gz \
 			man/man5/${PORTNAME}-sway-workspaces.5.gz \

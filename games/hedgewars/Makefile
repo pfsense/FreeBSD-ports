@@ -1,5 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-
 PORTNAME=	hedgewars
 PORTVERSION=	1.0.0
 PORTREVISION=	4
@@ -13,6 +11,8 @@ COMMENT=	Free Worms-like turn based strategy game
 
 LICENSE=	GPLv2 GFDL
 LICENSE_COMB=	multi
+
+BROKEN_i386=	ld: error: duplicate symbol: LandDirty_dimension_info
 
 LIB_DEPENDS=	libphysfs.so:devel/physfs \
 		libpng.so:graphics/png

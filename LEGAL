@@ -44,7 +44,6 @@ arcconf-v*		sysutils/arcconf	May not be redistributed in binary form
 cloudflare-cloudflared*	net/cloudflared		Not sure if we are allowed to redistribute it.
 clustalw-*		biology/clustalw	No commercial use
 cos-*			java/cos		Special conditions apply for commercial use
-cosmo/*			games/cosmo		Possible copyright infringement
 CrystalSVGforGnomeIcons* x11-themes/gnome-icons-crystal Themes may contain artwork not done by the author.  Keep FreeBSD safe if theme author violated copyrights.
 cyberbit/*		x11-fonts/cyberbit-ttfonts Not free for commercial use
 dbvis			java/dbvis		Redistribution is not permitted
@@ -147,6 +146,7 @@ NetComponents-*		java/netcomponents	No redistribution except as part of a substa
 nntpcache-*		news/nntpcache		Free for individuals and non-military, non-profit organisations only
 nttcp-*			benchmarks/nttcp	No commercial use
 nwresources*.tar.gz	games/nwndata		Distribution not allowed
+nyan--xmascot-*		x11/xmascot		Commercial use is prohibited
 oneko-*.tar.gz		games/oneko-sakura	Including derivatives from CARDCAPTOR SAKURA
 OptimFROG*		audio/optimfrog		No commercial use
 oracle/*		databases/jdbc-oracle11g	This software is under license and export controls

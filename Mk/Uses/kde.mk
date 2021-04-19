@@ -74,7 +74,7 @@ KDE_PLASMA_VERSION?=		5.20.5
 KDE_PLASMA_BRANCH?=		stable
 
 # Current KDE frameworks.
-KDE_FRAMEWORKS_VERSION?=	5.80.0
+KDE_FRAMEWORKS_VERSION?=	5.81.0
 KDE_FRAMEWORKS_BRANCH?= 	stable
 
 # Current KDE applications.
@@ -131,6 +131,7 @@ GL_SITE=		https://invent.kde.org
 GL_ACCOUNT=		${_invent_category}
 GL_PROJECT=		${_invent_name}
 GL_COMMIT=		${_invent_hash}
+WRKSRC=			${WRKDIR}/${GL_PROJECT}-${GL_COMMIT}-${GL_COMMIT}
 .      endif
 .    endif
 

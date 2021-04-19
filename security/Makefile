@@ -26,6 +26,7 @@
     SUBDIR += amavisd-milter
     SUBDIR += amavisd-new
     SUBDIR += apache-xml-security-c
+    SUBDIR += apg
     SUBDIR += apkid
     SUBDIR += arirang
     SUBDIR += arpCounterattack
@@ -59,7 +60,6 @@
     SUBDIR += bsdsfv
     SUBDIR += bsmtrace
     SUBDIR += bsmtrace3
-    SUBDIR += bugs
     SUBDIR += bzrtp
     SUBDIR += ca_root_nss
     SUBDIR += caesarcipher
@@ -125,9 +125,7 @@
     SUBDIR += dirbuster
     SUBDIR += dirmngr
     SUBDIR += distcache
-    SUBDIR += dmitry
     SUBDIR += doas
-    SUBDIR += doorman
     SUBDIR += doscan
     SUBDIR += dotdotpwn
     SUBDIR += dropbear
@@ -371,7 +369,6 @@
     SUBDIR += nacl
     SUBDIR += ncrack
     SUBDIR += ncrypt
-    SUBDIR += netpgp
     SUBDIR += nettle
     SUBDIR += nextcloud-end_to_end_encryption
     SUBDIR += nextcloud-passman
@@ -771,6 +768,7 @@
     SUBDIR += pecl-libsodium
     SUBDIR += pecl-mcrypt
     SUBDIR += pecl-pam
+    SUBDIR += pecl-pkcs11
     SUBDIR += pecl-scrypt
     SUBDIR += pecl-ssh2
     SUBDIR += peda
@@ -790,7 +788,6 @@
     SUBDIR += php80-sodium
     SUBDIR += phpsecinfo
     SUBDIR += picosha2
-    SUBDIR += pidentd
     SUBDIR += pidgin-encryption
     SUBDIR += pidgin-otr
     SUBDIR += pinentry
@@ -806,6 +803,7 @@
     SUBDIR += pkcs11-dump
     SUBDIR += pkcs11-gateway
     SUBDIR += pkcs11-helper
+    SUBDIR += pkcs11-tools
     SUBDIR += pkesh
     SUBDIR += pks
     SUBDIR += pktsuckers

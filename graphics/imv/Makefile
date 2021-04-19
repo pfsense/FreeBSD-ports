@@ -1,9 +1,7 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-
 PORTNAME=	imv
 DISTVERSIONPREFIX=	v
 DISTVERSION=	4.1.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics
 
 MAINTAINER=	eduardo@FreeBSD.org

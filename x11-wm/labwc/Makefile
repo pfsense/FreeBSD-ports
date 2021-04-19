@@ -1,14 +1,14 @@
 PORTNAME=	labwc
-DISTVERSION=	0.1.0
+DISTVERSION=	0.2.1
 CATEGORIES=	x11-wm
 
 MAINTAINER=	jbeich@FreeBSD.org
-COMMENT=	Openbox alternative for Wayland
+COMMENT=	Wayland stacking compositor
 
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols \
-		wlroots>=0.11.0:x11-toolkits/wlroots
+		wlroots>=0.13.0<0.14.0:x11-toolkits/wlroots
 LIB_DEPENDS=	libwayland-server.so:graphics/wayland \
 		libwlroots.so:x11-toolkits/wlroots \
 		libinput.so:x11/libinput \
@@ -29,6 +29,8 @@ MANPAGES_MESON_ENABLED=	man-pages
 MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz \
 			man/man5/${PORTNAME}-actions.5.gz \
 			man/man5/${PORTNAME}-config.5.gz \
+			man/man5/${PORTNAME}-environment.5.gz \
+			man/man5/${PORTNAME}-menu.5.gz \
 			man/man5/${PORTNAME}-theme.5.gz
 
 SUID_DESC=		setuid bit on "${PORTNAME}" binary (to claim DRM without seatd/console-kit-daemon)

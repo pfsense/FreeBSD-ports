@@ -5,6 +5,7 @@
     SUBDIR += R-cran-bslib
     SUBDIR += R-cran-crosstalk
     SUBDIR += R-cran-downloader
+    SUBDIR += R-cran-gh
     SUBDIR += R-cran-htmlwidgets
     SUBDIR += R-cran-httpuv
     SUBDIR += R-cran-httr
@@ -210,8 +211,6 @@
     SUBDIR += gotty
     SUBDIR += gpx2map
     SUBDIR += grafana
-    SUBDIR += grafana4
-    SUBDIR += grafana5
     SUBDIR += grafana6
     SUBDIR += grafana7
     SUBDIR += grails
@@ -1451,11 +1450,14 @@
     SUBDIR += py-dj31-djangorestframework
     SUBDIR += py-dj31-drf-yasg
     SUBDIR += py-django
+    SUBDIR += py-django-admin-rangefilter
+    SUBDIR += py-django-advanced-filters
     SUBDIR += py-django-allauth
     SUBDIR += py-django-annoying
     SUBDIR += py-django-appconf
     SUBDIR += py-django-assets
     SUBDIR += py-django-auth-ldap
+    SUBDIR += py-django-autocomplete-light
     SUBDIR += py-django-babel
     SUBDIR += py-django-bakery
     SUBDIR += py-django-bitfield
@@ -1554,6 +1556,7 @@
     SUBDIR += py-django22
     SUBDIR += py-django30
     SUBDIR += py-django31
+    SUBDIR += py-django32
     SUBDIR += py-django_compressor
     SUBDIR += py-djangocms-admin-style
     SUBDIR += py-djangoql
@@ -1634,6 +1637,7 @@
     SUBDIR += py-html5-parser
     SUBDIR += py-html5lib
     SUBDIR += py-httmock
+    SUBDIR += py-http-parser
     SUBDIR += py-httpbin
     SUBDIR += py-httpcore
     SUBDIR += py-httpie
@@ -2292,8 +2296,6 @@
     SUBDIR += xfce4-smartbookmark-plugin
     SUBDIR += xist
     SUBDIR += xoops
-    SUBDIR += xshttpd
-    SUBDIR += xshttpd-devel
     SUBDIR += xsp
     SUBDIR += yabb
     SUBDIR += yanopaste
@@ -2305,7 +2307,6 @@
     SUBDIR += you-get
     SUBDIR += yourls
     SUBDIR += youtube_dl
-    SUBDIR += youtube_dlc
     SUBDIR += yt-dlp
     SUBDIR += ytdl
     SUBDIR += yuicompressor

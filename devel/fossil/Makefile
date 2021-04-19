@@ -1,10 +1,10 @@
 PORTNAME=	fossil
-PORTVERSION=	2.15
+PORTVERSION=	2.15.1
 DISTVERSIONPREFIX=	src-
-PORTREVISION=	1
+PORTREVISION=	0
 PORTEPOCH=	2
 CATEGORIES=	devel www
-MASTER_SITES=	http://fossil-scm.org/index.html/uv/
+MASTER_SITES=	https://fossil-scm.org/index.html/uv/
 
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	DSCM with built-in wiki, http interface and server, tickets database
