@@ -36,6 +36,62 @@ cur_version=$(kenv -q smbios.bios.version 2>/dev/null)
 product=$(kenv -q smbios.system.product 2>/dev/null)
 base_dir=$(dirname $(realpath $0))
 
+get_diskdevice() {
+	sysctl -b kern.geom.conftxt |
+	while read line
+	do
+		local _type=$(echo ${line} | awk '{printf $2}')
+		local _dev=$(echo ${line} | awk '{printf $3}')
+		if [ "${_type}" = "DISK" -a -n "$(echo ${1} | grep ${_dev})" ]; then
+			echo -n ${_dev}
+			return
+		fi
+	done
+}
+
+find_root_device() {
+	FSTYPE=$(mount -p | awk '{ if ( $2 == "/") { print $3 }}')
+	FSDEV=$(mount -p | awk '{ if ( $2 == "/") { print $1 }}')
+	case "$FSTYPE" in
+	ufs)
+		rootdev=${FSDEV#/dev/}
+		;;
+	zfs)
+		pool=${FSDEV%%/*}
+		rootdev=$(zpool list -v $pool | awk 'END { print $1 }')
+		;;
+	*)
+		echo "Don't know how to find the root filesystem type: $FSTYPE"
+		exit 1
+	esac
+	if [ x"$rootdev" = x"${rootdev%/*}" ]; then
+		# raw device
+		rawdev="$rootdev"
+	else
+		rawdev=$(glabel status | awk 'index("'"$rootdev"'", $1) { print $3 }')
+		if [ x"$rawdev" = x"" ]; then
+			echo "Can't figure out device for: $rootdev"
+			exit 1
+		fi
+	fi
+	if [ x"diskid" = x"${rootdev%/*}" ]; then
+		search=$rootdev
+	else
+		search=$rawdev
+	fi
+	diskdev=$(get_diskdevice ${search})
+	if [ -z "${diskdev}" ]; then
+		diskdev=${rootdev}
+	fi
+	echo -n ${diskdev}
+}
+
+check_efi_partition() {
+	local _disk=${1}
+	local _part=${2}
+	sysctl kern.geom.conftxt | grep "${_disk}p${_part}" | awk '{ if ($11 == "efi" && $13 == "GPT") { print "ok" }}'
+}
+
 if [ "${product}" != "6100" ]; then
 	echo "Unsupported device ${product}.  exiting."
 	exit 1
@@ -57,10 +113,14 @@ fi
 ( cd ${tmp_dir} && ${base_dir}/dmistore )
 
 # Mount the EFI partition
-if ! mount -t msdosfs /dev/mmcsd0p1 /mnt; then
-	echo "Error mounting EFI partition"
-	rm -rf ${tmp_dir}
-	exit 1
+DISK=$(find_root_device)
+EFIPART=$(check_efi_partition ${DISK} 1)
+if [ "${EFIPART}" == "ok" ]; then
+	if ! mount -t msdosfs /dev/${DISK}p1 /mnt; then
+		echo "Error mounting EFI partition"
+		rm -rf ${tmp_dir}
+		exit 1
+	fi
 fi
 mkdir -p /mnt/efi/UpdateCapsule
 
