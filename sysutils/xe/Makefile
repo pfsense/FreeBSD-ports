@@ -1,11 +1,9 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-
 PORTNAME=	xe
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.11
 CATEGORIES=	sysutils
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Simple xargs and apply replacement
 
 LICENSE=	CC0-1.0

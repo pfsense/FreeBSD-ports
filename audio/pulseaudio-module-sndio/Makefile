@@ -1,8 +1,6 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-
 PORTNAME=	pulseaudio-module-sndio
 DISTVERSION=	13.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/t6/pulseaudio-module-sndio/releases/download/${DISTVERSION}/
 

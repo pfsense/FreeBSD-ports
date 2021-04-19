@@ -1,6 +1,6 @@
 PORTNAME=	sameboy
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.14.2
+DISTVERSION=	0.14.3
 CATEGORIES=	emulators games
 
 MAINTAINER=	tobik@FreeBSD.org
@@ -30,7 +30,8 @@ OPTIONS_SUB=		yes
 
 LIBRETRO_DESC=	Build libretro core
 
-LIBRETRO_ALL_TARGET=	libretro
+post-build-LIBRETRO-on:
+	@${DO_MAKE_BUILD} -C ${WRKSRC} libretro
 
 post-install-LIBRETRO-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/libretro

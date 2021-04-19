@@ -1,7 +1,7 @@
 # Created by: Doug Barton <dougb@FreeBSD.org>
 
 PORTNAME=	libtorrent-rasterbar
-DISTVERSION=	1.2.12
+DISTVERSION=	1.2.13
 PORTEPOCH=	1
 CATEGORIES=	net-p2p
 MASTER_SITES=	https://github.com/arvidn/libtorrent/releases/download/v${DISTVERSION}/
@@ -36,6 +36,8 @@ LOGGING_DESC=		Enable logging to disk
 
 EXAMPLES_CMAKE_BOOL=	build_examples
 LOGGING_CMAKE_BOOL=	logging
+
+PORTSCOUT=	limit:^1.* # 2.x is WIP and we don't accept it before qBittorrent does
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|return "python3";|return "${PYTHON_CMD}";|' \

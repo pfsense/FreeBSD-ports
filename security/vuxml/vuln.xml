@@ -76,6 +76,700 @@ Notes:
   * Do not forget port variants (linux-f10-libxml2, libxml2, etc.)
 -->
 <vuxml xmlns="http://www.vuxml.org/apps/vuxml-1">
+  <vuln vid="20006b5f-a0bc-11eb-8ae6-fc4dd43e2b6a">
+    <topic>Apache Maven -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>maven</name>
+	<range><lt>3.8.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Apache Maven project reports:</p>
+	<blockquote cite="http://maven.apache.org/docs/3.8.1/release-notes.html#cve-2021-26291">
+	  <p>We received a report from Jonathan Leitschuh about a vulnerability
+	    of custom repositories in dependency POMs. We've split this up
+	    into three separate issues:</p>
+	  <ul>
+	    <li>Possible Man-In-The-Middle-Attack due to custom repositories
+	    using HTTP.
+
+	    More and more repositories use HTTPS nowadays, but this
+	    hasn't always been the case. This means that Maven Central contains
+	    POMs with custom repositories that refer to a URL over HTTP. This
+	    makes downloads via such repository a target for a MITM attack. At
+	    the same time, developers are probably not aware that for some
+	    downloads an insecure URL is being used. Because uploaded POMs to
+	    Maven Central are immutable, a change for Maven was required. To
+	    solve this, we extended the mirror configuration with blocked
+	    parameter, and we added a new external:http:* mirror selector (like
+	    existing external:*), meaning "any external URL using HTTP".
+
+	    The decision was made to block such external HTTP repositories by default:
+	    this is done by providing a mirror in the conf/settings.xml blocking
+	    insecure HTTP external URLs.</li>
+	    <li>Possible Domain Hijacking due to custom repositories using abandoned
+	    domains
+
+	    Sonatype has analyzed which domains were abandoned and has claimed these
+	    domains.</li>
+	    <li>Possible hijacking of downloads by redirecting to custom repositories
+
+	    This one was the hardest to analyze and explain. The short story is:
+	    you're safe, dependencies are only downloaded from repositories within
+	    their context. So there are two main questions: what is the context and
+	    what is the order? The order is described on the Repository Order page.
+	    The first group of repositories are defined in the settings.xml (both user
+	    and global). The second group of repositories are based on inheritence,
+	    with ultimately the super POM containing the URL to Maven Central. The
+	    third group is the most complex one but is important to understand the
+	    term context: repositories from the effective POMs from the dependency
+	    path to the artifact. So if a dependency was defined by another dependency
+	    or by a Maven project, it will also include their repositories. In the end
+	    this is not a bug, but a design feature.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>http://maven.apache.org/docs/3.8.1/release-notes.html#cve-2021-26291</url>
+	<cvename>CVE-2021-26291</cvename>
+	<cvename>CVE-2020-13956</cvename>
+    </references>
+    <dates>
+      <discovery>2021-04-04</discovery>
+      <entry>2021-04-19</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="093a6baf-9f99-11eb-b150-000c292ee6b8">
+    <topic>Consul -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>consul</name>
+	<range><lt>1.9.5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Hashicorp reports:</p>
+	<blockquote cite="https://github.com/hashicorp/consul/releases/tag/v1.9.5">
+	  <p>Add content-type headers to raw KV responses to prevent XSS attacks
+	  (CVE-2020-25864).  audit-logging: Parse endpoint URL to prevent
+	  requests from bypassing the audit log (CVE-2021-28156).</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://github.com/hashicorp/consul/releases/tag/v1.9.5</url>
+      <cvename>CVE-2020-25864</cvename>
+      <cvename>CVE-2021-28156</cvename>
+    </references>
+    <dates>
+      <discovery>2021-04-15</discovery>
+      <entry>2021-04-17</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="75aae50b-9e3c-11eb-9bc3-8c164582fbac">
+    <topic>AccountService -- Insufficient path check in user_change_icon_file_authorized_cb()</topic>
+    <affects>
+      <package>
+	<name>accountsservice</name>
+	<range><lt>0.6.50</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>NVD reports:</p>
+	<blockquote cite="https://nvd.nist.gov/vuln/detail/CVE-2018-14036">
+	  <p>
+	    Directory Traversal with ../ sequences occurs in AccountsService
+	    before 0.6.50 because of an insufficient path check in
+	    user_change_icon_file_authorized_cb() in user.c.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>http://www.openwall.com/lists/oss-security/2018/07/02/2</url>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2018-14036</url>
+      <url>https://www.securityfocus.com/bid/104757</url>
+      <url>https://bugs.freedesktop.org/show_bug.cgi?id=107085</url>
+      <url>https://bugzilla.suse.com/show_bug.cgi?id=1099699</url>
+      <url>https://cgit.freedesktop.org/accountsservice/commit/?id=f9abd359f71a5bce421b9ae23432f539a067847a</url>
+      <cvename>CVE-2018-14036</cvename>
+    </references>
+    <dates>
+      <discovery>2018-07-13</discovery>
+      <entry>2021-04-15</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="40b481a9-9df7-11eb-9bc3-8c164582fbac">
+    <topic>mdbook -- XSS in mdBook's search page</topic>
+    <affects>
+      <package>
+	<name>mdbook</name>
+	<range><lt>0.4.5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Rust Security Response Working Group reports:</p>
+	<blockquote cite="https://github.com/rust-lang/mdBook/security/advisories/GHSA-gx5w-rrhp-f436">
+	  <p>
+	    The search feature of mdBook (introduced in version 0.1.4) was
+	    affected by a cross site scripting vulnerability that allowed an
+	    attacker to execute arbitrary JavaScript code on an user's browser
+	    by tricking the user into typing a malicious search query, or
+	    tricking the user into clicking a link to the search page with the
+	    malicious search query prefilled.
+
+	    mdBook 0.4.5 fixes the vulnerability by properly escaping the search
+	    query.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://github.com/rust-lang/mdBook/blob/master/CHANGELOG.md#mdbook-045</url>
+      <url>https://github.com/rust-lang/mdBook/commit/32abeef088e98327ca0dfccdad92e84afa9d2e9b</url>
+      <url>https://github.com/rust-lang/mdBook/security/advisories/GHSA-gx5w-rrhp-f436</url>
+      <url>https://groups.google.com/g/rustlang-security-announcements/c/3-sO6of29O0?pli=1</url>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2020-26297</url>
+      <cvename>CVE-2020-26297</cvename>
+    </references>
+    <dates>
+      <discovery>2021-04-01</discovery>
+      <entry>2021-04-15</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="fb6e53ae-9df6-11eb-ba8c-001b217b3468">
+    <topic>Gitlab -- Vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<range><ge>13.10.0</ge><lt>13.10.3</lt></range>
+	<range><ge>13.9.0</ge><lt>13.9.6</lt></range>
+	<range><ge>7.12</ge><lt>13.8.8</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>SO-AND-SO reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2021/04/14/security-release-gitlab-13-10-3-released/">
+	  <p>Remote code execution when uploading specially crafted image files</p>
+	  <p>Update Rexml</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://about.gitlab.com/releases/2021/04/14/security-release-gitlab-13-10-3-released/</url>
+      <cvename>CVE-2021-28965</cvename>
+    </references>
+    <dates>
+      <discovery>2021-04-14</discovery>
+      <entry>2021-04-15</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f3d86439-9def-11eb-97a0-e09467587c17">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>90.0.4430.72</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Chrome Releases reports:</p>
+	<blockquote cite="https://chromereleases.googleblog.com/2021/04/stable-channel-update-for-desktop_14.html">
+	  <p>This release contains 37 security fixes, including:</p>
+	  <ul>
+	    <li>[1025683] High CVE-2021-21201: Use after free in permissions.
+	      Reported by Gengming Liu, Jianyu Chen at Tencent Keen Security
+	      Lab on 2019-11-18</li>
+	    <li>[1188889] High CVE-2021-21202: Use after free in extensions.
+	      Reported by David Erceg on 2021-03-16</li>
+	    <li>[1192054] High CVE-2021-21203: Use after free in Blink.
+	      Reported by asnine on 2021-03-24</li>
+	    <li>[1189926] High CVE-2021-21204: Use after free in Blink.
+	      Reported by Chelse Tsai-Simek, Jeanette Ulloa, and Emily
+	      Voigtlander of Seesaw on 2021-03-19</li>
+	    <li>[1165654] High CVE-2021-21205: Insufficient policy enforcement
+	     in navigation. Reported by Alison Huffman, Microsoft Browser
+	      Vulnerability Research on 2021-01-12</li>
+	    <li>[1195333] High CVE-2021-21221: Insufficient validation of
+	      untrusted input in Mojo. Reported by Guang Gong of Alpha Lab,
+	      Qihoo 360 on 2021-04-02</li>
+	    <li>[1185732] Medium CVE-2021-21207: Use after free in IndexedDB.
+	      Reported by koocola (@alo_cook) and Nan Wang (@eternalsakura13)
+	      of 360 Alpha Lab on 2021-03-08</li>
+	    <li>[1039539] Medium CVE-2021-21208: Insufficient data validation
+	      in QR scanner. Reported by Ahmed Elsobky (@0xsobky) on
+	      2020-01-07</li>
+	    <li>[1143526] Medium CVE-2021-21209: Inappropriate implementation
+	      in storage. Reported by Tom Van Goethem (@tomvangoethem) on
+	      2020-10-29</li>
+	    <li>[1184562] Medium CVE-2021-21210: Inappropriate implementation
+	      in Network. Reported by @bananabr on 2021-03-04</li>
+	    <li>[1103119] Medium CVE-2021-21211: Inappropriate implementation
+	      in Navigation. Reported by Akash Labade (m0ns7er) on
+	      2020-07-08</li>
+	    <li>[1145024] Medium CVE-2021-21212: Incorrect security UI in
+	      Network Config UI. Reported by Hugo Hue and Sze Yiu Chau of the
+	      Chinese University of Hong Kong on 2020-11-03</li>
+	    <li>[1161806] Medium CVE-2021-21213: Use after free in WebMIDI.
+	      Reported by raven (@raid_akame) on 2020-12-25</li>
+	    <li>[1170148] Medium CVE-2021-21214: Use after free in Network API.
+	      Reported by Anonymous on 2021-01-24</li>
+	    <li>[1172533] Medium CVE-2021-21215: Inappropriate implementation
+	      in Autofill. Reported by Abdulrahman Alqabandi, Microsoft Browser
+	      Vulnerability Research on 2021-01-30</li>
+	    <li>[1173297] Medium CVE-2021-21216: Inappropriate implementation
+	      in Autofill. Reported by Abdulrahman Alqabandi, Microsoft Browser
+	      Vulnerability Research on 2021-02-02</li>
+	    <li>[1166462] Low CVE-2021-21217: Uninitialized Use in PDFium.
+	      Reported by Zhou Aiting (@zhouat1) of Qihoo 360 Vulcan Team on
+	      2021-01-14</li>
+	    <li>[1166478] Low CVE-2021-21218: Uninitialized Use in PDFium.
+	      Reported by Zhou Aiting (@zhouat1) of Qihoo 360 Vulcan Team on
+	      2021-01-14</li>
+	    <li>[1166972] Low CVE-2021-21219: Uninitialized Use in PDFium.
+	      Reported by Zhou Aiting (@zhouat1) of Qihoo 360 Vulcan Team on
+	      2021-01-15</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-21201</cvename>
+      <cvename>CVE-2021-21202</cvename>
+      <cvename>CVE-2021-21203</cvename>
+      <cvename>CVE-2021-21204</cvename>
+      <cvename>CVE-2021-21205</cvename>
+      <cvename>CVE-2021-21221</cvename>
+      <cvename>CVE-2021-21207</cvename>
+      <cvename>CVE-2021-21208</cvename>
+      <cvename>CVE-2021-21209</cvename>
+      <cvename>CVE-2021-21210</cvename>
+      <cvename>CVE-2021-21211</cvename>
+      <cvename>CVE-2021-21212</cvename>
+      <cvename>CVE-2021-21213</cvename>
+      <cvename>CVE-2021-21214</cvename>
+      <cvename>CVE-2021-21215</cvename>
+      <cvename>CVE-2021-21216</cvename>
+      <cvename>CVE-2021-21217</cvename>
+      <cvename>CVE-2021-21218</cvename>
+      <cvename>CVE-2021-21219</cvename>
+      <url>https://chromereleases.googleblog.com/2021/04/stable-channel-update-for-desktop_14.html</url>
+    </references>
+    <dates>
+      <discovery>2021-04-14</discovery>
+      <entry>2021-04-15</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="7c0d71a9-9d48-11eb-97a0-e09467587c17">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>89.0.4389.128</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Chrome Releases reports:</p>
+	<blockquote cite="https://chromereleases.googleblog.com/2021/04/stable-channel-update-for-desktop.html">
+	  <p>This release contains two security fixes:</p>
+	  <ul>
+	    <li>[1196781] High CVE-2021-21206: Use after free in Blink. Reported
+	      by Anonymous on 2021-04-07</li>
+	    <li>[1196683] High CVE-2021-21220: Insufficient validation of
+	      untrusted input in V8 for x86_64. Reported by Bruno Keith (@bkth_)
+	      and Niklas Baumstark (@_niklasb) of Dataflow Security (@dfsec_it)
+	      via ZDI (ZDI-CAN-13569) on 2021-04-07></li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-21206</cvename>
+      <cvename>CVE-2021-21220</cvename>
+      <url>https://chromereleases.googleblog.com/2021/04/stable-channel-update-for-desktop.html</url>
+    </references>
+    <dates>
+      <discovery>2021-04-13</discovery>
+      <entry>2021-04-14</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="465db5b6-9c6d-11eb-8e8a-bc542f4bd1dd">
+    <topic>xorg-server -- Input validation failures in X server XInput extension</topic>
+    <affects>
+      <package>
+	<name>xorg-server</name>
+	<range><lt>1.20.11,1</lt></range>
+      </package>
+      <package>
+	<name>xwayland</name>
+	<range><lt>1.20.11,1</lt></range>
+      </package>
+      <package>
+	<name>xwayland-devel</name>
+	<range><le>1.20.0.877</le></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>X.Org server security reports for release 1.20.11:</p>
+	<blockquote cite="https://lists.x.org/archives/xorg/2021-April/060678.html">
+	  <ul>
+	    <li>Fix XChangeFeedbackControl() request underflow</li>
+	  </ul>
+	  <p>.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://gitlab.freedesktop.org/xorg/xserver/-/tags/xorg-server-1.20.11</url>
+    </references>
+    <dates>
+      <discovery>2021-04-13</discovery>
+      <entry>2021-04-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="094fb2ec-9aa3-11eb-83cb-0800278d94f0">
+    <topic>gitea -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitea</name>
+	<range><lt>1.14.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Gitea Team reports for release 1.14.0:</p>
+	<blockquote cite="https://blog.gitea.io/2021/04/gitea-1.14.0-is-released/">
+	  <ul>
+	    <li>Validate email in external authenticator registration form</li>
+	    <li>Ensure validation occurs on clone addresses too</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://github.com/go-gitea/gitea/releases/tag/v1.14.0</url>
+      <freebsdpr>ports/254976</freebsdpr>
+    </references>
+    <dates>
+      <discovery>2021-03-11</discovery>
+      <entry>2021-04-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="9ee01e60-6045-43df-98e5-a794007e54ef">
+    <topic>syncthing -- crash due to malformed relay protocol message</topic>
+    <affects>
+      <package>
+	<name>syncthing</name>
+	<range><lt>1.15.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>syncthing developers report:</p>
+	<blockquote cite="https://github.com/syncthing/syncthing/security/advisories/GHSA-x462-89pf-6r5h">
+	  <p>syncthing can be caused to crash and exit if sent a malformed relay protocol
+	    message message with a negative length field.</p>
+	  <p>The relay server strelaysrv can be caused to crash and exit if sent a malformed
+	    relay protocol message with a negative length field.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-21404</cvename>
+      <url>https://github.com/syncthing/syncthing/security/advisories/GHSA-x462-89pf-6r5h</url>
+    </references>
+    <dates>
+      <discovery>2021-04-06</discovery>
+      <entry>2021-04-12</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f671c282-95ef-11eb-9c34-080027f515ea">
+    <topic>python -- Information disclosure via pydoc -p: /getfile?key=path allows to read arbitrary file on the filesystem</topic>
+    <affects>
+      <package>
+	<name>python38</name>
+	<range><lt>3.8.9</lt></range>
+      </package>
+      <package>
+	<name>python39</name>
+	<range><lt>3.9.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>David Schwörer reports:</p>
+	<blockquote cite="https://pythoninsider.blogspot.com/2021/04/python-393-and-389-are-now-available.html">
+	  <p>
+	    Remove the getfile feature of the pydoc module which could be
+	    abused to read arbitrary files on the disk (directory traversal
+	    vulnerability). Moreover, even source code of Python modules
+	    can contain sensitive data like passwords.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-3426</cvename>
+      <url>https://pythoninsider.blogspot.com/2021/04/python-393-and-389-are-now-available.html</url>
+      <url>https://bugs.python.org/issue42988</url>
+    </references>
+    <dates>
+      <discovery>2021-01-21</discovery>
+      <entry>2021-04-10</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d10fc771-958f-11eb-9c34-080027f515ea">
+    <topic>curl -- TLS 1.3 session ticket proxy host mixup</topic>
+    <affects>
+      <package>
+	<name>curl</name>
+	<range><ge>7.63.0</ge><lt>7.76.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Daniel Stenberg reports:</p>
+	<blockquote cite="https://curl.se/docs/CVE-2021-22890.html">
+	  <p>
+	    Enabled by default, libcurl supports the use of TLS 1.3 session
+	    tickets to resume previous TLS sessions to speed up subsequent
+	    TLS handshakes.
+	  </p>
+	  <p>
+	    When using a HTTPS proxy and TLS 1.3, libcurl can confuse session
+	    tickets arriving from the HTTPS proxy but work as if they arrived
+	    from the remote server and then wrongly "short-cut" the host
+	    handshake. The reason for this confusion is the modified sequence
+	    from TLS 1.2 when the session ids would provided only during the
+	    TLS handshake, while in TLS 1.3 it happens post hand-shake and
+	    the code was not updated to take that changed behavior into account.
+	  </p>
+	  <p>
+	    When confusing the tickets, a HTTPS proxy can trick libcurl to use
+	    the wrong session ticket resume for the host and thereby circumvent
+	    the server TLS certificate check and make a MITM attack to be
+	    possible to perform unnoticed.
+	  </p>
+	  <p>
+	    This flaw can allow a malicious HTTPS proxy to MITM the traffic.
+	    Such a malicious HTTPS proxy needs to provide a certificate that
+	    curl will accept for the MITMed server for an attack to work -
+	    unless curl has been told to ignore the server certificate check.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-22890</cvename>
+      <url>https://curl.se/docs/CVE-2021-22890.html</url>
+    </references>
+    <dates>
+      <discovery>2021-03-31</discovery>
+      <entry>2021-04-10</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="b1194286-958e-11eb-9c34-080027f515ea">
+    <topic>curl -- Automatic referer leaks credentials</topic>
+    <affects>
+      <package>
+	<name>curl</name>
+	<range><ge>7.1.1</ge><lt>7.76.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Daniel Stenberg reports:</p>
+	<blockquote cite="https://curl.se/docs/CVE-2021-22876.html">
+	  <p>
+	    libcurl does not strip off user credentials from the URL when
+	    automatically populating the Referer: HTTP request header field
+	    in outgoing HTTP requests, and therefore risks leaking sensitive
+	    data to the server that is the target of the second HTTP request.
+	  </p>
+	  <p>
+	    libcurl automatically sets the Referer: HTTP request header field
+	    in outgoing HTTP requests if the CURLOPT_AUTOREFERER option is set.
+	    With the curl tool, it is enabled with --referer ";auto".
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-22876</cvename>
+      <url>https://curl.se/docs/CVE-2021-22876.html</url>
+    </references>
+    <dates>
+      <discovery>2021-03-31</discovery>
+      <entry>2021-04-10</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="8ba23a62-997d-11eb-9f0e-0800278d94f0">
+    <topic>gitea -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitea</name>
+	<range><lt>1.13.7</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Gitea Team reports for release 1.13.7:</p>
+	<blockquote cite="https://blog.gitea.io/2021/04/gitea-1.13.7-is-released/">
+	  <ul>
+	    <li>Update to bluemonday-1.0.6</li>
+	    <li>Clusterfuzz found another way</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://github.com/go-gitea/gitea/releases/tag/v1.13.7</url>
+      <freebsdpr>ports/254930</freebsdpr>
+    </references>
+    <dates>
+      <discovery>2021-04-07</discovery>
+      <entry>2021-04-09</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="9ae2c00f-97d0-11eb-8cd6-080027f515ea">
+    <topic>clamav -- Multiple vulnerabilites</topic>
+    <affects>
+      <package>
+	<name>clamav</name>
+	<range><lt>0.103.2,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Micah Snyder reports:</p>
+	<blockquote cite="https://blog.clamav.net/2021/04/clamav-01032-security-patch-release.html">
+	  <dl>
+	    <dt>CVE-2021-1252</dt>
+	    <dd>Excel XLM parser infinite loop</dd>
+	    <dt>CVE-2021-1404</dt>
+	    <dd>PDF parser buffer over-read; possible crash. </dd>
+	    <dt>CVE-2021-1405</dt>
+	    <dd>Mail parser NULL-dereference crash. </dd>
+	  </dl>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-1252</cvename>
+      <cvename>CVE-2021-1404</cvename>
+      <cvename>CVE-2021-1405</cvename>
+      <url>https://blog.clamav.net/2021/04/clamav-01032-security-patch-release.html</url>
+    </references>
+    <dates>
+      <discovery>2021-04-07</discovery>
+      <entry>2021-04-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="9595d002-edeb-4602-be2d-791cd654247e">
+    <topic>jenkins -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>jenkins</name>
+	<range><lt>2.287</lt></range>
+      </package>
+      <package>
+	<name>jenkins-lts</name>
+	<range><lt>2.277.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Jenkins Security Advisory:</p>
+	<blockquote cite="https://www.jenkins.io/security/advisory/2021-04-07/">
+	  <h1>Description</h1>
+	  <h5>(Low) SECURITY-1721 / CVE-2021-21639</h5>
+	  <p>Lack of type validation in agent related REST API</p>
+	  <h5>(Medium) SECURITY-1871 / CVE-2021-21640</h5>
+	  <p>View name validation bypass</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://www.jenkins.io/security/advisory/2021-04-07/</url>
+    </references>
+    <dates>
+      <discovery>2021-04-07</discovery>
+      <entry>2021-04-08</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c0c1834c-9761-11eb-acfd-0022489ad614">
+    <topic>Node.js -- April 2021 Security Releases</topic>
+    <affects>
+      <package>
+	<name>node10</name>
+	<range><lt>10.24.1</lt></range>
+      </package>
+      <package>
+	<name>node12</name>
+	<range><lt>12.22.1</lt></range>
+      </package>
+      <package>
+	<name>node14</name>
+	<range><lt>14.16.1</lt></range>
+      </package>
+      <package>
+	<name>node</name>
+	<range><lt>15.14.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Node.js reports:</p>
+	<blockquote cite="https://nodejs.org/en/blog/vulnerability/april-2021-security-releases/">
+	  <h1>OpenSSL - CA certificate check bypass with X509_V_FLAG_X509_STRICT (High) (CVE-2021-3450)</h1>
+	  <p>This is a vulnerability in OpenSSL which may be exploited through Node.js. You can read more about it in https://www.openssl.org/news/secadv/20210325.txt</p>
+	  <h1>OpenSSL - NULL pointer deref in signature_algorithms processing (High) (CVE-2021-3449)</h1>
+	  <p>This is a vulnerability in OpenSSL which may be exploited through Node.js. You can read more about it in https://www.openssl.org/news/secadv/20210325.txt</p>
+	  <h1>npm upgrade - Update y18n to fix Prototype-Pollution (High) (CVE-2020-7774)</h1>
+	  <p>This is a vulnerability in the y18n npm module which may be exploited by prototype pollution. You can read more about it in https://github.com/advisories/GHSA-c4w7-xm78-47vh</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://nodejs.org/en/blog/vulnerability/april-2021-security-releases/</url>
+      <url>https://www.openssl.org/news/secadv/20210325.txt</url>
+      <url>https://github.com/advisories/GHSA-c4w7-xm78-47vh</url>
+      <cvename>CVE-2021-3450</cvename>
+      <cvename>CVE-2021-3449</cvename>
+      <cvename>CVE-2020-7774</cvename>
+    </references>
+    <dates>
+      <discovery>2021-04-06</discovery>
+      <entry>2021-04-07</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="a7b97d26-9792-11eb-b87a-901b0ef719ab">
     <topic>FreeBSD -- jail escape possible by mounting over jail root</topic>
     <affects>
@@ -175,6 +869,36 @@ Notes:
     <dates>
       <discovery>2021-04-06</discovery>
       <entry>2021-04-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="79fa9f23-9725-11eb-b530-7085c2fb2c14">
+    <topic>upnp -- stack overflow vulnerability</topic>
+    <affects>
+      <package>
+	<name>upnp</name>
+	<range><lt>1.14.5,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Mitre reports:</p>
+	<blockquote cite="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-28302">
+	  <p>
+	      A stack overflow in pupnp 1.16.1 can cause the denial of service through the
+	      Parser_parseDocument() function. ixmlNode_free() will release a child node
+	      recursively, which will consume stack space and lead to a crash.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-28302</cvename>
+      <url>https://github.com/pupnp/pupnp/issues/249</url>
+    </references>
+    <dates>
+      <discovery>2021-03-12</discovery>
+      <entry>2021-04-06</entry>
     </dates>
   </vuln>
 

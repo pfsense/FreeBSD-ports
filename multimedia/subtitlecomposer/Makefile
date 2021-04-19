@@ -1,7 +1,7 @@
 PORTNAME=	subtitlecomposer
 PORTVERSION=	0.7.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	multimedia kde
 
 MAINTAINER=	makc@FreeBSD.org
@@ -23,7 +23,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	maxrd2
 GH_PROJECT=	SubtitleComposer
 
-PORTSCOUT=	ignore:continuous
+PORTSCOUT=	ignore:1
 
 OPTIONS_GROUP=	VIDEO
 VIDEO_DESC=	Video players

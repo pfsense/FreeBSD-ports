@@ -47,6 +47,7 @@
     SUBDIR += R-cran-gdata
     SUBDIR += R-cran-generics
     SUBDIR += R-cran-getopt
+    SUBDIR += R-cran-git2r
     SUBDIR += R-cran-glmnet
     SUBDIR += R-cran-glue
     SUBDIR += R-cran-gmodels
@@ -274,8 +275,6 @@
     SUBDIR += bugzilla50
     SUBDIR += build
     SUBDIR += buildstream
-    SUBDIR += buildtool
-    SUBDIR += buildtool-doc
     SUBDIR += bullet
     SUBDIR += busybee
     SUBDIR += byacc
@@ -586,6 +585,7 @@
     SUBDIR += embb
     SUBDIR += emscripten
     SUBDIR += entt
+    SUBDIR += envsubst
     SUBDIR += epl.el
     SUBDIR += epm
     SUBDIR += eric6
@@ -725,7 +725,6 @@
     SUBDIR += gammaray
     SUBDIR += gauche-readline
     SUBDIR += gaul
-    SUBDIR += gb
     SUBDIR += gbump
     SUBDIR += gcc-arm-embedded
     SUBDIR += gcc-msp430-ti-toolchain
@@ -792,6 +791,7 @@
     SUBDIR += gettext-msghack
     SUBDIR += gettext-po-mode
     SUBDIR += gettext-runtime
+    SUBDIR += gettext-tiny
     SUBDIR += gettext-tools
     SUBDIR += gflags
     SUBDIR += gh
@@ -936,8 +936,10 @@
     SUBDIR += hs-git-annex
     SUBDIR += hs-haddock
     SUBDIR += hs-happy
+    SUBDIR += hs-haskell-language-server
     SUBDIR += hs-hasktags
     SUBDIR += hs-hlint
+    SUBDIR += hs-hls-install
     SUBDIR += hs-hoogle
     SUBDIR += hs-hpack
     SUBDIR += hs-hspec-discover
@@ -1632,7 +1634,6 @@
     SUBDIR += opengrok
     SUBDIR += openocd
     SUBDIR += openwince-include
-    SUBDIR += openzz
     SUBDIR += orc
     SUBDIR += osc
     SUBDIR += ossp-al
@@ -2351,6 +2352,7 @@
     SUBDIR += p5-FFI-CheckLib
     SUBDIR += p5-FFI-Platypus
     SUBDIR += p5-FSA-Rules
+    SUBDIR += p5-Feature-Compat-Try
     SUBDIR += p5-Fennec-Lite
     SUBDIR += p5-File-Append-TempFile
     SUBDIR += p5-File-Assets
@@ -4170,6 +4172,7 @@
     SUBDIR += py-azure-mgmt-security
     SUBDIR += py-azure-mgmt-servicebus
     SUBDIR += py-azure-mgmt-servicefabric
+    SUBDIR += py-azure-mgmt-servicefabricmanagedclusters
     SUBDIR += py-azure-mgmt-signalr
     SUBDIR += py-azure-mgmt-sql
     SUBDIR += py-azure-mgmt-sqlvirtualmachine
@@ -4327,6 +4330,7 @@
     SUBDIR += py-darts.util.lru
     SUBDIR += py-dask
     SUBDIR += py-dataclasses
+    SUBDIR += py-dataclasses-json
     SUBDIR += py-datadog
     SUBDIR += py-datapackage
     SUBDIR += py-datatest
@@ -4484,6 +4488,7 @@
     SUBDIR += py-grpcio-tools
     SUBDIR += py-gs_api_client
     SUBDIR += py-gtfslib
+    SUBDIR += py-guppy3
     SUBDIR += py-gyp
     SUBDIR += py-hash_ring
     SUBDIR += py-heapdict
@@ -4633,6 +4638,7 @@
     SUBDIR += py-marrow.mailer
     SUBDIR += py-marrow.util
     SUBDIR += py-marshmallow
+    SUBDIR += py-marshmallow-enum
     SUBDIR += py-matrix-angular-sdk
     SUBDIR += py-maturin
     SUBDIR += py-mccabe
@@ -5092,6 +5098,7 @@
     SUBDIR += py-setuptools_scm
     SUBDIR += py-setuptools_scm_git_archive
     SUBDIR += py-sexpdata
+    SUBDIR += py-sgmllib3k
     SUBDIR += py-sh
     SUBDIR += py-shapely
     SUBDIR += py-shellingham
@@ -5620,6 +5627,7 @@
     SUBDIR += rubygem-aws-sdk-emrcontainers
     SUBDIR += rubygem-aws-sdk-eventbridge
     SUBDIR += rubygem-aws-sdk-firehose
+    SUBDIR += rubygem-aws-sdk-fis
     SUBDIR += rubygem-aws-sdk-fms
     SUBDIR += rubygem-aws-sdk-forecastqueryservice
     SUBDIR += rubygem-aws-sdk-forecastservice
@@ -6704,6 +6712,7 @@
     SUBDIR += rubygem-useragent
     SUBDIR += rubygem-uuid
     SUBDIR += rubygem-uuidtools
+    SUBDIR += rubygem-valid
     SUBDIR += rubygem-validatable
     SUBDIR += rubygem-validate_email
     SUBDIR += rubygem-validate_url
@@ -6756,7 +6765,7 @@
     SUBDIR += scandoc
     SUBDIR += sccache
     SUBDIR += scons
-    SUBDIR += sd-mux
+    SUBDIR += sd-mux-ctrl
     SUBDIR += sdl12
     SUBDIR += sdl20
     SUBDIR += sdl2pp
@@ -6807,7 +6816,6 @@
     SUBDIR += sope2
     SUBDIR += sope4
     SUBDIR += sord
-    SUBDIR += sourcenav
     SUBDIR += sparc64-gcc
     SUBDIR += sparc64-xtoolchain-gcc
     SUBDIR += spark

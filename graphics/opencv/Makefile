@@ -1,6 +1,6 @@
 PORTNAME=	opencv
 DISTVERSION=	4.5.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics
 
 MAINTAINER=	tcberner@FreeBSD.org
@@ -13,7 +13,7 @@ BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers \
 		opencl>=0:devel/opencl
 RUN_DEPENDS=	opencl>=0:devel/opencl
 LIB_DEPENDS=	\
-		libIlmImf.so:graphics/openexr \
+		libOpenEXR.so:graphics/openexr \
 		libavcodec.so:multimedia/ffmpeg \
 		libfreetype.so:print/freetype2 \
 		libgflags.so:devel/gflags \
@@ -71,8 +71,11 @@ OPTIONS_SUB=		yes
 HARDENING_CMAKE_BOOL=	ENABLE_BUILD_HARDENING
 HARDENING_DESC=		Enable hardening of the resulting binaries
 
-JAVA_CMAKE_BOOL=	BUILD_openv_java
+JAVA_CMAKE_BOOL=	BUILD_JAVA
 JAVA_BUILD_DEPENDS=	ant:devel/apache-ant
+JAVA_MAKE_ENV=		JAVACMD=${JAVA}
+JAVA_USE=		JAVA=yes
+JAVA_VARS=		JAVA_BUILD=yes
 
 PYTHON_BUILD_DEPENDS=	${PYNUMPY}
 PYTHON_RUN_DEPENDS=	${PYNUMPY}

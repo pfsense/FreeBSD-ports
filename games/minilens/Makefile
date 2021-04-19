@@ -1,5 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-
 PORTNAME=	minilens
 PORTVERSION=	1.2
 DISTVERSIONPREFIX=	v
@@ -12,9 +10,6 @@ COMMENT=	Puzzle platformer for gravity-oblivious aliens
 LICENSE=	GPLv3+ CC-BY-SA-4.0
 LICENSE_COMB=	multi
 LICENSE_FILE_GPLv3+ =	${WRKSRC}/LICENSE.txt
-
-DEPRECATED=	Uses EOL Python 2.7 via devel/godot2
-EXPIRATION_DATE=2021-06-23
 
 RUN_DEPENDS=	godot2:devel/godot2
 

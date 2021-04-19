@@ -1,61 +1,65 @@
 # Created by: Igor Pokrovsky <tiamat@telegraph.spb.ru>
 
 PORTNAME=	exult
-PORTVERSION=	1.5.0.20160514
-PORTREVISION=	9
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.7.0.20210418
 CATEGORIES=	games
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Ultima VII engine
+COMMENT=	Engine for Ultima VII (BG, FOV, SI, SS)
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
-		libpng.so:graphics/png
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+		libogg.so:audio/libogg \
+		libpng.so:graphics/png \
+		libvorbis.so:audio/libvorbis
+
+USES=		autoreconf compiler:c++17-lang gmake libtool localbase \
+		pkgconfig sdl xorg
 
 USE_GITHUB=	yes
-GH_TAGNAME=	b15afba
+GH_TAGNAME=	snapshot-${DISTVERSIONPREFIX}${DISTVERSION}
+USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30
+USE_SDL=	mixer2 sdl2
+USE_XORG=	xext x11
 
-USES=		autoreconf compiler:c++11-lib gmake libtool localbase pkgconfig \
-		xorg
-USE_CXXSTD=	c++98
-USE_XORG=	xext
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-alsa \
+
+CONFIGURE_ARGS=	--disable-static \
+		--enable-shared \
 		--with-icondir=${PREFIX}/share/pixmaps
+
 SUB_FILES=	pkg-message
 
-OPTIONS_DEFINE=		DOCS FLUIDSYNTH GIMP STUDIO THUMBNAILER
-OPTIONS_SINGLE=		SDL
-OPTIONS_SINGLE_SDL=	SDL1 SDL2
-OPTIONS_DEFAULT=	SDL1 STUDIO
+OPTIONS_DEFINE=		ALSA DOCS DEBUG FLUIDSYNTH GIMP STUDIO THUMBNAILER
+OPTIONS_DEFAULT=	STUDIO
 OPTIONS_SUB=		yes
 
-FLUIDSYNTH_LIB_DEPENDS=	libfluidsynth.so:audio/fluidsynth
-FLUIDSYNTH_CONFIGURE_ENABLE=\
-			fluidsynth
 GIMP_DESC=		GIMP plugin support
-GIMP_LIB_DEPENDS=	libgimp-2.0.so:graphics/gimp-app
-GIMP_CONFIGURE_ENABLE=	gimp-plugin
-SDL1_DESC=		Simple Direct Media Layer 1 support
-SDL1_USES=		sdl
-SDL1_USE=		sdl=mixer
-SDL1_CONFIGURE_ON=	--with-sdl=sdl12
-SDL2_DESC=		Simple Direct Media Layer 2 support
-SDL2_USES=		sdl
-SDL2_USE=		sdl=mixer2
-SDL2_CONFIGURE_ON=	--with-sdl=sdl2
 STUDIO_DESC=		Install Exult Studio
-STUDIO_CONFIGURE_ENABLE=\
-			exult-studio exult-studio-support
-STUDIO_USES=		gnome
-STUDIO_USE=		gnome=libglade2
 THUMBNAILER_DESC=	Gnome SHP thumbnailer support
-THUMBNAILER_USES=	gnome shared-mime-info
-THUMBNAILER_USE=	gnome=libgnomeui
-THUMBNAILER_CONFIGURE_ENABLE=\
-			gnome-shp-thumbnailer
+
+ALSA_LIB_DEPENDS=		libasound.so:audio/alsa-lib
+ALSA_CONFIGURE_ENABLE=		alsa
+
+DEBUG_CONFIGURE_OFF=		--with-debug=no
+DEBUG_CONFIGURE_ON=		--with-debug=full --with-optimization=none
+
+FLUIDSYNTH_LIB_DEPENDS=		libfluidsynth.so:audio/fluidsynth
+FLUIDSYNTH_CONFIGURE_ENABLE=	fluidsynth
+
+GIMP_LIB_DEPENDS=		libgimp-2.0.so:graphics/gimp-app
+GIMP_CONFIGURE_ENABLE=		gimp-plugin
+
+STUDIO_CONFIGURE_ENABLE=	exult-studio exult-studio-support
+STUDIO_USES=			gnome
+STUDIO_USE=			gnome=libglade2
+
+THUMBNAILER_USES=		gnome shared-mime-info
+THUMBNAILER_USE=		gnome=libgnomeui
+THUMBNAILER_CONFIGURE_ENABLE=	gnome-shp-thumbnailer
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

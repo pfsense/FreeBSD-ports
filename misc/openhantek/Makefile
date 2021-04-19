@@ -1,5 +1,5 @@
 PORTNAME=	openhantek
-DISTVERSION=	3.2.1
+DISTVERSION=	3.2.2
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -27,5 +27,7 @@ PLIST_FILES=	bin/OpenHantek \
 		share/applications/OpenHantek.desktop \
 		share/icons/hicolor/48x48/apps/OpenHantek.png \
 		share/icons/hicolor/scalable/apps/OpenHantek.svg
+
+PORTSCOUT=	limit:^.*[1-9]\. # prevent words like 'unstable'
 
 .include <bsd.port.mk>

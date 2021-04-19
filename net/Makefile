@@ -90,7 +90,6 @@
     SUBDIR += corkscrew
     SUBDIR += corosync2
     SUBDIR += corosync3
-    SUBDIR += coturn
     SUBDIR += courier-authlib-ldap
     SUBDIR += courier-sox
     SUBDIR += cppzmq
@@ -159,7 +158,6 @@
     SUBDIR += fping
     SUBDIR += freebsd-uucp
     SUBDIR += freediameter
-    SUBDIR += freenet6
     SUBDIR += freeradius-client
     SUBDIR += freeradius3
     SUBDIR += freerdp
@@ -1474,7 +1472,6 @@
     SUBDIR += toonel
     SUBDIR += torsocks
     SUBDIR += traefik
-    SUBDIR += traefik2
     SUBDIR += traff
     SUBDIR += trafshow
     SUBDIR += trafshow3

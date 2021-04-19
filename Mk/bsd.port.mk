@@ -1706,7 +1706,7 @@ WRKSRC?=		${WRKDIR}/${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}
 .if defined(WRKSRC)
 DEV_WARNING+=	"You are using USE_GITLAB and WRKSRC is set which is wrong.  Set GL_PROJECT, GL_ACCOUNT correctly, and/or set WRKSRC_SUBDIR and remove WRKSRC entirely."
 .endif
-WRKSRC?=		${WRKDIR}/${GL_PROJECT}-${GL_COMMIT}-${GL_COMMIT}
+WRKSRC?=		${WRKDIR}/${GL_PROJECT}-${GL_COMMIT}
 .endif
 
 # If the distname is not extracting into a specific subdirectory, have the
@@ -2020,7 +2020,7 @@ MAKE_ENV+=		LANG=${USE_LOCALE} LC_ALL=${USE_LOCALE}
 # invalid.
 REINPLACE_ARGS?=	-i.bak
 .if defined(DEVELOPER)
-REINPLACE_CMD?=	${SETENV} WRKSRC=${WRKSRC} REWARNFILE=${REWARNFILE} ${SCRIPTSDIR}/sed_checked.sh
+REINPLACE_CMD?=	${SETENV} WRKSRC=${WRKSRC} REWARNFILE=${REWARNFILE} ${SH} ${SCRIPTSDIR}/sed_checked.sh
 .else
 REINPLACE_CMD?=	${SED} ${REINPLACE_ARGS}
 .endif
@@ -4513,9 +4513,8 @@ pretty-print-run-depends-list:
 .endif
 
 _SUB_LIST_TEMP=	${SUB_LIST:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/}
-.if !target(apply-slist)
+.if !target(apply-slist) && defined(SUB_FILES)
 apply-slist:
-.if defined(SUB_FILES)
 .for file in ${SUB_FILES}
 .if !exists(${FILESDIR}/${file}.in)
 	@${ECHO_MSG} "** Missing ${FILESDIR}/${file}.in for ${PKGNAME}."; exit 1
@@ -4528,7 +4527,6 @@ apply-slist:
 ${i:S/-//:tu}=	${WRKDIR}/${SUB_FILES:M${i}*}
 .endif
 .endfor
-.endif
 .endif
 
 # Generate packing list.  Also tests to make sure all required package
@@ -5303,7 +5301,7 @@ _PATCH_SEQ=		050:ask-license 100:patch-message 150:patch-depends \
 _CONFIGURE_DEP=	patch
 _CONFIGURE_SEQ=	150:build-depends 151:lib-depends 160:create-binary-alias \
 				161:create-binary-wrappers \
-				200:configure-message \
+				200:configure-message 210:apply-slist \
 				300:pre-configure 450:pre-configure-script \
 				490:run-autotools-fixup 500:do-configure 700:post-configure \
 				850:post-configure-script \
@@ -5316,7 +5314,7 @@ _STAGE_DEP=		build
 # STAGE is special in its numbering as it has install and stage, so install is
 # the main, and stage goes after.
 _STAGE_SEQ=		050:stage-message 100:stage-dir 150:run-depends \
-				200:apply-slist 300:pre-install \
+				300:pre-install \
 				400:generate-plist 450:pre-su-install 475:create-users-groups \
 				500:do-install 550:kmod-post-install 600:fixup-lib-pkgconfig 700:post-install \
 				750:post-install-script 800:post-stage 850:compress-man \

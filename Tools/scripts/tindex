@@ -44,7 +44,7 @@ fi
 blame() {
   # Find out who is responsible for current version of file $1
 
-  git log --no-patch --max-count=1 --format='%ce' $1
+  ${GIT} log --no-patch --max-count=1 --format='%ce' -- $1
 }
 
 indexfail() {

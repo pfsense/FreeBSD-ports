@@ -1,7 +1,7 @@
 # Created by: Wen Heping <wenheping@gmail.com>
 
 PORTNAME=	tmux
-PORTVERSION=	3.1c
+PORTVERSION=	3.2
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/tmux/tmux/releases/download/${PORTVERSION}/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -9,13 +9,17 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	mat@FreeBSD.org
 COMMENT=	Terminal Multiplexer
 
-LICENSE=	ISCL
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	ISCL GPLv2
+LICENSE_COMB=	multi
+LICENSE_FILE_ISCL=	${WRKSRC}/COPYING
+LICENSE_FILE_GPLv2=	${WRKSRC_bash}/COPYING
+LICENSE_DISTFILES_ISCL=	${DISTNAME}${EXTRACT_SUFX}
+LICENSE_DISTFILES_GPLv2=	${DISTFILE_bash}
 
 USES=		ncurses pkgconfig
 
 USE_GITHUB=	nodefault
-GH_TUPLE=	imomaliev:tmux-bash-completion:ef56d3e:bash
+GH_TUPLE=	imomaliev:tmux-bash-completion:f5d5323:bash
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-utempter \
@@ -30,13 +34,10 @@ PLIST_FILES=	bin/tmux \
 PORTDOCS=	CHANGES README
 PORTEXAMPLES=	*
 
-OPTIONS_DEFINE=	BACKSPACE DOCS EXAMPLES LIBEVENT_STATIC UTF8PROC
+OPTIONS_DEFINE=	DOCS EXAMPLES LIBEVENT_STATIC UTF8PROC
 
-BACKSPACE_DESC=		Build with tty/keys patch
 LIBEVENT_STATIC_DESC=	Build with static libevent
 UTF8PROC_DESC=		Build with utf8proc support
-
-BACKSPACE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-tty-keys.c
 
 LIBEVENT_STATIC_BUILD_DEPENDS=		${LOCALBASE}/lib/libevent.a:devel/libevent
 LIBEVENT_STATIC_LIB_DEPENDS_OFF=	libevent.so:devel/libevent

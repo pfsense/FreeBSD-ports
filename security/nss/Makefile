@@ -1,7 +1,7 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
 
 PORTNAME=	nss
-PORTVERSION=	3.63
+PORTVERSION=	3.64
 CATEGORIES=	security
 MASTER_SITES=	MOZILLA/security/${PORTNAME}/releases/${DISTNAME:tu:C/[-.]/_/g}_RTM/src
 
@@ -67,7 +67,7 @@ MAKE_ENV+=	NSS_DISABLE_ARM32_NEON=1
 EXTRA_PATCHES=	${FILESDIR}/${ARCH}${PPC_ABI:tl}-lib_freebl_scripts_gen.sh
 USES+=		compiler:c++11-lang # -mcrypto -mvsx
 .if ! ${PORT_OPTIONS:MVSX}
-MAKE_ENV+=	NSS_DISABLE_ALTIVEC=1
+MAKE_ENV+=	NSS_DISABLE_CRYPTO_VSX=1
 .endif
 .endif
 

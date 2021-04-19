@@ -1,8 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-
 PORTNAME=	eaglemode
 PORTVERSION=	0.95.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	x11
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 

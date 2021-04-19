@@ -31,7 +31,6 @@
     SUBDIR += broot
     SUBDIR += bsod
     SUBDIR += buffer
-    SUBDIR += cave
     SUBDIR += cheat
     SUBDIR += chef
     SUBDIR += chmlib
@@ -99,7 +98,6 @@
     SUBDIR += findutils
     SUBDIR += firestring
     SUBDIR += flag
-    SUBDIR += floatator
     SUBDIR += fortune-mod-bible
     SUBDIR += fortune-mod-bofh
     SUBDIR += fortune-mod-epictetus
@@ -541,6 +539,7 @@
     SUBDIR += xiphos
     SUBDIR += xless
     SUBDIR += xosd
+    SUBDIR += xplr
     SUBDIR += xtail
     SUBDIR += xtar
     SUBDIR += ytree

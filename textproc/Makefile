@@ -52,6 +52,7 @@
     SUBDIR += apertium
     SUBDIR += artha
     SUBDIR += asciidoc
+    SUBDIR += askgit
     SUBDIR += asm-xml
     SUBDIR += asm2html
     SUBDIR += aspell
@@ -257,7 +258,6 @@
     SUBDIR += hr-aspell
     SUBDIR += hs-lhs2tex
     SUBDIR += hs-pandoc
-    SUBDIR += hs-pandoc-citeproc
     SUBDIR += hs-pandoc-crossref
     SUBDIR += hs-yaml
     SUBDIR += hsb-aspell
@@ -350,7 +350,6 @@
     SUBDIR += latex-service
     SUBDIR += latex2html
     SUBDIR += libabw
-    SUBDIR += libcrm114
     SUBDIR += libcroco
     SUBDIR += libcss
     SUBDIR += libcsv
@@ -481,6 +480,7 @@
     SUBDIR += opensp
     SUBDIR += openvanilla-framework
     SUBDIR += or-aspell
+    SUBDIR += ov
     SUBDIR += p5-AI-Categorizer
     SUBDIR += p5-Algorithm-CheckDigits
     SUBDIR += p5-Algorithm-RabinKarp
@@ -1401,12 +1401,14 @@
     SUBDIR += py-rst2html5
     SUBDIR += py-scour
     SUBDIR += py-simplebayes
+    SUBDIR += py-smartypants
     SUBDIR += py-snowballstemmer
     SUBDIR += py-sparqlwrapper
     SUBDIR += py-sphinx
     SUBDIR += py-sphinx-argparse
     SUBDIR += py-sphinx-autoapi
     SUBDIR += py-sphinx-autodoc-typehints
+    SUBDIR += py-sphinx-copybutton
     SUBDIR += py-sphinx-inline-tabs
     SUBDIR += py-sphinx-intl
     SUBDIR += py-sphinx-issues
@@ -1451,6 +1453,7 @@
     SUBDIR += py-translationstring
     SUBDIR += py-transpopy
     SUBDIR += py-ttp
+    SUBDIR += py-typogrify
     SUBDIR += py-ucl
     SUBDIR += py-ufal.udpipe
     SUBDIR += py-wcmatch

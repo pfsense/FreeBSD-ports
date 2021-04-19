@@ -1,10 +1,10 @@
 PORTNAME=	compute-runtime
-DISTVERSION=	21.13.19438
+DISTVERSION=	21.15.19533
 CATEGORIES=	lang
 PKGNAMEPREFIX=	intel-
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	5fcfd6ac8032.patch:-p1 # https://github.com/intel/compute-runtime/pull/361
+PATCHFILES+=	4a926516c3ea.patch:-p1 # https://github.com/intel/compute-runtime/pull/361
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	OpenCL implementation for Intel HD 5000 (Gen8) or newer
@@ -41,7 +41,7 @@ L0_BUILD_DEPENDS=	level-zero>=1.0:devel/level-zero
 L0_CMAKE_BOOL=		BUILD_WITH_L0
 L0_CMAKE_ON=		-DNEO_VERSION_BUILD:STRING="0"
 L0_PLIST_FILES=		lib/libze_intel_gpu.so.1 \
-			lib/libze_intel_gpu.so.1.0.0
+			lib/libze_intel_gpu.so.1.1.0
 
 VAAPI_BUILD_DEPENDS=	${LOCALBASE}/include/va/va.h:multimedia/libva
 VAAPI_CMAKE_BOOL_OFF=	DISABLE_LIBVA

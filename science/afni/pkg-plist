@@ -477,8 +477,7 @@ bin/Xphace
 bin/abids_json_info.py
 bin/abids_json_tool.py
 bin/abids_tool.py
-bin/adjunct_apqc_tsnr_no_mask
-bin/adjunct_apqc_tsnr_with_mask
+bin/adjunct_apqc_tsnr_general
 bin/adjunct_aw_tableize_roi_info.py
 bin/adjunct_calc_mont_dims.py
 bin/adjunct_combine_str.py
@@ -506,6 +505,7 @@ bin/afni_system_check.py
 bin/afni_vcheck
 bin/aiv
 bin/align_epi_anat.py
+bin/ap_run_simple_rest.tcsh
 bin/apqc_make_html.py
 bin/apqc_make_tcsh.py
 bin/apsearch
