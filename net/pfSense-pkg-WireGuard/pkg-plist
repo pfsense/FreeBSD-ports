@@ -1,0 +1,14 @@
+pkg/wireguard.xml
+pkg/wireguard/wg_api.inc
+pkg/wireguard/wg_globals.inc
+pkg/wireguard/wg_install.inc
+pkg/wireguard/wg_validate.inc
+pkg/wireguard/wg.inc
+www/shortcuts/pkg_wireguard.inc
+www/wg/status_wireguard.php
+www/wg/vpn_wg_settings.php
+www/wg/vpn_wg_edit.php
+www/wg/vpn_wg.php
+/etc/inc/priv/wireguard.priv.inc
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv
