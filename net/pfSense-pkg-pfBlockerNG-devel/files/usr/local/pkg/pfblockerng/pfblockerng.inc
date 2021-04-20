@@ -555,7 +555,7 @@ function pfb_strtolower($line) {
 
 // Function to decode alias custom entry box.
 // Default (False, True): Return as string with comments
-function pfbng_text_area_decode($text, $mode=FALSE, $type=TRUE) {
+function pfbng_text_area_decode($text, $mode=FALSE, $type=TRUE, $idn=FALSE) {
 
 	if ($mode) {
 		$custom = array();
@@ -565,7 +565,44 @@ function pfbng_text_area_decode($text, $mode=FALSE, $type=TRUE) {
 	if (!empty($customlist)) {
 		foreach ($customlist as $line) {
 			if (substr(trim($line), 0, 1) != '#' && !empty($line)) {
-
+				if ($idn && !ctype_print($line)) {
+					$line_old = $line;
+					// Convert encodings to UTF-8
+					$line = mb_convert_encoding($line, 'UTF-8',
+						mb_detect_encoding($line, 'UTF-8, ASCII, ISO-8859-1'));
+					if (strpos($line, '#') !== FALSE) {
+						$tmpline = preg_split('/(?=#)/', $line);
+						if (substr($tmpline[0], 0, 1) == '.') {
+							// idn_to_ascii() returns empty string if it starts with '.' 
+							$tmpline[0] = idn_to_ascii(ltrim($tmpline[0], '.'));
+							if (!empty($tmpline[0])) {
+								$tmpline[0] = '.' . $tmpline[0];
+							}
+						} else {
+							$tmpline[0] = idn_to_ascii($tmpline[0]);
+						}
+						if (empty($tmpline[0])) {
+							$log = "\nError converting IDN line '{$line_old}'\n";
+							pfb_logger($log, 2);
+							continue;
+						}
+						$line = implode(' ', $tmpline);
+					} else {
+						if (substr($line, 0, 1) == '.') {
+							$line = idn_to_ascii(ltrim($line, '.'));
+							if (!empty($line)) {
+								$line = '.' . $line;
+							}
+						} else {
+							$line = idn_to_ascii($line);
+						}
+						if (empty($line)) {
+							$log = "\nError converting IDN line '{$line_old}'\n";
+							pfb_logger($log, 2);
+							continue;
+						}
+					}
+				}
 				// '#' commentline found
 				if (strpos($line, '#') !== FALSE) {
 					if ($mode) {
@@ -1799,7 +1836,7 @@ function pfb_unbound_python_whitelist($mode='') {
 	pfb_global();
 
 	$dnsbl_whitelist = '';
-	$dnsbl_white = pfbng_text_area_decode($pfb['dnsblconfig']['suppression'], TRUE, FALSE);
+	$dnsbl_white = pfbng_text_area_decode($pfb['dnsblconfig']['suppression'], TRUE, FALSE, TRUE);
 	if (!empty($dnsbl_white)) {
 		foreach ($dnsbl_white as $key => $line) {
 			if (!empty($line)) {
@@ -1980,7 +2017,7 @@ python_control	= {$python_control}
 EOF;
 		if ($pfb['dnsbl_regex'] == 'on' && isset($pfb['dnsbl_regex_list']) && !empty($pfb['dnsbl_regex_list'])) {
 			$regex = '';
-			$regex_list = pfbng_text_area_decode($pfb['dnsbl_regex_list'], TRUE, TRUE);
+			$regex_list = pfbng_text_area_decode($pfb['dnsbl_regex_list'], TRUE, TRUE, FALSE);
 			if (!empty($regex_list)) {
 				$counter = 1;
 				foreach ($regex_list as $key => $list) {
@@ -2003,7 +2040,7 @@ EOF;
 
 		if ($pfb['dnsbl_noaaaa'] == 'on' && isset($pfb['dnsbl_noaaaa_list']) && !empty($pfb['dnsbl_noaaaa_list'])) {
 			$noaaaa = '';
-			$noaaaa_list = pfbng_text_area_decode($pfb['dnsbl_noaaaa_list'], TRUE, TRUE);
+			$noaaaa_list = pfbng_text_area_decode($pfb['dnsbl_noaaaa_list'], TRUE, TRUE, TRUE);
 			if (!empty($noaaaa_list)) {
 				foreach ($noaaaa_list as $key => $list) {
 					if (substr($list[0], 0, 1) == '.') {
@@ -2023,7 +2060,7 @@ EOF;
 
 		if ($pfb['dnsbl_gp'] == 'on' && isset($pfb['dnsbl_gp_bypass_list']) && !empty($pfb['dnsbl_gp_bypass_list'])) {
 			$gp_bypass = '';
-			$gp_bypass_list = pfbng_text_area_decode($pfb['dnsbl_gp_bypass_list'], TRUE, TRUE);
+			$gp_bypass_list = pfbng_text_area_decode($pfb['dnsbl_gp_bypass_list'], TRUE, TRUE, FALSE);
 			if (!empty($gp_bypass_list)) {
 				foreach ($gp_bypass_list as $key => $list) {
 					$gp_bypass .= "{$key} = {$list[0]}\n";
@@ -2203,7 +2240,7 @@ function tld_analysis() {
 	}
 
 	// Collect TLD Blacklist(s). If configured the whole TLD will be blocked
-	$tld_blacklist = pfbng_text_area_decode($pfb['dnsblconfig']['tldblacklist'], TRUE, FALSE);
+	$tld_blacklist = pfbng_text_area_decode($pfb['dnsblconfig']['tldblacklist'], TRUE, FALSE, TRUE);
 	if (!empty($tld_blacklist)) {
 		$tld_blacklist = array_flip($tld_blacklist);
 	}
@@ -2211,7 +2248,7 @@ function tld_analysis() {
 	// Collect TLD Whitelist(s). If configured, create a 'static local-zone' Resolver entry (Not required for python mode blocking)
 	$whitelist = array();
 	if (!$pfb['dnsbl_py_blacklist']) {
-		$whitelist = pfbng_text_area_decode($pfb['dnsblconfig']['tldwhitelist'], TRUE, FALSE);
+		$whitelist = pfbng_text_area_decode($pfb['dnsblconfig']['tldwhitelist'], TRUE, FALSE, TRUE);
 		$tld_whitelist = array();
 	}
 
@@ -2390,7 +2427,7 @@ function tld_analysis() {
 	}
 
 	// Collect TLD Exclusion list and remove any 'TLD Exclusions' from the 'TLD master list'
-	$exclusion = pfbng_text_area_decode($pfb['dnsblconfig']['tldexclusion'], TRUE, FALSE);
+	$exclusion = pfbng_text_area_decode($pfb['dnsblconfig']['tldexclusion'], TRUE, FALSE, TRUE);
 	$tld_exclusion = array();
 	if (!empty($exclusion)) {
 		foreach ($exclusion as $key => $exclude) {
@@ -6469,7 +6506,7 @@ function sync_package_pfblockerng($cron='') {
 
 		// If 'TLD' enabled and TLD Blacklists are defined, add to enabled DNSBL lists
 		if ($pfb['dnsbl_tld']) {
-			$tld_blacklist = pfbng_text_area_decode($pfb['dnsblconfig']['tldblacklist'], TRUE, FALSE);
+			$tld_blacklist = pfbng_text_area_decode($pfb['dnsblconfig']['tldblacklist'], TRUE, FALSE, TRUE);
 			if (!empty($tld_blacklist)) {
 				$pfb['existing']['dnsbl'][] = 'DNSBL_TLD';
 			}
@@ -6848,7 +6885,7 @@ function sync_package_pfblockerng($cron='') {
 
 			// Collect Whitelist, create string, and save to file (for grep -vF -f cmd)
 			pfb_logger("\n Loading DNSBL Whitelist...", 1);
-			$pfb_white = pfbng_text_area_decode($pfb['dnsblconfig']['suppression'], TRUE, FALSE);
+			$pfb_white = pfbng_text_area_decode($pfb['dnsblconfig']['suppression'], TRUE, FALSE, TRUE);
 			if (!empty($pfb_white)) {
 				foreach ($pfb_white as $line) {
 					if (!empty($line)) {
@@ -7224,7 +7261,7 @@ function sync_package_pfblockerng($cron='') {
 								}
 								else {
 									// Collect custom list data.
-									$custom_list = pfbng_text_area_decode($row['custom'], FALSE, TRUE);
+									$custom_list = pfbng_text_area_decode($row['custom'], FALSE, TRUE, TRUE);
 									@file_put_contents("{$file_dwn}.orig", $custom_list, LOCK_EX);
 									unset($custom_list);
 									$liteparser = TRUE;
@@ -7753,7 +7790,7 @@ function sync_package_pfblockerng($cron='') {
 			if ($pfb['dnsbl_regex'] == 'on') {
 				$regex_cnt = 0;
 				if (isset($pfb['dnsbl_regex_list'])) {
-					$regex_cnt = count(pfbng_text_area_decode($pfb['dnsbl_regex_list'], TRUE, FALSE)) ?: 0;
+					$regex_cnt = count(pfbng_text_area_decode($pfb['dnsbl_regex_list'], TRUE, FALSE, FALSE)) ?: 0;
 				}
 				$pfb['alias_dnsbl_all'][] = 'DNSBL_Regex';
 				dnsbl_alias_update('update', 'DNSBL_Regex', '', '', $regex_cnt);
@@ -8316,12 +8353,12 @@ function sync_package_pfblockerng($cron='') {
 							else {
 								if ($list['whois_convert'] == 'on') {
 									// Process Domain/AS based custom list
-									$custom_list = str_replace("\n", ',', pfbng_text_area_decode($list['custom'], FALSE, TRUE));
+									$custom_list = str_replace("\n", ',', pfbng_text_area_decode($list['custom'], FALSE, TRUE, TRUE));
 									exec("{$pfb['script']} whoisconvert {$header} {$list['vtype']} {$custom_list} {$elog}");
 								}
 								else {
 									// Process IP based custom list
-									$custom_list = pfbng_text_area_decode($list['custom'], FALSE, TRUE);
+									$custom_list = pfbng_text_area_decode($list['custom'], FALSE, TRUE, FALSE);
 									@file_put_contents("{$file_dwn}.orig", $custom_list, LOCK_EX);
 								}
 								pfb_logger(' . completed .', 1);
