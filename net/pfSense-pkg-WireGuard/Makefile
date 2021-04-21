@@ -1,23 +1,18 @@
-# $FreeBSD$
-
 PORTNAME=	pfSense-pkg-WireGuard
 PORTVERSION=	0.0.6
-PORREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
-
 
 MAINTAINER=	rcmcdonald91@gmail.com
 COMMENT=	pfSense package WireGuard
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash \
-		wg:net/wireguard-tools \
-		wg-quick:net/wireguard-tools \
-		${KMODDIR}/if_wg.ko:net/wireguard-kmod
+RUN_DEPENDS=	bash>=0:shells/bash \
+		wireguard-tools>0:net/wireguard-tools \
+		wsireguard-kmod>0:net/wireguard-kmod
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -31,10 +26,8 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 
-	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/wireguard
 
-	${MKDIR} ${STAGEDIR}${PREFIX}/www
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/shortcuts
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/wg
 
@@ -46,27 +39,13 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/wireguard.xml \
 		${STAGEDIR}${PREFIX}/pkg
 
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/wireguard/wg.inc \
-		${STAGEDIR}${PREFIX}/pkg/wireguard
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/wireguard/wg_api.inc \
-		${STAGEDIR}${PREFIX}/pkg/wireguard
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/wireguard/wg_globals.inc \
-		${STAGEDIR}${PREFIX}/pkg/wireguard
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/wireguard/wg_install.inc \
-		${STAGEDIR}${PREFIX}/pkg/wireguard
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/wireguard/wg_validate.inc \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/wireguard/*.inc \
 		${STAGEDIR}${PREFIX}/pkg/wireguard
 
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/shortcuts/pkg_wireguard.inc \
 		${STAGEDIR}${PREFIX}/www/shortcuts
 
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/wg/status_wireguard.php \
-		${STAGEDIR}${PREFIX}/www/wg
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/wg/vpn_wg.php \
-		${STAGEDIR}${PREFIX}/www/wg
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/wg/vpn_wg_edit.php \
-		${STAGEDIR}${PREFIX}/www/wg
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/wg/vpn_wg_settings.php \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/wg/*.php \
 		${STAGEDIR}${PREFIX}/www/wg
 		
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
