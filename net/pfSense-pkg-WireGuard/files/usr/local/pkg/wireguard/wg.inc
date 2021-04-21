@@ -32,10 +32,10 @@ require_once('system.inc');
 require_once('util.inc');
 
 // WireGuard includes
-require_once('wg_api.inc');
-require_once('wg_globals.inc');
-require_once('wg_install.inc');
-require_once('wg_validate.inc');
+require_once('wireguard/wg_api.inc');
+require_once('wireguard/wg_globals.inc');
+require_once('wireguard/wg_install.inc');
+require_once('wireguard/wg_validate.inc');
 
 // Setup WireGuard tunnel
 function wg_configure_if($tunnel, $conf_hard = true, $verbose = false) {
@@ -56,7 +56,7 @@ function wg_configure_if($tunnel, $conf_hard = true, $verbose = false) {
 	wg_syncconf($tunnel);
 
 	// Add the interface to the interface group (i.e. WireGuard)
-	exec("{$wgg['ifconfig']} {$tunnel['name']} group {$wgg['ifgroupentry']['ifname']}" . verbose_pipe($verbose));
+	mwexec("{$wgg['ifconfig']} {$tunnel['name']} group {$wgg['ifgroupentry']['ifname']}");
 
 	// Get the tunnel interface friendly name if assigned
 	$if_fname = convert_real_interface_to_friendly_interface_name($tunnel['name']);
@@ -174,15 +174,12 @@ function wg_do_post($post) {
 
 		$idx = 0;
 
-		for (;;) {
-			if (!$post['publickeyp'.$idx] &&
-			    !$post['endpoint'.$idx] &&
-			    !$post['allowedips'.$idx] &&
-			    !$post['descr'.$idx] &&
-			    !$post['persistentkeepalive'.$idx]) {
-				break;
-			}
-
+		while (	$post['publickeyp'.$idx] &&
+		    	$post['endpoint'.$idx] &&
+		    	$post['allowedips'.$idx] &&
+		    	$post['descr'.$idx] &&
+		    	$post['persistentkeepalive'.$idx] ) {
+			
 			$peer = array();
 			$peer['publickey'] = $post['publickeyp' . $idx];
 			$peer['endpoint'] = $post['endpoint' . $idx];
@@ -249,8 +246,6 @@ function wg_resync($verbose = false) {
 				wg_destroy_if($tunnel, $verbose);
 
 			}
-
-			
 
 		}
 
