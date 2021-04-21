@@ -24,7 +24,7 @@ require_once('config.inc');
 require_once('globals.inc');
 
 // WireGuard includes
-require_once('wg_globals.inc');
+require_once('wireguard/wg_globals.inc');
 
 /*
  * This is the main install hook

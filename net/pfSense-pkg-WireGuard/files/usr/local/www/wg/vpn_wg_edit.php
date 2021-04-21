@@ -24,16 +24,16 @@
 ##|+PRIV
 ##|*IDENT=page-vpn-wg-edit
 ##|*NAME=VPN: WireGuard: Edit
-##|*DESCR=Edit WireGuard tunnel.
+##|*DESCR=Allow access to the 'VPN: WireGuard' page.
 ##|*MATCH=vpn_wg_edit.php*
 ##|-PRIV
 
 // pfSense includes
-require_once("functions.inc");
-require_once("guiconfig.inc");
+require_once('functions.inc');
+require_once('guiconfig.inc');
 
 // WireGuard includes
-require_once("/usr/local/pkg/wireguard/wg.inc");
+require_once('wireguard/wg.inc');
 
 global $wgg;
 

@@ -179,7 +179,7 @@ function wg_do_post($post) {
 		    	$post['allowedips'.$idx] &&
 		    	$post['descr'.$idx] &&
 		    	$post['persistentkeepalive'.$idx] ) {
-			
+
 			$peer = array();
 			$peer['publickey'] = $post['publickeyp' . $idx];
 			$peer['endpoint'] = $post['endpoint' . $idx];
@@ -323,13 +323,10 @@ function wg_delete_config_files() {
 function wg_remove_config_settings() {
 	global $config, $wgg;
 
-	foreach ($wgg['xml_conf_tags'] as $conf_tag) {
+	// Loop through each potential conf path and unset
+	foreach ($wgg['xml_paths_to_clean'] as $confpath) {
 
-		if (isset($config['installedpackages'][$conf_tag])) {
-
-			unset($config['installedpackages'][$conf_tag]);
-
-		}
+		array_unset_value($config, $confpath);
 
 	}
 

@@ -29,6 +29,11 @@ require_once('pkg-utils.inc');
 require_once('service-utils.inc');
 require_once('util.inc');
 
+// WireGuard includes
+require_once('wireguard/wg_globals.inc');
+
+wg_globals();
+
 global $wgpeerdefaultroute;
 $wgpeerdefaultroute = array();
 

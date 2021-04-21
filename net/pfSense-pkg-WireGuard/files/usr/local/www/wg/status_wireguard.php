@@ -27,16 +27,16 @@
 ##|*MATCH=status_wireguard.php*
 ##|-PRIV
 
-$shortcut_section = "wireguard";
-$pgtitle = array(gettext("Status"), "WireGuard");
-
 // pfSense includes
-require_once("guiconfig.inc");
-require_once("functions.inc");
-require_once("shortcuts.inc");
+require_once('guiconfig.inc');
+require_once('functions.inc');
+require_once('shortcuts.inc');
 
 // WireGuard includes
-require_once("/usr/local/pkg/wireguard/wg.inc");
+require_once('wireguard/wg.inc');
+
+$shortcut_section = "wireguard";
+$pgtitle = array(gettext("Status"), "WireGuard");
 
 include("head.inc");
 
@@ -74,13 +74,38 @@ display_top_tabs($tab_array);
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h2 class="panel-title">WireGuard Version</h2>
+		<h2 class="panel-title">Package Versions</h2>
 	</div>
-	<div class="panel-body">
-		<dl class="dl-horizontal">
-			<pre><?=wg_version(); ?></pre>
-		</dl>
-    </div>
+	<div class="table-responsive panel-body">
+		<table class="table table-hover table-striped table-condensed">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Version</th>
+    					<th>Comment</th>
+				</tr>
+			</thead>
+			<tbody>
+<?php
+
+			$a_packages = wg_pkg_info();
+
+			foreach ($a_packages as $package):
+
+?>
+    				<tr>
+        				<td><?=$package[0]?></td>
+    					<td><?=$package[1]?></td>
+					<td><?=$package[2]?></td>
+
+				</tr>
+<?php
+			endforeach;
+?>
+
+			</tbody>
+		</table>
+	</div>
 </div>
 
 <div class="panel panel-default">

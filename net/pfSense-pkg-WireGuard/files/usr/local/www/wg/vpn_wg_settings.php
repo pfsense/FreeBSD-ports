@@ -1,6 +1,6 @@
 <?php
 /*
- * vpn_wg.php
+ * vpn_wg_settings.php
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2021 Rubicon Communications, LLC (Netgate)
@@ -23,16 +23,16 @@
 ##|+PRIV
 ##|*IDENT=page-vpn-wg-settings
 ##|*NAME=VPN: WireGuard: Settings
-##|*DESCR=WireGuard Settings.
+##|*DESCR=Allow access to the 'VPN: WireGuard' page.
 ##|*MATCH=vpn_wg_settings.php*
 ##|-PRIV
 
 // pfSense includes
-require_once("guiconfig.inc");
-require_once("functions.inc");
+require_once('guiconfig.inc');
+require_once('functions.inc');
 
 // WireGuard includes
-require_once("/usr/local/pkg/wireguard/wg.inc");
+require_once('wireguard/wg.inc');
 
 global $wgg;
 

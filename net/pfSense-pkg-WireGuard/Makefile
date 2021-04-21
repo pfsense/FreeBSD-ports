@@ -1,18 +1,19 @@
 PORTNAME=	pfSense-pkg-WireGuard
-PORTVERSION=	0.0.6
+PORTVERSION=	0.0.7
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
+
 
 MAINTAINER=	rcmcdonald91@gmail.com
 COMMENT=	pfSense package WireGuard
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	bash>=0:shells/bash \
-		wireguard-tools>0:net/wireguard-tools \
-		wsireguard-kmod>0:net/wireguard-kmod
+RUN_DEPENDS=	bash>0:shells/bash \
+		wireguard-kmod>0:net/wireguard-kmod \
+		wireguard-tools>0:net/wireguard-tools
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -47,7 +48,7 @@ do-install:
 
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/wg/*.php \
 		${STAGEDIR}${PREFIX}/www/wg
-		
+
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 

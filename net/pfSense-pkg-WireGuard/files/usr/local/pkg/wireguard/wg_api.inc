@@ -30,7 +30,7 @@ require_once('service-utils.inc');
 require_once('util.inc');
 
 // WireGuard includes
-require_once('wg_globals.inc');
+require_once('wireguard/wg_globals.inc');
 
 // Get WireGuard status
 function wg_status() {
@@ -66,15 +66,21 @@ function wg_kmod_status() {
 
 }
 
-// Get wg and tools version
-function wg_version() {
+// Get various package infos and return an array
+function wg_pkg_info() {
 	global $wgg;
 
-	$packages = array();
-	exec("{$wgg['pkg']} info | grep -i {$wgg['pkg_name']}", $packages);
+	$packages = implode(" ", $wgg['pkg_names']);
 
-	$output = implode("\n", $packages);
-	return htmlspecialchars($output);
+	exec("{$wgg['pkg']} query '%n\t%v\t%c' {$packages}", $output);
+
+	foreach ($output as $key => $package) {
+
+		$output[$key] = explode("\t", htmlspecialchars($package));
+
+	}
+
+	return $output;
 
 }
 
