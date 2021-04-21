@@ -167,32 +167,29 @@ function wg_do_post($post) {
 
 	$pconfig['interface']['mtu'] = $post['mtu'];
 
-	if (isset($post['endpoint0'])) {
+	if (!empty($post['endpoint'])) {
+
 		// Peers section
 		$pconfig['peers'] = array();
+
 		$pconfig['peers']['wgpeer'] = array();
 
-		$idx = 0;
-
-		while (	$post['publickeyp'.$idx] &&
-		    	$post['endpoint'.$idx] &&
-		    	$post['allowedips'.$idx] &&
-		    	$post['descr'.$idx] &&
-		    	$post['persistentkeepalive'.$idx] ) {
+		for ($idx = 0; $idx < count($post['endpoint']); $idx++) {
 
 			$peer = array();
-			$peer['publickey'] = $post['publickeyp' . $idx];
-			$peer['endpoint'] = $post['endpoint' . $idx];
-			$peer['allowedips'] = $post['allowedips' . $idx];
-			$peer['descr'] = $post['descp' . $idx];
-			$peer['persistentkeepalive'] = $post['persistentkeepalive' . $idx];
-			$peer['presharedkey'] = $post['presharedkey' . $idx];
-			$peer['port'] = $post['port' . $idx];
-			$peer['peerwgaddr'] = $post['peerwgaddr' . $idx];
+			$peer['publickey'] = $post['publickeyp'][$idx];
+			$peer['endpoint'] = $post['endpoint'][$idx];
+			$peer['allowedips'] = $post['allowedips'][$idx];
+			$peer['descr'] = $post['descp'][$idx];
+			$peer['persistentkeepalive'] = $post['persistentkeepalive'][$idx];
+			$peer['presharedkey'] = $post['presharedkey'][$idx];
+			$peer['port'] = $post['port'][$idx];
+			$peer['peerwgaddr'] = $post['peerwgaddr'][$idx];
 
 			$pconfig['peers']['wgpeer'][] = $peer;
-			$idx++;
+
 		}
+
 	} else {
 		unset($pconfig['peers']);
 	}

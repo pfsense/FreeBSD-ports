@@ -547,14 +547,14 @@ events.push(function() {
 	$('#saveform').click(function () {
 		// For each row in the peers table, construct an array of inputs with the values from the row
 		$('#peertable > tbody').find('tr').each(function (idx) {
-			$('<input>').attr({type: 'hidden',name: 'descp' + idx, value: $(this).find('td').eq(1).text()}).appendTo(form);
-			$('<input>').attr({type: 'hidden',name: 'endpoint' + idx, value: $(this).find('td').eq(2).text()}).appendTo(form);
-			$('<input>').attr({type: 'hidden',name: 'port' + idx, value: $(this).find('td').eq(3).text()}).appendTo(form);
-			$('<input>').attr({type: 'hidden',name: 'publickeyp' + idx, value: $(this).find('td').eq(4).text()}).appendTo(form);
-			$('<input>').attr({type: 'hidden',name: 'persistentkeepalive' + idx, value: $(this).find('td').eq(5).text()}).appendTo(form);
-			$('<input>').attr({type: 'hidden',name: 'allowedips' + idx, value: $(this).find('td').eq(6).text()}).appendTo(form);
-			$('<input>').attr({type: 'hidden',name: 'presharedkey' + idx, value: $(this).find('td').eq(7).text()}).appendTo(form);
-			$('<input>').attr({type: 'hidden',name: 'peerwgaddr' + idx, value: $(this).find('td').eq(8).text()}).appendTo(form);
+			$('<input>').attr({type: 'hidden',name: 'descp[]', value: $(this).find('td').eq(1).text()}).appendTo(form);
+			$('<input>').attr({type: 'hidden',name: 'endpoint[]', value: $(this).find('td').eq(2).text()}).appendTo(form);
+			$('<input>').attr({type: 'hidden',name: 'port[]', value: $(this).find('td').eq(3).text()}).appendTo(form);
+			$('<input>').attr({type: 'hidden',name: 'publickeyp[]', value: $(this).find('td').eq(4).text()}).appendTo(form);
+			$('<input>').attr({type: 'hidden',name: 'persistentkeepalive[]', value: $(this).find('td').eq(5).text()}).appendTo(form);
+			$('<input>').attr({type: 'hidden',name: 'allowedips[]', value: $(this).find('td').eq(6).text()}).appendTo(form);
+			$('<input>').attr({type: 'hidden',name: 'presharedkey[]', value: $(this).find('td').eq(7).text()}).appendTo(form);
+			$('<input>').attr({type: 'hidden',name: 'peerwgaddr[]', value: $(this).find('td').eq(8).text()}).appendTo(form);
 		});
 
 		$('<input>').attr({type: 'hidden',name: 'save',value: 'save'}).appendTo(form);
