@@ -658,6 +658,11 @@
 			<cols>75</cols>
 		</field>
 	</fields>
+	<plugins>
+		<item>
+			<type>plugin_certificates</type>
+		</item>
+	</plugins>
 	<custom_delete_php_command>
 		freeradius_users_resync();
 	</custom_delete_php_command>

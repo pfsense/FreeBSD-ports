@@ -4637,4 +4637,42 @@ function freeradius_validate_ldap($post, &$input_errors) {
 
 }
 
+function freeradius_plugin_certificates($pluginparams) {
+	global $config;
+	$result = array();
+	init_config_arr(array('installedpackages', 'freeradiuseapconf', 'config'));
+	$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
+
+	if (($pluginparams['type'] == 'certificates') && !empty($eapconf)) {
+		if (($pluginparams['event'] == 'used_ca') && !empty($eapconf['ssl_ca_cert'])) {
+			$result['pkgname'] = "FreeRADIUS";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $eapconf['ssl_ca_cert'];
+			$item['usedby'] = 'TLS CA Certificate';
+			$result['certificatelist'][$cert][] = $item;
+		}
+
+		if (($pluginparams['event'] == 'used_certificates') && !empty($eapconf['ssl_server_cert'])) {
+			$result['pkgname'] = "FreeRADIUS";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $eapconf['ssl_server_cert'];
+			$item['usedby'] = 'TLS Server Certificate';
+			$result['certificatelist'][$cert][] = $item;
+		}
+
+		if (($pluginparams['event'] == 'used_crl') && !empty($eapconf['ssl_ca_crl'])) {
+			$result['pkgname'] = "FreeRADIUS";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $eapconf['ssl_ca_crl'];
+			$item['usedby'] = 'TLS Revocation List';
+			$result['certificatelist'][$cert][] = $item;
+		}
+	}
+
+	return $result;
+}
+
 ?>
