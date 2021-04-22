@@ -1468,6 +1468,7 @@
     SUBDIR += py-django-braces
     SUBDIR += py-django-bulk-update
     SUBDIR += py-django-cacheops
+    SUBDIR += py-django-ckeditor-5
     SUBDIR += py-django-classy-tags
     SUBDIR += py-django-cms
     SUBDIR += py-django-common-helpers
@@ -1513,6 +1514,7 @@
     SUBDIR += py-django-modern-rpc
     SUBDIR += py-django-mptt
     SUBDIR += py-django-netfields
+    SUBDIR += py-django-object-actions
     SUBDIR += py-django-otp
     SUBDIR += py-django-otp-yubikey
     SUBDIR += py-django-pglocks
@@ -1530,9 +1532,11 @@
     SUBDIR += py-django-registration-redux
     SUBDIR += py-django-rest-swagger
     SUBDIR += py-django-reversion
+    SUBDIR += py-django-reversion-compare
     SUBDIR += py-django-sekizai
     SUBDIR += py-django-simple-captcha
     SUBDIR += py-django-simple-history
+    SUBDIR += py-django-smart-selects
     SUBDIR += py-django-solo
     SUBDIR += py-django-sortedm2m
     SUBDIR += py-django-star-ratings
