@@ -76,6 +76,210 @@ Notes:
   * Do not forget port variants (linux-f10-libxml2, libxml2, etc.)
 -->
 <vuxml xmlns="http://www.vuxml.org/apps/vuxml-1">
+  <vuln vid="bc83cfc9-42cf-4b00-97ad-d352ba0c5e2b">
+    <topic>zeek -- null-pointer dereference vulnerability</topic>
+    <affects>
+      <package>
+	<name>zeek</name>
+	<range><lt>4.0.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Jon Siwek of Corelight reports:</p>
+	<blockquote cite="https://github.com/zeek/zeek/releases/tag/v4.0.1">
+	  <p>Fix null-pointer dereference when encountering an
+	  invalid enum name in a config/input file that tries to
+	  read it into a set[enum].  For those that have such an
+	  input feed whose contents may come from external/remote
+	  sources, this is a potential DoS vulnerability. </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://github.com/zeek/zeek/releases/tag/v4.0.1</url>
+    </references>
+    <dates>
+      <discovery>2021-04-01</discovery>
+      <entry>2021-04-21</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="efb965be-a2c0-11eb-8956-1951a8617e30">
+    <topic>openvpn -- deferred authentication can be bypassed in specific circumstances</topic>
+    <affects>
+      <package>
+	<name>openvpn</name>
+	<range><lt>2.5.2</lt></range>
+      </package>
+      <package>
+	<name>openvpn-mbedtls</name>
+	<range><lt>2.5.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gert Döring reports:</p>
+	<blockquote cite="https://community.openvpn.net/openvpn/wiki/CVE-2020-15078">
+	  <p>
+	    OpenVPN 2.5.1 and earlier versions allows a remote attackers to
+	    bypass authentication and access control channel data on servers
+	    configured with deferred authentication, which can be used to
+	    potentially trigger further information leaks.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://community.openvpn.net/openvpn/wiki/CVE-2020-15078</url>
+      <url>https://github.com/OpenVPN/openvpn/blob/release/2.5/Changes.rst#overview-of-changes-in-252</url>
+      <cvename>CVE-2020-15078</cvename>
+    </references>
+    <dates>
+      <discovery>2021-03-02</discovery>
+      <entry>2021-04-21</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="cb13a765-a277-11eb-97a0-e09467587c17">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>90.0.4430.85</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Chrome Reelases reports:</p>
+	<blockquote cite="https://chromereleases.googleblog.com/2021/04/stable-channel-update-for-desktop_20.html">
+	  <p>This release includes 7 security fixes, including:</p>
+	  <ul>
+	    <li>1194046] High CVE-2021-21222: Heap buffer overflow in V8.
+	     Reported by Guang Gong of Alpha Lab, Qihoo 360 on 2021-03-30</li>
+	    <li>[1195308] High CVE-2021-21223: Integer overflow in Mojo.
+	      Reported by Guang Gong of Alpha Lab, Qihoo 360 on 2021-04-02</li>
+	    <li>[1195777] High CVE-2021-21224: Type Confusion in V8. Reported
+	      by Jose Martinez (tr0y4) from VerSprite Inc. on 2021-04-05</li>
+	    <li>[1195977] High CVE-2021-21225: Out of bounds memory access in
+	      V8. Reported by Brendon Tiszka (@btiszka) supporting the EFF on
+	      2021-04-05</li>
+	    <li>[1197904] High CVE-2021-21226: Use after free in navigation.
+	      Reported by Brendon Tiszka (@btiszka) supporting the EFF on
+	      2021-04-11</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-21222</cvename>
+      <cvename>CVE-2021-21223</cvename>
+      <cvename>CVE-2021-21224</cvename>
+      <cvename>CVE-2021-21225</cvename>
+      <cvename>CVE-2021-21226</cvename>
+      <url>https://chromereleases.googleblog.com/2021/04/stable-channel-update-for-desktop_20.html</url>
+    </references>
+    <dates>
+      <discovery>2021-04-20</discovery>
+      <entry>2021-04-21</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="e358b470-b37d-4e47-bc8a-2cd9adbeb63c">
+    <topic>jenkins -- Denial of service vulnerability in bundled Jetty</topic>
+    <affects>
+      <package>
+	<name>jenkins</name>
+	<range><lt>2.286</lt></range>
+      </package>
+      <package>
+	<name>jenkins-lts</name>
+	<range><lt>2.277.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Jenkins Security Advisory:</p>
+	<blockquote cite="https://www.jenkins.io/security/advisory/2021-04-20/">
+	  <h1>Description</h1>
+	  <h5>(High) JENKINS-65280 / CVE-2021-28165</h5>
+	  <p>Denial of service vulnerability in bundled Jetty</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://www.jenkins.io/security/advisory/2021-04-20/</url>
+    </references>
+    <dates>
+      <discovery>2021-04-20</discovery>
+      <entry>2021-04-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="56ba4513-a1be-11eb-9072-d4c9ef517024">
+    <topic>MySQL -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>mysql57-server</name>
+	<range><lt>5.7.34</lt></range>
+      </package>
+      <package>
+	<name>mysql80-server</name>
+	<range><lt>8.0.24</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Oracle reports:</p>
+	<blockquote cite="https://www.oracle.com/security-alerts/cpuapr2021.html">
+	  <p>This Critical Patch Update contains 49 new security patches for
+	    Oracle MySQL.  10 of these vulnerabilities may be remotely exploitable
+	    without authentication, i.e., may be exploited over a network without
+	    requiring user credentials.<br/>
+	    The highest CVSS v3.1 Base Score of vulnerabilities affecting Oracle
+	    MySQL is 9.8.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://www.oracle.com/security-alerts/cpuapr2021.html</url>
+    </references>
+    <dates>
+      <discovery>2021-04-20</discovery>
+      <entry>2021-04-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="e87c2647-a188-11eb-8806-1c1b0d9ea7e6">
+    <topic>All versions of Apache OpenOffice through 4.1.9 can open non-http(s) hyperlinks. If the link is specifically crafted this could lead to untrusted code execution.</topic>
+    <affects>
+      <package>
+       <name>apache-openoffice</name>
+       <range><lt>4.1.10</lt></range>
+      </package>
+      <package>
+       <name>apache-openoffice-devel</name>
+       <range><lt>4.2.1612022694,4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Apache Openofffice project reports:</p>
+	<blockquote cite="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-30245">
+	  <p>The project received a report that all versions of Apache OpenOffice through 4.1.8 can open non-http(s) hyperlinks. The problem has existed since about 2006 and the issue is also in 4.1.9. If the link is specifically crafted this could lead to untrusted code execution. It is always best practice to be careful opening documents from unknown and unverified sources. The mitigation in Apache OpenOffice 4.1.10 (unreleased) assures that a security warning is displayed giving the user the option of continuing to open the hyperlink.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-30245</url>
+      <cvename>CVE-2021-30245</cvename>
+    </references>
+    <dates>
+      <discovery>2021-01-25</discovery>
+      <entry>2021-04-20</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="20006b5f-a0bc-11eb-8ae6-fc4dd43e2b6a">
     <topic>Apache Maven -- multiple vulnerabilities</topic>
     <affects>
@@ -1258,7 +1462,7 @@ Notes:
 	<name>openssh-portable</name>
 	<name>openssh-portable-hpn</name>
 	<name>openssh-portable-gssapi</name>
-	<range><ge>8.2p1,1</ge><lt>8.4p1,1_4</lt></range>
+	<range><ge>8.2.p1,1</ge><lt>8.4.p1_4,1</lt></range>
       </package>
     </affects>
     <description>
@@ -1294,6 +1498,7 @@ Notes:
     <dates>
       <discovery>2021-03-03</discovery>
       <entry>2021-03-13</entry>
+      <modified>2021-04-20</modified>
     </dates>
   </vuln>
 
