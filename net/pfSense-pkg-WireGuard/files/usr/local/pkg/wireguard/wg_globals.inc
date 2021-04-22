@@ -118,7 +118,7 @@ function wg_globals() {
 	$config = parse_config(true);
 
 	// Need to initialize as arrays relative to xml_path
-	init_config_arr(array_merge($wgg['xml_path'], array('config')));
+	init_config_arr(array_merge($wgg['xml_path'], array('config', 0)));
 	init_config_arr(array_merge($wgg['xml_path'], array('tunnel')));
 
 	// By reference assignment for reading and writing back to the configure at xml_path through $wgg
