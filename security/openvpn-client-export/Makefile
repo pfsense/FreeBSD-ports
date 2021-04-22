@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	openvpn-client-export
-PORTVERSION=	2.5.0
+PORTVERSION=	2.5.2
 CATEGORIES=	security
 MASTER_SITES=	https://files.netgate.com/packages/openvpn-client-export/
 
@@ -10,7 +10,7 @@ COMMENT=	OpenVPN Client Export
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	openvpn>=2.4.3:security/openvpn
+RUN_DEPENDS=	openvpn>=2.5.0:security/openvpn
 
 USES=		tar:tgz
 
