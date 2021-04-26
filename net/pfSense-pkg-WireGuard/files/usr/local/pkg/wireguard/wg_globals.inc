@@ -33,17 +33,27 @@ $wgg = array(
 	'ifconfig'		=> '/sbin/ifconfig',
 	'kldstat'		=> '/sbin/kldstat',
 	'pkg'			=> '/usr/sbin/pkg',
-	'kmod'			=> 'if_wg.ko',
-	'pkg_names'		=> array('pfSense-pkg-WireGuard', 'bash', 'wireguard-kmod', 'wireguard-tools'),
+	'kmod'			=> 'if_wg',
+	'pkg_names'		=> array(
+					'pfSense-pkg-WireGuard',
+					'bash',
+					'wireguard-kmod',
+					'wireguard-tools'),
 	'conf_path'		=> '/usr/local/etc/wireguard',
 	'xml_path'		=> array('installedpackages', 'wireguard'),
-	'conf_paths_to_clean'	=> array('/usr/local/etc/wireguard', '/etc/wireguard', '/etc/wg'),
+	'conf_paths_to_clean'	=> array(
+					'/usr/local/etc/wireguard', 
+					'/etc/wireguard', 
+					'/etc/wg'),
 	'xml_paths_to_clean'	=> array(
 					array('wireguard'), 
 					array('installedpackages', 'wireguard')),
 	'if_prefix'		=> 'tun_wg',
 	'if_group'		=> 'WireGuard',
-	'ifgroupentry'		=> array('ifname' => 'WireGuard', 'descr' => 'Dynamic Group for WireGuard', 'members' => null),
+	'ifgroupentry'		=> array(
+					'ifname' => 'WireGuard', 
+					'descr' => 'Dynamic Group for WireGuard (DO NOT EDIT)', 
+					'members' => null),
 	'default_mtu'		=> 1420,
 	'default_port'		=> 51820,
 	'max_port'		=> 65535,
@@ -117,17 +127,24 @@ function wg_globals() {
 	// Reload config.xml to get any recent changes
 	$config = parse_config(true);
 
-	// Need to initialize as arrays relative to xml_path
-	init_config_arr(array_merge($wgg['xml_path'], array('config', 0)));
-	init_config_arr(array_merge($wgg['xml_path'], array('tunnel')));
+	// Construct array paths relative to the package root xml_path
+	$a_config_path = array_merge($wgg['xml_path'], array('config', 0));
+	$a_tunnels_path = array_merge($wgg['xml_path'], array('tunnels', 'item'));
+	$a_peers_path = array_merge($wgg['xml_path'], array('peers', 'item'));
+
+	// Need to initialize these config paths as arrays first
+	init_config_arr($a_config_path);
+	init_config_arr($a_tunnels_path);
+	init_config_arr($a_peers_path);
 
 	// By reference assignment for reading and writing back to the configure at xml_path through $wgg
-	$wgg['config'] = &array_get_value($config, array_merge($wgg['xml_path'], array('config', 0)));
-	$wgg['tunnels'] = &array_get_value($config, array_merge($wgg['xml_path'], array('tunnel')));
+	$wgg['config'] = &array_get_value($config, $a_config_path);
+	$wgg['tunnels'] = &array_get_value($config, $a_tunnels_path);
+	$wgg['peers'] = &array_get_value($config, $a_peers_path);
 
 }
 
-// Call this to read the latest configuration when this file is included
+// Call this often to read the latest configuration information
 wg_globals();
 
 ?>

@@ -21,7 +21,7 @@
  */
 
 ##|+PRIV
-##|*IDENT=page-vpn-wg-settings
+##|*IDENT=page-vpn-wireguard
 ##|*NAME=VPN: WireGuard: Settings
 ##|*DESCR=Allow access to the 'VPN: WireGuard' page.
 ##|*MATCH=vpn_wg_settings.php*
@@ -38,6 +38,8 @@ global $wgg;
 
 wg_globals();
 
+$save_success = false;
+
 if ($_POST) {
 
 	if ($_POST['save']) {
@@ -52,7 +54,7 @@ if ($_POST) {
 
 			write_config('[WireGuard] Save WireGuard settings');
 
-			header("Location: /wg/vpn_wg_settings.php");
+			$save_success = true;
 
 		}
 
@@ -67,24 +69,28 @@ if ($_POST) {
 
 }
 
-$pgtitle = array(gettext("VPN"), gettext("WireGuard"), gettext("Settings"));
-$pglinks = array("", "/wg/vpn_wg.php", "@self");
 $shortcut_section = "wireguard";
 
+$pgtitle = array(gettext("VPN"), gettext("WireGuard"), gettext("Settings"));
+$pglinks = array("", "/wg/vpn_wg_tunnels.php", "@self");
+
 $tab_array = array();
-$tab_array[] = array(gettext("Tunnels"), false, "vpn_wg.php");
-$tab_array[] = array(gettext("Settings"), true, "vpn_wg_settings.php");
-$tab_array[] = array(gettext("Status"), false, "status_wireguard.php");
+$tab_array[] = array(gettext("Tunnels"), false, "/wg/vpn_wg_tunnels.php");
+$tab_array[] = array(gettext("Peers"), false, "/wg/vpn_wg_peers.php");
+$tab_array[] = array(gettext("Settings"), true, "/wg/vpn_wg_settings.php");
+$tab_array[] = array(gettext("Status"), false, "/wg/status_wireguard.php");
 
 include("head.inc");
 
-add_package_tabs("wireguard", $tab_array);
-
-display_top_tabs($tab_array);
+if ($save_success) {
+	print_info_box(gettext("The changes have been applied successfully."), 'success');
+}
 
 if ($input_errors) {
 	print_input_errors($input_errors);
 }
+
+display_top_tabs($tab_array);
 
 $form = new Form(false);
 
@@ -109,10 +115,16 @@ $section->addInput(new Form_Checkbox(
     	gettext('Enable'),
     	$pconfig['hide_secrets'] == 'yes'
 ))->setHelp('<span class="text-danger">Note: </span>'
-		. 'With \'Hide Secrets\' enabled, all secrets (private and pre-shared keys) are hidden in the user interface.'
-);
+		. 'With \'Hide Secrets\' enabled, all secrets (private and pre-shared keys) are hidden in the user interface.');
 
 $form->add($section);
+
+$form->addGlobal(new Form_Input(
+	'act',
+	'',
+	'hidden',
+	'save'
+));
 
 print($form);
 
@@ -125,28 +137,13 @@ print($form);
 	</button>
 </nav>
 
-<?php $jpconfig = json_encode($pconfig, JSON_HEX_APOS); ?>
-
 <!-- ============== JavaScript =================================================================================================-->
 <script type="text/javascript">
 //<![CDATA[
 events.push(function() {
-	var pconfig = JSON.parse('<?=$jpconfig?>');
-
-	// Eliminate ghost lines in modal
-	$('.form-group').css({"border-bottom-width" : "0"});
-
-	// Return text from peer table cell
-	function tabletext (row, col) {
-		row++; col++;
-		return $('#peertable tr:nth-child(' + row + ') td:nth-child('+ col + ')').text();
-	}
-
 
 	// Save the form
 	$('#saveform').click(function () {
-
-		$('<input>').attr({type: 'hidden',name: 'save',value: 'save'}).appendTo(form);
 
 		$(form).submit();
 

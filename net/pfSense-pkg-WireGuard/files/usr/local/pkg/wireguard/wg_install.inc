@@ -97,8 +97,6 @@ function wg_ifgroup_install() {
 
 	write_config("[WireGuard] Interface group ({$wgg['ifgroupentry']['ifname']}) (re)installed.");
 
-	unlink_if_exists("{$g['tmp_path']}/config.cache");
-
 }
 
 /*
@@ -122,7 +120,5 @@ function wg_ifgroup_deinstall() {
 	}
 
 	write_config("[WireGuard] Interface group ({$wgg['ifgroupentry']['ifname']}) de-installed.");
-
-	unlink_if_exists("{$g['tmp_path']}/config.cache");
 
 }

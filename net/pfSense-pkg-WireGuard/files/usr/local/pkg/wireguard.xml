@@ -34,7 +34,7 @@
 	<menu>
 		<name>WireGuard</name>
 		<section>VPN</section>
-		<url>/wg/vpn_wg.php</url>
+		<url>/wg/vpn_wg_tunnels.php</url>
 	</menu>
 	<menu>
 		<name>WireGuard Status</name>

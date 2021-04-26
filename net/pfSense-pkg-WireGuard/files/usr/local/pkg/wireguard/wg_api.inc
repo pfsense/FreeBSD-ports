@@ -40,7 +40,7 @@ function wg_status() {
 	exec("{$wgg['wg']} show", $status);
 
 	$output = implode("\n", $status);
-	return htmlspecialchars($output);
+	return $output;
 
 }
 
@@ -48,21 +48,13 @@ function wg_status() {
 function wg_interface_status() {
 	global $wgg;
 
+	$if_group = escapeshellarg($wgg['if_group']);
+
 	$status = array();
-	exec("{$wgg['ifconfig']} -a -g {$wgg['if_group']}", $status);
+	exec("{$wgg['ifconfig']} -a -g {$if_group}", $status);
 
 	$output = implode("\n", $status);
-	return htmlspecialchars($output);
-
-}
-
-// Get WireGuard kmod status
-function wg_kmod_status() {
-	global $wgg;
-
-	$output = exec("{$wgg['kldstat']} | grep {$wgg['kmod']}");
-	
-	return htmlspecialchars($output);
+	return $output;
 
 }
 
@@ -70,13 +62,18 @@ function wg_kmod_status() {
 function wg_pkg_info() {
 	global $wgg;
 
-	$packages = implode(" ", $wgg['pkg_names']);
+	$a_packages = $wgg['pkg_names'];
+
+	// Escape each package element
+	array_walk($a_packages, function(&$x) { $x = escapeshellarg($x); });
+
+	$packages = implode(" ", $a_packages);
 
 	exec("{$wgg['pkg']} query '%n\t%v\t%c' {$packages}", $output);
 
 	foreach ($output as $key => $package) {
 
-		$output[$key] = explode("\t", htmlspecialchars($package));
+		$output[$key] = explode("\t", $package);
 
 	}
 
@@ -85,11 +82,11 @@ function wg_pkg_info() {
 }
 
 // Generate private key
-function genKeyPair($json = false) {
+function wg_gen_keypair($json = false) {
 	global $wgg;
 
 	$privkey = exec("{$wgg['wg']} genkey");
-	$pubkey = genPubKey($privkey);
+	$pubkey = wg_gen_publickey($privkey);
 
 	$res = array('privkey' => $privkey, 'pubkey' => $pubkey);
 	return $json ? json_encode($res) : $res;
@@ -97,12 +94,26 @@ function genKeyPair($json = false) {
 }
 
 // Compose the public key from a provided private key
-function genPubKey($privkey) {
+function wg_gen_publickey($privkey) {
 	global $wgg;
+
+	$privkey = escapeshellarg($privkey);
 
 	$pubkey = exec("echo {$privkey} | {$wgg['wg']} pubkey");
 
 	return $pubkey;
+
+}
+
+// Checks if a given private or public key is valid
+function wg_is_valid_key($key) {
+	global $wgg;
+
+	$key = escapeshellarg($key);
+
+	$retval = mwexec("echo {$key} | {$wgg['wg']} pubkey");
+
+	return ($retval <> 0 ? false : true);
 
 }
 
@@ -146,13 +157,17 @@ function exec_wg_quick_action($tunnel, $action, $verbose = false) {
 
 	}
 
+	$action = escapeshellarg($action);
+
+	$wg_ifname = escapeshellarg($wg_ifname);
+
 	// Execute wg-quick(8) on the interface using the provided action 
 	exec("{$wgg['wg_quick']} {$action} {$wg_ifname}" . verbose_pipe($verbose));
 
 }
 
 // Generate a pre-shared key
-function genPSK() {
+function wg_gen_psk() {
 	global $wgg;
 
 	$psk = exec("{$wgg['wg']} genpsk");
@@ -167,14 +182,14 @@ function next_wg_port() {
 
 	wg_globals();
 
-	for ($idx=$wgg['default_port']; $idx<$wgg['max_port']; $idx++) {
+	for ($idx = $wgg['default_port']; $idx < $wgg['max_port']; $idx++) {
 
 		// Check to see if the port is already in use
 		$found = false;
 
 		foreach ($wgg['tunnels'] as $tunnel) {
 
-			if ($tunnel['interface']['listenport'] == $idx) {
+			if ($tunnel['listenport'] == $idx) {
 
 				$found = true;
 
@@ -194,6 +209,39 @@ function next_wg_port() {
 	}
 
 	return $wgg['default_port'];
+
+}
+
+// Returns the array index of the given tunnel in the config, this isn't necessarily the interface number
+function wg_get_tunnel_id($tunnel) {
+	global $config, $wgg;
+
+	// Assume we have an interface first
+	$wg_ifname = $tunnel;
+
+	// Looks like we have a tunnel structure
+	if (is_array($tunnel) && isset($tunnel['name'])) {
+
+		// Transform to an interface name
+		$wg_ifname = $tunnel['name'];
+
+	}
+
+	if (isset($wgg['tunnels']) && is_array($wgg['tunnels'])) {
+
+		foreach ($wgg['tunnels'] as $index => $tunnel) {
+
+			if ($tunnel['name'] == $wg_ifname) {
+				
+				return $index;
+
+			}
+
+		}
+
+	}
+
+	return -1;
 
 }
 
