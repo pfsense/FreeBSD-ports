@@ -46,12 +46,11 @@ if ($_POST) {
 
 		if ($_POST['act'] == 'toggle') {
 
-			$input_errors[] = wg_toggle_tunnel($tun_id);
-
+			$input_errors = wg_toggle_tunnel($tun_id);
 
 		} elseif ($_POST['act'] == 'delete') { 
 
-			$input_errors[] = wg_delete_tunnel($tun_id);
+			$input_errors = wg_delete_tunnel($tun_id);
 
 		}
 
