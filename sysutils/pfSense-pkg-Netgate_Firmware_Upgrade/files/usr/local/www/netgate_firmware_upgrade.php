@@ -83,13 +83,20 @@ if ($input_errors) {
  */
 if (file_exists("/tmp/coreupdatecomplete")) {
 	$savemsg = gettext('Firmware was successfully upgraded! The ' .
-	    'new version will take effect after reboot');
+	    'new version will take effect after reboot.');
+
+	$platform = system_identify_specific_platform();
+	if ($platform['name'] == 'Netgate-6100') {
+		$savemsg .= '<br/><br/>';
+		$savemsg .= gettext('Microcontroller updates on this platform ' .
+		    'require a power cycle to complete. Manually halt the ' .
+		    'device, unplug the power cord, then plug it back in.');
+	}
 
 	print_info_box($savemsg, 'success');
 
 	if ($reboot) {
 		print('<div><pre>');
-		$platform = system_identify_specific_platform();
 		if ($platform['name'] == 'RCC-VE') {
 			mwexec('/usr/local/sbin/adi_powercycle');
 			system_halt();
