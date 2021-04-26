@@ -42,7 +42,7 @@ $save_success = false;
 
 if ($_POST) {
 
-	if ($_POST['save']) {
+	if ($_POST['act'] == 'save') {
 
 		if (!$input_errors) {
 
@@ -83,11 +83,15 @@ $tab_array[] = array(gettext("Status"), false, "/wg/status_wireguard.php");
 include("head.inc");
 
 if ($save_success) {
+
 	print_info_box(gettext("The changes have been applied successfully."), 'success');
+	
 }
 
 if ($input_errors) {
+
 	print_input_errors($input_errors);
+	
 }
 
 display_top_tabs($tab_array);
