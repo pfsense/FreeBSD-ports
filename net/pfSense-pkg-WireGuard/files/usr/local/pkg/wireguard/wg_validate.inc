@@ -94,13 +94,11 @@ function wg_validate_post($pconfig) {
 	// Check keys
 	if (empty($pconfig['privatekey'])) {
 
-		$input_errors[] = gettext("Private key must be specified.");
+		$input_errors[] = gettext("A private key must be specified.");
 
-		if (!wg_is_valid_key($post['privatekey'])) {
+	} elseif (!wg_is_valid_key($post['privatekey'])) {
 
-			$input_errors[] = gettext("The private key specified is not a valid WireGuard private key.");
-
-		}
+		$input_errors[] = gettext("The private key specified is not a valid WireGuard private key.");
 
 	}
 
