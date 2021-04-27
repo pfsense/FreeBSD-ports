@@ -2,7 +2,6 @@
 
 PORTNAME=	unbound
 PORTVERSION=	1.13.1
-PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	https://www.nlnetlabs.nl/downloads/unbound/ \
 		https://distfiles.crux.guru/
