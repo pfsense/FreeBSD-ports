@@ -119,7 +119,7 @@ TESTVECTOR_CONFIGURE_ON=--enable-test-vectors
 TPM_CONFIGURE_ON=	--enable-tpm
 TSS2_LIB_DEPENDS=	libtss2-sys.so:security/tpm2-tss
 TSS2_CONFIGURE_ON=	--enable-tss-tss2
-UNBOUND_LIB_DEPENDS=	libunbound.so:dns/unbound \
+UNBOUND_LIB_DEPENDS=	libunbound.so:dns/unbound112 \
 			libldns.so:dns/ldns
 UNBOUND_CONFIGURE_ON=	--enable-unbound
 UNITY_CONFIGURE_ON=	--enable-unity
