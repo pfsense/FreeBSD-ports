@@ -1007,6 +1007,8 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 	}
 	fwrite ($fd, "\tretries\t\t\t" . $pool['retries'] . "\n");
 
+	fwrite ($fd, "\tload-server-state-from-file\tglobal\n");
+
 	$addrprefix = "";
 	$dnsquerytype = "A,AAAA";
 	if ($pool['transparent_clientip'] == 'yes') {
