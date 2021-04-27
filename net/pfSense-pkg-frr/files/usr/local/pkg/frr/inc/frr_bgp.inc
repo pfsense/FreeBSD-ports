@@ -634,7 +634,7 @@ function frr_bgp_generate_neighbors() {
 		/* Address family neighbor configuration items */
 		foreach(PKG_FRR_BGP_ADDRESS_FAMILIES as $af) {
 			/* Check if neighbor is enabled for the current address family */
-			if (!($nei_af_flag[$af])) {
+			if (!($nei_af_flag[$af]) && ($ntype == 'peer')) {
 				continue;
 			}
 
