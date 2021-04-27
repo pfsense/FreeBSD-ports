@@ -309,16 +309,74 @@ function build_tun_list() {
 
 }
 
-// This converts a form post array containing addresses and subnets and returns an CIDR-formatted array
-function wg_parse_post_addresses($post_array, $addrstr = 'address', $subnetstr = 'address_subnet') {
+function wg_allowed_ips_filtered($allowed_ips) {
+
+	$a_all = array('0.0.0.0/0', '::/0');
+
+	$all_ipv4 = $all_ipv6 = false;
+
+	$a_ips = explode(',', $allowed_ips);
 
 	$a_ret = array();
 
+	foreach ($a_ips as $index => $ip) {
+
+		if (!in_array($ip, $a_all)) {
+
+			$a_ret[] = $ip;
+
+		} elseif (in_array($ip, $a_all)) {
+
+			$all_ipv4 = is_v4($ip) ? true : $all_ipv4;
+
+			$all_ipv6 = is_v6($ip) ? true : $all_ipv6;
+
+		}
+
+	}
+
+	return array('allowedips' => $a_ret, 'all_ipv4' => $all_ipv4, 'all_ipv6' => $all_ipv6);
+
+}
+
+// This converts a form post array containing addresses and subnets and returns an CIDR-formatted array
+function wg_parse_post_addresses($post, $default = true) {
+
+	$a_ret = array();
+
+	$all_ipv4 = ($default && isset($post['all_ipv4']) && $post['all_ipv4'] == 'yes');
+
+	$all_ipv6 = ($default && isset($post['all_ipv6']) && $post['all_ipv6'] == 'yes');
+
+	if ($all_ipv4) { 
+		
+		$a_ret[] = '0.0.0.0/0'; 
+	
+	}
+
+	if ($all_ipv6) { 
+		
+		$a_ret[] = '::/0'; 
+	
+	}
+
 	$x = 0;
 
-	while ($post_array["{$addrstr}{$x}"] && $post_array["{$subnetstr}{$x}"]) {
+	while ($post["address{$x}"] && $post["address_subnet{$x}"]) {
 
-		$a_ret[] = "{$post_array["{$addrstr}{$x}"]}/{$post_array["{$subnetstr}{$x}"]}";
+		$s_address = "{$post["address{$x}"]}/{$post["address_subnet{$x}"]}";
+
+		if (!$all_ipv4 && is_v4($s_address)) {
+
+			$a_ret[] = $s_address;
+
+		}
+		
+		if (!$all_ipv6 && is_v6($s_address)) {
+
+			$a_ret[] = $s_address;
+		
+		}
 
 		$x++;
 
@@ -348,6 +406,8 @@ function wg_do_peer_post($post) {
 
 	}
 
+	$a_allowed_ips = wg_parse_post_addresses($post);
+
 	$pconfig['enabled'] 		= empty($post['enabled']) ? 'no' : 'yes';
 	$pconfig['tun'] 		= $post['tun'];
 	$pconfig['descr'] 		= $post['descr'];
@@ -356,9 +416,7 @@ function wg_do_peer_post($post) {
 	$pconfig['persistentkeepalive']	= $post['persistentkeepalive'];
 	$pconfig['publickey'] 		= $post['publickey'];
 	$pconfig['presharedkey']	= $post['presharedkey'];
-	$pconfig['allowedips'] 		= implode(',', wg_parse_post_addresses($post));
-
-	echo($pconfig['allowedips']);
+	$pconfig['allowedips'] 		= implode(',', $a_allowed_ips);
 
 	$input_errors = wg_validate_peer_post($pconfig);
 

@@ -98,13 +98,16 @@ if ($_POST) {
 		// Default to enabled
 		$pconfig['enabled'] = 'yes';
 
-		// Automatically choose a tunnel based on request 
+		// Automatically choose a tunnel based on the request 
 		$pconfig['tun'] = $tun;
 
-		// Default to a dynamic tunnel
+		// Default to a dynamic tunnel, so hide the endpoint form group
 		$is_dynamic = true;
 
 	}
+
+	// Pull out $allowedips, $all_ipv4, and $all_ipv6 in one shot
+	extract(wg_allowed_ips_filtered($pconfig['allowedips']));
 
 }
 
@@ -226,23 +229,34 @@ $group->add(new Form_Button(
 
 $section->add($group);
 
-$section->addInput(new Form_StaticText(
-	'Allowed IPs',
-	'A list of IPv4/IPv6 subnets or hosts (/32 for IPv4 or /128 for IPv6) reachable via this peer.'
-));
+$group = new Form_Group("Allowed IPs");
 
-// This is a hack to ensure the default subnet selection isn't /0
-if (empty($pconfig['allowedips'])) {
+$group->add(new Form_Checkbox(
+	'all_ipv4',
+	'Protocol',
+	'IPv4',
+	$all_ipv4
+))->setWidth(3)->setHelp("Allow all IPv4 addresses (0.0.0.0/0)");
 
-	$pconfig['allowedips'] = '/128';
+$group->add(new Form_Checkbox(
+	'all_ipv6',
+	'Protocol',
+	'IPv6',
+	$all_ipv6
+))->setWidth(3)->setHelp("Allow all IPv6 addresses (::/0)");
 
-}
+$section->add($group);
 
-$allowedips = explode(",", $pconfig['allowedips']);
+$group = new Form_Group(null);
 
-$last = count($allowedips) - 1;
+$group->add(new Form_StaticText(
+	null,
+	'IPv4 or IPv6 subnets or hosts reachable via this peer:'
+))->setWidth(5);
 
-foreach ($allowedips as $counter => $ip) {
+$section->add($group);
+
+foreach ($allowedips as $index => $ip) {
 
 	list($address, $address_subnet) = explode("/", $ip);
 
@@ -251,22 +265,15 @@ foreach ($allowedips as $counter => $ip) {
 	$group->addClass('repeatable');
 
 	$group->add(new Form_IpAddress(
-		"address{$counter}",
+		"address{$index}",
 		'Allowed IPs',
 		$address,
 		'BOTH'
-	))->addMask("address_subnet{$counter}", $address_subnet, 128, 0)
+	))->addMask("address_subnet{$index}", $address_subnet, 128, 1)
 		->setWidth(5);
 
-/* 	$group->add(new Form_Checkbox(
-		"peeraddress{$counter}",
-		null,
-		"Is Peer",
-		false
-	))->setWidth(1); */
-
 	$group->add(new Form_Button(
-		"deleterow{$counter}",
+		"deleterow{$index}",
 		'Delete',
 		null,
 		'fa-trash'
