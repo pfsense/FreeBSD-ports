@@ -648,8 +648,9 @@ pkg_upgrade() {
 		fi
 
 		# Do not upgrade if there are enabled WireGuard tunnels on config
-		if sed -e '/<wireguard>/,/<\/wireguard>/!d' \
-		    /cf/conf/config.xml | grep -q '<enabled>yes'; then
+		if sed -e '/<installedpackages>/,/<\/installedpackages>/d' \
+		    -e '/<wireguard>/,/<\/wireguard>/!d' /cf/conf/config.xml \
+		    | grep -q '<enabled>yes'; then
 			notice "ERROR: Remove all WireGuard tunnels before" \
 			    "upgrading."
 			_echo "ERROR: Remove all WireGuard tunnels before" \
@@ -1021,7 +1022,8 @@ check_upgrade() {
 		    "interfaces and all WireGuard tunnels before upgrading."
 	fi
 	# Do not upgrade if there are enabled WireGuard tunnels on config
-	if sed -e '/<wireguard>/,/<\/wireguard>/!d' /cf/conf/config.xml \
+	if sed -e '/<installedpackages>/,/<\/installedpackages>/d' \
+	    -e '/<wireguard>/,/<\/wireguard>/!d' /cf/conf/config.xml \
 	    | grep -q '<enabled>yes'; then
 		notice "ERROR: Remove all WireGuard tunnels before" \
 		    "upgrading."
