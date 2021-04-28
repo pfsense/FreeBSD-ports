@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2019 Bill Meeks
+ * Copyright (C) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -100,6 +100,16 @@ if (!defined("GPLV2_DNLD_FILENAME"))
 	define("GPLV2_DNLD_FILENAME", "community-rules.tar.gz");
 if (!defined("GPLV2_DNLD_URL"))
 	define("GPLV2_DNLD_URL", "https://www.snort.org/downloads/community/");
+
+if (!defined("FEODO_TRACKER_DNLD_FILENAME"))
+	define("FEODO_TRACKER_DNLD_FILENAME", "feodotracker.tar.gz");
+if (!defined("FEODO_TRACKER_DNLD_URL"))
+	define("FEODO_TRACKER_DNLD_URL", "https://feodotracker.abuse.ch/downloads/");
+if (!defined("ABUSE_SSLBL_DNLD_FILENAME"))
+	define("ABUSE_SSLBL_DNLD_FILENAME", "sslblacklist_tls_cert.tar.gz");
+if (!defined("ABUSE_SSLBL_DNLD_URL"))
+	define("ABUSE_SSLBL_DNLD_URL", "https://sslbl.abuse.ch/blacklist/");
+
 if (!defined("VRT_FILE_PREFIX"))
 	define("VRT_FILE_PREFIX", "snort_");
 if (!defined("GPL_FILE_PREFIX"))
