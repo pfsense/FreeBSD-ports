@@ -1,5 +1,5 @@
 PORTNAME=	visp-go
-DISTVERSION=	g20210422
+DISTVERSION=	g20210425
 CATEGORIES=	audio
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -12,7 +12,7 @@ USES=		go:modules
 USE_GITHUB=	yes
 GH_ACCOUNT=	ambientsound
 GH_PROJECT=	${PORTNAME:C/-go//}
-GH_TAGNAME=	35e21a8
+GH_TAGNAME=	d2efc0e
 GH_TUPLE=	davecgh:go-spew:v1.1.1:davecgh_go_spew/vendor/github.com/davecgh/go-spew \
 		fsnotify:fsnotify:v1.4.7:fsnotify_fsnotify/vendor/github.com/fsnotify/fsnotify \
 		gdamore:encoding:v1.0.0:gdamore_encoding/vendor/github.com/gdamore/encoding \
@@ -75,6 +75,8 @@ SPOTIFYD_RUN_DEPENDS=	spotifyd:audio/spotifyd
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${WRKSRC} && ${INSTALL_DATA} ${_DOCS} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC} && \
+		${INSTALL_DATA} ${_DOCS} \
+		${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

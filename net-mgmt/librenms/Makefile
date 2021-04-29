@@ -1,7 +1,8 @@
 # Created by: Muhammad Moinur Rahman<bofh@FreeBSD.org>
 
 PORTNAME=	librenms
-PORTVERSION=	21.3.0
+PORTVERSION=	21.4.0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	LOCAL/dvl:vendor
@@ -17,7 +18,7 @@ USES=		shebangfix python php
 # RELEASE_TIMESTAMP is used for a patch inside the vendor code
 # it represents the release date via: git show --pretty='%H|%ct' -s 1.42.01
 # It sits here so you remember to update it with each release
-RELEASE_TIMESTAMP=	1616284710
+RELEASE_TIMESTAMP=	1618718707
 
 # perhaps we also need python-memcache python-mysqldb
 RUN_DEPENDS+=	rrdtool:databases/rrdtool \
@@ -193,5 +194,10 @@ post-install:
 .for f in ${OTHER_DIRS}
 	@${ECHO_CMD} "@dir(root,www,0775) ${WWWDIR}/${f}" >> ${TMPPLIST}
 .endfor
+
+	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d
+	${INSTALL_DATA} ${FILESDIR}/newsyslog.conf.sample ${STAGEDIR}/${WWWDIR}/contrib/newsyslog.conf.sample
+	@${ECHO_CMD} "@dir etc/newsyslog.conf.d" >> ${TMPPLIST}
+	@${ECHO_CMD} "@sample ${WWWDIR}/contrib/newsyslog.conf.sample etc/newsyslog.conf.d/librenms.conf" >> ${TMPPLIST}
 
 .include <bsd.port.mk>

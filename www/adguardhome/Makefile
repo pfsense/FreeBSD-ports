@@ -1,7 +1,6 @@
 PORTNAME=	adguardhome
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.105.2
-PORTREVISION=	1
+DISTVERSION=	0.106.0
 CATEGORIES=	www
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -23,14 +22,18 @@ GO_MODULE=	github.com/AdguardTeam/AdGuardHome
 
 DEV_UPDATE_MODE=	no
 
+USER=		root # it has to run as root because it listens on the privileged DNS port
+SUB_LIST=	USER=${USER}
+USE_RC_SUBR=	${PORTNAME}
+
 .if (${DEV_UPDATE_MODE} == "yes")
 BUILD_DEPENDS=	npm:www/npm \
 		yarn:www/yarn
 do-build:
 	@cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} js-deps js-build && \
-		${TAR} czf ${DISTDIR}/${PORTNAME}-html-build-${DISTVERSION}${EXTRACT_SUFX} build && \
-		${TAR} czf ${DISTDIR}/${PORTNAME}-html-build2-${DISTVERSION}${EXTRACT_SUFX} build2 && \
+		${TAR} czf ${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-html-build-${DISTVERSION}${EXTRACT_SUFX} build && \
+		${TAR} czf ${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-html-build2-${DISTVERSION}${EXTRACT_SUFX} build2 && \
 		${ECHO} "Please upload files ${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-html-build-${DISTVERSION}${EXTRACT_SUFX} and ${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-html-build2-${DISTVERSION}${EXTRACT_SUFX}"
 .else
 MASTER_SITES=	LOCAL/yuri/:deps

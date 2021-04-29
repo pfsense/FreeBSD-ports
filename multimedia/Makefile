@@ -73,7 +73,6 @@
     SUBDIR += gdialog
     SUBDIR += get_iplayer
     SUBDIR += gmerlin
-    SUBDIR += gmimms
     SUBDIR += gmmlib
     SUBDIR += gmp-api
     SUBDIR += gmtk
@@ -220,13 +219,13 @@
     SUBDIR += livego
     SUBDIR += lives
     SUBDIR += livestreamer
+    SUBDIR += lms
     SUBDIR += lsdvd
     SUBDIR += m2tstoavi
     SUBDIR += m2vrequantiser
     SUBDIR += makemkv
     SUBDIR += mediainfo
     SUBDIR += mencoder
-    SUBDIR += mimms
     SUBDIR += minisatip
     SUBDIR += minitube
     SUBDIR += mjpegtools

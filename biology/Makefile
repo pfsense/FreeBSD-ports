@@ -84,6 +84,7 @@
     SUBDIR += muscle
     SUBDIR += ncbi-blast+
     SUBDIR += ncbi-cxx-toolkit
+    SUBDIR += ncbi-entrez-direct
     SUBDIR += ncbi-toolkit
     SUBDIR += ncbi-vdb
     SUBDIR += ngs-sdk
@@ -181,6 +182,7 @@
     SUBDIR += treepuzzle
     SUBDIR += trimadap
     SUBDIR += trimmomatic
+    SUBDIR += ucsc-userapps
     SUBDIR += ugene
     SUBDIR += vcf-split
     SUBDIR += vcf2hap

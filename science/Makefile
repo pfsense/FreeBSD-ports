@@ -76,6 +76,7 @@
     SUBDIR += fasthenry
     SUBDIR += fastjet
     SUBDIR += fisicalab
+    SUBDIR += frontistr
     SUBDIR += fsom
     SUBDIR += fvcom
     SUBDIR += fvcom-mpi
@@ -292,6 +293,7 @@
     SUBDIR += py-scoria
     SUBDIR += py-segregation
     SUBDIR += py-segyio
+    SUBDIR += py-skrebate
     SUBDIR += py-spaghetti
     SUBDIR += py-spglib
     SUBDIR += py-tensorflow
