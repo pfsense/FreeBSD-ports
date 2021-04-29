@@ -16276,7 +16276,7 @@ dns/dnsmasq-devel|dns/dnsmasq|2021-04-08|Has expired: use dns/dnsmasq instead, w
 net/coturn|net/turnserver|2021-04-09|Remove duplicate port: coturn is another name for turnserver
 databases/percona55-server||2021-04-11|EOL upstream
 databases/percona55-client||2021-04-11|EOL upstream
-graphics/ilmbase|math/Imath|2021-04-10|Ilmbase was split out into Imath and OpenEXR.
+graphics/ilmbase|math/Imath|2021-04-11|Ilmbase was split out into Imath and OpenEXR
 www/xshttpd||2021-04-12|Unmaintained and dead upstream
 www/xshttpd-devel||2021-04-12|Unmaintained and dead upstream
 dns/credns||2021-04-12|Broken 12+, unmaintained upstream
@@ -16295,3 +16295,13 @@ textproc/py-markdown3|textproc/py-markdown|2021-04-20|markdown3 confilicts with 
 security/fbopenssl||2021-04-20|Unmaintained, abandoned, does not build with recent OS versions
 devel/gearmand-devel||2021-04-20|Unmaintained, abandoned, has not built for over half a year
 textproc/bsdsort||2021-04-21|Old version of sort(1)
+www/py-django-mezzanine||2021-04-23|Depends on expired www/py-django111, not compatible with newer versions of Django
+devel/py-enum34||2021-04-23|No longer needed with python 3
+multimedia/gmimms||2021-04-23|Unmaintained, uses EOL'd Python 2.7
+multimedia/mimms||2021-04-23|Unmaintained, uses EOL'd Python 2.7
+net/samba411|net/samba412|2021-04-24|Has expired: Security Support ends on 03 Dec 2020
+net-im/cordless||2021-04-24|Has expired: Unmaintained and dead upstream, uses the old Discord API which notably has got users banned
+news/plor||2021-04-24|Has expired: listed as "Alpha-release" but last update in 2001; unmaintained
+security/certificate-transparency||2021-04-24|Has expired: Broken for more than 6 months
+misc/soapysdr-rtlsdr|comms/soapysdr-rtlsdr|2021-04-28|Move port to a proper category
+net/libjson-rpc-cpp||2021-04-28|Port has been broken since October 2020

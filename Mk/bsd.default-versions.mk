@@ -103,16 +103,16 @@ PGSQL_DEFAULT?=		12
 # Possible values: 7.3, 7.4, 8.0
 PHP_DEFAULT?=		7.4
 # Possible values: 2.7, 3.6, 3.7, 3.8, 3.9
-PYTHON_DEFAULT?=	3.7
+PYTHON_DEFAULT?=	3.8
 # Possible values: 2.7
 PYTHON2_DEFAULT?=	2.7
 # Possible values: 3.6, 3.7, 3.8, 3.9
-PYTHON3_DEFAULT?=	3.7
+PYTHON3_DEFAULT?=	3.8
 # Possible values: 2.6, 2.7, 3.0
 RUBY_DEFAULT?=		2.7
 # Possible values: rust, rust-nightly
 RUST_DEFAULT?=		rust
-# Possible values: 4.11, 4.12, 4.13
+# Possible values: 4.12, 4.13
 SAMBA_DEFAULT?=		4.12
 # Possible values: base, openssl, libressl, libressl-devel
 .if !defined(SSL_DEFAULT)

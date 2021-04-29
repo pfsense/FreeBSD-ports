@@ -1,7 +1,7 @@
 PORTNAME=	xwayland
 DISTVERSIONPREFIX=	xorg-server-
-DISTVERSION=	1.20.0-914
-DISTVERSIONSUFFIX=	-g7e142cb2a
+DISTVERSION=	1.20.0-917
+DISTVERSIONSUFFIX=	-ga50a0e348
 CATEGORIES=	x11-servers
 PKGNAMESUFFIX=	-devel
 
@@ -31,8 +31,8 @@ USES=		compiler:c11 gl meson pkgconfig xorg
 USE_GITHUB=	yes
 USE_GL=		gbm gl
 USE_XORG=	pixman xau xdmcp xfont2 xkbfile xshmfence xtrans
-GH_ACCOUNT=	freedesktop
-GH_PROJECT=	xorg-xserver
+GH_ACCOUNT=	mirror
+GH_PROJECT=	xserver
 MESON_ARGS=	-D${PORTNAME}=true \
 		-Dxorg=false \
 		-Dxnest=false \

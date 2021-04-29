@@ -1,5 +1,5 @@
 PORTNAME=	foundationdb
-DISTVERSION=	6.3.11
+DISTVERSION=	6.3.12
 CATEGORIES=	databases
 
 MAINTAINER=	dch@FreeBSD.org
@@ -8,6 +8,7 @@ COMMENT=	Distributed, transactional key-value store
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_FreeBSD_11=	requires newer OpenSSL
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	not yet ported to anything other than amd64
 
