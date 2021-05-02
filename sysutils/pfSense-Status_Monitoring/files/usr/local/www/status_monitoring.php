@@ -1364,7 +1364,7 @@ events.push(function() {
 				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 100)
-					.attr("y", 415)
+					.attr("y", 400)
 					.attr("id", "system-name")
 					.text(systemName);
 
@@ -1373,7 +1373,7 @@ events.push(function() {
 				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 400)
-					.attr("y", 415)
+					.attr("y", 400)
 					.attr("id", "time-period")
 					.text("Time Period: " + timePeriod);
 
@@ -1382,7 +1382,7 @@ events.push(function() {
 				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 570)
-					.attr("y", 415)
+					.attr("y", 400)
 					.attr("id", "resolution")
 					.text("Resolution: " + stepLookup[data[0].step]);
 
@@ -1391,7 +1391,7 @@ events.push(function() {
 				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 755)
-					.attr("y", 415)
+					.attr("y", 400)
 					.attr("id", "current-date")
 					.text(currentDate);
 
