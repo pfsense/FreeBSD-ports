@@ -6,7 +6,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	rcmcdonald91@gmail.com
-COMMENT=	pfSense package WireGuard
+COMMENT=	pfSense package WireGuard (EXPERIMENTAL)
 
 LICENSE=	APACHE20
 
