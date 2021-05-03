@@ -780,7 +780,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 			}
 
 			// Make sure the interface subdirectory exists.  We need to re-create
-			// it during a pkg reinstall on the intial rules set download.
+			// it during a pkg reinstall on the initial rules set download.
 			if (!is_dir("{$suricatadir}suricata_{$value['uuid']}_{$if_real}"))
 				safe_mkdir("{$suricatadir}suricata_{$value['uuid']}_{$if_real}");
 			if (!is_dir("{$suricatadir}suricata_{$value['uuid']}_{$if_real}/rules"))
@@ -791,6 +791,29 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 			$tmp = "\t" . $tmp . "\n";
 			error_log($tmp, 3, SURICATA_RULES_UPD_LOGFILE);
 			suricata_update_status(gettext(" done.") . "\n");
+
+			// If running, reload the rules for this interface
+			if (suricata_is_running($value['uuid'], $if_real) && !$g['suricata_postinstall']) {
+				// If "Live Reload" is enabled, just reload the configuration;
+				// otherwise, restart the interface instance of Suricata.
+				if ($config['installedpackages']['suricata']['config'][0]['live_swap_updates'] == 'on') {
+					syslog(LOG_NOTICE, gettext("[Suricata] Live-Reload of rules from auto-update is enabled..."));
+					error_log(gettext("\tLive-Reload of updated rules is enabled...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+					suricata_update_status(gettext("Signaling Suricata to live-load the new set of rules for " . convert_friendly_interface_to_friendly_descr($value['interface']) . "..."));
+					suricata_reload_config($value);
+					suricata_update_status(gettext(" done.") . "\n");
+					error_log(gettext("\tLive-Reload of updated rules requested for " . convert_friendly_interface_to_friendly_descr($value['interface']) . ".\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+				}
+				else {
+					suricata_update_status(gettext("Restarting Suricata to activate the new set of rules for " . convert_friendly_interface_to_friendly_descr($value['interface']) . "..."));
+					error_log(gettext("\tRestarting Suricata to activate the new set of rules for " . convert_friendly_interface_to_friendly_descr($value['interface']) . "...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+					suricata_stop($value, $if_real);
+					suricata_start($value, $if_real);
+					suricata_update_status(gettext(" done.") . "\n");
+					syslog(LOG_NOTICE, gettext("[Suricata] Suricata has restarted with your new set of rules for " . convert_friendly_interface_to_friendly_descr($value['interface']) . "..."));
+					error_log(gettext("\tSuricata has restarted with your new set of rules for " . convert_friendly_interface_to_friendly_descr($value['interface']) . ".\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+				}
+			}
 		}
 	}
 	else {
@@ -800,34 +823,6 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 
 	/* Clear the rebuild rules flag.  */
 	$rebuild_rules = false;
-
-	/* Restart Suricata if already running and we are not in post-install, so as to pick up the new rules. */
-       	if (is_process_running("suricata") && !$g['suricata_postinstall'] &&
-	    count($config['installedpackages']['suricata']['rule']) > 0) {
-
-		// See if "Live Reload" is configured and signal each Suricata instance
-		// if enabled, else just do a hard restart of all the instances.
-		if ($config['installedpackages']['suricata']['config'][0]['live_swap_updates'] == 'on') {
-			suricata_update_status(gettext('Signaling Suricata to live-load the new set of rules...'));
-			syslog(LOG_NOTICE, gettext("[Suricata] Live-Reload of rules from auto-update is enabled..."));
-			error_log(gettext("\tLive-Reload of updated rules is enabled...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
-			foreach ($config['installedpackages']['suricata']['rule'] as $value) {
-				suricata_reload_config($value);
-				error_log(gettext("\tLive swap of updated rules requested for " . convert_friendly_interface_to_friendly_descr($value['interface']) . ".\n"), 3, SURICATA_RULES_UPD_LOGFILE);
-			}
-			suricata_update_status(gettext(" done.") . "\n");
-			syslog(LOG_NOTICE, gettext("[Suricata] Live-Reload of updated rules completed..."));
-			error_log(gettext("\tLive-Reload of the updated rules is complete.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
-		}
-		else {
-			suricata_update_status(gettext('Restarting Suricata to activate the new set of rules...'));
-			error_log(gettext("\tRestarting Suricata to activate the new set of rules...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
-       			restart_service("suricata");
-			suricata_update_status(gettext(" done.") . "\n");
-			syslog(LOG_NOTICE, gettext("[Suricata] Suricata has restarted with your new set of rules..."));
-			error_log(gettext("\tSuricata has restarted with your new set of rules.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
-		}
-	}
 }
 
 // Remove old $tmpfname files
