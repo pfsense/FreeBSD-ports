@@ -5,7 +5,6 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-
 MAINTAINER=	rcmcdonald91@gmail.com
 COMMENT=	pfSense package WireGuard
 
@@ -33,7 +32,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/wg
 
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	
+
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/wireguard.priv.inc \
 		${STAGEDIR}/etc/inc/priv
 
