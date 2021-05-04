@@ -71,12 +71,10 @@ _USE_GNOME_ALL= intlhack intltool introspection \
 # GNOME 2 components
 _USE_GNOME_ALL+= atk cairo \
 		gdkpixbuf2 gconf2 glib20 \
-		gnomesharp20 \
-		gnomevfs2 gtk-update-icon-cache gtk20 gtkhtml3 \
-		gtksharp20 gtksourceview2 gvfs libartlgpl2 libbonobo \
-		libbonoboui libglade2 libgnome \
-		libgnomecanvas \
-		libgnomeui libgsf libidl librsvg2 libwnck \
+		gtk-update-icon-cache gtk20 \
+		gtksharp20 gtksourceview2 gvfs libartlgpl2 \
+		libglade2 libgnomecanvas \
+		libgsf libidl librsvg2 libwnck \
 		libxml2 libxslt \
 		orbit2 pango pangox-compat \
 		vte
@@ -90,8 +88,7 @@ _USE_GNOME_ALL+=dconf evolutiondataserver3 gnomecontrolcenter3 gnomedesktop3 \
 
 # C++ bindings
 _USE_GNOME_ALL+=atkmm cairomm gconfmm26 glibmm gtkmm24 \
-		gtkmm30 gtksourceviewmm3 libgdamm5 \
-		libgtksourceviewmm libxml++26 libsigc++20 \
+		gtkmm30 gtksourceviewmm3 libgdamm5 libxml++26 libsigc++20 \
 		pangomm
 
 # glib-mkenums often fails with C locale
@@ -148,9 +145,6 @@ gtksourceviewmm3_USE_GNOME_IMPL=	gtkmm30 gtksourceview3
 
 libgdamm5_LIB_DEPENDS=		libgdamm-5.0.so:databases/libgdamm5
 libgdamm5_USE_GNOME_IMPL=	libgda5 glibmm
-
-libgtksourceviewmm_LIB_DEPENDS=		libgtksourceviewmm-2.0.so:x11-toolkits/libgtksourceviewmm
-libgtksourceviewmm_USE_GNOME_IMPL=	gtksourceview2 gtkmm24
 
 libsigc++20_LIB_DEPENDS=	libsigc-2.0.so:devel/libsigc++20
 
@@ -210,9 +204,6 @@ libxslt_LIB_DEPENDS=	libxslt.so:textproc/libxslt
 libxslt_RUN_DEPENDS=	${libxslt_BUILD_DEPENDS}
 libxslt_USE_GNOME_IMPL=	libxml2
 
-libbonobo_LIB_DEPENDS=	libbonobo-2.so:devel/libbonobo
-libbonobo_USE_GNOME_IMPL=libxml2 orbit2
-
 introspection_BUILD_DEPENDS=	g-ir-scanner:devel/gobject-introspection
 introspection_LIB_DEPENDS=	libgirepository-1.0.so:devel/gobject-introspection
 introspection_RUN_DEPENDS=	g-ir-scanner:devel/gobject-introspection
@@ -222,22 +213,10 @@ introspection_MAKE_ENV=		GI_SCANNER_DISABLE_CACHE=1 XDG_CACHE_HOME=${WRKDIR}
 gconf2_LIB_DEPENDS=	libgconf-2.so:devel/gconf2
 gconf2_USE_GNOME_IMPL=	orbit2 libxml2 gtk20
 
-gnomevfs2_LIB_DEPENDS=	libgnomevfs-2.so:devel/gnome-vfs
-gnomevfs2_USE_GNOME_IMPL=gconf2 gnomemimedata
-
 libgnomecanvas_LIB_DEPENDS=	libgnomecanvas-2.so:graphics/libgnomecanvas
 libgnomecanvas_USE_GNOME_IMPL=	libglade2 libartlgpl2
 
 libartlgpl2_LIB_DEPENDS=	libart_lgpl_2.so:graphics/libart_lgpl
-
-libgnome_LIB_DEPENDS=	libgnome-2.so:x11/libgnome
-libgnome_USE_GNOME_IMPL=gnomevfs2 libbonobo
-
-libbonoboui_LIB_DEPENDS=	libbonoboui-2.so:x11-toolkits/libbonoboui
-libbonoboui_USE_GNOME_IMPL=	libgnomecanvas libgnome
-
-libgnomeui_LIB_DEPENDS=		libgnomeui-2.so:x11-toolkits/libgnomeui
-libgnomeui_USE_GNOME_IMPL=	libbonoboui
 
 gnomedesktop3_LIB_DEPENDS=	libgnome-desktop-3.so:x11/gnome-desktop
 gnomedesktop3_USE_GNOME_IMPL=	gtk30
@@ -308,9 +287,6 @@ intlhack_PRE_PATCH=	${FIND} ${WRKSRC} -name "intltool-merge.in" | ${XARGS} ${FRA
 			's/DATADIRNAME=lib/DATADIRNAME=share/'
 intlhack_USE_GNOME_IMPL=intltool
 
-gtkhtml3_LIB_DEPENDS=	libgtkhtml-3.14.so:www/gtkhtml3
-gtkhtml3_USE_GNOME_IMPL=libglade2
-
 gtkhtml4_LIB_DEPENDS=	libgtkhtml-4.0.so:www/gtkhtml4
 gtkhtml4_USE_GNOME_IMPL=gtk30 libxml2
 
@@ -321,17 +297,9 @@ gnomemenus3_BUILD_DEPENDS=	gnome-menus>=3.2.0:x11/gnome-menus
 gnomemenus3_RUN_DEPENDS=	gnome-menus>=3.2.0:x11/gnome-menus
 gnomemenus3_USE_GNOME_IMPL=	glib20
 
-gtksharp10_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gtk-sharp.pc:x11-toolkits/gtk-sharp10
-gtksharp10_RUN_DEPENDS=		${LOCALBASE}/libdata/pkgconfig/gtk-sharp.pc:x11-toolkits/gtk-sharp10
-gtksharp10_USE_GNOME_IMPL=	gtk20
-
 gtksharp20_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gtk-sharp-2.0.pc:x11-toolkits/gtk-sharp20
 gtksharp20_RUN_DEPENDS=		${LOCALBASE}/libdata/pkgconfig/gtk-sharp-2.0.pc:x11-toolkits/gtk-sharp20
 gtksharp20_USE_GNOME_IMPL=	gtk20
-
-gnomesharp20_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gnome-sharp-2.0.pc:x11-toolkits/gnome-sharp20
-gnomesharp20_RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gnome-sharp-2.0.pc:x11-toolkits/gnome-sharp20
-gnomesharp20_USE_GNOME_IMPL=	gnomevfs2 gtkhtml3 gtksharp20 librsvg2 vte
 
 libgnomekbd_LIB_DEPENDS=	libgnomekbd.so:x11/libgnomekbd
 libgnomekbd_USE_GNOME_IMPL=	gtk30 libxml2

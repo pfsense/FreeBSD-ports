@@ -16305,3 +16305,25 @@ news/plor||2021-04-24|Has expired: listed as "Alpha-release" but last update in 
 security/certificate-transparency||2021-04-24|Has expired: Broken for more than 6 months
 misc/soapysdr-rtlsdr|comms/soapysdr-rtlsdr|2021-04-28|Move port to a proper category
 net/libjson-rpc-cpp||2021-04-28|Port has been broken since October 2020
+www/py-django111|www/py-django22|2021-04-30|Has expired: Django 1.11 is End-of-Life since April 2020. Switch to Django 2.2+ as soon as possible
+archivers/par2cmdline-tbb|archivers/par2cmdline|2021-04-30|Has expired: Unmaintained upstream, does not build with oneTbb. Use archivers/par2cmdline instead
+x11-toolkits/p5-Gnome2-VFS||2021-05-01|Has expired: Deprecated by the Gtk-Perl project. No more security patches and bug fixes
+x11-toolkits/p5-Gnome2||2021-05-01|Has expired: Deprecated by the Gtk-Perl project. No more security patches and bug fixes
+deskutils/shutter||2021-05-01|Has expired: Upstream gone, depends on expired x11-toolkits/p5-Gnome2-VFS
+misc/gcstar||2021-05-01|Has expired: Depends on expired x11-toolkits/p5-Gnome2-VFS
+x11/gnome-sharp20||2021-05-01|Dead upstream, no consumers left in the ports tree
+x11-toolkits/libgnomeui||2021-05-01|Dead upstream, no consumers left in the ports tree
+x11-toolkits/p5-Gnome2-Canvas||2021-05-01|Has expired: Deprecated by the Gtk-Perl project. No more security patches and bug fixes
+x11-toolkits/p5-Gnome2-Wnck||2021-05-01|Has expired: Deprecated by the Gtk-Perl project. No more security patches and bug fixes
+devel/p5-Gnome2-GConf||2021-05-01|Has expired: Deprecated by the Gtk-Perl project. No more security patches and bug fixes
+comms/kb||2021-05-01|Abandonware, upstream has disappeared, depends on libgnome
+games/monster-masher||2021-05-01|Abandonware, depends on libgnome
+x11/libgnome||2021-05-01|Dead upstream, no consumers left in the ports tree
+devel/gnome-vfs||2021-05-01|Dead upstream, no consumers left in the ports tree
+devel/libbonobo||2021-05-01|Dead upstream, no consumers left in the ports tree
+x11-toolkits/p5-Gtk2-Unique||2021-05-01|Dead upstream, no consumers left in the ports tree
+sysutils/policykit-gnome||2021-05-01|Gnome2 component, no consumers left in the ports tree
+sysutils/policykit|sysutils/polkit|2021-05-01|Gnome2 component, no consumers left in the ports tree
+databases/rubygem-gitlab-pg_query|databases/rubygem-pg_query|2021-05-03|Obsolete, please use databases/rubygem-pg_query
+devel/rubygem-licensee8|devel/rubygem-licensee|2021-05-03|Obsolete, please use devel/rubygem-licensee
+devel/rubygem-ruby-magic-static|devel/rubygem-ruby-magic|2021-05-03|Obsolete, please use devel/rubygem-ruby-magic

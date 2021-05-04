@@ -131,7 +131,6 @@
     SUBDIR += paq
     SUBDIR += par
     SUBDIR += par2cmdline
-    SUBDIR += par2cmdline-tbb
     SUBDIR += parchive
     SUBDIR += pbzip2
     SUBDIR += pear-File_Archive
@@ -169,6 +168,7 @@
     SUBDIR += py-acefile
     SUBDIR += py-borgbackup
     SUBDIR += py-brotli
+    SUBDIR += py-brotlicffi
     SUBDIR += py-brotlipy
     SUBDIR += py-bz2file
     SUBDIR += py-libarchive-c

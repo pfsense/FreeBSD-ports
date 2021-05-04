@@ -1,4 +1,4 @@
---- ioctl_helpers.c.orig	2021-04-19 14:49:09 UTC
+--- ioctl_helpers.c.orig	2021-04-19 18:12:17 UTC
 +++ ioctl_helpers.c
 @@ -160,46 +160,3 @@ radix_get_tstats(int dev, struct pfr_tstats **tstats, 
  	*tstats = (struct pfr_tstats *)pt.pfrio_buffer;
