@@ -429,6 +429,7 @@ function squid_reconfigure($remove_only = '')
                 (strpos($t_opt, REDIRECT_BYPASS_OPT)    === 0) or
                 (strpos($t_opt, REDIRECT_CHILDREN_OPT)  === 0))
                  unset($conf[$key]);
+                 $sg_squidconf = true;
         }
         sg_addlog("squid_reconfigure", "Remove old redirector options from Squid config.", SQUIDGUARD_INFO);
     }
@@ -445,6 +446,7 @@ function squid_reconfigure($remove_only = '')
 	$conf[] = REDIRECTOR_PROGRAM_OPT . " $redirector_path -c $redirector_conf";
 	$conf[] = REDIRECT_BYPASS_OPT    . " off";
 	$conf[] = REDIRECT_CHILDREN_OPT  . " " . $rewrite_children . " startup=" . $rewrite_children_startup . " idle=" . $rewrite_children_idle . " concurrency=0";
+	$sg_squidconf = true;
 
 	sg_addlog("squid_reconfigure", "Add new redirector options to Squid config.", SQUIDGUARD_INFO);
     }
@@ -459,7 +461,7 @@ function squid_reconfigure($remove_only = '')
 	}
 
     # resync squid package, if installed
-    if (function_exists('squid_resync')) {
+    if ($sg_squidconf && function_exists('squid_resync')) {
         squid_resync();
     }
 }
