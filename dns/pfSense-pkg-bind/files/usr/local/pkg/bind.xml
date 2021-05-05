@@ -42,6 +42,7 @@
 		<rcfile>named.sh</rcfile>
 		<executable>named</executable>
 		<description>Domain Name Service</description>
+		<starts_on_sync></starts_on_sync>
 	</service>
 	<tabs>
 		<tab>

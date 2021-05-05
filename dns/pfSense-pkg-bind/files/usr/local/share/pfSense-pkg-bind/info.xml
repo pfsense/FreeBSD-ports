@@ -2,6 +2,7 @@
 <pfsensepkgs>
 	<package>
 		<name>bind</name>
+		<internal_name>named</internal_name>
 		<descr>The most widely used name server software.</descr>
 		<website>http://www.isc.org/downloads/BIND/</website>
 		<category>Services</category>
