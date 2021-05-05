@@ -39,6 +39,7 @@
 		<rcfile>radiusd.sh</rcfile>
 		<executable>radiusd</executable>
 		<description>FreeRADIUS Server</description>
+		<starts_on_sync></starts_on_sync>
 	</service>
 	<tabs>
 		<tab>
