@@ -901,7 +901,7 @@ function sg_check_unique_name($module_id, $name, $log='') {
 function sg_check_reserved_name($name, $log='')
 {
     $res = true;
-    $reserved = array("acl", "all", "allow", "dbhome", "default", "dest", "in-addr", "log", "logdir", "none", "pass", "rew", "src", "url", "user");
+    $reserved = array("acl", "all", "allow", "dbhome", "default", "dest", "in-addr", "log", "logdir", "none", "pass", "rew", "src", "squidstatus", "url", "user");
 
     if (in_array(strtolower(trim($name)), $reserved)) {
         $res = false;
