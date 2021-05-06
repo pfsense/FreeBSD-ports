@@ -89,8 +89,9 @@ if (file_exists("/tmp/coreupdatecomplete")) {
 	if ($platform['name'] == 'Netgate-6100') {
 		$savemsg .= '<br/><br/>';
 		$savemsg .= gettext('Microcontroller updates on this platform ' .
-		    'require a power cycle to complete. Manually halt the ' .
-		    'device, unplug the power cord, then plug it back in.');
+		    'require a power cycle to activate. Wait for the automatic reboot ' .
+		    'to complete then manually halt the device. Once the device ' .
+		    'has shut down, unplug the power cord and plug it back in.');
 	}
 
 	print_info_box($savemsg, 'success');
