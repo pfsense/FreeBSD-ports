@@ -2,7 +2,7 @@
 <pfsensepkgs>
 	<package>
 		<name>WireGuard</name>
-		<descr><![CDATA[WireGuard® is an extremely simple yet fast and modern VPN&lt;br /&gt;
+		<descr><![CDATA[WireGuard is an extremely simple yet fast and modern VPN&lt;br /&gt;
 				that utilizes state-of-the-art cryptography. It aims to be&lt;br /&gt;
 				faster, simpler, leaner, and more useful than IPSec, while&lt;br /&gt;
 				avoiding the massive headache. It intends to be considerably&lt;br /&gt;

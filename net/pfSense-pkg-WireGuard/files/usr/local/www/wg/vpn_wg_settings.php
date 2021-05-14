@@ -28,11 +28,12 @@
 ##|-PRIV
 
 // pfSense includes
-require_once('guiconfig.inc');
 require_once('functions.inc');
+require_once('guiconfig.inc');
 
 // WireGuard includes
 require_once('wireguard/wg.inc');
+require_once('wireguard/wg_guiconfig.inc');
 
 global $wgg;
 
@@ -86,6 +87,12 @@ if ($save_success) {
 
 	print_info_box(gettext("The changes have been applied successfully."), 'success');
 	
+}
+
+if (count($wgg['tunnels']) > 0 && !is_module_loaded($wgg['kmod'])) {
+
+	print_info_box(gettext('The WireGuard kernel module is not loaded!'), 'danger', null);
+
 }
 
 if ($input_errors) {
@@ -157,8 +164,11 @@ events.push(function() {
 //]]>
 </script>
 
-<?php
+<?php 
 
-include("foot.inc");
+include('foot.inc');
+
+// Must be included last
+include('wireguard/wg_foot.inc');
 
 ?>

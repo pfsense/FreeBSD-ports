@@ -37,19 +37,31 @@
 		<url>/wg/vpn_wg_tunnels.php</url>
 	</menu>
 	<menu>
-		<name>WireGuard Status</name>
+		<name>WireGuard </name>
 		<section>Status</section>
 		<url>/wg/status_wireguard.php</url>
 	</menu>
+	<service>
+		<name>wireguard</name>
+		<rcfile>wireguardd</rcfile>
+		<executable>php_wg</executable>
+		<description>WireGuard</description>
+	</service>
 	<custom_php_install_command>
+		<![CDATA[
 		wg_install();
+		]]>
 	</custom_php_install_command>
 	<custom_php_pre_deinstall_command>
+		<![CDATA[
 		wg_deinstall();
+		]]>
 	</custom_php_pre_deinstall_command>
 	<custom_php_validation_command>
 	</custom_php_validation_command>
 	<custom_php_resync_config_command>
-		wg_resync();
+		<![CDATA[
+		wg_resync_all();
+		]]>
 	</custom_php_resync_config_command>
 </packagegui>

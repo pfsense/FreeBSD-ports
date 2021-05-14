@@ -28,11 +28,12 @@
 ##|-PRIV
 
 // pfSense includes
-require_once('guiconfig.inc');
 require_once('functions.inc');
+require_once('guiconfig.inc');
 
 // WireGuard includes
 require_once('wireguard/wg.inc');
+require_once('wireguard/wg_guiconfig.inc');
 
 global $wgg;
 
@@ -42,15 +43,15 @@ if ($_POST) {
 
 	if (isset($_POST['tun'])) {
 
-		$tun_id = wg_get_tunnel_id($_POST['tun']);
+		$tun_name = $_POST['tun'];
 
 		if ($_POST['act'] == 'toggle') {
 
-			$input_errors = wg_toggle_tunnel($tun_id);
+			$input_errors = wg_toggle_tunnel($tun_name);
 
 		} elseif ($_POST['act'] == 'delete') { 
 
-			$input_errors = wg_delete_tunnel($tun_id);
+			$input_errors = wg_delete_tunnel($tun_name);
 
 		}
 
@@ -70,6 +71,12 @@ $tab_array[] = array(gettext("Settings"), false, "/wg/vpn_wg_settings.php");
 $tab_array[] = array(gettext("Status"), false, "/wg/status_wireguard.php");
 
 include("head.inc");
+
+if (count($wgg['tunnels']) > 0 && !is_module_loaded($wgg['kmod'])) {
+
+	print_info_box(gettext('The WireGuard kernel module is not loaded!'), 'danger', null);
+
+}
 
 if ($input_errors) {
 
@@ -107,41 +114,23 @@ display_top_tabs($tab_array);
 				</thead>
 				<tbody>
 <?php
-		foreach ($wgg['tunnels'] as $tun_id => $tunnel):
+		foreach ($wgg['tunnels'] as $tunnel):
 
 			$peers = wg_get_tunnel_peers($tunnel['name']);
-
-			$entryStatus = ($tunnel['enabled'] == 'yes') ? 'enabled':'disabled';
-
-			// Not a fan of this, neeeds to be rewritten at some point
-			if (is_wg_tunnel_assigned($tunnel)) {
-
-				// We want all configured interfaces, including disabled ones
-				$iflist = get_configured_interface_list_by_realif(true);
-				$ifdescr = get_configured_interface_with_descr(true);
-
-				$iffriendly = $ifdescr[$iflist[$tunnel['name']]];
-
-				$tunnel['addresses'] = $iffriendly;
-
-			}
-
-			$icon_toggle = ($tunnel['enabled'] == 'yes') ? 'ban' : 'check-square-o';	
-
 ?>
-					<tr ondblclick="document.location='vpn_wg_tunnels_edit.php?tun=<?=$tunnel['name']?>';" class="<?=$entryStatus?>">
+					<tr ondblclick="document.location='vpn_wg_tunnels_edit.php?tun=<?=$tunnel['name']?>';" class="<?=wg_entrystatus_class($tunnel)?>">
 						<td class="peer-entries"><?=gettext('Interface')?></td>
 						<td><?=htmlspecialchars($tunnel['name'])?></td>
 						<td><?=htmlspecialchars($tunnel['descr'])?></td>
-						<td><?=htmlspecialchars(substr($tunnel['publickey'], 0, 16).'...')?></td>
-						<td><?=htmlspecialchars(explode(',', $tunnel['addresses'])[0])?></td>
+						<td><?=htmlspecialchars(wg_truncate_pretty($tunnel['publickey'], 16))?></td>
+						<td><?=wg_generate_tunnel_address_popup_link($tunnel['name'])?></td>
 						<td><?=htmlspecialchars($tunnel['listenport'])?></td>
 						<td><?=count($peers)?></td>
 
 						<td style="cursor: pointer;">
 							<a class="fa fa-user-plus" title="<?=gettext("Add Peer")?>" href="<?="vpn_wg_peers_edit.php?tun={$tunnel['name']}"?>"></a>
 							<a class="fa fa-pencil" title="<?=gettext("Edit tunnel")?>" href="<?="vpn_wg_tunnels_edit.php?tun={$tunnel['name']}"?>"></a>
-							<a class="fa fa-<?=$icon_toggle?>" title="<?=gettext("Click to toggle enabled/disabled status")?>" href="<?="?act=toggle&tun={$tunnel['name']}"?>" usepost></a>
+							<?=wg_generate_toggle_icon_link($tunnel, 'Click to toggle enabled/disabled status', "?act=toggle&tun={$tunnel['name']}")?>
 							<a class="fa fa-trash text-danger" title="<?=gettext('Delete tunnel')?>" href="<?="?act=delete&tun={$tunnel['name']}"?>" usepost></a>
 						</td>
 					</tr>
@@ -149,7 +138,6 @@ display_top_tabs($tab_array);
 					<tr class="peer-entries peerbg_color">
 						<td><?=gettext("Peers")?></td>
 <?php
-	$peers = wg_get_tunnel_peers($tunnel['name']);
 
 			if (count($peers) > 0):
 ?>
@@ -159,9 +147,8 @@ display_top_tabs($tab_array);
 									<tr class="peerbg_color">
 										<th><?=gettext("Description")?></th>
 										<th><?=gettext("Public key")?></th>
-										<th><?=gettext("Peer Address")?></th>
 										<th><?=gettext("Allowed IPs")?></th>
-										<th><?=gettext("Endpoint").' : '.gettext("Port")?></th>
+										<th><?=wg_format_endpoint(true)?></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -170,11 +157,10 @@ display_top_tabs($tab_array);
 				foreach ($peers as $peer):
 ?>
 									<tr class="peerbg_color">
-										<td><?=htmlspecialchars($peer['descr'])?></td>
-										<td><?=htmlspecialchars(substr($peer['publickey'], 0, 16).'...')?></td>
-										<td><?=htmlspecialchars($peer['peeraddresses'])?></td>
-										<td><?=htmlspecialchars($peer['allowedips'])?></td>
-										<td><?=htmlspecialchars(wg_format_endpoint($peer))?></td>
+										<td><?=htmlspecialchars(wg_truncate_pretty($peer['descr'], 16))?></td>
+										<td><?=htmlspecialchars(wg_truncate_pretty($peer['publickey'], 16))?></td>
+										<td><?=wg_generate_peer_allowedips_popup_link($peer['index'])?></td>
+										<td><?=htmlspecialchars(wg_format_endpoint(false, $peer))?></td>
 									</tr>
 <?php
 				endforeach;
@@ -203,7 +189,7 @@ display_top_tabs($tab_array);
 	<nav class="action-buttons">
 		<a href="#" class="btn btn-info btn-sm" id="showpeers">
 			<i class="fa fa-info icon-embed-btn"></i>
-			<?=gettext("Show peers")?>
+			<?=gettext("Show Peers")?>
 		</a>
 
 		<a href="vpn_wg_tunnels_edit.php" class="btn btn-success btn-sm">
@@ -231,6 +217,11 @@ events.push(function() {
 //]]>
 </script>
 
-<?php
-include("foot.inc");
+<?php 
+
+include('foot.inc');
+
+// Must be included last
+include('wireguard/wg_foot.inc');
+
 ?>
