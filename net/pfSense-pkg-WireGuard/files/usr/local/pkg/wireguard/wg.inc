@@ -23,79 +23,20 @@
 
 // pfSense includes
 require_once('config.inc');
-require_once('globals.inc');
-require_once('interfaces.inc');
-require_once('pfsense-utils.inc');
-require_once('pkg-utils.inc');
-require_once('service-utils.inc');
-require_once('system.inc');
+require_once('gwlb.inc');
 require_once('util.inc');
 
 // WireGuard includes
 require_once('wireguard/wg_api.inc');
-require_once('wireguard/wg_globals.inc');
 require_once('wireguard/wg_install.inc');
 require_once('wireguard/wg_validate.inc');
 
 global $wgg;
 
-// Setup WireGuard tunnel...this needs to be reworked at some point
-function wg_configure_if($tunnel, $conf_hard = true, $verbose = false) {
-	global $config, $wgg;
-
-	// Should we perform a hard reconfiguration
-	if ($conf_hard) {
-
-		// Destroy the interface first
-		wg_destroy_if($tunnel, $verbose);
-
-		// Then attempt to bring up interface using wg-quick(8)
-		exec_wg_quick_action($tunnel, "up", $verbose);
-
-	}
-
-	// Now let's always soft configure the interface
-	wg_syncconf($tunnel);
-
-	$wg_ifname = escapeshellarg($tunnel['name']);
-	$group_ifname =escapeshellarg($wgg['ifgroupentry']['ifname']);
-
-	// Add the interface to the interface group (i.e. WireGuard)
-	mwexec("{$wgg['ifconfig']} {$wg_ifname} group {$group_ifname}");
-
-	// Get the tunnel interface friendly name if assigned
-	$if_fname = convert_real_interface_to_friendly_interface_name($tunnel['name']);
-
-	if(isset($if_fname)) {
-
-		interface_reconfigure($if_fname);
-
-		system_routing_configure($if_fname);
-	
-	}
-
-}
-
-
-// Remove WireGuard tunnel
-function wg_destroy_if($tunnel, $verbose = false) {
-
-	// Execute the wg-quick(8) way of tearing down an interface
-	exec_wg_quick_action($tunnel, "down", $verbose);
-
-	// Need to transform out of tunnel structure because pfSense_interface_destroy expects an ifname
-	if (is_array($tunnel) && isset($tunnel['name'])) {
-
-		$tunnel = $tunnel['name'];
-
-	}
-
-	// Now execute the pfSense way of tearing down an interface
-	pfSense_interface_destroy($tunnel);
-
-}
-
-function wg_toggle_tunnel($tun_id) {
+/*
+ * This toggles a given tunnel based on index
+ */
+function wg_toggle_tunnel($tunnel_name) {
 	global $wgg;
 
 	$input_errors = array();
@@ -103,41 +44,29 @@ function wg_toggle_tunnel($tun_id) {
 	// Make sure we have the latest info
 	wg_globals();
 
-	// Make sure we have a valid tunnel
-	if (isset($wgg['tunnels'][$tun_id])) {
+	// Get the config array index
+	$tun_idx = wg_get_tunnel_array_index($tunnel_name);
 
-		// We can't disable tunnels if they are assigned
-		if (!is_wg_tunnel_assigned($wgg['tunnels'][$tun_id]['name'])) {
+	// Make sure we have a valid tunnel in the xml
+	if (isset($wgg['tunnels'][$tun_idx])) {
+
+		$tunnel = $wgg['tunnels'][$tun_idx];
+
+		// We can't disable a tunnel assigned to a pfSense interface
+		if (!is_wg_tunnel_assigned($tunnel['name'])) {
 
 			// Now we toggle the tunnel
-			$wgg['tunnels'][$tun_id]['enabled'] = ($wgg['tunnels'][$tun_id]['enabled'] == 'yes') ? 'no' : 'yes';
+			$wgg['tunnels'][$tun_idx]['enabled'] = ($tunnel['enabled'] == 'yes') ? 'no' : 'yes';
 
-			// Write the configuration to disk
-			write_config("[{$wgg['pkg_names'][0]}] Tunnel {$wgg['tunnels'][$tun_id]['name']} toggled.");
-		
-			// Regenerate conf files
-			wg_globals();
-			wg_create_config_files();
-			wg_ifgroup_install();
+			// Sync with configuration backend
+			write_config("[{$wgg['pkg_names'][0]}] Tunnel {$tunnel['name']} toggled.");
 
-			// This logic needs to be rewritten at some point
-			$tunnel = $wgg['tunnels'][$tun_id];
+			// Sync with WireGuard backend
+			wg_resync_tunnel($tunnel['name']);
 
-			if (isset($tunnel['enabled']) && $tunnel['enabled'] == 'yes') {
-
-				$conf_hard = (!is_wg_tunnel_assigned($tunnel) || !does_interface_exist($tunnel['name']));
-
-				wg_configure_if($tunnel, $conf_hard);
-
-			} else {
-
-				wg_destroy_if($tunnel);
-
-			}
-		
 		} else {
 
-			$action_txt = ($wgg['tunnels'][$tun_id]['enabled'] == 'yes') ? 'disable' : 'enable';
+			$action_txt = ($tunnel['enabled'] == 'yes') ? 'disable' : 'enable';
 
 			$input_errors[] = "Cannot {$action_txt} a WireGuard tunnel while it is assigned as an interface.";
 
@@ -149,24 +78,11 @@ function wg_toggle_tunnel($tun_id) {
 
 }
 
-function wg_format_endpoint($peer, $endpoint_key = 'endpoint', $port_key = 'port') {
-
-	if (!empty($peer[$endpoint_key])) {
-
-		$ret_str = "{$peer[$endpoint_key]} : {$peer[$port_key]}";
-
-	} else {
-
-		$ret_str = "Dynamic";
-
-	}
-
-	return $ret_str;
-
-}
-
+/*
+ * This toggles a given peer based on peerid
+ */
 function wg_toggle_peer($peer_id) {
-	global $config, $wgg;
+	global $wgg;
 
 	// Make sure we have the latest info
 	wg_globals();
@@ -174,79 +90,81 @@ function wg_toggle_peer($peer_id) {
 	// Make sure we have a valid peer
 	if (isset($wgg['peers'][$peer_id])) {
 
+		// Toggle the peer
 		$wgg['peers'][$peer_id]['enabled'] = ($wgg['peers'][$peer_id]['enabled'] == 'yes') ? 'no' : 'yes';
 
-		write_config("[{$wgg['pkg_names'][0]}] Peer {$peer_id} toggled.");
+		// Sync with configuration backend
+		write_config("[{$wgg['pkg_names'][0]}] Peer {$peer_id} deleted.");
 
-		wg_resync();
+		// Sync with the WireGuard backend
+		wg_resync_peer($wgg['peers'][$peer_id]);
 
 	}
 
 }
 
+/*
+ * This deletes a given peer based on index
+ */
 function wg_delete_peer($peer_id) {
-	global $config, $wgg;
+	global $wgg;
 
 	wg_globals();
 
 	if (isset($wgg['peers'][$peer_id])) {
 
+		// We need to save this because we are about to unset it
+		$tmp_peer = $wgg['peers'][$peer_id];
+
 		unset($wgg['peers'][$peer_id]);
 
+		// Sync with configuration backend
 		write_config("[{$wgg['pkg_names'][0]}] Peer {$peer_id} deleted.");
 
-		wg_resync();
+		// Sync with the WireGuard backend
+		wg_resync_peer($tmp_peer);
 
 	}
 
 }
 
-function wg_delete_tunnel($tun_id) {
-	global $config, $wgg;
+/*
+ * This deletes a given tunnel based on name
+ */
+function wg_delete_tunnel($tunnel_name) {
+	global $wgg;
 
+	// Make sure we have the latest info
 	wg_globals();
 
-	if (isset($wgg['tunnels'][$tun_id])) {
+	unset($ifname, $conf_path);
 
-		// We can't disable tunnels if they are assigned
-		if (!is_wg_tunnel_assigned($wgg['tunnels'][$tun_id]['name'])) {
+	// Get the config array index
+	$tun_idx = wg_get_tunnel_array_index($tunnel_name);
 
-			$tmp_tunnel = $wgg['tunnels'][$tun_id];
+	// Make sure we have a valid tunnel
+	if (isset($wgg['tunnels'][$tun_idx])) {
 
-			unset($ifname);
+		$tunnel = $wgg['tunnels'][$tun_idx];
 
-			unset($conf_path);
+		// We can't delete assigned tunnels
+		if (!is_wg_tunnel_assigned($tunnel['name'])) {
 
-			if (isset($wgg['tunnels'][$tun_id]['name'])) {
+			// Delete the tunnel
+			unset($wgg['tunnels'][$tun_idx]);
 
-				$ifname = $wgg['tunnels'][$tun_id]['name'];
+			// Sync with configuration backend
+			write_config("[{$wgg['pkg_names'][0]}] Tunnel {$tunnel['name']} deleted.");
 
-			}
-		
-			if (isset($ifname)) {
+			// Recreate configuration files
+			wg_create_config_files();
 
-				$conf_path = "{$wgg['conf_path']}/{$ifname}.conf";
-
-			}
-
-			// Delete the tunnel configuration entry
-			unset($wgg['tunnels'][$tun_id]);
-
-			write_config("[{$wgg['pkg_names'][0]}] Tunnel {$tmp_tunnel['name']} deleted.");
-
-			// Delete the wg?.conf file
-			if (isset($conf_path) && is_file($conf_path)) {
-
-				unlink($conf_path);
-
-			}
-
-			// Destroy the deleted tunnel
-			wg_destroy_if($ifname);
+			// Destroy the interface
+			pfSense_interface_destroy($tunnel['name']);
 		
 		} else {
 
-			$input_errors[] = "Cannot delete a WireGuard tunnel while it is assigned as an interface.";
+			$input_errors[] = "Cannot delete a WireGuard tunnel assigned to a pfSense interface.";
 
 		}
 
@@ -256,297 +174,324 @@ function wg_delete_tunnel($tun_id) {
 
 }
 
-// This returns an array of peer structs for a given tunnel
-function wg_get_tunnel_peers($tunnel) {
-	global $config, $wgg;
+/*
+ * This transforms a raw peer post consisting of repeatables 
+ */
+function wg_peer_allowedips($post) {
 
-	$a_ret = array();
+	// Convert the post into proper arrays
+	$allowedips = wg_parse_post_repeatables($post, array('address', 'address_subnet', 'address_descr'));
 
-	// Assume we have a tunnel name first
-	$wg_ifname = $tunnel;
+	$ret_array = array();
 
-	// Looks like we have a tunnel structure
-	if (is_array($tunnel) && isset($tunnel['name'])) {
+	// Loop through each address entry
+	foreach ($allowedips as $address) {
 
-		// Transform to an interface name
-		$wg_ifname = $tunnel['name'];
+		// Remove any accidental whitespace
+		$address['address'] = trim($address['address']);
 
-	}
+		if (!empty($address['address'])) {
 
-	// Look through array of peers for matching tunnel name
-	foreach ($wgg['peers'] as $peer_id => $peer) {
-
-		if ($peer['tun'] == $wg_ifname) {
-
-			// We need the array index for future manipulations
-			$peer['index'] = $peer_id;
-
-			$a_ret[] = $peer;
+			$ret_array[] = array('address' => $address['address'], 'mask' => $address['address_subnet'], 'descr' => $address['address_descr']);
 
 		}
 
 	}
 
-	// Return the list of filtered peers
-	return $a_ret;
+	return $ret_array;
 
 }
 
-function build_tun_list() {
-	global $config, $wgg;
+/*
+ * This transforms a raw tunnel post consisting of repeatables 
+ */
+function wg_tunnel_addresses($post) {
 
-	$a_ret = array();
+	// Convert the post into proper arrays
+	$addresses = wg_parse_post_repeatables($post, array('address', 'address_subnet', 'address_descr'));
 
-	$a_ret['unassigned'] = 'Unassigned';
+	$ret_array = array();
 
-	foreach ($wgg['tunnels'] as $tunnel) {
+	// Loop through each address entry
+	foreach ($addresses as $address) {
 
-		$a_ret[$tunnel['name']] = "{$tunnel['name']} ({$tunnel['descr']})";	
+		// Remove any accidental whitespace
+		$address['address'] = trim($address['address']);
 
-	}
+		if (!empty($address['address'])) {
 
-	return $a_ret;
-
-}
-
-function wg_allowed_ips_filtered($allowed_ips) {
-
-	$a_all = array('0.0.0.0/0', '::/0');
-
-	$all_ipv4 = $all_ipv6 = false;
-
-	$a_ips = explode(',', $allowed_ips);
-
-	$a_ret = array();
-
-	foreach ($a_ips as $index => $ip) {
-
-		if (!in_array($ip, $a_all)) {
-
-			$a_ret[] = $ip;
-
-		} elseif (in_array($ip, $a_all)) {
-
-			$all_ipv4 = is_v4($ip) ? true : $all_ipv4;
-
-			$all_ipv6 = is_v6($ip) ? true : $all_ipv6;
+			$ret_array[] = array('address' => $address['address'], 'mask' => $address['address_subnet'], 'descr' => $address['address_descr']);
 
 		}
 
 	}
 
-	// Need to make sure we return at least one for the UI
-	if (count($a_ret) == 0) {
-
-		$a_ret[] = null;
-
-	}
-
-	return array('allowedips' => $a_ret, 'all_ipv4' => $all_ipv4, 'all_ipv6' => $all_ipv6);
+	return $ret_array;
 
 }
 
-// This converts a form post array containing addresses and subnets and returns an CIDR-formatted array
-function wg_parse_post_addresses($post, $default = true) {
+/*
+ * This converts a raw form post containing any repeatables like addresses, subnets, and descriptions and returns an actual array
+ */
+function wg_parse_post_repeatables($post, $fields = null) {
 
-	$a_ret = array();
+	if (is_array($fields)) {
 
-	$all_ipv4 = ($default && isset($post['all_ipv4']) && $post['all_ipv4'] == 'yes');
+		$ret_array = array();
 
-	$all_ipv6 = ($default && isset($post['all_ipv6']) && $post['all_ipv6'] == 'yes');
+		foreach ($fields as $field) {
 
-	if ($all_ipv4) { 
-		
-		$a_ret[] = '0.0.0.0/0'; 
-	
-	}
+			$x = 0;
 
-	if ($all_ipv6) { 
-		
-		$a_ret[] = '::/0'; 
-	
-	}
+			while (!is_null($post["{$field}{$x}"])) {
 
-	$x = 0;
+				$ret_array[$x][$field] = $post["{$field}{$x}"];
 
-	while ($post["address{$x}"] && $post["address_subnet{$x}"]) {
-
-		$s_address = "{$post["address{$x}"]}/{$post["address_subnet{$x}"]}";
-
-		if (!$all_ipv4 && is_v4($s_address)) {
-
-			$a_ret[] = $s_address;
-
-		}
-		
-		if (!$all_ipv6 && is_v6($s_address)) {
-
-			$a_ret[] = $s_address;
-		
-		}
-
-		$x++;
-
-	}
-	
-	return $a_ret;
-
-}
-
-function wg_do_peer_post($post) {
-	global $config, $wgg;
-
-	wg_globals();
-
-	$input_errors = array();
-
-	$index = $post['index'];
-
-	$pconfig = $wgg['peers'][$index];
-
-	// Looks like we have a dynamic endpoint, clear endpoint or port variables before saving
-	if (isset($post['dynamic']) && $post['dynamic'] == 'yes') {
-
-		unset($post['endpoint']);
-
-		unset($post['port']);
-
-	}
-
-	$a_allowed_ips = wg_parse_post_addresses($post);
-
-	$pconfig['enabled'] 		= empty($post['enabled']) ? 'no' : 'yes';
-	$pconfig['tun'] 		= $post['tun'];
-	$pconfig['descr'] 		= $post['descr'];
-	$pconfig['endpoint'] 		= $post['endpoint'];
-	$pconfig['port'] 		= $post['port'];
-	$pconfig['persistentkeepalive']	= $post['persistentkeepalive'];
-	$pconfig['publickey'] 		= $post['publickey'];
-	$pconfig['presharedkey']	= $post['presharedkey'];
-	$pconfig['allowedips'] 		= implode(',', $a_allowed_ips);
-
-	$input_errors = wg_validate_peer_post($pconfig);
-
-	if (!$input_errors) {
-
-		$wgg['peers'][$index] = $pconfig;
-
-		write_config("[{$wgg['pkg_names'][0]}] Peer {$pconfig['descr']} updated.");
-
-	}
-
-	return(array('input_errors' => $input_errors, 'pconfig' => $pconfig));
-
-}
-
-// Write new tunnel values to the configuration system
-function wg_do_post($post) {
-	global $config, $wgg;
-
-	wg_globals();
-
-	$input_errors = array();
-
-	$index = $post['index'];
-
-	$pconfig = $wgg['tunnels'][$index];
-
-	if (empty($pconfig['name'])) {
-
-		$pconfig['name'] = next_wg_if();
-
-	}
-
-	if (empty($pconfig['mtu'])) {
-
-		$pconfig['mtu'] = $wgg['default_mtu'];
-
-	}
-
-	$pconfig['enabled'] = empty($post['enabled']) ? 'no' : 'yes';
-
-	$pconfig['descr'] = $post['descr'];
-
-	// Tunnel section
-	$pconfig['addresses'] = implode(',', wg_parse_post_addresses($post));
-	$pconfig['listenport'] = $post['listenport'];
-	$pconfig['privatekey'] = $post['privatekey'];
-	$pconfig['publickey'] = wg_gen_publickey($post['privatekey']);
-
-	$input_errors = wg_validate_post($pconfig);
-
-	if (!$input_errors) {
-
-		$wgg['tunnels'][$index] = $pconfig;
-
-		write_config("[{$wgg['pkg_names'][0]}] Tunnel {$pconfig['name']} updated.");
-
-	}
-
-	return(array('input_errors' => $input_errors, 'pconfig' => $pconfig));
-
-}
-
-
-
-function wg_resync($verbose = false) {
-	global $config, $g, $wgg;
-
-	// Read latest settings
-	wg_globals();
-
-	// Write out configuration files to disk
-	wg_create_config_files();
-
-	// Attempt to reinstall the interface group to keep things clean
-	wg_ifgroup_install();
-
-	if ($g['wireguard_installing']) {
-
-		update_status("\n  Configuring WireGuard tunnels...");
-
-	}
-
-	if (is_array($wgg['tunnels'])) {
-
-		foreach ($wgg['tunnels'] as $tunnel) {
-
-			if (isset($tunnel['enabled']) && $tunnel['enabled'] == 'yes') {
-
-				// Determine if we should configure hard or soft
-				$conf_hard = (!is_wg_tunnel_assigned($tunnel) || !does_interface_exist($tunnel['name']));
-
-				// Attempt to create the WireGuard tunnel
-				wg_configure_if($tunnel, $conf_hard, $verbose);
-
-			} else {
-
-				// Attempt to destroy the WireGuard tunnel
-				wg_destroy_if($tunnel, $verbose);
+				$x++;
 
 			}
 
 		}
 
+		return $ret_array;
+
 	}
+
+	return false;
+
+}
+
+/*
+ * Takes a raw post for a peer, validates it, and saves it to the configuration system
+ */
+function wg_do_peer_post($post) {
+	global $wgg;
+
+	wg_globals();
+
+	$pconfig = $input_errors = array();
+
+	$peer_idx = $post['index'];
+
+	$pconfig = $wgg['peers'][$peer_idx];
+
+	wg_init_config_arr($pconfig, array('allowedips', 'row'));
+
+	$pconfig['enabled'] 		= empty($post['enabled']) ? 'no' : 'yes';
+
+	$pconfig['tun'] 		= $post['tun'];
+
+	$pconfig['descr'] 		= $post['descr'];
+
+	$pconfig['endpoint'] 		= $post['endpoint'];
+
+	$pconfig['port'] 		= empty($post['port']) ? $wgg['default_port'] : $post['port'];
+
+	$pconfig['persistentkeepalive']	= $post['persistentkeepalive'];
+
+	$pconfig['publickey'] 		= $post['publickey'];
+	
+	$pconfig['presharedkey']	= $post['presharedkey'];
+
+	$pconfig['allowedips']['row'] 	= wg_peer_allowedips($post);
+
+	// Looks like we have a dynamic endpoint, so clear endpoint or port variables before saving
+	if (isset($post['dynamic']) && $post['dynamic'] == 'yes') {
+
+		unset($post['endpoint'], $post['port']);
+
+	}
+
+	$input_errors = wg_validate_peer_post($pconfig, $peer_idx);
+
+	if (!$input_errors) {
+
+		$wgg['peers'][$peer_idx] = $pconfig;
+
+		// Sync with configuration backend
+		write_config("[{$wgg['pkg_names'][0]}] Peer {$pconfig['descr']} updated.");
+
+		// Sync with WireGuard backend
+		wg_resync_peer($pconfig);
+
+	}
+
+	return array('input_errors' => $input_errors, 'pconfig' => $pconfig);
+
+}
+
+/*
+ * Takes a raw post for a tunnel, validates it, and saves it to the configuration system
+ */
+function wg_do_tunnel_post($post) {
+	global $wgg;
+
+	wg_globals();
+
+	$pconfig = $input_errors = array();
+
+	$tun_idx = $post['index'];
+
+	$pconfig = $wgg['tunnels'][$tun_idx];
+
+	wg_init_config_arr($pconfig, array('addresses', 'row'));
+
+	$pconfig['name']		= empty($pconfig['name']) ? next_wg_if() : $pconfig['name'];
+
+	$pconfig['enabled'] 		= empty($post['enabled']) ? 'no' : 'yes';
+
+	$pconfig['descr'] 		= $post['descr'];
+
+	$pconfig['listenport'] 		= empty($post['listenport']) ? next_wg_port() : $post['listenport'];
+
+	$pconfig['privatekey'] 		= $post['privatekey'];
+
+	$pconfig['publickey'] 		= wg_gen_publickey($post['privatekey']);
+
+	$pconfig['mtu'] 		= empty($post['mtu']) ? $wgg['default_mtu'] : $post['mtu'];
+
+	$pconfig['addresses']['row'] 	= wg_tunnel_addresses($post);
+
+	$input_errors 			= wg_validate_tunnel_post($pconfig, $tun_idx);
+
+	if (!$input_errors) {
+
+		$wgg['tunnels'][$tun_idx] = $pconfig;
+
+		// Sync with configuration backend
+		write_config("[{$wgg['pkg_names'][0]}] Tunnel {$pconfig['name']} updated.");
+
+		// Sync with WireGuard backend
+		wg_resync_tunnel($pconfig['name']);
+
+	}
+
+	return array('input_errors' => $input_errors, 'pconfig' => $pconfig);
+
+}
+
+function wg_resync_peer($peer) {
+	global $wgg;
+
+	// Create new configuration files
+	wg_create_config_files();
+
+	// Sync the configuration with the tunnel interface
+	wg_interface_syncconf($peer['tun']);
+
+}
+
+function wg_resync_all() {
+	global $g, $wgg;
 
 	if ($g['wireguard_installing']) {
 
-		update_status(" done.\n");
-
-		// We are no longer installing
 		unset($g['wireguard_installing']);
+
+		return;
+		
+	}
+
+	// Create WireGuard configuration files
+	wg_create_config_files();
+
+	// Build each tunnel
+	foreach ($wgg['tunnels'] as $tunnel) {
+		
+		wg_resync_tunnel($tunnel['name'], true);
+	
+	}
+
+	// Update the Unbound ACL without restarting Unbound
+	wg_unbound_acl_update(false);
+
+}
+
+
+// This resyncs a specific tunnel interface
+function wg_resync_tunnel($tunnel_name, $quick = false) {
+	global $wgg;
+
+	wg_globals();
+
+	$tun_idx = wg_get_tunnel_array_index($tunnel_name);
+
+	if (!$quick) {
+
+		// Create new configuration files
+		wg_create_config_files();
+
+	}
+
+	if (isset($wgg['tunnels'][$tun_idx])) {
+
+		$tunnel = $wgg['tunnels'][$tun_idx];
+
+		// Create the tunnel interface if it does not yet exist
+		wg_interface_create($tunnel['name']);
+
+		// Add the tunnel interface to the WireGuard interface group
+		wg_interface_group_add($tunnel['name']);
+
+		// Update the addresses on the tunnel interface
+		wg_interface_update_addresses($tunnel['name']);
+
+		// Toggle the interface accordingly instead of tearing it down completely
+		if (isset($tunnel['enabled']) && $tunnel['enabled'] == 'yes') {
+
+			wg_ifconfig_up_interface($tunnel['name']);
+
+		} else {
+
+			wg_ifconfig_down_interface($tunnel['name']);
+
+		}
+
+		// Sync the configuration with the tunnel interface
+		wg_interface_syncconf($tunnel['name']);
+
+	}
+
+	if (!$quick) {
+
+		// Update Unbound ACL
+		wg_unbound_acl_update();
 
 	}
 
 }
 
-function wg_create_config_files($clean = true) {
-	global $config, $wgg;
+function wg_get_enabled_tunnels() {
+	global $wgg;
 
 	wg_globals();
 
-	// We've got some tunnels to configure
+	$ret_tunnels = array();
+
+	foreach ($wgg['tunnels'] as $tunnel) {
+
+		if (isset($tunnel['enabled']) && $tunnel['enabled'] == 'yes') {
+
+			$ret_tunnels[] = $tunnel;
+
+		}
+
+	}
+
+	return $ret_tunnels;
+
+}
+
+
+/*
+ * (Re)creates configuration files based on the current configuration
+ */
+function wg_create_config_files($clean = true) {
+	global $wgg;
+
+	wg_globals();
+
+	// Check if there are any configurations to write to disk
 	if (is_array($wgg['tunnels'])) {
 
 		// Create configuration path if it is missing
@@ -560,20 +505,18 @@ function wg_create_config_files($clean = true) {
 
 		}
 
-		// We almost always want to just overwrite the configurations
+		// We almost always want to just overwrite the old configurations
 		if ($clean) {
 
 			wg_delete_config_files();
 
 		}
 
-		foreach ($wgg['tunnels'] as $tunnel) {
+		$tunnels = wg_get_enabled_tunnels();
 
-			if (!empty($tunnel['enabled']) && $tunnel['enabled'] == 'yes') {
+		foreach ($tunnels as $tunnel) {
 
-				make_wg_conf($tunnel);
-
-			}
+			make_wg_conf($tunnel);
 
 		}
 
@@ -597,6 +540,60 @@ function wg_delete_config_files() {
 }
 
 /* 
+ * Wrapper to sanitize many variables at once
+ * Call as wg_htmlspecialchars($var1, $var2, ... $varX)
+ * Vars can be a mix of strings and arrays
+ */
+function wg_htmlspecialchars(&...$vars) {
+
+	foreach ($vars as &$var) {
+
+		if (isset($var) && is_array($var)) {
+
+			array_walk($var, function(&$x) {
+
+				$x = htmlspecialchars($x);
+		
+			});
+
+			continue;
+		
+		}
+
+		$var = htmlspecialchars($var);
+
+	}
+
+}
+
+/* 
+ * Wrapper to sanitize many variables at once
+ * Call as wg_escapeshellargs($var1, $var2, ... $varX)
+ * Vars can be a mix of strings and arrays
+ */
+function wg_escapeshellarg(&...$vars) {
+
+	foreach ($vars as &$var) {
+
+		if (isset($var) && is_array($var)) {
+
+			array_walk($var, function(&$x) {
+
+				$x = escapeshellarg($x);
+		
+			});
+
+			continue;
+		
+		}
+
+		$var = escapeshellarg($var);
+
+	}
+
+}
+
+/* 
  * Removes any configuration xml paths as defined by $wgg['xml_conf_tags']
  */
 function wg_remove_config_settings() {
@@ -614,7 +611,9 @@ function wg_remove_config_settings() {
 
 }
 
-// Write each file
+/*
+ * Writes a WireGuard configuration file for a given tunnel to the configuration path
+ */
 function make_wg_conf($tunnel) {
 	global $wgg;
 
@@ -634,22 +633,10 @@ function make_wg_conf($tunnel) {
 		$txt .= "ListenPort = {$tunnel['listenport']}\n";
 	}
 
-	if (!empty($tunnel['addresses'])) {
-		$txt .= "Address = {$tunnel['addresses']}\n";
-	}
-
-	if (!empty($tunnel['mtu'])) {
-		$txt .= "MTU = {$tunnel['mtu']}\n";
-	}
-
-	// We need to address this at some point
-	$txt .= "Table = off\n";
-
 	$txt .= "\n";
 
 	// Process peers section
-
-	$peers = wg_get_tunnel_peers($tunnel);
+	$peers = wg_get_tunnel_peers($tunnel['name']);
 
 	if (is_array($peers) && count($peers) > 0) {
 
@@ -667,30 +654,33 @@ function make_wg_conf($tunnel) {
 
 				}
 
-				if (!empty($peer['endpoint'])) {
+				if (!empty($peer['presharedkey'])) {
 
-					$txt .= "EndPoint = ";
+					$txt .= "PresharedKey = {$peer['presharedkey']}\n";
+				}
 
-					$txt .= is_ipaddrv6($peer['endpoint']) ? "[{$peer['endpoint']}]" : $peer['endpoint'];
+				
+				if (is_array($peer['allowedips']['row'])) {
 
-					$txt .= ":" . ((empty($peer['port'])) ? '51820' : $peer['port']) . "\n";
+					$allowedips = implode(',', array_map(fn($x) => "{$x['address']}/{$x['mask']}", $peer['allowedips']['row']));
+
+					$txt .= "AllowedIPs = {$allowedips}\n";
 
 				}
 
-				if (!empty($peer['allowedips'])) {
+				if (!empty($peer['endpoint'])) {
+			
+					$peer['endpoint'] = is_ipaddrv6($peer['endpoint']) ? "[{$peer['endpoint']}]" : $peer['endpoint'];
 
-					$txt .= "AllowedIPs = {$peer['allowedips']}\n";
+					$peer['port'] = empty($peer['port']) ? $wgg['default_port'] : $peer['port'];
+
+					$txt .= "Endpoint = {$peer['endpoint']}:{$peer['port']}\n";
 
 				}
 
 				if (!empty($peer['persistentkeepalive'])) {
 
 					$txt .= "PersistentKeepalive = {$peer['persistentkeepalive']}\n";
-				}
-
-				if (!empty($peer['presharedkey'])) {
-
-					$txt .= "PresharedKey = {$peer['presharedkey']}\n";
 				}
 
 				$txt .= "\n";
@@ -703,9 +693,11 @@ function make_wg_conf($tunnel) {
 
 	$conf_path = "{$wgg['conf_path']}/{$tunnel['name']}.conf";
 
+	$old_mask = umask(077);
+
 	file_put_contents($conf_path, $txt);
 
-	chmod($conf_path, 0600);
+	umask($old_mask);
 
 }
 

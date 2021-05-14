@@ -1,11 +1,9 @@
 <?php
 /*
- * pkg_wireguard.inc
+ * wg_foot.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2021 R. Christian McDonald
- * Copyright (c) 2020 Ascord
+ * Copyright (c) 2021 R. Christian McDonald (https://github.com/theonemcdonald)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,12 +18,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-global $shortcuts;
-
-$shortcuts['wireguard'] = array();
-$shortcuts['wireguard']['main'] = '/wg/vpn_wg_settings.php';
-$shortcuts['wireguard']['status'] = '/wg/status_wireguard.php';
-$shortcuts['wireguard']['service'] = 'wireguard';
-
 ?>
+
+<script src="/wg/js/WireGuardHelpers.js?v=<?=filemtime('/usr/local/www/wg/js/WireGuardHelpers.js')?>"></script>
