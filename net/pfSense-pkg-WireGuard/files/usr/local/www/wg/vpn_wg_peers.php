@@ -28,11 +28,12 @@
 ##|-PRIV
 
 // pfSense includes
-require_once('guiconfig.inc');
 require_once('functions.inc');
+require_once('guiconfig.inc');
 
 // WireGuard includes
 require_once('wireguard/wg.inc');
+require_once('wireguard/wg_guiconfig.inc');
 
 global $wgg;
 
@@ -42,15 +43,15 @@ if ($_POST) {
 
 	if (isset($_POST['peer'])) {
 
-		$peer_id = $_POST['peer'];
+		$peer_idx = $_POST['peer'];
 
 		if ($_POST['act'] == 'toggle') {
 
-			wg_toggle_peer($peer_id);
+			wg_toggle_peer($peer_idx);
 
 		} elseif ($_POST['act'] == 'delete') { 
 		
-			wg_delete_peer($peer_id);
+			wg_delete_peer($peer_idx);
 
 		}
 
@@ -71,8 +72,16 @@ $tab_array[] = array(gettext("Status"), false, "/wg/status_wireguard.php");
 
 include("head.inc");
 
+if (count($wgg['tunnels']) > 0 && !is_module_loaded($wgg['kmod'])) {
+
+	print_info_box(gettext('The WireGuard kernel module is not loaded!'), 'danger', null);
+
+}
+
 if ($input_errors) {
+
 	print_input_errors($input_errors);
+
 }
 
 display_top_tabs($tab_array);
@@ -96,32 +105,25 @@ display_top_tabs($tab_array);
 						<th><?=gettext("Description")?></th>
 						<th><?=gettext("Public key")?></th>
 						<th><?=gettext("Tunnel")?></th>
-						<th><?=gettext("Peer Address")?></th>
 						<th><?=gettext("Allowed IPs")?></th>
-						<th><?=gettext("Endpoint").' : '.gettext("Port")?></th>
+						<th><?=htmlspecialchars(wg_format_endpoint(true))?></th>
 						<th><?=gettext("Actions")?></th>
 					</tr>
 				</thead>
 				<tbody>
 <?php
-		foreach ($wgg['peers'] as $peer_id => $peer):
-
-			$entryStatus = ($peer['enabled'] == 'yes') ? 'enabled' : 'disabled';
-
-			$icon_toggle = ($peer['enabled'] == 'yes') ? 'ban' : 'check-square-o';	
-
+		foreach ($wgg['peers'] as $peer_idx => $peer):
 ?>
-					<tr ondblclick="document.location='<?="vpn_wg_peers_edit.php?peer={$peer_id}"?>';" class="<?=$entryStatus?>">
-						<td><?=htmlspecialchars($peer['descr'])?></td>
-						<td><?=htmlspecialchars(substr($peer['publickey'],0,16).'...')?></td>
+					<tr ondblclick="document.location='<?="vpn_wg_peers_edit.php?peer={$peer_idx}"?>';" class="<?=wg_entrystatus_class($peer)?>">
+						<td><?=htmlspecialchars(wg_truncate_pretty($peer['descr'], 16))?></td>
+						<td><?=htmlspecialchars(wg_truncate_pretty($peer['publickey'], 16))?></td>
 						<td><?=htmlspecialchars($peer['tun'])?></td>
-						<td><?=htmlspecialchars(explode(',', $peer['peeraddresses'])[0])?></td>
-						<td><?=htmlspecialchars(explode(',', $peer['allowedips'])[0])?></td>
-						<td><?=htmlspecialchars(wg_format_endpoint($peer))?></td>
+						<td><?=wg_generate_peer_allowedips_popup_link($peer_idx)?></td>
+						<td><?=htmlspecialchars(wg_format_endpoint(false, $peer))?></td>
 						<td style="cursor: pointer;">
-							<a class="fa fa-pencil" title="<?=gettext("Edit peer")?>" href="<?="vpn_wg_peers_edit.php?peer={$peer_id}"?>"></a>
-							<a class="fa fa-<?=$icon_toggle?>" title="<?=gettext("Click to toggle enabled/disabled status")?>" href="<?="?act=toggle&peer={$peer_id}"?>" usepost></a>
-							<a class="fa fa-trash text-danger" title="<?=gettext('Delete peer')?>" href="<?="?act=delete&peer={$peer_id}"?>" usepost></a>
+							<a class="fa fa-pencil" title="<?=gettext("Edit peer")?>" href="<?="vpn_wg_peers_edit.php?peer={$peer_idx}"?>"></a>
+							<?=wg_generate_toggle_icon_link($peer, 'Click to toggle enabled/disabled status', "?act=toggle&peer={$peer_idx}")?>
+							<a class="fa fa-trash text-danger" title="<?=gettext('Delete peer')?>" href="<?="?act=delete&peer={$peer_idx}"?>" usepost></a>
 						</td>
 					</tr>
 
@@ -148,13 +150,14 @@ display_top_tabs($tab_array);
 
 <script type="text/javascript">
 //<![CDATA[
-
-events.push(function() {
-
-});
 //]]>
 </script>
 
-<?php
-include("foot.inc");
+<?php 
+
+include('foot.inc');
+
+// Must be included last
+include('wireguard/wg_foot.inc');
+
 ?>

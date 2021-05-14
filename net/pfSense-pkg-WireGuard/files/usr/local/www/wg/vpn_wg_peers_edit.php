@@ -33,24 +33,21 @@ require_once('guiconfig.inc');
 
 // WireGuard includes
 require_once('wireguard/wg.inc');
+require_once('wireguard/wg_guiconfig.inc');
 
 global $wgg;
 
 wg_globals();
 
-$secrets_input_type = (isset($wgg['config']['hide_secrets']) && $wgg['config']['hide_secrets'] =='yes') ? 'password' : 'text';
-
 if (isset($_REQUEST['tun'])) {
 
-	$tun = $_REQUEST['tun'];
-
-	$tun_id = wg_get_tunnel_id($_REQUEST['tun']);
+	$tun_name = $_REQUEST['tun'];
 
 }
 
 if (isset($_REQUEST['peer']) && is_numericint($_REQUEST['peer'])) {
 
-	$peer_id = $_REQUEST['peer'];
+	$peer_idx = $_REQUEST['peer'];
 
 }
 
@@ -66,8 +63,6 @@ if ($_POST) {
 		$pconfig = $res['pconfig'];
 
 		if (!$input_errors) {
-
-			wg_resync();
 			
 			// Save was successful
 			header("Location: /wg/vpn_wg_peers.php");
@@ -83,31 +78,28 @@ if ($_POST) {
 	
 	}
 
+} 
+
+$pconfig = array();
+
+if (isset($peer_idx) && is_array($wgg['peers'][$peer_idx])) {
+
+	// Looks like we are editing an existing peer
+	$pconfig = &$wgg['peers'][$peer_idx];
+
 } else {
 
-	if (isset($peer_id) && is_array($wgg['peers'][$peer_id])) {
+	// We are creating a new peer
+	$pconfig = array();
 
-		// Looks like we are editing an existing tunnel
-		$pconfig = &$wgg['peers'][$peer_id];
+	// Default to enabled
+	$pconfig['enabled'] = 'yes';
 
-	} else {
+	// Automatically choose a tunnel based on the request 
+	$pconfig['tun'] = $tun_name;
 
-		// We are creating a new peer
-		$pconfig = array();
-
-		// Default to enabled
-		$pconfig['enabled'] = 'yes';
-
-		// Automatically choose a tunnel based on the request 
-		$pconfig['tun'] = $tun;
-
-		// Default to a dynamic tunnel, so hide the endpoint form group
-		$is_dynamic = true;
-
-	}
-
-	// Pull out $allowedips, $all_ipv4, and $all_ipv6 in one shot
-	extract(wg_allowed_ips_filtered($pconfig['allowedips']));
+	// Default to a dynamic tunnel, so hide the endpoint form group
+	$is_dynamic = true;
 
 }
 
@@ -124,8 +116,16 @@ $tab_array[] = array(gettext("Status"), false, "/wg/status_wireguard.php");
 
 include("head.inc");
 
+if (count($wgg['tunnels']) > 0 && !is_module_loaded($wgg['kmod'])) {
+
+	print_info_box(gettext('The WireGuard kernel module is not loaded!'), 'danger', null);
+
+}
+
 if ($input_errors) {
+
 	print_input_errors($input_errors);
+
 }
 
 display_top_tabs($tab_array);
@@ -138,7 +138,7 @@ $form->addGlobal(new Form_Input(
 	'index',
 	'',
 	'hidden',
-	$peer_id
+	$peer_idx
 ));
 
 $section->addInput(new Form_Checkbox(
@@ -152,7 +152,7 @@ $section->addInput($input = new Form_Select(
 	'tun',
 	'Tunnel',
 	$pconfig['tun'],
-	build_tun_list()
+	wg_get_tun_list()
 ))->setHelp("WireGuard tunnel for this peer. (<a href='vpn_wg_tunnels_edit.php'>Create a New Tunnel</a>)");
 
 $section->addInput(new Form_Input(
@@ -161,7 +161,7 @@ $section->addInput(new Form_Input(
 	'text',
 	$pconfig['descr'],
 	['placeholder' => 'Description']
-))->setHelp("Peer description for administrative reference (not parsed)");
+))->setHelp("Peer description for administrative reference (not parsed).");
 
 $section->addInput(new Form_Checkbox(
 	'dynamic',
@@ -215,7 +215,7 @@ $group = new Form_Group('Pre-shared Key');
 $group->add(new Form_Input(
 	'presharedkey',
 	'Pre-shared Key',
-	$secrets_input_type,
+	wg_secret_input_type(),
 	$pconfig['presharedkey']
 ))->setHelp('Optional pre-shared key for this tunnel.');
 
@@ -229,51 +229,46 @@ $group->add(new Form_Button(
 
 $section->add($group);
 
-$group = new Form_Group("Allowed IPs");
+$form->add($section);
 
-$group->add(new Form_Checkbox(
-	'all_ipv4',
-	'Protocol',
-	'IPv4',
-	$all_ipv4
-))->setWidth(3)->setHelp("Allow all IPv4 addresses (0.0.0.0/0)");
+$section = new Form_Section('Address Configuration');
 
-$group->add(new Form_Checkbox(
-	'all_ipv6',
-	'Protocol',
-	'IPv6',
-	$all_ipv6
-))->setWidth(3)->setHelp("Allow all IPv6 addresses (::/0)");
+// Hack to ensure empty lists default to /128 mask
+if (!is_array($pconfig['allowedips']['row'])) {
 
-$section->add($group);
+	wg_init_config_arr($pconfig, array('allowedips', 'row', 0));
+	
+	$pconfig['allowedips']['row'][0]['mask'] = '128';
+	
+}
 
-$group = new Form_Group(null);
+$last = count($pconfig['allowedips']['row']) - 1;
 
-$group->add(new Form_StaticText(
-	null,
-	'IPv4 or IPv6 subnets or hosts reachable via this peer:'
-))->setWidth(5);
+foreach ($pconfig['allowedips']['row'] as $counter => $item) {
 
-$section->add($group);
-
-foreach ($allowedips as $index => $ip) {
-
-	list($address, $address_subnet) = explode("/", $ip);
-
-	$group = new Form_Group(null);
+	$group = new Form_Group($counter == 0 ? 'Allowed IPs' : null);
 
 	$group->addClass('repeatable');
 
 	$group->add(new Form_IpAddress(
-		"address{$index}",
-		'Allowed IPs',
-		$address,
+		"address{$counter}",
+		'Allowed Subnet or Host',
+		$item['address'],
 		'BOTH'
-	))->addMask("address_subnet{$index}", $address_subnet, 128, 1)
-		->setWidth(5);
+	))->setHelp($counter == $last ? 'IPv4 or IPv6 subnet or host reachable via this peer.' : '')
+		->addMask("address_subnet{$counter}", $item['mask'], 128, 0)
+		->setWidth(4);
+
+	$group->add(new Form_Input(
+		"address_descr{$counter}",
+		'Description',
+		'text',
+		$item['descr']
+	))->setHelp($counter == $last ? 'Description for administrative reference (not parsed).' : '')
+		->setWidth(4);
 
 	$group->add(new Form_Button(
-		"deleterow{$index}",
+		"deleterow{$counter}",
 		'Delete',
 		null,
 		'fa-trash'
@@ -312,10 +307,12 @@ print($form);
 
 <?php $genkeywarning = gettext("Overwrite pre-shared key? Click 'ok' to overwrite key."); ?>
 
-<!-- ============== JavaScript =================================================================================================-->
 <script type="text/javascript">
 //<![CDATA[
 events.push(function() {
+
+	// Supress "Delete" button if there are fewer than two rows
+	checkLastRow();
 
 	$('#copypsk').click(function () {
 		$('#presharedkey').focus();
@@ -348,19 +345,19 @@ events.push(function() {
 		$(form).submit();
 	});
 
-	function updateSection(hide) {
+	$('#dynamic').click(function () {
+
+		updateDynamicSection(this.checked);
+
+	});
+
+	function updateDynamicSection(hide) {
 
 		hideClass('endpoint', hide);
 
 	}
 
-	$('#dynamic').click(function () {
-
-		updateSection(this.checked);
-
-	});
-
-    	updateSection($('#dynamic').prop('checked'));
+	updateDynamicSection($('#dynamic').prop('checked'));
 
 });
 //]]>
@@ -368,6 +365,9 @@ events.push(function() {
 
 <?php
 
-include("foot.inc");
+include('foot.inc');
+
+// Must be included last
+include('wireguard/wg_foot.inc');
 
 ?>
