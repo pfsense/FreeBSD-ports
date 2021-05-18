@@ -148,7 +148,7 @@ display_top_tabs($tab_array);
 										<th><?=gettext("Description")?></th>
 										<th><?=gettext("Public key")?></th>
 										<th><?=gettext("Allowed IPs")?></th>
-										<th><?=wg_format_endpoint(true)?></th>
+										<th><?=htmlspecialchars(wg_format_endpoint(true))?></th>
 									</tr>
 								</thead>
 								<tbody>

@@ -357,9 +357,11 @@ function wg_destroy_tunnels() {
 	// Now unload the kernel module if it is still loaded
 	if (is_module_loaded($wgg['kmod'])) {
 
-		$kmod_safe = escapeshellarg($wgg['kmod']);
+		$kmod = $wgg['kmod'];
 
-		mwexec("{$wgg['kldunload']} {$kmod_safe} > /dev/null 2>&1");
+		wg_escapeshellarg($kmod);
+
+		mwexec("{$wgg['kldunload']} {$kmod} > /dev/null 2>&1");
 
 	}
 
@@ -548,25 +550,30 @@ function wg_unbound_acl_install() {
 
 	$a_unbound_acls_names = array_map(fn($x) => $x['aclname'], $a_unbound_acls);
 
-	if (!preg_grep("/{$wgg['unboundaclentry']['aclname']}/", $a_unbound_acls_names)) {
+	// Only need to create the ACL if we actually have tunnel networks to add
+	if (!empty($tun_networks) && is_array($tun_networks)) {
 
-		$wgg['unboundaclentry']['aclid'] = unbound_get_next_id();
+		if (!preg_grep("/{$wgg['unboundaclentry']['aclname']}/", $a_unbound_acls_names)) {
 
-		$tmp_acls = array();
+			$wgg['unboundaclentry']['aclid'] = unbound_get_next_id();
 
-		foreach ($tun_networks as $network_idx => $network) {
+			$tmp_acls = array();
 
-			$tmp_acls[$network_idx]['acl_network'] 	= $network['network'];
+			foreach ($tun_networks as $network_idx => $network) {
 
-			$tmp_acls[$network_idx]['mask']		= $network['mask'];
+				$tmp_acls[$network_idx]['acl_network'] 	= $network['network'];
 
-			$tmp_acls[$network_idx]['description']	= "{$network['tun']} ({$network['descr']})";
+				$tmp_acls[$network_idx]['mask']		= $network['mask'];
 
-			$wgg['unboundaclentry']['row'] = $tmp_acls;
+				$tmp_acls[$network_idx]['description']	= "{$network['tun']} ({$network['descr']})";
+
+				$wgg['unboundaclentry']['row'] = $tmp_acls;
+
+			}
+
+			$a_unbound_acls[] = $wgg['unboundaclentry'];
 
 		}
-
-		$a_unbound_acls[] = $wgg['unboundaclentry'];
 
 	}
 

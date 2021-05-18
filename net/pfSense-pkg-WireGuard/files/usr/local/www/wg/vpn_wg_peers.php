@@ -106,7 +106,7 @@ display_top_tabs($tab_array);
 						<th><?=gettext("Public key")?></th>
 						<th><?=gettext("Tunnel")?></th>
 						<th><?=gettext("Allowed IPs")?></th>
-						<th><?=wg_format_endpoint(true)?></th>
+						<th><?=htmlspecialchars(wg_format_endpoint(true))?></th>
 						<th><?=gettext("Actions")?></th>
 					</tr>
 				</thead>
@@ -149,11 +149,7 @@ display_top_tabs($tab_array);
 </form>
 
 <script type="text/javascript">
-//<![CDATA[,
-
-events.push(function() {
-
-});
+//<![CDATA[
 //]]>
 </script>
 

@@ -289,7 +289,7 @@ if (!is_wg_tunnel_assigned($pconfig)) {
 			'fa-trash'
 		))->addClass('btn-warning btn-sm');
 	
-		$section->add($group);		
+		$section->add($group);	
 
 	}
 
@@ -304,6 +304,8 @@ if (!is_wg_tunnel_assigned($pconfig)) {
 
 	// We want all configured interfaces, including disabled ones
 	$wg_pfsense_if = wg_get_pfsense_interface_info($pconfig['name']);
+
+	wg_htmlspecialchars($wg_pfsense_if);
 
 	$section->addInput(new Form_StaticText(
 		'Assignment',
@@ -366,7 +368,7 @@ else:
 					<th><?=gettext("Description")?></th>
 					<th><?=gettext("Public key")?></th>
 					<th><?=gettext("Allowed IPs")?></th>
-					<th><?=wg_format_endpoint(true)?></th>
+					<th><?=htmlspecialchars(wg_format_endpoint(true))?></th>
 					<th><?=gettext("Actions")?></th>
 				</tr>
 			</thead>

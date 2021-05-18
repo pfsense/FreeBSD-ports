@@ -24,6 +24,7 @@ require_once('util.inc');
 
 // WireGuard includes
 require_once('wireguard/wg_globals.inc');
+require_once('wireguard/wg.inc');
 
 // Formats peer endpoint address and port for the UI
 function wg_format_endpoint($header = true, $peer = null, $endpoint_key = 'endpoint', $port_key = 'port') {
@@ -77,7 +78,7 @@ function wg_get_tun_list() {
 
 }
 
-// Truncates a given string if if necessary and formats it to make it look good
+// Truncates a given string if necessary and formats it to make it look good
 function wg_truncate_pretty($str, $length) {
 
 	$s_truncated = substr($str, 0, $length);
@@ -93,6 +94,8 @@ function wg_interface_status_icon($status, $fa_icon = "fa-ethernet") {
 
 	$ret_class = ($status == "up") ? 'text-success' : '';
 
+	wg_htmlspecialchars($fa_icon, $ret_class, $status);
+
 	$ret_html = "<i class=\"fa {$fa_icon} {$ret_class}\" style=\"vertical-align: middle;\" title=\"{$status}\"></i>";
 
 	return $ret_html;
@@ -100,18 +103,24 @@ function wg_interface_status_icon($status, $fa_icon = "fa-ethernet") {
 }
 
 // Returns the appropriate fa icon class for handshake status icon
-function wg_handshake_status_icon($latest_handshake = 0, $fa_icon = "fa-handshake") {
+function wg_handshake_status_icon($latest_handshake_stamp = 0, $fa_icon = "fa-handshake") {
 	global $wgg;
 
-	$current_time = time();
+	$end_time = new DateTimeImmutable;
 
-	$diff_time = $current_time - $latest_handshake;
+	$start_time = new DateTime();
+
+	$start_time->setTimestamp($latest_handshake_stamp);
+
+	$diff_time = $end_time->diff($start_time);
+
+	$diff_time_seconds = abs($end_time->getTimestamp() - $start_time->getTimestamp());
 
 	$a_thresholds = $wgg['handshake_thresholds'];
 
 	foreach ($a_thresholds as $threshold => $value) {
 
-		if ($diff_time >= $threshold) {
+		if ($diff_time_seconds >= $threshold) {
 	
 			$ret_class = $value['class'];
 
@@ -123,6 +132,8 @@ function wg_handshake_status_icon($latest_handshake = 0, $fa_icon = "fa-handshak
 
 	}
 
+	wg_htmlspecialchars($fa_icon, $ret_class, $ret_title);
+
 	$ret_html = "<i class=\"fa {$fa_icon} {$ret_class}\" style=\"vertical-align: middle;\" title=\"{$ret_title}\"></i>";
 
 	return $ret_html;
@@ -130,43 +141,66 @@ function wg_handshake_status_icon($latest_handshake = 0, $fa_icon = "fa-handshak
 }
 
 // Formats a given time difference in a human-friendly way
-function wg_human_time_diff($start_time, $end_time = null, $from_epoch = false) {
-	
-	// If end time is not supplied, use the current time instead
-	$end_time = is_null($end_time) ? time() : $end_time;
+function wg_human_time_diff($start_time_stamp, $end_time_stamp = null, $from_epoch = false) {
 
-	// If start time is zero, proceed unless we are actually interested in calculating time from epoch, probably not...
-	$start_time = ($start_time > 0) ? $start_time : ($from_epoch ? $start_time : $end_time);
+	if (is_null($end_time_stamp)) {
 
-	$diff_time = abs($end_time - $start_time);
+		$end_time = new DateTimeImmutable();
+
+	} elseif (is_numericint($end_time_stamp)) {
+
+		$end_time = new DateTime();
+
+		$end_time->setTimestamp($end_time_stamp);
+
+	}
+
+	$start_time = new DateTime();
+
+	if ($start_time_stamp > 0 || $from_epoch) {
+
+		$start_time->setTimestamp($start_time_stamp);
+
+	} else {
+
+		return gettext('never');
+
+	}
+
+	$diff_time = $end_time->diff($start_time);
+
+	$diff_time_seconds = abs($end_time->getTimestamp() - $start_time->getTimestamp());
 
 	$tokens = array (
-		31536000 => 'year',
-		2592000 => 'month',
-		604800 => 'week',
-		86400 => 'day',
-		3600 => 'hour',
-		60 => 'minute',
-		1 => 'second'
+		31536000 => gettext('year'),
+		2592000 => gettext('month'),
+		604800 => gettext('week'),
+		86400 => gettext('day'),
+		3600 => gettext('hour'),
+		60 => gettext('minute'),
+		1 => gettext('second')
 	);
 
 	foreach ($tokens as $unit => $text) {
 
-		if ($diff_time < $unit) {
-			
+		if ($diff_time_seconds < $unit) {
+
 			continue;
 			
 		}
 
-		$num_of_units = floor($diff_time / $unit);
+		$num_of_units = floor($diff_time_seconds / $unit);
 
 		$plural = ($num_of_units > 1) ? 's' : '';
+
+		$tense = ($diff_time->invert) ? 'ago' : 'from now';
 		
-		return "{$num_of_units} {$text}{$plural}";
+		return "{$num_of_units} {$text}{$plural} {$tense}";
 
 	}
 
-	return "never";
+	// We should 'never' get here...
+	return gettext('never');
 
 }
 
@@ -213,6 +247,8 @@ function wg_generate_toggle_icon_link($target_device, $title = '', $href = '#', 
 
 		$s_usepost = $usepost ? 'usepost' : '';
 
+		wg_htmlspecialchars($s_icon, $s_title, $href, $s_usepost);
+
 		return "<a class=\"fa {$s_icon}\" title=\"{$s_title}\" href=\"{$href}\" {$s_usepost}></a>";
 
 	}
@@ -245,7 +281,9 @@ function wg_generate_tunnel_address_popup_link($tunnel_name) {
 					$data_html = "<table><thead><th>Address</th><th style='padding-left: 10px;'>Description</th></thead><tbody>";
 		
 					foreach ($addresses as $address) {
-		
+
+						wg_htmlspecialchars($address);
+
 						$data_html .= "<tr><td>{$address['address']}/{$address['mask']}</td><td style='padding-left: 10px;'>{$address['descr']}</td></tr>";
 		
 					}
@@ -253,12 +291,16 @@ function wg_generate_tunnel_address_popup_link($tunnel_name) {
 					$data_html .= '</tbody></table>';
 		
 					$hint = "{$addresses[0]['address']} (+{$extras})";
+
+					wg_htmlspecialchars($href, $data_html, $hint);
 		
 					$ret_html = "<a href=\"{$href}\" title=\"Interface Addresses\" data-toggle=\"popover\" data-trigger=\"hover focus\" data-content=\"{$data_html}\" data-html=\"true\">{$hint}</a>";
 		
 					return $ret_html;
 		
 				} else {
+
+					wg_htmlspecialchars($href, $addresses[0]);
 		
 					$ret_html = "<a href=\"{$href}\" title=\"{$addresses[0]['descr']}\">{$addresses[0]['address']}/{$addresses[0]['mask']}</a>";
 		
@@ -275,6 +317,8 @@ function wg_generate_tunnel_address_popup_link($tunnel_name) {
 		} else {
 
 			$wg_pfsense_if = wg_get_pfsense_interface_info($tunnel['name']);
+
+			wg_htmlspecialchars($wg_pfsense_if);
 
 			return "<i class=\"fa fa-sitemap\" style=\"vertical-align: middle;\"></i><a style=\"padding-left: 3px\" href=\"../../interfaces.php?if={$wg_pfsense_if['name']}\">{$wg_pfsense_if['descr']} ({$wg_pfsense_if['name']})</a>";
 
@@ -304,6 +348,8 @@ function wg_generate_peer_allowedips_popup_link($peer_idx) {
 				$data_html = "<table><thead><th>Subnet</th><th style='padding-left: 10px;'>Description</th></thead><tbody>";
 	
 				foreach ($allowedips as $address) {
+
+					wg_htmlspecialchars($address);
 	
 					$data_html .= "<tr><td>{$address['address']}/{$address['mask']}</td><td style='padding-left: 10px;'>{$address['descr']}</td></tr>";
 	
@@ -312,12 +358,16 @@ function wg_generate_peer_allowedips_popup_link($peer_idx) {
 				$data_html .= '</tbody></table>';
 	
 				$hint = "{$allowedips[0]['address']} (+{$extras})";
+
+				wg_htmlspecialchars($href, $data_html, $hint);
 	
 				$ret_html = "<a href=\"{$href}\" title=\"Allowed IPs\" data-toggle=\"popover\" data-trigger=\"hover focus\" data-content=\"{$data_html}\" data-html=\"true\">{$hint}</a>";
 	
 				return $ret_html;
 	
 			} else {
+
+				wg_htmlspecialchars($href, $allowedips[0]);
 	
 				$ret_html = "<a href=\"{$href}\" title=\"{$allowedips[0]['descr']}\">{$allowedips[0]['address']}/{$allowedips[0]['mask']}</a>";
 	
@@ -328,6 +378,7 @@ function wg_generate_peer_allowedips_popup_link($peer_idx) {
 		} else {
 
 			return '(none)';
+			
 		}
 
 

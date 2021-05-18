@@ -57,8 +57,6 @@ if (isset($argv[1])) {
 	
 			wg_service_start();
 	
-			wg_service_daemon();
-	
 			exit(0);
 
 		case 'stop':
@@ -81,7 +79,7 @@ if (isset($argv[1])) {
 
 function wg_is_cli() {
 
-	return PHP_SAPI == 'cli';
+	return (PHP_SAPI == 'cli');
 
 }
 
@@ -95,7 +93,7 @@ function wg_service_stop() {
 function wg_is_service_running() {
 	global $wgg;
 
-	if (!($h_lock = @fopen($wgg['pid_path'],'r')) || !file_exists($wgg['pid_path'])) {
+	if (!($h_lock = @fopen($wgg['pid_path'], 'a+')) || !file_exists($wgg['pid_path'])) {
 
 		return 0;
 
@@ -109,7 +107,7 @@ function wg_is_service_running() {
 
 	}
 
-	@fclose($h_lock);
+	fclose($h_lock);
 
 	return !$not_running || $wouldblock;
 
@@ -124,7 +122,8 @@ function wg_service_start() {
 
 	}
 
-	umask(0);
+	// Register the service environment and lock early to ensure singletons
+	wg_register_service_env(false);
 
 	// The initial fork...
 	$newpid = pcntl_fork();
@@ -163,6 +162,9 @@ function wg_service_start() {
 
 	}
 
+	// Now that we are properly daemonized, register the service signal handlers
+	wg_register_sig_handler();
+
 	if (platform_booting()) {
 
 		$g['wireguard_firststart'] = true;
@@ -173,18 +175,7 @@ function wg_service_start() {
 
 	}
 
-	// Create WireGuard configuration files
-	wg_create_config_files();
-
-	// Update Unbound ACL without restarting Unbound, we will do this once on service start
-	wg_unbound_acl_update(false);
-
-	// Build each tunnel
-	foreach ($wgg['tunnels'] as $tunnel) {
-	
-		wg_resync_tunnel($tunnel['name'], true);
-	
-	}
+	wg_resync_all();
  
 	if (platform_booting()) {
 
@@ -206,24 +197,45 @@ function wg_service_start() {
 
 	}
 
-	setup_gateways_monitor();
+	// Spawns a child process to handle additional service restarting
+	$newpid = pcntl_fork();
 
-	services_unbound_configure();
-	
-	filter_configure();
+	if ($newpid === -1) {
 
-	return;
+		// We could not fork, so bail out...
+		exit(1);
+
+	} elseif ($newpid) {
+
+		// Wait for the child to finish
+		pcntl_waitpid($newpid, $status);
+
+		// We are the parent so go on...
+		wg_service_daemon();
+
+	} else {
+
+		setup_gateways_monitor();
+
+		services_unbound_configure();
+		
+		filter_configure();
+
+		// All good
+		exit(0);
+
+	}
+
+	// We should never get here
+	exit(0);
 
 }
 
 function wg_service_daemon() {
 	global $wgg;
 
-	// Register the service environment
-	wg_register_service_env();
-
-	// Register the service signal handlers
-	wg_register_sig_handler();
+	// Re-register the service environment
+	wg_register_service_env(true);
 
 	while (true) {
 
@@ -252,9 +264,7 @@ function wg_service_daemon() {
 function wg_service_install() {
 	global $wgg;
 
-	stop_service('wireguard');
-
-	unlink_if_exists($wgg['wg_daemon']);
+	wg_service_deinstall();
 
 	link($wgg['php'], $wgg['wg_daemon']);
 
@@ -288,10 +298,26 @@ function wg_service_rcfile() {
 
 }
 
-function wg_register_service_env() {
+function wg_deregister_service_env() {
 	global $h_lock, $wgg;
 
-	$h_lock = @fopen($wgg['pid_path'], 'a+');
+	// Release exclusive lock
+	flock($h_lock, LOCK_UN);
+
+	// Close file handler
+	fclose($h_lock);
+
+	// Delete PID
+	unlink_if_exists($wgg['pid_path']);
+
+}
+
+function wg_register_service_env($close_handlers = false) {
+	global $h_lock, $wgg;
+
+	wg_deregister_service_env();
+
+	$h_lock = fopen($wgg['pid_path'], 'a+');
 
 	flock($h_lock, LOCK_EX);
 
@@ -303,11 +329,15 @@ function wg_register_service_env() {
 
 	fflush($h_lock);
 
-	fclose(STDIN);
+	if ($close_handlers) {
 
-	fclose(STDOUT);
+		fclose(STDIN);
 
-	fclose(STDERR);
+		fclose(STDOUT);
+
+		fclose(STDERR);
+
+	}
 
 }
 
@@ -322,26 +352,19 @@ function wg_register_sig_handler() {
 }
 
 function sig_handler($signo) {
-	global $h_lock, $wgg;
 
 	switch ($signo) {
 
 		case SIGTERM:
 
-			// Release exclusive lock
-			@flock($h_lock, LOCK_UN);
-
-			// Close file handler
-			@fclose($h_lock);
-
-			// Delete PID
-			unlink($wgg['pid_path']);
+			// Cleanup the service environment
+			wg_deregister_service_env();
 
 			// Teardown tunnels
 			wg_destroy_tunnels();
 
 			// We are done...
-			exit;
+			exit(0);
 
 			break;
 

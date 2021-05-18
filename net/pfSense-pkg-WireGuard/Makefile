@@ -5,7 +5,6 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-
 MAINTAINER=	rcmcdonald91@gmail.com
 COMMENT=	pfSense package WireGuard (EXPERIMENTAL)
 

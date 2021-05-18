@@ -163,43 +163,40 @@ function wg_get_address_family($address) {
 
 }
 
-function wg_ifconfig_del_address($wg_ifname, $address, $verbose = false) {
+function wg_ifconfig_del_address($wg_ifname, $masked_address, $verbose = false) {
 	global $wgg;
 
 	// Gets the ifconfig address family while also validating the input at the same time
-	if ($family_safe = wg_get_address_family($address)) {
-		
-		$ifname_safe = escapeshellarg($wg_ifname);
+	if ($family = wg_get_address_family($masked_address)) {
 
-		list($addr, $addr_subnet) = explode('/', $address);
-
-		$address_safe = escapeshellarg($addr);
+		list($address, $address_subnet) = explode('/', $masked_address);
 
 		$redirect = wg_verbosity_redirect($verbose);
 
-		$ret_val = mwexec("{$wgg['ifconfig']} {$ifname_safe} {$family_safe} {$address_safe} delete {$redirect}");
+		wg_escapeshellarg($wg_ifname, $address);
+
+		$ret_val = mwexec("{$wgg['ifconfig']} {$wg_ifname} {$family} {$addr} delete {$redirect}");
 
 		return ($ret_val <> 0) ? false : true;
 
 	}
 
+	// Unable to validate address family, bail out...
 	return false;
 
 }
 
-function wg_ifconfig_set_address($wg_ifname, $address, $verbose = false) {
+function wg_ifconfig_set_address($wg_ifname, $masked_address, $verbose = false) {
 	global $wgg;
 
 	// Gets the ifconfig address family while also validating the input at the same time
-	if ($family_safe = wg_get_address_family($address)) {
-		
-		$ifname_safe = escapeshellarg($wg_ifname);
-
-		$address_safe = escapeshellarg($address);
+	if ($family = wg_get_address_family($masked_address)) {
 
 		$redirect = wg_verbosity_redirect($verbose);
 
-		$ret_val = mwexec("{$wgg['ifconfig']} {$ifname_safe} {$family_safe} {$address_safe} add {$redirect}");
+		wg_escapeshellarg($wg_ifname, $masked_address);
+
+		$ret_val = mwexec("{$wgg['ifconfig']} {$wg_ifname} {$family} {$masked_address} add {$redirect}");
 
 		return ($ret_val <> 0) ? false : true;
 
@@ -212,11 +209,11 @@ function wg_ifconfig_set_address($wg_ifname, $address, $verbose = false) {
 function wg_ifconfig_down_interface($wg_ifname, $verbose = false) {
 	global $wgg;
 
-	$ifname_safe = escapeshellarg($wg_ifname);
-
 	$redirect = wg_verbosity_redirect($verbose);
 
-	$ret_val = mwexec("{$wgg['ifconfig']} {$ifname_safe} down {$redirect}");
+	wg_escapeshellarg($wg_ifname);
+
+	$ret_val = mwexec("{$wgg['ifconfig']} {$wg_ifname} down {$redirect}");
 
 	return ($ret_val <> 0) ? false : true;
 
@@ -225,11 +222,11 @@ function wg_ifconfig_down_interface($wg_ifname, $verbose = false) {
 function wg_ifconfig_up_interface($wg_ifname, $verbose = false) {
 	global $wgg;
 
-	$ifname_safe = escapeshellarg($wg_ifname);
-
 	$redirect = wg_verbosity_redirect($verbose);
 
-	$ret_val = mwexec("{$wgg['ifconfig']} {$ifname_safe} up {$redirect}");
+	wg_escapeshellarg($wg_ifname);
+
+	$ret_val = mwexec("{$wgg['ifconfig']} {$wg_ifname} up {$redirect}");
 
 	return ($ret_val <> 0) ? false : true;
 
@@ -292,7 +289,6 @@ function wg_interface_update_addresses($wg_ifname) {
 
 		if ($pfsense_if_name = wg_get_pfsense_interface_info($wg_ifname)) {
 
-
 			interface_reconfigure($pfsense_if_name['name']);
 
 		}
@@ -331,15 +327,21 @@ function wg_get_pfsense_interface_info($tunnel_name) {
 function wg_interface_syncconf($wg_ifname, $verbose = false) {
 	global $wgg;
 
-	$wg_ifname_safe = escapeshellarg($wg_ifname);
+	$wg_conf_path = "{$wgg['conf_path']}/{$wg_ifname}.conf";
 
-	$wg_conf_path_safe = escapeshellarg("{$wgg['conf_path']}/{$wg_ifname}.conf");
+	if (file_exists($wg_conf_path)) {
 
-	$redirect = wg_verbosity_redirect($verbose);
+		$redirect = wg_verbosity_redirect($verbose);
 
-	$ret_val = mwexec("{$wgg['wg']} syncconf {$wg_ifname_safe} {$wg_conf_path_safe} {$redirect}");
+		wg_escapeshellarg($wg_ifname, $wg_conf_path);
 
-	return ($ret_val <> 0) ? false : true;
+		$ret_val = mwexec("{$wgg['wg']} syncconf {$wg_ifname} {$wg_conf_path} {$redirect}");
+
+		return ($ret_val <> 0) ? false : true;
+
+	}
+
+	return false;
 
 }
 
@@ -349,12 +351,12 @@ function wg_interface_syncconf($wg_ifname, $verbose = false) {
 function wg_interface_create($wg_ifname, $verbose = false) {
 	global $wgg;
 
-	$wg_ifname_safe = escapeshellarg($wg_ifname);
-
 	$redirect = wg_verbosity_redirect($verbose);
 
+	wg_escapeshellarg($wg_ifname);
+
 	// We first check to see if the desired interface already exists, then we create it if it does not
-	$ret_val = mwexec("{$wgg['ifconfig']} {$wg_ifname_safe} {$redirect} || {$wgg['ifconfig']} wg create name {$wg_ifname_safe} {$redirect}");
+	$ret_val = mwexec("{$wgg['ifconfig']} {$wg_ifname} {$redirect} || {$wgg['ifconfig']} wg create name {$wg_ifname} {$redirect}");
 		
 	return ($ret_val <> 0) ? false : true;
 
@@ -380,14 +382,14 @@ function wg_get_real_ifs() {
 function wg_interface_group_add($wg_ifname, $verbose = false) {
 	global $wgg;
 
-	$wg_ifname_safe = escapeshellarg($wg_ifname);
-
-	$wg_ifgroup_safe = escapeshellarg($wgg['if_group']);
+	$wg_ifgroup = $wgg['if_group'];
 
 	$redirect = wg_verbosity_redirect($verbose);
 
+	wg_escapeshellarg($wg_ifname, $wg_ifgroup);
+
 	// We first check to see if the desired interface exists, then we add it to the group if it does
-	$ret_val = mwexec("{$wgg['ifconfig']} {$wg_ifname_safe} {$redirect} && {$wgg['ifconfig']} {$wg_ifname_safe} group {$wg_ifgroup_safe} {$redirect}");
+	$ret_val = mwexec("{$wgg['ifconfig']} {$wg_ifname} {$redirect} && {$wgg['ifconfig']} {$wg_ifname} group {$wg_ifgroup} {$redirect}");
 		
 	return ($ret_val <> 0) ? false : true;
 
@@ -402,9 +404,9 @@ function wg_interface_status($wg_ifname) {
 function wg_ifconfig_interface_flags($wg_ifname) {
 	global $wgg;
 
-	$wg_ifname_safe = escapeshellarg($wg_ifname);
+	wg_escapeshellarg($wg_ifname);
 
-	exec("{$wgg['ifconfig']} {$wg_ifname_safe}", $output, $ret_code);
+	exec("{$wgg['ifconfig']} {$wg_ifname}", $output, $ret_code);
 
 	if ($ret_code <> 0) {
 
@@ -432,15 +434,16 @@ function wg_pkg_info() {
 
 	$a_return_keys = array_values(array_flip($a_fields));
 
-	$fields_safe = escapeshellarg(implode("\t", $a_fields));
+	$field_string = implode("\t", $a_fields);
 
 	$a_packages = $wgg['pkg_names'];
 
-	array_walk($a_packages, function(&$x) { $x = escapeshellarg($x); });
+	// Each package needs to be escaped individually before imploding
+	wg_escapeshellarg($field_string, $a_packages);
 	
-	$packages_safe = implode(" ", $a_packages);
+	$packages_string = implode(" ", $a_packages);
 
-	exec("{$wgg['pkg']} query {$fields_safe} {$packages_safe}", $packages, $ret_code);
+	exec("{$wgg['pkg']} query {$field_string} {$packages_string}", $packages, $ret_code);
 
 	foreach ($packages as $pkg_index => $package) {
 
@@ -477,7 +480,7 @@ function wg_gen_keypair($json = false) {
 function wg_gen_publickey($privkey) {
 	global $wgg;
 
-	$privkey = escapeshellarg($privkey);
+	wg_escapeshellarg($privkey);
 
 	$pubkey = exec("echo {$privkey} | {$wgg['wg']} pubkey");
 
@@ -718,26 +721,30 @@ function wg_get_tunnel_networks($family = 'both') {
 
 		foreach ($wgg['tunnels'] as $tunnel) {
 
-			foreach ($tunnel['addresses']['row'] as $address) {
+			if (!empty($tunnel['addresses']['row']) && is_array($tunnel['addresses']['row'])) {
 
-				$masked_address = "{$address['address']}/{$address['mask']}";
+				foreach ($tunnel['addresses']['row'] as $address) {
 
-				if ((is_ipaddrv6($masked_address) && ($family == 'ipv4')) ||
-					(is_ipaddrv4($masked_address) && ($family == 'ipv6'))) {
+					$masked_address = "{$address['address']}/{$address['mask']}";
 
-					continue;
+					if ((is_ipaddrv6($masked_address) && ($family == 'ipv4')) ||
+						(is_ipaddrv4($masked_address) && ($family == 'ipv6'))) {
 
-				}
+						continue;
 
-				if (is_subnet($masked_address)) {
+					}
 
-					$network = gen_subnet($address['address'], $address['mask']);
+					if (is_subnet($masked_address)) {
 
-					$wg_tunnel_networks[] 	= array(
-									'network' => $network, 
-									'mask' => $address['mask'],
-									'tun' => $tunnel['name'],
-									'descr' => $tunnel['descr']);
+						$network = gen_subnet($address['address'], $address['mask']);
+
+						$wg_tunnel_networks[] 	= array(
+										'network' => $network, 
+										'mask' => $address['mask'],
+										'tun' => $tunnel['name'],
+										'descr' => $tunnel['descr']);
+
+					}
 
 				}
 
