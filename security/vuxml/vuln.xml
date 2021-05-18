@@ -76,6 +76,682 @@ Notes:
   * Do not forget port variants (linux-f10-libxml2, libxml2, etc.)
 -->
 <vuxml xmlns="http://www.vuxml.org/apps/vuxml-1">
+  <vuln vid="62da9702-b4cc-11eb-b9c9-6cc21735f730">
+    <topic>PostgreSQL server -- two security issues</topic>
+    <affects>
+      <package>
+	<name>postgresql13-server</name>
+	<range><lt>13.3</lt></range>
+      </package>
+      <package>
+	<name>postgresql12-server</name>
+	<range><lt>12.7</lt></range>
+      </package>
+      <package>
+	<name>postgresql11-server</name>
+	<range><lt>11.12</lt></range>
+      </package>
+      <package>
+	<name>postgresql10-server</name>
+	<range><lt>10.17</lt></range>
+      </package>
+      <package>
+	<name>postgresql96-server</name>
+	<range><lt>9.6.22</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The PostgreSQL project reports:</p>
+	<blockquote cite="https://www.postgresql.org/support/security/CVE-2021-32028/">
+	  <p>Memory disclosure in INSERT ... ON CONFLICT ... DO UPDATE</p>
+	  <p>
+	    Using an INSERT ... ON CONFLICT ... DO UPDATE command on a
+	    purpose-crafted table, an attacker can read arbitrary bytes of
+	    server memory. In the default configuration, any authenticated
+	    database user can create prerequisite objects and complete this
+	    attack at will. A user lacking the CREATE and TEMPORARY privileges
+	    on all databases and the CREATE privilege on all schemas cannot use
+	    this attack at will..
+	  </p>
+	</blockquote>
+	<blockquote cite="https://www.postgresql.org/support/security/CVE-2021-32027/">
+	  <p>
+	    Buffer overrun from integer overflow in array subscripting
+	    calculations
+	  </p>
+	  <p>
+	    While modifying certain SQL array values, missing bounds checks let
+	    authenticated database users write arbitrary bytes to a wide area of
+	    server memory.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://www.postgresql.org/support/security/CVE-2021-32027/</url>
+      <url>https://www.postgresql.org/support/security/CVE-2021-32028/</url>
+    </references>
+    <dates>
+      <discovery>2021-05-13</discovery>
+      <entry>2021-05-14</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="76e0bb86-b4cb-11eb-b9c9-6cc21735f730">
+    <topic>PostgreSQL -- Memory disclosure in partitioned-table UPDATE ... RETURNING</topic>
+    <affects>
+      <package>
+	<name>postgresql13-server</name>
+	<range><lt>13.3</lt></range>
+      </package>
+      <package>
+	<name>postgresql12-server</name>
+	<range><lt>12.7</lt></range>
+      </package>
+      <package>
+	<name>postgresql11-server</name>
+	<range><lt>11.12</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The PostgreSQL project reports:</p>
+	<blockquote cite="https://www.postgresql.org/support/security/CVE-2021-32029/">
+	  <p>
+	    Using an UPDATE ... RETURNING on a purpose-crafted partitioned
+	    table, an attacker can read arbitrary bytes of server memory. In the
+	    default configuration, any authenticated database user can create
+	    prerequisite objects and complete this attack at will. A user
+	    lacking the CREATE and TEMPORARY privileges on all databases and the
+	    CREATE privilege on all schemas typically cannot use this attack at
+	    will.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://www.postgresql.org/support/security/CVE-2021-32029/</url>
+    </references>
+    <dates>
+      <discovery>2021-05-13</discovery>
+      <entry>2021-05-14</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="fc75570a-b417-11eb-a23d-c7ab331fd711">
+    <topic>Prosody -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>prosody</name>
+	<range><lt>0.11.9</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Prosody security advisory 2021-05-12 reports:</p>
+	<blockquote cite="https://prosody.im/security/advisory_20210512/">
+	  <p>
+	    This advisory details 5 new security vulnerabilities discovered in the
+	    Prosody.im XMPP server software. All issues are fixed in the 0.11.9
+	    release default configuration.
+	  </p>
+	  <ul>
+	    <li>CVE-2021-32918: DoS via insufficient memory consumption controls</li>
+	    <li>CVE-2021-32920: DoS via repeated TLS renegotiation causing excessive CPU consumption</li>
+	    <li>CVE-2021-32921: Use of timing-dependent string comparison with sensitive values</li>
+	    <li>CVE-2021-32917: Use of mod_proxy65 is unrestricted in default configuration</li>
+	    <li>CVE-2021-32919: Undocumented dialback-without-dialback option insecure</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-32918</cvename>
+      <cvename>CVE-2021-32920</cvename>
+      <cvename>CVE-2021-32921</cvename>
+      <cvename>CVE-2021-32917</cvename>
+      <cvename>CVE-2021-32919</cvename>
+    </references>
+    <dates>
+      <discovery>2021-05-12</discovery>
+      <entry>2021-05-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3e0ca488-b3f6-11eb-a5f7-a0f3c100ae18">
+    <topic>ImageMagick6 -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>ImageMagick6</name>
+	<name>ImageMagick6-nox11</name>
+	<range><lt>6.9.12.12,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>CVE reports:</p>
+	<blockquote cite="https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=ImageMagick">
+	  <p>Several vulnerabilities have been discovered in ImageMagick:</p>
+	  <ul>
+	    <li>CVE-2021-20309: A flaw was found in ImageMagick in versions before 6.9.12,
+	    where a division by zero in WaveImage() of MagickCore/visual-effects.c may trigger
+	    undefined behavior via a crafted image file submitted to an application using ImageMagick.</li>
+	    <li>CVE-2021-20176: A divide-by-zero flaw was found in ImageMagick 6.9.11-57 in gem.c.
+	    This flaw allows an attacker who submits a crafted file that is processed by ImageMagick
+	    to trigger undefined behavior through a division by zero.</li>
+	    <li>CVE-2020-29599: ImageMagick before 6.9.11-40  mishandles the -authenticate option,
+	    which allows setting a password for password-protected PDF files.</li>
+	    <li>And maybe some others…</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2020-29599</cvename>
+      <cvename>CVE-2021-20176</cvename>
+      <cvename>CVE-2021-20309</cvename>
+    </references>
+    <dates>
+      <discovery>2020-12-17</discovery>
+      <entry>2021-05-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="a7c60af1-b3f1-11eb-a5f7-a0f3c100ae18">
+    <topic>ImageMagick7 -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>ImageMagick7</name>
+	<name>ImageMagick7-nox11</name>
+	<range><lt>7.0.11.12</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>CVE reports:</p>
+	<blockquote cite="https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=ImageMagick">
+	  <p>Several vulnerabilities have been discovered in ImageMagick:</p>
+	  <ul>
+	    <li>CVE-2021-20313: A flaw was found in ImageMagick in versions before 7.0.11.
+	    A potential cipher leak when the calculate signatures in TransformSignature is possible.</li>
+	    <li>CVE-2021-20312: A flaw was found in ImageMagick in versions 7.0.11,
+	    where an integer overflow in WriteTHUMBNAILImage of coders/thumbnail.c may trigger
+	    undefined behavior via a crafted image file that is submitted by an attacker and
+	    processed by an application using ImageMagick.</li>
+	    <li>CVE-2021-20311: A flaw was found in ImageMagick in versions before 7.0.11,
+	    where a division by zero in sRGBTransformImage() in the MagickCore/colorspace.c
+	    may trigger undefined behavior via a crafted image file that is submitted by an
+	    attacker processed by an application using ImageMagick.</li>
+	    <li>CVE-2021-20310: A flaw was found in ImageMagick in versions before 7.0.11,
+	    where a division by zero ConvertXYZToJzazbz() of MagickCore/colorspace.c may trigger
+	    undefined behavior via a crafted image file that is submitted by an attacker
+	    and processed by an application using ImageMagick.</li>
+	    <li>CVE-2021-20309: A flaw was found in ImageMagick in versions before 7.0.11,
+	    where a division by zero in WaveImage() of MagickCore/visual-effects.c may trigger
+	    undefined behavior via a crafted image file submitted to an application using ImageMagick.</li>
+	    <li>And several others…</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2020-27829</cvename>
+      <cvename>CVE-2020-29599</cvename>
+      <cvename>CVE-2021-20176</cvename>
+      <cvename>CVE-2021-20241</cvename>
+      <cvename>CVE-2021-20243</cvename>
+      <cvename>CVE-2021-20244</cvename>
+      <cvename>CVE-2021-20245</cvename>
+      <cvename>CVE-2021-20246</cvename>
+      <cvename>CVE-2021-20309</cvename>
+      <cvename>CVE-2021-20310</cvename>
+      <cvename>CVE-2021-20311</cvename>
+      <cvename>CVE-2021-20312</cvename>
+      <cvename>CVE-2021-20313</cvename>
+    </references>
+    <dates>
+      <discovery>2020-10-27</discovery>
+      <entry>2021-05-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f947aa26-b2f9-11eb-a5f7-a0f3c100ae18">
+    <topic>Pillow -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>py38-pillow</name>
+	<range><lt>8.2.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>python-pillow reports:</p>
+	<blockquote cite="https://github.com/python-pillow/Pillow/pull/5377/commits/8ec027867f19633d9adfc5c8b7504d9b609fc5f1">
+	  <p>This release fixes several vulnerabilities found with `OSS-Fuzz`.</p>
+	  <ul>
+	    <li>`CVE-2021-25288`: Fix OOB read in Jpeg2KDecode.
+	    This dates to Pillow 2.4.0.</li>
+	    <li>`CVE-2021-28675`: Fix DOS in PsdImagePlugin.
+	    This dates to the PIL fork.</li>
+	    <li>`CVE-2021-28676`: Fix FLI DOS.
+	    This dates to the PIL fork.</li>
+	    <li>`CVE-2021-28677`: Fix EPS DOS on _open.
+	    This dates to the PIL fork.</li>
+	    <li>`CVE-2021-28678`: Fix BLP DOS.
+	    This dates to Pillow 5.1.0.</li>
+	    <li>Fix memory DOS in ImageFont.
+	    This dates to the PIL fork.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-25288</cvename>
+      <cvename>CVE-2021-28675</cvename>
+      <cvename>CVE-2021-28676</cvename>
+      <cvename>CVE-2021-28677</cvename>
+      <cvename>CVE-2021-28678</cvename>
+    </references>
+    <dates>
+      <discovery>2021-04-01</discovery>
+      <entry>2021-05-12</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3cac007f-b27e-11eb-97a0-e09467587c17">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>90.0.4430.212</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Chrome Releases reports:</p>
+	<blockquote cite="https://chromereleases.googleblog.com/2021/05/stable-channel-update-for-desktop.html">
+	  <p>This release contains 19 security fixes, including:</p>
+	  <ul>
+	    <li>[1180126] High CVE-2021-30506: Incorrect security UI in Web App
+	      Installs. Reported by @retsew0x01 on 2021-02-19</li>
+	    <li>[1178202] High CVE-2021-30507: Inappropriate implementation in
+	      Offline. Reported by Alison Huffman, Microsoft Browser
+	      Vulnerability Research on 2021-02-14</li>
+	    <li>[1195340] High CVE-2021-30508: Heap buffer overflow in Media
+	      Feeds. Reported by Leecraso and Guang Gong of 360 Alpha Lab on
+	      2021-04-02</li>
+	    <li>[1196309] High CVE-2021-30509: Out of bounds write in Tab Strip.
+	      Reported by David Erceg on 2021-04-06</li>
+	    <li>[1197436] High CVE-2021-30510: Race in Aura. Reported by Weipeng
+	      Jiang (@Krace) from Codesafe Team of Legendsec at Qi'anxin Group
+	      on 2021-04-09</li>
+	    <li>[1197875] High CVE-2021-30511: Out of bounds read in Tab Groups.
+	      Reported by David Erceg on 2021-04-10</li>
+	    <li>[1200019] High CVE-2021-30512: Use after free in Notifications.
+	      Reported by ZhanJia Song on 2021-04-17</li>
+	    <li>[1200490] High CVE-2021-30513: Type Confusion in V8. Reported by
+	      Man Yue Mo of GitHub Security Lab on 2021-04-19</li>
+	    <li>[1200766] High CVE-2021-30514: Use after free in Autofill.
+	      Reported by koocola (@alo_cook) and Nan Wang (@eternalsakura13) of
+	      360 Alpha Lab on 2021-04-20</li>
+	    <li>[1201073] High CVE-2021-30515: Use after free in File API.
+	      Reported by Rong Jian and Guang Gong of 360 Alpha Lab on
+	      2021-04-21</li>
+	    <li>[1201446] High CVE-2021-30516: Heap buffer overflow in History.
+	      Reported by ZhanJia Song on 2021-04-22</li>
+	    <li>[1203122] High CVE-2021-30517: Type Confusion in V8. Reported by
+	      laural on 2021-04-27</li>
+	    <li>[1203590] High CVE-2021-30518: Heap buffer overflow in Reader
+	      Mode. Reported by Jun Kokatsu, Microsoft Browser Vulnerability
+	      Research on 2021-04-28</li>
+	    <li>[1194058] Medium CVE-2021-30519: Use after free in Payments.
+	      Reported by asnine on 2021-03-30</li>
+	    <li>[1193362] Medium CVE-2021-30520: Use after free in Tab Strip.
+	      Reported by Khalil Zhani on 2021-04-03</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-30506</cvename>
+      <cvename>CVE-2021-30507</cvename>
+      <cvename>CVE-2021-30508</cvename>
+      <cvename>CVE-2021-30509</cvename>
+      <cvename>CVE-2021-30510</cvename>
+      <cvename>CVE-2021-30511</cvename>
+      <cvename>CVE-2021-30512</cvename>
+      <cvename>CVE-2021-30513</cvename>
+      <cvename>CVE-2021-30514</cvename>
+      <cvename>CVE-2021-30515</cvename>
+      <cvename>CVE-2021-30516</cvename>
+      <cvename>CVE-2021-30517</cvename>
+      <cvename>CVE-2021-30518</cvename>
+      <cvename>CVE-2021-30519</cvename>
+      <cvename>CVE-2021-30520</cvename>
+      <url>https://chromereleases.googleblog.com/2021/05/stable-channel-update-for-desktop.html</url>
+    </references>
+    <dates>
+      <discovery>2021-05-10</discovery>
+      <entry>2021-05-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="278561d7-b261-11eb-b788-901b0e934d69">
+    <topic>py-matrix-synapse -- malicious push rules may be used for a denial of service attack.</topic>
+    <affects>
+      <package>
+	<name>py36-matrix-synapse</name>
+	<name>py37-matrix-synapse</name>
+	<name>py38-matrix-synapse</name>
+	<name>py39-matrix-synapse</name>
+	<range><lt>1.33.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Matrix developers report:</p>
+	<blockquote cite="https://github.com/matrix-org/synapse/security/advisories/GHSA-x345-32rc-8h85">
+	  <p>"Push rules" can specify conditions under which they will match,
+	    including event_match, which matches event content against a
+	    pattern including wildcards.
+	    Certain patterns can cause very poor performance in the matching
+	    engine, leading to a denial-of-service when processing moderate
+	    length events.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-29471</cvename>
+      <url>https://github.com/matrix-org/synapse/security/advisories/GHSA-x345-32rc-8h85</url>
+    </references>
+    <dates>
+      <discovery>2021-05-11</discovery>
+      <entry>2021-05-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="12156786-b18a-11eb-8cba-080027b00c2e">
+    <topic>cyrus-imapd -- Remote authenticated users could bypass intended access restrictions on certain server annotations.</topic>
+    <affects>
+      <package>
+	<name>cyrus-imapd34</name>
+	<range><ge>3.4.0</ge><lt>3.4.1</lt></range>
+      </package>
+      <package>
+	<name>cyrus-imapd32</name>
+	<range><ge>3.2.0</ge><lt>3.2.7</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Cyrus IMAP 3.4.1 Release Notes states:</p>
+	<blockquote cite="https://www.cyrusimap.org/imap/download/release-notes/3.4/x/3.4.1.html">
+	  <p>Fixed CVE-2021-32056: Remote authenticated users could bypass intended access restrictions on certain server annotations. Additionally, a long-standing bug in replication did not allow server annotations to be replicated. Combining these two bugs, a remote authenticated user could stall replication, requiring administrator intervention.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-32056</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-32056</url>
+    </references>
+    <dates>
+      <discovery>2021-05-05</discovery>
+      <entry>2021-05-10</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="49346de2-b015-11eb-9bdf-f8b156b6dcc8">
+    <topic>FLAC -- out-of-bounds read</topic>
+    <affects>
+      <package>
+	<name>flac</name>
+	<range><lt>1.3.3_1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Oss-Fuzz reports:</p>
+	<blockquote cite="https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=17069">
+	  <p>There is a possible out of bounds read due to a heap
+	    buffer overflow in FLAC__bitreader_read_rice_signed_block
+	    of bitreader.c.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=17069</url>
+      <cvename>CVE-2020-0499</cvename>
+    </references>
+    <dates>
+      <discovery>2019-09-08</discovery>
+      <entry>2021-05-08</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f7a00ad7-ae75-11eb-8113-08002728f74c">
+    <topic>Rails -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>rubygem-actionpack52</name>
+	<range><lt>5.2.6</lt></range>
+      </package>
+      <package>
+	<name>rubygem-actionpack60</name>
+	<range><lt>6.0.3.7</lt></range>
+      </package>
+      <package>
+	<name>rubygem-actionpack61</name>
+	<range><lt>6.1.3.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Ruby on Rails blog:</p>
+	<blockquote cite="https://weblog.rubyonrails.org/2021/5/5/Rails-versions-6-1-3-2-6-0-3-7-5-2-4-6-and-5-2-6-have-been-released/">
+	  <p>Rails versions 6.1.3.2, 6.0.3.7, and 5.2.6 have been released! These
+	    releases contain important security fixes. Here is a list of the issues
+	    fixed:</p>
+	  <p>CVE-2021-22885: Possible Information Disclosure / Unintended Method Execution in Action Pack</p>
+	  <p>CVE-2021-22902: Possible Denial of Service vulnerability in Action Dispatch</p>
+	  <p>CVE-2021-22903: Possible Open Redirect Vulnerability in Action Pack</p>
+	  <p>CVE-2021-22904: Possible DoS Vulnerability in Action Controller Token Authentication</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://weblog.rubyonrails.org/2021/5/5/Rails-versions-6-1-3-2-6-0-3-7-5-2-4-6-and-5-2-6-have-been-released/</url>
+      <url>https://discuss.rubyonrails.org/t/cve-2021-22885-possible-information-disclosure-unintended-method-execution-in-action-pack/77868</url>
+      <url>https://discuss.rubyonrails.org/t/cve-2021-22902-possible-denial-of-service-vulnerability-in-action-dispatch/77866</url>
+      <url>https://discuss.rubyonrails.org/t/cve-2021-22903-possible-open-redirect-vulnerability-in-action-pack/77867</url>
+      <url>https://discuss.rubyonrails.org/t/cve-2021-22904-possible-dos-vulnerability-in-action-controller-token-authentication/77869</url>
+      <cvename>CVE-2021-22885</cvename>
+      <cvename>CVE-2021-22902</cvename>
+      <cvename>CVE-2021-22903</cvename>
+      <cvename>CVE-2021-22904</cvename>
+    </references>
+    <dates>
+      <discovery>2021-05-05</discovery>
+      <entry>2021-05-07</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="7f242313-aea5-11eb-8151-67f74cf7c704">
+    <topic>go -- net/http: ReadRequest can stack overflow due to recursion with very large headers</topic>
+    <affects>
+      <package>
+	<name>go</name>
+	<range><lt>1.16.4,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Go project reports:</p>
+	<blockquote cite="https://github.com/golang/go/issues/45710">
+	  <p>http.ReadRequest can stack overflow due to recursion when given a
+	    request with a very large header (~8-10MB depending on the
+	    architecture). A http.Server which overrides the default max header
+	    of 1MB by setting Server.MaxHeaderBytes to a much larger value could
+	    also be vulnerable in the same way.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-31525</cvename>
+      <url>https://github.com/golang/go/issues/45710</url>
+    </references>
+    <dates>
+      <discovery>2021-04-22</discovery>
+      <entry>2021-05-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="50ec3a01-ad77-11eb-8528-8c164582fbac">
+    <topic>Ansible -- Insecure Temporary File</topic>
+    <affects>
+      <package>
+	<name>py36-ansible</name>
+	<name>py37-ansible</name>
+	<name>py38-ansible</name>
+	<name>py39-ansible</name>
+	<name>py36-ansible27</name>
+	<range><ge>2.9.0</ge><le>2.9.9</le></range>
+      </package>
+      <package>
+	<name>py37-ansible27</name>
+	<name>py38-ansible27</name>
+	<name>py39-ansible27</name>
+	<range><ge>2.7.0</ge><le>2.7.18</le></range>
+      </package>
+      <package>
+	<name>py36-ansible28</name>
+	<name>py37-ansible28</name>
+	<name>py38-ansible28</name>
+	<name>py39-ansible28</name>
+	<range><ge>2.8.0</ge><le>2.8.12</le></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>NVD reports:</p>
+	<blockquote cite="https://nvd.nist.gov/vuln/detail/CVE-2020-10744">
+	<p>
+	  An incomplete fix was found for the fix of the flaw CVE-2020-1733
+	  ansible: insecure temporary directory when running become_user from
+	  become directive. The provided fix is insufficient to prevent the
+	  race condition on systems using ACLs and FUSE filesystems..
+	</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2020-10744</url>
+      <cvename>CVE-2020-10744</cvename>
+    </references>
+    <dates>
+      <discovery>2020-05-15</discovery>
+      <entry>2021-05-05</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="1766359c-ad6e-11eb-b2a4-080027e50e6d">
+    <topic>Django -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>py36-django22</name>
+	<name>py37-django22</name>
+	<name>py38-django22</name>
+	<name>py39-django22</name>
+	<range><lt>2.2.21</lt></range>
+      </package>
+      <package>
+	<name>py36-django31</name>
+	<name>py37-django31</name>
+	<name>py38-django31</name>
+	<name>py39-django31</name>
+	<range><lt>3.1.9</lt></range>
+      </package>
+      <package>
+	<name>py36-django32</name>
+	<name>py37-django32</name>
+	<name>py38-django32</name>
+	<name>py39-django32</name>
+	<range><lt>3.2.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Django Release reports:</p>
+	<blockquote cite="https://www.djangoproject.com/weblog/2021/may/04/security-releases/">
+	  <p>CVE-2021-31542:Potential directory-traversal via uploaded files.</p>
+	  <p>MultiPartParser, UploadedFile, and FieldFile allowed directory-traversal
+	    via uploaded files with suitably crafted file names.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://www.djangoproject.com/weblog/2021/may/04/security-releases/</url>
+      <cvename>CVE-2021-31542</cvename>
+    </references>
+    <dates>
+      <discovery>2021-04-22</discovery>
+      <entry>2021-05-05</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="bffa40db-ad50-11eb-86b8-080027846a02">
+    <topic>Python -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>python38</name>
+	<range><lt>3.8.10</lt></range>
+      </package>
+      <package>
+	<name>python39</name>
+	<range><lt>3.9.5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Python reports:</p>
+	<blockquote cite="https://docs.python.org/3/whatsnew/changelog.html#changelog">
+	  <p>bpo-43434: Creating a sqlite3.Connection object now also produces a
+	    sqlite3.connect auditing event. Previously this event was only produced
+	    by sqlite3.connect() calls. Patch by Erlend E. Aasland.</p>
+	  <p>bpo-43882: The presence of newline or tab characters in parts of a URL
+	    could allow some forms of attacks.Following the controlling specification
+	    for URLs defined by WHATWG urllib.parse() now removes A SCII newlines
+	    and tabs from URLs, preventing such attacks.</p>
+	  <p>bpo-43472: Ensures interpreter-level audit hooks receive the cpython.
+	    PyInterpreterState_New event when called through the _xxsubinterpreters
+	    module.</p>
+	  <p>bpo-36384: ipaddress module no longer accepts any leading zeros in IPv4
+	    address strings. Leading zeros are ambiguous and interpreted as octal
+	    notation by some libraries. For example the legacy function socket.inet_aton()
+	    treats leading zeros as octal notatation. glibc implementation of modern
+	    inet_pton() does not accept any leading zeros. For a while the ipaddress
+	    module used to accept ambiguous leading zeros.</p>
+	  <p>bpo-43075: Fix Regular Expression Denial of Service (ReDoS) vulnerability
+	    in urllib.request.AbstractBasicAuthHandler. The ReDoS-vulnerable regex has
+	    quadratic worst-case complexity and it allows cause a denial of service
+	    when identifying crafted invalid RFCs. This ReDoS issue is on the client
+	    side and needs remote attackers to control the HTTP server.</p>
+	  <p>bpo-42800: Audit hooks are now fired for frame.f_code, traceback.tb_frame,
+	    and generator code/frame attribute access.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://docs.python.org/3/whatsnew/changelog.html#changelog</url>
+      <url>https://docs.python.org/3.8/whatsnew/changelog.html#changelog</url>
+    </references>
+    <dates>
+      <discovery>2021-03-08</discovery>
+      <entry>2021-05-05</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="1606b03b-ac57-11eb-9bdd-8c164567ca3c">
     <topic>redis -- multiple vulnerabilities</topic>
     <affects>
@@ -549,6 +1225,7 @@ Notes:
     </description>
     <references>
       <url>https://www.jenkins.io/security/advisory/2021-04-20/</url>
+      <cvename>CVE-2021-28165</cvename>
     </references>
     <dates>
       <discovery>2021-04-20</discovery>
@@ -559,6 +1236,22 @@ Notes:
   <vuln vid="56ba4513-a1be-11eb-9072-d4c9ef517024">
     <topic>MySQL -- Multiple vulnerabilities</topic>
     <affects>
+      <package>
+	<name>mariadb103-server</name>
+	<range><lt>10.3.29</lt></range>
+      </package>
+      <package>
+	<name>mariadb104-server</name>
+	<range><lt>10.4.19</lt></range>
+      </package>
+      <package>
+	<name>mariadb105-server</name>
+	<range><lt>10.5.10</lt></range>
+      </package>
+      <package>
+	<name>mysql56-server</name>
+	<range><lt>5.6.52</lt></range>
+      </package>
       <package>
 	<name>mysql57-server</name>
 	<range><lt>5.7.34</lt></range>
@@ -578,15 +1271,62 @@ Notes:
 	    requiring user credentials.<br/>
 	    The highest CVSS v3.1 Base Score of vulnerabilities affecting Oracle
 	    MySQL is 9.8.</p>
+	  <p>MariaDB is affected by CVE-2021-2166 and CVE-2021-2154 only</p>
 	</blockquote>
       </body>
     </description>
     <references>
       <url>https://www.oracle.com/security-alerts/cpuapr2021.html</url>
+      <url>https://mariadb.com/kb/en/mariadb-10510-release-notes/</url>
+      <cvename>CVE-2020-8277</cvename>
+      <cvename>CVE-2020-1971</cvename>
+      <cvename>CVE-2021-3449</cvename>
+      <cvename>CVE-2020-28196</cvename>
+      <cvename>CVE-2021-23841</cvename>
+      <cvename>CVE-2021-2144</cvename>
+      <cvename>CVE-2021-2172</cvename>
+      <cvename>CVE-2021-2298</cvename>
+      <cvename>CVE-2021-2178</cvename>
+      <cvename>CVE-2021-2202</cvename>
+      <cvename>CVE-2021-2307</cvename>
+      <cvename>CVE-2021-2304</cvename>
+      <cvename>CVE-2021-2180</cvename>
+      <cvename>CVE-2021-2194</cvename>
+      <cvename>CVE-2021-2154</cvename>
+      <cvename>CVE-2021-2166</cvename>
+      <cvename>CVE-2021-2196</cvename>
+      <cvename>CVE-2021-2300</cvename>
+      <cvename>CVE-2021-2305</cvename>
+      <cvename>CVE-2021-2179</cvename>
+      <cvename>CVE-2021-2226</cvename>
+      <cvename>CVE-2021-2160</cvename>
+      <cvename>CVE-2021-2164</cvename>
+      <cvename>CVE-2021-2169</cvename>
+      <cvename>CVE-2021-2170</cvename>
+      <cvename>CVE-2021-2193</cvename>
+      <cvename>CVE-2021-2203</cvename>
+      <cvename>CVE-2021-2212</cvename>
+      <cvename>CVE-2021-2213</cvename>
+      <cvename>CVE-2021-2278</cvename>
+      <cvename>CVE-2021-2299</cvename>
+      <cvename>CVE-2021-2230</cvename>
+      <cvename>CVE-2021-2146</cvename>
+      <cvename>CVE-2021-2201</cvename>
+      <cvename>CVE-2021-2208</cvename>
+      <cvename>CVE-2021-2215</cvename>
+      <cvename>CVE-2021-2217</cvename>
+      <cvename>CVE-2021-2293</cvename>
+      <cvename>CVE-2021-2174</cvename>
+      <cvename>CVE-2021-2171</cvename>
+      <cvename>CVE-2021-2162</cvename>
+      <cvename>CVE-2021-2301</cvename>
+      <cvename>CVE-2021-2308</cvename>
+      <cvename>CVE-2021-2232</cvename>
     </references>
     <dates>
       <discovery>2021-04-20</discovery>
       <entry>2021-04-20</entry>
+      <modified>2021-05-04</modified>
     </dates>
   </vuln>
 
@@ -3124,6 +3864,15 @@ raptor_xml_writer_start_element_common.</p>
     </description>
     <references>
       <url>https://github.com/AcademySoftwareFoundation/openexr/releases/tag/v2.5.5</url>
+      <!-- updated 2021-05-08 from https://github.com/AcademySoftwareFoundation/openexr/commit/744cdecc87ff3489cc47204411d7903ceeb80be4 -->
+      <url>https://github.com/AcademySoftwareFoundation/openexr/releases/tag/v2.5.4</url>
+      <cvename>CVE-2021-20296</cvename>
+      <cvename>CVE-2021-3479</cvename>
+      <cvename>CVE-2021-3478</cvename>
+      <cvename>CVE-2021-3477</cvename>
+      <cvename>CVE-2021-3476</cvename>
+      <cvename>CVE-2021-3475</cvename>
+      <cvename>CVE-2021-3474</cvename>
     </references>
     <dates>
       <discovery>2021-02-12</discovery>

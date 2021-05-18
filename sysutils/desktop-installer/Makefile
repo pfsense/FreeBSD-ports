@@ -1,6 +1,8 @@
+# Created by: Jason Bacon <jwb@FreeBSD.org>
+
 PORTNAME=	desktop-installer
-DISTVERSION=	0.7.1-1
-DISTVERSIONSUFFIX=	-g5e85859
+DISTVERSION=	0.7.2-2
+DISTVERSIONSUFFIX=	-g569ef3a
 CATEGORIES=	sysutils
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -9,7 +11,7 @@ COMMENT=	Quickly configure a FreeBSD desktop system
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	auto-admin>=0.7.2:sysutils/auto-admin
+RUN_DEPENDS=	auto-admin>=0.7.3:sysutils/auto-admin
 
 USES=		tar:xz
 USE_GITHUB=	yes
@@ -21,7 +23,7 @@ NO_ARCH=	yes
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/sbin
-	${INSTALL_SCRIPT} ${WRKSRC}/Scripts/battery_shutdown.sh ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_SCRIPT} ${WRKSRC}/Scripts/battery-shutdown.sh ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_MAN} ${WRKSRC}/Doc/${PORTNAME}.man \
 		${STAGEDIR}${PREFIX}/man/man1/${PORTNAME}.1
 	@${MKDIR} ${STAGEDIR}${DATADIR}

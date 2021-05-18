@@ -373,7 +373,6 @@
     SUBDIR += torrus
     SUBDIR += triton-guesttools
     SUBDIR += unbound_exporter
-    SUBDIR += unifi-devel
     SUBDIR += unifi-lts
     SUBDIR += unifi-poller
     SUBDIR += unifi5
@@ -408,5 +407,10 @@
     SUBDIR += zabbix52-java
     SUBDIR += zabbix52-proxy
     SUBDIR += zabbix52-server
+    SUBDIR += zabbix54-agent
+    SUBDIR += zabbix54-frontend
+    SUBDIR += zabbix54-java
+    SUBDIR += zabbix54-proxy
+    SUBDIR += zabbix54-server
 
 .include <bsd.port.subdir.mk>
