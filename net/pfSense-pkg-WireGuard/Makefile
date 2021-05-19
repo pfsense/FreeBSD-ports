@@ -31,7 +31,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/wg/js
 
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	
+
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/wireguard.priv.inc \
 		${STAGEDIR}/etc/inc/priv
 
