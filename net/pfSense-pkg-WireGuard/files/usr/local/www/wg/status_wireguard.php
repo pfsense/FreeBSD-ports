@@ -54,13 +54,7 @@ $tab_array[] = array(gettext("Status"), true, "/wg/status_wireguard.php");
 
 include("head.inc");
 
-// Check if the kernel module is loaded
-if (!is_module_loaded($wgg['kmod'])) {
-
-	// Warn the user if the kernel module is not loaded
-	print_info_box(gettext('The WireGuard kernel module is not loaded!'), 'danger', null);
-
-}
+wg_display_service_warning(false);
 
 display_top_tabs($tab_array);
 
@@ -119,7 +113,7 @@ if (!empty($a_devices)):
 								<th><?=gettext('Peer')?></th>
 								<th><?=gettext('Latest Handshake')?></th>
 								<th><?=gettext('Public Key')?></th>
-								<th><?=htmlspecialchars(wg_format_endpoint(true))?></th>
+								<th><?=wg_format_endpoint(true)?></th>
 								<th><?=gettext('Allowed IPs')?></th>
 								<th><?=gettext('RX')?></th>
 								<th><?=gettext('TX')?></th>
@@ -133,7 +127,7 @@ if (!empty($a_devices)):
 										<?=wg_handshake_status_icon($peer['latest_handshake'])?>
 										<?=htmlspecialchars(wg_truncate_pretty($peer['config']['descr'], 16))?>
 									</td>
-									<td><?=htmlspecialchars(wg_human_time_diff($peer['latest_handshake']))?></td>
+									<td><?=htmlspecialchars(wg_human_time_diff("@{$peer['latest_handshake']}"))?></td>
 									<td><?=htmlspecialchars(wg_truncate_pretty($peer['public_key'], 16))?></td>
 									<td><?=htmlspecialchars($peer['endpoint'])?></td>
 									<td><?=wg_generate_peer_allowedips_popup_link(wg_get_peer_id($peer['config']['publickey'], $peer['config']['tun']))?></td>
