@@ -3075,7 +3075,6 @@ PHP_FUNCTION(pfSense_interface_listget) {
 
 static int interface_create(char *ifname, unsigned long op, zend_string **str, zval *return_value) {
 	struct ifreq ifr;
-	int err;
 
 	memset(&ifr, 0, sizeof(ifr));
 	strlcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
