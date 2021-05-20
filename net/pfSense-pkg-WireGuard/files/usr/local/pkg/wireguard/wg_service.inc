@@ -55,9 +55,9 @@ if (isset($argv[1])) {
 
 			set_time_limit(0);
 	
-			wg_service_start();
+			$ret_code = wg_service_start();
 	
-			exit(0);
+			exit($ret_code);
 
 		case 'stop':
 
@@ -71,7 +71,7 @@ if (isset($argv[1])) {
 
 		default:
 
-			exit(0);
+			exit(1);
 
 	}
 
@@ -93,9 +93,9 @@ function wg_service_stop() {
 function wg_is_service_running() {
 	global $wgg;
 
-	if (!($h_lock = @fopen($wgg['pid_path'], 'a+')) || !file_exists($wgg['pid_path'])) {
+	if (!($h_lock = @fopen($wgg['pid_path'], 'r')) || !file_exists($wgg['pid_path'])) {
 
-		return 0;
+		return false;
 
 	}
 
@@ -109,7 +109,7 @@ function wg_is_service_running() {
 
 	fclose($h_lock);
 
-	return !$not_running || $wouldblock;
+	return (!$not_running || $wouldblock);
 
 }
 
@@ -118,7 +118,7 @@ function wg_service_start() {
 
 	if (wg_is_service_running()) {
 
-		exit(1);
+		return 1;
 
 	}
 
@@ -128,37 +128,37 @@ function wg_service_start() {
 	// The initial fork...
 	$newpid = pcntl_fork();
 
-	if ($newpid === - 1) {
+	if ($newpid === -1) {
 
 		// We could not fork, so bail out...
-		exit(1);
+		return 1;
 
 	} elseif ($newpid) {
 
 		// I'm the parent, and I'm going to self-destruct...
-		exit(0);
+		return 0;
 
 	}
 
 	// Now become the session leader
 	if (posix_setsid() < 0) {
 
-		exit(1);
+		return 1;
 
 	}
 
 	// The second fork...
 	$newpid = pcntl_fork();
 
-	if ($newpid === - 1) {
+	if ($newpid === -1) {
 
 		// We could not fork, so bail out...
-		exit(1);
+		return 1;
 
 	} elseif ($newpid) {
 
 		// I'm the parent, and I'm going to self-destruct...
-		exit(0);
+		return 0;
 
 	}
 
@@ -171,10 +171,12 @@ function wg_service_start() {
 
 		print_message("Configuring WireGuard tunnels...");
 
+		// Supresses ifconfig spew 
 		mute_kernel_msgs();
 
 	}
-
+	
+	// Build the tunnels
 	wg_resync_all();
  
 	if (platform_booting()) {
@@ -184,7 +186,7 @@ function wg_service_start() {
 		print_message("done. \n");
 
 		// Let the boot process continue and handle additional service and package invocation
-		exit(0);
+		return 0;
 
 	}
 
@@ -193,7 +195,7 @@ function wg_service_start() {
 
 		unset($g['wireguard_firststart']);
 
-		return;
+		return 0;
 
 	}
 
@@ -203,7 +205,7 @@ function wg_service_start() {
 	if ($newpid === -1) {
 
 		// We could not fork, so bail out...
-		exit(1);
+		return 1;
 
 	} elseif ($newpid) {
 
@@ -213,30 +215,46 @@ function wg_service_start() {
 		// We are the parent so go on...
 		wg_service_daemon();
 
+	// In this child process is where we can now safely restart any additional services
 	} else {
 
+		// dpinger
 		setup_gateways_monitor();
 
+		// unbound
 		services_unbound_configure();
 		
+		// pf
 		filter_configure();
 
 		// All good
-		exit(0);
+		return 0;
 
 	}
 
 	// We should never get here
-	exit(0);
+	return 0;
 
 }
 
 function wg_service_daemon() {
 	global $wgg;
 
-	// Re-register the service environment
+	// Re-register the service environment and obtain a fresh lock now that we have finished restarting additional services
 	wg_register_service_env(true);
 
+	// Attempt to load the kmod, required to run the service without any tunnels configured
+	if (!is_module_loaded($wgg['kmod'])) {
+
+		$kmod = $wgg['kmod'];
+
+		wg_escapeshellarg($kmod);
+
+		mwexec("{$wgg['kldload']} {$kmod}");
+
+	}
+
+	// Main daemon loop
 	while (true) {
 
 		// Check if any new signals are waiting for dispatch
@@ -257,7 +275,8 @@ function wg_service_daemon() {
 	// Send a signal to self to terminate gracefully
 	posix_kill(getmypid(), SIGTERM);
 
-	return;
+	// Fall though just in case
+	return 0;
 
 }
 
