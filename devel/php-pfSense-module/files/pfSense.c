@@ -3555,7 +3555,6 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 	int dev;
 	struct pfioc_rule pr;
 	uint32_t mnr, nr;
-	zval array;
 
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
 		RETURN_NULL();
@@ -3569,6 +3568,8 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 	mnr = pr.nr;
 	array_init(return_value);
 	for (nr = 0; nr < mnr; ++nr) {
+		zval array;
+
 		pr.nr = nr;
 		if (ioctl(dev, DIOCGETRULE, &pr)) {
 			add_assoc_string(return_value, "error", strerror(errno));
