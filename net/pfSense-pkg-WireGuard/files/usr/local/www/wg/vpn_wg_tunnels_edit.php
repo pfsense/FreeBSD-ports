@@ -289,7 +289,7 @@ if (!is_wg_tunnel_assigned($pconfig)) {
 			'fa-trash'
 		))->addClass('btn-warning btn-sm');
 	
-		$section->add($group);	
+		$section->add($group);
 
 	}
 
