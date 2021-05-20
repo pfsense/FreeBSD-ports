@@ -1,6 +1,6 @@
 <?php
 /*
- * wg_guiconfig.inc
+ * wg_globals.inc
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/theonemcdonald)
@@ -20,11 +20,23 @@
  */
 
 // pfSense includes
+require_once('guiconfig.inc');
 require_once('util.inc');
 
 // WireGuard includes
-require_once('wireguard/wg_globals.inc');
 require_once('wireguard/wg.inc');
+
+function wg_display_service_warning($only_with_tunnels = true) {
+	global $wgg;
+
+	if ((!$only_with_tunnels || count($wgg['tunnels']) > 0) && !wg_is_service_running()) {
+
+		print_info_box(gettext('The WireGuard service is not running.'), 'danger', null);
+	
+	}
+
+
+}
 
 // Formats peer endpoint address and port for the UI
 function wg_format_endpoint($header = true, $peer = null, $endpoint_key = 'endpoint', $port_key = 'port') {
@@ -140,67 +152,70 @@ function wg_handshake_status_icon($latest_handshake_stamp = 0, $fa_icon = "fa-ha
 
 }
 
-// Formats a given time difference in a human-friendly way
-function wg_human_time_diff($start_time_stamp, $end_time_stamp = null, $from_epoch = false) {
+/* 
+ * Formats a given time difference in a human-friendly way
+ * $start and $end should be format compatible with DateTime
+ */
+function wg_human_time_diff($start, $end = null, $from_epoch = false) {
 
-	if (is_null($end_time_stamp)) {
+	if (is_null($end)) {
 
-		$end_time = new DateTimeImmutable();
-
-	} elseif (is_numericint($end_time_stamp)) {
-
-		$end_time = new DateTime();
-
-		$end_time->setTimestamp($end_time_stamp);
+		$end = new DateTime('now');
 
 	}
 
-	$start_time = new DateTime();
+	// If these fail for any reason, just bail out...
+	try {
 
-	if ($start_time_stamp > 0 || $from_epoch) {
+		if (!($start instanceof DateTime)) {
 
-		$start_time->setTimestamp($start_time_stamp);
+			$start = new DateTime($start);
 
-	} else {
+		}
+
+		if (!($end instanceof DateTime)) {
+
+			$end = new DateTime($end);
+
+		}
+
+	} catch (Exception $e) {
 
 		return gettext('never');
 
 	}
 
-	$diff_time = $end_time->diff($start_time);
+	$interval = $end->diff($start);
 
-	$diff_time_seconds = abs($end_time->getTimestamp() - $start_time->getTimestamp());
+	$doPlural = function($nb, $str) { return ($nb > 1) ? gettext("{$str}s") : gettext($str); };
 
-	$tokens = array (
-		31536000 => gettext('year'),
-		2592000 => gettext('month'),
-		604800 => gettext('week'),
-		86400 => gettext('day'),
-		3600 => gettext('hour'),
-		60 => gettext('minute'),
-		1 => gettext('second')
-	);
+	$doTense = function($interval) { return ($interval->invert) ? gettext('ago') : gettext('from now'); };
 
-	foreach ($tokens as $unit => $text) {
+	$a_format = array();
 
-		if ($diff_time_seconds < $unit) {
+	$a_interval = get_object_vars($interval);
 
-			continue;
-			
+	$tokens = array('y' => 'year', 'm' => 'month', 'd' => 'day', 'h' => 'hour', 'i' => 'minute', 's' => 'second');
+
+	foreach ($tokens as $key => $value) {
+
+		if ($a_interval[$key] !== 0) {
+
+			$a_format[] = "%{$key} {$doPlural($a_interval[$key], $value)}";
+
 		}
-
-		$num_of_units = floor($diff_time_seconds / $unit);
-
-		$plural = ($num_of_units > 1) ? 's' : '';
-
-		$tense = ($diff_time->invert) ? 'ago' : 'from now';
-		
-		return "{$num_of_units} {$text}{$plural} {$tense}";
 
 	}
 
-	// We should 'never' get here...
-	return gettext('never');
+	if ((count($a_format) == 0) || (($start->getTimestamp() == 0) && !$from_epoch)) {
+
+		return gettext('never');
+
+	}
+
+	$s_format = (count($a_format) > 1) ? "{$a_format[0]}, {$a_format[1]}" : $a_format[0];
+
+	return "{$interval->format($s_format)} {$doTense($interval)}";
 
 }
 
