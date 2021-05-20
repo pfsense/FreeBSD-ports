@@ -1,6 +1,6 @@
 <?php
 /*
- * wg_globals.inc
+ * wg_guiconfig.inc
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/theonemcdonald)
@@ -25,6 +25,7 @@ require_once('util.inc');
 
 // WireGuard includes
 require_once('wireguard/wg.inc');
+require_once('wireguard/wg_globals.inc');
 
 function wg_display_service_warning($only_with_tunnels = true) {
 	global $wgg;
