@@ -40,82 +40,80 @@ function wg_status() {
 
 	$peer_keys = array('public_key', 'preshared_key', 'endpoint', 'allowed_ips', 'latest_handshake', 'transfer_rx', 'transfer_tx', 'persistent_keepalive');
 	
+	$ret_array = $wg_output_rows = array();
+	
 	exec("{$wgg['wg']} show all dump", $wg_output_rows, $ret_code);
 
-	// Bail out early if necessary
-	if ($ret_code <> 0) { 
-		
-		return false; 
+	if ($ret_code == 0) {
 	
-	}
+		foreach ($wg_output_rows as $wg_index => $wg_row) {
 
-	$a_ret = array();
-	
-	foreach ($wg_output_rows as $wg_index => $wg_row) {
+			$tmp_tunnel = $tmp_peer = array();
 
-		$tmp_tunnel = $tmp_peer = array();
+			$a_device = explode("\t", $wg_row);
 
-		$a_device = explode("\t", $wg_row);
+			$current_device = $a_device[0];
 
-		$current_device = $a_device[0];
+			if (strcmp($current_device, $last_device)) {
 
-		if (strcmp($current_device, $last_device)) {
+				foreach ($tunnel_keys as $index => $key) {
 
-			foreach ($tunnel_keys as $index => $key) {
+					$tmp_tunnel[$key] = $a_device[$index + 1];
 
-				$tmp_tunnel[$key] = $a_device[$index + 1];
+				}
 
+				// Gets some extra information about tunnels not returned by `wg show all dump`
+				$tunnel_if_stats 		= pfSense_get_interface_stats($current_device);
+
+				$tun_idx			= wg_get_tunnel_array_index($current_device);
+
+				$tmp_tunnel['status'] 		= wg_interface_status($current_device) ? 'up' : 'down';
+
+				$tmp_tunnel['transfer_rx'] 	= $tunnel_if_stats['inbytes'];
+
+				$tmp_tunnel['transfer_tx'] 	= $tunnel_if_stats['outbytes'];
+
+				$tmp_tunnel['inpkts']		= $tunnel_if_stats['inpkts'];
+
+				$tmp_tunnel['outpkts']		= $tunnel_if_stats['outpkts'];
+
+				$tmp_tunnel['mtu']		= $tunnel_if_stats['mtu'];
+
+				$tmp_tunnel['config']		= $wgg['tunnels'][$tun_idx];
+
+				// Add the tunnel to the array
+				$ret_array[$current_device] = $tmp_tunnel;
+				
+				// Now provision an empty peer array
+				$ret_array[$current_device]['peers'] = array();
+				
+				$last_device = $a_device[0];
+
+			} else {
+
+				foreach ($peer_keys as $index => $key) {
+
+					$tmp_peer[$key] = $a_device[$index + 1];
+
+				}
+
+				// Gets some extra information about peers not returned by `wg show all dump`
+				$peer_id = wg_get_peer_id($tmp_peer['public_key'], $last_device);
+
+				$tmp_peer['config']		= $wgg['peers'][$peer_id];
+				
+				// Add the peer to the array
+				$ret_array[$last_device]['peers'][$a_device[1]] = $tmp_peer;
+				
 			}
 
-			// Gets some extra information about tunnels not returned by `wg show all dump`
-			$tunnel_if_stats 		= pfSense_get_interface_stats($current_device);
 
-			$tun_idx			= wg_get_tunnel_array_index($current_device);
-
-			$tmp_tunnel['status'] 		= wg_interface_status($current_device) ? 'up' : 'down';
-
-			$tmp_tunnel['transfer_rx'] 	= $tunnel_if_stats['inbytes'];
-
-			$tmp_tunnel['transfer_tx'] 	= $tunnel_if_stats['outbytes'];
-
-			$tmp_tunnel['inpkts']		= $tunnel_if_stats['inpkts'];
-
-			$tmp_tunnel['outpkts']		= $tunnel_if_stats['outpkts'];
-
-			$tmp_tunnel['mtu']		= $tunnel_if_stats['mtu'];
-
-			$tmp_tunnel['config']		= $wgg['tunnels'][$tun_idx];
-
-			// Add the tunnel to the array
-			$a_ret[$current_device] = $tmp_tunnel;
-			
-			// Now provision an empty peer array
-			$a_ret[$current_device]['peers'] = array();
-			
-			$last_device = $a_device[0];
-
-		} else {
-
-			foreach ($peer_keys as $index => $key) {
-
-				$tmp_peer[$key] = $a_device[$index + 1];
-
-			}
-
-			// Gets some extra information about peers not returned by `wg show all dump`
-			$peer_id = wg_get_peer_id($tmp_peer['public_key'], $last_device);
-
-			$tmp_peer['config']		= $wgg['peers'][$peer_id];
-			
-			// Add the peer to the array
-			$a_ret[$last_device]['peers'][$a_device[1]] = $tmp_peer;
-			
 		}
 
-
 	}
 
-	return $a_ret;
+	// Consumers of this function always expect an array type
+	return $ret_array;
 
 }
 
@@ -175,9 +173,9 @@ function wg_ifconfig_del_address($wg_ifname, $masked_address, $verbose = false) 
 
 		wg_escapeshellarg($wg_ifname, $address);
 
-		$ret_val = mwexec("{$wgg['ifconfig']} {$wg_ifname} {$family} {$addr} delete {$redirect}");
+		$ret_val = mwexec("{$wgg['ifconfig']} {$wg_ifname} {$family} {$address} delete {$redirect}");
 
-		return ($ret_val <> 0) ? false : true;
+		return ($ret_val == 0);
 
 	}
 
@@ -198,7 +196,7 @@ function wg_ifconfig_set_address($wg_ifname, $masked_address, $verbose = false) 
 
 		$ret_val = mwexec("{$wgg['ifconfig']} {$wg_ifname} {$family} {$masked_address} add {$redirect}");
 
-		return ($ret_val <> 0) ? false : true;
+		return ($ret_val == 0);
 
 	}
 
@@ -215,7 +213,7 @@ function wg_ifconfig_down_interface($wg_ifname, $verbose = false) {
 
 	$ret_val = mwexec("{$wgg['ifconfig']} {$wg_ifname} down {$redirect}");
 
-	return ($ret_val <> 0) ? false : true;
+	return ($ret_val == 0);
 
 }
 
@@ -228,7 +226,7 @@ function wg_ifconfig_up_interface($wg_ifname, $verbose = false) {
 
 	$ret_val = mwexec("{$wgg['ifconfig']} {$wg_ifname} up {$redirect}");
 
-	return ($ret_val <> 0) ? false : true;
+	return ($ret_val == 0);
 
 }
 
@@ -302,7 +300,7 @@ function wg_interface_update_addresses($wg_ifname) {
  */
 function wg_get_pfsense_interface_info($tunnel_name) {
 
-	$ret_val = array();
+	$ret_array = array();
 
 	$iflist = get_configured_interface_list_by_realif(true);
 
@@ -312,15 +310,16 @@ function wg_get_pfsense_interface_info($tunnel_name) {
 
 		$tmp_name = $iflist[$tunnel_name];
 
-		$ret_val['name'] 	= $tmp_name;
+		$ret_array['name'] 	= $tmp_name;
 
-		$ret_val['descr']	=  $ifdescr[$tmp_name];
+		$ret_array['descr']	=  $ifdescr[$tmp_name];
 
-		return $ret_val;
+		return $ret_array;
 
 	}
 
-	return false;
+	// Consumers of this function always expect an array type
+	return $ret_array;
 
 }
 
@@ -337,7 +336,7 @@ function wg_interface_syncconf($wg_ifname, $verbose = false) {
 
 		$ret_val = mwexec("{$wgg['wg']} syncconf {$wg_ifname} {$wg_conf_path} {$redirect}");
 
-		return ($ret_val <> 0) ? false : true;
+		return ($ret_val == 0);
 
 	}
 
@@ -358,7 +357,7 @@ function wg_interface_create($wg_ifname, $verbose = false) {
 	// We first check to see if the desired interface already exists, then we create it if it does not
 	$ret_val = mwexec("{$wgg['ifconfig']} {$wg_ifname} {$redirect} || {$wgg['ifconfig']} wg create name {$wg_ifname} {$redirect}");
 		
-	return ($ret_val <> 0) ? false : true;
+	return ($ret_val == 0);
 
 }
 
@@ -391,13 +390,15 @@ function wg_interface_group_add($wg_ifname, $verbose = false) {
 	// We first check to see if the desired interface exists, then we add it to the group if it does
 	$ret_val = mwexec("{$wgg['ifconfig']} {$wg_ifname} {$redirect} && {$wgg['ifconfig']} {$wg_ifname} group {$wg_ifgroup} {$redirect}");
 		
-	return ($ret_val <> 0) ? false : true;
+	return ($ret_val == 0);
 
 }
 
 function wg_interface_status($wg_ifname) {
 
-	return in_array("UP", wg_ifconfig_interface_flags($wg_ifname)) ? true : false;
+	$if_flags = wg_ifconfig_interface_flags($wg_ifname);
+
+	return in_array("UP", $if_flags);
 
 }
 
@@ -406,21 +407,22 @@ function wg_ifconfig_interface_flags($wg_ifname) {
 
 	wg_escapeshellarg($wg_ifname);
 
+	$ret_array = $output = array();
+
 	exec("{$wgg['ifconfig']} {$wg_ifname}", $output, $ret_code);
 
-	if ($ret_code <> 0) {
+	if ($ret_code == 0) {
 
-		return false;
+		if (preg_match("/flags=.*<(?P<flags>.*)>/", $output[0], $matches)) {
 
-	}
+			$ret_array = explode(',', $matches['flags']);
 
-	if (preg_match("/flags=.*<(?P<flags>.*)>/", $output[0], $matches)) {
-
-		return explode(',', $matches['flags']);
+		}
 
 	}
 
-	return false;
+	// Consumers of this function always expect an array type
+	return $ret_array;
 
 }
 
@@ -428,7 +430,7 @@ function wg_ifconfig_interface_flags($wg_ifname) {
 function wg_pkg_info() {
 	global $wgg;
 
-	$ret_val = array();
+	$ret_array = array();
 
 	$a_fields = array('name'=> '%n', 'version' => '%v', 'comment' => '%c');
 
@@ -445,20 +447,25 @@ function wg_pkg_info() {
 
 	exec("{$wgg['pkg']} query {$field_string} {$packages_string}", $packages, $ret_code);
 
-	foreach ($packages as $pkg_index => $package) {
+	if ($ret_code == 0) {
 
-		$fields = explode("\t", $package);
+		foreach ($packages as $pkg_index => $package) {
 
-		foreach ($fields as $field_index => $field) {
+			$fields = explode("\t", $package);
 
-			$ret_val[$pkg_index][$a_return_keys[$field_index]] = $field;
+			foreach ($fields as $field_index => $field) {
 
+				$ret_array[$pkg_index][$a_return_keys[$field_index]] = $field;
+
+
+			}
 
 		}
 
 	}
 
-	return ($ret_code <> 0) ? false : $ret_val;
+	// Consumers of this function always expect an array type
+	return $ret_array;
 
 }
 
