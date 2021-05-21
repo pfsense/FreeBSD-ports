@@ -922,6 +922,17 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 		if ($check_type == "Agent") {
 			$checkport = " port " . $pool['monitor_agentport'];
 		}
+		if (($check_type == "HTTP") && (haproxy_version() >= '2.2')) {
+			$httpchecksend = "\thttp-check\t\tsend meth {$pool['httpcheck_method']}";
+			if (!empty($pool['monitor_uri'])) {
+				$httpchecksend .= " uri {$pool['monitor_uri']}";
+			}
+			if (!empty($pool['monitor_httpversion'])) {
+				$httpchecksend .= " ver {$pool['monitor_httpversion']}";
+			}
+			fwrite ($fd, $httpchecksend . "\n");
+			$optioncheck = "httpchk";
+		}
 	}
 
 	if ($pool['balance']) {
