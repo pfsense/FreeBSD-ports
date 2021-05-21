@@ -314,6 +314,14 @@ $a_action["http-request_replace-header"] = array('name' => "http-request header 
 		array('name'=>"find",'columnheader'=>"Find regex",'type'=>"textbox",'size'=>"50",'mask'=>'match-regex'),
 		array('name'=>"replace",'columnheader'=>"Replace by",'type'=>"textbox",'size'=>"50",'mask'=>'replace-fmt')
 	));
+if (haproxy_version() >= '2.2') {
+	$a_action["http-request_replace-path"] = array('name' => "http-request header replace path", 'mode'=> 'http', 'syntax' => 'http-request replace-path {find} {path} {replace}',
+		'fields' => array(
+			array('name'=>"path",'columnheader'=>"Path",'type'=>"textbox",'size'=>"50",'mask'=>'headername'),
+			array('name'=>"find",'columnheader'=>"Find regex",'type'=>"textbox",'size'=>"50",'mask'=>'match-regex'),
+			array('name'=>"replace",'columnheader'=>"Replace by",'type'=>"textbox",'size'=>"50",'mask'=>'replace-fmt')
+	));
+}
 $a_action["http-request_replace-value"] = array('name' => "http-request header replace value", 'mode'=> 'http', 'syntax' => 'http-request replace-value {name} {find} {replace}',
 	'fields' => array(
 		array('name'=>"name",'columnheader'=>"Headername",'type'=>"textbox",'size'=>"50",'mask'=>'headername'),
@@ -377,6 +385,39 @@ $a_action["http-response_set-status"] = array('name' => "http-response set statu
 		array('name'=>"status",'columnheader'=>"Status",'type'=>"textbox",'size'=>"50",'mask'=>'text'),
 		array('name'=>"reason",'columnheader'=>"Reason",'type'=>"textbox",'size'=>"50",'mask'=>'text','prefix'=>'reason')
 	));
+if (haproxy_version() >= '2.2') {
+	$a_action["http-after-response_add-header"] = array('name' => "http-after-response header add", 'mode'=> 'http', 'syntax' => ' http-after-response add-header {name} {fmt}',
+		'fields' => array(
+			array('name'=>"name",'columnheader'=>"Headername",'type'=>"textbox",'size'=>"50",'mask'=>'headername'),
+			array('name'=>"fmt",'columnheader'=>"New logformat value",'type'=>"textbox",'size'=>"50",'mask'=>'logformat')
+	));
+	$a_action["http-after-response_set-header"] = array('name' => "http-after-response header set", 'mode'=> 'http', 'syntax' => 'http-after-response set-header {name} {fmt}',
+		'fields' => array(
+			array('name'=>"name",'columnheader'=>"Headername",'type'=>"textbox",'size'=>"50",'mask'=>'headername'),
+			array('name'=>"fmt",'columnheader'=>"New logformat value",'type'=>"textbox",'size'=>"50",'mask'=>'logformat')
+	));
+	$a_action["http-after-response_del-header"] = array('name' => "http-after-response header delete", 'mode'=> 'http', 'syntax' => 'http-after-response del-header {name}',
+		'fields' => array(
+			array('name'=>"name",'columnheader'=>"Headername",'type'=>"textbox",'size'=>"50",'mask'=>'headername')
+	));
+	$a_action["http-after-response_replace-header"] = array('name' => "http-after-response header replace", 'mode'=> 'http', 'syntax' => 'http-after-response replace-header {name} {find} {replace}',
+		'fields' => array(
+			array('name'=>"name",'columnheader'=>"Headername",'type'=>"textbox",'size'=>"50",'mask'=>'headername'),
+			array('name'=>"find",'columnheader'=>"Find regex",'type'=>"textbox",'size'=>"50",'mask'=>'match-regex'),
+			array('name'=>"replace",'columnheader'=>"Replace by",'type'=>"textbox",'size'=>"50",'mask'=>'replace-fmt')
+	));
+	$a_action["http-after-response_replace-value"] = array('name' => "http-after-response header replace value", 'mode'=> 'http', 'syntax' => 'http-after-response replace-value {name} {find} {replace}',
+		'fields' => array(
+			array('name'=>"name",'columnheader'=>"Headername",'type'=>"textbox",'size'=>"50",'mask'=>'headername'),
+			array('name'=>"find",'columnheader'=>"Find regex",'type'=>"textbox",'size'=>"50",'mask'=>'match-regex'),
+			array('name'=>"replace",'columnheader'=>"Replace by",'type'=>"textbox",'size'=>"50",'mask'=>'replace-fmt')
+	));
+	$a_action["http-after-response_set-status"] = array('name' => "http-after-response set status", 'mode'=> 'http', 'syntax' => ' http-after-response set-status {status} {reason}',
+		'fields' => array(
+			array('name'=>"status",'columnheader'=>"Status",'type'=>"textbox",'size'=>"50",'mask'=>'text'),
+			array('name'=>"reason",'columnheader'=>"Reason",'type'=>"textbox",'size'=>"50",'mask'=>'text','prefix'=>'reason')
+	));
+}
 //
 $a_action["tcp-request_connection_accept"] = array('name' => "tcp-request connection accept", 'mode'=> '', 'syntax' => 'tcp-request connection accept');
 $a_action["tcp-request_connection_reject"] = array('name' => "tcp-request connection reject", 'mode'=> '', 'syntax' => 'tcp-request connection reject');
