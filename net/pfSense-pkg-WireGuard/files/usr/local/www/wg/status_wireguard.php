@@ -113,7 +113,7 @@ if (!empty($a_devices)):
 								<th><?=gettext('Peer')?></th>
 								<th><?=gettext('Latest Handshake')?></th>
 								<th><?=gettext('Public Key')?></th>
-								<th><?=wg_format_endpoint(true)?></th>
+								<th><?=htmlspecialchars(wg_format_endpoint(true))?></th>
 								<th><?=gettext('Allowed IPs')?></th>
 								<th><?=gettext('RX')?></th>
 								<th><?=gettext('TX')?></th>
