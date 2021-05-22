@@ -51,7 +51,6 @@
     SUBDIR += belier
     SUBDIR += bfbtester
     SUBDIR += binwalk
-    SUBDIR += bitwarden_rs
     SUBDIR += boringssl
     SUBDIR += botan110
     SUBDIR += botan2
@@ -131,6 +130,7 @@
     SUBDIR += dsniff
     SUBDIR += dsvpn
     SUBDIR += duo
+    SUBDIR += duo_openvpn
     SUBDIR += easy-rsa
     SUBDIR += elixir-comeonin
     SUBDIR += elixir-comeonin_i18n
@@ -172,6 +172,7 @@
     SUBDIR += git-crypt
     SUBDIR += git-remote-gcrypt
     SUBDIR += git-secret
+    SUBDIR += gitjacker
     SUBDIR += gnome-keyring
     SUBDIR += gnome-keyring-sharp
     SUBDIR += gnome-ssh-askpass
@@ -271,6 +272,7 @@
     SUBDIR += kripp
     SUBDIR += kstart
     SUBDIR += ktls_isa-l_crypto-kmod
+    SUBDIR += kuku
     SUBDIR += kwalletmanager
     SUBDIR += l0pht-watch
     SUBDIR += l0phtcrack
@@ -1242,6 +1244,7 @@
     SUBDIR += swatchdog
     SUBDIR += symbion-sslproxy
     SUBDIR += tailscale
+    SUBDIR += tang
     SUBDIR += tclsasl
     SUBDIR += tcpcrypt
     SUBDIR += teleport
@@ -1274,6 +1277,7 @@
     SUBDIR += unicornscan
     SUBDIR += vanguards-tor
     SUBDIR += vault
+    SUBDIR += vaultwarden
     SUBDIR += veracrypt
     SUBDIR += vigenere
     SUBDIR += vinetto

@@ -285,6 +285,7 @@
     SUBDIR += lagrange
     SUBDIR += larbin
     SUBDIR += libapreq2
+    SUBDIR += libdatachannel
     SUBDIR += libdom
     SUBDIR += libecap
     SUBDIR += libepc
@@ -411,6 +412,7 @@
     SUBDIR += mongrel2
     SUBDIR += monolith
     SUBDIR += moodle310
+    SUBDIR += moodle311
     SUBDIR += moodle39
     SUBDIR += morty
     SUBDIR += mozplugger
@@ -1558,7 +1560,6 @@
     SUBDIR += py-django-webpack-loader
     SUBDIR += py-django-widget-tweaks
     SUBDIR += py-django22
-    SUBDIR += py-django30
     SUBDIR += py-django31
     SUBDIR += py-django32
     SUBDIR += py-django_compressor
@@ -1574,6 +1575,7 @@
     SUBDIR += py-enmerkar
     SUBDIR += py-fake-useragent
     SUBDIR += py-falcon
+    SUBDIR += py-fastapi
     SUBDIR += py-feedgenerator
     SUBDIR += py-flask
     SUBDIR += py-flask-admin
@@ -1773,6 +1775,7 @@
     SUBDIR += py-wsaccel
     SUBDIR += py-wsgidav
     SUBDIR += py-yarl
+    SUBDIR += pydio-cells
     SUBDIR += qdecoder
     SUBDIR += qhttpengine
     SUBDIR += qt5-webchannel
@@ -1910,6 +1913,7 @@
     SUBDIR += rubygem-http-cookie
     SUBDIR += rubygem-http-form_data
     SUBDIR += rubygem-http3
+    SUBDIR += rubygem-http4
     SUBDIR += rubygem-http_router
     SUBDIR += rubygem-httparty
     SUBDIR += rubygem-httpclient
@@ -1957,6 +1961,7 @@
     SUBDIR += rubygem-less
     SUBDIR += rubygem-lighthouse-api
     SUBDIR += rubygem-link_header
+    SUBDIR += rubygem-llhttp-ffi
     SUBDIR += rubygem-lograge
     SUBDIR += rubygem-lograge-rails5
     SUBDIR += rubygem-lograge-rails52
@@ -2156,6 +2161,7 @@
     SUBDIR += squidpurge
     SUBDIR += squidview
     SUBDIR += srg
+    SUBDIR += srt
     SUBDIR += stagit
     SUBDIR += subsonic-standalone
     SUBDIR += suphp
@@ -2292,6 +2298,7 @@
     SUBDIR += wordpress
     SUBDIR += wpebackend-fdo
     SUBDIR += wsdlpull
+    SUBDIR += wslay
     SUBDIR += wsmake
     SUBDIR += wt
     SUBDIR += wuzz

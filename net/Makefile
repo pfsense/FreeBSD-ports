@@ -170,6 +170,7 @@
     SUBDIR += fspd
     SUBDIR += fsplib
     SUBDIR += gdrive
+    SUBDIR += gemserv
     SUBDIR += geoclue
     SUBDIR += geocode-glib
     SUBDIR += geoipupdate
@@ -283,6 +284,7 @@
     SUBDIR += jgroups
     SUBDIR += jicmp
     SUBDIR += jicmp6
+    SUBDIR += jose
     SUBDIR += jrdesktop
     SUBDIR += jsch
     SUBDIR += jumpgate
@@ -382,6 +384,7 @@
     SUBDIR += libosip2
     SUBDIR += libpcap
     SUBDIR += libpcapnav
+    SUBDIR += libpfctl
     SUBDIR += libproxy
     SUBDIR += libproxy-gnome3
     SUBDIR += libproxy-kde
@@ -717,6 +720,7 @@
     SUBDIR += p5-Net-NIS-Listgroup
     SUBDIR += p5-Net-NTP
     SUBDIR += p5-Net-Nessus-XMLRPC
+    SUBDIR += p5-Net-Netcat
     SUBDIR += p5-Net-Nmsg
     SUBDIR += p5-Net-OAuth
     SUBDIR += p5-Net-OAuth-Simple
@@ -1404,6 +1408,7 @@
     SUBDIR += socketpipe
     SUBDIR += socketw
     SUBDIR += sofia-sip
+    SUBDIR += spiritvnc
     SUBDIR += spoofer
     SUBDIR += spread
     SUBDIR += spread-j
@@ -1455,6 +1460,7 @@
     SUBDIR += tcpwatch
     SUBDIR += tcpxd
     SUBDIR += tcpxtract
+    SUBDIR += td-system-tools
     SUBDIR += tdetect
     SUBDIR += termshark
     SUBDIR += tftpgrab

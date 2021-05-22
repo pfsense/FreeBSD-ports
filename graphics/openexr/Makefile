@@ -1,7 +1,7 @@
 # Created by: nork@FreeBSD.org
 
 PORTNAME=	openexr
-PORTVERSION=	3.0.1
+PORTVERSION=	3.0.2
 CATEGORIES=	graphics devel
 MASTER_SITES=	LOCAL/mandree/:test
 DISTFILES=	${PORTNAME}-2.2.0-comp_dwa-test-images.tar.xz:test
@@ -12,7 +12,7 @@ COMMENT=	High dynamic-range (HDR) image file format
 LICENSE=	BSD3CLAUSE
 
 # exact version required to avoid hard-to-debug issues
-LIB_DEPENDS=	libImath-3_0.so.27:math/Imath
+LIB_DEPENDS=	libImath-3_0.so.28:math/Imath
 
 USES=		cmake compiler:c++14-lang pathfix pkgconfig
 
@@ -25,12 +25,14 @@ CPPFLAGS+=	-I. -I../IlmImf
 # must be linked with -l{thr|pthread} explicitly
 LDFLAGS+=	-lpthread
 
-MAJORVER=	3_0
-_VER=		27
+PATCH_STRIP=	-p1
+
+_MAJORVER=	3_0
+_VER=		28
 _MINVER=	0
 _PLVER=		0
 
-PLIST_SUB+=	MAJORVER=${MAJORVER} \
+PLIST_SUB+=	MAJORVER=${_MAJORVER} \
 		VER=${_VER} \
 		MINVER=${_MINVER} \
 		PLVER=${_PLVER}
