@@ -57,7 +57,9 @@ function is_netgate_hw() {
 function get_firmware_details($firmware) {
 	$details = array();
 
-	if (preg_match('/^(CORDOBA)-([\d.]{11}\w)/', $firmware, $matches)) {
+	if (preg_match('/^(CORDOBA)-([\d.]{11}\w-uc-\d*)/', $firmware,
+	    $matches)) {
+
 		return(array('model' => $matches[1], 'version' => $matches[2]));
 	}
 
@@ -78,6 +80,11 @@ function get_firmware_details($firmware) {
 
 function get_current_firmware_details() {
 	$firmware = exec("/bin/kenv -q smbios.bios.version 2>/dev/null");
+
+	$uc_version = get_single_sysctl('dev.cordbuc.0.version');
+	if (!empty($uc_version)) {
+		$firmware .= "-uc-" . $uc_version;
+	}
 
 	return get_firmware_details($firmware);
 }
