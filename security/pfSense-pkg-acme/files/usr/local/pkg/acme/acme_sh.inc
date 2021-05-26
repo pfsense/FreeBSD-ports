@@ -254,8 +254,7 @@ EOF;
 				$envvariables['NSUPDATE_SERVER'] = $nsupdatefileprefix;
 				$envvariables['NSUPDATE_KEY'] = $nsupdatefileprefix;
 				$envvariables['NSUPDATE_ZONE'] = $domain->NSUPDATE_ZONE;
-				if (strpos($domain->NSUPDATE_SERVER, ":") !== false)
-				{
+				if (strpos($domain->NSUPDATE_SERVER, ":") !== false) {
 					$parts = explode(":" ,$domain->NSUPDATE_SERVER);
 					$domain->NSUPDATE_SERVER = $parts[0];
 					$envvariables['NSUPDATE_SERVER_PORT'] = $parts[1];
