@@ -40,6 +40,7 @@
 		<rcfile>avahi-daemon.sh</rcfile>
 		<executable>avahi-daemon</executable>
 		<description>Avahi mDNS/DNS-SD daemon</description>
+		<starts_on_sync></starts_on_sync>
 	</service>
 	<plugins>
 		<item>

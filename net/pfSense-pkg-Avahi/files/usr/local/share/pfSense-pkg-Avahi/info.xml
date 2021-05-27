@@ -2,6 +2,7 @@
 <pfsensepkgs>
 	<package>
 		<name>Avahi</name>
+		<internal_name>avahi-daemon</internal_name>
 		<pkginfolink>https://forum.netgate.com/topic/134339</pkginfolink>
 		<website>http://www.avahi.org/</website>
 		<descr><![CDATA[Avahi is a system which facilitates host and service discovery in local networks via mDNS (Multicast DNS) and DNS-SD (DNS Service Discovery).]]></descr>
