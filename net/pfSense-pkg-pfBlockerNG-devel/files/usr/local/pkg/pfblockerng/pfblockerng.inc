@@ -9853,9 +9853,14 @@ function pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $p
 		if (isset($config['installedpackages']['pfblockerngdnsblsettings'])) {
 			$xml['pfblockerngdnsblsettings']= $config['installedpackages']['pfblockerngdnsblsettings'];
 
-			// Remove CARP Advskew setting, if found
+			// Increase CARP Advskew value, see https://redmine.pfsense.org/issues/11964
 			if (isset($xml['pfblockerngdnsblsettings']['config'][0]['pfb_dnsvip_skew'])) {
-				unset($xml['pfblockerngdnsblsettings']['config'][0]['pfb_dnsvip_skew']);
+				$advskew = intval($xml['pfblockerngdnsblsettings']['config'][0]['pfb_dnsvip_skew']);
+				$advskew += 100;
+				if ($advskew > 254) {
+					$advskew = 254;
+				}
+				$xml['pfblockerngdnsblsettings']['config'][0]['pfb_dnsvip_skew'] = $advskew;
 			}
 		}
 	}
