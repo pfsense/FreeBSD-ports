@@ -241,7 +241,7 @@ function interpretLine($line, &$state, &$ovpn) {
 
 		case "auth-retry" :
 			if ($parts[1] && ($parts[1] == "nointeract")) {
-				$ovpn['auth-retry-none'] = true;
+				$ovpn['auth-retry-none'] = "yes";
 			}
 
 		break;
@@ -314,7 +314,7 @@ function interpretLine($line, &$state, &$ovpn) {
 		break;
 
 		case  "fast-io" :
-			$ovpn['udp_fast_io'] = true;
+			$ovpn['udp_fast_io'] = "yes";
 		break;
 
 		case "http-proxy" :
@@ -377,11 +377,11 @@ function interpretLine($line, &$state, &$ovpn) {
 		break;
 
 		case "ncp-disable" :
-			$ovpn['ncp_disable'] = true;
+			$ovpn['ncp_disable'] = "yes";
 		break;
 
 		case "passtos" :
-			$ovpn['passtos'] = true;
+			$ovpn['passtos'] = "yes";
 		break;
 
 		case "ping" :
@@ -444,11 +444,11 @@ function interpretLine($line, &$state, &$ovpn) {
 		break;
 
 		case "route-noexec" :
-			$ovpn['route_no_exec'] = true;
+			$ovpn['route_no_exec'] = "yes";
 		break;
 
 		case "route-nopull" :
-			$ovpn['route_no_pull'] = true;
+			$ovpn['route_no_pull'] = "yes";
 		break;
 
 		case "server-poll-timeout" :
@@ -555,7 +555,7 @@ function mapOvpnConfig($ovpn, $name, $username, $password, $caref, $certrefid, $
 	}
 
 	if (!$ovpn['ncp_disable']) {
-		$client['ncp_enable'] = "yes";
+		$client['ncp_enable'] = "enabled";
 	}
 
 	if (!isset($ovpn['tls_type'])) {
