@@ -249,8 +249,15 @@ if ((false !== $message) && ((false === strpos($message, ': Cron ')) ||
 	$message = preg_replace('/^To: .*$/m', '', $message);
 	$message = preg_replace('/^Subject: .*$/m', '', $message);
 	$message = preg_replace("/^(\n){4}/", '', $message);
+	$send_subject = "{$config['system']['hostname']}.{$config['system']['domain']} - Arpwatch Notification : {$subject[1]}";
 
-	send_smtp_message($message, "{$config['system']['hostname']}.{$config['system']['domain']} - Arpwatch Notification : {$subject[1]}");
+	send_smtp_message($message, $send_subject);
+	if (function_exists('notify_via_telegram')) {
+		notify_via_telegram($send_subject . " - " . $message);
+	}
+	if (function_exists('notify_via_pushover')) {
+		notify_via_pushover($send_subject . " - " . $message);
+	}
 }
 
 ?>
