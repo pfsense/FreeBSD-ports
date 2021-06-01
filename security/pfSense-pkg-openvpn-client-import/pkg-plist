@@ -1,0 +1,7 @@
+pkg/openvpn-client-import.xml
+pkg/openvpn-client-import.inc
+www/vpn_openvpn_import.php
+/etc/inc/priv/openvpnimport.inc
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv
+@dir /etc/inc

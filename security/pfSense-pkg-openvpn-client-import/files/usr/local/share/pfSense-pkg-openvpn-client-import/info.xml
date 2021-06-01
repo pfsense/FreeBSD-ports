@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>OpenVPN Client Imort Utility</name>
+		<internal_name>openvpn-client-import</internal_name>
+		<descr><![CDATA[The OpenVPN Client Import package makes it easy to import an .ovpn config file to configure connections.]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>openvpn-client-import.xml</configurationfile>
+	</package>
+</pfsensepkgs>
