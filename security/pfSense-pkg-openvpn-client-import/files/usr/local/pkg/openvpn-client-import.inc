@@ -377,7 +377,7 @@ function interpretLine($line, &$state, &$ovpn) {
 		break;
 
 		case "ncp-disable" :
-			$ovpn['ncp_disable'] = "yes";
+			$ovpn['ncp_enable'] = "disabled";
 		break;
 
 		case "passtos" :
