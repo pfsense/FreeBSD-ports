@@ -108,6 +108,10 @@ STRIP_CMD=	${LOCALBASE}/bin/strip # unsupported e_type with base strip
 IGNORE=	fails to run due to a bug in rtld, update to 12.2-RELEASE or newer
 .endif
 
+.if ${ARCH} == armv7
+MAKE_JOBS_NUMBER_LIMIT=6
+.endif
+
 .ifdef QEMU_EMULATING
 IGNORE=	fails to build with qemu-user-static
 .endif
