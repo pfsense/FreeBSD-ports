@@ -6113,7 +6113,6 @@ security/sudosh3||2014-07-01|Has expired: Funcition replaced by sudo -s
 security/sudosh||2014-07-01|Has expired: Funcition replaced by sudo -s
 security/sudosh2||2014-07-01|Has expired: Funcition replaced by sudo -s
 lang/pike76|lang/pike78|2014-07-01|Has expired: Outdated: Users should switch to lang/pike78
-editors/gummi||2014-07-01|Has expired: Builds fine but the program itself is unusable
 archivers/rpm|archivers/rpm4|2014-07-03|rpm3 is long EOLed, rpm4 is the default rpm archivers for most of linux distributions
 x11-clocks/wmitime||2014-07-04|Has expired
 x11/xorg-edit||2014-07-04|Has expired: Depends on older version of wxGTK
@@ -10156,7 +10155,6 @@ audio/deforaos-mixer||2018-06-07|Has expired: Broken for more than 6 months
 audio/gkrellmss2||2018-06-07|Has expired: Broken for more than 6 months
 audio/abcmidi||2018-06-07|Has expired: Broken for more than 6 months
 benchmarks/netpipe||2018-06-07|Has expired: Broken for more than 6 months
-science/orthanc||2018-06-07|Has expired: Broken for more than 3 months
 science/orthanc-dicomweb||2018-06-07|Removed, depends on expired science/orthanc
 science/orthanc-postgresql||2018-06-07|Removed, depends on expired science/orthanc
 science/orthanc-webviewer||2018-06-07|Removed, depends on expired science/orthanc
@@ -15128,7 +15126,6 @@ net/kblog||2020-08-13|No longer shipped
 www/py-html|www/py-html3|2020-08-13|python3-compatible version is named html3
 audio/py-hsaudiotag|audio/py-hsaudiotag3k|2020-08-13|python3-compatible version is named hsaudiotag3k
 archivers/py-backports.lzma||2020-08-15|Has expired: Uses deprecated version of python
-archivers/py-bup||2020-08-15|Has expired: Uses deprecated version of python
 archivers/py-librtfcomp||2020-08-15|Has expired: Uses deprecated version of python
 audio/blop-lv2||2020-08-15|Has expired: Uses deprecated version of python
 audio/bs2b-lv2||2020-08-15|Has expired: Uses deprecated version of python
@@ -16336,3 +16333,14 @@ security/bitwarden_rs|security/vaultwarden|2021-05-16|Project was renamed
 sysutils/kdiskmark|benchmarks/kdiskmark|2021-05-18|Moved to a more appropriate category
 sysutils/edk2@xen|sysutils/edk2@xen_x64|2021-05-18|Add Xen arch to the flavor name to be futur-proof
 devel/py-jupyter_core|devel/py-jupyter-core|2021-05-18|Rename to match upstream naming
+devel/sope4|devel/sope|2021-05-19|Obsolete, please use devel/sope
+sysutils/ansible27|sysutils/ansible|2021-05-21|Has expired: Upstream support ended; consider upgrading to sysutils/ansible
+sysutils/ansible28|sysutils/ansible|2021-05-21|Has expired: Upstream support ended; consider upgrading to sysutils/ansible
+devel/omnisharp-server||2021-05-23|Dead upstream, no depends in ports tree
+devel/py-jupyter_client|devel/py-jupyter-client|2021-05-26|Rename to match upstream naming
+textproc/gi-docgen|textproc/py-gi-docgen|2021-05-27|Follow standard python port conventions
+x11/phosh||2021-05-29|Incomplete
+multimedia/libav|multimedia/ffmpeg|2021-05-31|Has expired: Unmaintained upstream, use multimedia/ffmpeg instead
+devel/py-iterpipes||2021-06-06|Has expired: Unmaintained upstream, uses old Python
+devel/py-aspyct||2021-06-06|Has expired: Unmaintained upstream, uses old Python
+irc/oragono|irc/ergo|2021-06-08|Project renamed

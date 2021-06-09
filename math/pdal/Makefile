@@ -1,8 +1,8 @@
 # Created by: bart <lbartoletti@FreeBSD.org>
 
 PORTNAME=	pdal
-DISTVERSION=	2.2.0
-PORTREVISION=	2
+DISTVERSION=	2.3.0
+PORTREVISION=	1
 CATEGORIES=	math databases graphics
 
 MAINTAINER=	lbartoletti@FreeBSD.org
@@ -33,12 +33,14 @@ GH_ACCOUNT=	${PORTNAME:tu}
 GH_PROJECT=	${GH_ACCOUNT}
 
 CMAKE_ON=	WITH_LASZIP #LASZIP is recommended
+CMAKE_OFF=	WITH_TESTS
 
 OPTIONS_DEFINE=	BASH \
 		ICEBRIDGE PGPOINTCLOUD LAZPERF MBIO \
-		TESTS
-#OPTIONS_DEFAULT=	PGPOINTCLOUD LAZPERF
-OPTIONS_DEFAULT=	${OPTIONS_DEFINE}
+
+OPTIONS_DEFAULT=	BASH \
+			ICEBRIDGE PGPOINTCLOUD LAZPERF MBIO
+
 #Plugins with lib not in port:
 #RivLib, Matlab, MrSID, CPD, GeoWave, GreyHound, HexBin, NITF (nitro)
 OPTIONS_SUB=	yes
@@ -48,7 +50,6 @@ ICEBRIDGE_DESC=		Enable Icebridge plugin
 LAZPERF_DESC=		Enable LAZPerf plugin
 MBIO_DESC=		Enable MBIO plugin
 PGPOINTCLOUD_DESC=	Enable Coherent PostgreSQL Point Cloud plugin
-TESTS_DESC=		Enable Tests
 
 BASH_CMAKE_BOOL=	WITH_COMPLETION
 BASH_RUN_DEPENDS=	bash:shells/bash
@@ -58,14 +59,12 @@ ICEBRIDGE_LIB_DEPENDS=	libhdf5.so:science/hdf5 \
 			libsz.so:science/szip
 
 LAZPERF_CMAKE_BOOL=	WITH_LAZPERF
-LAZPERF_BUILD_DEPENDS=	${LOCALBASE}/include/laz-perf/las.hpp:archivers/lazperf
+LAZPERF_BUILD_DEPENDS=	${LOCALBASE}/include/lazperf/lazperf.hpp:archivers/lazperf
 
 MBIO_CMAKE_BOOL=	BUILD_PLUGIN_MBIO
 
 PGPOINTCLOUD_CMAKE_BOOL=	BUILD_PLUGIN_PGPOINTCLOUD
 PGPOINTCLOUD_USES=	pgsql
-
-TESTS_CMAKE_BOOL=	BUILD_PLUGIN_TESTS
 
 post-install-BASH-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/bash-completion/completions
