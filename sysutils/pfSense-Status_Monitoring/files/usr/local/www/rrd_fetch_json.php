@@ -55,6 +55,7 @@ $graph_unit_lookup = array(
 	"states"     => "cps",
 	"quality"    => "ms",
 	"processor"  => "%",
+	"sensors"    => "°C",
 	"memory"     => "%",
 	"wireless"   => "dBi",
 	"mbuf"       => "",
@@ -81,6 +82,7 @@ $unit_desc_lookup = array(
 	"%"   => "Percent",
 	"Mb"  => "Megabit",
 	"dBi" => "Decibels Relative to Isotropic",
+	"°C"  => "Degrees Celsius",
 	""    => ""
 );
 
