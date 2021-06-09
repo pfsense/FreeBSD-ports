@@ -75,6 +75,7 @@
     SUBDIR += blend2d
     SUBDIR += blender
     SUBDIR += blender-doc
+    SUBDIR += blender-lts28
     SUBDIR += bmeps
     SUBDIR += bmp2html
     SUBDIR += bonzomatic
@@ -281,6 +282,7 @@
     SUBDIR += gocr
     SUBDIR += goocanvas
     SUBDIR += goocanvas2
+    SUBDIR += goocanvas3
     SUBDIR += goocanvasmm2
     SUBDIR += goom
     SUBDIR += gource
@@ -755,6 +757,7 @@
     SUBDIR += picpuz
     SUBDIR += piddle
     SUBDIR += piglit
+    SUBDIR += pikchr
     SUBDIR += pikopixel
     SUBDIR += pinpoint
     SUBDIR += pinta
@@ -880,6 +883,7 @@
     SUBDIR += py-pyqrcode
     SUBDIR += py-pyqtgraph
     SUBDIR += py-pyrsgis
+    SUBDIR += py-pytesseract
     SUBDIR += py-python-poppler-qt5
     SUBDIR += py-pyvips
     SUBDIR += py-pyx

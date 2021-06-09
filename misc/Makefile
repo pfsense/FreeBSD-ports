@@ -378,8 +378,10 @@
     SUBDIR += py-fuzzy
     SUBDIR += py-gluoncv
     SUBDIR += py-gluonnlp
+    SUBDIR += py-halo
     SUBDIR += py-huepy
     SUBDIR += py-kartograph
+    SUBDIR += py-log_symbols
     SUBDIR += py-mffpy
     SUBDIR += py-molequeue
     SUBDIR += py-mxnet
@@ -408,6 +410,7 @@
     SUBDIR += py-spdx
     SUBDIR += py-spdx-lookup
     SUBDIR += py-spdx-tools
+    SUBDIR += py-spinners
     SUBDIR += py-tflearn
     SUBDIR += py-tflite
     SUBDIR += py-tflite-support

@@ -1,5 +1,5 @@
 PORTNAME=	arrow
-DISTVERSION=	4.0.0
+DISTVERSION=	4.0.1
 PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://mirrors.advancedhosters.com/apache/${PORTNAME}/${PORTNAME}-${DISTVERSION}/ \

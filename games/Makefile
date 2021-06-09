@@ -472,6 +472,7 @@
     SUBDIR += libkmahjongg
     SUBDIR += liblcf
     SUBDIR += libmaitretarot
+    SUBDIR += libmanette
     SUBDIR += libmt_client
     SUBDIR += libretro
     SUBDIR += libretro-2048
@@ -627,6 +628,7 @@
     SUBDIR += naev-data
     SUBDIR += narcissu2
     SUBDIR += nazghul
+    SUBDIR += nbsdgames
     SUBDIR += nehquake
     SUBDIR += neo-cowsay
     SUBDIR += nethack32
@@ -820,6 +822,8 @@
     SUBDIR += re3
     SUBDIR += redeclipse
     SUBDIR += redeclipse-data
+    SUBDIR += redeclipse-data16
+    SUBDIR += redeclipse16
     SUBDIR += redorblack
     SUBDIR += regoth
     SUBDIR += reminiscence
@@ -840,6 +844,7 @@
     SUBDIR += rocksndiamonds
     SUBDIR += rocksndiamonds-data
     SUBDIR += rottdc
+    SUBDIR += rpg-cli
     SUBDIR += rubix
     SUBDIR += rubygem-fortune_gem
     SUBDIR += rubygem-lolcat
@@ -1083,6 +1088,8 @@
     SUBDIR += xmris
     SUBDIR += xmulti
     SUBDIR += xneko
+    SUBDIR += xnethack
+    SUBDIR += xnethack-nox11
     SUBDIR += xoct
     SUBDIR += xoids
     SUBDIR += xoj
