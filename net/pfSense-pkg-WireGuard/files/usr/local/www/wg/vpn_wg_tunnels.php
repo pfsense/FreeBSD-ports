@@ -99,7 +99,7 @@ if ($_POST) {
 			default:
 
 				// Shouldn't be here, so bail out.
-				header("Location: /wg/vpn_wg_tunnels.php");
+				header('Location: /wg/vpn_wg_tunnels.php');
 
 				break;
 
@@ -198,7 +198,7 @@ if (is_array($wgg['tunnels']) && count($wgg['tunnels']) > 0):
 							<a class="fa fa-pencil" title="<?=gettext('Edit Tunnel')?>" href="<?="vpn_wg_tunnels_edit.php?tun={$tunnel['name']}"?>"></a>
 							<a class="fa fa-download" title="<?=gettext('Download Configuration')?>" href="<?="?act=download&tun={$tunnel['name']}"?>" usepost></a>
 							<?=wg_generate_toggle_icon_link($tunnel, 'Click to toggle enabled/disabled status', "?act=toggle&tun={$tunnel['name']}")?>
-							<a class="fa fa-trash text-danger" title="<?=gettext('Delete Yunnel')?>" href="<?="?act=delete&tun={$tunnel['name']}"?>" usepost></a>
+							<a class="fa fa-trash text-danger" title="<?=gettext('Delete Tunnel')?>" href="<?="?act=delete&tun={$tunnel['name']}"?>" usepost></a>
 						</td>
 					</tr>
 
