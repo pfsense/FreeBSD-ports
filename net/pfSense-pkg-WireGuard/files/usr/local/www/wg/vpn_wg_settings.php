@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2021 R. Christian McDonald
+ * Copyright (c) 2021 R. Christian McDonald (https://github.com/theonemcdonald)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,32 +43,73 @@ $save_success = false;
 
 if ($_POST) {
 
-	if ($_POST['act'] == 'save') {
+	if (isset($_POST['apply'])) {
 
-		if (!$input_errors) {
+		$ret_code = 0;
 
-			$pconfig = $_POST;
+		if (is_subsystem_dirty($wgg['subsystems']['wg'])) {
 
-			$wgg['config']['keep_conf'] = $pconfig['keep_conf'];
-			
-			$wgg['config']['hide_secrets'] = $pconfig['hide_secrets'];
+			if (wg_is_service_running()) {
 
-			write_config('[WireGuard] Save WireGuard settings');
+				$tunnels_to_apply = wg_apply_list_get('tunnels');
 
-			$save_success = true;
+				// TODO: Make extra services restart (true) a package setting
+				$sync_status = wg_tunnel_sync($tunnels_to_apply, true);
+
+				$ret_code |= $sync_status['ret_code'];
+
+			}
+
+			if ($ret_code == 0) {
+
+				clear_subsystem_dirty($wgg['subsystems']['wg']);
+
+			}
 
 		}
 
 	}
 
-} else {
+	if (isset($_POST['act'])) {
 
-	// Default to yes if not set (i.e. a new installation)
-	$pconfig['keep_conf'] = isset($wgg['config']['keep_conf']) ? $wgg['config']['keep_conf'] : 'yes';
+		switch ($_POST['act']) {
 
-	$pconfig['hide_secrets'] = $wgg['config']['hide_secrets'];
+			case 'save':
+
+				if (empty($input_errors)) {
+
+					$pconfig = $_POST;
+
+					$wgg['config']['keep_conf'] 	= $pconfig['keep_conf'] ? 'yes' : 'no';
+					
+					$wgg['config']['hide_secrets'] 	= $pconfig['hide_secrets'] ? 'yes' : 'no';
+
+					write_config("[{$wgg['pkg_name']}] Package settings saved.");
+
+					$save_success = true;
+
+				}
+
+				break;
+
+			default:
+
+				// Shouldn't be here, so bail out.
+				header('Location: /wg/vpn_wg_settings.php');
+
+				break;
+
+		}
+
+	}
 
 }
+
+// Default yes for new installations (i.e. keep_conf is empty)
+$pconfig['keep_conf'] = (isset($wgg['config']['keep_conf'])) ? $wgg['config']['keep_conf'] : 'yes';
+
+// Default yes for new installations (i.e. hide_secrets is empty)
+$pconfig['hide_secrets'] = (isset($wgg['config']['hide_secrets'])) ? $wgg['config']['hide_secrets'] : 'yes';
 
 $shortcut_section = "wireguard";
 
@@ -89,13 +130,17 @@ if ($save_success) {
 	
 }
 
-if (count($wgg['tunnels']) > 0 && !is_module_loaded($wgg['kmod'])) {
+wg_print_service_warning();
 
-	print_info_box(gettext('The WireGuard kernel module is not loaded!'), 'danger', null);
+if (isset($_POST['apply'])) {
+
+	print_apply_result_box($ret_code);
 
 }
 
-if ($input_errors) {
+wg_print_config_apply_box();
+
+if (!empty($input_errors)) {
 
 	print_input_errors($input_errors);
 	
@@ -148,7 +193,6 @@ print($form);
 	</button>
 </nav>
 
-<!-- ============== JavaScript =================================================================================================-->
 <script type="text/javascript">
 //<![CDATA[
 events.push(function() {

@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2021 R. Christian McDonald
+ * Copyright (c) 2021 R. Christian McDonald (https://github.com/theonemcdonald)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,51 +52,136 @@ if (isset($_REQUEST['tun'])) {
 
 }
 
-if (isset($_REQUEST['peer'])) {
-
-	$peer_id = $_REQUEST['peer'];
-
-}
-
-// All form save logic is in wireguard/wg.inc
 if ($_POST) {
 
-	if ($_POST['act'] == 'save') {
+	if (isset($_POST['apply'])) {
 
-		$res = wg_do_tunnel_post($_POST);
-		
-		$input_errors = $res['input_errors'];
+		$ret_code = 0;
 
-		$pconfig = $res['pconfig'];
+		if (is_subsystem_dirty($wgg['subsystems']['wg'])) {
 
-		if (!$input_errors) {
+			if (wg_is_service_running()) {
 
-			// Save was successful
-			header("Location: /wg/vpn_wg_tunnels.php");
+				$tunnels_to_apply = wg_apply_list_get('tunnels');
+
+				// TODO: Make extra services restart (true) a package setting
+				$sync_status = wg_tunnel_sync($tunnels_to_apply, true);
+
+				$ret_code |= $sync_status['ret_code'];
+
+			}
+
+			if ($ret_code == 0) {
+
+				clear_subsystem_dirty($wgg['subsystems']['wg']);
+
+			}
 
 		}
 
-	} elseif ($_POST['act'] == 'genkeys') {
+	}
 
-		// Process ajax call requesting new key pair
-		print(wg_gen_keypair(true));
+	if (isset($_POST['act'])) {
 
-		exit;
+		switch ($_POST['act']) {
 
-	} elseif ($_POST['act'] == 'genpubkey') {
+			case 'save':
 
-		// Process ajax call calculating the public key from a private key
-		print(wg_gen_publickey($_POST['privatekey']));
+				$res = wg_do_tunnel_post($_POST);
+			
+				$input_errors = $res['input_errors'];
+		
+				$pconfig = $res['pconfig'];
+		
+				if (empty($input_errors)) {
 
-		exit;
+					if (wg_is_service_running() && $res['changes']) {
 
-	} elseif ($_POST['act'] == 'toggle') {
+						// Everything looks good so far, so mark the subsystem dirty
+						mark_subsystem_dirty($wgg['subsystems']['wg']);
 
-		wg_toggle_peer($peer_id);
+						// Add tunnel to the list to apply
+						wg_apply_list_add($res['tun_to_sync'], 'tunnels');
 
-	} elseif ($_POST['act'] == 'delete') {
+					}
+		
+					// Save was successful
+					header('Location: /wg/vpn_wg_tunnels.php');
+		
+				}
 
-		wg_delete_peer($peer_id);
+				break;
+
+			case 'genkeys':
+
+				// Process ajax call requesting new key pair
+				print(wg_gen_keypair(true));
+
+				exit;
+
+				break;
+
+			case 'genpubkey':
+
+				// Process ajax call calculating the public key from a private key
+				print(wg_gen_publickey($_POST['privatekey'], true));
+
+				exit;
+
+				break;
+
+			default:
+
+				// Shouldn't be here, so bail out.
+				header('Location: /wg/vpn_wg_tunnels.php');
+
+				break;
+
+		}
+
+	}
+
+	if (isset($_POST['peer'])) {
+
+		$peer_idx = $_POST['peer'];
+
+		switch ($_POST['act']) {
+
+			case 'toggle':
+
+				$res = wg_toggle_peer($peer_idx);
+
+				break;
+
+			case 'delete':
+				
+				$res = wg_delete_peer($peer_idx);
+
+				break;
+
+			default:
+				
+				// Shouldn't be here, so bail out.
+				header('Location: /wg/vpn_wg_tunnels.php');
+
+				break;
+				
+		}
+
+		$input_errors = $res['input_errors'];
+
+		if (empty($input_errors)) {
+
+			if (wg_is_service_running() && $res['changes']) {
+
+				mark_subsystem_dirty($wgg['subsystems']['wg']);
+
+				// Add tunnel to the list to apply
+				wg_apply_list_add($res['tun_to_sync'], 'tunnels');
+
+			}
+
+		}
 
 	}
 
@@ -136,13 +221,17 @@ $tab_array[] = array(gettext("Status"), false, "/wg/status_wireguard.php");
 
 include("head.inc");
 
-if (count($wgg['tunnels']) > 0 && !is_module_loaded($wgg['kmod'])) {
+wg_print_service_warning();
 
-	print_info_box(gettext('The WireGuard kernel module is not loaded!'), 'danger', null);
+if (isset($_POST['apply'])) {
+
+	print_apply_result_box($ret_code);
 
 }
 
-if ($input_errors) {
+wg_print_config_apply_box();
+
+if (!empty($input_errors)) {
 
 	print_input_errors($input_errors);
 
@@ -171,7 +260,7 @@ $tun_enable = new Form_Checkbox(
 $tun_enable->setHelp('<span class="text-danger">Note: </span>Tunnel must be <b>enabled</b> in order to be assigned to a pfSense interface.');	
 
 // Disable the tunnel enabled button if interface is assigned in pfSense
-if (is_wg_tunnel_assigned($pconfig)) {
+if (is_wg_tunnel_assigned($pconfig['name'])) {
 
 	$tun_enable->setDisabled();
 
@@ -219,7 +308,7 @@ $group->add(new Form_Input(
 	'Public Key',
 	'text',
 	$pconfig['publickey']
-))->setHelp('Public key for this tunnel. (<a id="copypubkey" href="#">Copy</a>)')->setReadonly();
+))->setHelp('Public key for this tunnel. (<a id="copypubkey" style="cursor: pointer;" data-success-text="Copied" data-timeout="3000">Copy</a>)')->setReadonly();
 
 $group->add(new Form_Button(
 	'genkeys',
@@ -236,7 +325,9 @@ $form->add($section);
 
 $section = new Form_Section("Interface Configuration ({$pconfig['name']})");
 
-if (!is_wg_tunnel_assigned($pconfig)) {
+$section->setAttribute('id', 'addresses');
+
+if (!is_wg_tunnel_assigned($pconfig['name'])) {
 
 	$section->addInput(new Form_StaticText(
 		'Assignment',
@@ -245,14 +336,20 @@ if (!is_wg_tunnel_assigned($pconfig)) {
 
 	$section->addInput(new Form_StaticText(
 		'Firewall Rules',
-		"<i class='fa fa-shield-alt' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='../../firewall_rules.php?if={$wgg['if_group']}'>WireGuard Interface Group</a>"
+		"<i class='fa fa-shield-alt' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='../../firewall_rules.php?if={$wgg['ifgroupentry']['ifname']}'>WireGuard Interface Group</a>"
 	));
 
-	// Hack to ensure empty lists default to /128 mask
-	if (!is_array($pconfig['addresses']['row'])) {
+	$section->addInput(new Form_StaticText(
+		'Hint',
+		"These interface addresses are only applicable for unassigned WireGuard tunnel interfaces.</a>"
+	));
+
+	// Init the addresses array if necessary
+	if (!is_array($pconfig['addresses']['row']) || empty($pconfig['addresses']['row'])) {
 
 		wg_init_config_arr($pconfig, array('addresses', 'row', 0));
 
+		// Hack to ensure empty lists default to /128 mask
 		$pconfig['addresses']['row'][0]['mask'] = '128';
 
 	}
@@ -270,7 +367,8 @@ if (!is_wg_tunnel_assigned($pconfig)) {
 			'Interface Address',
 			$item['address'],
 			'BOTH'
-		))->setHelp($counter == $last ? 'IPv4 or IPv6 address assigned to the tunnel interface.' : '')
+		))->addClass('address')
+			->setHelp($counter == $last ? 'IPv4 or IPv6 address assigned to the tunnel interface.' : '')
 			->addMask("address_subnet{$counter}", $item['mask'])
 			->setWidth(4);
 		
@@ -289,7 +387,7 @@ if (!is_wg_tunnel_assigned($pconfig)) {
 			'fa-trash'
 		))->addClass('btn-warning btn-sm');
 	
-		$section->add($group);
+		$section->add($group);	
 
 	}
 
@@ -302,7 +400,6 @@ if (!is_wg_tunnel_assigned($pconfig)) {
 
 } else {
 
-	// We want all configured interfaces, including disabled ones
 	$wg_pfsense_if = wg_get_pfsense_interface_info($pconfig['name']);
 
 	wg_htmlspecialchars($wg_pfsense_if);
@@ -349,12 +446,6 @@ $form->addGlobal(new Form_Input(
 
 print($form);
 
-if ($is_new):
-
-	print_info_box("New tunnels must be saved before adding or assigning peers.", 'warning', null);
-
-else:
-
 ?>
 
 <div class="panel panel-default">
@@ -362,7 +453,7 @@ else:
 		<h2 class="panel-title"><?=gettext("Peer Configuration")?></h2>
 	</div>
 	<div id="mainarea" class="table-responsive panel-body">
-		<table id="peertable" class="table table-hover table-striped table-condensed" style="overflow-x: 'visible'">
+		<table id="peertable" class="table table-hover table-striped table-condensed" style="overflow-x: visible;">
 			<thead>
 				<tr>
 					<th><?=gettext("Description")?></th>
@@ -374,6 +465,8 @@ else:
 			</thead>
 			<tbody>
 <?php
+	if (!$is_new):
+
 		$peers = wg_get_tunnel_peers($pconfig['name']);
 
 		if (!empty($peers)):
@@ -382,28 +475,35 @@ else:
 ?>
 				<tr ondblclick="document.location='<?="vpn_wg_peers_edit.php?peer={$peer['index']}"?>';" class="<?=wg_entrystatus_class($peer)?>">
 					<td><?=htmlspecialchars($peer['descr'])?></td>
-					<td><?=htmlspecialchars(substr($peer['publickey'], 0, 16).'...')?></td>
+					<td title="<?=htmlspecialchars($peer['publickey'])?>">
+						<?=htmlspecialchars(substr($peer['publickey'], 0, 16).'...')?>
+					</td>
 					<td><?=wg_generate_peer_allowedips_popup_link($peer['index'])?></td>
 					<td><?=htmlspecialchars(wg_format_endpoint(false, $peer))?></td>
 					<td style="cursor: pointer;">
-						<a class="fa fa-pencil" title="<?=gettext("Edit peer")?>" href="<?="vpn_wg_peers_edit.php?peer={$peer['index']}"?>"></a>
+						<a class="fa fa-pencil" title="<?=gettext("Edit Peer")?>" href="<?="vpn_wg_peers_edit.php?peer={$peer['index']}"?>"></a>
 						<?=wg_generate_toggle_icon_link($peer, 'Click to toggle enabled/disabled status', "?act=toggle&peer={$peer['index']}&tun={$tun}")?>
-						<a class="fa fa-trash text-danger" title="<?=gettext('Delete peer')?>" href="<?="?act=delete&peer={$peer['index']}&tun={$tun}"?>" usepost></a>
+						<a class="fa fa-trash text-danger" title="<?=gettext('Delete Peer')?>" href="<?="?act=delete&peer={$peer['index']}&tun={$tun}"?>" usepost></a>
 					</td>
 				</tr>
 
 <?php
 			endforeach;
 		endif;
+	else:
+?>
+				<tr>
+					<td colspan="5">
+						<?php print_info_box("New tunnels must be saved before adding or assigning peers.", 'warning', null); ?>
+					</td>
+				</tr>
+<?php
+	endif;
 ?>
 			</tbody>
 		</table>
 	</div>
 </div>
-
-<?php
-endif;
-?>
 
 <nav class="action-buttons">
 <?php
@@ -431,7 +531,7 @@ endif;
 	</button>
 </nav>
 
-<?php $genkeywarning = gettext("Overwrite key pair? Click 'ok' to overwrite keys."); ?>
+<?php $genKeyWarning = gettext("Overwrite key pair? Click 'ok' to overwrite keys."); ?>
 
 <script type="text/javascript">
 //<![CDATA[
@@ -441,9 +541,25 @@ events.push(function() {
 	checkLastRow();
 
 	$('#copypubkey').click(function () {
-		$('#publickey').focus();
-		$('#publickey').select();
-		document.execCommand("copy");
+
+		var $this = $(this);
+
+		var originalText = $this.text();
+
+		// The 'modern' way...
+		navigator.clipboard.writeText($('#publickey').val());
+		
+		$this.text($this.attr('data-success-text'));
+
+		setTimeout(function() {
+
+			$this.text(originalText);
+
+		}, $this.attr('data-timeout'));
+
+		// Prevents the browser from scrolling
+		return false;
+
 	});
 
 	// These are action buttons, not submit buttons
@@ -451,7 +567,7 @@ events.push(function() {
 
 	// Request a new public/private key pair
 	$('#genkeys').click(function(event) {
-		if ($('#privatekey').val().length == 0 || confirm("<?=$genkeywarning?>")) {
+		if ($('#privatekey').val().length == 0 || confirm("<?=$genKeyWarning?>")) {
 			ajaxRequest = $.ajax({
 				url: '/wg/vpn_wg_tunnels_edit.php',
 				type: 'post',
@@ -476,7 +592,8 @@ events.push(function() {
 					privatekey: $('#privatekey').val()
 				},
 			success: function(response, textStatus, jqXHR) {
-				$('#publickey').val(response);
+				resp = JSON.parse(response);
+				$('#publickey').val(resp.pubkey);
 			}
 		});
 	});
@@ -485,6 +602,13 @@ events.push(function() {
 	// Save the form
 	$('#saveform').click(function(event) {
 		$(form).submit();
+	});
+
+	// Trim any whitespace from address input
+	$("#addresses").on("change", "input.address", function () {
+
+		$(this).val($(this).val().replace(/\s/g, ""));
+
 	});
 
 });

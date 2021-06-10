@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2021 R. Christian McDonald
+ * Copyright (c) 2021 R. Christian McDonald (https://github.com/theonemcdonald)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,17 +41,72 @@ wg_globals();
 
 if ($_POST) {
 
+	if (isset($_POST['apply'])) {
+
+		$ret_code = 0;
+
+		if (is_subsystem_dirty($wgg['subsystems']['wg'])) {
+
+			if (wg_is_service_running()) {
+
+				$tunnels_to_apply = wg_apply_list_get('tunnels');
+
+				// TODO: Make extra services restart (true) a package setting
+				$sync_status = wg_tunnel_sync($tunnels_to_apply, true);
+
+				$ret_code |= $sync_status['ret_code'];
+
+			}
+
+			if ($ret_code == 0) {
+
+				clear_subsystem_dirty($wgg['subsystems']['wg']);
+
+			}
+
+		}
+
+	}
+
 	if (isset($_POST['peer'])) {
 
 		$peer_idx = $_POST['peer'];
 
-		if ($_POST['act'] == 'toggle') {
+		switch ($_POST['act']) {
 
-			wg_toggle_peer($peer_idx);
+			case 'toggle':
 
-		} elseif ($_POST['act'] == 'delete') { 
-		
-			wg_delete_peer($peer_idx);
+				$res = wg_toggle_peer($peer_idx);
+
+				break;
+
+			case 'delete':
+				
+				$res = wg_delete_peer($peer_idx);
+
+				break;
+
+			default:
+				
+				// Shouldn't be here, so bail out.
+				header('Location: /wg/vpn_wg_peers.php');
+
+				break;
+				
+		}
+
+		$input_errors = $res['input_errors'];
+
+		if (empty($input_errors)) {
+
+			if (wg_is_service_running() && $res['changes']) {
+
+				mark_subsystem_dirty($wgg['subsystems']['wg']);
+
+				// Add tunnel to the list to apply
+				wg_apply_list_add($res['tun_to_sync'], 'tunnels');
+
+			}
 
 		}
 
@@ -72,13 +127,17 @@ $tab_array[] = array(gettext("Status"), false, "/wg/status_wireguard.php");
 
 include("head.inc");
 
-if (count($wgg['tunnels']) > 0 && !is_module_loaded($wgg['kmod'])) {
+wg_print_service_warning();
 
-	print_info_box(gettext('The WireGuard kernel module is not loaded!'), 'danger', null);
+if (isset($_POST['apply'])) {
+
+	print_apply_result_box($ret_code);
 
 }
 
-if ($input_errors) {
+wg_print_config_apply_box();
+
+if (!empty($input_errors)) {
 
 	print_input_errors($input_errors);
 
@@ -89,17 +148,10 @@ display_top_tabs($tab_array);
 ?>
 
 <form name="mainform" method="post">
-<?php
-	if (is_array($wgg['peers']) && count($wgg['peers']) == 0):
-
-		print_info_box(gettext('No WireGuard peers have been configured. Click the "Add Peer" button below to create one.'), 'warning', false);
-		
-	else:
-?>
 	<div class="panel panel-default">
 		<div class="panel-heading"><h2 class="panel-title"><?=gettext('WireGuard Peers')?></h2></div>
 		<div class="panel-body table-responsive">
-			<table class="table table-striped table-hover">
+			<table class="table table-hover table-striped table-condensed">
 				<thead>
 					<tr>
 						<th><?=gettext("Description")?></th>
@@ -112,34 +164,42 @@ display_top_tabs($tab_array);
 				</thead>
 				<tbody>
 <?php
+if (is_array($wgg['peers']) && count($wgg['peers']) > 0):
+
 		foreach ($wgg['peers'] as $peer_idx => $peer):
 ?>
 					<tr ondblclick="document.location='<?="vpn_wg_peers_edit.php?peer={$peer_idx}"?>';" class="<?=wg_entrystatus_class($peer)?>">
 						<td><?=htmlspecialchars(wg_truncate_pretty($peer['descr'], 16))?></td>
-						<td><?=htmlspecialchars(wg_truncate_pretty($peer['publickey'], 16))?></td>
+						<td class="pubkey" title="<?=htmlspecialchars($peer['publickey'])?>">
+							<?=htmlspecialchars(wg_truncate_pretty($peer['publickey'], 16))?>
+						</td>
 						<td><?=htmlspecialchars($peer['tun'])?></td>
 						<td><?=wg_generate_peer_allowedips_popup_link($peer_idx)?></td>
 						<td><?=htmlspecialchars(wg_format_endpoint(false, $peer))?></td>
 						<td style="cursor: pointer;">
-							<a class="fa fa-pencil" title="<?=gettext("Edit peer")?>" href="<?="vpn_wg_peers_edit.php?peer={$peer_idx}"?>"></a>
+							<a class="fa fa-pencil" title="<?=gettext("Edit Peer")?>" href="<?="vpn_wg_peers_edit.php?peer={$peer_idx}"?>"></a>
 							<?=wg_generate_toggle_icon_link($peer, 'Click to toggle enabled/disabled status', "?act=toggle&peer={$peer_idx}")?>
-							<a class="fa fa-trash text-danger" title="<?=gettext('Delete peer')?>" href="<?="?act=delete&peer={$peer_idx}"?>" usepost></a>
+							<a class="fa fa-trash text-danger" title="<?=gettext('Delete Peer')?>" href="<?="?act=delete&peer={$peer_idx}"?>" usepost></a>
 						</td>
 					</tr>
 
 <?php
 		endforeach;
+
+else:
+?>
+					<tr>
+						<td colspan="6">
+							<?php print_info_box(gettext('No WireGuard peers have been configured. Click the "Add Peer" button below to create one.'), 'warning', null); ?>
+						</td>
+					</tr>
+<?php
+endif;
 ?>
 				</tbody>
 			</table>
 		</div>
 	</div>
-
-
-<?php
-	endif;
-?>
-
 	<nav class="action-buttons">
 		<a href="vpn_wg_peers_edit.php" class="btn btn-success btn-sm">
 			<i class="fa fa-plus icon-embed-btn"></i>
@@ -150,6 +210,11 @@ display_top_tabs($tab_array);
 
 <script type="text/javascript">
 //<![CDATA[
+	$('.pubkey').click(function () {
+
+		navigator.clipboard.writeText($(this).attr('title'));
+
+	});
 //]]>
 </script>
 
