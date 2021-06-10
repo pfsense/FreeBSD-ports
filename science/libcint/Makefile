@@ -1,6 +1,6 @@
 PORTNAME=	libcint
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.4.0
+DISTVERSION=	4.4.1
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,7 +10,8 @@ LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libopenblas.so:math/openblas
-TEST_DEPENDS=	${PYNUMPY}
+TEST_DEPENDS=	${PYNUMPY} \
+		${PYTHON_PKGNAMEPREFIX}pyscf>0:science/py-pyscf@${PY_FLAVOR}
 
 USES=		cmake blaslapack:openblas python:test
 USE_LDCONFIG=	yes

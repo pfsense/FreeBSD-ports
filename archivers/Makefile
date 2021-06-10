@@ -65,6 +65,7 @@
     SUBDIR += libunrar
     SUBDIR += libunrar6
     SUBDIR += libzip
+    SUBDIR += libzippp
     SUBDIR += linux-c7-lz4
     SUBDIR += lizard
     SUBDIR += lrzip
@@ -171,6 +172,7 @@
     SUBDIR += py-brotli
     SUBDIR += py-brotlicffi
     SUBDIR += py-brotlipy
+    SUBDIR += py-bup
     SUBDIR += py-bz2file
     SUBDIR += py-libarchive-c
     SUBDIR += py-lz4

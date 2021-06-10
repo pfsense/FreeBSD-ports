@@ -2,7 +2,7 @@
 
 PORTNAME=	sage
 PORTVERSION=	9.2
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	math
 MASTER_SITES=	https://mirrors.xmission.com/sage/src/		\
 		http://mirrors.xmission.com/sage/src/		\
@@ -55,7 +55,7 @@ BUILD_DEPENDS=	bash:shells/bash		\
 		${PYTHON_PKGNAMEPREFIX}jedi>0:devel/py-jedi@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}jsonschema>0:devel/py-jsonschema@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}jupyter-core>0:devel/py-jupyter-core@${PY_FLAVOR}\
-		${PYTHON_PKGNAMEPREFIX}jupyter_client>0:devel/py-jupyter_client@${PY_FLAVOR}\
+		${PYTHON_PKGNAMEPREFIX}jupyter-client>0:devel/py-jupyter-client@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}kiwisolver>0:math/py-kiwisolver@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}markupsafe>0:textproc/py-markupsafe@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR}\
@@ -201,7 +201,7 @@ LIB_DEPENDS=	libarb.so:math/arb		\
 		libR.so:math/R			\
 		librw.so:math/rankwidth		\
 		libSingular.so:math/singular	\
-		libamd.so:math/suitesparse	\
+		libumfpack.so:math/suitesparse-umfpack	\
 		libsemigroups.so:math/libsemigroups	\
 		libsymmetrica.so:math/symmetrica\
 		libzmq.so:net/libzmq4		\
@@ -252,7 +252,7 @@ RUN_DEPENDS=	bash:shells/bash		\
 		${PYTHON_PKGNAMEPREFIX}jedi>0:devel/py-jedi@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}jsonschema>0:devel/py-jsonschema@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}jupyter-core>0:devel/py-jupyter-core@${PY_FLAVOR}\
-		${PYTHON_PKGNAMEPREFIX}jupyter_client>0:devel/py-jupyter_client@${PY_FLAVOR}\
+		${PYTHON_PKGNAMEPREFIX}jupyter-client>0:devel/py-jupyter-client@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}kiwisolver>0:math/py-kiwisolver@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}markupsafe>0:textproc/py-markupsafe@${PY_FLAVOR}\
 		${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR}\

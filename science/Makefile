@@ -175,6 +175,7 @@
     SUBDIR += opensim-core
     SUBDIR += opensph
     SUBDIR += opsin
+    SUBDIR += orthanc
     SUBDIR += p5-Algorithm-SVMLight
     SUBDIR += p5-Chemistry-3DBuilder
     SUBDIR += p5-Chemistry-Bond-Find
@@ -276,6 +277,7 @@
     SUBDIR += py-pymol
     SUBDIR += py-pyosf
     SUBDIR += py-pysal
+    SUBDIR += py-pyscf
     SUBDIR += py-pyteomics
     SUBDIR += py-qcelemental
     SUBDIR += py-qcengine
@@ -352,6 +354,7 @@
     SUBDIR += wannier90
     SUBDIR += wwplot
     SUBDIR += wxmacmolplt
+    SUBDIR += xcfun
     SUBDIR += xcrysden
     SUBDIR += xdrawchem
     SUBDIR += xtb

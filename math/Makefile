@@ -77,6 +77,7 @@
     SUBDIR += R-cran-lme4
     SUBDIR += R-cran-lpSolve
     SUBDIR += R-cran-magic
+    SUBDIR += R-cran-maps
     SUBDIR += R-cran-matrixStats
     SUBDIR += R-cran-maxLik
     SUBDIR += R-cran-mcmc
@@ -117,6 +118,7 @@
     SUBDIR += R-cran-stabledist
     SUBDIR += R-cran-statmod
     SUBDIR += R-cran-survey
+    SUBDIR += R-cran-tensor
     SUBDIR += R-cran-truncnorm
     SUBDIR += R-cran-units
     SUBDIR += R-cran-uroot
@@ -164,6 +166,7 @@
     SUBDIR += blaze
     SUBDIR += blazeiterative
     SUBDIR += blis
+    SUBDIR += bliss
     SUBDIR += blocksolve95
     SUBDIR += bonmin
     SUBDIR += boolector
@@ -210,6 +213,7 @@
     SUBDIR += coinmumps
     SUBDIR += coinutils
     SUBDIR += combblas
+    SUBDIR += conauto
     SUBDIR += concorde
     SUBDIR += convertall
     SUBDIR += coq
@@ -972,6 +976,23 @@
     SUBDIR += sprng
     SUBDIR += stp
     SUBDIR += suitesparse
+    SUBDIR += suitesparse-amd
+    SUBDIR += suitesparse-btf
+    SUBDIR += suitesparse-camd
+    SUBDIR += suitesparse-ccolamd
+    SUBDIR += suitesparse-cholmod
+    SUBDIR += suitesparse-colamd
+    SUBDIR += suitesparse-config
+    SUBDIR += suitesparse-csparse
+    SUBDIR += suitesparse-cxsparse
+    SUBDIR += suitesparse-graphblas
+    SUBDIR += suitesparse-klu
+    SUBDIR += suitesparse-ldl
+    SUBDIR += suitesparse-mongoose
+    SUBDIR += suitesparse-rbio
+    SUBDIR += suitesparse-slip_lu
+    SUBDIR += suitesparse-spqr
+    SUBDIR += suitesparse-umfpack
     SUBDIR += sundials
     SUBDIR += superlu
     SUBDIR += symengine

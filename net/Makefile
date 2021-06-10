@@ -23,6 +23,7 @@
     SUBDIR += appkonference
     SUBDIR += aprsc
     SUBDIR += aquantia-atlantic-kmod
+    SUBDIR += arataga
     SUBDIR += arp-scan
     SUBDIR += arp-sk
     SUBDIR += arpdig
@@ -92,6 +93,7 @@
     SUBDIR += corosync3
     SUBDIR += courier-authlib-ldap
     SUBDIR += courier-sox
+    SUBDIR += cpp-pcp-client
     SUBDIR += cppzmq
     SUBDIR += croc
     SUBDIR += cryptcat
@@ -169,6 +171,7 @@
     SUBDIR += fspclient
     SUBDIR += fspd
     SUBDIR += fsplib
+    SUBDIR += gamenetworkingsockets
     SUBDIR += gdrive
     SUBDIR += gemserv
     SUBDIR += geoclue
@@ -1252,6 +1255,7 @@
     SUBDIR += rubygem-gitaly-proto
     SUBDIR += rubygem-gitlab-fog-azure-rm
     SUBDIR += rubygem-gitlab-fog-google
+    SUBDIR += rubygem-gitlab-omniauth-openid-connect
     SUBDIR += rubygem-gitlab_omniauth-ldap
     SUBDIR += rubygem-google-cloud-bigquery
     SUBDIR += rubygem-google-cloud-bigtable
@@ -1342,6 +1346,7 @@
     SUBDIR += rubygem-rye
     SUBDIR += rubygem-serverengine
     SUBDIR += rubygem-simple_oauth
+    SUBDIR += rubygem-spamcheck
     SUBDIR += rubygem-stackdriver-core
     SUBDIR += rubygem-stompserver
     SUBDIR += rubygem-t

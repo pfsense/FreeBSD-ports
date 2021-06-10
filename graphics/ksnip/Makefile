@@ -1,13 +1,14 @@
 PORTNAME=	ksnip
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.2
+DISTVERSION=	1.9.0
+PORTREVISION=	1
 CATEGORIES=	graphics kde
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Screenshot and annotation tool
 
-LICENSE=	LGPL3+
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 LIB_DEPENDS=	libkColorPicker.so:graphics/kcolorpicker \
 		libkImageAnnotator.so:graphics/kimageannotator

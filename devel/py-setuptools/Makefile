@@ -1,6 +1,5 @@
 PORTNAME=	setuptools
-PORTVERSION=	44.0.0
-PORTREVISION=	1
+PORTVERSION=	57.0.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +14,7 @@ COMMENT=	Python packages installer
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python:2.7+ zip
+USES=		python:3.6+
 USE_PYTHON=	allflavors autoplist concurrent distutils
 
 MAKE_ENV+=	SETUPTOOLS_DISABLE_VERSIONED_EASY_INSTALL_SCRIPT=1
@@ -34,7 +33,7 @@ SUB_LIST+=	PYTHON_VER=${PYTHON_VER}
 # These create dependency loops in redports/poudriere, because setuptools
 # is currently an explicit BUILD & RUN dependency in Uses/python.mk.
 #TEST_DEPENDS=  ${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
-#.if ${PYTHON_REL} < 3300
+#.if ${PYTHON_REL} < 30300
 #TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR}
 #.endif
 # pkg install -y py36-pytest py36-mock py36-pytest-fixture-config py36-pytest-virtualenv py36-paver

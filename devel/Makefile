@@ -67,6 +67,7 @@
     SUBDIR += R-cran-optparse
     SUBDIR += R-cran-pillar
     SUBDIR += R-cran-pkgbuild
+    SUBDIR += R-cran-pkgcache
     SUBDIR += R-cran-pkgconfig
     SUBDIR += R-cran-pkgload
     SUBDIR += R-cran-pkgmaker
@@ -395,6 +396,7 @@
     SUBDIR += cppcheck
     SUBDIR += cppcheck-gui
     SUBDIR += cppi
+    SUBDIR += cpplint
     SUBDIR += cpprestsdk
     SUBDIR += cpptest
     SUBDIR += cppunit
@@ -668,6 +670,7 @@
     SUBDIR += fmake
     SUBDIR += fnccheck
     SUBDIR += folly
+    SUBDIR += forge
     SUBDIR += fortran-utils
     SUBDIR += fortytwo-encore
     SUBDIR += fossil
@@ -807,6 +810,7 @@
     SUBDIR += git-cola
     SUBDIR += git-delta
     SUBDIR += git-extras
+    SUBDIR += git-lab
     SUBDIR += git-lfs
     SUBDIR += git-merge-changelog
     SUBDIR += git-modes
@@ -972,6 +976,7 @@
     SUBDIR += imake
     SUBDIR += inastemp
     SUBDIR += include-what-you-use
+    SUBDIR += indi
     SUBDIR += indicators
     SUBDIR += inifiled
     SUBDIR += inih
@@ -1185,6 +1190,7 @@
     SUBDIR += libfixposix
     SUBDIR += libflatarray
     SUBDIR += libfmt
+    SUBDIR += libfort
     SUBDIR += libfortuna
     SUBDIR += libfreefare
     SUBDIR += libfsapfs
@@ -1388,6 +1394,7 @@
     SUBDIR += libxalloc
     SUBDIR += libxo
     SUBDIR += libxs
+    SUBDIR += libxtend
     SUBDIR += libzim
     SUBDIR += libzookeeper
     SUBDIR += libzrtpcpp
@@ -1624,7 +1631,6 @@
     SUBDIR += okteta
     SUBDIR += omake
     SUBDIR += omniORB
-    SUBDIR += omnisharp-server
     SUBDIR += onetbb
     SUBDIR += oniguruma
     SUBDIR += open-beagle
@@ -1784,6 +1790,7 @@
     SUBDIR += p5-CHI
     SUBDIR += p5-CHI-Driver-DBI
     SUBDIR += p5-CLASS
+    SUBDIR += p5-CLI-Osprey
     SUBDIR += p5-CPAN-Changes
     SUBDIR += p5-CPAN-Checksums
     SUBDIR += p5-CPAN-DistnameInfo
@@ -3423,6 +3430,7 @@
     SUBDIR += p5-Test-MockObject
     SUBDIR += p5-Test-MockRandom
     SUBDIR += p5-Test-MockTime
+    SUBDIR += p5-Test-MockTime-HiRes
     SUBDIR += p5-Test-Modern
     SUBDIR += p5-Test-Module-Used
     SUBDIR += p5-Test-Moose-More
@@ -4092,7 +4100,6 @@
     SUBDIR += py-asciimatics
     SUBDIR += py-asn1crypto
     SUBDIR += py-aspy.yaml
-    SUBDIR += py-aspyct
     SUBDIR += py-astor
     SUBDIR += py-astroid
     SUBDIR += py-asttokens
@@ -4301,6 +4308,7 @@
     SUBDIR += py-configparser
     SUBDIR += py-confusable_homoglyphs
     SUBDIR += py-confuse
+    SUBDIR += py-connection_pool
     SUBDIR += py-constantly
     SUBDIR += py-construct
     SUBDIR += py-contextlib2
@@ -4355,6 +4363,7 @@
     SUBDIR += py-debtcollector
     SUBDIR += py-debugtools
     SUBDIR += py-decorator
+    SUBDIR += py-decorator4
     SUBDIR += py-decoratortools
     SUBDIR += py-deepdiff
     SUBDIR += py-deepmerge
@@ -4549,7 +4558,8 @@
     SUBDIR += py-isodate
     SUBDIR += py-isort
     SUBDIR += py-itanium_demangler
-    SUBDIR += py-iterpipes
+    SUBDIR += py-itemadapter
+    SUBDIR += py-itemloaders
     SUBDIR += py-itypes
     SUBDIR += py-jaraco
     SUBDIR += py-jaraco.classes
@@ -4588,12 +4598,12 @@
     SUBDIR += py-jsonrpclib-pelix
     SUBDIR += py-jsonschema
     SUBDIR += py-jsonsir
+    SUBDIR += py-jupyter-client
     SUBDIR += py-jupyter-core
     SUBDIR += py-jupyter-packaging
     SUBDIR += py-jupyter-server
     SUBDIR += py-jupyter-server-mathjax
     SUBDIR += py-jupyter-telemetry
-    SUBDIR += py-jupyter_client
     SUBDIR += py-jupyter_console
     SUBDIR += py-jupyterlab
     SUBDIR += py-jupyterlab-server
@@ -4810,6 +4820,7 @@
     SUBDIR += py-pefile
     SUBDIR += py-pendulum
     SUBDIR += py-pep517
+    SUBDIR += py-pep562
     SUBDIR += py-pep8-naming
     SUBDIR += py-period
     SUBDIR += py-persistent
@@ -5040,8 +5051,10 @@
     SUBDIR += py-pyvisa-py
     SUBDIR += py-pyxb
     SUBDIR += py-pyyaml-include
+    SUBDIR += py-pyzipper
     SUBDIR += py-q
     SUBDIR += py-qasync
+    SUBDIR += py-qstylizer
     SUBDIR += py-qt5
     SUBDIR += py-qt5-core
     SUBDIR += py-qt5-dbus
@@ -5065,6 +5078,7 @@
     SUBDIR += py-readme-renderer
     SUBDIR += py-rebulk
     SUBDIR += py-rednose
+    SUBDIR += py-reedsolo
     SUBDIR += py-remote-pdb
     SUBDIR += py-repoze.lru
     SUBDIR += py-repoze.sphinx.autointerface
@@ -5116,6 +5130,7 @@
     SUBDIR += py-setuptools
     SUBDIR += py-setuptools-git
     SUBDIR += py-setuptools-pkg
+    SUBDIR += py-setuptools44
     SUBDIR += py-setuptools_hg
     SUBDIR += py-setuptools_scm
     SUBDIR += py-setuptools_scm_git_archive
@@ -5380,6 +5395,7 @@
     SUBDIR += pycos
     SUBDIR += pycount
     SUBDIR += pydbus-common
+    SUBDIR += pydio-packr
     SUBDIR += pygobject3-common
     SUBDIR += pylint
     SUBDIR += pyobfuscate
@@ -5565,10 +5581,12 @@
     SUBDIR += rubygem-aws-sdk-appflow
     SUBDIR += rubygem-aws-sdk-appintegrationsservice
     SUBDIR += rubygem-aws-sdk-applicationautoscaling
+    SUBDIR += rubygem-aws-sdk-applicationcostprofiler
     SUBDIR += rubygem-aws-sdk-applicationdiscoveryservice
     SUBDIR += rubygem-aws-sdk-applicationinsights
     SUBDIR += rubygem-aws-sdk-appmesh
     SUBDIR += rubygem-aws-sdk-appregistry
+    SUBDIR += rubygem-aws-sdk-apprunner
     SUBDIR += rubygem-aws-sdk-appstream
     SUBDIR += rubygem-aws-sdk-appsync
     SUBDIR += rubygem-aws-sdk-athena
@@ -6105,6 +6123,7 @@
     SUBDIR += rubygem-ditz
     SUBDIR += rubygem-diva
     SUBDIR += rubygem-docile
+    SUBDIR += rubygem-drb
     SUBDIR += rubygem-dry-configurable
     SUBDIR += rubygem-dry-container
     SUBDIR += rubygem-dry-core
@@ -6842,6 +6861,7 @@
     SUBDIR += smc
     SUBDIR += smv
     SUBDIR += soapui
+    SUBDIR += sobjectizer
     SUBDIR += socket_wrapper
     SUBDIR += sol2
     SUBDIR += sonar-scanner-cli
@@ -6849,7 +6869,6 @@
     SUBDIR += sonarqube-community
     SUBDIR += sope
     SUBDIR += sope2
-    SUBDIR += sope4
     SUBDIR += sord
     SUBDIR += sparc64-gcc
     SUBDIR += sparc64-xtoolchain-gcc
@@ -7035,6 +7054,7 @@
     SUBDIR += xxgdb
     SUBDIR += xxhash
     SUBDIR += xxl
+    SUBDIR += yaegi
     SUBDIR += yaggo
     SUBDIR += yajl
     SUBDIR += yajl-tcl

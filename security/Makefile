@@ -101,7 +101,9 @@
     SUBDIR += cracklib
     SUBDIR += crackpkcs12
     SUBDIR += create-cert
+    SUBDIR += crlfuzz
     SUBDIR += crowdsec
+    SUBDIR += crowdsec-firewall-bouncer
     SUBDIR += cryptlib
     SUBDIR += cryptopp
     SUBDIR += ct-submit
@@ -189,6 +191,7 @@
     SUBDIR += govpn
     SUBDIR += gpa
     SUBDIR += gpg-gui
+    SUBDIR += gpg-tui
     SUBDIR += gpgdir
     SUBDIR += gpgme
     SUBDIR += gpgme-cpp
@@ -310,6 +313,7 @@
     SUBDIR += libpwstor
     SUBDIR += libressl
     SUBDIR += libressl-devel
+    SUBDIR += libreswan
     SUBDIR += libretls
     SUBDIR += libscep
     SUBDIR += libscrypt
@@ -397,11 +401,13 @@
     SUBDIR += openbsm
     SUBDIR += openca-tools-forked
     SUBDIR += openconnect
+    SUBDIR += openconnect-freebsd-daemon
     SUBDIR += openconnect-gui
     SUBDIR += opencryptoki
     SUBDIR += openct
     SUBDIR += openfortivpn
     SUBDIR += openiked
+    SUBDIR += openiked-portable
     SUBDIR += opensaml
     SUBDIR += opensc
     SUBDIR += openscep
@@ -1047,6 +1053,7 @@
     SUBDIR += rubygem-bcrypt_pbkdf
     SUBDIR += rubygem-bcrypt_pbkdf10
     SUBDIR += rubygem-cose
+    SUBDIR += rubygem-declarative_policy
     SUBDIR += rubygem-devise-two-factor
     SUBDIR += rubygem-devise-two-factor-rails5
     SUBDIR += rubygem-devise-two-factor-rails60

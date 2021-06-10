@@ -1,5 +1,6 @@
 PORTNAME=	fheroes2
-PORTVERSION=	0.9.3
+PORTVERSION=	0.9.4
+PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	pkubaj@FreeBSD.org
@@ -8,20 +9,17 @@ COMMENT=	Free implementation of Heroes of Might and Magic II engine
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libtinyxml.so:textproc/tinyxml
+LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		gettext-tools gmake sdl
+USES=		cmake gettext-tools iconv localbase:ldflags pkgconfig sdl
 USE_GITHUB=	yes
 GH_ACCOUNT=	ihhub
 USE_SDL=	image2 mixer2 sdl2 ttf2
 
-LDFLAGS+=	-ltinyxml
-MAKE_ENV=	WITHOUT_BUNDLED_LIBS=1
+OPTIONS_DEFINE=	DOCS
 
 PLIST_FILES=	bin/${PORTNAME}
-
-do-install:
-	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/${PORTNAME} \
-		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+PORTDOCS=	README.txt \
+		changelog.txt
 
 .include <bsd.port.mk>

@@ -1,7 +1,6 @@
 PORTNAME=	libdatachannel
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.13.0-8
-DISTVERSIONSUFFIX=	-g5c8d63a
+DISTVERSION=	0.13.3
 CATEGORIES=	www
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -19,10 +18,16 @@ GH_ACCOUNT=	paullouisageneau
 GH_TUPLE=	\
 		SergiusTheBest:plog:d8461e9:plog/deps/plog \
 		sctplab:usrsctp:07f871b:usrsctp/deps/usrsctp \
-		paullouisageneau:libjuice:7a6efb7:libjuice/deps/libjuice \
+		paullouisageneau:libjuice:15d6654:libjuice/deps/libjuice \
 		nlohmann:json:973c52d:json/deps/json
 
 CMAKE_ON=	USE_SYSTEM_SRTP NO_EXAMPLES NO_TESTS
+
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} == base
+BROKEN_FreeBSD_11=	OpenSSL is too old: use of undeclared identifier 'X509_getm_notBefore'
+.endif
 
 do-test:
 	@cd ${BUILD_WRKSRC} && \
@@ -30,4 +35,4 @@ do-test:
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${ALL_TARGET} && \
 		./tests-${DISTVERSION:C/-.*//}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

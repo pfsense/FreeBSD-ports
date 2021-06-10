@@ -86,6 +86,9 @@ _USE_GNOME_ALL+=dconf evolutiondataserver3 gnomecontrolcenter3 gnomedesktop3 \
 		libgda5-ui libgnomekbd libwnck3 metacity nautilus3 \
 		pygobject3 vte3
 
+# GNOME 40 components
+_USE_GNOME_ALL+=gtk40 libadwaita
+
 # C++ bindings
 _USE_GNOME_ALL+=atkmm cairomm gconfmm26 glibmm gtkmm24 \
 		gtkmm30 gtksourceviewmm3 libgdamm5 libxml++26 libsigc++20 \
@@ -186,6 +189,10 @@ gtk30_LIB_DEPENDS=	libgtk-3.so:x11-toolkits/gtk30
 gtk30_USE_GNOME_IMPL=	atk pango
 GTK3_VERSION=		3.0.0
 
+gtk40_LIB_DEPENDS=	libgtk-4.so:x11-toolkits/gtk40
+gtk40_USE_GNOME_IMPL=	atk pango
+GTK4_VERSION=		4.0.0
+
 libidl_LIB_DEPENDS=	libIDL-2.so:devel/libIDL
 libidl_USE_GNOME_IMPL=	glib20
 
@@ -232,6 +239,9 @@ vte_USE_GNOME_IMPL=	gtk20
 
 vte3_LIB_DEPENDS=	libvte-2.91.so:x11-toolkits/vte3
 vte3_USE_GNOME_IMPL=	gtk30
+
+libadwaita_LIB_DEPENDS=		libadwaita-1.so:x11-toolkits/libadwaita
+libadwaita_USE_GNOME_IMPL=	gtk40
 
 # Use librsvg2-rust where lang/rust is available
 .if ${LIBRSVG2_DEFAULT:Mrust}
@@ -336,7 +346,8 @@ _USE_GNOME+=	${${component}_USE_GNOME_IMPL} ${component}
 # Setup the GTK+ API version for pixbuf loaders, input method modules,
 # and theme engines.
 PLIST_SUB+=			GTK2_VERSION="${GTK2_VERSION}" \
-				GTK3_VERSION="${GTK3_VERSION}"
+				GTK3_VERSION="${GTK3_VERSION}" \
+				GTK4_VERSION="${GTK4_VERSION}"
 
 .if defined(_USE_GNOME) && empty(_USE_GNOME:Mglib20:u) && defined(GLIB_SCHEMAS)
 IGNORE=		GLIB_SCHEMAS is set, but needs USE_GNOME=glib20 to work
@@ -417,7 +428,7 @@ gnome-pre-patch:
 _USES_install+=	690:gnome-post-gconf-schemas
 gnome-post-gconf-schemas:
 	@for i in ${GCONF_SCHEMAS}; do \
-		${ECHO_CMD} "@postunexec env GCONF_CONFIG_SOURCE=xml:${GCONF_CONFIG_OPTIONS}:%D/${GCONF_CONFIG_DIRECTORY} HOME=${WRKDIR} gconftool-2 --makefile-uninstall-rule %D/etc/gconf/schemas/$${i} > /dev/null || /usr/bin/true" \
+		${ECHO_CMD} "@preunexec env GCONF_CONFIG_SOURCE=xml:${GCONF_CONFIG_OPTIONS}:%D/${GCONF_CONFIG_DIRECTORY} HOME=${WRKDIR} gconftool-2 --makefile-uninstall-rule %D/etc/gconf/schemas/$${i} > /dev/null || /usr/bin/true" \
 			>> ${TMPPLIST}; \
 		${ECHO_CMD} "etc/gconf/schemas/$${i}" >> ${TMPPLIST}; \
 		${ECHO_CMD} "@postexec env GCONF_CONFIG_SOURCE=xml:${GCONF_CONFIG_OPTIONS}:%D/${GCONF_CONFIG_DIRECTORY} HOME=${WRKDIR} gconftool-2 --makefile-install-rule %D/etc/gconf/schemas/$${i} > /dev/null || /usr/bin/true" \

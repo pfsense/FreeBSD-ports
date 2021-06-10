@@ -76,6 +76,993 @@ Notes:
   * Do not forget port variants (linux-f10-libxml2, libxml2, etc.)
 -->
 <vuxml xmlns="http://www.vuxml.org/apps/vuxml-1">
+  <vuln vid="fc1bcbca-c88b-11eb-9120-f02f74d0e4bd">
+    <topic>dino -- Path traversal in Dino file transfers</topic>
+    <affects>
+      <package>
+	<name>dino</name>
+	<range><lt>0.2.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Dino team reports:</p>
+	<blockquote cite="https://dino.im/security/cve-2021-33896/">
+	  <p>It was discovered that when a user receives and downloads
+	  a file in Dino, URI-encoded path separators in the file name
+	  will be decoded, allowing an attacker to traverse
+	  directories and create arbitrary files in the context of the
+	  user.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-33896</cvename>
+      <mlist msgid="392f934a-f937-7b29-5f7f-5df3ee60d8a8@.larma.de">https://marc.info/?l=oss-security&amp;m=162308719412719</mlist>
+      <url>https://dino.im/security/cve-2021-33896/</url>
+    </references>
+    <dates>
+      <discovery>2021-06-07</discovery>
+      <entry>2021-06-08</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="45b8716b-c707-11eb-b9a0-6805ca0b3d42">
+    <topic>pglogical -- shell command injection in pglogical.create_subscription()</topic>
+    <affects>
+      <package>
+	<name>pglogical</name>
+	<range><lt>2.3.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>2ndQuadrant reports:</p>
+	<blockquote cite="https://github.com/2ndQuadrant/pglogical/releases/tag/REL2_3_4">
+	  <ul>
+	    <li>
+	      Fix pg_dump/pg_restore execution (CVE-2021-3515)<br />
+	      <br />
+	      Correctly escape the connection string for both pg_dump
+	      and pg_restore so that exotic database and user names are
+	      handled correctly.<br />
+	      <br />
+	      Reported by Pedro Gallegos
+	    </li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-3515</cvename>
+      <url>https://github.com/2ndQuadrant/pglogical/releases/tag/REL2_3_4</url>
+      <url>https://bugzilla.redhat.com/show_bug.cgi?id=1954112</url>
+    </references>
+    <dates>
+      <discovery>2021-06-01</discovery>
+      <entry>2021-06-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f70ab05e-be06-11eb-b983-000c294bb613">
+    <topic>drupal7 -- fix possible CSS</topic>
+    <affects>
+      <package>
+	<name>drupal7</name>
+	<range><gt>7.0</gt><lt>7.80</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Drupal Security team reports:</p>
+	<blockquote cite="https://www.drupal.org/sa-core-2021-002">
+	  <p>Drupal core's sanitization API fails to properly filter
+		cross-site scripting under certain circumstances.
+		Not all sites and users are affected, but configuration
+		changes to prevent the exploit might be impractical
+		and will vary between sites. Therefore, we recommend
+		all sites update to this release as soon as
+		possible.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+	<cvename>CVE-2020-13672</cvename>
+    </references>
+    <dates>
+      <discovery>2021-04-21</discovery>
+      <entry>2021-06-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="36a35d83-c560-11eb-84ab-e0d55e2a8bf9">
+    <topic>polkit -- local privilege escalation using polkit_system_bus_name_get_creds_sync</topic>
+    <affects>
+      <package>
+	<name>polkit</name>
+	<range><lt>0.119</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Cedric Buissart reports:</p>
+	<blockquote cite="https://seclists.org/oss-sec/2021/q2/180">
+	  <p>The function <code>polkit_system_bus_name_get_creds_sync</code> is used to get the
+	  uid and pid of the process requesting the action. It does this by
+	  sending the unique bus name of the requesting process, which is
+	  typically something like ":1.96", to <code>dbus-daemon</code>. These unique names
+	  are assigned and managed by <code>dbus-daemon</code> and cannot be forged, so this
+	  is a good way to check the privileges of the requesting process.</p>
+	  <p>The vulnerability happens when the requesting process disconnects from
+	  <code>dbus-daemon</code> just before the call to
+	  <code>polkit_system_bus_name_get_creds_sync</code> starts. In this scenario, the
+	  unique bus name is no longer valid, so <code>dbus-daemon</code> sends back an error
+	  reply. This error case is handled in
+	  <code>polkit_system_bus_name_get_creds_sync</code> by setting the value of the
+	  <code>error</code> parameter, but it still returns <code>TRUE</code>, rather than <code>FALSE</code>.
+	  This behavior means that all callers of
+	  <code>polkit_system_bus_name_get_creds_sync</code> need to carefully check whether
+	  an error was set. If the calling function forgets to check for errors
+	  then it will think that the uid of the requesting process is 0 (because
+	  the <code>AsyncGetBusNameCredsData</code> struct is zero initialized). In other
+	  words, it will think that the action was requested by a root process,
+	  and will therefore allow it.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-3560</cvename>
+      <url>https://seclists.org/oss-sec/2021/q2/180</url>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-3560</url>
+      <url>https://gitlab.freedesktop.org/polkit/polkit/-/commit/a04d13a</url>
+    </references>
+    <dates>
+      <discovery>2021-06-03</discovery>
+      <entry>2021-06-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="69815a1d-c31d-11eb-9633-b42e99a1b9c3">
+    <topic>SOGo -- SAML user authentication impersonation</topic>
+    <affects>
+      <package>
+	<name>sogo</name>
+	<range><lt>5.1.1</lt></range>
+      </package>
+      <package>
+	<name>sogo-activesync</name>
+	<range><lt>5.1.1</lt></range>
+      </package>
+      <package>
+	<name>sogo2</name>
+	<range><lt>2.4.1</lt></range>
+      </package>
+      <package>
+	<name>sogo2-activesync</name>
+	<range><lt>2.4.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>sogo.nu reports:</p>
+	<blockquote cite="https://www.sogo.nu/news/2021/saml-vulnerability.html">
+	  <p>SOGo was not validating the signatures of any SAML assertions it received.</p>
+	  <p>This means any actor with network access to the deployment could impersonate</p>
+	  <p>users when SAML was the authentication method.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-33054</cvename>
+      <url>https://www.sogo.nu/news/2021/saml-vulnerability.html</url>
+      <url>https://blogs.akamai.com/2021/06/sogo-and-packetfence-impacted-by-saml-implementation-vulnerabilities.html</url>
+    </references>
+    <dates>
+      <discovery>2021-06-01</discovery>
+      <entry>2021-06-02</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c7855866-c511-11eb-ae1d-b42e991fc52e">
+    <topic>tauthon -- Regular Expression Denial of Service</topic>
+    <affects>
+      <package>
+	<name>tauthon</name>
+	<range><lt>2.8.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p></p>
+	<blockquote cite="https://github.com/naftaliharris/tauthon/blob/master/Misc/NEWS.d/2.8.3.rst">
+	  <p>The :class:`~urllib.request.AbstractBasicAuthHandler` class
+	    of the :mod:`urllib.request` module uses an inefficient
+	    regular expression which can be exploited by an
+	    attacker to cause a denial of service</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2020-8492</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-8492</url>
+    </references>
+    <dates>
+      <discovery>2020-01-30</discovery>
+      <entry>2021-06-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="417de1e6-c31b-11eb-9633-b42e99a1b9c3">
+    <topic>lasso -- signature checking failure</topic>
+    <affects>
+      <package>
+	<name>lasso</name>
+	<range><lt>2.7.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+    <p>entrouvert reports:</p>
+    <blockquote cite="https://git.entrouvert.org/lasso.git/tree/NEWS?id=v2.7.0">
+      <p>When AuthnResponse messages are not signed (which is
+  permitted by the specifiation), all assertion's signatures should be
+  checked, but currently after the first signed assertion is checked all
+  following assertions are accepted without checking their signature, and
+  the last one is considered the main assertion.</p>
+    </blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-28091</cvename>
+      <url>https://git.entrouvert.org/lasso.git/tree/NEWS?id=v2.7.0</url>
+    </references>
+    <dates>
+      <discovery>2021-06-01</discovery>
+      <entry>2021-06-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="079b3641-c4bd-11eb-a22a-693f0544ae52">
+    <topic>go -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>go</name>
+	<range><lt>1.16.5,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Go project reports:</p>
+	<blockquote cite="https://github.com/golang/go/issues/45910">
+	  <p>The SetString and UnmarshalText methods of math/big.Rat may cause a
+	    panic or an unrecoverable fatal error if passed inputs with very
+	    large exponents.</p>
+	</blockquote>
+	<blockquote cite="https://github.com/golang/go/issues/46313">
+	  <p>ReverseProxy in net/http/httputil could be made to forward certain
+	    hop-by-hop headers, including Connection. In case the target of the
+	    ReverseProxy was itself a reverse proxy, this would let an attacker
+	    drop arbitrary headers, including those set by the
+	    ReverseProxy.Director.</p>
+	</blockquote>
+	<blockquote cite="https://github.com/golang/go/issues/46241">
+	  <p>The LookupCNAME, LookupSRV, LookupMX, LookupNS, and LookupAddr
+	    functions in net, and their respective methods on the Resolver type
+	    may return arbitrary values retrieved from DNS which do not follow
+	    the established RFC 1035 rules for domain names. If these names are
+	    used without further sanitization, for instance unsafely included in
+	    HTML, they may allow for injection of unexpected content. Note that
+	    LookupTXT may still return arbitrary values that could require
+	    sanitization before further use.</p>
+	</blockquote>
+	<blockquote cite="https://github.com/golang/go/issues/46242">
+	  <p>The NewReader and OpenReader functions in archive/zip can cause a
+	    panic or an unrecoverable fatal error when reading an archive that
+	    claims to contain a large number of files, regardless of its actual
+	    size.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-33198</cvename>
+      <url>https://github.com/golang/go/issues/45910</url>
+      <cvename>CVE-2021-33197</cvename>
+      <url>https://github.com/golang/go/issues/46313</url>
+      <cvename>CVE-2021-33195</cvename>
+      <url>https://github.com/golang/go/issues/46241</url>
+      <cvename>CVE-2021-33196</cvename>
+      <url>https://github.com/golang/go/issues/46242</url>
+    </references>
+    <dates>
+      <discovery>2021-05-01</discovery>
+      <entry>2021-06-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3000acee-c45d-11eb-904f-14dae9d5a9d2">
+    <topic>aiohttp -- open redirect vulnerability</topic>
+    <affects>
+      <package>
+	<name>py36-aiohttp</name>
+	<name>py37-aiohttp</name>
+	<name>py38-aiohttp</name>
+	<name>py39-aiohttp</name>
+	<range><lt>3.7.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Sviatoslav Sydorenko reports:</p>
+	<blockquote cite="https://github.com/aio-libs/aiohttp/security/advisories/GHSA-v6wp-4m6f-gcjg">
+	  <p>Open redirect vulnerability — a maliciously crafted link to an aiohttp-based web-server could redirect the browser to a different website.</p>
+	  <p>It is caused by a bug in the <code>aiohttp.web_middlewares.normalize_path_middleware</code> middleware.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-21330</cvename>
+      <url>https://github.com/aio-libs/aiohttp/security/advisories/GHSA-v6wp-4m6f-gcjg</url>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2021-21330</url>
+    </references>
+    <dates>
+      <discovery>2021-02-25</discovery>
+      <entry>2021-06-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="a550d62c-f78d-4407-97d9-93876b6741b9">
+    <topic>zeek -- several potential DoS vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>zeek</name>
+	<range><lt>4.0.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Tim Wojtulewicz of Corelight reports:</p>
+	<blockquote cite="https://github.com/zeek/zeek/releases/tag/v4.0.2">
+	  <p> Fix potential Undefined Behavior in decode_netbios_name()
+	  and decode_netbios_name_type() BIFs. The latter has a
+	  possibility of a remote heap-buffer-overread, making this
+	  a potential DoS vulnerability.</p>
+	  <p> Add some extra length checking when parsing mobile
+	  ipv6 packets. Due to the possibility of reading invalid
+	  headers from remote sources, this is a potential DoS
+	  vulnerability. </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://github.com/zeek/zeek/releases/tag/v4.0.2</url>
+    </references>
+    <dates>
+      <discovery>2021-04-30</discovery>
+      <entry>2021-06-02</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c7ec6375-c3cf-11eb-904f-14dae9d5a9d2">
+    <topic>PyYAML -- arbitrary code execution</topic>
+    <affects>
+      <package>
+	<name>py36-yaml</name>
+	<name>py37-yaml</name>
+	<name>py38-yaml</name>
+	<name>py39-yaml</name>
+	<range><lt>5.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>A vulnerability was discovered in the PyYAML library
+	in versions before 5.4, where it is susceptible to arbitrary
+	code execution when it processes untrusted YAML files
+	through the full_load method or with the FullLoader loader.
+	Applications that use the library to process untrusted
+	input may be vulnerable to this flaw. This flaw allows
+	an attacker to execute arbitrary code on the system by
+	abusing the python/object/new constructor. This flaw is
+	due to an incomplete fix for CVE-2020-1747.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2020-14343</cvename>
+      <url>https://github.com/yaml/pyyaml/issues/420</url>
+      <url>https://access.redhat.com/security/cve/CVE-2020-14343</url>
+      <url>https://bugzilla.redhat.com/show_bug.cgi?id=1860466</url>
+    </references>
+    <dates>
+      <discovery>2020-07-22</discovery>
+      <entry>2021-06-02</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="e24fb8f8-c39a-11eb-9370-b42e99a1b9c3">
+    <topic>isc-dhcp -- remotely exploitable vulnerability</topic>
+    <affects>
+      <package>
+	<name>isc-dhcp44-relay</name>
+	<range><lt>4.4.2-P1</lt></range>
+      </package>
+      <package>
+	<name>isc-dhcp44-server</name>
+	<range><lt>4.4.2-P1</lt></range>
+      </package>
+      <package>
+	<name>isc-dhcp44-client</name>
+	<range><lt>4.4.2-P1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Michael McNally reports:</p>
+	<blockquote cite="https://seclists.org/oss-sec/2021/q2/170">
+	  <p>Program code used by the ISC DHCP package to read and parse stored leases</p>
+	  <p>has a defect that can be exploited by an attacker to cause one of several
+	     undesirable outcomes</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-25217</cvename>
+      <url>https://kb.isc.org/docs/cve-2021-25217</url>
+    </references>
+    <dates>
+      <discovery>2021-05-26</discovery>
+      <entry>2021-06-02</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="5f52d646-c31f-11eb-8dcf-001b217b3468">
+    <topic>Gitlab -- Multiple Vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<range><ge>13.12.0</ge><lt>13.12.2</lt></range>
+	<range><ge>13.11.0</ge><lt>13.11.5</lt></range>
+	<range><ge>7.10.0</ge><lt>13.10.5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2021/06/01/security-release-gitlab-13-12-2-released/">
+	  <p>Stealing GitLab OAuth access tokens using XSLeaks in Safari</p>
+	  <p>Denial of service through recursive triggered pipelines</p>
+	  <p>Unauthenticated CI lint API may lead to information disclosure and SSRF</p>
+	  <p>Server-side DoS through rendering crafted Markdown documents</p>
+	  <p>Issue and merge request length limit is not being enforced</p>
+	  <p>Insufficient Expired Password Validation</p>
+	  <p>XSS in blob viewer of notebooks</p>
+	  <p>Logging of Sensitive Information</p>
+	  <p>On-call rotation information exposed when removing a member</p>
+	  <p>Spoofing commit author for signed commits</p>
+	  <p>Enable qsh verification for Atlassian Connect</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-22181</cvename>
+      <url>https://about.gitlab.com/releases/2021/06/01/security-release-gitlab-13-12-2-released/</url>
+    </references>
+    <dates>
+      <discovery>2021-06-01</discovery>
+      <entry>2021-06-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="8eb69cd0-c2ec-11eb-b6e7-8c164567ca3c">
+    <topic>redis -- integer overflow</topic>
+    <affects>
+      <package>
+	<name>redis</name>
+	<range><ge>6.0.0</ge><lt>6.0.14</lt></range>
+      </package>
+      <package>
+	<name>redis-devel</name>
+	<range><ge>6.2.0</ge><lt>6.2.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Redis development team reports:</p>
+	<blockquote cite="https://groups.google.com/g/redis-db/c/RLTwi1kKsCI">
+	  <p>An integer overflow bug in Redis version 6.0 or newer can be
+	    exploited using the STRALGO LCS command to corrupt the heap and
+	    potentially result with remote code execution. This is a result
+	    of an incomplete fix by CVE-2021-29477.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-32625</cvename>
+      <url>https://groups.google.com/g/redis-db/c/RLTwi1kKsCI</url>
+    </references>
+    <dates>
+      <discovery>2021-06-01</discovery>
+      <entry>2021-06-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="58d6ed66-c2e8-11eb-9fb0-6451062f0f7a">
+    <topic>libX11 -- Arbitrary code execution</topic>
+    <affects>
+      <package>
+	<name>libX11</name>
+	<range><lt>1.7.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The X.org project reports:</p>
+	<blockquote cite="https://lists.freedesktop.org/archives/xorg/2021-May/060699.html">
+	  <p>XLookupColor() and other X libraries function lack proper validation
+	    of the length of their string parameters. If those parameters can be
+	    controlled by an external application (for instance a color name that
+	    can be emitted via a terminal control sequence) it can lead to the
+	    emission of extra X protocol requests to the X server.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-31535</cvename>
+      <url>https://lists.freedesktop.org/archives/xorg/2021-May/060699.html</url>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2021-31535</url>
+    </references>
+    <dates>
+      <discovery>2021-05-11</discovery>
+      <entry>2021-06-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="59ab72fb-bccf-11eb-a38d-6805ca1caf5c">
+    <topic>Prometheus -- arbitrary redirects</topic>
+    <affects>
+      <package>
+	<name>prometheus2</name>
+	<range><ge>2.23.0</ge><lt>2.26.1</lt></range>
+	<range><eq>2.27.0</eq></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Prometheus reports:</p>
+	<blockquote cite="https://nvd.nist.gov/vuln/detail/CVE-2021-29622">
+	  <p>
+	    Prometheus is an open-source monitoring system and time series
+	    database. In 2.23.0, Prometheus changed its default UI to the New
+	    ui. To ensure a seamless transition, the URL's prefixed by /new
+	    redirect to /. Due to a bug in the code, it is possible for an
+	    attacker to craft an URL that can redirect to any other URL, in the
+	    /new endpoint. If a user visits a prometheus server with a
+	    specially crafted address, they can be redirected to an arbitrary
+	    URL. The issue was patched in the 2.26.1 and 2.27.1 releases. In
+	    2.28.0, the /new endpoint will be removed completely. The
+	    workaround is to disable access to /new via a reverse proxy in
+	    front of Prometheus.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-29622</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2021-29622</url>
+    </references>
+    <dates>
+      <discovery>2021-05-18</discovery>
+      <entry>2021-06-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="fd24a530-c202-11eb-b217-b42e99639323">
+    <topic>wayland -- integer overflow</topic>
+    <affects>
+      <package>
+	<name>wayland</name>
+	<range><lt>1.19.0_1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Tobias Stoeckmann reports:</p>
+	<blockquote
+	  cite="https://gitlab.freedesktop.org/wayland/wayland/-/merge_requests/133">
+	  <p>The libXcursor fix for CVE-2013-2003 has never been imported into wayland, leaving it vulnerable to it.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-2003</cvename>
+      <url>https://gitlab.freedesktop.org/wayland/wayland/-/merge_requests/133</url>
+      <freebsdpr>ports/256273</freebsdpr>
+    </references>
+    <dates>
+      <discovery>2021-05-02</discovery>
+      <entry>2021-05-31</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="107c7a76-beaa-11eb-b87a-901b0ef719ab">
+    <topic>FreeBSD -- Missing message validation in libradius(3)</topic>
+    <affects>
+      <package>
+	<name>FreeBSD</name>
+	<range><ge>13.0</ge><lt>13.0_1</lt></range>
+	<range><ge>12.2</ge><lt>12.2_7</lt></range>
+	<range><ge>11.4</ge><lt>11.4_10</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>libradius did not perform sufficient validation of received messages.</p>
+	<p>rad_get_attr(3) did not verify that the attribute length is valid before
+	subtracting the length of the Type and Length fields.  As a result, it
+	could return success while also providing a bogus length of SIZE_T_MAX -
+	2 for the Value field.</p>
+	<p>When processing attributes to find an optional authenticator,
+	is_valid_response() failed to verify that each attribute length is
+	non-zero and could thus enter an infinite loop.</p>
+	<h1>Impact:</h1>
+	<p>A server may use libradius(3) to process messages from RADIUS clients.
+	In this case, a malicious client could trigger a denial-of-service in
+	the server.  A client using libradius(3) to process messages from a
+	server is susceptible to the same problem.</p>
+	<p>The impact of the rad_get_attr(3) bug depends on how the returned length
+	is validated and used by the consumer.  It is possible that libradius(3)
+	applications will crash or enter an infinite loop when calling
+	rad_get_attr(3) on untrusted RADIUS messages.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-29629</cvename>
+      <freebsdsa>SA-21:12.libradius</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2021-05-27</discovery>
+      <entry>2021-05-27</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d1ac6a6a-bea8-11eb-b87a-901b0ef719ab">
+    <topic>FreeBSD-kernel -- SMAP bypass</topic>
+    <affects>
+      <package>
+	<name>FreeBSD-kernel</name>
+	<range><ge>13.0</ge><lt>13.0_1</lt></range>
+	<range><ge>12.2</ge><lt>12.2_7</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<h1>Problem Description:</h1>
+	<p>The FreeBSD kernel enables SMAP during boot when the CPU reports that
+	the SMAP capability is present.  Subroutines such as copyin() and
+	copyout() are responsible for disabling SMAP around the sections of code
+	that perform user memory accesses.</p>
+	<p>Such subroutines must handle page faults triggered when user memory is
+	not mapped.  The kernel's page fault handler checks the validity of the
+	fault, and if it is indeed valid it will map a page and resume copying.
+	If the fault is invalid, the fault handler returns control to a
+	trampoline which aborts the operation and causes an error to be
+	returned.  In this second scenario, a bug in the implementation of SMAP
+	support meant that SMAP would remain disabled until the thread returns
+	to user mode.</p>
+	<h1>Impact:</h1>
+	<p>This bug may be used to bypass the protections provided by SMAP for the
+	duration of a system call.  It could thus be combined with other kernel
+	bugs to craft an exploit.</p>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-29628</cvename>
+      <freebsdsa>SA-21:11.smap</freebsdsa>
+    </references>
+    <dates>
+      <discovery>2021-05-27</discovery>
+      <entry>2021-05-27</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="674ed047-be0a-11eb-b927-3065ec8fd3ec">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>91.0.4472.77</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Chrome Releases reports:</p>
+	<blockquote cite="https://chromereleases.googleblog.com/2021/05/stable-channel-update-for-desktop_25.html">
+	  <p>This release contains 32 security fixes, including:</p>
+	  <ul>
+	    <li>[1208721] High CVE-2021-30521: Heap buffer overflow in Autofill.
+	      Reported by ZhanJia Song on 2021-05-13</li>
+	    <li>[1176218] High CVE-2021-30522: Use after free in WebAudio.
+	      Reported by Piotr Bania of Cisco Talos on 2021-02-09</li>
+	    <li>[1187797] High CVE-2021-30523: Use after free in WebRTC.
+	      Reported by Tolyan Korniltsev on 2021-03-13</li>
+	    <li>[1197146] High CVE-2021-30524: Use after free in TabStrip.
+	      Reported by David Erceg on 2021-04-08</li>
+	    <li>[1197888] High CVE-2021-30525: Use after free in TabGroups.
+	      Reported by David Erceg on 2021-04-11</li>
+	    <li>[1198717] High CVE-2021-30526: Out of bounds write in
+	      TabStrip. Reported by David Erceg on 2021-04-13</li>
+	    <li>[1199198] High CVE-2021-30527: Use after free in WebUI.
+	      Reported by David Erceg on 2021-04-15</li>
+	    <li>[1206329] High CVE-2021-30528: Use after free in
+	      WebAuthentication. Reported by Man Yue Mo of GitHub Security Lab on
+	      2021-05-06</li>
+	    <li>[1195278] Medium CVE-2021-30529: Use after free in Bookmarks.
+	      Reported by koocola (@alo_cook) and Nan Wang (@eternalsakura13) of
+	      360 Alpha Lab on 2021-04-02</li>
+	    <li>[1201033] Medium CVE-2021-30530: Out of bounds memory access
+	      in WebAudio. Reported by kkwon on 2021-04-21</li>
+	    <li>[1115628] Medium CVE-2021-30531: Insufficient policy
+	      enforcement in Content Security Policy. Reported by Philip Papurt on
+	      2020-08-12</li>
+	    <li>[1117687] Medium CVE-2021-30532: Insufficient policy
+	      enforcement in Content Security Policy. Reported by Philip Papurt on
+	      2020-08-18</li>
+	    <li>[1145553] Medium CVE-2021-30533: Insufficient policy
+	      enforcement in PopupBlocker. Reported by Eliya Stein on
+	      2020-11-04</li>
+	    <li>[1151507] Medium CVE-2021-30534: Insufficient policy
+	      enforcement in iFrameSandbox. Reported by Alesandro Ortiz on
+	      2020-11-20</li>
+	    <li>[1194899] Medium CVE-2021-30535: Double free in ICU. Reported
+	      by nocma, leogan, cheneyxu of WeChat Open Platform Security Team on
+	      2021-04-01</li>
+	    <li>[1145024] Medium CVE-2021-21212: Insufficient data validation
+	      in networking. Reported by Hugo Hue and Sze Yiu Chau of the Chinese
+	      University of Hong Kong on 2020-11-03</li>
+	    <li>[1194358] Low CVE-2021-30536: Out of bounds read in V8.
+	      Reported by Chris Salls (@salls) on 2021-03-31</li>
+	    <li>[830101] Low CVE-2021-30537: Insufficient policy enforcement
+	      in cookies. Reported by Jun Kokatsu (@shhnjk) on 2018-04-06</li>
+	    <li>[1115045] Low CVE-2021-30538: Insufficient policy enforcement
+	      in content security policy. Reported by Tianze Ding (@D1iv3) of
+	      Tencent Security Xuanwu Lab on 2020-08-11</li>
+	    <li>[971231] Low CVE-2021-30539: Insufficient policy enforcement
+	      in content security policy. Reported by unnamed researcher on
+	      2019-06-05</li>
+	    <li>[1184147] Low CVE-2021-30540: Incorrect security UI in
+	      payments. Reported by @retsew0x01 on 2021-03-03</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-30521</cvename>
+      <cvename>CVE-2021-30522</cvename>
+      <cvename>CVE-2021-30523</cvename>
+      <cvename>CVE-2021-30524</cvename>
+      <cvename>CVE-2021-30525</cvename>
+      <cvename>CVE-2021-30526</cvename>
+      <cvename>CVE-2021-30527</cvename>
+      <cvename>CVE-2021-30528</cvename>
+      <cvename>CVE-2021-30529</cvename>
+      <cvename>CVE-2021-30530</cvename>
+      <cvename>CVE-2021-30531</cvename>
+      <cvename>CVE-2021-30532</cvename>
+      <cvename>CVE-2021-30533</cvename>
+      <cvename>CVE-2021-30534</cvename>
+      <cvename>CVE-2021-30535</cvename>
+      <cvename>CVE-2021-21212</cvename>
+      <cvename>CVE-2021-30536</cvename>
+      <cvename>CVE-2021-30537</cvename>
+      <cvename>CVE-2021-30538</cvename>
+      <cvename>CVE-2021-30539</cvename>
+      <cvename>CVE-2021-30540</cvename>
+      <url>https://chromereleases.googleblog.com/2021/05/stable-channel-update-for-desktop_25.html</url>
+    </references>
+    <dates>
+      <discovery>2021-05-25</discovery>
+      <entry>2021-05-26</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="21ec4428-bdaa-11eb-a04e-641c67a117d8">
+    <topic>libzmq4 -- Denial of Service</topic>
+    <affects>
+      <package>
+	<name>libzmq4</name>
+	<range><lt>4.3.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Google's oss-fuzz project reports:</p>
+	<blockquote cite="https://github.com/zeromq/libzmq/releases/tag/v4.3.3">
+	  <p>Denial-of-Service on CURVE/ZAP-protected servers by
+	    unauthenticated clients.
+	    If a raw TCP socket is opened and connected to an endpoint that is fully
+	    configured with CURVE/ZAP, legitimate clients will not be able to exchange
+	    any message. Handshakes complete successfully, and messages are delivered to
+	    the library, but the server application never receives them.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2020-15166</cvename>
+      <url>https://github.com/zeromq/libzmq/releases/tag/v4.3.3</url>
+      <url>https://github.com/zeromq/libzmq/security/advisories/GHSA-25wp-cf8g-938m</url>
+      <freebsdpr>ports/255102</freebsdpr>
+    </references>
+    <dates>
+      <discovery>2020-09-07</discovery>
+      <entry>2021-05-25</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="6954a2b0-bda8-11eb-a04e-641c67a117d8">
+    <topic>libzmq4 -- Stack overflow</topic>
+    <affects>
+      <package>
+	<name>libzmq4</name>
+	<range><lt>4.3.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Fang-Pen Lin reports:</p>
+	<blockquote cite="https://github.com/zeromq/libzmq/releases/tag/v4.3.2">
+	  <p>A remote, unauthenticated client connecting to a
+	    libzmq application, running with a socket listening with CURVE
+	    encryption/authentication enabled, may cause a stack overflow and
+	    overwrite the stack with arbitrary data, due to a buffer overflow in
+	    the library. Users running public servers with the above configuration
+	    are highly encouraged to upgrade as soon as possible, as there are no
+	    known mitigations.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2019-13132</cvename>
+      <url>https://github.com/zeromq/libzmq/releases/tag/v4.3.2</url>
+      <url>https://github.com/zeromq/libzmq/issues/3558</url>
+      <freebsdpr>ports/255102</freebsdpr>
+    </references>
+    <dates>
+      <discovery>2019-06-27</discovery>
+      <entry>2021-05-25</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="0882f019-bd60-11eb-9bdd-8c164567ca3c">
+    <topic>NGINX -- 1-byte memory overwrite in resolver</topic>
+    <affects>
+      <package>
+	<name>nginx</name>
+	<range><lt>1.20.1</lt></range>
+      </package>
+      <package>
+	<name>nginx-devel</name>
+	<range><lt>1.21.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>NGINX team reports:</p>
+	<blockquote cite="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-23017">
+	  <p>1-byte memory overwrite might occur during DNS server response
+	   processing if the "resolver" directive was used, allowing an
+	   attacker who is able to forge UDP packets from the DNS server
+	   to cause worker process crash or, potentially, arbitrary code
+	   execution.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-23017</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-23017</url>
+    </references>
+    <dates>
+      <discovery>2021-05-25</discovery>
+      <entry>2021-05-25</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="58b22f3a-bc71-11eb-b9c9-6cc21735f730">
+    <topic>PG Partition Manager -- arbitrary code execution</topic>
+    <affects>
+      <package>
+	<name>pg_partman</name>
+	<range><lt>4.5.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>PG Partition Manager reports:</p>
+	<blockquote cite="https://nvd.nist.gov/vuln/detail/CVE-2021-33204">
+	  <p>
+	    In the pg_partman (aka PG Partition Manager) extension before 4.5.1
+	    for PostgreSQL, arbitrary code execution can be achieved via
+	    SECURITY DEFINER functions because an explicit search_path is not
+	    set.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-33204</cvename>
+      <url>https://nvd.nist.gov/vuln/detail/CVE-2021-33204</url>
+    </references>
+    <dates>
+      <discovery>2021-05-21</discovery>
+      <entry>2021-05-24</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="5fa90ee6-bc9e-11eb-a287-e0d55e2a8bf9">
+    <topic>texproc/expat2 -- billion laugh attack</topic>
+    <affects>
+      <package>
+	<name>expat</name>
+	<range><lt>2.4.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Kurt Seifried reports:</p>
+	<blockquote cite="https://blog.hartwork.org/posts/cve-2013-0340-billion-laughs-fixed-in-expat-2-4-0/">
+	  <p>So here are the CVE's for the two big ones, libxml2 and expat.
+	     Both are affected by the expansion of internal entities
+	     (which can be used to consume resources) and external entities
+	     (which can cause a denial of service against other services, be
+	     used to port scan, etc.).</p>
+	   <p>A billion laughs attack is a type of denial-of-service attack
+	     which is aimed at parsers of XML documents.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-0340</cvename>
+	<url>https://www.openwall.com/lists/oss-security/2013/02/22/3</url>
+	<url>https://blog.hartwork.org/posts/cve-2013-0340-billion-laughs-fixed-in-expat-2-4-0/</url>
+	<url>https://nvd.nist.gov/vuln/detail/CVE-2013-0340</url>
+    </references>
+    <dates>
+      <discovery>2013-02-21</discovery>
+      <entry>2021-05-24</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="524bd03a-bb75-11eb-bf35-080027f515ea">
+    <topic>libxml2 -- Possible denial of service</topic>
+    <affects>
+      <package>
+	<name>libxml2</name>
+	<range><lt>2.9.10_4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Daniel Veillard reports:</p>
+	<blockquote cite="https://ubuntu.com/security/CVE-2021-3541">
+	  <p>
+	    A flaw was found in libxml2. Exponential entity expansion attack
+	    its possible bypassing all existing protection mechanisms and
+	    leading to denial of service.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-3541</cvename>
+      <url>https://ubuntu.com/security/CVE-2021-3541</url>
+      <url>https://gitlab.gnome.org/GNOME/libxml2/-/commit/8598060bacada41a0eb09d95c97744ff4e428f8e</url>
+    </references>
+    <dates>
+      <discovery>2021-05-18</discovery>
+      <entry>2021-05-23</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="62da9702-b4cc-11eb-b9c9-6cc21735f730">
     <topic>PostgreSQL server -- two security issues</topic>
     <affects>
@@ -3014,97 +4001,7 @@ Notes:
 	<blockquote cite="https://chromereleases.googleblog.com/2021/03/stable-channel-update-for-desktop.html">
 	  <p>This release includes 47 security fixes, including the below.
 	  Google is aware of reports that an exploit for CVE-2021-21166 exists
-	  in the wild.</p>
-	  <ul>
-	    <li>[1171049] High CVE-2021-21159: Heap buffer overflow in
-	      TabStrip. Reported by Khalil Zhani on 2021-01-27</li>
-	    <li>[1170531] High CVE-2021-21160: Heap buffer overflow in
-	      WebAudio. Reported by Marcin 'Icewall' Noga of Cisco Talos on
-	      2021-01-25</li>
-	    <li>[1173702] High CVE-2021-21161: Heap buffer overflow in
-	      TabStrip. Reported by Khalil Zhani on 2021-02-02</li>
-	    <li>[1172054] High CVE-2021-21162: Use after free in WebRTC.
-	      Reported by Anonymous on 2021-01-29</li>
-	    <li>[1111239] High CVE-2021-21163: Insufficient data validation in
-	      Reader Mode. Reported by Alison Huffman, Microsoft Browser
-	      Vulnerability Research on 2020-07-30</li>
-	    <li>[1164846] High CVE-2021-21164: Insufficient data validation in
-	      Chrome for iOS. Reported by Muneaki Nishimura (nishimunea) on
-	      2021-01-11</li>
-	    <li>[1174582] High CVE-2021-21165: Object lifecycle issue in audio.
-	      Reported by Alison Huffman, Microsoft Browser Vulnerability
-	      Research on 2021-02-04</li>
-	    <li>[1177465] High CVE-2021-21166: Object lifecycle issue in audio.
-	      Reported by Alison Huffman, Microsoft Browser Vulnerability
-	      Research on 2021-02-11</li>
-	    <li>[1161144] Medium CVE-2021-21167: Use after free in bookmarks.
-	      Reported by Leecraso and Guang Gong of 360 Alpha Lab on
-	      2020-12-22</li>
-	    <li>[1152226] Medium CVE-2021-21168: Insufficient policy
-	      enforcement in appcache. Reported by Luan Herrera (@lbherrera_)
-	      on 2020-11-24</li>
-	    <li>[1166138] Medium CVE-2021-21169: Out of bounds memory access in
-	      V8. Reported by Bohan Liu (@P4nda20371774) and Moon Liang of
-	      Tencent Security Xuanwu Lab on 2021-01-13</li>
-	    <li>[1111646] Medium CVE-2021-21170: Incorrect security UI in
-	      Loader. Reported by David Erceg on 2020-07-31</li>
-	    <li>[1152894] Medium CVE-2021-21171: Incorrect security UI in
-	      TabStrip and Navigation. Reported by Irvan Kurniawan (sourc7) on
-	      2020-11-25</li>
-	    <li>[1150810] Medium CVE-2021-21172: Insufficient policy
-	      enforcement in File System API. Reported by Maciej Pulikowski on
-	      2020-11-19</li>
-	    <li>[1154250] Medium CVE-2021-21173: Side-channel information
-	      leakage in Network Internals. Reported by Tom Van Goethem from
-	      imec-DistriNet, KU Leuven on 2020-12-01</li>
-	    <li>[1158010] Medium CVE-2021-21174: Inappropriate implementation
-	      in Referrer. Reported by Ashish Gautam Kamble on 2020-12-11</li>
-	    <li>[1146651] Medium CVE-2021-21175: Inappropriate implementation
-	      in Site isolation. Reported by Jun Kokatsu, Microsoft Browser
-	      Vulnerability Research on 2020-11-07</li>
-	    <li>[1170584] Medium CVE-2021-21176: Inappropriate implementation
-	      in full screen mode. Reported by Luan Herrera (@lbherrera_) on
-	      2021-01-26</li>
-	    <li>[1173879] Medium CVE-2021-21177: Insufficient policy
-	      enforcement in Autofill. Reported by Abdulrahman Alqabandi,
-	      Microsoft Browser Vulnerability Research on 2021-02-03</li>
-	    <li>[1174186] Medium CVE-2021-21178: Inappropriate implementation
-	      in Compositing. Reported by Japong on 2021-02-03</li>
-	    <li>[1174943] Medium CVE-2021-21179: Use after free in Network
-	      Internals. Reported by Anonymous on 2021-02-05</li>
-	    <li>[1175507] Medium CVE-2021-21180: Use after free in tab search.
-	      Reported by Abdulrahman Alqabandi, Microsoft Browser
-	      Vulnerability Research on 2021-02-07</li>
-	    <li>[1177875] Medium CVE-2020-27844: Heap buffer overflow in
-	      OpenJPEG. Reported by Sean Campbell at Tableau on 2021-02-12</li>
-	    <li>[1182767] Medium CVE-2021-21181: Side-channel information
-	      leakage in autofill. Reported by Xu Lin (University of Illinois
-	      at Chicago), Panagiotis Ilia (University of Illinois at Chicago),
-	      Jason Polakis (University of Illinois at Chicago) on
-	      2021-02-26</li>
-	    <li>[1049265] Low CVE-2021-21182: Insufficient policy enforcement
-	      in navigations. Reported by Luan Herrera (@lbherrera_) on
-	      2020-02-05</li>
-	    <li>[1105875] Low CVE-2021-21183: Inappropriate implementation in
-	      performance APIs. Reported by Takashi Yoneuchi (@y0n3uchy) on
-	      2020-07-15</li>
-	    <li>[1131929] Low CVE-2021-21184: Inappropriate implementation in
-	      performance APIs. Reported by James Hartig on 2020-09-24</li>
-	    <li>[1100748] Low CVE-2021-21185: Insufficient policy enforcement
-	      in extensions. Reported by David Erceg on 2020-06-30</li>
-	    <li>[1153445] Low CVE-2021-21186: Insufficient policy enforcement
-	      in QR scanning. Reported by dhirajkumarnifty on 2020-11-28</li>
-	    <li>[1155516] Low CVE-2021-21187: Insufficient data validation in
-	      URL formatting. Reported by Kirtikumar Anandrao Ramchandani on
-	      2020-12-04</li>
-	    <li>[1161739] Low CVE-2021-21188: Use after free in Blink. Reported
-	      by Woojin Oh(@pwn_expoit) of STEALIEN on 2020-12-24</li>
-	    <li>[1165392] Low CVE-2021-21189: Insufficient policy enforcement
-	      in payments. Reported by Khalil Zhani on 2021-01-11</li>
-	    <li>[1166091] Low CVE-2021-21190: Uninitialized Use in PDFium.
-	      Reported by Zhou Aiting(@zhouat1) of Qihoo 360 Vulcan Team on
-	      2021-01-13</li>
-	  </ul>
+	  in the wild.  Please see URL for details.</p>
 	</blockquote>
       </body>
     </description>

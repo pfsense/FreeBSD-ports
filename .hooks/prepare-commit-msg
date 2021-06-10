@@ -26,6 +26,26 @@ merge)
 esac
 
 outfile=$(mktemp /tmp/freebsd-git-commit.XXXXXXXX)
+exec 3> "$outfile"
+
+if [ -z "$3" ]
+then
+  what=$(git diff-index --name-only --cached --diff-filter=ACMR HEAD|sed -Ee 's/^([^\/]+\/[^\/]+).*/\1/'|sort -u|xargs)
+
+  case $what in
+    *\ *)
+      # More than one port, do nothing
+      ;;
+    *)
+      # One port, prepare the commit message.
+      {
+	echo "# Uncomment and add a short description of why things changed."
+	echo "# $what: "
+	echo
+      } >&3
+      ;;
+esac
+fi
 
 # Create a commit message template from three parts:
 #
@@ -38,8 +58,9 @@ outfile=$(mktemp /tmp/freebsd-git-commit.XXXXXXXX)
 #    line to the end of the file) which lists files staged for commit, files
 #    not staged, and untracked files.
 
-cat >"$outfile" <<EOF
-$(awk '1;/^#$/{exit}' "$1")
+awk '1;/^#$/{exit}' "$1" >&3
+
+cat >&3 <<EOF
 # category/port: Subject goes here, max 50 cols -|
 # <then a blank line>
 #                                                         72 columns --|
@@ -65,7 +86,10 @@ $(awk '1;/^#$/{exit}' "$1")
 #
 # "Pull Request" and "Differential Revision" require the *full* GitHub or
 # Phabricator URL.
-$(awk '/^#$/,EOF' "$1")
 EOF
+
+awk '/^#$/,EOF' "$1" >&3
+
+exec 3>&-
 
 mv "$outfile" "$1"

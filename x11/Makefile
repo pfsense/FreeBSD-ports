@@ -133,6 +133,7 @@
     SUBDIR += kf5-kwayland
     SUBDIR += kf5-kwindowsystem
     SUBDIR += kf5-plasma-framework
+    SUBDIR += kitty
     SUBDIR += konsole
     SUBDIR += lavalauncher
     SUBDIR += lemonbar
@@ -234,6 +235,7 @@
     SUBDIR += mxascii
     SUBDIR += mxico
     SUBDIR += nezd
+    SUBDIR += nfy
     SUBDIR += numlockx
     SUBDIR += nvidia-driver
     SUBDIR += nvidia-driver-304
@@ -254,7 +256,6 @@
     SUBDIR += p5-XTerm-Conf
     SUBDIR += pcdm
     SUBDIR += perwindowlayoutd
-    SUBDIR += phosh
     SUBDIR += pipeglade
     SUBDIR += pixman
     SUBDIR += plank
@@ -273,6 +274,7 @@
     SUBDIR += polybar
     SUBDIR += printscreen
     SUBDIR += py-caffeine-ng
+    SUBDIR += py-i3-quickterm
     SUBDIR += py-i3ipc
     SUBDIR += py-pyscreenshot
     SUBDIR += py-python-xapp
@@ -295,6 +297,7 @@
     SUBDIR += roxterm
     SUBDIR += rsibreak
     SUBDIR += rubygem-gnome
+    SUBDIR += runner
     SUBDIR += rxvt-unicode
     SUBDIR += sakura
     SUBDIR += sbxkb
@@ -318,6 +321,7 @@
     SUBDIR += smproxy
     SUBDIR += sprop
     SUBDIR += squeekboard
+    SUBDIR += srandrd
     SUBDIR += sselp
     SUBDIR += stalonetray
     SUBDIR += startup-notification
