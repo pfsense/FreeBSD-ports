@@ -121,7 +121,7 @@ TPM_CONFIGURE_ON=		--enable-tpm
 TSS2_LIB_DEPENDS=		libtss2-sys.so:security/tpm2-tss
 TSS2_CONFIGURE_ON=		--enable-tss-tss2
 UNBOUND_LIB_DEPENDS=		libldns.so:dns/ldns \
-				libunbound.so:dns/unbound
+				libunbound.so:dns/unbound112
 UNBOUND_CONFIGURE_ON=		--enable-unbound
 UNITY_CONFIGURE_ON=		--enable-unity
 VIA_CONFIGURE_ON=		--enable-padlock
