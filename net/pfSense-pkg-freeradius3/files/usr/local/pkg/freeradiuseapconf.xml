@@ -85,7 +85,7 @@
 		<field>
 			<fielddescr>Disable Weak EAP Types</fielddescr>
 			<fieldname>vareapconfdisableweakeaptypes</fieldname>
-			<description>Disables weak EAP types: MD5, GTC and LEAP</description>
+			<description>Disables weak EAP types: MD5, and GTC</description>
 			<sethelp>
 				<![CDATA[
 				When enabled, only stronger EAP types like TLS, TTLS, PEAP, and MSCHAPv2 are allowed.<br/>
