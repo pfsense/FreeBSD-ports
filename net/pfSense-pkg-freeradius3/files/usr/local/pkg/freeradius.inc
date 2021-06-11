@@ -1190,12 +1190,10 @@ function freeradius_eapconf_resync($restart_svc = true) {
 	}
 	$eapconf = & $config['installedpackages']['freeradiuseapconf']['config'][0];
 
-	// Disable weak EAP types like MD5, GTC, LEAP
+	// Disable weak EAP types like MD5, and GTC
 	if ($eapconf['vareapconfdisableweakeaptypes'] == '') {
 		$vareapconfweakeaptypes = <<<EOD
 	md5 {
-	}
-	leap {
 	}
 	gtc {
 		#challenge = "Password: "
@@ -1205,7 +1203,7 @@ function freeradius_eapconf_resync($restart_svc = true) {
 EOD;
 
 	} else {
-		$vareapconfweakeaptypes = '### DISABLED WEAK EAP TYPES MD5, GTC, LEAP ###';
+		$vareapconfweakeaptypes = '### DISABLED WEAK EAP TYPES MD5, GTC ###';
 	}
 
 	// Variables: EAP
@@ -4348,7 +4346,7 @@ function freeradius_validate_eap($post, &$input_errors) {
 
 	// Disable Weak EAP Types sanity check
 	if ($post['vareapconfdisableweakeaptypes'] == 'on') {
-		if (in_array($post['vareapconfdefaulteaptype'], array('md5', 'gtc', 'leap'))) {
+		if (in_array($post['vareapconfdefaulteaptype'], array('md5', 'gtc'))) {
 			$input_errors[] = "The 'Default EAP Type' field must not contain any of the weak types when 'Disable Weak EAP Types' is enabled.";
 		}
 	}
