@@ -1,5 +1,5 @@
 PORTNAME=	pfSense-pkg-openvpn-client-import
-DISTVERSION=	0.3
+DISTVERSION=	0.4
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
