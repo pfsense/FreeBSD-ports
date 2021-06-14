@@ -336,4 +336,53 @@ function zabbix_proxy_certca($type) {
         return $c_arr;
 }
 
+function zabbix_proxy_plugin_certificates($pluginparams) {
+	global $config;
+	$result = array();
+	init_config_arr(array('installedpackages', 'zabbixproxylts', 'config'));
+	$zabbixconf = $config['installedpackages']['zabbixproxylts']['config'][0];
+
+	if (($pluginparams['type'] == 'certificates') && !empty($zabbixconf) && ($zabbixconf['agentenabled'] == 'on')) {
+		if (($pluginparams['event'] == 'used_ca') && ($zabbixconf['tlscaso'] != 'on') &&
+		    !empty($zabbixconf['tlscafile']) && ($zabbixconf['tlscafile'] != 'none')) {
+			$result['pkgname'] = "Zabbix Proxy";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $zabbixconf['tlscafile'];
+			$item['usedby'] = 'TLS CA';
+			$result['certificatelist'][$cert][] = $item;
+		}
+
+		if (($pluginparams['event'] == 'used_certificates') && !empty($zabbixconf['tlscertfile']) &&
+		    ($zabbixconf['tlscertfile'] != 'none') {
+			$result['pkgname'] = "Zabbix Proxy";
+			$result['certificatelist'] = array();
+		        if ($zabbixconf['tlsconnect'] == 'cert') {
+				$item = array();
+				$cert = $zabbixconf['tlscertfile'];
+				$item['usedby'] = 'TLS Proxy';
+				$result['certificatelist'][$cert][] = $item;
+			}
+		        if ($zabbixconf['tlsaccept'] == 'cert') {
+				$item = array();
+				$cert = $zabbixconf['tlscertfile'];
+				$item['usedby'] = 'TLS Proxy';
+				$result['certificatelist'][$cert][] = $item;
+			}
+		}
+
+		if (($pluginparams['event'] == 'used_crl') && !empty($zabbixconf['tlscrlfile']) &&
+		    ($zabbixconf['tlscrlfile'] != 'none')) {
+			$result['pkgname'] = "Zabbix Proxy";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $zabbixconf['tlscrlfile'];
+			$item['usedby'] = 'TLS CRL';
+			$result['certificatelist'][$cert][] = $item;
+		}
+	}
+
+	return $result;
+}
+
 ?>
