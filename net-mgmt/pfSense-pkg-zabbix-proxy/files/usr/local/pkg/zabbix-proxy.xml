@@ -290,6 +290,11 @@
 			<advancedfield/>
 		</field>
 	</fields>
+	<plugins>
+		<item>
+			<type>plugin_certificates</type>
+		</item>
+	</plugins>
 	<custom_php_install_command>
 		sync_package_zabbix_proxy();
 	</custom_php_install_command>
