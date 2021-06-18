@@ -140,9 +140,15 @@ if ($_POST['cancel']) {
 // Check for returned "selected alias" if action is import
 if ($_GET['act'] == "import") {
 	session_start();
+
+	// Initialize our SESSION array if necessary
+	if (!isset($_SESSION['http_inspect_import'])) {
+		$_SESSION['http_inspect_import'] = array();
+	}
+
+	// Grab the passed alias values and store them
 	if (($_GET['varname'] == "bind_to" || $_GET['varname'] == "ports") && !empty($_GET['varvalue'])) {
 		$pconfig[$_GET['varname']] = htmlspecialchars($_GET['varvalue']);
-		$_SESSION['http_inspect_import'] = array();
 		$_SESSION['http_inspect_import'][$_GET['varname']] = $_GET['varvalue'];
 		if (isset($_SESSION['http_inspect_import']['bind_to']))
 			$pconfig['bind_to'] = $_SESSION['http_inspect_import']['bind_to'];
