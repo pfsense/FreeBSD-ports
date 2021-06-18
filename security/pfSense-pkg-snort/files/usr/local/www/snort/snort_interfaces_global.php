@@ -50,6 +50,7 @@ else {
 	$pconfig['openappid_rules_detectors'] = $config['installedpackages']['snortglobal']['openappid_rules_detectors'] == "on" ? 'on' : 'off';
 	$pconfig['hide_deprecated_rules'] = $config['installedpackages']['snortglobal']['hide_deprecated_rules'] == "on" ? 'on' : 'off';
 	$pconfig['curl_no_verify_ssl_peer'] = $config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer'] == "on" ? 'on' : 'off';
+	$pconfig['enable_feodo_botnet_c2_rules'] = $config['installedpackages']['snortglobal']['enable_feodo_botnet_c2_rules'] == "on" ? 'on' : 'off';
 }
 
 /* Set sensible values for any empty default params */
@@ -91,6 +92,7 @@ if (!$input_errors) {
 		$config['installedpackages']['snortglobal']['snortcommunityrules'] = $_POST['snortcommunityrules'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['emergingthreats'] = $_POST['emergingthreats'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['emergingthreats_pro'] = $_POST['emergingthreats_pro'] ? 'on' : 'off';
+		$config['installedpackages']['snortglobal']['enable_feodo_botnet_c2_rules'] = $_POST['enable_feodo_botnet_c2_rules'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['clearblocks'] = $_POST['clearblocks'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['verbose_logging'] = $_POST['verbose_logging'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['openappid_detectors'] = $_POST['openappid_detectors'] ? 'on' : 'off';
@@ -115,6 +117,8 @@ if (!$input_errors) {
 			$disabled_rules[] = ET_PRO_FILE_PREFIX;
 		if ($config['installedpackages']['snortglobal']['openappid_rules_detectors'] == 'off')
 			$disabled_rules[] = OPENAPPID_FILE_PREFIX;
+		if ($config['installedpackages']['snortglobal']['enable_feodo_botnet_c2_rules'] == 'off')
+			$disabled_rules[] = "feodotracker";
 
 		// Now walk all the configured interface rulesets and remove
 		// any matching the disabled ruleset prefixes.
@@ -291,6 +295,21 @@ $group->setHelp('Note - the AppID Open Text Rules file is maintained by a volunt
 'The URL for the file ' . 'is <a href="' . SNORT_OPENAPPID_RULES_URL . SNORT_OPENAPPID_RULES_FILENAME . '" target="_blank">' . 
 SNORT_OPENAPPID_RULES_URL . SNORT_OPENAPPID_RULES_FILENAME . '</a>.');
 $section->add($group);
+$form->add($section);
+
+$section = new Form_Section('FEODO Tracker Botnet C2 IP Rules');
+$section->addInput(new Form_Checkbox(
+	'enable_feodo_botnet_c2_rules',
+	'Enable FEODO Tracker Botnet C2 IP Rules',
+	'Click to enable download of FEODO Tracker Botnet C2 IP rules',
+	$pconfig['enable_feodo_botnet_c2_rules'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_StaticText(
+	null,
+	'Feodo Tracker tracks certain families that are related to, or that evolved from, Feodo. Originally, Feodo was an ebanking Trojan used by cybercriminals to commit ebanking fraud. Since 2010, various malware families evolved from Feodo, such as Cridex, Dridex, Geodo, Heodo and Emotet.'
+));
+
 $form->add($section);
 
 $section = new Form_Section('Rules Update Settings');

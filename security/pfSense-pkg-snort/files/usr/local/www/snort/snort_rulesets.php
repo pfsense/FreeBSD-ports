@@ -66,6 +66,7 @@ $emergingdownload = $config['installedpackages']['snortglobal']['emergingthreats
 $etpro = $config['installedpackages']['snortglobal']['emergingthreats_pro'] == 'on' ? 'on' : 'off';
 $snortcommunitydownload = $config['installedpackages']['snortglobal']['snortcommunityrules'] == 'on' ? 'on' : 'off';
 $openappid_rulesdownload = $config['installedpackages']['snortglobal']['openappid_rules_detectors'] == 'on' ? 'on' : 'off';
+$feodotrackerdownload = $config['installedpackages']['snortglobal']['enable_feodo_botnet_c2_rules'] == 'on' ? 'on' : 'off';
 
 $no_emerging_files = false;
 $no_snort_files = false;
@@ -91,6 +92,8 @@ if (empty($test))
 	$no_openappid_files = true;
 if (!file_exists("{$snortdir}/rules/" . GPL_FILE_PREFIX . "community.rules"))
 	$no_community_files = true;
+if (!file_exists("{$snortdir}/rules/feodotracker.rules"))
+	$no_feodotracker_files = true;
 
 $inline_ips_mode = $a_nat[$id]['ips_mode'] == 'ips_mode_inline' ? true:false;
 
@@ -228,6 +231,11 @@ if (isset($_POST['selectall'])) {
 		foreach ($files as $file)
 			$enabled_rulesets_array[] = basename($file);
 	}
+
+	if ($feodotrackerdownload == 'on') {
+		$enabled_rulesets_array[] = "feodotracker.rules";
+	}
+
 	if ($openappid_rulesdownload == 'on') {
 		$files = glob("{$snortdir}/rules/" . OPENAPPID_FILE_PREFIX . "*.rules");
 		foreach ($files as $file)
@@ -504,6 +512,88 @@ if ($snortdownload == "on") {
 		</div>
 	<?php endif; ?>
 <!-- End of GPLv2 Community rules -->
+
+<!-- Process Feodo Tracker Rules if enabled -->
+	<?php if ($no_feodotracker_files)
+			$msg_feodotracker = gettext("NOTE: Feodo Tracker Botnet C2 IP Rules have not been downloaded.  Perform a Rules Update to enable them.");
+	      else
+			$msg_feodotracker = gettext("Feodo Tracker Botnet C2 IP Rules");
+		  $feodotracker_rules_file = gettext("feodotracker.rules");
+	?>
+	<?php if ($feodotrackerdownload == 'on'): ?>
+		<div class="table-responsive col-sm-12">
+			<table class="table table-striped table-hover table-condensed">
+				<thead>
+					<tr>
+						<th><?=gettext("Enable"); ?></th>
+						<th><?=gettext('Ruleset: FEODO Tracker Botnet C2 IP Rules'); ?></th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+			<?php if (isset($cat_mods[$feodotracker_rules_file])): ?>
+				<?php if ($cat_mods[$feodotracker_rules_file] == 'enabled') : ?>
+					<tr>
+						<td>
+							<i class="fa fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
+						</td>
+						<td colspan="5">
+							<?php if ($no_feodotracker_files): ?>
+								<?php echo gettext("{$msg_feodotracker}"); ?>
+							<?php else: ?>
+								<a href='snort_rules.php?id=<?=$id;?>&openruleset=<?=$feodotracker_rules_file;?>'><?=gettext('{$msg_feodotracker}');?></a>
+							<?php endif; ?>
+						</td>
+					</tr>
+				<?php else: ?>
+					<tr>
+						<td>
+							<i class="fa fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
+						</td>
+						<td colspan="5">
+							<?php if ($no_feodotracker_files): ?>
+								<?php echo gettext("{$msg_feodotracker}"); ?>
+							<?php else: ?>
+								<a href='snort_rules_edit.php?id=<?=$id;?>&openruleset=<?=$feodotracker_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=gettext("{$msg_feodotracker}"); ?></a>
+							<?php endif; ?>
+						</td>
+					</tr>
+				<?php endif; ?>
+			<?php elseif (in_array($feodotracker_rules_file, $enabled_rulesets_array)): ?>
+				<tr>
+					<td>
+						<input type="checkbox" name="toenable[]" value="<?=$feodotracker_rules_file;?>" checked="checked"/>
+					</td>
+					<td colspan="5">
+						<?php if ($no_feodotracker_files): ?>
+							<?php echo gettext("{$msg_feodotracker}"); ?>
+						<?php else: ?>
+							<a href='snort_rules.php?id=<?=$id;?>&openruleset=<?=$feodotracker_rules_file;?>'><?php echo gettext("{$msg_feodotracker}"); ?></a>
+						<?php endif; ?>
+					</td>
+				</tr>
+			<?php else: ?>
+				<tr>
+					<td>
+						<input type="checkbox" name="toenable[]" value="<?=$feodotracker_rules_file; ?>" />
+					</td>
+					<td colspan="5">
+						<?php if ($no_feodotracker_files): ?>
+							<?php echo gettext("{$msg_feodotracker}"); ?>
+						<?php else: ?>
+							<a href='snort_rules_edit.php?id=<?=$id;?>&openruleset=<?=$feodotracker_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=gettext("{$msg_feodotracker}"); ?></a>
+						<?php endif; ?>
+					</td>
+				</tr>
+			<?php endif; ?>
+				</tbody>
+			</table>
+		</div>
+	<?php endif; ?>
+<!-- End of Feodo Tracker rules -->
 
 <!-- Set strings for rules file state of "not enabled" or "not downloaded" -->
 			<?php if ($no_emerging_files && ($emergingdownload == 'on' || $etpro == 'on'))

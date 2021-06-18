@@ -44,6 +44,7 @@ $snortcommunityrules = $config['installedpackages']['snortglobal']['snortcommuni
 $vrt_enabled = $config['installedpackages']['snortglobal']['snortdownload'] == 'on' ? 'on' : 'off';
 $openappid_detectors = $config['installedpackages']['snortglobal']['openappid_detectors'] == 'on' ? 'on' : 'off';
 $openappid_rules_detectors = $config['installedpackages']['snortglobal']['openappid_rules_detectors'] == 'on' ? 'on' : 'off';
+$feodotracker_rules = $config['installedpackages']['snortglobal']['enable_feodo_botnet_c2_rules'] == 'on' ? 'on' : 'off';
 
 /* Working directory for downloaded rules tarballs and extraction */
 $tmpfname = "{$g['tmp_path']}/snort_rules_up";
@@ -105,6 +106,12 @@ $snort_openappid_rules_filename = SNORT_OPENAPPID_RULES_FILENAME;
 $snort_openappid_rules_filename_md5 = SNORT_OPENAPPID_RULES_FILENAME . ".md5";
 $snort_openappid_rules_url = SNORT_OPENAPPID_RULES_URL;
 
+/* Set up ABUSE.ch Feodo Tracker rules filename and URL */
+if ($feodotracker_rules == 'on') {
+	$feodotracker_rules_filename = FEODO_TRACKER_DNLD_FILENAME;
+	$feodotracker_rules_filename_md5 = FEODO_TRACKER_DNLD_FILENAME . ".md5";
+	$feodotracker_rules_url = FEODO_TRACKER_DNLD_URL;
+}
 
 function snort_update_status($msg) {
 	/************************************************/
@@ -495,6 +502,57 @@ if ($emergingthreats == 'on') {
 		$emergingthreats = 'off';
 }
 
+/*  Download any new ABUSE.ch Fedoo Tracker Rules sigs */
+if ($feodotracker_rules == 'on') {
+	// Grab the MD5 hash of our last successful download if available
+	if (file_exists("{$snortdir}/{$feodotracker_rules_filename}.md5")) {
+		$old_file_md5 = trim(file_get_contents("{$snortdir}/{$feodotracker_rules_filename}.md5"));
+	}
+	else {
+		$old_file_md5 = "0";
+	}
+
+	snort_update_status(gettext("Downloading Feodo Tracker Botnet C2 IP rules file..."));
+	error_log(gettext("\tDownloading Feodo Tracker Botnet C2 IP rules file...\n"), 3, SNORT_RULES_UPD_LOGFILE);
+	$rc = snort_download_file_url("{$feodotracker_rules_url}{$feodotracker_rules_filename}", "{$tmpfname}/{$feodotracker_rules_filename}");
+
+	// See if the download from the URL was successful
+	if ($rc === true) {
+		snort_update_status(gettext(" done.") . "\n");
+		syslog(LOG_NOTICE, "[Snort] Feodo Tracker Botnet C2 IP rules file update downloaded successfully.");
+		error_log(gettext("\tDone downloading rules file.\n"),3, SNORT_RULES_UPD_LOGFILE);
+
+		// See if file has changed from our previously downloaded version
+		if ($old_file_md5 == trim(md5_file("{$tmpfname}/{$feodotracker_rules_filename}"))) {
+			// File is unchanged from previous download, so no update required
+			snort_update_status(gettext("Feodo Tracker Botnet C2 IP rules are up to date.") . "\n");
+			syslog(LOG_NOTICE, gettext("[Snort] Feodo Tracker Botnet C2 IP rules are up to date..."));
+			error_log(gettext("\tFeodo Tracker Botnet C2 IP rules are up to date.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+			$feodotracker_rules = 'off';
+		}
+		else {
+			// Downloaded file is changed, so update our local MD5 hash and extract the new rules
+			file_put_contents("{$snortdir}/{$feodotracker_rules_filename}.md5", trim(md5_file("{$tmpfname}/{$feodotracker_rules_filename}")));
+			snort_update_status(gettext("Installing Feodo Tracker Botnet C2 IP rules..."));
+			error_log(gettext("\tExtracting and installing Feodo Tracker Botnet C2 IP rules...\n"), 3, SNORT_RULES_UPD_LOGFILE);
+			if(snort_untar("xzf", "{$tmpfname}/{$feodotracker_rules_filename}", "{$snortdir}/rules/")) {
+				snort_update_status(gettext("Feodo Tracker Botnet C2 IP rules were updated.") . "\n");
+				syslog(LOG_NOTICE, gettext("[Snort] Feodo Tracker Botnet C2 IP rules were updated..."));
+				error_log(gettext("\tFeodo Tracker Botnet C2 IP rules were updated.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+			}
+		}
+	}
+	else {
+		snort_update_status(gettext("Feodo Tracker Botnet C2 IP rules file download failed!") . "\n");
+		syslog(LOG_ERR, gettext("[Snort] ERROR: Feodo Tracker Botnet C2 IP rules file download failed... server returned error '{$rc}'."));
+		error_log(gettext("\tERROR: Feodo Tracker Botnet C2 IP rules file download failed.  Remote server returned error {$rc}.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+		error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SNORT_RULES_UPD_LOGFILE);
+		error_log(gettext("\tFeodo Tracker Botnet C2 IP rules will not be updated.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+		$update_errors = true;
+		$feodotracker_rules = 'off';
+	}
+}
+
 /* Untar Snort rules file to tmp and install the rules */
 if ($snortdownload == 'on') {
 	if (file_exists("{$tmpfname}/{$snort_filename}")) {
@@ -744,7 +802,7 @@ function snort_apply_customizations($snortcfg, $if_real) {
 	@copy("{$snortdir}/unicode.map", "{$snortdir}/snort_{$snortcfg['uuid']}_{$if_real}/unicode.map");
 }
 
-if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules == 'on') {
+if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules == 'on' || $openappid_rules_detectors == 'on' || $feodotracker_rules == 'on') {
 
 	error_log(gettext("\tCopying new config and map files...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 
