@@ -190,6 +190,7 @@ if (isset($_POST['mode'])) {
 		unlink_if_exists("{$snortdir}/{$snort_community_rules_filename}.md5");
 		unlink_if_exists("{$snortdir}/{$snort_rules_file}.md5");
 		unlink_if_exists("{$snortdir}/{$snort_openappid_filename}.md5");
+		unlink_if_exists("{$snortdir}/{$feodotracker_rules_filename}.md5");
 	}
 	
 	// Launch a background process to download the updates
