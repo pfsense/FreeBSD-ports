@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fcitx-skk
 PORTVERSION=	0.1.4
 PORTREVISION=	3

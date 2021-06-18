@@ -1,12 +1,11 @@
 # Created by: kmoore@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	octopkg
 PORTVERSION=	0.3.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	ports-mgmt
 
-MAINTAINER=	kmoore@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graphical front-end to the FreeBSD pkg-ng package manager
 
 LICENSE=	LGPL20

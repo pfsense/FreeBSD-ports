@@ -1,5 +1,4 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	pinball
 PORTVERSION=	0.3.20201218
@@ -35,6 +34,10 @@ OPTIONS_DEFINE=	DOCS
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/pinball/lib*.so*
+.for table in professor tux
+	(cd ${STAGEDIR}${SCOREDIR}/${PORTNAME}/${table} &&	\
+	${MV} highscores highscores.sample)
+.endfor
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

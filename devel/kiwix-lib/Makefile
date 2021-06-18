@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	kiwix-lib
 DISTVERSION=	9.4.1
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	me@int19h.org

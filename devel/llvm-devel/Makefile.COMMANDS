@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 LLVM_COMMANDS=	\
 		bugpoint \
 		dsymutil \
@@ -39,8 +37,10 @@ LLVM_COMMANDS=	\
 		llvm-objcopy \
 		llvm-objdump \
 		llvm-opt-report \
+		llvm-otool \
 		llvm-pdbutil \
 		llvm-profdata \
+		llvm-profgen \
 		llvm-ranlib \
 		llvm-rc \
 		llvm-readelf \
@@ -55,6 +55,7 @@ LLVM_COMMANDS=	\
 		llvm-symbolizer \
 		llvm-tblgen \
 		llvm-undname \
+		llvm-windres \
 		llvm-xray \
 		opt \
 		sancov \
@@ -94,7 +95,9 @@ EXTRAS_COMMANDS= \
 FLANG_COMMANDS=	\
 		f18 \
 		f18-parse-demo \
+		fir-opt \
 		flang \
+		flang-new \
 		tco
 
 LIT_COMMANDS=	\
@@ -105,6 +108,8 @@ LIT_COMMANDS=	\
 LLD_COMMANDS=	\
 		ld.lld \
 		ld64.lld \
+		ld64.lld.darwinnew \
+		ld64.lld.darwinold \
 		lld \
 		lld-link \
 		wasm-ld
@@ -119,6 +124,7 @@ LLDB_COMMANDS=	\
 MLIR_COMMANDS=	\
 		mlir-cpu-runner \
 		mlir-linalg-ods-gen \
+		mlir-lsp-server \
 		mlir-opt \
 		mlir-reduce \
 		mlir-tblgen \

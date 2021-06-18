@@ -1,5 +1,4 @@
 # Created by: Jason Harris <jharris@widomaker.com>
-# $FreeBSD$
 
 PORTNAME=	units
 PORTVERSION=	2.16
@@ -20,7 +19,7 @@ INFO=		units
 
 OPTIONS_DEFINE=		READLINE
 OPTIONS_DEFAULT=	READLINE
-READLINE_USES=	readline:port
+READLINE_USES=	readline
 
 post-patch:
 	@${REINPLACE_CMD} -e \

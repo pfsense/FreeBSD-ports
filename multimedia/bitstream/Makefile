@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	bitstream
 PORTVERSION=	1.5
 CATEGORIES=	multimedia

@@ -1,8 +1,7 @@
 # Created by: Hugo Saro <hugo@barafranca.com>
-# $FreeBSD$
 
 PORTNAME=	haproxy
-DISTVERSION=	2.1.10
+DISTVERSION=	2.1.12
 CATEGORIES=	net www
 PKGNAMESUFFIX=	21
 MASTER_SITES=	http://www.haproxy.org/download/2.1/src/

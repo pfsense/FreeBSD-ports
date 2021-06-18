@@ -1,5 +1,4 @@
 # Created by: Patrick Li <pat@databits.net>
-# $FreeBSD$
 
 PORTNAME=	wmScoreBoard
 PORTVERSION=	0.30
@@ -12,6 +11,9 @@ COMMENT=	Window Maker dockapp that display game scores from excite
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/../COPYING
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: DisplayDepth
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: DisplayDepth
 
 RUN_DEPENDS=	wget:ftp/wget
 

@@ -1,11 +1,11 @@
---- poller-wrapper.py.orig	2020-07-20 20:50:23 UTC
+--- poller-wrapper.py.orig	2021-01-14 02:21:36 UTC
 +++ poller-wrapper.py
-@@ -27,6 +27,8 @@
+@@ -44,6 +44,8 @@ except ImportError as exc:
+     print('ERROR: %s' % exc)
+     sys.exit(2)
  
- import LibreNMS.library as LNMS
- 
-+os.environ['PATH'] += ':/usr/local/sbin:/usr/local/bin'
++os.environ['PATH'] += ':%%LOCALBASE%%/sbin:%%LOCALBASE%%/bin'
 +
- try:
  
-     import json
+ APP_NAME = "poller_wrapper"
+ LOG_FILE = "logs/" + APP_NAME + ".log"

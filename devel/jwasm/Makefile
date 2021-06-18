@@ -1,9 +1,7 @@
 # Created by: Pedro F. Giffuni
-# $FreeBSD$
 
 PORTNAME=	jwasm
-PORTVERSION=	2.13
-PORTREVISION=	1
+PORTVERSION=	2.14
 PORTEPOCH=	1
 CATEGORIES=	devel
 
@@ -20,7 +18,7 @@ USES=		alias dos2unix gmake
 USE_GITHUB=     yes
 GH_ACCOUNT=	Baron-von-Riedesel
 GH_PROJECT=	JWasm
-GH_TAGNAME=	95ed609
+GH_TAGNAME=	f0a2fdd
 
 OPTIONS_DEFINE=	DOCS
 

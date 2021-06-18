@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	azure-mgmt-databoxedge
 DISTVERSION=	0.2.0
 CATEGORIES=	devel python

@@ -1,9 +1,7 @@
 #!/bin/sh
 
-# $FreeBSD$
-#
 # PROVIDE: slim
-# REQUIRE: LOGIN dbus hald
+# REQUIRE: LOGIN dbus
 # KEYWORD: shutdown
 #
 # Add the following line to /etc/rc.conf to enable slim:

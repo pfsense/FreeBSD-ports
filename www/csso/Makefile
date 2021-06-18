@@ -1,10 +1,9 @@
 # Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	csso
 PORTVERSION=	1.3.9
 DISTVERSIONPREFIX=	v
-#PORTREVISION=	0
+PORTREVISION=	0
 CATEGORIES=	www
 MASTER_SITES=	http://nivit.altervista.org/FreeBSD/ports/distfiles/
 

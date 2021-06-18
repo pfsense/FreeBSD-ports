@@ -1,8 +1,8 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	gmp-ecm
 DISTVERSION=	7.0.4
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	https://gforge.inria.fr/frs/download.php/file/36224/
 DISTNAME=	ecm-${DISTVERSION}
@@ -16,8 +16,6 @@ LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
 LICENSE_FILE_LGPL21+ =	${WRKSRC}/COPYING.LIB
 
 LIB_DEPENDS=	libgmp.so:math/gmp
-
-CONFLICTS=	ecm-[0-9]*
 
 USES=		gmake libtool
 GNU_CONFIGURE=	yes

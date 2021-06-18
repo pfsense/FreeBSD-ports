@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ipad_charge
 PORTVERSION=	2.0.1
 CATEGORIES=	sysutils

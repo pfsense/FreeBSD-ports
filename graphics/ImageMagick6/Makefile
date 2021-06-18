@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	ImageMagick
-DISTVERSION=	6.9.11-6
-PORTREVISION=	2
+DISTVERSION=	6.9.12-12
 PORTEPOCH=	1
 CATEGORIES=	graphics perl5
 MASTER_SITES=	https://www.imagemagick.org/download/ \
@@ -35,7 +32,8 @@ COMMENT=	Image processing tools (legacy version)
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libltdl.so:devel/libltdl
+LIB_DEPENDS=	libltdl.so:devel/libltdl	\
+		libavutil.so:multimedia/ffmpeg
 
 TESTS_DEPENDS=	gsfonts>=0:print/gsfonts
 
@@ -247,8 +245,8 @@ CONFIGURE_ARGS+=	--with-windows-font-dir=${WITH_WINDOWS_FONT_DIR}
 . if ${_IMAGEMAGICK_THREADS} == "no"
 IGNORE=OpenEXR requires threads. ${_IMAGEMAGICK_THREADS_IGNORE_MSG}
 . else
-LIB_DEPENDS+=		libIlmImf.so:graphics/openexr \
-			libImath.so:graphics/ilmbase
+LIB_DEPENDS+=		libOpenEXR.so:graphics/openexr \
+			libImath.so:math/Imath
 PLIST_SUB+=		OPENEXR=""
 . endif
 .else

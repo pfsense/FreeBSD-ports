@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	GxSwitchlessWah
 DISTVERSION=	g20171206
 CATEGORIES=	audio

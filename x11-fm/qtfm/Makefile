@@ -1,9 +1,7 @@
 # Created by: Zhihao Yuan <lichray@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	qtfm
-PORTVERSION=	6.2.0
-PORTREVISION=	1
+PORTVERSION=	6.2.1
 CATEGORIES=	x11-fm
 
 MAINTAINER=	jgh@FreeBSD.org

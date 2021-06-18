@@ -1,12 +1,11 @@
 # Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fDOMDocument
 PORTVERSION=	1.6.6
 CATEGORIES=	devel www pear
 PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}TheSeer_
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Extension to PHP standard DOM
 
 LICENSE=	BSD3CLAUSE

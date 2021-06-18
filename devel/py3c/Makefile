@@ -1,8 +1,7 @@
 # Created by: lev@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	py3c
-PORTVERSION=	1.0
+PORTVERSION=	1.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 

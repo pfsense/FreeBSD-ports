@@ -1,8 +1,7 @@
 # Created by: nork@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	Crypt-OpenSSL-DSA
-PORTVERSION=	0.19
+PORTVERSION=	0.20
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -15,7 +14,8 @@ LICENSE_COMB=	dual
 
 USES=		perl5 ssl
 USE_PERL5=	configure
-MAKE_ARGS+=	PASTHRU_INC=-I${OPENSSLINC}
+
+MAKE_ARGS=	PASTHRU_INC=-I${OPENSSLINC}
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Crypt/OpenSSL/DSA/DSA.so

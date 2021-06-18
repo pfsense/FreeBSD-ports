@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	RenderListPlugin
 SVNREV=		16417
 

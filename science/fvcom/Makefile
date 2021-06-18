@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fvcom
 PORTVERSION=	2.7.1
 PORTREVISION?=	16
@@ -11,6 +9,12 @@ DIST_SUBDIR=	fvcom
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Unstructured Grid Finite Volume Coastal Ocean Model
 
+# Converted from RESTRICTED
+LICENSE=	fvcom
+LICENSE_NAME=	fvcom
+LICENSE_TEXT=	Requires (free) registration
+LICENSE_PERMS=	auto-accept
+
 # Check netcdf lib for Fortran support!
 LIB_DEPENDS+=	libnetcdff.so:science/netcdf-fortran \
 		liblapack.so:math/lapack \
@@ -21,8 +25,6 @@ USE_GCC=	yes
 WRKSRC=		${WRKDIR}/FVCOM2.7.1/FVCOM_source
 
 PLIST_FILES=	${MPIPREFIX}bin/${PORTNAME}${PKGNAMESUFFIX}
-
-RESTRICTED=	Requires (free) registration
 
 .include <bsd.port.pre.mk>
 

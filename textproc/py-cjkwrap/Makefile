@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cjkwrap
 DISTVERSION=	2.2
 CATEGORIES=	textproc python

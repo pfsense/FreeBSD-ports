@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bsd-plotutils
 DISTVERSION=	1.4.2
 PORTREVISION=	2

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Plack-Middleware-File-Sass
 PORTVERSION=	0.03
 PORTREVISION=	1

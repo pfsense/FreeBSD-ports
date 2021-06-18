@@ -1,8 +1,7 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	IO-AIO
-PORTVERSION=	4.73
+PORTVERSION=	4.75
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

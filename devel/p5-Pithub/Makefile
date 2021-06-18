@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Pithub
-PORTVERSION=	0.01035
+PORTVERSION=	0.01036
 CATEGORIES=	devel
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:OALDERS

@@ -1,9 +1,8 @@
 # Created by: Dirk Froemberg <dirk@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	snort
-PORTVERSION=	2.9.17
-PORTREVISION=	1
+PORTVERSION=	2.9.17.1
+PORTREVISION=	0
 CATEGORIES=	security
 MASTER_SITES=	https://snort.org/downloads/snort/
 PATCH_DIST_STRIP=	-p1

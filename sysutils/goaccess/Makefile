@@ -1,8 +1,7 @@
 # Created by: Sofian Brabez <sbrabez@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	goaccess
-PORTVERSION=	1.4.2
+PORTVERSION=	1.4.6
 CATEGORIES=	sysutils
 MASTER_SITES=	http://tar.goaccess.io/
 

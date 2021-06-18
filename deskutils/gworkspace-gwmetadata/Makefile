@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	gworkspace
 PORTVERSION=	0.9.4
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	deskutils gnustep
 #MASTER_SITES=	http://www.gnustep.it/enrico/gworkspace/
 MASTER_SITES=	GNUSTEP/usr-apps

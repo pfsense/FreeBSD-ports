@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Plack-Middleware-Deflater
 PORTVERSION=	0.12
 PORTREVISION=	1

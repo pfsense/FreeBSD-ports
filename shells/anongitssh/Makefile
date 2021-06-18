@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	anongitssh
 PORTVERSION=	0.2
 DISTVERSIONPREFIX=	v

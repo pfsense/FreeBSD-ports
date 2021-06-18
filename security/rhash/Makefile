@@ -1,8 +1,7 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rhash
-PORTVERSION=	1.4.0
+PORTVERSION=	1.4.1
 CATEGORIES=	security
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src

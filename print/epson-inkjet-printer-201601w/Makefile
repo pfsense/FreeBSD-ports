@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	epson-inkjet-printer-201601w
 PORTVERSION=	1.0.0
 CATEGORIES=	print
@@ -11,6 +9,7 @@ DISTFILES_i386=	${DISTNAME}-1lsb3.2.i486.rpm:i386
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CUPS filter for Seiko Epson Color Ink Jet Printers
 
+# License does not allow redistribution
 LICENSE=		EPSON LGPL21
 LICENSE_COMB=		multi
 LICENSE_NAME_EPSON=	SEIKO EPSON CORPORATION SOFTWARE LICENSE AGREEMENT
@@ -19,8 +18,6 @@ LICENSE_FILE_LGPL21=	${WRKSRC}/opt/${PORTNAME}/doc/COPYING.LIB
 LICENSE_PERMS_EPSON=	none
 
 RUN_DEPENDS=	${LOCALBASE}/libexec/cups/filter/gstoraster:print/cups-filters
-
-RESTRICTED=	License does not allow redistribution
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes

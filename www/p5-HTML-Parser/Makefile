@@ -1,8 +1,7 @@
 # Created by: Vanilla I. Shu <vanilla@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	HTML-Parser
-PORTVERSION=	3.75
+PORTVERSION=	3.76
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

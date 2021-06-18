@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	signon-kwallet-extension
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	sysutils kde kde-applications
@@ -16,7 +14,5 @@ USE_QT=		core dbus gui \
 USE_LDCONFIG=	${KDE_PREFIX}/${SE_DIR}
 PLIST_FILES=	${SE_DIR}/libkeyring-kwallet.so
 SE_DIR=		lib/signon/extensions
-
-OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	bareos
 DISTVERSIONPREFIX=	Release/
 DISTVERSION=	19.2.9
-PORTREVISION?=	0
+PORTREVISION?=	2
 CATEGORIES?=	sysutils
 PKGNAMEPREFIX?=	#
 PKGNAMESUFFIX?=	19-server
@@ -19,7 +17,7 @@ CONFLICTS?=	bacula18*-server bacula17*-server-*
 LIB_DEPENDS+=	liblzo2.so:archivers/lzo2 \
 		libjansson.so:devel/jansson
 
-USES+=		cmake compiler:c++11-lang localbase perl5 pkgconfig readline:port \
+USES+=		cmake compiler:c++11-lang localbase perl5 pkgconfig readline \
 		shebangfix
 USE_GITHUB=	yes
 USE_PERL5=	run

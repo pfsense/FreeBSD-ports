@@ -1,5 +1,4 @@
 # Created by: Alexander Nusov <alexander.nusov@nfvexpress.com>
-# $FreeBSD$
 
 PORTNAME=	django-babel
 PORTVERSION=	0.6.2
@@ -24,7 +23,7 @@ NO_ARCH=	yes
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
-DOCS_BUILD_DEPENDS=	${PY_SPHINX}
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
 DOCS_VARS=		PYDISTUTILS_BUILD_TARGET+="build_sphinx -a -E"
 
 post-install-DOCS-on:

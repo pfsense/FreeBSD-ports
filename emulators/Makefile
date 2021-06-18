@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Emulators for other operating systems
 
     SUBDIR += adamem
@@ -10,13 +7,13 @@
     SUBDIR += almostti
     SUBDIR += anese
     SUBDIR += aqemu
+    SUBDIR += aranym
     SUBDIR += atari800
     SUBDIR += bfe
     SUBDIR += bochs
     SUBDIR += bsvc
     SUBDIR += cannonball
     SUBDIR += cemu
-    SUBDIR += cinc
     SUBDIR += cingb
     SUBDIR += citra
     SUBDIR += citra-qt5
@@ -28,9 +25,7 @@
     SUBDIR += dolphin-emu
     SUBDIR += dosbox
     SUBDIR += dosbox-staging
-    SUBDIR += dtcyber
     SUBDIR += dynamips-community
-    SUBDIR += e-uae
     SUBDIR += edumips64
     SUBDIR += elliott-803
     SUBDIR += emu64
@@ -51,6 +46,7 @@
     SUBDIR += hercules
     SUBDIR += higan
     SUBDIR += hugo
+    SUBDIR += hv_kvp_cmd
     SUBDIR += i386-wine
     SUBDIR += i386-wine-devel
     SUBDIR += ines
@@ -70,6 +66,7 @@
     SUBDIR += linux-power9-functional-sim
     SUBDIR += linux_base-c7
     SUBDIR += lisaem
+    SUBDIR += magia
     SUBDIR += mame
     SUBDIR += mastergear
     SUBDIR += mednafen
@@ -97,7 +94,6 @@
     SUBDIR += o2em
     SUBDIR += ods2reader
     SUBDIR += open-vm-tools
-    SUBDIR += open-vm-tools-nox11
     SUBDIR += openmsx
     SUBDIR += p5-Acme-6502
     SUBDIR += parallels-tools
@@ -111,6 +107,7 @@
     SUBDIR += qemu
     SUBDIR += qemu-cheri
     SUBDIR += qemu-devel
+    SUBDIR += qemu-guest-agent
     SUBDIR += qemu-powernv
     SUBDIR += qemu-user-static
     SUBDIR += qemu-user-static-devel
@@ -125,6 +122,7 @@
     SUBDIR += rpcs3
     SUBDIR += rtc
     SUBDIR += rubygem-fission
+    SUBDIR += sameboy
     SUBDIR += simh
     SUBDIR += simh-hp2100
     SUBDIR += simh-hp3000
@@ -152,9 +150,14 @@
     SUBDIR += vice
     SUBDIR += virtualbox-ose
     SUBDIR += virtualbox-ose-additions
+    SUBDIR += virtualbox-ose-additions-legacy
     SUBDIR += virtualbox-ose-additions-nox11
+    SUBDIR += virtualbox-ose-additions-nox11-legacy
     SUBDIR += virtualbox-ose-kmod
+    SUBDIR += virtualbox-ose-kmod-legacy
+    SUBDIR += virtualbox-ose-legacy
     SUBDIR += virtualbox-ose-nox11
+    SUBDIR += virtualbox-ose-nox11-legacy
     SUBDIR += visualboyadvance-m
     SUBDIR += vmips
     SUBDIR += vmsbackup
@@ -179,8 +182,10 @@
     SUBDIR += xhomer
     SUBDIR += xsystem35
     SUBDIR += xzx
+    SUBDIR += yaze-ag
     SUBDIR += yuzu
     SUBDIR += yuzu-qt5
+    SUBDIR += z80pack
     SUBDIR += zsnes
 
 .include <bsd.port.subdir.mk>

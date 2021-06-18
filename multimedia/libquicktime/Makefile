@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	libquicktime
 PORTVERSION=	1.2.4
@@ -64,7 +63,7 @@ CONFIGURE_ARGS+=	--without-alsa
 
 .if ${PORT_OPTIONS:MOPENGL}
 USES+=		gl
-USE_GL=		yes
+USE_GL=		gl
 CONFIGURE_ARGS+=	--with-opengl
 .else
 CONFIGURE_ARGS+=	--without-opengl

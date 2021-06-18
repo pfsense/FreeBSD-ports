@@ -1,10 +1,9 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	zeronet
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.7.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security net-p2p
 
 MAINTAINER=	yuri@FreeBSD.org

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fswiki
 PORTVERSION=	3.6.2
 PORTREVISION=	2

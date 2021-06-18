@@ -1,5 +1,4 @@
 # Created by: MANTANI Nobutaka <nobutaka@FreeBSD.org>
-# $FreeBSD$
 
 .if defined(WITHOUT_X11)
 PKGNAMESUFFIX=	-m17nlib-nox11
@@ -23,8 +22,6 @@ PKGDIR=		${.CURDIR}
 CONFIGURE_ARGS=	--with-m17nlib
 
 UIM_SLAVE=	yes
-
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-uim_Makefile.in
 
 do-build:
 	(cd ${WRKSRC}/uim && ${MAKE_CMD} libuim-m17nlib.la)

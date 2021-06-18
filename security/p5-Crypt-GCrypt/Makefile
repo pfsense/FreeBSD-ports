@@ -1,5 +1,4 @@
 # Created by: TAKAHASHI Kaoru <kaoru@kaisei.org>
-# $FreeBSD$
 
 PORTNAME=	Crypt-GCrypt
 PORTVERSION=	1.26
@@ -16,8 +15,8 @@ LICENSE_COMB=	dual
 
 LIB_DEPENDS=	libgcrypt.so:security/libgcrypt
 
-USE_PERL5=	configure
 USES=		localbase perl5
+USE_PERL5=	configure
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Crypt/GCrypt/GCrypt.so

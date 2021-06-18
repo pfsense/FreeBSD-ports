@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libktorrent
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	net-p2p kde kde-applications

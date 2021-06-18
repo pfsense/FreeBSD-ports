@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	freeblocks
 PORTVERSION=	0.5
 DISTVERSIONPREFIX=	v

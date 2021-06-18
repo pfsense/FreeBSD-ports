@@ -1,4 +1,4 @@
---- base/threading/platform_thread_internal_posix.h.orig	2020-11-16 17:28:09 UTC
+--- base/threading/platform_thread_internal_posix.h.orig	2021-04-14 18:40:48 UTC
 +++ base/threading/platform_thread_internal_posix.h
 @@ -47,13 +47,13 @@ bool SetCurrentThreadPriorityForPlatform(ThreadPriorit
  // of CanIncreaseThreadPriority().

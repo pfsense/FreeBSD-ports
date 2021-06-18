@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ebook2cwgui
 PORTVERSION=	0.1.2
 PORTREVISION=	4

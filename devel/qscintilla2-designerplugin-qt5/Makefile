@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	designerplugin-qt5
 PORTVERSION=	${QSCI2_VERSION}
 CATEGORIES=	devel
@@ -18,7 +16,7 @@ USE_GL=		gl
 USE_QT=		core designer printsupport gui widgets xml \
 		buildtools_build qmake_build
 
-WRKSRC=		${WRKDIR}/${DISTNAME}/designer-Qt4Qt5
+WRKSRC=		${WRKDIR}/${DISTNAME}/designer
 
 PLIST_FILES=	%%QT_PLUGINDIR%%/designer/libqscintillaplugin.so
 

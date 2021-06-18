@@ -1,10 +1,9 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	cimg
 DISTVERSIONPREFIX=	v.
-DISTVERSION=	2.9.4
-PORTREVISION=	1
+DISTVERSION=	2.9.7
+PORTREVISION=	3
 PORTEPOCH=	3
 CATEGORIES=	graphics devel
 
@@ -45,18 +44,18 @@ USES+=		blaslapack
 .endif
 
 REINPLACE_ARGS=	-i ""
-LIB_DEPENDS+=	libboard.so:graphics/libboard
+#LIB_DEPENDS+=	libboard.so:graphics/libboard
 
 . if !defined(WITH_DEBUG)
 LIB_DEPENDS+=	libcurl.so:ftp/curl			\
 		libpng.so:graphics/png			\
 		libtiff.so:graphics/tiff		\
-		libHalf.so:graphics/ilmbase		\
-		libIlmImf.so:graphics/openexr		\
+		libImath.so:math/Imath			\
+		libheif.so:graphics/libheif		\
+		libOpenEXR.so:graphics/openexr		\
 		libgimp-2.0.so:graphics/gimp-app	\
 		libfftw3.so:math/fftw3			\
-		libopencv_video.so:graphics/opencv	\
-		libopencv_core.so:graphics/opencv-core	\
+		libopencv_core.so:graphics/opencv	\
 		libGraphicsMagick.so:graphics/GraphicsMagick
 USES+=		jpeg
 ALL_TARGET=	Mlinux
@@ -85,6 +84,7 @@ USE_XORG+=	xext
 . endif
 
 DOCBASE=	README.txt
+CFLAGS+=	-I${LOCALBASE}/include/Imath -I${LOCALBASE}/include/OpenEXR
 MAKE_ARGS+=	CPPFLAGS="${CFLAGS}" FREEBSD_LDFLAGS="${LDFLAGS}"
 PROGS=		CImg_demo captcha curve_editor2d dtmri_view3d			\
 	edge_explorer2d fade_images gaussian_fit1d generate_loop_macros		\

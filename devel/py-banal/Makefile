@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	banal
 DISTVERSION=	1.0.1
 CATEGORIES=	devel python

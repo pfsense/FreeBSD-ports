@@ -1,4 +1,4 @@
---- chrome/browser/memory_details.cc.orig	2020-11-13 06:36:37 UTC
+--- chrome/browser/memory_details.cc.orig	2021-04-14 18:40:53 UTC
 +++ chrome/browser/memory_details.cc
 @@ -38,7 +38,7 @@
  #include "services/resource_coordinator/public/cpp/memory_instrumentation/memory_instrumentation.h"

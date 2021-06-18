@@ -1,5 +1,4 @@
 # Created by: Nemo Liu <nemoliu@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	geronimo
 DISTVERSION=	3.0-beta-1
@@ -45,7 +44,6 @@ GERONIMO_USER?=	www
 GERONIMO_GROUP?=www
 GERONIMO_OUT=	${LOG_DIR}/geronimo.out
 PID_FILE=	/var/run/${APP_SHORTNAME}.pid
-WRKDIR?=	${WRKDIRPREFIX}${.CURDIR}/${_WRKDIR}
 WRKSRC=		${WRKDIR}/${DISTNAME:S/-bin//}
 JAR_FILE=	bin/server.jar
 PLIST_FILES=	"@(${GERONIMO_USER},${GERONIMO_GROUP},) ${GERONIMO_OUT:S,^${PREFIX}/,,}"

@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Geo-Address-Formatter
-PORTVERSION=	1.85
+PORTVERSION=	1.88
 CATEGORIES=	misc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

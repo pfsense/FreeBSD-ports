@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Plack-Middleware-ServerStatus-Lite
 PORTVERSION=	0.34
 PORTREVISION=	2

@@ -1,8 +1,7 @@
 # Created by: Jov amutu@amutu.com
-# $FreeBSD$
 
 PORTNAME=	pgFormatter
-PORTVERSION=	4.4
+PORTVERSION=	5.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 

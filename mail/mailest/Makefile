@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	mailest
 PORTVERSION=	0.9.24
 DISTVERSIONPREFIX=	${PORTNAME}-
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	mail
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
@@ -26,6 +24,9 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	yasuoka
 
 MAKE_ENV=	USE_BSDMAKE=true WITH_INSTALL_AS_USER=true
+
+# XXX Static libraries with PIE are currently unsupported
+MAKE_ENV+=	WITHOUT_PIE=true
 
 LICENSE_BSD2CLAUSE_SRC=	bytebuf.c replace/sys/tree.h
 LICENSE_BSD3CLAUSE_SRC=	replace/sys/queue.h

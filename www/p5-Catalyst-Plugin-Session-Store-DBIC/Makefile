@@ -1,5 +1,4 @@
 # Created by: Fernan Aguero <fernan@iib.unsam.edu.ar>
-# $FreeBSD$
 
 PORTNAME=	Catalyst-Plugin-Session-Store-DBIC
 PORTVERSION=	0.14
@@ -8,7 +7,7 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Store your sessions via DBIx::Class
 
 LICENSE=	ART10 GPLv1+

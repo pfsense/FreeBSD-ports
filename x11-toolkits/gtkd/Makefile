@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gtkd
 PORTVERSION=	3.9.0
 CATEGORIES=	x11-toolkits

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kmenuedit
 DISTVERSION=	${KDE_PLASMA_VERSION}
 CATEGORIES=	sysutils kde kde-plasma

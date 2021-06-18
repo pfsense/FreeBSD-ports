@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTREVISION=	1
 PKGNAMEPREFIX=	amd64-
 

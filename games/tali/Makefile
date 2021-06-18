@@ -1,8 +1,7 @@
 # Created by: FreeBSD GNOME Team <gnome@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	tali
-PORTVERSION=	3.38.2
+PORTVERSION=	3.38.3
 CATEGORIES=	games gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dcw-gmt
 DISTVERSION=	1.1.4
 CATEGORIES=	graphics

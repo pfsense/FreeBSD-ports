@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	python-louvain
 DISTVERSION=	0.15
 CATEGORIES=	math python

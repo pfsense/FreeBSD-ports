@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jitsi
 DISTVERSION=	2.1-183
 PORTREVISION=	3
@@ -14,7 +12,7 @@ LICENSE=	APACHE20
 BUILD_DEPENDS=	${LOCALBASE}/share/java/maven/bin/mvn:devel/maven
 RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash
 
-ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS=	i386 amd64 powerpc64 powerpc64le
 
 USE_GITHUB=     yes
 GH_PROJECT=     ${PORTNAME}${PKGNAMESUFFIX}

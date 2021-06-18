@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	multimon-ng
 PORTVERSION=	1.1.0
 CATEGORIES=	comms hamradio

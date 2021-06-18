@@ -1,11 +1,8 @@
 # Created by: MANTANI Nobutaka <nobutaka@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	uim
-PORTVERSION=	1.8.8
-PORTREVISION?=	2
+PORTVERSION=	1.8.9.b.20210104
 CATEGORIES?=	textproc
-MASTER_SITES=	https://github.com/uim/uim/releases/download/${PORTVERSION}/
 .if !defined(UIM_SLAVE) && defined(WITHOUT_X11)
 PKGNAMESUFFIX=	-nox11
 .endif
@@ -17,11 +14,19 @@ LICENSE=	BSD3CLAUSE GPLv2+ GPLv3+ LGPL21+ PD
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES+=		gettext gmake gnome iconv libedit libtool pathfix pkgconfig perl5 sqlite tar:bzip2
+BROKEN_riscv64=		fails to configure: ./include/private/gcconfig.h:492:5: The collector has not been ported to this machine/OS combination
+
+USES+=		autoreconf:build gettext gmake gnome iconv libedit libtool pathfix pkgconfig sqlite
 USE_LDCONFIG=	yes
 USE_GNOME+=	glib20 intltool
-USE_PERL5=	build
+
+USE_GITHUB=	yes
+GH_TAGNAME=	d1ac9d9
+GH_TUPLE=	uim:sigscheme:beb8fbd:sigscheme \
+		uim:libgcroots:d362356:libgcroots
+
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS+=	--enable-maintainer-mode
 
 OPTIONS_DEFINE=	DOCS X11
 OPTIONS_DEFAULT=	X11
@@ -36,11 +41,16 @@ CONFIGURE_ARGS+=	--with-x --with-xft
 .endif
 
 .if !defined(UIM_SLAVE)
+USES+=		perl5
+USE_GNOME+=	librsvg2:build
+USE_PERL5=	build
+USE_RUBY=	yes
+RUBY_NO_RUN_DEPENDS=	yes
 .if ${PORT_OPTIONS:MX11}
-USE_GNOME+=	cairo gdkpixbuf2 gtk20
+USE_GNOME+=	cairo gdkpixbuf2 gtk30
 LIB_DEPENDS+=	libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
-CONFIGURE_ARGS+=	--with-gtk2
+CONFIGURE_ARGS+=	--with-gtk3
 .endif
 CONFIGURE_ARGS+=	--enable-emacs --with-sj3 --with-canna --with-prime
 .endif
@@ -68,7 +78,7 @@ PLIST_SUB+=	X11=""
 CONFIGURE_ARGS+=	--enable-storage=fatty
 .endif
 
-.for _x in x xft gtk2 qt anthy canna m17nlib prime scim dict
+.for _x in x xft gtk2 gtk3 qt5 anthy canna m17nlib prime scim dict
 .if ${CONFIGURE_ARGS:M--with-${_x}} == ""
 CONFIGURE_ARGS+=--without-${_x}
 .endif
@@ -79,8 +89,16 @@ CONFIGURE_ARGS+=--disable-${_x}
 .endif
 .endfor
 
+post-extract:
+	${CP} -R ${WRKSRC_sigscheme}/* ${WRKSRC}/sigscheme
+	${MKDIR} ${WRKSRC}/sigscheme/libgcroots
+	${CP} -R ${WRKSRC_libgcroots}/* ${WRKSRC}/sigscheme/libgcroots
+
 post-patch:
 	${REINPLACE_CMD} -e 's,%%LOCALBASE%%,${LOCALBASE},' ${WRKSRC}/scm/skk-custom.scm
+
+pre-configure:
+	cd ${WRKSRC} && ./autogen.sh
 
 do-build:
 .if !defined(UIM_SLAVE)
@@ -88,7 +106,7 @@ do-build:
 	cd ${WRKSRC}/${d} && ${MAKE_CMD}
 .endfor
 .if ${PORT_OPTIONS:MX11}
-	cd ${WRKSRC}/gtk2/candwin && ${MAKE_CMD}
+	cd ${WRKSRC}/gtk3/candwin && ${MAKE_CMD}
 .endif
 .endif
 
@@ -99,7 +117,7 @@ do-install:
 	cd ${WRKSRC}/${d} && ${MAKE_CMD} DESTDIR=${STAGEDIR} install
 .endfor
 .if ${PORT_OPTIONS:MX11}
-	cd ${WRKSRC}/gtk2/candwin && ${MAKE_CMD} DESTDIR=${STAGEDIR} install
+	cd ${WRKSRC}/gtk3/candwin && ${MAKE_CMD} DESTDIR=${STAGEDIR} install
 .endif
 .endif
 

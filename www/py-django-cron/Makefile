@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	django-cron
 PORTVERSION=	0.5.1
 PORTREVISION=	1

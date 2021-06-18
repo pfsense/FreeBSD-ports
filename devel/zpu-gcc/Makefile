@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zpu-gcc
 PORTVERSION=	1.0
 PORTREVISION=	1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	yakuake
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	x11 kde kde-applications
@@ -8,7 +6,6 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Drop-down terminal emulator for KDE
 
 LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	konsole:x11/konsole
 

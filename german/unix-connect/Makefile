@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	unix-connect
 PORTVERSION=	0.95
 PORTREVISION=	3

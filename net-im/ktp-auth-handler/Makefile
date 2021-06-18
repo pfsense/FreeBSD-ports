@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ktp-auth-handler
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	net-im kde kde-applications

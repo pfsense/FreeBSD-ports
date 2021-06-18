@@ -1,8 +1,7 @@
 # Created by: Anton Berezin <tobez@tobez.org>
-# $FreeBSD$
 
 PORTNAME=	Set-Object
-PORTVERSION=	1.40
+PORTVERSION=	1.41
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

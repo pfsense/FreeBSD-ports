@@ -1,10 +1,8 @@
 # Created by: Juha Nygard <juha.nygard1@netikka.fi>
-# $FreeBSD$
 
 PORTNAME=	fluidsynth
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.1.3
-PORTREVISION=	2
+DISTVERSION=	2.1.7
 CATEGORIES=	audio
 
 MAINTAINER=	multimedia@FreeBSD.org

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sha1collisiondetection
 PORTVERSION=	1.0.3
 DISTVERSIONPREFIX=	stable-v

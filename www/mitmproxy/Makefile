@@ -1,10 +1,9 @@
 # Created by: Hung-Yi Chen <gaod@hychen.org>
-# $FreeBSD$
 
 PORTNAME=	mitmproxy
 PORTVERSION=	4.0.4
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	www python
 
 MAINTAINER=	gaod@hychen.org
@@ -12,6 +11,8 @@ COMMENT=	SSL-capable man-in-the-middle proxy
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		incorrect depends: depends on package: py38-hyperframe>=5.1.0<6 - not found
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>=6.2:devel/py-click@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}blinker>=1.4:devel/py-blinker@${PY_FLAVOR} \
@@ -23,7 +24,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>=6.2:devel/py-click@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}openssl>=17.5:security/py-openssl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyparsing>=2.1.3:devel/py-pyparsing@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ruamel.yaml>=0.13.2:devel/py-ruamel.yaml@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}tornado>=4.3<5.2:www/py-tornado@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}tornado5>=4.3<5.2:www/py-tornado5@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}urwid>=2.0.1:devel/py-urwid@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}brotli>=0.7.0:archivers/py-brotli@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sortedcontainers>=1.5.4:devel/py-sortedcontainers@${PY_FLAVOR} \

@@ -28,9 +28,9 @@ require_once("util.inc");
 require_once("pfsense-utils.inc");
 
 global $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_version, $legacy_openvpn_version_rev;
-$current_openvpn_version = "2.5.0";
+$current_openvpn_version = "2.5.2";
 $current_openvpn_version_rev = "01";
-$legacy_openvpn_version = "2.4.9";
+$legacy_openvpn_version = "2.4.11";
 $legacy_openvpn_version_rev = "01";
 
 /* Ciphers not supported by legacy clients */

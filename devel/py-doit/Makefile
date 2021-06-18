@@ -1,5 +1,4 @@
 # Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	doit
 PORTVERSION=	0.31.1
@@ -8,7 +7,7 @@ MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	koobs@FreeBSD.org
-COMMENT=	Task management & automation tool
+COMMENT=	Task management and automation tool
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

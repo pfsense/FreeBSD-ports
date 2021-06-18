@@ -1,19 +1,14 @@
-# $FreeBSD$
-
 PORTNAME=	rpcs3
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.15-11838 # git rev-list --count HEAD
-DISTVERSIONSUFFIX=	-g8e4451d1a
-PORTREVISION=	1
+DISTVERSION=	0.0.16-12375 # git rev-list --count HEAD
+DISTVERSIONSUFFIX=	-g2169e8d93
 CATEGORIES=	emulators
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	PS3 emulator/debugger
 
-LICENSE=	APACHE20 BSD3CLAUSE BSL GPLv2 MIT ZLIB
+LICENSE=	APACHE20 GPLv2 MIT ZLIB
 LICENSE_COMB=	multi
-LICENSE_FILE_BSD3CLAUSE=${WRKSRC_cereal}/LICENSE
-LICENSE_FILE_BSL=	${WRKSRC_span}/LICENSE_1_0.txt
 LICENSE_FILE_MIT=	${WRKSRC_pugixml}/LICENSE.md
 LICENSE_FILE_ZLIB=	${WRKSRC_asmjit}/LICENSE.md
 
@@ -26,20 +21,18 @@ ONLY_FOR_ARCHS_REASON=	requires int128 and SSE2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	RPCS3
-GH_TUPLE=	RPCS3:hidapi:hidapi-0.8.0-rc1-28-g8961cf8:hidapi/3rdparty/hidapi \
-		RPCS3:llvm-mirror:716bb292ba3:llvm/llvm \
+GH_TUPLE=	RPCS3:hidapi:hidapi-0.8.0-rc1-28-g8961cf8:hidapi/3rdparty/hidapi/hidapi \
+		RPCS3:llvm-mirror:5836324d6443:llvm/llvm \
 		Cyan4973:xxHash:v0.8.0:xxHash/3rdparty/xxHash \
-		FNA-XNA:FAudio:20.05:FAudio/3rdparty/FAudio \
+		FNA-XNA:FAudio:21.04:FAudio/3rdparty/FAudio \
+		asmjit:asmjit:723f585:asmjit/3rdparty/asmjit/asmjit \
 		google:flatbuffers:v1.11.0:flatbuffers/3rdparty/flatbuffers \
 		jbeder:yaml-cpp:yaml-cpp-0.6.3-30-g6a211f0:yamlcpp/3rdparty/yaml-cpp \
-		kobalicek:asmjit:723f585:asmjit/asmjit \
-		KhronosGroup:SPIRV-Headers:1.5.3.reservations1:spirv_headers/Vulkan/spirv-headers \
-		KhronosGroup:SPIRV-Tools:v2020.4:spirv_tools/Vulkan/spirv-tools \
-		KhronosGroup:glslang:8.13.3743-225-g517f39ee:glslang/Vulkan/glslang \
-		tcbrindle:span:9d7559a:span/3rdparty/span \
-		USCiLab:cereal:v1.3.0-5-g60c69df9:cereal/3rdparty/cereal \
+		KhronosGroup:SPIRV-Headers:1.5.3.reservations1:spirv_headers/3rdparty/SPIRV/SPIRV-Headers \
+		KhronosGroup:SPIRV-Tools:v2020.4:spirv_tools/3rdparty/SPIRV/SPIRV-Tools \
+		KhronosGroup:glslang:11.4.0:glslang/3rdparty/glslang/glslang \
 		wolfSSL:wolfssl:v4.5.0-stable-80-g39b544860:wolfssl/3rdparty/wolfssl \
-		zeux:pugixml:v1.9-51-g8bf806c:pugixml/3rdparty/pugixml
+		zeux:pugixml:v1.11.4:pugixml/3rdparty/pugixml
 
 USES=		cmake compiler:c++17-lang gl iconv:wchar_t localbase:ldflags \
 		openal:soft pkgconfig python:3.4+,build qt:5 xorg
@@ -85,7 +78,7 @@ post-patch:
 
 # Ignore Mk/bsd.default-versions.mk but respect make.conf(5)
 .if !defined(DEFAULT_VERSIONS) || ! ${DEFAULT_VERSIONS:Mllvm*}
-LLVM_DEFAULT=	11 # bump if not latest release
+LLVM_DEFAULT=	12 # bump if not latest release
 .endif
 BUILD_DEPENDS+=	clang++${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 USES:=		${USES:Ncompiler*}
@@ -93,12 +86,12 @@ CC=		clang${LLVM_DEFAULT}
 CXX=		clang++${LLVM_DEFAULT}
 CPP=		clang-cpp${LLVM_DEFAULT}
 
-# XXX Drop after FreeBSD 12.1 EOL
-.if make(makesum) || (!exists(/usr/include/c++/v1/fenv.h) && exists(/usr/lib/libc++.so))
+# XXX Drop after FreeBSD 12.2 EOL
+.if make(makesum) || (!exists(/usr/include/c++/v1/__bits) && exists(/usr/lib/libc++.so))
 MASTER_SITES+=	https://github.com/llvm/llvm-project/releases/download/llvmorg-${LLVM_VER}/:libcxx
 DISTFILES+=	libcxx-${LLVM_VER}.src.tar.xz:libcxx
-CXXFLAGS+=	-nostdinc++ -isystem${WRKDIR}/libcxx-${LLVM_VER}.src/include
-LLVM_VER=	10.0.1
+CXXFLAGS+=	-nostdinc++ -D_LIBCPP_HAS_NO_VENDOR_AVAILABILITY_ANNOTATIONS -isystem${WRKDIR}/libcxx-${LLVM_VER}.src/include
+LLVM_VER=	12.0.0
 .endif
 
 .include <bsd.port.post.mk>

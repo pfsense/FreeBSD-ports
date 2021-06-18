@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	simpleagenda
 PORTVERSION=	0.43
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	deskutils gnustep
 MASTER_SITES=	http://coyote.octets.fr/pub/gnustep/
 DISTNAME=	SimpleAgenda-${PORTVERSION}

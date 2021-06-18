@@ -1,8 +1,7 @@
 # Created by: Frank Gruender <elwood@mc5sys.in-berlin.de>
-# $FreeBSD$
 
 PORTNAME=	yabasic
-PORTVERSION=	2.87.1
+PORTVERSION=	2.89.1
 PORTEPOCH=	1
 CATEGORIES=	lang
 

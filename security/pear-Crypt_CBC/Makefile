@@ -1,11 +1,10 @@
 # Created by: Thierry Thomas (<thierry@pompo.net>)
-# $FreeBSD$
 
 PORTNAME=	Crypt_CBC
 PORTVERSION=	1.0.1
 CATEGORIES=	security www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR class to emulate Perl's Crypt::CBC module
 
 USES=		pear

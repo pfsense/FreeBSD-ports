@@ -1,5 +1,4 @@
 # Created by: BluePex Security Solutions <freebsd-ports@bluepex.com>
-# $FreeBSD$
 
 PORTNAME=	Daemon-Generic
 PORTVERSION=	0.85
@@ -7,7 +6,7 @@ CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Framework to provide start/stop/reload for a daemon
 
 BUILD_DEPENDS=	${RUN_DEPENDS}

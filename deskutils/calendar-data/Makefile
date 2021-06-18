@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	calendar-data
 DISTVERSION=	2020.10
 DISTVERSIONPREFIX=	v

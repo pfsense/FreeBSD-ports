@@ -1,5 +1,4 @@
 # Created by: Pedro Giffuni
-# $FreeBSD$
 
 PORTNAME=	ccx
 PORTVERSION=	2.17
@@ -19,7 +18,7 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libarpack.so:math/arpack-ng	\
 		libspooles.so:math/spooles
 
-USES=		blaslapack compiler:openmp fortran gmake tar:bzip2
+USES=		blaslapack compiler:openmp fortran gmake perl5 tar:bzip2
 USE_PERL5=	build
 
 DIST_SOURCES=	ccx_${PORTVERSION}.src${EXTRACT_SUFX}
@@ -53,6 +52,11 @@ FFLAGS+=	-fPIC
 .else
 CFLAGS+=	-fpic
 FFLAGS+=	-fpic
+.endif
+
+.if ${GCC_DEFAULT} >= 10
+# workaround for Missing actual argument for argument '_formal_15' at (1)
+FFLAGS+=	-fallow-argument-mismatch
 .endif
 
 pre-build:

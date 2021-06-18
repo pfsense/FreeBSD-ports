@@ -1,6 +1,6 @@
---- ui/base/clipboard/clipboard_constants.cc.orig	2020-11-16 14:58:44 UTC
+--- ui/base/clipboard/clipboard_constants.cc.orig	2021-04-14 18:41:37 UTC
 +++ ui/base/clipboard/clipboard_constants.cc
-@@ -16,11 +16,11 @@ const char kMimeTypeSvg[] = "image/svg+xml";
+@@ -18,11 +18,11 @@ const char kMimeTypeSvg[] = "image/svg+xml";
  const char kMimeTypeRTF[] = "text/rtf";
  const char kMimeTypePNG[] = "image/png";
  

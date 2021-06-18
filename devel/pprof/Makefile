@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pprof
 DISTVERSION=	g20200905
 CATEGORIES=	devel

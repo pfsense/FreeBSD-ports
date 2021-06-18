@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	swaylock
 DISTVERSION?=	1.5
 PORTREVISION?=	2

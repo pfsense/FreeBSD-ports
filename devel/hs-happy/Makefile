@@ -1,8 +1,7 @@
 # Created by: Simon Marlow <simonmar@microsoft.com>
-# $FreeBSD$
 
 PORTNAME=	happy
-PORTVERSION=	1.19.12
+PORTVERSION=	1.20.0
 PORTREVISION=	1
 CATEGORIES=	devel haskell
 

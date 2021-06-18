@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	stuntrally
 PORTVERSION=	2.6.1
 PORTREVISION=	4

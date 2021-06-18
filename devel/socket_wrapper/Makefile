@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		socket_wrapper
 PORTVERSION=		1.1.9
 CATEGORIES=		devel

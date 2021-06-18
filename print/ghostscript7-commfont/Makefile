@@ -1,5 +1,4 @@
 # Created by: Tomokatsu SAITO <saito@a2z.co.jp>
-# $FreeBSD$
 
 PORTNAME=	ghostscript
 PORTVERSION=	7.07
@@ -32,7 +31,7 @@ CONFLICTS_INSTALL= \
 CMAPDIR?=	${LOCALBASE}/share/fonts/adobe-cmaps
 GS_RESDIR?=	share/ghostscript/Resource
 
-post-extract:	apply-slist
+pre-build:
 	@cd ${WRKDIR} && ${MV} Makefile template.* ${WRKSRC}
 
 .include <bsd.port.mk>

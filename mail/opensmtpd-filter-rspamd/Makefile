@@ -1,8 +1,8 @@
 # Created by: Emmanuel Vadot <manu@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	opensmtpd-filter-rspamd
-PORTVERSION=	0.1.6
+PORTVERSION=	0.1.7
+DISTVERSIONPREFIX=	v
 CATEGORIES=	mail
 
 MAINTAINER=	manu@FreeBSD.Org

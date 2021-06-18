@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ramspeed
 PORTVERSION=	3.5.0
 CATEGORIES=	benchmarks
@@ -9,7 +7,7 @@ DISTNAME=	ramsmp-${PORTVERSION}
 MAINTAINER=	mkamm@gmx.net
 COMMENT=	Cache and memory benchmarking tool
 
-NO_CDROM=	do not sell for money
+# do not sell for money
 LICENSE=	ALASIR
 LICENSE_NAME=	Alasir Licence
 LICENSE_FILE=	${WRKSRC}/LICENCE

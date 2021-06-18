@@ -1,8 +1,8 @@
 # Created by: Johannes M Dieterich <jmd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sleef
 DISTVERSION=	3.5.0
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	jmd@FreeBSD.org
@@ -21,7 +21,7 @@ CFLAGS_powerpc64=	-mpower8-vector
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == powerpc64
+.if ${ARCH:Mpowerpc64*}
 PLIST_SUB+=	NO_PPC64="@comment "
 .else
 PLIST_SUB+=	NO_PPC64=""

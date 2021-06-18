@@ -1,5 +1,4 @@
 # Created by: Eric Turgeon <ericturgeon.bsd at gmail.com>
-# $FreeBSD$
 
 PORTNAME=	lxmusic
 PORTVERSION=	0.4.7
@@ -12,6 +11,9 @@ COMMENT=	LXDE music player based on xmms2
 LICENSE=	MIT GPLv2+
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Uses EOL Python 2.7 via audio/xmms2
+EXPIRATION_DATE=2021-06-23
 
 LIB_DEPENDS=	libxmmsclient.so:audio/xmms2 \
 		libnotify.so:devel/libnotify

@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=		sope
-PORTVERSION=		5.0.1
+PORTVERSION=		5.1.0
 CATEGORIES=		devel gnustep
 MASTER_SITES=		http://www.sogo.nu/files/downloads/SOGo/Sources/
 DISTNAME=		SOPE-${PORTVERSION}
@@ -48,6 +46,7 @@ MEMCACHED_RUN_DEPENDS=	${LOCALBASE}/bin/memcached:databases/memcached
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/configure
+	@${REINPLACE_CMD} -e 's|gcc|${CC}|g' ${WRKSRC}/sope-core/NGStreams/configure
 
 post-patch-LDAP-off:
 	@${REINPLACE_CMD} -e '/checkLinking "ldap"/d' ${WRKSRC}/configure

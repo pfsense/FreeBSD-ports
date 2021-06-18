@@ -1,11 +1,10 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Text_Highlighter
 PORTVERSION=	0.8.0
 CATEGORIES=	textproc pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR Syntax highlighting
 
 LICENSE=	PHP301

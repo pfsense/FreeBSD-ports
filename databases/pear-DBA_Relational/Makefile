@@ -1,11 +1,10 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	DBA_Relational
 PORTVERSION=	0.2.0
 CATEGORIES=	databases www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Berkely-style database abstraction class
 
 LICENSE=	LGPL3

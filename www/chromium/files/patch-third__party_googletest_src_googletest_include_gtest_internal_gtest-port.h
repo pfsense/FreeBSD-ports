@@ -1,4 +1,4 @@
---- third_party/googletest/src/googletest/include/gtest/internal/gtest-port.h.orig	2020-11-13 06:42:16 UTC
+--- third_party/googletest/src/googletest/include/gtest/internal/gtest-port.h.orig	2021-04-14 18:43:03 UTC
 +++ third_party/googletest/src/googletest/include/gtest/internal/gtest-port.h
 @@ -1641,6 +1641,8 @@ class ThreadLocal : public ThreadLocalBase {
  // MutexBase and Mutex implement mutex on pthreads-based platforms.

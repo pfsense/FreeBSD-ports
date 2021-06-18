@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DateTime-Incomplete
 PORTVERSION=	0.08
 CATEGORIES=	devel perl5

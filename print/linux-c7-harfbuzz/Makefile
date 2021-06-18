@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	harfbuzz
 PORTVERSION=	1.7.5
 DISTVERSIONSUFFIX=	-2.el7

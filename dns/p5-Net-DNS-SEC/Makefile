@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-DNS-SEC
 PORTVERSION=	1.18
 CATEGORIES=	dns perl5

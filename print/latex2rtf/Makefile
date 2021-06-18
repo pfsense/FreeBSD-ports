@@ -1,5 +1,4 @@
 # Created by: Joerg Wunsch <joerg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	latex2rtf
 DISTVERSION=	2.3.17
@@ -7,7 +6,7 @@ CATEGORIES=	print
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-unix/${PORTVERSION} \
 		TEX_CTAN
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Translator from LaTeX to RTF
 
 USES=		shebangfix makeinfo

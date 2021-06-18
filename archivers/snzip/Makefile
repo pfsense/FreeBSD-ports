@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	snzip
 PORTVERSION=	1.0.4
 PORTREVISION=	1
@@ -10,6 +8,8 @@ COMMENT=	Compression/decompression tool based on snappy library
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		fails to link: undefined symbol: typeinfo for snappy::Source
 
 LIB_DEPENDS=	libsnappy.so:archivers/snappy
 

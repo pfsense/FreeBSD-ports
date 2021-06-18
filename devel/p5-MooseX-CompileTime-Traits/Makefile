@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MooseX-CompileTime-Traits
 PORTVERSION=	1.102570
 PORTREVISION=	1

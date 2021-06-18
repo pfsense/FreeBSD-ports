@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	antlr4
 PORTVERSION=	4.9
 CATEGORIES=	devel java

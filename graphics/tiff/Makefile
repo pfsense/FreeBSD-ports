@@ -1,8 +1,7 @@
 # Created by: Richard Hwang <rhwang@bigpanda.com>, Mikhail Teterin <mi@aldan.algebra.com>, Jun-ichiro itojun Itoh <itojun@itojun.org>
-# $FreeBSD$
 
 PORTNAME=	tiff
-PORTVERSION=	4.2.0
+PORTVERSION=	4.3.0
 CATEGORIES=	graphics
 MASTER_SITES=	https://download.osgeo.org/libtiff/
 

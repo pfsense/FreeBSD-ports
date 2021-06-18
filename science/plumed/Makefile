@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	plumed
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.7.0
+DISTVERSION=	2.7.1
 CATEGORIES=	science graphics
 
 MAINTAINER=	yuri@FreeBSD.org

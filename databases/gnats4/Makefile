@@ -1,9 +1,8 @@
 # Created by: Oliver Eikemeier <eikemeier@fillmore-labs.com>
-# $FreeBSD$
 
 PORTNAME=	gnats
 PORTVERSION=	4.1.0
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	databases devel
 MASTER_SITES=	GNU
 PKGNAMESUFFIX=	4
@@ -18,7 +17,7 @@ BROKEN_FreeBSD_12_powerpc64=	fails to build on powerpc64 elfv1: conflicting type
 
 GNU_CONFIGURE=	yes
 USES=		cpe gmake makeinfo
-USE_GCC=	any
+USE_GCC=	yes
 USERS=		gnats
 
 CPE_VENDOR=	gnu

@@ -1,9 +1,8 @@
 # Created by: Brendan Molloy <brendan+freebsd@bbqsrc.net>
-# $FreeBSD$
 
 PORTNAME=	matrix-synapse
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.24.0
+DISTVERSION=	1.35.1
 CATEGORIES=	net-im python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -42,24 +41,26 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}jsonschema>=2.5.1:devel/py-jsonschema@${PY_F
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=2.9:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}bleach>=1.4.3:www/py-bleach@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}typing-extensions>=3.7.4:devel/py-typing-extensions@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}ijson>=3.0:devel/py-ijson@${PY_FLAVOR} \
 		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}virtualenv>=15.0:devel/py-virtualenv@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tox>=2.3.1:devel/py-tox@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}mock>=2.0:devel/py-mock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}parameterized>=0.7.0:devel/py-parameterized@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}authlib>=0.14.0:security/py-authlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyjwt>=1.7.0:www/py-pyjwt@${PY_FLAVOR}
 
 USES=		python:3.6+
 USE_GITHUB=	yes
-USE_PYTHON=	autoplist distutils
-
 GH_ACCOUNT=	matrix-org
 GH_PROJECT=	synapse
-
+USE_PYTHON=	autoplist distutils
 USE_RC_SUBR=	synapse
+
+NO_ARCH=	yes
+SUB_FILES=	pkg-message log.config
+SUB_LIST=	PYTHON_CMD=${PYTHON_CMD} DBDIR=${DBDIR} LOGDIR=${LOGDIR} PIDDIR=${PIDDIR} USERS=${USERS}
 
 USERS=		synapse
 GROUPS=		synapse
@@ -68,32 +69,24 @@ DBDIR?=		/var/db/${PORTNAME}
 LOGDIR?=	/var/log/${PORTNAME}
 PIDDIR?=	/var/run/${PORTNAME}
 
-SUB_FILES=	pkg-message log.config
-SUB_LIST=	PYTHON_CMD=${PYTHON_CMD} DBDIR=${DBDIR} LOGDIR=${LOGDIR} PIDDIR=${PIDDIR} USERS=${USERS}
-
 PLIST_FILES=	"@sample ${ETCDIR}/log.config.sample"
-DOCS=README.rst UPGRADE.rst CHANGES.md docs/postgres.md
-PORTDOCS=${DOCS:T}
+DOCS=		README.rst UPGRADE.rst CHANGES.md docs/postgres.md
+PORTDOCS=	${DOCS:T}
 
-NO_ARCH=	yes
+OPTIONS_DEFINE=		DOCS LDAP OIDC  PGSQL REDIS SQLITE URLPREVIEW
+OPTIONS_DEFAULT=	PGSQL SQLITE
 
-OPTIONS_DEFINE=		LDAP PGSQL SQLITE URLPREVIEW OIDC REDIS DOCS
-OPTIONS_DEFAULT=	SQLITE PGSQL DOCS
-
-URLPREVIEW_DESC=	Add dependencies necessary for URL previews
 OIDC_DESC=		Add dependencies for OpenID Connect based logins
 REDIS_DESC=		Add support replication over Redis for synapse workers
+URLPREVIEW_DESC=	Add dependencies necessary for URL previews
 
 LDAP_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matrix-synapse-ldap3>=0.1:net/py-matrix-synapse-ldap3@${PY_FLAVOR}
-PGSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psycopg2>2.7:databases/py-psycopg2@${PY_FLAVOR}
-SQLITE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
-URLPREVIEW_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=3.5.0:devel/py-lxml@${PY_FLAVOR}
 OIDC_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}authlib>=0.14.0:security/py-authlib@${PY_FLAVOR}
+PGSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psycopg2>2.8:databases/py-psycopg2@${PY_FLAVOR}
 REDIS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hiredis>=0:databases/py-hiredis@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}txredisapi>=0:databases/py-txredisapi@${PY_FLAVOR}
-
-do-test:
-	cd ${WRKSRC} && PYTHONPATH="." trial-${PYTHON_VER} tests
+SQLITE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
+URLPREVIEW_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=3.5.0:devel/py-lxml@${PY_FLAVOR}
 
 post-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR}
@@ -102,5 +95,8 @@ post-install:
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+
+do-test:
+	cd ${WRKSRC} && PYTHONPATH="." trial-${PYTHON_VER} tests
 
 .include <bsd.port.mk>

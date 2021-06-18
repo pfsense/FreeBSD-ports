@@ -1,12 +1,11 @@
 # Created by: Munish Chopra <mchopra@engmail.uwaterloo.ca>
-# $FreeBSD$
 
 PORTNAME=	opendchub
 PORTVERSION=	0.8.3
 CATEGORIES=	net-p2p
 MASTER_SITES=	SF/${PORTNAME}/Open%20DC%20Hub/${PORTVERSION}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unofficial Unix version of the Direct Connect Hub software
 
 LICENSE=	GPLv2

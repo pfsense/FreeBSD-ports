@@ -1,16 +1,17 @@
 # Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
 
 PORTNAME=	Event_Dispatcher
 PORTVERSION=	1.1.0
 CATEGORIES=	devel pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR dispatch notifications using PHP callbacks
 
 LICENSE=	BSD2CLAUSE
 
 USES=		pear
+
+NO_ARCH=	yes
 
 post-extract:
 .for file in ${FILES}

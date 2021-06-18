@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rdapper
 PORTVERSION=	20150326
 CATEGORIES=	net

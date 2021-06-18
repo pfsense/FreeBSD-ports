@@ -1,8 +1,8 @@
 # Created by: Giuseppe Pilichi aka Jacula Modyun <jacula@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	hoogle
 PORTVERSION=	5.0.18.1
+PORTREVISION=	1
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

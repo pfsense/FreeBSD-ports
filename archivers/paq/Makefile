@@ -1,5 +1,4 @@
 # Created by: bf <bf2006a@yahoo.com>
-# $FreeBSD$
 
 PORTNAME=	paq
 PORTVERSION=	20140131
@@ -66,7 +65,7 @@ PORTDATA=	${WDATA} ${DDATA} zpsfx
 
 .if ${PORT_OPTIONS:MOPENMP}
 OPENMP_CFLAGS+=	-fopenmp
-USE_GCC=	any
+USE_GCC=	yes
 BROKEN=		does not build
 .endif
 

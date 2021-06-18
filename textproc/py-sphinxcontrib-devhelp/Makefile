@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sphinxcontrib-devhelp
 PORTVERSION=	1.0.2
 CATEGORIES=	textproc python

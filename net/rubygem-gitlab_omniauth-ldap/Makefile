@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gitlab_omniauth-ldap
 PORTVERSION=	2.1.1
 CATEGORIES=	net rubygems

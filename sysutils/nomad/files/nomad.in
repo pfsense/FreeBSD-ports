@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# $FreeBSD: head/sysutils/nomad/files/nomad.in 386655 2015-05-18 02:05:03Z swills $
-#
 # PROVIDE: nomad
 # REQUIRE: LOGIN
 # KEYWORD: shutdown
@@ -39,6 +37,7 @@ load_rc_config $name
 pidfile=/var/run/nomad.pid
 procname="%%PREFIX%%/bin/nomad"
 command="/usr/sbin/daemon"
+extra_commands="reload"
 nomad_command="/usr/bin/env ${nomad_env} ${procname} agent -data-dir=${nomad_dir} ${nomad_args}"
 command_args="-f -t ${name} -p ${pidfile} ${nomad_command}"
 

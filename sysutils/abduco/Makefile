@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	abduco
 PORTVERSION=	0.6
 CATEGORIES=	sysutils

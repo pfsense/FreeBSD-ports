@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	simhash
 DISTVERSION=	2.0.0
 CATEGORIES=	math python

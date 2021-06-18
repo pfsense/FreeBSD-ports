@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	PreferencesPlugin
 SVNREV=		17568
 

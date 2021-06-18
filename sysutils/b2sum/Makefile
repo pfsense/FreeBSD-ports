@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	b2sum
 PORTVERSION=	20190724
 CATEGORIES=	sysutils security

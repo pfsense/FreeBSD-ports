@@ -1,8 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	XML
-DISTVERSION=	3.99-0.5
+DISTVERSION=	3.99-0.6
 CATEGORIES=	textproc
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

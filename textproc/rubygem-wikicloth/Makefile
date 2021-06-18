@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wikicloth
 PORTVERSION=	0.8.3
 CATEGORIES=	textproc rubygems

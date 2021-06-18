@@ -1,9 +1,8 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dvdbackup
 PORTVERSION=	0.4.2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	sysutils multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 

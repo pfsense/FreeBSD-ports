@@ -1,5 +1,4 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ip2location
 PORTVERSION=	1.0.1
@@ -11,6 +10,8 @@ COMMENT=	Varnish Module (vmod) for ip2location
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
+
+BROKEN=		does not compile: no member named 'free' in 'struct vmod_priv'
 
 LIB_DEPENDS=	libIP2Location.so:net/ip2location
 BUILD_DEPENDS=	rst2man:textproc/py-docutils@${PY_FLAVOR}

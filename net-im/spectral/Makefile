@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	spectral
 PORTVERSION=	817
 PORTREVISION=	2

@@ -1,5 +1,4 @@
 # Created by: William Grzybowski <wg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	netif
 PORTVERSION=	1.0.20181212
@@ -11,8 +10,7 @@ COMMENT=	Python network configuration library for FreeBSD
 
 LICENSE=	BSD2CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bsd>0:devel/py-bsd@${PY_FLAVOR} \
-		${PY_ENUM34}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bsd>0:devel/py-bsd@${PY_FLAVOR}
 
 USE_GITHUB=     yes
 GH_ACCOUNT=	freenas

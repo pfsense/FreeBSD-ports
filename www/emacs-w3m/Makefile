@@ -1,9 +1,7 @@
 # Created by: MANTANI Nobutaka <nobutaka@nobutaka.com>
-# $FreeBSD$
 
 PORTNAME=	emacs-w3m
 PORTVERSION=	1.4.632.b.${SNAPDATE}
-PORTREVISION=	1
 CATEGORIES=	www elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
@@ -18,13 +16,13 @@ RUN_DEPENDS=	w3m:www/w3m
 
 USES=		autoreconf emacs tar:xz
 USE_GITHUB=	yes
-GH_TAGNAME=	c8157b5
+GH_TAGNAME=	8bab3dc
 
 ALL_TARGET=	default
 INSTALL_TARGET=	install install-icons
 
 NO_ARCH=	yes
-SNAPDATE=	20200318
+SNAPDATE=	20210409
 MAKE_JOBS_UNSAFE=	yes
 
 GNU_CONFIGURE=	yes

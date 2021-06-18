@@ -1,11 +1,11 @@
 # Created by: Ade Lovett <ade@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ip4r
 PORTVERSION=	2.4.1
+PORTREVISION=	1
 CATEGORIES=	databases net
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	axel.rau@chaos1.de
 COMMENT=	IP address and IP range index types for PostgreSQL
 
 LICENSE=	PostgreSQL

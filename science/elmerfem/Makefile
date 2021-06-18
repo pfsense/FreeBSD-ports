@@ -1,5 +1,4 @@
 # Created by: Pedro Giffuni
-# $FreeBSD$
 
 PORTNAME=	elmerfem
 PORTVERSION=	8.4.20200708
@@ -55,7 +54,7 @@ OCC_CMAKE_BOOL=		WITH_OCC
 OCC_CMAKE_ON=		-DVTK_DIR=${LOCALBASE}/lib/vtk-8.2/cmake/vtk-8.2
 OCC_LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 			libfreetype.so:print/freetype2 \
-			libpng16.so:graphics/png \
+			libpng.so:graphics/png \
 			libpython3.7m.so:lang/python37 \
 			libtiff.so:graphics/tiff \
 			libTKernel.so:cad/opencascade \
@@ -72,6 +71,12 @@ CFLAGS_${ARCH}=	-fPIC
 CXXFLAGS_${ARCH}= -fPIC
 FCFLAGS+=	-fPIC
 FFLAGS+=	-fPIC
+.endif
+
+.if ${GCC_DEFAULT} >= 10
+# workaround for Type mismatch between actual argument at (1) and actual argument at (2) (REAL(8)/COMPLEX(8)).
+# in theory, this should set FCFLAGS, but the port does not conform
+FFLAGS+=	-fallow-argument-mismatch
 .endif
 
 post-patch:

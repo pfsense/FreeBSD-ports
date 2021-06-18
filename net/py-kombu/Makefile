@@ -1,8 +1,7 @@
 # Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	kombu
-PORTVERSION=	4.6.9
+PORTVERSION=	4.6.11
 CATEGORIES=	net python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +12,7 @@ COMMENT=	AMQP messaging framework for Python
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}amqp>=2.5.2<2.6:net/py-amqp@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}amqp>=2.6.0<2.7:net/py-amqp@${PY_FLAVOR}
 
 USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
@@ -36,7 +35,7 @@ ZMQ_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyzmq>=13.1.0:net/py-pyzmq@${PY_FLAVOR}
 
 .include <bsd.port.pre.mk>
 
-.if ${PYTHON_REL} < 3800
+.if ${PYTHON_REL} < 30800
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}importlib-metadata>=0.18:devel/py-importlib-metadata@${PY_FLAVOR}
 .endif
 

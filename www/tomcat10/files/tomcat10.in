@@ -1,7 +1,4 @@
-!/bin/sh
-#
-# $FreeBSD$
-#
+#!/bin/sh
 
 # PROVIDE: tomcat10
 # REQUIRE: LOGIN

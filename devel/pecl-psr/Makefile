@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	psr
-PORTVERSION=	1.0.1
+PORTVERSION=	1.1.0
 CATEGORIES=	devel
 
 MAINTAINER=	sunpoet@FreeBSD.org

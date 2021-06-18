@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Convert-Color
 PORTVERSION=	0.11
 PORTREVISION=	2

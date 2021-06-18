@@ -1,8 +1,7 @@
 # Created by: Blaz Zupan <blaz@si.FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	monitoring-plugins
-PORTVERSION=	2.3
+PORTVERSION=	2.3.1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://www.monitoring-plugins.org/download/ \
 		LOCAL/mat/${PORTNAME}

@@ -1,5 +1,4 @@
 # Created by: Mikhail T.  <m.tsatsenko@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	backtrader
 PORTVERSION=	1.9.74.123
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python:3.7+
 USE_GITHUB=	yes # Does not distribute sdist via PyPI
 USE_PYTHON=	autoplist concurrent distutils
 

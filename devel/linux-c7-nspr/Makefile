@@ -1,9 +1,8 @@
 # Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
 
 PORTNAME=	nspr
-PORTVERSION=	4.21.0
-DISTVERSIONSUFFIX=	-1.el7
+PORTVERSION=	4.25.0
+DISTVERSIONSUFFIX=	-2.el7_9
 CATEGORIES=	devel linux
 
 MAINTAINER=	emulation@FreeBSD.org

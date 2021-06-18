@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	meliae
 PORTVERSION=	0.5.1
 CATEGORIES=	devel python

@@ -1,8 +1,8 @@
 # Created by: Douglas K. Rand <rand@meridian-enviro.com>
-# $FreeBSD$
 
 PORTNAME=		mapserver
 PORTVERSION=		7.6.2
+PORTREVISION=	1
 CATEGORIES=		graphics www geography
 MASTER_SITES=		https://download.osgeo.org/mapserver/
 

@@ -1,5 +1,4 @@
 # Created by: will
-# $FreeBSD$
 
 PORTNAME=	ppunpack
 PORTVERSION=	1.0
@@ -10,7 +9,11 @@ DISTNAME=	ppsmall-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Decompresses Amiga PowerPacker files
 
-NO_CDROM=	No commercial redistribution
+# Converted from NO_CDROM
+LICENSE=	PPUNPACK
+LICENSE_NAME=	PPUnpack
+LICENSE_TEXT=	No commercial redistribution
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 USES=		tar:Z
 WRKSRC=		${WRKDIR}/PPUnpack

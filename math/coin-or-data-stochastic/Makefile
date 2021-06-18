@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Data-Stochastic
 DISTVERSION=	1.1.7
 CATEGORIES=	math

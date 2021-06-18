@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	postgresql
 CATEGORIES=	databases python
 # Keep the ?=, it is used as master by the other plpython ports.
@@ -23,5 +21,8 @@ COMPONENT=	-plpython
 BUILD_DIRS=	src/backend ${INSTALL_DIRS}
 INSTALL_DIRS?=	src/pl/plpython contrib/hstore_plpython contrib/jsonb_plpython contrib/ltree_plpython
 SLAVE_ONLY=	yes
+
+# this port fails to build in parallel
+MAKE_JOBS_UNSAFE=	yes
 
 .include "${MASTERDIR}/Makefile"

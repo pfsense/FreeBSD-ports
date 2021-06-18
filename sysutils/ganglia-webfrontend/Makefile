@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ganglia
 PORTVERSION=	3.7.2
 PORTREVISION=	2

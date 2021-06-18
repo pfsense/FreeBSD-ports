@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	aeson-pretty
 PORTVERSION=	0.8.8
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	converters haskell
 
 MAINTAINER=	haskell@FreeBSD.org

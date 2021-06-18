@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	grammalecte-fr
 PORTVERSION=	1.11.0
 CATEGORIES=	french python

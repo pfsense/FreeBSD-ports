@@ -1,9 +1,8 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	3dc
 PORTVERSION=	0.8.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SUNSITE/games/strategy
 DISTNAME=	3Dc-${PORTVERSION}

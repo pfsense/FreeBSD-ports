@@ -1,5 +1,4 @@
 # Created by: Wen Heping <wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	ro
 PORTVERSION=	3.6.9
@@ -15,9 +14,9 @@ COMMENT=	Package of Python astronomical utilities
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/docs/License.txt
 
-RUN_DEPENDS=	${PYNUMPY}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=0,1:math/py-numpy@${PY_FLAVOR}
 
-USES=		python:3.5+
+USES=		python:3.7+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
@@ -30,6 +29,6 @@ PYGAME_DESC=	Add Support for PyGame
 
 ASTROPY_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}astropy>=0:astro/py-astropy@${PY_FLAVOR}
 MATPLOTLIB_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matplotlib>=0.98:math/py-matplotlib@${PY_FLAVOR}
-PYGAME_RUN_DEPENDS=	${PYGAME}
+PYGAME_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}game>=0:devel/py-game@${PY_FLAVOR}
 
 .include <bsd.port.mk>

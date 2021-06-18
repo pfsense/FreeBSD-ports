@@ -1,12 +1,11 @@
 # Created by: chinsan
-# $FreeBSD$
 
 PORTNAME=	paexec
 PORTVERSION=	1.1.4
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Parallel executor, distributes tasks over network
 
 LICENSE=	MIT

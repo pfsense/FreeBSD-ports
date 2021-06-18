@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nexus2
 PORTVERSION=	2.14.18
 DISTVERSIONSUFFIX=	01
@@ -9,7 +7,7 @@ PKGNAMESUFFIX=	-oss
 DISTNAME=	nexus-${PORTVERSION}-${DISTVERSIONSUFFIX}-bundle
 
 MAINTAINER=	michael.osipov@siemens.com
-COMMENT=	Maven (and others) artifacts repostory manager
+COMMENT=	Maven (and others) artifacts repository manager
 
 LICENSE=	EPL
 

@@ -1,8 +1,7 @@
 # Created by: Paul Everlund
-# $FreeBSD$
 
 PORTNAME=	xmedcon
-PORTVERSION=	0.16.1
+PORTVERSION=	0.17.0
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/XMedCon-Source/${PORTVERSION}
 

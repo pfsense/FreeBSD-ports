@@ -3171,12 +3171,13 @@ if ($pfb['dnsbl'] == 'on') {
 			'pfbreplytypes',
 			'',
 			$pfbreplytypes,
-			[ 'reply' => 'reply', 'cache' => 'cache', 'local' => 'local', 'servfail' => 'servfail', 'Unknown' => 'Unknown' ],
+			[	'resolver' => 'resolver', 'reply' => 'reply', 'cache' => 'cache', 'local' => 'local',
+				'servfail' => 'servfail', 'Unknown' => 'Unknown' ],
 			TRUE
 		))->setHelp('DNS Reply Type Suppress')
 		  ->setAttribute('title', 'Select the DNS Types to suppress from the DNS Reply Log')
 		  ->setWidth(2)
-		  ->setAttribute('size', 5);
+		  ->setAttribute('size', 6);
 
 		$group->add(new Form_Select(
 			'pfbreplyrec',
@@ -3746,6 +3747,19 @@ if (!$alert_summary):
 	$counter 	= array('Deny' => 0, 'Permit' => 0, 'Match' => 0, 'Unified' => 0, 'DNSBL' => 0, 'DNS' => 0);
 	$dup		= array('Deny' => 0, 'Permit' => 0, 'Match' => 0, 'DNSBL' => 0, 'Unified' => 0);
 
+	// Suppress user-defined reply types
+	if (isset($pfbreplytypes) && !empty($pfbreplytypes[0])) {
+		$pfbreplytypes = array_flip($pfbreplytypes);
+	} else {
+		unset($pfbreplytypes);
+	}
+
+	if (isset($pfbreplyrec) && !empty($pfbreplyrec[0])) {
+		$pfbreplyrec = array_flip($pfbreplyrec);
+	} else {
+		unset($pfbreplyrec);
+	}
+
 	foreach (array (	'Deny'		=> "{$pfb['ip_blocklog']}",
 				'DNSBL Block'	=> "{$pfb['dnslog']}",
 				'DNSBL Python'	=> "{$pfb['dnslog']}",
@@ -3881,7 +3895,7 @@ if (!$alert_summary):
 						case 'DNS-reply':
 
 							// Suppress user-defined reply types
-							if (isset($pfbreplytypes) && isset($pfbreplyrec[$fields[2]])) {
+							if (isset($pfbreplytypes) && isset($pfbreplytypes[$fields[2]])) {
 								continue 2;
 							}
 
@@ -3959,24 +3973,12 @@ if (!$alert_summary):
 			</thead>
 			<tbody>
 	<?php
-			if (isset($pfbreplytypes) && !empty($pfbreplytypes[0])) {
-				$pfbreplytypes	= array_flip($pfbreplytypes);
-			} else {
-				unset($pfbreplytypes);
-			}
-
-			if (isset($pfbreplyrec) && !empty($pfbreplyrec[0])) {
-				$pfbreplyrec	= array_flip($pfbreplyrec);
-			} else {
-				unset($pfbreplyrec);
-			}
-
 			exec("/usr/bin/tail -r {$pfb_log} > {$pfb_log}.rev 2>&1");
 			if (($handle = @fopen("{$pfb_log}.rev", 'r')) !== FALSE) {
 				while (($fields = @fgetcsv($handle)) !== FALSE) {
 
 					// Suppress user-defined reply types
-					if (isset($pfbreplytypes) && isset($pfbreplyrec[$fields[2]])) {
+					if (isset($pfbreplytypes) && isset($pfbreplytypes[$fields[2]])) {
 						continue;
 					}
 

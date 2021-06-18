@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	abyss
-DISTVERSION=	2.2.5
+DISTVERSION=	2.3.1
 CATEGORIES=	biology
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -21,17 +19,22 @@ RUN_DEPENDS=	bash:shells/bash \
 		gmake:devel/gmake
 
 USES=		autoreconf compiler:c++11-lang gmake iconv:wchar_t localbase:ldflags shebangfix sqlite
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	bcgsc
+
 SHEBANG_FILES=	bin/${PORTNAME}-* DataBase/abyss-db-txt
 SHEBANG_LANG=	make
 make_OLD_CMD=	/usr/bin/make
 make_CMD=	${PREFIX}/bin/gmake
-USE_GITHUB=	yes
-GH_ACCOUNT=	bcgsc
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-sparsehash # configure fails to find std::hash, reported to the ML: https://groups.google.com/forum/#!topic/trans-abyss/SZDBKR5bKxs
 
 OPTIONS_DEFINE=	DOCS
 
 PORTDOCS=	*
+
+PORTSCOUT=	limit:^[0-9\.]*$$ # to ignore alpha-numeric tags
 
 .include <bsd.port.mk>

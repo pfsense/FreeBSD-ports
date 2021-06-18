@@ -9,25 +9,35 @@
 # your port/system configuration.  This is the preferred use of USE_GCC.
 # It uses the canonical version of GCC defined in bsd.default-versions.mk.
 #
-# USE_GCC=any is similar, except that it also accepts the old GCC 4.2-
-# based system compiler where still present.
-# 
 # If your port needs a specific (minimum) version of GCC, you can easily
 # specify that with a USE_GCC= statement.  Unless absolutely necessary
 # do so by specifying USE_GCC=X+ which requests at least GCC version X.
 # To request a specific version omit the trailing + sign.
 #
+# Optionally comma-separated arguments follow the version specifier.
+# Currently we support:
+#   build ... which adds GCC as a build dependency (BUILD_DEPENDS) only.
+#
+# If no arguments are specified, GCC is added as both a build dependency
+# and a run time dependency.
+#
+# (USE_GCC=any is deprecated, must not be used for new ports, and should
+# be migrated to USE_GCC=yes or completely removed if possible.)
+#
+#
 # Examples:
 #   USE_GCC=	yes			# port requires a current version of GCC
 #							# as defined in bsd.default-versions.mk.
-#   USE_GCC=	any			# port requires GCC 4.2 or later.
 #   USE_GCC=	9+			# port requires GCC 9 or later.
 #   USE_GCC=	8			# port requires GCC 8.
+#   USE_GCC=	yes:build	# port requires a current version of GCC at
+#							# build time only.
+#   USE_GCC=	9:build		# port requires GCC 9 at build time only.
+#   USE_GCC=	11+:build	# port requires GCC 11 or later at build
+#							# time only.
 #
 # If you are wondering what your port exactly does, use "make test-gcc"
 # to see some debugging.
-#
-# $FreeBSD$
 
 GCC_Include_MAINTAINER=		gerald@FreeBSD.org
 
@@ -39,17 +49,24 @@ GCCVERSIONS=	4.8 7 8 9 10 11
 # No configurable parts below this. ####################################
 #
 
-.if defined(USE_GCC) && !defined(FORCE_BASE_CC_FOR_TESTING)
+# Split arguments
+.if defined(USE_GCC)
+__USE_GCC:=		${USE_GCC:C/\:.*//}
+_USE_GCC_ARGS:=	${USE_GCC:C/^[^\:]*(\:|\$)//:S/,/ /g}
+USE_GCC=		${__USE_GCC}
+.endif
 
-.if ${USE_GCC} == any && exists(/usr/bin/gcc)
-CC:=		gcc
-CXX:=		g++
-. if exists(/usr/bin/gcpp)
-CPP:=		gcpp
-. else
-CPP:=		cpp
-. endif
-.else # The regular approach, not using the age-old base compiler.
+.if ${_USE_GCC_ARGS:Mbuild}
+_USE_GCC_ARGS:=		${_USE_GCC_ARGS:Nbuild}
+.else
+_USE_GCC_RUN_DEPENDS=	yes
+.endif
+
+.if !empty(_USE_GCC_ARGS)
+IGNORE=	bad target specification in USE_GCC; only "build" is supported
+.endif
+
+.if defined(USE_GCC) && !defined(FORCE_BASE_CC_FOR_TESTING)
 
 # Handle USE_GCC=yes and USE_GCC=any.
 .if ${USE_GCC} == yes || ${USE_GCC} == any
@@ -116,13 +133,13 @@ CXXFLAGS:=		${CXXFLAGS:N-mretpoline}
 
 .if defined(_GCC_PORT)
 BUILD_DEPENDS+=	${CC}:lang/${_GCC_PORT}
+. if defined(_USE_GCC_RUN_DEPENDS)
 RUN_DEPENDS+=	${CC}:lang/${_GCC_PORT}
+. endif
 # GCC ports already depend on binutils; make sure whatever we build
 # leverages this as well.
 USE_BINUTILS=	yes
 .endif
-
-.endif # USE_GCC=any
 
 .endif # defined(_USE_GCC) && !defined(FORCE_BASE_CC_FOR_TESTING)
 

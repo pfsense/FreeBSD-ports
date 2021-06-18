@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	Image-Imgur
 PORTVERSION=	0.01
@@ -18,8 +17,9 @@ BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Moose>=0:devel/p5-Moose \
 		p5-libwww>=0:www/p5-libwww
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5 tar:tgz
+USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

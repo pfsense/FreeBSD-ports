@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Polish language support
 
     SUBDIR += aspell

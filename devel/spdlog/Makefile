@@ -1,9 +1,8 @@
 # Created by: vanilla@
-# $FreeBSD$
 
 PORTNAME=	spdlog
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.2
+DISTVERSION=	1.8.5
 PORTREVISION=	0
 CATEGORIES=	devel
 
@@ -19,8 +18,10 @@ USES=		cmake compiler:c++11-lib pathfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	gabime
+USE_LDCONFIG=	yes
 CMAKE_ON=	SPDLOG_BUILD_SHARED SPDLOG_FMT_EXTERNAL
 CMAKE_OFF=	SPDLOG_BUILD_BENCH
+PLIST_SUB=	SOVERSION="${DISTVERSION}"
 
 post-extract:
 	${RM} -r ${WRKSRC}/include/spdlog/fmt/bundled

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xprintidle
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.1

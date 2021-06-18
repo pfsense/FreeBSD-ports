@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gemmlowp
 DISTVERSION=	g20190812
 CATEGORIES=	math

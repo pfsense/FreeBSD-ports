@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 # Make sure that your configuration DOES NOT set ANY gcc-related
 # variables.  ksh93 will not compile if you set even the seemingly
 # most unrelated variable related to gcc configuration.  This means

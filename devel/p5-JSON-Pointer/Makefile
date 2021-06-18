@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	JSON-Pointer
 PORTVERSION=	0.07
 CATEGORIES=	devel perl5

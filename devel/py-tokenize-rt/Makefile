@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tokenize-rt
 PORTVERSION=	4.0.0
 CATEGORIES=	devel

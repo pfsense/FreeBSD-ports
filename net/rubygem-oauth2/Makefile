@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	oauth2
-PORTVERSION=	1.4.4
+PORTVERSION=	1.4.7
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 

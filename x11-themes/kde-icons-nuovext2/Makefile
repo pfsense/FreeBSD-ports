@@ -1,5 +1,4 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	nuoveXT2
 PORTVERSION=	2.2.2
@@ -10,7 +9,7 @@ MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	KDE nuoveXT 2 iconset
 
 LICENSE=	LGPL3
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE_FILE_LGPL3=	${WRKSRC}/COPYING
 
 USES=		tar:xz
 

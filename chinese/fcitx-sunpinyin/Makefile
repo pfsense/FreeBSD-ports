@@ -1,5 +1,4 @@
 # Created by: Zhihao Yuan <lichray@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fcitx-sunpinyin
 PORTVERSION=	0.4.2
@@ -12,6 +11,9 @@ MAINTAINER=	lichray@gmail.com
 COMMENT=	SunPinyin support for Fcitx
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Uses EOL Python 2.7 via chinese/fcitx
+EXPIRATION_DATE=2021-06-23
 
 BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libfcitx-config.so:chinese/fcitx \

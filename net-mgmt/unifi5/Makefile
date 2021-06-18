@@ -1,5 +1,4 @@
 # Created by: Alban MAIRE <a.maire@s2mi.fr>
-# $FreeBSD$
 
 PORTNAME=	unifi5
 PORTVERSION=	5.14.23
@@ -16,6 +15,9 @@ EXTRACT_ONLY=	unifi_sysvinit_all.deb
 
 MAINTAINER=	feld@FreeBSD.org
 COMMENT=	UniFi Controller v5
+
+DEPRECATED=	Use net-mgmt/unifi6 instead
+EXPIRATION_DATE=	2021-10-16
 
 RUN_DEPENDS=	mongodb36>0:databases/mongodb36 \
 		snappyjava>0:archivers/snappy-java

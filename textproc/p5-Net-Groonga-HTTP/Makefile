@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-Groonga-HTTP
 PORTVERSION=	0.03
 CATEGORIES=	textproc perl5

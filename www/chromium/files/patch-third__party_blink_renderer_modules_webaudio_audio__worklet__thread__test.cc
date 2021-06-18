@@ -1,4 +1,4 @@
---- third_party/blink/renderer/modules/webaudio/audio_worklet_thread_test.cc.orig	2021-01-18 21:29:05 UTC
+--- third_party/blink/renderer/modules/webaudio/audio_worklet_thread_test.cc.orig	2021-04-14 18:41:10 UTC
 +++ third_party/blink/renderer/modules/webaudio/audio_worklet_thread_test.cc
 @@ -431,8 +431,8 @@ class AudioWorkletThreadPriorityTest
          base::PlatformThread::GetCurrentThreadPriority();

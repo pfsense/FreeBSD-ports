@@ -1,7 +1,3 @@
-# $FreeBSD$
-
-PORTREVISION=	1
-
 USES=	qt:5 xorg
 USE_CXXSTD=	c++11
 USE_QT=		core gui svg widgets xml

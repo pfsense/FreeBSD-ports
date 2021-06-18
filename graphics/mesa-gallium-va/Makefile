@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mesa-gallium-va
 PORTVERSION=	${MESAVERSION}
 PORTREVISION=	2

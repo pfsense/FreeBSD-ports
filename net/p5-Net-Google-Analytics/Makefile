@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-Google-Analytics
 PORTVERSION=	3.03
 CATEGORIES=	net perl5

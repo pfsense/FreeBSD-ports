@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	GNUDoku
 PORTVERSION=	0.93
 PORTREVISION=	12

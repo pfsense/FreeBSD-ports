@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xf86-video-vmware
 PORTVERSION=	13.3.0
 PORTREVISION=	6
@@ -24,7 +22,7 @@ CONFIGURE_ARGS= --without-libudev
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == i386
-USE_GCC=	any
+USE_GCC=	yes
 .endif
 
 .include <bsd.port.mk>

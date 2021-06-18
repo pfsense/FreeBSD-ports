@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@ccca.nctu.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	sysbench
 PORTVERSION=	1.0.20
@@ -32,7 +31,7 @@ PGSQL_USES=		pgsql
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == powerpc64
+.if ${ARCH:Mpowerpc64*}
 LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit-openresty
 .else
 LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit

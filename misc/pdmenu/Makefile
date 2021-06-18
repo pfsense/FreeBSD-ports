@@ -1,5 +1,4 @@
 # Created by: Neil Blakey-Milner <nbm@rucus.ru.ac.za>
-# $FreeBSD$
 
 PORTNAME=	pdmenu
 PORTVERSION=	1.3.4
@@ -12,6 +11,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple console menu program
 
 LICENSE=	GPLv2
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: BG
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: BG
 
 LIB_DEPENDS=	libslang.so:devel/libslang2
 

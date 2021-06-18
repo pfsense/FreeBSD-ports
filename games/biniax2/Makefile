@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	biniax2
 PORTVERSION=	1.30
 PORTREVISION=	9

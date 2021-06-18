@@ -1,9 +1,8 @@
 # Created by: Tobias Roth <ports@fsck.ch>
-# $FreeBSD$
 
 PORTNAME=	slim
 PORTVERSION=	1.3.6
-PORTREVISION=	21
+PORTREVISION=	22
 CATEGORIES=	x11
 MASTER_SITES=	ftp://ftp.berlios.de/pub/slim/ \
 		SF/slim.berlios
@@ -17,6 +16,7 @@ BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:devel/libpthread-
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
+RUN_DEPENDS=	dbus-daemon:devel/dbus
 
 USES=		cmake compiler:c++11-lang jpeg pkgconfig xorg
 USE_XORG=	ice sm x11 xau xcb xdmcp xext xft xmu xorg-server xrandr \

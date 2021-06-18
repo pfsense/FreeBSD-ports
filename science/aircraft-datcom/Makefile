@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	aircraft-datcom
 DISTVERSION=	0.0.20120723
 PORTREVISION=	5

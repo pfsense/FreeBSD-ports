@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libkdegames
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	games kde kde-applications

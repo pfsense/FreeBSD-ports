@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libkcddb
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	audio kde kde-applications

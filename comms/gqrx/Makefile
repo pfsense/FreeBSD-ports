@@ -1,8 +1,7 @@
 # Created by: Ganael Laplanche <ganael.laplanche@martymac.org>
-# $FreeBSD$
 
 PORTNAME=	gqrx
-PORTVERSION=	2.14.3
+PORTVERSION=	2.14.4
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	comms hamradio

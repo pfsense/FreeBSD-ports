@@ -1,8 +1,7 @@
 # Created by: Juergen Lock <nox@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	w_scan2
-PORTVERSION=	1.0.9
+PORTVERSION=	1.0.12
 CATEGORIES=	multimedia
 
 MAINTAINER=	rene@FreeBSD.org

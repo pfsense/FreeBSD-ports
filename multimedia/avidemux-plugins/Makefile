@@ -1,9 +1,8 @@
 # Created by: Anish Mistry (with help from mean)
-# $FreeBSD$
 
 PORTNAME=	avidemux
 PORTVERSION=	${AVIDEMUX_VERSION}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia
 PKGNAMESUFFIX=	-plugins
 

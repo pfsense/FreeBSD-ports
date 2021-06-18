@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	cl
 PORTVERSION=	1.2.4
 DISTVERSIONPREFIX=	cl-

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ujprog
 DISTVERSION=	g20191117
 CATEGORIES=	comms

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 MASTERDIR=	${.CURDIR}/../../graphics/gd
 CATEGORIES=	russian
 

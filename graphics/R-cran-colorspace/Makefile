@@ -1,8 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	colorspace
-DISTVERSION=	2.0-0
+DISTVERSION=	2.0-1
 CATEGORIES=	graphics
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

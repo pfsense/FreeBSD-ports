@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ume
 PORTVERSION=	0.0.670
 CATEGORIES=	japanese x11-fonts

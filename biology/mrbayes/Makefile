@@ -1,5 +1,4 @@
 # Created by: mzaki@biol.s.u-tokyo.ac.jp
-# $FreeBSD$
 
 PORTNAME=	mrbayes
 DISTVERSIONPREFIX=	v
@@ -13,7 +12,7 @@ COMMENT=	Bayesian inference of phylogeny
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		readline:port
+USES=		readline
 USE_GITHUB=	yes
 GH_ACCOUNT=	NBISweden
 GH_PROJECT=	MrBayes

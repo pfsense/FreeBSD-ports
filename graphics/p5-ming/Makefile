@@ -1,8 +1,7 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	ming
-DISTVERSIONPREFIX=	${PORTNAME}-
+DISTVERSIONPREFIX=	ming-
 DISTVERSION=	0_4_8
 CATEGORIES=	graphics perl5
 PKGNAMEPREFIX=	p5-

@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	bandwhich
 DISTVERSION=	0.20.0
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	petteri.valkonen@iki.fi

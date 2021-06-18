@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
 PORTVERSION=	0.18
 PORTREVISION=	1

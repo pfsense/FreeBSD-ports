@@ -1,11 +1,10 @@
 # Created by: alexis
-# $FreeBSD$
 
 PORTNAME=	nsd
-PORTVERSION=	4.3.5
+DISTVERSION=	4.3.6
+PORTREVISION=	1
 CATEGORIES=	dns
-MASTER_SITES=	http://www.nlnetlabs.nl/downloads/nsd/	\
-		ftp://ftp.rhnet.is/pub/nsd/
+MASTER_SITES=	https://www.nlnetlabs.nl/downloads/nsd/
 
 MAINTAINER=	jaap@NLnetLabs.nl
 COMMENT=	Authoritative only non-recursive name server
@@ -15,9 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cpe ssl
 
-LIB_DEPENDS+=	libevent.so:devel/libevent
-
-CONFLICTS=	nsd-[0-3]* nsd3-[0-9]*
+LIB_DEPENDS=	libevent.so:devel/libevent
 
 CPE_VENDOR=	nlnetlabs
 USE_RC_SUBR=	nsd

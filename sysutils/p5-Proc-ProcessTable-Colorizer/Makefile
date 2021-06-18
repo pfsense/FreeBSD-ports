@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Proc-ProcessTable-Colorizer
 PORTVERSION=	0.3.0
 CATEGORIES=	sysutils perl5

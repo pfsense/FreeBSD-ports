@@ -1,8 +1,7 @@
 # Created by: wenheping@gmail.com
-# $FreeBSD$
 
 PORTNAME=	rtree
-PORTVERSION=	0.9.5
+PORTVERSION=	0.9.7
 CATEGORIES=	devel science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

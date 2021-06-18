@@ -1,11 +1,10 @@
 # Created by: Alex Miller (<asm@asm.kiev.ua>)
-# $FreeBSD$
 
 PORTNAME=	XML_RSS
 PORTVERSION=	1.1.0
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR RSS parser
 
 LICENSE=	PHP301

@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	coppermine
-PORTVERSION=	1.6.09
+PORTVERSION=	1.6.12
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Web picture gallery script
 
 LICENSE=	GPLv3

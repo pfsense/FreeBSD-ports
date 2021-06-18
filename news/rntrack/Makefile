@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rntrack
 PORTVERSION=	2.1.10
 PORTREVISION=	1

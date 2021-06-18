@@ -1,11 +1,10 @@
 # Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	PHP_Timer
 PORTVERSION=	2.1.2
 CATEGORIES=	devel pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Utility class for timing
 
 LICENSE=	BSD3CLAUSE

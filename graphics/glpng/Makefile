@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	glpng
 PORTVERSION=	1.46
 PORTREVISION=	1

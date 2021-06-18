@@ -1,10 +1,8 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	aiohttp-socks
-PORTVERSION=	0.5.5
+PORTVERSION=	0.6.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	net python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 

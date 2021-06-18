@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DBIx-Skinny-Pager
 PORTVERSION=	0.11
 PORTREVISION=	1

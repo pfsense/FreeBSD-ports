@@ -1,5 +1,4 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pglast
 PORTVERSION=	1.2
@@ -13,7 +12,7 @@ COMMENT=	PostgreSQL Languages AST and statements prettifier
 LICENSE=	GPLv3+
 
 BROKEN_riscv64=		fails to build: PostgreSQL does not have native spinlock support on this platform
-NOT_FOR_ARCHS=		aarch64 armv6 armv7 powerpc powerpc64 powerpc64le powerpcspe
+NOT_FOR_ARCHS=		aarch64 armv6 armv7
 NOT_FOR_ARCHS_REASON=	port/atomics/arch-<arch>.h: No such file or directory
 
 USES=		gmake python:3.4+

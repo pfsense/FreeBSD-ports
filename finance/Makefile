@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Monetary, financial, and related applications
 
     SUBDIR += R-cran-AER
@@ -96,6 +93,7 @@
     SUBDIR += py-backtrader
     SUBDIR += py-bitcoin
     SUBDIR += py-ebaysdk
+    SUBDIR += py-mplfinance
     SUBDIR += py-ofxparse
     SUBDIR += py-pycoin
     SUBDIR += py-python-bitcoinlib
@@ -111,10 +109,10 @@
     SUBDIR += rubygem-money
     SUBDIR += skrooge
     SUBDIR += sql-ledger
+    SUBDIR += tickrs
     SUBDIR += vanitygen
     SUBDIR += venice
     SUBDIR += weberp
-    SUBDIR += wmstock
     SUBDIR += xtrader
 
 .include <bsd.port.subdir.mk>

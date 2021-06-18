@@ -1,11 +1,10 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	DB_Sqlite_Tools
 PORTVERSION=	0.1.7
 CATEGORIES=	databases www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Object-oriented interface to backup SQLite databases
 
 LICENSE=	BSD2CLAUSE

@@ -1,8 +1,7 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Clipboard
-PORTVERSION=	0.26
+PORTVERSION=	0.28
 CATEGORIES=	x11 perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:SHLOMIF

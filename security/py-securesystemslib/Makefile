@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	securesystemslib
 PORTVERSION=	0.11.3
 DISTVERSIONPREFIX=v

@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	ydotool
 PORTVERSION=	0.1.8
 PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	deskutils
 
-MAINTAINER=	bapt@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generic command-line automation tool (no X!)
 
 LICENSE=	MIT

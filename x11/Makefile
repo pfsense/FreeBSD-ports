@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Ports to support the X window system
 
     SUBDIR += 3ddesktop
@@ -29,7 +26,6 @@
     SUBDIR += bgs
     SUBDIR += bitmap
     SUBDIR += bmpanel2
-    SUBDIR += bricons
     SUBDIR += brisk-menu
     SUBDIR += cde
     SUBDIR += cinnamon
@@ -54,6 +50,7 @@
     SUBDIR += dmenu-wayland
     SUBDIR += docker-tray
     SUBDIR += dsbautostart
+    SUBDIR += dsbxinput
     SUBDIR += dxpc
     SUBDIR += dzen2
     SUBDIR += eaglemode
@@ -90,6 +87,7 @@
     SUBDIR += grabc
     SUBDIR += grim
     SUBDIR += gromit
+    SUBDIR += gromit-mpx
     SUBDIR += gskrab
     SUBDIR += gstreamer1-plugins-x
     SUBDIR += gstreamer1-plugins-ximagesrc
@@ -135,6 +133,7 @@
     SUBDIR += kf5-kwayland
     SUBDIR += kf5-kwindowsystem
     SUBDIR += kf5-plasma-framework
+    SUBDIR += kitty
     SUBDIR += konsole
     SUBDIR += lavalauncher
     SUBDIR += lemonbar
@@ -168,7 +167,6 @@
     SUBDIR += libfm
     SUBDIR += libfm-extra
     SUBDIR += libfm-qt
-    SUBDIR += libgnome
     SUBDIR += libgnomekbd
     SUBDIR += libinput
     SUBDIR += libmatekbd
@@ -176,6 +174,7 @@
     SUBDIR += libsynaptics
     SUBDIR += libwacom
     SUBDIR += libxcb
+    SUBDIR += libxcvt
     SUBDIR += libxdg-basedir
     SUBDIR += libxfce4menu
     SUBDIR += libxfce4util
@@ -233,8 +232,10 @@
     SUBDIR += mrxvt
     SUBDIR += mrxvt-devel
     SUBDIR += multi-aterm
+    SUBDIR += mxascii
     SUBDIR += mxico
     SUBDIR += nezd
+    SUBDIR += nfy
     SUBDIR += numlockx
     SUBDIR += nvidia-driver
     SUBDIR += nvidia-driver-304
@@ -255,7 +256,6 @@
     SUBDIR += p5-XTerm-Conf
     SUBDIR += pcdm
     SUBDIR += perwindowlayoutd
-    SUBDIR += phosh
     SUBDIR += pipeglade
     SUBDIR += pixman
     SUBDIR += plank
@@ -274,6 +274,7 @@
     SUBDIR += polybar
     SUBDIR += printscreen
     SUBDIR += py-caffeine-ng
+    SUBDIR += py-i3-quickterm
     SUBDIR += py-i3ipc
     SUBDIR += py-pyscreenshot
     SUBDIR += py-python-xapp
@@ -292,13 +293,16 @@
     SUBDIR += rofi
     SUBDIR += rofi-calc
     SUBDIR += rofi-pass
+    SUBDIR += rofi-wayland
     SUBDIR += roxterm
     SUBDIR += rsibreak
     SUBDIR += rubygem-gnome
+    SUBDIR += runner
     SUBDIR += rxvt-unicode
     SUBDIR += sakura
     SUBDIR += sbxkb
     SUBDIR += screen-message
+    SUBDIR += screengrab
     SUBDIR += screenkey
     SUBDIR += scripts
     SUBDIR += sddm
@@ -306,6 +310,7 @@
     SUBDIR += setlayout
     SUBDIR += setxkbmap
     SUBDIR += showkeys
+    SUBDIR += showmethekey
     SUBDIR += simdock
     SUBDIR += simplestroke
     SUBDIR += slick-greeter
@@ -314,7 +319,9 @@
     SUBDIR += slop
     SUBDIR += slurp
     SUBDIR += smproxy
+    SUBDIR += sprop
     SUBDIR += squeekboard
+    SUBDIR += srandrd
     SUBDIR += sselp
     SUBDIR += stalonetray
     SUBDIR += startup-notification
@@ -339,7 +346,7 @@
     SUBDIR += tilix
     SUBDIR += tint
     SUBDIR += trayer
-    SUBDIR += tycoon
+    SUBDIR += ulauncher
     SUBDIR += urxvt-font-size
     SUBDIR += urxvt-perls
     SUBDIR += vdesk
@@ -368,11 +375,9 @@
     SUBDIR += wmctrl
     SUBDIR += wmdrawer
     SUBDIR += wmfocus
-    SUBDIR += wmmatrix
     SUBDIR += wmsystemtray
     SUBDIR += wmutils-core
     SUBDIR += wmutils-opt
-    SUBDIR += wmxss
     SUBDIR += wob
     SUBDIR += wofi
     SUBDIR += workrave
@@ -389,7 +394,6 @@
     SUBDIR += xbacklight
     SUBDIR += xballoon
     SUBDIR += xbanish
-    SUBDIR += xbanner
     SUBDIR += xbiff
     SUBDIR += xbindkeys
     SUBDIR += xbitmaps
@@ -436,7 +440,6 @@
     SUBDIR += xfce4-clipman-plugin
     SUBDIR += xfce4-conf
     SUBDIR += xfce4-dashboard
-    SUBDIR += xfce4-embed-plugin
     SUBDIR += xfce4-goodies
     SUBDIR += xfce4-screensaver
     SUBDIR += xfce4-screenshooter-plugin
@@ -449,7 +452,6 @@
     SUBDIR += xforward
     SUBDIR += xgamma
     SUBDIR += xgc
-    SUBDIR += xgrab
     SUBDIR += xhost
     SUBDIR += xidle
     SUBDIR += xinit
@@ -480,7 +482,6 @@
     SUBDIR += xmessage
     SUBDIR += xmh
     SUBDIR += xmodmap
-    SUBDIR += xmon
     SUBDIR += xmore
     SUBDIR += xmotd
     SUBDIR += xmsg
@@ -497,6 +498,7 @@
     SUBDIR += xorgproto
     SUBDIR += xpr
     SUBDIR += xpra
+    SUBDIR += xpra-html5
     SUBDIR += xprintidle
     SUBDIR += xprompt
     SUBDIR += xprop
@@ -517,6 +519,7 @@
     SUBDIR += xskyroot
     SUBDIR += xsm
     SUBDIR += xsnow
+    SUBDIR += xssstate
     SUBDIR += xstarroll
     SUBDIR += xstdcmap
     SUBDIR += xstroke

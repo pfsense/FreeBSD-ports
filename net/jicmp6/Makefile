@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	jicmp6
 PORTVERSION=	1.2.3
 CATEGORIES=	net java
 MASTER_SITES=	SF/opennms/JICMP6/stable-1.2
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java native interface (JNI) to ICMPv6
 
 USES=		libtool

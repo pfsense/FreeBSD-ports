@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	texlive
 PORTVERSION=	20150523
 CATEGORIES=	print
@@ -8,7 +6,7 @@ PKGNAMESUFFIX=	-docs
 DISTNAME=	${PORTNAME}-${PORTVERSION}-texmf
 DIST_SUBDIR=	TeX
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	freebsd-tex@FreeBSD.org
 COMMENT=	TeX Live Typesetting System, documentation
 
 USES=		tar:xz

@@ -1,8 +1,7 @@
 # Created by: Dmitry Kazarov <d.y.kazarov@mail.ru>
-# $FreeBSD$
 
 PORTNAME=	qpdf
-DISTVERSION=	10.0.4
+DISTVERSION=	10.3.2
 CATEGORIES=	print
 MASTER_SITES=	SF
 

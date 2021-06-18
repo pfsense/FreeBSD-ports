@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bosun
 DISTVERSION=	0.9.0
 DISTVERSIONSUFFIX=	-preview

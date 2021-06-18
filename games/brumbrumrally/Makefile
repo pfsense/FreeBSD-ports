@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	brumbrumrally
 PORTVERSION=	0.7
 CATEGORIES=	games

@@ -1,9 +1,8 @@
 # Created by: lbartoletti <lbartoletti@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	librasterlite
 PORTVERSION=	1.1g
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	graphics geography
 MASTER_SITES=	http://www.gaia-gis.it/gaia-sins/librasterlite-sources/
 

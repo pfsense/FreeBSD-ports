@@ -1,10 +1,9 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	libsemigroups
-PORTVERSION=	1.3.4
-PORTREVISION=	1
+PORTVERSION=	1.3.7
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -42,6 +41,6 @@ pre-configure:
 		${WRKSRC}/include/libsemigroups/hpcombi.hpp
 .endif
 	${REINPLACE_CMD} -e 's|fmtinclude_HEADERS|#fmtinclude_HEADERS|'	\
-		${WRKSRC}/Makefile.am
+		-e 's|-O3 ||' ${WRKSRC}/Makefile.am
 
 .include <bsd.port.post.mk>

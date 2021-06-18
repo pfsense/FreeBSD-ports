@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	string_theory
 PORTVERSION=	3.4
 CATEGORIES=	devel

@@ -1,8 +1,7 @@
 # Created by: John Hixson <john@pcbsd.org>
-# $FreeBSD$
 
 PORTNAME=	pianobar
-PORTVERSION=	2020.04.05
+PORTVERSION=	2020.11.28
 CATEGORIES=	audio
 
 MAINTAINER=	jhixson@FreeBSD.org

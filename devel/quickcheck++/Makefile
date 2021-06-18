@@ -1,5 +1,4 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	quickcheck++
 PORTVERSION=	0.0.3
@@ -21,7 +20,6 @@ PORTDOCS=	COPYRIGHT README
 PORTEXAMPLES=	examples.cc
 
 OPTIONS_DEFINE=	DOCS DOXYGEN EXAMPLES
-DOXYGEN_DESC=	Build documentation with doxygen
 
 .include <bsd.port.options.mk>
 

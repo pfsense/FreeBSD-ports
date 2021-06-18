@@ -1,7 +1,9 @@
 # Created by: Matthias Andree <mandree@FreeBSD.org>
-# $FreeBSD$
 
 PKGNAMESUFFIX=		-gtk2
+
+DEPRECATED=		putty-gtk2 is being phased out
+EXPIRATION_DATE=	2021-12-15
 
 OPTIONS_SLAVE=		GTK2
 OPTIONS_EXCLUDE=	GTK3

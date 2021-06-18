@@ -1,8 +1,7 @@
 # Created by: Nicola Stanislao Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	googler
-PORTVERSION=	4.2
+PORTVERSION=	4.3.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 
@@ -11,8 +10,6 @@ COMMENT=	Google Search, Google Site Search, Google News from the terminal
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-RUN_DEPENDS=	xclip:x11/xclip
 
 USES=		python:3.5+ shebangfix
 USE_GITHUB=	yes

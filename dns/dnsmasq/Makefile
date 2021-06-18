@@ -1,15 +1,13 @@
 # Created by: Steven Honson
-# $FreeBSD$
 
 PORTNAME=	dnsmasq
-DISTVERSION=	2.84
+DISTVERSION=	2.85
 # Leave the PORTREVISION in even if 0 to avoid accidental PORTEPOCH bumps:
-PORTREVISION=	0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	dns
 MASTER_SITES=	https://www.thekelleys.org.uk/dnsmasq/ \
 		LOCAL/mandree/
-PATCH_STRIP=	-p1
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	Lightweight DNS forwarder, DHCP, and TFTP server
@@ -34,6 +32,7 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 
 CONFLICTS_INSTALL=	dnsmasq-devel-*
 
+PATCH_STRIP=	-p1
 SUB_FILES=	pkg-message
 
 PORTDOCS=	CHANGELOG CHANGELOG.archive FAQ doc.html setup.html
@@ -104,7 +103,6 @@ LDFLAGS+=	-L${LOCALBASE}/lib ${_intllibs} ${ICONV_LIB}
 
 post-patch:
 	${REINPLACE_CMD} -e '/^lua_/s/lua5\.2/lua-${LUA_VER}/' ${WRKSRC}/Makefile
-	${REINPLACE_CMD} -e 's/2\.84rc2/2.84/' ${WRKSRC}/VERSION
 
 pre-configure: pretty-print-config
 .if ${PORT_OPTIONS:MIDN}

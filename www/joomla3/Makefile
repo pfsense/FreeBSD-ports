@@ -1,8 +1,7 @@
 # Created by: Francisco Cabrita <include@npf.pt.freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	joomla
-DISTVERSION=	3-9-6
+DISTVERSION=	3-9-24
 CATEGORIES=	www
 MASTER_SITES=	https://downloads.joomla.org/cms/joomla3/${DISTVERSION}/
 PKGNAMESUFFIX=	3
@@ -38,7 +37,7 @@ WWWDIR=		${PREFIX}/www/${PORTNAME}${PORTVERSION:R:R}
 
 .include <bsd.port.options.mk>
 
-.if ${FLAVOR} != php80
+.if ${FLAVOR} != php80 && !defined(PACKAGE_BUILDING)
 USE_PHP+=	pdf
 .endif
 

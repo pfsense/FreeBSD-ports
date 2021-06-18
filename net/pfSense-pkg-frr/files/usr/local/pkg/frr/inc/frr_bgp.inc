@@ -303,8 +303,8 @@ function frr_bgp_generate_routeradvanced() {
 	if (is_array($config['installedpackages']['frrbgpadvanced']['config'])) {
 		$frr_bgpadv_conf = &$config['installedpackages']['frrbgpadvanced']['config'][0];
 	} else {
-		/* No BGP Advanced config, stop. */
-		return null;
+		/* No BGP Advanced config, return defaults. */
+		return " no bgp network import-check\n";
 	}
 	$advconf = "";
 	/* Advanced Options */

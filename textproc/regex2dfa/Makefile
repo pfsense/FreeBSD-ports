@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	regex2dfa
 DISTVERSION=	0.1.6
 PORTREVISION=	3

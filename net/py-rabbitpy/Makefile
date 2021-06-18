@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rabbitpy
 PORTVERSION=	1.0.0
 CATEGORIES=	net python

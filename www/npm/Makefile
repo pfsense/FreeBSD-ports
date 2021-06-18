@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	npm
 PORTVERSION=	6.14.8
@@ -42,6 +41,15 @@ NODE12_RUN_DEPENDS=	node12>=0.8.0:www/node12
 NODE14_RUN_DEPENDS=	node14>=0.8.0:www/node14
 
 .include <bsd.port.pre.mk>
+
+.if ${PORT_OPTIONS:MNODE10}
+DEPRECATED=	Uses EOL Python 2.7 via www/node10
+EXPIRATION_DATE=2021-06-23
+.endif
+.if ${PORT_OPTIONS:MNODE12}
+DEPRECATED=	Uses EOL Python 2.7 via www/node12
+EXPIRATION_DATE=2021-06-23
+.endif
 
 .if ${ARCH} == i386
 # Workaround for kernel bug 178881

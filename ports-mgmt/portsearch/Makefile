@@ -1,8 +1,7 @@
 # Created by: Vasil Dimov <vd@datamax.bg>
-# $FreeBSD$
 
 PORTNAME=	portsearch
-PORTVERSION=	1.3.4
+PORTVERSION=	1.3.5
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	https://people.freebsd.org/~vd/portsearch/ \
 		LOCAL/vd/portsearch

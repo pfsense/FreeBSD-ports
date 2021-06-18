@@ -1,8 +1,7 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	minissdpd
-PORTVERSION=	1.5.20180223
+PORTVERSION=	1.5.20200928
 CATEGORIES=	net
 MASTER_SITES=	http://miniupnp.free.fr/files/ \
 		LOCAL/ehaupt

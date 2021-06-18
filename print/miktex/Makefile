@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	miktex
-DISTVERSION=	20.11
+DISTVERSION=	21.2
+PORTREVISION=	1
 CATEGORIES=	print
 MASTER_SITES=	LOCAL/arrowd/miktex:bootstrap
 DISTFILES=	miktex-zzdb1-2.9.tar.lzma:bootstrap \
@@ -22,6 +21,7 @@ LICENSE_TEXT=	This is a collection of many independent packages and does not hav
 LICENSE_PERMS=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
 
 LIB_DEPENDS=	libapr-1.so:devel/apr1 \
+		libboost_locale.so:devel/boost-libs \
 		libcurl.so:ftp/curl \
 		libexpat.so:textproc/expat2 \
 		libfreetype.so:print/freetype2 \
@@ -38,12 +38,12 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		liblog4cxx.so:devel/log4cxx \
 		libmpfr.so:math/mpfr \
 		libmspack.so:archivers/libmspack \
-		libpng16.so:graphics/png \
+		libpng.so:graphics/png \
 		libpopt.so:devel/popt \
 		liburiparser.so:net/uriparser \
 		libzzip.so:devel/zziplib
 
-USES=		bison cmake:noninja gmake gnome jpeg pkgconfig ssl xorg
+USES=		bison cmake:noninja gettext-tools gmake gnome jpeg pkgconfig ssl xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	MiKTeX
@@ -56,7 +56,6 @@ OPTIONS_DEFINE=		MANPAGES UIQT
 OPTIONS_DEFAULT=	MANPAGES UIQT
 OPTIONS_SUB=		yes
 
-CONTEXT_DESC=	Enable ConTeXt support
 UIQT_DESC=	Build Qt components
 
 MANPAGES_CMAKE_BOOL=	WITH_MAN_PAGES

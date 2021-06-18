@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 # QtWebEngine itself is a very thin layer of Qt code on top of a large part of
 # Chromium (everything up to the content/ layer). As such, most of the work in
 # this port revolves around taming Chromium and getting it to build on FreeBSD.
@@ -18,6 +16,7 @@
 
 PORTNAME=	webengine
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	2
 CATEGORIES=	www
 PKGNAMEPREFIX=	qt5-
 
@@ -25,7 +24,6 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt 5 library to render web content
 
 BUILD_DEPENDS=	bison:devel/bison \
-		ninja:devel/ninja \
 		yasm:devel/yasm \
 		${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
 		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
@@ -73,7 +71,7 @@ SNDIO_VARS_OFF=		QMAKE_CONFIGURE_ARGS+=-no-sndio
 # We pass `norecursive' to USES=qmake because src/plugins/plugins.pro checks
 # whether webenginewidgets is available, which fails when qmake processes all
 # .pro files at once.
-USES=		gl gnome gperf jpeg python:2.7,build pkgconfig \
+USES=		gl gnome gperf jpeg ninja:build pkgconfig python:2.7,build \
 		qmake:norecursive,outsource qt-dist:5,webengine shebangfix xorg
 USE_GL=		gl
 USE_GNOME=	glib20 libxml2 libxslt

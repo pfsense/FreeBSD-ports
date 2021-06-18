@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	descartes
 PORTVERSION=	1.1.0
 PORTREVISION=	1
@@ -14,7 +12,7 @@ LICENSE=	BSD3CLAUSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matplotlib>=0.98:math/py-matplotlib@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python:3.7+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

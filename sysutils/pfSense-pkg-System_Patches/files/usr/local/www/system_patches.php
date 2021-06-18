@@ -53,7 +53,7 @@ if ($a_patches[$_POST['id']]) {
 	$descr = patch_descr($_POST['id']);
 	switch ($_POST['act']) {
 		case 'fetch':
-			$savemsg .= patch_fetch($a_patches[$_POST['id']]) ? gettext("fetched succesfully") : gettext("fetch failed");
+			$savemsg .= patch_fetch($a_patches[$_POST['id']]) ? gettext("fetched successfully") : gettext("fetch failed");
 			patchlog($savemsg . $descr);
 			break;
 		case 'test':
@@ -64,7 +64,7 @@ if ($a_patches[$_POST['id']]) {
 			$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;fulltest=revert\" usepost>" . gettext("detail") . "</a>)";
 			break;
 		case 'apply':
-			$savemsg .= patch_apply($a_patches[$_POST['id']]) ? gettext("applied succesfully") : gettext("could NOT be applied");
+			$savemsg .= patch_apply($a_patches[$_POST['id']]) ? gettext("applied successfully") : gettext("could NOT be applied");
 			patchlog($savemsg . $descr);
 			break;
 		case 'revert':

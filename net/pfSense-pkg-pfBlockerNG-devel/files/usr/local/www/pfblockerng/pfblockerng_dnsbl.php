@@ -512,6 +512,7 @@ $section->addInput(new Form_Checkbox(
 ))->setHelp('Enabling this option will allow sending python_control commands (via DNS TXT) to the Python integration.'
 	. '<div class="infoblock" style="width: 90%;">'
 	. 'The python_control feature is limited to DNS TXT records sent from pfSense localhost (127.0.0.1) only!<br />'
+	. 'This is a temporary intervention, and will be reset on a restart of the Resolver<br />'
 	. 'These commands can be incorporated in CRON/Scheduler tasks or run manually as required<br />'
 	. 'All events are logged to the Reports Tab (Gear icon)<br /><br />'
 	. '<strong>Command Syntax:</strong><br />'

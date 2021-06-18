@@ -1,8 +1,5 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	wyrmsun
-PORTVERSION=	3.5.4
+PORTVERSION=	4.1.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
@@ -19,6 +16,7 @@ GH_ACCOUNT=	Andrettin
 GH_PROJECT=	Wyrmsun
 
 USES=		cmake gnome
+INSTALL_TARGET=	install
 INSTALLS_ICONS=	yes
 NO_ARCH=	yes
 

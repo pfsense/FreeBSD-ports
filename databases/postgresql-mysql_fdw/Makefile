@@ -1,9 +1,8 @@
 # Created by: Jov <amutu@amutu.com>
-# $FreeBSD$
 
 PORTNAME=	mysql_fdw
 DISTVERSIONPREFIX=	REL-
-DISTVERSION=	2_5_5
+DISTVERSION=	2_6_0
 CATEGORIES=	databases
 PKGNAMEPREFIX=	postgresql${PGSQL_VER:S/.//}-
 

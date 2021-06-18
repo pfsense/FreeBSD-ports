@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	screen-message
 PORTVERSION=	0.25
 CATEGORIES=	x11

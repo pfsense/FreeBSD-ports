@@ -1,5 +1,9 @@
+include/libepoll-shim/epoll-shim/detail/common.h
+include/libepoll-shim/epoll-shim/detail/poll.h
+include/libepoll-shim/epoll-shim/detail/read.h
+include/libepoll-shim/epoll-shim/detail/write.h
 include/libepoll-shim/sys/epoll.h
-include/libepoll-shim/sys/eventfd.h
+%%SHIM_EVENTFD%%include/libepoll-shim/sys/eventfd.h
 include/libepoll-shim/sys/signalfd.h
 include/libepoll-shim/sys/timerfd.h
 lib/cmake/epoll-shim/epoll-shim-config.cmake

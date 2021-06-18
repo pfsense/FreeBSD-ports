@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jobd
 PORTVERSION=	0.7.1
 DISTVERSIONPREFIX=v
@@ -12,11 +10,11 @@ LICENSE=	ISCL
 
 BUILD_DEPENDS=	docbook2mdoc:textproc/docbook2mdoc
 
+BROKEN=			fails to compile: job.cpp:63:26: error: object backing the pointer will be destroyed at the end of the full-expression [-Werror,-Wdangling-gsl]
 BROKEN_aarch64=		fails to compile: comparison of constant -1 with expression of type char is always true
 BROKEN_armv6=		fails to compile: comparison of constant -1 with expression of type char is always true
 BROKEN_armv7=		fails to compile: comparison of constant -1 with expression of type char is always true
 BROKEN_mips64=		fails to configure: unrecognized command line option -std=c++11
-BROKEN_riscv64=		fails to compile: job.cpp:63:26: object backing the pointer will be destroyed at the end of the full-expression
 BROKEN_sparc64=		fails to configure: unrecognized command line option -std=c++11
 
 HAS_CONFIGURE=	YES

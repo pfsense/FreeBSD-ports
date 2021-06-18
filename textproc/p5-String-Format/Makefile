@@ -1,5 +1,4 @@
 # Created by: Matt Mills <matt_mills@btopenworld.com>
-# $FreeBSD$
 
 PORTNAME=	String-Format
 PORTVERSION=	1.18
@@ -15,5 +14,7 @@ LICENSE_FILE=	${WRKSRC}/README
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

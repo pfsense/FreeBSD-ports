@@ -1,9 +1,8 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gmpc-mserver
 PORTVERSION=	0.20.0
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	audio
 MASTER_SITES=	http://download.sarine.nl/Programs/gmpc/${PORTVERSION}/
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	HTTP-Parser-XS
 PORTVERSION=	0.17
 CATEGORIES=	www perl5

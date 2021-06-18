@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	postgis
-PORTVERSION=	3.1.0
+PORTVERSION=	3.1.2
 CATEGORIES=	databases geography
 MASTER_SITES=	https://download.osgeo.org/postgis/source/
 PKGNAMESUFFIX=	31

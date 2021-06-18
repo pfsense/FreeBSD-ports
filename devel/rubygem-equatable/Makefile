@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	equatable
-PORTVERSION=	0.6.1
+PORTVERSION=	0.7.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

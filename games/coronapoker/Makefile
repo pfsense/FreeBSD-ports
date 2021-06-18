@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	coronapoker
 DISTVERSIONPREFIX=	v
 DISTVERSION=	4.33

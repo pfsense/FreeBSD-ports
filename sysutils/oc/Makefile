@@ -1,11 +1,9 @@
 # Created by: John Hixson <jhixson@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	oc
 PORTVERSION=	4.5
 DISTVERSIONPREFIX=	release-
 CATEGORIES=	sysutils
-DISTNAME=	${GIT_COMMIT}.zip
 
 MAINTAINER=	jhixson@freebsd.org
 COMMENT=	OpenShift Command Line

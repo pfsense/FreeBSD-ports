@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rush
 DISTVERSION=	2.1
 CATEGORIES=	shells

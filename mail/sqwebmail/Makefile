@@ -1,8 +1,8 @@
 # Created by: Neil Blakey-Milner
-# $FreeBSD$
 
 PORTNAME=	sqwebmail
 PORTVERSION=	6.0.3
+PORTREVISION=	1
 CATEGORIES=	mail www
 MASTER_SITES=	SF/courier/webmail/${PORTVERSION}
 

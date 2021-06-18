@@ -1,4 +1,4 @@
---- third_party/crashpad/crashpad/util/posix/close_multiple.cc.orig	2020-11-13 06:37:02 UTC
+--- third_party/crashpad/crashpad/util/posix/close_multiple.cc.orig	2021-04-14 18:41:34 UTC
 +++ third_party/crashpad/crashpad/util/posix/close_multiple.cc
 @@ -181,11 +181,37 @@ void CloseMultipleNowOrOnExec(int fd, int preserve_fd)
    }

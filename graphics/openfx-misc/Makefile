@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openfx-misc
 PORTVERSION=	2.3.14
 PORTREVISION=	1

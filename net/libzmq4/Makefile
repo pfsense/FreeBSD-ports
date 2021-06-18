@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	libzmq4
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.3.1
-PORTREVISION=	1
+DISTVERSION=	4.3.4
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/zeromq/libzmq/releases/download/${DISTVERSIONFULL}/
 DISTNAME=	zeromq-${DISTVERSION}
@@ -69,7 +66,6 @@ CFLAGS+=		-Wno-long-long
 .if defined(WITH_DEBUG)
 CONFIGURE_ARGS+=	--enable-debug
 .endif
-
 
 .if !${PORT_OPTIONS:MSODIUM} && !${PORT_OPTIONS:MTWEETNACL}
 CONFIGURE_ARGS+=	--disable-curve

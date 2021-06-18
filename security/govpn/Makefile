@@ -1,5 +1,4 @@
 # Created by: Sergey Matveev <stargrave@stargrave.org>
-# $FreeBSD$
 
 PORTNAME=	govpn
 DISTVERSION=	7.5
@@ -15,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		go:no_targets tar:xz
 MAKEFILE=	BSDmakefile
+MAKE_ENV=	${GO_ENV}
 
 PORTDOCS=	AUTHORS INSTALL NEWS NEWS.RU README README.RU THANKS
 INFO=		govpn

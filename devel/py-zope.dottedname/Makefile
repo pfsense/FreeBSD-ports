@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zope.dottedname
 PORTVERSION=	3.4.6
 PORTREVISION=	1

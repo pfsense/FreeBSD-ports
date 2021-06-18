@@ -1,5 +1,4 @@
 # Created by: Jeremy <karlj000@unbc.ca>
-# $FreeBSD$
 
 PORTNAME=	bluej
 PORTVERSION=	4.2.2
@@ -8,7 +7,7 @@ MASTER_SITES=	http://www.bluej.org/download/files/
 DISTNAME=	BlueJ-generic-${PORTVERSION:S/.//g}
 EXTRACT_SUFX=	.jar
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Integrated Java environment designed for introductory teaching
 
 LICENSE=	GPLv2

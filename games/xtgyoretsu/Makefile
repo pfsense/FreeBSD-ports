@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	xtgyoretsu
 PORTVERSION=	git20140822
 CATEGORIES=	games

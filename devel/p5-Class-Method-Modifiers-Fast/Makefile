@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Class-Method-Modifiers-Fast
 PORTVERSION=	0.041
 PORTREVISION=	1

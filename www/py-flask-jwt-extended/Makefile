@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	flask-jwt-extended
 PORTVERSION=	3.25.0
 CATEGORIES=	www devel python

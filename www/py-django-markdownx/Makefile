@@ -1,5 +1,4 @@
 # Created by: Carlo Strub
-# $FreeBSD$
 
 PORTNAME=	django-markdownx
 PORTVERSION=	3.0.1
@@ -24,7 +23,7 @@ NO_ARCH=	yes
 
 .include <bsd.port.pre.mk>
 
-.if ${PYTHON_REL} < 3700
+.if ${PYTHON_REL} < 30700
 # Force an UTF-8 environment to avoid failures in the configuration phase for
 # Python versions <= 3.6.  Since Python 3.7 the UTF-8 mode is enabled by
 # default when the locale is C.

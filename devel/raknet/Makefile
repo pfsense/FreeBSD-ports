@@ -1,5 +1,4 @@
 # Created by: Andrew Baznikin <dikiy@scn.ru>
-# $FreeBSD$
 
 PORTNAME=	raknet
 PORTVERSION=	3.9.2
@@ -26,14 +25,12 @@ LICENSE_PERMS_SpecialAuth=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 NOT_FOR_ARCHS=		aarch64 mips mips64
 NOT_FOR_ARCHS_REASON=	fails to compile: error: Add your platform to the list
 
-LEGAL_TEXT=	Special authorization granted to distribute version 3.x under GPLv3
-
 NO_WRKSUBDIR=	yes
 
 USES=		dos2unix cmake:insource zip
 
 USE_LDCONFIG=	yes
-USE_GCC=	any
+USE_GCC=	yes
 
 DOS2UNIX_REGEX=	.*\.(cpp|h|txt)
 

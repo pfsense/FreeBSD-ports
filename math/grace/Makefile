@@ -1,9 +1,8 @@
 # Created by: Lars Koeller <Lars.Koeller@Uni-Bielefeld.de>
-# $FreeBSD$
 
 PORTNAME=	grace
 PORTVERSION=	5.1.25
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	math print
 MASTER_SITES=	ftp://ftp.fu-berlin.de/unix/graphics/grace/src/stable/ \
 		ftp://ftp.ntua.gr/pub/graphics/grace/src/stable/ \

@@ -1,5 +1,4 @@
 # Created by: Björn König <bkoenig@alpha-tierchen.de>
-# $FreeBSD$
 
 PORTNAME=	sablevm-classpath
 PORTVERSION=	1.13
@@ -11,6 +10,9 @@ MAINTAINER=	java@FreeBSD.org
 COMMENT=	Classpath of SableVM
 
 LICENSE=	GPLv2
+
+BROKEN_aarch64=		Fails to configure: Endianess not declared
+BROKEN_riscv64=		Fails to configure: Endianess not declared
 
 BUILD_DEPENDS=	jikes:java/jikes
 
@@ -57,8 +59,6 @@ PLIST_SUB+=		WITHOUT_ZIP="@comment " WITH_ZIP=""
 CONFIGURE_ARGS+=	--with-compressed-classes=no
 PLIST_SUB+=		WITHOUT_ZIP="" WITH_ZIP="@comment "
 .endif
-
-BROKEN_aarch64=		Fails to configure: Endianess not declared
 
 post-patch:
 	@${CP} -f ${WRKSRC}/resource/java/security/classpath.security \

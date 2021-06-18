@@ -1,12 +1,11 @@
 # Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	DirectoryScanner
 PORTVERSION=	1.3.2
 CATEGORIES=	devel pear
 PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}TheSeer_
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Recursive directory scanner and filter
 
 LICENSE=	BSD2CLAUSE

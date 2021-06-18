@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ptvsd
 PORTVERSION=	3.1.0
 CATEGORIES=	devel python

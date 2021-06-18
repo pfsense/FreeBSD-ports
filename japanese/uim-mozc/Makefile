@@ -1,6 +1,6 @@
 # Created by: Koichiro IWAO <meta+ports@vmeta.jp>
-# $FreeBSD$
 
+PORTREVISION=	4
 PKGNAMEPREFIX=	ja-uim-
 
 COMMENT=	Mozc engine for uim

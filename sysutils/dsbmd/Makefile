@@ -1,10 +1,8 @@
 # Created by: Marcel Kaiser <mk@nic-nac-project.org>
-# $FreeBSD$
 
 PORTNAME=	dsbmd
-PORTVERSION=	1.11.1
+PORTVERSION=	1.11.4
 CATEGORIES=	sysutils
-MASTER_SITES=	http://freeshell.de/~mk/download/
 
 MAINTAINER=	mk@nic-nac-project.org
 COMMENT=	Media mounting daemon
@@ -15,6 +13,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		tar:tgz
 
 USE_RC_SUBR=	dsbmd
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	mrclksr
+GH_PROJECT=	DSBMD
 
 PLIST_FILES=	"@sample etc/dsbmd.conf.sample" \
 		libexec/dsbmd

@@ -1,9 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	viridisLite
-PORTVERSION=	0.3.0
-PORTREVISION=	3
+PORTVERSION=	0.4.0
 CATEGORIES=	graphics
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 

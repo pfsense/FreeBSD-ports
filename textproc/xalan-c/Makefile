@@ -1,9 +1,8 @@
 # Created by: Roger Leigh <rleigh@codelibre.net>
-# $FreeBSD$
 
 PORTNAME=	xalan-c
 PORTVERSION=	1.12
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc
 MASTER_SITES=	APACHE/xalan/xalan-c/sources
 DISTNAME=	xalan_c-${PORTVERSION}

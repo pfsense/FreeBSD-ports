@@ -1,9 +1,9 @@
 # Created by: Alejandro Pulver <alepulver@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	stumpwm
-DISTVERSION=	20.11
-PORTREVISION=	3
+DISTVERSION=	20.11-3
+DISTVERSIONSUFFIX=	-g72a4e2c
+PORTREVISION=	5
 CATEGORIES=	x11-wm lisp
 
 MAINTAINER=	jrm@FreeBSD.org

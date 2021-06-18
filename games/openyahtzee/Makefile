@@ -1,5 +1,4 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	openyahtzee
 PORTVERSION=	1.9.3
@@ -7,7 +6,7 @@ PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/Open%20Yahtzee/Open%20Yahtzee%20${PORTVERSION}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full-featured classic dice game Yahtzee
 
 LICENSE=	GPLv2+

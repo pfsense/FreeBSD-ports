@@ -1,8 +1,7 @@
 # Created by: Ganael Laplanche <ganael.laplanche@martymac.org>
-# $FreeBSD$
 
 PORTNAME=	fpart
-PORTVERSION=	1.2.0
+PORTVERSION=	1.3.0
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION} \
 		http://contribs.martymac.org/fpart/

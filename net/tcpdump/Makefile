@@ -1,8 +1,7 @@
 # Created by: Bruce M Simpson <bms@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tcpdump
-PORTVERSION=	4.9.3
+PORTVERSION=	4.99.0
 CATEGORIES=	net
 MASTER_SITES=	http://www.tcpdump.org/release/
 

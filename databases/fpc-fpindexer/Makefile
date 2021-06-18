@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	databases lang
 PKGNAMESUFFIX=	-fpindexer
 

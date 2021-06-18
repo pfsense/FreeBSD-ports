@@ -1,5 +1,4 @@
 # Created by: Boris Samorodov <bsam@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=		seatools
 PORTVERSION=		2.54
@@ -12,9 +11,14 @@ EXTRACT_SUFX=		.tar
 MAINTAINER=		bsam@FreeBSD.org
 COMMENT=		Seagate's SeaTools for Linux
 
+# Converted from RESTRICTED
+LICENSE=	seatools
+LICENSE_NAME=	seatools
+LICENSE_TEXT=	Redistribution is not permitted
+LICENSE_PERMS=	auto-accept
+
 DOWNLOAD_URL=		http://www.seagate.com/files/www-content/support-content/downloads/seatools/_shared/downloads/seatools_cli.tar
 NO_WRKSUBDIR=		yes
-RESTRICTED=		Redistribution is not permitted
 ONLY_FOR_ARCHS=		i386 amd64
 USES=			linux
 

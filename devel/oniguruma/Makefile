@@ -1,9 +1,8 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	oniguruma
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.9.6
+DISTVERSION=	6.9.7.1
 CATEGORIES=	devel textproc
 
 MAINTAINER=	yuri@FreeBSD.org

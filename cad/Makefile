@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = CAD tools
 
     SUBDIR += NASTRAN-95
@@ -67,6 +64,7 @@
     SUBDIR += klayout
     SUBDIR += ktechlab
     SUBDIR += ldraw
+    SUBDIR += ldview
     SUBDIR += leocad
     SUBDIR += lepton-eda
     SUBDIR += libopencad
@@ -120,9 +118,7 @@
     SUBDIR += sweethome3d
     SUBDIR += tkgate
     SUBDIR += tochnog
-    SUBDIR += transcalc
     SUBDIR += uranium
-    SUBDIR += varkon
     SUBDIR += verilator
     SUBDIR += verilog-mode.el
     SUBDIR += veroroute

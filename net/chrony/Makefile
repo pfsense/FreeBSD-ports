@@ -1,14 +1,13 @@
 # Created by: Masaki TAGAWA <masaki@club.kyutech.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	chrony
-DISTVERSION=	4.0
+DISTVERSION=	4.1
 CATEGORIES=	net
 MASTER_SITES=	https://download.tuxfamily.org/chrony/ \
 		LOCAL/mandree
 
-MAINTAINER=	mandree@FreeBSD.org
-COMMENT=	System clock synchronization client and server
+MAINTAINER?=	mandree@FreeBSD.org
+COMMENT?=	System clock synchronization client and server
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -23,6 +22,7 @@ HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--chronyvardir=/var/db/${PORTNAME} \
 		--datarootdir=${DATADIR} \
 		--docdir=${DOCSDIR} \
+		--enable-ntp-signd \
 		--mandir=${MANPREFIX}/man \
 		--prefix=${PREFIX} \
 		--sysconfdir=${PREFIX}/etc \
@@ -30,10 +30,12 @@ CONFIGURE_ARGS=	--chronyvardir=/var/db/${PORTNAME} \
 
 ALL_TARGET=	all
 INSTALL_TARGET=	install
-PORTDOCS=	FAQ NEWS README
 
 LDFLAGS+=	-L${LOCALBASE}/lib
 
+CONFLICTS_INSTALL?=	chrony-lite
+
+PORTDOCS=	FAQ NEWS README
 PORTEXAMPLES=	chrony.conf.example1 chrony.conf.example2 chrony.conf.example3 \
 		chrony.keys.example
 

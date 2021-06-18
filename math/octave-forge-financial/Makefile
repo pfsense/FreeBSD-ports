@@ -1,9 +1,8 @@
 # Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
-# $FreeBSD$
 
 PORTNAME=	octave-forge-financial
 PORTVERSION=	0.5.3
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org

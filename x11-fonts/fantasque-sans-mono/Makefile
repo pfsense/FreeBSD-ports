@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fantasque-sans-mono
 PORTVERSION=	1.8.0
 CATEGORIES=	x11-fonts

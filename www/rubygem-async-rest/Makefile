@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	async-rest
-PORTVERSION=	0.12.2
+PORTVERSION=	0.12.3
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 

@@ -1,8 +1,7 @@
 # Created by: Dirk Froemberg <dirk@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	openssl
-DISTVERSION=	3.0.0-alpha12
+DISTVERSION=	3.0.0-alpha16
 CATEGORIES=	security devel
 MASTER_SITES=	https://www.openssl.org/source/ \
 		ftp://ftp.cert.dfn.de/pub/tools/net/openssl/source/
@@ -17,6 +16,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 CONFLICTS_INSTALL=	libressl-[0-9]* \
 			libressl-devel-[0-9]* \
 			openssl-[0-9]*
+
+BROKEN_i386=	ld: error: undefined symbol: __atomic_is_lock_free
 
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	config
@@ -41,12 +42,13 @@ OPTIONS_GROUP_MODULES=	FIPS LEGACY
 OPTIONS_DEFINE_i386=	I386
 OPTIONS_GROUP_PROTOCOLS=NEXTPROTONEG SCTP SSL3 TLS1 TLS1_1 TLS1_2
 
-OPTIONS_DEFINE=	ASYNC CT KTLS MAN3 RFC3779 SHARED ZLIB
+OPTIONS_DEFINE=	ASYNC CRYPTODEV CT KTLS MAN3 RFC3779 SHARED ZLIB
 
-OPTIONS_DEFAULT=ASM ASYNC CT KTLS FIPS GOST DES EC MAN3 MD4 NEXTPROTONEG \
+OPTIONS_DEFAULT=ASM ASYNC CT DES EC FIPS GOST KTLS MAN3 MD4 NEXTPROTONEG \
 		RC2 RC4 RMD160 SCTP SHARED SSE2 THREADS TLS1 TLS1_1 TLS1_2
 
-OPTIONS_EXCLUDE=${${OSVERSION} < 1300042:?KTLS:}
+OPTIONS_EXCLUDE=${${OSVERSION} < 1300042:?KTLS:} \
+		${${OSVERSION} > 1300000:?CRYPTODEV:}
 
 OPTIONS_GROUP_OPTIMIZE_amd64=	EC
 
@@ -62,6 +64,7 @@ ARIA_DESC=	ARIA (South Korean standard)
 ASM_DESC=	Assembler code
 ASYNC_DESC=	Asynchronous mode
 CIPHERS_DESC=	Block Cipher Support
+CRYPTODEV_DESC=	/dev/crypto support
 CT_DESC=	Certificate Transparency Support
 DES_DESC=	(Triple) Data Encryption Standard
 EC_DESC=	Optimize NIST elliptic curves
@@ -96,15 +99,14 @@ TLS1_DESC=	TLSv1.0 (requires TLS1_1, TLS1_2)
 TLS1_1_DESC=	TLSv1.1 (requires TLS1_2)
 TLS1_2_DESC=	TLSv1.2
 WEAK-SSL-CIPHERS_DESC=	Weak cipher support (unsafe)
-ZLIB_DESC=	zlib compression support
 
 # Upstream default disabled options
-.for _option in md2 ktls rc5 sctp ssl3 weak-ssl-ciphers zlib
+.for _option in fips md2 ktls rc5 sctp ssl3 weak-ssl-ciphers zlib
 ${_option:tu}_CONFIGURE_ON=	enable-${_option}
 .endfor
 
 # Upstream default enabled options
-.for _option in aria asm async ct des fips gost idea md4 mdc2 legacy \
+.for _option in aria asm async ct des gost idea md4 mdc2 legacy \
 	nextprotoneg rc2 rc4 rfc3779 rmd160 shared sm2 sm3 sm4 sse2 \
 	threads tls1 tls1_1 tls1_2
 ${_option:tu}_CONFIGURE_OFF=	no-${_option}
@@ -136,6 +138,10 @@ ZLIB_CONFIGURE_ON=	zlib-dynamic
 IGNORE=	the OpenSSL port can not be installed over the base version
 .endif
 
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300000 && !${PORT_OPTIONS:MCRYPTODEV}
+CONFIGURE_ARGS+=        no-devcryptoeng
+.endif
+
 OPENSSLDIR?=	${PREFIX}/openssl
 PLIST_SUB+=	OPENSSLDIR=${OPENSSLDIR:S=^${PREFIX}/==}
 
@@ -157,13 +163,13 @@ post-configure:
 
 post-configure-MAN3-off:
 	${REINPLACE_CMD} \
-		-e 's|^build_man_docs:.*|build_man_docs: $$(MANDOCS1) $$(MANDOCS7)|' \
-		-e 's|dummy $$(MANDOCS[37]); do |dummy; do continue |' \
+		-e 's|^build_man_docs:.*|build_man_docs: $$(MANDOCS1) $$(MANDOCS5)|' \
+		-e 's|dummy $$(MANDOCS[37]); do |dummy; do |' \
 		${WRKSRC}/Makefile
 
 post-install-SHARED-on:
 .for i in ${SHLIBS}
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/$i
+	-@${STRIP_CMD} ${STAGEDIR}${PREFIX}/$i
 .endfor
 
 post-install-SHARED-off:

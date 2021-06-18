@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	omniauth-bitbucket
 PORTVERSION=	0.0.2
 CATEGORIES=	security rubygems

@@ -1,8 +1,7 @@
 # Created by: Joseph Koshy <jkoshy@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	fonttools
-PORTVERSION=	4.18.2
+PORTVERSION=	4.24.3
 CATEGORIES=	print python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ufolib2>=0:print/py-ufolib2@${PY_FLAVOR}
 
-USES=		python:3.6+ zip
+USES=		python:3.7+ zip
 USE_PYTHON=	autoplist concurrent distutils
 
 MAKE_ENV=	FONTTOOLS_MANPATH="man"

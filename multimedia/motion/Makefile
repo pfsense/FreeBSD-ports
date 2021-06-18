@@ -1,9 +1,9 @@
 # Created by: Angel Carpintero <ack@telefonica.net>
-# $FreeBSD$
 
 # PORTNAME block
 PORTNAME=	motion
 PORTVERSION=	4.3.2
+PORTREVISION=	1
 DISTVERSIONPREFIX=	release-
 CATEGORIES=	multimedia
 
@@ -22,10 +22,6 @@ LIB_DEPENDS=	libwebp.so:graphics/webp \
 # USES block
 USES=		autoreconf gmake jpeg localbase pkgconfig gettext
 
-KMODDIR?=	/boot/modules
-.if ${KMODDIR} == /boot/kernel
-KMODDIR=	/boot/modules
-.endif
 USE_GITHUB=	yes
 GH_ACCOUNT=	Motion-Project
 USE_RC_SUBR=	${PORTNAME}
@@ -76,7 +72,7 @@ PGSQL_CONFIGURE_ON=	--with-pgsql-lib=${LOCALBASE}/lib \
 PGSQL_CONFIGURE_OFF=	--without-pgsql
 
 PWCBSD_BUILD_DEPENDS=	v4l_compat>=1.0.20060801:multimedia/v4l_compat
-PWCBSD_RUN_DEPENDS=	${KMODDIR}/pwc.ko:multimedia/pwcbsd
+PWCBSD_RUN_DEPENDS=	pwcbsd>0:multimedia/pwcbsd
 PWCBSD_CONFIGURE_WITH=	pwcbsd
 
 SQLITE3_USES=		sqlite:3

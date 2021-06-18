@@ -1,12 +1,11 @@
 # Created by: Igor Pokrovsky <tiamat@comset.net>
-# $FreeBSD$
 
 PORTNAME=	gl2ps
-PORTVERSION=	1.4.0
+PORTVERSION=	1.4.2
 CATEGORIES=	print graphics
 MASTER_SITES=	http://www.geuz.org/gl2ps/src/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	makc@FreeBSD.org
 COMMENT=	C library providing vector output for OpenGL applications
 
 LICENSE=	LGPL20+
@@ -17,7 +16,7 @@ LIB_DEPENDS=	libpng.so:graphics/png
 USES=		cmake gl tar:tgz
 USE_GL=		gl
 USE_LDCONFIG=	yes
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-source
+PLIST_SUB=	SHLIB_VER=${PORTVERSION}
 
 OPTIONS_DEFINE=	DOCS
 

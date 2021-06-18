@@ -1,8 +1,7 @@
 # Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
 
 PORTNAME=	Array-Compare
-PORTVERSION=	3.0.7
+PORTVERSION=	3.0.8
 DISTVERSIONPREFIX=	v
 CATEGORIES=	misc perl5
 MASTER_SITES=	CPAN

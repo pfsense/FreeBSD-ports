@@ -1,5 +1,4 @@
 # Created by: John Marino <marino@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	aws
 PORTVERSION=	17.1
@@ -12,6 +11,9 @@ COMMENT=	Adacore Ada Web Server demos
 
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
+
+DEPRECATED=	Uses EOL Python 2.7 via www/aws
+EXPIRATION_DATE=2021-06-23
 
 BUILD_DEPENDS=	gprbuild:devel/gprbuild \
 		xmlada>=4.4:textproc/xmlada \

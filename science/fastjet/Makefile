@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fastjet
 DISTVERSION=	3.3.4
 PORTREVISION=	1

@@ -1,8 +1,7 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	matplotlib
-PORTVERSION=	3.3.1
+PORTVERSION=	3.4.1
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -33,10 +32,13 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}certifi>=0.10:security/py-certifi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}kiwisolver>=1.0.0:math/py-kiwisolver@${PY_FLAVOR}
 
-USES=		compiler:c++11-lib gettext gnome localbase pkgconfig python:3.6+ shebangfix uniquefiles:dirs
+USES=		compiler:c++11-lib gettext gnome localbase pkgconfig python:3.7+ shebangfix uniquefiles:dirs
 USE_PYTHON=	distutils
 
 LDFLAGS+=	-fuse-ld=lld
+
+PLIST_SUB=	VER=${PORTVERSION}
+PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=		EXAMPLES \
 			QT5AGGBACKEND TKAGGBACKEND
@@ -44,19 +46,17 @@ OPTIONS_DEFAULT=	TKAGGBACKEND
 OPTIONS_SUB=		yes
 
 QT5AGGBACKEND_DESC=	Qt5Agg backend support
+TKAGGBACKEND_DESC=	TKAgg backend support
+
 QT5AGGBACKEND_USES=	display pyqt:5
 QT5AGGBACKEND_USE=	PYQT=sip,widgets
 QT5AGGBACKEND_VARS=	QT5AGG_BACKEND=True
 QT5AGGBACKEND_VARS_OFF=	QT5AGG_BACKEND=False
-TKAGGBACKEND_DESC=	TKAgg backend support
 TKAGGBACKEND_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLAVOR}
 TKAGGBACKEND_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLAVOR}
 TKAGGBACKEND_USES=	display tk:run
 TKAGGBACKEND_VARS=	TKAGG_BACKEND=True
 TKAGGBACKEND_VARS_OFF=	TKAGG_BACKEND=False
-
-PLIST_SUB=	VER=${PORTVERSION}
-PORTEXAMPLES=	*
 
 post-extract:
 	@${FIND} ${WRKSRC} -name '*.py' | ${XARGS} ${CHMOD} -x

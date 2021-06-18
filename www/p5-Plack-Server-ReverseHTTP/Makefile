@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Plack-Server-ReverseHTTP
 PORTVERSION=	0.02
 PORTREVISION=	1

@@ -1,8 +1,7 @@
 # Created by: Jose Alonso Cardenas Marquez <acardenas@bsd.org.pe>
-# $FreeBSD$
 
 PORTNAME=	django
-PORTVERSION=	3.1.7
+PORTVERSION=	3.1.9
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP \
 		https://www.djangoproject.com/m/releases/${PORTVERSION}/
@@ -35,9 +34,12 @@ SHEBANG_FILES=	django/bin/django-admin.py \
 		django/conf/project_template/manage.py-tpl
 
 CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}django111 ${PYTHON_PKGNAMEPREFIX}django22 \
-			${PYTHON_PKGNAMEPREFIX}django30
+			${PYTHON_PKGNAMEPREFIX}django30 ${PYTHON_PKGNAMEPREFIX}django32
 
 CPE_VENDOR=	djangoproject
+
+# Upstream archive contains files with UTF-8 names
+EXTRACT_CMD=	${SETENV} LC_ALL=en_US.UTF-8 /usr/bin/bsdtar
 
 OPTIONS_DEFINE=	DOCS HTMLDOCS
 OPTIONS_GROUP=	DATABASE
@@ -45,7 +47,7 @@ OPTIONS_GROUP_DATABASE=	PGSQL MYSQL SQLITE
 OPTIONS_DEFAULT=SQLITE
 HTMLDOCS_DESC=	Install HTML documentation (requires Sphinx)
 
-HTMLDOCS_BUILD_DEPENDS=	${PY_SPHINX}
+HTMLDOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
 HTMLDOCS_IMPLIES=	DOCS
 PGSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psycopg2>0:databases/py-psycopg2@${PY_FLAVOR}
 MYSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mysqlclient>=1.3.13:databases/py-mysqlclient@${PY_FLAVOR}

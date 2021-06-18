@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	serveez
 PORTVERSION=	0.2.2
@@ -13,7 +12,10 @@ COMMENT=	Server framework
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libguile.so:lang/guile
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: guile_global_error
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: guile_global_error
+
+LIB_DEPENDS=	libguile.so:lang/guile1
 
 USES=		tar:xz libtool
 GNU_CONFIGURE=	yes

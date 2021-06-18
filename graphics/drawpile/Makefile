@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	Drawpile
 DISTVERSION=	2.1.17
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics python
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/

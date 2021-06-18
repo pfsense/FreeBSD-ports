@@ -1,4 +1,4 @@
---- chrome/browser/extensions/activity_log/activity_log.cc.orig	2021-01-18 21:28:49 UTC
+--- chrome/browser/extensions/activity_log/activity_log.cc.orig	2021-04-14 18:40:53 UTC
 +++ chrome/browser/extensions/activity_log/activity_log.cc
 @@ -49,7 +49,11 @@
  #include "extensions/common/extension.h"

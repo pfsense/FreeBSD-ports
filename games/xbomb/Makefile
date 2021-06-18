@@ -1,12 +1,11 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xbomb
 PORTVERSION=	2.2b
 CATEGORIES=	games
 MASTER_SITES=	http://www.gedanken.org.uk/software/xbomb/download/
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Minesweeper with a couple of grid types
 
 LICENSE=	GPLv2+

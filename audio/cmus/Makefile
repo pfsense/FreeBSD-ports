@@ -1,10 +1,8 @@
 # Created by: Adam Weinberger
-# $FreeBSD$
 
 PORTNAME=	cmus
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.8.0
-PORTREVISION=	6
+DISTVERSION=	2.9.1
 CATEGORIES=	audio
 
 MAINTAINER=	ports@FreeBSD.org

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	vulndb
 PORTVERSION=	0.0.19
 CATEGORIES=	security python

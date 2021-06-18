@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	volleyball
 PORTVERSION=	0.8.6
 PORTREVISION=	12

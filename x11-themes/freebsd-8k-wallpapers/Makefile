@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	freebsd-8k-wallpapers
 DISTVERSION=	2.1
 CATEGORIES=	x11-themes

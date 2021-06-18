@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libexttextcat
 PORTVERSION=	3.4.5
 CATEGORIES=	textproc

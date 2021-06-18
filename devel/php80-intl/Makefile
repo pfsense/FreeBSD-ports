@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	devel
 
 MASTERDIR=	${.CURDIR}/../../lang/php80

@@ -1,5 +1,4 @@
 # Created by: Bruce M. Simpson <bms@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ldapbrowser
 PORTVERSION=	2.8.2
@@ -15,7 +14,11 @@ DISTNAME=	Browser282b2
 MAINTAINER=	ronald-lists@klop.ws
 COMMENT=	Java/Swing-based LDAP browser and editor
 
-RESTRICTED=	No reply from author regarding redistribution licensing
+# Converted from RESTRICTED
+LICENSE=	ldapbrowser-license
+LICENSE_NAME=	ldapbrowser
+LICENSE_TEXT=	No reply from author regarding redistribution licensing
+LICENSE_PERMS=	auto-accept
 
 USE_JAVA=	yes
 NO_BUILD=	yes

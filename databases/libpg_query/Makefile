@@ -1,10 +1,12 @@
 # Created by: Matthias Fechner <mfechner@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libpg_query
 DISTVERSION=	10-1.0.4
 PORTREVISION=	0
 CATEGORIES=	databases devel
+
+PATCH_SITES=	https://github.com/lfittl/libpg_query/commit/
+PATCHFILES=	820f5294f92927d6c4f61722bb28cf380942b83c.patch:-p1
 
 MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	C library for accessing the PostgreSQL parser outside of the server

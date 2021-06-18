@@ -1,8 +1,5 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	hexalate
-PORTVERSION=	1.1.6
+PORTVERSION=	1.2.0
 CATEGORIES=	games
 MASTER_SITES=	https://gottcode.org/${PORTNAME}/ \
 		https://mirror.amdmi3.ru/distfiles/

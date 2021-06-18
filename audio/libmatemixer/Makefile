@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libmatemixer
 PORTVERSION=	1.24.1
 CATEGORIES=	audio mate

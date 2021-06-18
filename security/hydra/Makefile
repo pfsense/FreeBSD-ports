@@ -1,9 +1,8 @@
 # Created by: Laurent LEVIER <llevier@argosnet.com>
-# $FreeBSD$
 
 PORTNAME=	hydra
 DISTVERSIONPREFIX=v
-DISTVERSION=	9.1
+DISTVERSION=	9.2
 CATEGORIES=	security
 
 MAINTAINER=	rm@FreeBSD.org

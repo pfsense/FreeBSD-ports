@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sunwait
 PORTVERSION=	20041208
 CATEGORIES=	astro

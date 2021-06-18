@@ -1,9 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	mlt
-DISTVERSIONPREFIX=	v
-DISTVERSION=	6.22.1
-PORTREVISION=	2
+DISTVERSION=	6.26.1
+# Don't use GitHub "fake" downloads that are auto-generated from a
+# tag; the project uploads tarballs for each release.
+MASTER_SITES=	https://github.com/mltframework/${PORTNAME}/releases/download/v${DISTVERSION}/
 CATEGORIES?=	multimedia
 
 MAINTAINER=	kde@FreeBSD.org
@@ -16,8 +15,6 @@ USES+=		alias compiler:c++11-lang eigen:3 gmake gnome localbase \
 		pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--enable-gpl --enable-gpl3 --target-os=FreeBSD
-USE_GITHUB=	yes
-GH_ACCOUNT=	mltframework
 
 .ifndef(WITH_DEBUG)
 CONFIGURE_ARGS+=--disable-debug
@@ -51,7 +48,7 @@ PORTDOCS=	AUTHORS NEWS README docs
 PORTEXAMPLES=	demo
 
 OPTIONS_DEFINE=	DOCS EXAMPLES FFMPEG FREI0R GDK JACK OPENGL \
-		SAMPLERATE SOX VIDSTAB # OPENCV VDPAU
+		SAMPLERATE SOX VIDSTAB
 OPTIONS_DEFAULT=FFMPEG FREI0R GDK OPENGL SAMPLERATE SOX VIDSTAB
 OPTIONS_SUB=	yes
 
@@ -69,7 +66,7 @@ FREI0R_CONFIGURE_ENABLE=frei0r
 
 GDK_LIB_DEPENDS=	libexif.so:graphics/libexif \
 			libfontconfig.so:x11-fonts/fontconfig
-GDK_USE=		GNOME=gdkpixbuf2,gtk20,pango
+GDK_USE=		GNOME=gdkpixbuf2,pango
 GDK_CONFIGURE_ENABLE=	gdk
 
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
@@ -92,11 +89,6 @@ SAMPLERATE_CONFIGURE_ENABLE=resample
 SOX_LIB_DEPENDS=	libsox.so:audio/sox
 SOX_CONFIGURE_ENABLE=	sox
 
-# https://sourceforge.net/p/mlt/bugs/240/
-CONFIGURE_ARGS+=	${VDPAU_CONFIGURE_OFF}
-VDPAU_CONFIGURE_ON=	--avformat-vdpau
-VDPAU_CONFIGURE_OFF=	--avformat-no-vdpau
-
 VIDSTAB_LIB_DEPENDS=	libvidstab.so:multimedia/vid.stab
 VIDSTAB_CONFIGURE_ENABLE=vid.stab
 
@@ -104,7 +96,6 @@ pre-configure:
 	# Remove sdl1 support
 	${RM} -r ${WRKSRC}/src/modules/sdl
 	@${REINPLACE_CMD} -e 's,/usr/local,${LOCALBASE},' \
-		${WRKSRC}/src/modules/avformat/vdpau.c \
 		${WRKSRC}/src/modules/frei0r/factory.c \
 		${WRKSRC}/src/modules/jackrack/plugin_mgr.c
 	@${REINPLACE_CMD} -e 's,-lpthread,-pthread,' \

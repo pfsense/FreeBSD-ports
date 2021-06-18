@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	mstflint
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.15.0-1
+DISTVERSION=	4.16.0-1
 CATEGORIES=	sysutils
 
 MAINTAINER=	hselasky@FreeBSD.org
@@ -46,6 +44,7 @@ USES+=	ssl
 .if ${PORT_OPTIONS:MADAB}
 CONFIGURE_ARGS+=	--enable-adb-generic-tools
 .if ${PORT_OPTIONS:MSTATIC}
+BROKEN=		does not link: expat2 no longer provides static library
 BUILD_DEPENDS+=	xmlwf:textproc/expat2 \
 		boost-libs>0:devel/boost-libs
 .else

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Server-Starter
 PORTVERSION=	0.34
 CATEGORIES=	net perl5

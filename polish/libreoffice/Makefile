@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	polish
 LO_I18N=	pl
 LO_HAS_HELPPACK=	yes

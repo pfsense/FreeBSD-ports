@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pytest-flakes
 PORTVERSION=	4.0.1
 CATEGORIES=	devel python

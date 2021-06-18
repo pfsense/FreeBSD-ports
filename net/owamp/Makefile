@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	owamp
 PORTVERSION=	3.3
 CATEGORIES=	net

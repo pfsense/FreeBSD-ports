@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	spatialite-tools
-PORTVERSION=	5.0.0
-PORTREVISION=	2
+PORTVERSION=	5.0.1
 CATEGORIES=	databases geography
 MASTER_SITES=	http://www.gaia-gis.it/gaia-sins/
 

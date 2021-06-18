@@ -1,9 +1,9 @@
 # Created by: Brad Davis <brd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	hey
 PORTVERSION=	0.1.4
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	benchmarks
 
 MAINTAINER=	dmgk@FreeBSD.org
@@ -14,8 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go:modules
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	rakyll
+GO_MODULE=	github.com/rakyll/hey
 
 PLIST_FILES=	bin/hey
 

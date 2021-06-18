@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	peaclock
 DISTVERSION=	0.4.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	deskutils
 
 MAINTAINER=	yuri@FreeBSD.org

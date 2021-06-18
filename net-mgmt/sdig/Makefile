@@ -1,5 +1,4 @@
 # Created by: Russell A. Jackson <rjackson@cserv62.csub.edu>
-# $FreeBSD$
 
 PORTNAME=	sdig
 PORTVERSION=	0.45
@@ -10,6 +9,9 @@ MASTER_SITES=	SF \
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Translate IP/DNS/WINS/MAC address into port description
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: result
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: result
 
 LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
 

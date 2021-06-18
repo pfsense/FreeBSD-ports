@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xmodem
 DISTVERSION=	0.4.5
 CATEGORIES=	comms python

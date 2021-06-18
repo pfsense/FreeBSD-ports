@@ -1,9 +1,8 @@
 # Created by: shigeri <shigeri@m10.alpha-net.ne.jp>
-# $FreeBSD$
 
 PORTNAME=	sylpheed
 PORTVERSION=	3.7.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	mail
 MASTER_SITES=	http://sylpheed.sraoss.jp/sylpheed/v${PORTVERSION:C/\.[^\.]*$//}/ \
 		LOCAL/ehaupt
@@ -16,7 +15,8 @@ LICENSE_COMB=	dual
 
 RUN_DEPENDS=	${LOCALBASE}/etc/mime.types:misc/mime-support
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2
+		libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz
 
 USES=		desktop-file-utils gettext gmake gnome iconv libtool pkgconfig \
 		tar:bzip2

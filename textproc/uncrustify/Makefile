@@ -1,8 +1,5 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	uncrustify
-PORTVERSION=	0.72.0
+PORTVERSION=	0.73.0
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	textproc
 
@@ -14,7 +11,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_GITHUB=	yes
 
-USES=		cmake compiler:c++11-lang
+USES=		cmake compiler:c++11-lang python:build
 CMAKE_ARGS=	-DNoGitVersionString:BOOL=TRUE
 TEST_TARGET=	test
 

@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	tlsdate
 PORTVERSION=	0.0.13
-DISTVERSIONPREFIX=	${PORTNAME}-
+DISTVERSIONPREFIX=	tlsdate-
 PORTREVISION=	5
 CATEGORIES=	sysutils
 
@@ -12,8 +10,6 @@ COMMENT=	Secure parasitic rdate replacement
 LICENSE=	BSD3CLAUSE
 
 LIB_DEPENDS=	libevent.so:devel/libevent
-
-OPTIONS_DEFINE=	DOCS
 
 USES=		autoreconf libtool pkgconfig ssl
 
@@ -26,5 +22,7 @@ PORTDOCS=	*
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ioerror
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	noto
 PORTVERSION=	2.001
 CATEGORIES=	x11-fonts

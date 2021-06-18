@@ -1,5 +1,4 @@
 # Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	wsproto
 PORTVERSION=	1.0.0
@@ -22,7 +21,7 @@ NO_ARCH=	yes
 
 .include <bsd.port.pre.mk>
 
-.if ${PYTHON_REL} < 3700
+.if ${PYTHON_REL} < 30700
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}dataclasses>0:devel/py-dataclasses@${PY_FLAVOR}
 .endif
 

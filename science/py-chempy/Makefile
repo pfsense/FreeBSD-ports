@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	chempy
 DISTVERSION=	0.8.1
+PORTREVISION=	1
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -23,14 +22,14 @@ PY_DEPENDS=	\
 		${PYTHON_PKGNAMEPREFIX}scipy>=1.0.1:science/py-scipy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sym>=0.3.4:math/py-sym@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sympy>=1.1.1:math/py-sympy@${PY_FLAVOR} \
-		${NUMPY}
+		${PYNUMPY}
 BUILD_DEPENDS=	${PY_DEPENDS}
 RUN_DEPENDS=	${PY_DEPENDS}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-cov>0:devel/py-pytest-cov@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-flakes>0:devel/py-pytest-flakes@${PY_FLAVOR}
 
-USES=		python:3.5+
+USES=		python:3.7+
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

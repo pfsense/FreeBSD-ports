@@ -1,10 +1,9 @@
 # Created by: Tassilo Philipp <tphilipp@potion-studios.com>
-# $FreeBSD$
 
 PORTNAME=	dyncall
-DISTVERSION=	1.1
+DISTVERSION=	1.2
 CATEGORIES=	devel
-MASTER_SITES=	http://www.dyncall.org/r${DISTVERSION}/ \
+MASTER_SITES=	https://www.dyncall.org/r${DISTVERSION}/ \
 		http://www.potion-studios.com/
 
 MAINTAINER=	tphilipp@potion-studios.com

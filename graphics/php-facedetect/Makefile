@@ -1,9 +1,8 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	facedetect
 PORTVERSION=	1.1
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 

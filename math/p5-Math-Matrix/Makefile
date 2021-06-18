@@ -1,8 +1,7 @@
 # Created by: Anton Berezin <tobez@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Math-Matrix
-PORTVERSION=	0.92
+PORTVERSION=	0.94
 CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

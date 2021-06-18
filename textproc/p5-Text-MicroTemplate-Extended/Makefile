@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-MicroTemplate-Extended
 PORTVERSION=	0.17
 PORTREVISION=	1

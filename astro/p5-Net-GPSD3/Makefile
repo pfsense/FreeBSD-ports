@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-GPSD3
 PORTVERSION=	0.19
 CATEGORIES=	astro perl5 geography

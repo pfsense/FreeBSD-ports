@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	foswiki
 PORTVERSION=	2.1.6
 PORTREVISION=	1
@@ -24,7 +22,6 @@ RUN_DEPENDS=	p5-Error>=0.15:lang/p5-Error \
 
 USES=		cpe perl5 tar:tgz
 
-NO_BUILD=	yes
 NO_ARCH=	yes
 
 OPTIONS_DEFINE=	OPTINT OPTOTH APACHE

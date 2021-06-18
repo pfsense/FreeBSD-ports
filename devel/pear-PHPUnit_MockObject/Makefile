@@ -1,11 +1,10 @@
 # Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	PHPUnit_MockObject
 PORTVERSION=	4.0.1
 CATEGORIES=	devel pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Mock Object library for PHPUnit
 
 LICENSE=	BSD3CLAUSE

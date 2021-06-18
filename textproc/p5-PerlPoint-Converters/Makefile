@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	PerlPoint-Converters
 PORTVERSION=	1.0205
 CATEGORIES=	textproc perl5

@@ -1,11 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	starship
-DISTVERSION=	0.47.0
-PORTREVISION=	1
+DISTVERSION=	0.54.0
 CATEGORIES=	shells
 MASTER_SITES=	CRATESIO
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
+DISTFILES=	${CARGO_DIST_SUBDIR}/${DISTNAME}${CARGO_CRATE_EXT}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Cross-shell prompt for astronauts
@@ -13,187 +10,241 @@ COMMENT=	Cross-shell prompt for astronauts
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_i386=	conflicting types for 'get_cpu_speed' in the sys-info-rs crate, see https://github.com/FillZpp/sys-info-rs/issues/80
+
 LIB_DEPENDS=	libgit2.so:devel/libgit2 \
 		libssh2.so:security/libssh2
 
 USES=		cargo ssl
 
 CARGO_CRATES=	\
-		ahash-0.4.6 \
-		aho-corasick-0.7.14 \
+		ahash-0.4.7 \
+		aho-corasick-0.7.18 \
 		ansi_term-0.11.0 \
 		ansi_term-0.12.1 \
 		arrayref-0.3.6 \
-		arrayvec-0.5.1 \
-		attohttpc-0.16.0 \
+		arrayvec-0.5.2 \
+		async-io-1.4.1 \
+		attohttpc-0.17.0 \
 		atty-0.2.14 \
 		autocfg-1.0.1 \
-		base64-0.12.3 \
+		base64-0.13.0 \
 		battery-0.7.8 \
 		bitflags-0.9.1 \
 		bitflags-1.2.1 \
-		blake2b_simd-0.5.10 \
+		bitvec-0.19.5 \
+		blake2b_simd-0.5.11 \
 		block-0.1.6 \
 		block-buffer-0.7.3 \
 		block-padding-0.1.5 \
 		byte-tools-0.3.1 \
-		byte-unit-4.0.9 \
-		byteorder-1.3.4 \
-		bytes-0.5.6 \
-		cc-1.0.61 \
+		byte-unit-4.0.12 \
+		byteorder-1.4.3 \
+		bytes-1.0.1 \
+		cache-padded-1.1.1 \
+		cc-1.0.67 \
 		cfg-if-0.1.10 \
 		cfg-if-1.0.0 \
 		chrono-0.4.19 \
 		clap-2.33.3 \
-		const_fn-0.4.2 \
+		concurrent-queue-1.2.2 \
 		constant_time_eq-0.1.5 \
 		core-foundation-0.7.0 \
 		core-foundation-0.9.1 \
 		core-foundation-sys-0.7.0 \
 		core-foundation-sys-0.8.2 \
-		crossbeam-channel-0.5.0 \
+		crossbeam-channel-0.5.1 \
 		crossbeam-deque-0.8.0 \
-		crossbeam-epoch-0.9.0 \
-		crossbeam-utils-0.7.2 \
-		crossbeam-utils-0.8.0 \
-		dbus-0.8.4 \
+		crossbeam-epoch-0.9.4 \
+		crossbeam-utils-0.8.4 \
+		derivative-2.2.0 \
 		digest-0.8.1 \
 		dirs-1.0.5 \
 		dirs-next-2.0.0 \
-		dirs-sys-next-0.1.1 \
-		dlv-list-0.2.2 \
-		doc-comment-0.3.3 \
-		dtoa-0.4.6 \
+		dirs-sys-next-0.1.2 \
+		dlv-list-0.2.3 \
+		dtoa-0.4.8 \
 		either-1.6.1 \
+		enumflags2-0.6.4 \
+		enumflags2_derive-0.6.4 \
 		fake-simd-0.1.2 \
+		fastrand-1.4.1 \
 		fnv-1.0.7 \
 		foreign-types-0.3.2 \
 		foreign-types-shared-0.1.1 \
-		generic-array-0.12.3 \
+		form_urlencoded-1.0.1 \
+		funty-1.1.0 \
+		futures-0.3.15 \
+		futures-channel-0.3.15 \
+		futures-core-0.3.15 \
+		futures-executor-0.3.15 \
+		futures-io-0.3.15 \
+		futures-lite-1.11.3 \
+		futures-macro-0.3.15 \
+		futures-sink-0.3.15 \
+		futures-task-0.3.15 \
+		futures-util-0.3.15 \
+		generic-array-0.12.4 \
 		gethostname-0.2.1 \
-		getrandom-0.1.15 \
-		git2-0.13.12 \
+		getrandom-0.1.16 \
+		getrandom-0.2.2 \
+		git2-0.13.19 \
 		hashbrown-0.9.1 \
-		hermit-abi-0.1.17 \
-		http-0.2.1 \
-		idna-0.2.0 \
-		indexmap-1.6.0 \
-		itoa-0.4.6 \
-		jobserver-0.1.21 \
+		hermit-abi-0.1.18 \
+		http-0.2.4 \
+		idna-0.2.3 \
+		indexmap-1.6.2 \
+		instant-0.1.9 \
+		itertools-0.10.0 \
+		itoa-0.4.7 \
+		jobserver-0.1.22 \
 		lazy_static-1.4.0 \
 		lazycell-1.3.0 \
-		libc-0.2.79 \
-		libdbus-sys-0.2.1 \
-		libgit2-sys-0.12.14+1.1.0 \
-		libz-sys-1.1.2 \
-		linked-hash-map-0.5.3 \
-		log-0.4.11 \
+		lexical-core-0.7.6 \
+		libc-0.2.94 \
+		libgit2-sys-0.12.20+1.1.0 \
+		libz-sys-1.1.3 \
+		linked-hash-map-0.5.4 \
+		log-0.4.14 \
 		mac-notification-sys-0.3.0 \
 		mach-0.3.2 \
 		malloc_buf-0.0.6 \
 		maplit-1.0.2 \
 		matches-0.1.8 \
-		memchr-2.3.3 \
-		memoffset-0.5.6 \
-		native-tls-0.2.6 \
-		nix-0.19.0 \
-		notify-rust-4.0.0 \
-		ntapi-0.3.4 \
-		num-integer-0.1.43 \
-		num-traits-0.2.12 \
+		memchr-2.4.0 \
+		memoffset-0.6.3 \
+		native-tls-0.2.7 \
+		nb-connect-1.2.0 \
+		nix-0.17.0 \
+		nix-0.19.1 \
+		nix-0.20.0 \
+		nom-6.1.2 \
+		notify-rust-4.5.2 \
+		num-integer-0.1.44 \
+		num-traits-0.2.14 \
 		num_cpus-1.13.0 \
 		objc-0.2.7 \
 		objc-foundation-0.1.1 \
 		objc_id-0.1.1 \
-		once_cell-1.5.2 \
+		once_cell-1.7.2 \
 		opaque-debug-0.2.3 \
-		open-1.4.0 \
-		openssl-0.10.30 \
-		openssl-probe-0.1.2 \
-		openssl-src-111.12.0+1.1.1h \
-		openssl-sys-0.9.58 \
-		ordered-multimap-0.3.0 \
-		os_info-3.0.1 \
-		path-slash-0.1.3 \
+		open-1.7.0 \
+		openssl-0.10.34 \
+		openssl-probe-0.1.4 \
+		openssl-src-111.15.0+1.1.1k \
+		openssl-sys-0.9.63 \
+		ordered-multimap-0.3.1 \
+		os_info-3.0.5 \
+		parking-2.0.0 \
+		path-slash-0.1.4 \
 		percent-encoding-2.1.0 \
 		pest-2.1.3 \
 		pest_derive-2.1.0 \
 		pest_generator-2.1.3 \
 		pest_meta-2.1.3 \
+		pin-project-lite-0.2.6 \
+		pin-utils-0.1.0 \
 		pkg-config-0.3.19 \
-		ppv-lite86-0.2.9 \
-		proc-macro2-1.0.24 \
-		quick-xml-0.20.0 \
+		polling-2.0.3 \
+		ppv-lite86-0.2.10 \
+		proc-macro-crate-0.1.5 \
+		proc-macro-hack-0.5.19 \
+		proc-macro-nested-0.1.7 \
+		proc-macro2-1.0.26 \
+		process_control-3.0.1 \
+		quick-xml-0.22.0 \
 		quote-0.3.15 \
-		quote-1.0.7 \
-		rand-0.7.3 \
-		rand_chacha-0.2.2 \
-		rand_core-0.5.1 \
-		rand_hc-0.2.0 \
+		quote-1.0.9 \
+		radium-0.5.3 \
+		rand-0.8.3 \
+		rand_chacha-0.3.0 \
+		rand_core-0.6.2 \
+		rand_hc-0.3.0 \
 		rayon-1.5.0 \
 		rayon-core-1.9.0 \
 		redox_syscall-0.1.57 \
+		redox_syscall-0.2.8 \
 		redox_users-0.3.5 \
-		regex-1.4.2 \
-		regex-syntax-0.6.21 \
+		redox_users-0.4.0 \
+		regex-1.5.4 \
+		regex-syntax-0.6.25 \
 		remove_dir_all-0.5.3 \
-		rust-argon2-0.8.2 \
-		rust-ini-0.16.0 \
+		rust-argon2-0.8.3 \
+		rust-ini-0.17.0 \
 		ryu-1.0.5 \
 		schannel-0.1.19 \
+		scoped-tls-1.0.0 \
 		scopeguard-1.1.0 \
-		security-framework-2.0.0 \
-		security-framework-sys-2.0.0 \
-		serde-1.0.116 \
-		serde_derive-1.0.116 \
-		serde_json-1.0.59 \
+		security-framework-2.2.0 \
+		security-framework-sys-2.2.0 \
+		semver-0.11.0 \
+		semver-parser-0.10.2 \
+		serde-1.0.126 \
+		serde_derive-1.0.126 \
+		serde_json-1.0.64 \
+		serde_repr-0.1.7 \
 		serde_urlencoded-0.6.1 \
 		sha-1-0.8.2 \
+		shadow-rs-0.5.25 \
 		shell-words-1.0.0 \
-		starship_module_config_derive-0.1.2 \
+		slab-0.4.3 \
+		socket2-0.4.0 \
+		starship_module_config_derive-0.2.1 \
+		static_assertions-1.1.0 \
 		strsim-0.8.0 \
+		strsim-0.10.0 \
 		strum-0.8.0 \
 		strum_macros-0.8.0 \
 		syn-0.11.11 \
-		syn-1.0.44 \
+		syn-1.0.72 \
 		synom-0.11.3 \
-		sysinfo-0.15.3 \
-		tempfile-3.1.0 \
+		sys-info-0.9.0 \
+		tap-1.0.1 \
+		tempfile-3.2.0 \
 		term_size-0.3.2 \
 		textwrap-0.11.0 \
-		thread_local-1.0.1 \
 		time-0.1.44 \
-		tinyvec-0.3.4 \
-		toml-0.5.7 \
-		typenum-1.12.0 \
+		tinyvec-1.2.0 \
+		tinyvec_macros-0.1.0 \
+		toml-0.5.8 \
+		typenum-1.13.0 \
 		ucd-trie-0.1.3 \
-		unicode-bidi-0.3.4 \
-		unicode-normalization-0.1.13 \
-		unicode-segmentation-1.6.0 \
+		unicode-bidi-0.3.5 \
+		unicode-normalization-0.1.17 \
+		unicode-segmentation-1.7.1 \
 		unicode-width-0.1.8 \
 		unicode-xid-0.0.4 \
-		unicode-xid-0.2.1 \
+		unicode-xid-0.2.2 \
 		uom-0.30.0 \
-		url-2.1.1 \
-		urlencoding-1.1.1 \
-		utf8-width-0.1.4 \
-		vcpkg-0.2.10 \
+		url-2.2.2 \
+		urlencoding-1.3.2 \
+		utf8-width-0.1.5 \
+		vcpkg-0.2.12 \
 		vec_map-0.8.2 \
+		version_check-0.9.3 \
+		versions-3.0.1 \
+		void-1.0.2 \
+		waker-fn-1.1.0 \
 		wasi-0.9.0+wasi-snapshot-preview1 \
 		wasi-0.10.0+wasi-snapshot-preview1 \
-		wildmatch-1.0.11 \
+		wepoll-sys-3.0.1 \
+		which-4.1.0 \
+		wildmatch-1.1.0 \
 		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
 		winrt-0.4.0 \
-		winrt-notification-0.2.2 \
+		winrt-notification-0.2.4 \
+		wyz-0.2.0 \
 		xml-rs-0.6.1 \
-		yaml-rust-0.4.4
-
+		yaml-rust-0.4.5 \
+		zbus-1.9.1 \
+		zbus_macros-1.9.1 \
+		zvariant-2.6.0 \
+		zvariant_derive-2.6.0
 PLIST_FILES=	bin/${PORTNAME}
 
 OPTIONS_DEFINE=		FONTS
-OPTIONS_DEFAULT=	FONTS
 FONTS_DESC=		Install fonts
 FONTS_RUN_DEPENDS=	nerd-fonts>0:x11-fonts/nerd-fonts
 

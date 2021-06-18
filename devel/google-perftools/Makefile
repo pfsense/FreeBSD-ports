@@ -1,9 +1,8 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	google-perftools
 DISTVERSIONPREFIX=	gperftools-
-DISTVERSION=	2.8.1
+DISTVERSION=	2.9.1
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/gperftools/gperftools/releases/download/gperftools-${PORTVERSION}/
 DISTNAME=	gperftools-${PORTVERSION}

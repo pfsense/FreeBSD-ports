@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	idn-ruby
 PORTVERSION=	0.1.0
 PORTREVISION=	2

@@ -1,5 +1,4 @@
 # Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	autogen
 PORTVERSION=	5.18.16
@@ -25,6 +24,7 @@ USES=		gmake gnome libtool pathfix perl5 pkgconfig shebangfix tar:xz
 USE_GNOME=	libxml2
 USE_PERL5=	build
 
+BINARY_ALIAS=	mktemp=gmktemp
 CONFIGURE_ARGS=	--datadir=${PREFIX}/share \
 		--disable-dependency-tracking \
 		--with-libguile=yes --with-libxml2=yes
@@ -37,9 +37,5 @@ USE_LDCONFIG=	yes
 INFO=		autogen
 
 SHEBANG_FILES=	autoopts/tpl/*.pl
-
-post-patch:
-	@${REINPLACE_CMD} -e '/CFLAGS=/ s| -Wno-format-contains-nul||; /WARN_CFLAGS=/ s| -Werror||' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|mktemp --suffix=|g&|' ${WRKSRC}/agen5/mk-stamps.sh ${WRKSRC}/build-aux/run-ag.sh ${WRKSRC}/config/mk-shdefs.in
 
 .include <bsd.port.mk>

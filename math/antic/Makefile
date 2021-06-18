@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	antic
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.3
+DISTVERSION=	0.2.4
 PORTEPOCH=	1
 CATEGORIES=	math
 
@@ -29,7 +27,7 @@ PLIST_FILES=	include/antic/nf.h \
 		include/antic/qfb.h \
 		lib/libantic.so \
 		lib/libantic.so.0 \
-		lib/libantic.so.0.0.1
+		lib/libantic.so.0.2.4
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libantic.so

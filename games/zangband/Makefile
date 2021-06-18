@@ -1,5 +1,4 @@
 # Created by: Makoto YAMAKURA <makoto@pinpott.spnet.ne.jp>
-# $FreeBSD$
 
 PORTNAME=	zangband
 DISTVERSION=	2.7.5pre1
@@ -10,7 +9,11 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Zangband (Zelazny Angband) with color, X11 support
 
-NO_CDROM=	Possible copyright infringement
+# Converted from NO_CDROM
+LICENSE=	Zangband
+LICENSE_NAME=	zangband
+LICENSE_TEXT=	Possible copyright infringement
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

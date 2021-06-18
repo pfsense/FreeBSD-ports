@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	pixen
 PORTVERSION=	0.1
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	graphics gnustep
 MASTER_SITES=	http://download.gna.org/gsimageapps/
 DISTNAME=	Pixen-${PORTVERSION}

@@ -1,8 +1,7 @@
 # Created by: Johannes Dieterich <jmd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	drm-devel-kmod
-PORTVERSION=	5.4.92.g20210128
+PORTVERSION=	5.4.92.g20210526
 CATEGORIES=	graphics kld
 
 MAINTAINER=	x11@FreeBSD.org
@@ -25,7 +24,7 @@ USES=		kmod uidfix compiler:c++11-lang
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
 GH_PROJECT=	drm-kmod
-GH_TAGNAME=	drm_v5.4.92_1
+GH_TAGNAME=	drm_v5.4.92_4
 
 .include <bsd.port.options.mk>
 
@@ -40,26 +39,18 @@ IGNORE=		not supported on anything but FreeBSD (missing linuxkpi functionality)
 PLIST_SUB+=	AMDGPU=""
 PLIST_SUB+=	AMDKFD="@comment "
 PLIST_SUB+=	I915=""
-PLIST_SUB+=	VMWGFX=""
-PLIST_SUB+=	VBOXVIDEO=""
 .elif ${ARCH} == "i386"
 PLIST_SUB+=	AMDGPU="@comment "
 PLIST_SUB+=	AMDKFD="@comment "
 PLIST_SUB+=	I915=""
-PLIST_SUB+=	VMWGFX=""
-PLIST_SUB+=	VBOXVIDEO=""
 .elif ${ARCH} == "aarch64" || ${ARCH:Mpowerpc*}
 PLIST_SUB+=	AMDGPU=""
 PLIST_SUB+=	AMDKFD="@comment " 
 PLIST_SUB+=	I915="@comment "
-PLIST_SUB+=	VBOXVIDEO="@comment "
-PLIST_SUB+=	VMWGFX="@comment "
 .else
 PLIST_SUB+=	AMDGPU="@comment "
 PLIST_SUB+=	AMDKFD="@comment "
 PLIST_SUB+=	I915="@comment "
-PLIST_SUB+=	VBOXVIDEO="@comment "
-PLIST_SUB+=	VMWGFX="@comment "
 .endif
 
 .include <bsd.port.mk>

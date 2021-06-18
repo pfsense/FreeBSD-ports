@@ -1,8 +1,7 @@
 # Created by: Rozhuk Ivan 2019 <rozhuk.im@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	eolie
-PORTVERSION=	0.9.100
+PORTVERSION=	0.9.101
 CATEGORIES=	www gnome
 MASTER_SITES=	https://adishatz.org/eolie/
 

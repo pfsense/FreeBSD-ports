@@ -1,12 +1,11 @@
 # Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
 
 PORTNAME=	Net_DNSBL
 PORTVERSION=	1.3.7
 PORTREVISION=	1
 CATEGORIES=	net pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR DNSBL Checker
 
 LICENSE=	PHP30

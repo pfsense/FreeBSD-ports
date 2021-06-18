@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Internet Relay Chat utilities
 
     SUBDIR += anope
@@ -15,6 +12,7 @@
     SUBDIR += bitlbee-steam
     SUBDIR += bnc
     SUBDIR += bopm
+    SUBDIR += catgirl
     SUBDIR += cgiirc
     SUBDIR += ctrlproxy
     SUBDIR += cwirc
@@ -26,12 +24,12 @@
     SUBDIR += eggdrop-devel
     SUBDIR += epic4
     SUBDIR += epic5
+    SUBDIR += ergo
     SUBDIR += evangeline
     SUBDIR += ezbounce
     SUBDIR += gruftistats
     SUBDIR += hexchat
     SUBDIR += hexchat-fish
-    SUBDIR += hybserv
     SUBDIR += icbirc
     SUBDIR += ii
     SUBDIR += infobot
@@ -63,7 +61,6 @@
     SUBDIR += ngircd
     SUBDIR += ninja
     SUBDIR += onis
-    SUBDIR += oragono
     SUBDIR += p5-AnyEvent-IRC
     SUBDIR += p5-Bot-BasicBot
     SUBDIR += p5-IRC-Bot-Hangman
@@ -87,6 +84,7 @@
     SUBDIR += pircbot
     SUBDIR += pisg
     SUBDIR += polari
+    SUBDIR += pounce
     SUBDIR += py-fishcrypt
     SUBDIR += py-irc
     SUBDIR += py-limnoria
@@ -115,7 +113,6 @@
     SUBDIR += unreal
     SUBDIR += weechat
     SUBDIR += weechat-otr
-    SUBDIR += xaric
     SUBDIR += znc
     SUBDIR += znc-push
 

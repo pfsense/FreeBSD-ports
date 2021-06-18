@@ -1,8 +1,7 @@
 # Created by: Olivier Cochard-Labbé <olivier@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	maxminddb
-PORTVERSION=	2.0.2
+PORTVERSION=	2.0.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net python geography
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +13,6 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
-RUN_DEPENDS=	${PY_IPADDRESS}
 
 USES=		compiler:c11 localbase python:3.6+
 USE_GITHUB=	yes

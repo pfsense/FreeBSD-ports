@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	replxx
 DISTVERSIONPREFIX=	release-
 DISTVERSION=	0.0.3

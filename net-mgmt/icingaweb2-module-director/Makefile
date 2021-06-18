@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	icingaweb2-module-director
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.2

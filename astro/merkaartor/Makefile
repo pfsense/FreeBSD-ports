@@ -1,9 +1,8 @@
 # Created by: Slaven Rezic <slaven@rezic.de>
-# $FreeBSD$
 
 PORTNAME=	merkaartor
 PORTVERSION=	0.18.2
-PORTREVISION=	28
+PORTREVISION=	30
 CATEGORIES=	astro
 
 MAINTAINER=	dev2@heesakkers.info

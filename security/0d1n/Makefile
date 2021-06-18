@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	0d1n
 PORTVERSION=	2.3
 CATEGORIES=	security

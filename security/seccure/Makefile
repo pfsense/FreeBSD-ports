@@ -1,5 +1,4 @@
 # Created by: Lukasz Komsta
-# $FreeBSD$
 
 PORTNAME=	seccure
 PORTVERSION=	0.5
@@ -16,6 +15,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libgcrypt.so:security/libgcrypt
 
-USE_GCC=	any
+USE_GCC=	yes
 
 .include <bsd.port.mk>

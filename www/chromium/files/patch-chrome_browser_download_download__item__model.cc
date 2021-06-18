@@ -1,4 +1,4 @@
---- chrome/browser/download/download_item_model.cc.orig	2020-11-13 06:36:36 UTC
+--- chrome/browser/download/download_item_model.cc.orig	2021-04-14 18:40:53 UTC
 +++ chrome/browser/download/download_item_model.cc
 @@ -571,7 +571,7 @@ bool DownloadItemModel::IsCommandChecked(
        return download_->GetOpenWhenComplete() ||

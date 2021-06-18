@@ -1,8 +1,7 @@
 # Created by: vanilla@
-# $FreeBSD$
 
 PORTNAME=	CryptX
-PORTVERSION=	0.069
+PORTVERSION=	0.072
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN/Crypt
 PKGNAMEPREFIX=	p5-

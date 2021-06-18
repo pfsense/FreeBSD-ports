@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mtrc
 DISTVERSION=	0.0.4
 CATEGORIES=	math rubygems benchmarks

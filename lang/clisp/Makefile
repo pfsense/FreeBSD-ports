@@ -1,5 +1,4 @@
 # Created by: Jeff Brown <jabrown@caida.org>
-# $FreeBSD$
 
 PORTNAME=	clisp
 PORTVERSION=	2.49.93+
@@ -20,7 +19,7 @@ LIB_DEPENDS=	libffcall.so:devel/libffcall \
 		libsigsegv.so:devel/libsigsegv
 
 USES=		compiler gettext ghostscript gnome iconv localbase:ldflags
-USE_GCC=	any
+USE_GCC=	yes
 USE_GITLAB=	yes
 
 GL_ACCOUNT=	gnu-clisp

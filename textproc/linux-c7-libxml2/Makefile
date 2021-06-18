@@ -1,10 +1,9 @@
 # Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
 
 PORTNAME=	libxml2
 PORTVERSION=	2.9.1
-DISTVERSIONSUFFIX=	-6.el7.4
-PORTREVISION=	2
+DISTVERSIONSUFFIX=	-6.el7.5
+PORTREVISION=	3
 CATEGORIES=	textproc linux
 
 MAINTAINER=	emulation@FreeBSD.org

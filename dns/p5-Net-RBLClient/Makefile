@@ -1,5 +1,4 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	Net-RBLClient
 PORTVERSION=	0.5
@@ -17,10 +16,10 @@ LICENSE_COMB=	dual
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Net-DNS>=0:dns/p5-Net-DNS
 
-NO_ARCH=	yes
-USE_PERL5=	configure
 USES=		perl5
+USE_PERL5=	configure
 
+NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/RBLCLient-${PORTVERSION}
 
 .include <bsd.port.mk>

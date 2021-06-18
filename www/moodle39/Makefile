@@ -1,8 +1,7 @@
 # Created by: Javier Martin Rueda <jmrueda@diatel.upm.es>
-# $FreeBSD$
 
 PORTNAME=	moodle
-PORTVERSION=	3.9.5
+PORTVERSION=	3.9.7
 CATEGORIES=	www education
 MASTER_SITES=	SF/moodle/Moodle/stable39/
 PKGNAMESUFFIX=	${PKGORIGIN:T:S/moodle//}${PHP_PKGNAMESUFFIX}
@@ -12,13 +11,15 @@ COMMENT=	Course management system based on social constructionism
 
 LICENSE=	GPLv3
 
-CONFLICTS=	moodle310-3.10.[0-9]*
+CONFLICTS=	moodle310-3.10.[0-9]* moodle311-3.11
 
 USES=		cpe php:flavors tar:tgz
 USE_PHP=	ctype curl dom fileinfo filter gd hash iconv intl json mbstring \
 		opcache openssl pcre session simplexml soap spl tokenizer \
 		xml xmlreader zip zlib
 WRKSRC=		${WRKDIR}/moodle
+
+IGNORE_WITH_PHP=	80
 
 OPTIONS_SINGLE=		BACKEND
 OPTIONS_SINGLE_BACKEND=	MYSQL PGSQL MSSQL

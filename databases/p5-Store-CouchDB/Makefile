@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Store-CouchDB
 PORTVERSION=	4.3
 CATEGORIES=	databases perl5

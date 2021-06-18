@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hunspell
 PORTVERSION=	0.1.6
 CATEGORIES=	textproc

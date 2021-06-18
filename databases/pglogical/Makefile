@@ -1,9 +1,8 @@
 # Created by: Matthew Seaman
-# $FreeBSD$
 
 PORTNAME=	pglogical
 DISTVERSIONPREFIX=	REL
-DISTVERSION=	2_3_3
+DISTVERSION=	2_3_4
 CATEGORIES=	databases
 
 MAINTAINER=	matthew@FreeBSD.org
@@ -11,7 +10,7 @@ COMMENT=	Logical replication system as a PostgreSQL extension
 
 LICENSE=	PostgreSQL
 
-USES=		compiler:c11 gettext-runtime gmake pgsql:9.4+
+USES=		compiler:c11 gettext-runtime gmake pgsql
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	2ndQuadrant
@@ -37,9 +36,6 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/pglogical_create_subscriber
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/postgresql/pglogical.so
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/postgresql/pglogical_output.so
-.if ${PGSQL_VER:M9.4}
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/pglogical_dump
-.endif
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

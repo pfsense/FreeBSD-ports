@@ -1,4 +1,4 @@
---- extensions/common/image_util.cc.orig	2020-11-13 06:36:43 UTC
+--- extensions/common/image_util.cc.orig	2021-04-14 18:41:04 UTC
 +++ extensions/common/image_util.cc
 @@ -20,7 +20,11 @@
  #include "base/strings/stringprintf.h"

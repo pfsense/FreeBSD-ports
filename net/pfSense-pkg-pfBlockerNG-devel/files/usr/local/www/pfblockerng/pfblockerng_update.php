@@ -93,10 +93,12 @@ function pfb_cron_update($type) {
 				break;
 			case 'DNSBL':
 				$type = 'updatednsbl';
+				rmdir_recursive("{$pfb['dnsdir']}");
 				break;
 			case 'All':
 			default:
 				$type = 'update';
+				rmdir_recursive("{$pfb['dnsdir']}");
 		}
 	} else {
 		pfbupdate_status(gettext('Running Force CRON Task'));

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	simbody
 DISTVERSIONPREFIX=	Simbody-
 DISTVERSION=	3.7

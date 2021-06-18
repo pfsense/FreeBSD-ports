@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	highfive
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2.2
+DISTVERSION=	2.3
 CATEGORIES=	science devel
 
 MAINTAINER=	yuri@FreeBSD.org

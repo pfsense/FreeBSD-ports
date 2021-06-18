@@ -1,8 +1,7 @@
 # Created by: Stefan Hagen <ports@textmail.me>
-# $FreeBSD$
 
 PORTNAME=	luakit
-PORTVERSION=	2.2
+PORTVERSION=	2.3
 PORTEPOCH=	1
 CATEGORIES=	www
 

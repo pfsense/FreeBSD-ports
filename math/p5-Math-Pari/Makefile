@@ -1,5 +1,4 @@
 # Created by: Michael Haro <mharo@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Math-Pari
 PORTVERSION=	2.01080900
@@ -17,10 +16,6 @@ COMMENT=	Numerical/scientific/number-theoretic calculations
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-.if ${/usr/bin/ld:L:tA} == /usr/bin/ld.lld
-BROKEN_i386=	ld: error: can't create dynamic relocation R_386_32 against local symbol in readonly segment; recompile object files with -fPIC or pass '-Wl,-z,notext' to allow text relocations in the output
-.endif
-
 LIB_DEPENDS=	libgmp.so:math/gmp
 
 USES=		perl5
@@ -34,6 +29,7 @@ CFLAGS_powerpc=		-fPIC
 CFLAGS_powerpc64=	-fPIC
 CFLAGS_powerpc64le=	-fPIC
 CFLAGS_powerpcspe=	-fPIC
+CFLAGS_riscv64=		-fPIC
 
 CONFIGURE_ARGS=	parilib="-L${PARI_WRKSRC}/build -lpari" \
 		paridir=${PARI_WRKSRC}

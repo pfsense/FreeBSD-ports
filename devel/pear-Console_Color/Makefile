@@ -1,11 +1,10 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Console_Color
 PORTVERSION=	1.0.3
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR use ANSI console colors
 
 LICENSE=	MIT

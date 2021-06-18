@@ -1,9 +1,7 @@
 # Created by: Alfred Perlstein <alfred@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	websocket-client
-PORTVERSION=	0.56.0
-PORTREVISION=	1
+PORTVERSION=	0.58.0
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -25,13 +23,7 @@ USE_PYTHON=	distutils concurrent autoplist
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3500
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}backports.ssl_match_hostname>0:security/py-backports.ssl_match_hostname@${PY_FLAVOR}
-.endif
-
 do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ctl-sat
 DISTVERSION=	g20200210
 CATEGORIES=	math

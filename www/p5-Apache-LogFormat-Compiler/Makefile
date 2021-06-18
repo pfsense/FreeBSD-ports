@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Apache-LogFormat-Compiler
 PORTVERSION=	0.35
 CATEGORIES=	www perl5

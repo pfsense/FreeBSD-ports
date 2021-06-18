@@ -1,5 +1,4 @@
 # Created by: Peter Dunning
-# $FreeBSD$
 
 PORTNAME=	etr
 PORTVERSION=	0.8.0
@@ -7,7 +6,7 @@ CATEGORIES=	games
 MASTER_SITES=	SF/extremetuxracer/releases/${PORTVERSION}
 PKGNAMESUFFIX=	acer
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Extreme Tux Racer
 
 LICENSE=	GPLv2

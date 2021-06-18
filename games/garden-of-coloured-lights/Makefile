@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	garden-of-coloured-lights
 PORTVERSION=	1.0.9
 PORTREVISION=	2

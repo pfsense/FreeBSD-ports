@@ -1,17 +1,19 @@
-# $FreeBSD$
-#
-
     COMMENT = Biology
 
     SUBDIR += abyss
+    SUBDIR += ad2vcf
     SUBDIR += artemis
     SUBDIR += avida
     SUBDIR += babel
     SUBDIR += bamtools
+    SUBDIR += bbmap
     SUBDIR += bcftools
     SUBDIR += bedtools
     SUBDIR += bioawk
     SUBDIR += biococoa
+    SUBDIR += biolibc
+    SUBDIR += bioparser
+    SUBDIR += biosoup
     SUBDIR += bolt-lmm
     SUBDIR += bowtie
     SUBDIR += bowtie2
@@ -27,6 +29,7 @@
     SUBDIR += ddocent
     SUBDIR += diamond
     SUBDIR += dsr-pdb
+    SUBDIR += edlib
     SUBDIR += emboss
     SUBDIR += exonerate
     SUBDIR += fasta
@@ -45,12 +48,13 @@
     SUBDIR += gatk
     SUBDIR += gcta
     SUBDIR += gemma
+    SUBDIR += generand
     SUBDIR += gff2ps
     SUBDIR += gmap
     SUBDIR += gperiodic
     SUBDIR += graphlan
-    SUBDIR += grappa
     SUBDIR += groopm
+    SUBDIR += haplohseq
     SUBDIR += hhsuite
     SUBDIR += hisat2
     SUBDIR += hmmer
@@ -63,7 +67,6 @@
     SUBDIR += jalview
     SUBDIR += jellyfish
     SUBDIR += kallisto
-    SUBDIR += lagan
     SUBDIR += lamarc
     SUBDIR += libbigwig
     SUBDIR += libgtextutils
@@ -81,7 +84,9 @@
     SUBDIR += muscle
     SUBDIR += ncbi-blast+
     SUBDIR += ncbi-cxx-toolkit
+    SUBDIR += ncbi-entrez-direct
     SUBDIR += ncbi-toolkit
+    SUBDIR += ncbi-vdb
     SUBDIR += ngs-sdk
     SUBDIR += p5-AcePerl
     SUBDIR += p5-Bio-ASN1-EntrezGene
@@ -110,7 +115,6 @@
     SUBDIR += pear-merger
     SUBDIR += phrap
     SUBDIR += phred
-    SUBDIR += phylip
     SUBDIR += phyml
     SUBDIR += picard-tools
     SUBDIR += plink
@@ -121,13 +125,14 @@
     SUBDIR += protomol
     SUBDIR += psi88
     SUBDIR += py-Genesis-PyAPI
+    SUBDIR += py-bigwig
     SUBDIR += py-biom-format
     SUBDIR += py-biopython
     SUBDIR += py-bx-python
+    SUBDIR += py-crossmap
     SUBDIR += py-cutadapt
     SUBDIR += py-dnaio
     SUBDIR += py-ete3
-    SUBDIR += py-fastTSNE
     SUBDIR += py-gffutils
     SUBDIR += py-gtfparse
     SUBDIR += py-hits
@@ -139,11 +144,14 @@
     SUBDIR += py-pandas-charm
     SUBDIR += py-pyfaidx
     SUBDIR += py-pysam
+    SUBDIR += py-resdk
     SUBDIR += py-scikit-bio
     SUBDIR += py-xenaPython
     SUBDIR += pyfasta
     SUBDIR += python-nexus
     SUBDIR += rainbow
+    SUBDIR += rampler
+    SUBDIR += readseq
     SUBDIR += recombine
     SUBDIR += ruby-bio
     SUBDIR += rubygem-bio
@@ -156,22 +164,31 @@
     SUBDIR += seqan
     SUBDIR += seqan-apps
     SUBDIR += seqan1
+    SUBDIR += seqan3
     SUBDIR += seqio
+    SUBDIR += seqkit
     SUBDIR += seqtk
     SUBDIR += sim4
     SUBDIR += slclust
     SUBDIR += smithwaterman
+    SUBDIR += snpeff
+    SUBDIR += spoa
     SUBDIR += stacks
     SUBDIR += star
     SUBDIR += stringtie
     SUBDIR += subread
     SUBDIR += tRNAscan-SE
     SUBDIR += tabixpp
+    SUBDIR += taxonkit
     SUBDIR += treekin
     SUBDIR += treepuzzle
     SUBDIR += trimadap
     SUBDIR += trimmomatic
+    SUBDIR += ucsc-userapps
     SUBDIR += ugene
+    SUBDIR += unikmer
+    SUBDIR += vcf-split
+    SUBDIR += vcf2hap
     SUBDIR += vcflib
     SUBDIR += vcftools
     SUBDIR += velvet

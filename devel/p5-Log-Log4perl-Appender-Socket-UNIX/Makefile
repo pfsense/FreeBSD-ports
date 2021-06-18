@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Log-Log4perl-Appender-Socket-UNIX
 PORTVERSION=	1.04
 CATEGORIES=	devel perl5

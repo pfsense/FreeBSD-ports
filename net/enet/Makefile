@@ -1,5 +1,4 @@
 # Created by: Stanislav Sedov <stas@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	enet
 PORTVERSION=	1.3.17
@@ -7,7 +6,7 @@ PORTEPOCH=	1
 CATEGORIES=	net
 MASTER_SITES=	http://enet.bespin.org/download/
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Simple and robust communication library based on UDP
 
 LICENSE=	MIT

@@ -1,5 +1,4 @@
 # Created by: Ben Woods <woodsb02@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lightdm
 PORTVERSION=	1.30.0
@@ -7,7 +6,7 @@ PORTREVISION=	2
 CATEGORIES=	x11
 MASTER_SITES=	https://github.com/CanonicalLtd/${PORTNAME}/releases/download/${DISTVERSIONPREFIX}${DISTVERSION}/
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Lightweight Display Manager
 
 # library/bindings are LGPLv2 or LGPLv3, the rest GPLv3+

@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	siosocks
 PORTVERSION=	0.2.0
 CATEGORIES=	net python

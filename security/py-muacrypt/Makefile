@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	muacrypt
 PORTVERSION=	0.9.1
 CATEGORIES=	security mail python

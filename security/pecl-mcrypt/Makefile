@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mcrypt
 PORTVERSION=	1.0.4
 PORTREVISION=	0

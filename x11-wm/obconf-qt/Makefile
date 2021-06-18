@@ -1,8 +1,7 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	obconf-qt
-PORTVERSION=	0.16.0
+PORTVERSION=	0.16.1
 CATEGORIES=	x11-wm
 MASTER_SITES=	LXQT/${PORTNAME}
 

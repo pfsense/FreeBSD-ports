@@ -1,5 +1,4 @@
 # Created by: bremner@unb.ca
-# $FreeBSD$
 
 PORTNAME=	hashcash
 PORTVERSION=	1.22
@@ -30,7 +29,7 @@ OPTIONS_DEFINE=	DOCS
 .include <bsd.port.options.mk>
 
 .if ${ARCH:Mpowerpc*}
-USE_GCC=	any
+USE_GCC=	yes
 .endif
 
 post-patch-DOCS-off:

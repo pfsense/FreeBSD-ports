@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MooseX-CoverableModifiers
 PORTVERSION=	0.30
 CATEGORIES=	devel perl5

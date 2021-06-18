@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	uclcmd
 PORTVERSION=	0.1
 PORTREVISION=	3

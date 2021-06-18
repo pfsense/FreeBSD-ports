@@ -1,5 +1,4 @@
 # Created by: Andrey Zakhvatov
-# $FreeBSD$
 
 PORTNAME=	xkoules
 PORTVERSION=	1.4
@@ -17,9 +16,6 @@ COMMENT=	Fast action arcade-style game for X Window
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN_FreeBSD_13=	duplicate symbol: controls
-BROKEN_FreeBSD_14=	duplicate symbol: controls
 
 WRKSRC=		${WRKDIR}/${PORTNAME:S/x//}${PORTVERSION}
 

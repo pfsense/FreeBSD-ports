@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	django-libsass
 PORTVERSION=	0.7
 CATEGORIES=	www python

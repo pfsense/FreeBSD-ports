@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	docker-pycreds
 PORTVERSION=	0.4.0
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	lifanov@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python bindings for the docker credentials store API
 
 LICENSE=	APACHE20

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sonic-visualiser
 DISTVERSION=	4.0.1
 PORTREVISION=	2

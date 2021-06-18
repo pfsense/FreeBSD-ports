@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pre-commit
 PORTVERSION=	1.21.0
 CATEGORIES=	devel python

@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	xen
 PKGNAMESUFFIX=	-tools
-PORTVERSION=	4.14.0
+PORTVERSION=	4.15.0
 PORTREVISION=	1
 CATEGORIES=	sysutils emulators
 MASTER_SITES=	http://downloads.xenproject.org/release/xen/${PORTVERSION}/
@@ -18,9 +16,10 @@ LIB_DEPENDS=	libyajl.so:devel/yajl \
 		libpixman-1.so:x11/pixman \
 		libargp.so:devel/argp-standalone \
 		libxml2.so:textproc/libxml2
-BUILD_DEPENDS=	seabios>0:misc/seabios
-RUN_DEPENDS=	seabios>0:misc/seabios
-DOCS_BUILD_DEPENDS=markdown:textproc/markdown
+BUILD_DEPENDS=	seabios>0:misc/seabios \
+		${LOCALBASE}/share/edk2-xen/XEN_X64_EFI.fd:sysutils/edk2@xen_x64
+RUN_DEPENDS=	seabios>0:misc/seabios \
+		${LOCALBASE}/share/edk2-xen/XEN_X64_EFI.fd:sysutils/edk2@xen_x64
 
 OPTIONS_DEFINE=		DOCS SPICE
 OPTIONS_DEFAULT=	DOCS
@@ -46,6 +45,7 @@ MAKE_ARGS=	clang=y ARCH=x86_64
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 CONFIGURE_ARGS+=	--with-system-seabios=${LOCALBASE}/share/seabios/bios.bin \
+			--with-system-ovmf=${LOCALBASE}/share/edk2-xen/XEN_X64_EFI.fd \
 			--mandir=${MANPREFIX}/man
 
 SHEBANG_FILES=	tools/misc/xencov_split \
@@ -57,9 +57,6 @@ ALL_TARGET=		tools
 DOCS_ALL_TARGET=	docs
 INSTALL_TARGET=		install-tools
 DOCS_INSTALL_TARGET=	install-docs
-
-# Fix build with clang 11
-EXTRA_PATCHES+= ${PATCHDIR}/0001-x86-use-constant-flags-for-section-.init.rodata.patch:-p1
 
 .include <bsd.port.options.mk>
 
@@ -73,6 +70,13 @@ IGNORE=		only supported on FreeBSD 12.0 or newer
 
 .if ${PORT_OPTIONS:MSPICE} && ${OSVERSION} < 1300008
 BROKEN=	SPICE support requires FreeBSD version 13.0 or higher
+.endif
+
+# ivshmem requires eventfd
+.if ${OSVERSION} >= 1300000
+PLIST_SUB+=	IVSHMEM=""
+.else
+PLIST_SUB+=	IVSHMEM="@comment "
 .endif
 
 post-patch:

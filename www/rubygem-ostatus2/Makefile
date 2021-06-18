@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ostatus2
 PORTVERSION=	2.0.3
 PORTREVISION=	1

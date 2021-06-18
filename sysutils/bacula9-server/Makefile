@@ -1,8 +1,8 @@
 # Created by: Dmitry Sivachenko <demon@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	bacula
 PORTVERSION=	9.6.7
+PORTREVISION=	1
 CATEGORIES?=	sysutils
 MASTER_SITES=	SF/bacula/bacula/${PORTVERSION}
 PKGNAMEPREFIX?=	#
@@ -17,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES+=		libtool readline shebangfix ssl
 SHEBANG_FILES=	src/cats/make_catalog_backup.pl.in
 
-CONFLICTS?=	bacula5-server-* bacula-server-*
+CONFLICTS?=	bacula11-server-* bacula5-server-* bacula-server-*
 
 LIB_DEPENDS+=	liblzo2.so:archivers/lzo2
 
@@ -29,7 +29,7 @@ PLIST_SUB+=	LIB_VERSION=${PORTVERSION}
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
-CPPFLAGS+=	-I/usr/include/readline -I${LOCALBASE}/include
+CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE?=	MTX NLS IPV6
@@ -127,18 +127,12 @@ MTX_RUN_DEPENDS=	${LOCALBASE}/sbin/mtx:misc/mtx
 
 .include <bsd.port.pre.mk>
 
-.if ${readline_ARGS} == "port"
-readline_CONFIGURE=	${LOCALBASE}
-.else
-readline_CONFIGURE=	yes
-.endif
-
 # if IPv6 is not in the kernel, it generates many errors
 .if ! ${PORT_OPTIONS:MIPV6}
 CONFIGURE_ARGS+=	--disable-ipv6
 .endif
 
-CONFIGURE_ARGS+=	--with-readline=${readline_CONFIGURE}
+CONFIGURE_ARGS+=	--with-readline=${LOCALBASE}
 
 .if defined(WITH_CLIENT_ONLY)
 MP8+=	bacula.8 bacula-fd.8 bconsole.8

@@ -1,8 +1,7 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	tarantool
-PORTVERSION=	2.6.1
+PORTVERSION=	2.8.1
 CATEGORIES=	databases
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -45,11 +44,11 @@ SUB_FILES=	pkg-message
 
 GH_TUPLE=	luafun:luafun:e248e00:luafun_luafun/third_party/luafun \
 		tarantool:decNumber:5ddfde1:tarantool_decNumber/third_party/decNumber \
-		tarantool:luajit:8fc103f:tarantool_luajit/third_party/luajit \
+		tarantool:luajit:789820a:tarantool_luajit/third_party/luajit \
 		tarantool:luarocks:954c2f5:tarantool_luarocks/third_party/luarocks \
 		tarantool:serpent:879580f:tarantool_serpent/third_party/serpent \
-		tarantool:small:fcac155:tarantool_small/src/lib/small \
-		tarantool:test-run:b5fcafb:tarantool_test_run/test-run
+		tarantool:small:279fa38:tarantool_small/src/lib/small \
+		tarantool:test-run:1263cb5:tarantool_test_run/test-run
 USE_GITHUB=	yes
 
 USERS=		tarantool

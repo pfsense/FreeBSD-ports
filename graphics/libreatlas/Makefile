@@ -1,9 +1,8 @@
 # Created by: lbartoletti <lbartoletti@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libreatlas
 PORTVERSION=	1.0.0a
-PORTREVISION=	26
+PORTREVISION=	27
 CATEGORIES=	graphics education geography
 MASTER_SITES=	http://www.gaia-gis.it/gaia-sins/
 

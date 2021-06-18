@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pysmi
 PORTVERSION=	0.3.4
 CATEGORIES=	net-mgmt python

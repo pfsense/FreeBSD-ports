@@ -1,5 +1,4 @@
 # Created by: ballen
-# $FreeBSD$
 
 PORTNAME=	phyml
 DISTVERSIONPREFIX=	v
@@ -29,7 +28,6 @@ OPTIONS_DEFINE=		DOCS EXAMPLES
 OPTIONS_RADIO=		MPI
 OPTIONS_RADIO_MPI=	MPICH OPENMPI
 
-MPICH_DESC=		Parallel processing support via MPICH
 MPICH_LIB_DEPENDS=	libmpich.so:net/mpich
 MPICH_MAKE_ARGS=	CC="${LOCALBASE}/bin/mpicc"
 OPENMPI_LIB_DEPENDS=	libmpi.so:net/openmpi

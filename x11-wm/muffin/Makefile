@@ -1,5 +1,4 @@
 # Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	muffin
 PORTVERSION=	4.8.0
@@ -43,7 +42,7 @@ USE_GNOME=	cairo dconf gdkpixbuf2 gnomeprefix glib20 gtk30 intltool \
 USE_XORG=	ice sm x11 xcb xcomposite xcursor xdamage xext xfixes xi xinerama \
 		xkbfile xrandr xrender xtst
 
-USE_GL=		egl gl
+USE_GL=		egl gbm gl
 
 USE_LDCONFIG=	yes
 

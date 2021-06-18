@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	phlipple
 PORTVERSION=	0.8.5
 PORTREVISION=	6

@@ -1,6 +1,5 @@
 # Created by: Palle Girgensohn <girgen@pingpong.net>
-# $FreeBSD$
 
 WANT_PGSQL_VER=11
 
-.include "${.CURDIR}/../postgresql13-docs/Makefile"
+.include "${.CURDIR}/../postgresql14-docs/Makefile"

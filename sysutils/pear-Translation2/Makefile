@@ -1,12 +1,11 @@
 # Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
 
 PORTNAME=	Translation2
 DISTVERSION=	2.0.4
 PORTEPOCH=	1
 CATEGORIES=	sysutils devel pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR class for multilingual applications management
 
 USES=		pear shebangfix

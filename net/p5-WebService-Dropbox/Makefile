@@ -1,5 +1,4 @@
 # Created by: Lung-Pin Chang <changlp@cs.nctu.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	WebService-Dropbox
 PORTVERSION=	2.07
@@ -7,7 +6,7 @@ CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Perl interface to Dropbox API
 
 LICENSE=	ART10 GPLv1+

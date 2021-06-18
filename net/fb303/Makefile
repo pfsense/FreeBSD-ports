@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	fb303
-DISTVERSION=	g20201122
+DISTVERSION=	g20210511
 CATEGORIES=	net
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -27,10 +25,11 @@ LIB_DEPENDS=	libboost_regex.so:devel/boost-libs \
 		libzstd.so:archivers/zstd
 
 USES=		cmake compiler:c++17-lang ssl
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	facebook
-GH_TAGNAME=	94cac88
-USE_LDCONFIG=	yes
+GH_TAGNAME=	4968806
 
 CXXFLAGS+=	-fPIC
 

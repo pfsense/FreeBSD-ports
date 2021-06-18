@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	elisa10
 PORTVERSION=	1.0
 PORTREVISION=	4
@@ -32,8 +30,6 @@ PLIST_FILES=	${FONTSDIR:S,^${PREFIX}/,,}/elisau10.pcf.gz \
 		${FONTSDIR:S,^${PREFIX}/,,}/fonts.alias
 
 OPTIONS_DEFINE=	DOCS
-
-pre-build: apply-slist
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/fonts.alias ${STAGEDIR}${FONTSDIR}

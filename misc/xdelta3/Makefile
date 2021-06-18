@@ -1,5 +1,4 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	xdelta
 PORTVERSION=	3.1.0
@@ -9,7 +8,7 @@ PORTEPOCH=	1
 CATEGORIES?=	misc devel
 PKGNAMESUFFIX=	3
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open-source binary diff, VCDIFF/RFC 3284 delta compression
 
 LICENSE=	GPLv2+

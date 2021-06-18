@@ -23,6 +23,7 @@ include/KastenControllers/Kasten/SynchronizeControllerFactory
 include/KastenControllers/Kasten/TerminalToolFactory
 include/KastenControllers/Kasten/TerminalToolViewFactory
 include/KastenControllers/Kasten/ToolListMenuControllerFactory
+include/KastenControllers/Kasten/UiColorSchemeControllerFactory
 include/KastenControllers/Kasten/VersionControllerFactory
 include/KastenControllers/Kasten/VersionViewToolFactory
 include/KastenControllers/Kasten/VersionViewToolViewFactory
@@ -54,6 +55,7 @@ include/KastenControllers/kasten/synchronizecontrollerfactory.hpp
 include/KastenControllers/kasten/terminaltoolfactory.hpp
 include/KastenControllers/kasten/terminaltoolviewfactory.hpp
 include/KastenControllers/kasten/toollistmenucontrollerfactory.hpp
+include/KastenControllers/kasten/uicolorschemecontrollerfactory.hpp
 include/KastenControllers/kasten/versioncontrollerfactory.hpp
 include/KastenControllers/kasten/versionviewtoolfactory.hpp
 include/KastenControllers/kasten/versionviewtoolviewfactory.hpp
@@ -473,13 +475,13 @@ lib/cmake/OktetaKastenGui/OktetaKastenGuiTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/OktetaKastenGui/OktetaKastenGuiTargets.cmake
 lib/libKasten4Controllers.so
 lib/libKasten4Controllers.so.0
-lib/libKasten4Controllers.so.0.4.0
+lib/libKasten4Controllers.so.0.4.1
 lib/libKasten4Core.so
 lib/libKasten4Core.so.0
-lib/libKasten4Core.so.0.4.0
+lib/libKasten4Core.so.0.4.1
 lib/libKasten4Gui.so
 lib/libKasten4Gui.so.0
-lib/libKasten4Gui.so.0.4.0
+lib/libKasten4Gui.so.0.4.1
 lib/libKasten4Okteta2Controllers.so
 lib/libKasten4Okteta2Controllers.so.0
 lib/libKasten4Okteta2Controllers.so.0.4.0

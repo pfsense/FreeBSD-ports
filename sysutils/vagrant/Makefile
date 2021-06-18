@@ -1,10 +1,9 @@
 # Created by: Joseph Benden <joe@thrallingpenguin.com>
-# $FreeBSD$
 
 PORTNAME=	vagrant
 PORTVERSION=	2.2.14
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	sysutils rubygems devel
 
 MAINTAINER=	joe@thrallingpenguin.com
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	rubygem-builder>=2.1.2:devel/rubygem-builder \
 		rubygem-bundler>=1.12.5:sysutils/rubygem-bundler \
 		rubygem-main>=1.0:devel/rubygem-main
-RUN_DEPENDS=	rubygem-bcrypt_pbkdf>=1.0.0<1.1:security/rubygem-bcrypt_pbkdf \
+RUN_DEPENDS=	rubygem-bcrypt_pbkdf10>=1.0.0<1.1:security/rubygem-bcrypt_pbkdf10 \
 		rubygem-bundler>=1.12.5:sysutils/rubygem-bundler \
 		rubygem-childprocess>=4.0.0<4.1.0:devel/rubygem-childprocess \
 		rubygem-ed25519>=1.2.4<1.3:security/rubygem-ed25519 \
@@ -62,6 +61,12 @@ RUBYGEM_ARGS=	-l --no-document --no-update-sources \
 		--ignore-dependencies --bindir=${STAGEDIR}${PREFIX}/bin
 GEM_ENV+=	RB_USER_INSTALL=yes
 
+OPTIONS_DEFINE=		BASH ZSH
+OPTIONS_DEFAULT=	BASH ZSH
+
+BASH_PLIST_FILES=	share/bash-completion/completions/vagrant
+ZSH_PLIST_FILES=	share/share/zsh/site-functions/_vagrant
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|@PREFIX@|${PREFIX}|g' ${WRKSRC}/bin/vagrant
 
@@ -80,5 +85,13 @@ do-build:
 post-install:
 	${RMDIR} ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER}/doc
 	${RM} ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER}/gems/${PORTNAME}-${PORTVERSION}/.runner.sh
+
+post-install-BASH-on:
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/bash-completion/completions
+	${RLN} ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER}/gems/${PORTNAME}-${PORTVERSION}/contrib/bash/completion.sh ${STAGEDIR}${PREFIX}/share/bash-completion/completions/vagrant
+
+post-install-ZSH-on:
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/share/zsh/site-functions
+	${RLN} ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER}/gems/${PORTNAME}-${PORTVERSION}/contrib/zsh/_vagrant ${STAGEDIR}${PREFIX}/share/share/zsh/site-functions
 
 .include <bsd.port.mk>

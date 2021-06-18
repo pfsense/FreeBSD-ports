@@ -1,9 +1,7 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	qlipper
-PORTVERSION=	5.1.1
-PORTREVISION=	3
+PORTVERSION=	5.1.2
 CATEGORIES=	deskutils
 
 MAINTAINER=	jsm@FreeBSD.org

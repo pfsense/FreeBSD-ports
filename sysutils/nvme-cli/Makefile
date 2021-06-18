@@ -1,5 +1,4 @@
 # Created by: imp
-# $FreeBSD$
 
 PORTNAME=	nvme-cli
 PORTVERSION=	1.8.1
@@ -16,6 +15,8 @@ ONLY_FOR_ARCHS=	amd64
 BROKEN_FreeBSD_11=	Uses newer API than in 11.x
 
 USES=		gmake
+
+PLIST_FILES=	sbin/nvme
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	bsdimp

@@ -1,5 +1,4 @@
 # Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Jinja2
 PORTVERSION=	2.11.2
@@ -20,7 +19,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}markupsafe>=0.23:textproc/py-markupsafe@${P
 
 NO_ARCH=	yes
 .if empty(PKGNAMESUFFIX)
-USES=		python
+USES=		python:2.7+
 USE_PYTHON=	autoplist distutils
 .endif
 .if ${PKGNAMESUFFIX} == -doc
@@ -63,7 +62,7 @@ do-install:
 .if ${PORT_OPTIONS:MEXAMPLES}
 PORTEXAMPLES=	*
 post-build:
-.	if ${PYTHON_REL} >= 3000
+.	if ${PYTHON_REL} >= 30000
 	${PY2TO3_CMD} ${PY2TO3_ARGS} ${WRKSRC}/examples
 .	endif
 	${PYTHON_CMD} -m compileall ${WRKSRC}/examples ; \

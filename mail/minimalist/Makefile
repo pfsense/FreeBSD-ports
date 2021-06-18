@@ -1,5 +1,4 @@
 # Created by: gmarco@scotty.masternet.it
-# $FreeBSD$
 
 PORTNAME=	minimalist
 PORTVERSION=	2.5.3
@@ -7,7 +6,7 @@ CATEGORIES=	mail
 MASTER_SITES=	http://www.mml.org.ua/LIST/ \
 		http://utenti.gufi.org/~gmarco/files/distfiles/
 
-MAINTAINER=	gmarco@gufi.org
+MAINTAINER=	gmarco@giovannelli.it
 COMMENT=	Minimalistic mailing list manager
 
 USES=		shebangfix perl5

@@ -1,8 +1,7 @@
 # Created by: patrick, trevor
-# $FreeBSD$
 
 PORTNAME=	lilypond
-DISTVERSION=	2.21.82
+DISTVERSION=	2.22.1
 CATEGORIES=	print audio
 MASTER_SITES=	http://lilypond.org/download/source/v${DISTVERSION:R}/
 
@@ -12,7 +11,7 @@ COMMENT=	GNU music typesetter
 LICENSE=	GPLv3
 
 BUILD_DEPENDS=	bash:shells/bash \
-		convert:graphics/ImageMagick6 \
+		convert:graphics/ImageMagick7 \
 		dblatex:textproc/dblatex \
 		fontforge:print/fontforge \
 		help2man:misc/help2man \
@@ -25,7 +24,6 @@ BUILD_DEPENDS=	bash:shells/bash \
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libgmp.so:math/gmp \
-		libguile.so:lang/guile1 \
 		libltdl.so:devel/libltdl
 RUN_DEPENDS=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans-Bold.ttf:x11-fonts/dejavu \
 		mftrace:print/mftrace
@@ -49,8 +47,7 @@ ALL_TARGET=	all
 
 BINARY_ALIAS=	python=${PYTHON_VERSION}
 
-INFO=		internals \
-				lilypond-changes \
+INFO=		lilypond-changes \
 				lilypond-contributor \
 				lilypond-essay \
 				lilypond-extending \
@@ -59,20 +56,24 @@ INFO=		internals \
 				lilypond-notation \
 				lilypond-snippets \
 				lilypond-usage \
-				lilypond-web \
 				music-glossary
 PLIST_SUB=	DISTVERSION=${DISTVERSION}
 
-OPTIONS_DEFINE=	URW NLS
+OPTIONS_DEFINE=	GUILE2 NLS URW
 OPTIONS_SUB=	yes
 
+GUILE2_DESC=	guile2 instead guile (incurs performance penalty)
 URW_DESC=	Use bundled URW fonts
 
+GUILE2_LIB_DEPENDS=	libgc-threaded.so:devel/boehm-gc-threaded \
+			libguile-2.2.so:lang/guile2
+GUILE2_LIB_DEPENDS_OFF=	libguile.so:lang/guile1
+
 NLS_USES=	gettext
+NLS_USES_OFF=	gettext-tools
 
 URW_BUILD_DEPENDS=	urw-core35-fonts>0:x11-fonts/urw-core35-fonts
 URW_RUN_DEPENDS_OFF=	urw-core35-fonts>0:x11-fonts/urw-core35-fonts
-
 URW_CONFIGURE_WITH=	urwotf-dir=${LOCALBASE}/share/fonts/urw-core35-fonts
 
 post-patch:

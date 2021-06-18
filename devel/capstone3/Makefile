@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	capstone
 PORTVERSION=	3.0.5
 CATEGORIES=	devel

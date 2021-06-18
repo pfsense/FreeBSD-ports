@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Graphics tools and libraries
 
     SUBDIR += 4va
@@ -53,9 +50,11 @@
     SUBDIR += ampasCTL
     SUBDIR += animorph
     SUBDIR += ansilove
+    SUBDIR += anttweakbar
     SUBDIR += aoi
     SUBDIR += apngasm
     SUBDIR += apngdis
+    SUBDIR += appleseed
     SUBDIR += argyllcms
     SUBDIR += art
     SUBDIR += asciio
@@ -76,8 +75,10 @@
     SUBDIR += blend2d
     SUBDIR += blender
     SUBDIR += blender-doc
+    SUBDIR += blender-lts28
     SUBDIR += bmeps
     SUBDIR += bmp2html
+    SUBDIR += bonzomatic
     SUBDIR += box
     SUBDIR += bsd-plotutils
     SUBDIR += c-a-i-r
@@ -87,10 +88,12 @@
     SUBDIR += cal3d
     SUBDIR += camera
     SUBDIR += camerakit
+    SUBDIR += cbonsai
     SUBDIR += cbviewer
     SUBDIR += cegui
     SUBDIR += cenon
     SUBDIR += cfdg
+    SUBDIR += chafa
     SUBDIR += charls
     SUBDIR += cimg
     SUBDIR += clutter
@@ -135,6 +138,7 @@
     SUBDIR += djview4
     SUBDIR += djvulibre
     SUBDIR += dmtx-utils
+    SUBDIR += drawing
     SUBDIR += drawpile
     SUBDIR += drm-current-kmod
     SUBDIR += drm-devel-kmod
@@ -207,6 +211,7 @@
     SUBDIR += fraqtive
     SUBDIR += freeglut
     SUBDIR += freeimage
+    SUBDIR += freetype-gl
     SUBDIR += frei0r
     SUBDIR += frei0r-plugins
     SUBDIR += frei0r-plugins-gavl
@@ -235,7 +240,6 @@
     SUBDIR += geoserver
     SUBDIR += gexiv2
     SUBDIR += giblib
-    SUBDIR += gif2png
     SUBDIR += giflib
     SUBDIR += gifmerge
     SUBDIR += gifsicle
@@ -278,6 +282,7 @@
     SUBDIR += gocr
     SUBDIR += goocanvas
     SUBDIR += goocanvas2
+    SUBDIR += goocanvas3
     SUBDIR += goocanvasmm2
     SUBDIR += goom
     SUBDIR += gource
@@ -296,15 +301,6 @@
     SUBDIR += graphviz
     SUBDIR += grx
     SUBDIR += gscan2pdf
-    SUBDIR += gstreamer-plugins-aalib
-    SUBDIR += gstreamer-plugins-cairo
-    SUBDIR += gstreamer-plugins-gdkpixbuf
-    SUBDIR += gstreamer-plugins-gl
-    SUBDIR += gstreamer-plugins-jpeg
-    SUBDIR += gstreamer-plugins-libcaca
-    SUBDIR += gstreamer-plugins-libpng
-    SUBDIR += gstreamer-plugins-libvisual
-    SUBDIR += gstreamer-plugins-opencv
     SUBDIR += gstreamer1-plugins-aalib
     SUBDIR += gstreamer1-plugins-cairo
     SUBDIR += gstreamer1-plugins-gdkpixbuf
@@ -350,7 +346,6 @@
     SUBDIR += iec16022
     SUBDIR += iiview
     SUBDIR += ikona
-    SUBDIR += ilmbase
     SUBDIR += imageindex
     SUBDIR += imageviewer
     SUBDIR += imageworsener
@@ -398,6 +393,7 @@
     SUBDIR += kf5-kplotting
     SUBDIR += kf5-kquickcharts
     SUBDIR += kf5-prison
+    SUBDIR += kgeotag
     SUBDIR += kgraphviewer
     SUBDIR += kimageannotator
     SUBDIR += kimagemapeditor
@@ -410,6 +406,7 @@
     SUBDIR += kooka
     SUBDIR += kphotoalbum
     SUBDIR += kqtquickcharts
+    SUBDIR += kquickimageeditor
     SUBDIR += krita
     SUBDIR += ksnip
     SUBDIR += kxstitch
@@ -561,6 +558,7 @@
     SUBDIR += mypaint
     SUBDIR += mypaint-brushes
     SUBDIR += mypaint-brushes2
+    SUBDIR += nanort
     SUBDIR += nanosvg
     SUBDIR += netpbm
     SUBDIR += nip2
@@ -582,8 +580,6 @@
     SUBDIR += opencolorio-tools
     SUBDIR += opencsg
     SUBDIR += opencv
-    SUBDIR += opencv-core
-    SUBDIR += opencv-java
     SUBDIR += opendx
     SUBDIR += openexr
     SUBDIR += openfx-arena
@@ -668,6 +664,7 @@
     SUBDIR += p5-Graphics-GnuplotIF
     SUBDIR += p5-Graphics-Primitive
     SUBDIR += p5-Graphics-Primitive-Driver-Cairo
+    SUBDIR += p5-Graphics-TIFF
     SUBDIR += p5-Image-Base
     SUBDIR += p5-Image-Base-SVG
     SUBDIR += p5-Image-Caa
@@ -760,6 +757,7 @@
     SUBDIR += picpuz
     SUBDIR += piddle
     SUBDIR += piglit
+    SUBDIR += pikchr
     SUBDIR += pikopixel
     SUBDIR += pinpoint
     SUBDIR += pinta
@@ -827,11 +825,11 @@
     SUBDIR += py-gdal
     SUBDIR += py-geomdl
     SUBDIR += py-geopandas
+    SUBDIR += py-giddy
     SUBDIR += py-gizeh
     SUBDIR += py-glfw
     SUBDIR += py-glooey
     SUBDIR += py-gphoto2
-    SUBDIR += py-graph-core
     SUBDIR += py-graphviz
     SUBDIR += py-graphy
     SUBDIR += py-gvgen
@@ -843,25 +841,30 @@
     SUBDIR += py-img2pdf
     SUBDIR += py-leather
     SUBDIR += py-mapclassify
+    SUBDIR += py-mayavi
     SUBDIR += py-mcomix
+    SUBDIR += py-mgwr
     SUBDIR += py-ming
     SUBDIR += py-mpl-interactions
     SUBDIR += py-mpl-scatter-density
     SUBDIR += py-nwdiag
     SUBDIR += py-open3d-python
     SUBDIR += py-opencolorio
-    SUBDIR += py-opencv
     SUBDIR += py-openimageio
     SUBDIR += py-openshadinglanguage
+    SUBDIR += py-osmnet
+    SUBDIR += py-pandana
     SUBDIR += py-photocollage
     SUBDIR += py-piexif
     SUBDIR += py-pillow
     SUBDIR += py-pivy
     SUBDIR += py-plotly
     SUBDIR += py-png
+    SUBDIR += py-pointpats
     SUBDIR += py-pycha
     SUBDIR += py-pycollada
     SUBDIR += py-pydot
+    SUBDIR += py-pydotplus
     SUBDIR += py-pyepsg
     SUBDIR += py-pygal
     SUBDIR += py-pyganim
@@ -869,6 +872,7 @@
     SUBDIR += py-pygeos
     SUBDIR += py-pyglet
     SUBDIR += py-pyglet150
+    SUBDIR += py-pygraph
     SUBDIR += py-pygraphviz
     SUBDIR += py-pyinsane2
     SUBDIR += py-pymaging
@@ -879,12 +883,14 @@
     SUBDIR += py-pyqrcode
     SUBDIR += py-pyqtgraph
     SUBDIR += py-pyrsgis
+    SUBDIR += py-pytesseract
     SUBDIR += py-python-poppler-qt5
     SUBDIR += py-pyvips
     SUBDIR += py-pyx
     SUBDIR += py-qrencode
     SUBDIR += py-qt5-svg
     SUBDIR += py-rasterio
+    SUBDIR += py-rasterstats
     SUBDIR += py-rawkit
     SUBDIR += py-s2
     SUBDIR += py-scikit-image
@@ -897,6 +903,9 @@
     SUBDIR += py-tifffile
     SUBDIR += py-toyplot
     SUBDIR += py-traitsui
+    SUBDIR += py-ueberzug
+    SUBDIR += py-urbanaccess
+    SUBDIR += py-urbansim
     SUBDIR += py-utm
     SUBDIR += py-vecrec
     SUBDIR += py-visvis
@@ -911,7 +920,6 @@
     SUBDIR += qgis-ltr
     SUBDIR += qiv
     SUBDIR += qr-code-generator
-    SUBDIR += qt-avif-image-plugin
     SUBDIR += qt5-3d
     SUBDIR += qt5-graphicaleffects
     SUBDIR += qt5-imageformats
@@ -931,6 +939,7 @@
     SUBDIR += radius-engine
     SUBDIR += rapid-photo-downloader
     SUBDIR += raster3d
+    SUBDIR += rawstudio
     SUBDIR += rawtherapee
     SUBDIR += rayshade
     SUBDIR += reactphysics3d

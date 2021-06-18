@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	z3c.batching
 PORTVERSION=	1.1.0
 PORTREVISION=	1

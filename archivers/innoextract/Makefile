@@ -1,12 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	innoextract
-PORTVERSION=	1.8
-PORTREVISION=	1
+PORTVERSION=	1.9
 CATEGORIES=	archivers
 MASTER_SITES=	http://constexpr.org/innoextract/files/
 
-MAINTAINER=	lifanov@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program to extract Inno Setup files
 
 LICENSE=	ZLIB

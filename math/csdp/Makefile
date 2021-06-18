@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	csdp
 DISTVERSIONPREFIX=	releases/
 DISTVERSION=	6.2.0

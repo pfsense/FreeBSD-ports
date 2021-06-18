@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	taipeisanstc
 DISTVERSION=	Beta
 CATEGORIES=	chinese x11-fonts

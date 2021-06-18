@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dwatch-json
 DISTVERSION=	0.4.1
 CATEGORIES=	sysutils

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	addict
 DISTVERSION=	2.4.0
 CATEGORIES=	devel python

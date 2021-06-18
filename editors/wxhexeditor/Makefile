@@ -1,9 +1,8 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	wxhexeditor
 PORTVERSION=	0.24
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	editors
 MASTER_SITES=	SF/${PORTNAME}/wxHexEditor/v${PORTVERSION}%20Beta/
 DISTNAME=	wxHexEditor-v${PORTVERSION}-src

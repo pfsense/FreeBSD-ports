@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	File-Map
 PORTVERSION=	0.67
 CATEGORIES=	devel perl5

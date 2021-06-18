@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	UUID-URandom
 PORTVERSION=	0.001
 CATEGORIES=	devel perl5

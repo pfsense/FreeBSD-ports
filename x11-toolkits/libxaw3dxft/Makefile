@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libxaw3dxft
 DISTVERSION=	1.6.2e
 CATEGORIES=	x11-toolkits

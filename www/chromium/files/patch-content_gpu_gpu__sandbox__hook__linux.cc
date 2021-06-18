@@ -1,6 +1,6 @@
---- content/gpu/gpu_sandbox_hook_linux.cc.orig	2020-11-19 08:18:33 UTC
+--- content/gpu/gpu_sandbox_hook_linux.cc.orig	2021-04-14 18:41:03 UTC
 +++ content/gpu/gpu_sandbox_hook_linux.cc
-@@ -361,6 +361,7 @@ std::vector<BrokerFilePermission> FilePermissionsForGp
+@@ -378,6 +378,7 @@ std::vector<BrokerFilePermission> FilePermissionsForGp
  }
  
  void LoadArmGpuLibraries() {
@@ -8,9 +8,9 @@
    // Preload the Mali library.
    if (UseChromecastSandboxAllowlist()) {
      for (const char* path : kAllowedChromecastPaths) {
-@@ -375,6 +376,7 @@ void LoadArmGpuLibraries() {
-     // Preload the Tegra V4L2 (video decode acceleration) library.
-     dlopen(kLibTegraPath, dlopen_flag);
+@@ -410,6 +411,7 @@ void LoadArmGpuLibraries() {
+         dlopen(driver_paths[i], dlopen_flag);
+     }
    }
 +#endif
  }

@@ -1,5 +1,4 @@
 # Created by: Kimura Fuyuki <fuyuki@hadaly.org>
-# $FreeBSD$
 
 PORTNAME=	m17n-lib
 PORTVERSION=	1.8.0
@@ -36,7 +35,6 @@ CONFIGURE_ARGS=	--disable-nls
 OPTIONS_DEFINE=	ANTHY ISPELL THAI
 
 ANTHY_DESC=	Kana-Kanji conversion support via Anthy
-ISPELL_DESC=	Spell checking support via Ispell
 THAI_DESC=	Thai language support via libThai
 
 ANTHY_LIB_DEPENDS=	libanthy.so:japanese/anthy

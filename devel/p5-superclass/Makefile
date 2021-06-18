@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	superclass
 PORTVERSION=	0.003
 CATEGORIES=	devel perl5

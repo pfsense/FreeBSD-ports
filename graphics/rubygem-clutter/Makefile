@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	clutter
-PORTVERSION=	3.4.3
+PORTVERSION=	3.4.4
 CATEGORIES=	graphics rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Ruby binding for Clutter
+COMMENT=	Ruby binding of Clutter
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB

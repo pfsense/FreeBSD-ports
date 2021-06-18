@@ -1,3 +1,5 @@
-TIMESTAMP = 1606840736
-SHA256 (KDE/plasma/5.20.4/plasma-desktop-5.20.4.tar.xz) = 3864e80bb9b8da596188162b14cd9bb77e7a8abedfb0fa41c8c72d47139d1355
-SIZE (KDE/plasma/5.20.4/plasma-desktop-5.20.4.tar.xz) = 15896040
+TIMESTAMP = 1620499695
+SHA256 (KDE/plasma/5.21.5/plasma-desktop-5.21.5.tar.xz) = de507e305c8021d9226381e2beded1cf45d1b224e9a5201529924cd60eb31a27
+SIZE (KDE/plasma/5.21.5/plasma-desktop-5.21.5.tar.xz) = 15913496
+SHA256 (KDE/plasma/5.21.5/2f9371f34a2d0af98b4a0a6d6ccde1e85ac9cb39.diff) = 84c35179bcbf2b906d6c61897bcf0d7ac7c7bfe929aa2436095bb5245a5bdd30
+SIZE (KDE/plasma/5.21.5/2f9371f34a2d0af98b4a0a6d6ccde1e85ac9cb39.diff) = 639

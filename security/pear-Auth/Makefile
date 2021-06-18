@@ -1,11 +1,10 @@
 # Created by: Thierry Thomas (<thierry@pompo.net>)
-# $FreeBSD$
 
 PORTNAME=	Auth
 PORTVERSION=	1.6.4
 CATEGORIES=	security pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR class for creating an authentication system
 
 USES=		pear

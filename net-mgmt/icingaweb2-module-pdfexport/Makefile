@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	icingaweb2-module-pdfexport
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.0
@@ -12,6 +10,9 @@ COMMENT=	Icinga PDF Export
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Uses EOL Python 2.7 via www/chromium
+EXPIRATION_DATE=2021-06-23
 
 RUN_DEPENDS=	icingaweb2${PHP_PKGNAMESUFFIX}>=2.4.1:net-mgmt/icingaweb2@${PHP_FLAVOR} \
 		chromium>0:www/chromium

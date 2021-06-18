@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	selection
 PORTVERSION=	0.0.14
 CATEGORIES=	devel python
@@ -7,7 +5,7 @@ MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	rm@FreeBSD.org
-COMMENT=	API to extract content from HTML & XML documents
+COMMENT=	API to extract contents from HTML and XML documents
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	epp-client-afnic
 PORTVERSION=	0.15.2
 CATEGORIES=	net rubygems

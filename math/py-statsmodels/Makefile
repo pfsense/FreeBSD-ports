@@ -1,8 +1,7 @@
 # Created by: Johannes Meixner <johannes@perceivon.net>
-# $FreeBSD$
 
 PORTNAME=	statsmodels
-PORTVERSION=	0.12.1
+PORTVERSION=	0.12.2
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,13 +13,14 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cython>=0.29:lang/cython@${PY_FLAVOR} \
-		${RUN_DEPENDS}
-RUN_DEPENDS=	${PYNUMPY} \
+		${PYTHON_PKGNAMEPREFIX}numpy>=1.15,1:math/py-numpy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}scipy>=1.1:science/py-scipy@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.15,1:math/py-numpy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pandas>=0.21,1:math/py-pandas@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}patsy>=0.5:math/py-patsy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scipy>=1.1:science/py-scipy@${PY_FLAVOR}
 
-USES=		python:3.6+ shebangfix
+USES=		python:3.7+ shebangfix
 USE_PYTHON=	autoplist concurrent cython distutils
 
 SHEBANG_GLOB=	*.py

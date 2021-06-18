@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dwatch-gource
 DISTVERSION=	0.9
 CATEGORIES=	sysutils

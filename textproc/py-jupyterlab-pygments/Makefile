@@ -1,5 +1,4 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jupyterlab-pygments
 PORTVERSION=	0.1.2
@@ -14,7 +13,7 @@ COMMENT=	Pygments theme using JupyterLab CSS variables
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PY_PYGMENTS}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pygments>=2.4.1<3:textproc/py-pygments@${PY_FLAVOR}
 
 USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils

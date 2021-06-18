@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libkcompactdisc
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	audio kde kde-applications

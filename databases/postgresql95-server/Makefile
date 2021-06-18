@@ -1,7 +1,6 @@
 # Created by: Marc G. Fournier <scrappy@FreeBSD.org>
-# $FreeBSD$
 
-DISTVERSION?=	9.5.24
+DISTVERSION?=	9.5.25
 # PORTREVISION must be ?= otherwise, all slave ports get this PORTREVISION and
 # not their own.  Probably best to keep it at ?=0 when reset here too.
 PORTREVISION?=	0
@@ -24,5 +23,8 @@ ICU_PATCHFILE=	pg-954-icu-2016-08-10.diff.gz
 PG_USER?=	pgsql
 PG_GROUP?=	pgsql
 PG_UID?=	70
+
+DEPRECATED=	PostgreSQL-9.5 has reached end-of-life
+EXPIRATION_DATE=2021-06-13
  
-.include "${.CURDIR}/../postgresql13-server/Makefile"
+.include "${.CURDIR}/../postgresql14-server/Makefile"

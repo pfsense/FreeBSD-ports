@@ -1,8 +1,8 @@
 # Created by: mainland@apeiron.net
-# $FreeBSD$
 
 PORTNAME=	lhs2tex
 PORTVERSION=	1.24
+PORTREVISION=	1
 CATEGORIES=	textproc haskell
 
 MAINTAINER=	haskell@FreeBSD.org

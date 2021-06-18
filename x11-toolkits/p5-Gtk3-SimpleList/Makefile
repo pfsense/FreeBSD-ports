@@ -1,5 +1,4 @@
 # Created by: Danilo Egea Gondolfo <danilo@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Gtk3-SimpleList
 PORTVERSION=	0.21
@@ -8,7 +7,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:TVIGNAUD
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple interface to Gtk3's complex MVC list widget
 
 LICENSE=	LGPL21

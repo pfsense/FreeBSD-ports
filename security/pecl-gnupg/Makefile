@@ -1,9 +1,7 @@
 # Created by: mnag@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	gnupg
-PORTVERSION=	1.4.0
-PORTREVISION=	1
+PORTVERSION=	1.5.0
 CATEGORIES=	security
 
 MAINTAINER=	sunpoet@FreeBSD.org

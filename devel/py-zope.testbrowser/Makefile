@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zope.testbrowser
 PORTVERSION=	5.5.1
 CATEGORIES=	devel python zope

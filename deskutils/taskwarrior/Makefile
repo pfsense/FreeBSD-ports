@@ -1,8 +1,7 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	taskwarrior
-PORTVERSION=	2.5.2
+PORTVERSION=	2.5.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	deskutils
 

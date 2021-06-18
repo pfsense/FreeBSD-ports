@@ -1,8 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	forecast
-PORTVERSION=	8.13
+PORTVERSION=	8.15
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

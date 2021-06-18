@@ -1,7 +1,6 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
-PORTREVISION=	2
+PORTREVISION=	0
 CATEGORIES=	net devel
 PKGNAMESUFFIX=	-${LIBPROXY_SLAVE}
 

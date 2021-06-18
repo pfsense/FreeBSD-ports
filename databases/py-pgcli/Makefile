@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pgcli
 PORTVERSION=	3.1.0
@@ -35,7 +34,7 @@ NO_ARCH=	yes
 OPTIONS_DEFINE=	KEYRING
 KEYRING_DESC=	keyring support
 
-KEYRING_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}keyring>=12.2.0:security/py-keyring@${PY_FLAVOR}
+KEYRING_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}keyring>=12.2.0,1:security/py-keyring@${PY_FLAVOR}
 
 do-test:
 	cd ${WRKSRC} && ${PYTHON_CMD} -m pytest -rs -v

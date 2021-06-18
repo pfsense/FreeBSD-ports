@@ -1,8 +1,7 @@
 # Created by: Kirill Ponomarev <krion@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=		aiologger
-PORTVERSION=	0.6.0
+PORTVERSION=	0.6.1
 CATEGORIES=		devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

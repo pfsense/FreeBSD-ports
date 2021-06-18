@@ -1,11 +1,10 @@
 # Created by: Antonio Carlos Venancio Junior (<antonio@php.net>)
-# $FreeBSD$
 
 PORTNAME=	DB_DataObject_FormBuilder
 PORTVERSION=	1.0.2
 CATEGORIES=	databases www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Automatically build HTML_QuickForm objects using DB_DataObject
 
 LICENSE=	LGPL3

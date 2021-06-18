@@ -1,4 +1,4 @@
---- build/detect_host_arch.py.orig	2020-11-13 06:36:34 UTC
+--- build/detect_host_arch.py.orig	2021-04-14 18:40:48 UTC
 +++ build/detect_host_arch.py
 @@ -21,6 +21,8 @@ def HostArch():
      host_arch = 'ia32'

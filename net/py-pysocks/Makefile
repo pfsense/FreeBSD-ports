@@ -1,5 +1,4 @@
 # Created by: Neil Booth
-# $FreeBSD$
 
 PORTNAME=	pysocks
 PORTVERSION=	1.7.1
@@ -14,7 +13,7 @@ COMMENT=	Python SOCKS module
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

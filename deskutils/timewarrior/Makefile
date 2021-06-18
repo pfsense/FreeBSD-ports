@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	timewarrior
 PORTVERSION=	1.4.2
 DISTVERSIONPREFIX=	v

@@ -1,8 +1,8 @@
 # Created by: Muhammad Moinur Rahmanh <5u623l20@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	commons-math
 PORTVERSION=	3.6.1
+PORTREVISION=	1
 CATEGORIES=	math java
 MASTER_SITES=	APACHE_COMMONS_SOURCE \
 		http://repo1.maven.org/maven2/junit/junit/4.8.2/:source2
@@ -33,12 +33,13 @@ PLIST_FILES+=	${JAVAJARDIR}/${DESTJARFILE}
 
 OPTIONS_DEFINE=	DOCS
 
+NO_ARCH=	yes
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCS}
 ALL_TARGET+=	javadoc
-OTHERDOCS=	LICENSE.txt NOTICE.txt
-PORTDOCS=	apidocs ${OTHERDOCS}
+PORTDOCS=	LICENSE.txt NOTICE.txt RELEASE-NOTES.txt license-header.txt
 .endif
 
 post-extract:
@@ -50,8 +51,7 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/target/${JARFILE} ${STAGEDIR}${JAVAJARDIR}/${DESTJARFILE}
 
 .if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${STAGEDIR}${DOCSDIR}/apidocs
-	(cd ${WRKSRC}/target/apidocs && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}/apidocs/${SDIR})
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/*.txt ${STAGEDIR}${DOCSDIR}/
 .endif
 

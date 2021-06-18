@@ -1,9 +1,6 @@
 #-*- tab-width: 4; -*-
 # ex:ts=4
 #
-# $FreeBSD$
-#	$NetBSD: $
-#
 #	bsd.port.mk - 940820 Jordan K. Hubbard.
 #	This file is in the public domain.
 #
@@ -1700,13 +1697,16 @@ CONFIGURE_ENV+=		PATH=${PATH}
 
 .if !defined(IGNORE_MASTER_SITE_GITHUB) && defined(USE_GITHUB) && empty(USE_GITHUB:Mnodefault)
 .if defined(WRKSRC)
-DEV_WARNING+=	"You are using USE_GITHUB and WRKSRC is set which is wrong.  Set GH_PROJECT correctly, set WRKSRC_SUBDIR or remove WRKSRC entirely."
+DEV_WARNING+=	"You are using USE_GITHUB and WRKSRC is set which is wrong.  Set GH_PROJECT correctly or set WRKSRC_SUBDIR and remove WRKSRC entirely."
 .endif
-WRKSRC?=		${WRKDIR}/${GH_PROJECT}-${GH_TAGNAME_EXTRACT}
+WRKSRC?=		${WRKDIR}/${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}
 .endif
 
 .if !default(IGNORE_MASTER_SITE_GITLAB) && defined(USE_GITLAB) && empty(USE_GITLAB:Mnodefault)
-WRKSRC?=		${WRKDIR}/${GL_PROJECT}-${GL_COMMIT}-${GL_COMMIT}
+.if defined(WRKSRC)
+DEV_WARNING+=	"You are using USE_GITLAB and WRKSRC is set which is wrong.  Set GL_PROJECT, GL_ACCOUNT correctly, and/or set WRKSRC_SUBDIR and remove WRKSRC entirely."
+.endif
+WRKSRC?=		${WRKDIR}/${GL_PROJECT}-${GL_COMMIT}
 .endif
 
 # If the distname is not extracting into a specific subdirectory, have the
@@ -1758,7 +1758,7 @@ PLIST_SUB_SED_tmp2= ${PLIST_SUB_SED_tmp1:NEXTRACT_SUFX=*:NOSREL=*:NLIB32DIR=*:NP
 PLIST_SUB_SED_tmp3?= ${PLIST_SUB_SED_tmp2:C/(${PLIST_SUB:M*_regex=*:C/_regex=.*/=.*/:Q:S/\\ /|/g:S/\\//g})//:C/(.*)_regex=(.*)/\1=\2/}
 #  Remove quotes
 #  Replace . with \. for later sed(1) usage
-PLIST_SUB_SED?= ${PLIST_SUB_SED_tmp3:C/([^=]*)="?([^"]*)"?/s!\2!%%\1%%!g;/g:C/\./\\./g}
+PLIST_SUB_SED?= ${PLIST_SUB_SED_tmp3:C/([^=]*)="?([^"]*)"?/s!\2!%%\1%%!g;/g:C/\./[.]/g}
 
 # kludge to strip trailing whitespace from CFLAGS;
 # sub-configure will not # survive double space
@@ -1930,9 +1930,6 @@ PKGPREINSTALL?=		${PKGDIR}/pkg-pre-install
 PKGPOSTINSTALL?=	${PKGDIR}/pkg-post-install
 PKGPREDEINSTALL?=	${PKGDIR}/pkg-pre-deinstall
 PKGPOSTDEINSTALL?=	${PKGDIR}/pkg-post-deinstall
-PKGPREUPGRADE?=		${PKGDIR}/pkg-pre-upgrade
-PKGPOSTUPGRADE?=	${PKGDIR}/pkg-post-upgrade
-PKGUPGRADE?=		${PKGDIR}/pkg-upgrade
 
 _FORCE_POST_PATTERNS=	rmdir kldxref mkfontscale mkfontdir fc-cache \
 						fonts.dir fonts.scale gtk-update-icon-cache \
@@ -1958,7 +1955,7 @@ DEV_WARNING+=	"Using USE_XORG alone is deprecated, please use USES=xorg"
 _USES_POST+=	xorg
 .endif
 
-.if defined(WANT_GSTREAMER) || defined(USE_GSTREAMER) || defined(USE_GSTREAMER1)
+.if defined(USE_GSTREAMER1)
 .include "${PORTSDIR}/Mk/bsd.gstreamer.mk"
 .endif
 
@@ -2023,7 +2020,7 @@ MAKE_ENV+=		LANG=${USE_LOCALE} LC_ALL=${USE_LOCALE}
 # invalid.
 REINPLACE_ARGS?=	-i.bak
 .if defined(DEVELOPER)
-REINPLACE_CMD?=	${SETENV} WRKSRC=${WRKSRC} REWARNFILE=${REWARNFILE} ${SCRIPTSDIR}/sed_checked.sh
+REINPLACE_CMD?=	${SETENV} WRKSRC=${WRKSRC} REWARNFILE=${REWARNFILE} ${SH} ${SCRIPTSDIR}/sed_checked.sh
 .else
 REINPLACE_CMD?=	${SED} ${REINPLACE_ARGS}
 .endif
@@ -2230,10 +2227,23 @@ _PKGMESSAGES+=	${PKGMESSAGE}
 
 TMPPLIST?=	${WRKDIR}/.PLIST.mktmp
 
+.if ${WITH_PKG} == devel
+PKG_SUFX?=	.pkg
+.if defined(PKG_NOCOMPRESS)
+PKG_OLDSUFX?=	.tar
+.else
+#.if ${OSVERSION} > 1400000
+#PKG_OLDSUFX?=	.tzst
+#.else
+PKG_OLDSUFX?=	.txz
+#.endif
+.endif
+.else
 .if defined(PKG_NOCOMPRESS)
 PKG_SUFX?=		.tar
 .else
 PKG_SUFX?=		.txz
+.endif
 .endif
 # where pkg(8) stores its data
 PKG_DBDIR?=		/var/db/pkg
@@ -2624,6 +2634,9 @@ PKGREPOSITORY?=		${PACKAGES}/${PKGREPOSITORYSUBDIR}
 PACKAGES:=	${PACKAGES:S/:/\:/g}
 _HAVE_PACKAGES=	yes
 PKGFILE?=		${PKGREPOSITORY}/${PKGNAME}${PKG_SUFX}
+.if ${WITH_PKG} == devel
+PKGOLDFILE?=		${PKGREPOSITORY}/${PKGNAME}${PKG_OLDSUFX}
+.endif
 .else
 PKGFILE?=		${.CURDIR}/${PKGNAME}${PKG_SUFX}
 .endif
@@ -2633,6 +2646,9 @@ WRKDIR_PKGFILE=	${WRKDIR}/pkg/${PKGNAME}${PKG_SUFX}
 PKGLATESTREPOSITORY?=	${PACKAGES}/Latest
 PKGBASE?=			${PKGNAMEPREFIX}${PORTNAME}${PKGNAMESUFFIX}
 PKGLATESTFILE=		${PKGLATESTREPOSITORY}/${PKGBASE}${PKG_SUFX}
+.if ${WITH_PKG} == devel
+PKGOLDLATESTFILE=		${PKGLATESTREPOSITORY}/${PKGBASE}${PKG_OLDSUFX}
+.endif
 
 CONFIGURE_SCRIPT?=	configure
 CONFIGURE_CMD?=		./${CONFIGURE_SCRIPT}
@@ -3415,20 +3431,34 @@ ${PKGFILE}: ${WRKDIR_PKGFILE} ${PKGREPOSITORY}
 	@${LN} -f ${WRKDIR_PKGFILE} ${PKGFILE} 2>/dev/null \
 			|| ${CP} -f ${WRKDIR_PKGFILE} ${PKGFILE}
 
+.if ${WITH_PKG} == devel
+_EXTRA_PACKAGE_TARGET_DEP+= ${PKGOLDFILE}
+${PKGOLDFILE}: ${PKGFILE}
+	${INSTALL} -l rs ${PKGFILE} ${PKGOLDFILE}
+.endif
+
 .  if ${PKGORIGIN} == "ports-mgmt/pkg" || ${PKGORIGIN} == "ports-mgmt/pkg-devel"
 _EXTRA_PACKAGE_TARGET_DEP+=	${PKGLATESTREPOSITORY}
 _PORTS_DIRECTORIES+=	${PKGLATESTREPOSITORY}
 _EXTRA_PACKAGE_TARGET_DEP+=	${PKGLATESTFILE}
 
+
 ${PKGLATESTFILE}: ${PKGFILE} ${PKGLATESTREPOSITORY}
 	${INSTALL} -l rs ${PKGFILE} ${PKGLATESTFILE}
+
+.if ${WITH_PKG} == devel
+_EXTRA_PACKAGE_TARGET_DEP+=	${PKGOLDLATESTFILE}
+
+${PKGOLDLATESTFILE}: ${PKGOLDFILE} ${PKGLATESTREPOSITORY}
+	${INSTALL} -l rs ${PKGOLDFILE} ${PKGOLDLATESTFILE}
+.endif
 .  endif
 
 .endif
 
 # from here this will become a loop for subpackages
 ${WRKDIR_PKGFILE}: ${TMPPLIST} create-manifest ${WRKDIR}/pkg
-	@if ! ${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_CREATE} ${PKG_CREATE_ARGS} -m ${METADIR} -p ${TMPPLIST} -f ${PKG_SUFX:S/.//} -o ${WRKDIR}/pkg ${PKGNAME}; then \
+	@if ! ${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_CREATE} ${PKG_CREATE_ARGS} -m ${METADIR} -p ${TMPPLIST} -o ${WRKDIR}/pkg ${PKGNAME}; then \
 		cd ${.CURDIR} && eval ${MAKE} delete-package >/dev/null; \
 		exit 1; \
 	fi
@@ -3438,7 +3468,14 @@ _EXTRA_PACKAGE_TARGET_DEP+=	${WRKDIR_PKGFILE}
 # This will be the end of the loop
 
 .if !target(do-package)
-PKG_CREATE_ARGS=	-r ${STAGEDIR}
+.if ${WITH_PKG} == devel
+.if defined(PKG_NOCOMPRESS)
+PKG_CREATE_ARGS+= -f ${PKG_OLDSUFX:S/.//}
+.endif
+.else
+PKG_CREATE_ARGS+= -f ${PKG_SUFX:S/.//}
+.endif
+PKG_CREATE_ARGS+=	-r ${STAGEDIR}
 .  if defined(PKG_CREATE_VERBOSE)
 PKG_CREATE_ARGS+=	-v
 .  endif
@@ -4048,6 +4085,7 @@ _FLAVOR_RECURSIVE_SH= \
 	for dir in $${recursive_dirs}; do \
 		unset flavor; \
 		case $${dir} in \
+			*@*/*) ;; \
 			*@*) \
 				flavor=$${dir\#*@}; \
 				dir=$${dir%@*}; \
@@ -4057,7 +4095,7 @@ _FLAVOR_RECURSIVE_SH= \
 		/*) ;; \
 		*) dir=${PORTSDIR}/$$dir ;; \
 		esac; \
-		(cd $$dir; ${SETENV} FLAVOR=$${flavor} ${MAKE} $${recursive_cmd}); \
+		(cd $$dir; ${SETENV} $${flavor:+FLAVOR=$${flavor}} ${MAKE} $${recursive_cmd}); \
 	done
 
 # This script is shared among several dependency list variables.  See file for
@@ -4301,11 +4339,8 @@ create-manifest:
 			dp_PKGORIGIN='${PKGORIGIN}'                           \
 			dp_PKGPOSTDEINSTALL='${PKGPOSTDEINSTALL}'             \
 			dp_PKGPOSTINSTALL='${PKGPOSTINSTALL}'                 \
-			dp_PKGPOSTUPGRADE='${PKGPOSTUPGRADE}'                 \
 			dp_PKGPREDEINSTALL='${PKGPREDEINSTALL}'               \
 			dp_PKGPREINSTALL='${PKGPREINSTALL}'                   \
-			dp_PKGPREUPGRADE='${PKGPREUPGRADE}'                   \
-			dp_PKGUPGRADE='${PKGUPGRADE}'                         \
 			dp_PKGVERSION='${PKGVERSION}'                         \
 			dp_PKG_BIN='${PKG_BIN}'                               \
 			dp_PKG_IGNORE_DEPENDS='${PKG_IGNORE_DEPENDS}'         \
@@ -4479,9 +4514,8 @@ pretty-print-run-depends-list:
 .endif
 
 _SUB_LIST_TEMP=	${SUB_LIST:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/}
-.if !target(apply-slist)
+.if !target(apply-slist) && defined(SUB_FILES)
 apply-slist:
-.if defined(SUB_FILES)
 .for file in ${SUB_FILES}
 .if !exists(${FILESDIR}/${file}.in)
 	@${ECHO_MSG} "** Missing ${FILESDIR}/${file}.in for ${PKGNAME}."; exit 1
@@ -4495,10 +4529,11 @@ ${i:S/-//:tu}=	${WRKDIR}/${SUB_FILES:M${i}*}
 .endif
 .endfor
 .endif
-.endif
 
 # Generate packing list.  Also tests to make sure all required package
 # files exist.
+
+PLIST_SUB_SANITIZED=	${PLIST_SUB:N*_regex=*}
 
 .if !target(generate-plist)
 generate-plist: ${WRKDIR}
@@ -4507,19 +4542,19 @@ generate-plist: ${WRKDIR}
 	@if [ ! -f ${DESCR} ]; then ${ECHO_MSG} "** Missing pkg-descr for ${PKGNAME}."; exit 1; fi
 	@>${TMPPLIST}
 	@for file in ${PLIST_FILES}; do \
-		${ECHO_CMD} $${file} | ${SED} ${PLIST_SUB:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} >> ${TMPPLIST}; \
+		${ECHO_CMD} $${file} | ${SED} ${PLIST_SUB_SANITIZED:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} >> ${TMPPLIST}; \
 	done
 .if !empty(PLIST)
 .for f in ${PLIST}
 	@if [ -f "${f}" ]; then \
-		${SED} ${PLIST_SUB:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} ${f} >> ${TMPPLIST}; \
+		${SED} ${PLIST_SUB_SANITIZED:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} ${f} >> ${TMPPLIST}; \
 		for i in owner group mode; do ${ECHO_CMD} "@$$i"; done >> ${TMPPLIST}; \
 	fi
 .endfor
 .endif
 
 .for dir in ${PLIST_DIRS}
-	@${ECHO_CMD} ${dir} | ${SED} ${PLIST_SUB:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} -e 's,^,@dir ,' >> ${TMPPLIST}
+	@${ECHO_CMD} ${dir} | ${SED} ${PLIST_SUB_SANITIZED:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} -e 's,^,@dir ,' >> ${TMPPLIST}
 .endfor
 
 .endif
@@ -4892,8 +4927,11 @@ D4P_ENV=	PKGNAME="${PKGNAME}" \
 		PORTSDIR="${PORTSDIR}" \
 		MAKE="${MAKE}" \
 		D4PHEIGHT="${D4PHEIGHT}" \
+		D4PMINHEIGHT="${D4PMINHEIGHT}" \
 		D4PWIDTH="${D4PWIDTH}" \
-		D4PFULLSCREEN="${D4PFULLSCREEN}"
+		D4PFULLSCREEN="${D4PFULLSCREEN}" \
+		D4PALIGNCENTER="${D4PALIGNCENTER}" \
+		D4PASCIILINES="${D4PASCIILINES}"
 .if exists(${PKGHELP})
 D4P_ENV+=	PKGHELP="${PKGHELP}"
 .endif
@@ -5264,7 +5302,7 @@ _PATCH_SEQ=		050:ask-license 100:patch-message 150:patch-depends \
 _CONFIGURE_DEP=	patch
 _CONFIGURE_SEQ=	150:build-depends 151:lib-depends 160:create-binary-alias \
 				161:create-binary-wrappers \
-				200:configure-message \
+				200:configure-message 210:apply-slist \
 				300:pre-configure 450:pre-configure-script \
 				490:run-autotools-fixup 500:do-configure 700:post-configure \
 				850:post-configure-script \
@@ -5277,7 +5315,7 @@ _STAGE_DEP=		build
 # STAGE is special in its numbering as it has install and stage, so install is
 # the main, and stage goes after.
 _STAGE_SEQ=		050:stage-message 100:stage-dir 150:run-depends \
-				200:apply-slist 300:pre-install \
+				300:pre-install \
 				400:generate-plist 450:pre-su-install 475:create-users-groups \
 				500:do-install 550:kmod-post-install 600:fixup-lib-pkgconfig 700:post-install \
 				750:post-install-script 800:post-stage 850:compress-man \

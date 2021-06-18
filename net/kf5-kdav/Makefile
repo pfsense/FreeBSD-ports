@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kdav
 DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
 PORTEPOCH=	1
@@ -15,7 +13,5 @@ USE_QT=		concurrent core dbus gui network xml xmlpatterns \
 USE_LDCONFIG=	yes
 
 DESCR=		${.CURDIR:H:H}/deskutils/kdepim/pkg-descr
-
-OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

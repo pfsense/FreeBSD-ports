@@ -1,8 +1,7 @@
 # Created by: Hugo Saro <hugo@barafranca.com>
-# $FreeBSD$
 
 PORTNAME=	haproxy
-DISTVERSION=	2.2.6
+DISTVERSION=	2.2.14
 CATEGORIES=	net www
 MASTER_SITES=	http://www.haproxy.org/download/2.2/src/
 
@@ -11,6 +10,13 @@ COMMENT=	Reliable, high performance TCP/HTTP load balancer
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
+
+FLAVORS=	default lua
+FLAVOR?=	${FLAVORS:[1]}
+
+default_CONFLICTS_INSTALL=	haproxy-lua
+lua_CONFLICTS_INSTALL=		haproxy
+lua_PKGNAMESUFFIX=		-lua
 
 CONFLICTS_INSTALL=	haproxy-devel-[0-9]* haproxy17-[0-9]* haproxy18-[0-9]* haproxy19-[0-9]* haproxy20-[0-9]* haproxy21-[0-9]*
 
@@ -42,12 +48,11 @@ OPENSSL_MAKE_ARGS=	USE_OPENSSL=1 SSL_LIB=${OPENSSLLIB} SSL_INC=${OPENSSLINC}
 LUA_USES=		lua:53
 LUA_MAKE_ARGS=		USE_LUA=1 LUA_INC=${LUA_INCDIR} LUA_LIB=${LUA_LIBDIR} LUA_LIB_NAME=lua-${LUA_VER}
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "i386"
-MAKE_ARGS+=	ARCH=i586
-USE_GCC=	9+
+.if ${FLAVOR:U} == lua
+OPTIONS_DEFAULT+=	LUA
 .endif
+
+.include <bsd.port.pre.mk>
 
 .if ${ARCH} == "amd64" || ${ARCH} == "i386"
 MAKE_ARGS+=	USE_REGPARM=1

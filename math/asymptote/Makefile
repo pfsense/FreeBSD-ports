@@ -1,9 +1,8 @@
 # Created by: Nicola Vitale <nivit@email.it>
-# $FreeBSD$
 
 PORTNAME=	asymptote
 PORTVERSION=	2.67
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
@@ -71,7 +70,7 @@ OFFSCREEN_DESC=	Enable offscreen rendering using OSMesa library
 OFFSCREEN_LIB_DEPENDS=	libOSMesa.so:graphics/libosmesa
 
 READLINE_CONFIGURE_ENABLE=	readline
-READLINE_USES=	readline:port
+READLINE_USES=	readline
 
 TEST_TARGET=	test
 TEST_WRKSRC=	${WRKSRC}/tests

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	miruo
 PORTVERSION=	0.9.6b
 CATEGORIES=	net

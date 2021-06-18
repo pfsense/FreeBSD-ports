@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	httpdirfs
-DISTVERSION=	1.2.0
+DISTVERSION=	1.2.1
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
 

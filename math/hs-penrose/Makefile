@@ -1,10 +1,8 @@
-# $FreeBSD$
-
 PORTNAME=	penrose
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1-737
 DISTVERSIONSUFFIX=	-gb336c8d
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	math haskell
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -134,4 +132,10 @@ USE_CABAL=	MonadRandom-0.5.1.2 \
 		x509-1.7.5_1 \
 		zlib-0.6.2.1_1
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${GCC_DEFAULT} >= 10
+BROKEN=		fails to build with GCC 10: cabal: Missing dependency on a foreign library: Missing (or bad) C library: gfortran
+.endif
+
+.include <bsd.port.post.mk>

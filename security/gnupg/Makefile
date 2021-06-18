@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	gnupg
-PORTVERSION=	2.2.26
+PORTVERSION=	2.3.1
 CATEGORIES=	security
 MASTER_SITES=	GNUPG
 
@@ -40,7 +38,7 @@ OPTIONS_SUB=	yes
 LARGE_RSA_DESC=	Enable support for 8192-bit RSA keys
 LDAP_DESC=	LDAP keyserver interface
 SCDAEMON_DESC=	Enable Smartcard daemon (with libusb)
-SUID_GPG_DESC=	Install GPG with suid
+SUID_GPG_DESC=	Install GPG as SUID root
 WKS_SERVER_DESC=Install the Web Key Service server
 
 GNUTLS_CONFIGURE_ENABLE=gnutls
@@ -58,6 +56,14 @@ NLS_USES=		gettext
 SCDAEMON_CONFIGURE_ENABLE=	scdaemon
 
 WKS_SERVER_CONFIGURE_ENABLE=	wks-tools
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MGNUTLS} && ${PORT_OPTIONS:MLDAP}
+PLIST_SUB+=	DIRMNGRLDAP=""
+.else
+PLIST_SUB+=	DIRMNGRLDAP="@comment "
+.endif
 
 # Touch the texinfo files to force makeinfo to run.  This fixes Linuxisms in
 # the paths in the man pages.

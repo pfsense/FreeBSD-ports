@@ -1,9 +1,7 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	freeradius
-DISTVERSION=	3.0.21
-PORTREVISION=	2
+DISTVERSION=	3.0.22
 CATEGORIES=	net
 MASTER_SITES=	ftp://ftp.freeradius.org/pub/freeradius/%SUBDIR%/ \
 		ftp://ftp.ntua.gr/pub/net/radius/freeradius/%SUBDIR%/ \
@@ -21,6 +19,13 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libgdbm.so:databases/gdbm \
 		libtalloc.so:devel/talloc
 
+FLAVORS=	default ldap mysql pgsql sqlite3
+FLAVOR?=	${FLAVORS:[1]}
+ldap_PKGNAMESUFFIX=	-ldap
+mysql_PKGNAMESUFFIX=	-mysql
+pgsql_PKGNAMESUFFIX=	-pgsql
+sqlite3_PKGNAMESUFFIX=	-sqlite3
+
 LOGDIR?=	/var/log
 KRB5_CONFIG?=	/usr/bin/krb5-config --libs
 
@@ -30,7 +35,8 @@ CONFLICTS_INSTALL=	gnu-radius-[0-9].* openradius-[0-9].* radiusd-cistron-[0-9].*
 USES=		gmake readline shebangfix ssl tar:bzip2
 USE_RC_SUBR=	radiusd
 
-SHEBANG_FILES=	src/modules/rlm_counter/rad_counter scripts/sql/radsqlrelay
+SHEBANG_FILES=	src/modules/rlm_counter/rad_counter scripts/sql/radsqlrelay \
+		scripts/sql/rlm_sqlippool_tool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--without-rlm_python
 # Prevent /root/.rnd leftover
@@ -52,6 +58,19 @@ OPTIONS_DEFINE=	USER LDAP MYSQL PGSQL UNIXODBC FIREBIRD REDIS \
 OPTIONS_DEFAULT=USER PERL HEIMDAL UDPFROMTO
 OPTIONS_SINGLE=	KRB
 OPTIONS_SINGLE_KRB=	NOKRB HEIMDAL HEIMDAL_PORT MITKRB_PORT
+
+.if ${FLAVOR} == ldap
+OPTIONS_DEFAULT+=	LDAP
+.endif
+.if ${FLAVOR} == mysql
+OPTIONS_DEFAULT+=	MYSQL
+.endif
+.if ${FLAVOR} == pgsql
+OPTIONS_DEFAULT+=	PGSQL
+.endif
+.if ${FLAVOR} == sqlite3
+OPTIONS_DEFAULT+=	SQLITE3
+.endif
 
 USER_DESC=		Run as user freeradius, group freeradius
 KRB_DESC=		${KERBEROS_DESC}

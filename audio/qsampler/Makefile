@@ -1,9 +1,9 @@
 # Created by: trasz <trasz@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	qsampler
 DISTVERSIONPREFIX=	qsampler_
 DISTVERSION=	0_6_1
+PORTREVISION=	2
 CATEGORIES=	audio
 
 MAINTAINER=	ports@FreeBSD.org

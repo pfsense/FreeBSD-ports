@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	vtkmpeg2encode
 PORTVERSION=	${VTK_VERSION}
 PORTREVISION=	1

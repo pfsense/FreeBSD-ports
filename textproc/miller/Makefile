@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	miller
-DISTVERSION=	5.4.0
+DISTVERSIONPREFIX=	v
+DISTVERSION=	5.10.2
 CATEGORIES=	textproc
 
 MAINTAINER=	jungleboogie0+mlr@gmail.com

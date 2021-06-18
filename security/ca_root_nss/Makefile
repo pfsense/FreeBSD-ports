@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ca_root_nss
 PORTVERSION=	${VERSION_NSS}
 CATEGORIES=	security
@@ -29,20 +27,14 @@ ETCSYMLINK_CONFLICTS_INSTALL=	ca-roots-[0-9]*
 CERTDIR?=	share/certs
 PLIST_SUB+=	CERTDIR=${CERTDIR}
 
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# !!!  These versions are intended to track security/nss.        !!!
-# !!!  Please DO NOT submit patches for new version until it has !!!
-# !!!  been committed there first.                               !!!
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-VERSION_NSS=	3.58
-#NSS_SUFFIX=	-with-ckbi-1.98
+VERSION_NSS=	3.63
 CERTDATA_TXT_PATH=	lib/ckfw/builtins/certdata.txt
 BUNDLE_PROCESSOR=	MAca-bundle.pl
 
 SUB_FILES=	MAca-bundle.pl pkg-message
 SUB_LIST=	VERSION_NSS=${VERSION_NSS}
 
-do-build:	apply-slist
+do-build:
 	@${SETENV} PATH=${LOCALBASE}/bin:$${PATH} \
 		${PERL} ${WRKDIR}/${BUNDLE_PROCESSOR} \
 	    < ${WRKSRC}/${CERTDATA_TXT_PATH} > \

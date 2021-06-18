@@ -1,4 +1,4 @@
---- base/numerics/safe_math_shared_impl.h.orig	2020-11-13 06:36:34 UTC
+--- base/numerics/safe_math_shared_impl.h.orig	2021-04-14 18:40:48 UTC
 +++ base/numerics/safe_math_shared_impl.h
 @@ -24,8 +24,7 @@
  // Where available use builtin math overflow support on Clang and GCC.

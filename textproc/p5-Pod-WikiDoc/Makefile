@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Pod-WikiDoc
 PORTVERSION=	0.21
 CATEGORIES=	textproc perl5

@@ -1,5 +1,4 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cma
 PORTVERSION=	3.0.3
@@ -13,9 +12,9 @@ COMMENT=	CMA-ES for non-linear numerical optimization in Python
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/cma/LICENSE
 
-RUN_DEPENDS=	${PYNUMPY}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=0,1:math/py-numpy@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python:3.7+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

@@ -1,8 +1,7 @@
 # Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Devel-PatchPerl
-PORTVERSION=	2.04
+PORTVERSION=	2.08
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

@@ -1,18 +1,17 @@
-# $FreeBSD$
-
 PORTNAME=	snowballstemmer
-PORTVERSION=	1.2.1
+PORTVERSION=	2.1.0
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	kmoore@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Snowball stemming library collection for Python
 
-LICENSE=	BSD2CLAUSE
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python
-USE_PYTHON=	distutils autoplist
+USES=		python:3.6+
+USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
 

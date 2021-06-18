@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bootsnap
 PORTVERSION=	1.4.9
 CATEGORIES=	devel rubygems

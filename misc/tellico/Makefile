@@ -1,8 +1,7 @@
 # Created by: Kirill Ponomarew <ponomarew@oberon.net>
-# $FreeBSD$
 
 PORTNAME=	tellico
-DISTVERSION=	3.3.4
+DISTVERSION=	3.4.1
 PORTREVISION=	1
 CATEGORIES=	misc kde
 MASTER_SITES=	http://tellico-project.org/files/
@@ -30,7 +29,8 @@ USE_KDE=	archive attica5 auth bookmarks codecs completion config \
 		configwidgets coreaddons crash ecm filemetadata guiaddons \
 		i18n iconthemes itemmodels itemviews jobwidgets js khtml kio \
 		libkcddb libksane newstuff parts service solid sonnet \
-		textwidgets wallet widgetsaddons windowsystem xmlgui
+		textwidgets wallet widgetsaddons windowsystem xmlgui \
+		doctools_build
 USE_QT=		concurrent core dbus gui network widgets xml  \
 		buildtools_build qmake_build
 

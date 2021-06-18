@@ -1,5 +1,4 @@
 # Created by: Jochen Neumeister (<joneum@bsdproject.de>)
-# $FreeBSD$
 
 PORTNAME=	phpunit
 DISTVERSION=	6.5.14
@@ -8,7 +7,7 @@ MASTER_SITES=	https://phar.phpunit.de/
 PKGNAMESUFFIX=	6${PHP_PKGNAMESUFFIX}
 EXTRACT_SUFX=	.phar
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Testing framework for unit tests
 
 LICENSE=	BSD3CLAUSE

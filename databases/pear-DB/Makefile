@@ -1,12 +1,11 @@
 # Created by: Thierry Thomas (<thierry@pompo.net>)
-# $FreeBSD$
 
 PORTNAME=	DB
 PORTVERSION=	1.10.0
 PORTEPOCH=	1
 CATEGORIES=	databases www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR Database Abstraction Layer
 
 LICENSE=	PHP301

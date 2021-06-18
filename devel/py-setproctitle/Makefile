@@ -1,9 +1,7 @@
 # Created by: Sofian Brabez <sbrabez@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	setproctitle
-PORTVERSION=	1.1.10
-PORTREVISION=	1
+PORTVERSION=	1.2.2
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

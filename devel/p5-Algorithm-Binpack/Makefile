@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Algorithm-BinPack
 PORTVERSION=	0.5
 PORTREVISION=	1

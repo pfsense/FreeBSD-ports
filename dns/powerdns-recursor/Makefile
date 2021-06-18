@@ -1,8 +1,7 @@
 # Created by: sten@blinkenlights.nl
-# $FreeBSD$
 
 PORTNAME=	recursor
-DISTVERSION=	4.4.2
+DISTVERSION=	4.5.1
 CATEGORIES=	dns
 MASTER_SITES=	http://downloads.powerdns.com/releases/
 PKGNAMEPREFIX=	powerdns-
@@ -32,7 +31,8 @@ USE_RC_SUBR=	pdns-recursor
 GNU_CONFIGURE=	YES
 CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc/pdns \
 		--with-protobuf \
-		--without-net-snmp
+		--without-net-snmp \
+		--without-systemd
 
 SUB_FILES=	pkg-message
 

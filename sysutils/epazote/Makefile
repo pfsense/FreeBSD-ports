@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	epazote
 PORTVERSION=	2.1.2
 CATEGORIES=	sysutils

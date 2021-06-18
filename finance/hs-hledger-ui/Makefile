@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	hledger-ui
 DISTVERSION=	1.19
+PORTREVISION=	1
 CATEGORIES=	finance haskell
 
 MAINTAINER=	yuri@FreeBSD.org

@@ -1,12 +1,11 @@
 # Created by: shurd
-# $FreeBSD$
 
 PORTNAME=	syncterm
 PORTVERSION=	1.0
 CATEGORIES=	comms
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	shurd@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ANSI-BBS terminal which supports telnet, rlogin, and SSH
 
 LICENSE=	GPLv2
@@ -42,7 +41,7 @@ SDL_USE=	SDL=sdl
 SDL_MAKE_ARGS=	USE_SDL=1
 SDL_MAKE_ARGS_OFF=	WITHOUT_SDL=1
 
-ONLY_FOR_ARCHS=		i386 amd64 powerpc64
-ONLY_FOR_ARCHS_REASON=	does not configure except on i386 amd64
+ONLY_FOR_ARCHS=		i386 amd64 powerpc64 powerpc64le
+ONLY_FOR_ARCHS_REASON=	does not configure except on i386, amd64 and powerpc64(le)
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTVERSION=	8.4.0
 PKGNAMEPREFIX=	riscv64-none-elf-
 GCC_TARGET=	riscv64-none-elf

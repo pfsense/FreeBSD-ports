@@ -1,5 +1,4 @@
 # Created by: Yukihiro Nakai <nakai@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mono
 PORTVERSION=	5.10.1.57
@@ -40,7 +39,7 @@ NLS_USES=	gettext
 X11_USES=	display:test
 
 USES=	autoreconf bison compiler:c11 cpe gmake iconv libtool \
-	pathfix perl5 python shebangfix tar:bzip2
+	pathfix perl5 python:3.6+ shebangfix tar:bzip2
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

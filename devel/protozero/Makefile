@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	protozero
 PORTVERSION=	1.7.0
 DISTVERSIONPREFIX=	v

@@ -1,5 +1,4 @@
 # Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cssselect
 PORTVERSION=	1.1.0
@@ -21,7 +20,7 @@ NO_ARCH=	yes
 
 OPTIONS_DEFINE=	DOCS
 
-DOCS_BUILD_DEPENDS=	${PY_SPHINX}
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
 
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
 

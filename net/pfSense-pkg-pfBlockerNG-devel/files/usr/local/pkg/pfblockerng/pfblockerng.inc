@@ -635,7 +635,7 @@ function pfb_log_mgmt() {
 			exec("/usr/bin/tail -n {$logmax} {$pfb[$logtype]} > {$temp}");
 
 			// Set DNSBL python logfile permissions
-			if (($pfb['dnsbl_py_blacklist'] && $logtype == 'dnslog') || $logtype == 'dnsreplylog' || $logtype == 'unilog') {
+			if ($logtype == 'dnslog' || $logtype == 'dnsreplylog' || $logtype == 'unilog') {
 				@chown($temp, 'unbound');
 				@chgrp($temp, 'unbound');
 			}
@@ -1879,10 +1879,13 @@ function pfb_unbound_python($mode) {
 
 	// Ensure log file permissions are set as 'unbound:unbound'
 	foreach (array('dnsbl.log', 'dns_reply.log', 'unified.log') as $logfile) {
-		if (file_exists("{$pfb['logdir']}/{$logfile}")) {
-			@chown("{$pfb['logdir']}/{$logfile}", 'unbound');
-			@chgrp("{$pfb['logdir']}/{$logfile}", 'unbound');
+
+		if (!file_exists("{$pfb['logdir']}/{$logfile}")) {
+			touch("{$pfb['logdir']}/{$logfile}");
 		}
+
+		@chown("{$pfb['logdir']}/{$logfile}", 'unbound');
+		@chgrp("{$pfb['logdir']}/{$logfile}", 'unbound');
 	}
 
 	// Add python settings to DNS Resolver configuration
@@ -2974,7 +2977,7 @@ function pfb_update_unbound($mode, $pfbupdate, $pfbpython) {
 	else {
 		$tld_cnt = @file_get_contents($pfb['unbound_py_count']);
 		$dnsbl_cnt = $dnsbl_cnt - $tld_cnt;
-		$final_cnt = exec("/bin/cat {$pfb['unbound_py_data']} {$pfb['unbound_py_zone']} | {$pfb['grep']} -c ^ 2>&1");
+		$final_cnt = exec("/usr/bin/find {$pfb['unbound_py_data']} {$pfb['unbound_py_zone']} -type f 2>/dev/null | xargs cat | {$pfb['grep']} -c ^ 2>&1");
 		if ($final_cnt == $dnsbl_cnt) {
 			$log = "\nDNSBL update [ {$final_cnt} | PASSED  ]... completed [ NOW ]";
 		} else {
@@ -6830,10 +6833,12 @@ function sync_package_pfblockerng($cron='') {
 								}
 
 								$doh_found = FALSE;
-								foreach ($pfb['safesearch_doh_list'] as $doh) {
-									if (strpos($host, $doh) !== FALSE) {
-										$doh_found = TRUE;
-										break;
+								if (!empty($pfb['safesearch_doh_list'])) {
+									foreach ($pfb['safesearch_doh_list'] as $doh) {
+										if (strpos($host, $doh) !== FALSE) {
+											$doh_found = TRUE;
+											break;
+										}
 									}
 								}
 								if (!$doh_found) {

@@ -1,5 +1,4 @@
 # Created by: Gerrit Beine <gerrit.beine@gmx.de>
-# $FreeBSD$
 
 PORTNAME=	lucene
 PORTVERSION=	3.6.2
@@ -8,7 +7,7 @@ PORTVERSION=	3.6.2
 CATEGORIES=	textproc java devel
 MASTER_SITES=	APACHE/${PORTNAME}/java/${PORTVERSION}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full-text search engine for Java
 
 LICENSE=	APACHE20

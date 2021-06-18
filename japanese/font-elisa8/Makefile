@@ -1,5 +1,4 @@
 # Created by: Toshihiko SHIMOKAWA <toshi@tea.forus.or.jp> & ELISA Font Project
-# $FreeBSD$
 
 PORTNAME=	elisa8
 PORTVERSION=	1.0
@@ -31,8 +30,6 @@ SUB_LIST=	BDFTOPCF_CMD="${LOCALBASE}/bin/bdftopcf" \
 PORTDOCS=	elisa100.doc elisat10.doc elisat10.html
 
 OPTIONS_DEFINE=	DOCS
-
-pre-build: apply-slist
 
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/fonts.alias ${STAGEDIR}${FONTSDIR}

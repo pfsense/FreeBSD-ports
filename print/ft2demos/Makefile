@@ -1,5 +1,4 @@
 # Created by: KANOU Hiroki <kanou@khdd.net>
-# $FreeBSD$
 
 PORTNAME=	ft2demos
 PORTVERSION=	2.10.4
@@ -15,7 +14,7 @@ LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	${NONEXISTENT}:print/freetype2:build
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-		libpng16.so:graphics/png
+		libpng.so:graphics/png
 
 USES=		gmake tar:xz xorg
 USE_XORG=	x11

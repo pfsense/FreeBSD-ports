@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	color-tools
 PORTVERSION=	1.3.0
 CATEGORIES=	print rubygems

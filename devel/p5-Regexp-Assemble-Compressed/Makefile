@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Regexp-Assemble-Compressed
 PORTVERSION=	0.02
 PORTREVISION=	1

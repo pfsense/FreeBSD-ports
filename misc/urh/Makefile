@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	urh
-DISTVERSION=	2.9.1
+DISTVERSION=	2.9.2
 CATEGORIES=	misc hamradio python
 MASTER_SITES=	CHEESESHOP
 
@@ -28,5 +26,6 @@ post-install:
 	  echo "LD_PRELOAD=${PREFIX}/lib/gcc${GCC_DEFAULT}/libgcc_s.so ${PREFIX}/bin/urh.shadow \"$$@\"" \
 	) > ${STAGEDIR}${PREFIX}/bin/urh
 	@${CHMOD} +x ${STAGEDIR}${PREFIX}/bin/urh
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/urh/cythonext/*.so
 
 .include <bsd.port.mk>

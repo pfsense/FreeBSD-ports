@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Data-Perl
 PORTVERSION=	0.002011
 CATEGORIES=	devel perl5

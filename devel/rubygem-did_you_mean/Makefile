@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	did_you_mean
-PORTVERSION=	1.4.0
+PORTVERSION=	1.5.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

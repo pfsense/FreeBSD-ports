@@ -1,11 +1,10 @@
 # Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
 
 PORTNAME=	DB_ldap
 PORTVERSION=	1.2.1
 CATEGORIES=	databases net pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR DB compliant interface to LDAP servers
 
 LICENSE=	LGPL3

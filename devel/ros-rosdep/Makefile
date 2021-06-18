@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ros-rosdep
 DISTVERSION=	0.18.0
 CATEGORIES=	devel

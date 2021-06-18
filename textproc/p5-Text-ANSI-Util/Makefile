@@ -1,12 +1,11 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Text-ANSI-Util
 PORTVERSION=	0.23
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
-DISTNAME=	${PORTNAME}-${PORTVERSION}0
+DISTNAME=	${PORTNAME}-${PORTVERSION}1
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Routines for text containing ANSI color codes

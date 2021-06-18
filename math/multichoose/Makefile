@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		multichoose
 DISTVERSIONPREFIX=	v
 DISTVERSION=		1.0.3-2

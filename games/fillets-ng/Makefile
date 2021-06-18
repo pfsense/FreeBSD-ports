@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	fillets-ng
 PORTVERSION=	1.0.1
 PORTREVISION=	8

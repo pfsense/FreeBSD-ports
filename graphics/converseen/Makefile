@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	converseen
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.8.1
+DISTVERSION=	0.9.9.0
 CATEGORIES=	graphics
 
 MAINTAINER=	fernape@FreeBSD.org

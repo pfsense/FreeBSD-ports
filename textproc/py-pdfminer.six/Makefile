@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pdfminer.six
 PORTVERSION=	20201018
 CATEGORIES=	textproc python

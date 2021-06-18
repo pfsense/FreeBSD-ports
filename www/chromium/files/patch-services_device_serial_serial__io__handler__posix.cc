@@ -1,4 +1,4 @@
---- services/device/serial/serial_io_handler_posix.cc.orig	2021-01-18 21:29:02 UTC
+--- services/device/serial/serial_io_handler_posix.cc.orig	2021-04-14 18:41:08 UTC
 +++ services/device/serial/serial_io_handler_posix.cc
 @@ -38,6 +38,10 @@ struct termios2 {
  

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sass-listen
 PORTVERSION=	4.0.0
 CATEGORIES=	textproc rubygems

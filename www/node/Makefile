@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	node
 DISTVERSIONPREFIX=	v
-DISTVERSION=	15.10.0
+DISTVERSION=	16.2.0
 CATEGORIES=	www
 MASTER_SITES=	http://nodejs.org/dist/v${DISTVERSION}/
 
@@ -42,7 +40,7 @@ BUNDLED_SSL_CONFIGURE_OFF=	--shared-openssl --openssl-use-def-ca-store
 BUNDLED_SSL_RUN_DEPENDS_OFF=	ca_root_nss>=0:security/ca_root_nss
 
 NLS_CONFIGURE_ON=	--with-intl=system-icu
-NLS_BUILD_DEPENDS=	icu>=68.2:devel/icu
+NLS_BUILD_DEPENDS=	icu>=69.1:devel/icu
 NLS_LIB_DEPENDS=	libicui18n.so:devel/icu
 
 DTRACE_CONFIGURE_ON=	--with-dtrace

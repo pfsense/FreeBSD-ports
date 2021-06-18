@@ -1,8 +1,7 @@
 # Created by: Thierry Thomas <thierry@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	kicad
-PORTVERSION=	5.1.9
+PORTVERSION=	5.1.10
 CATEGORIES=	cad
 MASTER_SITES=	https://gitlab.com/kicad/libraries/${PORTNAME}-templates/-/archive/${DISTVERSION}/
 PKGNAMESUFFIX=	-library-tmpl

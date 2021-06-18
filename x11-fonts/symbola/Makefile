@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	symbola
 PORTVERSION=	12
 CATEGORIES=	x11-fonts

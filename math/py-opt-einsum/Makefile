@@ -1,5 +1,4 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	opt-einsum
 PORTVERSION=	3.3.0
@@ -14,7 +13,7 @@ COMMENT=	Optimizing numpys einsum function
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYNUMPY}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.7,1:math/py-numpy@${PY_FLAVOR}
 
 USES=		python:3.5+
 USE_PYTHON=	autoplist concurrent distutils

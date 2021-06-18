@@ -1,8 +1,8 @@
 # Created by: Oliver Braun <obraun@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	darcs
 PORTVERSION=	2.16.3
+PORTREVISION=	1
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

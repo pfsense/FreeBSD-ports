@@ -1,5 +1,4 @@
 # Created by: andreas@marvin.robin.de
-# $FreeBSD$
 
 PORTNAME=	mgdiff
 PORTVERSION=	1.0
@@ -12,6 +11,8 @@ MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Graphical front end to the UNIX diff command
 
 LICENSE=	MIT
+
+LIB_DEPENDS=	libgnuregex.so:devel/libgnuregex
 
 USES=		imake motif xorg
 USE_XORG=	ice sm x11 xext xmu xt

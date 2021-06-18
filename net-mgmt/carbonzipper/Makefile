@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		carbonzipper
 DISTVERSION=		0.74
 CATEGORIES=		net-mgmt

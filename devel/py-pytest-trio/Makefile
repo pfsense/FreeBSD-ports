@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pytest-trio
 PORTVERSION=	0.7.0
 CATEGORIES=	devel python

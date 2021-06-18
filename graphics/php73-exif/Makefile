@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	graphics
 
 MASTERDIR=	${.CURDIR}/../../lang/php73

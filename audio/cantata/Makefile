@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		cantata
 DISTVERSIONPREFIX=	v
 DISTVERSION=		2.4.2

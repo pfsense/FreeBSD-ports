@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libretro-shaders-glsl
 DISTVERSION=	g20200314
 CATEGORIES=	games

@@ -1,5 +1,4 @@
 # Created by: Kris Kennaway <kris@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	freebsd-uucp
 PORTREVISION=	3
@@ -29,7 +28,7 @@ FIXME=	etc/periodic/daily/340.uucp etc/periodic/daily/410.status-uucp \
 	etc/periodic/weekly/300.uucp
 
 # fix errros for -std=iso9899:1999 in FreeBSD 5.1
-MAKE_ENV+=	CSTD=gnu99
+MAKE_ENV+=	CSTD=gnu99 WITHOUT_PIE=true
 
 OPTIONS_DEFINE=PAM ENCRYPTED_PASSWORDS VAR_LOG
 OPTIONS_DEFAULT=

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mbox2mdir
 PORTVERSION=	1.4
 CATEGORIES=	mail

@@ -1,8 +1,7 @@
 # Created by: Veniamin Gvozdikov <vg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	avro
-PORTVERSION=	1.10.1
+PORTVERSION=	1.10.2
 DISTVERSIONPREFIX=	release-
 CATEGORIES=	devel
 PKGNAMESUFFIX=	-cpp

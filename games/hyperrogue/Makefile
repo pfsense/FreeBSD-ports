@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	hyperrogue
 PORTVERSION=	11.3o
 DISTVERSIONPREFIX=	v

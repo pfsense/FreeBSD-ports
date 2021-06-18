@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	squid
-PORTVERSION=	4.13
+DISTVERSION=	4.15
 CATEGORIES=	www
 MASTER_SITES=	http://www2.pl.squid-cache.org/Versions/v4/ \
 		http://ca.squid-cache.org/Versions/v4/ \

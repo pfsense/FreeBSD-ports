@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cellranger
 DISTVERSION=	1.1.0
 PORTREVISION=	3

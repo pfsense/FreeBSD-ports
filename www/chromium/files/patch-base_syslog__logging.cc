@@ -1,4 +1,4 @@
---- base/syslog_logging.cc.orig	2020-11-13 06:36:34 UTC
+--- base/syslog_logging.cc.orig	2021-04-14 18:40:48 UTC
 +++ base/syslog_logging.cc
 @@ -13,7 +13,7 @@
  #include "base/strings/string_util.h"

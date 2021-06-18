@@ -1,11 +1,10 @@
 # Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
 
 PORTNAME=	File_Fstab
 PORTVERSION=	2.0.3
 CATEGORIES=	sysutils devel pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR class to read and write fstab files
 
 NO_ARCH=	yes

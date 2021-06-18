@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	stressdisk
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.12
 CATEGORIES=	sysutils
 
-MAINTAINER=	ed.arrakis@gmail.com
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Stress test your disks before trusting your valuable data to them
 
 LICENSE=	MIT

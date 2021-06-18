@@ -1,5 +1,4 @@
 # Created by: Wen Heping
-# $FreeBSD$
 
 PORTNAME=	WebTest
 PORTVERSION=	2.0.32
@@ -26,5 +25,7 @@ GH_ACCOUNT=	Pylons
 GH_PROJECT=	webtest
 USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,18 +1,17 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	gnudatalanguage
 PORTVERSION=	1.0.0
-PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	-rc.3
+PORTREVISION=	3
 CATEGORIES=	science lang
 .if defined(BUILD_PYTHON_MODULE)
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 .endif
 
 MAINTAINER=	thierry@FreeBSD.org
-COMMENT?=	GDL, a free IDL compatible incremental compiler
+COMMENT?=	Free IDL-compatible incremental compiler
 
 LICENSE=	GPLv2
 
@@ -105,7 +104,7 @@ NETCDF_LIB_DEPENDS=	libnetcdf.so:science/netcdf
 NETCDF_CMAKE_ON=	-DNETCDF:BOOL=YES -DHDF:BOOL=NO
 NETCDF_CMAKE_OFF=	-DNETCDF:BOOL=NO
 
-#PYTHON_USES=		python:3.6+
+#PYTHON_USES=		python:3.7+
 #PYTHON_BUILD_DEPENDS=	${PYNUMPY}
 #PYTHON_RUN_DEPENDS=	${PYNUMPY} \
 #			${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR}

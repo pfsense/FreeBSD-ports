@@ -1,9 +1,8 @@
 # Created by: Nikolay Korotkiy <sikmir@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	openorienteering-mapper
 PORTVERSION=	0.9.2
-PORTREVISION=	2
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics geography
 

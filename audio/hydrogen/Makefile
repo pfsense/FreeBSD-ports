@@ -1,9 +1,7 @@
 # Created by: Jean-Yves Lefort <jylefort@brutele.be>
-# $FreeBSD$
 
 PORTNAME=	hydrogen
-DISTVERSION=	1.0.0
-PORTREVISION=	1
+DISTVERSION=	1.0.1
 CATEGORIES=	audio
 
 MAINTAINER=	FreeBSD@ShaneWare.Biz

@@ -1,5 +1,4 @@
 # Created by: David Yeske <dyeske@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	baudline
 PORTVERSION=	1.08
@@ -14,12 +13,16 @@ DISTNAME=	baudline_${PORTVERSION:S/.p/pre/}_linux_i686
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Real-time signal analysis and time-frequency browser
 
+# Converted from RESTRICTED
+LICENSE=	BAUDLINE
+LICENSE_NAME=	baudline
+LICENSE_TEXT=	author requests no distribution except from their site
+LICENSE_PERMS=	auto-accept
+
 WRKSRC=		${WRKDIR}/${DISTNAME:S/i686/x86/}
 USES=		linux
 USE_LINUX=	xorglibs
 ONLY_FOR_ARCHS=	i386 amd64
-
-RESTRICTED=	author requests no distribution except from their site
 
 PORTDOCS=	README_unix.txt
 PLIST_FILES=	bin/baudline

@@ -1,5 +1,4 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@sunpoet.net>
-# $FreeBSD$
 
 PORTNAME=	libfishsound
 PORTVERSION=	1.0.0
@@ -9,7 +8,7 @@ MASTER_SITES=	http://downloads.xiph.org/releases/libfishsound/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Programing interface to decode/encode audio data
+COMMENT=	Programming interface to decode/encode audio data
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

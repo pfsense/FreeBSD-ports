@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-AMQP-RabbitMQ
 PORTVERSION=	2.40008
 CATEGORIES=	net perl5

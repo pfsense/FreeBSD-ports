@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	puppetdb
-PORTVERSION=	7.0.1
+PORTVERSION=	7.3.1
 CATEGORIES=	databases java
 MASTER_SITES=	https://downloads.puppetlabs.com/puppetdb/
 PKGNAMESUFFIX=	7

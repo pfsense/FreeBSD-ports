@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hocon
 PORTVERSION=	1.3.1
 CATEGORIES=	devel rubygems

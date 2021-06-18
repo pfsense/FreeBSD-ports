@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ovirt-engine-sdk
-PORTVERSION=	4.4.0
+PORTVERSION=	4.4.1
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 

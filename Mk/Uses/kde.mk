@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # Provides support for KDE and KF5-based ports.
 #
 # Feature:	kde
@@ -19,11 +17,34 @@
 # To simplify the ports, also:
 # CATEGORIES	If the port is part of one of the KDE Software distribution,
 #		it can add, in addition to 'kde' one of the following:
-#			kde-application:	part of applications release
+#			kde-applications:	part of applications release
 #			kde-frameworks:		part of frameworks release
 #			kde-plasma:		part of plasma release
 #		this will then set default values for MASTER_SITES and DIST_SUBDIR
 #		as well as CPE_VENDOR and LICENSE.
+#
+# option DOCS	If the port is part of kde-applications (see CATEGORIES,
+#		above) and has an option defined for DOCS then a dependency
+#		for doctools_build is added. The option itself doesn't
+#		have to do anything -- the dependency is always there.
+#
+# KDE_INVENT	If the port does not have a regular release, and should
+#		be fetched from KDE Invent (a GitLab instance) it can set
+#		KDE_INVENT to 3 space-separated values:
+#		* a full 40-character commit hash
+#		* a category name inside KDE Invent
+#		* a repository name inside KDE Invent
+#		Default values for category and name are:
+#		* the first item in CATEGORIES that is not "kde"; this
+#		  is useful when the FreeBSD ports category and the KDE
+#		  category are the same (which happens sometimes)
+#		* PORTNAME, often the FreeBSD port name is the same
+#		  as the upstream name and it will not need to be specified.
+#		Sometimes `KDE_INVENT=<hash>` will do and often
+#		`KDE_INVENT=<hash> <category>` is enough.
+#
+#		Setting KDE_INVENT is the equivalent of a handful of USE_GITLAB
+#		and related settings.
 #
 # MAINTAINER:	kde@FreeBSD.org
 
@@ -54,20 +75,17 @@ _KDE_RELNAME=		KDE${_KDE_VERSION}
 
 # === VERSIONS OF THE DIFFERENT COMPONENTS =====================================
 # Current KDE desktop.
-KDE_PLASMA_VERSION?=		5.20.4
+KDE_PLASMA_VERSION?=		5.21.5
 KDE_PLASMA_BRANCH?=		stable
 
 # Current KDE frameworks.
-KDE_FRAMEWORKS_VERSION?=	5.77.0
+KDE_FRAMEWORKS_VERSION?=	5.82.0
 KDE_FRAMEWORKS_BRANCH?= 	stable
 
 # Current KDE applications.
-KDE_APPLICATIONS_VERSION?=	20.12.0
-KDE_APPLICATIONS_SHLIB_VER?=	5.16.0
+KDE_APPLICATIONS_VERSION?=	21.04.1
+KDE_APPLICATIONS_SHLIB_VER?=	5.17.1
 KDE_APPLICATIONS_BRANCH?=	stable
-# Upstream moves old software to Attic/. Specify the newest applications release there.
-# Only the major version is used for the comparison.
-_KDE_APPLICATIONS_ATTIC_VERSION=	17.08.3
 
 # Extended KDE universe applications.
 CALLIGRA_VERSION?=		2.9.11
@@ -92,6 +110,32 @@ IGNORE?=	cannot be installed: multiple kde-<...> categories specified via CATEGO
 .      endif
 .    endfor
 
+# Doing source-selection if the sources are on KDE invent
+.    if defined(KDE_INVENT)
+_invent_hash=		${KDE_INVENT:[1]}
+_invent_category=	${KDE_INVENT:[2]}
+_invent_name=		${KDE_INVENT:[3]}
+
+# Fill in default values if bits are missing
+.      if empty(_invent_category)
+_invent_category=	${CATEGORIES:Nkde:[1]}
+.      endif
+.      if empty(_invent_name)
+_invent_name=		${PORTNAME}
+.      endif
+
+# If valid, use it for GitLab
+.      if empty(_invent_hash) || empty(_invent_category) || empty(_invent_name)
+IGNORE?=		invalid KDE_INVENT value '${KDE_INVENT}'
+.      else
+USE_GITLAB=		yes
+GL_SITE=		https://invent.kde.org
+GL_ACCOUNT=		${_invent_category}
+GL_PROJECT=		${_invent_name}
+GL_COMMIT=		${_invent_hash}
+.      endif
+.    endif
+
 .    if defined(_KDE_CATEGORY)
 # KDE is normally licensed under the LGPL 2.0.
 LICENSE?=		LGPL20
@@ -103,22 +147,21 @@ CPE_VENDOR?=		kde
 
 .      if ${_KDE_CATEGORY:Mkde-applications}
 PORTVERSION?=		${KDE_APPLICATIONS_VERSION}
-# Decide where the file lies on KDE's servers: Check whether the file lies in Attic
-.        if ${KDE_APPLICATIONS_VERSION:R:R} <= ${_KDE_APPLICATIONS_ATTIC_VERSION:R:R}
-MASTER_SITES?=		KDE/Attic/applications/${KDE_APPLICATIONS_VERSION}/src
-.        elseif ${KDE_APPLICATIONS_VERSION:R} < 19.12
-MASTER_SITES?=		KDE/${KDE_APPLICATIONS_BRANCH}/applications/${KDE_APPLICATIONS_VERSION}/src
-.        else
 MASTER_SITES?=		KDE/${KDE_APPLICATIONS_BRANCH}/release-service/${KDE_APPLICATIONS_VERSION}/src
 # Let bsd.port.mk create the plist-entries for the documentation.
 # KDE Applications ports install their documentation to
-# ${PREFIX}/share/doc.
+# ${PREFIX}/share/doc. This is only done if the port
+# defines OPTION DOCS -- the _KDE_OPTIONS here is to
+# avoid make errors when there are no options defined at all.
+_KDE_OPTIONS=		bogus ${OPTIONS_DEFINE}
+.          if ${_KDE_OPTIONS:MDOCS}
 DOCSDIR=		${PREFIX}/share/doc
 PORTDOCS?=		HTML/*
+USE_KDE+=		doctools_build
+.          endif
 # Further pass along a SHLIB_VER PLIST_SUB
 PLIST_SUB+=		KDE_APPLICATIONS_SHLIB_VER=${KDE_APPLICATIONS_SHLIB_VER} \
 			KDE_APPLICATIONS_VERSION_SHORT="${KDE_APPLICATIONS_VERSION:R:R}"
-.        endif
 DIST_SUBDIR?=		KDE/release-service/${KDE_APPLICATIONS_VERSION}
 .      elif ${_KDE_CATEGORY:Mkde-plasma}
 PORTVERSION?=		${KDE_PLASMA_VERSION}
@@ -144,33 +187,33 @@ IGNORE?=		unknown CATEGORY value '${_KDE_CATEGORY}' #'
 
 # ==============================================================================
 
-# ==== SETUP CMAKE ENVIRONMENT =================================================
+# === SET UP CMAKE ENVIRONMENT =================================================
 # Help cmake to find files when testing ports with non-default PREFIX.
 CMAKE_ARGS+=	-DCMAKE_PREFIX_PATH="${LOCALBASE}"
 
-.    if ${_KDE_VERSION:M*5*}
 # We set KDE_INSTALL_USE_QT_SYS_PATHS to install mkspecs files, plugins and
 # imports to the Qt 5 install directory.
-CMAKE_ARGS+=   -DBUILD_TESTING:BOOL=OFF \
-               -DCMAKE_MODULE_PATH="${LOCALBASE};${KDE_PREFIX}" \
-               -DCMAKE_INSTALL_PREFIX="${KDE_PREFIX}" \
-               -DKDE_INSTALL_USE_QT_SYS_PATHS:BOOL=TRUE
-.    endif
+CMAKE_ARGS+=	-DCMAKE_MODULE_PATH="${LOCALBASE};${KDE_PREFIX}" \
+		-DCMAKE_INSTALL_PREFIX="${KDE_PREFIX}" \
+		-DKDE_INSTALL_USE_QT_SYS_PATHS:BOOL=true
 
 # Set man-page installation prefix.
 CMAKE_ARGS+=	-DKDE_INSTALL_MANDIR:PATH="${KDE_PREFIX}/man" \
 		-DMAN_INSTALL_DIR:PATH="${KDE_PREFIX}/man"
+
+# Disable autotests unless TEST_TARGET is defined.
+.    if !defined(TEST_TARGET)
+CMAKE_ARGS+=	-DBUILD_TESTING:BOOL=false
+.    endif
 # ==============================================================================
 
-# === SET-UP PLIST_SUB =========================================================
+# === SET UP PLIST_SUB =========================================================
 # Prefix and include directory.
 PLIST_SUB+=		KDE_PREFIX="${KDE_PREFIX}"
 # KDE Applications version.
-PLIST_SUB+=		KDE_APPLICATIONS_VERSION="${KDE_APPLICATIONS_VERSION}"
-.    if ${_KDE_VERSION:M*5*}
-PLIST_SUB+=		KDE_PLASMA_VERSION="${KDE_PLASMA_VERSION}" \
-			KDE_FRAMEWORKS_VERSION="${KDE_FRAMEWORKS_VERSION}"
-.    endif
+PLIST_SUB+=		KDE_APPLICATIONS_VERSION="${KDE_APPLICATIONS_VERSION}" \
+			KDE_FRAMEWORKS_VERSION="${KDE_FRAMEWORKS_VERSION}" \
+			KDE_PLASMA_VERSION="${KDE_PLASMA_VERSION}"
 # ==============================================================================
 
 _USE_KDE_BOTH=		akonadi attica libkcddb libkcompactdisc libkdcraw libkdegames \
@@ -393,7 +436,7 @@ kde-kquickcharts_PATH=		${QT_QMLDIR}/org/kde/quickcharts/controls/libchartscontr
 kde-kross_PORT=			lang/kf5-kross
 kde-kross_LIB=			libKF5KrossCore.so
 
-kde-kwayland-protocols_PORT=	x11/plasma-kwayland-protocols
+kde-kwayland-protocols_PORT=	x11/plasma-wayland-protocols
 kde-kwayland-protocols_LIB=	${KDE_PREFIX}/lib/cmake/PlasmaWaylandProtocols/PlasmaWaylandProtocolsConfig.cmake
 
 kde-kwayland-server_PORT=	x11/plasma5-kwayland-server

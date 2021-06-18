@@ -1,8 +1,7 @@
 # Created by: René Ladan <rene@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	django-rq
-PORTVERSION=	2.4.0
+PORTVERSION=	2.4.1
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MASTER_SITES=	CHEESESHOP

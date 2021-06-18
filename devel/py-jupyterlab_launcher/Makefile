@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jupyterlab_launcher
 DISTVERSION=	0.13.1
 PORTREVISION=	3

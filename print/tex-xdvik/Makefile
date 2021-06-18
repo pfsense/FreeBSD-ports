@@ -1,5 +1,4 @@
 # Created by: Kentaro Inagaki <JBD01226@niftyserve.ne.jp>
-# $FreeBSD$
 
 PORTNAME=	xdvik
 PORTVERSION=	22.87
@@ -9,7 +8,7 @@ MASTER_SITES=	SF/xdvi/${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	tex-
 DIST_SUBDIR=	TeX
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	freebsd-tex@FreeBSD.org
 COMMENT=	DVI Previewer(kpathsearch) for X
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \

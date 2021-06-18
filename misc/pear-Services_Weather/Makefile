@@ -1,12 +1,11 @@
 # Created by: Thierry Thomas (<thierry@FreeBSD.org>)
-# $FreeBSD$
 
 PORTNAME=	Services_Weather
 PORTVERSION=	1.4.6
 PORTEPOCH=	1
 CATEGORIES=	misc www pear geography
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR interface to various online weather-services
 
 LICENSE=	BSD2CLAUSE

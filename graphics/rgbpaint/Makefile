@@ -1,5 +1,4 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rgbpaint
 PORTVERSION=	0.8.7
@@ -11,6 +10,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Very basic painting program
 
 LICENSE=	GPLv2+
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: brcosa_pal
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: brcosa_pal
 
 USES=		gettext gnome pkgconfig tar:bzip2
 USE_GNOME=	gtk20

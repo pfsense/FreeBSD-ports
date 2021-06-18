@@ -1,9 +1,8 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	xd3d
 PORTVERSION=	8.3.1
-PORTREVISION=	18
+PORTREVISION=	19
 CATEGORIES=	graphics math
 MASTER_SITES=	http://www.cmap.polytechnique.fr/~jouve/xd3d/
 
@@ -29,7 +28,7 @@ LICENSE=	GPLv2
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .if !defined(WITHOUT_IMAGEMAGICK)
-RUN_DEPENDS+=	convert:graphics/ImageMagick6
+RUN_DEPENDS+=	convert:graphics/ImageMagick${IMAGEMAGICK_DEFAULT}
 .endif
 .if !defined(WITHOUT_GIFSICLE)
 RUN_DEPENDS+=	gifsicle:graphics/gifsicle

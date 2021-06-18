@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ipywidgets
 PORTVERSION=	7.5.1
 PORTREVISION=	3

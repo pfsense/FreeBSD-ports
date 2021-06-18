@@ -1,5 +1,4 @@
 # Created by: Alejandro Pulver <alepulver@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	q3cellshading
 PORTVERSION=	1.0
@@ -13,6 +12,8 @@ COMMENT=	Quake III engine with Cell Shading capabilities
 
 ONLY_FOR_ARCHS=	i386
 ONLY_FOR_ARCHS_REASON=	does not run properly; try games/ioquake3 with option
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: re
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: re
 
 USES=		compiler dos2unix gmake zip
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
@@ -55,7 +56,7 @@ MAKE_ENV+=	DLL_ONLY=true
 .if ${PORT_OPTIONS:MCLIENT} || ${PORT_OPTIONS:MSMP_CLIENT}
 USES+=		gl xorg
 USE_GL=		glu
-USE_XORG=	xxf86dga
+USE_XORG=	xxf86dga xxf86vm
 .endif
 
 .if ${PORT_OPTIONS:MCLIENT}

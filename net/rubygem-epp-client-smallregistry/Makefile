@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	epp-client-smallregistry
 PORTVERSION=	0.15.2
 CATEGORIES=	net rubygems

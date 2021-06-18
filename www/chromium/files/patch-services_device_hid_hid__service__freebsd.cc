@@ -1,6 +1,6 @@
---- services/device/hid/hid_service_freebsd.cc.orig	2020-11-16 10:08:51 UTC
+--- services/device/hid/hid_service_freebsd.cc.orig	2021-04-21 12:19:19 UTC
 +++ services/device/hid/hid_service_freebsd.cc
-@@ -0,0 +1,382 @@
+@@ -0,0 +1,390 @@
 +// Copyright 2014 The Chromium Authors. All rights reserved.
 +// Use of this source code is governed by a BSD-style license that can be
 +// found in the LICENSE file.
@@ -34,6 +34,7 @@
 +#include "base/task/post_task.h"
 +#include "base/threading/scoped_blocking_call.h"
 +#include "base/threading/thread_task_runner_handle.h"
++#include "base/threading/thread_restrictions.h"
 +#include "components/device_event_log/device_event_log.h"
 +#include "services/device/hid/hid_connection_freebsd.h"
 +
@@ -43,8 +44,10 @@
 +
 +struct HidServiceFreeBSD::ConnectParams {
 +  ConnectParams(scoped_refptr<HidDeviceInfo> device_info,
++                bool allow_protected_reports,
 +                ConnectCallback callback)
 +      : device_info(std::move(device_info)),
++	allow_protected_reports(allow_protected_reports),
 +        callback(std::move(callback)),
 +        task_runner(base::ThreadTaskRunnerHandle::Get()),
 +        blocking_task_runner(
@@ -52,6 +55,7 @@
 +  ~ConnectParams() {}
 +
 +  scoped_refptr<HidDeviceInfo> device_info;
++  bool allow_protected_reports;
 +  ConnectCallback callback;
 +  scoped_refptr<base::SequencedTaskRunner> task_runner;
 +  scoped_refptr<base::SequencedTaskRunner> blocking_task_runner;
@@ -345,7 +349,8 @@
 +}
 +
 +void HidServiceFreeBSD::Connect(const std::string& device_guid,
-+                            ConnectCallback callback) {
++                                bool allow_protected_reports,
++                                ConnectCallback callback) {
 +  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 +
 +  const auto& map_entry = devices().find(device_guid);
@@ -357,7 +362,9 @@
 +
 +  scoped_refptr<HidDeviceInfo> device_info = map_entry->second;
 +
-+  auto params = std::make_unique<ConnectParams>(device_info, std::move(callback));
++  auto params = std::make_unique<ConnectParams>(device_info,
++                                                allow_protected_reports,
++						std::move(callback));
 +  scoped_refptr<base::SequencedTaskRunner> blocking_task_runner =
 +      params->blocking_task_runner;
 +
@@ -378,7 +385,8 @@
 +  std::move(params->callback).Run(base::MakeRefCounted<HidConnectionFreeBSD>(
 +    std::move(params->device_info),
 +    std::move(params->fd),
-+    std::move(params->blocking_task_runner)
++    std::move(params->blocking_task_runner),
++    params->allow_protected_reports
 +  ));
 +}
 +

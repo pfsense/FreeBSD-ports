@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	elementary-photos
 DISTVERSION=	2.7.0
 PORTREVISION=	2

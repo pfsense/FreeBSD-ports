@@ -1,8 +1,7 @@
 # Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Carp-Assert-More
-PORTVERSION=	1.24
+PORTVERSION=	1.26
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

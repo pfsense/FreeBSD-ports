@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	converters
 
 MASTERDIR=	${.CURDIR}/../../lang/php74

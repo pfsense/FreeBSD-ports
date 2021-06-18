@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	snakeviz
 PORTVERSION=	2.1.0
 CATEGORIES=	devel python

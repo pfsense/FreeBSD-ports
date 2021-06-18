@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Plack-Middleware-ConsoleLogger
 PORTVERSION=	0.05
 CATEGORIES=	www perl5

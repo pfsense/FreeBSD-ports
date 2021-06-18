@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	synctex
 PORTVERSION=	1.17.0
 PORTREVISION=	1
@@ -9,7 +7,7 @@ PKGNAMEPREFIX=	tex-
 DISTNAME=	texlive-20150521-source
 DIST_SUBDIR=	TeX
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	freebsd-tex@FreeBSD.org
 COMMENT=	Synchronization TeXnology parser library
 
 LICENSE=	MIT

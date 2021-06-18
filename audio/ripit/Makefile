@@ -1,5 +1,4 @@
 # Created by: oyvindmo@initio.no
-# $FreeBSD$
 
 PORTNAME=	ripit
 PORTVERSION=	3.9.0
@@ -11,6 +10,9 @@ MAINTAINER=	tobias.rehbein@web.de
 COMMENT=	Command line audio CD ripper
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Upstream no longer maintained, use audio/abcde instead
+EXPIRATION_DATE=	2021-07-17
 
 # See pkg-message about other dependencies.
 RUN_DEPENDS=	p5-CDDB_get>=0:audio/p5-CDDB_get \

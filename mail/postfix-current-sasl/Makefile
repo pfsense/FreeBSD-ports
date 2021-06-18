@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PKGNAMESUFFIX?=	-current-sasl
 
-MAINTAINER=	ohauer@FreeBSD.org
+MAINTAINER=	otis@FreeBSD.org
 COMMENT=	Postfix with Cyrus SASL support
 
 MASTERDIR=	${.CURDIR}/../postfix-current

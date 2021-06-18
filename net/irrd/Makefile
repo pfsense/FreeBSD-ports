@@ -1,5 +1,4 @@
 # Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	irrd
 PORTVERSION=	4.0.8
@@ -46,7 +45,7 @@ USERS=		${PORTNAME}
 GROUPS=		${PORTNAME}
 
 OPTIONS_DEFINE=	DOCS
-DOCS_BUILD_DEPENDS=	${PY_SPHINX}
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=2.0.1,1:textproc/py-sphinx@${PY_FLAVOR}
 
 PLIST_FILES=	"@sample etc/${PORTNAME}${PKGNAMESUFFIX}.yaml.sample"
 NO_ARCH=	yes
@@ -59,7 +58,7 @@ SUB_LIST=	PYTHON_CMD="${PYTHON_CMD}" \
 
 .include <bsd.port.pre.mk>
 
-.if ${PYTHON_REL} < 3700
+.if ${PYTHON_REL} < 30700
 BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}dataclasses>=0.6:devel/py-dataclasses@${PY_FLAVOR}
 .endif
 

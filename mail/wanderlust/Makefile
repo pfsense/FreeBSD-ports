@@ -1,5 +1,4 @@
 # Created by: MANTANI Nobutaka <nobutaka@nobutaka.com>
-# $FreeBSD$
 
 PORTNAME=	wanderlust
 PORTVERSION=	2.15.9.b.${SNAPDATE}
@@ -20,10 +19,10 @@ RUN_DEPENDS=	emacs-w3m${EMACS_PKGNAMESUFFIX}>0:www/emacs-w3m@${EMACS_FLAVOR} \
 
 USES=		emacs
 USE_GITHUB=	yes
-GH_TAGNAME=	c19a1df
+GH_TAGNAME=	6e189fc
 
 NO_ARCH=	yes
-SNAPDATE=	20201115
+SNAPDATE=	20210312
 
 MAKE_ARGS+=	EMACS=${EMACS_CMD} \
 		FLAGS="-batch -q -no-site-file" \

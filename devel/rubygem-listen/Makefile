@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	listen
-PORTVERSION=	3.3.3
+PORTVERSION=	3.5.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

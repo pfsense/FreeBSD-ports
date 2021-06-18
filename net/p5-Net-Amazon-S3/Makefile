@@ -1,8 +1,7 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	Net-Amazon-S3
-PORTVERSION=	0.97
+PORTVERSION=	0.98
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

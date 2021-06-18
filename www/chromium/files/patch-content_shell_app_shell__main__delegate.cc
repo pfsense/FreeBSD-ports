@@ -1,4 +1,4 @@
---- content/shell/app/shell_main_delegate.cc.orig	2020-11-13 06:36:43 UTC
+--- content/shell/app/shell_main_delegate.cc.orig	2021-04-14 18:41:03 UTC
 +++ content/shell/app/shell_main_delegate.cc
 @@ -186,7 +186,7 @@ bool ShellMainDelegate::BasicStartupComplete(int* exit
  

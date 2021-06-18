@@ -1,12 +1,11 @@
 # Created by: arved
-# $FreeBSD$
 
 PORTNAME=	x2goclient
 PORTVERSION=	4.1.2.2
 CATEGORIES=	net
 MASTER_SITES=	http://code.x2go.org/releases/source/x2goclient/
 
-MAINTAINER=	neel@neelc.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Qt client for the X2Go system
 
 LICENSE=	GPLv2

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	secure-cookie
 PORTVERSION=	0.1.0
 CATEGORIES=	www python

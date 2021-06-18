@@ -1,5 +1,4 @@
 # Created by: Yoichi NAKAYAMA <yoichi@eken.phys.nagoya-u.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	shinonome
 PORTVERSION=	0.9.11.p1
@@ -33,8 +32,6 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:C/.p.*$//}
 PORTDOCS=	AUTHORS BUGS ChangeLog ChangeLog.0 DESIGN.12 DESIGN.14	\
 		DESIGN.16 DESIGN.18 INSTALL README THANKS TODO
 OPTIONS_DEFINE=	DOCS
-
-pre-build: apply-slist
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

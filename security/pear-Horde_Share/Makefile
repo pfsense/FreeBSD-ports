@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Horde_Share
 DISTVERSION=	2.2.0
 CATEGORIES=	security www pear

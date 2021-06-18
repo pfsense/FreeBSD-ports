@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	phpMyAdmin
 DISTVERSION=	5.1.0
 CATEGORIES=	databases www

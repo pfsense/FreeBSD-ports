@@ -1,6 +1,3 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	openmw
 DISTVERSIONPREFIX=	openmw-
 DISTVERSION=	0.46.0

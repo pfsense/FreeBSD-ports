@@ -1,6 +1,6 @@
---- base/test/launcher/test_launcher.cc.orig	2021-01-18 21:28:45 UTC
+--- base/test/launcher/test_launcher.cc.orig	2021-04-14 18:40:48 UTC
 +++ base/test/launcher/test_launcher.cc
-@@ -57,6 +57,7 @@
+@@ -58,6 +58,7 @@
  #include "testing/gtest/include/gtest/gtest.h"
  
  #if defined(OS_POSIX)
@@ -8,7 +8,7 @@
  #include <fcntl.h>
  
  #include "base/files/file_descriptor_watcher_posix.h"
-@@ -598,7 +599,7 @@ ChildProcessResults DoLaunchChildTestProcess(
+@@ -599,7 +600,7 @@ ChildProcessResults DoLaunchChildTestProcess(
  #if !defined(OS_FUCHSIA)
    options.new_process_group = true;
  #endif

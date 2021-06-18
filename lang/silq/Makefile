@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	silq
-PORTVERSION=	20200919
-PORTREVISION=	1
+PORTVERSION=	20210503
 CATEGORIES=	lang math science
 
 MAINTAINER=	se@FreeBSD.org
@@ -18,8 +15,8 @@ BUILD_DEPENDS=	ldmd2:lang/ldc
 
 USE_GITHUB=	yes
 
-GH_TUPLE=	eth-sri:silq:b09da8a \
-		tgehr:ast:0e36dc2:ast/ast \
+GH_TUPLE=	eth-sri:silq:c0029ff \
+		tgehr:ast:cfa0289:ast/ast \
 		tgehr:util:eb42377:util/util
 
 OPTIONS_DEFINE=	EXAMPLES

@@ -1,5 +1,4 @@
 # Created by: Ryo MIYAMOTO <rmiya@cc.hirosaki-u.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	molden
 DISTVERSION=	5.8.2
@@ -15,9 +14,8 @@ COMMENT=	Display molecular orbitals and electron densities in 2D and 3D
 LICENSE=	Molden
 LICENSE_NAME=	Molden
 LICENSE_FILE=	${WRKSRC}/CopyRight
+# free for academic, non profit usage; do not re-distribute source and executable.
 LICENSE_PERMS=	auto-accept
-
-RESTRICTED=	free for academic, non profit usage; do not re-distribute source and executable.
 
 WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION:R}
 
@@ -73,4 +71,12 @@ do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${GCC_DEFAULT} >= 10
+# workaround for Type mismatch between actual argument at (1) and actual argument at (2) (INTEGER(4)/REAL(4)).
+# in theory, this should set FCFLAGS, but the port does not conform
+FFLAGS+=	-fallow-argument-mismatch
+.endif
+
+.include <bsd.port.post.mk>

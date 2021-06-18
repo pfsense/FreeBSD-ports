@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = X11 clocks
 
     SUBDIR += abclock
@@ -14,6 +11,7 @@
     SUBDIR += bclock
     SUBDIR += buici-clock
     SUBDIR += cairo-clock
+    SUBDIR += catclock
     SUBDIR += dclock
     SUBDIR += emiclock
     SUBDIR += eyeclock

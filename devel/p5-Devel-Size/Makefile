@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Devel-Size
 PORTVERSION=	0.83
 CATEGORIES=	devel perl5

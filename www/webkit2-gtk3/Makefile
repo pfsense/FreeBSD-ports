@@ -1,8 +1,8 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	webkit
-PORTVERSION=	2.30.2
+DISTVERSION=	2.30.5
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	https://webkitgtk.org/releases/
 PKGNAMESUFFIX=	2-gtk3
@@ -15,6 +15,7 @@ COMMENT=	Opensource browser engine using the GTK+ 3 toolkit
 LICENSE=	GPLv2 BSD2CLAUSE
 LICENSE_COMB=	dual
 
+BUILD_DEPENDS=	${LOCALBASE}/bin/ar:devel/binutils
 LIB_DEPENDS=	libenchant-2.so:textproc/enchant2 \
 		libfribidi.so:converters/fribidi \
 		libfontconfig.so:x11-fonts/fontconfig \
@@ -40,7 +41,6 @@ USES=		bison cmake compiler:c++14-lang gettext gl gnome gperf \
 		sqlite tar:xz xorg
 USE_GNOME=	cairo gdkpixbuf2 gtk30 introspection:build libxml2 libxslt
 USE_GL=		gl egl glesv2
-USE_GSTREAMER1=	bad gl
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 USE_RUBY=	yes
@@ -66,8 +66,8 @@ INSTALL_TARGET=		install
 
 BROWSER_PLUGINS_DIR?=	${LOCALBASE}/lib/browser_plugins/symlinks/webkit-gtk3
 
-OPTIONS_DEFINE=		DEBUG GEOIP WAYLAND
-OPTIONS_DEFAULT=	GEOIP WAYLAND
+OPTIONS_DEFINE=		DEBUG GEOIP GSTREAMER WAYLAND
+OPTIONS_DEFAULT=	GEOIP GSTREAMER WAYLAND
 OPTIONS_SUB=		yes
 
 # Building WebKit with debugging symbols requires ar and ld with
@@ -87,6 +87,9 @@ DEBUG_CFLAGS_OFF=	-DNDEBUG
 GEOIP_CMAKE_BOOL=	ENABLE_GEOLOCATION
 GEOIP_BUILD_DEPENDS=	geoclue>=2.4.3:net/geoclue
 GEOIP_RUN_DEPENDS=	geoclue>=2.4.3:net/geoclue
+
+GSTREAMER_USE=		GSTREAMER1=bad,gl
+GSTREAMER_CMAKE_BOOL=	ENABLE_VIDEO ENABLE_WEB_AUDIO
 
 WAYLAND_CMAKE_BOOL=	ENABLE_WAYLAND_TARGET
 WAYLAND_LIB_DEPENDS=	libwayland-egl.so:graphics/wayland \

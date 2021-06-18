@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		pyznap
 DISTVERSION=		1.6.0
 CATEGORIES=		sysutils python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	toml-rb
 PORTVERSION=	1.1.1
 CATEGORIES=	www rubygems

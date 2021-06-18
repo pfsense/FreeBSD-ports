@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	librarianp
 PORTVERSION=	1.0.0
 CATEGORIES=	devel rubygems

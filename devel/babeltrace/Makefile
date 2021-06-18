@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	babeltrace
 PORTVERSION=	1.5.7
 DISTVERSIONPREFIX=	v

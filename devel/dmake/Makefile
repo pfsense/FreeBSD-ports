@@ -1,8 +1,8 @@
 # Created by: nils@guru.ims.uni-stuttgart.de
-# $FreeBSD$
 
 PORTNAME=	dmake
 PORTVERSION=	4.13.1
+DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	devel
 
@@ -16,7 +16,6 @@ USES=		autoreconf
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	jimjag
-GH_TAGNAME=	v${PORTVERSION}
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--datarootdir=${DATADIR}

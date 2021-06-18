@@ -1,6 +1,6 @@
---- base/process/launch.h.orig	2020-11-13 06:36:34 UTC
+--- base/process/launch.h.orig	2021-04-14 18:40:48 UTC
 +++ base/process/launch.h
-@@ -180,7 +180,7 @@ struct BASE_EXPORT LaunchOptions {
+@@ -190,7 +190,7 @@ struct BASE_EXPORT LaunchOptions {
    bool clear_environment = false;
  #endif  // OS_WIN || OS_POSIX || OS_FUCHSIA
  
@@ -9,7 +9,7 @@
    // If non-zero, start the process using clone(), using flags as provided.
    // Unlike in clone, clone_flags may not contain a custom termination signal
    // that is sent to the parent when the child dies. The termination signal will
-@@ -193,7 +193,7 @@ struct BASE_EXPORT LaunchOptions {
+@@ -203,7 +203,7 @@ struct BASE_EXPORT LaunchOptions {
  
    // Sets parent process death signal to SIGKILL.
    bool kill_on_parent_death = false;
@@ -18,7 +18,7 @@
  
  #if defined(OS_MAC)
    // Mach ports that will be accessible to the child process. These are not
-@@ -408,7 +408,7 @@ BASE_EXPORT void RaiseProcessToHighPriority();
+@@ -418,7 +418,7 @@ BASE_EXPORT void RaiseProcessToHighPriority();
  // binary. This should not be called in production/released code.
  BASE_EXPORT LaunchOptions LaunchOptionsForTest();
  

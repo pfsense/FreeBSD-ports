@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Perl-Metrics-Simple
 PORTVERSION=	0.18
 CATEGORIES=	devel perl5

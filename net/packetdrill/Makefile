@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	packetdrill
 PORTVERSION=	0.0.2020082101
 CATEGORIES=	net
@@ -22,6 +20,9 @@ PORTDOCS=	README
 PORTEXAMPLES=	tests
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
+
+# XXX Static libraries with PIE are currently unsupported.
+MAKE_ARGS+=	WITHOUT_PIE=true
 
 pre-build:
 	${INSTALL_DATA} ${FILESDIR}/Makefile ${FILESDIR}/Makefile.inc ${WRKSRC}

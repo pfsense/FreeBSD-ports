@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pegtl
 DISTVERSION=	3.0.0
 CATEGORIES=	devel

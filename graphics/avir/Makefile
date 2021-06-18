@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	avir
-DISTVERSION=	2.6
+DISTVERSION=	2.9
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org

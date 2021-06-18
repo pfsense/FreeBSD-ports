@@ -1,8 +1,7 @@
 # Created by: Tomoyuki Sakurai <cherry@trombik.org>
-# $FreeBSD$
 
 PORTNAME=	facter
-PORTVERSION=	4.0.47
+PORTVERSION=	4.2.0
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 

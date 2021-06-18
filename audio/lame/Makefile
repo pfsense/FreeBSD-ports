@@ -1,5 +1,4 @@
 # Created by: yoshiaki Uchikawa
-# $FreeBSD$
 
 PORTNAME=	lame
 PORTVERSION=	3.100
@@ -12,6 +11,8 @@ COMMENT=	Fast MP3 encoder kit
 
 LICENSE=		LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_riscv64=	fails to compile: needs FP_X_INV from empty sys/riscv/include/ieeefp.h
 
 USES=		gmake iconv libtool
 USE_LDCONFIG=	yes

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 MASTERDIR=	${.CURDIR}/../namecoin
 
 PKGNAMESUFFIX=	-daemon

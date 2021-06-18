@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	csmith
 PORTVERSION=	2.3.0
 CATEGORIES=	devel

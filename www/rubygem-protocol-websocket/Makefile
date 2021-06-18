@@ -1,5 +1,4 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	protocol-websocket
 PORTVERSION=	0.7.5
@@ -7,7 +6,7 @@ CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Low level implementation of the WebSocket protocol
+COMMENT=	Low-level implementation of the WebSocket protocol
 
 LICENSE=	MIT
 

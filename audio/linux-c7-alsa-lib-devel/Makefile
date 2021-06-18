@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	alsa-lib
 PORTVERSION=	1.1.8
 DISTVERSIONSUFFIX=	-1.el7

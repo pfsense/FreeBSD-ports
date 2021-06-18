@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	imapdedup
 PORTVERSION=	0.0.20150331
 CATEGORIES=	mail

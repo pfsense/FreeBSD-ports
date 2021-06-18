@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fasd
 PORTVERSION=	1.0.1
 CATEGORIES=	deskutils

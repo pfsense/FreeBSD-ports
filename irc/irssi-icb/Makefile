@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	irssi-icb
 PORTVERSION=	0.17
 PORTREVISION=	2

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zfp
 DISTVERSION=	0.5.5
 CATEGORIES=	devel science

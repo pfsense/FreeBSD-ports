@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	urlman
 DISTVERSION=	1.2.0
 CATEGORIES=	www python

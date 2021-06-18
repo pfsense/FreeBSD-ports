@@ -1,8 +1,7 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	pywikibot
-DISTVERSION=	5.3.0
+DISTVERSION=	6.3.0
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +11,7 @@ COMMENT=	Wikipedia bot for Python
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=2.20.1:www/py-requests@${PY_FLAVOR}
 
 USES=		dos2unix python:3.5+
 DOS2UNIX_FILES=	setup.py
@@ -41,10 +40,4 @@ PILLOW_RUN_DEPENDS=		${PY_PILLOW}
 MWOAUTH_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}mwoauth>0:www/py-mwoauth@${PY_FLAVOR}
 HTML_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}beautifulsoup>0:www/py-beautifulsoup@${PY_FLAVOR}
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3000
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}ipaddr>0:devel/py-ipaddr@${PY_FLAVOR}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

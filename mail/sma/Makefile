@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sma
 PORTVERSION=	1.4
 CATEGORIES=	mail

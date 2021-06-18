@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wxmacmolplt
 DISTVERSIONPREFIX=	v
 DISTVERSION=	7.7-43

@@ -1,5 +1,4 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pip-tools
 PORTVERSION=	4.5.1
@@ -22,7 +21,6 @@ USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
-USE_LOCALE=	en_US.UTF-8
 
 PORTSCOUT=	limit:^4\.
 

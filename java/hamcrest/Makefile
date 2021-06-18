@@ -1,5 +1,4 @@
 # Created by: Danilo Egea Gondolfo <danilo@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	hamcrest
 PORTVERSION=	1.3
@@ -8,7 +7,7 @@ MASTER_SITES=	http://repo1.maven.org/maven2/org/${PORTNAME}/${PORTNAME}-all/${PO
 DISTFILES=	${PORTNAME}-all-${PORTVERSION}.jar ${PORTNAME}-all-${PORTVERSION}-sources.jar
 EXTRACT_ONLY=
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library of matchers for building test expressions
 
 USE_JAVA=	yes

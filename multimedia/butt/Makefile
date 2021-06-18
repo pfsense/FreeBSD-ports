@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	butt
 PORTVERSION=	0.1.27
 CATEGORIES=	multimedia graphics

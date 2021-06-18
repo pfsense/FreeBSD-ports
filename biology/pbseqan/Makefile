@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pbseqan
 DISTVERSION=	g20171011
 CATEGORIES=	biology

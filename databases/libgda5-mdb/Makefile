@@ -1,12 +1,13 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	databases gnome
 PKGNAMESUFFIX=	5-mdb
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Provides mdb backend for the libgda5 library
+
+BROKEN=		does not compile: 'mdbfakeglib.h' file not found
 
 MASTERDIR=	${.CURDIR}/../libgda5
 BUILD_WRKSRC=	${WRKSRC}/providers/mdb/

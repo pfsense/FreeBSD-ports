@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	colorclass
 PORTVERSION=	2.2.0
 CATEGORIES=	textproc python

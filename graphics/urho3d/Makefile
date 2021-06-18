@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	urho3d
 PORTVERSION=	1.7.1
 CATEGORIES=	graphics
@@ -11,6 +9,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_aarch64=	fails to build: fatal error: 'LibCpuId/libcpuid.h' file not found
+BROKEN_i386=	fails to build: error: typedef redefinition with different types
 BROKEN_riscv64=	fails to build: invokes x86 assembler
 
 USES=		cmake:noninja,insource dos2unix gl xorg

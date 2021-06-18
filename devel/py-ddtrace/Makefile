@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ddtrace
-PORTVERSION=	0.45.0
+PORTVERSION=	0.49.1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,11 +15,8 @@ LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE.Apache
 LICENSE_FILE_BSD3CLAUSE=${WRKSRC}/LICENSE.BSD3
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>=4:devel/py-setuptools_scm@${PY_FLAVOR}
-RUN_DEPENDS=	${PY_ENUM34} \
-		${PYTHON_PKGNAMEPREFIX}intervaltree>=0:devel/py-intervaltree@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}protobuf>=3,1:devel/py-protobuf@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}tenacity>=5:devel/py-tenacity@${PY_FLAVOR} \
-		${PY_TYPING}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}protobuf>=3,1:devel/py-protobuf@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}tenacity>=5:devel/py-tenacity@${PY_FLAVOR}
 
 USES=		compiler:c11 python:3.6+
 USE_PYTHON=	autoplist concurrent cython distutils
@@ -33,8 +29,8 @@ OPENTRACING_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}opentracing>=2.0.0:devel/py-opent
 
 .include <bsd.port.pre.mk>
 
-.if ${PYTHON_REL} < 3000
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}funcsigs>=0:devel/py-funcsigs@${PY_FLAVOR}
+.if ${PYTHON_REL} < 30700
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}pep562>=0:devel/py-pep562@${PY_FLAVOR}
 .endif
 
 post-patch:

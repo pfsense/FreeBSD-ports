@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	libg15
-PORTVERSION=	1.2.7
+DISTVERSION=	3.0.5
 CATEGORIES=	sysutils
-MASTER_SITES=	SF/g15tools/libg15/${PORTVERSION}
+MASTER_SITES=	https://gitlab.com/menelkir/${PORTNAME}/-/archive/${PORTVERSION}/
 
 MAINTAINER=	menelkir@itroll.org
 COMMENT=	API for control of LCD and the extra keys on Logitech keyboards
@@ -12,9 +10,9 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		compiler:gcc-c++11-lib gmake libtool tar:bzip2
+USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USE_LDCONFIG=	yes
 
 .include <bsd.port.mk>

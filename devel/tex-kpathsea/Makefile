@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kpathsea
 PORTVERSION=	6.2.1
 PORTREVISION=	2
@@ -9,7 +7,7 @@ PKGNAMEPREFIX=	tex-
 DISTNAME=	texlive-20150521-source
 DIST_SUBDIR=	TeX
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	freebsd-tex@FreeBSD.org
 COMMENT=	Path searching library for TeX
 
 LICENSE=	LGPL21+

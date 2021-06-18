@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	c3p0
 PORTVERSION=	0.9.5.3
 CATEGORIES=	databases java

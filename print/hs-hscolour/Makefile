@@ -1,9 +1,8 @@
 # Created by: Giuseppe Pilichi aka Jacula Modyun <jacula@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	hscolour
 PORTVERSION=	1.24.4
-PORTREVISION=	7
+PORTREVISION=	8
 PORTEPOCH=	1
 CATEGORIES=	print haskell
 

@@ -1,9 +1,8 @@
 # Created by: Shane Ambler <FreeBSD@Shaneware.biz>
-# $FreeBSD$
 
 PORTNAME=	openshadinglanguage
 DISTVERSIONPREFIX=	Release-
-DISTVERSION=	1.11.7.3
+DISTVERSION=	1.11.13.0
 PORTREVISION=	1
 CATEGORIES=	graphics devel
 
@@ -14,11 +13,12 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 BROKEN_FreeBSD_12_powerpc64=	fails to compile: llvm_ops.cpp:101:10: fatal error: 'iostream' file not found
+BROKEN_riscv64=		fails to build: /usr/include/c++/v1/__threading_support:135:3: Unsupported architecture
 
 BUILD_DEPENDS=	llvm-config${LLVM_VER}:devel/llvm${LLVM_VER}
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
-		libImath.so:graphics/ilmbase \
-		libIlmImf.so:graphics/openexr \
+		libImath.so:math/Imath \
+		libOpenEXR.so:graphics/openexr \
 		libOpenImageIO.so:graphics/openimageio \
 		libpugixml.so:textproc/pugixml
 RUN_DEPENDS=	llvm-config${LLVM_VER}:devel/llvm${LLVM_VER}
@@ -71,7 +71,6 @@ post-patch:
 		-e 's,%%PYCMD%%,${PYTHON_CMD},' \
 		${WRKSRC}/src/shaders/CMakeLists.txt \
 		${WRKSRC}/src/shaders/MaterialX/CMakeLists.txt \
-		${WRKSRC}/src/doc/CMakeLists.txt \
 		${WRKSRC}/src/liboslexec/CMakeLists.txt
 
 .if ${SLAVE_PORT} == yes
@@ -89,6 +88,7 @@ do-install:
 	${INSTALL_LIB} ${BUILD_WRKSRC}/lib/python/site-packages/oslquery.so ${STAGEDIR}${PYTHON_SITELIBDIR}
 .else # SLAVE_PORT != yes
 USES+=		python:3.6+,build
+BINARY_ALIAS+=	python=${PYTHON_CMD}
 CMAKE_OFF+=	USE_PYTHON
 USE_LDCONFIG=	yes
 .endif # SLAVE_PORT

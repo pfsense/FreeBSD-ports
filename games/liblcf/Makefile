@@ -1,9 +1,6 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	liblcf
 PORTVERSION=	0.6.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org

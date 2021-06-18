@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	cppunit
 PORTVERSION=	1.14.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	devel
 MASTER_SITES=	https://dev-www.libreoffice.org/src/
 

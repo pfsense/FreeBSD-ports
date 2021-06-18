@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	APCu_bc
 PORTVERSION=	1.0.5
 CATEGORIES=	devel

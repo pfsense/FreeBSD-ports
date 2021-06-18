@@ -1,18 +1,19 @@
 # Created by: swallace
-# $FreeBSD$
 
 PORTNAME=	xinvaders
 PORTVERSION=	2.1.1
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	games
 MASTER_SITES=	SUNSITE/games/arcade/invaders
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Shoot-em-up them nasty little bugs
 
-BROKEN_FreeBSD_13=	duplicate symbol: basedestroyed
-BROKEN_FreeBSD_14=	duplicate symbol: basedestroyed
-NO_CDROM=	don't sell for profit
+# Converted from NO_CDROM
+LICENSE=	xinvaders
+LICENSE_NAME=	xinvaders
+LICENSE_TEXT=	don't sell for profit
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 USES=		gettext xorg
 USE_XORG=	x11 xmu xaw xt

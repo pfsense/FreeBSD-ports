@@ -1,9 +1,7 @@
 # Created by: Johannes Dieterich <jmd@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	drm-current-kmod
-PORTVERSION=	5.4.92.g20210128
-PORTREVISION=	2
+PORTVERSION=	5.4.92.g20210526
 CATEGORIES=	graphics kld
 
 MAINTAINER=	x11@FreeBSD.org
@@ -21,8 +19,6 @@ CONFLICTS_INSTALL=	drm-devel-kmod
 
 OPTIONS_DEFINE=	DEBUG SOURCE
 
-OPTIONS_DEFAULT=	SOURCE
-
 SOURCE_DESC=	Install kernel module sources
 
 OPTIONS_SUB=	yes
@@ -32,7 +28,7 @@ USES=		kmod uidfix compiler:c++11-lang
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
 GH_PROJECT=	drm-kmod
-GH_TAGNAME=	drm_v5.4.92_1
+GH_TAGNAME=	drm_v5.4.92_4
 
 .include <bsd.port.options.mk>
 

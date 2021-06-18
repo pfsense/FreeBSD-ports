@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hwloc
 PORTVERSION=	1.11.13
 CATEGORIES=	devel

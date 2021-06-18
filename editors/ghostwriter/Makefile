@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ghostwriter
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.8.1
@@ -10,6 +8,9 @@ COMMENT=	Distraction-free Markdown editor
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
 
 LIB_DEPENDS=	libhunspell-1.7.so:textproc/hunspell
 

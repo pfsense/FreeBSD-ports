@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	brlaser
 DISTVERSIONPREFIX=	v
 DISTVERSION=	6
 CATEGORIES=	print
 
-MAINTAINER=	20.100@defert.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Brother laser printer driver
 
 LICENSE=	GPLv2+

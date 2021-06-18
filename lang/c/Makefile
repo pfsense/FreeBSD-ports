@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	c
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.11
+DISTVERSION=	0.14
 CATEGORIES=	lang
 
 MAINTAINER=	portmaster@BSDforge.com
@@ -14,7 +12,6 @@ RUN_DEPENDS=	bash:shells/bash
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ryanmjacobs
-SHEBANG_FILES=	c
 
 NO_ARCH=	yes
 NO_BUILD=	yes

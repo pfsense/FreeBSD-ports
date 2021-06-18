@@ -1,10 +1,9 @@
 # Created by: Marc G. Fournier <scrappy@FreeBSD.org>
-# $FreeBSD$
 
-DISTVERSION?=	12.5
+DISTVERSION?=	12.7
 # PORTREVISION must be ?= otherwise, all slave ports get this PORTREVISION and
 # not their own.  Probably best to keep it at ?=0 when reset here too.
-PORTREVISION?=	0
+PORTREVISION?=	1
 
 MAINTAINER?=	pgsql@FreeBSD.org
 
@@ -24,4 +23,4 @@ PG_USER?=	postgres
 PG_GROUP?=	postgres
 PG_UID?=	770
 
-.include "${.CURDIR}/../postgresql13-server/Makefile"
+.include "${.CURDIR}/../postgresql14-server/Makefile"

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-Curl
 PORTVERSION=	0.44
 CATEGORIES=	www ftp perl5

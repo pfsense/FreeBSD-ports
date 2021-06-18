@@ -1,9 +1,8 @@
 # Created by: gurkan@phys.ethz.ch
-# $FreeBSD$
 
 PORTNAME=	paje
 PORTVERSION=	1.97
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	science gnustep
 MASTER_SITES=	SF/${PORTNAME}/Releases
 DISTNAME=	Paje_${PORTVERSION}

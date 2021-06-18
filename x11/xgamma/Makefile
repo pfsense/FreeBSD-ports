@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xgamma
 PORTVERSION=	1.0.6
 CATEGORIES=	x11

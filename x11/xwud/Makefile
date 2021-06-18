@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xwud
 PORTVERSION=	1.0.5
 CATEGORIES=	x11

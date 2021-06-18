@@ -1,8 +1,8 @@
 # Created by: Andrey Chernov <ache@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	screen
 PORTVERSION=	4.8.0
+PORTREVISION=	3
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU \
 		ftp://ftp.gnu.org/gnu/screen/ \

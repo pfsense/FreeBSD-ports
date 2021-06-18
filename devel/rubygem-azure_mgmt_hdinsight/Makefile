@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	azure_mgmt_hdinsight
-PORTVERSION=	0.18.3
+PORTVERSION=	0.18.5
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

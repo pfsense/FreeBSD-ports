@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kaccounts-integration
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	net-im kde kde-applications
@@ -21,7 +19,5 @@ USE_KDE=	auth codecs config configwidgets coreaddons dbusaddons ecm \
 		akonadi
 USE_QT=		dbus core declarative gui network widgets xml \
 		buildtools_build qmake_build
-
-OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

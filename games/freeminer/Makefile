@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	freeminer
 PORTVERSION=	0.4.10.4
 PORTREVISION=	9
@@ -68,7 +65,7 @@ LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == powerpc64
+.if ${ARCH:Mpowerpc64*}
 LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
 .endif
 

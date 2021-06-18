@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cluster-glue
 PORTVERSION=	1.0.12
 PORTREVISION=	3

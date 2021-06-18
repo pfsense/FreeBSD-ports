@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pytest-forked
 PORTVERSION=	1.0.2
 CATEGORIES=	devel python

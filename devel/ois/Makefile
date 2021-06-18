@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	ois
 PORTVERSION=	1.2.0
 PORTREVISION=	5

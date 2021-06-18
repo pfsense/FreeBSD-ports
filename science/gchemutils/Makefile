@@ -1,9 +1,8 @@
 # Created by: Pav Lucistnik <pav@oook.cz>
-# $FreeBSD$
 
 PORTNAME=	gchemutils
 PORTVERSION=	0.14.16
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	science
 MASTER_SITES=	SAVANNAH/${PORTNAME}/${PORTVERSION:R}
 DISTNAME=	gnome-chemistry-utils-${PORTVERSION}
@@ -16,8 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/bodr.pc:science/bodr \
 		${LOCALBASE}/libdata/pkgconfig/chemical-mime-data.pc:science/chemical-mime-data
-LIB_DEPENDS=	libgtkglext-x11-1.0.so:x11-toolkits/gtkglext \
-		libopenbabel.so:science/openbabel \
+LIB_DEPENDS=	libopenbabel.so:science/openbabel \
 		libgoffice-0.10.so:devel/goffice
 RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/bodr.pc:science/bodr \
 		${LOCALBASE}/libdata/pkgconfig/chemical-mime-data.pc:science/chemical-mime-data
@@ -62,8 +60,9 @@ PLIST_SUB+=	GNUMERIC=""
 PLIST_SUB+=	GNUMERIC="@comment "
 .endif
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|-ldl||g' ${WRKSRC}/libs/gcp/Makefile.in
+pre-configure:
+	${REINPLACE_CMD} -e 's|-ldl||g' ${WRKSRC}/libs/gcp/Makefile.in
+	${REINPLACE_CMD} -e 's|openbabel-2.0|openbabel-3|' ${WRKSRC}/${CONFIGURE_SCRIPT}
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so.*

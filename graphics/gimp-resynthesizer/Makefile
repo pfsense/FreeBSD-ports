@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	resynthesizer
 PORTVERSION=	2.0.3
 PORTREVISION=	2

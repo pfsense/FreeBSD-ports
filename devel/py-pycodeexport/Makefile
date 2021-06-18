@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pycodeexport
 DISTVERSION=	0.1.3
 CATEGORIES=	devel python

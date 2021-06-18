@@ -1,9 +1,8 @@
 # Created by: Max Khon
-# $FreeBSD$
 
 PORTNAME=	pgadmin3
 PORTVERSION=	1.22.2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	databases
 MASTER_SITES=	PGSQL/pgadmin/pgadmin3/v${PORTVERSION}/src
 DIST_SUBDIR=	postgresql

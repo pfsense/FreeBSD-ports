@@ -1,9 +1,8 @@
 # Created by: Sean Greven <sean.greven@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fwknop
 PORTVERSION=	2.6.10
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	http://www.cipherdyne.org/fwknop/download/
 

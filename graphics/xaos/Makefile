@@ -1,9 +1,8 @@
 # Created by: Joseph Koshy <koshy@india.hp.com>
-# $FreeBSD$
 
 PORTNAME=	xaos
 DISTVERSIONPREFIX=	release-
-DISTVERSION=	4.2
+DISTVERSION=	4.2.1
 CATEGORIES=	graphics math
 
 MAINTAINER=	ports@FreeBSD.org
@@ -13,12 +12,13 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		compiler:c++11-lang gl qmake qt:5
-USE_GL=		gl
-USE_QT=		core gui opengl widgets buildtools_build linguisttools_build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	xaos-project
 GH_PROJECT=	XaoS
+
+USE_GL=		gl
+USE_QT=		core gui opengl widgets buildtools_build linguisttools_build
 
 QMAKE_ARGS+=	INCLUDEPATH+=${LOCALBASE}/include \
 		LIBS+=-L${LOCALBASE}/lib

@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	irrlamb
 PORTVERSION=	0.2.1
 PORTREVISION=	8

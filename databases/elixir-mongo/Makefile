@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	elixir-mongo
 PORTVERSION=	0.5.4
 CATEGORIES=	databases
@@ -8,6 +6,8 @@ MAINTAINER=	vanilla@FreeBSD.org
 COMMENT=	Database driver for MongoDB written in Elixir
 
 LICENSE=	MIT
+
+BROKEN=		does not build: Compilation error in file lib/mongo.ex
 
 USES=		elixir
 USE_GITHUB=	yes

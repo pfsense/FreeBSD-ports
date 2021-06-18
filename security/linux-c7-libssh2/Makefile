@@ -1,9 +1,9 @@
 # Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
 
 PORTNAME=	libssh2
 PORTVERSION=	1.8.0
-DISTVERSIONSUFFIX=	-3.el7
+DISTVERSIONSUFFIX=	-4.el7
+PORTREVISION=	1
 CATEGORIES=	security linux
 
 MAINTAINER=	emulation@FreeBSD.org

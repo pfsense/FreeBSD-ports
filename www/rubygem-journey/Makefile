@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	journey
 PORTVERSION=	1.0.4
 CATEGORIES=	www rubygems

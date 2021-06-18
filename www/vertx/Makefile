@@ -1,9 +1,8 @@
 # Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	vertx
 PORTVERSION=	2.1.1
-#PORTREVISION=	0
+PORTREVISION=	0
 CATEGORIES=	www
 MASTER_SITES=	http://dl.bintray.com/vertx/downloads/
 DISTNAME=	vert.x-${PORTVERSION}

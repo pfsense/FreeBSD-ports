@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	emoji_regex
-PORTVERSION=	3.2.1
+PORTVERSION=	3.2.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	accounts-qml-module
 DISTVERSION=	0.7
 PORTREVISION=	1

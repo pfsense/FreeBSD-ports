@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	databases
 
 MASTERDIR=	${.CURDIR}/../../lang/php80

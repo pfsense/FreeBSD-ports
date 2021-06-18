@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	smart_proxy_remote_execution_ssh
 PORTVERSION=	0.2.0
 CATEGORIES=	sysutils ruby

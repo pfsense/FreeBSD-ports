@@ -1,12 +1,11 @@
 # Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	pirum
 PORTVERSION=	20110921
 PORTREVISION=	1
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR channel ${PEAR_CHANNEL_HOST}
 
 PEAR_CHANNEL_HOST=	pear.pirum-project.org

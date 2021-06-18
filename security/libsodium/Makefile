@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libsodium
 PORTVERSION=	1.0.18
 CATEGORIES=	security

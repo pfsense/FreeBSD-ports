@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	4.0.21
+DISTVERSION=	4.0.24
 CATEGORIES=	databases net
 MASTER_SITES=	https://fastdl.mongodb.org/src/ \
 		http://fastdl.mongodb.org/src/
@@ -18,11 +16,10 @@ LICENSE_NAME_SSPLv1=	Server Side Public License Version 1
 LICENSE_FILE_SSPLv1=	${WRKSRC}/LICENSE-Community.txt
 LICENSE_PERMS_SSPLv1=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-ONLY_FOR_ARCHS=	aarch64 amd64
-ONLY_FOR_ARCHS_REASON=	"Only supported on amd64 and aarch64 (i386 deprecated in v3)"
+ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64le
+ONLY_FOR_ARCHS_REASON=	Only supported on amd64, aarch64 and powerpc64le (i386 deprecated in v3)
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cheetah3>0:devel/py-cheetah3@${PY_FLAVOR} \
-		${PY_TYPING} \
 		${PYTHON_PKGNAMEPREFIX}yaml>=3.11:devel/py-yaml@${PY_FLAVOR} \
 		${LOCALBASE}/bin/ar:devel/binutils
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
@@ -33,7 +30,6 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 USES=		compiler:c++14-lang cpe python:3.5+,build scons shebangfix
 USE_RC_SUBR=	mongod
 
-CONFLICTS_BUILD=	mongo-cxx-driver
 CONFLICTS_INSTALL=	mongodb36 mongodb4[24]
 
 SHEBANG_FILES=	src/mongo/installer/compass/install_compass.in
@@ -66,8 +62,8 @@ SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
 SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
 .endif
 
-.if ${ARCH} == aarch64
-EXTRA_PATCHES=	${FILESDIR}/aarch64
+.if ${ARCH} == aarch64 || ${ARCH} == powerpc64le
+EXTRA_PATCHES=	${FILESDIR}/${ARCH}
 .endif
 
 ALL_TARGET=	core
@@ -75,6 +71,9 @@ ALL_TARGET=	core
 PORTSCOUT=	limitw:1,even
 
 CPE_PRODUCT=	mongodb
+
+pre-patch:
+	${MV} ${WRKSRC}/src/third_party/wiredtiger/src/checksum/power8/crc32.sx ${WRKSRC}/src/third_party/wiredtiger/src/checksum/power8/crc32.S
 
 post-install:
 .for f in mongo mongod mongos

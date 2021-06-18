@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	syncplay
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.4a

@@ -1,9 +1,8 @@
 # Created by: Andreas Kohn <andreas@syndrom23.de>
-# $FreeBSD$
 
 PORTNAME=	devil
 PORTVERSION=	1.7.8
-PORTREVISION=	25
+PORTREVISION=	26
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	SF/openil/DevIL/${PORTVERSION}
@@ -11,6 +10,8 @@ DISTNAME=	DevIL-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Full featured cross-platform image library
+
+LICENSE=	LGPL21
 
 USES=		alias autoreconf gmake libtool localbase pkgconfig
 GNU_CONFIGURE=	yes
@@ -55,7 +56,7 @@ PNG_CONFIGURE_ENABLE=	png
 PNG_CONFIGURE_OFF=	libpng_app=no
 TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
 TIFF_CONFIGURE_ENABLE=	tiff
-EXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr
+EXR_LIB_DEPENDS=	libOpenEXR.so:graphics/openexr libImath.so:math/Imath
 EXR_CONFIGURE_ENABLE=	exr
 #SQUISH_BUILD_DEPENDS=	${LOCALBASE}/lib/libsquish.a:graphics/squish
 #SQUISH_CONFIGURE_WITH=	libsquish
@@ -75,6 +76,9 @@ post-patch:
 		${WRKSRC}/data/Makefile.am
 	@${REINPLACE_CMD} -e 's|<malloc\.h>|<stdlib.h>|g' \
 		${WRKSRC}/src-ILU/ilur/ilur.c
+	${REINPLACE_CMD} -e 's/Imf::Int64/uint64_t/g' \
+		${WRKSRC}/src-IL/src/il_exr.cpp \
+		${WRKSRC}/src-IL/include/il_exr.h
 
 post-install:
 	@${RMDIR} ${STAGEDIR}${DATADIR}/examples

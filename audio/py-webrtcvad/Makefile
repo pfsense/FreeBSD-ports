@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	webrtcvad
 DISTVERSION=	2.0.10
 PORTREVISION=	1

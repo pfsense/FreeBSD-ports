@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	libjitterentropy
-PORTVERSION=	3.0.0
+PORTVERSION=	3.0.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 

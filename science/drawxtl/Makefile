@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DRAWxtl
 DISTVERSION=	5.5
 CATEGORIES=	science

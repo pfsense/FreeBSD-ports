@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Perl-Critic-Swift
 PORTVERSION=	1.0.3
 DISTVERSIONPREFIX=	v

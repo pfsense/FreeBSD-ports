@@ -1,8 +1,7 @@
 # Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rspec-expectations
-PORTVERSION=	3.10.0
+PORTVERSION=	3.10.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

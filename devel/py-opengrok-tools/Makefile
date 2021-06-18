@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	opengrok-tools
 PORTVERSION=		1.3.16
 CATEGORIES=	devel python

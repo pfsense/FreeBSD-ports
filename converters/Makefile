@@ -1,9 +1,7 @@
-# $FreeBSD$
-#
-
     COMMENT = Character code converters
 
     SUBDIR += R-cran-RJSONIO
+    SUBDIR += R-cran-arabic2kansuji
     SUBDIR += R-cran-base64enc
     SUBDIR += R-cran-jsonlite
     SUBDIR += R-cran-rjson
@@ -157,13 +155,14 @@
     SUBDIR += rcctools
     SUBDIR += recode
     SUBDIR += rubygem-base32
+    SUBDIR += rubygem-base64
+    SUBDIR += rubygem-iconv
     SUBDIR += rubygem-json-ld
     SUBDIR += rubygem-json-ld-preloaded
     SUBDIR += rubygem-po_to_json
     SUBDIR += rubygem-ruby-bsdconv
     SUBDIR += rubygem-url_safe_base64
     SUBDIR += rubygem-xdr
-    SUBDIR += shftool
     SUBDIR += showkey
     SUBDIR += ta2as
     SUBDIR += tnef
@@ -172,7 +171,6 @@
     SUBDIR += unix2dos
     SUBDIR += uudeview
     SUBDIR += uulib
-    SUBDIR += vda2fbd
     SUBDIR += wkhtmltopdf
     SUBDIR += xdeview
     SUBDIR += xml2c

@@ -1,8 +1,7 @@
 # Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
 
 PORTNAME=	Business-ISBN
-PORTVERSION=	3.005
+PORTVERSION=	3.006
 CATEGORIES=	misc perl5
 MASTER_SITES=	CPAN/Business CPAN
 MASTER_SITE_SUBDIR=	CPAN:BDFOY

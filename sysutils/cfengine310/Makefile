@@ -1,5 +1,4 @@
 # Created by: jrhett@netconsonance.com
-# $FreeBSD$
 
 PORTNAME=	cfengine
 PORTVERSION=	3.10.5
@@ -18,6 +17,9 @@ CPE_VENDOR=	gnu
 
 DEPRECATED=		OpenSSL 1.1.X is not supported.
 EXPIRATION_DATE=	2021-09-30
+
+BROKEN_FreeBSD_13=	Fails to build
+BROKEN_FreeBSD_14=	Fails to build
 
 CONFLICTS=	cfengine3[0-9]-* cfengine31[1-9]-*
 .if !defined(MASTERDIR)

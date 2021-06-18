@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 MASTERDIR=	${.CURDIR}/../quassel
 
 PKGNAMESUFFIX=	-core

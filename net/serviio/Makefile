@@ -1,15 +1,20 @@
 # Created by: Mikhail Teterin <mi@aldan.algebra.com>
-# $FreeBSD$
 
 PORTNAME=	serviio
 PORTVERSION=	2.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net multimedia java www
 MASTER_SITES=	https://download.serviio.org/releases/
 EXTRACT_SUFX=	-linux.tar.gz
 
 MAINTAINER=	netchild@FreeBSD.org
 COMMENT=	Transcoding DLNA-server implemented in Java
+
+# Converted from RESTRICTED
+LICENSE=	serviio
+LICENSE_NAME=	serviio
+LICENSE_TEXT=	License does not allow selling
+LICENSE_PERMS=	auto-accept
 
 RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg
 
@@ -23,7 +28,6 @@ PKGMESSAGE=	${WRKSRC}/pkg-message
 SUB_FILES+=	pkg-message serviiod
 USE_RC_SUBR=	serviio
 SUB_LIST+=	USER=${USERS}
-RESTRICTED=	License does not allow selling
 EXTRACT_AFTER_ARGS=--exclude junit.jar	\
 	--exclude org.restlet.ext.net.jar
 
@@ -39,6 +43,8 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/config/$f.xml \
 		${STAGEDIR}${ETCDIR}/$f.xml.sample
 .endfor
+	${INSTALL_DATA} ${WRKSRC}/config/serviio.jks \
+		${STAGEDIR}${ETCDIR}/serviio.jks.sample
 	${INSTALL_DATA} ${FILESDIR}/console-log4j.properties	\
 		${STAGEDIR}${ETCDIR}/console-log4j.properties.sample
 	${INSTALL_SCRIPT} ${WRKDIR}/serviiod ${STAGEDIR}${PREFIX}/sbin

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	obs-websocket
 DISTVERSION=	4.8.0
 CATEGORIES=	multimedia www

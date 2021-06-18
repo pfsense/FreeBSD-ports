@@ -156,6 +156,7 @@ man/man3/rtcUpdateGeometryBuffer.3embree3.gz
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/dynamic_scene
 %%ISPC%%%%PORTEXAMPLES%%%%EXAMPLESDIR%%/dynamic_scene_ispc
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/embree_tests
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/embree_verify
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/grid_geometry
 %%ISPC%%%%PORTEXAMPLES%%%%EXAMPLESDIR%%/grid_geometry_ispc
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/hair_geometry
@@ -169,9 +170,12 @@ man/man3/rtcUpdateGeometryBuffer.3embree3.gz
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/lazy_geometry
 %%ISPC%%%%PORTEXAMPLES%%%%EXAMPLESDIR%%/lazy_geometry_ispc
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/minimal
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/models/build.bench
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/models/cornell_box.ecs
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/models/cornell_box.mtl
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/models/cornell_box.obj
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/models/cornell_box_instanced.ecs
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/models/cornell_box_instanced.xml
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/models/cornell_box.xml
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/models/cornell_box.xml.bin
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/models/cornell_box_mblur.xml
@@ -250,6 +254,7 @@ man/man3/rtcUpdateGeometryBuffer.3embree3.gz
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/models/subdiv_pin_corners.xml
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/models/subdiv_smooth_boundary.ecs
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/models/subdiv_smooth_boundary.xml
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/models/trace.bench
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/motion_blur_geometry
 %%ISPC%%%%PORTEXAMPLES%%%%EXAMPLESDIR%%/motion_blur_geometry_ispc
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/multiscene_geometry
@@ -266,7 +271,6 @@ man/man3/rtcUpdateGeometryBuffer.3embree3.gz
 %%ISPC%%%%PORTEXAMPLES%%%%EXAMPLESDIR%%/triangle_geometry_ispc
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/user_geometry
 %%ISPC%%%%PORTEXAMPLES%%%%EXAMPLESDIR%%/user_geometry_ispc
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/verify
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/viewer
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/viewer_anim
 %%ISPC%%%%PORTEXAMPLES%%%%EXAMPLESDIR%%/viewer_anim_ispc

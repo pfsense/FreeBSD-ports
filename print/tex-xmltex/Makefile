@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xmltex
 PORTVERSION=	1.9
 PORTREVISION=	2
@@ -10,7 +8,7 @@ DISTNAME=	texlive-20150523-texmf
 DIST_SUBDIR=	TeX
 EXTRACT_ONLY=
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	freebsd-tex@FreeBSD.org
 COMMENT=	Non-validating XML parser, written in TeX
 
 USES=		tar:xz

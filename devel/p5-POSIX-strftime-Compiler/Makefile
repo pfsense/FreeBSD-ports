@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	POSIX-strftime-Compiler
 PORTVERSION=	0.41
 CATEGORIES=	devel perl5

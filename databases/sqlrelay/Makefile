@@ -1,5 +1,4 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	${SQLRELAY_PORTNAME}
 PORTVERSION=	${SQLRELAY_PORTVERSION}
@@ -10,9 +9,6 @@ MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Persistent DB connection pooling/proxying/load balancing system
 
 LICENSE=	LGPL20
-
-ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64 powerpc64le
-ONLY_FOR_ARCHS_REASON=	For i386 some depends like mysql fail to build
 
 LIB_DEPENDS=	librudiments.so:devel/rudiments \
 		libkrb5.so:security/krb5 \

@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dry-configurable
-PORTVERSION=	0.11.6
+PORTVERSION=	0.12.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -13,8 +12,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	rubygem-concurrent-ruby>=1.0<2:devel/rubygem-concurrent-ruby \
-		rubygem-dry-core>=0.4.7<1:devel/rubygem-dry-core \
-		rubygem-dry-equalizer>=0.2<1:devel/rubygem-dry-equalizer
+		rubygem-dry-core>=0.5.0<1:devel/rubygem-dry-core
 
 USES=		gem
 USE_RUBY=	yes

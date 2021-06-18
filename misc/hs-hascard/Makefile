@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	hascard
 DISTVERSION=	0.3.0.1
+PORTREVISION=	1
 CATEGORIES=	misc haskell
 
 MAINTAINER=	yuri@FreeBSD.org

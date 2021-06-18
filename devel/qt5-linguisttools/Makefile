@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	linguisttools
 DISTVERSION=	${QT5_VERSION}
 CATEGORIES=	devel

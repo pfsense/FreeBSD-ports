@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zope.password
 PORTVERSION=	3.6.1
 PORTREVISION=	1

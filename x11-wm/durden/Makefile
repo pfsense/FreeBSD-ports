@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	durden
 DISTVERSION=	0.6.1
 CATEGORIES=	x11-wm

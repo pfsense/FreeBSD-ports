@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Chinese support
 
     SUBDIR += CJKUnifonts

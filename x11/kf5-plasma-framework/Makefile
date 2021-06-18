@@ -1,12 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	plasma-framework
 DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	x11 kde kde-frameworks
-
-PATCH_SITES=	https://invent.kde.org/frameworks/plasma-framework/commit/
-PATCHFILES=	b1364fa601866792ecf69cf61b8ab48732150857.diff:-p1
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KF5 plugin based UI runtime used to write user interfaces
@@ -14,7 +8,7 @@ COMMENT=	KF5 plugin based UI runtime used to write user interfaces
 USES=		cmake compiler:c++11-lib gettext gl kde:5 pkgconfig qt:5 tar:xz xorg
 USE_GL=		egl gl
 USE_KDE=	activities archive auth codecs completion config \
-		configwidgets coreaddons dbusaddons doctools globalaccel \
+		configwidgets coreaddons dbusaddons doctools_build globalaccel \
 		guiaddons i18n iconthemes jobwidgets kirigami2 kio package \
 		notifications service wayland windowsystem xmlgui kdeclarative \
 		widgetsaddons

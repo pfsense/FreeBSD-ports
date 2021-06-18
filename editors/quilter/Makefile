@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	quilter
 DISTVERSION=	2.2.3
 CATEGORIES=	editors

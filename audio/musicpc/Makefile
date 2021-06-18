@@ -1,5 +1,4 @@
 # Created by: Mark Reidel <ports@mark.reidle.info>
-# $FreeBSD$
 
 PORTNAME=	musicpc
 DISTVERSION=	0.33
@@ -24,7 +23,7 @@ OPTIONS_DEFINE=	DOCS ICONV
 OPTIONS_DEFAULT=	DOCS ICONV
 
 DOCS_USES=	python:env
-DOCS_BUILD_DEPENDS=	${PY_SPHINX}
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0,1:textproc/py-sphinx@${PY_FLAVOR}
 DOCS_MESON_ENABLED=	documentation
 
 ICONV_USES=	iconv

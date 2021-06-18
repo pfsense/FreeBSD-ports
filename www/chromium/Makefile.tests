@@ -1,4 +1,3 @@
-# $FreeBSD$
 TEST_TARGETS=	base_unittests \
 		chromedriver_unittests \
 		crypto_unittests \

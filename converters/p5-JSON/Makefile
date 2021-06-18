@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	JSON
 PORTVERSION=	2.97.001
 CATEGORIES=	converters perl5

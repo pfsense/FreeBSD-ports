@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cabin
 PORTVERSION=	0.9.0
 CATEGORIES=	devel rubygems

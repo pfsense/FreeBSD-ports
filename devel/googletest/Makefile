@@ -1,10 +1,9 @@
 # Created by: Cheng-Lung Sung <clsung@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	googletest
 DISTVERSIONPREFIX=	release-
-DISTVERSION=	1.10.0
-PORTREVISION=	1
+DISTVERSION=	1.10.0-667
+DISTVERSIONSUFFIX=	-g53495a2a
 CATEGORIES=	devel
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -16,20 +15,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
 
-USES=		cmake compiler:c++11-lib
+USES=		cmake:testing compiler:c++11-lib python:test
 USE_LDCONFIG=	yes
 CMAKE_ON=	BUILD_SHARED_LIBS
-
-OPTIONS_DEFINE=	TEST
-
-TEST_USES=		python:build
-TEST_CMAKE_BOOL=	gtest_build_tests gmock_build_tests
-TEST_TEST_TARGET=	test
-
-post-install:
-# Drop unused not preprocessed headers
-	${FIND} ${STAGEDIR}${PREFIX} -name '*.pump' -delete
-
-pre-install-TEST-on: do-test
+CMAKE_TESTING_ON=	gtest_build_tests gmock_build_tests
 
 .include <bsd.port.mk>

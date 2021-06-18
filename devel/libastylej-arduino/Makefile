@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-arduino
 MASTERDIR=	${.CURDIR}/../libastylej
 

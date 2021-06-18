@@ -1,8 +1,7 @@
 # Created by: Torsten Blum <torstenb@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	postfix
-DISTVERSION=	3.6-20201212
+DISTVERSION=	3.7-20210424
 PORTREVISION?=	0
 PORTEPOCH=	6
 CATEGORIES=	mail
@@ -17,7 +16,7 @@ MASTER_SITES:=	${MASTER_SITES:S|$|experimental/|}
 PKGNAMESUFFIX?=	-current
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	ohauer@FreeBSD.org
+MAINTAINER=	otis@FreeBSD.org
 COMMENT=	Experimental Postfix version
 
 LICENSE=	IPL10 EPL
@@ -27,7 +26,7 @@ LICENSE_NAME_IPL10=	IBM PUBLIC LICENSE VERSION 1.0
 LICENSE_PERMS_IPL10=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 CONFLICTS_INSTALL?=	courier-0.* opensmtpd-[0-9]* sendmail-8.* sendmail+*-8.* \
-		postfix-3.* postfix-base-3.* postfix-sasl-3.*
+		postfix35-* postfix-3.* postfix-base-3.* postfix-sasl-3.*
 
 USERS=		postfix
 GROUPS=		mail maildrop postfix
@@ -95,7 +94,7 @@ BROKEN_FreeBSD_11=	error: OpenSSL-1.1.1 is the minimum supported version
 
 .if ${PORT_OPTIONS:MINST_BASE}
 .if defined(SASL_SLAVE)
-PKGNAMESUFFIX=	-current-base-sasl2
+PKGNAMESUFFIX=	-current-base-sasl
 .else
 PKGNAMESUFFIX=	-current-base
 .endif

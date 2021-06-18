@@ -1,5 +1,4 @@
 # Created by: Shigeyuki FUKUSHIMA <shige@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libretto-config
 PORTVERSION=	1.0.b5
@@ -15,7 +14,7 @@ ONLY_FOR_ARCHS=	i386
 
 WRKSRC=		${WRKDIR}/libapm
 
-USE_GCC=	any
+USE_GCC=	yes
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS

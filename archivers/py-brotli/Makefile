@@ -1,9 +1,8 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	brotli
 PORTVERSION=	1.0.9
-CATEGORIES=	archivers
+CATEGORIES=	archivers python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	Brotli-${PORTVERSION}

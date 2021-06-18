@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sphinx_rtd_theme
 PORTVERSION=	0.4.3
 CATEGORIES=	textproc python
@@ -13,7 +11,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 NO_ARCH=	yes
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

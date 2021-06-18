@@ -1,5 +1,4 @@
 #!/usr/bin/awk -f
-# $FreeBSD$
 
 BEGIN {
 	group = "yarn";
@@ -22,7 +21,7 @@ non_first_record {
 	# It is necessary to put distfiles into subdirectories within
 	# DISTDIR/DIST_SUBDIR, because some of the distfiles share the same
 	# names.
-	printf "\r\t\t%s:%s", distfile, group;
+	printf "\t\t%s:%s", distfile, group;
 
 	non_first_record = 1
 }

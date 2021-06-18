@@ -1,5 +1,4 @@
 # Created by: Johannes Meixner <johannes@perceivon.net>
-# $FreeBSD$
 
 PORTNAME=	opentsdb
 PORTVERSION=	2.3.0
@@ -7,7 +6,7 @@ PORTREVISION=	1
 CATEGORIES=	databases java
 MASTER_SITES=	https://github.com/OpenTSDB/opentsdb/releases/download/v${PORTVERSION}/
 
-MAINTAINER=	kbowling@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Distributed, scalable Time Series Database
 
 LICENSE=	LGPL21+

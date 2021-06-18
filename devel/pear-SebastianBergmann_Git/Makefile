@@ -1,5 +1,4 @@
 # Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	Git
 PORTVERSION=	1.2.0
@@ -7,7 +6,7 @@ PORTREVISION=	1
 CATEGORIES=	devel pear
 PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}SebastianBergmann_
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simple wrapper for Git
 
 LICENSE=	BSD3CLAUSE

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	RedisDB
 PORTVERSION=	2.53
 CATEGORIES=	databases perl5

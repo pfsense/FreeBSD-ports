@@ -1,9 +1,8 @@
 # Created by: Fernan Aguero <fernan@iib.unsam.edu.ar>
-# $FreeBSD$
 
 PORTNAME=	mol2ps
 PORTVERSION=	0.4b
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	science
 MASTER_SITES=	https://homepage.univie.ac.at/norbert.haider/download/chemistry/mol2ps/
 DISTNAME=	${PORTNAME}

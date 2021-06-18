@@ -1,5 +1,4 @@
 # Created by: js@jeannot.org
-# $FreeBSD$
 
 PORTNAME=	scilab
 PORTVERSION=	6.1.0
@@ -23,7 +22,7 @@ LIB_DEPENDS=	libxml2.so:textproc/libxml2 \
 		libarpack.so:math/arpack-ng \
 		libfftw3.so:math/fftw3 \
 		libmatio.so:math/matio \
-		libamd.so:math/suitesparse
+		libamd.so:math/suitesparse-amd
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
 USES=		compiler:c++17-lang cpe desktop-file-utils eigen:3,build \
@@ -49,6 +48,8 @@ OPTIONS_DEFINE=	GUI OCAML TK
 OPTIONS_RADIO=	BLAS
 OPTIONS_RADIO_BLAS=	ATLAS NETLIB OPENBLAS
 OPTIONS_DEFAULT=	GUI NETLIB OCAML TK
+OPTIONS_EXCLUDE_powerpc64=	GUI
+OPTIONS_EXCLUDE_powerpc64le=	GUI
 OPTIONS_SUB=	yes
 
 ATLAS_USES=	blaslapack:atlas
@@ -129,6 +130,13 @@ CONFIGURE_ARGS+=	--without-openmp
 CONFIGURE_ARGS+=	--enable-debug
 .endif
 
+.include <bsd.port.pre.mk>
+
+.if ${GCC_DEFAULT} >= 10
+# workaround for Rank mismatch between actual argument at (1) and actual argument at (2) (rank-1 and scalar)
+FFLAGS+=	-fallow-argument-mismatch
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} 's,/usr/local,${LOCALBASE},' ${WRKSRC}/etc/librarypath.xml
 	@${REINPLACE_CMD} -e 's, gfortran, ${FC},' ${WRKSRC}/modules/dynamic_link/src/scripts/configure
@@ -167,4 +175,4 @@ post-install:
 	@# toolbox uninstaller otherwise if 3rd party toolboxes are used
 	@${FIND} ${STAGEDIR}${DATADIR}/modules -type d -empty -delete
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

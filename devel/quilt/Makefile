@@ -1,9 +1,7 @@
 # Created by: Dirk Jagdmann <doj@cubic.org>
-# $FreeBSD$
 
 PORTNAME=	quilt
-PORTVERSION=	0.65
-PORTREVISION=	1
+PORTVERSION=	0.66
 CATEGORIES=	devel
 MASTER_SITES=	SAVANNAH
 

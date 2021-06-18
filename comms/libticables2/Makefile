@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libticables2
 PORTVERSION=	1.3.5
 PORTREVISION=	1

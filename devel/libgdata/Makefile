@@ -1,5 +1,4 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libgdata
 PORTVERSION=	0.17.13
@@ -8,7 +7,7 @@ CATEGORIES=	devel
 MASTER_SITES=	GNOME
 
 MAINTAINER=	kwm@FreeBSD.org
-COMMENT=	GLib based implimentation of the GData protocol
+COMMENT=	GLib-based implementation of the GData protocol
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

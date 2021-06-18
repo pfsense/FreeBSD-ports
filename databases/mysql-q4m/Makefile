@@ -1,5 +1,4 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	q4m
 PORTVERSION=	0.9.14
@@ -17,7 +16,7 @@ BUILD_DEPENDS+=	${NONEXISTENT}:${_MYSQL_SERVER}:build
 USES=		gmake perl5 libtool mysql:server
 
 IGNORE_WITH_MYSQL=	57 80 101m 102m 103m 57p 57w
-USE_GCC=	any
+USE_GCC=	yes
 USE_PERL5=	run
 
 GNU_CONFIGURE=	yes

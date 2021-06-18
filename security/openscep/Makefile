@@ -1,5 +1,4 @@
 # Created by: Vsevolod Stakhov
-# $FreeBSD$
 
 PORTNAME=	openscep
 PORTVERSION=	0.4.2
@@ -35,6 +34,7 @@ SUB_LIST=	CONF_DIR="${CONF_DIR}" CONF_FILES="${LOCAL_CONF_FILES}"
 .if ${SSL_DEFAULT} == base
 BROKEN_FreeBSD_12=	unexpected type name 'issuer_and_subject_t': expected expression
 BROKEN_FreeBSD_13=	unexpected type name 'issuer_and_subject_t': expected expression
+BROKEN_FreeBSD_14=	unexpected type name 'issuer_and_subject_t': expected expression
 .endif
 
 .if ${SSL_DEFAULT:Mlibressl*}

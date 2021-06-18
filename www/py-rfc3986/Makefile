@@ -1,8 +1,7 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	rfc3986
-PORTVERSION=	1.4.0
+PORTVERSION=	1.5.0
 CATEGORIES=	www python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 

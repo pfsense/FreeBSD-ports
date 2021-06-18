@@ -1,8 +1,7 @@
 # Created by: Antoine Brodin <antoine@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	plaso
-PORTVERSION=	20201228
+PORTVERSION=	20210412
 CATEGORIES=	security python
 MASTER_SITES=	https://github.com/log2timeline/plaso/releases/download/${PORTVERSION}/ \
 		LOCAL/antoine

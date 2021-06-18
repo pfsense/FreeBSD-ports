@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Data-Page-NoTotalEntries
 PORTVERSION=	0.02
 PORTREVISION=	2

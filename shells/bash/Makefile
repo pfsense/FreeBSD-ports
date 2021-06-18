@@ -1,8 +1,7 @@
 # Created by: Oliver Eikemeier
-# $FreeBSD$
 
 PORTNAME=		bash
-PATCHLEVEL=		4
+PATCHLEVEL=		8
 PORTVERSION=		5.1.${PATCHLEVEL:S/^0//g}
 PORTREVISION?=		0
 CATEGORIES=		shells
@@ -56,11 +55,14 @@ CONFIGURE_ARGS+=	--without-bash-malloc \
 			--enable-disabled-builtins \
 			--with-libiconv-prefix=${ICONV_PREFIX}
 
+MAKE_ARGS+=	TERMCAP_LIB=-lncursesw
+
 .if empty(PKGNAMESUFFIX)
-CONFLICTS+=		bash-static-[0-9]*
+CONFLICTS+=	bash-static-[0-9]*
 .else
-CONFLICTS+=		bash-[0-9]*
+CONFLICTS+=	bash-[0-9]*
 .endif
+CONFLICTS+=	bashc
 
 .include <bsd.port.options.mk>
 
@@ -91,6 +93,9 @@ post-patch:
 .endif
 	@${REINPLACE_CMD} -e "s|\(/etc/profile\)|${LOCALBASE}\1|" \
 		${WRKSRC}/pathnames.h.in
+	@${REINPLACE_CMD} -e "s|/etc/[iI]nputrc|${LOCALBASE}/etc/inputrc|g" \
+		${WRKSRC}/doc/*.info ${WRKSRC}/doc/*.html ${WRKSRC}/doc/*.1 \
+		${WRKSRC}/lib/readline/rlconf.h
 
 post-patch-SYSBASHRC-on:
 	@${REINPLACE_CMD} \
@@ -125,6 +130,6 @@ cklatest:
 	@${MAKE} -V PATCHLEVEL
 	-ncftpls \
 		${PATCH_SITES:Mftp*:Ox:[1]} \
-		| fgrep -v .sig | ${TAIL}
+		| fgrep -v .sig | ${SORT} | ${TAIL}
 
 .include <bsd.port.mk>

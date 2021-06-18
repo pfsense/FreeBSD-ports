@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rgeo
-PORTVERSION=	2.2.0
+PORTVERSION=	2.3.0
 CATEGORIES=	science rubygems
 MASTER_SITES=	RG
 

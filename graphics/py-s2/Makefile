@@ -1,10 +1,9 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	s2
 PORTVERSION=	0.9.0
 DISTVERSIONPREFIX=	v
-CATEGORIES=	graphics
+CATEGORIES=	graphics python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org

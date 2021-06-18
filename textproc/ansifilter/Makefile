@@ -1,8 +1,7 @@
 # Created by: Yi-Jheng Lin <yzlin@cs.nctu.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	ansifilter
-PORTVERSION=	2.17
+PORTVERSION=	2.18
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.andre-simon.de/zip/
 

@@ -1,5 +1,4 @@
 # Created by: Anders Nordby <anders@fix.no>
-# $FreeBSD$
 
 PORTNAME=	maradns
 PORTVERSION=	2.0.15
@@ -17,7 +16,6 @@ USE_RC_SUBR=	${PORTNAME} zoneserver Deadwood
 USERS=		bind
 GROUPS=		bind
 INSTALL_TARGET=	install PREFIX=${STAGEDIR}${PREFIX}
-SHEBANG_FILES=	tools/bind2csv2.py
 HAS_CONFIGURE=	yes
 
 OPTIONS_DEFINE=	IPV6 DOCS EXAMPLES

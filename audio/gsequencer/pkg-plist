@@ -1,5 +1,6 @@
 bin/gsequencer
 bin/midi2xml
+include/ags/ags_api_config.h
 include/ags/audio/ags_acceleration.h
 include/ags/audio/ags_audio.h
 include/ags/audio/ags_audio_application_context.h
@@ -17,12 +18,15 @@ include/ags/audio/ags_fifoout.h
 include/ags/audio/ags_filter_util.h
 include/ags/audio/ags_fm_synth_util.h
 include/ags/audio/ags_fourier_transform_util.h
+include/ags/audio/ags_frequency_aliase_util.h
 include/ags/audio/ags_frequency_map.h
 include/ags/audio/ags_frequency_map_manager.h
 include/ags/audio/ags_fx_factory.h
+include/ags/audio/ags_hq_pitch_util.h
 include/ags/audio/ags_generic_recall_channel_run.h
 include/ags/audio/ags_generic_recall_recycling.h
 include/ags/audio/ags_input.h
+include/ags/audio/ags_linear_interpolate_util.h
 include/ags/audio/ags_lfo_synth_util.h
 include/ags/audio/ags_midi.h
 include/ags/audio/ags_midiin.h
@@ -30,6 +34,7 @@ include/ags/audio/ags_notation.h
 include/ags/audio/ags_note.h
 include/ags/audio/ags_output.h
 include/ags/audio/ags_pattern.h
+include/ags/audio/ags_phase_shift_util.h
 include/ags/audio/ags_playback.h
 include/ags/audio/ags_playback_domain.h
 include/ags/audio/ags_port.h
@@ -132,6 +137,12 @@ include/ags/audio/fx/ags_fx_ladspa_audio_signal.h
 include/ags/audio/fx/ags_fx_ladspa_channel.h
 include/ags/audio/fx/ags_fx_ladspa_channel_processor.h
 include/ags/audio/fx/ags_fx_ladspa_recycling.h
+include/ags/audio/fx/ags_fx_lfo_audio.h
+include/ags/audio/fx/ags_fx_lfo_audio_processor.h
+include/ags/audio/fx/ags_fx_lfo_audio_signal.h
+include/ags/audio/fx/ags_fx_lfo_channel.h
+include/ags/audio/fx/ags_fx_lfo_channel_processor.h
+include/ags/audio/fx/ags_fx_lfo_recycling.h
 include/ags/audio/fx/ags_fx_lv2_audio.h
 include/ags/audio/fx/ags_fx_lv2_audio_processor.h
 include/ags/audio/fx/ags_fx_lv2_audio_signal.h
@@ -162,6 +173,12 @@ include/ags/audio/fx/ags_fx_playback_audio_signal.h
 include/ags/audio/fx/ags_fx_playback_channel.h
 include/ags/audio/fx/ags_fx_playback_channel_processor.h
 include/ags/audio/fx/ags_fx_playback_recycling.h
+include/ags/audio/fx/ags_fx_two_pass_aliase_audio.h
+include/ags/audio/fx/ags_fx_two_pass_aliase_audio_processor.h
+include/ags/audio/fx/ags_fx_two_pass_aliase_audio_signal.h
+include/ags/audio/fx/ags_fx_two_pass_aliase_channel.h
+include/ags/audio/fx/ags_fx_two_pass_aliase_channel_processor.h
+include/ags/audio/fx/ags_fx_two_pass_aliase_recycling.h
 include/ags/audio/fx/ags_fx_volume_audio.h
 include/ags/audio/fx/ags_fx_volume_audio_processor.h
 include/ags/audio/fx/ags_fx_volume_audio_signal.h
@@ -368,7 +385,6 @@ include/ags/audio/thread/ags_soundcard_thread.h
 include/ags/audio/thread/ags_wave_loader.h
 include/ags/audio/wasapi/ags_wasapi_devin.h
 include/ags/audio/wasapi/ags_wasapi_devout.h
-include/ags/config.h
 include/ags/file/ags_file.h
 include/ags/file/ags_file_id_ref.h
 include/ags/file/ags_file_launch.h
@@ -540,6 +556,10 @@ share/icons/hicolor/128x128/apps/gsequencer.png
 share/icons/hicolor/32x32/apps/gsequencer.png
 share/icons/hicolor/48x48/apps/gsequencer.png
 share/icons/hicolor/64x64/apps/gsequencer.png
+share/locale/de/LC_MESSAGES/gsequencer.mo
+share/locale/fr/LC_MESSAGES/gsequencer.mo
+share/locale/it/LC_MESSAGES/gsequencer.mo
+share/locale/pl/LC_MESSAGES/gsequencer.mo
 share/metainfo/org.nongnu.gsequencer.gsequencer.appdata.xml
 share/mime/packages/gsequencer.xml
 share/xml/gsequencer/schema/dtd/%%PORTVERSION%%/ags_file.dtd

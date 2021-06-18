@@ -1,9 +1,8 @@
 # Created by: Joachim Strombergson <watchman@ludd.ltu.se>
-# $FreeBSD$
 
 PORTNAME=	dinotrace
 PORTVERSION=	9.4c
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	cad
 MASTER_SITES=	http://www.veripool.org/ftp/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}

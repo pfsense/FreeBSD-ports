@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mpfrc++
 DISTVERSIONPREFIX=	${PORTNAME}-
 DISTVERSION=	3.6.8
@@ -17,8 +15,6 @@ GH_PROJECT=	mpreal
 
 NO_BUILD=	yes
 NO_ARCH=	yes
-
-WRKSRC=		${WRKDIR}/${GH_PROJECT}-mpfrc-${DISTVERSION}
 
 PLIST_FILES=	include/mpreal.h
 

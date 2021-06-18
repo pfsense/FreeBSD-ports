@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	importlib-metadata
 PORTVERSION=	3.3.0
 PORTREVISION=	1
@@ -22,7 +20,7 @@ USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.pre.mk>
 
-.if ${PYTHON_REL} < 3800
+.if ${PYTHON_REL} < 30800
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=3.6.4:devel/py-typing-extensions@${PY_FLAVOR}
 .endif
 

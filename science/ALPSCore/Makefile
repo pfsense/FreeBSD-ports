@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ALPSCore
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.2.0
@@ -30,7 +28,6 @@ LDFLAGS+=	-lexecinfo # https://github.com/ALPSCore/ALPSCore/issues/390
 
 OPTIONS_DEFINE=	DOXYGEN DOCS OPENMPI
 OPTIONS_DEFAULT=	OPENMPI
-OPENMPI_DESC=	Parallel processing support via Open MPI 3.x
 
 DOXYGEN_IMPLIES=	DOCS
 DOXYGEN_CMAKE_BOOL=	Documentation

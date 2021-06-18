@@ -1,10 +1,9 @@
 # Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
 
 PORTNAME=	cups
 PORTVERSION=	1.6.3
-DISTVERSIONSUFFIX=	-43.el7
-PORTREVISION=	8
+DISTVERSIONSUFFIX=	-51.el7
+PORTREVISION=	9
 CATEGORIES=	print linux
 PKGNAMESUFFIX=	-libs
 

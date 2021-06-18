@@ -1,8 +1,7 @@
 # Created by: Kevin Bowling <k@kev009.com>
-# $FreeBSD$
 
 PORTNAME=	libnss-cache
-PORTVERSION=	0.17
+PORTVERSION=	0.18
 DISTVERSIONPREFIX=	version/
 CATEGORIES=	net
 

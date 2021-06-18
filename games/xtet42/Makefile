@@ -1,5 +1,4 @@
 # Created by: gmarco@giovannelli.it
-# $FreeBSD$
 
 PORTNAME=	xtet42
 PORTVERSION=	2.21
@@ -7,7 +6,7 @@ PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	http://utenti.gufi.org/~gmarco/files/distfiles/
 
-MAINTAINER=	gmarco@gufi.org
+MAINTAINER=	gmarco@giovannelli.it
 COMMENT=	One or two player T*tris game
 
 GNU_CONFIGURE=	yes

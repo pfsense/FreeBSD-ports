@@ -1,3 +1,3 @@
-TIMESTAMP = 1606758735
-SHA256 (groupfolders-8.2.0.tar.gz) = ab87ab8254cafc567e39ffd350e79523749c8e0a3a25ea8678816fae2579b589
-SIZE (groupfolders-8.2.0.tar.gz) = 1147177
+TIMESTAMP = 1619518113
+SHA256 (nextcloud/groupfolders-v9.0.1/groupfolders.tar.gz) = 5bf0cb7833883c05d2c63fa49716ff97a0394b15292e891927e8f1dc704193a1
+SIZE (nextcloud/groupfolders-v9.0.1/groupfolders.tar.gz) = 1157310

@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	abbayedesmorts
 PORTVERSION=	2.0.1
 DISTVERSIONPREFIX=	v

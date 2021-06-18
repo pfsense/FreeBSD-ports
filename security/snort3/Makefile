@@ -1,8 +1,8 @@
 # Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	snort
-DISTVERSION=	3.0.3-4
+DISTVERSION=	3.1.5.0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	security
 PKGNAMESUFFIX=	3
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libdnet.so:net/libdnet \
 		libpcap.so:net/libpcap \
-		libhwloc.so:devel/hwloc \
+		libhwloc.so:devel/hwloc2 \
 		libuuid.so:misc/e2fsprogs-libuuid \
 		libdaq.so:net/libdaq
 
@@ -28,8 +28,8 @@ GH_PROJECT=	snort3
 
 SHEBANG_FILES=	tools/appid_detector_builder.sh
 
-OPTIONS_DEFINE=		ADDRESSSANITIZER DEBUG DOCS FLATBUFFERS LARGEPCAP PIE THREADSANITIZER STATICDAQ
-OPTIONS_DEFINE_amd64=	HYPERSCAN TSC
+OPTIONS_DEFINE=		ADDRESSSANITIZER DEBUG DOCS FLATBUFFERS HYPERSCAN LARGEPCAP PIE THREADSANITIZER STATICDAQ
+OPTIONS_DEFINE_amd64=	TSC
 OPTIONS_DEFAULT=	STATICDAQ
 OPTIONS_DEFAULT_amd64=	HYPERSCAN
 
@@ -45,29 +45,30 @@ TSC_DESC=		Use timestamp counter register clock (x86 only)
 ADDRESSSANITIZER_CMAKE_BOOL=	ENABLE_ADDRESS_SANITIZER
 DEBUG_CMAKE_BOOL=	ENABLE_COREFILES ENABLE_GDB
 DOCS_CMAKE_BOOL=	MAKE_HTML_DOC MAKE_PDF_DOC MAKE_TEXT_DOC
+FLATBUFFERS_LIB_DEPENDS=libflatbuffers.so:devel/flatbuffers
+HYPERSCAN_LIB_DEPENDS=	libhs.so:devel/hyperscan
+HYPERSCAN_PLIST_SUB=	HYPERSCAN=""
+HYPERSCAN_PLIST_SUB_OFF=HYPERSCAN="@comment "
 LARGEPCAP_CMAKE_BOOL=	ENABLE_LARGE_PCAP
 PIE_CMAKE_BOOL=		ENABLE_PIE
 STATICDAQ_CMAKE_BOOL=	ENABLE_STATIC_DAQ
 THREADSANITIZER_CMAKE_BOOL=	ENABLE_THREAD_SANITIZER
 TSC_CMAKE_BOOL=		ENABLE_TSC_CLOCK
 
-FLATBUFFERS_LIB_DEPENDS=libflatbuffers.so:devel/flatbuffers
-HYPERSCAN_LIB_DEPENDS=	libhs.so:devel/hyperscan
+CMAKE_ARGS+=	-DFLEX_INCLUDE_DIR_HINT:PATH=${PREFIX}/include/flex
 
 CONFLICTS=	snort-2*
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == powerpc64
+.if ${ARCH:Mpowerpc64*}
 LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit-openresty
 .else
 LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit
 .endif
 
-.if ${PORT_OPTIONS:MHYPERSCAN}
-PLIST_SUB+=	HYPERSCAN=""
-.else
-PLIST_SUB+=	HYPERSCAN="@comment "
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300000
+BUILD_DEPENDS=	flex>0:textproc/flex
 .endif
 
 post-patch:

@@ -1,4 +1,4 @@
---- tools/gn/build/gen.py.orig	2020-11-13 06:49:31 UTC
+--- tools/gn/build/gen.py.orig	2021-04-14 18:49:10 UTC
 +++ tools/gn/build/gen.py
 @@ -90,6 +90,9 @@ class Platform(object):
    def is_solaris(self):

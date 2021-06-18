@@ -1,8 +1,7 @@
 # Created by: Shell Hung <shell@shellhung.org>
-# $FreeBSD$
 
 PORTNAME=	Test-Simple
-PORTVERSION=	1.302183
+PORTVERSION=	1.302185
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

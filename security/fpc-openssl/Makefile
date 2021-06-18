@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	security lang
 PKGNAMESUFFIX=	-openssl
 

@@ -1,8 +1,7 @@
 # Created by: Gerald Pfeifer <gerald@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gcc
-PORTVERSION=	8.4.0
+PORTVERSION=	8.5.0
 CATEGORIES=	lang
 MASTER_SITES=	GCC
 PKGNAMESUFFIX=	${SUFFIX}

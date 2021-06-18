@@ -1,11 +1,10 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	debootstrap
 PORTVERSION=	1.0.123
-PORTREVISION=	1
+PORTREVISION=	6
 CATEGORIES=	sysutils
-MASTER_SITES=	DEBIAN/pool/main/d/${PORTNAME}
+MASTER_SITES=	DEBIAN
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	trasz@FreeBSD.org
@@ -15,7 +14,10 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/debian/copyright
 
 RUN_DEPENDS=	wget:ftp/wget \
-		bash:shells/bash
+		bash:shells/bash \
+		${LOCALBASE}/bin/grep:textproc/gnugrep \
+		gpgv2:security/gnupg \
+		${LOCALBASE}/share/keyrings/ubuntu-archive-keyring.gpg:security/ubuntu-keyring
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 NO_BUILD=	yes
@@ -33,6 +35,16 @@ post-patch:
 	@${REINPLACE_CMD} -e 's,%%LOCALBASE%%,${LOCALBASE},g' \
 		${WRKSRC}/Makefile \
 		${WRKSRC}/debootstrap
+	@${REINPLACE_CMD} -e 's,gpgv,gpgv2,g' \
+		${WRKSRC}/Makefile \
+		${WRKSRC}/debootstrap \
+		${WRKSRC}/functions
+	@${FIND} ${WRKSRC}/scripts -type f | \
+		${XARGS} ${REINPLACE_CMD} -e 's,/usr/share/keyrings,${LOCALBASE}/share/keyrings,g'
+
+	# Workaround for bin/255525
+	@${REINPLACE_CMD} -e 's,grep,${LOCALBASE}/bin/grep,g' \
+		${WRKSRC}/functions
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/debootstrap.8 \

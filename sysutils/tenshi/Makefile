@@ -1,5 +1,4 @@
 # Created by: Oliver Eikemeier
-# $FreeBSD$
 
 PORTNAME=	tenshi
 PORTVERSION=	0.17
@@ -31,6 +30,9 @@ MAKE_ARGS=	bindir="${PREFIX}/sbin" \
 
 NO_ARCH=	yes
 NO_BUILD=	yes
+
+PORTSCOUT=	skipv:2e3cacd
+
 SUB_LIST=	PERL="${PERL}"
 
 USERS=		tenshi

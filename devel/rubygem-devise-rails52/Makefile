@@ -1,8 +1,7 @@
 # Created by: rpsfa@rit.edu
-# $FreeBSD$
 
 PORTNAME=	devise
-PORTVERSION=	4.7.3
+PORTVERSION=	4.8.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	-rails52
@@ -23,8 +22,5 @@ USES=		gem
 USE_RUBY=	yes
 
 NO_ARCH=	yes
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|, "test/rails_app/config/routes.rb"||' ${WRKSRC}/${PORTNAME}.gemspec
 
 .include <bsd.port.mk>

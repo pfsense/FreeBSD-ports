@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dosfstools
 PORTVERSION=	3.0.20
 DISTVERSIONSUFFIX=	-10.el7

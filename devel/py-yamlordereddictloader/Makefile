@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	yamlordereddictloader
 DISTVERSION=	0.4.0
 CATEGORIES=	devel python

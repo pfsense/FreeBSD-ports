@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jutils
 PORTVERSION=	1.0.1
 PORTREVISION=	1

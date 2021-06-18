@@ -1,8 +1,7 @@
 # Created by: Matthias Fechner <mfechner@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	graphql
-PORTVERSION=	1.11.5
+PORTVERSION=	1.11.8
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

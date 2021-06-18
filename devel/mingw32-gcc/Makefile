@@ -1,9 +1,8 @@
 # Created by: Lev Serebryakov <lev@serebryakov.spb.ru>
-# $FreeBSD$
 
 PORTNAME=	gcc
 PORTVERSION=	${GCCVERSION}
-PORTREVISION=	4
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	GCC

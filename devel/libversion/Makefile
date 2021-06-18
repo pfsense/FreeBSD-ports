@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	libversion
 PORTVERSION=	3.0.1
 CATEGORIES=	devel

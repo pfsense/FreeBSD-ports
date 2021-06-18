@@ -1,5 +1,4 @@
 # Created by: Palle Girgensohn <girgen@partitur.se>
-# $FreeBSD$
 
 PORTNAME=	postgresql
 # Keep the ?=, this port is used as master by the other plperl.
@@ -23,5 +22,8 @@ BUILD_DIRS=	src/backend ${INSTALL_DIRS}
 INSTALL_DIRS?=	src/pl/plperl contrib/bool_plperl contrib/hstore_plperl contrib/jsonb_plperl
 SLAVE_ONLY=	yes
 COMPONENT=	-plperl
+
+# this port fails to build in parallel
+MAKE_JOBS_UNSAFE=	yes
 
 .include "${MASTERDIR}/Makefile"

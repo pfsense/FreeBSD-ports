@@ -1,10 +1,9 @@
 # Created by: David Naylor <naylor.b.david@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	soundkonverter
 PORTVERSION=	3.0.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	audio kde
 
 MAINTAINER=	ports@FreeBSD.org
@@ -25,7 +24,8 @@ USE_KDE=	auth codecs config configwidgets completion coreaddons crash \
 		bookmarks guiaddons i18n iconthemes init itemviews jobwidgets \
 		kdelibs4support kio libkcddb notifications parts textwidgets \
 		service solid sonnet unitconversion windowsystem widgetsaddons \
-		xmlgui
+		xmlgui \
+		doctools_build
 WRKSRC_SUBDIR=	src
 
 OPTIONS_DEFAULT=	VORBIS FLAC NORMALIZE VORBISGAIN

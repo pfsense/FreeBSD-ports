@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	commonmarker
-PORTVERSION=	0.21.0
+PORTVERSION=	0.21.2
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 

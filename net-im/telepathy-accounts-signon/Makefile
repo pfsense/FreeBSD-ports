@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	telepathy-accounts-signon
 DISTVERSION=	2.1
 PORTREVISION=	1

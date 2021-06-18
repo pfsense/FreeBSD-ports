@@ -1,8 +1,7 @@
 # Created by: Nick Hilliard <nick@foobar.org>
-# $FreeBSD$
 
 PORTNAME=	tinymce
-PORTVERSION=	5.6.2
+PORTVERSION=	5.8.1
 CATEGORIES=	www
 MASTER_SITES=	http://download.tiny.cloud/tinymce/community/ \
 		LOCAL/sunpoet

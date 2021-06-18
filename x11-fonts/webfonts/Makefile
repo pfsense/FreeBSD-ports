@@ -1,5 +1,4 @@
 # Created by: Konstantinos Konstantinidis <kkonstan@daemon.gr>
-# $FreeBSD$
 
 PORTNAME=	webfonts
 PORTVERSION=	0.30
@@ -17,6 +16,7 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	TrueType core fonts for the Web
 
+# Restrictive license - cannot sell for profit or distribute in modified form
 LICENSE=	EULA
 LICENSE_NAME=	End User License Agreement
 LICENSE_FILE=	${WRKSRC}/licen.txt
@@ -26,7 +26,6 @@ EXTRACT_DEPENDS=cabextract:archivers/cabextract
 
 USES=		fonts
 NO_BUILD=	yes
-RESTRICTED=	Restrictive license - cannot sell for profit or distribute in modified form
 
 EXTRACT_CMD=		${LOCALBASE}/bin/cabextract
 EXTRACT_BEFORE_ARGS=	-qLF '[a-uw-z]*.ttf' -d ${WRKSRC}

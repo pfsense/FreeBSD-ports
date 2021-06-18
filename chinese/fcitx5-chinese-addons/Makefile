@@ -1,8 +1,7 @@
 # Created by: Ka Ho Ng <khng300@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fcitx5-chinese-addons
-DISTVERSION=	5.0.2
+DISTVERSION=	5.0.3
 CATEGORIES=	chinese textproc
 MASTER_SITES=	https://download.fcitx-im.org/data/:py_stroke,py_table
 DISTFILES=	${PY_STROKE_TAR}:py_stroke \
@@ -46,6 +45,7 @@ CMAKE_ON=	ENABLE_OPENCC
 CMAKE_OFF=	ENABLE_TEST
 MAKE_ENV=	FCITX5_DOWNLOAD_DISALLOWED=TRUE
 
+# These must follow modules/pinyinhelper/CMakeLists.txt
 PY_STROKE_VER=	20121124
 PY_TABLE_VER=	20121124
 PY_STROKE_TAR=	py_stroke-${PY_STROKE_VER}.tar.gz

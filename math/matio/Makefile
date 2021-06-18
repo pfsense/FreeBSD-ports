@@ -1,8 +1,7 @@
 # Created by: rfarmer@predatorlabs.net
-# $FreeBSD$
 
 PORTNAME=	matio
-PORTVERSION=	1.5.19
+PORTVERSION=	1.5.21
 CATEGORIES=	math
 MASTER_SITES=	SF
 
@@ -16,6 +15,7 @@ USES=		7z compiler:c11 libtool pathfix
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
+PLIST_SUB+=	SHLIB_VER=11.0.3
 
 OPTIONS_DEFINE=	HDF5
 OPTIONS_DEFAULT=	HDF5

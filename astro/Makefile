@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Astronomical ports
 
     SUBDIR += R-cran-maptools
@@ -25,9 +22,11 @@
     SUBDIR += gpsprune
     SUBDIR += gpstk
     SUBDIR += gpxloggerd
+    SUBDIR += indiwebmanagerapp
     SUBDIR += jday
     SUBDIR += josm
     SUBDIR += kosmindoormap
+    SUBDIR += kosmorro
     SUBDIR += kstars
     SUBDIR += libgal
     SUBDIR += libnova
@@ -75,6 +74,7 @@
     SUBDIR += p5-Net-GPSD3
     SUBDIR += p5-Starlink-AST
     SUBDIR += p5-Weather-Underground
+    SUBDIR += phd2
     SUBDIR += phoon
     SUBDIR += pp3
     SUBDIR += ptiger
@@ -83,21 +83,29 @@
     SUBDIR += py-astropy-helpers
     SUBDIR += py-ephem
     SUBDIR += py-horoscopegenerator
+    SUBDIR += py-indiweb
+    SUBDIR += py-jplephem
+    SUBDIR += py-kosmorrolib
     SUBDIR += py-metar
     SUBDIR += py-metpy
+    SUBDIR += py-pykep
     SUBDIR += py-pymeeus
     SUBDIR += py-pymetar
     SUBDIR += py-pysofa
     SUBDIR += py-pywapi
     SUBDIR += py-ro
+    SUBDIR += py-sgp4
+    SUBDIR += py-skyfield
+    SUBDIR += py-skyfield-data
     SUBDIR += py-spacetrack
+    SUBDIR += py-spktype01
+    SUBDIR += py-spktype21
+    SUBDIR += pykep
     SUBDIR += pyweather
     SUBDIR += qmapshack
     SUBDIR += readosm
     SUBDIR += rmap
-    SUBDIR += roadmap
     SUBDIR += routino
-    SUBDIR += saoimage
     SUBDIR += sextractor
     SUBDIR += siril
     SUBDIR += sofa
@@ -106,6 +114,7 @@
     SUBDIR += starplot
     SUBDIR += stars
     SUBDIR += stellarium
+    SUBDIR += stellarsolver
     SUBDIR += sunclock
     SUBDIR += sunwait
     SUBDIR += swe

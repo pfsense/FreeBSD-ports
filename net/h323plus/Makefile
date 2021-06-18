@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	h323plus
 DISTVERSIONPREFIX=      v
-DISTVERSION=    1_27_0
+DISTVERSION=    1_27_2
 CATEGORIES=	net multimedia
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	pi@FreeBSD.org
 COMMENT=	H323 Video Conferencing library
 
 LICENSE=	MPL10 MPL11
@@ -22,6 +20,7 @@ USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 # ptlib-config --libs returns bogus dependencies on expat and SDL-1.2
+CFLAGS+=	-DH323_H46017 -DH323_TLS
 LDFLAGS+=	-Wl,--as-needed
 
 MAKE_JOBS_UNSAFE=yes

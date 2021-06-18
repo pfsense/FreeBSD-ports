@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 # The attempt to upgrade to version 6.4.1 was done incorrectly.
 # When 6.5.1 is released, set the SNAPSHOT to the release date,
 # but also set BUILD_RELEASE to "yes".  Otherwise snapshots will
@@ -10,7 +8,7 @@ GCC_POINT=		4.1
 GCC_VERSION=		${GCC_BRANCH}.${GCC_POINT}
 SNAPSHOT=		20180516
 BUILD_RELEASE=		no
-MAIN_PR=		1
+MAIN_PR=		2
 UTIL_PR=		0
 ARMV7_PR=		0
 ARM64_PR=		0

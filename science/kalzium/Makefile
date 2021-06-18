@@ -1,11 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	kalzium
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	science education kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	Periodic table of elements for KDE 4
+COMMENT=	Periodic table of elements for KDE
+
+LICENSE=	GPLv2 LGPL20 GFDL
+LICENSE_COMB=	multi
 
 LIB_DEPENDS=	libopenbabel.so:science/openbabel \
 		libAvogadroCore.so:science/avogadrolibs

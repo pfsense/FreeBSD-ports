@@ -1,5 +1,4 @@
 # Created by: kris@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	pks
 PORTVERSION=	0.9.6.20040312
@@ -18,7 +17,7 @@ BROKEN_SSL=	openssl
 BROKEN_SSL_REASON_openssl=	member access into incomplete type 'EVP_PKEY' (aka 'evp_pkey_st')
 
 USES=		bdb ssl
-USE_GCC=	any
+USE_GCC=	yes
 USE_RC_SUBR=	pksd
 
 WRKSRC=		${WRKDIR}/${PORTNAME}

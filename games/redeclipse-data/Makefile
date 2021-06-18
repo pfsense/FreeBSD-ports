@@ -1,22 +1,16 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	redeclipse-data
-PORTVERSION=	1.6.0
+PORTVERSION=	2.0.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Data files for Red Eclipse first-person shooter
 
-USE_GITHUB=	nodefault
-GH_TUPLE=	${DATAFILES:C/.*/red-eclipse:&:${DISTVERSIONPREFIX}${PORTVERSION}:&\/&/}
+CONFLICTS_INSTALL=redeclipse-data16-[0-9]*
 
-DATAFILES=	acerspyro actors appleflap blendbrush caustics crosshairs \
-		decals dziq elyvisions fonts freezurbern john jojo jwin luckystrike \
-		maps mayhem mikeplus64 misc nieb nobiax particles philipk \
-		projectiles props skyboxes snipergoth sounds textures torley \
-		trak ulukai unnamed vanities vegetation weapons wicked
+USE_GITHUB=	nodefault
+
+.include "${.CURDIR}/Makefile.tuples"
 
 NO_BUILD=	yes
 NO_ARCH=	yes
@@ -26,6 +20,18 @@ DATADIR=	${PREFIX}/share/redeclipse
 PORTDATA=	*
 
 do-install:
-	@cd ${WRKSRC} && ${COPYTREE_SHARE} "${DATAFILES}" ${STAGEDIR}${DATADIR}
+	@cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}
+
+Makefile.tuples::
+	@${ECHO_CMD} '# $$Free''BSD$$' > ${.CURDIR}/Makefile.tuples
+	@${RM} -rf ${WRKDIR}/.maintainer.checkout
+	@${MKDIR} ${WRKDIR}/.maintainer.checkout \
+		&& cd ${WRKDIR}/.maintainer.checkout \
+		&& git clone --depth=1 --branch=${DISTVERSIONPREFIX}${PORTVERSION} \
+			https://github.com/redeclipse/base.git . \
+		&& git submodule \
+			| awk '{print substr($$1,2,7), substr($$2,6)}' \
+			| awk '{printf("%sredeclipse:%s:%s:%s/%s \\\n", NR==1 ? "GH_TUPLE=\t" : "\t\t", $$2, $$1, $$2, $$2, $$2)}' \
+			>> ${.CURDIR}/Makefile.tuples
 
 .include <bsd.port.mk>

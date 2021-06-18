@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	travis
 PORTVERSION=	1.9.1
 CATEGORIES=	devel rubygems

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kate
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	editors kde kde-applications

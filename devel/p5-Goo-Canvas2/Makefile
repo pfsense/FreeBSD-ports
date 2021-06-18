@@ -1,5 +1,4 @@
 # Created by: Danilo Egea Gondolfo <danilo@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Goo-Canvas
 PORTVERSION=	0.06
@@ -11,7 +10,7 @@ PKGNAMEPREFIX=	p5-
 PKGNAMESUFFIX=	2
 DISTNAME=	GooCanvas2-${PORTVERSION}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Perl binding for GooCanvas2
 
 LICENSE=	GPLv2

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lua
 DISTVERSION=	5.4.2
 CATEGORIES=	lang

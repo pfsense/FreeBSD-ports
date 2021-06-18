@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	jvgs
 PORTVERSION=	0.5.1
 PORTREVISION=	4
@@ -11,6 +8,12 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Minimalistic platform game
 
+# Converted from NO_CDROM
+LICENSE=	jvgs
+LICENSE_NAME=	jvgs
+LICENSE_TEXT=	contains data under CC-by-NC-SA
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
+
 BUILD_DEPENDS=	swig:devel/swig
 LIB_DEPENDS=	libfreetype.so:print/freetype2
 
@@ -19,8 +22,6 @@ USE_SDL=	sdl mixer
 USE_GL=		gl glu
 
 SUB_FILES=	${PORTNAME}
-
-NO_CDROM=	contains data under CC-by-NC-SA
 
 PLIST_FILES=	bin/${PORTNAME} libexec/${PORTNAME}
 PORTDOCS=	*

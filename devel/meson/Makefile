@@ -1,8 +1,8 @@
 # Created by: Ting-Wei Lan <lantw44@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	meson
-PORTVERSION=	0.56.0
+PORTVERSION=	0.57.1
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	https://github.com/mesonbuild/${PORTNAME}/releases/download/${PORTVERSION}/
 
@@ -12,10 +12,9 @@ COMMENT=	High performance build system
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	ninja:devel/ninja
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest-xdist>0:devel/py-pytest-xdist@${PY_FLAVOR}
 
-USES=		python:3.5+ shebangfix
+USES=		ninja:run python:3.6+ shebangfix
 USE_PYTHON=	autoplist distutils noflavors
 SHEBANG_FILES=	mesonbuild/rewriter.py \
 		mesonbuild/scripts/cmake_run_ctgt.py

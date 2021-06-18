@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nagnu
 PORTVERSION=	1.1.3
 CATEGORIES=	net-mgmt
@@ -9,6 +7,9 @@ COMMENT=	Nagios dashboard
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: errorss
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: errorss
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
 

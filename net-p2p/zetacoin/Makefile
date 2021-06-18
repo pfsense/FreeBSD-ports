@@ -1,10 +1,9 @@
 # Created by: Daniel Morante <daniel@morante.net>
-# $FreeBSD$
 
 PORTNAME=	zetacoin
 PORTVERSION=	0.13.2.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net-p2p finance
 
 MAINTAINER=	daniel@morante.net

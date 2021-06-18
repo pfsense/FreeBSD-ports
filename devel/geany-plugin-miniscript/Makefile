@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	geany-plugin-miniscript
 PORTVERSION=	${GEANY_VER}
 CATEGORIES=	devel

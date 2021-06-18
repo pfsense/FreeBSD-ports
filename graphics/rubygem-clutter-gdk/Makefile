@@ -1,13 +1,12 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	clutter-gdk
-PORTVERSION=	3.4.3
+PORTVERSION=	3.4.4
 CATEGORIES=	graphics rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Ruby binding of GDK specific API of Clutter
+COMMENT=	Ruby binding of GDK-specific API of Clutter
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB

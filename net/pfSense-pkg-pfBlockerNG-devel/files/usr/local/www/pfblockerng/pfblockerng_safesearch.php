@@ -37,15 +37,29 @@ $pconfig['safesearch_doh']		= $pfb['bconfig']['safesearch_doh']			?: 'Disable';
 $pconfig['safesearch_doh_list']		= explode(',', $pfb['bconfig']['safesearch_doh_list'])	?: array();
 
 if (isset($_POST['save'])) {
-	$pfb['bconfig']['safesearch_enable']	= $_POST['safesearch_enable']				?: 'Disable';
-	$pfb['bconfig']['safesearch_youtube']	= $_POST['safesearch_youtube']				?: 'Disable';
-	$pfb['bconfig']['safesearch_doh']	= $_POST['safesearch_doh']				?: 'Disable';
-	$pfb['bconfig']['safesearch_doh_list']	= implode(',', (array)$_POST['safesearch_doh_list'])	?: '';
 
-	$msg = 'Saved SafeSearch configuration';
-	write_config("[ pfBlockerNG ] {$msg}");
-	$savemsg = "{$msg}. A Force Update|Reload is required to apply changes!";
-	header("Location: /pfblockerng/pfblockerng_safesearch.php?savemsg={$savemsg}");
+	if (isset($input_errors)) {
+		unset($input_errors);
+	}
+
+	if (isset($_POST['safesearch_doh']) && empty($_POST['safesearch_doh_list'])) {
+		$input_errors[] = "Warning: With DoH/DoT Blocking enabled, you must select atleast one List";
+	}
+
+	if (!$input_errors) {
+		$pfb['bconfig']['safesearch_enable']	= $_POST['safesearch_enable']				?: 'Disable';
+		$pfb['bconfig']['safesearch_youtube']	= $_POST['safesearch_youtube']				?: 'Disable';
+		$pfb['bconfig']['safesearch_doh']	= $_POST['safesearch_doh']				?: 'Disable';
+		$pfb['bconfig']['safesearch_doh_list']	= implode(',', (array)$_POST['safesearch_doh_list'])	?: '';
+
+		$msg = 'Saved SafeSearch configuration';
+		write_config("[ pfBlockerNG ] {$msg}");
+		$savemsg = "{$msg}. A Force Update|Reload is required to apply changes!";
+		header("Location: /pfblockerng/pfblockerng_safesearch.php?savemsg={$savemsg}");
+	}
+	else {
+		print_input_errors($input_errors);
+	}
 }
 
 $pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('DNSBL'), gettext('DNSBL SafeSearch'));
@@ -150,6 +164,7 @@ $section->addInput(new Form_Select(
 	'security-filter-dns.cleanbrowsing.org' => 'CleanBrowsing Security [security-filter-dns.cleanbrowsing.org]',
 	'family-filter-dns.cleanbrowsing.org' => 'CleanBrowsing Family [family-filter-dns.cleanbrowsing.org]',
 	'adult-filter-dns.cleanbrowsing.org' => 'CleanBrowsing Adult [adult-filter-dns.cleanbrowsing.org]',
+	'dns.nextdns.io' => 'NextDNS DoH/DoT [dns.nextdns.io]',
 	'dns.switch.ch' => 'SWITCH [dns.switch.ch]',
 	'dns.comss.one' => 'Comss.ru West [dns.comss.one]',
 	'dns.east.comss.one' => 'Comss.ru East [dns.east.comss.one]',

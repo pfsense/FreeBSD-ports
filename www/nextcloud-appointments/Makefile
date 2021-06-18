@@ -1,8 +1,7 @@
 # Created by: Bernard Spil <brnrd@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	appointments
-PORTVERSION=	1.7.15
+PORTVERSION=	1.9.1
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${PORTNAME}/raw/${GH_TAGNAME}/build/artifacts/appstore/
 PKGNAMEPREFIX=	nextcloud-
@@ -16,7 +15,7 @@ COMMENT=	Appointments app for Nextcloud
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	nextcloud${PHP_PKGNAMESUFFIX}>=18:www/nextcloud@${PHP_FLAVOR}
+RUN_DEPENDS=	nextcloud${PHP_PKGNAMESUFFIX}>=19:www/nextcloud@${PHP_FLAVOR}
 
 USES=		php:flavors
 NO_BUILD=	yes

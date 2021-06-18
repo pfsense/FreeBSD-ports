@@ -1,8 +1,8 @@
 # Created by: Peter Haight <peterh@sapros.com>
-# $FreeBSD$
 
 PORTNAME=	scons
 PORTVERSION=	3.1.2
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	SF
 PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
@@ -13,9 +13,7 @@ COMMENT=	Build tool alternative to make
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	gm4:devel/m4
-
-USES=		python shebangfix
+USES=		python:3.6+ shebangfix
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

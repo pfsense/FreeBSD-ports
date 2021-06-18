@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fth
 DISTVERSION=	1.4.1
 CATEGORIES=	lang

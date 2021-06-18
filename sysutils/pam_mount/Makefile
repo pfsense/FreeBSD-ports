@@ -1,5 +1,4 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	pam_mount
 PORTVERSION=	2.12
@@ -32,6 +31,7 @@ CONFIGURE_ARGS+=--localstatedir=/var \
 .if ${SSL_DEFAULT} == base
 BROKEN_FreeBSD_12=	variable has incomplete type 'EVP_CIPHER_CTX' (aka 'struct evp_cipher_ctx_st')
 BROKEN_FreeBSD_13=	variable has incomplete type 'EVP_CIPHER_CTX' (aka 'struct evp_cipher_ctx_st')
+BROKEN_FreeBSD_14=	variable has incomplete type 'EVP_CIPHER_CTX' (aka 'struct evp_cipher_ctx_st')
 .endif
 
 post-patch:

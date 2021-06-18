@@ -1,9 +1,8 @@
 # Created by: Randall Hopper
-# $FreeBSD$
 
 PORTNAME=	gdal
-PORTVERSION=	3.1.4
-PORTREVISION=	3
+PORTVERSION=	3.2.3
+PORTREVISION=	1
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://download.osgeo.org/gdal/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -27,7 +26,9 @@ LIB_DEPENDS=	libgeotiff.so:graphics/libgeotiff \
 OPTIONS_DEFINE=	ARMADILLO CFITSIO CHARLS CRYPTOPP CURL DODS ECW EXPAT EXR FREEXL GEOS GTA HDF5 JASPER KML LIBXML2 MYSQL NETCDF ODBC OPENJPEG PCRE PGSQL SFCGAL SPATIALITE SQLITE TILEDB WEBP XERCES ZSTD
 OPTIONS_RADIO=	PDF
 OPTIONS_RADIO_PDF=	PODOFO POPPLER
-OPTIONS_DEFAULT=JASPER
+OPTIONS_DEFAULT=	CURL EXPAT FREEXL GEOS HDF5 JASPER \
+			KML LIBXML2 NETCDF OPENJPEG PCRE PGSQL SFCGAL \
+			SPATIALITE SQLITE WEBP XERCES ZSTD POPPLER
 OPTIONS_SUB=	yes
 CHARLS_DESC=	JPEG-Lossless support via charls
 CRYPTOPP_DESC=	Cryptopp support
@@ -36,11 +37,12 @@ EXR_DESC=	EXR support via OpenEXR library
 PCRE_DESC=	Regular expression support for SQLite
 TILEDB_DESC=	TileDB support
 
-USES=		compiler:c++11-lang gmake iconv jpeg localbase pkgconfig ssl tar:xz
+USES=		compiler:c++14-lang gmake iconv jpeg localbase pkgconfig ssl tar:xz
 
 CFLAGS+=	-fPIC
 CONFIGURE_ARGS=	--datadir=${PREFIX}/share \
 		--enable-static=yes \
+		--with-cpp14 \
 		--with-crypto=yes \
 		--with-geotiff=yes \
 		--with-gif=yes \
@@ -60,9 +62,8 @@ CONFIGURE_ARGS=	--datadir=${PREFIX}/share \
 		${ICONV_CONFIGURE_ARG}
 GNU_CONFIGURE=	yes
 LDFLAGS+=	${ICONV_LIB}
-MAKE_JOBS_UNSAFE=	yes
 MAKEFILE=	GNUmakefile
-USE_CXXSTD=	c++11
+USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
@@ -105,8 +106,10 @@ ECW_CONFIGURE_WITH=	ecw
 ECW_LIB_DEPENDS=	libNCSEcw.so:graphics/libecwj2
 EXPAT_CONFIGURE_WITH=	expat
 EXPAT_LIB_DEPENDS=	libexpat.so:textproc/expat2
-EXR_CONFIGURE_ON=	--with-exr
-EXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr
+EXR_CONFIGURE_WITH=	exr
+EXR_LIB_DEPENDS=	libImath.so:math/Imath \
+			libOpenEXR.so:graphics/openexr
+EXR_CFLAGS=		-DInt64=uint64_t
 FREEXL_CONFIGURE_WITH=	freexl
 FREEXL_LIB_DEPENDS=	libfreexl.so:textproc/freexl
 GEOS_CONFIGURE_OFF=	--with-geos=no
@@ -161,7 +164,7 @@ ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
 post-patch:
 	@${REINPLACE_CMD} -e '/^#GDAL_SLIB_SONAME/ s|^#||' ${WRKSRC}/GDALmake.opt.in
 	@${REINPLACE_CMD} -e 's|$$(INST_LIB)/pkgconfig|${PREFIX}/libdata/pkgconfig|; s| LICENSE.TXT||' ${WRKSRC}/GNUmakefile
-	@${REINPLACE_CMD} -e 's|-lminizip|-lkmlminizip|' ${WRKSRC}/configure
+	@${REINPLACE_CMD} -e 's|-lminizip|-lkmlminizip|' -e 's|IlmImf|OpenEXR|g' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|getCString()|c_str()|' ${WRKSRC}/frmts/pdf/pdfdataset.cpp ${WRKSRC}/frmts/pdf/pdfobject.cpp
 # Clean up bundled libraries
 	@${RM} -r ${WRKSRC}/alg/internal_libqhull/
@@ -180,6 +183,6 @@ post-install:
 	cd ${WRKSRC}/ && ${INSTALL_DATA} ${HEADER_FILES} ${STAGEDIR}${PREFIX}/include/
 	${INSTALL_DATA} ${WRKSRC}/libgdal.a ${STAGEDIR}${PREFIX}/lib/
 	${INSTALL_DATA} ${WRKSRC}/GDALmake.opt ${STAGEDIR}${DATADIR}/
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgdal.so.${PORTVERSION}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgdal.so
 
 .include <bsd.port.mk>

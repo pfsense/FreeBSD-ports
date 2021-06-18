@@ -1,12 +1,11 @@
 # Created by: chinsan <chinsan.tw@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	PEAR_Info
 PORTVERSION=	1.9.2
 PORTREVISION=	2
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Show Information about your PEAR install and its packages
 
 LICENSE=	PHP301

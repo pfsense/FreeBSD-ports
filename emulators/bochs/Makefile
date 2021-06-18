@@ -1,14 +1,12 @@
 # Created by: alex
-# $FreeBSD$
 
 PORTNAME=	bochs
-PORTVERSION=	2.6.9
-PORTREVISION=	5
+PORTVERSION=	2.6.11
 PORTEPOCH=	2
 CATEGORIES=	emulators
 MASTER_SITES=	SF
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	IA-32 (x86) PC emulator that runs DOS, Win 95, and more
 
 LICENSE=	LGPL21

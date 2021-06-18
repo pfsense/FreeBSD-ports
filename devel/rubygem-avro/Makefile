@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	avro
-PORTVERSION=	1.10.1
+PORTVERSION=	1.10.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

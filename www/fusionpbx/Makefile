@@ -1,5 +1,4 @@
 # Created by: Richard Neese <r.neese@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	fusionpbx
 PORTVERSION=	4.4.1
@@ -9,8 +8,6 @@ MAINTAINER=	richard2891@gmail.com
 COMMENT=	Web/PHP Interface for FreeSwitch
 
 LICENSE=	MPL11
-
-ONLY_FOR_ARCHS=	amd64
 
 LIB_DEPENDS=	libodbc.so:databases/unixODBC
 RUN_DEPENDS=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/pdo_odbc.so:databases/php${PHP_VER}-pdo_odbc \

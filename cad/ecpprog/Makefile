@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ecpprog
 DISTVERSION=	g20200725
 CATEGORIES=	cad

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	network
 DISTVERSION=	${QT5_VERSION}
 PORTREVISION=	1
@@ -27,6 +25,11 @@ QT_CONFIG=	openssl
 .if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200085 && ${SSL_DEFAULT} == "base"
 # 1200085	339270	October 19, 2018	12.0-STABLE after updating OpenSSL to version 1.1.1.
 BROKEN=		Qt5 requires Openssl 1.1.1, upgrade to FreeBSD 12.x/13.x or add DEFAULT_VERSIONS+=ssl=[openssl|libressl*] to /etc/make.conf
+.endif
+
+# LibreSSL does not currently support BIO_ADDR in DTLSv1_listen()
+.if ${SSL_DEFAULT:Mlibressl*}
+CONFIGURE_ARGS+=	-no-feature-dtls
 .endif
 
 post-patch:

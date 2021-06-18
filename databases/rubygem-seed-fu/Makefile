@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	seed-fu
 PORTVERSION=	2.3.9
 PORTREVISION=	2
@@ -7,7 +5,7 @@ CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
-COMMENT=	Library to maintain seed datas
+COMMENT=	Library to maintain seed data
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

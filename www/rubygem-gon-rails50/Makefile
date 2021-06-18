@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gon
 PORTVERSION=	6.2.1
 CATEGORIES=	www rubygems

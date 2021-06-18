@@ -1,4 +1,4 @@
---- content/common/mojo_core_library_support.cc.orig	2020-11-16 14:35:51 UTC
+--- content/common/mojo_core_library_support.cc.orig	2021-04-14 18:41:03 UTC
 +++ content/common/mojo_core_library_support.cc
 @@ -15,7 +15,7 @@ bool IsMojoCoreSharedLibraryEnabled() {
  }

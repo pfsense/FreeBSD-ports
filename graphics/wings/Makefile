@@ -1,8 +1,7 @@
 # Created by: olgeni@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	wings
-PORTVERSION=	2.2.5
+PORTVERSION=	2.2.6.1
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 DIST_SUBDIR=	erlang

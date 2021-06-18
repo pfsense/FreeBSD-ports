@@ -1,5 +1,4 @@
 # Created by: Naram Qashat <cyberbotx@cyberbotx.com>
-# $FreeBSD$
 
 PORTNAME=	pHash
 PORTVERSION=	0.9.6
@@ -36,7 +35,6 @@ JPEG_CONFIGURE_WITH=	libjpeg
 JPEG_USES=		jpeg
 
 OPENMP_CONFIGURE_ENABLE=openmp
-OPENMP_USES=		compiler:openmp
 
 PNG_CONFIGURE_WITH=	libpng
 PNG_LIB_DEPENDS=	libpng.so:graphics/png

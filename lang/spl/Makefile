@@ -1,5 +1,4 @@
 # Created by: Hye-Shik Chang <perky@fallin.lv>
-# $FreeBSD$
 
 PORTNAME=	spl
 PORTVERSION=	1.2.1
@@ -12,6 +11,9 @@ COMMENT=	Shakespeare programming language
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: cast
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: cast
 
 USES=		bison gmake
 

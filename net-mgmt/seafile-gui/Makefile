@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	seafile-gui
 DISTVERSIONPREFIX=	v
 DISTVERSION=	7.0.9

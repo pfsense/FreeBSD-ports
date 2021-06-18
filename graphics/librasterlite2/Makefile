@@ -1,10 +1,9 @@
 # Created by: lbartoletti <lbartoletti@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	librasterlite2
 PORTVERSION=	1.0.0
 DISTVERSIONSUFFIX=-rc0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	graphics geography
 MASTER_SITES=	http://www.gaia-gis.it/gaia-sins/
 

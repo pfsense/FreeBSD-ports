@@ -1,8 +1,7 @@
 # Created by: Cezary Morga <cm@therek.net>
-# $FreeBSD$
 
 PORTNAME=	DateTime-Format-Flexible
-PORTVERSION=	0.32
+PORTVERSION=	0.33
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

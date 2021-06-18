@@ -1,5 +1,4 @@
 # Created by: Andreas Fehlner <fehlner@gmx.de>
-# $FreeBSD$
 
 PORTNAME=	gramps
 PORTVERSION=	5.1.1
@@ -7,7 +6,7 @@ DISTVERSIONPREFIX=	v
 PORTREVISION=	1
 CATEGORIES=	science gnome python
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK3-based genealogy program
 
 LICENSE=	GPLv2+

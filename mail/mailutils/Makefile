@@ -1,8 +1,8 @@
 # Created by: Attila Nagy <bra@fsn.hu>
-# $FreeBSD$
 
 PORTNAME=	mailutils
-PORTVERSION=	3.11
+PORTVERSION=	3.12
+PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	GNU GNU_ALPHA
 

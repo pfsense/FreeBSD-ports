@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	qmail
 PORTVERSION=	${QMAIL_VERSION}.${SPAMCONTROL_VERSION}
 PORTREVISION=	3
@@ -14,6 +12,7 @@ COMMENT=	Qmail MTA with SpamControl patches
 
 BROKEN_FreeBSD_12=	incomplete definition of type 'struct X509_name_st'
 BROKEN_FreeBSD_13=	incomplete definition of type 'struct X509_name_st'
+BROKEN_FreeBSD_14=	incomplete definition of type 'struct X509_name_st'
 CONFLICTS=	*qmail-[0-9]* qmail-ldap-[0-9]* *qmail-mysql-[0-9]* *qmail-tls-[0-9]*
 
 EXTRA_PATCHES+=	${MASTERDIR}/files/patch-install.c \

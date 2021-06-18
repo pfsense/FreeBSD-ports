@@ -1,13 +1,12 @@
 # Created by: jrhett@netconsonance.com
-# $FreeBSD$
 
 PORTNAME=	cfengine
 PORTVERSION=	3.${CFENGINE_COMMIT_DATE}
 CATEGORIES=	sysutils
 PKGNAMESUFFIX=	-devel
-CFENGINE_HASH=		ec8bc18ca
-LIBNTECH_HASH=		4e9efcb
-CFENGINE_COMMIT_DATE=	2020.11.30
+CFENGINE_HASH=		db63433b8
+LIBNTECH_HASH=		78a5987
+CFENGINE_COMMIT_DATE=	2021.06.03
 
 MAINTAINER=	cy@FreeBSD.org
 #		gjb@FreeBSD.org is also committer for this port

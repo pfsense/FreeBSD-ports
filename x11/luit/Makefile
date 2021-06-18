@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	luit
-PORTVERSION=	20190106
-PORTREVISION=	1
+PORTVERSION=	20210218
 CATEGORIES=	x11
 MASTER_SITES=	ftp://ftp.invisible-island.net/luit/
 

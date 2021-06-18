@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gxmessage
 PORTVERSION=	3.4.3
 PORTREVISION=	1

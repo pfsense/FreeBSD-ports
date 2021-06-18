@@ -1,4 +1,4 @@
-# $FreeBSD$
+PORTREVISION=	1
 
 CATEGORIES=	databases
 

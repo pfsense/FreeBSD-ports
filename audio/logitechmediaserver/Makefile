@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	logitechmediaserver
 PORTVERSION=	7.9.2.g2018.12.10
 CATEGORIES=	audio
@@ -10,6 +8,7 @@ COMMENT=	Audio streaming server that powers Squeezebox players from Logitech
 LICENSE=	SDL
 LICENSE_NAME=	Slim Devices License
 LICENSE_FILE=	${WRKSRC}/License.txt
+# Contains non-redistributable firmware, documentation, and images
 LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell
 
 ONLY_FOR_ARCHS=	amd64 i386
@@ -49,7 +48,6 @@ LAME_RUN_DEPENDS=	lame:audio/lame
 SOX_RUN_DEPENDS=	sox:audio/sox
 TEST_VARS_OFF=		CONTRIB_FLAGS=-t
 
-RESTRICTED=	Contains non-redistributable firmware, documentation, and images
 USERS=		${SLIMUSER}
 GROUPS=		${SLIMGROUP}
 EXTRA_PATCHES=	${FILESDIR}/vendorpatch-CPAN_buildme.sh

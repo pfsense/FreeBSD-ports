@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	uh
 PORTVERSION=	2.1.1
 CATEGORIES=	x11-toolkits rubygems

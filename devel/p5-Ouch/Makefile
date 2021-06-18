@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Ouch
 PORTVERSION=	0.0409
 CATEGORIES=	devel perl5

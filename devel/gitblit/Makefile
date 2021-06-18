@@ -1,9 +1,8 @@
 # Created by: Dusan Vejnovic <freebsd@dussan.org>
-# $FreeBSD$
 
 PORTNAME=	gitblit
 PORTVERSION=	1.8.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel java
 MASTER_SITES=	http://dl.bintray.com/${PORTNAME}/releases/
 EXTRACT_SUFX=	.war

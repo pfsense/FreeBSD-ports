@@ -1,8 +1,7 @@
 # Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	cinnamon-translations
-PORTVERSION=	4.8.2
+PORTVERSION=	4.8.3
 CATEGORIES=	misc x11 gnome
 DIST_SUBDIR=	gnome
 

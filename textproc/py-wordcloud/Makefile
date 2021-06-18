@@ -1,5 +1,4 @@
 # Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
 
 PORTNAME=	word_cloud
 DISTVERSION=	1.5.0
@@ -24,7 +23,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
 USE_GITHUB=	yes
 GH_ACCOUNT=	amueller
 
-USES=		python:3.6+ shebangfix
+USES=		python:3.7+ shebangfix
 USE_PYTHON=	distutils
 SHEBANG_FILES=	doc/*.sh examples/*.py
 

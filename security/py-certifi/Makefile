@@ -1,5 +1,4 @@
 # Created by: Olivier Duchateau <duchateau.olivier@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	certifi
 PORTVERSION=	2020.12.5
@@ -12,7 +11,7 @@ COMMENT=	Mozilla SSL certificates
 
 LICENSE=	MPL20
 
-USES=		python
+USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

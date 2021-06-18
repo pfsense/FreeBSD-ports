@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-Mock-Guard
 PORTVERSION=	0.10
 PORTREVISION=	1

@@ -1,8 +1,7 @@
 # Created by: Michael Moll <kvedulv at kvedulv.de>
-# $FreeBSD$
 
 PORTNAME=	bindata
-PORTVERSION=	2.4.8
+PORTVERSION=	2.4.10
 CATEGORIES=	devel ruby
 MASTER_SITES=	RG
 

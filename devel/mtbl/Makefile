@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mtbl
 PORTVERSION=	1.3.0
 CATEGORIES=	devel

@@ -1,4 +1,4 @@
---- components/security_interstitials/content/captive_portal_blocking_page.cc.orig	2020-11-13 06:36:41 UTC
+--- components/security_interstitials/content/captive_portal_blocking_page.cc.orig	2021-04-14 18:41:00 UTC
 +++ components/security_interstitials/content/captive_portal_blocking_page.cc
 @@ -106,7 +106,7 @@ std::string CaptivePortalBlockingPage::GetWiFiSSID() c
    wifi_service->GetConnectedNetworkSSID(&ssid, &error);

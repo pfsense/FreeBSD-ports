@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lumina-photo
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.0

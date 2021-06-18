@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	funnyboat
 PORTVERSION=	1.6
 CATEGORIES=	games

@@ -1,4 +1,4 @@
---- components/services/paint_preview_compositor/paint_preview_compositor_collection_impl.cc.orig	2021-01-18 21:28:56 UTC
+--- components/services/paint_preview_compositor/paint_preview_compositor_collection_impl.cc.orig	2021-04-14 18:41:00 UTC
 +++ components/services/paint_preview_compositor/paint_preview_compositor_collection_impl.cc
 @@ -15,7 +15,7 @@
  

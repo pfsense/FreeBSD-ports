@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	aqemu
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.2
@@ -14,8 +12,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libvncclient.so:net/libvncserver
 
-USES=		cmake:noninja compiler:c++11-lang qt:5
-USE_QT=		buildtools_build linguisttools_build qmake_build \
+USES=		cmake compiler:c++11-lang qt:5
+USE_QT=		buildtools_build qmake_build \
 		core dbus gui network printsupport testlib widgets
 
 USE_GITHUB=	yes

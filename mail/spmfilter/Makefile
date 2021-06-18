@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	spmfilter
 PORTVERSION=	0.6.7
 PORTREVISION=	6

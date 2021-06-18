@@ -1,12 +1,11 @@
 # Created by: Herve Quiroz <hq@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dnsjava
 PORTVERSION=	2.1.9
 DISTVERSIONPREFIX=	v
 CATEGORIES=	dns java
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Implementation of DNS in Java
 
 LICENSE=	BSD2CLAUSE

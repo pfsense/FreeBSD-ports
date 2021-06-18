@@ -1,4 +1,4 @@
---- ui/gfx/mojom/native_handle_types_mojom_traits.cc.orig	2020-11-13 06:37:06 UTC
+--- ui/gfx/mojom/native_handle_types_mojom_traits.cc.orig	2021-04-14 18:41:39 UTC
 +++ ui/gfx/mojom/native_handle_types_mojom_traits.cc
 @@ -8,15 +8,15 @@
  

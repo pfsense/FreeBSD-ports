@@ -1,9 +1,8 @@
 # Created by: Andrew Thompson <andy@fud.org.nz>
-# $FreeBSD$
 
 PORTNAME=	handbrake
 DISTVERSION=	1.3.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	multimedia
 DIST_SUBDIR=	${PORTNAME}
 
@@ -38,8 +37,8 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libopus.so:audio/opus \
 		libjansson.so:devel/jansson
 
-USES=		autoreconf:build compiler:c11 gmake iconv \
-		libtool:build localbase:ldflags pkgconfig python:3.6+,build
+USES=		autoreconf:build compiler:c11 gmake iconv libtool:build \
+		localbase:ldflags ninja:build pkgconfig python:3.6+,build
 
 CONTRIB_FILES=	fdk-aac-2.0.1.tar.gz \
 		ffmpeg-4.2.3.tar.bz2 \
@@ -117,9 +116,11 @@ X11_USE=	gstreamer1=gdkpixbuf,libav \
 # considered good in FreeBSD.  Instead, we will provide the downloaded files.
 post-extract: .SILENT
 	${MKDIR} ${WRKSRC}/download
-.for f in ${CONTRIB_FILES}
-	${CP} ${DISTDIR}/${DIST_SUBDIR}/${f} ${WRKSRC}/download
-.endfor
+
+pre-configure:
+	cd ${DISTDIR}/${DIST_SUBDIR} && \
+	    ${INSTALL_DATA} ${CONTRIB_FILES} \
+	    ${WRKSRC}/download
 # Install version information.
 	${CP} ${FILESDIR}/version.txt ${WRKSRC}
 # Following patches reduces warnings with clang.

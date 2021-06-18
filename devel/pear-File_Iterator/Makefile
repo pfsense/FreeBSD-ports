@@ -1,12 +1,11 @@
 # Created by: Martin Matuska <mm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	File_Iterator
 DISTVERSION=	3.0.5
 CATEGORIES=	devel www pear
 PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR FileIterator implementation
 
 LICENSE=	BSD3CLAUSE

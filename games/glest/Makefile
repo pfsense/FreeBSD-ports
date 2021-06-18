@@ -1,9 +1,8 @@
 # Created by: Jose Alonso Cardenas Marquez <acardenas@bsd.org.pe>
-# $FreeBSD$
 
 PORTNAME=	glest
 PORTVERSION=	3.2.2
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20source/${PORTVERSION}
 DISTNAME=	${PORTNAME}_source_${PORTVERSION}

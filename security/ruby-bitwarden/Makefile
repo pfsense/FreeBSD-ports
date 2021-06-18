@@ -1,10 +1,9 @@
 # Created by: Mark Felder <feld@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rubywarden
 DISTVERSION=	0.0.0.20200226
-#PORTREVISION=	1
-CATEGORIES=	     security www
+PORTREVISION=	0
+CATEGORIES=	security www
 
 MAINTAINER=	mr@FreeBSD.org
 COMMENT=	Ruby implementation of the BitWarden API

@@ -1,4 +1,4 @@
---- base/debug/stack_trace.cc.orig	2020-11-13 06:36:34 UTC
+--- base/debug/stack_trace.cc.orig	2021-04-14 18:40:48 UTC
 +++ base/debug/stack_trace.cc
 @@ -15,7 +15,7 @@
  

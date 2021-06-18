@@ -1,8 +1,7 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=		featherpad
-PORTVERSION=		0.16.0
+PORTVERSION=		0.18.0
 DISTVERSIONPREFIX=	V
 CATEGORIES=		editors
 

@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Games and related software
 
     SUBDIR += 0ad
@@ -19,6 +16,7 @@
     SUBDIR += KnightCap
     SUBDIR += NBlood
     SUBDIR += OpenDiablo2
+    SUBDIR += OpenLara
     SUBDIR += OpenTomb
     SUBDIR += abbayedesmorts
     SUBDIR += abe
@@ -105,7 +103,6 @@
     SUBDIR += bluemoon
     SUBDIR += bomber
     SUBDIR += bomberclone
-    SUBDIR += bomberinstinct
     SUBDIR += bombherman
     SUBDIR += bomns
     SUBDIR += bovo
@@ -128,7 +125,6 @@
     SUBDIR += bumprace
     SUBDIR += burgerspace
     SUBDIR += burrtools
-    SUBDIR += bygfoot
     SUBDIR += bzflag
     SUBDIR += bzflag-server
     SUBDIR += cake
@@ -138,7 +134,6 @@
     SUBDIR += cataclysm-dda-tiles
     SUBDIR += catesc
     SUBDIR += cave9
-    SUBDIR += cavezofphear
     SUBDIR += cdogs-sdl
     SUBDIR += cgoban
     SUBDIR += chapping
@@ -158,14 +153,12 @@
     SUBDIR += construo
     SUBDIR += coronapoker
     SUBDIR += corsix-th
-    SUBDIR += cosmo
     SUBDIR += cosmosmash
     SUBDIR += cowsay
     SUBDIR += crack-attack
     SUBDIR += craft
     SUBDIR += crafty
     SUBDIR += crashtest
-    SUBDIR += cre
     SUBDIR += cretan-hubris
     SUBDIR += crimson
     SUBDIR += crispy-doom
@@ -192,6 +185,7 @@
     SUBDIR += digger-vgl
     SUBDIR += divide-and-succeed
     SUBDIR += dmjava
+    SUBDIR += dobutsu
     SUBDIR += dodgindiamond2
     SUBDIR += domination
     SUBDIR += dontspace
@@ -206,7 +200,6 @@
     SUBDIR += doomsday
     SUBDIR += dose-response
     SUBDIR += dreamchess
-    SUBDIR += drm
     SUBDIR += duel
     SUBDIR += dunelegacy
     SUBDIR += dungeon
@@ -252,6 +245,7 @@
     SUBDIR += falconseye
     SUBDIR += fargoal
     SUBDIR += fbg2
+    SUBDIR += fheroes2
     SUBDIR += fightorperish
     SUBDIR += fillets-ng
     SUBDIR += filters
@@ -442,6 +436,11 @@
     SUBDIR += knetwalk
     SUBDIR += knights
     SUBDIR += kobodeluxe
+    SUBDIR += kodi-addon-game.libretro
+    SUBDIR += kodi-addon-game.libretro.beetle-psx
+    SUBDIR += kodi-addon-game.libretro.genplus
+    SUBDIR += kodi-addon-game.libretro.pcsx-rearmed
+    SUBDIR += kodi-addon-game.libretro.picodrive
     SUBDIR += kolf
     SUBDIR += kollision
     SUBDIR += konquest
@@ -473,6 +472,7 @@
     SUBDIR += libkmahjongg
     SUBDIR += liblcf
     SUBDIR += libmaitretarot
+    SUBDIR += libmanette
     SUBDIR += libmt_client
     SUBDIR += libretro
     SUBDIR += libretro-2048
@@ -588,6 +588,7 @@
     SUBDIR += manaplus
     SUBDIR += mancala
     SUBDIR += mangband
+    SUBDIR += marblemarcher
     SUBDIR += mari0
     SUBDIR += masterserver
     SUBDIR += maxr
@@ -604,12 +605,12 @@
     SUBDIR += minerbold
     SUBDIR += minetest
     SUBDIR += minetest_game
+    SUBDIR += minetestmapper
     SUBDIR += minilens
     SUBDIR += mirrormagic
     SUBDIR += miscom
     SUBDIR += mkhexgrid
     SUBDIR += moagg
-    SUBDIR += monster-masher
     SUBDIR += monsterz
     SUBDIR += moon-buggy
     SUBDIR += moonlander
@@ -627,6 +628,7 @@
     SUBDIR += naev-data
     SUBDIR += narcissu2
     SUBDIR += nazghul
+    SUBDIR += nbsdgames
     SUBDIR += nehquake
     SUBDIR += neo-cowsay
     SUBDIR += nethack32
@@ -739,6 +741,7 @@
     SUBDIR += phlipple
     SUBDIR += picmi
     SUBDIR += pinball
+    SUBDIR += pingus
     SUBDIR += pink-pony
     SUBDIR += pioneer
     SUBDIR += pioneers
@@ -816,8 +819,11 @@
     SUBDIR += r1q2
     SUBDIR += railroad-rampage
     SUBDIR += rawgl
+    SUBDIR += re3
     SUBDIR += redeclipse
     SUBDIR += redeclipse-data
+    SUBDIR += redeclipse-data16
+    SUBDIR += redeclipse16
     SUBDIR += redorblack
     SUBDIR += regoth
     SUBDIR += reminiscence
@@ -838,6 +844,7 @@
     SUBDIR += rocksndiamonds
     SUBDIR += rocksndiamonds-data
     SUBDIR += rottdc
+    SUBDIR += rpg-cli
     SUBDIR += rubix
     SUBDIR += rubygem-fortune_gem
     SUBDIR += rubygem-lolcat
@@ -1004,6 +1011,7 @@
     SUBDIR += wargus
     SUBDIR += warmux
     SUBDIR += warzone2100
+    SUBDIR += weebsay
     SUBDIR += wesnoth
     SUBDIR += whichwayisup
     SUBDIR += widelands
@@ -1080,6 +1088,8 @@
     SUBDIR += xmris
     SUBDIR += xmulti
     SUBDIR += xneko
+    SUBDIR += xnethack
+    SUBDIR += xnethack-nox11
     SUBDIR += xoct
     SUBDIR += xoids
     SUBDIR += xoj

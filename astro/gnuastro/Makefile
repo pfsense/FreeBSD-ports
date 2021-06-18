@@ -1,8 +1,7 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnuastro
-PORTVERSION=	0.13
+PORTVERSION=	0.15
 CATEGORIES=	astro
 MASTER_SITES=	GNU
 

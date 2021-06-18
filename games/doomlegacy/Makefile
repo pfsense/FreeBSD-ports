@@ -1,8 +1,7 @@
 # Created by: Alexander G. Chetirbock <bock@bock.nnov.ru>
-# $FreeBSD$
 
 PORTNAME=	doomlegacy
-PORTVERSION=	1.48.6
+PORTVERSION=	1.48.8
 PORTEPOCH=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${DISTVERSION:S,_,%20,}/

@@ -1,8 +1,7 @@
 # Created by: Neal Nelson <ports@nicandneal.net>
-# $FreeBSD$
 
 PORTNAME=	nim
-PORTVERSION=	1.4.2
+PORTVERSION=	1.4.8
 CATEGORIES=	lang
 MASTER_SITES=	https://nim-lang.org/download/
 
@@ -18,7 +17,6 @@ LIB_DEPENDS=	libpcre.so:devel/pcre
 TEST_DEPENDS=	node>=0:www/node
 
 USES=		compiler:c11 tar:xz
-USE_LDCONFIG=	yes
 
 CONFLICTS_INSTALL=	nimble
 

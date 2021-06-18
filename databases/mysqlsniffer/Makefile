@@ -1,5 +1,4 @@
 # Created by: Frederic Hardy <frederic.hardy@mageekbox.net>
-# $FreeBSD$
 
 PORTNAME=	mysqlsniffer
 PORTVERSION=	1.2
@@ -7,6 +6,9 @@ CATEGORIES=	databases
 
 MAINTAINER=	frederic.hardy@mageekbox.net
 COMMENT=	Tcpdump clone specifically for MySQL
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: decoded_len
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: decoded_len
 
 WRKSRC_SUBDIR=	${PORTNAME}
 

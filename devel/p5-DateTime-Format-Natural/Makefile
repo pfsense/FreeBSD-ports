@@ -1,8 +1,7 @@
 # Created by: Timur I. Bakeyev <bat@cpan.org>
-# $FreeBSD$
 
 PORTNAME=	DateTime-Format-Natural
-PORTVERSION=	1.11
+PORTVERSION=	1.12
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

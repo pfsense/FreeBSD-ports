@@ -1,9 +1,8 @@
 # Created by: Guangyuan Yang <ygy@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	websocketd
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.1
+DISTVERSION=	0.4.1
 CATEGORIES=	www
 
 MAINTAINER=	ygy@FreeBSD.org

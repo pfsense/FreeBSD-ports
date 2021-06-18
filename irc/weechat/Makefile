@@ -1,8 +1,7 @@
 # Created by: clement
-# $FreeBSD$
 
 PORTNAME=	weechat
-DISTVERSION=	3.0
+DISTVERSION=	3.1
 CATEGORIES=	irc
 MASTER_SITES=	https://weechat.org/files/src/
 

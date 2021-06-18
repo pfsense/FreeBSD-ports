@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=		cd-hit
 DISTVERSIONPREFIX=	V
 DISTVERSION=		4.8.1
-PORTREVISION=	1
+PORTREVISION=		2
 CATEGORIES=		biology
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -11,7 +9,7 @@ COMMENT=	Clustering and comparing protein or nucleotide sequences
 
 LICENSE=	GPLv2
 
-USES=		compiler:openmp gmake shebangfix
+USES=		gmake shebangfix
 USE_GITHUB=	yes
 
 GH_ACCOUNT=	weizhongli

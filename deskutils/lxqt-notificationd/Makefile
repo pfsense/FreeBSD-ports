@@ -1,8 +1,7 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	lxqt-notificationd
-PORTVERSION=	0.16.0
+PORTVERSION=	0.17.0
 CATEGORIES=	deskutils
 MASTER_SITES=	LXQT
 

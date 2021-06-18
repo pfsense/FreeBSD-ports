@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	IO-File-AtomicChange
 PORTVERSION=	0.05
 CATEGORIES=	devel perl5

@@ -1,10 +1,9 @@
 # Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
 
 PORTNAME=	audiofile
 PORTVERSION=	0.3.6
-DISTVERSIONSUFFIX=	-4.el7
-PORTREVISION=	1
+DISTVERSIONSUFFIX=	-9.el7
+PORTREVISION=	2
 CATEGORIES=	audio linux
 
 MAINTAINER=	emulation@FreeBSD.org

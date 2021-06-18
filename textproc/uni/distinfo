@@ -1,5 +1,11 @@
-TIMESTAMP = 1591008278
-SHA256 (arp242-uni-v1.1.1_GH0.tar.gz) = d29fdd8f34f726e6752e87f554d8ea73e324b7729afaf4bd52fcae04c7638757
-SIZE (arp242-uni-v1.1.1_GH0.tar.gz) = 412723
-SHA256 (golang-sys-bd437916bb0e_GH0.tar.gz) = 649b142ea9aec8da603327e456442cb625ddd8a99cddb2e4ee72c9a40a9fd712
-SIZE (golang-sys-bd437916bb0e_GH0.tar.gz) = 1515958
+TIMESTAMP = 1623012421
+SHA256 (arp242-uni-v2.2.0_GH0.tar.gz) = cf93dec8938e9e453bbeef17f9ef9a35e7253139eec9c15ab91cff52cf9643b4
+SIZE (arp242-uni-v2.2.0_GH0.tar.gz) = 456910
+SHA256 (golang-sys-c6e025ad8005_GH0.tar.gz) = 5480e2d804b33b60d3c4a360cd2a8aecb6fbc6c87b583d917fa5d9d5bba8352a
+SIZE (golang-sys-c6e025ad8005_GH0.tar.gz) = 1217570
+SHA256 (golang-term-de623e64d2a6_GH0.tar.gz) = 7431f7be907f0bd2a877e3a139cd3a10da7cac5a9bd34fb3a2eaf2cfccbf2bf2
+SIZE (golang-term-de623e64d2a6_GH0.tar.gz) = 15348
+SHA256 (zgoat-zli-b5f2a73532d6_GH0.tar.gz) = aa8ca263404cba5d9b33337c922ec28d35b96765c503bd6da593cb1a2ffdf0b4
+SIZE (zgoat-zli-b5f2a73532d6_GH0.tar.gz) = 25091
+SHA256 (zgoat-zstd-ca7824321150_GH0.tar.gz) = 0ca3c799de36e83a4f269d3fb04d2c0f6e39414504538fb3e8354241ff44728a
+SIZE (zgoat-zstd-ca7824321150_GH0.tar.gz) = 62704

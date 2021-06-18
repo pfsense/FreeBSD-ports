@@ -1,9 +1,8 @@
 # Created by: Andreas Kohn <andreas@syndrom23.de>
-# $FreeBSD$
 
 PORTNAME=	notification-daemon
 PORTVERSION=	3.20.0
-PORTERVISION=	1
+PORTREVISION=	1
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	CHI-Driver-Memcached
 PORTVERSION=	0.16
 CATEGORIES=	databases perl5

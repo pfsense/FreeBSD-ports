@@ -25,11 +25,24 @@ require_once('config.inc');
 require_once('globals.inc');
 global $g, $config;
 
+$config = parse_config(true);
+
 // Enable logging if called via pfBlockerNG
 $verbose = FALSE;
 if ($g['pfblockerng_include_verbose']) {
 	$verbose = TRUE;
 	require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
+}
+
+// Ensure log file permissions are set as 'unbound:unbound'
+foreach (array('dnsbl.log', 'dns_reply.log', 'unified.log') as $logfile) {
+
+	if (!file_exists("/var/log/pfblockerng/{$logfile}")) {
+		touch("/var/log/pfblockerng/{$logfile}");
+	}
+
+	@chown("/var/log/pfblockerng/{$logfile}", 'unbound');
+	@chgrp("/var/log/pfblockerng/{$logfile}", 'unbound');
 }
 
 $python_mode = FALSE;
@@ -40,15 +53,13 @@ if (isset($config['unbound']['python']) && !empty($config['unbound']['python_scr
 	// DNSBL Python mode is not compatable with dhcpleases binary code,
 	// as it attempts to HUP the Unbound PID and will cause DNSBL Python mode to crash Unbound
 
-	$config = parse_config(true);
-
 	// Force DNSBL Mode to DNSBL Unbound mode until the DNS Resolver DHCP Registration option has been disabled.
 	if (isset($config['unbound']['regdhcp'])) {
 		$python_mode = FALSE;
 
 		unset($config['unbound']['python']);
-		write_config('pfBlockerNG: Disable DNSBL python due to DNS Resolver DHCP Registration enabled');
-		$log = "[pfBlockerNG]: Terminating DNSBL Python mode due to DNS Resolver DHCP Registration option enabled!\n";
+		write_config('pfBlockerNG: Disable DNSBL python due to DNS Resolver DHCP Registration enabled (include)');
+		$log = "[pfBlockerNG]: Terminating DNSBL Python mode due to DNS Resolver DHCP Registration option enabled! (include)\n";
 		@file_put_contents('/var/log/pfblockerng/py_error.log', $log, FILE_APPEND); 
 	} else {
 		$python_mode = TRUE;		// This variable to remain in future

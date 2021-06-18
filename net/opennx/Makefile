@@ -1,9 +1,8 @@
 # Created by: Timothy Beyer <beyert@cs.ucr.edu>
-# $FreeBSD$
 
 PORTNAME=	opennx
 PORTVERSION=	0.16.0.729
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/CI-source
 

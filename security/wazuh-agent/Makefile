@@ -1,14 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	wazuh
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.0.3
+DISTVERSION=	4.1.5
 CATEGORIES=	security
-MASTER_SITES=	https://packages.wazuh.com/deps/4.0/
+MASTER_SITES=	https://packages.wazuh.com/deps/11/libraries/sources/
 PKGNAMESUFFIX=	-agent
-DISTFILES=	cJSON.tar.gz src_cpython.tar.gz curl.tar.gz libdb.tar.gz libffi.tar.gz \
-		libyaml.tar.gz openssl.tar.gz procps.tar.gz sqlite.tar.gz  zlib.tar.gz \
-		audit-userspace.tar.gz msgpack.tar.gz
+DISTFILES=	cJSON.tar.gz libplist.tar.gz curl.tar.gz libdb.tar.gz libffi.tar.gz \
+		libyaml.tar.gz openssl.tar.gz procps.tar.gz sqlite.tar.gz zlib.tar.gz \
+		audit-userspace.tar.gz msgpack.tar.gz bzip2.tar.gz libpcre2.tar.gz
 DIST_SUBDIR=	${PORTNAME}-${DISTVERSION}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -44,7 +42,8 @@ WAZUHMOD750=	/ /logs/ossec /bin /lib /queue /queue/diff /ruleset /ruleset/sca /w
 		/wodles/oscap /wodles/oscap/content
 
 WAZUHMOD770=	/logs /queue/alerts /queue/fim /queue/fim/db /queue/ossec /etc /etc/shared \
-		/.ssh /var/run /var/upgrade /var/wodles /var/incoming
+		/.ssh /var/run /var/upgrade /var/wodles /var/incoming /queue/ossec/fim \
+		/queue/ossec/fim/db
 
 WAZUHPREFIX=	/var/ossec
 

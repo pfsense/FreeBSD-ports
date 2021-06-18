@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	direwolf
 DISTVERSION=	1.5
 PORTREVISION=	1

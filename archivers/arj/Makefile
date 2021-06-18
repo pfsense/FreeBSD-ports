@@ -1,5 +1,4 @@
 # Created by: Konstantin Reznichenko <kot@premierbank.dp.ua>
-# $FreeBSD$
 
 PORTNAME=	arj
 PORTVERSION=	3.10.22
@@ -8,7 +7,7 @@ CATEGORIES=	archivers
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/2.78_3.10%20build%2022:source \
 		DEBIAN_POOL:patch
 DISTFILES=	${PORTNAME}-${PORTVERSION}.tar.gz:source \
-		${PORTNAME}_${PORTVERSION}-23.debian.tar.xz:patch
+		${PORTNAME}_${PORTVERSION}-24.debian.tar.xz:patch
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Open source implementation of the ARJ archiver

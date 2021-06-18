@@ -1,21 +1,20 @@
 # Created by: Yinghong.Liu <relaxbsd@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	synfig
 PORTVERSION=	1.2.2
 DISTVERSIONPREFIX=v
-PORTREVISION=	9
+PORTREVISION=	13
 CATEGORIES=	devel graphics multimedia
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Vector based 2D animation package
 
 LICENSE=	GPLv2+
 
 BUILD_DEPENDS=	etl>=1.2.2:devel/etl \
 		gsed:textproc/gsed
-LIB_DEPENDS=	libHalf.so:graphics/ilmbase \
-		libIlmImf.so:graphics/openexr \
+LIB_DEPENDS=	libImath.so:math/Imath \
+		libOpenEXR.so:graphics/openexr \
 		libMagickWand-6.so:graphics/ImageMagick6 \
 		libavcodec.so:multimedia/ffmpeg \
 		libboost_program_options.so:devel/boost-libs \

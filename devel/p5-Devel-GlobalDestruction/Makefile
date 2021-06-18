@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Devel-GlobalDestruction
 PORTVERSION=	0.14
 CATEGORIES=	devel perl5

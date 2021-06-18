@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	win32-file-security
 PORTVERSION=	1.0.10
 CATEGORIES=	sysutils rubygems

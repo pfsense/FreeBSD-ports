@@ -1,9 +1,8 @@
 # Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
-# $FreeBSD$
 
 PORTNAME=	octave-forge-benchmark
 PORTVERSION=	1.1.1
-PORTREVISION=	24
+PORTREVISION=	25
 CATEGORIES=	benchmarks math
 
 MAINTAINER=	stephen@FreeBSD.org

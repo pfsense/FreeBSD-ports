@@ -1,4 +1,4 @@
---- content/public/common/use_zoom_for_dsf_policy.cc.orig	2020-11-13 06:36:43 UTC
+--- content/public/common/use_zoom_for_dsf_policy.cc.orig	2021-04-14 18:41:03 UTC
 +++ content/public/common/use_zoom_for_dsf_policy.cc
 @@ -25,7 +25,7 @@ const base::Feature kUseZoomForDsfEnabledByDefault{
  #endif

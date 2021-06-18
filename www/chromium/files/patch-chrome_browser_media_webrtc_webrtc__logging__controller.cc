@@ -1,4 +1,4 @@
---- chrome/browser/media/webrtc/webrtc_logging_controller.cc.orig	2020-11-13 06:36:37 UTC
+--- chrome/browser/media/webrtc/webrtc_logging_controller.cc.orig	2021-04-14 18:40:53 UTC
 +++ chrome/browser/media/webrtc/webrtc_logging_controller.cc
 @@ -23,10 +23,10 @@
  #include "content/public/browser/browser_context.h"

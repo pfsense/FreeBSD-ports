@@ -1,9 +1,8 @@
 # Created by: Ayumi M <ayu@commun.jp>
-# $FreeBSD$
 
 PORTNAME=	murmur
 PORTVERSION=	1.3.3
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	audio net
 
 MAINTAINER=	feld@FreeBSD.org

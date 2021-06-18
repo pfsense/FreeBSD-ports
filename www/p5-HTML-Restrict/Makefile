@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	HTML-Restrict
 PORTVERSION=	2.2.2
 CATEGORIES=	www perl5

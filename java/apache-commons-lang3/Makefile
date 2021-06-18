@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	commons-lang3
 PORTVERSION=	3.8.1
 CATEGORIES=	java devel

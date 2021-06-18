@@ -1,4 +1,4 @@
---- chrome/browser/profiles/profiles_state.cc.orig	2021-01-19 11:26:28 UTC
+--- chrome/browser/profiles/profiles_state.cc.orig	2021-04-14 18:40:54 UTC
 +++ chrome/browser/profiles/profiles_state.cc
 @@ -179,7 +179,7 @@ bool IsRegularOrGuestSession(Browser* browser) {
  bool IsGuestModeRequested(const base::CommandLine& command_line,

@@ -1,8 +1,7 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	libqtxdg
-PORTVERSION=	3.6.0
+PORTVERSION=	3.7.1
 CATEGORIES=	devel
 MASTER_SITES=	LXQT/${PORTNAME}
 

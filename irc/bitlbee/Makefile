@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bitlbee
 PORTVERSION=	3.6
 PORTREVISION=	1

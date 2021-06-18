@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dateutils
 PORTVERSION=	0.4.1
 PORTREVISION=	1

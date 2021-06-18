@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ast
-PORTVERSION=	1.0.10
+PORTVERSION=	1.0.12
 CATEGORIES=	devel
 
 MAINTAINER=	sunpoet@FreeBSD.org

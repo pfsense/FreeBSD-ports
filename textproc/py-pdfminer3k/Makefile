@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pdfminer3k
 PORTVERSION=	1.3.4
 CATEGORIES=	textproc python

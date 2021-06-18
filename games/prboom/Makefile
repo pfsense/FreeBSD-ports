@@ -1,5 +1,4 @@
 # Created by: Jordan DeLong <fracture@allusion.net>
-# $FreeBSD$
 
 PORTNAME=	prboom
 PORTVERSION=	2.5.0
@@ -13,7 +12,7 @@ COMMENT=	Multiplayer-capable and modified version of ID's classic DOOM game
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libsmpeg.so:multimedia/smpeg \
-		libpng16.so:graphics/png
+		libpng.so:graphics/png
 
 USES=		gmake sdl
 USE_GL=		gl

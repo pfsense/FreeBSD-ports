@@ -1,5 +1,4 @@
 # Created by: SeaD
-# $FreeBSD$
 
 PORTNAME=	ipguard
 PORTVERSION=	1.04
@@ -11,6 +10,9 @@ MAINTAINER=	sead@deep.perm.ru
 COMMENT=	Tool designed to protect LAN IP address space by ARP spoofing
 
 LICENSE=	BSD2CLAUSE
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: addr_nosubst
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: addr_nosubst
 
 LIB_DEPENDS=	libnet.so:net/libnet
 

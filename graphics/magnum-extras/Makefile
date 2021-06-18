@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	magnum-extras
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2019.10

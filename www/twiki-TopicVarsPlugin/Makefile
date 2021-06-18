@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	TopicVarsPlugin
 SVNREV=		16417
 # with modifications, to be committed to SVN

@@ -1,8 +1,8 @@
 # Created by: Josh Gilliam <josh@quick.net>
-# $FreeBSD$
 
 PORTNAME=	aspell
 PORTVERSION=	0.60.8
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	textproc
 MASTER_SITES=	GNU/aspell

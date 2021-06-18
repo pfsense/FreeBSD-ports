@@ -1,9 +1,8 @@
 # Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	less
 PORTVERSION=	1.2.21
-#PORTREVISION=	0
+PORTREVISION=	0
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 

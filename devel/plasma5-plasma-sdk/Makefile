@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	plasma-sdk
 DISTVERSION=	${KDE_PLASMA_VERSION}
 CATEGORIES=	devel kde kde-plasma
@@ -12,7 +10,8 @@ USE_KDE=	archive attica auth codecs completion config configwidgets \
 		coreaddons dbusaddons ecm i18n iconthemes itemmodels \
 		jobwidgets kdeclarative kio kirigami2 newstuff package parts \
 		plasma-framework service sonnet texteditor textwidgets \
-		widgetsaddons windowsystem xmlgui
+		widgetsaddons windowsystem xmlgui \
+		doctools_build
 USE_QT=		concurrent core dbus declarative gui network webkit widgets x11extras xml \
 		buildtools_build qmake_build
 

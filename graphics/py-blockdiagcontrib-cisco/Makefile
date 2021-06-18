@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	blockdiagcontrib-cisco
 PORTVERSION=	0.1.8
 PORTREVISION=	2

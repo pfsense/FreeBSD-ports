@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mcollective-service-agent
 
 COMMENT=	MCollective agent to manage the OS Services

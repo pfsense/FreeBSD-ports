@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	glucose
 DISTVERSION=	4.1
 PORTREVISION=	3

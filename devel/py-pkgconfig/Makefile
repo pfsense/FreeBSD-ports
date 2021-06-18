@@ -1,8 +1,7 @@
 # Created by: Johannes Meixner <johannes@perceivon.net>
-# $FreeBSD$
 
 PORTNAME=	pkgconfig
-PORTVERSION=	1.5.1
+PORTVERSION=	1.5.2
 PORTEPOCH=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP

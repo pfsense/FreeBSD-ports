@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	luola
 PORTVERSION=	1.3.2
 PORTREVISION=	7
@@ -16,6 +13,9 @@ COMMENT=	2D multiplayer cave-flying game
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: Pilot
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: Pilot
 
 GNU_CONFIGURE=	yes
 USES=		gmake sdl

@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	curv
 DISTVERSION=	0.4-417
 DISTVERSIONSUFFIX=	-gf6f8d011
-PORTREVISION=	12
+PORTREVISION=	15
 CATEGORIES=	math lang graphics
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -16,7 +14,7 @@ BUILD_DEPENDS=	glm>0:math/glm
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libdouble-conversion.so:devel/double-conversion \
 		libglfw.so:graphics/glfw \
-		libHalf.so:graphics/ilmbase \
+		libImath.so:math/Imath \
 		libopenvdb.so:misc/openvdb \
 		libtbb.so:devel/tbb
 

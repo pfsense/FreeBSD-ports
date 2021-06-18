@@ -1,8 +1,7 @@
 # Created by: vanilla
-# $FreeBSD$
 
 PORTNAME=	protobuf
-PORTVERSION=   3.13.0
+PORTVERSION=	3.14.0
 DISTVERSIONPREFIX=	cpp-
 PORTEPOCH=	1
 CATEGORIES=	devel

@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	pengupop
 PORTVERSION=	2.2.6
 PORTREVISION=	3

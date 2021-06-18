@@ -1,11 +1,10 @@
 # Created by: Rong-En Fan <rafan@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	MDB2_Driver_mysqli
 DISTVERSION=	1.5.0b4
 CATEGORIES=	databases www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR MySQL MDB2 driver
 
 LICENSE=	BSD3CLAUSE

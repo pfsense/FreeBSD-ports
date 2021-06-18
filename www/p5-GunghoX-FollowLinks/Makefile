@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	GunghoX-FollowLinks
 PORTVERSION=	0.00006
 PORTREVISION=	1

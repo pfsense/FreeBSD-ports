@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	DBIx-Class-Migration
 PORTVERSION=	0.073
 CATEGORIES=	databases perl5

@@ -1,8 +1,7 @@
 # Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	cinnamon-control-center
-PORTVERSION=	4.8.1
+PORTVERSION=	4.8.2
 CATEGORIES=	sysutils gnome
 DIST_SUBDIR=	gnome
 

@@ -1,5 +1,4 @@
 # Created by: Stefan Bethke <stb@lassitu.de>
-# $FreeBSD$
 
 PORTNAME=	sauserprefs
 PORTVERSION=	1.10 # PLEASE MIRROR DISTFILE WITH VERSIONED DIR
@@ -19,6 +18,7 @@ LICENSE=	GPLv3
 RUN_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=0.8:mail/roundcube@${PHP_FLAVOR}
 
 USES=	php:flavors
+IGNORE_WITH_PHP=80
 NO_BUILD=	yes
 NO_ARCH=	yes
 

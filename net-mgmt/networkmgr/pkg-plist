@@ -1,9 +1,12 @@
 bin/netcardmgr
 bin/networkmgr
+bin/setup-nic
+etc/devd/setupnic.conf
 etc/sudoers.d/networkmgr
 etc/xdg/autostart/networkmgr.desktop
 share/icons/hicolor/128x128/apps/nm-adhoc.png
 share/icons/hicolor/128x128/apps/nm-device-wired-secure.png
+share/icons/hicolor/128x128/apps/nm-device-wired.png
 share/icons/hicolor/128x128/apps/nm-no-connection.png
 share/icons/hicolor/128x128/apps/nm-signal-00-secure.png
 share/icons/hicolor/128x128/apps/nm-signal-00.png
@@ -17,6 +20,7 @@ share/icons/hicolor/128x128/apps/nm-signal-75-secure.png
 share/icons/hicolor/128x128/apps/nm-signal-75.png
 share/icons/hicolor/16x16/apps/nm-adhoc.png
 share/icons/hicolor/16x16/apps/nm-device-wired-secure.png
+share/icons/hicolor/16x16/apps/nm-device-wired.png
 share/icons/hicolor/16x16/apps/nm-no-connection.png
 share/icons/hicolor/16x16/apps/nm-signal-00-secure.png
 share/icons/hicolor/16x16/apps/nm-signal-00.png
@@ -30,6 +34,7 @@ share/icons/hicolor/16x16/apps/nm-signal-75-secure.png
 share/icons/hicolor/16x16/apps/nm-signal-75.png
 share/icons/hicolor/192x192/apps/nm-adhoc.png
 share/icons/hicolor/192x192/apps/nm-device-wired-secure.png
+share/icons/hicolor/192x192/apps/nm-device-wired.png
 share/icons/hicolor/192x192/apps/nm-no-connection.png
 share/icons/hicolor/192x192/apps/nm-signal-00-secure.png
 share/icons/hicolor/192x192/apps/nm-signal-00.png
@@ -43,6 +48,7 @@ share/icons/hicolor/192x192/apps/nm-signal-75-secure.png
 share/icons/hicolor/192x192/apps/nm-signal-75.png
 share/icons/hicolor/20x20/apps/nm-adhoc.png
 share/icons/hicolor/20x20/apps/nm-device-wired-secure.png
+share/icons/hicolor/20x20/apps/nm-device-wired.png
 share/icons/hicolor/20x20/apps/nm-no-connection.png
 share/icons/hicolor/20x20/apps/nm-signal-00-secure.png
 share/icons/hicolor/20x20/apps/nm-signal-00.png
@@ -56,6 +62,7 @@ share/icons/hicolor/20x20/apps/nm-signal-75-secure.png
 share/icons/hicolor/20x20/apps/nm-signal-75.png
 share/icons/hicolor/24x24/apps/nm-adhoc.png
 share/icons/hicolor/24x24/apps/nm-device-wired-secure.png
+share/icons/hicolor/24x24/apps/nm-device-wired.png
 share/icons/hicolor/24x24/apps/nm-no-connection.png
 share/icons/hicolor/24x24/apps/nm-signal-00-secure.png
 share/icons/hicolor/24x24/apps/nm-signal-00.png
@@ -69,6 +76,7 @@ share/icons/hicolor/24x24/apps/nm-signal-75-secure.png
 share/icons/hicolor/24x24/apps/nm-signal-75.png
 share/icons/hicolor/256x256/apps/nm-adhoc.png
 share/icons/hicolor/256x256/apps/nm-device-wired-secure.png
+share/icons/hicolor/256x256/apps/nm-device-wired.png
 share/icons/hicolor/256x256/apps/nm-no-connection.png
 share/icons/hicolor/256x256/apps/nm-signal-00-secure.png
 share/icons/hicolor/256x256/apps/nm-signal-00.png
@@ -82,6 +90,7 @@ share/icons/hicolor/256x256/apps/nm-signal-75-secure.png
 share/icons/hicolor/256x256/apps/nm-signal-75.png
 share/icons/hicolor/32x32/apps/nm-adhoc.png
 share/icons/hicolor/32x32/apps/nm-device-wired-secure.png
+share/icons/hicolor/32x32/apps/nm-device-wired.png
 share/icons/hicolor/32x32/apps/nm-no-connection.png
 share/icons/hicolor/32x32/apps/nm-signal-00-secure.png
 share/icons/hicolor/32x32/apps/nm-signal-00.png
@@ -95,6 +104,7 @@ share/icons/hicolor/32x32/apps/nm-signal-75-secure.png
 share/icons/hicolor/32x32/apps/nm-signal-75.png
 share/icons/hicolor/36x36/apps/nm-adhoc.png
 share/icons/hicolor/36x36/apps/nm-device-wired-secure.png
+share/icons/hicolor/36x36/apps/nm-device-wired.png
 share/icons/hicolor/36x36/apps/nm-no-connection.png
 share/icons/hicolor/36x36/apps/nm-signal-00-secure.png
 share/icons/hicolor/36x36/apps/nm-signal-00.png
@@ -108,6 +118,7 @@ share/icons/hicolor/36x36/apps/nm-signal-75-secure.png
 share/icons/hicolor/36x36/apps/nm-signal-75.png
 share/icons/hicolor/48x48/apps/nm-adhoc.png
 share/icons/hicolor/48x48/apps/nm-device-wired-secure.png
+share/icons/hicolor/48x48/apps/nm-device-wired.png
 share/icons/hicolor/48x48/apps/nm-no-connection.png
 share/icons/hicolor/48x48/apps/nm-signal-00-secure.png
 share/icons/hicolor/48x48/apps/nm-signal-00.png
@@ -121,6 +132,7 @@ share/icons/hicolor/48x48/apps/nm-signal-75-secure.png
 share/icons/hicolor/48x48/apps/nm-signal-75.png
 share/icons/hicolor/512x512/apps/nm-adhoc.png
 share/icons/hicolor/512x512/apps/nm-device-wired-secure.png
+share/icons/hicolor/512x512/apps/nm-device-wired.png
 share/icons/hicolor/512x512/apps/nm-no-connection.png
 share/icons/hicolor/512x512/apps/nm-signal-00-secure.png
 share/icons/hicolor/512x512/apps/nm-signal-00.png
@@ -134,6 +146,7 @@ share/icons/hicolor/512x512/apps/nm-signal-75-secure.png
 share/icons/hicolor/512x512/apps/nm-signal-75.png
 share/icons/hicolor/64x64/apps/nm-adhoc.png
 share/icons/hicolor/64x64/apps/nm-device-wired-secure.png
+share/icons/hicolor/64x64/apps/nm-device-wired.png
 share/icons/hicolor/64x64/apps/nm-no-connection.png
 share/icons/hicolor/64x64/apps/nm-signal-00-secure.png
 share/icons/hicolor/64x64/apps/nm-signal-00.png
@@ -147,6 +160,7 @@ share/icons/hicolor/64x64/apps/nm-signal-75-secure.png
 share/icons/hicolor/64x64/apps/nm-signal-75.png
 share/icons/hicolor/72x72/apps/nm-adhoc.png
 share/icons/hicolor/72x72/apps/nm-device-wired-secure.png
+share/icons/hicolor/72x72/apps/nm-device-wired.png
 share/icons/hicolor/72x72/apps/nm-no-connection.png
 share/icons/hicolor/72x72/apps/nm-signal-00-secure.png
 share/icons/hicolor/72x72/apps/nm-signal-00.png
@@ -160,6 +174,7 @@ share/icons/hicolor/72x72/apps/nm-signal-75-secure.png
 share/icons/hicolor/72x72/apps/nm-signal-75.png
 share/icons/hicolor/96x96/apps/nm-adhoc.png
 share/icons/hicolor/96x96/apps/nm-device-wired-secure.png
+share/icons/hicolor/96x96/apps/nm-device-wired.png
 share/icons/hicolor/96x96/apps/nm-no-connection.png
 share/icons/hicolor/96x96/apps/nm-signal-00-secure.png
 share/icons/hicolor/96x96/apps/nm-signal-00.png
@@ -173,6 +188,7 @@ share/icons/hicolor/96x96/apps/nm-signal-75-secure.png
 share/icons/hicolor/96x96/apps/nm-signal-75.png
 share/icons/hicolor/scalable/apps/nm-adhoc.svg
 share/icons/hicolor/scalable/apps/nm-device-wired-secure.svg
+share/icons/hicolor/scalable/apps/nm-device-wired.png
 share/icons/hicolor/scalable/apps/nm-no-connection.svg
 share/icons/hicolor/scalable/apps/nm-signal-00-secure.svg
 share/icons/hicolor/scalable/apps/nm-signal-00.svg

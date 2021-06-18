@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Parallel-Async
 PORTVERSION=	0.03
 PORTREVISION=	1

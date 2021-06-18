@@ -1,5 +1,4 @@
 # Created by: Roman Shterenzon <roman@xpert.com>
-# $FreeBSD$
 
 PORTNAME=	gq
 PORTVERSION=	1.3.4
@@ -15,12 +14,15 @@ LICENSE=	GPLv2+ LGPL21+ # some source files are under lgpl
 LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
 
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: dt_entry_handler
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: dt_entry_handler
+
 LIB_DEPENDS=	libgnome-keyring.so:security/libgnome-keyring
 
-USE_GNOME=	intltool libglade2
-USE_OPENLDAP=	yes
 USES=		desktop-file-utils gettext gmake gnome pkgconfig \
 		shared-mime-info ssl
+USE_GNOME=	intltool libglade2
+USE_OPENLDAP=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-ldap-prefix=${LOCALBASE} --disable-update-mimedb
 INSTALLS_ICONS=	yes

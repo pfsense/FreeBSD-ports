@@ -1,5 +1,4 @@
 # Created by: Alexander Logvinov <ports@logvinov.com>
-# $FreeBSD$
 
 PORTNAME=	quaqut
 PORTVERSION=	0.2.0
@@ -8,6 +7,9 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20C%20sources/${PORTNAME}-${PORTVERSION
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Queries information from Unreal Tournament 2004 game servers
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: quaqut
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: quaqut
 
 HAS_CONFIGURE=	yes
 USE_RC_SUBR=	${PORTNAME}

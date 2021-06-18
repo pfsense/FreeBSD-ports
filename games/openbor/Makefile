@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	openbor
 # Hint: svn revision is git rev-list --count ${GH_TAGNAME}
-PORTVERSION?=	7096
+PORTVERSION?=	7123
 .ifndef PKGNAMESUFFIX
 PORTREVISION=	0
 .endif
@@ -38,7 +36,7 @@ PORTSCOUT=	ignore:1
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	DCurrent
-GH_TAGNAME?=	b8a2cef9
+GH_TAGNAME?=	f5261e7c
 
 USES+=		gmake pkgconfig sdl
 .if ${PORTVERSION} < 4433
@@ -46,7 +44,7 @@ USE_CSTD=	gnu89
 .endif
 .if ${PORTVERSION} < 4108
 USE_SDL=	gfx
-.elif ${PORTVERSION} < 6639
+.elif ${PORTVERSION} < 6639 || ${PORTVERSION} >= 7119
 USE_SDL=	gfx2
 .else
 USE_SDL=	sdl2
@@ -57,7 +55,9 @@ MAKE_ENV=	BUILD_LINUX=1 SDKPATH="${LOCALBASE}" \
 MAKE_ARGS=	CC="${CC}" LIBRARIES="${LOCALBASE}/lib" \
 		TARGET_ARCH=${ARCH:S/i386/x86/} ARCHFLAGS="" \
 		TARGET_FINAL='${TARGET}' BUILD_MMX="" ECHO="${ECHO}"
+.if ${PORTVERSION} < 7098
 CFLAGS+=	-fcommon # https://github.com/DCurrent/openbor/issues/206
+.endif
 LDFLAGS+=	-Wl,--as-needed # ogg, pthread, zlib
 SUB_FILES=	pkg-message
 SUB_LIST=	PKGBASE=${PKGBASE}
@@ -101,6 +101,7 @@ post-patch:
 		's,malloc\.h,stdlib.h,'
 	@${REINPLACE_CMD} -e 's/^function \(.*\) {/\1() {/' \
 		-e '/^[[:space:]]*VERSION_.*=0000/d' \
+		-e '/.*read -r VERSION_/d' \
 		${WRKSRC}/version.sh
 
 do-configure:

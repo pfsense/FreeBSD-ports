@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	kile
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.0b3
-PORTREVISION=	13
+PORTREVISION=	20
 CATEGORIES=	editors kde
 
 MAINTAINER=	kde@FreeBSD.org
@@ -21,13 +19,13 @@ USE_KDE=	auth bookmarks codecs completion config configwidgets \
 		coreaddons crash dbusaddons ecm guiaddons i18n iconthemes \
 		init itemviews jobwidgets js khtml kio parts service solid \
 		sonnet texteditor textwidgets widgetsaddons windowsystem xmlgui \
-		okular
+		okular \
+		doctools_build
 USE_QT=		concurrent core dbus gui network script widgets xml \
 		buildtools_build qmake_build
 SHEBANG_FILES=	*.pl
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	kde
+KDE_INVENT=	09ee4ef0417165b93da82c1fc057b9e1713a0c05 office
 
 OPTIONS_DEFINE=	DOCS
 

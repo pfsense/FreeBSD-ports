@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	casadi
 DISTVERSION=	3.5.5
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -35,7 +34,7 @@ BONMIN_DESC=		Build with Bonmin
 BONMIN_CMAKE_BOOL=	WITH_BONMIN
 BONMIN_USES=		blaslapack:netlib fortran
 BONMIN_LIB_DEPENDS=	libbonmin.so:math/bonmin \
-			libCbcSolver.so:math/coinmp \
+			libCbcSolver.so:math/cbc \
 			libipopt.so:math/ipopt
 
 CLANG_DESC=		Build with clang for JIT
@@ -66,5 +65,7 @@ CPP=		clang-cpp${LLVM_DEFAULT}
 CC=		clang${LLVM_DEFAULT}
 CXX=		clang++${LLVM_DEFAULT}
 .endif
+
+PORTSCOUT=	limit:^.*[1-9]\..* # prevent tags like ge2
 
 .include <bsd.port.mk>

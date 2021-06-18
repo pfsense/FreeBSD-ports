@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pl-puppetdb-ruby
 PORTVERSION=	2.0.3
 CATEGORIES=	databases rubygems

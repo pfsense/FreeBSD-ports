@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mod_asn
 PORTVERSION=	1.7
 PORTREVISION=	2

@@ -15,7 +15,7 @@ man/man1/emacsclient.1.gz
 man/man1/etags.1.gz
 share/applications/emacs.desktop
 share/applications/emacsclient.desktop
-share/metainfo/emacs.appdata.xml
+%%NO_NATIVECOMP%%share/metainfo/emacs.metainfo.xml
 %%DATADIR%%/%%EMACS_VER%%/etc/AUTHORS
 %%DATADIR%%/%%EMACS_VER%%/etc/CALC-NEWS
 %%DATADIR%%/%%EMACS_VER%%/etc/COPYING
@@ -189,12 +189,12 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/etc/edt-user.el
 %%DATADIR%%/%%EMACS_VER%%/etc/emacs-buffer.gdb
 %%DATADIR%%/%%EMACS_VER%%/etc/emacs-mail.desktop
-%%DATADIR%%/%%EMACS_VER%%/etc/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/etc/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/emacs.icon
 %%DATADIR%%/%%EMACS_VER%%/etc/emacs.service
 %%DATADIR%%/%%EMACS_VER%%/etc/emacsclient.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/enriched.txt
+%%DATADIR%%/%%EMACS_VER%%/etc/facemenu-removal.txt
 %%DATADIR%%/%%EMACS_VER%%/etc/forms/README
 %%DATADIR%%/%%EMACS_VER%%/etc/forms/forms-d2.dat
 %%DATADIR%%/%%EMACS_VER%%/etc/forms/forms-d2.el
@@ -213,6 +213,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/etc/images/bookmark_add.xpm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/cancel.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/cancel.xpm
+%%DATADIR%%/%%EMACS_VER%%/etc/images/checkbox-mixed.svg
+%%DATADIR%%/%%EMACS_VER%%/etc/images/checked.svg
 %%DATADIR%%/%%EMACS_VER%%/etc/images/checked.xpm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/close.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/close.xpm
@@ -243,8 +245,16 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/etc/images/diropen.xpm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/disconnect.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/disconnect.xpm
+%%DATADIR%%/%%EMACS_VER%%/etc/images/down.svg
 %%DATADIR%%/%%EMACS_VER%%/etc/images/exit.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/exit.xpm
+%%DATADIR%%/%%EMACS_VER%%/etc/images/left.svg
+%%DATADIR%%/%%EMACS_VER%%/etc/images/radio-checked.svg
+%%DATADIR%%/%%EMACS_VER%%/etc/images/radio-mixed.svg
+%%DATADIR%%/%%EMACS_VER%%/etc/images/radio.svg
+%%DATADIR%%/%%EMACS_VER%%/etc/images/right.svg
+%%DATADIR%%/%%EMACS_VER%%/etc/images/unchecked.svg
+%%DATADIR%%/%%EMACS_VER%%/etc/images/up.svg
 %%DATADIR%%/%%EMACS_VER%%/etc/images/ezimage/README
 %%DATADIR%%/%%EMACS_VER%%/etc/images/ezimage/bits.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/ezimage/bits.xpm
@@ -760,6 +770,7 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/etc/images/zoom-in.xpm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/zoom-out.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/zoom-out.xpm
+%%NO_NATIVECOMP%%%%DATADIR%%/%%EMACS_VER%%/%%ETCDIR%%.metainfo.xml
 %%DATADIR%%/%%EMACS_VER%%/etc/nxml/README
 %%DATADIR%%/%%EMACS_VER%%/etc/nxml/test-invalid.xml
 %%DATADIR%%/%%EMACS_VER%%/etc/nxml/test-valid.xml
@@ -799,6 +810,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/etc/refcards/viperCard.tex
 %%DATADIR%%/%%EMACS_VER%%/etc/rgb.txt
 %%DATADIR%%/%%EMACS_VER%%/etc/schema/README
+%%DATADIR%%/%%EMACS_VER%%/etc/schema/OpenDocument-schema-v1.3+libreoffice.rnc
+%%DATADIR%%/%%EMACS_VER%%/etc/schema/OpenDocument-schema-v1.3.rnc
 %%DATADIR%%/%%EMACS_VER%%/etc/schema/calstbl.rnc
 %%DATADIR%%/%%EMACS_VER%%/etc/schema/dbcalstbl.rnc
 %%DATADIR%%/%%EMACS_VER%%/etc/schema/dbhier.rnc
@@ -808,7 +821,6 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/etc/schema/docbook.rnc
 %%DATADIR%%/%%EMACS_VER%%/etc/schema/locate.rnc
 %%DATADIR%%/%%EMACS_VER%%/etc/schema/od-manifest-schema-v1.2-os.rnc
-%%DATADIR%%/%%EMACS_VER%%/etc/schema/od-schema-v1.2-os.rnc
 %%DATADIR%%/%%EMACS_VER%%/etc/schema/rdfxml.rnc
 %%DATADIR%%/%%EMACS_VER%%/etc/schema/relaxng.rnc
 %%DATADIR%%/%%EMACS_VER%%/etc/schema/schemas.xml
@@ -872,6 +884,7 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/etc/themes/light-blue-theme.el
 %%DATADIR%%/%%EMACS_VER%%/etc/themes/manoj-dark-theme.el
 %%DATADIR%%/%%EMACS_VER%%/etc/themes/misterioso-theme.el
+%%DATADIR%%/%%EMACS_VER%%/etc/themes/modus-themes.el
 %%DATADIR%%/%%EMACS_VER%%/etc/themes/modus-operandi-theme.el
 %%DATADIR%%/%%EMACS_VER%%/etc/themes/modus-vivendi-theme.el
 %%DATADIR%%/%%EMACS_VER%%/etc/themes/tango-dark-theme.el
@@ -1187,8 +1200,6 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/cedet/ede/system.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/cedet/ede/util.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/cedet/ede/util.elc
-%%DATADIR%%/%%EMACS_VER%%/lisp/cedet/inversion.el.gz
-%%DATADIR%%/%%EMACS_VER%%/lisp/cedet/inversion.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/cedet/mode-local.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/cedet/mode-local.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/cedet/pulse.el.gz
@@ -1281,6 +1292,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/cedet/semantic/grammar-wy.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/cedet/semantic/grammar.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/cedet/semantic/grammar.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/cedet/semantic/grm-wy-boot.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/cedet/semantic/grm-wy-boot.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/cedet/semantic/html.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/cedet/semantic/html.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/cedet/semantic/ia-sb.el.gz
@@ -1538,6 +1551,12 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/cl-print.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/cl-seq.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/cl-seq.elc
+%%NO_NATIVECOMP%%%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/comp-cstr.el
+%%NO_NATIVECOMP%%%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/comp.el
+%%NATIVECOMP%%%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/comp-cstr.el.gz
+%%NATIVECOMP%%%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/comp-cstr.elc
+%%NATIVECOMP%%%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/comp.el.gz
+%%NATIVECOMP%%%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/comp.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/copyright.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/copyright.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/crm.el.gz
@@ -1721,6 +1740,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/epa-file.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/epa-hook.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/epa-hook.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/epa-ks.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/epa-ks.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/epa-mail.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/epa-mail.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/epa.el.gz
@@ -1916,7 +1937,6 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/fringe.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/generic-x.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/generic-x.elc
-%%DATADIR%%/%%EMACS_VER%%/lisp/gnus/.dir-locals.el
 %%DATADIR%%/%%EMACS_VER%%/lisp/gnus/canlock.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/gnus/canlock.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/gnus/deuglify.el.gz
@@ -2408,6 +2428,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/ZOZY.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/arabic.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/arabic.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/cham.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/cham.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/compose.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/compose.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/leim/quail/croatian.el.gz
@@ -2812,6 +2834,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-crypt.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-ftp.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-ftp.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-fuse.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-fuse.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-gvfs.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-gvfs.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-integration.el.gz
@@ -2823,6 +2847,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-sh.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-smb.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-smb.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-sshfs.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-sshfs.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-sudoedit.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-sudoedit.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/net/tramp-uu.el.gz
@@ -2921,6 +2947,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/html2text.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/info-edit.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/info-edit.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/inversion.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/inversion.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/iswitchb.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/iswitchb.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/obsolete/landmark.el.gz
@@ -3727,6 +3755,7 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/textmodes/texinfmt.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/textmodes/texinfo.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/textmodes/texinfo.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/textmodes/texinfo-loaddefs.el
 %%DATADIR%%/%%EMACS_VER%%/lisp/textmodes/texnfo-upd.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/textmodes/texnfo-upd.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/textmodes/text-mode.el.gz
@@ -3755,6 +3784,8 @@ share/metainfo/emacs.appdata.xml
 %%DATADIR%%/%%EMACS_VER%%/lisp/tool-bar.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/tooltip.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/tooltip.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/transient.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/transient.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/tree-widget.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/tree-widget.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/tutorial.el.gz
@@ -3986,6 +4017,8 @@ share/metainfo/emacs.appdata.xml
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/coding.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/coding.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/commands.h
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/comp.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/comp.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/composite.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/composite.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/conf_post.h

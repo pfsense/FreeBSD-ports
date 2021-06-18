@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pcmsolver
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.3.0

@@ -1,4 +1,4 @@
---- build/config/BUILDCONFIG.gn.orig	2021-01-18 21:28:45 UTC
+--- build/config/BUILDCONFIG.gn.orig	2021-04-14 18:40:48 UTC
 +++ build/config/BUILDCONFIG.gn
 @@ -183,8 +183,8 @@ if (host_toolchain == "") {
    # TODO(dpranke): Add some sort of assert here that verifies that

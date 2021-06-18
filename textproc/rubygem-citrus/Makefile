@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	citrus
 PORTVERSION=	3.0.2
 CATEGORIES=	textproc rubygems

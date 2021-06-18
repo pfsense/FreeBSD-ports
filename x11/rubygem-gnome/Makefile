@@ -1,13 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	gnome
 PORTVERSION=	3.4.3
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	x11 gnome rubygems
 PKGNAMEPREFIX=	rubygem-
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Meta port for all Ruby Gnome2 Gems
+COMMENT=	Meta port for gems of Ruby-GNOME2 project
 
 LICENSE=	LGPL21+
 

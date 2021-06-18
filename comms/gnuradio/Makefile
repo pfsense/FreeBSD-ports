@@ -1,9 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	gnuradio
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.8.1.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	comms astro hamradio
 
 MAINTAINER=	hamradio@FreeBSD.org
@@ -13,7 +11,7 @@ LICENSE=	GPLv3
 
 BUILD_DEPENDS=	volk>0:devel/volk \
 		doxygen>0:devel/doxygen \
-		${PY_SPHINX} \
+		${PYTHON_PKGNAMEPREFIX}sphinx>=1.2.2,1:textproc/py-sphinx@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
 		${PYNUMPY} \
 		${PYTHON_SITELIBDIR}/mako/__init__.py:textproc/py-mako@${PY_FLAVOR} \
@@ -96,7 +94,7 @@ INSTALLS_ICONS=		yes
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 
 DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen \
-			${PY_SPHINX} \
+			${PYTHON_PKGNAMEPREFIX}sphinx>=1.2.2,1:textproc/py-sphinx@${PY_FLAVOR} \
 			dot:graphics/graphviz \
 			xmlto:textproc/xmlto \
 			freefont-ttf>0:x11-fonts/freefont-ttf

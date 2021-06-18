@@ -1,11 +1,11 @@
---- components/viz/service/frame_sinks/root_compositor_frame_sink_impl.h.orig	2020-11-13 06:36:42 UTC
+--- components/viz/service/frame_sinks/root_compositor_frame_sink_impl.h.orig	2021-04-14 18:41:02 UTC
 +++ components/viz/service/frame_sinks/root_compositor_frame_sink_impl.h
-@@ -163,7 +163,7 @@ class RootCompositorFrameSinkImpl : public mojom::Comp
-   base::TimeDelta preferred_frame_interval_ =
-       FrameRateDecider::UnspecifiedFrameInterval();
+@@ -166,7 +166,7 @@ class RootCompositorFrameSinkImpl : public mojom::Comp
  
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_BSD)
+ // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ // of lacros-chrome is complete.
+-#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
++#if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || defined(OS_BSD)
    gfx::Size last_swap_pixel_size_;
  #endif
  

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-VisualWidth
 PORTVERSION=	0.02
 PORTREVISION=	1

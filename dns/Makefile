@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Domain Name Service tools
 
     SUBDIR += adns
@@ -13,12 +10,11 @@
     SUBDIR += bind911
     SUBDIR += bind916
     SUBDIR += bindgraph
+    SUBDIR += blocky
     SUBDIR += bundy
     SUBDIR += c-ares
-    SUBDIR += checkdns
     SUBDIR += cli53
     SUBDIR += coredns
-    SUBDIR += credns
     SUBDIR += crossip
     SUBDIR += curvedns
     SUBDIR += ddclient
@@ -39,6 +35,7 @@
     SUBDIR += dnscrypt-proxy2
     SUBDIR += dnscrypt-wrapper
     SUBDIR += dnsdbck
+    SUBDIR += dnsdbflex
     SUBDIR += dnsdbq
     SUBDIR += dnsdist
     SUBDIR += dnsenum
@@ -61,6 +58,7 @@
     SUBDIR += dnswall
     SUBDIR += doc
     SUBDIR += dog
+    SUBDIR += doggo
     SUBDIR += doh-proxy
     SUBDIR += dq
     SUBDIR += drool
@@ -82,14 +80,12 @@
     SUBDIR += idnkit
     SUBDIR += idnkit2
     SUBDIR += inadyn
-    SUBDIR += inadyn-mt
     SUBDIR += ipcheck
     SUBDIR += ironsides
     SUBDIR += kadnode
     SUBDIR += kf5-kdnssd
     SUBDIR += knock
     SUBDIR += knot-resolver
-    SUBDIR += knot2
     SUBDIR += knot3
     SUBDIR += knot3-lib
     SUBDIR += ldapdns
@@ -118,7 +114,6 @@
     SUBDIR += nsping
     SUBDIR += nss_mdns
     SUBDIR += nss_resinit
-    SUBDIR += opendd
     SUBDIR += opendnssec2
     SUBDIR += openresolv
     SUBDIR += p5-AnyEvent-CacheDNS
@@ -210,11 +205,14 @@
     SUBDIR += rpsl2acl
     SUBDIR += rubygem-dnsruby
     SUBDIR += rubygem-gitlab-net-dns
+    SUBDIR += rubygem-google-apis-dns_v1
     SUBDIR += rubygem-google-cloud-dns
     SUBDIR += rubygem-idn-ruby
     SUBDIR += rubygem-net-dns
     SUBDIR += rubygem-public_suffix
     SUBDIR += rubygem-public_suffix_service
+    SUBDIR += rubygem-resolv
+    SUBDIR += rubygem-resolv-replace
     SUBDIR += rubygem-simpleidn
     SUBDIR += rubygem-validates_hostname
     SUBDIR += rubygem-zonefile

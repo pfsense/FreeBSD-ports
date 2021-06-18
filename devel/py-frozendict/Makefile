@@ -1,10 +1,9 @@
 # Created by: Brendan Molloy <brendan+freebsd@bbqsrc.net>
-# $FreeBSD$
 
 PORTNAME=	frozendict
-PORTVERSION=	1.2
+PORTVERSION=	2.0.2
+DISTVERSIONPREFIX=	v
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -17,5 +16,9 @@ USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
+
+GH_ACCOUNT=	Marco-Sulla
+GH_PROJECT=	python-frozendict
+USE_GITHUB=	yes
 
 .include <bsd.port.mk>

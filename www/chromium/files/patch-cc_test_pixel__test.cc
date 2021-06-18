@@ -1,6 +1,6 @@
---- cc/test/pixel_test.cc.orig	2020-11-13 06:36:34 UTC
+--- cc/test/pixel_test.cc.orig	2021-04-14 18:40:48 UTC
 +++ cc/test/pixel_test.cc
-@@ -69,7 +69,7 @@ PixelTest::PixelTest(GraphicsBackend backend)
+@@ -71,7 +71,7 @@ PixelTest::PixelTest(GraphicsBackend backend)
      init_vulkan = true;
    } else if (backend == kSkiaDawn) {
      scoped_feature_list_.InitAndEnableFeature(features::kSkiaDawn);

@@ -1,12 +1,11 @@
 # Created by: Anders Nordby <anders@fix.no>
-# $FreeBSD$
 
 PORTNAME=	libgphoto2
 PORTVERSION=	2.5.26
 CATEGORIES=	graphics
 MASTER_SITES=	SF/gphoto/libgphoto/${PORTVERSION}
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Universal digital camera control library
 
 LICENSE=	LGPL21+
@@ -15,8 +14,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libcurl.so:ftp/curl
 
-USES=		gmake gnome iconv libtool localbase pathfix pkgconfig tar:bzip2
-USE_CSTD=	gnu89
+USES=		compiler:c11 gmake gnome iconv libtool localbase pathfix \
+		pkgconfig tar:bzip2
+USE_CSTD=	gnu99
 USE_GNOME=	libxml2
 
 GNU_CONFIGURE=	yes

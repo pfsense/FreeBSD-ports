@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libxmlbird
 DISTVERSION=	1.2.12
 CATEGORIES=	textproc devel

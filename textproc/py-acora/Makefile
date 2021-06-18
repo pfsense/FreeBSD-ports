@@ -1,8 +1,7 @@
 # Created by: antoine@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	acora
-PORTVERSION=	2.2
+PORTVERSION=	2.3
 CATEGORIES=	textproc devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

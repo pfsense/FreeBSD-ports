@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jlisting
 PORTVERSION=	0.2
 CATEGORIES=	japanese print

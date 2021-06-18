@@ -1,5 +1,4 @@
 # Created by: mb@imp.ch
-# $FreeBSD$
 
 PORTNAME=	jpgtn
 PORTVERSION=	2.06
@@ -9,6 +8,9 @@ MASTER_SITES=	SUNSITE/apps/graphics/misc
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Creates thumbnails of JPEG images
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: background
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: background
 
 USES=		jpeg
 GNU_CONFIGURE=	yes

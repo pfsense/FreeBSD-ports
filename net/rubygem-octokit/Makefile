@@ -1,9 +1,7 @@
 # Created by: Johannes Meixner <johannes@perceivon.net>
-# $FreeBSD$
 
 PORTNAME=	octokit
-PORTVERSION=	4.15.0
-PORTREVISION=	1
+PORTVERSION=	4.20.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 

@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	azure_mgmt_netapp
-PORTVERSION=	0.21.0
+PORTVERSION=	0.23.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

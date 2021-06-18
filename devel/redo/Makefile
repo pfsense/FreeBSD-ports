@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	redo
 PORTVERSION=	1.5
 CATEGORIES=	devel

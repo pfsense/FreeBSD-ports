@@ -1,8 +1,7 @@
 # Created by: Aaron Dalton <aaron@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Archive-Extract
-PORTVERSION=	0.86
+PORTVERSION=	0.88
 CATEGORIES=	archivers perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

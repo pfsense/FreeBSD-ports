@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	powerline-fonts
 PORTVERSION=	0.0.0.2020.08.28
 CATEGORIES=	x11-fonts

@@ -1,5 +1,4 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	periscope
 PORTVERSION=	0.2.4
@@ -31,7 +30,6 @@ NO_WRKSUBDIR=	yes
 PLIST_FILES=	share/applications/periscope.desktop
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
 post-patch:
 	${REINPLACE_CMD} -e 's|from BeautifulSoup import|from bs4 import|' \
 		${WRKSRC}/periscope/plugins/Podnapisi.py \
@@ -43,13 +41,11 @@ post-patch:
 		${WRKSRC}/periscope/plugins/TvSubtitles.py
 
 pre-build:
-.if ${PYTHON_REL} >= 3000
 	@${LOCALBASE}/bin/2to3-${PYTHON_VER} --no-diffs --nobackups --verbose --write \
 		${WRKSRC}/
-.endif
 
 post-install:
 	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/periscope.desktop \
 		${STAGEDIR}${DESKTOPDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

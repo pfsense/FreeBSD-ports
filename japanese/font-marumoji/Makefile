@@ -1,5 +1,4 @@
 # Created by: Yoichi NAKAYAMA <yoichi@eken.phys.nagoya-u.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	marumoji
 PORTVERSION=	1.0
@@ -28,7 +27,7 @@ PKGDEINSTALL=	${WRKDIR}/pkg-install
 ${WRKSRC}/maru16.bdf:
 	cd ${WRKSRC} && ${SED} -f m18to16.sed < maru18.bdf > maru16.bdf
 
-pre-build: ${WRKSRC}/maru16.bdf apply-slist
+pre-build: ${WRKSRC}/maru16.bdf
 	${INSTALL_DATA} ${WRKDIR}/Makefile ${WRKSRC}
 
 .include <bsd.port.mk>

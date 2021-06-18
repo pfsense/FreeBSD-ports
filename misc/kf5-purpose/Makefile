@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	purpose
 DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
 CATEGORIES=	misc kde kde-frameworks

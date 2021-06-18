@@ -1,5 +1,4 @@
 # Created by: Sylvio Cesar <sylvio@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jailkit
 PORTVERSION=	2.21
@@ -7,7 +6,7 @@ CATEGORIES=	shells
 MASTER_SITES=	http://olivier.sessink.nl/jailkit/ \
 		http://www.sfr-fresh.com/unix/privat/
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utilities to limit user accounts to specific files and/or commands
 
 LICENSE=	BSD3CLAUSE

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Encode-JP-Mobile
 PORTVERSION=	0.30
 PORTREVISION=	1

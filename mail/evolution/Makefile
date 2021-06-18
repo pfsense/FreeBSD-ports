@@ -1,8 +1,7 @@
 # Created by: Ade Lovett <ade@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	evolution
-PORTVERSION=	3.38.2
+DISTVERSION=	3.40.1
 CATEGORIES=	mail gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -70,6 +69,7 @@ GLIB_SCHEMAS=	org.gnome.evolution.addressbook.gschema.xml \
 		org.gnome.evolution.plugin.mail-notification.gschema.xml \
 		org.gnome.evolution.plugin.prefer-plain.gschema.xml \
 		org.gnome.evolution.plugin.publish-calendar.gschema.xml \
+		org.gnome.evolution.plugin.sender-validator.gschema.xml \
 		org.gnome.evolution.plugin.templates.gschema.xml \
 		org.gnome.evolution.shell.gschema.xml \
 		org.gnome.evolution.spamassassin.gschema.xml \

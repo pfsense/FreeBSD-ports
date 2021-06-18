@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	git-review
 DISTVERSION=	1.28.0
 CATEGORIES=	devel python

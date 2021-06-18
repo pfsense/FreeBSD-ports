@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	python-dotenv
-PORTVERSION=	0.15.0
+PORTVERSION=	0.17.1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,13 +12,10 @@ COMMENT=	Add .env support to your django/flask apps
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PY_TYPING}
-
 USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
-USE_LOCALE=	en_US.UTF-8
 
 OPTIONS_DEFINE=	CLI
 OPTIONS_DEFAULT=CLI

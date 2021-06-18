@@ -1,8 +1,7 @@
 # Created by: Gerhard Häring <gh@ghaering.de>
-# $FreeBSD$
 
 PORTNAME=	duplicity
-PORTVERSION=	0.8.17
+PORTVERSION=	0.8.19
 CATEGORIES=	sysutils
 MASTER_SITES=	https://code.launchpad.net/duplicity/0.8-series/${PORTVERSION}/+download/
 
@@ -83,7 +82,7 @@ post-patch-B2-off:
 	@${RM} ${WRKSRC}/${PORTNAME}/backends/b2backend.py
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/duplicity/_librsync.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/duplicity/_librsync*.so
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

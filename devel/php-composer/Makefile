@@ -1,8 +1,7 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	composer
-DISTVERSION=	1.10.19
+DISTVERSION=	1.10.21
 CATEGORIES=	devel
 MASTER_SITES=	https://getcomposer.org/download/${DISTVERSION}/
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
@@ -18,7 +17,7 @@ LICENSE=	MIT
 RUN_DEPENDS=	ca_root_nss>0:security/ca_root_nss
 
 USES=		php:flavors
-USE_PHP=	intl openssl phar json ctype filter mbstring
+USE_PHP=	ctype filter intl json mbstring openssl phar
 
 CONFLICTS_INSTALL=	php*-composer2-*
 

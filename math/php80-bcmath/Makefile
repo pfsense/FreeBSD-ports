@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	math
 
 MASTERDIR=	${.CURDIR}/../../lang/php80

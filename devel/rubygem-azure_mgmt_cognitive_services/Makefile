@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	azure_mgmt_cognitive_services
-PORTVERSION=	0.19.3
+PORTVERSION=	0.19.4
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

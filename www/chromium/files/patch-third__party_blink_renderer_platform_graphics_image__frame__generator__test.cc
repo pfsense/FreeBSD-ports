@@ -1,4 +1,4 @@
---- third_party/blink/renderer/platform/graphics/image_frame_generator_test.cc.orig	2020-11-13 06:36:48 UTC
+--- third_party/blink/renderer/platform/graphics/image_frame_generator_test.cc.orig	2021-04-14 18:41:10 UTC
 +++ third_party/blink/renderer/platform/graphics/image_frame_generator_test.cc
 @@ -244,14 +244,14 @@ static void DecodeThreadMain(ImageFrameGenerator* gene
                              cc::PaintImage::kDefaultGeneratorClientId);

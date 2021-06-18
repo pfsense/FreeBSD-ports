@@ -1,5 +1,6 @@
-# $FreeBSD$
-
 WANT_PGSQL_VER=	11
 
-.include "${.CURDIR}/../postgresql13-plpython/Makefile"
+# this port fails to build in parallel
+MAKE_JOBS_UNSAFE=	yes
+
+.include "${.CURDIR}/../postgresql14-plpython/Makefile"

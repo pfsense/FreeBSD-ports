@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	chamfer
 DISTVERSION=	s20210218
+PORTREVISION=	1
 CATEGORIES=	x11-wm
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -40,7 +39,7 @@ post-patch:
 # XXX https://github.com/mesonbuild/meson/issues/4788
 	@${REINPLACE_CMD} -e '/boost/!s/python3/python-${PYTHON_VER}/' \
 		-e '/boost/s/python3/python${PYTHON_SUFFIX}/' \
-		`if [ ${PYTHON_REL} -lt 3800 ]; then \
+		`if [ ${PYTHON_REL} -lt 30800 ]; then \
 			printf "%s %s" -e '/python.*embed/d'; \
 		 fi` \
 		${WRKSRC}/meson.build

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libvirt-dbus
 PORTVERSION=	1.4.0
 CATEGORIES=	devel

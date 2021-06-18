@@ -1,8 +1,7 @@
 # Created by: Palle Girgensohn <girgen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pgmetrics
-PORTVERSION=	1.10.3
+PORTVERSION=	1.11.0
 DISTVERSIONPREFIX=v
 CATEGORIES=	databases
 

@@ -1,5 +1,4 @@
 # Created by: Kirill Ponomarew <ponomarew@oberon.net>
-# $FreeBSD$
 
 PORTNAME=	nast
 PORTVERSION=	0.2.0
@@ -12,6 +11,9 @@ COMMENT=	Packet sniffer
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: arp_glob
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: arp_glob
 
 LIB_DEPENDS=	libnet.so:net/libnet
 

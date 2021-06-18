@@ -1,11 +1,9 @@
 # Created by: Bernhard Froehlich <decke@bluelife.at>
-# $FreeBSD$
 
 PORTNAME=	virtualbox-ose
-PORTVERSION=	5.2.44
-PORTREVISION=	3
+PORTVERSION=	6.1.22
 CATEGORIES=	emulators
-MASTER_SITES=	https://download.oracle.com/virtualbox/${PORTVERSION}/
+MASTER_SITES=	https://download.virtualbox.org/virtualbox/${PORTVERSION}/
 PKGNAMESUFFIX?=	-additions
 DISTNAME=	VirtualBox-${PORTVERSION}
 
@@ -15,7 +13,7 @@ COMMENT=	VirtualBox additions for FreeBSD guests
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS=	amd64
 USES=		compiler:c++11-lang cpe iconv kmod tar:bzip2
 USE_RC_SUBR=	vboxguest vboxservice
 
@@ -43,6 +41,7 @@ CONFIGURE_ARGS+=	--nofatal --with-gcc="${CC}" --with-g++="${CXX}"
 
 CONFLICTS_INSTALL=	virtualbox-ose-[0-9]* \
 			virtualbox-ose-additions-devel-[0-9]* \
+			virtualbox-ose-additions-legacy-[0-9]* \
 			virtualbox-ose-devel-[0-9]* \
 			virtualbox-ose-legacy-[0-9]* \
 			virtualbox-ose-lite-[0-9]* \
@@ -91,12 +90,6 @@ VBOX_WITH_X11=
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == clang
-.if ${COMPILER_FEATURES:Mlibc++}
-EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-src-VBox-Additions-x11-VBoxClient-Makefile.kmk
-.endif
-.endif
-
 post-patch:
 	@${ECHO_CMD} 'VBOX_ONLY_ADDITIONS = 1' > ${WRKSRC}/LocalConfig.kmk
 	@${ECHO_CMD} 'VBOX_WITH_DRAG_AND_DROP = ${VBOX_WITH_X11}' >> \
@@ -111,13 +104,10 @@ post-patch:
 	    -e 's| -fno-merge-constants||' \
 	    -e 's| -mpreferred-stack-boundary=2||' ${WRKSRC}/Config.kmk
 .endif
-	@${REINPLACE_CMD} -e 's|/usr/X11|${LOCALBASE}|g' \
-	    ${WRKSRC}/src/VBox/Additions/x11/VBoxClient/display.cpp
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
 	    ${WRKSRC}/Config.kmk ${WRKSRC}/configure \
 	    ${WRKSRC}/kBuild/header.kmk ${WRKSRC}/kBuild/units/qt4.kmk \
 	    ${WRKSRC}/kBuild/units/qt5.kmk ${WRKSRC}/kBuild/sdks/LIBSDL.kmk \
-	    ${WRKSRC}/src/VBox/Additions/common/crOpenGL/load.c \
 	    ${WRKSRC}/src/VBox/Additions/x11/Installer/98vboxadd-xclient \
 	    ${WRKSRC}/src/VBox/Additions/x11/Installer/vboxclient.desktop \
 	    ${WRKSRC}/src/VBox/Additions/x11/vboxmouse/Makefile.kmk \
@@ -165,10 +155,10 @@ do-install-X11-on:
 	    ${WRKSRC}/src/VBox/Additions/x11/Installer/vboxclient.desktop \
 	    ${STAGEDIR}${PREFIX}/share/autostart/
 	${MKDIR} ${STAGEDIR}${VIDEODIR}
-	${INSTALL_DATA} ${VBOX_BIN}/vboxvideo_drv_system.so \
+	${INSTALL_LIB} ${VBOX_BIN}/vboxvideo_drv_system.so \
 	    ${STAGEDIR}${VIDEODIR}/vboxvideo_drv.so
 	${MKDIR} ${STAGEDIR}${INPUTDIR}
-	${INSTALL_DATA} ${VBOX_BIN}/vboxmouse_drv_system.so \
+	${INSTALL_LIB} ${VBOX_BIN}/vboxmouse_drv_system.so \
 	    ${STAGEDIR}${INPUTDIR}/vboxmouse_drv.so
 
 .include <bsd.port.post.mk>

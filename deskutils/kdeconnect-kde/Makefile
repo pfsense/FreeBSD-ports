@@ -1,14 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	kdeconnect-kde
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	deskutils kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Support for KDE to interface between your phone and your computer
 
 LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfakekey.so:x11/libfakekey \
 		libKF5PulseAudioQt.so:audio/pulseaudio-qt

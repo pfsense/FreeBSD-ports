@@ -6,35 +6,29 @@ CMake Error at IGC/CMakeLists.txt:1974 (message):
 
   Please specify one, e.g.  Windows32, Linux64, Android32, ...
 
---- IGC/CMakeLists.txt.orig	2019-11-27 01:05:20 UTC
-+++ IGC/CMakeLists.txt
-@@ -834,11 +834,11 @@ function(igc_arch_detect targetArchVarName hostArchVar
+--- IGC/cmake/igc_arch_utils.cmake.orig	2021-03-28 09:45:11 UTC
++++ IGC/cmake/igc_arch_utils.cmake
+@@ -48,7 +48,7 @@ function(igc_arch_detect targetArchVarName hostArchVar
        set(_targetArchitecture "Windows32")
      endif()
    # Use system processor set by toolchain or CMake.
--  elseif(ANDROID OR (CMAKE_SYSTEM_NAME MATCHES "Linux")
-+  elseif(ANDROID OR (UNIX AND NOT APPLE)
-       )
+-  elseif(ANDROID OR (CMAKE_SYSTEM_NAME MATCHES "Linux"))
++  elseif(ANDROID OR (UNIX AND NOT APPLE))
      if(ANDROID)
        set(_targetArchOS "Android")
--    elseif(CMAKE_SYSTEM_NAME MATCHES "Linux")
-+    elseif(UNIX AND NOT APPLE)
-       set(_targetArchOS "Linux")
-     endif()
- 
-@@ -865,9 +865,9 @@ function(igc_arch_detect targetArchVarName hostArchVar
+     else()
+@@ -78,7 +78,7 @@ function(igc_arch_detect targetArchVarName hostArchVar
        set(_hostArchitecture "Windows32")
      endif()
    # Use 'uname -m' to detect kernel architecture.
--  elseif((CMAKE_HOST_SYSTEM_NAME MATCHES "Linux")
-+  elseif((UNIX AND NOT APPLE)
-       )
--    if(CMAKE_HOST_SYSTEM_NAME MATCHES "Linux")
-+    if(UNIX AND NOT APPLE)
-       set(_hostArchOS "Linux")
-     endif()
- 
-@@ -2171,7 +2171,7 @@ endif()
+-  elseif(CMAKE_HOST_SYSTEM_NAME MATCHES "Linux")
++  elseif(UNIX AND NOT APPLE)
+     set(_hostArchOS "Linux")
+     set(_osArchitecture "x86_64")
+     execute_process(
+--- IGC/CMakeLists.txt.orig	2021-03-28 09:45:11 UTC
++++ IGC/CMakeLists.txt
+@@ -429,7 +429,7 @@ endif()
  
  # NOTE: LLVM_ON_UNIX is also true for Android (CMAKE_SYSTEM_NAME specified by Android toolchain file is also "Linux",
  # but we should make sure so there is no errors in our assumptions).
@@ -148,48 +142,6 @@ CMake Error at IGC/CMakeLists.txt:1974 (message):
      #include "os_inc.h"
  #endif
  
---- IGC/AdaptorOCL/DriverInfoOCL.hpp.orig	2020-02-22 05:52:18 UTC
-+++ IGC/AdaptorOCL/DriverInfoOCL.hpp
-@@ -71,7 +71,7 @@ namespace TC
-         bool supportsStatelessSpacePrivateMemory() const override { return true; }
- 
-         bool NeedFP64(PRODUCT_FAMILY productFamily) const override {
--#if defined(__linux__)
-+#if !defined(__APPLE__) && !defined(_WIN32)
-           if (IGC_IS_FLAG_ENABLED(EnableDPEmulation)) {
-               return true;
-           }
---- IGC/AdaptorOCL/OCL/sp/gtpin_igc_ocl.h.orig	2019-11-27 01:05:20 UTC
-+++ IGC/AdaptorOCL/OCL/sp/gtpin_igc_ocl.h
-@@ -38,7 +38,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- #define MY_CALLINGSTD  _fastcall
- #define MY_CDECL       _cdecl
- 
--#elif defined(ANDROID) || defined (__linux__)
-+#elif defined(__GNUC__)
- 
- // Linux, Android
- #define MY_EXTERN_C    extern "C"
---- IGC/AdaptorOCL/ocl_igc_interface/impl/fcl_ocl_translation_ctx_impl.cpp.orig	2020-11-21 02:52:12 UTC
-+++ IGC/AdaptorOCL/ocl_igc_interface/impl/fcl_ocl_translation_ctx_impl.cpp
-@@ -64,7 +64,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- 
- #include <memory>
- 
--#if defined(__linux__)
-+#if defined(__unix__)
- #include <dlfcn.h>
- #else
- #include <Windows.h>
-@@ -132,7 +132,7 @@ llvm::Optional<std::vector<char>> readBinaryFile(const
- #if !defined(WDDM_LINUX) && (!defined(IGC_VC_DISABLED) || !IGC_VC_DISABLED)
- 
- static std::string detectCmIncludes(llvm::sys::DynamicLibrary &LibInfo) {
--#if defined(__linux__)
-+#if defined(__unix__)
- #define GetFunctionNameAsStr(s) ((void)s, #s);
-   const char *SymName = GetFunctionNameAsStr(IntelCMClangFECompile);
-   void *FAddr = LibInfo.getAddressOfSymbol(SymName);
 --- IGC/GenISAIntrinsics/GenIntrinsics.h.orig	2020-02-10 06:06:31 UTC
 +++ IGC/GenISAIntrinsics/GenIntrinsics.h
 @@ -67,7 +67,7 @@ namespace GenISAIntrinsic {
@@ -232,19 +184,19 @@ CMake Error at IGC/CMakeLists.txt:1974 (message):
          if (!FCL_IGC_IS_FLAG_ENABLED(DumpToCurrentDir) && g_shaderOutputFolder == "" && !FCL_IGC_IS_FLAG_ENABLED(DumpToCustomDir))
          {
              bool needMkdir = true;
---- IGC/VectorCompiler/lib/GenXCodeGen/GenXWrapper.cpp.orig	2020-10-30 09:08:26 UTC
-+++ IGC/VectorCompiler/lib/GenXCodeGen/GenXWrapper.cpp
-@@ -24,7 +24,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- 
- ======================= end_copyright_notice ==================================*/
- 
+--- IGC/VectorCompiler/lib/GenXCodeGen/SPIRVWrapper.cpp.orig	2021-03-08 06:23:56 UTC
++++ IGC/VectorCompiler/lib/GenXCodeGen/SPIRVWrapper.cpp
+@@ -48,7 +48,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ #include "llvm/Support/DynamicLibrary.h"
+ #include "llvm/Support/Path.h"
+ #include "llvm/Support/Process.h"
 -#if defined(__linux__)
 +#if !defined(_WIN32)
  #include <dlfcn.h>
- #endif
- 
-@@ -121,7 +121,7 @@ translateSPIRVToIR(ArrayRef<char> Input, ArrayRef<uint
-           void *ErrUserData);
+ #endif // __linux__
+ #if defined(_WIN32)
+@@ -172,7 +172,7 @@ Expected<SpirvReadVerifyType *> getSpirvReadVerifyFunc
+   constexpr char *SpirvReadVerifyName = "spirv_read_verify_module";
  
    const std::string SpirvLibPath = findSpirvDLL();
 -#if defined(__linux__)
@@ -273,6 +225,17 @@ CMake Error at IGC/CMakeLists.txt:1974 (message):
  #   pragma GCC diagnostic push
  #   if __GNUC__ > 8
  #       pragma GCC diagnostic ignored "-Winit-list-lifetime"
+--- IGC/common/Stats.cpp.orig	2021-03-22 09:55:24 UTC
++++ IGC/common/Stats.cpp
+@@ -1061,7 +1061,7 @@ void TimeStats::printTimeCSV( std::string const& corpu
+     else
+         subFile += IGC::Debug::GetShaderCorpusName();
+     const std::string outputFilePath = 
+-#if defined(__linux__)
++#if !defined(_WIN32)
+     subFile + ".csv";
+ #else
+     std::string("c:\\Intel\\") + subFile + ".csv";
 --- IGC/common/igc_regkeys.hpp.orig	2019-11-27 01:05:20 UTC
 +++ IGC/common/igc_regkeys.hpp
 @@ -39,7 +39,7 @@ typedef char debugString[256];

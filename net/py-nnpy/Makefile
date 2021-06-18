@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nnpy
 DISTVERSION=	1.4.2
 CATEGORIES=	net python

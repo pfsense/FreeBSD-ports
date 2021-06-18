@@ -1,5 +1,4 @@
 # Created by: Stephen Weeks <sweeks@sweeks.com>
-# $FreeBSD$
 
 # Previouly maintained by Jesper Louis Andersen
 # (jesper.louis.andersen@gmail.com) and Geoffrey Mainland
@@ -33,7 +32,7 @@ MINGW32_DESC=	Add the mingw32 target (requires wine)
 
 MAKE_JOBS_UNSAFE=	yes
 USES=		gmake shebangfix
-USE_GCC=	any
+USE_GCC=	yes
 
 .include <bsd.port.options.mk>
 

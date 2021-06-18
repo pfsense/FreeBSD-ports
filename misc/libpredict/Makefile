@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libpredict
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.0.0

@@ -1,13 +1,13 @@
 # Created by: Sean Farley <sean-freebsd@farley.org>
-# $FreeBSD$
 
 PORTNAME=	linux-ut
 PORTVERSION=	${UTVERSION}
 PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	games linux
-MASTER_SITES=	http://liflg.holarse-linuxgaming.de/files/final/:p436 \
-		http://www.utpg.org/patches/:p451
+MASTER_SITES=	https://gitlab.com/XenGi/oldgames/raw/master/ut/:p436 \
+		https://files.holarse-linuxgaming.de/mirrors/liflg.org/final/:p436 \
+		https://gitlab.com/XenGi/oldgames/raw/master/ut/:p451
 DISTFILES=	${PATCH436FILES} \
 		${PATCH451FILES}
 DIST_SUBDIR=	${PORTNAME}
@@ -15,12 +15,16 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	scf@FreeBSD.org
 COMMENT=	Unreal Tournament for Linux
 
+# Converted from RESTRICTED
+LICENSE=	unreal
+LICENSE_NAME=	unreal
+LICENSE_TEXT=	Redistribution is limited, see license
+LICENSE_PERMS=	auto-accept
+
 ONLY_FOR_ARCHS=	i386 amd64
 USES=		linux
 USE_LINUX=	xorglibs sdl12
 NO_BUILD=	yes
-MANUAL_PACKAGE_BUILD=	Requires CD
-RESTRICTED=	Redistribution is limited, see license
 WRKSRC=		${WRKDIR}/${PKGNAME}
 
 CONFLICTS_INSTALL=	exult-[0-9]* ucc-[0-9]*

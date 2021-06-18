@@ -1,5 +1,4 @@
 # Created by: Yukihiro Nakai <Nakai@Mlab.t.u-tokyo.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	giftool
 PORTVERSION=	1.0
@@ -9,7 +8,11 @@ MASTER_SITES=	SUNSITE/apps/graphics/convert/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for GIF89a transparent option and interlace mode
 
-NO_CDROM=	Shareware
+# Converted from NO_CDROM
+LICENSE=	giftool
+LICENSE_NAME=	giftool
+LICENSE_TEXT=	Shareware
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 NO_WRKSUBDIR=	yes
 ALL_TARGET=	giftool

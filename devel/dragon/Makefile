@@ -1,8 +1,5 @@
-# Created by: Kurt Jaeger <fbsd-ports@opsec.eu>
-# $FreeBSD$
-
 PORTNAME=	dragon
-PORTVERSION=	1.5.4
+PORTVERSION=	1.5.5
 CATEGORIES=	devel
 MASTER_SITES=	http://www.lemke-it.com/
 

@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	cloud-init
 DISTVERSION=	20.4.1
+PORTREVISION=	2
 CATEGORIES=	net python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -39,9 +38,8 @@ PYDISTUTILS_INSTALLARGS+=	"--init-system=sysvinit_freebsd"
 NO_ARCH=	yes
 
 post-patch:
-	${REINPLACE_CMD} -e 's|"etc"|"${STAGEDIR}${PREFIX}/etc"|g' ${WRKSRC}/setup.py
-	${REINPLACE_CMD} -e 's|/etc/|${PREFIX}/etc/|g' ${WRKSRC}/cloudinit/settings.py
-	@${RM} ${WRKSRC}/sysvinit/freebsd/*.orig
+	${REINPLACE_CMD} -e 's|%%PREFIX%%|${STAGEDIR}${PREFIX}|g' ${WRKSRC}/setup.py
+	${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/cloudinit/settings.py
 
 post-build:
 	@cd ${WRKSRC} && ${MV} config/cloud.cfg.d/05_logging.cfg config/cloud.cfg.d/05_logging.cfg.sample

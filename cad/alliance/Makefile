@@ -1,5 +1,4 @@
 # Created by: hrs
-# $FreeBSD$
 
 PORTNAME=	alliance
 DISTVERSION=	5.1.1
@@ -17,8 +16,7 @@ LICENSE_NAME=	Alliance VLSI Cad System License
 LICENSE_FILE=	${WRKSRC}/LICENCE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BROKEN=		fails to build
-BROKEN_aarch64=		fails to link: collect2: error: ld returned 1 exit status
+BROKEN_aarch64=	fails to link: collect2: error: ld returned 1 exit status
 
 BUILD_DEPENDS=	convert:graphics/ImageMagick7 \
 		fig2dev:print/fig2dev

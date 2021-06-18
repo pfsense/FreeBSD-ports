@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	python-pam
 DISTVERSION=	1.8.4
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	vishwin@vishwin.info
+MAINTAINER=	vishwin@FreeBSD.org
 COMMENT=	Python PAM module
 
 LICENSE=	MIT

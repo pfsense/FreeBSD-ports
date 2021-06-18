@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libwpg
 PORTVERSION=	0.3.3
 PORTREVISION=	1

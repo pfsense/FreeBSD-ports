@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	flipper-active_record
-PORTVERSION=	0.20.0
+PORTVERSION=	0.21.0
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 
@@ -12,7 +11,7 @@ COMMENT=	ActiveRecord adapter for Flipper
 LICENSE=	MIT
 
 RUN_DEPENDS=	rubygem-activerecord50>=5.0<7:databases/rubygem-activerecord50 \
-		rubygem-flipper>=${PORTVERSION}<0.21:devel/rubygem-flipper
+		rubygem-flipper>=${PORTVERSION}<0.22:devel/rubygem-flipper
 
 USES=		gem
 USE_RUBY=	yes

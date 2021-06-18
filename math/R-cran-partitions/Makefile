@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	partitions
 DISTVERSION=	1.9-22
 PORTREVISION=	1

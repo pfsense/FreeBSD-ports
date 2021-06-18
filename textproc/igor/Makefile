@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	igor
 PORTVERSION=	1.595
 CATEGORIES=	textproc

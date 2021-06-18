@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	geshi
 PORTVERSION=	20180906
 CATEGORIES=	devel www pear

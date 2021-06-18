@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	geany-plugin-xmlsnippets
 PORTVERSION=	${GEANY_VER}
 CATEGORIES=	devel

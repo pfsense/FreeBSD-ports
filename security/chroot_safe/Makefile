@@ -1,5 +1,4 @@
 # Created by: Gabor Kovesdan
-# $FreeBSD$
 
 PORTNAME=	chroot_safe
 PORTVERSION=	1.4
@@ -8,7 +7,7 @@ CATEGORIES=	security sysutils
 MASTER_SITES=	SF/chrootsafe/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Tool to chroot softwares easily
+COMMENT=	LD_PRELOAD wrapper to safely chroot(2) any program
 
 LICENSE=	MIT
 

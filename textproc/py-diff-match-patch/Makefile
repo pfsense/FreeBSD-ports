@@ -1,5 +1,4 @@
 # Created by: Rene Ladan <rene@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	diff-match-patch
 PORTVERSION=	20200713
@@ -22,6 +21,6 @@ python_OLD_CMD=	/usr/bin/python[0-9\.]*
 SHEBANG_GLOB=	*.py
 
 do-test:
-	cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
+	cd ${WRKSRC} && ${PYTHON_CMD} -m unittest -v
 
 .include <bsd.port.mk>

@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	wagtail
-PORTVERSION=	2.11.3
+PORTVERSION=	2.12.4
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -23,9 +22,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}anyascii>=0.1.5:textproc/py-anyascii@${PY_FL
 		${PYTHON_PKGNAMEPREFIX}draftjs-exporter>=2.1.5:www/py-draftjs-exporter@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}html5lib>=0.999<2:www/py-html5lib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}l18n>=2018.5:devel/py-l18n@${PY_FLAVOR} \
-		${PY_PILLOW} \
+		${PYTHON_PKGNAMEPREFIX}pillow>=4.0.0<9.0.0:graphics/py-pillow@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.11.1<3.0:www/py-requests@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}unidecode>=0.04.14<2.0:converters/py-unidecode@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}willow>=1.4<1.5:graphics/py-willow@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}XlsxWriter>=1.2.8<2.0:textproc/py-xlsxwriter@${PY_FLAVOR}
 

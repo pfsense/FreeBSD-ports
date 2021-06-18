@@ -1,8 +1,8 @@
 # Created by: George Reid <greid@ukug.uk.freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	cryptopp
-PORTVERSION=	8.2.0
+PORTVERSION=	8.5.0
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	http://www.cryptopp.com/
 DISTNAME=	cryptopp${PORTVERSION:S/.//g}
@@ -36,6 +36,9 @@ OPTIONS_DEFINE_powerpc=		SIMD
 OPTIONS_DEFINE_powerpc64=	SIMD
 OPTIONS_DEFINE_powerpc64le=	SIMD
 OPTIONS_DEFAULT=	TOOLS
+OPTIONS_DEFAULT_powerpc=	SIMD
+OPTIONS_DEFAULT_powerpc64=	SIMD
+OPTIONS_DEFAULT_powerpc64le=	SIMD
 OPTIONS_SUB=		yes
 
 # Always compile with -DNDEBUG for release. Otherwise, sensitive
@@ -66,7 +69,7 @@ CXXFLAGS+=	-DCRYPTOPP_DISABLE_SSSE3
 CXXFLAGS+=	-DCRYPTOPP_DISABLE_SSE4
 .    endif
 .  elif ${ARCH} == powerpc || ${ARCH:Mpowerpc64*}
-CXXFLAGS+=	-DCRYPTOPP_ALTIVEC_AVAILABLE -maltivec -mcrypto -mvsx
+CXXFLAGS+=	-DCRYPTOPP_ALTIVEC_AVAILABLE
 .  endif
 .else
 CXXFLAGS+=	-DCRYPTOPP_DISABLE_ASM -DCRYPTOPP_DISABLE_SSE2 \

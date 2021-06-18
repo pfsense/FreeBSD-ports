@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-Roman
 PORTVERSION=	3.5
 CATEGORIES=	textproc perl5

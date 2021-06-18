@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pysparklines
 PORTVERSION=	1.0
 CATEGORIES=	devel python

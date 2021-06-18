@@ -1,10 +1,9 @@
 # Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
 
 PORTNAME=	libpng
 PORTVERSION=	1.5.13
-DISTVERSIONSUFFIX=	-7.el7_2
-PORTREVISION=	2
+DISTVERSIONSUFFIX=	-8.el7
+PORTREVISION=	3
 CATEGORIES=	graphics linux
 
 MAINTAINER=	emulation@FreeBSD.org

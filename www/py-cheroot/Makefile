@@ -1,8 +1,7 @@
 # Created by: Keith Gaughan <k@stereochro.me>
-# $FreeBSD$
 
 PORTNAME=	cheroot
-PORTVERSION=	8.5.1
+PORTVERSION=	8.5.2
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

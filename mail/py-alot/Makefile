@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	alot
 DISTVERSION=	0.9
 CATEGORIES=	mail python

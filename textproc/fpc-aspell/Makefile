@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	textproc lang
 PKGNAMESUFFIX=	-aspell
 

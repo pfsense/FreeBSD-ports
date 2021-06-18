@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-ACME2
 PORTVERSION=	0.35
 CATEGORIES=	net perl5

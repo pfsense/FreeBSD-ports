@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 MASTERDIR=	${.CURDIR}/../bitmark
 PKGNAMESUFFIX=	-daemon
 

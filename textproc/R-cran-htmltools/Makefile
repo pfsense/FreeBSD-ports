@@ -1,8 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	htmltools
-PORTVERSION=	0.5.0
+PORTVERSION=	0.5.1.1
 CATEGORIES=	textproc
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 

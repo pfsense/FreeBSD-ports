@@ -1,8 +1,7 @@
 # Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-# $FreeBSD$
 
 PORTNAME=	gettext
-PORTVERSION=	3.3.6
+PORTVERSION=	3.3.7
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

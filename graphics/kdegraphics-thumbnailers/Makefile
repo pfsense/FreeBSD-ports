@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kdegraphics-thumbnailers
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	graphics kde kde-applications
@@ -12,7 +10,5 @@ USE_KDE=	archive completion config coreaddons ecm jobwidgets libkdcraw \
 		libkexiv2 kio service widgetsaddons
 USE_QT=		concurrent core dbus gui network widgets \
 		buildtools_build qmake_build
-
-OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

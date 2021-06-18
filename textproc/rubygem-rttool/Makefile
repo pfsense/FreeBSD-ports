@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rttool
 PORTVERSION=	1.0.3.0
 CATEGORIES=	textproc ruby

@@ -1,5 +1,4 @@
 # Created by: arved
-# $FreeBSD$
 
 PORTNAME=	netio
 PORTVERSION=	1.33
@@ -13,9 +12,10 @@ COMMENT=	Network benchmark
 
 USES=		dos2unix gmake zip
 
-LICENSE_PERMS=no-pkg-mirror
-RESTRICTED=	Usage permitted for non-commercial purposes only
-NO_CDROM=	Sale for profit is not permitted
+LICENSE=	UNKNOWN
+LICENSE_NAME=	unknown
+LICENSE_TEXT=	Usage permitted for non-commercial purposes only. Sale for profit is not permitted.
+LICENSE_PERMS=	auto-accept
 
 DOS2UNIX_FILES=	Makefile netio.c
 NO_WRKSUBDIR=	yes

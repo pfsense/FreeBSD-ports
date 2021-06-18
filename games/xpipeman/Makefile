@@ -1,9 +1,7 @@
 # Created by: swallace
-# $FreeBSD$
 
 PORTNAME=	xpipeman
-PORTVERSION=	1.0
-PORTREVISION=	4
+PORTVERSION=	1.5
 CATEGORIES=	games
 MASTER_SITES=	SUNSITE/games/strategy
 DISTNAME=	${PORTNAME}

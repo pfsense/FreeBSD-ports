@@ -1,11 +1,10 @@
 # Created by: Thomas Abthorpe <thomas@goodking.ca>
-# $FreeBSD$
 
 PORTNAME=	Date_Holidays
 PORTVERSION=	0.21.8
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR driver based class to calculate holidays
 
 LICENSE=	PHP301

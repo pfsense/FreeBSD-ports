@@ -1,8 +1,8 @@
 # Created by: thierry@pompo.net
-# $FreeBSD$
 
 PORTNAME=	astk
 DISTVERSION=	2020.0-1
+PORTREVISION=	1
 CATEGORIES=	cad
 .if !defined(CLIENT_SEUL)
 PKGNAMESUFFIX=	-serveur

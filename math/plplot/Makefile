@@ -1,13 +1,12 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	plplot
 DISTVERSION=	5.15.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	math science
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}%20Source
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Scientific plotting package
 
 LICENSE=	LGPL21+
@@ -31,7 +30,7 @@ SHEBANG_FILES=	${WRKSRC}/examples/python/* \
 		${WRKSRC}/examples/tk/*
 SHEBANG_LANG=	sh xtk01 xtk02 xtk04
 sh_OLD_CMD=	@SH_EXECUTABLE@
-sh_CMD=		/bin/sh
+sh_CMD=		${SH}
 xtk01_OLD_CMD=	@xtk01_LOCATION@
 xtk01_CMD=	${DATADIR}/examples/tk/xtk01
 xtk02_OLD_CMD=	@xtk02_LOCATION@
@@ -50,7 +49,7 @@ CMAKE_ARGS=	-DENABLE_java:BOOL=OFF \
 		-DPL_FREETYPE_FONT_PATH:PATH="${FREEFONT_DIR}" \
 		-DCMAKE_INSTALL_PKG_CONFIG_DIR:PATH="${PREFIX}/libdata/pkgconfig" \
 		-DPLD_plmeta:BOOL=OFF
-CFLAGS+=	-D_IS_BUILDING_PLPLOT_PORT_
+CFLAGS+=	-D_IS_BUILDING_PLPLOT_PORT_ -DSHAPELIB_INCLUDE_DIR=/nonexistent
 USE_LDCONFIG=	yes
 CMAKE_OFF=	DEFAULT_NO_QT_DEVICES
 LDFLAGS+=	-pthread
@@ -59,14 +58,12 @@ PLIST_SUB=	PLPLOT_VERSION=${PORTVERSION}
 
 FREEFONT_DIR=	${LOCALBASE}/share/fonts/freefont-ttf
 
-OPTIONS_DEFINE=		DOCS FORTRAN GD LUA QT5 TCLTK THREADS WXGTK X11
-OPTIONS_RADIO=		QHULL
-OPTIONS_RADIO_QHULL=	QHULL2015 QHULL2003
-OPTIONS_DEFAULT=	QHULL2015 THREADS X11
+OPTIONS_DEFINE=		DOCS FORTRAN GD LUA QHULL2015 QT5 TCLTK THREADS WXGTK X11
+OPTIONS_DEFAULT=	QHULL2015 THREADS WXGTK X11
 OPTIONS_SUB=		yes
 
 FORTRAN_USES=		fortran
-FORTRAN_CMAKE_BOOL=	ENABLE_f95
+FORTRAN_CMAKE_BOOL=	ENABLE_fortran
 FORTRAN_CONFIGURE_ENV=	CMAKE_Fortran_COMPILER="${FC}"
 
 GD_LIB_DEPENDS=		libgd.so:graphics/gd \
@@ -79,10 +76,8 @@ LUA_BUILD_DEPENDS=	swig:devel/swig
 LUA_CMAKE_BOOL=		ENABLE_lua
 LUA_CMAKE_ON=		-DLUA_EXECUTABLE:FILEPATH="${LUA_CMD}"
 
-QHULL2003_DESC=		Legacy Qhull support
 QHULL2015_DESC=		Latest Qhull support
 QHULL2015_LIB_DEPENDS=	libqhull.so.7:math/qhull
-QHULL2003_LIB_DEPENDS=	libqhull.so.5:math/qhull5
 QHULL2015_CMAKE_ON=	-DQHULL_INCLUDE_DIRS:PATH="${LOCALBASE}/include/libqhull"
 
 TCLTK_LIB_DEPENDS=	libitk.so:x11-toolkits/itk
@@ -120,11 +115,14 @@ X11_USES=		xorg
 X11_USE=		XORG=ice,sm,x11,xext
 X11_CMAKE_BOOL=		PLD_xcairo PLD_xwin
 
-post-patch:
+pre-configure:
 	${REINPLACE_CMD} -e \
 		's|dl dlopen|c dlopen|' \
 		${WRKSRC}/cmake/modules/FindLTDL.cmake
 	${GREP} -lR "/usr/local" ${WRKSRC}/cmake/modules | ${XARGS} \
 		${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g'
+	${REINPLACE_CMD} -e \
+		's|shapefil.h|do_not_want_shapefil.h|' \
+		${WRKSRC}/cmake/modules/FindShapelib.cmake
 
 .include <bsd.port.mk>

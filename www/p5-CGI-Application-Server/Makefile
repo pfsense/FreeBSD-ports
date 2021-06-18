@@ -1,5 +1,4 @@
 # Created by: George Hartzell <hartzell@alerce.com>
-# $FreeBSD$
 
 PORTNAME=	CGI-Application-Server
 PORTVERSION=	0.063
@@ -8,7 +7,7 @@ CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simple HTTP server for developing with CGI::Application
 
 LICENSE=	ART10 GPLv1+

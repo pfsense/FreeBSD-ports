@@ -1,5 +1,4 @@
 # Created by: Vsevolod Stakhov <vsevolod@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	clasp
 PORTVERSION=	3.3.5
@@ -22,6 +21,8 @@ GH_PROJECT=	${PORTNAME}
 GH_TUPLE=	potassco:libpotassco:6e31cff:other/libpotassco
 
 PLIST_FILES=	bin/${PORTNAME}
+
+CONFLICTS_INSTALL=	clingo # bin/clasp is contained in clingo
 
 do-install:
 	${INSTALL_PROGRAM} ${INSTALL_WRKSRC}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}

@@ -1,8 +1,7 @@
 # Created by: Hye-Shik Chang <perky@python.or.kr>
-# $FreeBSD$
 
 PORTNAME=	bsddb3
-PORTVERSION=	6.2.7
+PORTVERSION=	6.2.9
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

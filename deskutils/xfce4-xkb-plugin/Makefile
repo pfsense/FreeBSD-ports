@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xfce4-xkb-plugin
 PORTVERSION=	0.8.2
 PORTREVISION=	1

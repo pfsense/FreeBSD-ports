@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pcem
 DISTVERSION=	14
 PORTREVISION=	1
@@ -11,19 +9,19 @@ MAINTAINER=	darkfm@vera.com.uy
 COMMENT=	PC/PC-Compatible low-level emulator striving for accuracy
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_FreeBSD_13=	ld: error: duplicate symbol: CGACONST
 BROKEN_FreeBSD_14=	ld: error: duplicate symbol: CGACONST
 
-USES=		autoreconf compiler gl gmake openal pkgconfig sdl zip
+USES=		autoreconf compiler gl gmake localbase:ldflags openal pkgconfig sdl zip
 USE_GL=		gl
 USE_SDL=	sdl2
 USE_WX=		3.0
 
 WRKSRC=		${WRKDIR}/pcem_emulator-pcem-faf5d6423060/
-PATCHDIR=files
 PLIST_FILES=	bin/pcem
-CONFIGURE_ARGS=	--enable-release-build --with-wx-config=wxgtk3u-3.0-config
+CONFIGURE_ARGS=	--enable-release-build --with-wx-config="${WX_CONFIG}"
 GNU_CONFIGURE=	yes
 ONLY_FOR_ARCHS=	amd64
 

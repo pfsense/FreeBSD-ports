@@ -1,5 +1,4 @@
 # Created by: Timothy Bourke <timbob@bigpond.com>
-# $FreeBSD$
 
 PORTNAME=	libgmp
 PORTVERSION=	6.0.0
@@ -14,6 +13,9 @@ COMMENT=	Library for arbitrary precision arithmetic (MinGW32)
 
 BUILD_DEPENDS=	${PKGNAMEPREFIX}gcc:devel/${PKGNAMEPREFIX}gcc \
 		mingwm10.dll:devel/mingw32-bin-msvcrt
+
+BROKEN_FreeBSD_13=	error: '::gets' has not been declared
+BROKEN_FreeBSD_14=	error: '::gets' has not been declared
 
 WRKSRC=		${WRKDIR}/gmp-${PORTVERSION}
 

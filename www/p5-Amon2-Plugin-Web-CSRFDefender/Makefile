@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Amon2-Plugin-Web-CSRFDefender
 PORTVERSION=	7.03
 PORTREVISION=	1

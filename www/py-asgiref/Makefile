@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	asgiref
-PORTVERSION=	3.2.10
+PORTVERSION=	3.3.4
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=4.3.0:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-asyncio>=0.10.0:devel/py-pytest-asyncio@${PY_FLAVOR}
 
-USES=		python:3.5+
+USES=		python:3.6+
 USE_PYTHON=	distutils autoplist
 
 NO_ARCH=	yes

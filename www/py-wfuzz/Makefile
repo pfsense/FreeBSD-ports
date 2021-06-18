@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wfuzz
 DISTVERSION=	3.1.0
 CATEGORIES=	www security python
@@ -17,7 +15,6 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}chardet>0:textproc/py-chardet@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pycurl>0:ftp/py-pycurl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyparsing>0:devel/py-pyparsing@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
-py27_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}configparser>0:devel/py-configparser@${PY_FLAVOR}
 
 USES=		python:3.6+
 USE_PYTHON=	distutils concurrent autoplist

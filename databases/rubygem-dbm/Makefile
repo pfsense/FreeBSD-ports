@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dbm
 PORTVERSION=	1.1.0
 CATEGORIES=	databases rubygems

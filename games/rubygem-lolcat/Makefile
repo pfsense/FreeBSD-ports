@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	lolcat
 PORTVERSION=	100.0.1
 CATEGORIES=	games

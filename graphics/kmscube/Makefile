@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kmscube
 PORTVERSION=	s20201028
 CATEGORIES=	graphics

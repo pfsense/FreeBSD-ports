@@ -1,6 +1,8 @@
 # Created by: Palle Girgensohn <girgen@partitur.se>
-# $FreeBSD$
 
 WANT_PGSQL_VER=	11
 
-.include "${.CURDIR}/../postgresql13-plperl/Makefile"
+# this port fails to build in parallel
+MAKE_JOBS_UNSAFE=	yes
+
+.include "${.CURDIR}/../postgresql14-plperl/Makefile"

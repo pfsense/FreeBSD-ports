@@ -1,4 +1,4 @@
---- remoting/host/switches.cc.orig	2020-11-13 06:36:46 UTC
+--- remoting/host/switches.cc.orig	2021-04-14 18:41:08 UTC
 +++ remoting/host/switches.cc
 @@ -21,9 +21,9 @@ const char kProcessTypeHost[] = "host";
  const char kProcessTypeRdpDesktopSession[] = "rdp_desktop_session";

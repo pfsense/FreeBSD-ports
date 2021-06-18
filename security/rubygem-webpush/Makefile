@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	webpush
 PORTVERSION=	0.3.4
 CATEGORIES=	security rubygems

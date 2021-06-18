@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	HTTP-Server-Simple-Static
 PORTVERSION=	0.14
 CATEGORIES=	www perl5

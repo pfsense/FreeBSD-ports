@@ -1,4 +1,4 @@
---- third_party/pdfium/fxjs/fx_date_helpers.cpp.orig	2020-11-13 06:42:21 UTC
+--- third_party/pdfium/fxjs/fx_date_helpers.cpp.orig	2021-04-14 18:43:07 UTC
 +++ third_party/pdfium/fxjs/fx_date_helpers.cpp
 @@ -36,6 +36,11 @@ double GetLocalTZA() {
      return 0;

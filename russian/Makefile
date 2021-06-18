@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Russian support
 
     SUBDIR += artwiz-ru

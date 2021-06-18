@@ -1,8 +1,7 @@
 # Created by: Bernard Spil <brnrd@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	circles
-PORTVERSION=	0.20.6
+PORTVERSION=	0.21.2
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/${PKGNAMEPREFIX:S/-//}/${PORTNAME}/releases/download/v${PORTVERSION}/
 PKGNAMEPREFIX=	nextcloud-
@@ -15,7 +14,7 @@ COMMENT=	Circles app for Nextcloud
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	nextcloud${PHP_PKGNAMESUFFIX}>=20:www/nextcloud@${PHP_FLAVOR}
+RUN_DEPENDS=	nextcloud${PHP_PKGNAMESUFFIX}>=21:www/nextcloud@${PHP_FLAVOR}
 
 USES=		php:flavors
 NO_BUILD=	yes
@@ -28,6 +27,9 @@ PLIST_SUB=	NEXTCLOUD_USERNAME=${NEXTCLOUD_USERNAME} \
 		NEXTCLOUD_GROUPNAME=${NEXTCLOUD_GROUPNAME}
 
 WWWDIR=		${PREFIX}/www/nextcloud/apps-pkg/${PORTNAME}
+
+post-stage:
+	${RM} ${STAGEDIR}${WWWDIR}/Makefile~
 
 do-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR}

@@ -1,9 +1,8 @@
 # Created by: Li-Wen Hsu <lwhsu@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cgrep
 PORTVERSION=	6.6.32
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc
 
 MAINTAINER=	lwhsu@FreeBSD.org

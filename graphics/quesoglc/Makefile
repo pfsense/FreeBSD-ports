@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	quesoglc
 PORTVERSION=	0.7.2
 PORTREVISION=	9

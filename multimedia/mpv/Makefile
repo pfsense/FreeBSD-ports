@@ -1,10 +1,9 @@
 # Created by: Grzegorz Blach <gblach@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mpv
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.33.0
-PORTREVISION=	5
+DISTVERSION=	0.33.1
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio
 MASTER_SITES=	https://waf.io/:waf
@@ -13,7 +12,7 @@ DISTFILES=	${WAF_RELEASE}${EXTRACT_SUFX}:waf
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 PATCHFILES+=	1bb2665e3d09.patch:-p1 59c32a04b04d.patch:-p1 62fb374349e0.patch:-p1
 PATCHFILES+=	24525e4ef9ba.patch:-p1 4dd5fdc0876e.patch:-p1 4d80314c5c88.patch:-p1
-PATCHFILES+=	322778f211a5.patch:-p1 # https://github.com/mpv-player/mpv/pull/8312
+PATCHFILES+=	1b2e5137e04b.patch:-p1 # https://github.com/mpv-player/mpv/pull/8312
 PATCHFILES+=	7c4465cefb27.patch:-p1 # libplacebo 3.104
 
 MAINTAINER=	multimedia@FreeBSD.org
@@ -49,7 +48,7 @@ CONFIGURE_ARGS=	--docdir="${EXAMPLESDIR}" \
 		--disable-vapoursynth \
 		--enable-libmpv-shared
 
-OPTIONS_DEFINE=		ARCHIVE DOCS LCMS2 LUAJIT MANPAGES TEST UCHARDET EXAMPLES ZIMG
+OPTIONS_DEFINE=		ARCHIVE DOCS LCMS2 LUAJIT MANPAGES MUJS TEST UCHARDET EXAMPLES ZIMG
 OPTIONS_DEFAULT=	ARCHIVE DVDNAV MANPAGES OPENGL UCHARDET \
 			V4L VAAPI VDPAU VULKAN WAYLAND X11 YTDL
 OPTIONS_GROUP=		IN VO AO
@@ -60,10 +59,10 @@ OPTIONS_SUB=		yes
 
 DVDNAV_DESC=		DVD menu navigation
 LUAJIT_DESC=		Use LuaJIT instead of Lua scripting language support
+MUJS_DESC=		Use MuJS for Javascript language support
 SIXEL_DESC=		Sixel graphics support
 UCHARDET_DESC=		Guess subtitle encoding via uchardet
 VULKAN_DESC=		Vulkan output support
-WAYLAND_DESC=		Wayland (graphics) support
 YTDL_DESC=		Install youtube-dl
 ZIMG_DESC=		High quality software scaling via "z" library
 IN_DESC=		Input
@@ -107,6 +106,10 @@ LUAJIT_CONFIGURE_OFF=		--lua=${LUA_VER_STR}fbsd
 MANPAGES_BUILD_DEPENDS=		rst2man:textproc/py-docutils
 MANPAGES_CONFIGURE_OFF=		--disable-manpage
 
+MUJS_LIB_DEPENDS=		libmujs.so:lang/mujs
+MUJS_CONFIGURE_ON=		--enable-javascript
+MUJS_CONFIGURE_OFF=		--disable-javascript
+
 OPENAL_CONFIGURE_ENABLE=	openal
 OPENAL_USES=			openal
 OPENAL_LDFLAGS=			${_OPENAL_LDFLAGS_${ARCH}}
@@ -115,7 +118,6 @@ _OPENAL_LDFLAGS_i386=		-Wl,-znotext
 OPENGL_USES=			gl
 OPENGL_USE=			GL=egl,gbm
 OPENGL_CONFIGURE_OFF=		--disable-gl
-OPENGL_IMPLIES=			X11
 
 PULSEAUDIO_LIB_DEPENDS=		libpulse.so:audio/pulseaudio
 PULSEAUDIO_CONFIGURE_OFF=	--disable-pulse
@@ -145,7 +147,6 @@ VULKAN_BUILD_DEPENDS=		${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-head
 VULKAN_LIB_DEPENDS=		libplacebo.so:graphics/libplacebo \
 				libvulkan.so:graphics/vulkan-loader
 VULKAN_CONFIGURE_OFF=		--disable-vulkan --disable-libplacebo
-VULKAN_IMPLIES=			X11
 
 WAYLAND_BUILD_DEPENDS=		wayland-protocols>=1.14:graphics/wayland-protocols \
 				${LOCALBASE}/include/linux/input-event-codes.h:devel/evdev-proto
@@ -153,6 +154,7 @@ WAYLAND_LIB_DEPENDS=		libwayland-client.so:graphics/wayland \
 				libwayland-cursor.so:graphics/wayland \
 				libxkbcommon.so:x11/libxkbcommon
 WAYLAND_CONFIGURE_OFF=		--disable-wayland
+WAYLAND_IMPLIES=		OPENGL
 
 X11_USES=			gnome xorg
 X11_USE=			XORG=x11,xext,xinerama,xorgproto,xrandr,xscrnsaver,xv,xxf86vm

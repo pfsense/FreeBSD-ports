@@ -1,9 +1,8 @@
 # Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
-# $FreeBSD$
 
 PORTNAME=	octave-forge-integration
 PORTVERSION=	1.0.7
-PORTREVISION=	24
+PORTREVISION=	25
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org

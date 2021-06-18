@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	hpenc
 PORTVERSION=	3.0
 PORTREVISION=	2
@@ -10,9 +8,9 @@ COMMENT=	Fast authenticated encryption CLI tool
 
 LICENSE=	BSD2CLAUSE
 
-USES=		cmake compiler:c++11-lib ssl
 LIB_DEPENDS=	libsodium.so:security/libsodium
 
+USES=		cmake compiler:c++11-lib ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	vstakhov
 

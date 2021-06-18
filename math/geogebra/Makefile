@@ -1,8 +1,7 @@
 # Created by: Nicola Vitale	<nivit@email.it>
-# $FreeBSD$
 
 PORTNAME=	geogebra
-PORTVERSION=	5.0.580.0
+PORTVERSION=	5.0.625.0
 CATEGORIES=	math education java
 MASTER_SITES=	http://download.geogebra.org/installers/5.0/ \
 		https://static.geogebra.org/images/ \

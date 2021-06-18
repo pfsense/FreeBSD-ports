@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Electronic mail utilities
 
     SUBDIR += abook
@@ -68,6 +65,7 @@
     SUBDIR += claws-mail-tnef_parse
     SUBDIR += claws-mail-vcalendar
     SUBDIR += clawsker
+    SUBDIR += cleanup-maildir
     SUBDIR += cone
     SUBDIR += coolmail
     SUBDIR += courier
@@ -82,6 +80,7 @@
     SUBDIR += cyrus-imapd25
     SUBDIR += cyrus-imapd30
     SUBDIR += cyrus-imapd32
+    SUBDIR += cyrus-imapd34
     SUBDIR += cyrus2courier
     SUBDIR += cyrus2dovecot
     SUBDIR += davmail
@@ -100,7 +99,6 @@
     SUBDIR += dspam
     SUBDIR += ecartis
     SUBDIR += elm
-    SUBDIR += elmo
     SUBDIR += emailrelay
     SUBDIR += emil
     SUBDIR += enma
@@ -202,6 +200,8 @@
     SUBDIR += mailgraph
     SUBDIR += mailhog
     SUBDIR += mailman
+    SUBDIR += mailman-exim4
+    SUBDIR += mailman-postfix
     SUBDIR += mailman3
     SUBDIR += mailscanner
     SUBDIR += mailsync
@@ -234,6 +234,7 @@
     SUBDIR += minimalist
     SUBDIR += missey
     SUBDIR += mlmmj
+    SUBDIR += mlmmj-webview
     SUBDIR += mls
     SUBDIR += mmh
     SUBDIR += mmr
@@ -273,7 +274,6 @@
     SUBDIR += opensmtpd-extras-table-sqlite
     SUBDIR += opensmtpd-filter-rspamd
     SUBDIR += opensmtpd-filter-senderscore
-    SUBDIR += openwebmail
     SUBDIR += osbf-lua
     SUBDIR += ovs
     SUBDIR += p5-CGP-CLI
@@ -476,6 +476,7 @@
     SUBDIR += postfix-policyd-weight
     SUBDIR += postfix-postfwd
     SUBDIR += postfix-sasl
+    SUBDIR += postfix35
     SUBDIR += postfixadmin
     SUBDIR += postgrey
     SUBDIR += postsrsd
@@ -488,6 +489,7 @@
     SUBDIR += py-alot
     SUBDIR += py-authheaders
     SUBDIR += py-authres
+    SUBDIR += py-django-mailbox
     SUBDIR += py-django-mailman3
     SUBDIR += py-dkimpy
     SUBDIR += py-email-validator
@@ -496,8 +498,11 @@
     SUBDIR += py-flask-mail
     SUBDIR += py-flufl.bounce
     SUBDIR += py-fuglu
+    SUBDIR += py-imapclient
     SUBDIR += py-mail-parser
     SUBDIR += py-mailmanclient
+    SUBDIR += py-mailnag
+    SUBDIR += py-mailsuite
     SUBDIR += py-managesieve3
     SUBDIR += py-milter
     SUBDIR += py-notmuch
@@ -505,7 +510,9 @@
     SUBDIR += py-postfix-mta-sts-resolver
     SUBDIR += py-premailer
     SUBDIR += py-pymailq
+    SUBDIR += py-pysasl
     SUBDIR += py-pyspf
+    SUBDIR += py-python-slimta
     SUBDIR += py-pyzmail
     SUBDIR += py-spf-engine
     SUBDIR += py-validate_email
@@ -527,6 +534,7 @@
     SUBDIR += qmail-tls
     SUBDIR += qmailadmin
     SUBDIR += qmailanalog
+    SUBDIR += qmailmrtg7
     SUBDIR += qmhandle
     SUBDIR += qpopper
     SUBDIR += qsf
@@ -547,6 +555,7 @@
     SUBDIR += rmilter
     SUBDIR += roundcube
     SUBDIR += roundcube-automatic_addressbook
+    SUBDIR += roundcube-calendar-kolab
     SUBDIR += roundcube-carddav
     SUBDIR += roundcube-contextmenu
     SUBDIR += roundcube-html5_notifier
@@ -563,11 +572,13 @@
     SUBDIR += rspamd-devel
     SUBDIR += rss2email3
     SUBDIR += rubygem-actionmailbox60
+    SUBDIR += rubygem-actionmailbox61
     SUBDIR += rubygem-actionmailer4
     SUBDIR += rubygem-actionmailer5
     SUBDIR += rubygem-actionmailer50
     SUBDIR += rubygem-actionmailer52
     SUBDIR += rubygem-actionmailer60
+    SUBDIR += rubygem-actionmailer61
     SUBDIR += rubygem-email_reply_parser
     SUBDIR += rubygem-email_reply_parser-discourse
     SUBDIR += rubygem-email_reply_trimmer
@@ -578,6 +589,9 @@
     SUBDIR += rubygem-mailboxer
     SUBDIR += rubygem-mailfactory
     SUBDIR += rubygem-mini_mime
+    SUBDIR += rubygem-net-imap
+    SUBDIR += rubygem-net-pop
+    SUBDIR += rubygem-net-smtp
     SUBDIR += rubygem-pony
     SUBDIR += rubygem-premailer
     SUBDIR += rubygem-premailer-rails
@@ -608,6 +622,7 @@
     SUBDIR += sigrot
     SUBDIR += simscan
     SUBDIR += slapd-cyrus
+    SUBDIR += slimta
     SUBDIR += sma
     SUBDIR += smfsav
     SUBDIR += smfsav-devel
@@ -622,6 +637,7 @@
     SUBDIR += spamass-milter
     SUBDIR += spamass-rules
     SUBDIR += spamassassin
+    SUBDIR += spamassassin-devel
     SUBDIR += spamassassin-dqs
     SUBDIR += spambnc
     SUBDIR += spamcup

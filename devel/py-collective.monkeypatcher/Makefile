@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	collective.monkeypatcher
 PORTVERSION=	1.1.1
 CATEGORIES=	devel python zope

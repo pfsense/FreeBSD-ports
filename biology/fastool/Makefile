@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fastool
 PORTVERSION=	0.1.4
 CATEGORIES=	biology

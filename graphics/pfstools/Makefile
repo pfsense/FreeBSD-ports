@@ -1,9 +1,8 @@
 # Created by: Daniel O'Connor <darius@dons.net.au>
-# $FreeBSD$
 
 PORTNAME=	pfstools
 DISTVERSION=	2.1.0
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
@@ -17,13 +16,14 @@ RUN_DEPENDS=	bash:shells/bash
 
 CONFLICTS=	pfstmo-1.* pfscalibration-1.*
 
+CFLAGS+=	-I${LOCALBASE}/include/Imath
 LDFLAGS+=	-lthr
 
 USES=		cmake tar:tgz dos2unix jpeg perl5
 USE_PERL5=	run
 USE_LDCONFIG=	yes
 
-CMAKE_ARGS=	-DBUILD_SHARED_LIBS=ON \
+CMAKE_ARGS+=	-DBUILD_SHARED_LIBS=ON \
 		-DWITH_MATLAB=OFF \
 		-DBASH_EXECUTABLE:STRING=${LOCALBASE}/bin/bash \
 		-DPERL_EXECUTABLE:STRING=${PERL}
@@ -51,8 +51,8 @@ TIFF_CMAKE_BOOL=	WITH_TIFF
 TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
 
 OPENEXR_CMAKE_BOOL=	WITH_OpenEXR
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr \
-			libIex.so:graphics/ilmbase
+OPENEXR_LIB_DEPENDS=	libOpenEXR.so:graphics/openexr \
+			libImath.so:math/Imath
 
 IMAGEMAGICK_CMAKE_BOOL=	WITH_ImageMagick
 IMAGEMAGICK_LIB_DEPENDS=	libMagick++-6.so:graphics/ImageMagick6

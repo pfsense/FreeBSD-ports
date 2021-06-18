@@ -1,4 +1,4 @@
---- net/dns/address_sorter_posix.cc.orig	2020-11-13 06:36:45 UTC
+--- net/dns/address_sorter_posix.cc.orig	2021-04-14 18:41:07 UTC
 +++ net/dns/address_sorter_posix.cc
 @@ -13,7 +13,9 @@
  #include <sys/socket.h>  // Must be included before ifaddrs.h.

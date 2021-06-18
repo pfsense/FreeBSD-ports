@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	blind
 DISTVERSION=	1.1
 CATEGORIES=	multimedia

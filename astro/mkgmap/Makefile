@@ -1,11 +1,8 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	mkgmap
-PORTVERSION=	r4589
+PORTVERSION=	r4693
 CATEGORIES=	astro converters java
-MASTER_SITES=	http://www.mkgmap.org.uk/download/ \
-		http://mirror.amdmi3.ru/distfiles/
+MASTER_SITES=	https://www.mkgmap.org.uk/download/ \
+		https://mirror.amdmi3.ru/distfiles/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Convert OpenStreetMap data into a Garmin format

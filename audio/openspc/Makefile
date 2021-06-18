@@ -1,5 +1,4 @@
 # Created by: Emanuel Haupt <ehaupt@critical.ch>
-# $FreeBSD$
 
 PORTNAME=	openspc
 PORTVERSION=	0.3.1
@@ -16,7 +15,7 @@ ONLY_FOR_ARCHS=	i386	# contains x86 asm code
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USES=		autoreconf libtool
-USE_GCC=	any
+USE_GCC=	yes
 USE_LDCONFIG=	yes
 
 PORTDOCS=	README

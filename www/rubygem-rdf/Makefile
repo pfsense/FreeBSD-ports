@@ -1,8 +1,7 @@
 # Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rdf
-PORTVERSION=	3.1.7
+PORTVERSION=	3.1.13
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 

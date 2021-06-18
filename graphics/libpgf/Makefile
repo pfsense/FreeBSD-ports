@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libpgf
 PORTVERSION=	7.15.32
 CATEGORIES=	graphics

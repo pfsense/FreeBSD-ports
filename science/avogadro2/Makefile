@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	avogadro2
-DISTVERSION=	1.93.0
+DISTVERSION=	1.94.0
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org

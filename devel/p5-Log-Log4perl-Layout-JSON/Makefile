@@ -1,8 +1,7 @@
 # Created by: Sergei Vyshenski <svysh.fbsd@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	Log-Log4perl-Layout-JSON
-PORTVERSION=	0.56
+PORTVERSION=	0.58
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

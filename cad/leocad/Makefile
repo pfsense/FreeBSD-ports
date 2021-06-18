@@ -1,9 +1,8 @@
 # Created by: David Yeske <dyeske@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	leocad
 DISTVERSIONPREFIX=	v
-DISTVERSION=	19.07.1
+DISTVERSION=	21.06
 CATEGORIES=	cad
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -22,14 +21,9 @@ USE_GL=		gl
 
 QMAKE_ARGS=	INSTALL_PREFIX=${PREFIX} MAN_DIR=${PREFIX}/man/man1 LDRAW_LIBRARY_PATH=${PREFIX}/share/ldraw
 
-PLIST_FILES=	bin/leocad \
-		share/applications/leocad.desktop \
-		share/icons/hicolor/scalable/mimetypes/application-vnd.leocad.svg \
-		man/man1/leocad.1.gz \
-		share/metainfo/leocad.appdata.xml \
-		share/mime/packages/leocad.xml \
-		share/pixmaps/leocad.png
+PORTSCOUT=	limit:^[0-9\.]*$$ # to ignore the 'continuous' tag
 
-PORTSCOUT=	limit:^[0-9\.]*$$ # to ignore the 'continuous'
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/leocad
 
 .include <bsd.port.mk>

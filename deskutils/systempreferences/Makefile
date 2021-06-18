@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	systempreferences
 PORTVERSION=	1.2.0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	deskutils gnustep
 MASTER_SITES=	GNUSTEP/usr-apps
 DISTNAME=	SystemPreferences-${PORTVERSION}

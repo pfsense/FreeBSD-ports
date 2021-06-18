@@ -1,9 +1,8 @@
 # Created by: Sergey A. Osokin <osa@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	nginx
-PORTVERSION=	1.18.0
-PORTREVISION?=	45
+PORTVERSION=	1.20.0
+PORTREVISION?=	2
 PORTEPOCH=	2
 CATEGORIES=	www
 MASTER_SITES=	https://nginx.org/download/ \
@@ -22,7 +21,7 @@ BROKEN_mips64=	error ngx_spinlock() or ngx_atomic_cmp_set() are not defined
 
 CONFLICTS_INSTALL=	nginx-devel
 
-PORTSCOUT=	limit:^1\.18\.[0-9]*
+PORTSCOUT=	limit:^1\.20\.[0-9]*
 
 USES=		compiler:c11 cpe
 
@@ -228,10 +227,6 @@ IGNORE=		requires at least HTTP or MAIL to \
 PKGNAMESUFFIX:=	${PKGNAMESUFFIX}-nopcre
 .endif
 
-.if ${PORT_OPTIONS:MKTLS}
-CFLAGS+=	-DNGX_SSL_SENDFILE
-.endif
-
 .if ${PORT_OPTIONS:MPASSENGER} && empty(PORT_OPTIONS:MDEBUG)
 CONFIGURE_ENV+=	OPTIMIZE="yes"
 CFLAGS+=	-DNDEBUG
@@ -317,6 +312,9 @@ post-patch-VOD-on:
 
 pre-configure-SMALL_LIGHT-on:
 	( cd ${WRKSRC_small_light} && ./setup )
+
+do-configure-NJS-on:
+	( cd ${WRKSRC_njs} && ${SETENV} ${CONFIGURE_ENV} ${CONFIGURE_CMD} )
 
 .if !target(do-install)
 do-install:

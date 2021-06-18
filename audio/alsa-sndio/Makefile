@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	alsa-sndio
 DISTVERSION=	0.2
 PORTREVISION=	1

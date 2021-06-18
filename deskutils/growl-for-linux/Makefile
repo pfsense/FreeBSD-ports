@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	growl-for-linux
 PORTVERSION=	0.8.5
 PORTREVISION=	5

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	luckybackup
 PORTVERSION=	0.5.0
 CATEGORIES=	sysutils

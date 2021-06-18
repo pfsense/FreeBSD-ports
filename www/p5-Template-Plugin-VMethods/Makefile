@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Template-Plugin-VMethods
 PORTVERSION=	0.03
 PORTREVISION=	1

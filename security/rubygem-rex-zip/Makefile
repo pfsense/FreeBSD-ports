@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rex-zip
 PORTVERSION=	0.1.4
 CATEGORIES=	security rubygems

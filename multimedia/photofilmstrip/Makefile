@@ -1,9 +1,8 @@
 # Created by: Charlie Kester <corky1951@comcast.net>
-# $FreeBSD$
 
 PORTNAME=	photofilmstrip
 PORTVERSION=	3.7.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia python
 MASTER_SITES=	SF/photostoryx/${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

@@ -1,10 +1,8 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	container-diff
-PORTVERSION=	0.15.0
+PORTVERSION=	0.16.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	sunpoet@FreeBSD.org

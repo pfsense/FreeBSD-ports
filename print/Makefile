@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Desktop publishing
 
     SUBDIR += R-cran-knitr
@@ -20,10 +17,8 @@
     SUBDIR += c2ps
     SUBDIR += catdvi
     SUBDIR += cdlabelgen
-    SUBDIR += cloud-print-connector
     SUBDIR += cups
     SUBDIR += cups-bjnp
-    SUBDIR += cups-cloud-print
     SUBDIR += cups-filters
     SUBDIR += cups-fxlinuxprint
     SUBDIR += cups-pdf
@@ -44,6 +39,7 @@
     SUBDIR += epson-inkjet-printer-201401w
     SUBDIR += epson-inkjet-printer-201601w
     SUBDIR += epson-inkjet-printer-escpr
+    SUBDIR += epson-inkjet-printer-escpr2
     SUBDIR += epsonepl
     SUBDIR += fig2dev
     SUBDIR += flpsed
@@ -107,6 +103,7 @@
     SUBDIR += libspectre
     SUBDIR += lilypond
     SUBDIR += lilypond-devel
+    SUBDIR += limereport
     SUBDIR += linux-c7-cups-libs
     SUBDIR += linux-c7-freetype
     SUBDIR += linux-c7-harfbuzz
@@ -146,6 +143,7 @@
     SUBDIR += pdf-renderer
     SUBDIR += pdf-tools
     SUBDIR += pdf4tcl
+    SUBDIR += pdfarranger
     SUBDIR += pdfbox
     SUBDIR += pdfchain
     SUBDIR += pdflib
@@ -164,6 +162,7 @@
     SUBDIR += pkfonts400
     SUBDIR += pkfonts600
     SUBDIR += pnm2ppa
+    SUBDIR += posterazor
     SUBDIR += print-manager
     SUBDIR += ps2eps
     SUBDIR += pscal
@@ -171,13 +170,18 @@
     SUBDIR += pslib
     SUBDIR += pstotext
     SUBDIR += psutils
+    SUBDIR += py-collidoscope
+    SUBDIR += py-dehinter
     SUBDIR += py-font-v
     SUBDIR += py-fontaine
     SUBDIR += py-fontbakery
+    SUBDIR += py-fontparts
+    SUBDIR += py-fontpens
     SUBDIR += py-fonttools
     SUBDIR += py-fonttools3
     SUBDIR += py-fpdf
     SUBDIR += py-frescobaldi
+    SUBDIR += py-glyphtools
     SUBDIR += py-pdf
     SUBDIR += py-pdf2
     SUBDIR += py-pollyreports
@@ -192,6 +196,8 @@
     SUBDIR += py-rtf
     SUBDIR += py-ttfautohint-py
     SUBDIR += py-ufolib2
+    SUBDIR += py-uharfbuzz
+    SUBDIR += py-vharfbuzz
     SUBDIR += py-weasyprint
     SUBDIR += qpdf
     SUBDIR += qpdfview

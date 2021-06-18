@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nltk
 DISTVERSION=	3.4.1
 PORTEPOCH=	2

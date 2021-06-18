@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PKGNAMESUFFIX?=	-ldap-sasl
 
-MAINTAINER=	ohauer@FreeBSD.org
+MAINTAINER=	otis@FreeBSD.org
 COMMENT=	Postfix with OpenLDAP and Cyrus SASL support
 
 MASTERDIR=	${.CURDIR}/../postfix

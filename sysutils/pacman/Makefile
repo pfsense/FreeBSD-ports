@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	pacman
 PORTVERSION=	5.1.3
 PORTREVISION=	1

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kcalc
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	math kde kde-applications

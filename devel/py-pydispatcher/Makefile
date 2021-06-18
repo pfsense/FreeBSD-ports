@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pydispatcher
 PORTVERSION=	2.0.5
 CATEGORIES=	devel python

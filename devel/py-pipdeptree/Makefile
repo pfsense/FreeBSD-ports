@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pipdeptree
 PORTVERSION=	0.13.2
 CATEGORIES=	devel python

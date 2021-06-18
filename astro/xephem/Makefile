@@ -1,5 +1,4 @@
 # Created by: erich@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	xephem
 PORTVERSION=	3.7.7
@@ -7,8 +6,14 @@ PORTREVISION=	5
 CATEGORIES=	astro
 MASTER_SITES=	http://www.clearskyinstitute.com/xephem/
 
-MAINTAINER=	jpaetzel@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Interactive astronomical ephemeris program
+
+# Converted from RESTRICTED
+LICENSE=	XEPHEM
+LICENSE_NAME=	Xephem
+LICENSE_TEXT=	Personal use only
+LICENSE_PERMS=	auto-accept
 
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libfontconfig.so:x11-fonts/fontconfig
@@ -21,8 +26,6 @@ LDFLAGS+=	-lfontconfig
 MAKE_JOBS_UNSAFE=	yes
 
 WRKSRC=		${WRKDIR}/${DISTNAME}/GUI/xephem
-
-RESTRICTED=	Personal use only
 
 # XXX needs to be the same as DISTFILES
 XEPHEMSRC=	${PORTNAME}-${PORTVERSION}.tgz

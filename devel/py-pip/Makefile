@@ -1,8 +1,7 @@
 # Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pip
-PORTVERSION=	20.2.3
+PORTVERSION=	20.3.4
 CATEGORIES=	devel python
 MASTER_SITES=	https://files.pythonhosted.org/packages/f9/d3/955738b20d3832dfa3cd3d9b07e29a8162edb480bf988332f5e6e48ca444/:test_setuptools \
 		https://files.pythonhosted.org/packages/a7/00/3df031b3ecd5444d572141321537080b40c1c25e1caa3d86cdd12e5e919c/:test_wheel
@@ -21,7 +20,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 # Tests also need bzr, git, otherwise they fail
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=0:security/py-cryptography@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}csv23>=0:devel/py-csv23@${PY_FLAVOR} \
-		${PY_ENUM34} \
 		${PYTHON_PKGNAMEPREFIX}freezegun>=0:devel/py-freezegun@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}invoke>=0:devel/py-invoke@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mock>=0:devel/py-mock@${PY_FLAVOR} \
@@ -41,7 +39,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=0:security/py-cryptography@${
 		git:devel/git \
 		svn:devel/subversion
 
-USES=		python shebangfix
+USES=		python:3.6+ shebangfix
 USE_PYTHON=	autoplist concurrent distutils
 
 MAKE_ENV=	PYTHONPATH=${WRKSRC}/src/
@@ -54,11 +52,19 @@ SHEBANG_FILES=	src/pip/__init__.py
 
 OPTIONS_DEFINE=	DOCS
 
-DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pypa-docs-theme>=g20180622:textproc/py-pypa-docs-theme@${PY_FLAVOR} \
-			${PY_SPHINX}
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}furo>=0:textproc/py-furo@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}sphinx>=2.4.3,1:textproc/py-sphinx@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}sphinx-inline-tabs>=0:textproc/py-sphinx-inline-tabs@${PY_FLAVOR}
 DOCS_PORTDOCS=		*
 DOCS_VARS=		PYDISTUTILS_BUILD_TARGET=build_sphinx \
 			PYDISTUTILS_BUILDARGS="-n --all-files --fresh-env"
+
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 30700 && ${PORT_OPTIONS:MDOCS}
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}future-annotations>=0:devel/py-future-annotations@${PY_FLAVOR}
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-python36
+.endif
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -73,4 +79,4 @@ do-test:
 	${LN} -sf ${LOCALBASE}/bin/pip ${LOCALBASE}/bin/pip3
 	cd ${WRKSRC} && ${PYTHON_CMD} -m pytest -v -rs
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

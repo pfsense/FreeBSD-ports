@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Dancer-Logger-Syslog
 PORTVERSION=	0.6
 CATEGORIES=	devel perl5

@@ -1,4 +1,4 @@
---- components/viz/common/gpu/dawn_context_provider.cc.orig	2020-11-13 06:36:42 UTC
+--- components/viz/common/gpu/dawn_context_provider.cc.orig	2021-04-14 18:41:02 UTC
 +++ components/viz/common/gpu/dawn_context_provider.cc
 @@ -20,7 +20,7 @@ namespace {
  dawn_native::BackendType GetDefaultBackendType() {

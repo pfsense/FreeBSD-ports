@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xcbautolock
 PORTVERSION=	0.2.2
 CATEGORIES=	x11

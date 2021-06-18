@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Horde_Mail
 PORTVERSION=	2.6.5
 CATEGORIES=	mail www pear

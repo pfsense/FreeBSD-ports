@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	opus
 PORTVERSION=	1.3.1
 CATEGORIES=	audio

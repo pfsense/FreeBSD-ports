@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	psftools
 PORTVERSION=	1.0.13
 CATEGORIES=	x11-fonts

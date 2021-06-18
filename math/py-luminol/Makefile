@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	luminol
 PORTVERSION=	0.3.1
 PORTREVISION=	3

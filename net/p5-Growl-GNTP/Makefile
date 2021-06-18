@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Growl-GNTP
 PORTVERSION=	0.21
 CATEGORIES=	net perl5

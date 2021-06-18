@@ -1,5 +1,4 @@
 # Created by: Kawaguti Ginga <ginga@athena.club.ne.jp>
-# $FreeBSD$
 
 PORTNAME=	kappa20
 PORTVERSION=	0.396
@@ -27,7 +26,7 @@ PORTDOCS=	README
 
 OPTIONS_DEFINE=	DOCS
 
-pre-build: apply-slist
+pre-build:
 	cd ${WRKSRC} && ${SH} makebdf.sh
 
 post-install-DOCS-on:

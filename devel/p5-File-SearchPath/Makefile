@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	File-SearchPath
 PORTVERSION=	0.07
 CATEGORIES=	devel perl5

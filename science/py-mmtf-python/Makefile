@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mmtf-python
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.1.2

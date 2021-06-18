@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	vietnamese
 LO_I18N=	vi
 LO_HAS_HELPPACK=	yes

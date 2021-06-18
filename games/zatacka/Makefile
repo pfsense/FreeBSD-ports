@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	zatacka
 PORTVERSION=	0.1.8
 PORTREVISION=	11

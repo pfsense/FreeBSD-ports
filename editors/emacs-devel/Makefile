@@ -1,8 +1,7 @@
 # Created by: Kenneth Vestergaard Schmidt <kvs@pil.dk>
-# $FreeBSD$
 
 PORTNAME=	emacs
-DISTVERSION=	28.0.50.20210101
+DISTVERSION=	28.0.50.20210602
 PORTEPOCH=	2
 CATEGORIES=	editors
 PKGNAMESUFFIX=	-devel
@@ -26,7 +25,7 @@ USES=		autoreconf:build cpe gmake localbase:ldflags ncurses pkgconfig
 CPE_VENDOR=	gnu
 USE_GITHUB=	yes
 GH_ACCOUNT=	emacs-mirror
-GH_TAGNAME=	58bdfd7
+GH_TAGNAME=	87e7390
 
 .if ${FLAVOR:U} != nox
 USES+=		desktop-file-utils gnome xorg
@@ -83,8 +82,8 @@ PLIST_SUB=	EMACS_VER=${DISTVERSION:R} \
 		GNU_HOST=${CONFIGURE_TARGET}
 
 OPTIONS_DEFINE=			ACL DBUS GCONF GNUTLS GSETTINGS HARFBUZZ JSON \
-				LCMS2 M17N MAILUTILS MODULES OTF SCROLLBARS \
-				SOURCES THREADS XFT XIM XML XWIDGETS
+				LCMS2 M17N MAILUTILS MODULES NATIVECOMP OTF \
+				SCROLLBARS SOURCES THREADS XFT XIM XML XWIDGETS
 OPTIONS_DEFAULT=		ACL CAIRO DBUS GIF GNUTLS GSETTINGS GTK3 \
 				HARFBUZZ JPEG JSON KQUEUE LCMS2 M17N MAILUTILS \
 				MODULES OSS OTF PNG SCROLLBARS SOURCES SVG \
@@ -94,12 +93,12 @@ OPTIONS_GROUP_GRAPHICS=		CAIRO GIF JPEG MAGICK PNG SVG TIFF XPM
 OPTIONS_RADIO=			FILENOTIFY SOUND X11TOOLKIT
 OPTIONS_RADIO_FILENOTIFY=	GFILE KQUEUE
 OPTIONS_RADIO_SOUND=		ALSA OSS
-OPTIONS_RADIO_X11TOOLKIT=	GTK2 GTK3 MOTIF XAW XAW3D
+OPTIONS_RADIO_X11TOOLKIT=	GTK2 GTK3 XAW XAW3D
 .if ${FLAVOR:U} == nox
 OPTIONS_EXCLUDE=		ALSA CAIRO DBUS GCONF GFILE GIF GSETTINGS GTK2 \
-				GTK3 HARFBUZZ JPEG LCMS2 M17N MAGICK MOTIF OSS \
-				OTF PNG SCROLLBARS SVG TIFF XAW XAW3D XFT XIM \
-				XPM XWIDGETS
+				GTK3 HARFBUZZ JPEG LCMS2 M17N MAGICK OSS OTF \
+				PNG SCROLLBARS SVG TIFF XAW XAW3D XFT XIM XPM \
+				XWIDGETS
 .endif
 OPTIONS_SUB=			YES
 
@@ -111,11 +110,11 @@ GRAPHICS_DESC=		Graphics support
 GSETTINGS_DESC=		GSettings API for application settings
 HARFBUZZ_DESC=		HarfBuzz for text shaping
 KQUEUE_DESC=		File notification via kqueue
-#LTO_DESC=		Enable link-time optimization
 M17N_DESC=		M17N support for text-shaping [implies XFT]
 MAGICK_DESC=		ImageMagick image processing support (deprecated)
 MAILUTILS_DESC=		Mail framework via GNU Mailutils
 MODULES_DESC=		Dynamic modules support
+NATIVECOMP_DESC=	Emacs Lisp native compiler support
 OTF_DESC=		Opentype fonts [implies XFT]
 SCROLLBARS_DESC=	Toolkit scroll-bars
 SOURCES_DESC=		Install sources
@@ -170,8 +169,11 @@ MAILUTILS_CONFIGURE_WITH=	mailutils
 MAILUTILS_CONFIGURE_ENV_OFF=	ac_cv_lib_lockfile_maillock=no \
 				ac_cv_prog_liblockfile=no
 MODULES_CONFIGURE_WITH=		modules
-MOTIF_USES=			motif
-MOTIF_CONFIGURE_ON=		--with-x-toolkit=motif
+NATIVECOMP_LIB_DEPENDS=		libgccjit.so:lang/gcc11-devel
+NATIVECOMP_CONFIGURE_WITH=	native-compilation
+NATIVECOMP_MAKE_ARGS=		NATIVE_FULL_AOT=1
+NATIVECOMP_CFLAGS=		-I${LOCALBASE}/include
+NATIVECOMP_LDFLAGS=		-L${LOCALBASE}/lib/gcc11
 OSS_CONFIGURE_ON=		--with-sound=oss
 OTF_IMPLIES=			XFT
 OTF_LIB_DEPENDS=		libotf.so:print/libotf
@@ -209,8 +211,11 @@ XWIDGETS_CONFIGURE_WITH=	xwidgets
 
 .include <bsd.port.options.mk>
 
-.if !${PORT_OPTIONS:MGTK2} && !${PORT_OPTIONS:MGTK3} && !${PORT_OPTIONS:MMOTIF} \
-	&& !${PORT_OPTIONS:MXAW} && !${PORT_OPTIONS:MXAW3D}
+.if ${ARCH} == powerpc64le
+USE_GCC=	yes
+.endif
+
+.if !${PORT_OPTIONS:MGTK2} && !${PORT_OPTIONS:MGTK3} && !${PORT_OPTIONS:MXAW} && !${PORT_OPTIONS:MXAW3D}
 CONFIGURE_ARGS+=	--with-x-toolkit=no
 .endif
 
@@ -235,6 +240,12 @@ post-install:
 post-install-MAILUTILS-on:
 	${LN} -sf ${PREFIX}/bin/movemail \
 		${STAGEDIR}${PREFIX}/libexec/emacs/${DISTVERSION:R}/${CONFIGURE_TARGET}
+
+# Natively compiled elisp files names include build checksum information, so add
+# these files to the plist after the build.
+post-install-NATIVECOMP-on:
+	@(cd ${WRKSRC} && ${FIND} native-lisp -type f | ${SED} -e 's,^,lib/emacs/${DISTVERSION:R}/,') >> ${TMPPLIST}
+	@${FIND} ${STAGEDIR}${PREFIX}/lib/emacs/${DISTVERSION:R}/native-lisp/ -name '*.eln*' -exec ${STRIP_CMD} {} +
 
 post-install-SOURCES-on:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/${DISTVERSION:R}/src

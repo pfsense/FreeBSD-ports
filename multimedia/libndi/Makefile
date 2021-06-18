@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libndi
 PORTVERSION=	g20200630
 CATEGORIES=	multimedia net

@@ -1,8 +1,8 @@
 # Created by: Marc G. Fournier <scrappy@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	bsdstats
 PORTVERSION=	7.0
+PORTREVISION=	2
 CATEGORIES=	sysutils
 DISTFILES=
 

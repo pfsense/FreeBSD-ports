@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	plasma-workspace
 DISTVERSION=	${KDE_PLASMA_VERSION}
 CATEGORIES=	x11 kde kde-plasma
@@ -42,7 +40,7 @@ USE_KDE=	activities activities-stats activitymanagerd attica archive auth baloo 
 		kded_run milou_run
 USE_QT=		concurrent core declarative dbus graphicaleffects gui network phonon4 \
 		printsupport qdbus quickcontrols_run script svg sql \
-		testlib webkit widgets x11extras xml \
+		testlib wayland webkit widgets x11extras xml \
 		paths_run \
 		buildtools_build qmake_build
 USE_XORG=	ice sm x11 xau xcb xcomposite xcursor xext xfixes xft xkbfile xrender xtst
@@ -51,5 +49,8 @@ CMAKE_OFF=	BUILD_TESTING
 
 # In 5.15 a file was moved from x11/plasma5-plasma-desktop to x11/plasma5-plasma-workspace:
 CONFLICTS_INSTALL=	plasma5-plasma-desktop-5.14.*
+
+post-stage:
+	${INSTALL_SCRIPT} ${FILESDIR}/startplasma-wayland.sh ${STAGEDIR}/${LOCALBASE}/bin/
 
 .include <bsd.port.mk>

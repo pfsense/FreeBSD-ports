@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libudev-devd
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.4.2
@@ -18,6 +16,8 @@ GH_ACCOUNT=	FreeBSDDesktop
 
 USES=		compiler:c11 localbase meson
 USE_LDCONFIG=	yes
+
+CFLAGS+=	-Wno-error
 
 PLIST_FILES=	include/libudev.h \
 		lib/libudev.so \

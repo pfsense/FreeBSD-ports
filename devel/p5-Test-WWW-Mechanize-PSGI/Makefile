@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-WWW-Mechanize-PSGI
 PORTVERSION=	0.39
 CATEGORIES=	devel perl5

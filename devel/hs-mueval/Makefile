@@ -1,9 +1,8 @@
 # Created by: Giuseppe Pilichi aka Jacula Modyun <jacula@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	mueval
 PORTVERSION=	0.9.3
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

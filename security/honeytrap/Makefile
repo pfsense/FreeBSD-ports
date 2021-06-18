@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	honeytrap
 DISTVERSION=	g20200625
 CATEGORIES=	security

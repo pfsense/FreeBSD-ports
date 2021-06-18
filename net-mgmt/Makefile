@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Network management tools
 
     SUBDIR += 2ping
@@ -32,7 +29,6 @@
     SUBDIR += cacti88-spine
     SUBDIR += carbon-relay-ng
     SUBDIR += carbonzipper
-    SUBDIR += ccnet-server
     SUBDIR += cdpd
     SUBDIR += cdpr
     SUBDIR += cdpsnarf
@@ -44,6 +40,7 @@
     SUBDIR += check_mysql_health
     SUBDIR += check_nwc_health
     SUBDIR += check_ssl_cert
+    SUBDIR += check_ups_health
     SUBDIR += chillispot
     SUBDIR += choparp
     SUBDIR += cidr
@@ -55,6 +52,7 @@
     SUBDIR += coovachilli
     SUBDIR += cowpatty
     SUBDIR += cricket
+    SUBDIR += crmsh
     SUBDIR += darkstat
     SUBDIR += devmon
     SUBDIR += devmon-templates
@@ -134,6 +132,7 @@
     SUBDIR += nagcon
     SUBDIR += nagios
     SUBDIR += nagios-certexp-plugin
+    SUBDIR += nagios-check_bacula11
     SUBDIR += nagios-check_bacula9
     SUBDIR += nagios-check_clamav
     SUBDIR += nagios-check_cpu_usage
@@ -189,6 +188,7 @@
     SUBDIR += networkmgr
     SUBDIR += netxms
     SUBDIR += nfdump
+    SUBDIR += nfs-exporter
     SUBDIR += nfsen
     SUBDIR += ng_ipacct
     SUBDIR += nitpicker
@@ -296,6 +296,7 @@
     SUBDIR += py-arouteserver
     SUBDIR += py-ciscoconfparse
     SUBDIR += py-dnsdiag
+    SUBDIR += py-gstat_exporter
     SUBDIR += py-ipcalc
     SUBDIR += py-ipy
     SUBDIR += py-junos-eznc
@@ -305,6 +306,9 @@
     SUBDIR += py-napalm-logs
     SUBDIR += py-ncclient
     SUBDIR += py-nxapi-plumbing
+    SUBDIR += py-opn-cli
+    SUBDIR += py-pdagent
+    SUBDIR += py-pdagent-integrations
     SUBDIR += py-prometheus-client
     SUBDIR += py-pyIOSXR
     SUBDIR += py-pyang
@@ -369,12 +373,13 @@
     SUBDIR += torrus
     SUBDIR += triton-guesttools
     SUBDIR += unbound_exporter
-    SUBDIR += unifi-devel
     SUBDIR += unifi-lts
     SUBDIR += unifi-poller
     SUBDIR += unifi5
     SUBDIR += unifi6
+    SUBDIR += victoria-metrics
     SUBDIR += virt-viewer
+    SUBDIR += vmutils
     SUBDIR += wdiag
     SUBDIR += whatmask
     SUBDIR += wifimgr
@@ -402,5 +407,10 @@
     SUBDIR += zabbix52-java
     SUBDIR += zabbix52-proxy
     SUBDIR += zabbix52-server
+    SUBDIR += zabbix54-agent
+    SUBDIR += zabbix54-frontend
+    SUBDIR += zabbix54-java
+    SUBDIR += zabbix54-proxy
+    SUBDIR += zabbix54-server
 
 .include <bsd.port.subdir.mk>

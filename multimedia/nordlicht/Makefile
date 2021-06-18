@@ -1,6 +1,3 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	nordlicht
 PORTVERSION=	0.4.5
 DISTVERSIONPREFIX=	v

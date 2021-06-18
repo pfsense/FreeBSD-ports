@@ -14,8 +14,7 @@
 # bsd.port.mk.  There are significant differences in those so non-FreeBSD code
 # was removed.
 #
-# $FreeBSD$
-# $MCom: portlint/portlint.pl,v 1.522 2020/12/27 19:19:02 jclarke Exp $
+# $MCom: portlint/portlint.pl,v 1.528 2021/05/14 16:53:31 jclarke Exp $
 #
 
 use strict;
@@ -50,7 +49,7 @@ $portdir = '.';
 # version variables
 my $major = 2;
 my $minor = 19;
-my $micro = 4;
+my $micro = 6;
 
 # default setting - for FreeBSD
 my $portsdir = '/usr/ports';
@@ -139,7 +138,6 @@ my $mfile_gids = "${portsdir}/GIDs";
 
 if ($verbose) {
 	print "OK: config: portsdir: \"$portsdir\" ".
-		"rcsidstr: \"$rcsidstr\" ".
 		"localbase: $localbase ".
 		"\n";
 }
@@ -589,7 +587,6 @@ sub checkdescr {
 sub checkplist {
 	my($file) = @_;
 	my($curdir) = ($localbase);
-	my($rcsidseen) = (0);
 
 	my $seen_special = 0;
 	my $item_count = 0;
@@ -727,7 +724,7 @@ sub checkplist {
 						"for more details).");
 				}
 			} elsif ($_ =~ /^\@(comment)/) {
-				$rcsidseen++ if (/\$$rcsidstr[:\$]/);
+				&perror("FATAL", $file, $., "\$$rcsidstr\$ is deprecated in Git.") if (/\$$rcsidstr[:\$]/);
 			} elsif ($_ =~ m!^\@(dirrm|dirrmtry)\s+/!) {
 				&perror("WARN", $file, $., "Using \@$1 with absolute path ".
 					"will not work as you expected in most cases.  Use ".
@@ -1444,20 +1441,19 @@ sub checkmakefile {
 	print "OK: checking header in $file.\n" if ($verbose);
 	if ($lines[1] =~ /^# (?:New )?[Pp]orts collection [mM]akefile/) {
 		&perror("FATAL", $file, 1, "old style headers found.");
+	} elsif ($lines[1] =~ /^# \$$rcsidstr[:\$]/) {
+		&perror("FATAL", $file, 1, "\$$rcsidstr\$ is deprecated in Git.");
 	} elsif ($lines[1] =~ /^# Created by: \S/) {
-		if ($lines[2] !~ /^# \$$rcsidstr[:\$]/) {
-			&perror("FATAL", $file, 2, "header should be ".
-				"followed by \$$rcsidstr\$.");
-		} elsif ($lines[3] !~ /^$/) {
-		#&perror("FATAL", $file, 3, "do not add extra ".
+		if ($lines[2] =~ /^# \$$rcsidstr[:\$]/) {
+			&perror("FATAL", $file, 2, "\$$rcsidstr\$ is deprecated in Git.");
+		}
+		if ($lines[2] !~ /^$/) {
+		#&perror("FATAL", $file, 2, "do not add extra ".
 		#		"empty comments after header.");
 		}
 	# special case for $rcsidsrt\nMCom:
-	} elsif ($lines[1] =~ /^# \$$rcsidstr[:\$]/ and $lines[2] =~ /^#\s+\$MCom[:\$]/ and $lines[3] =~ /^$/) {
+	} elsif ($lines[1] =~ /^#\s+\$MCom[:\$]/ and $lines[2] =~ /^$/) {
         # DO NOTHING
-	} elsif ($lines[1] !~ /^# \$$rcsidstr[:\$]/ or $lines[2] !~ /^$/) {
-		&perror("FATAL", $file, 1, "incorrect header; ".
-			"simply use \$$rcsidstr\$.");
 	}
 
 	#
@@ -2667,58 +2663,39 @@ xargs xmkmf
 		}
 	}
 	$idx = 0;
+	my @linestocheck = ();
 
-	#
-	# section 1: comment lines.
-	#
-	print "OK: checking comment section of $file.\n" if ($verbose);
-	my @linestocheck = split("\n", <<EOF);
+	# check if all lines in the first section are comments
+	if (grep(/^#/, split(/\n/, $sections[$idx])) == split(/\n/, $sections[$idx])) {
+
+		#
+		# section 1: comment lines.
+		#
+		print "OK: checking comment section of $file.\n" if ($verbose);
+		@linestocheck = split("\n", <<EOF);
 Whom
 Date [cC]reated
 EOF
 
-	$tmp = $sections[$idx++];
-	$tmp = "\n" . $tmp;	# to make the begin-of-line check easier
+		$tmp = $sections[$idx++];
+		$tmp = "\n" . $tmp;	# to make the begin-of-line check easier
 
-	if ($tmp =~ /\n[^#]/) {
-		&perror("FATAL", $file, -1, "non-comment line in comment section.");
-	}
-	if ($tmp =~ m/Version [rR]equired/) {
-		&perror("WARN", $file, -1, "Version required is no longer needed in the comment section.");
-	}
-	my $tmp2 = "";
-	for (split(/\n/, $tmp)) {
-		$tmp2 .= $_ if (m/\$$rcsidstr/);
-	}
-	if ($tmp2 !~ /#(\s+)\$$rcsidstr([^\$]*)\$$/) {
-
-		&perror("FATAL", $file, -1, "no \$$rcsidstr\$ line in comment ".
-			"section.");
-	} else {
-		print "OK: \$$rcsidstr\$ seen in $file.\n" if ($verbose);
-		if ($1 ne ' ') {
-			&perror("WARN", $file, -1, "please use single whitespace ".
-				"right before \$$rcsidstr\$ tag.");
+		if ($tmp =~ /\n[^#]/) {
+			&perror("FATAL", $file, -1, "non-comment line in comment section.");
 		}
-		if ($2 ne '') {
-			if ($verbose || $newport) {	# XXX
-				&perror("WARN", $file, -1,
-				    ($newport ? 'for new port, '
-					      : 'is it a new port? if so, ').
-				    "make \$$rcsidstr\$ tag in comment ".
-				    "section empty, to make SVN happy.");
-			}
+		if ($tmp =~ m/Version [rR]equired/) {
+			&perror("WARN", $file, -1, "Version required is no longer needed in the comment section.");
 		}
-	}
 
-	#
-	# for the rest of the checks, comment lines are not important.
-	#
-	for ($i = 0; $i < scalar(@sections); $i++) {
-		$sections[$i] = "\n" . $sections[$i];
-		$sections[$i] =~ s/\n#[^\n]*//g;
-		$sections[$i] =~ s/\n\n+/\n/g;
-		$sections[$i] =~ s/^\n//;
+		#
+		# for the rest of the checks, comment lines are not important.
+		#
+		for ($i = 0; $i < scalar(@sections); $i++) {
+			$sections[$i] = "\n" . $sections[$i];
+			$sections[$i] =~ s/\n#[^\n]*//g;
+			$sections[$i] =~ s/\n\n+/\n/g;
+			$sections[$i] =~ s/^\n//;
+		}
 	}
 
 	#
@@ -3250,6 +3227,12 @@ MAINTAINER COMMENT
 				&perror("WARN", $file, -1, "if license ends with a '+', make sure ".
 					"LICENSE_FILE_$lfn is followed by a space before the '='.");
 			}
+		}
+
+		# Last-ditch check to make sure the license is sanely defined.
+		my $lic_check = system("make check-license 2>&1 >/dev/null");
+		if ($lic_check) {
+			&perror("FATAL", $file, -1, "Failed to validate port LICENSE '$makevar{LICENSE}' with ``make check-license''");
 		}
 
 		$idx++;

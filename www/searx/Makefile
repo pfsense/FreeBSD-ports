@@ -1,10 +1,8 @@
 # Created by: Loic Blot <loic.blot@unix-experience.fr>
-# $FreeBSD$
 
 PORTNAME=	searx
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.16.0
-PORTREVISION=	3
+DISTVERSION=	0.18.0
 CATEGORIES=	www python
 
 MAINTAINER=	loic.blot@unix-experience.fr

@@ -1,4 +1,4 @@
---- third_party/blink/renderer/platform/fonts/font_metrics.cc.orig	2020-11-13 06:36:48 UTC
+--- third_party/blink/renderer/platform/fonts/font_metrics.cc.orig	2021-04-14 18:41:10 UTC
 +++ third_party/blink/renderer/platform/fonts/font_metrics.cc
 @@ -38,7 +38,7 @@
  

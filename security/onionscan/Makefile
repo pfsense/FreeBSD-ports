@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	onionscan
 DISTVERSIONPREFIX=	OnionScan-
 DISTVERSION=	0.2

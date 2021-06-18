@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	platform-api
-PORTVERSION=	3.2.0
+PORTVERSION=	3.3.0
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 

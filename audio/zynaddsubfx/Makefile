@@ -1,20 +1,15 @@
 # Created by: trasz <trasz@pin.if.uz.zgora.pl>
-# $FreeBSD$
 
 PORTNAME=	zynaddsubfx
-PORTVERSION=	3.0.5
+DISTVERSION=	3.0.6-rc3
+PORTEPOCH=	1
 PORTREVISION=	2
 CATEGORIES=	audio
-MASTER_SITES=	SF
 
 MAINTAINER=	hselasky@FreeBSD.org
 COMMENT=	Realtime software synthesizer
 
 LICENSE=	GPLv2
-
-BROKEN_aarch64=		fails to compile: argument unused during compilation: '-msse'
-BROKEN_armv6=		fails to compile: unknown argument: '-mvectorize-with-neon-quad'
-BROKEN_armv7=		fails to compile: unknown argument: '-mvectorize-with-neon-quad'
 
 LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libmxml.so:textproc/mxml \
@@ -23,7 +18,13 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 USES=		cmake:insource compiler:c++11-lang pkgconfig tar:bzip2
 USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=		OSS JACK GUI PORTAUDIO LASH DOCS EXAMPLES
+USE_GITHUB=	yes
+GH_ACCOUNT=	zynaddsubfx
+GH_TUPLE=	DISTRHO:DPF:e0d8e14a14d407648768da7e34bcf31812245387:d/DPF \
+		fundamental:rtosc:7de244bae04deb5964516ba544e551d95e7f15ce:e/rtosc \
+		zynaddsubfx:instruments:39e17e1c5c3db56fe9d0308af28be90f172e455e:f/instruments
+
+OPTIONS_DEFINE=		BASH OSS JACK GUI PORTAUDIO SNDIO LASH DOCS EXAMPLES
 OPTIONS_DEFAULT=	OSS JACK GUI PORTAUDIO
 OPTIONS_RADIO=		AUDIO
 OPTIONS_RADIO_AUDIO=	ALSAMIDI DSSI
@@ -35,16 +36,19 @@ DSSI_DESC=	DSSI Plugin
 ALSAMIDI_LIB_DEPENDS=		libasound.so:audio/alsa-lib
 ALSAMIDI_CMAKE_OFF=		-DAlsaEnable:BOOL=OFF
 
+BASH_DESC=			Support for bash auto-completion
+BASH_BUILD_DEPENDS=		bash-completion>=0:shells/bash-completion
+
 DSSI_LIB_DEPENDS=		libdssialsacompat.so:audio/libdssialsacompat
 DSSI_BUILD_DEPENDS=		dssi>0:audio/dssi
 DSSI_RUN_DEPENDS=		dssi>0:audio/dssi
 DSSI_CFLAGS=			-I${LOCALBASE}/include/dssi
 DSSI_CMAKE_OFF=			-DDssiEnable:BOOL=OFF
 
-GUI_LIB_DEPENDS=		libfltk.so:x11-toolkits/fltk \
+GUI_LIB_DEPENDS=		libntk.so:x11-toolkits/ntk \
 				libpng.so:graphics/png \
 				libfontconfig.so:x11-fonts/fontconfig
-GUI_CMAKE_ON=			-DGuiModule:STRING=fltk
+GUI_CMAKE_ON=			-DGuiModule:STRING=ntk
 GUI_CMAKE_OFF=			-DGuiModule:STRING=OFF
 GUI_USE+=			XORG=x11,xext,xfixes,xcursor,xrender,ice,sm,xpm,xinerama,xft
 GUI_USE+=			GL=gl,glu
@@ -61,12 +65,14 @@ JACK_CMAKE_OFF=			-DJackEnable:BOOL=OFF
 
 PORTAUDIO_LIB_DEPENDS=		libportaudio.so:audio/portaudio
 PORTAUDIO_CMAKE_OFF=		-DPaEnable:BOOL=OFF
-PORTAUDIO_LDFLAGS=		-L${LOCALBASE}/lib -lportaudio
+
+SNDIO_LIB_DEPENDS=		libsndio.so:audio/sndio
+SNDIO_CMAKE_OFF=		-DSndioEnable:BOOL=OFF
 
 PORTDOCS=	*
 
 DOCSRCDIR1=	${WRKSRC}
-DOC_FILES1=	AUTHORS.txt ChangeLog HISTORY.txt
+DOC_FILES1=	AUTHORS.txt NEWS.txt
 
 DOCSRCDIR2=	${WRKSRC}/doc
 DOCSDIR2=	${DOCSDIR}/doc
@@ -86,8 +92,6 @@ CMAKE_ARGS+=	-DZYN_EXAMPLESDIR:STRING=${EXAMPLESDIR}
 
 .if ${ARCH} == "i386" || ${ARCH} == "amd64"
 CFLAGS+=	-DASM_F2I_YES
-.else
-CMAKE_ARGS+=	-DSUPPORT_SSE:BOOL=OFF
 .endif
 
 post-patch:
@@ -96,10 +100,6 @@ post-patch:
 		 /-DASM_F2I_YES/d ; \
 		 /-g #/d' ${WRKSRC}/src/CMakeLists.txt
 
-post-configure-GUI-off:
-# kill a stray -lX11, fixed upstream
-	@${REINPLACE_CMD} -e 's| -lX11||' ${WRKSRC}/build.ninja
-
 post-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/banks \
 		${STAGEDIR}${DOCSDIR} \
@@ -107,7 +107,7 @@ post-install:
 		${STAGEDIR}${DOCSDIR3} \
 		${STAGEDIR}${EXAMPLESDIR}
 
-	(cd ${WRKDIR}/${DISTNAME}/instruments/banks && \
+	(cd ${WRKSRC}/instruments/banks && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/banks)
 	${INSTALL_DATA} ${DOC_FILES1:S|^|${DOCSRCDIR1}/|} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOC_FILES2:S|^|${DOCSRCDIR2}/|} ${STAGEDIR}${DOCSDIR2}

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	discid
 PORTVERSION=	1.2.0
 CATEGORIES=	audio python

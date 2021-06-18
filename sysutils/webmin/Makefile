@@ -1,8 +1,7 @@
 # Created by: Andreas Klemm <andreas@klemm.gtn.com>
-# $FreeBSD$
 
 PORTNAME=	webmin
-PORTVERSION=	1.954
+PORTVERSION=	1.973
 CATEGORIES=	sysutils
 MASTER_SITES=	http://download.webmin.com/updates/:up \
 		SF/webadmin/${PORTNAME}/${PORTVERSION}:sf

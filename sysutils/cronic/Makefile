@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cronic
 PORTVERSION=	3
 CATEGORIES=	sysutils

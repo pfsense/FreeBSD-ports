@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Encode-JP-Emoji
 PORTVERSION=	0.60
 PORTREVISION=	1

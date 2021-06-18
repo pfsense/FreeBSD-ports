@@ -1,9 +1,8 @@
 # Created by: gahr
-# $FreeBSD$
 
 PORTNAME=	zorba
 PORTVERSION=	2.7.0
-PORTREVISION=	31
+PORTREVISION=	32
 CATEGORIES=	textproc java
 MASTER_SITES=	https://launchpadlibrarian.net/119058962/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}

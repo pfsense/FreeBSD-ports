@@ -1,13 +1,12 @@
 # Created by: Koop Mast <einekoai@chello.nl>
-# $FreeBSD$
 
 PORTNAME=	bluefish
-PORTVERSION=	2.2.11
+PORTVERSION=	2.2.12
 CATEGORIES=	www editors
 MASTER_SITES=	http://www.bennewitz.com/bluefish/stable/source/ \
 		http://bluefish.mrball.net/stable/source/
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	HTML editor designed for the experienced web designer
 
 LICENSE=	GPLv3+

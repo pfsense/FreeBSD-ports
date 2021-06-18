@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dogapi
-PORTVERSION=	1.44.0
+PORTVERSION=	1.45.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 

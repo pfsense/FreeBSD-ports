@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Communication utilities
 
     SUBDIR += acfax
@@ -39,7 +36,6 @@
     SUBDIR += ebook2cwgui
     SUBDIR += ebusd
     SUBDIR += echolinux
-    SUBDIR += efax
     SUBDIR += ems-flasher
     SUBDIR += fl_moxgen
     SUBDIR += flamp
@@ -62,6 +58,7 @@
     SUBDIR += gstreamer1-plugins-spandsp
     SUBDIR += gtkmmorse
     SUBDIR += hackrf
+    SUBDIR += hackrf-devel
     SUBDIR += hamlib
     SUBDIR += hcidump
     SUBDIR += hidapi
@@ -70,7 +67,6 @@
     SUBDIR += inspectrum
     SUBDIR += iwmbt-firmware
     SUBDIR += java-simple-serial-connector
-    SUBDIR += kb
     SUBDIR += kermit
     SUBDIR += klog
     SUBDIR += libconcord
@@ -136,8 +132,9 @@
     SUBDIR += predict
     SUBDIR += py-adafruit-ampy
     SUBDIR += py-esptool
+    SUBDIR += py-hid
     SUBDIR += py-hidapi
-    SUBDIR += py-lirc
+    SUBDIR += py-libimobiledevice
     SUBDIR += py-pyserial
     SUBDIR += py-qt5-sensors
     SUBDIR += py-qt5-serialport
@@ -154,6 +151,7 @@
     SUBDIR += qtel
     SUBDIR += redsea
     SUBDIR += remserial
+    SUBDIR += rtl-443
     SUBDIR += rtl-sdr
     SUBDIR += rubygem-callsign
     SUBDIR += rubygem-ruby-termios
@@ -164,7 +162,6 @@
     SUBDIR += sdr-wspr
     SUBDIR += ser2net
     SUBDIR += serialoverip
-    SUBDIR += seyon
     SUBDIR += sms_client
     SUBDIR += smstools3
     SUBDIR += snap7
@@ -173,6 +170,7 @@
     SUBDIR += soapyplutosdr
     SUBDIR += soapyredpitaya
     SUBDIR += soapyremote
+    SUBDIR += soapysdr-rtlsdr
     SUBDIR += soapysdrhackrf
     SUBDIR += soapyuhd
     SUBDIR += spandsp

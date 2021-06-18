@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	mailman
 PORTVERSION=	3.3.1
 CATEGORIES=	mail
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	vishwin@vishwin.info
+MAINTAINER=	vishwin@FreeBSD.org
 COMMENT=	GNU Mailing List Management System, Core
 
 LICENSE=	GPLv3+

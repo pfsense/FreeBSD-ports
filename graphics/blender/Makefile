@@ -1,9 +1,8 @@
 # Created by: Jimmy Olgeni <olgeni@uli.it>
-# $FreeBSD$
 
 PORTNAME=	blender
 DISTVERSION=	2.91.0
-PORTREVISION=	1
+PORTREVISION=	6
 CATEGORIES=	graphics multimedia
 MASTER_SITES=	http://download.blender.org/source/ \
 		http://mirror.cs.umn.edu/blender.org/source/ \
@@ -27,7 +26,7 @@ RUN_DEPENDS=	${PYNUMPY}
 # libraries are used, if either of the most common options in blender
 # are set. We will pull boost in just to be on the safe side.
 
-USES=		cmake compiler:c++14-lang gl jpeg python:3.8 shebangfix \
+USES=		cmake compiler:c++14-lang gl gnome jpeg python:3.8 shebangfix \
 		tar:xz xorg
 USE_XORG=	x11 xext xfixes xmu xrender
 USE_GL=		gl glu glew
@@ -58,15 +57,13 @@ OPTIONS_SUB=	yes
 ALEMBIC_CMAKE_BOOL=		WITH_ALEMBIC
 ALEMBIC_LIB_DEPENDS=		libAlembic.so:graphics/alembic
 # note that this needs to be set to match alembics hdf5 option
-ALEMBIC_HDF5_REQUIRES=		ALEMBIC
+ALEMBIC_HDF5_IMPLIES=		ALEMBIC
 ALEMBIC_HDF5_CMAKE_BOOL=	WITH_ALEMBIC_HDF5
 ALEMBIC_HDF5_LIB_DEPENDS=	libhdf5.so:science/hdf5
 AVI_CMAKE_BOOL=			WITH_CODEC_AVI
 BULLET_CMAKE_BOOL=		WITH_BULLET
 CAMERATRACK_CMAKE_BOOL=		WITH_LIBMV
 CAMERATRACK_LIB_DEPENDS=	libunwind.so:devel/libunwind
-CAMERATRACK_ONLY_FOR_ARCHS=	i386 amd64
-CAMERATRACK_ONLY_FOR_ARCHS_REASON=	libunwind only supports x86/amd64
 CINEON_CMAKE_BOOL=		WITH_IMAGE_CINEON
 COLLADA_CMAKE_BOOL=		WITH_OPENCOLLADA
 COLLADA_LIB_DEPENDS=		libOpenCOLLADABaseUtils.so:graphics/opencollada \
@@ -80,8 +77,6 @@ CYCLES_LIB_DEPENDS=		libpugixml.so:textproc/pugixml
 CYCLESEMBR_IMPLIES=		CYCLES
 CYCLESEMBR_CMAKE_BOOL=		WITH_CYCLES_EMBREE
 CYCLESEMBR_LIB_DEPENDS=		libembree3.so:graphics/embree
-CYCLESEMBR_ONLY_FOR_ARCHS=	amd64
-CYCLESEMBR_ONLY_FOR_ARCHS_REASON=	embree only supports amd64
 CYCLESOSL_IMPLIES=		CYCLES
 CYCLESOSL_CMAKE_BOOL=		WITH_CYCLES_OSL WITH_LLVM
 CYCLESOSL_CMAKE_ON=		-DLLVM_STATIC:BOOL=OFF \
@@ -130,16 +125,15 @@ OPENCOLORIO_LIB_DEPENDS=	libOpenColorIO.so:graphics/opencolorio \
 				libyaml-cpp03.so:devel/yaml-cpp03 \
 				libtinyxml.so:textproc/tinyxml
 OPENEXR_CMAKE_BOOL=		WITH_IMAGE_OPENEXR
-OPENEXR_LIB_DEPENDS=		libIlmImf.so:graphics/openexr \
-				libHalf.so:graphics/ilmbase
+OPENEXR_CFLAGS=			-I${LOCALBASE}/include/Imath
+OPENEXR_LIB_DEPENDS=		libOpenEXR.so:graphics/openexr \
+				libImath.so:math/Imath
 OPENIMAGEIO_IMPLIES=		OPENEXR TIFF
 OPENIMAGEIO_CMAKE_BOOL=		WITH_OPENIMAGEIO
 OPENIMAGEIO_LIB_DEPENDS=	libOpenImageIO.so:graphics/openimageio
 OPENIMAGEDN_IMPLIES=		TBB
 OPENIMAGEDN_CMAKE_BOOL=		WITH_OPENIMAGEDENOISE
 OPENIMAGEDN_LIB_DEPENDS=	libOpenImageDenoise.so:graphics/oidn
-OPENIMAGEDN_ONLY_FOR_ARCHS=	amd64
-OPENIMAGEDN_ONLY_FOR_ARCHS_REASON=	oidn only supports amd64
 # openmp usually works on amd64
 OPENMP_CMAKE_BOOL=		WITH_OPENMP
 OPENSUBDIV_CMAKE_BOOL=		WITH_OPENSUBDIV
@@ -155,7 +149,7 @@ SDL_USES=			sdl
 SNDFILE_CMAKE_BOOL=		WITH_CODEC_SNDFILE
 SNDFILE_LIB_DEPENDS=		libsndfile.so:audio/libsndfile
 TBB_CMAKE_BOOL=			WITH_TBB
-TBB_LIB_DEPENDS=		libtbb.so:devel/tbb
+TBB_LIB_DEPENDS=		libtbb.so:devel/onetbb
 TIFF_CMAKE_BOOL=		WITH_IMAGE_TIFF
 TIFF_LIB_DEPENDS=		libtiff.so:graphics/tiff
 TRACE_CMAKE_BOOL=		WITH_POTRACE
@@ -170,6 +164,10 @@ CMAKE_ARGS+=		-DWITH_GHOST_DEBUG:BOOL=ON
 .endif
 
 .include <bsd.port.options.mk>
+
+.if ${ARCH} != amd64 && ${ARCH} != i386
+CMAKE_ARGS+=	-DWITH_CPU_SSE:BOOL=OFF
+.endif
 
 .if ${LLVM_DEFAULT:M[678]0}
 LLVM_VER=	90

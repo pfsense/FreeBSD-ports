@@ -1,5 +1,4 @@
 # Created by: Clement Laforet <sheepkiller@cultdeadsheep.org>
-# $FreeBSD$
 
 PORTNAME=	libprelude
 PORTVERSION=	1.2.6
@@ -11,6 +10,8 @@ COMMENT=	Sensor support library from Prelude SIEM
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN_riscv64=		fails to configure: Easybindings require a C++ compiler, but none were found.
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libgnutls.so:security/gnutls \

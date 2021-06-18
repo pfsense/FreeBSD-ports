@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * wireguard.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021 R. Christian McDonald
+ * Copyright (2) 2020 Ascord
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>wireguard</name>
+	<version>%%PKGVERSION%%</version>
+	<title>VPN/WireGuard</title>
+	<include_file>/usr/local/pkg/wireguard/wg.inc</include_file>
+	<menu>
+		<name>WireGuard</name>
+		<section>VPN</section>
+		<url>/wg/vpn_wg_tunnels.php</url>
+	</menu>
+	<menu>
+		<name>WireGuard </name>
+		<section>Status</section>
+		<url>/wg/status_wireguard.php</url>
+	</menu>
+	<service>
+		<name>wireguard</name>
+		<rcfile>wireguardd</rcfile>
+		<executable>php_wg</executable>
+		<description>WireGuard</description>
+	</service>
+	<custom_php_install_command>
+		<![CDATA[
+		wg_install();
+		]]>
+	</custom_php_install_command>
+	<custom_php_pre_deinstall_command>
+		<![CDATA[
+		wg_deinstall();
+		]]>
+	</custom_php_pre_deinstall_command>
+	<custom_php_validation_command>
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		<![CDATA[
+		wg_resync_all();
+		]]>
+	</custom_php_resync_config_command>
+</packagegui>

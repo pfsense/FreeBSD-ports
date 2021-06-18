@@ -1,10 +1,8 @@
 # Created by: Mathieu Arnold
-# $FreeBSD$
 
 PORTNAME=	nextcloudclient
-PORTVERSION=	3.0.3
+PORTVERSION=	3.2.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	deskutils
 
 MAINTAINER=	mr@FreeBSD.org
@@ -12,18 +10,23 @@ COMMENT=	NextCloud Desktop Syncing Client
 
 LICENSE=	GPLv2
 
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
+
 LIB_DEPENDS=	libinotify.so:devel/libinotify \
 		libqt5keychain.so:security/qtkeychain
 
-USES=		cmake:noninja compiler:c++11-lib gmake gnome iconv \
+USES=		cmake:noninja compiler:c++14-lang gmake gnome iconv \
 		localbase:ldflags pkgconfig qt:5 sqlite ssl
 USE_QT=		buildtools_build concurrent core dbus declarative graphicaleffects \
 		gui linguist_build location network printsupport qmake_build \
-		quickcontrols2 sql svg webchannel webengine webkit \
+		quickcontrols2 sql svg webchannel webengine websockets \
 		widgets xml
 CMAKE_ARGS=	-DBUILD_WITH_QT4:BOOL=OFF \
+		-DBUILD_UPDATER:BOOL=OFF \
 		-DCMAKE_INSTALL_MANDIR:STRING=man \
-		-DWITH_STACK_PROTECTOR:BOOL=OFF
+		-DWITH_STACK_PROTECTOR:BOOL=OFF \
+		-DNO_SHIBBOLETH=1
 USE_LDCONFIG=	yes
 INSTALLS_ICONS=	yes
 

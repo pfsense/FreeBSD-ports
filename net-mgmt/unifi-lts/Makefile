@@ -1,5 +1,4 @@
 # Created by: Alban MAIRE <a.maire@s2mi.fr>
-# $FreeBSD$
 
 PORTNAME=	unifi
 PORTVERSION=	5.6.40
@@ -13,6 +12,9 @@ DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	feld@FreeBSD.org
 COMMENT=	UniFi Controller v5
+
+DEPRECATED=	Upstream EoL the hardware supported by this release
+EXPIRATION_DATE=	2021-07-16
 
 RUN_DEPENDS=	mongodb36>0:databases/mongodb36 \
 		snappyjava>0:archivers/snappy-java

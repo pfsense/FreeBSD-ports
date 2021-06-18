@@ -1,5 +1,4 @@
 # Created by: Gasol Wu <gasol.wu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	Yaml
 PORTVERSION=	2.4.4
@@ -8,7 +7,7 @@ MASTER_SITES=	http://pear.symfony.com/get/
 PKGNAMEPREFIX=	${PEAR_PKGNAMEPREFIX}Symfony_Component_
 DIST_SUBDIR=	Symfony2
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Symfony2 Yaml Component
 
 LICENSE=	MIT

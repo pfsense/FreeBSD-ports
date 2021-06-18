@@ -1,5 +1,4 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pooch
 PORTVERSION=	1.3.0
@@ -21,6 +20,6 @@ USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
-USE_LOCALE=	en_US.UTF-8
+USE_LOCALE=	en_US.UTF-8 # Python 3.6
 
 .include <bsd.port.mk>

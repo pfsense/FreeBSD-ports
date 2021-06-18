@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-Bonjour
 PORTVERSION=	0.96
 PORTREVISION=	1

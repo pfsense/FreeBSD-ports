@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	munch
 PORTVERSION=	2.5.0
 CATEGORIES=	devel python
@@ -16,5 +14,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pbr>=3.0:devel/py-pbr@${PY_FLAVOR}
 
 USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

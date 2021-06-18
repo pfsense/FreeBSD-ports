@@ -1,6 +1,3 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	terminus-ttf
 PORTVERSION=	4.47.0
 PORTREVISION=	2

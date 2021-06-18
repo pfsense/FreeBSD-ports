@@ -1,9 +1,8 @@
 # Created by: Akito FUJITA <fujita@zoo.ncl.omron.co.jp>
-# $FreeBSD$
 
 PORTNAME=	mh
 PORTVERSION=	${VERSION}.j${JP_VERSION}
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	japanese mail
 MASTER_SITES=	ftp://ftp.laic.u-hyogo.ac.jp/pub/net/mh/ \
 		http://mirror.amdmi3.ru/distfiles/

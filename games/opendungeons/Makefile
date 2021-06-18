@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	opendungeons
 PORTVERSION=	0.7.1
 PORTREVISION=	7

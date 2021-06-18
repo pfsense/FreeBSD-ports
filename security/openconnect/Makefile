@@ -1,5 +1,4 @@
 # Created by: Damian Gerow <dgerow@afflictions.org>
-# $FreeBSD$
 
 PORTNAME=	openconnect
 PORTVERSION=	8.10
@@ -49,7 +48,7 @@ GNUTLS_CONFIGURE_WITH=	gnutls
 
 GSSAPI_CONFIGURE_WITH=	gssapi
 
-P11_DESC=		PKCS#11 support via libp11
+P11_DESC=		PKCS \#11 support via libp11
 P11_LIB_DEPENDS=	libp11.so:security/libp11
 
 STOKEN_DESC=		With RSA soft token support via libstoken

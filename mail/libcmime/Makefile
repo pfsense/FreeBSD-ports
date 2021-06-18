@@ -1,9 +1,8 @@
 # Created by: Axel Steiner <ast@treibsand.com>
-# $FreeBSD$
 
 PORTNAME=	libcmime
 PORTVERSION=	0.2.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	mail
 MASTER_SITES=	http://www.libcmime.org/files/
 

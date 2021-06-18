@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>WireGuard</name>
+		<descr><![CDATA[WireGuard is an extremely simple yet fast and modern VPN&lt;br /&gt;
+				that utilizes state-of-the-art cryptography. It aims to be&lt;br /&gt;
+				faster, simpler, leaner, and more useful than IPSec, while&lt;br /&gt;
+				avoiding the massive headache. It intends to be considerably&lt;br /&gt;
+				more performant than OpenVPN. WireGuard is designed as a&lt;br /&gt;
+				general purpose VPN for running on embedded interfaces and&lt;br /&gt;
+				super computers alike, fit for many different circumstances.&lt;br /&gt;
+				Initially released for the Linux kernel, it is now&lt;br /&gt;
+				cross-platform and widely deployable. It is currently under&lt;br /&gt;
+				heavy development, but already it might be regarded as the&lt;br /&gt;
+				most secure, easiest to use, and simplest VPN solution in&lt;br /&gt;
+				the industry.]]></descr>
+		<pkginfolink>https://github.com/theonemcdonald/pfSense-pkg-WireGuard</pkginfolink>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>wireguard.xml</configurationfile>
+	</package>
+</pfsensepkgs>

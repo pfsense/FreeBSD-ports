@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	itanium_demangler
 DISTVERSION=	1.0
 CATEGORIES=	devel python
@@ -10,9 +8,7 @@ MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Pure Python parser for mangled itanium symbols
 
 LICENSE=	BSD0CLAUSE
-LICENSE_NAME=	0-clause BSD
 LICENSE_FILE=	${WRKSRC}/README.md
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		python:3.6+
 USE_PYTHON=	autoplist distutils

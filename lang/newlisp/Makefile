@@ -1,5 +1,4 @@
 # Created by: Stanislav Sedov <ssedov@mbsd.msk.ru>
-# $FreeBSD$
 
 PORTNAME=	newlisp
 PORTVERSION=	10.7.5
@@ -16,7 +15,7 @@ LIB_DEPENDS=	libffi.so:devel/libffi
 
 CONFLICTS=	newlisp-devel-[0-9]*
 
-USES=		readline:port tar:tgz
+USES=		readline tar:tgz
 OPTIONS_SUB=	yes
 
 HAS_CONFIGURE=	yes

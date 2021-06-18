@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MooseX-Types-Stringlike
 PORTVERSION=	0.003
 PORTREVISION=	1

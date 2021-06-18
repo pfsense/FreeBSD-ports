@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	chart
 PORTVERSION=	${PYQT5_VERSION}
 CATEGORIES=	x11-toolkits devel python
@@ -11,9 +9,6 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Python bindings for the Qt5 toolkit, QtChart module
 
 LICENSE=	${PYQT5_LICENSE}
-
-BUILD_DEPENDS=	${PY_ENUM34}
-RUN_DEPENDS=	${PY_ENUM34}
 
 USES=		gl python:3.5+ pyqt:5 qt:5
 USE_GL=		gl

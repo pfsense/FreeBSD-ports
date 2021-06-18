@@ -1,5 +1,4 @@
 # Created by: Toni Gundogdu <legatvs@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	cclive
 PORTVERSION=	0.7.16
@@ -7,7 +6,7 @@ PORTREVISION=	12
 CATEGORIES=	multimedia net
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION:R}
 
-MAINTAINER=	jlaffaye@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight command line video extraction tool
 
 LICENSE=	GPLv3

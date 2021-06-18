@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	simdjson
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.0
+DISTVERSION=	0.9.5
 CATEGORIES=	devel
 
 MAINTAINER=	olevole@olevole.ru

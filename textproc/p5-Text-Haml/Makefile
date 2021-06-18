@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Text-Haml
 PORTVERSION=	0.990118
 CATEGORIES=	textproc perl5

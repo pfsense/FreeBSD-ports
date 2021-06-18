@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	selenium
 PORTVERSION=	3.141.59
 CATEGORIES=	www devel java

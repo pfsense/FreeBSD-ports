@@ -1,8 +1,7 @@
 # Created by: johans
-# $FreeBSD$
 
 PORTNAME=	webp
-PORTVERSION=	1.1.0
+PORTVERSION=	1.2.0
 CATEGORIES=	graphics
 MASTER_SITES=	http://downloads.webmproject.org/releases/webp/ \
 		https://storage.googleapis.com/downloads.webmproject.org/releases/webp/

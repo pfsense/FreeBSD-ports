@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	swayidle
 DISTVERSION=	1.6
 PORTREVISION=	2

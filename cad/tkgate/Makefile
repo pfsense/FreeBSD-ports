@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tkgate
 PORTVERSION=	2.1
 CATEGORIES=	cad
@@ -14,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		autoreconf gnome iconv:translit libtool pkgconfig tk
+USES=		autoreconf gnome iconv:translit libtool pkgconfig tk xorg
 
 USE_XORG=	x11 xft
 USE_GNOME=	pango

@@ -1,5 +1,4 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	lpac
 PORTVERSION=	1.40
@@ -11,7 +10,12 @@ COMMENT=	Lossless audio codec
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-NO_CDROM=	No commercial use
+# Converted from NO_CDROM
+LICENSE=	LPAC
+LICENSE_NAME=	lpac
+LICENSE_TEXT=	No commercial use
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
+
 NO_BUILD=	yes
 USES=		linux
 PLIST_FILES=	bin/lpac

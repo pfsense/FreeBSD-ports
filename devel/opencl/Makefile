@@ -1,5 +1,4 @@
 # Created by: O. Hartmann <ohartmann@walstatt.org>
-# $FreeBSD$
 
 PORTNAME=	opencl
 PORTVERSION=	3.0
@@ -25,7 +24,7 @@ CLHPP_TAG=	64c206f	#  include missing CL/opencl.hpp
 NO_BUILD=	yes
 NO_ARCH=	yes
 
-WRKSRC=	${WRKDIR}/${GH_PROJECT}-${GH_TAGNAME}/CL
+WRKSRC_SUBDIR=	CL
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/include/CL

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	File-Locate
 PORTVERSION=	0.62
 CATEGORIES=	databases perl5

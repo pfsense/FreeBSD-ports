@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	scrcpy
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.14
+DISTVERSION=	1.17
 CATEGORIES=	comms net
 MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/${DISTVERSIONFULL}/:server
 DISTFILES=	${SERVER_FILE}:server

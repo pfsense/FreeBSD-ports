@@ -309,7 +309,7 @@ libexec/gimp/2.2/plug-ins/despeckle/despeckle
 libexec/gimp/2.2/plug-ins/destripe/destripe
 libexec/gimp/2.2/plug-ins/edge-dog/edge-dog
 libexec/gimp/2.2/plug-ins/emboss/emboss
-%%AA%%libexec/gimp/2.2/plug-ins/file-aa/file-aa
+%%AALIB%%libexec/gimp/2.2/plug-ins/file-aa/file-aa
 libexec/gimp/2.2/plug-ins/file-bmp/file-bmp
 libexec/gimp/2.2/plug-ins/file-cel/file-cel
 libexec/gimp/2.2/plug-ins/file-compressor/file-compressor
@@ -4423,6 +4423,7 @@ share/gimp/icons/Symbolic/scalable/apps/zoom-in.svg
 share/gimp/icons/Symbolic/scalable/apps/zoom-original.svg
 share/gimp/icons/Symbolic/scalable/apps/zoom-out.svg
 share/gimp/icons/hicolor/index.theme
+share/gimp/icons/hicolor/scalable/status/software-update-available.svg
 share/gimp/images/gimp-logo.png
 share/gimp/images/gimp-splash.png
 share/gimp/images/wilber.png
@@ -5233,6 +5234,8 @@ share/locale/ja/LC_MESSAGES/gimp20-std-plug-ins.mo
 share/locale/ja/LC_MESSAGES/gimp20-tips.mo
 share/locale/ja/LC_MESSAGES/gimp20.mo
 share/locale/ka/LC_MESSAGES/gimp20.mo
+share/locale/kab/LC_MESSAGES/gimp20-python.mo
+share/locale/kab/LC_MESSAGES/gimp20-std-plug-ins.mo
 share/locale/kk/LC_MESSAGES/gimp20-libgimp.mo
 share/locale/kk/LC_MESSAGES/gimp20.mo
 share/locale/km/LC_MESSAGES/gimp20-libgimp.mo

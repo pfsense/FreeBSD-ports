@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pycompilation
 DISTVERSION=	0.4.12
 CATEGORIES=	devel python

@@ -1,8 +1,7 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	liblxqt
-PORTVERSION=	0.16.0
+PORTVERSION=	0.17.0
 CATEGORIES=	devel
 MASTER_SITES=	LXQT
 

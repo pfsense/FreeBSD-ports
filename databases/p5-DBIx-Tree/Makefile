@@ -1,8 +1,7 @@
 # Created by: Philip M. Gollucci <philip@p6m7g8.com>
-# $FreeBSD$
 
 PORTNAME=	DBIx-Tree
-PORTVERSION=	1.97
+PORTVERSION=	1.98
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

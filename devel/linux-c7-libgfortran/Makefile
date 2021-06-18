@@ -1,10 +1,9 @@
 # Created by: Piotr Kubaj <emulation@FreeBSD.org$
-# $FreeBSD$
 
 PORTNAME=	libgfortran
 PORTVERSION=	4.8.5
-DISTVERSIONSUFFIX=	-39.el7
-PORTREVISION=	5
+DISTVERSIONSUFFIX=	-44.el7
+PORTREVISION=	6
 CATEGORIES=	devel linux
 
 MAINTAINER=	emulation@FreeBSD.org

@@ -1,14 +1,13 @@
 # Created by: Alexander Logvinov <ports@logvinov.com>
-# $FreeBSD$
 
 PORTNAME=	dwdiff
-PORTVERSION=	2.1.3
+PORTVERSION=	2.1.4
 PORTREVISION=	1
 CATEGORIES=	textproc
 MASTER_SITES=	https://os.ghalkes.nl/dist/ \
 		http://fossies.org/unix/privat/
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Delimited word diff program
 
 LICENSE=	GPLv3

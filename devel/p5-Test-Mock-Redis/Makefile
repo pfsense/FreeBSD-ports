@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-Mock-Redis
 PORTVERSION=	0.22
 CATEGORIES=	devel perl5

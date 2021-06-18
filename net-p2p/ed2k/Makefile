@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ed2k
 PORTVERSION=	1.4
 CATEGORIES=	net-p2p

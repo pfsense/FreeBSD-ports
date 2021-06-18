@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	docker-api
 PORTVERSION=	1.34.2
 CATEGORIES=	net rubygems

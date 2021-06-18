@@ -1,5 +1,4 @@
 # Created by: Edward Tomasz Napierala <trasz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libsmf
 PORTVERSION=	1.3
@@ -13,7 +12,7 @@ COMMENT=	Standard MIDI File format library
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gnome libtool pathfix pkgconfig readline:port
+USES=		gnome libtool pathfix pkgconfig readline
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	trimesh
 PORTVERSION=	3.5.25
 CATEGORIES=	devel cad python

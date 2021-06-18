@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	devel lang
 PKGNAMESUFFIX=	-bfd
 

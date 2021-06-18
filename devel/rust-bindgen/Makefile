@@ -1,12 +1,11 @@
-# $FreeBSD$
-
 PORTNAME=	bindgen
-DISTVERSION=	0.56.0
+DISTVERSION=	0.58.1
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	CRATESIO
 PKGNAMEPREFIX=	rust-
 # XXX Teach USES=cargo to have proper default
-DISTFILES=	${CARGO_DIST_SUBDIR}/${DISTNAME}${EXTRACT_SUFX}
+DISTFILES=	${CARGO_DIST_SUBDIR}/${DISTNAME}${CARGO_CRATE_EXT}
 
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Generate Rust bindings from C (and some C++) code
@@ -46,7 +45,7 @@ CARGO_CRATES=	aho-corasick-0.7.15 \
 		regex-1.4.2 \
 		regex-syntax-0.6.21 \
 		rustc-hash-1.1.0 \
-		shlex-0.1.1 \
+		shlex-1.0.0 \
 		strsim-0.8.0 \
 		termcolor-1.1.0 \
 		textwrap-0.11.0 \

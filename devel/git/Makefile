@@ -1,8 +1,8 @@
 # Created by: Eric Anholt
-# $FreeBSD$
 
 PORTNAME=	git
-DISTVERSION=	2.30.1
+DISTVERSION=	2.31.1
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	KERNEL_ORG/software/scm/git
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -17,15 +17,18 @@ COMMENT=	Distributed source code management tool ${COMMENT_${FLAVOR}}
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-FLAVORS=	default gui lite tiny
-default_CONFLICTS_INSTALL=	git-gui git-lite git-tiny
-gui_CONFLICTS_INSTALL=		git git-lite git-tiny
+FLAVORS=	default gui lite svn tiny
+default_CONFLICTS_INSTALL=	git-gui git-lite git-svn git-tiny
+gui_CONFLICTS_INSTALL=		git git-lite git-svn git-tiny
 gui_DESCR=			${.CURDIR}/pkg-descr-gui
 gui_PKGNAMESUFFIX=		-gui
-lite_CONFLICTS_INSTALL=		git git-gui git-tiny
+lite_CONFLICTS_INSTALL=		git git-gui git-svn git-tiny
 lite_DESCR=			${.CURDIR}/pkg-descr-lite
 lite_PKGNAMESUFFIX=		-lite
-tiny_CONFLICTS_INSTALL=		git git-gui git-lite
+svn_CONFLICTS_INSTALL=		git git-gui git-lite git-tiny
+svn_DESCR=			${.CURDIR}/pkg-descr-svn
+svn_PKGNAMESUFFIX=		-svn
+tiny_CONFLICTS_INSTALL=		git git-gui git-svn git-lite
 tiny_DESCR=			${.CURDIR}/pkg-descr-tiny
 tiny_PKGNAMESUFFIX=		-tiny
 
@@ -33,6 +36,7 @@ USES=		autoreconf gmake iconv shebangfix ssl tar:xz
 
 COMMENT_gui=	(GUI enabled flavor)
 COMMENT_lite=	(lite flavor)
+COMMENT_svn=	(SVN enabled flavor)
 COMMENT_tiny=	(tiny flavor)
 
 USERS=		git_daemon
@@ -64,18 +68,18 @@ TEST_TARGET=	test
 
 CONFIGURE_ARGS=	--enable-pthreads=-pthread ac_cv_header_libcharset_h=no
 
-OPTIONS_RADIO=	PCRE_VERSION
-OPTIONS_RADIO_PCRE_VERSION=	PCRE PCRE2
-OPTIONS_DEFINE=	GUI SVN GITWEB CONTRIB P4 CVS HTMLDOCS PERL ICONV CURL \
-		SEND_EMAIL NLS SUBTREE
-OPTIONS_DEFAULT=	CONTRIB P4 CVS PERL GITWEB ICONV CURL SEND_EMAIL PCRE \
-			SUBTREE SVN
+OPTIONS_DEFINE=	CONTRIB CURL CVS GITWEB GUI HTMLDOCS ICONV NLS P4 PCRE2 PERL \
+		SEND_EMAIL SUBTREE SVN
+OPTIONS_DEFAULT=CONTRIB CURL CVS GITWEB ICONV P4 PCRE2 PERL SEND_EMAIL \
+		SUBTREE
 .if ${FLAVOR:U} == gui
 OPTIONS_SLAVE+=		GUI
 .elif ${FLAVOR:U} == lite
 OPTIONS_EXCLUDE=	GUI SVN GITWEB CONTRIB P4 CVS PERL
+.elif ${FLAVOR:U} == svn
+OPTIONS_SLAVE+=		SVN
 .elif ${FLAVOR:U} == tiny
-OPTIONS_EXCLUDE:=	${OPTIONS_DEFINE:NCURL} ${OPTIONS_RADIO_PCRE_VERSION}
+OPTIONS_EXCLUDE:=	${OPTIONS_DEFINE:NCURL}
 OPTIONS_SLAVE=		CURL
 .endif
 
@@ -106,9 +110,6 @@ PERL_MAKE_ARGS_OFF=	NO_PERL=1
 
 GITWEB_IMPLIES=		PERL
 GITWEB_RUN_DEPENDS=	p5-CGI>=0:www/p5-CGI
-
-PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
-PCRE_CONFIGURE_WITH=	libpcre1
 
 PCRE2_LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 PCRE2_CONFIGURE_WITH=	libpcre
@@ -206,7 +207,7 @@ post-patch-SVN-off:
 
 post-patch-GITWEB-off:
 	@${REINPLACE_CMD} -e '/$$(MAKE) -C gitweb install/d' ${WRKSRC}/Makefile
-	@${REINPLACE_CMD} -e "s,/usr/bin/perl,${PERL}," ${WRKSRC}/t/gitweb-lib.sh
+	@${REINPLACE_CMD} -e "s,/usr/bin/perl,${PERL}," ${WRKSRC}/t/lib-gitweb.sh
 
 post-patch-P4-off:
 	@${REINPLACE_CMD} -e '/^SCRIPT_PYTHON += git-p4.py$$/d' ${WRKSRC}/Makefile
@@ -229,6 +230,9 @@ post-install:
 		${STAGEDIR}${PREFIX}/share/emacs/site-lisp/git/
 	${INSTALL_DATA} ${WRKSRC}/contrib/emacs/git-blame.el \
 		${STAGEDIR}${PREFIX}/share/emacs/site-lisp/git/
+	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d
+	${INSTALL_SCRIPT} ${WRKSRC}/contrib/completion/git-completion.bash \
+		${STAGEDIR}${PREFIX}/etc/bash_completion.d/
 
 post-install-HTMLDOCS-on:
 	# Manually remove the index.html symlink before installing, and then
@@ -248,17 +252,6 @@ post-install-CONTRIB-on:
 	@${ECHO_MSG} "===> Installing contributed scripts"
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/git-core/contrib
 	${CP} -R ${WRKSRC}/contrib/* ${STAGEDIR}${PREFIX}/share/git-core/contrib
-	# Symlink the completions from the contrib directory to where they
-	# will be useful
-	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d
-	@${LN} -s ../../share/git-core/contrib/completion/git-completion.bash \
-		${STAGEDIR}${PREFIX}/etc/bash_completion.d/
-
-post-install-CONTRIB-off:
-	# Install the contrib completions anyway
-	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d
-	${INSTALL_SCRIPT} ${WRKSRC}/contrib/completion/git-completion.bash \
-		${STAGEDIR}${PREFIX}/etc/bash_completion.d/
 
 post-install-P4-on:
 	${INSTALL_SCRIPT} ${WRKSRC}/git-p4.py ${STAGEDIR}${PREFIX}/bin/

@@ -1,8 +1,7 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jasper
-PORTVERSION=	2.0.23
+PORTVERSION=	2.0.32
 DISTVERSIONPREFIX=	version-
 CATEGORIES=	graphics
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	chinese
 LO_I18N=	zh_CN
 LO_HAS_HELPPACK=	yes

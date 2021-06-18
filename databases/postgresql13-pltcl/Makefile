@@ -1,5 +1,4 @@
 # Created by: Palle Girgensohn <girgen@partitur.se>
-# $FreeBSD$
 
 PORTNAME=	postgresql
 # Keep the ?=, it is used by the other pltcl ports.
@@ -28,5 +27,8 @@ BUILD_DIRS=	src/backend src/pl/tcl
 INSTALL_DIRS=	src/pl/tcl
 SLAVE_ONLY=	yes
 COMPONENT=	-pltcl
+
+# this port fails to build in parallel
+MAKE_JOBS_UNSAFE=	yes
 
 .include "${MASTERDIR}/Makefile"

@@ -1,8 +1,7 @@
 # Created by: Seamus Venasse <svenasse@polaris.ca>
-# $FreeBSD$
 
 PORTNAME=	Locale-SubCountry
-PORTVERSION=	2.05
+PORTVERSION=	2.06
 CATEGORIES=	misc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

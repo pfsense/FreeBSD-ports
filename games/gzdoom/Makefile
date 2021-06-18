@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gzdoom
 PORTVERSION=	4.1.1
 PORTREVISION=	3

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xcwcp
 PORTREVISION=	2
 

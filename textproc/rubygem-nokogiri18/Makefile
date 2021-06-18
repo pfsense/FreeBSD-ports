@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nokogiri
 PORTVERSION=	1.8.5
 CATEGORIES=	textproc rubygems

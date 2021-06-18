@@ -1,11 +1,10 @@
 # Created by: Thierry Thomas (<thierry@FreeBSD.org>)
-# $FreeBSD$
 
 PORTNAME=	HTTP_Request
 PORTVERSION=	1.4.4
 CATEGORIES=	www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR classes providing an easy way to perform HTTP requests
 
 BUILD_DEPENDS=	${PEARDIR}/Net/URL.php:net/pear-Net_URL@${PHP_FLAVOR}		\

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gshhg-gmt
 DISTVERSION=	2.3.7
 CATEGORIES=	graphics

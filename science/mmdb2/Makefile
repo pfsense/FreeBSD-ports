@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mmdb2
 DISTVERSION=	2.0.20
 CATEGORIES=	science

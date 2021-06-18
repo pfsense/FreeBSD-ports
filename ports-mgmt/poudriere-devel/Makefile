@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	poudriere
-DISTVERSION=	3.3.99.20200326
-PORTREVISION=	2
+DISTVERSION=	3.3.99.20210521
+PORTREVISION=	0
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	LOCAL/bdrewery/${PORTNAME}/ \
 		http://mirror.shatow.net/freebsd/${PORTNAME}/ \
@@ -18,8 +16,7 @@ CONFLICTS_INSTALL=	poudriere-[0-9]*
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
-GH_TAGNAME=	3.3.0-257-g153d8f14c
-#DISTNAME=	${GH_ACCOUNT}-${GH_PROJECT}-${GH_TAGNAME}
+GH_TAGNAME=	3.3.0-704-g8c78cfb24
 
 GNU_CONFIGURE=	yes
 ETCDIR=		${PREFIX}/etc/poudriere.d
@@ -54,7 +51,7 @@ PLIST_SUB+=	RM="@comment "
 post-patch:
 	${REINPLACE_CMD} \
 	    -e "s,^\(POUDRIERE_VERSION\)=.*,\1='${PKGVERSION}'," \
-	    ${WRKSRC}/src/bin/poudriere
+	    ${WRKSRC}/src/bin/poudriere.in
 
 post-install:
 	${LN} -fs ${LOCALBASE}/share/freebsd/MANIFESTS \

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Clone
 PORTVERSION=	0.45
 CATEGORIES=	devel perl5

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bareos
 PKGNAMESUFFIX=	19-client
 

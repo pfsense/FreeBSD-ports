@@ -1,5 +1,4 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	django-modelcluster
 PORTVERSION=	5.1
@@ -13,7 +12,7 @@ COMMENT=	Django extension for working with clusters of models as a single unit
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytz>=2015.2:devel/py-pytz@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytz>=2015.2,1:devel/py-pytz@${PY_FLAVOR}
 
 USES=		python:3.5+
 USE_PYTHON=	autoplist concurrent distutils

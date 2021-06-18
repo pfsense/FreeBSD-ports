@@ -1,11 +1,10 @@
 # Created by: johnpupu <johnpupu@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	leveldb
-PORTVERSION=	0.2.1
+PORTVERSION=	0.3.0
 CATEGORIES=	databases
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PHP bindings for Google LevelDB
 
 LICENSE=	PHP301

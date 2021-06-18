@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libsearpc
 PORTVERSION=	3.2.0
 PORTREVISION=	1

@@ -1,5 +1,4 @@
 # Created by: Yuri Victorovich <yuri@rawbw.com>
-# $FreeBSD$
 
 PORTNAME=	yt
 DISTVERSION=	3.6.1
@@ -19,7 +18,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sympy>=1.0:math/py-sympy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}matplotlib>=1.5.3:math/py-matplotlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ipython5>=1.0:devel/ipython5@${PY_FLAVOR}
 
-USES=		dos2unix localbase python:3.5+
+USES=		dos2unix localbase python:3.7+
 USE_PYTHON=	distutils cython autoplist concurrent
 
 post-patch:

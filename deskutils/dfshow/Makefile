@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dfshow
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.1-beta

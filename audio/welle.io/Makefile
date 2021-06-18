@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	welle.io
-DISTVERSION=	2.2
+DISTVERSION=	2.3
 CATEGORIES=	audio hamradio
 
 MAINTAINER=	nsonack@outlook.com
@@ -14,6 +12,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libfaad.so:audio/faad \
 		libmp3lame.so:audio/lame \
 		libmpg123.so:audio/mpg123
+RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-plugins
 
 USES=		cmake compiler:c++11-lang pkgconfig qt:5
 USE_QT=		charts core declarative gui multimedia network quickcontrols2 \
@@ -21,7 +20,7 @@ USE_QT=		charts core declarative gui multimedia network quickcontrols2 \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	AlbrechtL
-GH_TAGNAME=	c39d3420cc30281e03835b3182f34d8617eb7ebf
+GH_TAGNAME=	66675c9a4160c644a5ade5bf7a0cd0647647f33c
 
 OPTIONS_DEFINE=		AIRSPY CLI FFTW RTLSDR SOAPY
 OPTIONS_DEFAULT=	FFTW RTLSDR
@@ -32,7 +31,6 @@ SOAPY_DESC=	SoapySDR support
 FFTW_DESC=	Use FFTW3 instead of KISSFFT
 CLI_DESC=	Build the welle-cli tool
 
-RTLSDR_DEPENDS=		rtl-sdr:comms/rtl-sdr
 RTLSDR_LIB_DEPENDS=	librtlsdr.so:comms/rtl-sdr
 RTLSDR_CMAKE_BOOL=	RTLSDR
 

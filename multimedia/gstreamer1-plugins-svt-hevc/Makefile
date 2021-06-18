@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	svt-hevc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.0
+DISTVERSION=	1.5.1
 CATEGORIES=	multimedia
 PKGNAMEPREFIX=	gstreamer1-plugins-
 

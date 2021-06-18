@@ -1,5 +1,4 @@
 # Created by: Anes Mukhametov <anes@anes.su>
-# $FreeBSD$
 
 PORTNAME=	Text-Hyphen-RU
 PORTVERSION=	0.11
@@ -9,7 +8,7 @@ MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	anes@anes.su
-COMMENT=	Determine positions for hyphens inside russian words
+COMMENT=	Determine positions for hyphens inside Russian words
 
 LICENSE=	BSD3CLAUSE
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libthmap
 PORTVERSION=	g2020082801
 CATEGORIES=	devel

@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	bsdadminscripts2
-PORTVERSION=	0.3.0
+PORTVERSION=	0.4.1
 CATEGORIES=	ports-mgmt
 
 MAINTAINER=	sunpoet@FreeBSD.org

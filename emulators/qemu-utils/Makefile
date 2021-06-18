@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-utils
 
 MAINTAINER=	ken@FreeBSD.org

@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	google-compute-engine
-DISTVERSION=	2.8.16
+DISTVERSION=	2.8.17
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 

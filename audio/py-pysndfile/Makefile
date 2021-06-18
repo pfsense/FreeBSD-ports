@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pysndfile
 DISTVERSION=	1.4.3
 PORTREVISION=	1

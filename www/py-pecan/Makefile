@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pecan
 PORTVERSION=	1.3.3
 CATEGORIES=	www python net

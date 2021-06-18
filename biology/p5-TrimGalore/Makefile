@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	TrimGalore
 DISTVERSION=	0.6.5
 CATEGORIES=	biology perl5 python

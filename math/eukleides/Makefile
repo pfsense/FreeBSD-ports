@@ -1,5 +1,4 @@
 # Created by: ijliao
-# $FreeBSD$
 
 PORTNAME=	eukleides
 PORTVERSION=	1.5.4
@@ -16,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 RUN_DEPENDS=	pstoedit:graphics/pstoedit \
 		getopt>=0:misc/getopt
 
-USES=		bison gettext iconv gmake readline:port tar:bzip2
+USES=		bison gettext iconv gmake readline tar:bzip2
 USE_TEX=	latex
 INSTALL_TARGET=	install PREFIX=${STAGEDIR}${PREFIX}
 

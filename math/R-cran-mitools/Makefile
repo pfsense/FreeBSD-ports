@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mitools
 DISTVERSION=	2.4
 PORTREVISION=	2

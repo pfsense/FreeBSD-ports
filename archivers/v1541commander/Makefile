@@ -1,5 +1,4 @@
 # Created by: Felix Palmen <felix@palmen-it.de>
-# $FreeBSD$
 
 PORTNAME=	v1541commander
 PORTVERSION=	1.1
@@ -31,6 +30,9 @@ OPTIONS_DEFINE=	DOCS
 
 MAKE_ARGS=	pkgconfigdir=${LOCALBASE}/libdata/pkgconfig \
 		V=1
+MAKE_ENV=	DEFAULT_MOC=${MOC} \
+		DEFAULT_RCC=${RCC} \
+		LRELEASE=${LRELEASE}
 ALL_TARGET=	strip
 
 post-extract:

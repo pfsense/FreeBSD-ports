@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	print-manager
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	print kde kde-applications
@@ -16,8 +14,6 @@ USE_KDE=	auth codecs completion config configwidgets coreaddons \
 		windowsystem
 USE_QT=		concurrent core dbus declarative gui network widgets xml \
 		buildtools_build qmake_build
-
-OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	${REINPLACE_CMD} '/CUPS_DATADIR/s|/usr/share/cups|${LOCALBASE}/share/cups|' \

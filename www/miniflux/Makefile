@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	miniflux
-DISTVERSION=	2.0.29
+DISTVERSION=	2.0.31
 CATEGORIES=	www
 
 MAINTAINER=	krion@FreeBSD.org
@@ -14,16 +12,9 @@ RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
 USES=		go:modules
 
-USERS=	miniflux
-GROUPS=	miniflux
-
-WANT_PGSQL=	client
-USE_RC_SUBR=	miniflux
-
 USE_GITHUB=	yes
 GH_PROJECT=	v2
-GH_TUPLE=	\
-		PuerkitoBio:goquery:v1.6.1:puerkitobio_goquery/vendor/github.com/PuerkitoBio/goquery \
+GH_TUPLE=	PuerkitoBio:goquery:v1.6.1:puerkitobio_goquery/vendor/github.com/PuerkitoBio/goquery \
 		andybalholm:cascadia:v1.1.0:andybalholm_cascadia/vendor/github.com/andybalholm/cascadia \
 		beorn7:perks:v1.0.1:beorn7_perks/vendor/github.com/beorn7/perks \
 		cespare:xxhash:v2.1.1:cespare_xxhash_v2/vendor/github.com/cespare/xxhash/v2 \
@@ -35,33 +26,38 @@ GH_TUPLE=	\
 		golang:net:28c70e62bb1d:golang_net/vendor/golang.org/x/net \
 		golang:oauth2:bf48bf16ab8d:golang_oauth2/vendor/golang.org/x/oauth2 \
 		golang:protobuf:v1.4.3:golang_protobuf/vendor/github.com/golang/protobuf \
-		golang:sys:f9fddec55a1e:golang_sys/vendor/golang.org/x/sys \
+		golang:sys:977fb7262007:golang_sys/vendor/golang.org/x/sys \
 		golang:text:v0.3.3:golang_text/vendor/golang.org/x/text \
 		gorilla:mux:v1.8.0:gorilla_mux/vendor/github.com/gorilla/mux \
-		lib:pq:v1.10.0:lib_pq/vendor/github.com/lib/pq \
+		lib:pq:v1.10.2:lib_pq/vendor/github.com/lib/pq \
 		matttproud:golang_protobuf_extensions:v1.0.1:matttproud_golang_protobuf_extensions/vendor/github.com/matttproud/golang_protobuf_extensions \
 		mitchellh:go-server-timing:feb680ab92c2:mitchellh_go_server_timing/vendor/github.com/mitchellh/go-server-timing \
 		mvdan:xurls:v2.2.0:mvdan_xurls/vendor/mvdan.cc/xurls/v2 \
 		pquerna:cachecontrol:1555304b9b35:pquerna_cachecontrol/vendor/github.com/pquerna/cachecontrol \
-		prometheus:client_golang:v1.9.0:prometheus_client_golang/vendor/github.com/prometheus/client_golang \
+		prometheus:client_golang:v1.10.0:prometheus_client_golang/vendor/github.com/prometheus/client_golang \
 		prometheus:client_model:v0.2.0:prometheus_client_model/vendor/github.com/prometheus/client_model \
-		prometheus:common:v0.15.0:prometheus_common/vendor/github.com/prometheus/common \
-		prometheus:procfs:v0.2.0:prometheus_procfs/vendor/github.com/prometheus/procfs \
+		prometheus:common:v0.18.0:prometheus_common/vendor/github.com/prometheus/common \
+		prometheus:procfs:v0.6.0:prometheus_procfs/vendor/github.com/prometheus/procfs \
 		protocolbuffers:protobuf-go:v1.25.0:protocolbuffers_protobuf_go/vendor/google.golang.org/protobuf \
 		rylans:getlang:4c3188ff8a2d:rylans_getlang/vendor/github.com/rylans/getlang \
 		square:go-jose:v2.5.0:square_go_jose/vendor/gopkg.in/square/go-jose.v2 \
 		stretchr:testify:v1.6.1:stretchr_testify/vendor/github.com/stretchr/testify \
-		tdewolff:minify:v2.9.13:tdewolff_minify_v2/vendor/github.com/tdewolff/minify/v2 \
-		tdewolff:parse:v2.5.10:tdewolff_parse_v2/vendor/github.com/tdewolff/parse/v2
+		tdewolff:minify:v2.9.17:tdewolff_minify_v2/vendor/github.com/tdewolff/minify/v2
+
+USE_RC_SUBR=	miniflux
 
 GO_PKGNAME=	miniflux.app
 GO_TARGET=	:${PORTNAME}
 GO_BUILDFLAGS=	-ldflags="-X miniflux.app/version.Version=${DISTVERSION} \
 		-X miniflux.app/version.BuildDate=$$(date +'%Y-%m-%dT%H:%M:%SZ')"
 
+USERS=		miniflux
+GROUPS=		miniflux
+
 OPTIONS_DEFINE=		PGSQL_SERVER
 PGSQL_SERVER_DESC=	Install the PostgreSQL Server Component
-PGSQL_SERVER_VARS=	WANT_PGSQL=server,contrib
+PGSQL_SERVER_USES=	pgsql
+PGSQL_SERVER_VARS=	WANT_PGSQL+="server contrib"
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/miniflux.1 ${STAGEDIR}${PREFIX}/man/man1/

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jxrlib
 PORTVERSION=	1.1
 CATEGORIES=	graphics devel

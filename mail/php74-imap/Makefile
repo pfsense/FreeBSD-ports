@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 CATEGORIES=	mail
 
 MASTERDIR=	${.CURDIR}/../../lang/php74

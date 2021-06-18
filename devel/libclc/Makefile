@@ -1,5 +1,4 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libclc
 DISTVERSION=	0.4.0.20190527
@@ -14,8 +13,6 @@ LICENSE_NAME=	LLVM Release License
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BROKEN_powerpc64=	fails to compile: /usr/local/llvm80/include/llvm-c/DataTypes.h:28:10: fatal error: 'cmath' file not found
-
 BUILD_DEPENDS=	llvm${LLVM_DEFAULT}>=4.0:devel/llvm${LLVM_DEFAULT} \
 		libedit>=0:devel/libedit
 
@@ -24,7 +21,7 @@ GH_ACCOUNT=	llvm-mirror
 GH_TAGNAME=	9f6204e
 
 # ninja based build is broken since commit 598792bc (16 sep 2016)
-USES=		gmake python:2.7,build gmake
+USES=		gmake python:build
 USE_LDCONFIG=	yes
 MAKE_ENV=	MAKE=${GMAKE} DESTDIR=${STAGEDIR}
 ALL_TARGET=

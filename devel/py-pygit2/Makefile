@@ -1,10 +1,9 @@
 # Created by: William Grzybowski <wg@FreeBSD.org>
-# $FreeBSD$
 
 # Also update devel/libgit2, devel/libgit2-glib, devel/rubygem-rugged
 
 PORTNAME=	pygit2
-PORTVERSION=	1.3.0
+PORTVERSION=	1.5.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

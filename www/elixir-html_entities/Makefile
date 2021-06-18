@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	html_entities
 PORTVERSION=	0.4.0
 DISTVERSIONPREFIX=	v

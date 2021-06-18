@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	i3blocks
 DISTVERSION=	1.4-93
 DISTVERSIONSUFFIX=	-gfcee4e0

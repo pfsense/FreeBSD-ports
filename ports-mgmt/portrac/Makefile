@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	portrac
 PORTVERSION=	0.5
 PORTREVISION=	6

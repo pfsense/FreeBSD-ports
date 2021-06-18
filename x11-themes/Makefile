@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = X11 themes
 
     SUBDIR += Kvantum
@@ -11,6 +8,9 @@
     SUBDIR += ant-dracula-theme
     SUBDIR += arc-gruvbox-theme
     SUBDIR += audacious-skins
+    SUBDIR += canta-gtk-themes
+    SUBDIR += canta-icon-theme
+    SUBDIR += chicago95
     SUBDIR += classiclooks
     SUBDIR += claws-mail-themes
     SUBDIR += clearlooks
@@ -33,6 +33,7 @@
     SUBDIR += emerald-themes
     SUBDIR += flat-remix-gtk-themes
     SUBDIR += flat-remix-icon-themes
+    SUBDIR += flatery-icon-themes
     SUBDIR += fluxbox-tenr-styles-pack
     SUBDIR += freebsd-8k-wallpapers
     SUBDIR += freebsd-8k-wallpapers-kde
@@ -58,7 +59,6 @@
     SUBDIR += gnome-icons-ximian-south
     SUBDIR += gnome-themes
     SUBDIR += gnome-themes-extra
-    SUBDIR += gnome-themes-extras
     SUBDIR += greybird-theme
     SUBDIR += gtk-E17-theme
     SUBDIR += gtk-aluminumalloy-cryogenic-theme
@@ -82,6 +82,7 @@
     SUBDIR += gtk-xfce-engine
     SUBDIR += gtk3-oxygen-engine
     SUBDIR += gtk3-unico-engine
+    SUBDIR += icewm-extra-themes
     SUBDIR += icon-naming-utils
     SUBDIR += icons-human-azul
     SUBDIR += icons-tango
@@ -101,6 +102,7 @@
     SUBDIR += kf5-kiconthemes
     SUBDIR += kf5-oxygen-icons5
     SUBDIR += kf5-qqc2-desktop-style
+    SUBDIR += layan-gtk-themes
     SUBDIR += lumina-themes
     SUBDIR += lxappearance
     SUBDIR += lxde-icon-theme
@@ -123,6 +125,7 @@
     SUBDIR += metacity-theme-microgui
     SUBDIR += metacity-themes
     SUBDIR += mint-themes
+    SUBDIR += mojave-gtk-themes
     SUBDIR += nordic-theme
     SUBDIR += numix-gtk-theme
     SUBDIR += numix-icon-theme
@@ -135,7 +138,11 @@
     SUBDIR += plasma5-oxygen
     SUBDIR += plasma5-plasma-workspace-wallpapers
     SUBDIR += plata-theme
+    SUBDIR += pop-gtk-themes
+    SUBDIR += pop-icon-theme
     SUBDIR += qgnomeplatform
+    SUBDIR += qogir-gtk-themes
+    SUBDIR += qogir-icon-themes
     SUBDIR += qt5-style-plugins
     SUBDIR += qtcurve
     SUBDIR += qtcurve-gtk2
@@ -153,5 +160,7 @@
     SUBDIR += wallpapers-freebsd-kde
     SUBDIR += xcursor-themes
     SUBDIR += xfce-icons-elementary
+    SUBDIR += yaru-gtk-themes
+    SUBDIR += yaru-icon-theme
 
 .include <bsd.port.subdir.mk>

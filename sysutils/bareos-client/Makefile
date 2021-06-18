@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bareos
 PKGNAMESUFFIX=	-client
 
@@ -15,11 +13,10 @@ MASTERDIR=	${.CURDIR}/../../sysutils/bareos-server
 
 OPTIONS_GROUP=	PLUGINS
 OPTIONS_GROUP_PLUGINS= CEPHFS GFAPI RADOS
-OPTIONS_DEFINE=	NLS PYTHON LMDB SCSICRYPTO
+OPTIONS_DEFINE=	NLS PYTHON SCSICRYPTO
 
 CEPHFS_DESC=	CEPHFS fd plugin support
 GFAPI_DESC=	GFAPI fd plugin support
 RADOS_DESC=	RADOS fd plugin support
-LMDB_DESC=	Enable build of LMDB support
 
 .include "${MASTERDIR}/Makefile"

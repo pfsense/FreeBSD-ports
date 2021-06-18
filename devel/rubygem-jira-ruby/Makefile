@@ -1,8 +1,7 @@
 # Created by: Torsten Zuehlsdorff <tz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	jira-ruby
-PORTVERSION=	2.1.3
+PORTVERSION=	2.1.5
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

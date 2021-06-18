@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	roadie-rails
-PORTVERSION=	2.1.1
+PORTVERSION=	2.2.0
 CATEGORIES=	mail rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	-rails52

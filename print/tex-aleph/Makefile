@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	aleph
 PORTVERSION=	1.15.2.1.r.4
 PORTREVISION=	4
@@ -12,7 +10,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 DIST_SUBDIR=	TeX
 EXTRACT_ONLY=	texlive-${DISTVERSION_TEXLIVE_SOURCE}-source${EXTRACT_SUFX}
 
-MAINTAINER=	hrs@FreeBSD.org
+MAINTAINER=	freebsd-tex@FreeBSD.org
 COMMENT=	TeX Engine including Omega and e-TeX features
 
 LIB_DEPENDS=	libmpfr.so:math/mpfr \

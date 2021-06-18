@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sqlcipher
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.4.2

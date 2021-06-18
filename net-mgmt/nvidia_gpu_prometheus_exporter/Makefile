@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nvidia_gpu_prometheus_exporter
 DISTVERSION=	g20181028
 PORTREVISION=	1

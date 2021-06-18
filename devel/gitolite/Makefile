@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gitolite
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.6.12
@@ -33,7 +31,7 @@ OPTIONS_DEFINE=		CONTRIB DOCS GITUSER
 OPTIONS_DEFAULT=	CONTRIB
 OPTIONS_SUB=		yes
 
-CONTRIB_DESC=	Install additionnal contrib files
+CONTRIB_DESC=	Install additional contrib files
 GITUSER_DESC=	Create git user as gitolite provider
 
 GITUSER_VARS=	GROUPS=git \

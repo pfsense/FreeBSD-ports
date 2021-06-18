@@ -1,8 +1,7 @@
 # Created by: Stephen Montgomery-Smith <stephen@math.missouri.edu>
-# $FreeBSD$
 
 PORTNAME=	octave-forge-communications
-PORTVERSION=	1.2.2
+PORTVERSION=	1.2.3
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org

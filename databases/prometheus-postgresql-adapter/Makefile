@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	prometheus-postgresql-adapter
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.6.0

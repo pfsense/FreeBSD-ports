@@ -1,12 +1,11 @@
 # Created by: rbt@zort.on.ca
-# $FreeBSD$
 
 PORTNAME=	gtk-gnutella
 PORTVERSION=	1.1.15
 DISTVERSIONPREFIX=v
 CATEGORIES=	net-p2p
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK based Gnutella client
 
 LICENSE=	GPLv2+

@@ -1,8 +1,7 @@
 # Created by: Muhammad Moinur Rahman <bofh@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	pgroonga
-PORTVERSION=	2.2.8
+PORTVERSION=	2.3.0
 CATEGORIES=	databases textproc
 MASTER_SITES=	http://packages.groonga.org/source/pgroonga/
 

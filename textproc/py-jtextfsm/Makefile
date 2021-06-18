@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jtextfsm
 DISTVERSION=	0.3.1
 CATEGORIES=	textproc python

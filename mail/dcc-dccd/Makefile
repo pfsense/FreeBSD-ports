@@ -1,9 +1,7 @@
 # Created by: Dean Hollister <dean@odyssey.apana.org.au>
-# $FreeBSD$
 
 PORTNAME=	dcc-dccd
-PORTVERSION=	2.3.167
-PORTREVISION=	1
+PORTVERSION=	2.3.168
 CATEGORIES=	mail
 MASTER_SITES=	https://www.dcc-servers.net/dcc/source/old/
 DISTNAME=	dcc-${PORTVERSION}
@@ -99,8 +97,8 @@ PLIST_SUB+=	IFD_MILT="@comment "
 
 post-patch:
 	${REINPLACE_CMD} -e 's,md5.c ,,' ${WRKSRC}/clntlib/Makefile.in
-	${REINPLACE_CMD} -e 's,^\(BININSTALL.*\),\1 -s,p'	\
-			-e 's,^BIN\(INSTALL\s*=\s*.*\) -s$$,SCRIPT\1,' ${WRKSRC}/Makefile.inc.in
+	${REINPLACE_CMD} -E -e 's,^(BININSTALL.*),\1 -s,p' \
+			-e 's,^BIN(INSTALL[:space:]*=[:space:]*.*) -s$$,SCRIPT\1,' ${WRKSRC}/Makefile.inc.in
 	${REINPLACE_CMD} -e 's,BININSTALL,SCRIPTINSTALL,g'	\
 			${WRKSRC}/homedir/Makefile.in ${WRKSRC}/misc/Makefile.in
 

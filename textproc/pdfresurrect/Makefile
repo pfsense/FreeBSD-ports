@@ -1,8 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	pdfresurrect
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.21
+DISTVERSION=	0.22
 CATEGORIES=	textproc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,9 +11,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		gmake
 GNU_CONFIGURE=	yes
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	enferex
-USE_LDCONFIG=	yes
 
 PLIST_FILES=	bin/pdfresurrect \
 		man/man1/pdfresurrect.1.gz

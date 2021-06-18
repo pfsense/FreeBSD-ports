@@ -1,24 +1,22 @@
 # Created by: Martin Matuska <martin@matuska.org>
-# $FreeBSD$
 
 PORTNAME=	luasql
-PORTVERSION=	2.5.0
-PORTREVISION=	1
+PORTVERSION=	2.6.0
 CATEGORIES=	databases
-PKGNAMESUFFIX=	-${LUASQL_DRIVER}
 PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
+PKGNAMESUFFIX=	-${LUASQL_DRIVER}
 
 MAINTAINER=	mbeis@xs4all.nl
 COMMENT=	LuaSQL driver
 
 LICENSE=	MIT
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	keplerproject
-
 USES=		lua:module gmake dos2unix
 DOS2UNIX_FILES=	src/*.c
 ALL_TARGET=	${LUASQL_DRIVER}
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	keplerproject
 
 LUASQL_DRIVER?=	mysql
 

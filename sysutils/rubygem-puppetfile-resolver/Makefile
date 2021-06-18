@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	puppetfile-resolver
 DISTVERSION=	0.5.0
 CATEGORIES=	sysutils rubygems

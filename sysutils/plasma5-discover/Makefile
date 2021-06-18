@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	discover
 DISTVERSION=	${KDE_PLASMA_VERSION}
 CATEGORIES=	sysutils kde kde-plasma
@@ -13,11 +11,12 @@ COMMENT=	Plasma5 package management tools
 USES=		cmake compiler:c++11-lib cpe desktop-file-utils \
 		gettext kde:5 pkgconfig qt:5 tar:xz
 USE_KDE=	archive attica auth codecs completion config configwidgets \
-		coreaddons crash dbusaddons ecm i18n iconthemes itemmodels \
-		itemviews jobwidgets kdeclarative kio kirigami2 newstuff \
+		coreaddons crash dbusaddons ecm i18n iconthemes idletime itemmodels \
+		itemviews jobwidgets kcmutils kdeclarative kio kirigami2 newstuff \
 		notifications package plasma-framework service solid \
 		textwidgets wallet windowsystem widgetsaddons xmlgui
-USE_QT=		concurrent core dbus declarative gui network svg testlib widgets xml \
+USE_QT=		concurrent core dbus declarative gui network svg testlib \
+		widgets x11extras xml \
 		buildtools_build qmake_build
 
 .include <bsd.port.mk>

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	maeparser
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.2.4

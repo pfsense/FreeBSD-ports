@@ -1,8 +1,7 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
-# $FreeBSD$
 
 PORTNAME=	fasm
-PORTVERSION=	1.73.25
+PORTVERSION=	1.73.27
 CATEGORIES=	lang devel
 MASTER_SITES=	https://flatassembler.net/ \
 		LOCAL/sunpoet

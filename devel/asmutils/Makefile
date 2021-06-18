@@ -1,5 +1,4 @@
 # Created by: George Reid <greid@ukug.uk.freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	asmutils
 PORTVERSION=	0.18
@@ -17,7 +16,7 @@ ONLY_FOR_ARCHS=	i386
 BUILD_DEPENDS=	nasm:devel/nasm
 
 USES=		gmake
-USE_GCC=	any
+USE_GCC=	yes
 MAKE_ARGS=	OS="${OPSYS:tu}" KERNEL="${OSREL:S/.//g}" CC="${CC}" LD="${LD}"
 
 # This will play merry hell with portlint(1)

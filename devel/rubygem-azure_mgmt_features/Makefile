@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	azure_mgmt_features
-PORTVERSION=	0.17.4
+PORTVERSION=	0.17.5
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

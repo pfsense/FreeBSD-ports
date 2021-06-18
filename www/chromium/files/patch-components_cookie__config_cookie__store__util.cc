@@ -1,4 +1,4 @@
---- components/cookie_config/cookie_store_util.cc.orig	2020-11-13 06:36:40 UTC
+--- components/cookie_config/cookie_store_util.cc.orig	2021-04-14 18:40:59 UTC
 +++ components/cookie_config/cookie_store_util.cc
 @@ -11,7 +11,7 @@
  

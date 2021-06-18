@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xkill
 PORTVERSION=	1.0.5
 CATEGORIES=	x11

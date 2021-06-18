@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		tdb
 PORTVERSION=		1.4.3
 PORTREVISION=		0

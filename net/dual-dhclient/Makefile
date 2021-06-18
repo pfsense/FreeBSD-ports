@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	dual-dhclient
 PORTVERSION=	1.0
 PORTREVISION=	1

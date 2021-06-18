@@ -1,5 +1,4 @@
 # Created by: Juergen Lock <nox@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	vdr
 PORTVERSION=	1.7.29
@@ -69,7 +68,7 @@ IGNORE=		will not work due to lack of driver support
 .endif
 
 .if ${ARCH} == "i386"
-USE_GCC=	any
+USE_GCC=	yes
 .endif
 
 post-patch:

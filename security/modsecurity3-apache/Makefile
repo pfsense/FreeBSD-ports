@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	modsecurity3-apache
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.0.9-beta1-19

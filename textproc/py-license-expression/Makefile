@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	license-expression
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.99

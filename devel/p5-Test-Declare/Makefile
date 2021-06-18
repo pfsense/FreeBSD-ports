@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Test-Declare
 PORTVERSION=	0.06
 PORTREVISION=	2

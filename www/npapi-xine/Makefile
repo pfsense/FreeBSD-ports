@@ -1,9 +1,8 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	xine
 PORTVERSION=	1.0.2
-PORTREVISION=	12
+PORTREVISION=	13
 DISTVERSIONPREFIX=	plugin-
 CATEGORIES=	www multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-plugin/${PORTVERSION}

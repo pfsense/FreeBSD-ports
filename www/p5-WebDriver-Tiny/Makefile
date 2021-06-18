@@ -1,8 +1,7 @@
 # Created by: Adam Weinberger <adamw@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	WebDriver-Tiny
-PORTVERSION=	0.103
+PORTVERSION=	0.105
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:CVLIBRARY

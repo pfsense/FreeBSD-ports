@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	purple-discord
 PORTVERSION=	g20200802
 CATEGORIES=	net-im

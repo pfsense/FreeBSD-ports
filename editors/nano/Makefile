@@ -1,10 +1,9 @@
 # Created by: Philippe Lefebvre <nemesis@balistik.net>
-# $FreeBSD$
 
 PORTNAME=	nano
-PORTVERSION=	5.4
+DISTVERSION=	5.7
 CATEGORIES=	editors
-MASTER_SITES=	https://www.nano-editor.org/dist/v${PORTVERSION:R:R}/ GNU
+MASTER_SITES=	https://www.nano-editor.org/dist/v${DISTVERSION:R:R}/ GNU
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Nano's ANOther editor, an enhanced free Pico clone
@@ -13,8 +12,6 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		charsetfix ncurses pkgconfig tar:xz
-
-CONFLICTS=	nano-devel-2*
 
 GNU_CONFIGURE=	yes
 

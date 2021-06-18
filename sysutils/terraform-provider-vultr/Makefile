@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	terraform-provider-vultr
 PORTVERSION=	0.1.10
 DISTVERSIONPREFIX=	v
 PORTREVISION=	1
 CATEGORIES=	sysutils
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Terraform provider for Vultr
 
 LICENSE=	MPL20

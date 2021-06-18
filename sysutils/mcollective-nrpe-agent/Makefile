@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	mcollective-nrpe-agent
 PORTEPOCH=	1
 

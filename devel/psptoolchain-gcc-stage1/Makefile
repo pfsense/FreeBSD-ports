@@ -1,9 +1,8 @@
 # Created by: Tassilo Philipp <tphilipp@potion-studios.com>
-# $FreeBSD$
 
 PORTNAME=		gcc
 PORTVERSION=		4.9.3
-PORTREVISION?=		1
+PORTREVISION?=		2
 CATEGORIES=		devel
 MASTER_SITES=		GCC
 PKGNAMEPREFIX=		psptoolchain-
@@ -14,7 +13,7 @@ COMMENT=		PlayStation Portable development toolchain ${PORTNAME}
 
 LICENSE=		GPLv3
 
-ONLY_FOR_ARCHS=		amd64 i386 powerpc64
+ONLY_FOR_ARCHS=		amd64 i386 powerpc64 powerpc64le
 
 LIB_DEPENDS=		libgmp.so:math/gmp \
 			libmpfr.so:math/mpfr \

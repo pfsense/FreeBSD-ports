@@ -1,8 +1,7 @@
 # Created by: Pawel Pekala <pawel@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	codequery
-PORTVERSION=	0.23.0
+PORTVERSION=	0.24.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fmtlatex
 DISTVERSION=	g20130930
 CATEGORIES=	textproc perl5

@@ -1,12 +1,11 @@
 # Created by: Koop Mast <einekoai@chello.nl>
-# $FreeBSD$
 
 PORTNAME=	workrave
-PORTVERSION=	1.10.34
+PORTVERSION=	1.10.44
 CATEGORIES=	x11
 MASTER_SITES=	https://github.com/rcaelers/workrave/releases/download/v${PORTVERSION:S/./_/g}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	cyberbotx@cyberbotx.com
 COMMENT=	RSI prevention tool
 
 LICENSE=	GPLv3+

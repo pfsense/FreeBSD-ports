@@ -1,8 +1,7 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	dashboard
-PORTVERSION=	0.8.0
+PORTVERSION=	0.8.1
 CATEGORIES=	x11 xfce
 MASTER_SITES=	XFCE/apps
 PKGNAMEPREFIX=	xfce4-

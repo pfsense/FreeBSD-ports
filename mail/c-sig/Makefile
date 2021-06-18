@@ -1,9 +1,8 @@
 # Created by: KIMURA Yasuhiro <yasu@utahime.org>
-# $FreeBSD$
 
 PORTNAME=	c-sig
 PORTVERSION=	3.8.0.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	mail elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 

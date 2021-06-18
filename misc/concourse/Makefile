@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	concourse
 DISTVERSIONPREFIX=	v
 DISTVERSION=	6.7.2

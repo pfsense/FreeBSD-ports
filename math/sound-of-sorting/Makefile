@@ -1,10 +1,9 @@
 # Created by: Stefan Esser <se@StefanEsser.FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sound-of-sorting
 PORTVERSION=	0.6.5
 DISTVERSIONPREFIX=	${PORTNAME}-
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math
 
 MAINTAINER=	se@FreeBSD.org

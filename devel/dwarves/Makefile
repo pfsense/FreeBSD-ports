@@ -1,5 +1,4 @@
 # Created by: Conrad Meyer <cem@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dwarves
 DISTVERSION=	1.19
@@ -22,7 +21,7 @@ LIB_DEPENDS=	libargp.so:devel/argp-standalone \
 		libdw.so:devel/elfutils
 
 USES=		cmake gettext python:3.7+,env shebangfix tar:xz
-USE_GCC=	9+
+USE_GCC=	yes
 USE_LDCONFIG=	yes
 
 SHEBANG_FILES=	btfdiff fullcircle ostra/ostra-cg ostra/python/ostra.py

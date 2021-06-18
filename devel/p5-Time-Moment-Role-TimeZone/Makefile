@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Time-Moment-Role-TimeZone
 PORTVERSION=	1.000
 CATEGORIES=	devel perl5

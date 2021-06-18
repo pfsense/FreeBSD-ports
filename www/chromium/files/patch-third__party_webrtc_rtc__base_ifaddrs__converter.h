@@ -1,4 +1,4 @@
---- third_party/webrtc/rtc_base/ifaddrs_converter.h.orig	2020-11-13 06:42:25 UTC
+--- third_party/webrtc/rtc_base/ifaddrs_converter.h.orig	2021-04-14 18:43:12 UTC
 +++ third_party/webrtc/rtc_base/ifaddrs_converter.h
 @@ -14,6 +14,8 @@
  #if defined(WEBRTC_ANDROID)

@@ -1,9 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	horizon-eda
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.3.0
-PORTREVISION=	2
+DISTVERSION=	2.0.0
 CATEGORIES=	cad
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -18,22 +15,31 @@ BUILD_DEPENDS=	${LOCALBASE}/include/boost/optional.hpp:devel/boost-libs \
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libepoxy.so:graphics/libepoxy \
 		libgit2.so:devel/libgit2 \
+		libpng16.so:graphics/png \
 		libpodofo.so:graphics/podofo \
 		libTKSTEP.so:cad/opencascade \
 		libuuid.so:misc/e2fsprogs-libuuid \
 		libzip.so:archivers/libzip \
 		libzmq.so:net/libzmq4
 
-USES=		compiler:c++17-lang gmake gnome localbase pkgconfig python:build sqlite
+USES=		gmake gnome localbase pkgconfig python:build sqlite # compiler:c++17-lang
 USE_GITHUB=	yes
 GH_PROJECT=	horizon
 USE_GNOME=	atkmm gdkpixbuf2 gtkmm30 librsvg2
+
+MAKE_ARGS=	DEBUGFLAGS= OPTIMIZE=
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 INSTALLS_ICONS=	yes
 
-post-install:
-	cd ${STAGEDIR}${PREFIX}/bin && ${STRIP_CMD} horizon-imp horizon-eda
+LLVM_VER=	10 # workaround for bug#253551
+BUILD_DEPENDS+=	clang${LLVM_VER}:devel/llvm${LLVM_VER}
+CPP=		clang-cpp${LLVM_VER}
+CC=		clang${LLVM_VER}
+CXX=		clang++${LLVM_VER}
+
+post-install: # https://github.com/horizon-eda/horizon/issues/558
+	cd ${STAGEDIR}${PREFIX}/bin && ${STRIP_CMD} horizon-eda
 
 .include <bsd.port.mk>

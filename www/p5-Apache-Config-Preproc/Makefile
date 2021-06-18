@@ -1,8 +1,7 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Apache-Config-Preproc
-PORTVERSION=	1.06
+PORTVERSION=	1.07
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	gnujump
 PORTVERSION=	1.0.8
 PORTREVISION=	1

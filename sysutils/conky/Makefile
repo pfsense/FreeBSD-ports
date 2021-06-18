@@ -1,10 +1,8 @@
 # Created by: Roman Bogorodskiy <novel@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	conky
-PORTVERSION=	1.11.6
+PORTVERSION=	1.12.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	madpilot@FreeBSD.org
@@ -17,7 +15,7 @@ BUILD_DEPENDS=	db2x_xsltproc:textproc/docbook2X \
 		gsed:textproc/gsed
 
 USES=		cpe cmake:noninja compiler:c++11-lib gettext-runtime iconv \
-		localbase lua:52 pkgconfig tar:bzip2
+		localbase lua:52-53 pkgconfig tar:bzip2
 
 CMAKE_ARGS=	-DBUILD_PORT_MONITORS:BOOL=false \
 		-DBUILD_IBM:BOOL=false \
@@ -146,6 +144,15 @@ post-patch:
 		${WRKSRC}/cmake/ConkyPlatformChecks.cmake
 	@${REINPLACE_CMD} -e 's,LOCALBASE,${LOCALBASE},' \
 		${WRKSRC}/doc/docgen.sh
+.if ${LUA_DEFAULT} == 5.2
+	# Force using lua 5.2
+	@${REINPLACE_CMD} -e 's/lua.*5\.*3//' \
+		${WRKSRC}/cmake/ConkyPlatformChecks.cmake
+.elif ${LUA_DEFAULT} == 5.3
+	# Force using lua 5.3
+	@${REINPLACE_CMD} -e 's/lua.*5\.*2//' \
+		${WRKSRC}/cmake/ConkyPlatformChecks.cmake
+.endif
 
 post-build:
 	(cd ${WRKSRC}/doc && ${SH} docgen.sh)

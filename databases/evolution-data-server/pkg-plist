@@ -88,6 +88,7 @@ include/evolution-data-server/camel/camel-sasl-plain.h
 include/evolution-data-server/camel/camel-sasl-popb4smtp.h
 include/evolution-data-server/camel/camel-sasl-xoauth2-google.h
 include/evolution-data-server/camel/camel-sasl-xoauth2-outlook.h
+include/evolution-data-server/camel/camel-sasl-xoauth2-yahoo.h
 include/evolution-data-server/camel/camel-sasl-xoauth2.h
 include/evolution-data-server/camel/camel-sasl.h
 include/evolution-data-server/camel/camel-search-private.h
@@ -255,6 +256,7 @@ include/evolution-data-server/libedataserver/e-network-monitor.h
 include/evolution-data-server/libedataserver/e-oauth2-service-base.h
 include/evolution-data-server/libedataserver/e-oauth2-service-google.h
 include/evolution-data-server/libedataserver/e-oauth2-service-outlook.h
+include/evolution-data-server/libedataserver/e-oauth2-service-yahoo.h
 include/evolution-data-server/libedataserver/e-oauth2-service.h
 include/evolution-data-server/libedataserver/e-oauth2-services.h
 include/evolution-data-server/libedataserver/e-operation-pool.h
@@ -394,11 +396,11 @@ lib/libedata-cal-2.0.so
 lib/libedata-cal-2.0.so.1
 lib/libedata-cal-2.0.so.1.0.0
 lib/libedataserver-%%EVO_VERSION%%.so
-lib/libedataserver-%%EVO_VERSION%%.so.25
-lib/libedataserver-%%EVO_VERSION%%.so.25.0.0
+lib/libedataserver-%%EVO_VERSION%%.so.26
+lib/libedataserver-%%EVO_VERSION%%.so.26.0.0
 lib/libedataserverui-%%EVO_VERSION%%.so
-lib/libedataserverui-%%EVO_VERSION%%.so.2
-lib/libedataserverui-%%EVO_VERSION%%.so.2.0.0
+lib/libedataserverui-%%EVO_VERSION%%.so.3
+lib/libedataserverui-%%EVO_VERSION%%.so.3.0.0
 libdata/pkgconfig/camel-%%EVO_VERSION%%.pc
 libdata/pkgconfig/evolution-data-server-%%EVO_VERSION%%.pc
 libdata/pkgconfig/libebackend-%%EVO_VERSION%%.pc

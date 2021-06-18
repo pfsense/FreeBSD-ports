@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PKGNAMESUFFIX=	-sql
 
 COMMENT=	SASL SQL plugins

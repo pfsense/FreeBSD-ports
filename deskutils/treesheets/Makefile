@@ -1,9 +1,8 @@
 # Created by: lightside <lightside@gmx.com>
-# $FreeBSD$
 
 PORTNAME=	treesheets
 PORTVERSION=	1.0.2
-PORTREVISION=	1
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	deskutils
 

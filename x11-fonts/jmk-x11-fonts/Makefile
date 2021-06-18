@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	jmk-x11-fonts
 PORTVERSION=	3.0
 PORTREVISION=	6

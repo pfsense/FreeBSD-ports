@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	django-jquery-js
 PORTVERSION=	3.1.1
 CATEGORIES=	www python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	zap
 DISTVERSION=	0.8
 CATEGORIES=	sysutils

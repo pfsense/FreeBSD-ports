@@ -1,4 +1,4 @@
---- content/app/content_main.cc.orig	2021-01-18 21:28:57 UTC
+--- content/app/content_main.cc.orig	2021-04-14 18:41:02 UTC
 +++ content/app/content_main.cc
 @@ -229,7 +229,7 @@ int RunContentProcess(const ContentMainParams& params,
  #endif

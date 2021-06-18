@@ -1,9 +1,8 @@
 # Created by: Nikolai Lifanov <lifanov@mail.lifanov.com>
-# $FreeBSD$
 
 PORTNAME=	scroll
 PORTVERSION=	1.20180421
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	games haskell
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -17,7 +16,7 @@ USE_CABAL=	IfElse-0.85 \
 		alex-3.2.5 \
 		ansi-terminal-0.10.3 \
 		ansi-wl-pprint-0.6.9_1 \
-		c2hs-0.28.6 \
+		c2hs-0.28.7 \
 		case-insensitive-1.2.1.0 \
 		colour-2.3.5 \
 		data-default-0.7.1.1 \

@@ -1,12 +1,11 @@
 # Created by: Antonio Carlos Venancio Junior (<antonio@inf.ufsc.br>)
-# $FreeBSD$
 
 PORTNAME=	HTML_Page2
 PORTVERSION=	0.6.1
 CATEGORIES=	devel www pear
 DISTNAME=	${PORTNAME}-${PORTVERSION}beta
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR base class for XHTML page generation
 
 LICENSE=	PHP30

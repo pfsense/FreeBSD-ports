@@ -1,5 +1,4 @@
 # Created by: Alexander Novitsky <alecn2002@yandex.ru>
-# $FreeBSD$
 
 PORTNAME=	gems
 PORTVERSION=	3.0.8
@@ -56,6 +55,12 @@ DOCS_VARS_OFF=	RUBY_SETUP_OPTIONS+="--no-ri --no-rdoc"
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/${GEMS_VER_DIR}
+	${MKDIR} ${STAGEDIR}${PREFIX}/${GEMS_VER_DIR}/build_info
+	${MKDIR} ${STAGEDIR}${PREFIX}/${GEMS_DIR}
+	${MKDIR} ${STAGEDIR}${PREFIX}/${DOC_DIR}
+	${MKDIR} ${STAGEDIR}${PREFIX}/${CACHE_DIR}
+	${MKDIR} ${STAGEDIR}${PREFIX}/${SPEC_DIR}
+	${MKDIR} ${STAGEDIR}${PREFIX}/${EXT_DIR}
 	cd ${WRKSRC}/ && ${SETENV} ${GEMS_ENV} ${RUBY} ${RUBY_SETUP} ${RUBY_SETUP_OPTIONS}
 	${LN} -sf gem${RUBY_VER_SHORT} ${STAGEDIR}${PREFIX}/bin/gem
 

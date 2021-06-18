@@ -1,8 +1,7 @@
 # Created by: Horia Racoviceanu <horia@racoviceanu.com>
-# $FreeBSD$
 
 PORTNAME=	mozjpeg
-PORTVERSION=	4.0.0
+PORTVERSION=	4.0.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
 

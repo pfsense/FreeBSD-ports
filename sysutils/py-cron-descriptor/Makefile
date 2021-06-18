@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cron-descriptor
 PORTVERSION=	1.2.24
 CATEGORIES=	sysutils python

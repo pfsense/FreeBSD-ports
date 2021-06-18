@@ -1,5 +1,4 @@
 # Created by: Kubilay Kocak <koobs@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	oauthlib
 PORTVERSION=	1.1.2
@@ -35,13 +34,7 @@ USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3000
-TEST_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR}
-.endif
-
 do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

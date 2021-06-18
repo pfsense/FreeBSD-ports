@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	SpeechRecognition
 PORTVERSION=	3.8.1
 CATEGORIES=	audio python
@@ -25,10 +23,4 @@ USE_PYTHON=	distutils autoplist
 post-extract:       
 	@cd ${WRKSRC}/speech_recognition && ${RM} flac-*
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3000
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}monotonic>=0.3:devel/py-monotonic@${PY_FLAVOR}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

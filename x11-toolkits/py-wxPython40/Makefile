@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	wxPython
 PORTVERSION=	4.0.7
 PORTREVISION=	1

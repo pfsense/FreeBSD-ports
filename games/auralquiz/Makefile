@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	auralquiz
 PORTVERSION=	1.0.0
 DISTVERSIONPREFIX=	v

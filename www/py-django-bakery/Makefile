@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	django-bakery
 PORTVERSION=	0.12.7
 CATEGORIES=	www python

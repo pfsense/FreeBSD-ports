@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	enumerize
 PORTVERSION=	2.2.2
 CATEGORIES=	devel rubygems

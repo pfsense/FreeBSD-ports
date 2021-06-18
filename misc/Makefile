@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Miscellaneous utilities
 
     SUBDIR += R-cran-mime
@@ -34,8 +31,6 @@
     SUBDIR += broot
     SUBDIR += bsod
     SUBDIR += buffer
-    SUBDIR += cave
-    SUBDIR += cdcollect
     SUBDIR += cheat
     SUBDIR += chef
     SUBDIR += chmlib
@@ -65,6 +60,7 @@
     SUBDIR += cs
     SUBDIR += cstream
     SUBDIR += ctm
+    SUBDIR += cxxmatrix
     SUBDIR += dahdi
     SUBDIR += dahdi-kmod
     SUBDIR += dahdi-kmod26
@@ -83,6 +79,7 @@
     SUBDIR += dynomite
     SUBDIR += e2fsprogs-libblkid
     SUBDIR += e2fsprogs-libuuid
+    SUBDIR += edflib
     SUBDIR += elixir-mime
     SUBDIR += elixir-uuid
     SUBDIR += elki
@@ -101,7 +98,6 @@
     SUBDIR += findutils
     SUBDIR += firestring
     SUBDIR += flag
-    SUBDIR += floatator
     SUBDIR += fortune-mod-bible
     SUBDIR += fortune-mod-bofh
     SUBDIR += fortune-mod-epictetus
@@ -133,9 +129,9 @@
     SUBDIR += freebsd-doc-zh_tw
     SUBDIR += freebsd-release-manifests
     SUBDIR += freeguide
+    SUBDIR += frugally-deep
     SUBDIR += ftdi-eeprom
     SUBDIR += fxload
-    SUBDIR += gcstar
     SUBDIR += gedkeeper
     SUBDIR += geekcode
     SUBDIR += getopt
@@ -171,6 +167,7 @@
     SUBDIR += hotkeys
     SUBDIR += hs-hascard
     SUBDIR += hulgalugha
+    SUBDIR += hwdata
     SUBDIR += hxtools
     SUBDIR += ignition-fuel-tools
     SUBDIR += iio-oscilloscope
@@ -359,7 +356,6 @@
     SUBDIR += php80-calendar
     SUBDIR += pinfo
     SUBDIR += pipe
-    SUBDIR += pnpids
     SUBDIR += posixtestsuite
     SUBDIR += proxyper
     SUBDIR += pspresent
@@ -369,10 +365,12 @@
     SUBDIR += py-QSpectrumAnalyzer
     SUBDIR += py-SimpleSoapy
     SUBDIR += py-SoapySDR
+    SUBDIR += py-alive-progress
     SUBDIR += py-cinder
     SUBDIR += py-colorbrewer
     SUBDIR += py-colored
     SUBDIR += py-crudini
+    SUBDIR += py-dictdiffer
     SUBDIR += py-eemeter
     SUBDIR += py-emoji
     SUBDIR += py-fast-histogram
@@ -380,8 +378,11 @@
     SUBDIR += py-fuzzy
     SUBDIR += py-gluoncv
     SUBDIR += py-gluonnlp
+    SUBDIR += py-halo
     SUBDIR += py-huepy
     SUBDIR += py-kartograph
+    SUBDIR += py-log_symbols
+    SUBDIR += py-mffpy
     SUBDIR += py-molequeue
     SUBDIR += py-mxnet
     SUBDIR += py-onnx
@@ -396,6 +397,7 @@
     SUBDIR += py-powerline-status
     SUBDIR += py-progressbar
     SUBDIR += py-progressbar2
+    SUBDIR += py-pyEDFlib
     SUBDIR += py-pyfiglet
     SUBDIR += py-pykml
     SUBDIR += py-pyprind
@@ -408,12 +410,14 @@
     SUBDIR += py-spdx
     SUBDIR += py-spdx-lookup
     SUBDIR += py-spdx-tools
+    SUBDIR += py-spinners
     SUBDIR += py-tflearn
     SUBDIR += py-tflite
     SUBDIR += py-tflite-support
     SUBDIR += py-toil
     SUBDIR += py-tqdm
     SUBDIR += py-tvm
+    SUBDIR += py-wurlitzer
     SUBDIR += py-xgboost
     SUBDIR += pyobd
     SUBDIR += qbrew
@@ -423,6 +427,7 @@
     SUBDIR += qt5-l10n
     SUBDIR += qt5ct
     SUBDIR += qtchooser
+    SUBDIR += quantum++
     SUBDIR += raspberrypi-gpioshutdown
     SUBDIR += raspberrypi-userland
     SUBDIR += raspbsd-led
@@ -462,7 +467,6 @@
     SUBDIR += smssend
     SUBDIR += snakemake
     SUBDIR += soapysdr
-    SUBDIR += soapysdr-rtlsdr
     SUBDIR += solarized
     SUBDIR += sshbuddy
     SUBDIR += sssnips
@@ -477,9 +481,11 @@
     SUBDIR += tellico
     SUBDIR += tempcontrol
     SUBDIR += termatrix
+    SUBDIR += terminfo-db
     SUBDIR += teseq
     SUBDIR += thefuck
     SUBDIR += thrill
+    SUBDIR += timetrace
     SUBDIR += timezonemap
     SUBDIR += tkcron
     SUBDIR += tkinfo
@@ -519,6 +525,7 @@
     SUBDIR += with
     SUBDIR += wmScoreBoard
     SUBDIR += wmcalendar
+    SUBDIR += wmforecast
     SUBDIR += wmjulia
     SUBDIR += wmpal
     SUBDIR += wmtunlo
@@ -535,6 +542,7 @@
     SUBDIR += xiphos
     SUBDIR += xless
     SUBDIR += xosd
+    SUBDIR += xplr
     SUBDIR += xtail
     SUBDIR += xtar
     SUBDIR += ytree

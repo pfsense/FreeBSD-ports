@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-Libdnet6
 PORTVERSION=	0.28
 CATEGORIES=	net perl5

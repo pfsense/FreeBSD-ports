@@ -213,9 +213,9 @@
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>RIB State Time</fielddescr>
+			<fielddescr>RIB Stale Time</fielddescr>
 			<fieldname>grribstaletime</fieldname>
-			<description>RIB State Time (1-3600, s)</description>
+			<description>RIB Stale Time (1-3600, s)</description>
 			<type>input</type>
 			<combinefields>end</combinefields>
 		</field>

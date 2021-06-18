@@ -1,9 +1,7 @@
 # Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mps
 PORTVERSION=	0.20.16
-#PORTREVISION=	0
 PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	CHEESESHOP

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Search-Sitemap
 PORTVERSION=	2.13
 CATEGORIES=	textproc www perl5

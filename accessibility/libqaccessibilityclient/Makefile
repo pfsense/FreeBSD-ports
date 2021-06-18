@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libqaccessibilityclient
 DISTVERSION=	0.4.1
 PORTREVISION=	1

@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	ffi-libarchive
-PORTVERSION=	1.0.4
+PORTVERSION=	1.0.17
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

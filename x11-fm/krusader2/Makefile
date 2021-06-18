@@ -1,8 +1,8 @@
 # Created by: Heiner <h.eichmann@gmx.de>
-# $FreeBSD$
 
 PORTNAME=	krusader
 DISTVERSION=	2.7.2
+PORTREVISION=	1
 CATEGORIES=	x11-fm kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}/
 

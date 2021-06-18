@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	perl
 DISTVERSION=	${PERL_VERSION}
 PORTREVISION=	1
@@ -15,9 +13,9 @@ LICENSE_COMB=	dual
 LICENSE_FILE_ART10=	${WRKSRC}/Artistic
 LICENSE_FILE_GPLv1+ =	${WRKSRC}/Copying
 
-# Uncomment when the default Perl is switched to 5.3(X+2)
+# Uncomment when the default Perl is switched to 5.34
 #DEPRECATED=	Support ends three years after .0 release. Please upgrade to a more recent version of Perl
-#EXPIRATION_DATE=<Release date of .0 + 3 years>
+#EXPIRATION_DATE=2023-06-20
 
 USES=		cpe tar:xz
 
@@ -87,11 +85,11 @@ PLIST_SUB=	ARCH_LIB=${_ARCH_LIB} \
 		MAN1=${PERLMANPREFIX_REL}/man/man1 \
 		MAN3=${PERLMANPREFIX_REL}/man/man3 \
 		PERL_ARCH=${PERL_ARCH} \
-		PERL_ARCH_regex=\b${PERL_ARCH}\b \
+		PERL_ARCH_regex=[[:<:]]${PERL_ARCH}[[:>:]] \
 		PERL_VER=${PERL_VER} \
 		PERL_VERSION=${PERL_VERSION} \
 		PERLMANPREFIX=${PERLMANPREFIX_REL} \
-		PERLMANPREFIX_regex=${PERLMANPREFIX_REL}\b \
+		PERLMANPREFIX_regex=${PERLMANPREFIX_REL}[[:>:]] \
 		PKGNAMESUFFIX=${PKGNAMESUFFIX} \
 		PRIV_LIB=${_PRIV_LIB} \
 		SITE_ARCH=${SITE_ARCH_REL} \

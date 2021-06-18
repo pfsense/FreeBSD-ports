@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Devel-Trace
 PORTVERSION=	0.12
 PORTREVISION=	1

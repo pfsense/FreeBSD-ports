@@ -1,12 +1,11 @@
 # Created by: Gerald Pfeifer <gerald@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	wine
-DISTVERSION=	6.0-rc4
+DISTVERSION=	6.10
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/Source \
-		http://mirrors.ibiblio.org/wine/source/5.x/
+		http://mirrors.ibiblio.org/wine/source/6.x/
 PKGNAMESUFFIX?=	-devel
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -24,6 +23,7 @@ LIB_DEPENDS=	libFAudio.so:audio/faudio \
 		libxml2.so:textproc/libxml2
 
 USES=		bison desktop-file-utils gmake localbase pkgconfig shebangfix tar:xz
+USE_GCC=	yes
 
 CONFLICTS_INSTALL=	wine-[0-9]* i386-wine-[0-9]* i386-wine-devel-[0-9]*
 
@@ -58,8 +58,8 @@ SUB_FILES=	pkg-message
 
 PORTDATA=	wine.inf
 
-OPTIONS_DEFINE=	CUPS DOCS DOSBOX GCC GNUTLS HAL LDAP LIBXSLT MPG123 OPENAL SDL STAGING V4L VKD3D VULKAN WINEMAKER X11 GECKO MONO
-OPTIONS_DEFAULT=GCC GNUTLS X11
+OPTIONS_DEFINE=	CUPS DOCS DOSBOX GNUTLS LDAP LIBXSLT MPG123 OPENAL SDL STAGING V4L VKD3D VULKAN WINEMAKER X11 GECKO MONO
+OPTIONS_DEFAULT=GNUTLS X11
 OPTIONS_SUB=	yes
 
 DOSBOX_DESC=	Use DOSBox to run MS-DOS programs
@@ -77,16 +77,10 @@ CUPS_LIB_DEPENDS=	libcups.so:print/cups
 
 DOSBOX_RUN_DEPENDS=	dosbox:emulators/dosbox
 
-GCC_USE=		gcc=yes
-GCC_USES_OFF=		compiler:c11
-
 GECKO_RUN_DEPENDS=	${DATADIR}/gecko/wine-gecko-2.47.2-x86.msi:emulators/wine-gecko-devel
 
 GNUTLS_CONFIGURE_WITH=	gnutls
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
-
-HAL_CONFIGURE_WITH=	hal
-HAL_LIB_DEPENDS=	libhal.so:sysutils/hal
 
 LDAP_CONFIGURE_WITH=	ldap
 LDAP_USE=		OPENLDAP=yes
@@ -94,7 +88,7 @@ LDAP_USE=		OPENLDAP=yes
 LIBXSLT_CONFIGURE_WITH=	xslt
 LIBXSLT_LIB_DEPENDS=	libxslt.so:textproc/libxslt
 
-MONO_RUN_DEPENDS=	${DATADIR}/mono/wine-mono-5.1.1-x86.msi:emulators/wine-mono-devel
+MONO_RUN_DEPENDS=	wine-mono-devel>0:emulators/wine-mono-devel
 
 MPG123_CONFIGURE_WITH=	mpg123
 MPG123_LIB_DEPENDS=	libmpg123.so:audio/mpg123
@@ -153,7 +147,7 @@ X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 # --libdir is required since Wine defaults to "${PREFIX}/lib64" on amd64.
 CONFIGURE_ARGS+=	--enable-win64 --libdir=${PREFIX}/lib
-PLIST_SUB+=		WINE32="@comment " WINE64=""
+PLIST_SUB+=		WINE32="@comment " WINE64="" WINEARCH="amd64"
 
 # Wine assumes a WoW64 package is available, which is not the case on
 # FreeBSD yet.
@@ -161,7 +155,7 @@ post-patch:
 	${REINPLACE_CMD} '/Exec/s|wine|wine64|g' ${WRKSRC}/loader/wine.desktop
 
 .else
-PLIST_SUB+=		WINE32="" WINE64="@comment "
+PLIST_SUB+=		WINE32="" WINE64="@comment " WINEARCH="i386"
 .endif
 
 post-extract-STAGING-on: fix-shebang
@@ -172,9 +166,6 @@ pre-build:
 	cd ${WRKSRC} && ${MAKE_CMD} depend
 
 post-install:
-	@${MV} -f ${STAGEDIR}${WINELIBDIR}/libwine.so.1.0 \
-	          ${STAGEDIR}${WINELIBDIR}/libwine.so.1
-	@${LN} -sf libwine.so.1 ${STAGEDIR}/${WINELIBDIR}/libwine.so
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in README ANNOUNCE AUTHORS
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}

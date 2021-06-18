@@ -1,9 +1,8 @@
 # Created by: Grigori Goronzy <greg@chown.ath.cx>
-# $FreeBSD$
 
 PORTNAME=	gxine
 PORTVERSION=	0.5.910
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/xine/${PORTNAME}/${PORTVERSION}
 
@@ -12,6 +11,9 @@ COMMENT=	Alternative GUI for the Xine media player
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Uses EOL Python 2.7 via lang/spidermonkey185
+EXPIRATION_DATE=2021-06-23
 
 LIB_DEPENDS=	libnspr4.so:devel/nspr \
 		libmozjs185.so:lang/spidermonkey185 \

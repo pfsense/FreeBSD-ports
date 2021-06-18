@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	datrie
 PORTVERSION=	0.8.2
 CATEGORIES=	devel python

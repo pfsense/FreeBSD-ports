@@ -1,5 +1,4 @@
 # Created by: Babak Farrokhi <babak@farrokhi.net>
-# $FreeBSD$
 
 PORTNAME=	jwm
 PORTVERSION=	2.3.7
@@ -7,7 +6,7 @@ PORTREVISION=	1
 CATEGORIES=	x11-wm
 MASTER_SITES=	http://joewing.net/projects/jwm/releases/
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Joe's Window Manager
 
 LICENSE=	MIT

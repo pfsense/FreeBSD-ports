@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@FreeBSD.org>
-# $FreeBSD$
-
 PORTNAME=	billardgl
 PORTVERSION=	1.75
 PORTREVISION=	1

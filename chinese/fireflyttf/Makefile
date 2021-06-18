@@ -1,5 +1,4 @@
 # Created by: Shen Chuan-Hsing <statue@freebsd.sinica.edu.tw>
-# $FreeBSD$
 
 PORTNAME=	fireflyttf
 PORTVERSION=	1.3.0
@@ -9,7 +8,7 @@ MASTER_SITES?=	LOCAL/chinsan/fonts
 DISTNAME?=	fireflysung-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Firefly TrueType Font is combine of two arphic sung fonts
+COMMENT=	Combination of two Arphic Sung fonts
 
 CONFLICTS=	zh-opendesktop-fonts-*
 

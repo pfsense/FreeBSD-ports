@@ -1,8 +1,7 @@
 # Created by: Alex Kapranoff <kappa@rambler-co.ru>
-# $FreeBSD$
 
 PORTNAME=	CPANPLUS
-PORTVERSION=	0.9908
+PORTVERSION=	0.9910
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:BINGOS

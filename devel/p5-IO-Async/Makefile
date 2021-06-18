@@ -1,8 +1,7 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
-# $FreeBSD$
 
 PORTNAME=	IO-Async
-PORTVERSION=	0.77
+PORTVERSION=	0.78
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:PEVANS

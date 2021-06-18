@@ -1,9 +1,8 @@
 # Created by: Edward Tomasz Napierala <trasz@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	objecthash
 PORTVERSION=	20160802
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org

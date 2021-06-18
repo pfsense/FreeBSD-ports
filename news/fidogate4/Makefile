@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	fidogate
 PORTVERSION=	4.4.10
 PORTREVISION=	1

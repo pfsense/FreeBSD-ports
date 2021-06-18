@@ -1,5 +1,4 @@
 # Created by: Anders Nordby <anders@fix.no>
-# $FreeBSD$
 
 PORTNAME=	spread4
 PORTVERSION=	4.2.0
@@ -9,6 +8,9 @@ DISTNAME=	spread-src-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Spread Group Communication System, a network toolkit
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: yyin
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: yyin
 
 GNU_CONFIGURE=	yes
 USES=		gmake

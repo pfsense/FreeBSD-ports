@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	SimpleSpectral
 DISTVERSION=	1.0.0
 PORTREVISION=	2

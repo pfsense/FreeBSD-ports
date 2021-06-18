@@ -1,8 +1,7 @@
 # Created by: kftseng@iyard.org
-# $FreeBSD$
 
 PORTNAME=	Crypt-OpenSSL-X509
-PORTVERSION=	1.902
+PORTVERSION=	1.908
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

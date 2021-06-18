@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	gtk3
-PORTVERSION=	3.4.3
+PORTVERSION=	3.4.4
 CATEGORIES=	x11-toolkits rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Ruby binding for GTK+3
+COMMENT=	Ruby binding of GTK+ 3.x
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB

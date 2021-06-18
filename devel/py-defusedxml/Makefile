@@ -1,8 +1,7 @@
 # Created by: William Grzybowski <wg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	defusedxml
-PORTVERSION=	0.5.0
+PORTVERSION=	0.6.0
 CATEGORIES=	devel python textproc
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

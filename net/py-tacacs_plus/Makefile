@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tacacs_plus
 DISTVERSION=	2.6
 CATEGORIES=	net python

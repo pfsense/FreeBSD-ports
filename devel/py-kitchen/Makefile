@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kitchen
 PORTVERSION=	1.2.6
 CATEGORIES=	devel python

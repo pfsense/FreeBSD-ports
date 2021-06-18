@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libcdb
 PORTVERSION=	g2020082801
 CATEGORIES=	devel

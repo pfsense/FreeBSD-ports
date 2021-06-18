@@ -1,5 +1,4 @@
 # Created by: Ozkan KIRIK <ozkan@enderunix.org>
-# $FreeBSD$
 
 PORTNAME=	netustad
 PORTVERSION=	0.3.1
@@ -10,8 +9,11 @@ MASTER_SITES=	http://www.enderunix.org/netustad/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Web based admin tool that manages network services
 
-USE_RC_SUBR=	${PORTNAME}
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: adminpasswd
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: adminpasswd
+
 USES=		gettext
+USE_RC_SUBR=	${PORTNAME}
 GNU_CONFIGURE=	yes
 SUB_FILES=	pkg-message
 

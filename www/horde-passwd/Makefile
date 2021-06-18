@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	passwd
 PORTVERSION=	5.0.7
 CATEGORIES=	www pear

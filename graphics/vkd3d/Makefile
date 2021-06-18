@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	vkd3d
 PORTVERSION=	1.2
 CATEGORIES=	graphics

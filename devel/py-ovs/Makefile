@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ovs
 PORTVERSION=	2.9.0
 CATEGORIES=	devel python

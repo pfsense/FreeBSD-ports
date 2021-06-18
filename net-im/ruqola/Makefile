@@ -1,7 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	ruqola
-DISTVERSION=	1.2.2
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.3.0
+PORTREVISION=	1
 CATEGORIES=	net-im kde
 
 MAINTAINER=	kde@FreeBSD.org
@@ -18,11 +18,14 @@ USE_GNOME=	glib20
 USE_KDE=	auth codecs completion config configwidgets coreaddons crash \
 		dbusaddons ecm i18n iconthemes itemviews jobwidgets kio kirigami2 \
 		notifications notifyconfig service sonnet syntaxhighlighting \
-		textwidgets widgetsaddons windowsystem xmlgui
+		textwidgets widgetsaddons windowsystem xmlgui \
+		doctools_build
 USE_QT=		concurrent core dbus declarative declarative gui multimedia \
 		network networkauth speech xml 	websockets widgets \
 		buildtools_build qmake_build
-USE_GITHUB=	yes
-GH_ACCOUNT=	KDE
+
+KDE_INVENT=	9a770478085e737b291db2b50fe76a9b7704cd7d network
+
+PLIST_SUB=	SO_VER=${DISTVERSION} 
 
 .include <bsd.port.mk>

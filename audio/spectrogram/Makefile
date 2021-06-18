@@ -1,6 +1,3 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	spectrogram
 PORTVERSION=	20190725
 CATEGORIES=	audio

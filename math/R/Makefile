@@ -1,9 +1,7 @@
 # Created by: Maurice Castro <maurice@serc.rmit.edu.au>
-# $FreeBSD$
 
 PORTNAME=	R
-DISTVERSION=	4.0.3
-PORTREVISION=	1
+DISTVERSION=	4.1.0
 CATEGORIES=	math lang
 MASTER_SITES=	CRAN/src/base/R-${PORTVERSION:C|\..*||}
 
@@ -17,7 +15,8 @@ ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc64 powerpc64le
 BUILD_DEPENDS=	texi2any:print/texinfo
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpcre2-8.so:devel/pcre2
-RUN_DEPENDS=	gmake:devel/gmake # R packages may require GNU make
+# R packages may require GNU make
+RUN_DEPENDS=	gmake:devel/gmake
 
 # possible TODO
 # - Use --with-recommended-packages=no by default
@@ -26,7 +25,7 @@ RUN_DEPENDS=	gmake:devel/gmake # R packages may require GNU make
 # - Create a meta-port for the recommended packages
 
 USES=		compiler:c++11-lang gmake iconv libtool localbase pathfix perl5 \
-		readline:port
+		readline
 USE_LDCONFIG=	${PREFIX}/lib/R/lib
 USE_PERL5=	build
 
@@ -36,15 +35,20 @@ CONFIGURE_ARGS=	--disable-java \
 		--with-readline \
 		rdocdir=${DOCSDIR}
 INSTALL_TARGET=	install-strip
-PLIST_SUB=	FULLVER=${DISTVERSION} MAJORVER=${_MAJORVER}
+PLIST_SUB=	FULLVER=${DISTVERSION} \
+		MAJORVER=${_MAJORVER}
 
 OPTIONS_DEFINE=		ICU INFO LDOUBLE LETTER MEMPROF NLS RPROF X11
 OPTIONS_DEFINE_amd64=	FLANG OPENMP
 OPTIONS_DEFINE_i386=	OPENMP
+OPTIONS_DEFINE_powerpc64=	OPENMP
+OPTIONS_DEFINE_powerpc64le=	OPENMP
 OPTIONS_DEFAULT=	CAIROPANGO GHOSTSCRIPT ICU INFO JPEG LDOUBLE PNG RBLAS \
 			RPROF TCLTK TIFF X11
 OPTIONS_DEFAULT_amd64=	OPENMP
 OPTIONS_DEFAULT_i386=	OPENMP
+OPTIONS_DEFAULT_powerpc64=	OPENMP
+OPTIONS_DEFAULT_powerpc64le=	OPENMP
 OPTIONS_GROUP=		NEEDX11
 OPTIONS_GROUP_NEEDX11=	CAIROPANGO GHOSTSCRIPT JPEG PNG TCLTK TEXDOCS TIFF
 OPTIONS_SINGLE=		BLAS
@@ -52,7 +56,6 @@ OPTIONS_SINGLE_BLAS=	ATLAS NETLIB OPENBLAS RBLAS
 
 OPTIONS_SUB=		YES
 
-ATLAS_DESC=		ATLAS BLAS implementation
 CAIROPANGO_DESC=	Cairo graphics device and Pango multi-language text
 FLANG_DESC=		Use experimental flang Fortran compiler
 GHOSTSCRIPT_DESC=	Graphics device for bitmap files via Ghostscript
@@ -62,7 +65,6 @@ LETTER_DESC=		US letter paper
 MEMPROF_DESC=		Memory profiling via Rprofmem() and tracemem()
 NEEDX11_DESC=		Require X11
 NETLIB_DESC=		Netlib BLAS implementation
-OPENBLAS_DESC=		OpenBLAS BLAS implementation
 PNG_DESC=		PNG graphics device
 RBLAS_DESC=		Use R-bundled BLAS implementation
 RPROF_DESC=		R profiling via Rprof()
@@ -142,12 +144,12 @@ post-patch:
 		${WRKSRC}/src/extra/blas/Makefile.in \
 		${WRKSRC}/src/modules/lapack/Makefile.in
 
-post-install-RBLAS-off:
-	@${REINPLACE_CMD} -e "s| -lR| -lR ${BLASLIB}|" \
-		${STAGEDIR}${PREFIX}/libdata/pkgconfig/libR.pc
-
 post-install-RBLAS-on:
 	@${REINPLACE_CMD} -e "s| -lR| -lR -lRblas|" \
+		${STAGEDIR}${PREFIX}/libdata/pkgconfig/libR.pc
+
+post-install-RBLAS-off:
+	@${REINPLACE_CMD} -e "s| -lR| -lR ${BLASLIB}|" \
 		${STAGEDIR}${PREFIX}/libdata/pkgconfig/libR.pc
 
 .include <bsd.port.mk>

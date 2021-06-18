@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	phabricator
 PORTVERSION=	20201119
+PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
@@ -17,9 +16,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	arcanist-lib${PHP_PKGNAMESUFFIX}>=20200514:devel/arcanist-lib@${PHP_FLAVOR} \
 		git:devel/git
 
-USES=		php:flavors shebangfix
+USES=		php:cli,flavors shebangfix
 
-REINPLACE_ARGS=	-i ""
 SHEBANG_FILES=	resources/timezones/*.php \
 		scripts/*.php \
 		scripts/almanac/*.php \

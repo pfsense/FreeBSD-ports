@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Email-Outlook-Message
 PORTVERSION=	0.920
 CATEGORIES=	mail perl5

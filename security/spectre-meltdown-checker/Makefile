@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	spectre-meltdown-checker
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.44

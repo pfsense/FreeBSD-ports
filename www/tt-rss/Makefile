@@ -1,12 +1,11 @@
 # Created by: Thierry Thomas <thierry@pompo.net>
-# $FreeBSD$
 
 PORTNAME=	tt-rss
-PORTVERSION=	g20201208
-PORTEPOCH=	1
+PORTVERSION=	g20210423
+PORTEPOCH=	2
 CATEGORIES=	www
 MASTER_SITES=	https://git.tt-rss.org/fox/tt-rss/archive/
-DISTNAME=	${GIT_TAGNAME}
+DISTNAME=	${_GIT_TAGNAME}
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	dereks@lifeofadishwasher.com
@@ -14,55 +13,52 @@ COMMENT=	Tiny Tiny RSS: web-based news feed (RSS/Atom) aggregator
 
 LICENSE=	GPLv2
 
-USES=		php:cli,web shebangfix gettext-tools
-USE_PHP=	ctype dom fileinfo filter iconv intl hash json mbstring pcntl posix session xmlrpc
+RUN_DEPENDS=	${LOCALBASE}/bin/git:devel/git
 
-REINPLACE_ARGS=	-i ""
-SHEBANG_FILES=	lib/dojo-src/rebuild-dojo.sh utils/extract-i18n-js.pl update_daemon2.php
-WRKSRC=		${WRKDIR}/tt-rss
-
-GIT_TAGNAME=	71c8d8d36
-
-NO_BUILD=	yes
-NO_ARCH=	yes
-
+USES=		gettext-tools php:cli,web shebangfix
+USE_PHP=	ctype dom exif fileinfo filter hash iconv intl json mbstring \
+		openssl pcntl pdo posix session tokenizer xml xmlrpc zip
 USE_RC_SUBR=	ttrssd
 
-OPTIONS_DEFINE=	CURL GD
-OPTIONS_SINGLE=	DB
-OPTIONS_SINGLE_DB=	MYSQL PGSQL
+SHEBANG_FILES=	update.php update_daemon2.php
+
+_GIT_TAGNAME=	e8f78181f
+
+REINPLACE_ARGS=	-i ""
+
+NO_ARCH=	yes
+NO_BUILD=	yes
+
+WRKSRC=		${WRKDIR}/tt-rss
+
+OPTIONS_DEFINE=		CURL GD
 OPTIONS_DEFAULT=	CURL GD MYSQL
+OPTIONS_SINGLE=		DB
+OPTIONS_SINGLE_DB=	MYSQL PGSQL
 
 CURL_DESC=	Use SimplePie instead of Magpie
-CURL_USE=	PHP=curl
-
 GD_DESC=	Use OTP QR code generation
+
+CURL_USE=	PHP=curl
 GD_USE=		PHP=gd
 
-PGSQL_VARS=	DB=pgsql
-PGSQL_USE=	PHP=pdo_pgsql,pgsql
-PGSQL_VARS_OFF=	PGSQL="\#"
-
+MYSQL_USE=	PHP=mysqli,pdo_mysql
 MYSQL_VARS=	DB=mysql
-MYSQL_USE=	PHP=pdo_mysql,mysqli
 MYSQL_VARS_OFF=	MYSQL="\#"
+
+PGSQL_USE=	PHP=pdo_pgsql,pgsql
+PGSQL_VARS=	DB=pgsql
+PGSQL_VARS_OFF=	PGSQL="\#"
 
 .include <bsd.port.options.mk>
 
-SUB_FILES=	httpd-tt-rss.conf pkg-message
-SUB_LIST=	DB=${DB} WWWOWN=${WWWOWN} MYSQL=${MYSQL} PGSQL=${PGSQL}
-PLIST_SUB=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
-
-PHP2FIX=	config.php-dist update.php
-
-SCRIPTS=	update.php update_daemon2.php
-
-pre-configure:
-.for script in ${PHP2FIX}
-	${REINPLACE_CMD} -e 's|/usr/bin/php|${LOCALBASE}/bin/php|'	\
-		-e 's|/usr/bin/env php| ${LOCALBASE}/bin/php|'		\
-		${WRKSRC}/${script}
-.endfor
+SUB_FILES=	config.php httpd-tt-rss.conf pkg-message
+SUB_LIST=	DB=${DB} \
+		MYSQL=${MYSQL} \
+		PGSQL=${PGSQL} \
+		WWWOWN=${WWWOWN}
+PLIST_SUB=	WWWGRP=${WWWGRP} \
+		WWWOWN=${WWWOWN}
 
 do-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR} ${STAGEDIR}${DATADIR}
@@ -70,8 +66,10 @@ do-install:
 		"! -name LICENSE ! -name .empty")
 	${RM} -r ${STAGEDIR}${WWWDIR}/debian
 	${INSTALL_DATA} ${WRKDIR}/httpd-tt-rss.conf ${STAGEDIR}${DATADIR}
-	${ECHO} "${OPSYS}:${PORTVERSION}:${GIT_TAGNAME}" > "${STAGEDIR}${WWWDIR}/version_static.txt"
-	${MV} ${STAGEDIR}${WWWDIR}/config.php-dist ${STAGEDIR}${WWWDIR}/config.php.sample
-	${RLN} ${STAGEDIR}${WWWDIR}/config.php.sample ${STAGEDIR}${WWWDIR}/config.php-dist
+	${ECHO} "${OPSYS}:${PORTVERSION}:${_GIT_TAGNAME}" > \
+		"${STAGEDIR}${WWWDIR}/version_static.txt"
+	${RM} ${STAGEDIR}${WWWDIR}/config.php-dist
+	${INSTALL_DATA} ${WRKDIR}/config.php \
+		${STAGEDIR}${WWWDIR}/config.php.sample
 
 .include <bsd.port.mk>

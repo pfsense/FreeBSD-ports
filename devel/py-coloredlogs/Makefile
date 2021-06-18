@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	coloredlogs
 PORTVERSION=	15.0
 CATEGORIES=	devel python

@@ -1,14 +1,13 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	vobcopy
 PORTVERSION=	1.2.0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	sysutils
 MASTER_SITES=	http://vobcopy.org/download/ \
 		LOCAL/ehaupt
 
-MAINTAINER=	jpaetzel@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Decrypts and copies DVD .vob files
 
 LIB_DEPENDS=	libdvdread.so:multimedia/libdvdread

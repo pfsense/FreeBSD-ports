@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	asyncplusplus
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.1

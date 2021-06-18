@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	crispy-doom
-PORTVERSION=	5.9.2
+PORTVERSION=	5.10.1
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	games
 
@@ -11,7 +9,7 @@ COMMENT=	Enhanced-resolution Doom source port based on Chocolate Doom
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate \
-		libpng16.so:graphics/png
+		libpng.so:graphics/png
 
 CONFLICTS_INSTALL=	chocolate-doom
 
@@ -27,7 +25,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	fabiangreffrath
 
 post-patch:
-	${REINPLACE_CMD} "s|python|${PYTHON_VERSION}|" ${WRKSRC}/configure.ac
+	${REINPLACE_CMD} "s|python3|${PYTHON_VERSION}|" ${WRKSRC}/configure.ac
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/crispy-*

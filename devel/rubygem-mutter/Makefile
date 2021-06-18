@@ -1,9 +1,8 @@
 # Created by: Nicola Vitale <nivit@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	mutter
 PORTVERSION=	0.5.3
-#PORTREVISION=	0
+PORTREVISION=	0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

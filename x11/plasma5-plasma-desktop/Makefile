@@ -1,8 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	plasma-desktop
 DISTVERSION=	${KDE_PLASMA_VERSION}
+PORTREVISION=	1
 CATEGORIES=	x11 kde kde-plasma
+
+PATCH_SITES=	https://invent.kde.org/plasma/plasma-desktop/commit/
+PATCHFILES=	2f9371f34a2d0af98b4a0a6d6ccde1e85ac9cb39.diff:-p1
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Plasma5 plasma desktop
@@ -48,7 +50,8 @@ USE_XORG=	ice sm x11 xcb xcursor xext xfixes xft xi xrender
 
 CMAKE_ON=	WANT_SYNAPTICS
 
-SHEBANG_FILES=	kcms/ksmserver/kconf_update/ksmserver_update_loginMode_value.py
+SHEBANG_FILES=	kcms/ksmserver/kconf_update/*.py \
+		kcms/keyboard/*.py
 
 OPTIONS_SUB=	yes
 

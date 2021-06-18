@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	MooseX-Types-ISO8601
 PORTVERSION=	0.20
 CATEGORIES=	devel perl5

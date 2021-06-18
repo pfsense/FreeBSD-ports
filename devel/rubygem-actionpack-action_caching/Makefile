@@ -1,8 +1,7 @@
 # Created by: Steve Wills <swills@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	actionpack-action_caching
-PORTVERSION=	1.2.1
+PORTVERSION=	1.2.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	roboctl
 PORTVERSION=	0.3.8
 CATEGORIES=	devel

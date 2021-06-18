@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	compute-runtime
-DISTVERSION=	20.52.18783
+DISTVERSION=	21.22.19967
 CATEGORIES=	lang
 PKGNAMEPREFIX=	intel-
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	2a423820aaa4.patch:-p1 # https://github.com/intel/compute-runtime/pull/361
+PATCHFILES+=	4a926516c3ea.patch:-p1 # https://github.com/intel/compute-runtime/pull/361
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	OpenCL implementation for Intel HD 5000 (Gen8) or newer
@@ -20,7 +18,7 @@ ONLY_FOR_ARCHS_REASON=	Only Intel GPUs on x86 are supported
 LIB_DEPENDS=	libigc.so:devel/intel-graphics-compiler \
 		libigdgmm.so:multimedia/gmmlib
 
-USES=		cmake compiler:c++14-lang localbase:ldflags pkgconfig
+USES=		cmake compiler:c++17-lang localbase:ldflags pkgconfig
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_ACCOUNT=	intel
@@ -43,7 +41,7 @@ L0_BUILD_DEPENDS=	level-zero>=1.0:devel/level-zero
 L0_CMAKE_BOOL=		BUILD_WITH_L0
 L0_CMAKE_ON=		-DNEO_VERSION_BUILD:STRING="0"
 L0_PLIST_FILES=		lib/libze_intel_gpu.so.1 \
-			lib/libze_intel_gpu.so.1.0.0
+			lib/libze_intel_gpu.so.1.1.0
 
 VAAPI_BUILD_DEPENDS=	${LOCALBASE}/include/va/va.h:multimedia/libva
 VAAPI_CMAKE_BOOL_OFF=	DISABLE_LIBVA

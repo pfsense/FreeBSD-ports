@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Mozilla-CA
 PORTVERSION=	20200520
 CATEGORIES=	www perl5

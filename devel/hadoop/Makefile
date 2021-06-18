@@ -1,5 +1,4 @@
 # Created by: Clement Laforet <clement@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	hadoop
 PORTVERSION=	1.2.1
@@ -10,7 +9,7 @@ MASTER_SITES=	APACHE/${PORTNAME}/core/${PORTNAME}-${PORTVERSION} \
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} jetty-6.1.14.zip:jetty
 DIST_SUBDIR=	hadoop
 
-MAINTAINER=	kbowling@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Apache Map/Reduce framework
 
 LICENSE=	APACHE20
@@ -85,6 +84,7 @@ ALL_TARGET=	compile-core-native compile-c++ compile-c++-libhdfs compile-c++-pipe
 .if ${SSL_DEFAULT} == base
 BROKEN_FreeBSD_12=	variable has incomplete type 'HMAC_CTX' (aka 'hmac_ctx_st')
 BROKEN_FreeBSD_13=	variable has incomplete type 'HMAC_CTX' (aka 'hmac_ctx_st')
+BROKEN_FreeBSD_14=	variable has incomplete type 'HMAC_CTX' (aka 'hmac_ctx_st')
 .endif
 
 # The ssl.mk helper can augment MAKE_ARGS and break the build.  Filter out

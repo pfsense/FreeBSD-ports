@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	tk
 PORTVERSION=	0.2.0
 CATEGORIES=	x11-toolkits rubygems

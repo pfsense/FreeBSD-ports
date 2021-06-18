@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pockets
 DISTVERSION=	0.9.1
 CATEGORIES=	devel python

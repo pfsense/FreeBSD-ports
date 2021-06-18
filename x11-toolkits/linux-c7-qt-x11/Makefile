@@ -1,10 +1,9 @@
 # Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
 
 PORTNAME=	qt
 PORTVERSION=	4.8.7
-DISTVERSIONSUFFIX=	-8.el7
-PORTREVISION=	3
+DISTVERSIONSUFFIX=	-9.el7_9
+PORTREVISION=	4
 CATEGORIES=	x11-toolkits linux
 PKGNAMESUFFIX=	-x11
 

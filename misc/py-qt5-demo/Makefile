@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	demo
 PORTVERSION=	${PYQT5_VERSION}
 CATEGORIES=	misc devel python

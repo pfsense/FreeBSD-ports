@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	google-pasta
 PORTVERSION=	0.1.7
 PORTREVISION=	1

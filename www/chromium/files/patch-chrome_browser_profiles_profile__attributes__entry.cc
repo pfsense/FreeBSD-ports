@@ -1,6 +1,6 @@
---- chrome/browser/profiles/profile_attributes_entry.cc.orig	2021-01-18 21:28:50 UTC
+--- chrome/browser/profiles/profile_attributes_entry.cc.orig	2021-04-14 18:40:54 UTC
 +++ chrome/browser/profiles/profile_attributes_entry.cc
-@@ -158,7 +158,7 @@ void ProfileAttributesEntry::Initialize(ProfileInfoCac
+@@ -157,7 +157,7 @@ void ProfileAttributesEntry::Initialize(ProfileInfoCac
    if (is_force_signin_enabled_) {
      if (!IsAuthenticated())
        is_force_signin_profile_locked_ = true;

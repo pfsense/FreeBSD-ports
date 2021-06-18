@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	django-taggit
 PORTVERSION=	1.3.0
 CATEGORIES=	www python

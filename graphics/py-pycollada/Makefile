@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pycollada
 DISTVERSION=	0.6
 PORTREVISION=	3

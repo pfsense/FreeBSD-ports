@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	docbook
 PORTVERSION=	5.0
 PORTREVISION=	3

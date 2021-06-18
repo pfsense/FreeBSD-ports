@@ -1,12 +1,10 @@
-# $FreeBSD$
-
 PORTNAME=	librespot
-PORTVERSION=	0.1.3
+PORTVERSION=	0.2.0
 DISTVERSIONPREFIX=	v
 PORTREVISION=	2
 CATEGORIES=	multimedia
 
-MAINTAINER=	ehaupt@FreeBSD.org
+MAINTAINER=	driesm.michiels@gmail.com
 COMMENT=	Open Source Spotify client library
 
 LICENSE=	MIT
@@ -29,6 +27,7 @@ ALSA_DESC=		Rodio audio backend using ALSA
 
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 ALSA_VARS=		CARGO_FEATURES+=rodio-backend
+GSTREAMER_USES=		gnome
 GSTREAMER_USE=		GNOME=glib20 \
 			GSTREAMER1=yes
 GSTREAMER_VARS=		CARGO_FEATURES+=gstreamer-backend
@@ -38,6 +37,7 @@ PORTAUDIO_LIB_DEPENDS=	libportaudio.so:audio/portaudio
 PORTAUDIO_VARS=		CARGO_FEATURES+=portaudio-backend
 PULSEAUDIO_LIB_DEPENDS=	libpulse-simple.so:audio/pulseaudio
 PULSEAUDIO_VARS=	CARGO_FEATURES+=pulseaudio-backend
+SDL_USES=		sdl
 SDL_USE=		SDL=sdl2
 SDL_VARS=		CARGO_FEATURES+=sdl-backend
 TREMOR_LIB_DEPENDS=	libvorbisidec.so:audio/libtremor

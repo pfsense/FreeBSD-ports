@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	HTTP-Engine-Middleware
 PORTVERSION=	0.22
 PORTREVISION=	2

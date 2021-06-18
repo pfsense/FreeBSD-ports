@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Sys-Syslog
 PORTVERSION=	0.36
 CATEGORIES=	sysutils perl5

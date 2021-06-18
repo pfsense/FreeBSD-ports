@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pywapi
 PORTVERSION=	0.3.8
 CATEGORIES=	astro python

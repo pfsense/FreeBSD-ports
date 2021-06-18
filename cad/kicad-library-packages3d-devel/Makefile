@@ -1,10 +1,8 @@
 # Created by: Thierry Thomas <thierry@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	kicad
 DISTVERSION=	r${GIT_P3D_DATE}
 PORTREVISION=	1
-#PORTREVISION=	1
 CATEGORIES=	cad
 MASTER_SITES=	https://gitlab.com/kicad/libraries/${PORTNAME}-packages3D/-/archive/${GL_COMMIT}/
 PKGNAMESUFFIX=	-library-packages3d-devel

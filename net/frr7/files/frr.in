@@ -1,7 +1,4 @@
 #!/bin/sh
-#
-# $FreeBSD$
-#
 
 # PROVIDE: frr dynamicrouting
 # REQUIRE: netif routing
@@ -36,7 +33,7 @@
 . /etc/rc.subr
 
 name=frr
-rcvar=$name_enable
+rcvar=${name}_enable
 
 start_postcmd=start_postcmd
 stop_postcmd="rm -f $pidfile"

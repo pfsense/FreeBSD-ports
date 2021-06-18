@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	kpublictransport
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	devel kde kde-applications
@@ -15,5 +13,8 @@ USE_QT=		core declarative gui network \
 		buildtools_build qmake_build
 
 OPTIONS_DEFINE=	DOCS
+
+# Override shared library version
+KDE_APPLICATIONS_SHLIB_VER=	21.4.1
 
 .include <bsd.port.mk>

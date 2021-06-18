@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	nwg-launchers
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.4.4

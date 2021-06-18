@@ -1,5 +1,4 @@
 # Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	rnd_jue
 PORTVERSION=	3.3.0.0
@@ -21,6 +20,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Colorful Boulderdash'n'Emerald Mine'n'Sokoban'n'Stuff jue
 
 LICENSE=	GPLv2
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: setup
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: setup
 
 LIB_DEPENDS+=	libsmpeg.so:multimedia/smpeg
 EXTRACT_DEPENDS+=${UNZIP_CMD}:archivers/unzip

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sockjs-tornado
 PORTVERSION=	1.0.3
 CATEGORIES=	www python

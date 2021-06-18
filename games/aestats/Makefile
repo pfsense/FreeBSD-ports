@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	aestats
 PORTVERSION=	5.39
@@ -10,7 +9,11 @@ DISTNAME=	${PORTNAME}-v${PORTVERSION}
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Advanced HTML statistics generator for various games
 
-NO_CDROM=	Commercial use is prohibited
+# Converted from NO_CDROM
+LICENSE=	aestats
+LICENSE_NAME=	aestats
+LICENSE_TEXT=	Commercial use is prohibited
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 ONLY_FOR_ARCHS=	i386 amd64
 

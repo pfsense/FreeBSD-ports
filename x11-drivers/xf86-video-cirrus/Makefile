@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	xf86-video-cirrus
 PORTVERSION=	1.5.3
 PORTREVISION=	4

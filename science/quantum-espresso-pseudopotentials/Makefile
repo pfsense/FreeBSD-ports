@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	quantum-espresso-pseudopotentials
 DISTVERSION=	g20180406
 PORTREVISION=	2

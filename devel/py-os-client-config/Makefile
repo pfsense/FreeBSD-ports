@@ -1,5 +1,4 @@
 # Created by: Alexander Nusov <alexander.nusov@nfvexpress.com>
-# $FreeBSD$
 
 PORTNAME=	os-client-config
 PORTVERSION=	2.1.0
@@ -8,7 +7,7 @@ MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	OpenStack Client Configuation Library
+COMMENT=	OpenStack client configuration library
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

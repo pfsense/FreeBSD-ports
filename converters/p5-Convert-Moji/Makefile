@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Convert-Moji
 PORTVERSION=	0.10
 CATEGORIES=	converters perl5

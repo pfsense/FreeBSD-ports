@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 VOICE=	cmu_us_awb_arctic
 
 COMMENT=	CMU US English Scottish male voice for festival

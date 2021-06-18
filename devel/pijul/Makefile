@@ -1,9 +1,8 @@
 # Created by: Carlo Strub
-# $FreeBSD$
 
 PORTNAME=	pijul
 PORTVERSION=	0.12.0
-PORTREVISION=	21
+PORTREVISION=	25
 CATEGORIES=	devel
 MASTER_SITES=	https://pijul.org/releases/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -12,6 +11,8 @@ MAINTAINER=	cs@FreeBSD.org
 COMMENT=	Distributed version control system
 
 LICENSE=	GPLv2
+
+BROKEN=		unfechtable
 
 BUILD_DEPENDS=	llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT}
 LIB_DEPENDS=	libgmp.so:math/gmp \

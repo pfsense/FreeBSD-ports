@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Types-URI
 PORTVERSION=	0.006
 CATEGORIES=	devel perl5

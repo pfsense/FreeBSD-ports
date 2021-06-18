@@ -1,5 +1,4 @@
 # Created by: Eiji-usagi-MATSUmoto <usagi@ruby.club.or.jp>
-# $FreeBSD$
 
 PORTNAME=	naga10
 PORTVERSION=	1.1
@@ -28,8 +27,6 @@ MAKEFILE=	${WRKDIR}/Makefile
 PORTDOCS=	README
 
 OPTIONS_DEFINE=	DOCS
-
-pre-build: apply-slist
 
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/fonts.alias ${STAGEDIR}${FONTSDIR}

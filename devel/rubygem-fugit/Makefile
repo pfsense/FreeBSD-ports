@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	fugit
-PORTVERSION=	1.4.1
+PORTVERSION=	1.4.5
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

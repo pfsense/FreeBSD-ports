@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Net-Abuse-Utils-Spamhaus
 PORTVERSION=	0.09
 CATEGORIES=	net-mgmt perl5

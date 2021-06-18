@@ -1,5 +1,4 @@
 # Created by: Javad Kouhi <javad.kouhi@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	gkmap
 PORTVERSION=	0.2
@@ -11,6 +10,9 @@ MAINTAINER=	javad.kouhi@gmail.com
 COMMENT=	Simplification of Boolean Functions using Karnaugh Map
 
 LICENSE=	GPLv2
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: cell_array
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: cell_array
 
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2

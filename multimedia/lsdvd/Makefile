@@ -1,9 +1,8 @@
 # Created by: michael johnson <ahze@ahze.net>
-# $FreeBSD$
 
 PORTNAME=	lsdvd
 PORTVERSION=	0.17
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}
 

@@ -1,8 +1,7 @@
 # Created by: Frederic Culot <culot@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	HTTP-Cookies
-PORTVERSION=	6.09
+PORTVERSION=	6.10
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

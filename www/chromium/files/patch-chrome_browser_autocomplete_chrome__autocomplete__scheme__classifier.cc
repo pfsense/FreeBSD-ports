@@ -1,4 +1,4 @@
---- chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.cc.orig	2021-01-18 21:28:49 UTC
+--- chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.cc.orig	2021-04-14 18:40:52 UTC
 +++ chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.cc
 @@ -87,7 +87,7 @@ ChromeAutocompleteSchemeClassifier::GetInputTypeForSch
        return metrics::OmniboxInputType::QUERY;

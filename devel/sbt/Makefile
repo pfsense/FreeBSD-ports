@@ -1,8 +1,7 @@
 # Created by: Alex Dupre <ale@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	sbt
-PORTVERSION=	1.4.6
+PORTVERSION=	1.5.3
 CATEGORIES=	devel java
 MASTER_SITES=	https://github.com/sbt/sbt/releases/download/v${PORTVERSION}/
 
@@ -41,7 +40,6 @@ do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKSRC}/bin/sbt-launch.jar ${STAGEDIR}${DATADIR}
 .if ${PORT_OPTIONS:MADVANCED}
-	${INSTALL_DATA} ${WRKSRC}/bin/java9-rt-export.jar ${STAGEDIR}${DATADIR}
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/sbt ${STAGEDIR}${DATADIR}
 	${MKDIR} ${STAGEDIR}${DATADIR}/conf
 	${INSTALL_DATA} ${FILESDIR}/sbtopts ${STAGEDIR}${DATADIR}/conf

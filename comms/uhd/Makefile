@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	uhd
 PORTVERSION=	4.0.0.0
 PORTREVISION=	2
@@ -40,7 +38,6 @@ BROKEN_FreeBSD_13_aarch64=	fails to configure: Could not find standard set_new_h
 BROKEN_FreeBSD_13_armv6=	fails to configure: Could not find standard set_new_handler function
 BROKEN_FreeBSD_13_armv7=	fails to configure: Could not find standard set_new_handler function
 
-USE_LDCONFIG=		yes
 CMAKE_SOURCE_PATH=	${WRKSRC}/host
 #CXXFLAGS_amd64=	-msse2 -std=c++11
 CXXFLAGS_i386=	-msse2

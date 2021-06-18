@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pktanon
 PORTVERSION=	1.4.0
 PORTREVISION=	16

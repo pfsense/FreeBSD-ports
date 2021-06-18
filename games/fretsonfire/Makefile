@@ -1,5 +1,4 @@
 # Created by: Jose Alonso Cardenas Marquez <acm@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	fretsonfire
 PORTVERSION=	1.3.110
@@ -21,7 +20,7 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}PyOpenGL>=0:graphics/py-PyOpenGL@${PY_FLAVOR} \
 		${LOCALBASE}/share/${PORTNAME}/default.ttf:games/fretsonfire-data
 
-USES=		dos2unix python
+USES=		dos2unix python:3.6+
 DOS2UNIX_FILES=	*.txt
 NO_BUILD=	yes
 NO_ARCH=	yes

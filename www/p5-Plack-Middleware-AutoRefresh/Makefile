@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Plack-Middleware-AutoRefresh
 PORTVERSION=	0.08
 PORTREVISION=	1

@@ -1,5 +1,4 @@
 # Created by: Shin'ya Murakami <murakami@ahs.scitec.kobe-u.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	dcl
 PORTVERSION=	5.4.8
@@ -12,6 +11,14 @@ MASTER_SITES=	http://www.gfd-dennou.org/library/dcl/ \
 MAINTAINER=	murashin@gfd-dennou.org
 COMMENT=	Scientific graphic library for geoscience
 
+# Converted from RESTRICTED
+LICENSE=	dcl
+LICENSE_NAME=	dcl
+LICENSE_TEXT=	No commercial use
+LICENSE_PERMS=	auto-accept
+
+BROKEN=		fails to fetch from mastersite (newest release is 7.4.0 of 2020611)
+
 MAKE_JOBS_UNSAFE=	yes
 USES=		desthack fortran gnome pkgconfig xorg
 USE_XORG=	x11 xext
@@ -21,8 +28,6 @@ CONFIGURE_ARGS=	--with-x
 
 PORTDOCS=	CHECK CREDITS HISTORY README
 PORTEXAMPLES=	*
-
-RESTRICTED=	No commercial use
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

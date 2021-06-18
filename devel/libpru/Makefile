@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libpru
 DISTVERSION=	0.4
 CATEGORIES=	devel

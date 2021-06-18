@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	hp3000
-DISTVERSION=	3.11-0.8
+DISTVERSION=	3.11-0.10
 CATEGORIES=	emulators
 MASTER_SITES=	http://simh.trailing-edge.com/hp/releases/:src \
 		http://simh.trailing-edge.com/hp/docs/:app \

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openggsn
 PORTVERSION=	0.94
 CATEGORIES=	net
@@ -10,6 +8,9 @@ COMMENT=	Implementation of the Gateway GPRS Support Node element
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Uses EOL Python 2.7 via devel/libosmocore
+EXPIRATION_DATE=2021-06-23
 
 LIB_DEPENDS=    libosmocore.so:devel/libosmocore \
 		libtalloc.so:devel/talloc

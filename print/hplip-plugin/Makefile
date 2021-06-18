@@ -1,5 +1,4 @@
 # Created by: amistry@am-productions.biz
-# $FreeBSD$
 
 PORTNAME=	hplip-plugin
 PORTVERSION=	3.20.6
@@ -11,14 +10,13 @@ EXTRACT_SUFX=	.run
 MAINTAINER=	tijl@FreeBSD.org
 COMMENT=	Binary plugin for some HP Printers and All-in-One devices
 
+# License agreement is required
 LICENSE=	HPLIP_PLUGIN
 LICENSE_NAME=	HPLIP Driver Plug-in License
 LICENSE_FILE=	${WRKSRC}/license.txt
 LICENSE_PERMS=	none
 
 RUN_DEPENDS=	hp-plugin:print/hplip
-
-RESTRICTED=	License agreement is required
 
 ONLY_FOR_ARCHS=	amd64 i386 # arm
 

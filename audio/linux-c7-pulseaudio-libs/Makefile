@@ -1,10 +1,9 @@
 # Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-# $FreeBSD$
 
 PORTNAME=	pulseaudio
 PORTVERSION=	10.0
-DISTVERSIONSUFFIX=	-5.el7
-PORTREVISION=	2
+DISTVERSIONSUFFIX=	-6.el7_9
+PORTREVISION=	3
 CATEGORIES=	audio linux
 PKGNAMESUFFIX=	-libs
 

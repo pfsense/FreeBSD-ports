@@ -1,8 +1,7 @@
 # Created by: Sofian Brabez <sbrabez@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	bitarray
-PORTVERSION=	1.6.1
+PORTVERSION=	2.1.0
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -15,18 +14,22 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		python:3.6+
 
 USE_GITHUB=	yes
-USE_PYTHON=	distutils autoplist
+USE_PYTHON=	autoplist distutils
 
 GH_ACCOUNT=	ilanschnell
 GH_PROJECT=	bitarray
 
-DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
-EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}
+DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
+EXAMPLESDIR=	${PREFIX}/share/examples/${PKGNAMEPREFIX}${PORTNAME}
 
-PORTDOCS=	AUTHORS CHANGE_LOG README.md
+PORTDOCS=	CHANGE_LOG README.rst
 PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/bitarray/_bitarray*.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/bitarray/_util*.so
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

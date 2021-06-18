@@ -1,8 +1,8 @@
 # Created by: Dan Langille <dvl@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	cheetah
-DISTVERSION=	3.2.4
+DISTVERSION=	3.2.6
+PORTREVISION=	1
 CATEGORIES=	devel textproc www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

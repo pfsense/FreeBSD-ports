@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@regency.nsu.ru>
-# $FreeBSD$
 
 PORTNAME=	bicom
 PORTVERSION=	1.01
@@ -11,7 +10,11 @@ DISTNAME=	${PORTNAME}${PORTVERSION:S/.//g}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Data compressor in the PPM family
 
-RESTRICTED=	Contact author personally regarding commercial use
+# Converted from RESTRICTED
+LICENSE=	BICOM
+LICENSE_NAME=	bicom
+LICENSE_TEXT=	Contact author personally regarding commercial use
+LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 USES=		zip
 NO_WRKSUBDIR=	yes

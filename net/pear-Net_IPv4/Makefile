@@ -1,11 +1,10 @@
 # Created by: Wen Heping <wen@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Net_IPv4
 DISTVERSION=	1.3.5
 CATEGORIES=	net pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	IPv4 network calculations and validation
 
 LICENSE=	PHP301

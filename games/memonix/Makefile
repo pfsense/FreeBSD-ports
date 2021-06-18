@@ -1,6 +1,3 @@
-# Created by: Dmitry Marakasov <amdmi3@amdmi3.ru>
-# $FreeBSD$
-
 PORTNAME=	memonix
 PORTVERSION=	1.6.070713
 PORTREVISION=	11

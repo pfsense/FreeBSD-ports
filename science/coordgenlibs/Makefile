@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	coordgenlibs
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.4.2

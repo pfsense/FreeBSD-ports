@@ -1,5 +1,4 @@
 # Created by: fenner@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	idnits
 PORTVERSION=	2.16.05
@@ -14,15 +13,16 @@ LICENSE=	GPLv2+
 
 RUN_DEPENDS=	bash:shells/bash
 
-NO_ARCH=	yes
-NO_BUILD=	yes
 USES=		shebangfix tar:tgz
 
-PLIST_FILES=	bin/${PORTNAME}
+NO_ARCH=	yes
+NO_BUILD=	yes
 
-SHEBANG_FILES=	${PORTNAME}
+PLIST_FILES=	bin/idnits
+
+SHEBANG_FILES=	idnits
 
 do-install:
-	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_SCRIPT} ${WRKSRC}/idnits ${STAGEDIR}${PREFIX}/bin/
 
 .include <bsd.port.mk>

@@ -1,5 +1,4 @@
 # Created by: Maxim Khon <fjoe@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dahdi-kmod26
 PORTVERSION=	${DAHDI_VERSION:S/-/./g}
@@ -15,6 +14,8 @@ DISTFILES=	${DISTNAME}.tar.bz2\
 
 MAINTAINER=	fjoe@FreeBSD.org
 COMMENT=	Digium/Asterisk Hardware Device Interface
+
+BROKEN=		does not compile: use of undeclared identifier 'thread_dtor'
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/dahdi_cfg:misc/dahdi
 

@@ -1,8 +1,7 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	dnspython
-PORTVERSION=	2.0.0
+PORTVERSION=	2.1.0
 CATEGORIES=	dns python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

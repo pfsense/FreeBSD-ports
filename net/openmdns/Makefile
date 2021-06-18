@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	openmdns
 DISTVERSION=	0.7
 PORTREVISION=	2

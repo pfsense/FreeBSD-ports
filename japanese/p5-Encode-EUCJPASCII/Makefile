@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Encode-EUCJPASCII
 PORTVERSION=	0.03
 CATEGORIES=	japanese converters perl5

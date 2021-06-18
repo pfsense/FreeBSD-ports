@@ -1,9 +1,8 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	vincenty
 PORTVERSION=	0.1.4
-CATEGORIES=	math python geography
+CATEGORIES=	math geography python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 

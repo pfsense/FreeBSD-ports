@@ -1,7 +1,6 @@
-# $FreeBSD$
-
 PORTNAME=	kodi-platform
 PORTVERSION=	20190726
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	decke@FreeBSD.org

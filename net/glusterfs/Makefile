@@ -1,8 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	glusterfs
-PORTVERSION=	8.0
-PORTREVISION=	2
+PORTVERSION=	8.4
 CATEGORIES=	net
 MASTER_SITES=	http://bits.gluster.org/pub/gluster/glusterfs/src/
 
@@ -70,7 +67,6 @@ LDFLAGS+=	-L"${LOCALBASE}/lib" -largp
 INSTALL_TARGET=	install-strip
 PLIST_SUB=	GLUSTERLIBDIR="lib/${PORTNAME}" \
 		PORTVERSION="${PORTVERSION}"
-KMODDIR?=	/boot/modules
 
 OPTIONS_DEFINE=	DOCS
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	gimmik
 DISTVERSION=	2.1
 PORTREVISION=	2

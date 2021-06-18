@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	sqlgrey
 PORTVERSION=	1.8.0
 PORTREVISION=	4

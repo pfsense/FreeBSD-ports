@@ -1,8 +1,7 @@
 # Created by: J.F. Dockes
-# $FreeBSD$
 
 PORTNAME=	xapian-core
-PORTVERSION=	1.4.17
+PORTVERSION=	1.4.18
 PORTEPOCH=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION}/ \

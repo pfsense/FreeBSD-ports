@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		freebayes
 DISTVERSIONPREFIX=	v
 DISTVERSION=		1.2.0

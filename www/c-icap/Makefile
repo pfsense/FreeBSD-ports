@@ -1,8 +1,7 @@
 # Created by: Elisey Savateev <b3k@mail.ru>
-# $FreeBSD$
 
 PORTNAME=	c-icap
-PORTVERSION=	0.5.7
+PORTVERSION=	0.5.8
 PORTEPOCH=	2
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/0.5.x/

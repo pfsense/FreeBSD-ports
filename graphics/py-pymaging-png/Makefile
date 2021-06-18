@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	pymaging-png
 PORTREVISION=	1
 PORTVERSION=	g20130727

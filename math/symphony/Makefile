@@ -1,8 +1,7 @@
-# $FreeBSD$
-
 PORTNAME=	symphony
 DISTVERSIONPREFIX=	releases/
 DISTVERSION=	5.6.17
+PORTREVISION=	1
 CATEGORIES=	math
 PKGNAMEPREFIX=	coin-or-
 
@@ -12,7 +11,7 @@ COMMENT=	Solver and development framework for mixed-integer linear programs
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/SYMPHONY/LICENSE
 
-LIB_DEPENDS=	libCbc.so:math/coinmp
+LIB_DEPENDS=	libCbc.so:math/cbc
 
 USES=		gmake libtool pkgconfig
 GNU_CONFIGURE=	yes

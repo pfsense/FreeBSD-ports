@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	bigdecimal
-PORTVERSION=	3.0.0
+PORTVERSION=	3.0.2
 CATEGORIES=	math rubygems
 MASTER_SITES=	RG
 

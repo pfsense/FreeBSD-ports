@@ -1,8 +1,7 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	lxqt-sudo
-PORTVERSION=	0.16.0
+PORTVERSION=	0.17.0
 CATEGORIES=	security
 MASTER_SITES=	LXQT
 

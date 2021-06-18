@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	libXft
 DISTVERSION=	2.3.3
 CATEGORIES=	x11-fonts

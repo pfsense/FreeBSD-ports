@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	quantities
 DISTVERSION=	0.12.4
 CATEGORIES=	science python

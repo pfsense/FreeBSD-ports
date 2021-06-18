@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ktp-text-ui
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	net-im kde kde-applications
@@ -9,6 +7,9 @@ COMMENT=	KDE chat window application
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
+EXPIRATION_DATE=2021-06-23
 
 LIB_DEPENDS=	libtelepathy-qt5.so:net-im/telepathy-qt \
 		libtelepathy-logger-qt.so:net-im/telepathy-logger-qt5 \

@@ -1,9 +1,8 @@
 # Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	vamps
 PORTVERSION=	0.99.2
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/Vamps/${PORTVERSION}
 

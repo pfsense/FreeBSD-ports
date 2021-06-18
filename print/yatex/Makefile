@@ -1,9 +1,8 @@
 # Created by: Satoshi Taoka <taoka@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	yatex
 PORTVERSION=	1.82
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES?=	print elisp
 MASTER_SITES=	http://www.yatex.org/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}

@@ -1,9 +1,8 @@
 # Created by: TATEISHI Katsuyuki <katsu@iec.hiroshima-u.ac.jp>
-# $FreeBSD$
 
 PORTNAME=	gimageview
 PORTVERSION=	0.2.27
-PORTREVISION=	24
+PORTREVISION=	25
 CATEGORIES=	graphics
 MASTER_SITES=	SF/gtkmmviewer/${PORTNAME}/${PORTVERSION}
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-#
 # Provide support for Python related ports. This includes detecting Python
 # interpreters, ports providing package and modules for python as well as
 # consumer ports requiring Python at build or run time.
@@ -22,12 +20,12 @@
 #			USES=python:3.6+	# Supports Python 3.6 or later
 #			USES=python:3.6-3.9	# Supports Python 3.6 to 3.9
 #			USES=python:-3.8	# Supports Python up to 3.8
-#			USES=python		# Supports any/all Python versions
+#			USES=python		# Supports 3.6+
 #
 # NOTE:	<version-spec> should be as specific as possible, matching the versions
 #	upstream declares support for, without being incorrect. In particular,
-#	USES=python *without* a <version-spec> means any and all past or future
-#	versions, including unreleased versions, which is probably incorrect.
+#	USES=python *without* a <version-spec> means 3.6+,
+#	including unreleased versions, which is probably incorrect.
 #
 #	Not specifying a <version-spec> should only be used when a more specific
 #	<version-spec> cannot be specified due to syntax limitations, for
@@ -170,13 +168,13 @@
 # PYTHONBASE		- The installation prefix of the chosen Python
 #			  interpreter, e.g. /usr/local
 #
-# PYTHON_PORTVERSION
-#			- Version number suitable for ${PORTVERSION}.
+# PYTHON_DISTVERSION
+#			- Version number suitable for ${DISTVERSION}.
 #
 # PYTHON_PORTSDIR	- The port directory of the chosen Python interpreter
 #
 # PYTHON_REL		- The release number of the chosen Python interpreter
-#			  without dots, e.g. 2706, 3401, ...
+#			  without dots, e.g. 20706, 30401, ...
 #
 # PYTHON_SUFFIX		- The major-minor release number of the chosen Python
 #			  interpreter without dots, e.g. 27, 36, ...
@@ -224,7 +222,7 @@
 #			  packages for different Python versions.
 #			  default: -py${PYTHON_SUFFIX}
 #
-# Using USES=python.mk also will add some useful entries to PLIST_SUB:
+# Using USES=python also will add some useful entries to PLIST_SUB:
 #
 #	PYTHON_INCLUDEDIR=${PYTHONPREFIX_INCLUDEDIR:S;${PREFIX}/;;}
 #	PYTHON_LIBDIR=${PYTHONPREFIX_LIBDIR:S;${PREFIX}/;;}
@@ -250,8 +248,8 @@ _INCLUDE_USES_PYTHON_MK=	yes
 # What Python version and what Python interpreters are currently supported?
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-_PYTHON_VERSIONS=		2.7 3.7 3.8 3.9 3.6 # preferred first
-_PYTHON_PORTBRANCH=		2.7		# ${_PYTHON_VERSIONS:[1]}
+_PYTHON_VERSIONS=		3.8 3.9 3.7 3.6 2.7 # preferred first
+_PYTHON_PORTBRANCH=		3.8		# ${_PYTHON_VERSIONS:[1]}
 _PYTHON_BASECMD=		${LOCALBASE}/bin/python
 _PYTHON_RELPORTDIR=		lang/python
 
@@ -334,24 +332,33 @@ DEV_ERROR+=		"USES=python:3 is no longer supported, use USES=python:3.6+ or an a
 
 _PYTHON_VERSION:=	${PYTHON_DEFAULT}
 
+.if empty(_PYTHON_ARGS)
+_PYTHON_ARGS=	3.6+
+.endif
+
 # Validate Python version whether it meets the version restriction.
-_PYTHON_VERSION_CHECK:=		${_PYTHON_ARGS:C/^([1-9]\.[0-9])$/\1-\1/}
-_PYTHON_VERSION_MINIMUM_TMP:=	${_PYTHON_VERSION_CHECK:C/([1-9]\.[0-9])[-+].*/\1/}
-_PYTHON_VERSION_MINIMUM:=	${_PYTHON_VERSION_MINIMUM_TMP:M[1-9].[0-9]}
-_PYTHON_VERSION_MAXIMUM_TMP:=	${_PYTHON_VERSION_CHECK:C/.*-([1-9]\.[0-9])/\1/}
-_PYTHON_VERSION_MAXIMUM:=	${_PYTHON_VERSION_MAXIMUM_TMP:M[1-9].[0-9]}
+_PYTHON_VERSION_CHECK:=		${_PYTHON_ARGS:C/^([1-9]\.[1-9]?[0-9])$/\1-\1/}
+_PYTHON_VERSION_MINIMUM_TMP:=	${_PYTHON_VERSION_CHECK:C/([1-9]\.[1-9]?[0-9])[-+].*/\1/}
+_PYTHON_VERSION_MINIMUM:=	${_PYTHON_VERSION_MINIMUM_TMP:M[1-9].[0-9]}${_PYTHON_VERSION_MINIMUM_TMP:M[1-9].[1-9][0-9]}
+_PYTHON_VERSION_MAXIMUM_TMP:=	${_PYTHON_VERSION_CHECK:C/.*-([1-9]\.[1-9]?[0-9])/\1/}
+_PYTHON_VERSION_MAXIMUM:=	${_PYTHON_VERSION_MAXIMUM_TMP:M[1-9].[0-9]}${_PYTHON_VERSION_MAXIMUM_TMP:M[1-9].[1-9][0-9]}
 
 # At this point we should have no argument left in ${_PYTHON_ARGS}
 # except a version spec
-_PYTHON_ARGS:=	${_PYTHON_ARGS:N[1-9].[0-9]-[1-9].[0-9]:N[1-9].[0-9]:N[1-9].[0-9]+:N-[1-9].[0-9]}
+_V1=		[1-9].[0-9]
+_V2=		[1-9].[1-9][0-9]
+_PYTHON_ARGS:=	${_PYTHON_ARGS:N${_V1}-${_V1}:N${_V1}-${_V2}:N${_V2}-${_V2}:N${_V1}:N${_V2}:N${_V1}+:N${_V2}+:N-${_V1}:N-${_V2}}
 .if !empty(_PYTHON_ARGS)
 IGNORE=	uses unknown USES=python arguments: ${_PYTHON_ARGS}
 .endif
 
+# Pattern to convert python versions (X.Y or X.YY) to comparable format X.YY
+_VC=		C/^([1-9]\.)([0-9])$$/\10\2/
+
 .undef _PYTHON_VERSION_NONSUPPORTED
-.if !empty(_PYTHON_VERSION_MINIMUM) && (${_PYTHON_VERSION} < ${_PYTHON_VERSION_MINIMUM})
+.if !empty(_PYTHON_VERSION_MINIMUM) && (${_PYTHON_VERSION:${_VC}} < ${_PYTHON_VERSION_MINIMUM:${_VC}})
 _PYTHON_VERSION_NONSUPPORTED=	${_PYTHON_VERSION_MINIMUM} at least
-.elif !empty(_PYTHON_VERSION_MAXIMUM) && (${_PYTHON_VERSION} > ${_PYTHON_VERSION_MAXIMUM})
+.elif !empty(_PYTHON_VERSION_MAXIMUM) && (${_PYTHON_VERSION:${_VC}} > ${_PYTHON_VERSION_MAXIMUM:${_VC}})
 _PYTHON_VERSION_NONSUPPORTED=	${_PYTHON_VERSION_MAXIMUM} at most
 .endif
 
@@ -362,9 +369,9 @@ _PYTHON_VERSION_NONSUPPORTED=	${_PYTHON_VERSION_MAXIMUM} at most
 __VER=		${ver}
 .if !defined(_PYTHON_VERSION) && \
 	!(!empty(_PYTHON_VERSION_MINIMUM) && ( \
-		${__VER} < ${_PYTHON_VERSION_MINIMUM})) && \
+		${__VER:${_VC}} < ${_PYTHON_VERSION_MINIMUM:${_VC}})) && \
 	!(!empty(_PYTHON_VERSION_MAXIMUM) && ( \
-		${__VER} > ${_PYTHON_VERSION_MAXIMUM}))
+		${__VER:${_VC}} > ${_PYTHON_VERSION_MAXIMUM:${_VC}}))
 _PYTHON_VERSION=	${ver}
 .endif
 .endfor
@@ -379,9 +386,9 @@ IGNORE=		needs an unsupported version of Python
 .  for ver in ${PYTHON_DEFAULT} ${PYTHON2_DEFAULT} ${PYTHON3_DEFAULT} ${_PYTHON_VERSIONS}
 __VER=		${ver}
 .    if !(!empty(_PYTHON_VERSION_MINIMUM) && ( \
-		${__VER} < ${_PYTHON_VERSION_MINIMUM})) && \
+		${__VER:${_VC}} < ${_PYTHON_VERSION_MINIMUM:${_VC}})) && \
 	!(!empty(_PYTHON_VERSION_MAXIMUM) && ( \
-		${__VER} > ${_PYTHON_VERSION_MAXIMUM}))
+		${__VER:${_VC}} > ${_PYTHON_VERSION_MAXIMUM:${_VC}}))
 .      if empty(_VALID_PYTHON_VERSIONS:M${ver})
 _VALID_PYTHON_VERSIONS+=	${ver}
 .      endif
@@ -414,7 +421,7 @@ FLAVOR=	${FLAVORS:[1]}
 .  endif
 .endif
 
-.if ${FLAVOR:Mpy[23][0-9]}
+.if ${FLAVOR:Mpy[23][0-9]}${FLAVOR:Mpy[23][1-9][0-9]}
 _PYTHON_VERSION=	${FLAVOR:S/py//:C/(.)/\1./}
 .endif
 
@@ -443,31 +450,31 @@ PYTHON_REL=		# empty
 PYTHON_ABIVER=		# empty
 PYTHON_PORTSDIR=	${_PYTHON_RELPORTDIR}${PYTHON_SUFFIX}
 
-.if ${PYTHON_VER} == 3.8
-PYTHON_EXT_SUFFIX=	.cpython-${PYTHON_SUFFIX}
-.else
-PYTHON_EXT_SUFFIX=	# empty
-.endif
-
 # Protect partial checkouts from Mk/Scripts/functions.sh:export_ports_env().
 .if !defined(_PORTS_ENV_CHECK) || exists(${PORTSDIR}/${PYTHON_PORTSDIR})
 .include "${PORTSDIR}/${PYTHON_PORTSDIR}/Makefile.version"
 .endif
-# Create a 4 integer version string, prefixing 0 to the last token if
-# it's a single character. Only use the the first 3 tokens of
+# Create a 5 integer version string, prefixing 0 to the minor and patch
+# tokens if it's a single character. Only use the the first 3 tokens of
 # PORTVERSION to support pre-release versions (rc3, alpha4, etc) of
 # any Python port (lang/pythonXY)
-PYTHON_REL=	${PYTHON_PORTVERSION:C/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/:C/\.([0-9]+)$/.0\1/:C/\.0?([0-9][0-9])$/.\1/:S/.//g}
+PYTHON_REL=	${PYTHON_DISTVERSION:C/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/:C/\.([0-9])$/.0\1/:C/\.([0-9]\.[0-9]+)/.0\1/:S/.//g}
 
 # Might be overridden by calling ports
 PYTHON_CMD?=		${_PYTHON_BASECMD}${_PYTHON_VERSION}
 .if ${PYTHON_VER} != 2.7
 .if exists(${PYTHON_CMD}-config)
 PYTHON_ABIVER!=		${PYTHON_CMD}-config --abiflags
-.elif ${PYTHON_REL} < 3800
+.elif ${PYTHON_REL} < 30800
 # Default ABI flags for lang/python3[67] ports
 PYTHON_ABIVER=		m
 .endif
+.endif
+
+.if ${PYTHON_REL} >= 30807
+PYTHON_EXT_SUFFIX=	.cpython-${PYTHON_SUFFIX}
+.else
+PYTHON_EXT_SUFFIX=	# empty
 .endif
 
 .if ${PYTHON_MAJOR_VER} == 2
@@ -494,13 +501,6 @@ PYTHONPREFIX_SITELIBDIR=	${PYTHON_SITELIBDIR:S;${PYTHONBASE};${PREFIX};}
 
 # Used for recording the installed files.
 _PYTHONPKGLIST=	${WRKDIR}/.PLIST.pymodtmp
-
-# PEP 0488 (https://www.python.org/dev/peps/pep-0488/)
-.if ${PYTHON_REL} < 3500
-PYTHON_PYOEXTENSION=	pyo
-.else
-PYTHON_PYOEXTENSION=	opt-1.pyc
-.endif
 
 # Ports bound to a certain python version SHOULD
 # - use the PYTHON_PKGNAMEPREFIX
@@ -554,9 +554,15 @@ UNIQUE_FIND_SUFFIX_MAN_FILES+=	${_UNIQUE_FIND_SUFFIX_FILES} | \
 
 _CURRENTPORT:=	${PKGNAMEPREFIX}${PORTNAME}${PKGNAMESUFFIX}
 .if defined(_PYTHON_FEATURE_DISTUTILS) && \
-	${_CURRENTPORT} != ${PYTHON_PKGNAMEPREFIX}setuptools
+	${_CURRENTPORT} != ${PYTHON_PKGNAMEPREFIX}setuptools &&\
+	${_CURRENTPORT} != ${PYTHON_PKGNAMEPREFIX}setuptools44
+.if ${PYTHON_VER} == 2.7
+BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools44>0:devel/py-setuptools44@${PY_FLAVOR}
+RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools44>0:devel/py-setuptools44@${PY_FLAVOR}
+.else
 BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
 RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR}
+.endif
 .endif
 
 # distutils support
@@ -612,7 +618,7 @@ add-plist-pymod:
 		${_PYTHONPKGLIST} | ${SORT} >> ${TMPPLIST}
 
 .else
-.if ${PYTHON_REL} >= 3200 && defined(_PYTHON_FEATURE_PY3KPLIST)
+.if ${PYTHON_REL} >= 30200 && defined(_PYTHON_FEATURE_PY3KPLIST)
 # When Python version is 3.2+ we rewrite all the filenames
 # of TMPPLIST that end with .py[co], so that they conform
 # to PEP 3147 (see https://www.python.org/dev/peps/pep-3147/)
@@ -628,7 +634,7 @@ add-plist-python:
 		pc="__pycache__" mt="$$(${PYMAGICTAG})" pyo="opt-1.pyc" \
 		${TMPPLIST} > ${TMPPLIST}.pyc_tmp
 	@${MV} ${TMPPLIST}.pyc_tmp ${TMPPLIST}
-.endif # ${PYTHON_REL} >= 3200 && defined(_PYTHON_FEATURE_PY3KPLIST)
+.endif # ${PYTHON_REL} >= 30200 && defined(_PYTHON_FEATURE_PY3KPLIST)
 .endif # defined(_PYTHON_FEATURE_AUTOPLIST) && defined(_PYTHON_FEATURE_DISTUTILS)
 
 # Fix for programs that build python from a GNU auto* environment
@@ -643,36 +649,11 @@ PYGAME=		${PYTHON_PKGNAMEPREFIX}game>0:devel/py-game@${PY_FLAVOR}
 PYNUMPY=	${PYTHON_PKGNAMEPREFIX}numpy>=1.16,1<1.20,1:math/py-numpy@${PY_FLAVOR}
 
 # Common Python modules that can be needed but only for some versions of Python.
-.if ${PYTHON_REL} < 3500
-PY_PILLOW=	${PYTHON_PKGNAMEPREFIX}pillow6>=6.0.0:graphics/py-pillow6@${PY_FLAVOR}
+.if ${PYTHON_REL} < 30500
 PY_PYGMENTS=	${PYTHON_PKGNAMEPREFIX}pygments-25>=2.5.1<3:textproc/py-pygments-25@${PY_FLAVOR}
-PY_SPHINX=	${PYTHON_PKGNAMEPREFIX}sphinx18>=0,1:textproc/py-sphinx18@${PY_FLAVOR}
-PY_TYPING=	${PYTHON_PKGNAMEPREFIX}typing>=3.7.4.1:devel/py-typing@${PY_FLAVOR}
 .else
 PY_PILLOW=	${PYTHON_PKGNAMEPREFIX}pillow>=7.0.0:graphics/py-pillow@${PY_FLAVOR}
 PY_PYGMENTS=	${PYTHON_PKGNAMEPREFIX}pygments>=2.5.1<3:textproc/py-pygments@${PY_FLAVOR}
-PY_SPHINX=	${PYTHON_PKGNAMEPREFIX}sphinx>=3.0,1:textproc/py-sphinx@${PY_FLAVOR}
-PY_TYPING=
-.endif
-
-.if ${PYTHON_REL} < 3400
-PY_ENUM34=	${PYTHON_PKGNAMEPREFIX}enum34>=1.1<2.0:devel/py-enum34@${PY_FLAVOR}
-PY_PATHLIB=	${PYTHON_PKGNAMEPREFIX}pathlib>0:devel/py-pathlib@${PY_FLAVOR}
-.else
-PY_ENUM34=
-PY_PATHLIB=
-.endif
-
-.if ${PYTHON_REL} < 3300
-PY_IPADDRESS=	${PYTHON_PKGNAMEPREFIX}ipaddress>=1.0.23:net/py-ipaddress@${PY_FLAVOR}
-.else
-PY_IPADDRESS=
-.endif
-
-.if ${PYTHON_REL} < 3200
-PY_FUTURES=	${PYTHON_PKGNAMEPREFIX}futures>=3.2:devel/py-futures@${PY_FLAVOR}
-.else
-PY_FUTURES=
 .endif
 
 .if ${PYTHON_VER} != ${PYTHON_DEFAULT}
@@ -708,7 +689,7 @@ PLIST_SUB+=	PYTHON_INCLUDEDIR=${PYTHONPREFIX_INCLUDEDIR:S;${PREFIX}/;;} \
 		PYTHON_EXT_SUFFIX=${PYTHON_EXT_SUFFIX} \
 		PYTHON_VER=${PYTHON_VER} \
 		PYTHON_VERSION=${PYTHON_VERSION}
-.if ${PYTHON_REL} < 3000
+.if ${PYTHON_REL} < 30000
 PLIST_SUB+=	PYTHON2="" PYTHON3="@comment "
 .else
 PLIST_SUB+=	PYTHON2="@comment " PYTHON3=""

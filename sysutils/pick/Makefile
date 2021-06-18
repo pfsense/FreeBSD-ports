@@ -1,11 +1,9 @@
-# $FreeBSD$
-
 PORTNAME=	pick
 PORTVERSION=	4.0.0
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/mptre/pick/releases/download/v${PORTVERSION}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Tool for choosing one option from a set of choices with an interface
 
 LICENSE=	MIT

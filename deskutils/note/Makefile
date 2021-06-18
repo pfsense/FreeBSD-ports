@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	note
 DISTVERSION=	1.3.26
 CATEGORIES=	deskutils perl5

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	inifile
 PORTVERSION=	0.4
 CATEGORIES=	devel python

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	Class-MethodMapper
 PORTVERSION=	1.0
 PORTREVISION=	1

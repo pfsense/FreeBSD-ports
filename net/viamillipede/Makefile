@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	viamillipede
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.89

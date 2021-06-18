@@ -1,9 +1,8 @@
 # Created by: Dryice Liu <dryice@dryice.name>
-# $FreeBSD$
 
 PORTNAME=	emms
 DISTVERSION=	5.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	audio elisp
 MASTER_SITES=	GNU
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}

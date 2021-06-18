@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	glad
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1.34
@@ -11,7 +9,7 @@ COMMENT=	Multi-Language Vulkan/GL/GLES/EGL/GLX/WGL loader-generator
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake
+USES=		cmake python:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	Dav1dde
 USE_LDCONFIG=	yes

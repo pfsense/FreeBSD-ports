@@ -1,11 +1,10 @@
 # Created by: Wen Heping<wenheping@gmail.com>
-# $FreeBSD$
 
 PORTNAME=	Net_Nmap
 PORTVERSION=	1.0.5
 CATEGORIES=	net pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simple Wrapper Class for the Nmap Utility
 
 LICENSE=	LGPL3

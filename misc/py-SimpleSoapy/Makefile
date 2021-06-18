@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	SimpleSoapy
 DISTVERSION=	1.5.1
 PORTREVISION=	3

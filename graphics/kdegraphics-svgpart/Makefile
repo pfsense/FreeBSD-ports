@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	svgpart
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
 CATEGORIES=	graphics kde kde-applications
@@ -14,7 +12,5 @@ USE_KDE=	auth codecs completion config configwidgets coreaddons ecm \
 		widgetsaddons xmlgui
 USE_QT=		concurrent core dbus gui network svg widgets xml \
 		buildtools_build qmake_build
-
-OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

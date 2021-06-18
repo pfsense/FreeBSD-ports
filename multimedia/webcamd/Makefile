@@ -1,9 +1,8 @@
 # Created by: Andrew Thompson <thompsa@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	webcamd
-DISTVERSION=	5.10.6.0
-PORTREVISION=	1
+DISTVERSIONPREFIX=	v
+DISTVERSION=	5.13.2.4
 CATEGORIES=	multimedia
 
 MAINTAINER=	hselasky@FreeBSD.org
@@ -21,11 +20,10 @@ SUB_FILES=	webcamd.conf
 USE_GITHUB=	yes
 GH_ACCOUNT=	hselasky
 GH_PROJECT=	${PORTNAME}
-GH_TAGNAME=	v${DISTVERSION}
-GH_TUPLE=	torvalds:linux:v5.10-rc6:linux
+GH_TUPLE=	torvalds:linux:v5.13-rc2:linux/media_tree
 
-OPTIONS_DEFINE=	DEBUG HAL VT_CLIENT VT_SERVER DVB INPUT KEYBOARD MOUSE RADIO WEBCAM
-OPTIONS_DEFAULT=DVB HAL INPUT RADIO WEBCAM
+OPTIONS_DEFINE=	DEBUG VT_CLIENT VT_SERVER DVB INPUT KEYBOARD MOUSE RADIO WEBCAM
+OPTIONS_DEFAULT=DVB INPUT RADIO WEBCAM
 
 #
 # 32-bit compatibility support is mostly useful for
@@ -36,13 +34,6 @@ OPTIONS_DEFAULT_amd64=		COMPAT32
 
 COMPAT32_DESC=	Enable 32-bit compatibility support
 COMPAT32_MAKE_ARGS=	HAVE_COMPAT32="YES"
-
-HAL_DESC=	Build with HAL and DBUS support
-HAL_LIB_DEPENDS+=	libhal.so:sysutils/hal
-HAL_LIB_DEPENDS+=	libdbus-1.so:devel/dbus
-HAL_MAKE_ARGS=		HAVE_HAL="YES"
-HAL_SUB_LIST=		LIBHAL="${LOCALBASE}/lib/libhal.so:${LOCALBASE}/lib/libdbus-1.so:"
-HAL_SUB_LIST_OFF=	LIBHAL=""
 
 DEBUG_MAKE_ARGS=	HAVE_DEBUG="YES"
 
@@ -84,7 +75,6 @@ do-configure:
 	${MAKE} ${MAKE_ARGS} configure -C${WEBCAMDDIR}
 
 post-patch:
-	@(${RM} -r ${WEBCAMDDIR}/media_tree && ${LN} -s ${LINUXDIR} ${WEBCAMDDIR}/media_tree)
 	@(cd ${WEBCAMDDIR}/patches && ${SH} ./do_patch.sh)
 
 post-install:

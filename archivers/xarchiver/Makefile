@@ -1,12 +1,10 @@
 # Created by: Andreev Maxim
-# $FreeBSD$
 
 PORTNAME=	xarchiver
-PORTVERSION=	0.5.4.15
-PORTREVISION=	1
+PORTVERSION=	0.5.4.16
 CATEGORIES=	archivers
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Desktop-agnostic GTK frontend to various archiving tools
 
 LICENSE=	GPLv2+
@@ -40,7 +38,6 @@ OPTIONS_SUB=	yes
 
 FORMATS_DESC=	Additional compression formats support
 ARJ_DESC=	ARJ compression support
-LZO_DESC=	LZO compression support
 RAR_DESC=	RAR compression support
 
 ARJ_RUN_DEPENDS=	arj:archivers/arj

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	isal
 DISTVERSION=	g20200702
 CATEGORIES=	security

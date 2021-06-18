@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	SubscribePlugin
 SVNREV=		17653
 

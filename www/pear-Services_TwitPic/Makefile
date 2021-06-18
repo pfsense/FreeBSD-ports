@@ -1,11 +1,10 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Services_TwitPic
 PORTVERSION=	0.1.0
 CATEGORIES=	www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PHP Interface to TwitPic's API
 
 NO_ARCH=	yes

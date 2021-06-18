@@ -1,5 +1,4 @@
 # Created by: Satoshi TAOKA <taoka@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	onew
 PORTVERSION=	2.2.10
@@ -11,6 +10,9 @@ DISTNAME=	jvim2.0r+${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Library for Japanese Input Methods
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: ONEW_THRUSYMS_ON
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: ONEW_THRUSYMS_ON
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 ALL_TARGET=
@@ -48,8 +50,6 @@ PLIST_FILES+=	lib/libonew-${I:S/_/+/g:tl}.a
 RK_DIR+=	${RK_DIR.${I}}
 .endif
 .endfor
-
-pre-build: apply-slist
 
 do-build:
 .for I in ${INPUT_METHOD}

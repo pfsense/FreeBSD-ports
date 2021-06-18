@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	ttystatus
 PORTVERSION=	0.36
 CATEGORIES=	devel

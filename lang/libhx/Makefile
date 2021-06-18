@@ -1,12 +1,11 @@
 # Created by: Sylvio Cesar <sylvio@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libHX
 PORTVERSION=	3.25
 CATEGORIES=	lang
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}
 
-MAINTAINER=	danilo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C/C++ library with common data structures and functions
 
 LICENSE=	LGPL21+

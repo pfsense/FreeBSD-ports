@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	truncato
 PORTVERSION=	0.7.11
 CATEGORIES=	textproc rubygems

@@ -1,7 +1,5 @@
-# $FreeBSD$
-
 PORTNAME=	r10k
-PORTVERSION=	3.7.0
+PORTVERSION=	3.9.0
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 

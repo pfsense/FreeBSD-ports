@@ -1,6 +1,3 @@
-# Created by: Tobias Kortkamp <t@tobik.me>
-# $FreeBSD$
-
 PORTNAME=	cmark
 DISTVERSION=	0.29.0
 CATEGORIES=	textproc

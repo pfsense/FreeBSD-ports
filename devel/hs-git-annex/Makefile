@@ -1,8 +1,8 @@
 # Created by: frase@frase.id.au
-# $FreeBSD$
 
 PORTNAME=	git-annex
-PORTVERSION=	8.20200617
+PORTVERSION=	8.20210223
+PORTREVISION=	1
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

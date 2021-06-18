@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	bwping
 PORTVERSION=	2.2
 CATEGORIES=	net

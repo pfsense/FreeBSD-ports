@@ -1,5 +1,4 @@
 # Created by: gahr@FreeBSD.org
-# $FreeBSD$
 
 PORTNAME=	critcl
 PORTVERSION=	3.1.18.1
@@ -13,6 +12,8 @@ LICENSE=	TclTk
 LICENSE_NAME=	Tcl/Tk License
 LICENSE_FILE=	${WRKSRC}/license.terms
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+BROKEN_riscv64=		fails to package: callback.so: no such file or directory
 
 RUN_DEPENDS=	${LOCALBASE}/lib/Trf/pkgIndex.tcl:devel/tcl-trf	\
 		${LOCALBASE}/lib/tcllib/cmdline/pkgIndex.tcl:devel/tcllib

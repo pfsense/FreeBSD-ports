@@ -1,8 +1,7 @@
 # Created by: Michael Nottebrock <lofi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	libassuan
-PORTVERSION=	2.5.4
+PORTVERSION=	2.5.5
 CATEGORIES=	security devel
 MASTER_SITES=	GNUPG
 

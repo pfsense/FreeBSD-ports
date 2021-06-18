@@ -1,11 +1,10 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Structures_DataGrid_DataSource_PDO
 PORTVERSION=	0.2.0
 CATEGORIES=	databases www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	DataSource driver using PHP Data Objects (PDO) and an SQL query
 
 LICENSE=	BSD2CLAUSE

@@ -1,5 +1,4 @@
 # Created by: Matthias Fechner <mfechner@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	activerecord-explain-analyze
 PORTVERSION=	0.1.0
@@ -8,7 +7,7 @@ CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	mfechner@FreeBSD.org
-COMMENT=	Extends ActiveRecord#explain with additinal features
+COMMENT=	Extends ActiveRecord#explain with additional features
 
 LICENSE=	MIT
 

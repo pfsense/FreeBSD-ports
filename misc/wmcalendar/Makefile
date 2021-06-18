@@ -1,5 +1,4 @@
 # Created by: Alexey Dokuchaev <danfe@regency.nsu.ru>
-# $FreeBSD$
 
 PORTNAME=	wmcalendar
 PORTVERSION=	0.5.2
@@ -19,7 +18,7 @@ USE_XORG=	xpm
 USE_GNOME=	gtk20
 MAKE_ARGS=	CC="${CC}" \
 		LFLAGS="`pkg-config --libs gtk+-2.0` -L${LOCALBASE}/lib" \
-		CFLAGS="${CFLAGS}" \
+		CFLAGS="${CFLAGS} -fcommon" \
 		INCDIR="`pkg-config --cflags gtk+-2.0` -I${LOCALBASE}/include" \
 		LIBDIR="" \
 		LIBS="-lical -lX11 -lXext -lXpm -lm"

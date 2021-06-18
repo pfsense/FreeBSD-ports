@@ -1,9 +1,8 @@
 # Created by: gurkan@phys.ethz.ch
-# $FreeBSD$
 
 PORTNAME=	aclock
 PORTVERSION=	0.4.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	x11-clocks gnustep
 MASTER_SITES=	SAVANNAH/gap
 DISTNAME=	AClock-${PORTVERSION}

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	flvstreamer
 PORTVERSION=	2.1.c.1
 PORTREVISION=	1

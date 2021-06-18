@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=		libsweep-lidar
 DISTVERSIONPREFIX=	v
 DISTVERSION=		1.3.0

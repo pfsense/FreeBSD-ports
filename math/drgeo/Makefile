@@ -1,9 +1,8 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	drgeo
 PORTVERSION=	1.1.0
-PORTREVISION=	21
+PORTREVISION=	22
 CATEGORIES=	math
 MASTER_SITES=	SF/ofset/${PORTNAME}/${PORTVERSION}
 
@@ -13,7 +12,7 @@ COMMENT=	GTK interactive geometry software
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libguile.so:lang/guile
+LIB_DEPENDS=	libguile.so:lang/guile1
 
 USES=		compiler:c++11-lang gettext gmake gnome localbase:ldflags \
 		pathfix pkgconfig

@@ -1,8 +1,7 @@
 # Created by: Zastupov Stepan [RedChrom] <redchrom@mail.ru>
-# $FreeBSD$
 
 PORTNAME=	audacious
-PORTVERSION=	4.0.5
+PORTVERSION=	4.1
 CATEGORIES=	multimedia audio
 MASTER_SITES=	https://distfiles.audacious-media-player.org/
 

@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	cronolog
 PORTVERSION=	1.7.1
 PORTREVISION=	1

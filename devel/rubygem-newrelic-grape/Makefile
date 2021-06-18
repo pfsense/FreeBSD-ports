@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	newrelic-grape
 PORTVERSION=	2.1.0
 CATEGORIES=	devel rubygems

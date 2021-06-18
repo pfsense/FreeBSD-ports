@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Editors
 
     SUBDIR += 2bsd-vi
@@ -47,7 +44,6 @@
     SUBDIR += fpc-ide
     SUBDIR += fte
     SUBDIR += fxite
-    SUBDIR += gate
     SUBDIR += gedit
     SUBDIR += gedit-plugins
     SUBDIR += ghex
@@ -56,6 +52,7 @@
     SUBDIR += gnome-latex
     SUBDIR += gobby
     SUBDIR += gomate
+    SUBDIR += gummi
     SUBDIR += heme
     SUBDIR += hexcurse
     SUBDIR += hexedit
@@ -191,8 +188,8 @@
     SUBDIR += linux-sublime
     SUBDIR += linux-sublime3
     SUBDIR += madedit
+    SUBDIR += marker
     SUBDIR += mg
-    SUBDIR += mg-static
     SUBDIR += micro
     SUBDIR += mined
     SUBDIR += mle
@@ -218,6 +215,7 @@
     SUBDIR += picpas
     SUBDIR += pluma
     SUBDIR += poedit
+    SUBDIR += poke
     SUBDIR += psgml
     SUBDIR += puff
     SUBDIR += py-babi
@@ -231,6 +229,10 @@
     SUBDIR += setzer
     SUBDIR += shed
     SUBDIR += slime
+    SUBDIR += sly
+    SUBDIR += sly-asdf
+    SUBDIR += sly-named-readtables
+    SUBDIR += sly-quicklisp
     SUBDIR += ssed
     SUBDIR += sted
     SUBDIR += tamago
@@ -244,7 +246,6 @@
     SUBDIR += textadept
     SUBDIR += texworks
     SUBDIR += the
-    SUBDIR += thoteditor
     SUBDIR += treeform
     SUBDIR += tweak
     SUBDIR += uemacs

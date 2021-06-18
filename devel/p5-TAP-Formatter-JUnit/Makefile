@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	TAP-Formatter-JUnit
 PORTVERSION=	0.11
 PORTREVISION=	5

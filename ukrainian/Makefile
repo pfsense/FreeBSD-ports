@@ -1,6 +1,3 @@
-# $FreeBSD$
-#
-
     COMMENT = Ukrainian support
 
     SUBDIR += aspell

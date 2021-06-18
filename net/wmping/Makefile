@@ -1,5 +1,4 @@
 # Created by: Sergey Velichkevych <serg@cad.kiev.ua>
-# $FreeBSD$
 
 PORTNAME=	wmping
 PORTVERSION=	0.2.1
@@ -9,6 +8,9 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	serg@cad.kiev.ua
 COMMENT=	Windowmaker dock app to display network hosts status
+
+BROKEN_FreeBSD_13=	ld: error: duplicate symbol: display
+BROKEN_FreeBSD_14=	ld: error: duplicate symbol: display
 
 USES=		gmake xorg
 USE_XORG=	xpm
@@ -23,7 +25,7 @@ do-install:
 	${INSTALL_MAN} ${WRKSRC}/wmping.1 ${STAGEDIR}${PREFIX}/man/man1
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for file in ${PORTDOCS}
-	@${INSTALL_DATA} ${WRKSRC}/${file} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${file} ${STAGEDIR}${DOCSDIR}
 .endfor
 
 .include <bsd.port.mk>

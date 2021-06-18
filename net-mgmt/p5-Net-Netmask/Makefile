@@ -1,8 +1,7 @@
 # Created by: Wei-chun Chao
-# $FreeBSD$
 
 PORTNAME=	Net-Netmask
-PORTVERSION=	1.9104
+PORTVERSION=	2.0001
 CATEGORIES=	net-mgmt perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-

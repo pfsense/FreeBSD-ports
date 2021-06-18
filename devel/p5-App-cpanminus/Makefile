@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	App-cpanminus
 PORTVERSION=	1.7042
 CATEGORIES=	devel perl5

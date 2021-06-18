@@ -1,11 +1,10 @@
 # Created by: Nick Hilliard <nick@foobar.org>
-# $FreeBSD$
 
 PORTNAME=	Structures_DataGrid_DataSource_DB
 PORTVERSION=	0.1.1
 CATEGORIES=	databases www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	DB datasource driver for pear-Structures_DataGrid
 
 LICENSE=	BSD2CLAUSE

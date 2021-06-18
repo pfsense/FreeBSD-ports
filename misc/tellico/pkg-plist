@@ -1,6 +1,4 @@
 bin/tellico
-etc/xdg/tellico-script.knsrc
-etc/xdg/tellico-template.knsrc
 etc/xdg/tellicorc
 share/applications/org.kde.tellico.desktop
 share/config.kcfg/tellico_config.kcfg
@@ -154,6 +152,16 @@ share/doc/HTML/pt_BR/tellico/importing-exporting.docbook
 share/doc/HTML/pt_BR/tellico/index.cache.bz2
 share/doc/HTML/pt_BR/tellico/index.docbook
 share/doc/HTML/pt_BR/tellico/menus.docbook
+share/doc/HTML/ru/tellico/advanced.docbook
+share/doc/HTML/ru/tellico/configuration.docbook
+share/doc/HTML/ru/tellico/details.docbook
+share/doc/HTML/ru/tellico/faqs.docbook
+share/doc/HTML/ru/tellico/fundamentals.docbook
+share/doc/HTML/ru/tellico/hacking.docbook
+share/doc/HTML/ru/tellico/importing-exporting.docbook
+share/doc/HTML/ru/tellico/index.cache.bz2
+share/doc/HTML/ru/tellico/index.docbook
+share/doc/HTML/ru/tellico/menus.docbook
 share/doc/HTML/sv/tellico/advanced.docbook
 share/doc/HTML/sv/tellico/configuration.docbook
 share/doc/HTML/sv/tellico/details.docbook
@@ -213,8 +221,11 @@ share/icons/hicolor/48x48/mimetypes/application-x-tellico.png
 share/icons/hicolor/64x64/apps/tellico.png
 share/icons/hicolor/64x64/mimetypes/application-x-tellico.png
 share/kconf_update/tellico-1-3-update.pl
+share/kconf_update/tellico-3-4-update.pl
 share/kconf_update/tellico-rename.upd
 share/kconf_update/tellico.upd
+share/knsrcfiles/tellico-script.knsrc
+share/knsrcfiles/tellico-template.knsrc
 share/kxmlgui5/tellico/tellicoui.rc
 share/locale/bg/LC_MESSAGES/tellico.mo
 share/locale/bs/LC_MESSAGES/tellico.mo
@@ -271,6 +282,7 @@ share/mime/packages/tellico.xml
 %%DATADIR%%/boardgamegeek2tellico.xsl
 %%DATADIR%%/cassette-logo.png
 %%DATADIR%%/cd-logo.png
+%%DATADIR%%/collectorz2tellico.xsl
 %%DATADIR%%/comicvine2tellico.xsl
 %%DATADIR%%/crossref2tellico.xsl
 %%DATADIR%%/data-sources/dark_horse_comics.py
@@ -307,6 +319,7 @@ share/mime/packages/tellico.xml
 %%DATADIR%%/pics/checkmark.png
 %%DATADIR%%/pics/cite.png
 %%DATADIR%%/pics/coin.png
+%%DATADIR%%/pics/collectorz.png
 %%DATADIR%%/pics/comic.png
 %%DATADIR%%/pics/deliciouslibrary.png
 %%DATADIR%%/pics/file.png

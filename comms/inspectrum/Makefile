@@ -1,9 +1,8 @@
 # Created by: <mr@freebsd.org>
-# $FreeBSD$
 
 PORTNAME=	inspectrum
 PORTVERSION=	g20191102
-#PORTREVISION=	2
+PORTREVISION=	0
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	mr@FreeBSD.org

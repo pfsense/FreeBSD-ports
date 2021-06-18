@@ -1,8 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	validates_timeliness
-PORTVERSION=	4.1.1
+PORTVERSION=	5.0.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 

@@ -1,8 +1,7 @@
 # Created by: Olivier Duchateau
-# $FreeBSD$
 
 PORTNAME=	lxhotkey
-PORTVERSION=	0.1.0
+PORTVERSION=	0.1.1
 CATEGORIES=	x11
 MASTER_SITES=	SF/lxde/LXHotkey/
 

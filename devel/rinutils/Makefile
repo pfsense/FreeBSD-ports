@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	rinutils
 DISTVERSION=	0.8.0
 CATEGORIES=	devel

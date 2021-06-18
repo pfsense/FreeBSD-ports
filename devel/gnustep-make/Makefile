@@ -1,9 +1,7 @@
 # Created by: Thomas Gellekum <tg@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	gnustep-make
-PORTVERSION=	2.7.0
-PORTREVISION=	3
+PORTVERSION=	2.8.0
 CATEGORIES=	devel gnustep
 MASTER_SITES=	GNUSTEP/core
 

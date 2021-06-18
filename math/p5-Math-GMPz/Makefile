@@ -1,8 +1,7 @@
 # Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-# $FreeBSD$
 
 PORTNAME=	Math-GMPz
-PORTVERSION=	0.48
+PORTVERSION=	0.51
 CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -15,10 +14,11 @@ LICENSE_COMB=	dual
 
 LIB_DEPENDS=	libgmp.so:math/gmp
 TEST_DEPENDS=	p5-Math-GMP>=0:math/p5-Math-GMP \
-		p5-Test-Pod>=1:devel/p5-Test-Pod
+		p5-Test-Pod>=1:devel/p5-Test-Pod \
+		p5-Test-Warn>=0.36:devel/p5-Test-Warn
 
-USE_PERL5=	configure
 USES=		localbase perl5
+USE_PERL5=	configure
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Math/GMPz/GMPz.so
