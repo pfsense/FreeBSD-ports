@@ -441,6 +441,22 @@ error_log(gettext("Starting rules update...  Time: " . date("Y-m-d H:i:s") . "\n
 $last_curl_error = "";
 $update_errors = false;
 
+/* Save current state (running/not running) for each enabled Snort interface */
+$active_interfaces = array();
+foreach ($config['installedpackages']['snortglobal']['rule'] as $id => $value) {
+	$if_real = get_real_interface($value['interface']);
+
+	/* Skip processing for instances whose underlying physical        */
+	/* interface has been removed in pfSense.                         */
+	if ($if_real == "") {
+		continue;
+	}
+
+	if ($value['enable'] = "on" && snort_is_running($value['uuid'])) {
+		$active_interfaces[] = $value['interface'];
+	}
+}
+
 /*  Check for and download any new Snort Subscriber Rules sigs */
 if ($snortdownload == 'on') {
 	if (snort_check_rule_md5("{$snort_rule_url}{$snort_filename_md5}?oinkcode={$oinkid}", "{$tmpfname}/{$snort_filename_md5}", "Snort Subscriber rules")) {
@@ -872,7 +888,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 
 			snort_apply_customizations($value, $if_real);
 
-			/*  Log a message in Update Log if protecting customized preprocessor rules. */
+			/* Log a message in Update Log if protecting customized preprocessor rules. */
 			$tmp = "\t" . $tmp . "\n";
 			if ($value['protect_preproc_rules'] == 'on') {
 				$tmp .= gettext("\tPreprocessor text rules flagged as protected and not updated for ");
@@ -880,6 +896,16 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 			}
 			error_log($tmp, 3, SNORT_RULES_UPD_LOGFILE);
 			snort_update_status(gettext(" done.") . "\n");
+
+			/* Restart Snort on the interface if it was previously running, and we are not in Post Install mode */
+			if (!$g['snort_postinstall'] && in_array($value['interface'], $active_interfaces)) {
+				snort_update_status(gettext('Restarting Snort on ' . convert_friendly_interface_to_friendly_descr($value['interface']) . ' to activate the new set of rules...'));
+				error_log(gettext("\tRestarting Snort on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " to activate the new set of rules...\n"), 3, SNORT_RULES_UPD_LOGFILE);
+				snort_start($value, $if_real);
+				snort_update_status(gettext(" done.") . "\n");
+       				syslog(LOG_NOTICE, gettext("[Snort] Snort has restarted on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " with your new set of rules..."));
+				error_log(gettext("\tSnort has restarted on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " with your new set of rules.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+			}
 		}
 	}
 	else {
@@ -889,35 +915,29 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 
 	/* Clear the rebuild rules flag.  */
 	$rebuild_rules = false;
-
-	/* Restart snort if running, and not in post-install, so as to pick up the new rules. */
-       	if (!$g['snort_postinstall'] && is_service_running("snort") && count($config['installedpackages']['snortglobal']['rule']) > 0) {
-		snort_update_status(gettext('Restarting Snort to activate the new set of rules...'));
-		error_log(gettext("\tRestarting Snort to activate the new set of rules...\n"), 3, SNORT_RULES_UPD_LOGFILE);
-		touch("{$g['varrun_path']}/snort_pkg_starting.lck");
-		snort_restart_all_interfaces(TRUE);
-		sleep(3);
-		unlink_if_exists("{$g['varrun_path']}/snort_pkg_starting.lck");
-		snort_update_status(gettext(" done.") . "\n");
-       		syslog(LOG_NOTICE, gettext("[Snort] Snort has restarted with your new set of rules..."));
-		error_log(gettext("\tSnort has restarted with your new set of rules.\n"), 3, SNORT_RULES_UPD_LOGFILE);
-	}
 }
 elseif ($openappid_detectors == 'on') {
 	/**************************************************************************************/
 	/* Only updated OpenAppID detectors, so do not need to rebuild all interface rules.   */
 	/* Restart snort if running, and not in post-install, so as to pick up the detectors. */
 	/**************************************************************************************/
-       	if (!$g['snort_postinstall'] && is_service_running("snort") && count($config['installedpackages']['snortglobal']['rule']) > 0) {
-		snort_update_status(gettext('Restarting Snort to activate the new OpenAppID detectors...'));
-		error_log(gettext("\tRestarting Snort to activate the new OpenAppID detectors...\n"), 3, SNORT_RULES_UPD_LOGFILE);
-		touch("{$g['varrun_path']}/snort_pkg_starting.lck");
-		snort_restart_all_interfaces(TRUE);
-		sleep(2);
-		unlink_if_exists("{$g['varrun_path']}/snort_pkg_starting.lck");
-		snort_update_status(gettext(" done.") . "\n");
-       		syslog(LOG_NOTICE, gettext("[Snort] Snort has restarted with your new set of OpenAppID detectors..."));
-		error_log(gettext("\tSnort has restarted with your new set of OpenAppID detectors.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+	foreach ($config['installedpackages']['snortglobal']['rule'] as $id => $value) {
+		$if_real = get_real_interface($value['interface']);
+
+		/* Skip processing for instances whose underlying physical        */
+		/* interface has been removed in pfSense.                         */
+		if ($if_real == "") {
+			continue;
+		}
+
+		if (!$g['snort_postinstall'] && in_array($value['interface'], $active_interfaces)) {
+			snort_update_status(gettext('Restarting Snort on ' . convert_friendly_interface_to_friendly_descr($value['interface']) . ' to activate the new set of OpenAppID detectors...'));
+			error_log(gettext("\tRestarting Snort on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " to activate the new set of OpenAppID detectors...\n"), 3, SNORT_RULES_UPD_LOGFILE);
+			snort_start($value, $if_real);
+			snort_update_status(gettext(" done.") . "\n");
+			syslog(LOG_NOTICE, gettext("[Snort] Snort has restarted on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " with your new set of OpenAppID detectors..."));
+			error_log(gettext("\tSnort has restarted on " . convert_friendly_interface_to_friendly_descr($value['interface']) . " with your new set of OpenAppID detectors.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+		}
 	}
 }
 
