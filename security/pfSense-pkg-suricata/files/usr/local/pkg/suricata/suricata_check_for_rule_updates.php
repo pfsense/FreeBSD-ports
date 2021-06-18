@@ -429,6 +429,22 @@ error_log(gettext("Starting rules update...  Time: " . date("Y-m-d H:i:s") . "\n
 $last_curl_error = "";
 $update_errors = false;
 
+/* Save current state (running/not running) for each enabled Suricatat interface */
+$active_interfaces = array();
+foreach ($config['installedpackages']['suricata']['rule'] as $value) {
+	$if_real = get_real_interface($value['interface']);
+
+	/* Skip processing for instances whose underlying physical        */
+	/* interface has been removed in pfSense.                         */
+	if ($if_real == "") {
+		continue;
+	}
+
+	if ($value['enable'] = "on" && suricata_is_running($value['uuid'], $if_real)) {
+		$active_interfaces[] = $value['interface'];
+	}
+}
+
 /*  Check for and download any new Emerging Threats Rules sigs */
 if ($emergingthreats == 'on') {
 	if (suricata_check_rule_md5("{$emergingthreats_url}{$emergingthreats_filename_md5}", "{$tmpfname}/{$emergingthreats_filename_md5}", "{$et_name} rules")) {
@@ -757,7 +773,6 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 			@copy("{$tmpfname}/{$prefix}gen-msg.map", "{$suricatadir}gen-msg.map");
 	}
 
-
 	/* Start the rules rebuild proccess for each configured interface */
 	if (is_array($config['installedpackages']['suricata']['rule']) &&
 	    count($config['installedpackages']['suricata']['rule']) > 0) {
@@ -793,10 +808,10 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 			suricata_update_status(gettext(" done.") . "\n");
 
 			// If running, reload the rules for this interface
-			if (suricata_is_running($value['uuid'], $if_real) && !$g['suricata_postinstall']) {
-				// If "Live Reload" is enabled, just reload the configuration;
-				// otherwise, restart the interface instance of Suricata.
-				if ($config['installedpackages']['suricata']['config'][0]['live_swap_updates'] == 'on') {
+			if (in_array($value['interface'], $active_interfaces) && !$g['suricata_postinstall']) {
+				// If running and "Live Reload" is enabled, just reload the configuration;
+				// otherwise, start/restart the interface instance of Suricata.
+				if (suricata_is_running($value['uuid'], $if_real) && $config['installedpackages']['suricata']['config'][0]['live_swap_updates'] == 'on') {
 					syslog(LOG_NOTICE, gettext("[Suricata] Live-Reload of rules from auto-update is enabled..."));
 					error_log(gettext("\tLive-Reload of updated rules is enabled...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 					suricata_update_status(gettext("Signaling Suricata to live-load the new set of rules for " . convert_friendly_interface_to_friendly_descr($value['interface']) . "..."));
