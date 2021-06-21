@@ -53,8 +53,7 @@ if ($_POST) {
 
 				$tunnels_to_apply = wg_apply_list_get('tunnels');
 
-				// TODO: Make extra services restart (true) a package setting
-				$sync_status = wg_tunnel_sync($tunnels_to_apply, true);
+				$sync_status = wg_tunnel_sync($tunnels_to_apply, true, true);
 
 				$ret_code |= $sync_status['ret_code'];
 
@@ -97,7 +96,7 @@ wg_print_config_apply_box();
 
 display_top_tabs($tab_array);
 
-$a_devices = wg_status();
+$a_devices = wg_get_status();
 
 ?>
 
@@ -160,7 +159,7 @@ if (!empty($a_devices)):
 ?>
 								<tr>
 									<td>
-										<?=wg_handshake_status_icon($peer['latest_handshake'])?>
+										<?=wg_handshake_status_icon("@{$peer['latest_handshake']}")?>
 										<?=htmlspecialchars(wg_truncate_pretty($peer['config']['descr'], 16))?>
 									</td>
 									<td><?=htmlspecialchars(wg_human_time_diff("@{$peer['latest_handshake']}"))?></td>
@@ -168,7 +167,7 @@ if (!empty($a_devices)):
 										<?=htmlspecialchars(wg_truncate_pretty($peer['public_key'], 16))?>
 									</td>
 									<td><?=htmlspecialchars($peer['endpoint'])?></td>
-									<td><?=wg_generate_peer_allowedips_popup_link(wg_get_peer_id($peer['config']['publickey'], $peer['config']['tun']))?></td>
+									<td><?=wg_generate_peer_allowedips_popup_link(wg_get_peer_idx($peer['config']['publickey'], $peer['config']['tun']))?></td>
 									<td><?=htmlspecialchars(format_bytes($peer['transfer_rx']))?></td>
 									<td><?=htmlspecialchars(format_bytes($peer['transfer_tx']))?></td>
 								</tr>

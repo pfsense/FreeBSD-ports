@@ -53,8 +53,7 @@ if ($_POST) {
 
 				$tunnels_to_apply = wg_apply_list_get('tunnels');
 
-				// TODO: Make extra services restart (true) a package setting
-				$sync_status = wg_tunnel_sync($tunnels_to_apply, true);
+				$sync_status = wg_tunnel_sync($tunnels_to_apply, true, true);
 
 				$ret_code |= $sync_status['ret_code'];
 
@@ -114,7 +113,7 @@ if ($_POST) {
 				mark_subsystem_dirty($wgg['subsystems']['wg']);
 
 				// Add tunnel to the list to apply
-				wg_apply_list_add($res['tun_to_sync'], 'tunnels');
+				wg_apply_list_add('tunnels', $res['tuns_to_sync']);
 
 			}
 
@@ -180,9 +179,9 @@ if (is_array($wgg['tunnels']) && count($wgg['tunnels']) > 0):
 
 		foreach ($wgg['tunnels'] as $tunnel):
 
-			$peers = wg_get_tunnel_peers($tunnel['name']);
+			$peers = wg_tunnel_get_peers_config($tunnel['name']);
 ?>
-					<tr ondblclick="document.location='vpn_wg_tunnels_edit.php?tun=<?=$tunnel['name']?>';" class="<?=wg_entrystatus_class($tunnel)?>">
+					<tr ondblclick="document.location='vpn_wg_tunnels_edit.php?tun=<?=$tunnel['name']?>';" class="<?=wg_tunnel_status_class($tunnel)?>">
 						<td class="peer-entries"><?=gettext('Interface')?></td>
 						<td><?=htmlspecialchars($tunnel['name'])?></td>
 						<td><?=htmlspecialchars($tunnel['descr'])?></td>

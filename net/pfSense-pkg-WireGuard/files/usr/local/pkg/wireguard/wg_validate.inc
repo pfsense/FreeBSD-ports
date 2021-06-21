@@ -31,10 +31,31 @@ require_once('wireguard/wg_api.inc');
 wg_globals();
 
 /*
+ * Validate package settings
+ */
+function wg_validate_settings_post($pconfig) {
+
+	$input_errors = array();
+
+	// Check dns ttl
+	$dns_ttl = $pconfig['dns_ttl'];
+
+	if (!empty($dns_ttl) && !is_numericint($dns_ttl)) {
+
+		$input_errors[] = "Invalid endpoint DNS TTL interval ({$dns_ttl}).";
+
+	}
+
+	// Consumers expect an array
+	return $input_errors;
+
+}
+
+/*
  * Valildate a tunnel
  * These validation checks should be in the same order as the UI for consistency
  */
-function wg_validate_tunnel_post($pconfig) {
+function wg_validate_tunnel_post($pconfig, $idx_from_post) {
 
 	$input_errors = array();
 
@@ -108,7 +129,7 @@ function wg_validate_tunnel_post($pconfig) {
  * Valildate a peer
  * These validation checks should be in the same order as the UI for consistency
  */
-function wg_validate_peer_post($pconfig) {
+function wg_validate_peer_post($pconfig, $posted_peer_idx) {
 
 	$input_errors = array();
 
@@ -149,17 +170,13 @@ function wg_validate_peer_post($pconfig) {
 
 	} elseif (!empty($pconfig['tun'])) {
 
-		$peers = wg_get_tunnel_peers($pconfig['tun']);
+		foreach (wg_tunnel_get_peers_config($pconfig['tun']) as [$peer_idx, $peer, $is_new]) {
 
-		$peer_idx = wg_get_peer_id($pconfig['publickey'], $pconfig['tun']);
-
-		foreach ($peers as $peer) {
-
-			// We don't want to allow duplicate public keys to be assigned on the same tunnel
-			if (($peer['publickey'] == $pconfig['publickey']) && ($peer['index'] != $peer_idx)) {
+			// We don't want duplicate public keys per tunnel, but re-saving is okay...
+			if (($peer['publickey'] == $pconfig['publickey']) && ($peer_idx != $posted_peer_idx)) {
 
 				$input_errors[] = "The public key ({$pconfig['publickey']}) is already assigned to a peer on this tunnel ({$pconfig['tun']}).";
-				
+
 				break;
 
 			}

@@ -53,8 +53,7 @@ if ($_POST) {
 
 				$tunnels_to_apply = wg_apply_list_get('tunnels');
 
-				// TODO: Make extra services restart (true) a package setting
-				$sync_status = wg_tunnel_sync($tunnels_to_apply, true);
+				$sync_status = wg_tunnel_sync($tunnels_to_apply, true, true);
 
 				$ret_code |= $sync_status['ret_code'];
 
@@ -76,19 +75,13 @@ if ($_POST) {
 
 			case 'save':
 
-				if (empty($input_errors)) {
+				$res = wg_do_settings_post($_POST);
 
-					$pconfig = $_POST;
+				$input_errors = $res['input_errors'];
 
-					$wgg['config']['keep_conf'] 	= $pconfig['keep_conf'] ? 'yes' : 'no';
-					
-					$wgg['config']['hide_secrets'] 	= $pconfig['hide_secrets'] ? 'yes' : 'no';
+				$pconfig = $res['pconfig'];
 
-					write_config("[{$wgg['pkg_name']}] Package settings saved.");
-
-					$save_success = true;
-
-				}
+				$save_success = (empty($input_errors) && $res['changes']);
 
 				break;
 
@@ -105,28 +98,32 @@ if ($_POST) {
 
 }
 
-// Default yes for new installations (i.e. keep_conf is empty)
-$pconfig['keep_conf'] = (isset($wgg['config']['keep_conf'])) ? $wgg['config']['keep_conf'] : 'yes';
+// Defaults for new installations
 
-// Default yes for new installations (i.e. hide_secrets is empty)
-$pconfig['hide_secrets'] = (isset($wgg['config']['hide_secrets'])) ? $wgg['config']['hide_secrets'] : 'yes';
+$pconfig['keep_conf'] = isset($wgg['config']['keep_conf']) ? $wgg['config']['keep_conf'] : 'yes';
 
-$shortcut_section = "wireguard";
+$pconfig['hide_secrets'] = isset($wgg['config']['hide_secrets']) ? $wgg['config']['hide_secrets'] : 'yes';
 
-$pgtitle = array(gettext("VPN"), gettext("WireGuard"), gettext("Settings"));
-$pglinks = array("", "/wg/vpn_wg_tunnels.php", "@self");
+$pconfig['resolve_interval'] = isset($wgg['config']['resolve_interval']) ? $wgg['config']['default_resolve_interval'] : $wgg['resolve_interval'];
+
+$pconfig['resolve_interval_track'] = isset($wgg['config']['resolve_interval_track']) ? $wgg['config']['resolve_interval_track'] : 'no';
+
+$shortcut_section = 'wireguard';
+
+$pgtitle = array(gettext('VPN'), gettext('WireGuard'), gettext('Settings'));
+$pglinks = array('', '/wg/vpn_wg_tunnels.php', '@self');
 
 $tab_array = array();
-$tab_array[] = array(gettext("Tunnels"), false, "/wg/vpn_wg_tunnels.php");
-$tab_array[] = array(gettext("Peers"), false, "/wg/vpn_wg_peers.php");
-$tab_array[] = array(gettext("Settings"), true, "/wg/vpn_wg_settings.php");
-$tab_array[] = array(gettext("Status"), false, "/wg/status_wireguard.php");
+$tab_array[] = array(gettext('Tunnels'), false, '/wg/vpn_wg_tunnels.php');
+$tab_array[] = array(gettext('Peers'), false, '/wg/vpn_wg_peers.php');
+$tab_array[] = array(gettext('Settings'), true, '/wg/vpn_wg_settings.php');
+$tab_array[] = array(gettext('Status'), false, '/wg/status_wireguard.php');
 
-include("head.inc");
+include('head.inc');
 
 if ($save_success) {
 
-	print_info_box(gettext("The changes have been applied successfully."), 'success');
+	print_info_box(gettext('The changes have been applied successfully.'), 'success');
 	
 }
 
@@ -150,28 +147,49 @@ display_top_tabs($tab_array);
 
 $form = new Form(false);
 
-$section = new Form_Section("General Settings");
+$section = new Form_Section('General Settings');
 
 $section->addInput(new Form_Checkbox(
 	'keep_conf',
 	'Keep Configuration',
-    	gettext('Enable'),
-    	$pconfig['keep_conf'] == 'yes'
-))->setHelp('<span class="text-danger">Note: </span>'
-		. 'With \'Keep Configurations\' enabled (default), all tunnel configurations and package settings will persist on install/de-install.'
+	gettext('Enable'),
+	$pconfig['keep_conf'] == 'yes'
+))->setHelp("<span class=\"text-danger\">Note: </span>
+		With 'Keep Configurations' enabled (default), all tunnel configurations and package settings will persist on install/de-install."
 );
+
+$group = new Form_Group('Endpoint Hostname Resolve Interval');
+
+$group->add(new Form_Input(
+	'resolve_interval',
+	'Endpoint Hostname Resolve Interval',
+	'text',
+	wg_get_endpoint_resolve_interval(),
+	['placeholder' => wg_get_endpoint_resolve_interval()]
+))->setHelp("Interval (in seconds) for re-resolving endpoint host/domain names.<br />
+		<span class=\"text-danger\">Note: </span> The default is {$wgg['default_resolve_interval']} seconds (0 to disable).");
+
+$group->add(new Form_Checkbox(
+	'resolve_interval_track',
+	null,
+	gettext('Track System Resolve Interval'),
+	($pconfig['resolve_interval_track'] == 'yes')
+))->setHelp("Tracks the system 'Aliases Hostnames Resolve Interval' setting.<br />
+		<span class=\"text-danger\">Note: </span> See System / Advanced / <a href=\"..\..\system_advanced_firewall.php\">Firewall & NAT</a>");
+
+$section->add($group);
 
 $form->add($section);
 
-$section = new Form_Section("User Interface Settings");
+$section = new Form_Section('User Interface Settings');
 
 $section->addInput(new Form_Checkbox(
 	'hide_secrets',
 	'Hide Secrets',
     	gettext('Enable'),
     	$pconfig['hide_secrets'] == 'yes'
-))->setHelp('<span class="text-danger">Note: </span>'
-		. 'With \'Hide Secrets\' enabled, all secrets (private and pre-shared keys) are hidden in the user interface.');
+))->setHelp("<span class=\"text-danger\">Note: </span>
+		With 'Hide Secrets' enabled, all secrets (private and pre-shared keys) are hidden in the user interface.");
 
 $form->add($section);
 
@@ -189,7 +207,7 @@ print($form);
 <nav class="action-buttons">
 	<button type="submit" id="saveform" name="saveform" class="btn btn-sm btn-primary" value="save" title="<?=gettext('Save Settings')?>">
 		<i class="fa fa-save icon-embed-btn"></i>
-		<?=gettext("Save")?>
+		<?=gettext('Save')?>
 	</button>
 </nav>
 
@@ -203,6 +221,20 @@ events.push(function() {
 		$(form).submit();
 
 	});
+
+	$('#resolve_interval_track').click(function () {
+
+		updateResolveInterval(this.checked);
+
+	});
+
+	function updateResolveInterval(state) {
+
+		$('#resolve_interval').prop( "disabled", state);
+
+	}
+
+	updateResolveInterval($('#resolve_interval_track').prop('checked'));
 
 });
 //]]>

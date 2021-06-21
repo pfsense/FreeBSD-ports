@@ -128,7 +128,7 @@ function wg_service_cli_restart($serialize = true) {
 
 		if ($ret_code <> 0) {
 
-			return $ret_Code;
+			return $ret_code;
 		}
 
 	}
@@ -173,7 +173,7 @@ function wg_service_cli_stop($serialize = true) {
 
 		$ret_code |= WG_ERROR_SVC_STOP;
 
-		wg_service_error_handler($ret_code, $serialize);
+		wg_service_parse_errors($ret_code, $serialize);
 
 		// Terminate early...
 		return $ret_code;
@@ -185,7 +185,7 @@ function wg_service_cli_stop($serialize = true) {
 
 		$ret_code |= WG_ERROR_SVC_STOP;
 
-		wg_service_error_handler($ret_code, $serialize);
+		wg_service_parse_errors($ret_code, $serialize);
 
 	}
 
@@ -231,7 +231,7 @@ function wg_service_cli_start($serialize = true) {
 
 		$ret_code |= WG_ERROR_SVC_START;
 
-		wg_service_error_handler($ret_code, $serialize);
+		wg_service_parse_errors($ret_code, $serialize);
 
 		return $ret_code;
 
@@ -241,7 +241,7 @@ function wg_service_cli_start($serialize = true) {
 
 		$ret_code |= WG_ERROR_SVC_RUNNING;
 
-		wg_service_error_handler($ret_code, $serialize);
+		wg_service_parse_errors($ret_code, $serialize);
 
 		return $ret_code;
 
@@ -260,18 +260,18 @@ function wg_service_cli_start($serialize = true) {
 
 	}
 
-	// We don't need to do this if we are in postboot
-	if (!is_subsystem_dirty($wgg['subsystems']['postboot'])) {
+	/*
+	 * Build all (i.e. null) the tunnels
+	 *
+	 * NOTE: Don't restart services, they will be restarted later...
+	 * NOTE: Don't resolve endpoints, they will be resolved later...
+	 */
+	$sync_status = wg_tunnel_sync(null, false, false);
 
-		// Build all (i.e. null) the tunnels
-		$sync_status = wg_tunnel_sync(null, false);
+	if ($sync_status['ret_code'] <> 0 ) {
 
-		if ($sync_status['ret_code'] <> 0 ) {
+		$ret_code |= WG_ERROR_SVC_CREATE;
 
-			$ret_code |= WG_ERROR_SVC_BUILD;
-
-		}
-	
 	}
 
 	if (platform_booting()) {
@@ -279,9 +279,6 @@ function wg_service_cli_start($serialize = true) {
 		unmute_kernel_msgs();
 
 		fwrite(STDERR, "done. \n");
-
-		// Set postboot state
-		mark_subsystem_dirty($wgg['subsystems']['postboot']);
 
 		return $ret_code;
 
@@ -296,13 +293,13 @@ function wg_service_cli_start($serialize = true) {
 
 		wg_destroy_tunnels();
 
-		wg_service_error_handler($ret_code, $serialize);
+		wg_service_parse_errors($ret_code, $serialize);
 
 		return $ret_code;
 
 	} elseif ($newpid) {
 
-		wg_service_error_handler($ret_code, $serialize, array('sync_status' => $sync_status));
+		wg_service_parse_errors($ret_code, $serialize);
 
 		return $ret_code;
 
@@ -347,16 +344,8 @@ function wg_service_cli_start($serialize = true) {
 
 	} else {
 
-		// We don't need to restart additional services if we are in postboot
-		if (!is_subsystem_dirty($wgg['subsystems']['postboot'])) {
-
-			// Restart any additional services
-			$ret_code = wg_restart_extra_services();
-
-		}
-
-		// Clear postboot state
-		clear_subsystem_dirty($wgg['subsystems']['postboot']);
+		// Nowe we restart any additional services
+		$ret_code = wg_restart_extra_services();
 
 		return $ret_code;
 
@@ -377,6 +366,8 @@ function wg_restart_extra_services() {
 
 		// unbound
 		services_unbound_configure();
+
+		// TODO: This is where we will add facilities for users to pick what services to restart
 
 	}
 
@@ -406,6 +397,9 @@ function wg_service_daemon() {
 
 	}
 
+	// Now we resolve endpoint hostnames here...
+	$last_update_time = wg_resolve_endpoints();
+
 	// Main WireGuard service loop
 	while (true) {
 
@@ -413,6 +407,14 @@ function wg_service_daemon() {
 		if (!is_module_loaded($wgg['kmod'])) {
 
 			break;
+
+		}
+		
+		// Check if we should reresolve hostnames
+		if (wg_should_reresolve_endpoints($last_update_time)) {
+
+			// Reresolve endpoint hostnames again
+			$last_update_time = wg_resolve_endpoints();
 
 		}
 
@@ -506,21 +508,21 @@ function wg_daemon_sig_handler($signo) {
 
 }
 
-function wg_service_error_handler($ret_code, $serialize_output = true, $extras = array()) {
+function wg_service_parse_errors($ret_code, $serialize_output = true, $extras = null) {
 	global $wgg;
 
 	$errors = array();
 
+	// Collect any errors
 	foreach ($wgg['error_flags']['service'] as $error_mask => $error_text) {
 
 		if (($ret_code & $error_mask) > 0) {
-	
-			if ($serialize_output) {
 
-				$errors[$error_mask] = $error_text;
+			$errors[$error_mask] = $error_text;
 
-			} else {
+			if (!$serialize_output) {
 
+				// Send each error to STDERR as it is found
 				fwrite(STDERR, "{$error_text}\n");
 
 			}
@@ -531,15 +533,17 @@ function wg_service_error_handler($ret_code, $serialize_output = true, $extras =
 
 	if ($serialize_output) {
 
-		$ret_array = array_merge(array('ret_code' => $ret_code, 'errors' => $errors), $extras);
+		$res = array('ret_code' => $ret_code, 'errors' => $errors);
 
-		$ret_serialized = serialize($ret_array);
+		$res = is_array($extras) ? array_merge($res, $extras) : $res;
 
-		fwrite(STDOUT, "{$ret_serialized}\n");
+		$res_serialized = serialize($res);
+
+		fwrite(STDOUT, "{$res_serialized}\n");
 
 	}
 
-	return $ret_code;
+	return;
 
 }
 

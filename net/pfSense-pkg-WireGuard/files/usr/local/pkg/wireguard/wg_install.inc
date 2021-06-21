@@ -124,7 +124,7 @@ function wg_upgrade_allowedips() {
 
 			foreach ($peer['allowedips']['item'] as $a_index => $item) {
 
-				list($addr, $addr_mask) 			= explode('/', $item['addr']);
+				[$addr, $addr_mask] 				= explode('/', $item['addr']);
 
 				$tmp_addrs['row'][$a_index]['address'] 		= $addr;
 
@@ -231,7 +231,7 @@ function wg_upgrade_addresses() {
 
 			foreach ($tunnel['addresses']['item'] as $a_index => $item) {
 
-				list($addr, $addr_mask) 			= explode('/', $item['addr']);
+				[$addr, $addr_mask] 				= explode('/', $item['addr']);
 
 				$tmp_addrs['row'][$a_index]['address'] 		= $addr;
 
@@ -409,15 +409,19 @@ function wg_service_deinstall($force_stop = false) {
 function wg_destroy_tunnels() {
 	global $wgg;
 
-	$ret_code = 0;
+	$cmds = array();
 
-	// We only care about the ones in the running state
-	$tunnels_to_destroy = wg_get_real_ifs();
+	// We only care about the ones that are actually running
+	$tunnels_to_destroy = wg_get_running_ifs();
 
 	// Tear down interfaces
 	foreach ($tunnels_to_destroy as $tunnel) {
 
-		$ret_code |= wg_interface_destroy($tunnel);
+		if ($res = wg_ifconfig_if_destroy($tunnel)) {
+		
+			$cmds[] = $res;
+
+		}
 
 	}
 
