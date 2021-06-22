@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,6 +61,8 @@ else {
 	$pconfig['etpro_custom_rule_url'] = htmlentities($config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url']);
 	$pconfig['snort_custom_url'] = htmlentities($config['installedpackages']['suricata']['config'][0]['snort_custom_url']);
 	$pconfig['gplv2_custom_url'] = htmlentities($config['installedpackages']['suricata']['config'][0]['gplv2_custom_url']);
+	$pconfig['enable_feodo_botnet_c2_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_feodo_botnet_c2_rules'] == "on" ? 'on' : 'off';
+	$pconfig['enable_abuse_ssl_blacklist_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'] == "on" ? 'on' : 'off';
 }
 
 // Do input validation on parameters
@@ -110,6 +112,8 @@ if (!$input_errors) {
 		$config['installedpackages']['suricata']['config'][0]['enable_etpro_custom_url'] = $_POST['enable_etpro_custom_url'] ? 'on' : 'off';
 		$config['installedpackages']['suricata']['config'][0]['enable_snort_custom_url'] = $_POST['enable_snort_custom_url'] ? 'on' : 'off';
 		$config['installedpackages']['suricata']['config'][0]['enable_gplv2_custom_url'] = $_POST['enable_gplv2_custom_url'] ? 'on' : 'off';
+		$config['installedpackages']['suricata']['config'][0]['enable_feodo_botnet_c2_rules'] = $_POST['enable_feodo_botnet_c2_rules'] ? 'on' : 'off';
+		$config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'] = $_POST['enable_abuse_ssl_blacklist_rules'] ? 'on' : 'off';
 
 		// If any rule sets are being turned off, then remove them
 		// from the active rules section of each interface.  Start
@@ -126,6 +130,11 @@ if (!$input_errors) {
 			$disabled_rules[] = ET_OPEN_FILE_PREFIX;
 		if ($config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'] == 'off')
 			$disabled_rules[] = ET_PRO_FILE_PREFIX;
+
+		if ($config['installedpackages']['suricata']['config'][0]['enable_feodo_botnet_c2_rules'] == 'off')
+			$disabled_rules[] = "feodotracker";
+		if ($config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'] == 'off')
+			$disabled_rules[] = "sslblacklist_tls_cert";
 
 		// Now walk all the configured interface rulesets and remove
 		// any matching the disabled ruleset prefixes.
@@ -203,7 +212,8 @@ if (!$input_errors) {
 	}
 }
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Global Settings"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "Global Settings");
 include_once("head.inc");
 
 /* Display Alert message, under form tag or no refresh */
@@ -348,6 +358,26 @@ $section->addInput(new Form_Input(
 	'text',
 	$pconfig['gplv2_custom_url']
 ))->setHelp('You must provide the complete URL including the filename!  The code will assume a matching filename exists at the same URL with an additional extension of ".md5".');
+
+$group = new Form_Group('Install Feodo Tracker Botnet C2 IP rules');
+$group->add(new Form_Checkbox(
+	'enable_feodo_botnet_c2_rules',
+	'Install Feodo Tracker Suricata Botnet C2 IP rules',
+	'The Feodo Botnet C2 IP Ruleset contains Dridex and Emotet/Heodo botnet command and control servers (C&Cs) tracked by Feodo Tracker.',
+	$pconfig['enable_feodo_botnet_c2_rules'] == 'on' ? true:false,
+	'on'
+));
+$section->add($group);
+
+$group = new Form_Group('Install ABUSE.ch SSL Blacklist rules');
+$group->add(new Form_Checkbox(
+	'enable_abuse_ssl_blacklist_rules',
+	'Install ABUSE.ch SSL Blacklist rules',
+	'The ABUSE.ch SSL Blacklist Ruleset contains the SSL cert fingerprints of all SSL certs blacklisted by ABUSE.ch.',
+	$pconfig['enable_abuse_ssl_blacklist_rules'] == 'on' ? true:false,
+	'on'
+));
+$section->add($group);
 
 $section->addInput(new Form_Checkbox(
 	'hide_deprecated_rules',

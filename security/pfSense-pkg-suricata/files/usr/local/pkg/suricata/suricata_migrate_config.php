@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2019-2021 Rubicon Communications, LLC (Netgate)
- * Copyright (C) 2020 Bill Meeks
+ * Copyright (C) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -880,6 +880,15 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 	/**********************************************************/
 	/* End Barnyard2 parameter removal                        */
 	/**********************************************************/
+
+	/**********************************************************/
+	/* Add new 'netmap_threads' parameter for the interface   */
+	/* when using Inline IPS Mode. Default is 'auto'.         */
+	/**********************************************************/
+	if (!isset($pconfig['ips_netmap_threads'])) {
+		$updated_cfg = true;
+		$pconfig['ips_netmap_threads'] = 'auto';
+	}
 
 	// Save the new configuration data into the $config array pointer
 	$r = $pconfig;

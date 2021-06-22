@@ -922,7 +922,8 @@ function build_cat_list() {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
-$pgtitle = array(gettext("Suricata"), gettext("Interface ") . $if_friendly, gettext("Rules: ") . $currentruleset);
+$pglinks = array("", "/suricata/suricata_interfaces.php", "/suricata/suricata_interfaces_edit.php?id={$id}", "@self");
+$pgtitle = array("Services", "Suricata", "Interface Settings", "{$if_friendly} - Rules");
 include_once("head.inc");
 
 if (is_subsystem_dirty('suricata_rules')) {

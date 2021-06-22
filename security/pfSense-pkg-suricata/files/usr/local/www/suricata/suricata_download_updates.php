@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2019 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,6 +35,8 @@ $snortdownload = $config['installedpackages']['suricata']['config'][0]['enable_v
 $emergingthreats = $config['installedpackages']['suricata']['config'][0]['enable_etopen_rules'];
 $etpro = $config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'];
 $snortcommunityrules = $config['installedpackages']['suricata']['config'][0]['snortcommunityrules'];
+$feodotracker_rules = $config['installedpackages']['suricata']['config'][0]['enable_feodo_botnet_c2_rules'];
+$sslbl_rules = $config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'];
 
 /* Get last update information if available */
 if (file_exists(SURICATADIR . "rulesupd_status")) {
@@ -80,6 +82,9 @@ else {
 	}
 }
 
+$feodotracker_rules_filename = FEODO_TRACKER_DNLD_FILENAME;
+$sslbl_rules_filename = ABUSE_SSLBL_DNLD_FILENAME;
+
 /* quick md5 chk of downloaded rules */
 if ($snortdownload == 'on') {
 	$snort_org_sig_chk_local = 'Not Downloaded';
@@ -120,6 +125,32 @@ if ($snortcommunityrules == 'on' && file_exists("{$suricatadir}{$snort_community
 	$snort_community_sig_sig_date = date(DATE_RFC850, filemtime("{$suricatadir}{$snort_community_rules_filename}.md5"));
 }
 
+if ($feodotracker_rules == 'on') {
+	$feodotracker_sig_chk_local = 'Not Downloaded';
+	$feodotracker_sig_sig_date = 'Not Downloaded';
+}
+else {
+	$feodotracker_sig_chk_local = 'Not Enabled';
+	$feodotracker_sig_sig_date = 'Not Enabled';
+}
+if ($feodotracker_rules == 'on' && file_exists("{$suricatadir}{$feodotracker_rules_filename}.md5")) {
+	$feodotracker_sig_chk_local = file_get_contents("{$suricatadir}{$feodotracker_rules_filename}.md5");
+	$feodotracker_sig_sig_date = date(DATE_RFC850, filemtime("{$suricatadir}{$feodotracker_rules_filename}.md5"));
+}
+
+if ($sslbl_rules == 'on') {
+	$sslbl_sig_chk_local = 'Not Downloaded';
+	$sslbl_sig_sig_date = 'Not Downloaded';
+}
+else {
+	$sslbl_sig_chk_local = 'Not Enabled';
+	$sslbl_sig_sig_date = 'Not Enabled';
+}
+if ($sslbl_rules == 'on' && file_exists("{$suricatadir}{$sslbl_rules_filename}.md5")) {
+	$sslbl_sig_chk_local = file_get_contents("{$suricatadir}{$sslbl_rules_filename}.md5");
+	$sslbl_sig_sig_date = date(DATE_RFC850, filemtime("{$suricatadir}{$sslbl_rules_filename}.md5"));
+}
+
 /* Check for postback to see if we should clear the update log file. */
 if ($_POST['clear']) {
 	if (file_exists(SURICATA_RULES_UPD_LOGFILE)) {
@@ -133,6 +164,8 @@ if ($_REQUEST['updatemode']) {
 		unlink_if_exists("{$suricatadir}{$emergingthreats_filename}.md5");
 		unlink_if_exists("{$suricatadir}{$snort_community_rules_filename}.md5");
 		unlink_if_exists("{$suricatadir}{$snort_rules_file}.md5");
+		unlink_if_exists("{$suricatadir}{$feodotracker_rules_filename}.md5");
+		unlink_if_exists("{$suricatadir}{$sslbl_rules_filename}.md5");
 	}
 
 	// Launch a background process to download the updates
@@ -183,7 +216,8 @@ if ($_POST['view']&& $suricata_rules_upd_log_chk == 'yes') {
 if ($_POST['hide'])
 	$contents = "";
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Update Rules Set Files"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "Updates");
 include_once("head.inc");
 ?>
 
@@ -231,19 +265,29 @@ include_once("head.inc");
 				</thead>
 				<tbody>
 				<tr>
-					<td><b><?=$et_name;?></b></td>
+					<td><?=$et_name;?></td>
 					<td><?=trim($emergingt_net_sig_chk_local);?></td>
 					<td><?=gettext($emergingt_net_sig_date);?></td>
 				</tr>
 				<tr>
-					<td><b><?=gettext("Snort Subscriber Rules");?></b></td>
+					<td><?=gettext("Snort Subscriber Rules");?></td>
 					<td><?=trim($snort_org_sig_chk_local);?></td>
 					<td><?=gettext($snort_org_sig_date);?></td>
 				</tr>
 				<tr>
-					<td><b><?=gettext("Snort GPLv2 Community Rules");?></b></td>
+					<td><?=gettext("Snort GPLv2 Community Rules");?></td>
 					<td><?=trim($snort_community_sig_chk_local);?></td>
 					<td><?=gettext($snort_community_sig_sig_date);?></td>
+				</tr>
+				<tr>
+					<td><?=gettext("Feodo Tracker Botnet C2 IP Rules");?></td>
+					<td><?=trim($feodotracker_sig_chk_local);?></td>
+					<td><?=gettext($feodotracker_sig_sig_date);?></td>
+				</tr>
+				<tr>
+					<td><?=gettext("ABUSE.ch SSL Blacklist Rules");?></td>
+					<td><?=trim($sslbl_sig_chk_local);?></td>
+					<td><?=gettext($sslbl_sig_sig_date);?></td>
 				</tr>
 				</tbody>
 			</table>

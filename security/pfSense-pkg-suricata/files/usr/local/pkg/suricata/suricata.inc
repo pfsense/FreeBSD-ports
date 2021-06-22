@@ -70,12 +70,6 @@ function suricata_stop($suricatacfg, $if_real) {
 	if (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid")) {
 		syslog(LOG_NOTICE, "[Suricata] Suricata STOP for {$suricatacfg['descr']}({$if_real})...");
 		killbypid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
-		sleep(1);
-
-		// For some reason Suricata seems to need a double TERM signal to actually shutdown
-		if (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid")) {
-			killbypid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
-		}
 	}
 	// Make sure the PID file is actually deleted so Suricata will restart without error
 	unlink_if_exists("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
@@ -233,6 +227,44 @@ function suricata_get_blocked_ips() {
 		}
 	}
 	return $blocked_ips_array;
+}
+
+function suricata_get_supported_netmap_queues($if_real) {
+
+	/*******************************************************/
+	/* This function attempts to parse the 'dmesg.boot'    */ 
+	/* file to find the number of netmap queues available  */
+	/* on the NIC hosting the passed real interface.       */
+	/*                                                     */
+	/* On Entry: $if_real = NIC driver to query            */
+	/* Returns: lesser of registered TX or RX queues       */
+	/*******************************************************/
+
+	global $g;
+	$threads_param = 1;
+	$handle = @fopen("{$g['varlog_path']}/dmesg.boot", "r");
+	if ($handle) {
+		while (!feof($handle)) {
+			$buffer = fgets($handle);
+			if(strpos($buffer, "{$if_real}: netmap queues/slots:") !== FALSE) {
+				$matches = array();
+				if (preg_match('/\bTX\s*(\d+)\/\d+,\s*\bRX\s*(\d+)\/\d+/', $buffer, $matches)) {
+					if (intval($matches[1]) < intval($matches[2])) {
+						$threads_param = $matches[1];
+					}
+					else {
+						$threads_param = $matches[2];
+					}
+					if ($threads_param < 2) {
+						$threads_param = 1;
+					}
+				}
+				break;
+			}
+		}
+		fclose($handle);
+	}
+	return $threads_param;
 }
 
 /* func builds custom Pass Lists */

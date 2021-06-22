@@ -120,7 +120,8 @@ if ($_POST['save']) {
 	}
 }
 
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Suppression List Edit"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "/suricata/suricata_suppress.php", "@self");
+$pgtitle = array("Services", "Suricata", "Suppression List", "Edit");
 include_once("head.inc");
 
 if ($input_errors) print_input_errors($input_errors);

@@ -65,11 +65,13 @@ if (empty($suricataglob['rule'][$id]['uuid'])) {
 	/* Adding new interface, so generate a new UUID and flag rules to build. */
 	$pconfig['uuid'] = suricata_generate_id();
 	$rebuild_rules = true;
+	$new_interface = true;
 }
 else {
 	$pconfig['uuid'] = $a_rule[$id]['uuid'];
 	$pconfig['descr'] = $a_rule[$id]['descr'];
 	$rebuild_rules = false;
+	$new_interface = false;
 }
 $suricata_uuid = $pconfig['uuid'];
 
@@ -87,6 +89,7 @@ $interfaces["Unassigned"] = gettext("Unassigned");
 // See if interface is already configured, and use its values
 if (isset($id) && isset($a_rule[$id])) {
 	/* old options */
+	$if_friendly = convert_friendly_interface_to_friendly_descr($a_rule[$id]['interface']);
 	$pconfig = $a_rule[$id];
 	if (!empty($pconfig['configpassthru']))
 		$pconfig['configpassthru'] = base64_decode($pconfig['configpassthru']);
@@ -107,8 +110,23 @@ elseif (isset($id) && !isset($a_rule[$id])) {
 	foreach ($ifaces as $i) {
 		if (!in_array($i, $ifrules)) {
 			$pconfig['interface'] = $i;
+			$if_friendly = convert_friendly_interface_to_friendly_descr($i);
+
+			// If the interface is a VLAN, use the VLAN description
+			// if set, otherwise default to the friendly description.
+			if ($vlan = interface_is_vlan(get_real_interface($i))) {
+				if (strlen($vlan['descr']) > 0) {
+					$pconfig['descr'] = $vlan['descr'];
+				}
+				else {
+					$pconfig['descr'] = convert_friendly_interface_to_friendly_descr($i);
+				}
+			}
+			else {
+				$pconfig['descr'] = convert_friendly_interface_to_friendly_descr($i);
+			}
+
 			$pconfig['enable'] = 'on';
-			$pconfig['descr'] = strtoupper($i);
 			$pconfig['inspect_recursion_limit'] = '3000';
 			break;
 		}
@@ -130,6 +148,8 @@ if (empty($pconfig['blockoffenderskill']))
 	$pconfig['blockoffenderskill'] = "on";
 if (empty($pconfig['ips_mode']))
 	$pconfig['ips_mode'] = 'ips_mode_legacy';
+if (empty($pconfig['ips_netmap_threads']))
+	$pconfig['ips_netmap_threads'] = 'auto';
 if (empty($pconfig['block_drops_only']))
 	$pconfig['block_drops_only'] = "off";
 if (empty($pconfig['runmode']))
@@ -422,6 +442,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['sgh_mpm_context']) $natent['sgh_mpm_context'] = $_POST['sgh_mpm_context']; else unset($natent['sgh_mpm_context']);
 		if ($_POST['blockoffenders'] == "on") $natent['blockoffenders'] = 'on'; else $natent['blockoffenders'] = 'off';
 		if ($_POST['ips_mode']) $natent['ips_mode'] = $_POST['ips_mode']; else unset($natent['ips_mode']);
+		if ($_POST['ips_netmap_threads']) $natent['ips_netmap_threads'] = $_POST['ips_netmap_threads']; else $natent['ips_netmap_threads'] = "auto";
 		if ($_POST['blockoffenderskill'] == "on") $natent['blockoffenderskill'] = 'on'; else $natent['blockoffenderskill'] = 'off';
 		if ($_POST['block_drops_only'] == "on") $natent['block_drops_only'] = 'on'; else $natent['block_drops_only'] = 'off';
 		if ($_POST['blockoffendersip']) $natent['blockoffendersip'] = $_POST['blockoffendersip']; else unset($natent['blockoffendersip']);
@@ -651,6 +672,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 
 		// Refresh page fields with just-saved values
 		$pconfig = $natent;
+		$new_interface = false;
 	} else
 		$pconfig = $_POST;
 }
@@ -671,9 +693,8 @@ function suricata_get_config_lists($lists) {
 	return(['default' => 'default'] + $list);
 }
 
-$if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
-
-$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Edit Interface Settings - {$if_friendly}"));
+$pglinks = array("", "/suricata/suricata_interfaces.php", "@self");
+$pgtitle = array("Services", "Suricata", "{$if_friendly} - Interface Settings");
 include_once("head.inc");
 
 /* Display Alert message */
@@ -698,7 +719,13 @@ $tab_array = array();
 $tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
 $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
-$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
+
+if ($new_interface) {
+	$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php");
+} else {
+	$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
+}
+
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
@@ -712,12 +739,14 @@ display_top_tabs($tab_array, true);
 $tab_array = array();
 $menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
 $tab_array[] = array($menu_iface . gettext("Settings"), true, "/suricata/suricata_interfaces_edit.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("Categories"), false, "/suricata/suricata_rulesets.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_rules.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("App Parsers"), false, "/suricata/suricata_app_parsers.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
-$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
+if (!$new_interface) {
+	$tab_array[] = array($menu_iface . gettext("Categories"), false, "/suricata/suricata_rulesets.php?id={$id}");
+	$tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_rules.php?id={$id}");
+	$tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
+	$tab_array[] = array($menu_iface . gettext("App Parsers"), false, "/suricata/suricata_app_parsers.php?id={$id}");
+	$tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
+	$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
+}
 display_top_tabs($tab_array, true);
 
 $form = new Form;
@@ -1372,6 +1401,15 @@ $group->setHelp('Legacy Mode uses the PCAP engine to generate copies of packets 
 		'hardware NIC driver does not support Netmap, using Inline Mode can result in a firewall system crash!  If problems are experienced with Inline Mode, switch to Legacy Mode instead.');
 $section->add($group);
 
+$section->addInput(new Form_Input(
+	'ips_netmap_threads',
+	'Netmap Threads',
+	'text',
+	$pconfig['ips_netmap_threads']
+))->setHelp('Enter the number of netmap threads to use. Default is "auto". When set to a numeric value corresponding to the netmap TX/RX queues registered by the NIC, performance can be substantially increased. ' . 
+	    'The NIC hosting this interface registered ' . suricata_get_supported_netmap_queues($if_real) . ' queue(s) with the kernel. Note that with some network cards, using half of the queues value may ' . 
+		'actually be the best choice. For example, if the NIC reports 4 TX/RX queues, using only 2 may work better. The value entered here must be either "auto", or a whole number, and cannot exceed the number of TX/RX queues reported by the NIC.');
+
 $section->addInput(new Form_Checkbox(
 	'blockoffenderskill',
 	'Kill States',
@@ -1677,6 +1715,7 @@ events.push(function(){
 		hideSelect('ips_mode', hide);
 		hideClass('passlist', hide);
 		if ($('#ips_mode').val() == 'ips_mode_inline') {
+			hideInput('ips_netmap_threads', hide);
 			hideCheckbox('blockoffenderskill', true);
 			hideCheckbox('block_drops_only', true);
 			hideSelect('blockoffendersip', true);
@@ -1692,6 +1731,7 @@ events.push(function(){
 		else {
 			$('#eve_log_drop').parent().hide();
 			hideInput('intf_snaplen', false);
+			hideInput('ips_netmap_threads', true);
 		}
 	}
 
@@ -1853,6 +1893,7 @@ events.push(function(){
 		disableInput('blockoffenderskill', disable);
 		disableInput('block_drops_only', disable);
 		disableInput('blockoffendersip', disable);
+		disableInput('ips_netmap_threads', disable);
 		disableInput('performance', disable);
 		disableInput('max_pending_packets', disable);
 		disableInput('detect_eng_profile', disable);
@@ -2112,6 +2153,7 @@ events.push(function(){
 			hideSelect('blockoffendersip', true);
 			hideClass('passlist', true);
 			hideInput('intf_snaplen', true);
+			hideInput('ips_netmap_threads', false);
 			$('#eve_log_drop').parent().show();
 			$('#ips_warn_dlg').modal('show');
 		}
@@ -2123,6 +2165,7 @@ events.push(function(){
 			hideClass('passlist', false);
 			$('#eve_log_drop').parent().hide();
 			$('#ips_warn_dlg').modal('hide');
+			hideInput('ips_netmap_threads', true);
 		}
 	});
 
