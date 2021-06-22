@@ -219,7 +219,7 @@ if (is_array($wgg['tunnels']) && count($wgg['tunnels']) > 0):
 								<tbody>
 
 <?php
-				foreach ($peers as $peer):
+				foreach ($peers as [$peer_idx, $peer, $is_new]):
 ?>
 									<tr>
 										<td><?=htmlspecialchars(wg_truncate_pretty($peer['descr'], 16))?></td>
