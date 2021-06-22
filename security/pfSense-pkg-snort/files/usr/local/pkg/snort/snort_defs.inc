@@ -47,7 +47,7 @@ if (!defined("SNORT_BIN_VERSION")) {
 		define("SNORT_BIN_VERSION", $matches[0]);
 	}
 	else {
-		define("SNORT_BIN_VERSION", "2.9.17.1");
+		define("SNORT_BIN_VERSION", "2.9.18");
 	}
 }
 
@@ -104,5 +104,9 @@ if (!defined("ET_PRO_FILE_PREFIX"))
 	define("ET_PRO_FILE_PREFIX", "etpro-");
 if (!defined("OPENAPPID_FILE_PREFIX"))
 	define("OPENAPPID_FILE_PREFIX", "openappid-");
+if (!defined("FEODO_TRACKER_DNLD_FILENAME"))
+	define("FEODO_TRACKER_DNLD_FILENAME", "feodotracker.tar.gz");
+if (!defined("FEODO_TRACKER_DNLD_URL"))
+	define("FEODO_TRACKER_DNLD_URL", "https://feodotracker.abuse.ch/downloads/");
 
 ?>

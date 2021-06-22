@@ -45,6 +45,7 @@ $etpro = $config['installedpackages']['snortglobal']['emergingthreats_pro'];
 $snortcommunityrules = $config['installedpackages']['snortglobal']['snortcommunityrules'];
 $openappid_detectors = $config['installedpackages']['snortglobal']['openappid_detectors'];
 $openappid_rules_detectors = $config['installedpackages']['snortglobal']['openappid_rules_detectors'];
+$feodotracker_rules = $config['installedpackages']['snortglobal']['enable_feodo_botnet_c2_rules'];
 
 /* Get last update information if available */
 if (file_exists(SNORTDIR . "/rulesupd_status")) {
@@ -65,6 +66,8 @@ else {
 	$emergingthreats_filename = SNORT_ET_DNLD_FILENAME;
 	$et_name = gettext("Emerging Threats Open Rules");
 }
+
+$feodotracker_rules_filename = FEODO_TRACKER_DNLD_FILENAME;
 
 /* quick md5 chk of downloaded rules */
 if ($snortdownload == 'on') {
@@ -132,6 +135,20 @@ if (file_exists("{$snortdir}/{$snort_openappid_rules_filename}.md5") && $openapp
         $openappid_detectors_rules_sig_chk_local = file_get_contents("{$snortdir}/{$snort_openappid_rules_filename}.md5");
         $openappid_detectors_rules_sig_date = date(DATE_RFC850, filemtime("{$snortdir}/{$snort_openappid_rules_filename}.md5"));
 }
+
+if ($feodotracker_rules == 'on') {
+	$feodotracker_sig_chk_local = 'Not Downloaded';
+	$feodotracker_sig_sig_date = 'Not Downloaded';
+}
+else {
+	$feodotracker_sig_chk_local = 'Not Enabled';
+	$feodotracker_sig_sig_date = 'Not Enabled';
+}
+if ($feodotracker_rules == 'on' && file_exists("{$snortdir}/{$feodotracker_rules_filename}.md5")) {
+	$feodotracker_sig_chk_local = file_get_contents("{$snortdir}/{$feodotracker_rules_filename}.md5");
+	$feodotracker_sig_sig_date = date(DATE_RFC850, filemtime("{$snortdir}/{$feodotracker_rules_filename}.md5"));
+}
+
 // Check status of the background rules update process (when launched)
 if ($_REQUEST['ajax'] == 'status') {
 	if (is_numeric($_REQUEST['pid'])) {
@@ -173,6 +190,7 @@ if (isset($_POST['mode'])) {
 		unlink_if_exists("{$snortdir}/{$snort_community_rules_filename}.md5");
 		unlink_if_exists("{$snortdir}/{$snort_rules_file}.md5");
 		unlink_if_exists("{$snortdir}/{$snort_openappid_filename}.md5");
+		unlink_if_exists("{$snortdir}/{$feodotracker_rules_filename}.md5");
 	}
 	
 	// Launch a background process to download the updates
@@ -249,6 +267,11 @@ display_top_tabs($tab_array, true);
                                         <td><?=trim($openappid_detectors_rules_sig_chk_local);?></td>
                                         <td><?=gettext($openappid_detectors_rules_sig_date);?></td>
                                 </tr>
+				<tr>
+					<td><?=gettext("Feodo Tracker Botnet C2 IP Rules");?></td>
+					<td><?=trim($feodotracker_sig_chk_local);?></td>
+					<td><?=gettext($feodotracker_sig_sig_date);?></td>
+				</tr>
 				</tbody>
 			</table>
 		</div>
