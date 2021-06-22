@@ -191,12 +191,12 @@ if ($_POST) {
 	}
 
 	// Copy back into the schedule.
-	if (count($a_cmds)) {
+	if (is_array($a_cmds) && count($a_cmds)) {
 		$pconfig['cmd']['row'] = $a_cmds;
 	} elseif (is_array($pconfig['cmd'])) {
 		unset($pconfig['cmd']);
 	}
-	if (count($a_logs)) {
+	if (is_array($a_logs) && count($a_logs)) {
 		$pconfig['log']['row'] = $a_logs;
 	} elseif (is_array($pconfig['log'])) {
 		unset($pconfig['log']);
