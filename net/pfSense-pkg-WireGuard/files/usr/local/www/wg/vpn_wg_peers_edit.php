@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2021 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2021 R. Christian McDonald
+ * Copyright (c) 2021 R. Christian McDonald (https://github.com/theonemcdonald)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,6 +37,8 @@ require_once('wireguard/wg_guiconfig.inc');
 
 global $wgg;
 
+$pconfig = array();
+
 wg_globals();
 
 if (isset($_REQUEST['tun'])) {
@@ -54,33 +56,54 @@ if (isset($_REQUEST['peer']) && is_numericint($_REQUEST['peer'])) {
 // All form save logic is in wireguard/wg.inc
 if ($_POST) {
 
-	if ($_POST['act'] == 'save') {
+	switch ($_POST['act']) {
 
-		$res = wg_do_peer_post($_POST);
+		case 'save':
+
+			$res = wg_do_peer_post($_POST);
 		
-		$input_errors = $res['input_errors'];
-
-		$pconfig = $res['pconfig'];
-
-		if (!$input_errors) {
-			
-			// Save was successful
-			header("Location: /wg/vpn_wg_peers.php");
-
-		}
-
-	} elseif ($_POST['act'] == 'genpsk') {
-
-		// Process ajax call requesting new pre-shared key
-		print(wg_gen_psk());
-
-		exit;
+			$input_errors = $res['input_errors'];
 	
+			$pconfig = $res['pconfig'];
+	
+			if (empty($input_errors)) {
+
+				if (wg_is_service_running() && $res['changes']) {
+
+					// Everything looks good so far, so mark the subsystem dirty
+					mark_subsystem_dirty($wgg['subsystems']['wg']);
+
+					// Add tunnel to the list to apply
+					wg_apply_list_add('tunnels', $res['tuns_to_sync']);
+
+				}
+
+				// Save was successful
+				header('Location: /wg/vpn_wg_peers.php');
+	
+			}
+			
+			break;
+
+		case 'genpsk':
+
+			// Process ajax call requesting new pre-shared key
+			print(wg_gen_psk());
+
+			exit;
+
+			break;
+
+		default:
+
+			// Shouldn't be here, so bail out.
+			header('Location: /wg/vpn_wg_peers.php');
+
+			break;
+
 	}
 
-} 
-
-$pconfig = array();
+}
 
 if (isset($peer_idx) && is_array($wgg['peers'][$peer_idx])) {
 
@@ -88,9 +111,6 @@ if (isset($peer_idx) && is_array($wgg['peers'][$peer_idx])) {
 	$pconfig = &$wgg['peers'][$peer_idx];
 
 } else {
-
-	// We are creating a new peer
-	$pconfig = array();
 
 	// Default to enabled
 	$pconfig['enabled'] = 'yes';
@@ -116,13 +136,9 @@ $tab_array[] = array(gettext("Status"), false, "/wg/status_wireguard.php");
 
 include("head.inc");
 
-if (count($wgg['tunnels']) > 0 && !is_module_loaded($wgg['kmod'])) {
+wg_print_service_warning();
 
-	print_info_box(gettext('The WireGuard kernel module is not loaded!'), 'danger', null);
-
-}
-
-if ($input_errors) {
+if (!empty($input_errors)) {
 
 	print_input_errors($input_errors);
 
@@ -217,7 +233,7 @@ $group->add(new Form_Input(
 	'Pre-shared Key',
 	wg_secret_input_type(),
 	$pconfig['presharedkey']
-))->setHelp('Optional pre-shared key for this tunnel.');
+))->setHelp('Optional pre-shared key for this tunnel. (<a id="copypsk" style="cursor: pointer;" data-success-text="Copied" data-timeout="3000">Copy</a>)');
 
 $group->add(new Form_Button(
 	'genpsk',
@@ -233,11 +249,14 @@ $form->add($section);
 
 $section = new Form_Section('Address Configuration');
 
-// Hack to ensure empty lists default to /128 mask
-if (!is_array($pconfig['allowedips']['row'])) {
+$section->setAttribute('id', 'allowedips');
+
+// Init the addresses array if necessary
+if (!is_array($pconfig['allowedips']['row']) || empty($pconfig['allowedips']['row'])) {
 
 	wg_init_config_arr($pconfig, array('allowedips', 'row', 0));
 	
+	// Hack to ensure empty lists default to /128 mask
 	$pconfig['allowedips']['row'][0]['mask'] = '128';
 	
 }
@@ -255,7 +274,8 @@ foreach ($pconfig['allowedips']['row'] as $counter => $item) {
 		'Allowed Subnet or Host',
 		$item['address'],
 		'BOTH'
-	))->setHelp($counter == $last ? 'IPv4 or IPv6 subnet or host reachable via this peer.' : '')
+	))->AddClass('address')
+		->setHelp($counter == $last ? 'IPv4 or IPv6 subnet or host reachable via this peer.' : '')
 		->addMask("address_subnet{$counter}", $item['mask'], 128, 0)
 		->setWidth(4);
 
@@ -315,9 +335,25 @@ events.push(function() {
 	checkLastRow();
 
 	$('#copypsk').click(function () {
-		$('#presharedkey').focus();
-		$('#presharedkey').select();
-		document.execCommand("copy");
+
+		var $this = $(this);
+
+		var originalText = $this.text();
+
+		// The 'modern' way...
+		navigator.clipboard.writeText($('#presharedkey').val());
+
+		$this.text($this.attr('data-success-text'));
+
+		setTimeout(function() {
+
+			$this.text(originalText);
+
+		}, $this.attr('data-timeout'));
+
+		// Prevents the browser from scrolling
+		return false;
+
 	});
 
 	// These are action buttons, not submit buttons
@@ -337,6 +373,13 @@ events.push(function() {
 				}
 			});
 		}
+
+	});
+
+	// Trim any whitespace from allowedips input
+	$('#allowedips').on('change', 'input.address', function () {
+
+		$(this).val($(this).val().replace(/\s/g, ''));
 
 	});
 
