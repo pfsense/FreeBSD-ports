@@ -20,7 +20,7 @@
  */
 
 // pfSense includes
-//require_once('guiconfig.inc');
+require_once('guiconfig.inc');
 require_once('util.inc');
 
 // WireGuard includes

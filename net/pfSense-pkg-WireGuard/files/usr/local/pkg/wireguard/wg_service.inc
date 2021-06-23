@@ -33,6 +33,14 @@ require_once('wireguard/wg.inc');
 
 if (isset($argv[1])) {
 
+	$ret_code = 0;
+
+	ignore_user_abort(true);
+
+	set_time_limit(0);
+
+	pcntl_async_signals(true);
+
 	if (!wg_is_cli()) {
 
 		// Bail out if we aren't in the CLI...
@@ -40,56 +48,513 @@ if (isset($argv[1])) {
 
 	}
 
-	if (PHP_BINARY != $wgg['wg_daemon']) {
+	if (PHP_BINARY != $wgg['php_wg']) {
 
 		// Bail out if we aren't running under under the correct executable...
-		die("FATAL: This script can only be executed by {$wgg['wg_daemon']}.\n");
+		die("FATAL: This script can only be executed by {$wgg['php_wg']}.\n");
 
 	}
 
-	switch (strtolower($argv[1])) {
+	// Should we serialize the return output?
+	$serialize = (isset($argv[2]) && strtolower($argv[2]) == 'serialize');
 
+	switch (strtolower($argv[1])) {
+		
 		case 'start':
 
-			ignore_user_abort(true);
-
-			set_time_limit(0);
-	
-			$ret_code = wg_service_start();
-	
-			exit($ret_code);
+			$ret_code = wg_service_cli_start($serialize);
+			
+			break;
 
 		case 'stop':
-
-			ignore_user_abort(true);
-
-			set_time_limit(0);
 	
-			wg_service_stop();
-	
-			exit(0);
+			$ret_code = wg_service_cli_stop($serialize);
+
+			break;
+
+		case 'restart':
+
+			$ret_code = wg_service_cli_restart($serialize);
+
+			break;
 
 		default:
 
-			exit(1);
+			fwrite(STDOUT, "Usage: {$wgg['wg_daemon']} {START|STOP|RESTART} [SERIALIZE]");
+
+			$ret_code = 1;
+
+			break;
+
+	}
+
+	// We are done...
+	exit($ret_code);
+
+}
+
+// This is a wrapper for safely calling from web frontend
+function wg_service_fpm_restart() {
+	global $wgg;
+
+	$exec_output = $unserialize_output = $ret_output = array();
+
+	// Invokes service restart with serialization flag so we can cleanly report back to the web frontend.
+	exec("{$wgg['wg_daemon']} restart serialize", $exec_output, $ret_code);
+
+	if ($unserialize_output = unserialize($exec_output[0])) {
+
+		if (is_array($unserialize_output)) {
+
+			$ret_output = $unserialize_output;
+
+		}
+
+	}
+
+	// Consumers expect an array...
+	return $ret_output;
+
+}
+
+function wg_service_cli_restart($serialize = true) {
+	global $wgg;
+
+	$ret_code = 0;
+
+	if (wg_is_service_running()) {
+
+		$ret_code = wg_service_cli_stop($serialize);
+
+		if ($ret_code <> 0) {
+
+			return $ret_code;
+		}
+
+	}
+
+	$ret_code = wg_service_cli_start($serialize);
+
+	return $ret_code;
+
+}
+
+// This is a wrapper for safely calling from web frontend
+function wg_service_fpm_stop() {
+	global $wgg;
+
+	$exec_output = $unserialize_output = $ret_output = array();
+
+	// Invokes service stop with serialization flag so we can cleanly report back to the web frontend.
+	exec("{$wgg['wg_daemon']} stop serialize", $exec_output, $ret_code);
+
+	if ($unserialize_output = unserialize($exec_output[0])) {
+
+		if (is_array($unserialize_output)) {
+
+			$ret_output = $unserialize_output;
+
+		}
+
+	}
+
+	// Consumers expect an array...
+	return $ret_output;
+
+}
+
+// Only for calling service stop from the CLI
+function wg_service_cli_stop($serialize = true) {
+	global $wgg;
+
+	$ret_code = 0;
+
+	if (!wg_is_cli()) {
+
+		$ret_code |= WG_ERROR_SVC_STOP;
+
+		wg_service_parse_errors($ret_code, $serialize);
+
+		// Terminate early...
+		return $ret_code;
+
+	}
+
+	// Need to wait here for just a second...
+	if (killbypid($wgg['pid_path'], 1) <> 0) {
+
+		$ret_code |= WG_ERROR_SVC_STOP;
+
+		wg_service_parse_errors($ret_code, $serialize);
+
+	}
+
+	return $ret_code;
+
+}
+
+// This is a wrapper for safely calling from the web frontend
+function wg_service_fpm_start() {
+	global $wgg;
+
+	$exec_output = $unserialize_output = $ret_output = array();
+
+	// Invokes service start with serialization flag so we can cleanly report back to the web frontend
+	exec("{$wgg['wg_daemon']} start serialize", $exec_output, $ret_code);
+
+	// Catch unserialization results before returning
+	if ($unserialize_output = unserialize($exec_output[0])) {
+
+		if (is_array($unserialize_output)) {
+
+			$ret_output = $unserialize_output;
+
+		}
+
+	}
+
+	// Consumers expect an array...
+	return $ret_output;
+
+}
+
+// Only for calling service start from the CLI
+function wg_service_cli_start($serialize = true) {
+	global $g, $wgg;
+
+	// Set the process name
+	cli_set_process_title('WireGuard service');
+	
+	$ret_code = 0;
+
+	if (!wg_is_cli()) {
+
+		$ret_code |= WG_ERROR_SVC_START;
+
+		wg_service_parse_errors($ret_code, $serialize);
+
+		return $ret_code;
+
+	}
+
+	if (wg_is_service_running()) {
+
+		$ret_code |= WG_ERROR_SVC_RUNNING;
+
+		wg_service_parse_errors($ret_code, $serialize);
+
+		return $ret_code;
+
+	}
+
+	// Register the service environment and lock early to ensure singletons
+	wg_register_service_env(false);
+
+	if (platform_booting()) {
+
+		// Output during booting must be to STDERR for some reason
+		fwrite(STDERR, "Configuring WireGuard tunnels...");
+
+		// Supresses ifconfig spew 
+		mute_kernel_msgs();
+
+	}
+
+	/*
+	 * Build all (i.e. null) the tunnels
+	 *
+	 * NOTE: Don't restart services, they will be restarted later...
+	 * NOTE: Don't resolve endpoints, they will be resolved later...
+	 */
+	$sync_status = wg_tunnel_sync(null, false, false);
+
+	if ($sync_status['ret_code'] <> 0 ) {
+
+		$ret_code |= WG_ERROR_SVC_CREATE;
+
+	}
+
+	if (platform_booting()) {
+
+		unmute_kernel_msgs();
+
+		fwrite(STDERR, "done. \n");
+
+		return $ret_code;
+
+	}
+
+	// Now, the initial fork...
+	$newpid = pcntl_fork();
+
+	if ($newpid === -1) {
+
+		$ret_code |= WG_ERROR_SVC_START;
+
+		wg_destroy_tunnels();
+
+		wg_service_parse_errors($ret_code, $serialize);
+
+		return $ret_code;
+
+	} elseif ($newpid) {
+
+		wg_service_parse_errors($ret_code, $serialize);
+
+		return $ret_code;
+
+	}
+
+	// Now become the session leader
+	if (posix_setsid() < 0) {
+
+		wg_destroy_tunnels();
+
+		return 1;
+
+	}
+
+	// The second fork...
+	$newpid = pcntl_fork();
+
+	if ($newpid === -1) {
+
+		wg_destroy_tunnels();
+
+		return 1;
+
+	} elseif ($newpid) {
+
+		// Reap the child process below...
+		pcntl_waitpid($newpid, $status);
+
+		// Boilerplate if we want to trap service ret codes and halt...
+		$ret_code = pcntl_wexitstatus($status);
+
+		if ($ret_code <> 0) {
+
+			return $ret_code;
+		}
+
+		// Move on to the actual daemon
+		wg_service_daemon();
+
+		// We shouldn't be here...
+		return 0;
+
+	} else {
+
+		// Nowe we restart any additional services
+		$ret_code = wg_restart_extra_services();
+
+		return $ret_code;
+
+	}
+
+	// We shouldn't be here...
+	return 1;
+
+}
+
+// This is where we restart any extra services
+function wg_restart_extra_services() {
+
+	if (!platform_booting()) {
+
+		// dpinger
+		setup_gateways_monitor();
+
+		// unbound
+		services_unbound_configure();
+
+		// TODO: This is where we will add facilities for users to pick what services to restart
+
+	}
+
+	// This is currently just a best effort attempt...
+	return 0;
+
+}
+
+// Main WireGuard service loop
+function wg_service_daemon() {
+	global $wgg;
+
+	// Re-register the service environment
+	wg_register_service_env(true);
+
+	// Now that we are properly daemonized, register the service signal handlers
+	wg_register_daemon_sig_handler();
+
+	// Attempt to load the kmod, required to run the service without any tunnels configured
+	if (!is_module_loaded($wgg['kmod'])) {
+
+		$kmod = $wgg['kmod'];
+
+		wg_escapeshellarg($kmod);
+
+		mwexec("{$wgg['kldload']} {$kmod}");
+
+	}
+
+	// Now we resolve endpoint hostnames here...
+	$last_update_time = wg_resolve_endpoints();
+
+	// Main WireGuard service loop
+	while (true) {
+
+		// The whole point of this daemon...
+		if (!is_module_loaded($wgg['kmod'])) {
+
+			break;
+
+		}
+		
+		// Check if we should reresolve hostnames
+		if (wg_should_reresolve_endpoints($last_update_time)) {
+
+			// Reresolve endpoint hostnames again
+			$last_update_time = wg_resolve_endpoints();
+
+		}
+
+		// Wait a bit before trying again
+		sleep(1);
+
+	}
+
+	// Execute SIGTERM handler to exit gracefully
+	wg_daemon_sig_handler(SIGTERM);
+
+}
+
+function wg_deregister_service_env() {
+	global $h_lock, $wgg;
+
+	if (!is_null($h_lock)) {
+
+		// Attempt to release exclusive lock
+		@flock($h_lock, LOCK_UN);
+
+		// Attempt to close file handler
+		@fclose($h_lock);
+
+	}
+
+	// Attempt to delete PID file
+	unlink_if_exists($wgg['pid_path']);
+
+}
+
+function wg_register_service_env($close_fdio = false) {
+	global $h_lock, $wgg;
+
+	wg_deregister_service_env();
+
+	if ($h_lock = fopen($wgg['pid_path'], 'a+')) {
+
+		flock($h_lock, LOCK_EX);
+
+		ftruncate($h_lock, 0);
+
+		fseek($h_lock, 0, 0);
+
+		fwrite($h_lock, getmypid());
+
+		fflush($h_lock);
+
+	}
+
+	if ($close_fdio) {
+
+		fclose(STDIN);
+
+		fclose(STDOUT);
+
+		fclose(STDERR);
 
 	}
 
 }
 
+function wg_register_daemon_sig_handler() {
+
+	pcntl_signal(SIGTERM, 'wg_daemon_sig_handler');
+
+}
+
+function wg_daemon_sig_handler($signo) {
+
+	switch ($signo) {
+
+		case SIGTERM:
+
+			// Teardown any tunnels and unload the module
+			wg_destroy_tunnels();
+
+			// Cleanup the service environment
+			wg_deregister_service_env();
+
+			// We are done...
+			exit(0);
+
+			break;
+
+		default:
+
+			break;
+
+	}
+
+}
+
+function wg_service_parse_errors($ret_code, $serialize_output = true, $extras = null) {
+	global $wgg;
+
+	$errors = array();
+
+	// Collect any errors
+	foreach ($wgg['error_flags']['service'] as $error_mask => $error_text) {
+
+		if (($ret_code & $error_mask) > 0) {
+
+			$errors[$error_mask] = $error_text;
+
+			if (!$serialize_output) {
+
+				// Send each error to STDERR as it is found
+				fwrite(STDERR, "{$error_text}\n");
+
+			}
+
+		}
+
+	}
+
+	if ($serialize_output) {
+
+		$res = array('ret_code' => $ret_code, 'errors' => $errors);
+
+		$res = is_array($extras) ? array_merge($res, $extras) : $res;
+
+		$res_serialized = serialize($res);
+
+		fwrite(STDOUT, "{$res_serialized}\n");
+
+	}
+
+	return;
+
+}
+
+// Check if we are in CLI or not
 function wg_is_cli() {
 
 	return (PHP_SAPI == 'cli');
 
 }
 
-function wg_service_stop() {
-	global $wgg;
-
-	killbypid($wgg['pid_path']);
-	
-}
-
+// Checks if the service is running
 function wg_is_service_running() {
 	global $wgg;
 
@@ -107,306 +572,14 @@ function wg_is_service_running() {
 
 	}
 
-	fclose($h_lock);
-
-	return (!$not_running || $wouldblock);
-
-}
-
-function wg_service_start() {
-	global $g, $wgg;
-
-	if (wg_is_service_running()) {
-
-		return 1;
-
-	}
-
-	// Register the service environment and lock early to ensure singletons
-	wg_register_service_env(false);
-
-	// The initial fork...
-	$newpid = pcntl_fork();
-
-	if ($newpid === -1) {
-
-		// We could not fork, so bail out...
-		return 1;
-
-	} elseif ($newpid) {
-
-		// I'm the parent, and I'm going to self-destruct...
-		return 0;
-
-	}
-
-	// Now become the session leader
-	if (posix_setsid() < 0) {
-
-		return 1;
-
-	}
-
-	// The second fork...
-	$newpid = pcntl_fork();
-
-	if ($newpid === -1) {
-
-		// We could not fork, so bail out...
-		return 1;
-
-	} elseif ($newpid) {
-
-		// I'm the parent, and I'm going to self-destruct...
-		return 0;
-
-	}
-
-	// Now that we are properly daemonized, register the service signal handlers
-	wg_register_sig_handler();
-
-	if (platform_booting()) {
-
-		$g['wireguard_firststart'] = true;
-
-		print_message("Configuring WireGuard tunnels...");
-
-		// Supresses ifconfig spew 
-		mute_kernel_msgs();
-
-	}
+	$pid = fgets($h_lock);
 	
-	// Build the tunnels
-	wg_resync_all();
- 
-	if (platform_booting()) {
-
-		unmute_kernel_msgs();
-
-		print_message("done. \n");
-
-		// Let the boot process continue and handle additional service and package invocation
-		return 0;
-
-	}
-
-	// We don't need to restart any additional services because we just finished booting...
-	if ($g['wireguard_firststart']) {
-
-		unset($g['wireguard_firststart']);
-
-		return 0;
-
-	}
-
-	// Spawns a child process to handle additional service restarting
-	$newpid = pcntl_fork();
-
-	if ($newpid === -1) {
-
-		// We could not fork, so bail out...
-		return 1;
-
-	} elseif ($newpid) {
-
-		// Wait for the child to finish
-		pcntl_waitpid($newpid, $status);
-
-		// We are the parent so go on...
-		wg_service_daemon();
-
-	// In this child process is where we can now safely restart any additional services
-	} else {
-
-		// dpinger
-		setup_gateways_monitor();
-
-		// unbound
-		services_unbound_configure();
-		
-		// pf
-		filter_configure();
-
-		// All good
-		return 0;
-
-	}
-
-	// We should never get here
-	return 0;
-
-}
-
-function wg_service_daemon() {
-	global $wgg;
-
-	// Re-register the service environment and obtain a fresh lock now that we have finished restarting additional services
-	wg_register_service_env(true);
-
-	// Attempt to load the kmod, required to run the service without any tunnels configured
-	if (!is_module_loaded($wgg['kmod'])) {
-
-		$kmod = $wgg['kmod'];
-
-		wg_escapeshellarg($kmod);
-
-		mwexec("{$wgg['kldload']} {$kmod}");
-
-	}
-
-	// Main daemon loop
-	while (true) {
-
-		// Check if any new signals are waiting for dispatch
-		pcntl_signal_dispatch();
-
-		// The whole point of this daemon...
-		if (!is_module_loaded($wgg['kmod'])) {
-
-			break;
-
-		}
-
-		// Wait a bit before trying again
-		sleep(1);
-
-	}
-
-	// Send a signal to self to terminate gracefully
-	posix_kill(getmypid(), SIGTERM);
-
-	// Fall though just in case
-	return 0;
-
-}
-
-function wg_service_install() {
-	global $wgg;
-
-	wg_service_deinstall();
-
-	link($wgg['php'], $wgg['wg_daemon']);
-
-}
-
-function wg_service_deinstall() {
-	global $wgg;
-
-	stop_service('wireguard');
-
-	unlink_if_exists($wgg['wg_daemon']);
-
-}
-
-function wg_service_rcfile() {
-	global $wgg;
-
-	$start = $stop = array();
-
-	$start[] = "{$wgg['wg_daemon']} -f {$wgg['wg_includes']}/wg_service.inc start";
-
-	$stop[] = "{$wgg['wg_daemon']} -f {$wgg['wg_includes']}/wg_service.inc stop";
-
-	$rcfile['file'] 	= 'wireguardd';
-
-	$rcfile['start'] 	= implode("\n\t", $start);
-
-	$rcfile['stop'] 	= implode("\n\t", $stop);
-
-	write_rcfile($rcfile);
-
-}
-
-function wg_deregister_service_env() {
-	global $h_lock, $wgg;
-
-	// Release exclusive lock
-	flock($h_lock, LOCK_UN);
-
-	// Close file handler
 	fclose($h_lock);
 
-	// Delete PID
-	unlink_if_exists($wgg['pid_path']);
+	// Another trick to test if a process is running
+	$sig_test = posix_kill($pid, 0);
 
-}
-
-function wg_register_service_env($close_handlers = false) {
-	global $h_lock, $wgg;
-
-	wg_deregister_service_env();
-
-	$h_lock = fopen($wgg['pid_path'], 'a+');
-
-	flock($h_lock, LOCK_EX);
-
-	ftruncate($h_lock, 0);
-
-	fseek($h_lock, 0, 0);
-
-	fwrite($h_lock, getmypid());
-
-	fflush($h_lock);
-
-	if ($close_handlers) {
-
-		fclose(STDIN);
-
-		fclose(STDOUT);
-
-		fclose(STDERR);
-
-	}
-
-}
-
-function wg_register_sig_handler() {
-
-	pcntl_signal(SIGTERM, 'sig_handler');
-
-	pcntl_signal(SIGHUP, 'sig_handler');
-
-	pcntl_signal(SIGINT, 'sig_handler');
-
-}
-
-function sig_handler($signo) {
-
-	switch ($signo) {
-
-		case SIGTERM:
-
-			// Cleanup the service environment
-			wg_deregister_service_env();
-
-			// Teardown tunnels
-			wg_destroy_tunnels();
-
-			// We are done...
-			exit(0);
-
-			break;
-
-		case SIGHUP:
-
-			break;
-
-		default:
-
-			break;
-
-	}
-
-}
-
-// This is a hack to get text onto the console during booting
-function print_message($message) {
-
-	$message = gettext($message);
-
-    	$message = escapeshellarg($message);
-
-	mwexec("printf {$message} >&2");
+	return (!$not_running || $wouldblock || $sig_test);
 
 }
 

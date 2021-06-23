@@ -3,7 +3,7 @@
  * status_wireguard.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021 R. Christian McDonald
+ * Copyright (c) 2021 R. Christian McDonald (https://github.com/theonemcdonald)
  * Copyright (c) 2021 Vajonam
  * Copyright (c) 2020 Ascrod
  * All rights reserved.
@@ -35,11 +35,41 @@ require_once('util.inc');
 // WireGuard includes
 require_once('wireguard/wg.inc');
 require_once('wireguard/wg_guiconfig.inc');
-
-// Grab the latest info
-wg_globals();
+require_once('wireguard/wg_service.inc');
 
 global $wgg;
+
+wg_globals();
+
+if ($_POST) {
+
+	if (isset($_POST['apply'])) {
+
+		$ret_code = 0;
+
+		if (is_subsystem_dirty($wgg['subsystems']['wg'])) {
+
+			if (wg_is_service_running()) {
+
+				$tunnels_to_apply = wg_apply_list_get('tunnels');
+
+				$sync_status = wg_tunnel_sync($tunnels_to_apply, true, true);
+
+				$ret_code |= $sync_status['ret_code'];
+
+			}
+
+			if ($ret_code == 0) {
+
+				clear_subsystem_dirty($wgg['subsystems']['wg']);
+
+			}
+
+		}
+
+	}
+
+}
 
 $shortcut_section = "wireguard";
 
@@ -54,13 +84,19 @@ $tab_array[] = array(gettext("Status"), true, "/wg/status_wireguard.php");
 
 include("head.inc");
 
-wg_display_service_warning(false);
+wg_print_service_warning();
+
+if (isset($_POST['apply'])) {
+
+	print_apply_result_box($ret_code);
+
+}
+
+wg_print_config_apply_box();
 
 display_top_tabs($tab_array);
 
-$a_devices = wg_status();
-
-if (!empty($a_devices)):
+$a_devices = wg_get_status();
 
 ?>
 
@@ -69,7 +105,7 @@ if (!empty($a_devices)):
 		<h2 class="panel-title"><?=gettext('WireGuard Status')?></h2>
 	</div>
 	<div class="table-responsive panel-body">
-		<table class="table table-hover table-striped table-condensed" style="overflow-x: 'visible'">
+		<table class="table table-hover table-striped table-condensed" style="overflow-x: visible;">
 			<thead>
 				<th><?=gettext('Tunnel')?></th>
 				<th><?=gettext('Description')?></th>
@@ -81,11 +117,12 @@ if (!empty($a_devices)):
 				<th><?=gettext('RX')?></th>
 				<th><?=gettext('TX')?></th>
 			</thead>
+			<tbody>
 <?php
+if (!empty($a_devices)):
+
 	foreach ($a_devices as $device_name => $device):
-		wg_
 ?>
-			<tbody>	
 				<tr class="tunnel-entry">
 					<td>
 						<?=wg_interface_status_icon($device['status'])?>
@@ -93,20 +130,16 @@ if (!empty($a_devices)):
 					</td>
 					<td><?=htmlspecialchars(wg_truncate_pretty($device['config']['descr'], 16))?></td>
 					<td><?=count($device['peers'])?></td>
-					<td><?=htmlspecialchars(wg_truncate_pretty($device['public_key'], 16))?></td>
-					<td><?=wg_generate_tunnel_address_popup_link($device_name)?></td>
+					<td title="<?=htmlspecialchars($device['public_key'])?>">
+						<?=htmlspecialchars(wg_truncate_pretty($device['public_key'], 16))?>
+					</td>
+					<td><?=wg_generate_tunnel_address_popover_link($device_name)?></td>
 					<td><?=htmlspecialchars($device['mtu'])?></td>
 					<td><?=htmlspecialchars($device['listen_port'])?></td>
 					<td><?=htmlspecialchars(format_bytes($device['transfer_rx']))?></td>
 					<td><?=htmlspecialchars(format_bytes($device['transfer_tx']))?></td>
 				</tr>
 				<tr class="peer-entries">
-	
-<?php
-		if ($device['status'] == 'up'):
-			
-			if (count($device['peers']) > 0):
-?>
 					<td colspan="9">
 						<table class="table table-hover table-condensed">
 							<thead>
@@ -120,50 +153,60 @@ if (!empty($a_devices)):
 							</thead>
 							<tbody>
 <?php
-				foreach($device['peers'] as $peer):
+		if (count($device['peers']) > 0):
+
+			foreach($device['peers'] as $peer):
 ?>
 								<tr>
 									<td>
-										<?=wg_handshake_status_icon($peer['latest_handshake'])?>
+										<?=wg_handshake_status_icon("@{$peer['latest_handshake']}")?>
 										<?=htmlspecialchars(wg_truncate_pretty($peer['config']['descr'], 16))?>
 									</td>
 									<td><?=htmlspecialchars(wg_human_time_diff("@{$peer['latest_handshake']}"))?></td>
-									<td><?=htmlspecialchars(wg_truncate_pretty($peer['public_key'], 16))?></td>
+									<td title="<?=htmlspecialchars($peer['public_key'])?>">
+										<?=htmlspecialchars(wg_truncate_pretty($peer['public_key'], 16))?>
+									</td>
 									<td><?=htmlspecialchars($peer['endpoint'])?></td>
-									<td><?=wg_generate_peer_allowedips_popup_link(wg_get_peer_id($peer['config']['publickey'], $peer['config']['tun']))?></td>
+									<td><?=wg_generate_peer_allowedips_popup_link(wg_get_peer_idx($peer['config']['publickey'], $peer['config']['tun']))?></td>
 									<td><?=htmlspecialchars(format_bytes($peer['transfer_rx']))?></td>
 									<td><?=htmlspecialchars(format_bytes($peer['transfer_tx']))?></td>
 								</tr>
 <?php	
-				endforeach;
+			endforeach;
+		else:
 ?>
+								<tr>
+									<td colspan="7"><?=gettext('No peers have been configured')?></td>
+								</tr>
+<?php		
+		endif;
+?>
+
 							</tbody>
 						</table>
 					</td>
-<?php
-			else:
-?>
-					<td colspan="9"><?=gettext('No peers have been configured')?></td>
-<?php
-			endif;
-		endif;
-?>
 				</tr>
 <?php
 	endforeach;
+
+elseif (empty($wgg['tunnels'])):
+?>
+				<tr>
+					<td colspan="9"><?php print_info_box(gettext('No WireGuard tunnels have been configured.'), 'warning', null); ?></td>
+				</tr>
+<?php
+else:
+?>
+				<tr>
+					<td colspan="9"><?php print_info_box(gettext('No WireGuard status information is available.'), 'warning', null); ?></td>
+				</tr>
+<?php
+endif;
 ?>
 			</tbody>
 		</table>
     	</div>
 </div>
-
-<?php
-else:
-
-	print_info_box('No WireGuard tunnels have been configured.', 'warning', null);
-
-endif;
-?>
 
 <nav class="action-buttons">
 	<a href="#" class="btn btn-info btn-sm" id="showpeers">
@@ -171,7 +214,6 @@ endif;
 		<?=gettext("Show Peers")?>
 	</a>
 </nav>
-
 
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -188,11 +230,9 @@ endif;
 			</thead>
 			<tbody>
 <?php
-
 			$a_packages = wg_pkg_info();
 
 			foreach ($a_packages as $package):
-
 ?>
     				<tr>
 					<td><?=htmlspecialchars($package['name'])?></td>
