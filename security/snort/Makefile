@@ -4,7 +4,7 @@ PORTNAME=	snort
 PORTVERSION=	2.9.18
 PORTREVISION=	0
 CATEGORIES=	security
-MASTER_SITES=	https://www.snort.org/downloads/snort/
+MASTER_SITES=	https://snort.org/downloads/snort/
 PATCH_DIST_STRIP=	-p1
 
 MAINTAINER=	dvl@FreeBSD.org
