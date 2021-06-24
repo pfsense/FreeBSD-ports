@@ -409,7 +409,7 @@ function wg_should_reresolve_endpoints($last_update_time) {
 		$time_to_update = $last_update_time->getTimestamp() + wg_get_endpoint_resolve_interval();
 
 		// Should we update? A 0 TTL means disabled.
-		return (wg_get_endpoint_resolve_interval() > 0 && ($time_to_update <= $current_time));
+		return ((wg_get_endpoint_resolve_interval() > 0) && ($time_to_update <= $current_time));
 
 	} catch (Exception $e) {
 
@@ -429,10 +429,10 @@ function wg_get_endpoint_resolve_interval() {
 
 	// Are we tracking the system value?
 	if (isset($wgg['config']['resolve_interval_track']) 
-		&& ($wgg['config']['resolve_interval_track'] == 'yes')) {
+	    && ($wgg['config']['resolve_interval_track'] == 'yes')) {
 
 		if (isset($config['system']['aliasesresolveinterval']) 
-			&& is_numeric($config['system']['aliasesresolveinterval'])) {
+		    && is_numeric($config['system']['aliasesresolveinterval'])) {
 
 			return $config['system']['aliasesresolveinterval'];
 
@@ -445,7 +445,7 @@ function wg_get_endpoint_resolve_interval() {
 
 	// Looks like we are using our own value...
 	if (isset($wgg['config']['resolve_interval'])
-		&& is_numericint($wgg['config']['resolve_interval'])) {
+	    && is_numericint($wgg['config']['resolve_interval'])) {
 
 		return $wgg['config']['resolve_interval'];
 
@@ -1002,7 +1002,7 @@ function wg_htmlspecialchars(&...$vars) {
 
 /* 
  * Wrapper to sanitize many variables at once
- * Call as wg_escapeshellargs($var1, $var2, ... $varX)
+ * Call as wg_escapeshellarg($var1, $var2, ... $varX)
  * Vars can be a mix of strings and arrays
  */
 function wg_escapeshellarg(&...$vars) {
