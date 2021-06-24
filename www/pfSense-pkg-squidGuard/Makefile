@@ -13,7 +13,8 @@ COMMENT=	pfSense package squidGuard
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/bin/squidGuard:www/squidguard
+RUN_DEPENDS=	pfSense-pkg-squid>0:www/pfSense-pkg-squid \
+		squidguard>0:www/squidguard
 
 NO_BUILD=	yes
 NO_MTREE=	yes
