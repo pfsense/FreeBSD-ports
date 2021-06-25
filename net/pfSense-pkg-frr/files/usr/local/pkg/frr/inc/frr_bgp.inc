@@ -275,7 +275,7 @@ function frr_bgp_generate_router() {
 				$frr_bgp_config_address_family[$af_pre] .= "  redistribute $redist\n";
 			} elseif (!in_array($frr_bgp_conf['redistribute' . $redist], array('no', 'yes', 'ipv4', 'ipv6')) &&
 					in_array($frr_bgp_conf['redistribute' . $redist], frr_get_list_values(frr_get_routemap_list(false, true)))) {
-					$frr_bgp_config_address_family[$af_pre] .= "  redistribute $redist route-map {$frr_bgp_conf['redistribute' . $source]}\n";
+					$frr_bgp_config_address_family[$af_pre] .= "  redistribute $redist route-map {$frr_bgp_conf['redistribute' . $redist]}\n";
 			}
 		}
 		foreach ($frr_bgp_conf['row'] as $net) {
