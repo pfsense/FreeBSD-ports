@@ -595,19 +595,29 @@
 		<field>
 			<fielddescr>Advertise Capability</fielddescr>
 			<fieldname>capability</fieldname>
-			<description>
-				<![CDATA[
-				Advertise capabilities to the neighbor
-				]]>
-			</description>
+			<description>Advertise Dynamic capability</description>
+			<type>checkbox</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Advertise Capability Nexthop</fielddescr>
+			<fieldname>capability_nexthop</fieldname>
+			<description>Advertise Extended Next-Hop capability. This is automatically enabled when peering with IPv6 link-local addresses.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Advertise Capability</fielddescr>
+			<fieldname>capability_orf</fieldname>
+			<description>Advertise Outbound Route Filter capability</description>
 			<type>select</type>
 			<default_value>disabled</default_value>
 			<options>
 				<option><name>Disabled</name><value>disabled</value></option>
-				<option><name>Dynamic</name><value>dynamic</value></option>
-				<option><name>Extended Next-Hop</name><value>extended-nexthop</value></option>
-				<option><name>ORF</name><value>orf</value></option>
+				<option><name>Send</name><value>send</value></option>
+				<option><name>Receive</name><value>receive</value></option>
+				<option><name>Both</name><value>both</value></option>
 			</options>
+			<combinefields>end</combinefields>
 		</field>
 		<field>
 			<fielddescr>Disable Capability Negotiation</fielddescr>
