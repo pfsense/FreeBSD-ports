@@ -586,8 +586,16 @@ function frr_bgp_generate_neighbors() {
 			}
 		}
 
-		if (in_array($neighbor['capability'], array('dynamic', 'extended-nexthop', 'orf'))) {
-			$nconf .= " neighbor {$neighbor['peer']} capability {$neighbor['capability']}\n";
+		if (!empty($neighbor['capability'])) {
+			$nconf .= " neighbor {$neighbor['peer']} capability dynamic\n";
+		}
+
+		if (!empty($neighbor['capability_nexthop'])) {
+			$nconf .= " neighbor {$neighbor['peer']} capability extended-nexthop\n";
+		}
+
+		if (in_array($neighbor['capability_orf'], array('send', 'receive', 'both'))) {
+			$nconf .= " neighbor {$neighbor['peer']} capability orf prefix-list {$neighbor['capability_orf']}\n";
 		}
 
 		if (!empty($neighbor['dontcapabilitynegotiate'])) {
