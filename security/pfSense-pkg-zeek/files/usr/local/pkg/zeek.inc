@@ -470,6 +470,9 @@ function zeek_zeekctl_resync() {
 # Recipient address for all emails sent out by Zeek and ZeekControl.
 MailTo = {$email}
 
+# Location of the sendmail binary
+SendMail = /usr/sbin/sendmail
+
 # Mail connection summary reports each log rotation interval.  A value of 1
 # means mail connection summaries, and a value of 0 means do not mail
 # connection summaries.  This option has no effect if the trace-summary
