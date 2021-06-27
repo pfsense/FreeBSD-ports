@@ -113,7 +113,9 @@ $( "#logfile" ).change(function() {
 });
 
 function updateSelect() {
+	var selected = $('#logfile').val();
 	var x = 'x='+$('#logfile').length;
+
 	jQuery.ajax({
 		type: "POST",
 		url: "select_box_file.php",
@@ -121,6 +123,10 @@ function updateSelect() {
 		success: function(html) {
 			if (html) {
 				$("#logfile").html(html);
+
+				if (typeof selected !== 'undefined' && selected) {
+					$('#logfile').val(selected);
+				}
 			}
 		},
 	});
