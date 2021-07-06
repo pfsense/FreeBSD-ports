@@ -429,6 +429,7 @@ function squid_reconfigure($remove_only = '')
                 (strpos($t_opt, REDIRECT_BYPASS_OPT)    === 0) or
                 (strpos($t_opt, REDIRECT_CHILDREN_OPT)  === 0))
                  unset($conf[$key]);
+                 $sg_squidconf = true;
         }
         sg_addlog("squid_reconfigure", "Remove old redirector options from Squid config.", SQUIDGUARD_INFO);
     }
@@ -445,6 +446,7 @@ function squid_reconfigure($remove_only = '')
 	$conf[] = REDIRECTOR_PROGRAM_OPT . " $redirector_path -c $redirector_conf";
 	$conf[] = REDIRECT_BYPASS_OPT    . " off";
 	$conf[] = REDIRECT_CHILDREN_OPT  . " " . $rewrite_children . " startup=" . $rewrite_children_startup . " idle=" . $rewrite_children_idle . " concurrency=0";
+	$sg_squidconf = true;
 
 	sg_addlog("squid_reconfigure", "Add new redirector options to Squid config.", SQUIDGUARD_INFO);
     }
@@ -459,7 +461,7 @@ function squid_reconfigure($remove_only = '')
 	}
 
     # resync squid package, if installed
-    if (function_exists('squid_resync')) {
+    if ($sg_squidconf && function_exists('squid_resync')) {
         squid_resync();
     }
 }
@@ -518,7 +520,7 @@ function sg_check_system()
 # sg_reconfigure_user_db - reconfigure(update) db user entries
 # ------------------------------------------------------------------------------
 function sg_reconfigure_user_db() {
-	global $squidguard_config;
+	global $squidguard_config, $config;
 	$dbhome = $squidguard_config[F_DBHOME];
 
 	sg_addlog("sg_reconfigure_user_db", "Begin with '$dbhome'", SQUIDGUARD_INFO);
@@ -531,6 +533,24 @@ function sg_reconfigure_user_db() {
 		}
 		set_file_access($dbhome, OWNER_NAME, 0755);
 		sg_addlog("sg_reconfigure_user_db", "Create user DB directory '$dbhome'.", SQUIDGUARD_INFO);
+	}
+
+	/* bypass local IPs for squid_status.php, see https://redmine.pfsense.org/issues/11711 */
+	if ($squidguard_config[F_DEFAULT][F_NOTALLOWINGIP]) {
+		init_config_arr(array('installedpackages', 'squidcache','config'));
+		$proxy_ifaces = explode(",", $config['installedpackages']['squid']['config'][0]['active_interface']);
+		$sgips = '';
+		foreach ($proxy_ifaces as $iface) {
+			if (get_interface_ip($iface)) {
+				$sgips .= get_interface_ip($iface) . ' ';
+			} else {
+				$sgips .= get_interface_ipv6($iface) . ' ';
+			}
+		}
+		if (!empty($sgips)) {
+			$squidguard_config[F_DESTINATIONS][F_ITEM][] = array(F_NAME => 'squidstatus',
+			    F_DOMAINS => $sgips, F_RMOD => RMOD_NONE);
+		}
 	}
 
 	# update destinations to db
@@ -1106,8 +1126,8 @@ function sg_create_config() {
 
 				# not allowing IP in URL
 				if ($acl[F_NOTALLOWINGIP]) {
-					$acl[F_DESTINATIONNAME]     = "!in-addr {$acl[F_DESTINATIONNAME]}";
-					$acl[F_OVERDESTINATIONNAME] = "!in-addr {$acl[F_OVERDESTINATIONNAME]}";
+					$acl[F_DESTINATIONNAME]     = "^squidstatus !in-addr {$acl[F_DESTINATIONNAME]}";
+					$acl[F_OVERDESTINATIONNAME] = "^squidstatus !in-addr {$acl[F_OVERDESTINATIONNAME]}";
 				}
 
 				# re-order acl pass (<white><!in-addr><deny><allow><all|none>)
@@ -1164,7 +1184,7 @@ function sg_create_config() {
 
 		# not allowing IP in URL
 		if ($def[F_NOTALLOWINGIP]) {
-			$def[F_DESTINATIONNAME] = "!in-addr " . $def[F_DESTINATIONNAME];
+			$def[F_DESTINATIONNAME] = "^squidstatus !in-addr " . $def[F_DESTINATIONNAME];
 		}
 
 		# re-order acl pass (<allow><deny<all|none>)

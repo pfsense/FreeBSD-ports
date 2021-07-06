@@ -79,6 +79,7 @@
 		<name>squidGuard</name>
 		<description><![CDATA[Proxy server filter Service]]></description>
 		<executable>squidGuard</executable>
+		<starts_on_sync></starts_on_sync>
 	</service>
 	<fields>
 		<field>

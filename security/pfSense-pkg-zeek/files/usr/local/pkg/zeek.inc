@@ -38,6 +38,7 @@ if (!function_exists("filter_configure")) {
 $shortcut_section = "zeek";
 
 define('ZEEK_LOCALBASE', '/usr/local');
+define('ZEEKCTL_BIN', ZEEK_LOCALBASE .'/bin');
 define('ZEEK_ETC', ZEEK_LOCALBASE .'/etc');
 define('ZEEK_LOGDIR', ZEEK_LOCALBASE .'/logs/current');
 define('ZEEK_SITEDIR', ZEEK_LOCALBASE .'/share/zeek/site');
@@ -141,21 +142,17 @@ function zeek_install_cron($should_install) {
 }
 
 function zeek_write_rcfile() {
-	$zeek_etc_dir = ZEEK_ETC;
+	$zeekctl_bin_dir = ZEEKCTL_BIN;
 	$rcfile = array();
 	$rcfile['file'] = 'zeek.sh';
 	$rcfile['start'] = <<< EOD
-{$zeek_etc_dir}/rc.d/zeek onestart
+{$zeekctl_bin_dir}/zeekctl deploy
 
 EOD;
 
 	$rcfile['stop'] = <<< EOD
-{$zeek_etc_dir}/rc.d/zeek stop
-# Just to be sure...
-sleep 5
-if [ /usr/bin/pgrep "zeek" ]; then
-	/usr/bin/killall zeek 2>/dev/null
-fi
+{$zeekctl_bin_dir}/zeekctl stop
+
 EOD;
 
 	write_rcfile($rcfile);
@@ -469,6 +466,9 @@ function zeek_zeekctl_resync() {
 
 # Recipient address for all emails sent out by Zeek and ZeekControl.
 MailTo = {$email}
+
+# Location of the sendmail binary
+SendMail = /usr/sbin/sendmail
 
 # Mail connection summary reports each log rotation interval.  A value of 1
 # means mail connection summaries, and a value of 0 means do not mail
@@ -883,7 +883,7 @@ function zeek_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncport, $v
 	if ($g['debug']) {
 		$cli->setDebug(1);
 	}
-	/* Send our XMLRPC message and timeout after defined sync timeout value*/
+	/* Send our XMLRPC message and timeout after defined sync timeout value */
 	$resp = $cli->send($msg, $synctimeout);
 	if (!$resp) {
 		$error = "A communication error occurred while attempting XMLRPC sync with {$url}:{$port}.";
