@@ -42,6 +42,9 @@ $pfb['gconfig'] = &$config['installedpackages']['pfblockerng']['config'][0];
 
 $pconfig = array();
 $pconfig['enable_cb']			= $pfb['gconfig']['enable_cb']				?: '';
+$pconfig['enable_syslog']		= $pfb['gconfig']['enable_syslog']			?: '';
+$pconfig['syslog_facility']		= $pfb['gconfig']['syslog_facility']			?: LOG_AUTH;
+$pconfig['syslog_priority']		= $pfb['gconfig']['syslog_priority']			?: LOG_ALERT;
 
 // Default to 'on' for new installation only
 $pconfig['pfb_keep']			= isset($pfb['gconfig']['pfb_keep'])			? $pfb['gconfig']['pfb_keep'] : 'on';
@@ -74,6 +77,9 @@ if ($_POST) {
 		$pfb['gconfig']['pfb_hour']			= $_POST['pfb_hour']		?: '';
 		$pfb['gconfig']['pfb_dailystart']		= $_POST['pfb_dailystart']	?: '';
 		$pfb['gconfig']['skipfeed']			= $_POST['skipfeed']		?: '';
+		$pfb['gconfig']['enable_syslog']		= $_POST['enable_syslog']	?: '';
+		$pfb['gconfig']['syslog_facility']		= $_POST['syslog_facility']	?: LOG_AUTH;
+		$pfb['gconfig']['syslog_priority']		= $_POST['syslog_priority']	?: LOG_ALERT;
 
 		// Remove old Line Limit setting
 		if (isset($pfb['gconfig']['log_maxlines'])) {
@@ -91,11 +97,22 @@ if ($_POST) {
 		$pfb['gconfig']['log_max_dnsreplylog']		= $_POST['log_max_dnsreplylog']		?: '';
 		$pfb['gconfig']['log_max_unilog']		= $_POST['log_max_unilog']		?: '';
 
+		$syslog_changed = ($pconfig['syslog_facility'] != $pfb['gconfig']['syslog_facility'] ||
+				$pconfig['syslog_priority'] != $pfb['gconfig']['syslog_priority']||
+				$pconfig['enable_syslog'] != $pfb['gconfig']['enable_syslog']);
+
 		if (!$input_errors) {
 			write_config('[pfBlockerNG] save General settings');
 
 			$pfb['save'] = TRUE;
 			sync_package_pfblockerng();
+			
+			if($syslog_changed){
+				syslog(LOG_NOTICE, '[pfBlockerNG] sytem logging settings changed, restarting services.');
+				restart_service('pfb_filter');
+				restart_service('dnsbl');
+			}
+			
 			header('Location: /pfblockerng/pfblockerng_general.php');
 		}
 	}
@@ -233,6 +250,31 @@ foreach ($log_types as $logdescr => $logtype) {
 	}
 	$section->add($group);
 }
+
+$section->addInput(new Form_Checkbox(
+	'enable_syslog',
+	'Send Alerts to System Log',
+	gettext('DNSBL and GeoIP alerst will be send to the firewall\'s system log. Default is Not Checked.'),
+	$pconfig['enable_syslog'] === 'on' ? true:false,
+	'on'));
+
+$section->addInput(new Form_Select(
+	'syslog_facility',
+	'System Log Facility',
+	$pconfig['syslog_facility'],
+	[	LOG_AUTH => 'LOG_AUTH', LOG_AUTHPRIV => 'LOG_AUTHPRIV', LOG_DAEMON => 'LOG_DAEMON', LOG_USER => 'LOG_USER', 
+		LOG_LOCAL0 => 'LOG_LOCAL0', LOG_LOCAL1 => 'LOG_LOCAL1', LOG_LOCAL2 => 'LOG_LOCAL2', LOG_LOCAL3 => 'LOG_LOCAL3', 
+		LOG_LOCAL4 => 'LOG_LOCAL4', LOG_LOCAL5 => 'LOG_LOCAL5', LOG_LOCAL6 => 'LOG_LOCAL6', LOG_LOCAL7 => 'LOG_LOCAL7' ]
+))->setHelp('Select system log Facility to use for reporting. Default is LOG_AUTH.');
+		  
+$section->addInput(new Form_Select(
+	'syslog_priority',
+	'System Log Priority',
+	$pconfig['syslog_priority'],
+	[	LOG_EMERG => 'LOG_EMERG', LOG_CRIT => 'LOG_CRIT', LOG_ALERT => 'LOG_ALERT', LOG_ERR => 'LOG_ERR', 
+		LOG_WARNING => 'LOG_WARNING', LOG_NOTICE => 'LOG_NOTICE', LOG_INFO => 'LOG_INFO', LOG_DEBUG => 'LOG_DEBUG' ]
+))->setHelp('Select system log Priority (Level) to use for reporting. Default is LOG_ALERT.');
+
 $form->add($section);
 
 $section = new Form_Section('Support');
@@ -327,4 +369,27 @@ $form->add($section);
 print($form);
 print_callout('<p><strong>Setting changes are applied via CRON or \'Force Update|Reload\' only!</strong></p>');
 ?>
+<script type="text/javascript">
+//<![CDATA[
+events.push(function(){
+
+	function toggle_syslog() {
+		var hide = ! $('#enable_syslog').prop('checked');
+		hideSelect('syslog_facility', hide);
+		hideSelect('syslog_priority', hide);
+	}
+
+	// ---------- Click checkbox handlers ---------------------------------------------------------
+
+	// When 'enable_syslog' is clicked, disable/enable associated form controls
+	$('#enable_syslog').click(function() {
+		toggle_syslog();
+	});
+
+	// ---------- On initial page load ------------------------------------------------------------
+
+	toggle_syslog();
+});
+//]]>
+</script>
 <?php include('foot.inc');?>

@@ -255,6 +255,9 @@ function pfb_global() {
 	$pfb['min']		= $pfb['config']['pfb_min']		?: '0';	// User defined CRON start minute
 	$pfb['hour']		= $pfb['config']['pfb_hour']		?: '0';	// Start hour of the scheduler
 	$pfb['24hour']		= $pfb['config']['pfb_dailystart']	?: '0';	// Start hour of the 'Once a day' schedule
+	$pfb['syslog']		= $pfb['config']['enable_syslog']	?: '';	// Enable/Disable of logging to system log
+	$pfb['syslog_facility']	= $pfb['config']['syslog_facility']	?: LOG_AUTH;  // System log facility
+	$pfb['syslog_priority']	= $pfb['config']['syslog_priority']	?: LOG_ALERT; // System log priority
 
 	$pfb['supp']		= $pfb['ipconfig']['suppression'];		// Enable Suppression
 	$pfb['cc']		= $pfb['ipconfig']['database_cc'];		// Disable Country database CRON updates
@@ -5011,10 +5014,17 @@ function pfb_daemon_filterlog() {
 					}
 				}
 				@file_put_contents("{$iplog}", "{$log},{$details},{$dup_entry}\n", FILE_APPEND | LOCK_EX);
-
+				
 				// Write to Unified Log
 				if ($dup_entry == '+') {
 					@file_put_contents("{$pfb['unilog']}", "{$l_type},{$log},{$details},{$dup_entry}\n", FILE_APPEND | LOCK_EX);
+				}
+				
+				// Write to syslog
+				if($pfb['syslog'] == 'on'){
+					openlog("pfblockerng", 0, $pfb['syslog_facility']);
+					syslog($pfb['syslog_priority'], "${l_type},${details},${dup_entry}");
+					closelog();
 				}
 			}
 		}
@@ -5532,6 +5542,13 @@ function pfb_log_event($type, $domain, $src_ip, $req_agent) {
 	
 	// Write to Unified Log
 	@file_put_contents($pfb['unilog'], "{$log}", FILE_APPEND | LOCK_EX);
+
+	// Write to syslog
+	if($pfb['syslog'] == 'on'){
+		openlog("pfblockerng", 0, $pfb['syslog_facility']);
+		syslog($pfb['syslog_priority'], "${type},${details},${dup_entry}");
+		closelog();
+	}
 
 	// Increment DNSBL Widget counter
 	if (!empty($pfb_group)) {
