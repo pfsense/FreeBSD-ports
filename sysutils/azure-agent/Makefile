@@ -1,6 +1,7 @@
 PORTNAME=	azure-agent
-PORTVERSION=	2.2.54.2
+PORTVERSION=	2.2.45
 DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
 PATCH_SITES=	https://github.com/Azure/WALinuxAgent/commit/
@@ -12,12 +13,13 @@ LICENSE=	APACHE20
 
 RUN_DEPENDS=	sudo:security/sudo \
 		bash:shells/bash \
+		base64:converters/base64 \
 		dmidecode:sysutils/dmidecode \
 		${PYTHON_PKGNAMEPREFIX}pyasn1>=0:devel/py-pyasn1@${PY_FLAVOR} \
-		ca_root_nss>0:security/ca_root_nss
+		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
 NO_BUILD=	yes
-USES=		python shebangfix
+USES=		python:3.5+ shebangfix
 
 SHEBANG_FILES=	bin/waagent bin/waagent2.0
 
@@ -36,7 +38,7 @@ post-patch:
 			 -e "s,/usr/sbin/waagent,${PREFIX}/sbin/waagent,g" \
 		${WRKSRC}/bin/waagent2.0
 	${REINPLACE_CMD} -e "s,:/usr/local/bin,:/usr/local/bin:/usr/local/sbin,g" \
-			 -e "s,python,${PYTHON_CMD},g" \
+			 -e "s,python,${PYTHON_VERSION},g" \
 		${WRKSRC}/init/freebsd/waagent
 	${REINPLACE_CMD} -e "s,/usr/sbin,${PREFIX}/sbin,g" \
 		${WRKSRC}/init/waagent
