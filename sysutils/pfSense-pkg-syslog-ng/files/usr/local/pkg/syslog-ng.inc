@@ -129,7 +129,7 @@ function syslogng_build_default_objects($settings) {
 	$default_logdir = $settings['default_logdir'];
 	$default_logfile = $settings['default_logfile'];
 
-	$default_objects[0] = array("objecttype"=>"source", "objectname"=>"_DEFAULT", "objectparameters"=>"{ internal(); syslog(transport($default_protocol) port($default_port)");
+	$default_objects[0] = array("objecttype"=>"source", "objectname"=>"_DEFAULT", "objectparameters"=>"{ internal();");
 
 	if ($settings['default_protocol'] == 'tls') {
 		safe_mkdir(SYSLOGNG_DIR);
@@ -146,10 +146,10 @@ function syslogng_build_default_objects($settings) {
 	foreach (explode(",", $interfaces) as $interface) {
 		$interface_address = syslogng_get_real_interface_address($interface);
 		if ($interface_address[0]) {
-			$default_objects[0]['objectparameters'] .= " ip({$interface_address[0]})";
+			$default_objects[0]['objectparameters'] .= " syslog(transport($default_protocol) port($default_port) ip({$interface_address[0]}));";
 		}
 	}
-	$default_objects[0]['objectparameters'] .= "); };";
+	$default_objects[0]['objectparameters'] .= " };";
 	$default_objects[0]['objectparameters'] = base64_encode($default_objects[0]['objectparameters']);
 	$default_objects[1] = array("objecttype"=>"destination", "objectname"=>"_DEFAULT", "objectparameters"=>"{ file(\"$default_logdir/$default_logfile\"); };");
 	$default_objects[1]['objectparameters'] = base64_encode($default_objects[1]['objectparameters']);
