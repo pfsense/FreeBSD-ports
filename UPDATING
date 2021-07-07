@@ -5,6 +5,73 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20210704:
+  AFFECTS: users of misc/qtchooser
+  AUTHOR: kde@FreeBSD.org
+
+  QtChooser allows you to select your version of Qt among those installed.
+  However, this tool is no longer supported upstream and will not be
+  available for Qt6.
+
+  By default, our Qt installations are done in:
+  ${LOCALBASE}/lib/qt${QT_VERSION} as recommended.
+  We have added symbolic linking for the main binaries to 
+  ${LOCALBASE}/bin with the suffix -qt5.
+
+20210628:
+  AFFECTS: users of misc/openhab
+  AUTHOR: netchild@FreeBSD.org
+
+  You need to run
+    sed -i -e 's:^karaf.framework.equinox=.*:karaf.framework.equinox=mvn\:org.eclipse.platform/org.eclipse.osgi/3.16.200: ; s:^karaf.framework.felix=.*:karaf.framework.felix=mvn\:org.apache.felix/org.apache.felix.framework/6.0.4:' /var/db/openhab/userdata/etc/config.properties
+  to update the version numbers of some components in a config file.
+
+20210621:
+  AFFECTS: users of www/gitlab-ce
+  AUTHOR: mfechner@FreeBSD.org
+
+  The upgrade of Gitlab 14.0.0 is in preparation.
+  You must upgrade first to 13.12.
+  For more information see here:
+  https://about.gitlab.com/blog/2021/06/04/gitlab-moving-to-14-breaking-changes/
+
+  To do the upgrade, make sure you follow the upgrade manuals:
+  https://gitlab.fechner.net/mfechner/Gitlab-docu/-/tree/master/update
+
+  I will merge the 14.0.0 upgrade later to quarterly branch to give you
+  some time for the upgrade to 13.12.
+
+20210620:
+  AFFECTS: users of misc/openhab2
+  AUTHOR: netchild@FreeBSD.org
+
+  The openhab v3 port has been committed. Upstream has removed the
+  version from the name, as such the FreeBSD port follows in all places
+  (start script name, directory names, ...).
+  Users are encuraged to migrate from misc/openhab2 to misc/openhab.
+
+  No automatic config migration is available Both versions can be
+  installed in parallel, but an users has to take care to not run
+  both at the same time on the same port.
+
+20210617:
+  AFFECTS: users of graphics/mesa-libs and x11/nvidia-driver
+  AUTHOR: kbowling@FreeBSD.org
+
+  Some libraries from mesa-libs are now provided by libglvnd while
+  others were renamed. nvidia-driver already used libglvnd but bundled
+  a copy which is now provided as a separate package. When building
+  outside poudriere make sure to remove mesa-libs and nvidia-driver
+  first in order to avoid conflict with libglvnd.
+
+  For portmaster users:
+  # pkg delete -f mesa-libs nvidia-driver
+  # portmaster -a
+
+  For portupgrade users:
+  # pkg delete -f mesa-libs nvidia-driver
+  # portupgrade -a
+
 20210523:
   AFFECTS: users of www/tt-rss
   AUTHOR: dereks@lifeofadishwasher.com

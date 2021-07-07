@@ -1,6 +1,5 @@
 PORTNAME=	resolvelib
-# Make sure you don't break Ansible.
-DISTVERSION=	0.5.4
+DISTVERSION=	0.7.1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,6 +11,8 @@ LICENSE=	ISCL
 
 USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
+
+CONFLICTS_INSTALL=	py${PYTHON_SUFFIX}-${PORTNAME}05
 
 NO_ARCH=	yes
 

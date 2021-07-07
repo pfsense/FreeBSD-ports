@@ -1,7 +1,7 @@
 # Created by: Sergey A. Osokin <osa@FreeBSD.org>
 
 PORTNAME=	nginx
-PORTVERSION=	1.20.0
+PORTVERSION=	1.20.1
 PORTREVISION?=	2
 PORTEPOCH=	2
 CATEGORIES=	www

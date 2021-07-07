@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_FreeBSD_11=	gradle daemon systematically fails on 11: The message received from the daemon indicates that the daemon has disappeared.
 
-BUILD_DEPENDS=	gradle:devel/gradle
+BUILD_DEPENDS=	gradle:devel/gradle6
 
 USE_JAVA=	yes
 JAVA_VERSION=	11

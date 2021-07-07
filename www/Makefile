@@ -36,8 +36,6 @@
     SUBDIR += asql
     SUBDIR += authelia
     SUBDIR += awffull
-    SUBDIR += aws
-    SUBDIR += aws-demos
     SUBDIR += awstats
     SUBDIR += axis2
     SUBDIR += bacula-web
@@ -48,7 +46,6 @@
     SUBDIR += bareos19-webui
     SUBDIR += beehive
     SUBDIR += bkmrkconv
-    SUBDIR += blastbeat
     SUBDIR += bluefish
     SUBDIR += bolt
     SUBDIR += bozohttpd
@@ -103,14 +100,12 @@
     SUBDIR += davix
     SUBDIR += dddbl
     SUBDIR += ddgr
-    SUBDIR += demoroniser
     SUBDIR += deno
     SUBDIR += devd
     SUBDIR += dfileserver
     SUBDIR += dhttpd
     SUBDIR += dillo2
     SUBDIR += dojo
-    SUBDIR += dojo-shrinksafe
     SUBDIR += dokuwiki
     SUBDIR += dolibarr
     SUBDIR += domoticz
@@ -215,6 +210,7 @@
     SUBDIR += grafana
     SUBDIR += grafana6
     SUBDIR += grafana7
+    SUBDIR += grafana8
     SUBDIR += grails
     SUBDIR += gregarius
     SUBDIR += groupoffice
@@ -455,7 +451,6 @@
     SUBDIR += nift
     SUBDIR += node
     SUBDIR += node10
-    SUBDIR += node12
     SUBDIR += node14
     SUBDIR += nostromo
     SUBDIR += novnc
@@ -463,8 +458,6 @@
     SUBDIR += npapi-xine
     SUBDIR += npc
     SUBDIR += npm
-    SUBDIR += npm-node10
-    SUBDIR += npm-node12
     SUBDIR += npm-node14
     SUBDIR += nspluginwrapper
     SUBDIR += oauth2-proxy
@@ -1421,7 +1414,6 @@
     SUBDIR += py-azure-storage
     SUBDIR += py-beaker
     SUBDIR += py-beautifulsoup
-    SUBDIR += py-beautifulsoup448
     SUBDIR += py-betamax
     SUBDIR += py-biscuits
     SUBDIR += py-bjoern
@@ -1624,6 +1616,8 @@
     SUBDIR += py-google
     SUBDIR += py-google-api-core
     SUBDIR += py-google-api-python-client
+    SUBDIR += py-google-cloud-appengine-logging
+    SUBDIR += py-google-cloud-audit-log
     SUBDIR += py-google-cloud-bigtable
     SUBDIR += py-google-cloud-core
     SUBDIR += py-google-cloud-datastore
@@ -1655,6 +1649,7 @@
     SUBDIR += py-httpretty
     SUBDIR += py-httptools
     SUBDIR += py-httpx
+    SUBDIR += py-httpx-socks
     SUBDIR += py-httpx013
     SUBDIR += py-hyper
     SUBDIR += py-hypercorn
@@ -1689,6 +1684,7 @@
     SUBDIR += py-praw
     SUBDIR += py-prawcore
     SUBDIR += py-priority
+    SUBDIR += py-priority1
     SUBDIR += py-protego
     SUBDIR += py-puppetboard
     SUBDIR += py-py-restclient
@@ -1721,6 +1717,7 @@
     SUBDIR += py-requests-toolbelt
     SUBDIR += py-requests-unixsocket
     SUBDIR += py-requests_ntlm
+    SUBDIR += py-respx
     SUBDIR += py-restclient
     SUBDIR += py-rfc3986
     SUBDIR += py-rfc3987
@@ -1875,8 +1872,10 @@
     SUBDIR += rubygem-faraday
     SUBDIR += rubygem-faraday-em_http
     SUBDIR += rubygem-faraday-em_synchrony
+    SUBDIR += rubygem-faraday-httpclient
     SUBDIR += rubygem-faraday-net_http
     SUBDIR += rubygem-faraday-net_http_persistent
+    SUBDIR += rubygem-faraday-patron
     SUBDIR += rubygem-faraday0
     SUBDIR += rubygem-faraday_middleware
     SUBDIR += rubygem-faraday_middleware0
@@ -1901,6 +1900,7 @@
     SUBDIR += rubygem-gon-rails5
     SUBDIR += rubygem-gon-rails50
     SUBDIR += rubygem-gon-rails60
+    SUBDIR += rubygem-gon-rails61
     SUBDIR += rubygem-hackpad-cli
     SUBDIR += rubygem-haml
     SUBDIR += rubygem-haml-coderay
@@ -1952,17 +1952,20 @@
     SUBDIR += rubygem-kaminari-actionview-rails50
     SUBDIR += rubygem-kaminari-actionview-rails52
     SUBDIR += rubygem-kaminari-actionview-rails60
+    SUBDIR += rubygem-kaminari-actionview-rails61
     SUBDIR += rubygem-kaminari-activerecord
     SUBDIR += rubygem-kaminari-activerecord-rails5
     SUBDIR += rubygem-kaminari-activerecord-rails50
     SUBDIR += rubygem-kaminari-activerecord-rails52
     SUBDIR += rubygem-kaminari-activerecord-rails60
+    SUBDIR += rubygem-kaminari-activerecord-rails61
     SUBDIR += rubygem-kaminari-core
     SUBDIR += rubygem-kaminari-rails4
     SUBDIR += rubygem-kaminari-rails5
     SUBDIR += rubygem-kaminari-rails50
     SUBDIR += rubygem-kaminari-rails52
     SUBDIR += rubygem-kaminari-rails60
+    SUBDIR += rubygem-kaminari-rails61
     SUBDIR += rubygem-kensa
     SUBDIR += rubygem-kubeclient
     SUBDIR += rubygem-layout_yullio_generator
@@ -1974,6 +1977,7 @@
     SUBDIR += rubygem-lograge-rails5
     SUBDIR += rubygem-lograge-rails52
     SUBDIR += rubygem-lograge-rails60
+    SUBDIR += rubygem-lograge-rails61
     SUBDIR += rubygem-maruku
     SUBDIR += rubygem-mechanize
     SUBDIR += rubygem-merb-assets
@@ -2022,6 +2026,7 @@
     SUBDIR += rubygem-rack-protection
     SUBDIR += rubygem-rack-protection1
     SUBDIR += rubygem-rack-proxy
+    SUBDIR += rubygem-rack-proxy06
     SUBDIR += rubygem-rack-ssl
     SUBDIR += rubygem-rack-test
     SUBDIR += rubygem-rack-timeout
@@ -2063,10 +2068,12 @@
     SUBDIR += rubygem-redis-rails-rails50
     SUBDIR += rubygem-redis-rails-rails52
     SUBDIR += rubygem-redis-rails-rails60
+    SUBDIR += rubygem-redis-rails-rails61
     SUBDIR += rubygem-responders
     SUBDIR += rubygem-responders-rails5
     SUBDIR += rubygem-responders-rails52
     SUBDIR += rubygem-responders-rails60
+    SUBDIR += rubygem-responders-rails61
     SUBDIR += rubygem-rest-client
     SUBDIR += rubygem-rfacebook
     SUBDIR += rubygem-rfeedfinder
@@ -2321,8 +2328,6 @@
     SUBDIR += yabb
     SUBDIR += yanopaste
     SUBDIR += yarn
-    SUBDIR += yarn-node10
-    SUBDIR += yarn-node12
     SUBDIR += yarn-node14
     SUBDIR += yaws
     SUBDIR += you-get

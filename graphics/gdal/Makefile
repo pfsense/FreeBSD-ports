@@ -1,7 +1,7 @@
 # Created by: Randall Hopper
 
 PORTNAME=	gdal
-PORTVERSION=	3.2.3
+PORTVERSION=	3.3.0
 PORTREVISION=	1
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://download.osgeo.org/gdal/${PORTVERSION}/ \
@@ -26,9 +26,8 @@ LIB_DEPENDS=	libgeotiff.so:graphics/libgeotiff \
 OPTIONS_DEFINE=	ARMADILLO CFITSIO CHARLS CRYPTOPP CURL DODS ECW EXPAT EXR FREEXL GEOS GTA HDF5 JASPER KML LIBXML2 MYSQL NETCDF ODBC OPENJPEG PCRE PGSQL SFCGAL SPATIALITE SQLITE TILEDB WEBP XERCES ZSTD
 OPTIONS_RADIO=	PDF
 OPTIONS_RADIO_PDF=	PODOFO POPPLER
-OPTIONS_DEFAULT=	CURL EXPAT FREEXL GEOS HDF5 JASPER \
-			KML LIBXML2 NETCDF OPENJPEG PCRE PGSQL SFCGAL \
-			SPATIALITE SQLITE WEBP XERCES ZSTD POPPLER
+OPTIONS_DEFAULT=CURL EXPAT FREEXL GEOS JASPER LIBXML2 OPENJPEG PCRE PGSQL POPPLER WEBP ZSTD \
+		HDF5 KML NETCDF SPATIALITE SFCGAL SQLITE XERCES
 OPTIONS_SUB=	yes
 CHARLS_DESC=	JPEG-Lossless support via charls
 CRYPTOPP_DESC=	Cryptopp support
@@ -162,10 +161,6 @@ ZSTD_CONFIGURE_WITH=	zstd
 ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
 
 post-patch:
-	@${REINPLACE_CMD} -e '/^#GDAL_SLIB_SONAME/ s|^#||' ${WRKSRC}/GDALmake.opt.in
-	@${REINPLACE_CMD} -e 's|$$(INST_LIB)/pkgconfig|${PREFIX}/libdata/pkgconfig|; s| LICENSE.TXT||' ${WRKSRC}/GNUmakefile
-	@${REINPLACE_CMD} -e 's|-lminizip|-lkmlminizip|' -e 's|IlmImf|OpenEXR|g' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|getCString()|c_str()|' ${WRKSRC}/frmts/pdf/pdfdataset.cpp ${WRKSRC}/frmts/pdf/pdfobject.cpp
 # Clean up bundled libraries
 	@${RM} -r ${WRKSRC}/alg/internal_libqhull/
 	@${RM} -r ${WRKSRC}/frmts/gif/giflib/

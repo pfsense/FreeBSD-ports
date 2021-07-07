@@ -1,7 +1,7 @@
 PORTNAME=	phd2
 DISTVERSIONPREFIX=v
 DISTVERSION=	2.6.9dev5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	astro
 
 MAINTAINER=	acm@FreeBSD.org
@@ -30,5 +30,11 @@ CMAKE_ARGS+=	-DUSE_SYSTEM_GTEST:BOOL=YES \
 		-DUSE_SYSTEM_LIBUSB:BOOL=YES \
 		-DUSE_SYSTEM_LIBINDI:BOOL=YES \
 		-DUSE_SYSTEM_EIGEN3:BOOL=YES
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} != aarch64 && ${ARCH} != armv6 && ${ARCH} != armv7 && ${ARCH} != amd64 && ${ARCH} != i386
+CMAKE_ARGS+=	-DOPENSOURCE_ONLY:BOOL=YES
+.endif
 
 .include <bsd.port.mk>

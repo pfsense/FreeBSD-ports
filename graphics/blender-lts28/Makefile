@@ -1,5 +1,6 @@
 PORTNAME=	blender
 DISTVERSION=	2.83.15
+PORTREVISION=	3
 CATEGORIES=	graphics multimedia
 MASTER_SITES=	http://download.blender.org/source/ \
 		http://mirror.cs.umn.edu/blender.org/source/ \
@@ -159,6 +160,10 @@ CMAKE_ARGS+=		-DWITH_GHOST_DEBUG:BOOL=ON
 .endif
 
 .include <bsd.port.options.mk>
+
+.if ${ARCH} != amd64 && ${ARCH} != i386
+CMAKE_ARGS+=	-DWITH_CPU_SSE:BOOL=OFF
+.endif
 
 .if ${LLVM_DEFAULT:M[678]0}
 LLVM_VER=	90

@@ -2,7 +2,7 @@
 
 PORTNAME=	xine
 DISTVERSION=	1.2.11
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-lib/${PORTVERSION}
 PKGNAMEPREFIX=	lib
@@ -159,6 +159,9 @@ XVMC_CONFIGURE_ENABLE=		xvmc
 
 .if ${ARCH} == aarch64
 BUILD_DEPENDS+=	as:devel/binutils
+.elif ${ARCH} == powerpc
+BUILD_DEPENDS+=	as:devel/binutils
+CFLAGS+=	-fno-integrated-as
 .endif
 
 .if !${PORT_OPTIONS:MGNUTLS} && !${PORT_OPTIONS:MOPENSSL}

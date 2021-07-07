@@ -11,6 +11,7 @@
     SUBDIR += alttab
     SUBDIR += aminal
     SUBDIR += antimicro
+    SUBDIR += appmenu-registrar
     SUBDIR += appres
     SUBDIR += apwal
     SUBDIR += arandr
@@ -214,6 +215,7 @@
     SUBDIR += ly
     SUBDIR += mako
     SUBDIR += mate
+    SUBDIR += mate-applet-appmenu
     SUBDIR += mate-applets
     SUBDIR += mate-base
     SUBDIR += mate-desktop
@@ -241,9 +243,15 @@
     SUBDIR += nvidia-driver-304
     SUBDIR += nvidia-driver-340
     SUBDIR += nvidia-driver-390
+    SUBDIR += nvidia-hybrid-graphics
+    SUBDIR += nvidia-secondary-driver
+    SUBDIR += nvidia-secondary-driver-390
     SUBDIR += nvidia-settings
     SUBDIR += nvidia-xconfig
+    SUBDIR += nwg-dock
+    SUBDIR += nwg-drawer
     SUBDIR += nwg-launchers
+    SUBDIR += nwg-menu
     SUBDIR += nxcomp
     SUBDIR += p5-Clipboard
     SUBDIR += p5-X11-GUITest
@@ -265,6 +273,7 @@
     SUBDIR += plasma5-kscreen
     SUBDIR += plasma5-kwayland-integration
     SUBDIR += plasma5-kwayland-server
+    SUBDIR += plasma5-layer-shell-qt
     SUBDIR += plasma5-libkscreen
     SUBDIR += plasma5-plasma
     SUBDIR += plasma5-plasma-desktop
@@ -332,6 +341,7 @@
     SUBDIR += swayidle
     SUBDIR += swaylock
     SUBDIR += swaylock-effects
+    SUBDIR += swayr
     SUBDIR += sxhkd
     SUBDIR += sxpc
     SUBDIR += tabbed
@@ -383,6 +393,7 @@
     SUBDIR += workrave
     SUBDIR += wshowkeys
     SUBDIR += wtype
+    SUBDIR += x-on-resize
     SUBDIR += x11perf
     SUBDIR += x3270
     SUBDIR += xantfarm

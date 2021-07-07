@@ -324,6 +324,7 @@
     SUBDIR += json-yaml
     SUBDIR += jtc
     SUBDIR += kdiff3
+    SUBDIR += kepubify
     SUBDIR += kf5-kcodecs
     SUBDIR += kf5-sonnet
     SUBDIR += kf5-syntax-highlighting
@@ -1410,6 +1411,7 @@
     SUBDIR += py-rss2gen
     SUBDIR += py-rst2ansi
     SUBDIR += py-rst2html5
+    SUBDIR += py-rstfmt
     SUBDIR += py-scour
     SUBDIR += py-simplebayes
     SUBDIR += py-smartypants
@@ -1573,7 +1575,9 @@
     SUBDIR += rubygem-cssmin
     SUBDIR += rubygem-cucumber-gherkin
     SUBDIR += rubygem-cucumber-gherkin15
+    SUBDIR += rubygem-cucumber-gherkin18
     SUBDIR += rubygem-cucumber-html-formatter
+    SUBDIR += rubygem-cucumber-html-formatter13
     SUBDIR += rubygem-cucumber-html-formatter9
     SUBDIR += rubygem-diff-lcs
     SUBDIR += rubygem-diff_match_patch
@@ -1804,6 +1808,7 @@
     SUBDIR += slowcat
     SUBDIR += smi
     SUBDIR += smu
+    SUBDIR += snowballstemmer
     SUBDIR += so-hunspell
     SUBDIR += sonic
     SUBDIR += soothsayer
@@ -1950,6 +1955,7 @@
     SUBDIR += yali
     SUBDIR += yamcha
     SUBDIR += yaml-mode.el
+    SUBDIR += yaml.el
     SUBDIR += ydiff
     SUBDIR += yelp-tools
     SUBDIR += yelp-xsl

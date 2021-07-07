@@ -1,7 +1,7 @@
 # Created by: Kenneth Vestergaard Schmidt <kvs@pil.dk>
 
 PORTNAME=	emacs
-DISTVERSION=	28.0.50.20210602
+DISTVERSION=	28.0.50.20210701
 PORTEPOCH=	2
 CATEGORIES=	editors
 PKGNAMESUFFIX=	-devel
@@ -25,7 +25,7 @@ USES=		autoreconf:build cpe gmake localbase:ldflags ncurses pkgconfig
 CPE_VENDOR=	gnu
 USE_GITHUB=	yes
 GH_ACCOUNT=	emacs-mirror
-GH_TAGNAME=	87e7390
+GH_TAGNAME=	dc0ce5f
 
 .if ${FLAVOR:U} != nox
 USES+=		desktop-file-utils gnome xorg
@@ -169,10 +169,9 @@ MAILUTILS_CONFIGURE_WITH=	mailutils
 MAILUTILS_CONFIGURE_ENV_OFF=	ac_cv_lib_lockfile_maillock=no \
 				ac_cv_prog_liblockfile=no
 MODULES_CONFIGURE_WITH=		modules
-NATIVECOMP_LIB_DEPENDS=		libgccjit.so:lang/gcc11-devel
+NATIVECOMP_LIB_DEPENDS=		libgccjit.so:lang/gcc11
 NATIVECOMP_CONFIGURE_WITH=	native-compilation
 NATIVECOMP_MAKE_ARGS=		NATIVE_FULL_AOT=1
-NATIVECOMP_CFLAGS=		-I${LOCALBASE}/include
 NATIVECOMP_LDFLAGS=		-L${LOCALBASE}/lib/gcc11
 OSS_CONFIGURE_ON=		--with-sound=oss
 OTF_IMPLIES=			XFT

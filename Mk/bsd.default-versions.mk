@@ -17,7 +17,7 @@ _INCLUDE_BSD_DEFAULT_VERSIONS_MK=	yes
 
 LOCALBASE?=	/usr/local
 
-.for lang in APACHE BDB COROSYNC EMACS FIREBIRD FORTRAN FPC GCC GHOSTSCRIPT \
+.for lang in APACHE BDB COROSYNC EMACS FIREBIRD FORTRAN FPC GCC GHOSTSCRIPT GL \
 	IMAGEMAGICK JAVA LAZARUS LIBRSVG2 LINUX LLVM LUA MYSQL NINJA PERL5 \
 	PGSQL PHP PYTHON PYTHON2 PYTHON3 RUBY RUST SAMBA SSL TCLTK VARNISH
 .if defined(${lang}_DEFAULT)
@@ -39,28 +39,31 @@ BDB_DEFAULT?=		5
 COROSYNC_DEFAULT?=	2
 # Possible_values: full canna nox devel_full devel_nox
 #EMACS_DEFAULT?=	let the flavor be the default if not explicitly set
-# Possible values: 2.5
+# Possible values: 2.5, 3.0, 4.0
 FIREBIRD_DEFAULT?=	2.5
 # Possible values: flang (experimental), gfortran
 FORTRAN_DEFAULT?=	gfortran
 # Possible values: 3.2.0
 FPC_DEFAULT?=		3.2.0
-# Possible values: 8, 9 (powerpcspe was dropped with GCC 9), 10
+# Possible values: 8 (last to support powerpcspe), 9, 10, 11
+# (Any other version is completely unsupported and not meant for general use.)
 .if ${ARCH} == "powerpcspe"
 GCC_DEFAULT?=		8
 .else
 GCC_DEFAULT?=		10
 .endif
+# Possible values (tuple): libglvnd, mesa-libs, mesa-devel
+GL_DEFAULT?=		libglvnd,mesa-libs
 # Possible values: 7, 8, 9, agpl
 GHOSTSCRIPT_DEFAULT?=	agpl
-# Possible values: 6, 7
+# Possible values: 6, 6-nox11, 7, 7-nox11
 IMAGEMAGICK_DEFAULT?=	7
 # Possible values: 7, 8, 11, 12, 13, 14, 15, 16
 JAVA_DEFAULT?=		8
 # Possible values: 2.0.10
 LAZARUS_DEFAULT?=	2.0.10
-# Possible values: rust legacy
-.if empty(ARCH:Naarch64:Narmv6:Narmv7:Namd64:Ni386:Npowerpc64:Npowerpc64le)
+# Possible values: rust, legacy
+.if empty(ARCH:Naarch64:Narmv6:Narmv7:Namd64:Ni386:Npowerpc64:Npowerpc64le:Npowerpc)
 LIBRSVG2_DEFAULT?=	rust
 .else
 LIBRSVG2_DEFAULT?=	legacy
@@ -83,7 +86,7 @@ MONO_DEFAULT=		5.10
 MYSQL_DEFAULT?=		5.7
 # Possible values: ninja, samurai
 NINJA_DEFAULT?=		ninja
-# Possible values: 5.28, 5.30, 5.32, 5.34, devel
+# Possible values: 5.30, 5.32, 5.34, devel
 .if !exists(${LOCALBASE}/bin/perl) || (!defined(_PORTS_ENV_CHECK) && \
     defined(PACKAGE_BUILDING))
 PERL5_DEFAULT?=		5.32
@@ -98,7 +101,7 @@ _PERL5_FROM_BIN!=	${LOCALBASE}/bin/perl -e 'printf "%vd\n", $$^V;'
 _EXPORTED_VARS+=	_PERL5_FROM_BIN
 PERL5_DEFAULT:=		${_PERL5_FROM_BIN:R}
 .endif
-# Possible values: 9.5, 9.6, 10, 11, 12, 13
+# Possible values: 9.6, 10, 11, 12, 13
 PGSQL_DEFAULT?=		12
 # Possible values: 7.3, 7.4, 8.0
 PHP_DEFAULT?=		7.4

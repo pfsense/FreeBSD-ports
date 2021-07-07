@@ -676,7 +676,6 @@ net-im/ocaml-jabbr||2009-06-13|Removed
 net-mgmt/nav||2009-06-13|Removed
 net/evolution-rss||2009-06-13|Removed
 net/openpbx.org||2009-06-13|Removed
-news/inn-current||2009-06-13|Removed
 science/elmerfront||2009-06-13|Removed
 science/openfoam||2009-06-13|Removed
 www/cacheboy||2009-06-13|Removed
@@ -5975,7 +5974,6 @@ java/linux-sun-jdk16||2014-05-11|Has expired: Unsupported and known for multiple
 ports-mgmt/pver||2014-05-11|Has expired: does not support pkgng
 databases/firebird20-client|databases/firebird25-client|2014-05-11|Firebird 2.0 is EOLed
 databases/firebird20-server|databases/firebird25-server|2014-05-11|Firebird 2.0 is EOLed
-editors/ved||2014-05-15|Has expired: Depends on deprecated smake
 japanese/chasen||2014-05-15|Has expired: Unmaintained since 2001
 www/openx|www/revive-adserver|2014-05-15|Upstream obsolete, forked
 security/clamav-devel||2014-05-16|Retire, older than security/clamav
@@ -11740,7 +11738,6 @@ finance/alkimia-qt4||2019-03-16|Has expired: Qt4 has been EOL since december 201
 finance/bitcoin-armory||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 finance/qhacc||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 ftp/scythia||2019-03-16|Has expired: Qt4 has been EOL since december 2015
-games/bubble-chains||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 games/capicity||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 games/capitalism||2019-03-16|Has expired: Qt4 has been EOL since december 2015
 games/flukz||2019-03-16|Has expired: Qt4 has been EOL since december 2015
@@ -12659,8 +12656,6 @@ net/linuxigd||2019-05-09|Has expired: Abandonware; use net/miniupnpd instead
 net/openafs||2019-05-09|Has expired: Broken for more than 6 months
 security/quantis||2019-05-09|Has expired: Broken for more than 6 months
 sysutils/boxbackup||2019-05-09|Has expired: Broken for more than 6 months
-sysutils/grub2-efi||2019-05-09|Has expired: Broken for more than 6 months
-sysutils/grub2-pcbsd||2019-05-09|Has expired: Broken for more than 6 months
 sysutils/mdcp||2019-05-09|Has expired: Broken for more than 6 months
 sysutils/sbsigntool||2019-05-09|Has expired: Broken for more than 6 months
 www/py-cherrypy-old||2019-05-09|Has expired: Lates version is in tree and no dependent ports
@@ -13193,7 +13188,6 @@ multimedia/subtitleeditor||2019-10-16|Has expired: Unfetchable, unmaintained
 multimedia/umr||2019-10-16|Has expired: Unfetchable, unmaintained
 net/bluemix-cli||2019-10-16|Has expired: Unfetchable, unmaintained
 net/boclient||2019-10-16|Has expired: Unfetchable, unmaintained
-net/csync2||2019-10-16|Has expired: Unfetchable, unmaintained
 net/dictd-database||2019-10-16|Has expired: Unfetchable, unmaintained
 net/gtic||2019-10-16|Has expired: Unfetchable, unmaintained
 net/hidentd||2019-10-16|Has expired: Unfetchable, unmaintained
@@ -16141,7 +16135,7 @@ security/openvas9-scanner|security/openvas|2021-02-08|Has expired: End of life, 
 security/greenbone-security-assistant8|security/greenbone-security-assistant|2021-02-08|Has expired: End of life, please migrate to new version of greenbone-security-assistant
 security/greenbone-security-assistant9|security/greenbone-security-assistant|2021-02-08|Has expired: End of life, please migrate to new version of greenbone-security-assistant
 misc/pnpids|misc/hwdata|2021-02-14|Rename package to upstreams name
-misc/cdcollect||2021-02-14|Has expired: Unmaintained and dead upstream (12+ years) depends on  deprecated libraries as www/gtkhtml3
+misc/cdcollect||2021-02-14|Has expired: Unmaintained and dead upstream (12+ years) depends on deprecated libraries as www/gtkhtml3
 security/krb5-116|security/krb5-118|2021-02-14|Has expired: EOL one year after the release of krb5 1.18
 www/palemoon||2021-02-15|Depends on expired version of python
 www/rtv||2021-02-17|Has expired: Abandoned, use www/py-ttrv or www/py-tuir instead
@@ -16191,7 +16185,7 @@ net/libsignal|net/libsignal-protocol-c|2021-03-30|Rename to match upstream namin
 databases/redis4|databases/redis|2021-04-06|Has expired: End of life, please use modern version
 lang/ruby25|lang/ruby27|2021-04-06|Has expired: Use newer version, e.g. lang/ruby27 or above. Ruby 2.5 is in security maintenance phase and planned for EOL on March 31, 2021
 www/gtkhtml3|www/gtkhtml4|2021-04-06|Has expired: Obsolete by upstream, doesn't build with recent versions of pango
-deskutils/tomboy||2021-04-06|Has expired: Unmaintained and dead upstream, depends on deprecated libraries  such as www/gtkhtml3. Upstream project is now called tomboy-ng
+deskutils/tomboy||2021-04-06|Has expired: Unmaintained and dead upstream, depends on deprecated libraries such as www/gtkhtml3. Upstream project is now called tomboy-ng
 deskutils/tomboy-plugin-reminder||2021-04-06|Removed, part of deskutils/tomboy
 devel/monodevelop||2021-04-06|Has expired: outdated, depends on deprecated library www/gtkhtml3
 sysutils/syslog-ng327|sysutils/syslog-ng|2021-04-06|Has expired: Not officially supported by upstream
@@ -16267,7 +16261,6 @@ finance/wmstock||2021-04-07|Has expired: Unmaintained and dead upstream, does no
 ftp/frox||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
 databases/couchdb2|databases/couchdb3|2021-04-07|No longer supported upstream, uses spidermonkey68 & python2; move to databases/couchdb3
 security/pidentd||2021-04-07|Removed: Unmaintained, abandoned, does not build with recent OS versions
-dns/dnsmasq-devel|dns/dnsmasq|2021-04-08|Has expired: use dns/dnsmasq instead, which is newer
 net/coturn|net/turnserver|2021-04-09|Remove duplicate port: coturn is another name for turnserver
 databases/percona55-server||2021-04-11|EOL upstream
 databases/percona55-client||2021-04-11|EOL upstream
@@ -16322,6 +16315,7 @@ sysutils/policykit|sysutils/polkit|2021-05-01|Gnome2 component, no consumers lef
 databases/rubygem-gitlab-pg_query|databases/rubygem-pg_query|2021-05-03|Obsolete, please use databases/rubygem-pg_query
 devel/rubygem-licensee8|devel/rubygem-licensee|2021-05-03|Obsolete, please use devel/rubygem-licensee
 devel/rubygem-ruby-magic-static|devel/rubygem-ruby-magic|2021-05-03|Obsolete, please use devel/rubygem-ruby-magic
+ftp/cpr|www/cpr|2021-05-03|Remove duplicate port
 devel/gecode|math/gecode|2021-05-04|Move to a proper category
 net-im/libqmatrixclient|net-im/libquotient|2021-05-08|Has expired: Use libQuotient (devel/libquotient) instead
 devel/electron11|devel/electron12|2021-05-12|VSCode update requires a newer major version
@@ -16344,3 +16338,127 @@ multimedia/libav|multimedia/ffmpeg|2021-05-31|Has expired: Unmaintained upstream
 devel/py-iterpipes||2021-06-06|Has expired: Unmaintained upstream, uses old Python
 devel/py-aspyct||2021-06-06|Has expired: Unmaintained upstream, uses old Python
 irc/oragono|irc/ergo|2021-06-08|Project renamed
+devel/py-castellan1|devel/py-castellan|2021-06-10|Remove obsoleted port. Use devel/py-castellan instead
+devel/py-cliff2|devel/py-cliff|2021-06-10|Remove obsoleted port. Use devel/py-cliff instead
+devel/py-cmd208|devel/py-cmd2|2021-06-10|Remove obsoleted port. Use devel/py-cmd2 instead
+devel/py-futurist1|devel/py-futurist|2021-06-10|Remove obsoleted port. Use devel/py-futurist instead
+devel/py-google-crc32c0|devel/py-google-crc32c|2021-06-10|Remove obsoleted port. Use devel/py-google-crc32c instead
+devel/py-jaraco.context2|devel/py-jaraco.context|2021-06-10|Remove obsoleted port. Use devel/py-jaraco.context instead
+devel/py-jaraco.util13|devel/py-jaraco.util|2021-06-10|Remove obsoleted port. Use devel/py-jaraco.util instead
+devel/py-keystoneauth13|devel/py-keystoneauth1|2021-06-10|Remove obsoleted port. Use devel/py-keystoneauth1 instead
+devel/py-keystonemiddleware8|devel/py-keystonemiddleware|2021-06-10|Remove obsoleted port. Use devel/py-keystonemiddleware instead
+devel/py-openstacksdk043|devel/py-openstacksdk|2021-06-10|Remove obsoleted port. Use devel/py-openstacksdk instead
+devel/py-os-brick2|devel/py-os-brick|2021-06-10|Remove obsoleted port. Use devel/py-os-brick instead
+devel/py-os-client-config1|devel/py-os-client-config|2021-06-10|Remove obsoleted port. Use devel/py-os-client-config instead
+devel/py-os-win4|devel/py-os-win|2021-06-10|Remove obsoleted port. Use devel/py-os-win instead
+devel/py-osc-lib1|devel/py-osc-lib|2021-06-10|Remove obsoleted port. Use devel/py-osc-lib instead
+devel/py-oslo.cache1|devel/py-oslo.cache|2021-06-10|Remove obsoleted port. Use devel/py-oslo.cache instead
+devel/py-oslo.concurrency3|devel/py-oslo.concurrency|2021-06-10|Remove obsoleted port. Use devel/py-oslo.concurrency instead
+devel/py-oslo.config7|devel/py-oslo.config|2021-06-10|Remove obsoleted port. Use devel/py-oslo.config instead
+devel/py-oslo.context2|devel/py-oslo.context|2021-06-10|Remove obsoleted port. Use devel/py-oslo.context instead
+devel/py-oslo.db6|devel/py-oslo.db|2021-06-10|Remove obsoleted port. Use devel/py-oslo.db instead
+devel/py-oslo.i18n3|devel/py-oslo.i18n|2021-06-10|Remove obsoleted port. Use devel/py-oslo.i18n instead
+devel/py-oslo.log3|devel/py-oslo.log|2021-06-10|Remove obsoleted port. Use devel/py-oslo.log instead
+devel/py-oslo.messaging10|devel/py-oslo.messaging|2021-06-10|Remove obsoleted port. Use devel/py-oslo.messaging instead
+devel/py-oslo.middleware3|devel/py-oslo.middleware|2021-06-10|Remove obsoleted port. Use devel/py-oslo.middleware instead
+devel/py-oslo.policy2|devel/py-oslo.policy|2021-06-10|Remove obsoleted port. Use devel/py-oslo.policy instead
+devel/py-oslo.privsep1|devel/py-oslo.privsep|2021-06-10|Remove obsoleted port. Use devel/py-oslo.privsep instead
+devel/py-oslo.reports1|devel/py-oslo.reports|2021-06-10|Remove obsoleted port. Use devel/py-oslo.reports instead
+devel/py-oslo.rootwrap5|devel/py-oslo.rootwrap|2021-06-10|Remove obsoleted port. Use devel/py-oslo.rootwrap instead
+devel/py-oslo.serialization2|devel/py-oslo.serialization|2021-06-10|Remove obsoleted port. Use devel/py-oslo.serialization instead
+devel/py-oslo.service1|devel/py-oslo.service|2021-06-10|Remove obsoleted port. Use devel/py-oslo.service instead
+devel/py-oslo.utils3|devel/py-oslo.utils|2021-06-10|Remove obsoleted port. Use devel/py-oslo.utils instead
+devel/py-oslo.versionedobjects1|devel/py-oslo.versionedobjects|2021-06-10|Remove obsoleted port. Use devel/py-oslo.versionedobjects instead
+devel/py-oslo.vmware2|devel/py-oslo.vmware|2021-06-10|Remove obsoleted port. Use devel/py-oslo.vmware instead
+devel/py-pycadf2|devel/py-pycadf|2021-06-10|Remove obsoleted port. Use devel/py-pycadf instead
+devel/py-taskflow3|devel/py-taskflow|2021-06-10|Remove obsoleted port. Use devel/py-taskflow instead
+devel/py-tempora1|devel/py-tempora|2021-06-10|Remove obsoleted port. Use devel/py-tempora instead
+devel/py-tinyrpc0|devel/py-tinyrpc|2021-06-10|Remove obsoleted port. Use devel/py-tinyrpc instead
+devel/py-tooz1|devel/py-tooz|2021-06-10|Remove obsoleted port. Use devel/py-tooz instead
+devel/py-twine1|devel/py-twine|2021-06-10|Remove obsoleted port. Use devel/py-twine instead
+net/py-python-cinderclient5|net/py-python-cinderclient|2021-06-10|Remove obsoleted port. Use net/py-python-cinderclient instead
+net/py-python-glanceclient2|net/py-python-glanceclient|2021-06-10|Remove obsoleted port. Use net/py-python-glanceclient instead
+net/py-python-keystoneclient3|net/py-python-keystoneclient|2021-06-10|Remove obsoleted port. Use net/py-python-keystoneclient instead
+net/py-python-novaclient16|net/py-python-novaclient|2021-06-10|Remove obsoleted port. Use net/py-python-novaclient instead
+print/py-pycups1|print/py-pycups|2021-06-10|Remove obsoleted port. Use print/py-pycups instead
+lang/gcc8-devel|lang/gcc8|2021-06-11|GCC 8 reached end of life, use the final release (or a new major version)
+news/inn-CURRENT|news/inn-current|2021-06-12|Port renamed on request
+databases/postgresql95-client||2021-06-13|Has expired: PostgreSQL-9.5 has reached end-of-life
+databases/postgresql95-contrib||2021-06-13|Has expired: PostgreSQL-9.5 has reached end-of-life
+databases/postgresql95-docs||2021-06-13|Has expired: PostgreSQL-9.5 has reached end-of-life
+databases/postgresql95-pgtcl||2021-06-13|Has expired: PostgreSQL-9.5 has reached end-of-life
+databases/postgresql95-plperl||2021-06-13|Has expired: PostgreSQL-9.5 has reached end-of-life
+databases/postgresql95-plpython||2021-06-13|Has expired: PostgreSQL-9.5 has reached end-of-life
+databases/postgresql95-pltcl||2021-06-13|Has expired: PostgreSQL-9.5 has reached end-of-life
+databases/postgresql95-server||2021-06-13|Has expired: PostgreSQL-9.5 has reached end-of-life
+databases/pg_reorg||2021-06-13|Removed, abandonware only for PostgreSQL 9.5
+databases/pgespresso||2021-06-13|Removed, functionality part of PostgreSQL 9.6 and later.
+x11-fonts/urw-core35-fonts|x11-fonts/urw-base35-fonts|2021-06-15|Project was renamed upstream
+graphics/jpeg-xl|graphics/libjxl|2021-06-16|Project was renamed upstream
+chinese/docproj|textproc/docproj|2021-06-17|Deprecated after the doc transition
+devel/aarch64-gcc|devel/freebsd-gcc6@aarch64|2021-06-18|Replaced by a flavor
+devel/aarch64-xtoolchain-gcc|devel/freebsd-gcc6@aarch64|2021-06-18|Replaced by a flavor
+devel/amd64-gcc|devel/freebsd-gcc6@amd64|2021-06-18|Replaced by a flavor
+devel/amd64-xtoolchain-gcc|devel/freebsd-gcc6@amd64|2021-06-18|Replaced by a flavor
+devel/i386-gcc|devel/freebsd-gcc6@i386|2021-06-18|Replaced by a flavor
+devel/i386-xtoolchain-gcc|devel/freebsd-gcc6@i386|2021-06-18|Replaced by a flavor
+devel/mips-gcc|devel/freebsd-gcc6@mips|2021-06-18|Replaced by a flavor
+devel/mips-xtoolchain-gcc|devel/freebsd-gcc6@mips|2021-06-18|Replaced by a flavor
+devel/mips64-gcc|devel/freebsd-gcc6@mips64|2021-06-18|Replaced by a flavor
+devel/mips64-xtoolchain-gcc|devel/freebsd-gcc6@mips64|2021-06-18|Replaced by a flavor
+devel/powerpc64-gcc|devel/freebsd-gcc6@powerpc64|2021-06-18|Replaced by a flavor
+devel/powerpc64-xtoolchain-gcc|devel/freebsd-gcc6@powerpc64|2021-06-18|Replaced by a flavor
+devel/sparc64-gcc|devel/freebsd-gcc6@sparc64|2021-06-18|Replaced by a flavor
+devel/sparc64-xtoolchain-gcc|devel/freebsd-gcc6@sparc64|2021-06-18|Replaced by a flavor
+devel/riscv64-xtoolchain-gcc|devel/freebsd-gcc9@riscv64|2021-06-19|Replaced by a flavor
+www/py-beautifulsoup448|www/py-beautifulsoup|2021-06-20|Remove obsoleted port. Use www/py-beautifulsoup instead
+comms/rtl-443|comms/rtl-433|2021-06-21|Fix typo in port directory name
+devel/elixir-tirexs||2021-06-24|Remove obsoleted port. No releases on hex.pm.
+lang/perl5.28||2021-06-26|Has expired: Support ends three years after .0 release. Please upgrade to a more recent version of Perl
+sysutils/cfengine314||2021-06-26|Has expired: Expire one year after cfengine 3.16.0 released
+sysutils/cfengine-masterfiles314||2021-06-26|Has expired: Expire one year after cfengine 3.16.0 released
+lang/pypy3||2021-06-26|Has expired: Uses Python 2.7 which is EOLed upstream
+lang/pypy||2021-06-26|Has expired: Uses Python 2.7 which is EOLed upstream
+databases/pypy-gdbm||2021-06-26|Has expired: Uses EOL Python 2.7 via lang/pypy
+databases/pypy-sqlite3||2021-06-26|Has expired: Uses EOL Python 2.7 via lang/pypy
+x11-toolkits/pypy-tkinter||2021-06-26|Has expired: Uses EOL Python 2.7 via lang/pypy
+multimedia/gxine||2021-06-26|Has expired: Uses EOL Python 2.7 via lang/spidermonkey185
+lang/spidermonkey185||2021-06-26|Has expired: Uses Python 2.7 which is EOLed upstream
+www/aws||2021-06-26|Has expired: Uses EOL Python 2.7 via devel/gnatpython
+www/aws-demos||2021-06-26|Has expired: Uses EOL Python 2.7 via www/aws
+devel/gnatpython||2021-06-26|Has expired: Uses Python 2.7 which is EOLed upstream
+devel/libosmocore||2021-06-26|Has expired: Uses Python 2.7 which is EOLed upstream
+net/openggsn||2021-06-26|Has expired: Uses EOL Python 2.7 via devel/libosmocore
+devel/libosmo-abis||2021-06-26|Has expired: Uses EOL Python 2.7 via devel/libosmocore
+www/node12||2021-06-26|Has expired: Uses Python 2.7 which is EOLed upstream
+www/npm-node12||2021-06-26|Removed, uses www/node12
+www/yarn-node12||2021-06-26|Has expired: Uses EOL Python 2.7 via www/node12
+www/npm-node10||2021-06-26|Removed, uses EOL Python 2.7 via www/node10
+www/yarn-node10||2021-06-26|Has expired: Uses EOL Python 2.7 via www/node10
+devel/libhid||2021-06-26|Has expired: Uses Python 2.7 which is EOLed upstream
+sysutils/usbhotkey||2021-06-26|Has expired: Uses EOL Python 2.7 via devel/libhid
+net/panoptis||2021-06-26|Has expired: Unmaintained upstream
+databases/elixir-mongo||2021-06-26|Has expired: Upsupported by upstream
+irc/eggdrop-devel|irc/eggdrop|2021-06-26|Has expired: Use stable version instead, irc/eggdrop
+audio/xmms2||2021-06-26|Has expired: Uses Python 2.7 which is EOLed upstream
+audio/gxmms2||2021-06-26|Has expired: Uses EOL Python 2.7 via audio/xmms2
+audio/lxmusic||2021-06-26|Has expired: Uses EOL Python 2.7 via audio/xmms2
+math/gringo||2021-06-26|Has expired: Uses Python 2.7 which is EOLed upstream
+math/aspcud||2021-06-26|Has expired: Uses EOL Python 2.7 via math/gringo
+math/py-pyasp||2021-06-26|Has expired: Uses EOL Python 2.7 via math/gringo
+devel/viewvc|devel/viewvc-devel|2021-06-26|Has expired: Uses Python 2.7 which is EOLed upstream
+chinese/sunpinyin||2021-06-26|Has expired: Uses Python 2.7 which is EOLed upstream
+chinese/fcitx-sunpinyin||2021-06-26|Has expired: Uses EOL Python 2.7 via chinese/sunpinyin
+www/dojo-shrinksafe||2021-06-26|Removed, deprecated upstream
+www/blastbeat||2021-06-26|Removed, abandoned upstream, broken on 12.X since 2019
+www/demoroniser||2021-06-26|Removed, made for Microsoft Powerpoint 9x with Perl 4.0
+x11-toolkits/v||2021-06-27|Has expired: Dead upstream, unmaintained and no consumers
+sysutils/ssid|sysutils/setsid|2021-06-27|Move to more obvious package name
+databases/pgpool-II-35||2021-07-01|Has expired: EOL since January 2021, please use one of the other pgpool-II-* ports
+sysutils/cdrtools-devel|sysutils/cdrtools|2021-07-01|Obsolete, use sysutils/cdrtools instead
+sysutils/sformat|sysutils/schilyutils|2021-07-01|Subsumed under sysutils/schilyutils
+misc/qtchooser||2021-07-04|No longer supported upstream
+databases/puppetdb5||2021-07-05|Has expired: Puppet 5 has reached EOL
+sysutils/puppet5||2021-07-05|Has expired: Puppet 5 has reached EOL
+sysutils/puppetserver5||2021-07-05|Has expired: Puppet 5 has reached EOL
+databases/puppetdb-terminus5||2021-07-05|Has expired: Puppet 5 has reached EOL

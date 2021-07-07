@@ -48,6 +48,7 @@
     SUBDIR += aylet
     SUBDIR += bambootracker
     SUBDIR += bamp-lv2
+    SUBDIR += bangr-lv2
     SUBDIR += baresip
     SUBDIR += baudline
     SUBDIR += bcg729
@@ -58,6 +59,7 @@
     SUBDIR += bjumblr-lv2
     SUBDIR += bliss
     SUBDIR += blop
+    SUBDIR += boca
     SUBDIR += boops-lv2
     SUBDIR += bristol
     SUBDIR += bschaffl-lv2
@@ -114,6 +116,7 @@
     SUBDIR += denemo
     SUBDIR += din
     SUBDIR += discid
+    SUBDIR += dmidiplayer
     SUBDIR += dpf-plugins-lv2
     SUBDIR += dragonfly-reverb-lv2
     SUBDIR += drumgizmo
@@ -199,6 +202,7 @@
     SUBDIR += fpc-modplug
     SUBDIR += fpc-oggvorbis
     SUBDIR += fpc-openal
+    SUBDIR += freac
     SUBDIR += freealut
     SUBDIR += freedesktop-sound-theme
     SUBDIR += freepats
@@ -290,7 +294,6 @@
     SUBDIR += gula-plugins-lv2
     SUBDIR += guspat
     SUBDIR += gvolwheel
-    SUBDIR += gxmms2
     SUBDIR += gxplugins-lv2
     SUBDIR += harp
     SUBDIR += headsetcontrol
@@ -450,7 +453,6 @@
     SUBDIR += lv2lint
     SUBDIR += lv2proc
     SUBDIR += lvtk
-    SUBDIR += lxmusic
     SUBDIR += mac
     SUBDIR += madfufw
     SUBDIR += madplay
@@ -624,6 +626,7 @@
     SUBDIR += pragha
     SUBDIR += prelude-lv2
     SUBDIR += protracker
+    SUBDIR += psindustrializer
     SUBDIR += pulseaudio
     SUBDIR += pulseaudio-module-sndio
     SUBDIR += pulseaudio-module-xrdp
@@ -735,6 +738,7 @@
     SUBDIR += sox
     SUBDIR += spc2it
     SUBDIR += spectacle-lv2
+    SUBDIR += spectmorph
     SUBDIR += spectrogram
     SUBDIR += speech-denoiser-lv2
     SUBDIR += speex
@@ -782,6 +786,7 @@
     SUBDIR += tcd
     SUBDIR += teamspeak3-server
     SUBDIR += tempest_for_eliza
+    SUBDIR += tetraproc
     SUBDIR += thunar-media-tags-plugin
     SUBDIR += tiatracker
     SUBDIR += timely-lv2
@@ -855,7 +860,6 @@
     SUBDIR += xmix
     SUBDIR += xmixer
     SUBDIR += xmmix
-    SUBDIR += xmms2
     SUBDIR += xmp
     SUBDIR += xmradio
     SUBDIR += xoscope
@@ -866,6 +870,7 @@
     SUBDIR += yoshimi
     SUBDIR += zam-plugins-lv2
     SUBDIR += zita-convolver
+    SUBDIR += zita-njbridge
     SUBDIR += zita-resampler
     SUBDIR += zrythm
     SUBDIR += zynaddsubfx

@@ -1,5 +1,5 @@
 PORTNAME=	labwc
-DISTVERSION=	0.2.1
+DISTVERSION=	0.3.0
 CATEGORIES=	x11-wm
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -8,7 +8,7 @@ COMMENT=	Wayland stacking compositor
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols \
-		wlroots>=0.13.0<0.14.0:x11-toolkits/wlroots
+		wlroots>=0.14.0<0.15.0:x11-toolkits/wlroots
 LIB_DEPENDS=	libwayland-server.so:graphics/wayland \
 		libwlroots.so:x11-toolkits/wlroots \
 		libinput.so:x11/libinput \
@@ -37,6 +37,10 @@ SUID_DESC=		setuid bit on "${PORTNAME}" binary (to claim DRM without seatd/conso
 SUID_VARS=		MAYBE_SUID="@(,,4755) "
 
 X11_MESON_ENABLED=	xwayland
+
+post-extract:
+# Force system dependencies
+	@${RM} ${WRKSRC}/subprojects/*.wrap
 
 post-patch:
 # Extract (snapshot) version from the port instead of meson.build

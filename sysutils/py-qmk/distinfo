@@ -1,3 +1,3 @@
-TIMESTAMP = 1622107782
-SHA256 (qmk-0.0.51.tar.gz) = efeef209cde1df92b9823db686d9684962cd00aae9f45ba5e3d494aa5b3c6b9a
-SIZE (qmk-0.0.51.tar.gz) = 8007
+TIMESTAMP = 1624805090
+SHA256 (qmk-0.1.0.tar.gz) = 76654b2fff92857f04201cdea3effc8af1f6039b4fcbe64157edb62666928251
+SIZE (qmk-0.1.0.tar.gz) = 8750

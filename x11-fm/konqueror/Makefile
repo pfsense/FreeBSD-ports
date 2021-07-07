@@ -1,13 +1,9 @@
 PORTNAME=	konqueror
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
-PORTREVISION=	1
 CATEGORIES=	x11-fm www kde kde-applications
 
-PATCH_SITES=	https://invent.kde.org/network/konqueror/-/commit/
-PATCHFILES=	1003724180b3a758f7f4f42b247261ac95234e1b.diff:-p1
-
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	KDE system log application
+COMMENT=	KDE web browser and file manager
 
 DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
 EXPIRATION_DATE=2021-06-23

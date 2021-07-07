@@ -1,10 +1,10 @@
---- src/sshguard.in.orig	2019-05-23 22:25:17 UTC
+--- src/sshguard.in.orig	2020-12-31 17:06:03 UTC
 +++ src/sshguard.in
-@@ -97,19 +97,12 @@ elif [ -z "$tailcmd" ]; then
+@@ -98,14 +98,8 @@ elif [ -z "$tailcmd" ]; then
      exit 1
  fi
  
--if [ ! -z "$PID_FILE" ]; then
+-if [ -n "$PID_FILE" ]; then
 -    if [ ! -e "$PID_FILE" ]; then
 -        echo "$$" > $PID_FILE
 -    else
@@ -15,11 +15,12 @@
 +# Already checked by rc(8)
 +echo "$$" > $PID_FILE
  
- # Make sure to kill entire process group (subshell) on exit/interrupts.
- trap "clean_and_exit" INT TERM
+ # Select PARSER from configuration file or use default. Add POST_PARSER from
+ # configuration file if it exists.
+@@ -119,5 +113,4 @@ trap "clean_and_exit" INT TERM
  trap "kill 0" EXIT
  
- eval $tailcmd | $libexec/sshg-parser | \
+ eval $tailcmd | eval "$RUN_PARSER" | \
 -    $libexec/sshg-blocker $flags | $BACKEND &
 -wait
 +    $libexec/sshg-blocker $flags | ($BACKEND ; pkill -PIPE -P $$)

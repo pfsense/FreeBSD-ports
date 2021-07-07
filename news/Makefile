@@ -21,6 +21,7 @@
     SUBDIR += husky-sqpack
     SUBDIR += ifmail
     SUBDIR += inn
+    SUBDIR += inn-current
     SUBDIR += knews
     SUBDIR += leafnode
     SUBDIR += lusernet

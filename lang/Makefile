@@ -47,6 +47,7 @@
     SUBDIR += duktape-lib
     SUBDIR += ecl
     SUBDIR += elixir
+    SUBDIR += elixir-devel
     SUBDIR += elixir-mode.el
     SUBDIR += elk
     SUBDIR += elm
@@ -92,13 +93,13 @@
     SUBDIR += gcc-ecj45
     SUBDIR += gcc10
     SUBDIR += gcc10-devel
+    SUBDIR += gcc11
     SUBDIR += gcc11-devel
     SUBDIR += gcc12-devel
     SUBDIR += gcc48
     SUBDIR += gcc6-aux
     SUBDIR += gcc7
     SUBDIR += gcc8
-    SUBDIR += gcc8-devel
     SUBDIR += gcc9
     SUBDIR += gcc9-devel
     SUBDIR += gforth
@@ -249,7 +250,6 @@
     SUBDIR += pbasic
     SUBDIR += pcc
     SUBDIR += perl5-devel
-    SUBDIR += perl5.28
     SUBDIR += perl5.30
     SUBDIR += perl5.32
     SUBDIR += perl5.34
@@ -274,8 +274,6 @@
     SUBDIR += py-lupa
     SUBDIR += py-qt5-qml
     SUBDIR += py-textX
-    SUBDIR += pypy
-    SUBDIR += pypy3
     SUBDIR += python
     SUBDIR += python-doc-html
     SUBDIR += python-doc-pdf-a4
@@ -306,6 +304,7 @@
     SUBDIR += ruby26
     SUBDIR += ruby27
     SUBDIR += ruby30
+    SUBDIR += rubygem-ruby_language_server
     SUBDIR += runawk
     SUBDIR += rust
     SUBDIR += rust-bootstrap
@@ -335,7 +334,6 @@
     SUBDIR += snobol4
     SUBDIR += solidity
     SUBDIR += spidermonkey17
-    SUBDIR += spidermonkey185
     SUBDIR += spidermonkey60
     SUBDIR += spidermonkey78
     SUBDIR += spl

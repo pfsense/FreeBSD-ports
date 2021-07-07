@@ -145,6 +145,7 @@
     SUBDIR += kuserfeedback
     SUBDIR += latte-dock
     SUBDIR += libkdepim
+    SUBDIR += libportal
     SUBDIR += ljclive
     SUBDIR += lookbook
     SUBDIR += lumina-archiver
@@ -157,6 +158,8 @@
     SUBDIR += lumina-screenshot
     SUBDIR += lumina-textedit
     SUBDIR += lxqt-notificationd
+    SUBDIR += maliit-framework
+    SUBDIR += maliit-keyboard
     SUBDIR += mate-indicator-applet
     SUBDIR += mate-notification-daemon
     SUBDIR += mate-utils
@@ -193,6 +196,7 @@
     SUBDIR += plasma5-sddm-kcm
     SUBDIR += plopfolio
     SUBDIR += preferences
+    SUBDIR += presage
     SUBDIR += projectlibre
     SUBDIR += puush
     SUBDIR += py-autokey
@@ -210,6 +214,7 @@
     SUBDIR += py-vobject
     SUBDIR += qlipper
     SUBDIR += qownnotes
+    SUBDIR += qtfeedback
     SUBDIR += recoll
     SUBDIR += remind
     SUBDIR += rolo
@@ -246,6 +251,7 @@
     SUBDIR += x026
     SUBDIR += xcalendar
     SUBDIR += xchm
+    SUBDIR += xdg-desktop-portal
     SUBDIR += xfce4-generic-slider
     SUBDIR += xfce4-notes-plugin
     SUBDIR += xfce4-notifyd

@@ -1,7 +1,7 @@
 # Created by: Sergey A. Osokin <osa@FreeBSD.org>
 
 PORTNAME?=	nginx
-PORTVERSION=	1.21.0
+PORTVERSION=	1.21.1
 CATEGORIES=	www
 MASTER_SITES=	https://nginx.org/download/ \
 		LOCAL/osa

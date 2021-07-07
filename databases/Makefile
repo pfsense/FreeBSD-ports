@@ -63,7 +63,6 @@
     SUBDIR += elixir-ecto
     SUBDIR += elixir-geo
     SUBDIR += elixir-mariaex
-    SUBDIR += elixir-mongo
     SUBDIR += elixir-postgrex
     SUBDIR += elixir-timex_ecto
     SUBDIR += emacsql
@@ -75,6 +74,10 @@
     SUBDIR += fastdb
     SUBDIR += firebird25-client
     SUBDIR += firebird25-server
+    SUBDIR += firebird30-client
+    SUBDIR += firebird30-server
+    SUBDIR += firebird40-client
+    SUBDIR += firebird40-server
     SUBDIR += fortytwo-bdb
     SUBDIR += foundationdb
     SUBDIR += foundationdb-devel
@@ -198,6 +201,7 @@
     SUBDIR += mongodb42-tools
     SUBDIR += mongodb44
     SUBDIR += mongodb49
+    SUBDIR += mongodb50
     SUBDIR += mroonga
     SUBDIR += mtop
     SUBDIR += mydumper
@@ -569,10 +573,10 @@
     SUBDIR += pg_hashids
     SUBDIR += pg_partman
     SUBDIR += pg_qualstats
-    SUBDIR += pg_reorg
     SUBDIR += pg_repack
     SUBDIR += pg_similarity
     SUBDIR += pg_stat_kcache
+    SUBDIR += pg_tileserv
     SUBDIR += pgaccess
     SUBDIR += pgadmin3
     SUBDIR += pgbackrest
@@ -580,13 +584,11 @@
     SUBDIR += pgbarman
     SUBDIR += pgbouncer
     SUBDIR += pgdbf
-    SUBDIR += pgespresso
     SUBDIR += pgfouine
     SUBDIR += pgloader3
     SUBDIR += pglogical
     SUBDIR += pgmetrics
     SUBDIR += pgmodeler
-    SUBDIR += pgpool-II-35
     SUBDIR += pgpool-II-36
     SUBDIR += pgpool-II-37
     SUBDIR += pgpool-II-40
@@ -708,14 +710,6 @@
     SUBDIR += postgresql14-plpython
     SUBDIR += postgresql14-pltcl
     SUBDIR += postgresql14-server
-    SUBDIR += postgresql95-client
-    SUBDIR += postgresql95-contrib
-    SUBDIR += postgresql95-docs
-    SUBDIR += postgresql95-pgtcl
-    SUBDIR += postgresql95-plperl
-    SUBDIR += postgresql95-plpython
-    SUBDIR += postgresql95-pltcl
-    SUBDIR += postgresql95-server
     SUBDIR += postgresql96-client
     SUBDIR += postgresql96-contrib
     SUBDIR += postgresql96-docs
@@ -734,10 +728,8 @@
     SUBDIR += proftpd-mod_sql_tds
     SUBDIR += prometheus-postgresql-adapter
     SUBDIR += pspg
-    SUBDIR += puppetdb-terminus5
     SUBDIR += puppetdb-terminus6
     SUBDIR += puppetdb-terminus7
-    SUBDIR += puppetdb5
     SUBDIR += puppetdb6
     SUBDIR += puppetdb7
     SUBDIR += puredb
@@ -843,8 +835,6 @@
     SUBDIR += py-xapian
     SUBDIR += py-zodbpickle
     SUBDIR += pymongo
-    SUBDIR += pypy-gdbm
-    SUBDIR += pypy-sqlite3
     SUBDIR += qdbm
     SUBDIR += qdbm-plus
     SUBDIR += qof
@@ -936,6 +926,7 @@
     SUBDIR += rubygem-em-redis-unified
     SUBDIR += rubygem-familia
     SUBDIR += rubygem-flipper-active_record
+    SUBDIR += rubygem-flipper-active_record-rails61
     SUBDIR += rubygem-flipper-active_record017
     SUBDIR += rubygem-gdbm
     SUBDIR += rubygem-globalid
@@ -976,6 +967,7 @@
     SUBDIR += rubygem-redis-actionpack-rails50
     SUBDIR += rubygem-redis-actionpack-rails52
     SUBDIR += rubygem-redis-actionpack-rails60
+    SUBDIR += rubygem-redis-actionpack-rails61
     SUBDIR += rubygem-redis-namespace
     SUBDIR += rubygem-redis-namespace16
     SUBDIR += rubygem-redis-namespace17
@@ -1008,6 +1000,7 @@
     SUBDIR += sqlite3
     SUBDIR += sqlitebrowser
     SUBDIR += sqliteconvert
+    SUBDIR += sqlitecpp
     SUBDIR += sqlitemanager
     SUBDIR += sqliteodbc
     SUBDIR += sqlitestudio

@@ -1,9 +1,10 @@
 PORTNAME=	iortcw
 PORTVERSION=	1.51c
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	games
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Game engine for Return to Castle Wolfenstein
 
 LICENSE=	GPLv3

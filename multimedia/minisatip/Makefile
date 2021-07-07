@@ -1,7 +1,7 @@
 # Created by: Bernhard Froehlich <decke@FreeBSD.org>
 
 PORTNAME=	minisatip
-PORTVERSION=	1.1.7
+PORTVERSION=	1.1.24
 DISTVERSIONPREFIX=	v
 CATEGORIES=	multimedia
 
@@ -20,6 +20,7 @@ GH_ACCOUNT=	catalinii
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
+USE_RC_SUBR=	${PORTNAME}
 GNU_CONFIGURE=	yes
 ALL_TARGET=	minisatip
 

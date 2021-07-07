@@ -1140,6 +1140,9 @@ lib32/.libGL/dri/swrast_dri.so
 lib32/.libGL/dri/vmwgfx_dri.so
 lib32/.libGL/libGL.so.1
 lib32/libFAudio.so.0
+lib32/libGLX.so.0
+lib32/libGLX_mesa.so.0
+lib32/libGLdispatch.so.0
 lib32/libLLVM-10.so
 lib32/libSDL2-2.0.so.0
 lib32/libX11-xcb.so.1
@@ -1490,7 +1493,6 @@ lib32/wine/i386-unix/connect.dll.so
 lib32/wine/i386-unix/control.exe.so
 lib32/wine/i386-unix/credui.dll.so
 lib32/wine/i386-unix/crtdll.dll.so
-lib32/wine/i386-unix/crtdll.so
 lib32/wine/i386-unix/crypt32.dll.so
 lib32/wine/i386-unix/crypt32.so
 lib32/wine/i386-unix/cryptdlg.dll.so
@@ -1598,6 +1600,7 @@ lib32/wine/i386-unix/dplayx.dll.so
 lib32/wine/i386-unix/dpnaddr.dll.so
 lib32/wine/i386-unix/dpnet.dll.so
 lib32/wine/i386-unix/dpnhpast.dll.so
+lib32/wine/i386-unix/dpnhupnp.dll.so
 lib32/wine/i386-unix/dpnlobby.dll.so
 lib32/wine/i386-unix/dpnsvr.exe.so
 lib32/wine/i386-unix/dpvoice.dll.so
@@ -2047,26 +2050,17 @@ lib32/wine/i386-unix/msvcp71.dll.so
 lib32/wine/i386-unix/msvcp80.dll.so
 lib32/wine/i386-unix/msvcp90.dll.so
 lib32/wine/i386-unix/msvcr100.dll.so
-lib32/wine/i386-unix/msvcr100.so
 lib32/wine/i386-unix/msvcr110.dll.so
-lib32/wine/i386-unix/msvcr110.so
 lib32/wine/i386-unix/msvcr120.dll.so
-lib32/wine/i386-unix/msvcr120.so
 lib32/wine/i386-unix/msvcr120_app.dll.so
 lib32/wine/i386-unix/msvcr70.dll.so
-lib32/wine/i386-unix/msvcr70.so
 lib32/wine/i386-unix/msvcr71.dll.so
-lib32/wine/i386-unix/msvcr71.so
 lib32/wine/i386-unix/msvcr80.dll.so
-lib32/wine/i386-unix/msvcr80.so
 lib32/wine/i386-unix/msvcr90.dll.so
-lib32/wine/i386-unix/msvcr90.so
 lib32/wine/i386-unix/msvcrt.dll.so
-lib32/wine/i386-unix/msvcrt.so
 lib32/wine/i386-unix/msvcrt20.dll.so
 lib32/wine/i386-unix/msvcrt40.dll.so
 lib32/wine/i386-unix/msvcrtd.dll.so
-lib32/wine/i386-unix/msvcrtd.so
 lib32/wine/i386-unix/msvfw32.dll.so
 lib32/wine/i386-unix/msvidc32.dll.so
 lib32/wine/i386-unix/msvideo.dll16.so
@@ -2217,6 +2211,7 @@ lib32/wine/i386-unix/softpub.dll.so
 lib32/wine/i386-unix/sound.drv16.so
 lib32/wine/i386-unix/spoolss.dll.so
 lib32/wine/i386-unix/spoolsv.exe.so
+lib32/wine/i386-unix/sppc.dll.so
 lib32/wine/i386-unix/srclient.dll.so
 lib32/wine/i386-unix/srvcli.dll.so
 lib32/wine/i386-unix/sspicli.dll.so
@@ -2249,7 +2244,6 @@ lib32/wine/i386-unix/twain_32.dll.so
 lib32/wine/i386-unix/typelib.dll16.so
 lib32/wine/i386-unix/tzres.dll.so
 lib32/wine/i386-unix/ucrtbase.dll.so
-lib32/wine/i386-unix/ucrtbase.so
 lib32/wine/i386-unix/uianimation.dll.so
 lib32/wine/i386-unix/uiautomationcore.dll.so
 lib32/wine/i386-unix/uiribbon.dll.so
@@ -2306,6 +2300,7 @@ lib32/wine/i386-unix/whoami.exe.so
 lib32/wine/i386-unix/wiaservc.dll.so
 lib32/wine/i386-unix/wimgapi.dll.so
 lib32/wine/i386-unix/win32s16.dll16.so
+lib32/wine/i386-unix/win32u.dll.so
 lib32/wine/i386-unix/win87em.dll16.so
 lib32/wine/i386-unix/winaspi.dll16.so
 lib32/wine/i386-unix/windebug.dll16.so
@@ -2804,6 +2799,7 @@ lib32/wine/i386-windows/dplayx.dll
 lib32/wine/i386-windows/dpnaddr.dll
 lib32/wine/i386-windows/dpnet.dll
 lib32/wine/i386-windows/dpnhpast.dll
+lib32/wine/i386-windows/dpnhupnp.dll
 lib32/wine/i386-windows/dpnlobby.dll
 lib32/wine/i386-windows/dpnsvr.exe
 lib32/wine/i386-windows/dpvoice.dll
@@ -3194,6 +3190,7 @@ lib32/wine/i386-windows/softpub.dll
 lib32/wine/i386-windows/sound.drv16
 lib32/wine/i386-windows/spoolss.dll
 lib32/wine/i386-windows/spoolsv.exe
+lib32/wine/i386-windows/sppc.dll
 lib32/wine/i386-windows/srclient.dll
 lib32/wine/i386-windows/srvcli.dll
 lib32/wine/i386-windows/sspicli.dll
@@ -3281,6 +3278,7 @@ lib32/wine/i386-windows/whoami.exe
 lib32/wine/i386-windows/wiaservc.dll
 lib32/wine/i386-windows/wimgapi.dll
 lib32/wine/i386-windows/win32s16.dll16
+lib32/wine/i386-windows/win32u.dll
 lib32/wine/i386-windows/win87em.dll16
 lib32/wine/i386-windows/winaspi.dll16
 lib32/wine/i386-windows/windebug.dll16
@@ -3514,6 +3512,7 @@ share/applications/wine.desktop
 %%DATADIR%%/nls/c_437.nls
 %%DATADIR%%/nls/c_500.nls
 %%DATADIR%%/nls/c_708.nls
+%%DATADIR%%/nls/c_720.nls
 %%DATADIR%%/nls/c_737.nls
 %%DATADIR%%/nls/c_775.nls
 %%DATADIR%%/nls/c_850.nls

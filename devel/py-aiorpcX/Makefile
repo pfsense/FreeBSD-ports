@@ -2,6 +2,7 @@
 
 PORTNAME=	aiorpcX
 PORTVERSION=	0.22.1
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
@@ -17,6 +18,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}attrs>=0:devel/py-attrs@${PY_FLAVOR} \
 
 USES=		python:3.8+
 USE_PYTHON=	autoplist distutils
+
+CONFLICTS_INSTALL=	py[0-9]*-aiorpcX-legacy
 
 NO_ARCH=	yes
 

@@ -1,6 +1,6 @@
 PORTNAME=	getmail6
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.16
+DISTVERSION=	6.18.1
 PORTREVISION=	1
 CATEGORIES=	mail python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,9 +11,10 @@ COMMENT=	POP3/IMAP4 mail retriever (Python3 fork)
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/docs/COPYING
 
-USES=		python:3.6+
+USES=		python:3.6+ shebangfix
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist concurrent distutils
+SHEBANG_FILES=	getmail getmail-gmail-xoauth-tokens getmail_*
 
 NO_ARCH=	yes
 NO_BUILD=	yes
