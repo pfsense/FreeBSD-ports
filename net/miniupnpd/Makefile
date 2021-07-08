@@ -2,6 +2,7 @@
 
 PORTNAME=	miniupnpd
 DISTVERSION=	2.2.1
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	net
 MASTER_SITES=	http://miniupnp.tuxfamily.org/files/ \
