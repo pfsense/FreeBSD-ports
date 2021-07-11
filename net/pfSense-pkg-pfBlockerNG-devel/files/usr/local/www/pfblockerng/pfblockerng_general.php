@@ -110,7 +110,7 @@ if ($_POST) {
 			if($syslog_changed){
 				syslog(LOG_NOTICE, '[pfBlockerNG] sytem logging settings changed, restarting services.');
 				restart_service('pfb_filter');
-				restart_service('dnsbl');
+				restart_service('pfb_dnsbl');
 			}
 			
 			header('Location: /pfblockerng/pfblockerng_general.php');
