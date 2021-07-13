@@ -34,8 +34,8 @@ require_once('pfsense-utils.inc');
 require_once('service-utils.inc');
 
 // WireGuard includes
-require_once('wireguard/wg.inc');
-require_once('wireguard/wg_guiconfig.inc');
+require_once('wireguard/includes/wg.inc');
+require_once('wireguard/includes/wg_guiconfig.inc');
 
 global $wgg;
 
@@ -169,7 +169,7 @@ display_top_tabs($tab_array);
 						<th><?=gettext("Public Key")?></th>
 						<th><?=gettext("Address / Assignment")?></th>
 						<th><?=gettext("Listen Port")?></th>
-						<th><?=gettext("# Peers")?></th>
+						<th><?=gettext("Peers")?></th>
 						<th><?=gettext("Actions")?></th>
 					</tr>
 				</thead>
@@ -196,7 +196,7 @@ if (is_array($wgg['tunnels']) && count($wgg['tunnels']) > 0):
 							<a class="fa fa-user-plus" title="<?=gettext('Add Peer')?>" href="<?="vpn_wg_peers_edit.php?tun={$tunnel['name']}"?>"></a>
 							<a class="fa fa-pencil" title="<?=gettext('Edit Tunnel')?>" href="<?="vpn_wg_tunnels_edit.php?tun={$tunnel['name']}"?>"></a>
 							<a class="fa fa-download" title="<?=gettext('Download Configuration')?>" href="<?="?act=download&tun={$tunnel['name']}"?>" usepost></a>
-							<?=wg_generate_toggle_icon_link($tunnel, 'Click to toggle enabled/disabled status', "?act=toggle&tun={$tunnel['name']}")?>
+							<?=wg_generate_toggle_icon_link(($tunnel['enabled'] == 'yes'), 'tunnel', "?act=toggle&tun={$tunnel['name']}")?>
 							<a class="fa fa-trash text-danger" title="<?=gettext('Delete Tunnel')?>" href="<?="?act=delete&tun={$tunnel['name']}"?>" usepost></a>
 						</td>
 					</tr>
@@ -273,15 +273,20 @@ endif;
 <script type="text/javascript">
 //<![CDATA[
 events.push(function() {
+
 	var peershidden = true;
+
 	var keyshidden = true;
 
 	hideClass('peer-entries', peershidden);
 
 	// Toggle peer visibility
 	$('#showpeers').click(function () {
+
 		peershidden = !peershidden;
+
 		hideClass('peer-entries', peershidden);
+
 	});
 
 	$('.pubkey').click(function () {
@@ -294,11 +299,7 @@ events.push(function() {
 //]]>
 </script>
 
-<?php 
-
+<?php
+include('wireguard/includes/wg_foot.inc');
 include('foot.inc');
-
-// Must be included last
-include('wireguard/wg_foot.inc');
-
 ?>

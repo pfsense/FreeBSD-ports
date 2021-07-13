@@ -1,12 +1,11 @@
 PORTNAME=	pfSense-pkg-WireGuard
-DISTVERSION=	0.1.3
-PORTREVISION=	1
+PORTVERSION=	0.1.5
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	rcmcdonald91@gmail.com
+MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package WireGuard (EXPERIMENTAL)
 
 LICENSE=	APACHE20
@@ -26,24 +25,36 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 
-	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/wireguard
+	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/wireguard/classes
+	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/wireguard/includes
 
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/shortcuts
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/include
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/widgets
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/wg/js
 
 	${MKDIR} ${STAGEDIR}${DATADIR}
 
-	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/wireguard.priv.inc \
+	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/*.priv.inc \
 		${STAGEDIR}/etc/inc/priv
 
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/wireguard.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/*.xml \
 		${STAGEDIR}${PREFIX}/pkg
 
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/wireguard/*.inc \
-		${STAGEDIR}${PREFIX}/pkg/wireguard
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/wireguard/classes/*.class.php \
+		${STAGEDIR}${PREFIX}/pkg/wireguard/classes
 
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/shortcuts/pkg_wireguard.inc \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/wireguard/includes/*.inc \
+		${STAGEDIR}${PREFIX}/pkg/wireguard/includes
+
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/shortcuts/*.inc \
 		${STAGEDIR}${PREFIX}/www/shortcuts
+
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/include/*.inc \
+		${STAGEDIR}${PREFIX}/www/widgets/include
+
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/widgets/*.widget.php \
+		${STAGEDIR}${PREFIX}/www/widgets/widgets
 
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/wg/*.php \
 		${STAGEDIR}${PREFIX}/www/wg

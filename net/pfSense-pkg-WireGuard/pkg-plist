@@ -1,17 +1,18 @@
 pkg/wireguard.xml
-pkg/wireguard/wg.inc
-pkg/wireguard/wg_api.inc
-pkg/wireguard/wg_foot.inc
-pkg/wireguard/wg_globals.inc
-pkg/wireguard/wg_guiconfig.inc
-pkg/wireguard/wg_install.inc
-pkg/wireguard/wg_service.inc
-pkg/wireguard/wg_validate.inc
+pkg/wireguard/classes/wgconfig.class.php
+pkg/wireguard/includes/wg.inc
+pkg/wireguard/includes/wg_api.inc
+pkg/wireguard/includes/wg_foot.inc
+pkg/wireguard/includes/wg_globals.inc
+pkg/wireguard/includes/wg_guiconfig.inc
+pkg/wireguard/includes/wg_install.inc
+pkg/wireguard/includes/wg_service.inc
+pkg/wireguard/includes/wg_validate.inc
 www/shortcuts/pkg_wireguard.inc
+www/widgets/include/wireguard.inc
+www/widgets/widgets/wireguard.widget.php
 www/wg/js/WireGuardHelpers.js
 www/wg/status_wireguard.php
-www/wg/vpn_wg.php
-www/wg/vpn_wg_edit.php
 www/wg/vpn_wg_peers.php
 www/wg/vpn_wg_peers_edit.php
 www/wg/vpn_wg_settings.php
@@ -20,4 +21,3 @@ www/wg/vpn_wg_tunnels_edit.php
 /etc/inc/priv/wireguard.priv.inc
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
-@dir /etc/inc
