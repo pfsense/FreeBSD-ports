@@ -239,7 +239,7 @@
 			<fieldname>varsettingsauthbadpassmessage</fieldname>
 			<description>
 				<![CDATA[
-				You can add additional information to the syslog output if a user connects. Click Info for details.
+				You can add additional information to the syslog output if a user is rejected. Click Info for details.
 				<div class="infoblock">
 				You can use variables for any attributes.<br/><br/>
 				<code>%{User-Name}</code> - Logs the username.</br>
@@ -272,7 +272,7 @@
 			<fieldname>varsettingsauthgoodpassmessage</fieldname>
 			<description>
 				<![CDATA[
-				You can add additional information to the syslog output if a user is rejected. Click Info for details.
+				You can add additional information to the syslog output if a user connects. Click Info for details.
 				<div class="infoblock">
 				You can use variables for any attributes.<br/><br/>
 				<code>%{User-Name}</code> - Logs the username.</br>
