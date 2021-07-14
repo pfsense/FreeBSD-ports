@@ -444,6 +444,19 @@ function frr_ospf_validate_input() {
 		}
 	}
 
+	for ($x = 0; $x < 99; $x++) {
+		if (isset($_POST["routevalue{$x}"]) || isset($_POST["routearea{$x}"])) {
+			if (!is_subnetv4($_POST["routevalue{$x}"])) {
+				$input_errors[] = "OSPF Network must be an IPv4 subnet.";
+			}
+			if (!is_ipaddr($_POST["routearea{$x}"])) {
+				$input_errors[] = "Area ID must be an IPv4 address.";
+			}
+		} else {
+			break;
+		}
+	}
+
 	/* spfholdtime 0-60000 */
 	frr_validate_intrange_input("SPF Hold Time", $_POST['spfholdtime'], 0, 60000);
 	/* spfdelay 0-600000 */
