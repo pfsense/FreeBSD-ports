@@ -354,7 +354,7 @@ function zabbix_proxy_plugin_certificates($pluginparams) {
 		}
 
 		if (($pluginparams['event'] == 'used_certificates') && !empty($zabbixconf['tlscertfile']) &&
-		    ($zabbixconf['tlscertfile'] != 'none') {
+		    ($zabbixconf['tlscertfile'] != 'none')) {
 			$result['pkgname'] = "Zabbix Proxy";
 			$result['certificatelist'] = array();
 		        if ($zabbixconf['tlsconnect'] == 'cert') {
