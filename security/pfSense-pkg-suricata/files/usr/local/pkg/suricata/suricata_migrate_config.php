@@ -890,6 +890,15 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 		$pconfig['ips_netmap_threads'] = 'auto';
 	}
 
+	/**********************************************************/
+	/* Add new 'autofp-scheduler' parameter for the interface */
+	/* when using 'autofp" runmode.                           */
+	/**********************************************************/
+	if (!isset($pconfig['autofp_scheduler'])) {
+		$updated_cfg = true;
+		$pconfig['autofp_scheduler'] = 'hash';
+	}
+
 	// Save the new configuration data into the $config array pointer
 	$r = $pconfig;
 }
