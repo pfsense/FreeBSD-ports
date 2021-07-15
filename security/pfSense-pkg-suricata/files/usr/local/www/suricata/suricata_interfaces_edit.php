@@ -1906,6 +1906,7 @@ events.push(function(){
 		disableInput('blockoffendersip', disable);
 		disableInput('ips_netmap_threads', disable);
 		disableInput('performance', disable);
+		disableInput('runmode', disable);
 		disableInput('max_pending_packets', disable);
 		disableInput('detect_eng_profile', disable);
 		disableInput('inspect_recursion_limit', disable);
@@ -1957,7 +1958,10 @@ events.push(function(){
 		disableInput('eve_log_alerts_payload', disable);
 		disableInput('eve_log_alerts_metadata', disable);
 		disableInput('eve_log_anomaly', disable);
+		disableInput('eve_log_anomaly_type_decode', disable);
+		disableInput('eve_log_anomaly_type_stream', disable);
 		disableInput('eve_log_anomaly_type_applayer', disable);
+		disableInput('eve_log_anomaly_packethdr', disable);
 		disableInput('eve_log_http', disable);
 		disableInput('eve_log_dns', disable);
 		disableInput('eve_log_nfs', disable);
@@ -2185,7 +2189,6 @@ events.push(function(){
 	});
 
 	// ---------- On initial page load ------------------------------------------------------------
-	enable_change();
 	enable_blockoffenders();
 	toggle_system_log();
 	toggle_enable_stats();
@@ -2207,6 +2210,7 @@ events.push(function(){
 	toggle_eve_log_tls_extended();
 	toggle_eve_log_http_extended();
 	toggle_eve_log_smtp_extended();
+	enable_change();
 
 });
 //]]>
