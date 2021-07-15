@@ -34,7 +34,6 @@
 		<section>Services</section>
 		<configfile>stunnel.xml</configfile>
 	</menu>
-	<include_file>/usr/local/pkg/stunnel.inc</include_file>	
 	<tabs>
 		<tab>
 			<text>Tunnels</text>
