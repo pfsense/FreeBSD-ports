@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2020 Bill Meeks
+ * Copyright (C) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -507,6 +507,10 @@ if ($suricatacfg['eve_log_sip'] == 'on') {
 
 if ($suricatacfg['eve_log_snmp'] == 'on') {
 	$eve_out_types .= "\n        - snmp";
+}
+
+if ($suricatacfg['eve_log_mqtt'] == 'on') {
+	$eve_out_types .= "\n        - mqtt";
 }
 
 if ($suricatacfg['eve_log_smtp'] == 'on') {

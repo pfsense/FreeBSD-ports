@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -262,6 +262,9 @@ if (empty($pconfig['eve_log_drop'])) {
 if (empty($pconfig['eve_log_snmp'])) {
 	$pconfig['eve_log_snmp'] = "on";
 }
+if (empty($pconfig['eve_log_mqtt'])) {
+	$pconfig['eve_log_mqtt'] = "on";
+}
 if (empty($pconfig['eve_log_http_extended']))
 	$pconfig['eve_log_http_extended'] = $pconfig['http_log_extended'];
 if (empty($pconfig['eve_log_tls_extended']))
@@ -489,6 +492,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['eve_log_flow'] == "on") { $natent['eve_log_flow'] = 'on'; }else{ $natent['eve_log_flow'] = 'off'; }
 		if ($_POST['eve_log_netflow'] == "on") { $natent['eve_log_netflow'] = 'on'; }else{ $natent['eve_log_netflow'] = 'off'; }
 		if ($_POST['eve_log_snmp'] == "on") { $natent['eve_log_snmp'] = 'on'; }else{ $natent['eve_log_snmp'] = 'off'; }
+		if ($_POST['eve_log_mqtt'] == "on") { $natent['eve_log_mqtt'] = 'on'; }else{ $natent['eve_log_mqtt'] = 'off'; }
 		if ($_POST['eve_log_stats_totals'] == "on") { $natent['eve_log_stats_totals'] = 'on'; }else{ $natent['eve_log_stats_totals'] = 'off'; }
 		if ($_POST['eve_log_stats_deltas'] == "on") { $natent['eve_log_stats_deltas'] = 'on'; }else{ $natent['eve_log_stats_deltas'] = 'off'; }
 		if ($_POST['eve_log_stats_threads'] == "on") { $natent['eve_log_stats_threads'] = 'on'; }else{ $natent['eve_log_stats_threads'] = 'off'; }
@@ -1267,6 +1271,14 @@ $group->add(new Form_Checkbox(
 	'on'
 ));
 
+$group->add(new Form_Checkbox(
+	'eve_log_mqtt',
+	'MQTT',
+	'MQTT',
+	$pconfig['eve_log_mqtt'] == 'on' ? true:false,
+	'on'
+));
+
 $group->setHelp('Choose the information to log via EVE JSON output.');
 $section->add($group)->addClass('eve_log_info');
 
@@ -1406,9 +1418,8 @@ $section->addInput(new Form_Input(
 	'Netmap Threads',
 	'text',
 	$pconfig['ips_netmap_threads']
-))->setHelp('Enter the number of netmap threads to use. Default is "auto". When set to a numeric value corresponding to the netmap TX/RX queues registered by the NIC, performance can be substantially increased. ' . 
-	    'The NIC hosting this interface registered ' . suricata_get_supported_netmap_queues($if_real) . ' queue(s) with the kernel. Note that with some network cards, using half of the queues value may ' . 
-		'actually be the best choice. For example, if the NIC reports 4 TX/RX queues, using only 2 may work better. The value entered here must be either "auto", or a whole number, and cannot exceed the number of TX/RX queues reported by the NIC.');
+))->setHelp('Enter the number of netmap threads to use. Default is "auto". When set to a value matching the netmap TX/RX queues registered by the NIC, performance can be greatly increased. ' . 
+	    'The NIC hosting this interface registered ' . suricata_get_supported_netmap_queues($if_real) . ' queue(s) with the kernel.');
 
 $section->addInput(new Form_Checkbox(
 	'blockoffenderskill',
@@ -1944,7 +1955,9 @@ events.push(function(){
 		disableInput('eve_log_info', disable);
 		disableInput('eve_log_alerts', disable);
 		disableInput('eve_log_alerts_payload', disable);
+		disableInput('eve_log_alerts_metadata', disable);
 		disableInput('eve_log_anomaly', disable);
+		disableInput('eve_log_anomaly_type_applayer', disable);
 		disableInput('eve_log_http', disable);
 		disableInput('eve_log_dns', disable);
 		disableInput('eve_log_nfs', disable);
@@ -1959,6 +1972,8 @@ events.push(function(){
 		disableInput('eve_log_dhcp', disable);
 		disableInput('eve_log_ssh', disable);
 		disableInput('eve_log_smtp', disable);
+		disableInput('eve_log_snmp', disable);
+		disableInput('eve_log_mqtt', disable);
 		disableInput('eve_log_flow', disable);
 		disableInput('eve_log_netflow', disable);
 		disableInput('eve_log_drop', disable);
