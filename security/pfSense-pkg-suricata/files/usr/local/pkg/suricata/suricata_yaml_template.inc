@@ -20,7 +20,7 @@ runmode: {$runmode}
 host-mode: auto
 
 # Specifies the kind of flow load balancer used by the flow pinned autofp mode.
-autofp-scheduler: active-packets
+autofp-scheduler: {$autofp_scheduler}
 
 # Daemon working directory
 daemon-directory: {$suricatacfgdir}
