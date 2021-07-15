@@ -255,7 +255,7 @@ elseif ($_POST['ResetAll']) {
 	$pconfig['tls_parser'] = "yes";
 	$pconfig['tls_detect_ports'] = "443";
 	$pconfig['tls_encrypt_handling'] = "default";
-	$pconfig['tls_ja3_fingerprint'] = "off";
+	$pconfig['tls_ja3_fingerprint'] = "auto";
 	$pconfig['smtp_parser'] = "yes";
 	$pconfig['smtp_parser_decode_mime'] = "off";
 	$pconfig['smtp_parser_decode_base64'] = "on";
@@ -690,7 +690,7 @@ if ($importalias) {
 	$section->addInput(new Form_Checkbox(
 		'tls_ja3_fingerprint',
 		'JA3/JA3S Fingerprint',
-		'Suricata will generate JA3/JA3S fingerprint from client hello. Default is Not Checked.',
+		'Suricata will generate JA3/JA3S fingerprint from client hello. Default is Not Checked, which disables fingerprinting unless required by the rules.',
 		$pconfig['tls_ja3_fingerprint'] == 'on' ? true:false,
 		'on'
 	));

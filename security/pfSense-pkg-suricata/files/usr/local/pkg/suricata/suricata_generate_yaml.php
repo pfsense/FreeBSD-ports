@@ -991,7 +991,7 @@ if (!empty($suricatacfg['tls_ja3_fingerprint'])) {
 	$tls_ja3 = $suricatacfg['tls_ja3_fingerprint'];
 }
 else {
-	$tls_ja3 = "no";
+	$tls_ja3 = "auto";
 }
 if (!empty($suricatacfg['tls_encrypt_handling'])) {
 	$tls_encrypt_handling = $suricatacfg['tls_encrypt_handling'];

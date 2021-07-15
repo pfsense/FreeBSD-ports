@@ -597,7 +597,7 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 		$updated_cfg = true;
 	}
 	if (empty($pconfig['tls_ja3_fingerprint'])) {
-		$pconfig['tls_ja3_fingerprint'] = "off";
+		$pconfig['tls_ja3_fingerprint'] = "auto";
 		$updated_cfg = true;
 	}
 
