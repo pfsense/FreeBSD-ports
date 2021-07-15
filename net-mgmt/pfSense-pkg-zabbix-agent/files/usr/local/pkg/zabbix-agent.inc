@@ -375,7 +375,7 @@ function zabbix_agent_plugin_certificates($pluginparams) {
 		}
 
 		if (($pluginparams['event'] == 'used_certificates') && !empty($zabbixconf['tlscertfile']) &&
-		    ($zabbixconf['tlscertfile'] != 'none') {
+		    ($zabbixconf['tlscertfile'] != 'none')) {
 			$result['pkgname'] = "Zabbix Agent";
 			$result['certificatelist'] = array();
 		        if ($zabbixconf['tlsconnect'] == 'cert') {
