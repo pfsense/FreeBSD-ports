@@ -128,7 +128,10 @@ if (!empty($suricatacfg['runmode']))
 	$runmode = $suricatacfg['runmode'];
 else
 	$runmode = "autofp";
-
+if (!empty($suricatacfg['autofp_scheduler']))
+	$autofp_scheduler = $suricatacfg['autofp_scheduler'];
+else
+	$autofp_scheduler = "hash";
 if (!empty($suricatacfg['max_pending_packets']))
 	$max_pend_pkts = $suricatacfg['max_pending_packets'];
 else

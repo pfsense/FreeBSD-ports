@@ -154,6 +154,8 @@ if (empty($pconfig['block_drops_only']))
 	$pconfig['block_drops_only'] = "off";
 if (empty($pconfig['runmode']))
 	$pconfig['runmode'] = "autofp";
+if (empty($pconfig['autofp_scheduler']))
+	$pconfig['autofp_scheduler'] = "hash";
 if (empty($pconfig['max_pending_packets']))
 	$pconfig['max_pending_packets'] = "1024";
 if (empty($pconfig['detect_eng_profile']))
@@ -437,6 +439,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['file_store_logdir']) $natent['file_store_logdir'] = base64_encode($_POST['file_store_logdir']);
 		if ($_POST['enable_eve_log'] == "on") { $natent['enable_eve_log'] = 'on'; }else{ $natent['enable_eve_log'] = 'off'; }
 		if ($_POST['runmode']) $natent['runmode'] = $_POST['runmode']; else unset($natent['runmode']);
+		if ($_POST['autofp_scheduler']) $natent['autofp_scheduler'] = $_POST['autofp_scheduler']; else unset($natent['autofp_scheduler']);
 		if ($_POST['max_pending_packets']) $natent['max_pending_packets'] = $_POST['max_pending_packets']; else unset($natent['max_pending_packets']);
 		if ($_POST['inspect_recursion_limit'] >= '0') $natent['inspect_recursion_limit'] = $_POST['inspect_recursion_limit']; else unset($natent['inspect_recursion_limit']);
 		if ($_POST['intf_snaplen'] > '0') $natent['intf_snaplen'] = $_POST['intf_snaplen']; else $natent['inspect_recursion_limit'] = "1518";
@@ -1476,6 +1479,13 @@ $section->addInput(new Form_Select(
 	array('autofp' => 'AutoFP', 'workers' => 'Workers', 'single' => 'Single')
 ))->setHelp('Choose a Suricata run mode setting. Default is "AutoFP" and is the recommended setting for most cases.  "Workers" uses multiple worker threads, each of which single-handedly processes the packets it acquires (i.e., each thread runs all thread modules). ' . 
 	    '"Single" uses only a single thread for all operations on a packet and is intended for use only in testing or development instances.');
+$section->addInput(new Form_Select(
+	'autofp_scheduler',
+	'AutoFP Scheduler Type',
+	$pconfig['autofp_scheduler'],
+	array('hash' => 'Hash', 'ippair' => 'IP Pair')
+))->setHelp('Choose the kind of flow load balancer used by the flow pinned autofp mode.  "Hash" assigns the flow to a thread using the 5-7 tuple hash. ' . 
+	    '"IP Pair" assigns the flow to a thread using addresses only. This setting is applicable only when the Run Mode is set to "autofp".');
 $section->addInput(new Form_Input(
 	'max_pending_packets',
 	'Max Pending Packets',
@@ -1743,6 +1753,15 @@ events.push(function(){
 			$('#eve_log_drop').parent().hide();
 			hideInput('intf_snaplen', false);
 			hideInput('ips_netmap_threads', true);
+		}
+	}
+
+	function enable_autofp_scheduler() {
+		if ($('#runmode').val() == 'autofp') {
+			hideSelect('autofp_scheduler', false);
+		}
+		else {
+			hideSelect('autofp_scheduler', true);
 		}
 	}
 
@@ -2188,8 +2207,18 @@ events.push(function(){
 		}
 	});
 
+	$('#runmode').on('change', function() {
+		if ($('#runmode').val() == 'autofp') {
+			hideSelect('autofp_scheduler', false);
+		}
+		else {
+			hideSelect('autofp_scheduler', true);
+		}
+	});
+
 	// ---------- On initial page load ------------------------------------------------------------
 	enable_blockoffenders();
+	enable_autofp_scheduler();
 	toggle_system_log();
 	toggle_enable_stats();
 	toggle_http_log();
