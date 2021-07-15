@@ -2245,11 +2245,9 @@ function suricata_get_auto_category_mods($categories, $sid_mods, $action, $log_r
 	$matchcount = 0;
 
 	// Get a list of all possible categories by loading all rules files
-	foreach (array( VRT_FILE_PREFIX, ET_OPEN_FILE_PREFIX, ET_PRO_FILE_PREFIX, GPL_FILE_PREFIX ) as $prefix) {
-		$files = glob(SURICATA_RULES_DIR . "{$prefix}*.rules");
-		foreach ($files as $file) {
-			$all_cats[] = basename($file);
-		}
+	$files = glob(SURICATA_RULES_DIR . "*.rules");
+	foreach ($files as $file) {
+		$all_cats[] = basename($file);
 	}
 
 	// Walk the SID mod tokens and decode looking for rule
