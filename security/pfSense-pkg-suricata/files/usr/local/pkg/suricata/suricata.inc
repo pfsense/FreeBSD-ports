@@ -3571,14 +3571,17 @@ function suricata_create_rc() {
 	$suricatadir = SURICATADIR;
 	$suricatalogdir = SURICATALOGDIR;
 	$suricatabindir = SURICATA_PBI_BINDIR;
-	$rcdir = RCFILEPREFIX;	
+	$rcdir = RCFILEPREFIX;
+	$no_enabled_interface = TRUE;
 
 	// If no interfaces are configured for Suricata, exit
 	if (!is_array($config['installedpackages']['suricata']['rule'])) {
+		unlink_if_exists("{$rcdir}suricata.sh");
 		return;
 	}
 	$suricataconf = $config['installedpackages']['suricata']['rule'];
 	if (empty($suricataconf)) {
+		unlink_if_exists("{$rcdir}suricata.sh");
 		return;
 	}
 
@@ -3600,6 +3603,9 @@ function suricata_create_rc() {
 		if (($value['enable'] != 'on') || ($if_real == "")) {
 			continue;
 		}
+
+		// We have at least one enabled Suricata interface
+		$no_enabled_interface = FALSE;
 		$suricata_uuid = $value['uuid'];
 		$run_mode = $value['ips_mode'] == 'ips_mode_inline' && $value['blockoffenders'] == 'on' ? '--netmap' : '-i ' . $if_real;
 
@@ -3705,9 +3711,14 @@ esac
 
 EOD;
 
-	// Write out the suricata.sh script file
-	@file_put_contents("{$rcdir}suricata.sh", $suricata_sh_text);
-	@chmod("{$rcdir}suricata.sh", 0755);
+	if (!$no_enabled_interface) {
+		// Write out the suricata.sh script file
+		@file_put_contents("{$rcdir}suricata.sh", $suricata_sh_text);
+		@chmod("{$rcdir}suricata.sh", 0755);
+	} else {
+		unlink_if_exists("{$rcdir}suricata.sh");
+	}
+
 	unset($suricata_sh_text);
 }
 
