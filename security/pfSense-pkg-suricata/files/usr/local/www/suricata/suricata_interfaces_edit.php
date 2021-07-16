@@ -1926,6 +1926,7 @@ events.push(function(){
 		disableInput('ips_netmap_threads', disable);
 		disableInput('performance', disable);
 		disableInput('runmode', disable);
+		disableInput('autofp_scheduler', disable);
 		disableInput('max_pending_packets', disable);
 		disableInput('detect_eng_profile', disable);
 		disableInput('inspect_recursion_limit', disable);
