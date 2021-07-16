@@ -429,6 +429,9 @@ error_log(gettext("Starting rules update...  Time: " . date("Y-m-d H:i:s") . "\n
 $last_curl_error = "";
 $update_errors = false;
 
+/* Ensure our basic config array of interfaces exists to prevent PHP foreach() errors */
+init_config_arr(array('installedpackages', 'suricata', 'rule'));
+
 /* Save current state (running/not running) for each enabled Suricatat interface */
 $active_interfaces = array();
 foreach ($config['installedpackages']['suricata']['rule'] as $value) {
