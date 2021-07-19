@@ -842,7 +842,7 @@ function zeek_sync_on_changes() {
 					$valid = FALSE;
 				}
 				if ($valid) {
-					zeek_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout);
+					zeek_do_xmlrpc_sync($sync_to_ip, $username, $password, $port, $protocol, $synctimeout);
 				} else {
 					log_error("[zeek] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
 				}
@@ -856,15 +856,10 @@ function zeek_sync_on_changes() {
 function zeek_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncport, $varsyncprotocol, $varsynctimeout) {
 	global $config, $g;
 
-	if ($username == "" || $password == "" || $sync_to_ip == "" || $port == "" || $protocol == "") {
+	if ($username == "" || $password == "" || $sync_to_ip == "" || $varsyncport == "" || $varsyncprotocol == "") {
 		log_error("[zeek] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
 		return;
 	}
-	// Take care of IPv6 literal address
-	if (is_ipaddrv6($sync_to_ip)) {
-		$sync_to_ip = "[{$sync_to_ip}]";
-	}
-	$url = "{$protocol}://{$sync_to_ip}";
 	/* XML will hold the sections to sync */
 	$xml = array();
 	$xml['zeek'] = $config['installedpackages']['zeek'];
@@ -872,57 +867,14 @@ function zeek_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncport, $v
 	$xml['zeekcluster'] = $config['installedpackages']['zeekcluster'];
 	$xml['zeekscript'] = $config['installedpackages']['zeekscript'];
 
-	/* Assemble XMLRPC payload */
-	$params = array(XML_RPC_encode($password), XML_RPC_encode($xml));
-
-	/* Set a few variables needed for sync */
-	$method = 'pfsense.merge_installedpackages_section_xmlrpc';
-	$msg = new XML_RPC_Message($method, $params);
-	$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-	$cli->setCredentials($username, $password);
-	if ($g['debug']) {
-		$cli->setDebug(1);
-	}
-	/* Send our XMLRPC message and timeout after defined sync timeout value */
-	$resp = $cli->send($msg, $synctimeout);
-	if (!$resp) {
-		$error = "A communication error occurred while attempting XMLRPC sync with {$url}:{$port}.";
-		log_error("[zeek] {$error}");
-		file_notice("sync_settings", $error, "zeek Settings Sync", "");
-	} elseif ($resp->faultCode()) {
-		$cli->setDebug(1);
-		$resp = $cli->send($msg, $synctimeout);
-		$error = "An error code was received while attempting XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-		log_error("[zeek] {$error}");
-		file_notice("sync_settings", $error, "zeek Settings Sync", "");
-	} else {
-		log_error("[zeek] XMLRPC sync successfully completed with {$url}:{$port}.");
-	}
-
-	/* Tell zeek to reload our settings on the destination sync host. */
-	$method = 'pfsense.exec_php';
+	$synctimeout = intval($varsynctimeout);
 	$execcmd = "require_once('/usr/local/pkg/zeek.inc');\n";
 	$execcmd .= "zeek_all_after_XMLRPC_resync();";
-	/* Assemble XMLRPC payload */
-	$params = array(XML_RPC_encode($password), XML_RPC_encode($execcmd));
-
-	$msg = new XML_RPC_Message($method, $params);
-	$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-	$cli->setCredentials($username, $password);
-	$resp = $cli->send($msg, $synctimeout);
-	if (!$resp) {
-		$error = "A communication error occurred while attempting XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-		log_error("[zeek] {$error}");
-		file_notice("sync_settings", $error, "zeek Settings Sync", "");
-	} elseif ($resp->faultCode()) {
-		$cli->setDebug(1);
-		$resp = $cli->send($msg, $synctimeout);
-		$error = "An error code was received while attempting XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-		log_error("[zeek] {$error}");
-		file_notice("sync_settings", $error, "zeek Settings Sync", "");
-	} else {
-		log_error("[zeek] XMLRPC reload data success with {$url}:{$port} (pfsense.exec_php).");
-	}
+	$rpc_client = new pfsense_xmlrpc_client();
+	$rpc_client->setConnectionData($sync_to_ip, $varsyncport, $username, $password, $varsyncprotocol);
+	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
+	/* Tell zeek to reload our settings on the destination sync host. */
+	$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
 }
 
 function zeek_all_after_XMLRPC_resync() {
