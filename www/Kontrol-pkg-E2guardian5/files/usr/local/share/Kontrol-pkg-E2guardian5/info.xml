@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>E2guardian5</name>
+		<descr><![CDATA[Full featured content filtering with MITM, domain, url and body filtering.]]></descr>
+		<pkginfolink/>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>e2guardian.xml</configurationfile>
+		<filter_rule_function>e2g_generate_rules</filter_rule_function>
+	</package>
+</pfsensepkgs>

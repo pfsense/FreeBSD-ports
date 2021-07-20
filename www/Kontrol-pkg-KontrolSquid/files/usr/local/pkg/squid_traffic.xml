@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/*
+ * squid_traffic.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2014 Marcello Coutinho
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>squidtraffic</name>
+	<title>Proxy Server: Traffic Management</title>
+	<include_file>/usr/local/pkg/squid.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=squid.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Remote Cache</text>
+			<url>/pkg.php?xml=squid_upstream.xml</url>
+		</tab>
+		<tab>
+			<text>Local Cache</text>
+			<url>/pkg_edit.php?xml=squid_cache.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Antivirus</text>
+			<url>/pkg_edit.php?xml=squid_antivirus.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>ACLs</text>
+			<url>/pkg_edit.php?xml=squid_nac.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Traffic Mgmt</text>
+			<url>/pkg_edit.php?xml=squid_traffic.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Authentication</text>
+			<url>/pkg_edit.php?xml=squid_auth.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=squid_users.xml</url>
+		</tab>
+		<tab>
+			<text>Real Time</text>
+			<url>/squid_monitor.php</url>
+		</tab>
+		<tab>
+                        <text>Status</text>
+                        <url>/status_squid.php</url>
+                </tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=squid_sync.xml</url>
+		</tab>
+		</tabs>
+	<fields>
+		<field>
+			<name>Squid Traffic Managment Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Maximum Download Size</fielddescr>
+			<fieldname>max_download_size</fieldname>
+			<description>
+				<![CDATA[
+				Limit the maximum total download size to the size specified here (in kilobytes).
+				<span class="text-info">Set to 0 to disable.<br />
+				<strong>Traffic control settings mainly work with universal HTTP, so it may not work without HTTPS interception, if HTTPS is used, it can also be a problem with dynamic content (javascript).</strong>
+				</span>
+				]]>
+			</description>
+			<type>input</type>
+			<size>10</size>
+			<required/>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>Maximum Upload Size</fielddescr>
+			<fieldname>max_upload_size</fieldname>
+			<description>
+				<![CDATA[
+				Limit the maximum total upload size to the size specified here (in kilobytes).
+				<span class="text-info">Set to 0 to disable.</span>
+				]]>
+			</description>
+			<type>input</type>
+			<size>10</size>
+			<required/>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>Overall Bandwidth Throttling</fielddescr>
+			<fieldname>overall_throttling</fieldname>
+			<description>
+				<![CDATA[
+				This value specifies the bandwidth throttle for downloads (in kilobytes per second).
+				Users will gradually have their download speed decreased according to this value.<br/>
+				<span class="text-info">Set to 0 to disable.</span>
+				]]>
+			</description>
+			<type>input</type>
+			<size>10</size>
+			<required/>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>Per-Host Throttling</fielddescr>
+			<fieldname>perhost_throttling</fieldname>
+			<description>
+				<![CDATA[
+				This value specifies the download throttling per host.
+				<span class="text-info">Set to 0 to disable.</span>
+				]]>
+			</description>
+			<type>input</type>
+			<size>10</size>
+			<required/>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>Throttle Unrestricted IPs</fielddescr>
+			<fieldname>unrestricted_throttling</fieldname>
+			<description>If enabled, even 'Unrestricted IPs' configured on the ACLs tab are subject to throttling.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name>Squid Transfer Extension Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Throttle Only Specific Extensions</fielddescr>
+			<fieldname>throttle_specific</fieldname>
+			<description>Leave this checked to be able to choose the extensions that throttling will be applied to. Otherwise, all files will be throttled.</description>
+			<type>checkbox</type>
+			<enablefields>throttle_binaries,throttle_cdimages,throttle_multimedia,throttle_others</enablefields>
+		</field>
+		<field>
+			<fielddescr>Throttle Binary Files</fielddescr>
+			<fieldname>throttle_binaries</fieldname>
+			<description>Check this to apply bandwidth throttle to binary files. This includes compressed archives and executables.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Throttle CD/DVD Image Files</fielddescr>
+			<fieldname>throttle_cdimages</fieldname>
+			<description>Check this to apply bandwidth throttle to CD/DVD image files.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Throttle Multimedia Files</fielddescr>
+			<fieldname>throttle_multimedia</fieldname>
+			<description>Check this to apply bandwidth throttle to multimedia files, such as movies or songs.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Throttle Other Extensions</fielddescr>
+			<fieldname>throttle_others</fieldname>
+			<description>Comma-separated list of extensions to apply bandwidth throttle to.</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<name>Squid Transfer Quick Abort Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<type>info</type>
+			<fielddescr>Quick Abort Settings</fielddescr>
+			<description>
+				<![CDATA[
+				<div class="infoblock">
+				The cache by default continues downloading aborted requests which are almost completed.
+				This may be undesirable on slow links and/or very busy caches. Impatient users may tie up file descriptors and
+				bandwidth by repeatedly requesting and immediately aborting downloads.
+				When the user aborts a request, Squid will compare the below values to the amount of data transferred so far.<br/><br/>
+				If you do not want any retrieval to continue after the client has aborted, set both values below to 0.<br/>
+				If you want retrievals to always continue if they are being cached, set 'Finish transfer if less than x KB remaining' to -1.
+				</div>
+				]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Finish transfer if less than x KB remaining</fielddescr>
+			<fieldname>quick_abort_min</fieldname>
+			<description>If the transfer has less than x KB remaining, it will finish the retrieval.</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>Abort transfer if more than x KB remaining</fielddescr>
+			<fieldname>quick_abort_max</fieldname>
+			<description>If the transfer has more than x KB remaining, it will abort the retrieval.</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>Finish transfer if more than x % finished</fielddescr>
+			<fieldname>quick_abort_pct</fieldname>
+			<description>If more than x % of the transfer has completed, it will finish the retrieval.</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>0</default_value>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+		squid_validate_traffic($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		squid_resync();
+	</custom_php_resync_config_command>
+</packagegui>

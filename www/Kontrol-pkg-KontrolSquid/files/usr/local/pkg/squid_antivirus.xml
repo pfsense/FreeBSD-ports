@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/*
+ * squid_antivirus.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2014 Marcello Coutinho
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>squidantivirus</name>
+	<title>Proxy Server: Antivirus</title>
+	<include_file>/usr/local/pkg/squid.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=squid.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Remote Cache</text>
+			<url>/pkg.php?xml=squid_upstream.xml</url>
+		</tab>
+		<tab>
+			<text>Local Cache</text>
+			<url>/pkg_edit.php?xml=squid_cache.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Antivirus</text>
+			<url>/pkg_edit.php?xml=squid_antivirus.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>ACLs</text>
+			<url>/pkg_edit.php?xml=squid_nac.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Traffic Mgmt</text>
+			<url>/pkg_edit.php?xml=squid_traffic.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Authentication</text>
+			<url>/pkg_edit.php?xml=squid_auth.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=squid_users.xml</url>
+		</tab>
+		<tab>
+			<text>Real Time</text>
+			<url>/squid_monitor.php</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_squid.php</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=squid_sync.xml</url>
+		</tab>
+	</tabs>
+	<advanced_options>enabled</advanced_options>
+	<fields>
+		<field>
+			<name>ClamAV Anti-Virus Integration Using C-ICAP</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable AV</fielddescr>
+			<fieldname>enable</fieldname>
+			<description>Enable Squid antivirus check using ClamAV.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Client Forward Options</fielddescr>
+			<fieldname>client_info</fieldname>
+			<description>
+				<![CDATA[
+				Select what client info to forward to ClamAV.
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>both</default_value>
+			<options>
+				<option><name>Send both client username and IP info (Default)</name><value>both</value></option>
+				<option><name>Send only client username</name><value>username</value></option>
+				<option><name>Send only client IP</name><value>ip</value></option>
+				<option><name>Do not send client info</name><value>none</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Enable Manual Configuration</fielddescr>
+			<fieldname>enable_advanced</fieldname>
+			<description>
+				<![CDATA[
+				<strong><span class="text-danger">Warning: Only enable this if you know what you are doing.</span></strong>
+				<div class="infoblock blockopen">
+				When enabled, the options below no longer have any effect.
+				You must edit the configuration files directly in the 'Advanced Features'.<br/>
+				After enabling manual configuration, click the button below <strong>once</strong> to load default configuration files.
+				To disable manual configuration again, select 'disabled' and click 'Save'.<br/>
+				<button class="btn btn-info btn-sm" name='load_advanced' id='load_advanced' type='submit' value='Load Advanced'><i class="fa fa-file-text-o icon-embed-btn"></i> Load Advanced</button>
+				</div>
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><value>disabled</value><name>disabled</name></option>
+				<option><value>enabled</value><name>enabled</name></option>
+			</options>
+			<default_value>disabled</default_value>
+			<onchange>on_antivirus_advanced_config_changed()</onchange>
+		</field>
+		<field>
+			<fielddescr>Redirect URL</fielddescr>
+			<fieldname>clamav_url</fieldname>
+			<description>
+				<![CDATA[
+				When a virus is found then redirect the user to this URL.
+				<span class="text-info">Example:</span> http://proxy.example.com/blocked.html<br/>
+				<span class="text-info">Leave empty to use the default Squid/Kontrol WebGUI URL.</span>
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+
+		</field>
+		<field>
+			<fielddescr>Scan Type</fielddescr>
+			<fieldname>clamav_scan_type</fieldname>
+			<description>
+				<![CDATA[
+				What kind of data to scan:<br/>
+				<span class="text-info">All:</span> All data<br/>
+				<span class="text-info">Web:</span> Web pages, scripts, images and documents<br/>
+				<span class="text-info">Applications:</span> Executables, scripts, archives and documents<br/>
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><value>all</value><name>All (default)</name></option>
+				<option><value>web</value><name>Web</name></option>
+				<option><value>app</value><name>Applications</name></option>
+			</options>
+			<default_value>all</default_value>
+		</field>
+		<field>
+			<fielddescr>Exclude Audio/Video Streams</fielddescr>
+			<fieldname>clamav_disable_stream_scanning</fieldname>
+			<description>This option disables antivirus scanning of streamed video and audio for the default scan type.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Block PUA</fielddescr>
+			<fieldname>clamav_block_pua</fieldname>
+			<description>This option enables blocking of Potentially Unwanted Applications.</description>
+			<sethelp>
+				<![CDATA[
+				See <a href="https://www.clamav.net/documents/potentially-unwanted-applications-pua" target="_blank">https://www.clamav.net/documents/potentially-unwanted-applications-pua</a> for details.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>ClamAV Database Update</fielddescr>
+			<fieldname>clamav_update</fieldname>
+			<description>
+				<![CDATA[
+				Optionally, you can schedule ClamAV definitions updates via cron. Select the desired frequency here.
+				<div class="infoblock blockopen">
+				<strong><span class="text-danger">Important:</span></strong> Set to 'every 1 hour' if you want to use Google Safe Browsing feature.</br>
+				Click the button below <strong>once</strong> to force the update of AV databases immediately.
+				<strong><span class="text-info">Note:</span> This will take a while.</strong>
+				Check freshclam log on the <a href="squid_monitor.php" target="_blank">'Real Time' tab</a> for progress information.</br>
+				<button class="btn btn-success btn-sm" name='update_av' id='update_av' type='submit' value='Update AV'><i class="fa fa-refresh icon-embed-btn"></i>Update AV</button>
+				</div>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>0</default_value>
+			<options>
+				<option><name>never	  </name><value></value></option>
+				<option><name>every 1  hour</name><value>1</value></option>
+				<option><name>every 2  hours</name><value>2</value></option>
+				<option><name>every 3  hours</name><value>3</value></option>
+				<option><name>every 4  hours</name><value>4</value></option>
+				<option><name>every 6  hours</name><value>6</value></option>
+				<option><name>every 8  hours</name><value>8</value></option>
+				<option><name>every 12 hours</name><value>12</value></option>
+				<option><name>every 24 hours</name><value>24</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Regional ClamAV Database Update Mirror</fielddescr>
+			<fieldname>clamav_dbregion</fieldname>
+			<description>
+				<![CDATA[
+				Select a regional database mirror. <span class="text-info">Note:</span> The default ClamAV database mirror performs extremely slow.<br/>
+				<strong><span class="text-info">It is strongly recommended to choose a mirror here and/or configure your own mirrors manually below.</span></strong>
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><value></value><name>none</name></option>
+				<option><value>au</value><name>Australia</name></option>
+				<option><value>europe</value><name>Europe</name></option>
+				<option><value>ca</value><name>Canada</name></option>
+				<option><value>cn</value><name>China</name></option>
+				<option><value>id</value><name>Indonesia</name></option>
+				<option><value>jp</value><name>Japan</name></option>
+				<option><value>kr</value><name>Korea</name></option>
+				<option><value>ml</value><name>Malaysia</name></option>
+				<option><value>ru</value><name>Russia</name></option>
+				<option><value>sa</value><name>South Africa</name></option>
+				<option><value>tw</value><name>Taiwan</name></option>
+				<option><value>uk</value><name>United Kingdom</name></option>
+				<option><value>us</value><name>United States</name></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Optional ClamAV Database Update Servers</fielddescr>
+			<fieldname>clamav_dbservers</fieldname>
+			<description>
+				<![CDATA[
+				Enter ClamAV update servers here, or leave empty.
+				<span class="text-info">Separate entries by semi-colons (;)</span><br/>
+				<strong><span class="text-info">Note:</span></strong> For official update mirrors, use <span class="text-info">db.XY.clamav.net</span> format.
+				(Replace XY with your <a href="http://www.iana.org/domains/root/db" target="_blank">country code</a>.)
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<name>Unofficial Signatures</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>URLhaus</fielddescr>
+			<fieldname>urlhaus_sig</fieldname>
+			<description>Enables URLhaus active malware distribution sites DB support.</description>
+			<sethelp>
+				<![CDATA[
+				The signature file only contains active malware distribution sites or such that have been added to URLhaus in past 48 hours. The false positive rate should be very low. See <a href="https://urlhaus.abuse.ch/api/#clamav" target="_blank">URLhaus ClamAV signatures</a> for details.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>InterServer</fielddescr>
+			<fieldname>interserver_sig</fieldname>
+			<description>Enables InterServer.net malware DB support.</description>
+			<sethelp>
+				<![CDATA[
+				The signature file contains real time suspected malware list as detected by InterServer's InterShield protection system. See <a href="http://rbluri.interserver.net/usage.php" target="_blank">InterServer Real Time Malware Detection</a> for details.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>SecuriteInfo</fielddescr>
+			<fieldname>securiteinfo_sig</fieldname>
+			<description>Enables SecuriteInfo.com malware DB support.</description>
+			<sethelp>
+                                <![CDATA[
+				The signature files contains more that 4.000.000 signatures. At least free registration needed. See <a href="https://www.securiteinfo.com/services/anti-spam-anti-virus/improve-detection-rate-of-zero-day-malwares-for-clamav.shtml?lg=en">SecuriteInfo signatures info</a> for details.<br/>
+                                <strong><span class="text-danger">Warning:</span></strong> This option consumes significant amount of RAM.<br/>
+                                ]]>
+                        </sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>SecuriteInfo Premium</fielddescr>
+			<fieldname>securiteinfo_premium</fieldname>
+			<description>Enables SecuriteInfo.com 0-day malware DB support.</description>
+			<sethelp>
+                                <![CDATA[
+				A valid premium subscription ID required.
+                                ]]>
+                        </sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>SecuriteInfo ID</fielddescr>
+			<fieldname>securiteinfo_id</fieldname>
+			<description>
+				<![CDATA[
+				The unique 128 character identifier from one of the download links.<br/>
+				<span class="text-info">Example:</span> https://www.securiteinfo.com/get/signatures/your_unique_and_very_long_random_string_of_characters/securiteinfo.hdb
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>squidclamav.conf</fielddescr>
+			<fieldname>raw_squidclamav_conf</fieldname>
+			<description>
+				<![CDATA[
+				squidclamav.conf file.
+				<span class="text-danger">Edit only if you know what you are doing.</span>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<cols>85</cols>
+			<rows>15</rows>
+			<advancedfield/>
+		</field>
+		<field>
+			<fielddescr>c-icap.conf</fielddescr>
+			<fieldname>raw_cicap_conf</fieldname>
+			<description>
+				<![CDATA[
+				c-icap.conf file.
+				<span class="text-danger">Edit only if you know what you are doing.</span>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<cols>85</cols>
+			<rows>15</rows>
+			<advancedfield/>
+		</field>
+		<field>
+			<fielddescr>c-icap.magic</fielddescr>
+			<fieldname>raw_cicap_magic</fieldname>
+			<description>
+				<![CDATA[
+				c-icap.conf file.
+				<span class="text-danger">Edit only if you know what you are doing.</span>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<cols>85</cols>
+			<rows>15</rows>
+			<advancedfield/>
+		</field>
+		<field>
+			<fielddescr>freshclam.conf</fielddescr>
+			<fieldname>raw_freshclam_conf</fieldname>
+			<description>
+				<![CDATA[
+				freshclam.conf file.
+				<span class="text-danger">Edit only if you know what you are doing.</span>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<cols>85</cols>
+			<rows>15</rows>
+			<advancedfield/>
+		</field>
+		<field>
+			<fielddescr>clamd.conf</fielddescr>
+			<fieldname>raw_clamd_conf</fieldname>
+			<description>
+				<![CDATA[
+				clamd.conf file.
+				<span class="text-danger">Edit only if you know what you are doing.</span>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<cols>85</cols>
+			<rows>15</rows>
+			<advancedfield/>
+		</field>
+	</fields>
+	<custom_php_after_head_command>
+		squid_print_antivirus_advanced_config();
+	</custom_php_after_head_command>
+	<custom_php_before_form_command>
+		<![CDATA[
+		squid_print_antivirus_advanced_config2();
+		if ($_POST['enable_advanced'] == "enabled") {
+			$opts = array("clamav_url", "clamav_safebrowsing", "clamav_dbregion", "clamav_dbservers");
+			foreach ($opts as $opt) {
+				if (isset($_POST[$opt])) {
+					unset($_POST[$opt]);
+				}
+			}
+		} else {
+			$opts = array("raw_squidclamav_conf", "raw_cicap_conf", "raw_cicap_magic", "raw_freshclam_conf", "raw_clamd_conf");
+			foreach ($opts as $opt) {
+				if (isset($_POST[$opt])) {
+					unset($_POST[$opt]);
+				}
+			}
+		}
+		]]>
+	</custom_php_before_form_command>
+	<custom_php_after_form_command>
+		squid_print_antivirus_advanced_config2();
+	</custom_php_after_form_command>
+	<custom_php_validation_command>
+		squid_validate_antivirus($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		<![CDATA[
+		if ($_POST['load_advanced'] == "Load Advanced" ) {
+			return;
+		}
+		if ($_POST['update_av'] == 'Update AV') {
+			return;
+		}
+		if ($_POST['enable_advanced'] == "enabled" ) {
+			squid_antivirus_put_raw_config($_POST);
+		}
+		squid_resync();
+		]]>
+	</custom_php_resync_config_command>
+</packagegui>

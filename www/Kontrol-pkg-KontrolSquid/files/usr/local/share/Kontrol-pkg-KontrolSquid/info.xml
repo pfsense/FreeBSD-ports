@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>KontrolSquid</name>
+		<internal_name>KontrolSquid</internal_name>
+		<descr><![CDATA[Kontrol Customized High performance web proxy cache. It combines Squid as a proxy server with its capabilities of acting as a HTTP / HTTPS reverse proxy.&lt;br /&gt;
+			It includes SSL filtering and antivirus integration via C-ICAP and also A Full integration with E2guardian filtering.
+			]]></descr>
+		<pkginfolink>https://konntrol.com.br/</pkginfolink>
+		<website>http://www.squid-cache.org/</website>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>squid.xml</configurationfile>
+	</package>
+</pfsensepkgs>

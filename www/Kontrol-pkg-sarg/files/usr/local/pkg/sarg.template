@@ -1,0 +1,821 @@
+<?php
+/*
+	sarg.template
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2012 Marcello Coutinho <marcellocoutinho@gmail.com>
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+// create sarg.conf
+	$sg = <<<EOF
+# sarg.conf
+#
+# TAG:  access_log file
+#       Where is the access.log
+#       sarg -l file
+#
+access_log {$access_log}
+
+# TAG: graphs yes|no
+#	Use graphics where possible.
+#           graph_days_bytes_bar_color blue|green|yellow|orange|brown|red
+#
+graphs {$graphs}
+#graph_days_bytes_bar_color orange
+
+# TAG:  graph_font
+#       The full path to the TTF font file to use to create the graphs. It is required
+#       if graphs is set to yes.
+#
+#graph_font /usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf
+
+# TAG:	title
+# 	Specify the title for html page.
+#
+#title "Squid User Access Reports"
+title "{$sarg_title} User Access Reports"
+# TAG:	font_face
+# 	Specify the font for html page.
+#
+#font_face Tahoma,Verdana,Arial
+font_face "Segoe UI", "Dejavu Sans", "Helvetica Neue"
+
+# TAG:	header_color
+# 	Specify the header color
+#
+#header_color darkblue
+header_color lightgray
+
+# TAG:	header_bgcolor
+# 	Specify the header bgcolor
+#
+#header_bgcolor blanchedalmond
+header_bgcolor #212121
+
+# TAG:	font_size
+# 	Specify the text font size
+#
+#font_size 9px
+font_size 12px
+
+# TAG:	header_font_size
+# 	Specify the header font size
+#
+#header_font_size 9px
+header_font_size 12px
+
+# TAG:	title_font_size
+# 	Specify the title font size
+#
+#title_font_size 11px
+title_font_size 14px
+
+# TAG:	background_color
+# TAG:	background_color
+#	Html page background color
+#
+# background_color white
+background_color whitesmoke
+
+# TAG:	text_color
+#	Html page text color
+#
+#text_color #000000
+
+# TAG:	text_bgcolor
+#	Html page text background color
+#
+#text_bgcolor lavender
+text_bgcolor whitesmoke
+
+# TAG:	title_color
+#	Html page title color
+#
+#title_color green
+title_color #212121
+
+# TAG:	logo_image
+#	Html page logo.
+#
+#logo_image none
+
+# TAG:	logo_text
+#	Html page logo text.
+#
+#logo_text ""
+
+# TAG:	logo_text_color
+#	Html page logo texti color.
+#
+#logo_text_color #000000
+
+# TAG:	logo_image_size
+#	Html page logo image size.
+#       width height
+#
+#image_size 80 45
+
+# TAG:	background_image
+#	Html page background image
+#
+#background_image none
+
+# TAG:  password
+#       User password file used by Squid authentication scheme
+#       If used, generate reports just for those users.
+#
+#password none
+
+# TAG:  temporary_dir
+#       Temporary directory name for work files
+#       sarg -w dir
+#
+#temporary_dir /tmp
+
+# TAG:  output_dir
+#       The reports will be saved in that directory
+#       sarg -o dir
+#
+output_dir /usr/local/sarg-reports
+
+# TAG:  anonymous_output_files yes/no
+#       Use anonymous file and directory names in the report. If it is set to
+#       no (the default), the user ID/IP/name is slightly mangled to create a
+#       suitable file name to store the report of the user but the user's
+#       identity can easily be guessed from the mangled name. If this option is
+#       set, any file or directory belonging to the user is replaced by a short
+#       number.  The purpose is to hide the identity of the user when looking
+#       at the report file names but it may serve to shorten the path too.
+#
+anonymous_output_files {$anonymous_output_files}
+
+# TAG:  output_email
+#       Email address to send the reports. If you use this tag, no html reports will be generated.
+#       sarg -e email
+#
+#output_email none
+
+# TAG:  resolve_ip yes/no
+#       Convert IP address to DNS name
+#       sarg -n
+resolve_ip {$resolve_ip}
+
+# TAG:  user_ip yes/no
+#       Use IP address instead of userid in reports.
+#       sarg -p
+user_ip {$user_ip}
+
+# TAG:  topuser_sort_field field normal/reverse
+#       Sort field for the Topuser Report.
+#       Allowed fields: USER CONNECT BYTES TIME
+#
+topuser_sort_field {$sarguser['user_sort_field']} {$sort_order}
+
+# TAG:  user_sort_field field normal/reverse
+#       Sort field for the User Report.
+#       Allowed fields: SITE CONNECT BYTES TIME
+#
+user_sort_field {$sarguser['user_sort_field']} {$sort_order}
+
+# TAG:  exclude_users file
+#       users within the file will be excluded from reports.
+#       You can use indexonly to have only index.html file.
+#
+exclude_users {$sarg_dir}/etc/sarg/exclude_users.conf
+
+# TAG:  exclude_hosts file
+#       Hosts, domains or subnets will be excluded from reports.
+#
+#       Eg.: 192.168.10.10 - exclude this IP address only
+#            192.168.10.0/24 - exclude entire subnet
+#            host1.example.com - exclude this hostname only
+#            *.example.com - exclude entire domain
+#
+exclude_hosts {$sarg_dir}/etc/sarg/exclude_hosts.conf
+
+# TAG:  useragent_log file
+#       useragent.log file path to generate useragent report.
+#
+#useragent_log none
+
+# TAG:  date_format
+#       Date format in reports: e (European=dd/mm/yy), u (American=mm/dd/yy), w (Weekly=yy.ww)
+#
+#date_format u
+date_format {$date_format}
+
+# TAG:  per_user_limit file MB
+#       Saves userid on file if download exceed n MB.
+#       This option allows you to disable user access if user exceeds a download limit.
+#
+#per_user_limit none
+
+# TAG: lastlog n
+#      How many reports files will be kept in reports directory.
+#      The oldest report file will be automatically removed.
+#      0 - no limit.
+#
+#lastlog 0
+lastlog {$lastlog}
+
+# TAG: remove_temp_files yes
+#      Remove temporary files from root report directory.
+#
+remove_temp_files {$remove_temp_files}
+
+# TAG: index yes|no|only
+#      Generate the main index.html.
+#      only - generate only the main index.html
+#
+index {$main_index}
+
+# TAG: index_tree date|file
+#      How to generate the index.
+#
+index_tree {$index_tree}
+
+# TAG: index_fields
+#      The columns to show in the index of the reports
+#      Columns are: dirsize
+#
+#index_fields dirsize
+
+# TAG: overwrite_report yes|no
+#      yes - if report date already exist it will be overwrited.
+#       no - if report date already exist it will be renamed to filename.n, filename.n+1
+#
+overwrite_report {$overwrite_report}
+
+# TAG: records_without_userid ignore|ip|everybody
+#      What can I do with records without user id (no authentication) in access.log file ?
+#
+#      ignore - This record will be ignored.
+#          ip - Use IP address instead. (default)
+#   everybody - Use "everybody" instead.
+#
+#records_without_userid ip
+
+# TAG: use_comma no|yes
+#      Use comma instead of dot in reports.
+#      Eg.: use_comma yes => 23,450,110
+#           use_comma no  => 23.450.110
+#
+use_comma {$use_comma}
+
+# TAG: mail_utility
+#      Mail command to use to send reports via SMTP. Sarg calls it like this:
+#         mail_utility -s "SARG report, date" "output_email" <"mail_content"
+#
+#      Therefore, it is possible to add more arguments to the command by specifying them
+#      here.
+#
+#      If you need too, you can use a shell script to process the content of /dev/stdin
+#      (/dev/stdin is the mail_content passed by Sarg to the script) and call whatever
+#      command you like. It is not limited to mailing the report via SMTP.
+#
+#      Don't forget to quote the command if necessary (i.e. if the path contains
+#      characters that must be quoted).
+#
+#mail_utility mailx
+
+# TAG: topsites_num n
+#      How many sites in topsites report.
+#
+#topsites_num 100
+
+# TAG: topsites_sort_order CONNECT|BYTES|TIME A|D
+#      Sort for topsites report, where A=Ascending, D=Descending
+#
+#topsites_sort_order CONNECT D
+
+# TAG: index_sort_order A/D
+#      Sort for index.html, where A=Ascending, D=Descending
+#
+#index_sort_order D
+
+# TAG: exclude_codes file
+#      Ignore records with these Squid return codes. Eg.: NONE/400
+#      Write one code per line. Lines starting with a # are ignored.
+#      Only codes matching exactly one of the line is rejected. The
+#      comparison is not case sensitive.
+#
+exclude_codes {$sarg_dir}/etc/sarg/exclude_codes
+
+# TAG: replace_index string
+#      Replace "index.html" in the main index file with this string
+#      If null, "index.html" is used
+#
+#replace_index <?php echo str_replace(".", "_", $REMOTE_ADDR); echo ".html"; ?>
+
+# TAG: max_elapsed milliseconds
+#      If elapsed time recorded in log is greater than max_elapsed, use 0 for elapsed time.
+#      Use 0 for no checking
+#
+#max_elapsed 28800000
+# 8 Hours
+max_elapsed {$max_elapsed}
+
+# TAG: report_type type
+#      What kind of reports to generate.
+#      topusers            - users, sites, times, bytes, connects, links to accessed sites, etc.
+#      topsites		   - site, connect and bytes report
+#      sites_users	   - users and sites report
+#      users_sites	   - accessed sites by the user report
+#      date_time	   - bytes used per day and hour report
+#      denied		   - denied sites with full URL report
+#      auth_failures       - autentication failures report
+#      site_user_time_date - sites, dates, times and bytes report
+#      downloads           - downloads per user report
+#
+#      Eg.: report_type topsites denied
+#
+#report_type topusers topsites sites_users users_sites date_time denied auth_failures site_user_time_date downloads
+report_type {$report_type}
+
+# TAG: usertab filename
+#      You can change the "userid" or the "IP address" to be a real user name on the reports.
+#      If resolve_ip is active, the IP address is resolved before being looked up in this
+#      file. That is, if you want to map the ip address, be sure to set resolve_ip to no or
+#      the resolved name will be looked up in the file instead of the IP address. Note that
+#      it can be used to resolve any IP address known to the DNS and then map the unresolved
+#      IP addresses to a name found in the usertab file.
+#      Table syntax:
+# 		userid name   or   ip address name
+#      Eg:
+#		SirIsaac Isaac Newton
+#		vinci Leonardo da Vinci
+#		192.168.10.1 Karol Wojtyla
+#
+#      Each line must be terminated with '\ n'
+#      If usertab is set to value "ldap" (case ignored), user names
+#      will be taken from LDAP server. Use this method to obtain usernames
+#      LDAP / Active Directory.
+#
+#usertab none
+usertab {$usertab}
+
+# TAG: LDAPHost hostname
+#	FQDN or IP address of host with LDAP service or AD DC
+#	default is '127.0.0.1'
+#LDAPHost 127.0.0.1
+{$LDAPHost}
+
+# TAG: LDAPPort port
+#       LDAP service port number
+#	default is '389'
+#LDAPPort 389
+{$LDAPPort}
+
+# TAG: LDAPBindDN CN=username,OU=group,DC=mydomain,DC=com
+#	DN of the LDAP user who is authorized to the search the LDAP database
+#	default is empty line
+#LDAPBindDN cn=proxy,dc=mydomain,dc=local
+{$LDAPBindDN}
+
+# TAG: LDAPBindPW secret
+#	Password for LDAPBindDN specified above.
+#	default is empty line
+#LDAPBindPW secret
+{$LDAPBindPW}
+
+# TAG: LDAPBaseSearch OU=users,DC=mydomain,DC=com
+#	LDAP search base DN. The search base is the place in the hierarchical LDAP structure
+#       where the search for user accounts starts.
+#	default is empty line
+#LDAPBaseSearch ou=users,dc=mydomain,dc=local
+{$LDAPBaseSearch}
+
+# TAG: LDAPFilterSearch (uid=%s)
+#	Use this to filter the user login entries to be returned for a search operation in LDAP.
+#	First founded record will be used
+#	%s - will be changed to userlogins from access.log file
+#       Search filter string can have up to 5 '%s' tags.
+#	default value is '(uid=%s)'
+#LDAPFilterSearch (uid=%s)
+{$LDAPFilterSearch}
+
+# TAG: LDAPTargetAttr attributename
+#	Name of the attribute containing the login name of the user.
+#	default value is 'cn'
+#LDAPTargetAttr cn
+{$LDAPTargetAttr}
+
+# TAG: long_url yes|no
+#      If yes, the full url is showed in report.
+#      If no, only the site will be showed
+#
+#      YES option generate very big sort files and reports.
+#
+long_url {$long_url}
+
+# TAG: date_time_by bytes|elap
+#      Date/Time reports show the downloaded volume or the elapsed time or both.
+#
+#date_time_by bytes
+date_time_by {$date_time_by}
+
+# TAG: charset name
+#      ISO 8859 is a full series of 10 standardized multilingual single-byte coded (8bit)
+#      graphic character sets for writing in alphabetic languages
+#      You can use the following charsets:
+#		Latin1 		- West European
+#		Latin2 		- Central and East European
+#		Latin3 		- Southeast European
+#		Latin4 		- Scandinavian/Baltic
+#		Cyrillic
+#		Arabic
+#		Greek
+#		Hebrew
+#		Latin5 		- Turkish
+#		Latin6          - Lappish/Nordic/Eskimo
+#		Windows-1251
+#		Japan
+#		Koi8-r
+#		UTF-8
+#
+#charset Latin1
+charset {$report_charset}
+
+# TAG: user_invalid_char "&/"
+#      Records that contain invalid characters in userid will be ignored by Sarg.
+#
+#user_invalid_char "&/"
+
+# TAG: privacy yes|no
+#      privacy_string "***.***.***.***"
+#      privacy_string_color blue
+#      In some countries the sysadm cannot see the visited sites by a restrictive law.
+#      Using privacy 'yes', the visited url will be changes by privacy_string and the link
+#      will be removed from reports.
+#
+privacy {$privacy}
+#privacy_string "***.***.***.***"
+#privacy_string_color blue
+
+# TAG: include_users "user1:user2:...:usern"
+#      Reports will be generated only for listed users.
+#
+#include_users none
+{$include_users}
+
+# TAG: exclude_string "string1:string2:...:stringn"
+#      Records from access.log file that contain one of listed strings will be ignored.
+#
+#exclude_string none
+{$exclude_string}
+# TAG: show_successful_message yes|no
+#      Shows "Successful report generated on dir" at end of process.
+#
+#show_successful_message yes
+
+# TAG: show_read_statistics yes|no
+#      Shows some reading statistics.
+#
+#show_read_statistics yes
+
+# TAG: topuser_fields
+#      Which fields must be in Topuser report.
+#
+#topuser_fields NUM DATE_TIME USERID CONNECT BYTES %BYTES IN-CACHE-OUT USED_TIME MILISEC %TIME TOTAL AVERAGE
+
+# TAG: user_report_fields
+#      Which fields must be in User report.
+#
+#user_report_fields CONNECT BYTES %BYTES IN-CACHE-OUT USED_TIME MILISEC %TIME TOTAL AVERAGE
+
+# TAG: bytes_in_sites_users_report yes|no
+#      Bytes field must be in Site & Users Report ?
+#
+#bytes_in_sites_users_report no
+bytes_in_sites_users_report {$bytes_in_sites_users_report}
+
+# TAG: topuser_num n
+#      How many users in topsites report. 0 = no limit
+#
+#topuser_num 0
+topuser_num {$topuser_num}
+
+# TAG: datafile file
+#      Save the report results in a file to populate some database
+#
+#datafile none
+
+# TAG: datafile_delimiter "	"
+#      ascii character to use as a field separator in datafile
+#
+#datafile_delimiter ""
+{$datafile_delimiter}
+# TAG: datafile_fields all
+#      Which data fields must be in datafile
+#      user;date;time;url;connect;bytes;in_cache;out_cache;elapsed
+#
+#datafile_fields user;date;time;url;connect;bytes;in_cache;out_cache;elapsed
+{$datafile_fields}
+
+# TAG: datafile_url ip|name
+#      Saves the URL as IP or name in datafile
+#
+#datafile_url ip
+
+# TAG: weekdays
+#      The weekdays to take into account ( Sunday->0, Saturday->6 )
+# Example:
+#weekdays 1-3,5
+# Default:
+#weekdays 0-6
+
+# TAG: hours
+#      The hours to take into account
+# Example:
+#hours 7-12,14,16,18-20
+# Default:
+#hours 0-23
+
+# TAG: dansguardian_conf file
+#      DansGuardian.conf file path
+#      Generate reports from DansGuardian logs.
+#      Use 'none' to disable it.
+#      dansguardian_conf /usr/dansguardian/dansguardian.conf
+#
+dansguardian_conf {$e2guardian_conf}
+
+# TAG: dansguardian_filter_out_date on|off
+#      This option replaces dansguardian_ignore_date (its name was not appropriate with respect to its action).
+#      Note the change of parameter value compared to the old option.
+#      'off' use the record even if its date is outside of the range found in the input log file.
+#      'on'  use the record only if its date is in the range found in the input log file.
+#
+{$e2guardian_filter_out_date}
+
+# TAG: squidguard_conf file
+#      path to squidGuard.conf file
+#      Generate reports from SquidGuard logs.
+#      Use 'none' to disable.
+#      You can use sarg -L filename to use an alternate squidGuard log.
+#      squidguard_conf /usr/local/squidGuard/squidGuard.conf
+#
+{$squidguard_conf}
+
+# TAG: redirector_log file
+#      The location of the web proxy redirector log, such as one created by squidGuard or Rejik. The option
+#      may be repeated up to 64 times to read multiple files.
+#      If this option is specified, it takes precedence over squidguard_conf.
+#      The command line option -L override this option.
+#
+#redirector_log /usr/local/squidGuard/var/logs/urls.log
+
+# TAG: redirector_filter_out_date on|off
+#      This option replaces squidguard_ignore_date and redirector_ignore_date (their names were not
+#      appropriate with respect to their actions).
+#      Note the change of parameter value compared to the old options.
+#      'off' use the record even if its date is outside of the range found in the input log file.
+#      'on'  use the record only if its date is in the range found in the input log file.
+#
+#redirector_filter_out_date on
+
+# TAG: redirector_log_format
+#      Format string for web proxy redirector logs.
+#      This option was named squidguard_log_format before Sarg 2.3.
+#      REJIK       #year#-#mon#-#day# #hour# #list#:#tmp# #ip# #user# #tmp#/#tmp#/#url#/#end#
+#      SQUIDGUARD  #year#-#mon#-#day# #hour# #tmp#/#list#/#tmp#/#tmp#/#url#/#tmp# #ip#/#tmp# #user# #end#
+#redirector_log_format #year#-#mon#-#day# #hour# #tmp#/#list#/#tmp#/#tmp#/#url#/#tmp# #ip#/#tmp# #user# #end#
+{$redirector_log_format}
+# TAG: show_sarg_info yes|no
+#      shows Sarg information and site path on each report bottom
+#
+show_sarg_info no
+
+# TAG: show_sarg_logo yes|no
+#      shows Sarg logo
+#
+show_sarg_logo no
+
+# TAG: parsed_output_log directory
+#      Saves the processed log in a Sarg format after parsing the squid log file.
+#      This is a way to dump all of the data structures out, after parsing from
+#      the logs (presumably this data will be much smaller than the log files themselves),
+#      and pull them back in for later processing and merging with data from previous logs.
+#
+#parsed_output_log none
+
+# TAG: parsed_output_log_compress /bin/gzip|/usr/bin/bzip2|nocompress
+#      Command to run to compress sarg parsed output log. It may contain
+#      options (such as -f to overwrite existing target file). The name of
+#      the file to compresse is provided at the end of this
+#      command line. Don't forget to quote things appropriately.
+#
+#parsed_output_log_compress /bin/gzip
+
+# TAG: displayed_values bytes|abbreviation
+#      how the values will be displayed in reports.
+#      eg. bytes  	-  209.526
+#          abbreviation -  210K
+#
+#displayed_values bytes
+displayed_values {$displayed_values}
+
+# Report limits
+# TAG: authfail_report_limit n
+# TAG: denied_report_limit n
+# TAG: siteusers_report_limit n
+# TAG: squidguard_report_limit n
+# TAG: user_report_limit n
+# TAG: dansguardian_report_limit n
+# TAG: download_report_limit n
+#      report limits (lines).
+#      '0' no limit
+#
+#authfail_report_limit 10
+authfail_report_limit {$authfail_report_limit}
+#denied_report_limit 10
+denied_report_limit {$denied_report_limit}
+#siteusers_report_limit 0
+#squidguard_report_limit 10
+#dansguardian_report_limit 10
+#user_report_limit 10
+#user_report_limit 50
+{$user_report_limit}
+
+# TAG: www_document_root dir
+#     Where is your Web DocumentRoot
+#     Sarg will create sarg-php directory with some PHP modules:
+#     - sarg-squidguard-block.php - add urls from user reports to squidGuard DB
+#
+#www_document_root /var/www/html
+www_document_root /usr/local/www
+
+# TAG: block_it module_url
+#     This tag allows you to pass urls from user reports to a cgi or php module,
+#     to be blocked by some Squid acl.
+#
+#     Eg.: block_it /sarg-php/sarg-block-it.php
+#     sarg-block-it is a php that will append a url to a flat file.
+#     You must change /var/www/html/sarg-php/sarg-block-it to point to your file
+#     in $filename variable, and chown to the httpd owner.
+#
+#     Sarg will pass http://module_url?url=url
+#
+#block_it none
+
+# TAG: external_css_file path
+#     Provide the path to an external CSS file to link into the HTML reports instead of
+#     the inline CSS written by sarg when this option is not set.
+#
+#     In versions prior to 2.3, this used to be an absolute file name to
+#     a file to include verbatim in each HTML page but, as it takes a lot of
+#     space, version 2.3 switched to a link to an external CSS file.
+#     Therefore, this option must contain the HTTP server path on which a client
+#     browser may find the CSS file.
+#
+#     Sarg use theses style classes:
+#	.logo		logo class
+#	.info		sarg information class, align=center
+#	.title_c	title class, align=center
+#	.header_c	header class, align:center
+#	.header_l	header class, align:left
+#	.header_r	header class, align:right
+#	.text		text class, align:right
+#	.data		table text class, align:right
+#	.data2		table text class, align:left
+#	.data3		table text class, align:center
+#	.link  		link class
+#
+#     Sarg can be instructed to output the internal CSS it inline
+#     into the reports with this command:
+#
+#        sarg --css
+#
+#     You can redirect the output to a file of your choice and edit
+#     it to your liking.
+#
+#external_css_file none
+
+# TAG: user_authentication yes|no
+#     Allow user authentication in User Reports using .htaccess
+#     Parameters:
+#	AuthUserTemplateFile - The template to use to create the
+#     .htaccess file. In the template, %u is replaced by the
+#     user's ID for which the report is generated. The path of the
+#     template is relative to the directory containing sarg
+#     configuration file.
+#
+# user_authentication no
+# AuthUserTemplateFile sarg_htaccess
+
+# TAG: download_suffix "suffix,suffix,...,suffix"
+#    file suffix to be considered as "download" in Download report.
+#    Use 'none' to disable.
+#
+#download_suffix "zip,arj,bzip,gz,ace,doc,iso,adt,bin,cab,com,dot,drv$,lha,lzh,mdb,mso,ppt,rtf,src,shs,sys,exe,dll,mp3,avi,mpg,mpeg"
+
+# TAG: ulimit n
+#    The maximum number of open file descriptors to avoid "Too many open files" error message.
+#    You need to run Sarg as root to use ulimit tag.
+#    If you run Sarg with a low privilege user, set to 'none' to disable ulimit
+#
+#ulimit 20000
+
+# TAG: ntlm_user_format username|domainname+username
+#      NTLM users format.
+#
+#ntlm_user_format domainname+username
+ntlm_user_format {$ntlm_user_format}
+
+# TAG: realtime_refresh_time num sec
+#      How many seconds between auto refresh of the realtime report.
+#      0 = disable
+#
+realtime_refresh_time 0
+
+# TAG: realtime_access_log_lines num
+#      How many last lines to get from access.log file
+#
+# realtime_access_log_lines 1000
+
+# TAG: realtime_types: GET,PUT,CONNECT,ICP_QUERY,POST
+#      Which records must be in realtime report.
+#
+realtime_types GET,PUT,CONNECT
+
+# TAG: realtime_unauthenticated_records: ignore|show
+#      What to do with unauthenticated records in realtime report.
+#
+# 
+realtime_unauthenticated_records show
+
+# TAG: byte_cost value no_cost_limit
+#      Cost per byte.
+#      Eg. byte_cost 0.01 100000000
+#           per byte cost      = 0.01
+#           bytes with no cost = 100 Mb
+#      0 = disable
+#
+# byte_cost 0.01 50000000
+
+# TAG: squid24 on|off
+#      Compatilibity with squid version <= 2.4 when using emulate_http_log on
+#
+# squid24 off
+
+# TAG: sorttable path
+#      The path to a javascript script to dynamically sort the tables.
+#      The path is the link a browser must follow to find the script. For instance,
+#      it may be http://www.myproxy.org/sorttable.js or just /sorttable.js if the script
+#      is at the root of your web site.
+#
+#      If the path starts with "../" then it is assumed to be a relative
+#      path and Sarg adds as many "../" as necessary to locate the js script from
+#      the output directory. Therefore, ../../sorttable.js links to the javascript
+#      one level above output_dir.
+#
+#      If this entry is set, each sortable table will have the "sortable" class set.
+#      You may have a look at http://www.kryogenix.org/code/browser/sorttable/
+#      for the implementation on which Sarg is based.
+#
+sorttable /sarg_sorttable.js
+
+# TAG: hostalias
+#      The name of a text file containing the host names (one per line) and the
+#      optional alias to use in the report instead of that host name.
+#      Host names may contain up to one wildcard denoted by a *. The wildcard
+#      must not be at the end of the host name.
+#      The host name may be followed by an optional alias; if no alias is provided,
+#      the host name, including the wildcard, replaces any matching host name found
+#      in the log.
+#      Host names replaced by identical aliases are grouped together in the
+#      reports.
+#      IP addresses are supported and accept the CIDR notation both for IPv4 and
+#      IPv6 addresses.
+#
+#      Example:
+#      *.gstatic.com
+#      mt*.google.com
+#      *.myphone.microsoft.com
+#      *.myphone.microsoft.com:443 *.myphone.microsoft.com:secure
+#      *.freeav.net antivirus:freeav
+#      *.mail.live.com
+#      65.52.00.00/14 *.mail.live.com
+hostalias {$sarg_dir}/etc/sarg/hostalias
+EOF;
+?>
