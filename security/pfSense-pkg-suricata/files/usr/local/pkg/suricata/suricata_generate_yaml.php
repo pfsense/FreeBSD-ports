@@ -512,9 +512,10 @@ if ($suricatacfg['eve_log_snmp'] == 'on') {
 	$eve_out_types .= "\n        - snmp";
 }
 
-if ($suricatacfg['eve_log_mqtt'] == 'on') {
-	$eve_out_types .= "\n        - mqtt";
-}
+// Disable MQTT Eve logging for now as it is a 6.x binary feature
+//if ($suricatacfg['eve_log_mqtt'] == 'on') {
+//	$eve_out_types .= "\n        - mqtt";
+//}
 
 if ($suricatacfg['eve_log_smtp'] == 'on') {
 	$eve_out_types .= "\n        - smtp:";
