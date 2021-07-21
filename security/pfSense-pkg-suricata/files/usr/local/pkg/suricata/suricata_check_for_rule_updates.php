@@ -826,6 +826,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 					suricata_update_status(gettext("Restarting Suricata to activate the new set of rules for " . convert_friendly_interface_to_friendly_descr($value['interface']) . "..."));
 					error_log(gettext("\tRestarting Suricata to activate the new set of rules for " . convert_friendly_interface_to_friendly_descr($value['interface']) . "...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 					suricata_stop($value, $if_real);
+					sleep(5);
 					suricata_start($value, $if_real);
 					suricata_update_status(gettext(" done.") . "\n");
 					syslog(LOG_NOTICE, gettext("[Suricata] Suricata has restarted with your new set of rules for " . convert_friendly_interface_to_friendly_descr($value['interface']) . "..."));
