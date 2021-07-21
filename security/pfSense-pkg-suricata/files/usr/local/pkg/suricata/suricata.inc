@@ -71,6 +71,10 @@ function suricata_stop($suricatacfg, $if_real) {
 		syslog(LOG_NOTICE, "[Suricata] Suricata STOP for {$suricatacfg['descr']}({$if_real})...");
 		killbypid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
 	}
+
+	// Give the Suricata daemon some to actually stop and cleanup before returning
+	sleep(10);
+
 	// Make sure the PID file is actually deleted so Suricata will restart without error
 	unlink_if_exists("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
 }
@@ -3705,6 +3709,7 @@ case $1 in
 		;;
 	restart)
 		rc_stop
+		sleep 5
 		rc_start
 		;;
 esac
