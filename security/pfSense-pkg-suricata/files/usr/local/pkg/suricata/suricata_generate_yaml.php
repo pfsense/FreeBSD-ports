@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2020 Bill Meeks
+ * Copyright (C) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -128,7 +128,10 @@ if (!empty($suricatacfg['runmode']))
 	$runmode = $suricatacfg['runmode'];
 else
 	$runmode = "autofp";
-
+if (!empty($suricatacfg['autofp_scheduler']))
+	$autofp_scheduler = $suricatacfg['autofp_scheduler'];
+else
+	$autofp_scheduler = "hash";
 if (!empty($suricatacfg['max_pending_packets']))
 	$max_pend_pkts = $suricatacfg['max_pending_packets'];
 else
@@ -508,6 +511,11 @@ if ($suricatacfg['eve_log_sip'] == 'on') {
 if ($suricatacfg['eve_log_snmp'] == 'on') {
 	$eve_out_types .= "\n        - snmp";
 }
+
+// Disable MQTT Eve logging for now as it is a 6.x binary feature
+//if ($suricatacfg['eve_log_mqtt'] == 'on') {
+//	$eve_out_types .= "\n        - mqtt";
+//}
 
 if ($suricatacfg['eve_log_smtp'] == 'on') {
 	$eve_out_types .= "\n        - smtp:";
@@ -987,7 +995,7 @@ if (!empty($suricatacfg['tls_ja3_fingerprint'])) {
 	$tls_ja3 = $suricatacfg['tls_ja3_fingerprint'];
 }
 else {
-	$tls_ja3 = "no";
+	$tls_ja3 = "auto";
 }
 if (!empty($suricatacfg['tls_encrypt_handling'])) {
 	$tls_encrypt_handling = $suricatacfg['tls_encrypt_handling'];

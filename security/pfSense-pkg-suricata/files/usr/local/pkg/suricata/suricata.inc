@@ -71,6 +71,10 @@ function suricata_stop($suricatacfg, $if_real) {
 		syslog(LOG_NOTICE, "[Suricata] Suricata STOP for {$suricatacfg['descr']}({$if_real})...");
 		killbypid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
 	}
+
+	// Give the Suricata daemon some to actually stop and cleanup before returning
+	sleep(10);
+
 	// Make sure the PID file is actually deleted so Suricata will restart without error
 	unlink_if_exists("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
 }
@@ -2245,11 +2249,9 @@ function suricata_get_auto_category_mods($categories, $sid_mods, $action, $log_r
 	$matchcount = 0;
 
 	// Get a list of all possible categories by loading all rules files
-	foreach (array( VRT_FILE_PREFIX, ET_OPEN_FILE_PREFIX, ET_PRO_FILE_PREFIX, GPL_FILE_PREFIX ) as $prefix) {
-		$files = glob(SURICATA_RULES_DIR . "{$prefix}*.rules");
-		foreach ($files as $file) {
-			$all_cats[] = basename($file);
-		}
+	$files = glob(SURICATA_RULES_DIR . "*.rules");
+	foreach ($files as $file) {
+		$all_cats[] = basename($file);
 	}
 
 	// Walk the SID mod tokens and decode looking for rule
@@ -3573,14 +3575,17 @@ function suricata_create_rc() {
 	$suricatadir = SURICATADIR;
 	$suricatalogdir = SURICATALOGDIR;
 	$suricatabindir = SURICATA_PBI_BINDIR;
-	$rcdir = RCFILEPREFIX;	
+	$rcdir = RCFILEPREFIX;
+	$no_enabled_interface = TRUE;
 
 	// If no interfaces are configured for Suricata, exit
 	if (!is_array($config['installedpackages']['suricata']['rule'])) {
+		unlink_if_exists("{$rcdir}suricata.sh");
 		return;
 	}
 	$suricataconf = $config['installedpackages']['suricata']['rule'];
 	if (empty($suricataconf)) {
+		unlink_if_exists("{$rcdir}suricata.sh");
 		return;
 	}
 
@@ -3602,6 +3607,9 @@ function suricata_create_rc() {
 		if (($value['enable'] != 'on') || ($if_real == "")) {
 			continue;
 		}
+
+		// We have at least one enabled Suricata interface
+		$no_enabled_interface = FALSE;
 		$suricata_uuid = $value['uuid'];
 		$run_mode = $value['ips_mode'] == 'ips_mode_inline' && $value['blockoffenders'] == 'on' ? '--netmap' : '-i ' . $if_real;
 
@@ -3701,15 +3709,21 @@ case $1 in
 		;;
 	restart)
 		rc_stop
+		sleep 5
 		rc_start
 		;;
 esac
 
 EOD;
 
-	// Write out the suricata.sh script file
-	@file_put_contents("{$rcdir}suricata.sh", $suricata_sh_text);
-	@chmod("{$rcdir}suricata.sh", 0755);
+	if (!$no_enabled_interface) {
+		// Write out the suricata.sh script file
+		@file_put_contents("{$rcdir}suricata.sh", $suricata_sh_text);
+		@chmod("{$rcdir}suricata.sh", 0755);
+	} else {
+		unlink_if_exists("{$rcdir}suricata.sh");
+	}
+
 	unset($suricata_sh_text);
 }
 

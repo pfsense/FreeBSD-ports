@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -154,6 +154,8 @@ if (empty($pconfig['block_drops_only']))
 	$pconfig['block_drops_only'] = "off";
 if (empty($pconfig['runmode']))
 	$pconfig['runmode'] = "autofp";
+if (empty($pconfig['autofp_scheduler']))
+	$pconfig['autofp_scheduler'] = "hash";
 if (empty($pconfig['max_pending_packets']))
 	$pconfig['max_pending_packets'] = "1024";
 if (empty($pconfig['detect_eng_profile']))
@@ -261,6 +263,9 @@ if (empty($pconfig['eve_log_drop'])) {
 }
 if (empty($pconfig['eve_log_snmp'])) {
 	$pconfig['eve_log_snmp'] = "on";
+}
+if (empty($pconfig['eve_log_mqtt'])) {
+	$pconfig['eve_log_mqtt'] = "on";
 }
 if (empty($pconfig['eve_log_http_extended']))
 	$pconfig['eve_log_http_extended'] = $pconfig['http_log_extended'];
@@ -434,6 +439,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['file_store_logdir']) $natent['file_store_logdir'] = base64_encode($_POST['file_store_logdir']);
 		if ($_POST['enable_eve_log'] == "on") { $natent['enable_eve_log'] = 'on'; }else{ $natent['enable_eve_log'] = 'off'; }
 		if ($_POST['runmode']) $natent['runmode'] = $_POST['runmode']; else unset($natent['runmode']);
+		if ($_POST['autofp_scheduler']) $natent['autofp_scheduler'] = $_POST['autofp_scheduler']; else unset($natent['autofp_scheduler']);
 		if ($_POST['max_pending_packets']) $natent['max_pending_packets'] = $_POST['max_pending_packets']; else unset($natent['max_pending_packets']);
 		if ($_POST['inspect_recursion_limit'] >= '0') $natent['inspect_recursion_limit'] = $_POST['inspect_recursion_limit']; else unset($natent['inspect_recursion_limit']);
 		if ($_POST['intf_snaplen'] > '0') $natent['intf_snaplen'] = $_POST['intf_snaplen']; else $natent['inspect_recursion_limit'] = "1518";
@@ -489,6 +495,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['eve_log_flow'] == "on") { $natent['eve_log_flow'] = 'on'; }else{ $natent['eve_log_flow'] = 'off'; }
 		if ($_POST['eve_log_netflow'] == "on") { $natent['eve_log_netflow'] = 'on'; }else{ $natent['eve_log_netflow'] = 'off'; }
 		if ($_POST['eve_log_snmp'] == "on") { $natent['eve_log_snmp'] = 'on'; }else{ $natent['eve_log_snmp'] = 'off'; }
+		if ($_POST['eve_log_mqtt'] == "on") { $natent['eve_log_mqtt'] = 'on'; }else{ $natent['eve_log_mqtt'] = 'off'; }
 		if ($_POST['eve_log_stats_totals'] == "on") { $natent['eve_log_stats_totals'] = 'on'; }else{ $natent['eve_log_stats_totals'] = 'off'; }
 		if ($_POST['eve_log_stats_deltas'] == "on") { $natent['eve_log_stats_deltas'] = 'on'; }else{ $natent['eve_log_stats_deltas'] = 'off'; }
 		if ($_POST['eve_log_stats_threads'] == "on") { $natent['eve_log_stats_threads'] = 'on'; }else{ $natent['eve_log_stats_threads'] = 'off'; }
@@ -1267,6 +1274,14 @@ $group->add(new Form_Checkbox(
 	'on'
 ));
 
+$group->add(new Form_Checkbox(
+	'eve_log_mqtt',
+	'MQTT',
+	'MQTT',
+	$pconfig['eve_log_mqtt'] == 'on' ? true:false,
+	'on'
+));
+
 $group->setHelp('Choose the information to log via EVE JSON output.');
 $section->add($group)->addClass('eve_log_info');
 
@@ -1406,9 +1421,8 @@ $section->addInput(new Form_Input(
 	'Netmap Threads',
 	'text',
 	$pconfig['ips_netmap_threads']
-))->setHelp('Enter the number of netmap threads to use. Default is "auto". When set to a numeric value corresponding to the netmap TX/RX queues registered by the NIC, performance can be substantially increased. ' . 
-	    'The NIC hosting this interface registered ' . suricata_get_supported_netmap_queues($if_real) . ' queue(s) with the kernel. Note that with some network cards, using half of the queues value may ' . 
-		'actually be the best choice. For example, if the NIC reports 4 TX/RX queues, using only 2 may work better. The value entered here must be either "auto", or a whole number, and cannot exceed the number of TX/RX queues reported by the NIC.');
+))->setHelp('Enter the number of netmap threads to use. Default is "auto". When set to a value matching the netmap TX/RX queues registered by the NIC, performance can be greatly increased. ' . 
+	    'The NIC hosting this interface registered ' . suricata_get_supported_netmap_queues($if_real) . ' queue(s) with the kernel.');
 
 $section->addInput(new Form_Checkbox(
 	'blockoffenderskill',
@@ -1465,6 +1479,13 @@ $section->addInput(new Form_Select(
 	array('autofp' => 'AutoFP', 'workers' => 'Workers', 'single' => 'Single')
 ))->setHelp('Choose a Suricata run mode setting. Default is "AutoFP" and is the recommended setting for most cases.  "Workers" uses multiple worker threads, each of which single-handedly processes the packets it acquires (i.e., each thread runs all thread modules). ' . 
 	    '"Single" uses only a single thread for all operations on a packet and is intended for use only in testing or development instances.');
+$section->addInput(new Form_Select(
+	'autofp_scheduler',
+	'AutoFP Scheduler Type',
+	$pconfig['autofp_scheduler'],
+	array('hash' => 'Hash', 'ippair' => 'IP Pair')
+))->setHelp('Choose the kind of flow load balancer used by the flow pinned autofp mode.  "Hash" assigns the flow to a thread using the 5-7 tuple hash. ' . 
+	    '"IP Pair" assigns the flow to a thread using addresses only. This setting is applicable only when the Run Mode is set to "autofp".');
 $section->addInput(new Form_Input(
 	'max_pending_packets',
 	'Max Pending Packets',
@@ -1735,6 +1756,15 @@ events.push(function(){
 		}
 	}
 
+	function enable_autofp_scheduler() {
+		if ($('#runmode').val() == 'autofp') {
+			hideSelect('autofp_scheduler', false);
+		}
+		else {
+			hideSelect('autofp_scheduler', true);
+		}
+	}
+
 	function toggle_system_log() {
 		var hide = ! $('#alertsystemlog').prop('checked');
 		hideSelect('alertsystemlog_facility', hide);
@@ -1895,6 +1925,8 @@ events.push(function(){
 		disableInput('blockoffendersip', disable);
 		disableInput('ips_netmap_threads', disable);
 		disableInput('performance', disable);
+		disableInput('runmode', disable);
+		disableInput('autofp_scheduler', disable);
 		disableInput('max_pending_packets', disable);
 		disableInput('detect_eng_profile', disable);
 		disableInput('inspect_recursion_limit', disable);
@@ -1944,7 +1976,12 @@ events.push(function(){
 		disableInput('eve_log_info', disable);
 		disableInput('eve_log_alerts', disable);
 		disableInput('eve_log_alerts_payload', disable);
+		disableInput('eve_log_alerts_metadata', disable);
 		disableInput('eve_log_anomaly', disable);
+		disableInput('eve_log_anomaly_type_decode', disable);
+		disableInput('eve_log_anomaly_type_stream', disable);
+		disableInput('eve_log_anomaly_type_applayer', disable);
+		disableInput('eve_log_anomaly_packethdr', disable);
 		disableInput('eve_log_http', disable);
 		disableInput('eve_log_dns', disable);
 		disableInput('eve_log_nfs', disable);
@@ -1959,6 +1996,8 @@ events.push(function(){
 		disableInput('eve_log_dhcp', disable);
 		disableInput('eve_log_ssh', disable);
 		disableInput('eve_log_smtp', disable);
+		disableInput('eve_log_snmp', disable);
+		disableInput('eve_log_mqtt', disable);
 		disableInput('eve_log_flow', disable);
 		disableInput('eve_log_netflow', disable);
 		disableInput('eve_log_drop', disable);
@@ -2169,9 +2208,18 @@ events.push(function(){
 		}
 	});
 
+	$('#runmode').on('change', function() {
+		if ($('#runmode').val() == 'autofp') {
+			hideSelect('autofp_scheduler', false);
+		}
+		else {
+			hideSelect('autofp_scheduler', true);
+		}
+	});
+
 	// ---------- On initial page load ------------------------------------------------------------
-	enable_change();
 	enable_blockoffenders();
+	enable_autofp_scheduler();
 	toggle_system_log();
 	toggle_enable_stats();
 	toggle_http_log();
@@ -2192,6 +2240,7 @@ events.push(function(){
 	toggle_eve_log_tls_extended();
 	toggle_eve_log_http_extended();
 	toggle_eve_log_smtp_extended();
+	enable_change();
 
 });
 //]]>
