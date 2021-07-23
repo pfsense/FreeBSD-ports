@@ -135,10 +135,6 @@ function syslogng_build_default_objects($settings) {
 		safe_mkdir(SYSLOGNG_DIR);
 		safe_mkdir(SYSLOGNG_DIR . "/ca.d");
 		syslogng_build_cert($settings);
-		$default_objects[0]['objectparameters'] .= " tls(
-		    key-file('/var/etc/syslog-ng/syslog-ng.key')
-		    cert-file('/var/etc/syslog-ng/syslog-ng.cert')
-		    ca-dir('/var/etc/syslog-ng/ca.d'))";
 	} else {
 		rmdir_recursive(SYSLOGNG_DIR);
 	}
@@ -146,7 +142,11 @@ function syslogng_build_default_objects($settings) {
 	foreach (explode(",", $interfaces) as $interface) {
 		$interface_address = syslogng_get_real_interface_address($interface);
 		if ($interface_address[0]) {
-			$default_objects[0]['objectparameters'] .= " syslog(transport($default_protocol) port($default_port) ip({$interface_address[0]}));";
+			$default_objects[0]['objectparameters'] .= " syslog(transport($default_protocol) port($default_port) ip({$interface_address[0]})";
+			if ($settings['default_protocol'] == 'tls') {
+				$default_objects[0]['objectparameters'] .= " tls(key-file('/var/etc/syslog-ng/syslog-ng.key') cert-file('/var/etc/syslog-ng/syslog-ng.cert') ca-dir('/var/etc/syslog-ng/ca.d'))";
+			}
+			$default_objects[0]['objectparameters'] .= ");";
 		}
 	}
 	$default_objects[0]['objectparameters'] .= " };";
