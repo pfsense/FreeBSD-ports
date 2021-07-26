@@ -21,3 +21,4 @@ www/wg/vpn_wg_tunnels_edit.php
 /etc/inc/priv/wireguard.priv.inc
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
+@dir /etc/inc
