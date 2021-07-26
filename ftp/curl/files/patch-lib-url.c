@@ -3,9 +3,9 @@ Forwarded: not-needed
 Author: Peter Pentchev <roam@FreeBSD.org>
 Last-Update: 2010-12-18
 
---- lib/url.c.orig	2019-05-21 17:57:39 UTC
+--- lib/url.c.orig	2020-12-08 07:39:35 UTC
 +++ lib/url.c
-@@ -552,6 +552,10 @@ CURLcode Curl_init_userdefined(struct Cu
+@@ -607,6 +607,10 @@ CURLcode Curl_init_userdefined(struct Curl_easy *data)
      CURL_HTTP_VERSION_1_1
  #endif
      ;
