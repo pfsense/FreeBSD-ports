@@ -2,7 +2,7 @@
 
 PORTNAME?=	pfSense-pkg-zabbix-proxy
 PORTVERSION=	1.0.4
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
