@@ -1,7 +1,7 @@
 # Created by: Eric TUrgeon <ericbsd@FreeBSD.org>
 
 PORTNAME=	sublime
-PORTVERSION=	4109
+PORTVERSION=	4113
 CATEGORIES=	editors linux
 MASTER_SITES=	http://download.sublimetext.com/
 PKGNAMESUFFIX=	-text4
@@ -14,8 +14,8 @@ LICENSE_NAME=	End User License Agreement
 LICENSE_FILE=	${FILESDIR}/LICENSE.txt
 LICENSE_PERMS=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
 
-ONLY_FOR_ARCHS=	amd64 arm64
-ONLY_FOR_ARCHS_REASON=	Upstream only supports amd64 and i386
+ONLY_FOR_ARCHS= aarch64 amd64
+ONLY_FOR_ARCHS_REASON=	Upstream only supports amd64 and aarch64
 
 USES=		desktop-file-utils gnome linux tar:xz
 INSTALLS_ICONS=	yes
@@ -28,8 +28,8 @@ SUB_FILES=	sublime-text
 
 WRKSRC=		${WRKDIR}/sublime_text
 
-DISTNAME_amd64=	sublime_text_build_4107_x64
-DISTNAME_arm64=	sublime_text_build_4107_arm64
+DISTNAME_amd64=	sublime_text_build_${PORTVERSION}_x64
+DISTNAME_aarch64=	sublime_text_build_${PORTVERSION}_arm64
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

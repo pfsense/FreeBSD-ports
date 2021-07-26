@@ -37,13 +37,6 @@ Ruby_Include_MAINTAINER=	ruby@FreeBSD.org
 #			  build.
 # RUBY_SETUP		- Set to the alternative name of setup.rb
 #			  (default: setup.rb).
-# USE_RUBY_RDOC		- Says that the port uses rdoc to generate documents.
-# RUBY_REQUIRE		- Set to a Ruby expression to evaluate before building
-#			  the port.  The constant "Ruby" is set to the integer
-#			  version number of ruby, and the result of the
-#			  expression will be set to RUBY_PROVIDED, which is
-#			  left undefined if the result is nil, false or a
-#			  zero-length string.  Implies USE_RUBY.
 # USE_RUBYGEMS		- Do not use this -- instead USES=gem
 #
 # [variables that each port should not (re)define]
@@ -82,10 +75,8 @@ Ruby_Include_MAINTAINER=	ruby@FreeBSD.org
 # RUBY_BASE_PORT	- Port path of base ruby without PORTSDIR, without
 #			  suffix except version.
 # RUBY_PORT		- Port path of ruby without PORTSDIR.
-# RUBY_RDOC_PORT	- Port path of rdoc without PORTSDIR.
 #
 # DEPEND_RUBY		- BUILD_DEPENDS/RUN_DEPENDS entry for ruby.
-# DEPEND_RUBY_RDOC	- BUILD_DEPENDS entry for rdoc.
 #
 # RUBY_LIBDIR		- Installation path for architecture independent
 #			  libraries.
@@ -144,8 +135,8 @@ RUBY?=			${LOCALBASE}/bin/${RUBY_NAME}
 #
 # Ruby 2.6
 #
-RUBY_VERSION=		2.6.7
-RUBY_PORTREVISION=	2
+RUBY_VERSION=		2.6.8
+RUBY_PORTREVISION=	0
 RUBY_PORTEPOCH=		1
 RUBY26=			""	# PLIST_SUB helpers
 
@@ -153,8 +144,8 @@ RUBY26=			""	# PLIST_SUB helpers
 #
 # Ruby 2.7
 #
-RUBY_VERSION=		2.7.3
-RUBY_PORTREVISION=	2
+RUBY_VERSION=		2.7.4
+RUBY_PORTREVISION=	0
 RUBY_PORTEPOCH=		1
 RUBY27=			""	# PLIST_SUB helpers
 
@@ -162,8 +153,8 @@ RUBY27=			""	# PLIST_SUB helpers
 #
 # Ruby 3.0
 #
-RUBY_VERSION=		3.0.1
-RUBY_PORTREVISION=	1
+RUBY_VERSION=		3.0.2
+RUBY_PORTREVISION=	0
 RUBY_PORTEPOCH=		1
 RUBY30=			""	# PLIST_SUB helpers
 
@@ -295,27 +286,6 @@ PLIST_SUB+=		${PLIST_RUBY_DIRS:C,DIR="(${LOCALBASE}|${PREFIX})/,DIR=",} \
 			RUBY26=${RUBY26} \
 			RUBY27=${RUBY27} \
 			RUBY30=${RUBY30}
-
-.if defined(USE_RUBY_RDOC)
-MAKE_ENV+=	RUBY_RDOC=${RUBY_RDOC}
-.endif
-
-# require check
-.if defined(RUBY_REQUIRE)
-USE_RUBY=		yes
-
-.if exists(${RUBY})
-RUBY_PROVIDED!=		${RUBY} -e '\
-	Ruby = ${RUBY_RELVERSION_CODE}; \
-	value = begin; ${RUBY_REQUIRE}; end and puts value'
-.else
-RUBY_PROVIDED=		"should be"	# the latest version is going to be installed
-.endif
-
-.if empty(RUBY_PROVIDED)
-.undef RUBY_PROVIDED
-.endif
-.endif
 
 .if ${PORT_OPTIONS:MDEBUG}
 RUBY_FLAGS+=	-d

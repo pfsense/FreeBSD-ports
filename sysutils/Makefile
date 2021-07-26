@@ -107,6 +107,7 @@
     SUBDIR += bashtop
     SUBDIR += bastille
     SUBDIR += batmon
+    SUBDIR += batterycat
     SUBDIR += battmond
     SUBDIR += battray
     SUBDIR += bchunk
@@ -125,6 +126,7 @@
     SUBDIR += bpytop
     SUBDIR += brasero
     SUBDIR += brename
+    SUBDIR += brut
     SUBDIR += bsd-splash-changer
     SUBDIR += bsdconfig
     SUBDIR += bsdcrashtar
@@ -143,6 +145,7 @@
     SUBDIR += byobu
     SUBDIR += catfish
     SUBDIR += cbsd
+    SUBDIR += cbsd-mq-api
     SUBDIR += cbsd-mq-router
     SUBDIR += ccd2iso
     SUBDIR += cciss_vol_status
@@ -710,6 +713,7 @@
     SUBDIR += mixer
     SUBDIR += mkdesktop
     SUBDIR += mkfwimage
+    SUBDIR += mkjail
     SUBDIR += mkntpwd
     SUBDIR += mmc-utils
     SUBDIR += mmve
@@ -1154,7 +1158,6 @@
     SUBDIR += rubygem-fluent-mixin-plaintextformatter
     SUBDIR += rubygem-fluent-plugin-config-expander
     SUBDIR += rubygem-fluent-plugin-file-alternative
-    SUBDIR += rubygem-fluent-plugin-graylog
     SUBDIR += rubygem-fluent-plugin-tail-asis
     SUBDIR += rubygem-fluentd
     SUBDIR += rubygem-fssm
@@ -1395,6 +1398,7 @@
     SUBDIR += u-boot-nanopi-neo
     SUBDIR += u-boot-nanopi-neo-air
     SUBDIR += u-boot-nanopi-neo2
+    SUBDIR += u-boot-nanopi-r4s
     SUBDIR += u-boot-olimex-a20-som-evb
     SUBDIR += u-boot-olinuxino-lime
     SUBDIR += u-boot-olinuxino-lime2

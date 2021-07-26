@@ -105,6 +105,7 @@
     SUBDIR += R-cran-tidyr
     SUBDIR += R-cran-tidyselect
     SUBDIR += R-cran-tinytest
+    SUBDIR += R-cran-tzdb
     SUBDIR += R-cran-uuid
     SUBDIR += R-cran-vcd
     SUBDIR += R-cran-vctrs
@@ -538,6 +539,7 @@
     SUBDIR += eiffelstudio
     SUBDIR += electron12
     SUBDIR += elf
+    SUBDIR += elf-dissector
     SUBDIR += elfio
     SUBDIR += elfkickers
     SUBDIR += elfsh
@@ -869,6 +871,7 @@
     SUBDIR += golangci-lint
     SUBDIR += golint
     SUBDIR += google-cloud-cpp
+    SUBDIR += google-cloud-cpp117
     SUBDIR += google-gdata
     SUBDIR += google-perftools
     SUBDIR += google-styleguide
@@ -2397,6 +2400,7 @@
     SUBDIR += p5-File-HomeDir-Tiny
     SUBDIR += p5-File-Iterator
     SUBDIR += p5-File-LibMagic
+    SUBDIR += p5-File-LoadLines
     SUBDIR += p5-File-MMagic
     SUBDIR += p5-File-MMagic-XS
     SUBDIR += p5-File-Map
@@ -3236,6 +3240,7 @@
     SUBDIR += p5-String-Ediff
     SUBDIR += p5-String-Errf
     SUBDIR += p5-String-Formatter
+    SUBDIR += p5-String-Interpolate-Named
     SUBDIR += p5-String-LRC
     SUBDIR += p5-String-Parity
     SUBDIR += p5-String-Random
@@ -3503,6 +3508,7 @@
     SUBDIR += p5-Test-YAML-Valid
     SUBDIR += p5-Test-utf8
     SUBDIR += p5-Test2-Harness
+    SUBDIR += p5-Test2-Harness-UI
     SUBDIR += p5-Test2-Plugin-Cover
     SUBDIR += p5-Test2-Plugin-DBIProfile
     SUBDIR += p5-Test2-Plugin-IOEvents
@@ -4256,6 +4262,7 @@
     SUBDIR += py-cclib
     SUBDIR += py-cdg
     SUBDIR += py-celery
+    SUBDIR += py-celery-progress
     SUBDIR += py-cerberus
     SUBDIR += py-certsrv
     SUBDIR += py-cffi
@@ -4308,6 +4315,7 @@
     SUBDIR += py-constantly
     SUBDIR += py-construct
     SUBDIR += py-contextlib2
+    SUBDIR += py-contextvars
     SUBDIR += py-convertdate
     SUBDIR += py-cookiecutter
     SUBDIR += py-copier
@@ -4376,6 +4384,7 @@
     SUBDIR += py-distlib
     SUBDIR += py-distributed
     SUBDIR += py-dj31-django-rq
+    SUBDIR += py-dj32-django-rq
     SUBDIR += py-django-rq
     SUBDIR += py-docker-py
     SUBDIR += py-dockerpty
@@ -4503,6 +4512,7 @@
     SUBDIR += py-greenlet
     SUBDIR += py-grizzled
     SUBDIR += py-grpc-google-iam-v1
+    SUBDIR += py-grpc-stubs
     SUBDIR += py-grpcio
     SUBDIR += py-grpcio-gcp
     SUBDIR += py-grpcio-tools
@@ -4545,6 +4555,7 @@
     SUBDIR += py-intervaltree
     SUBDIR += py-invoke
     SUBDIR += py-ioflo
+    SUBDIR += py-iopath
     SUBDIR += py-ipaddr
     SUBDIR += py-ipdb
     SUBDIR += py-ipykernel5
@@ -4834,6 +4845,7 @@
     SUBDIR += py-pockets
     SUBDIR += py-podcastparser
     SUBDIR += py-poetry-core
+    SUBDIR += py-poetry2setup
     SUBDIR += py-polib
     SUBDIR += py-pooch
     SUBDIR += py-pop
@@ -4931,6 +4943,7 @@
     SUBDIR += py-pyplusplus
     SUBDIR += py-pypugjs
     SUBDIR += py-pyqtree
+    SUBDIR += py-pyquery
     SUBDIR += py-pyral
     SUBDIR += py-pyrepl
     SUBDIR += py-pyrfc3339
@@ -5180,6 +5193,7 @@
     SUBDIR += py-threema-msgapi
     SUBDIR += py-thrift
     SUBDIR += py-thriftpy
+    SUBDIR += py-thriftpy2
     SUBDIR += py-tiamat
     SUBDIR += py-timelib
     SUBDIR += py-tinyarray
@@ -5209,6 +5223,7 @@
     SUBDIR += py-typed-ast
     SUBDIR += py-typer
     SUBDIR += py-types-PyYAML
+    SUBDIR += py-types-futures
     SUBDIR += py-types-protobuf
     SUBDIR += py-types-requests
     SUBDIR += py-typing-extensions
@@ -5308,6 +5323,7 @@
     SUBDIR += py-xstatic-term.js
     SUBDIR += py-xstatic-tv4
     SUBDIR += py-xxhash
+    SUBDIR += py-yacs
     SUBDIR += py-yaml
     SUBDIR += py-yamllint
     SUBDIR += py-yamlordereddictloader
@@ -5381,6 +5397,7 @@
     SUBDIR += pystring
     SUBDIR += pysvn
     SUBDIR += pythontidy
+    SUBDIR += pytype
     SUBDIR += qbs
     SUBDIR += qca
     SUBDIR += qca-legacy
@@ -6169,6 +6186,7 @@
     SUBDIR += rubygem-flipper-ui
     SUBDIR += rubygem-flipper-ui017
     SUBDIR += rubygem-flipper017
+    SUBDIR += rubygem-flipper021
     SUBDIR += rubygem-fluent-logger
     SUBDIR += rubygem-fog
     SUBDIR += rubygem-fog-core
@@ -6223,7 +6241,6 @@
     SUBDIR += rubygem-gitlab-labkit
     SUBDIR += rubygem-gitlab-license
     SUBDIR += rubygem-gitlab-pygments.rb
-    SUBDIR += rubygem-gitlab-rdoc
     SUBDIR += rubygem-gitlab-sidekiq-fetcher
     SUBDIR += rubygem-gitlab_chronic_duration
     SUBDIR += rubygem-gitlab_git
@@ -6247,7 +6264,6 @@
     SUBDIR += rubygem-graf
     SUBDIR += rubygem-grape
     SUBDIR += rubygem-grape-entity
-    SUBDIR += rubygem-grape-entity07
     SUBDIR += rubygem-grape-path-helpers
     SUBDIR += rubygem-grape-route-helpers
     SUBDIR += rubygem-grape-swagger
@@ -6716,6 +6732,7 @@
     SUBDIR += rubygem-to_regexp
     SUBDIR += rubygem-tool
     SUBDIR += rubygem-tracer
+    SUBDIR += rubygem-trailblazer-option
     SUBDIR += rubygem-transaction-simple
     SUBDIR += rubygem-travis
     SUBDIR += rubygem-treetop
@@ -6906,7 +6923,6 @@
     SUBDIR += svntrac
     SUBDIR += swank-clojure
     SUBDIR += swig
-    SUBDIR += synfig
     SUBDIR += sysconftool
     SUBDIR += sysfsutils
     SUBDIR += systemc

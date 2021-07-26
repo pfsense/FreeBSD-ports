@@ -1,6 +1,6 @@
 PORTNAME=	gpg-tui
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.2
+DISTVERSION=	0.7.3
 CATEGORIES=	security
 
 MAINTAINER=	se@FreeBSD.org
@@ -22,7 +22,7 @@ GH_ACCOUNT=	orhun
 
 CARGO_CRATES=	ansi_term-0.11.0 \
 		ansi_term-0.12.1 \
-		anyhow-1.0.41 \
+		anyhow-1.0.42 \
 		atty-0.2.14 \
 		autocfg-1.0.1 \
 		bitflags-1.2.1 \
@@ -40,7 +40,7 @@ CARGO_CRATES=	ansi_term-0.11.0 \
 		colorsys-0.6.3 \
 		conv-0.3.3 \
 		copypasta-0.7.1 \
-		copypasta-ext-0.3.4 \
+		copypasta-ext-0.3.7 \
 		crossterm-0.19.0 \
 		crossterm-0.20.0 \
 		crossterm_winapi-0.7.0 \
@@ -114,8 +114,8 @@ CARGO_CRATES=	ansi_term-0.11.0 \
 		socket2-0.3.19 \
 		static_assertions-1.1.0 \
 		strsim-0.8.0 \
-		structopt-0.3.21 \
-		structopt-derive-0.4.14 \
+		structopt-0.3.22 \
+		structopt-derive-0.4.15 \
 		syn-1.0.55 \
 		term_size-0.3.2 \
 		textwrap-0.11.0 \

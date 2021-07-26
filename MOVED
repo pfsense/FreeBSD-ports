@@ -16196,7 +16196,6 @@ textproc/elasticsearch5-search-guard||2021-04-06|Has expired: textproc/elasticse
 multimedia/gnome-subtitles||2021-04-06|Has expired: outdated, depends on deprecated library www/gtkhtml3
 net/libproxy-mozjs||2021-04-06|Has expired: Uses EOL Python 2.7 via lang/spidermonkey52
 lang/spidermonkey52|lang/spidermonkey78|2021-04-06|Has expired: Uses Python 2.7 which is EOLed upstream
-ftp/wzdftpd||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
 astro/roadmap||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
 games/cosmo||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
 games/bomberinstinct||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
@@ -16462,3 +16461,14 @@ databases/puppetdb5||2021-07-05|Has expired: Puppet 5 has reached EOL
 sysutils/puppet5||2021-07-05|Has expired: Puppet 5 has reached EOL
 sysutils/puppetserver5||2021-07-05|Has expired: Puppet 5 has reached EOL
 databases/puppetdb-terminus5||2021-07-05|Has expired: Puppet 5 has reached EOL
+devel/synfig|graphics/synfig|2021-07-06|The Graphics category is a more appropriate category for an image manipulation program
+www/nextcloud-circles|www/nextcloud|2021-07-09|Included in the Nextcloud port with 22.0.0
+net-mgmt/unifi-lts||2021-07-18|Has expired: Upstream EoL the hardware supported by this release
+audio/ripit|audio/abcde|2021-07-18|Has expired: Upstream no longer maintained, use audio/abcde instead
+x11-toolkits/libsexymm||2021-07-19|Discontinued in 2006, no dependency left in the ports tree
+sysutils/rubygem-fluent-plugin-graylog||2021-07-21|Has expired: Project is abandoned upstreams
+www/rubygem-toml-rb10|www/rubygem-toml-rb|2021-07-25|Obsolete, use www/rubygem-toml-rb
+devel/rubygem-grape-entity07|devel/rubygem-grape-entity|2021-07-25|Obsolete, use devel/rubygem-grape-entity
+net/rubygem-gitlab-fog-google|net/rubygem-fog-google|2021-07-25|Obsolete, use net/rubygem-fog-google
+devel/rubygem-gitlab-rdoc|devel/rubygem-rdoc|2021-07-25|Obsolete, use devel/rubygem-rdoc
+databases/rubygem-redis-namespace17|databases/rubygem-redis-namespace|2021-07-25|Obsolete, use databases/rubygem-redis-namespace

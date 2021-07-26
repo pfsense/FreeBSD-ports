@@ -1,8 +1,8 @@
 # Created by: Torsten Zuehlsdorff <tz@FreeBSD.org>
 
 PORTNAME=	gitlab-ce
-PORTVERSION=	14.0.2
-PORTREVISION=	2
+PORTVERSION=	14.1.0
+PORTREVISION=	0
 CATEGORIES=	www devel
 
 MAINTAINER=	mfechner@FreeBSD.org
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 # which makes maintaining this long list much easier!
 MY_DEPENDS=	git>=2.32.0:devel/git \
 	gitaly>=${PORTVERSION}:devel/gitaly \
-	gitlab-agent>=14.0.1:net/gitlab-agent \
+	gitlab-agent>=14.1.0:net/gitlab-agent \
 	gitlab-elasticsearch-indexer>=2.12.0:textproc/gitlab-elasticsearch-indexer \
 	gitlab-pages>=1.40.0:www/gitlab-pages \
 	gitlab-shell>=13.19.0:devel/gitlab-shell \
@@ -41,9 +41,9 @@ MY_DEPENDS=	git>=2.32.0:devel/git \
 	rubygem-doorkeeper-openid_connect>=1.7.5<1.8:security/rubygem-doorkeeper-openid_connect \
 	rubygem-rexml>=3.2.5<3.3:textproc/rubygem-rexml \
 	rubygem-ruby-saml>=1.12.1<1.13:security/rubygem-ruby-saml \
-	rubygem-omniauth>=1.8<2.0:security/rubygem-omniauth \
+	rubygem-omniauth1>=1.9.1<2.0:security/rubygem-omniauth1 \
 	rubygem-omniauth-auth0>=2.0.0<2.1.0:net/rubygem-omniauth-auth0 \
-	rubygem-omniauth-azure-activedirectory-v2>=0.1<1:net/rubygem-omniauth-azure-activedirectory-v2 \
+	rubygem-omniauth-azure-activedirectory-v2>=1.0<2:net/rubygem-omniauth-azure-activedirectory-v2 \
 	rubygem-omniauth-azure-oauth2>=0.0.9<0.1.0:net/rubygem-omniauth-azure-oauth2 \
 	rubygem-omniauth-cas3>=1.1.4<1.2.0:security/rubygem-omniauth-cas3 \
 	rubygem-omniauth-facebook4>=4.0.0<4.1.0:net/rubygem-omniauth-facebook4 \
@@ -87,7 +87,7 @@ MY_DEPENDS=	git>=2.32.0:devel/git \
 	rubygem-apollo_upload_server>=2.0.2<2.1:net/rubygem-apollo_upload_server \
 	rubygem-graphql-docs>=1.6.0<1.7.0:devel/rubygem-graphql-docs \
 	rubygem-graphlient>=0.4.0<0.5:devel/rubygem-graphlient \
-	rubygem-hashie>0:devel/rubygem-hashie \
+	rubygem-hashie>=4.1.0:devel/rubygem-hashie \
 	rubygem-hashie-forbidden_attributes>0:devel/rubygem-hashie-forbidden_attributes \
 	rubygem-kaminari-rails61>=1.2.1<2.0:www/rubygem-kaminari-rails61 \
 	rubygem-hamlit>=2.15.0<2.16:www/rubygem-hamlit \
@@ -95,7 +95,7 @@ MY_DEPENDS=	git>=2.32.0:devel/git \
 	rubygem-mini_magick>=4.10.1<4.11:graphics/rubygem-mini_magick \
 	rubygem-fog-aws>=3.9<4.0:net/rubygem-fog-aws \
 	rubygem-fog-core210=2.1.0:devel/rubygem-fog-core210 \
-	rubygem-gitlab-fog-google>=1.13<2:net/rubygem-gitlab-fog-google \
+	rubygem-fog-google>=1.15<2:net/rubygem-fog-google \
 	rubygem-fog-local>=0.6<1.0:net/rubygem-fog-local \
 	rubygem-fog-openstack>=1.0<2.0:net/rubygem-fog-openstack \
 	rubygem-fog-rackspace>=0.1.1<1.2.0:net/rubygem-fog-rackspace \
@@ -118,18 +118,18 @@ MY_DEPENDS=	git>=2.32.0:devel/git \
 	rubygem-commonmarker>=0.21<1.0:textproc/rubygem-commonmarker \
 	rubygem-kramdown>=2.3.1<2.4:textproc/rubygem-kramdown \
 	rubygem-redcloth>=4.3.2<4.4.0:www/rubygem-redcloth \
-	rubygem-gitlab-rdoc>=6.3.2<7:devel/rubygem-gitlab-rdoc \
+	rubygem-rdoc>=6.3.2<7:devel/rubygem-rdoc \
 	rubygem-org-ruby>=0.9.12<0.10.0:textproc/rubygem-org-ruby \
 	rubygem-creole>=0.5.0<0.6.0:textproc/rubygem-creole \
 	rubygem-wikicloth081>=0.8.1<0.8.2:textproc/rubygem-wikicloth081 \
-	rubygem-asciidoctor>=2.0.12<2.1.0:textproc/rubygem-asciidoctor \
+	rubygem-asciidoctor>=2.0.15<2.1.0:textproc/rubygem-asciidoctor \
 	rubygem-asciidoctor-include-ext>=0.3.1<0.4.0:textproc/rubygem-asciidoctor-include-ext \
 	rubygem-asciidoctor-plantuml>=0.0.12<0.1:textproc/rubygem-asciidoctor-plantuml \
-	rubygem-asciidoctor-kroki>=0.4.0<0.5:textproc/rubygem-asciidoctor-kroki \
+	rubygem-asciidoctor-kroki>=0.5.0<0.6:textproc/rubygem-asciidoctor-kroki \
 	rubygem-rouge>=3.26.0<3.27:textproc/rubygem-rouge \
 	rubygem-truncato>=0.7.11<0.8.0:textproc/rubygem-truncato \
 	rubygem-bootstrap_form>=4.2.0<4.3.0:devel/rubygem-bootstrap_form \
-	rubygem-nokogiri>=1.11.4<1.12:textproc/rubygem-nokogiri \
+	rubygem-nokogiri>=1.11.5<1.12:textproc/rubygem-nokogiri \
 	rubygem-escape_utils>=1.1<2.0:textproc/rubygem-escape_utils \
 	rubygem-icalendar>=0:devel/rubygem-icalendar \
 	rubygem-diffy>=3.3<4:textproc/rubygem-diffy \
@@ -142,7 +142,7 @@ MY_DEPENDS=	git>=2.32.0:devel/git \
 	rubygem-acts-as-taggable-on>=7.0<8.0:www/rubygem-acts-as-taggable-on \
 	rubygem-sidekiq5>=5.2.9<5.3.0:devel/rubygem-sidekiq5 \
 	rubygem-sidekiq-cron>=1.0<2.0:devel/rubygem-sidekiq-cron \
-	rubygem-redis-namespace17>=1.7.0<1.8.0:databases/rubygem-redis-namespace17 \
+	rubygem-redis-namespace>=1.8.1<1.9.0:databases/rubygem-redis-namespace \
 	rubygem-gitlab-sidekiq-fetcher>=0.5.6<0.5.7:devel/rubygem-gitlab-sidekiq-fetcher \
 	rubygem-fugit12>=1.2.1<1.3.0:devel/rubygem-fugit12 \
 	rubygem-httparty>=0.16.4<0.17.0:www/rubygem-httparty \
@@ -153,7 +153,7 @@ MY_DEPENDS=	git>=2.32.0:devel/git \
 	rubygem-version_sorter>=2.2.4<2.3.0:textproc/rubygem-version_sorter \
 	rubygem-js_regex>=3.4<4.0:textproc/rubygem-js_regex \
 	rubygem-device_detector>=0:devel/rubygem-device_detector \
-	rubygem-redis>=4.0<5.0:databases/rubygem-redis \
+	rubygem-redis>=4.1.4<5:databases/rubygem-redis \
 	rubygem-connection_pool>=2.0<3.0:net/rubygem-connection_pool \
 	rubygem-redis-rails-rails61>=5.0.2<5.1:www/rubygem-redis-rails-rails61 \
 	rubygem-discordrb-webhooks>=3.4<4.0:net-im/rubygem-discordrb-webhooks \
@@ -164,7 +164,7 @@ MY_DEPENDS=	git>=2.32.0:devel/git \
 	rubygem-hangouts-chat>=0.0.5<0.1.0:net/rubygem-hangouts-chat \
 	rubygem-asana>=0.10.3<0.11:www/rubygem-asana \
 	rubygem-ruby-fogbugz021>=0.2.1<0.3.0:devel/rubygem-ruby-fogbugz021 \
-	rubygem-kubeclient>=4.9.1<4.10.0:www/rubygem-kubeclient \
+	rubygem-kubeclient>=4.9.2<4.10.0:www/rubygem-kubeclient \
 	rubygem-sanitize>=5.2.1<6:textproc/rubygem-sanitize \
 	rubygem-babosa>=1.0.4<1.1.0:textproc/rubygem-babosa \
 	rubygem-loofah>=2.9.0<3.0:textproc/rubygem-loofah \
@@ -178,17 +178,17 @@ MY_DEPENDS=	git>=2.32.0:devel/git \
 	rubygem-sassc-rails-rails61>=2.1.0<2.2.0:textproc/rubygem-sassc-rails-rails61 \
 	rubygem-autoprefixer-rails>=10.2.5.1<10.2.6:textproc/rubygem-autoprefixer-rails \
 	rubygem-terser>=1.0.2:textproc/rubygem-terser \
-	rubygem-addressable>=2.7<3:www/rubygem-addressable \
+	rubygem-addressable>=2.8<3:www/rubygem-addressable \
 	rubygem-gemojione>=3.3<4.0:graphics/rubygem-gemojione \
 	rubygem-gon-rails61>=6.4.0<6.5:www/rubygem-gon-rails61 \
 	rubygem-request_store>=1.5<2.0:devel/rubygem-request_store \
 	rubygem-base32>=0.3.0<0.4.0:converters/rubygem-base32 \
-	rubygem-gitlab-license>=1.5<2.0:devel/rubygem-gitlab-license \
+	rubygem-gitlab-license>=2.0<3:devel/rubygem-gitlab-license \
 	rubygem-rack-attack>=6.3.0<6.4.0:www/rubygem-rack-attack \
 	rubygem-sentry-raven>=3.1<4.0:devel/rubygem-sentry-raven \
 	rubygem-pg_query>=2.1<3:databases/rubygem-pg_query \
 	rubygem-premailer-rails-rails61>=1.10.3<1.11.0:mail/rubygem-premailer-rails-rails61 \
-	rubygem-gitlab-labkit>=0.18.0<0.19:devel/rubygem-gitlab-labkit \
+	rubygem-gitlab-labkit>=0.20.0<0.21:devel/rubygem-gitlab-labkit \
 	rubygem-thrift>=0.14.0:devel/rubygem-thrift \
 	rubygem-ruby_parser>=3.15<4.0:devel/rubygem-ruby_parser \
 	rubygem-rails-i18n-rails61>=6.0<7.0:devel/rubygem-rails-i18n-rails61 \
@@ -211,26 +211,26 @@ MY_DEPENDS=	git>=2.32.0:devel/git \
 	rubygem-memory_profiler>=0.9<1.0:devel/rubygem-memory_profiler \
 	rubygem-benchmark-memory>=0.1<1.0:benchmarks/rubygem-benchmark-memory \
 	rubygem-activerecord-explain-analyze>=0.1<1.0:databases/rubygem-activerecord-explain-analyze \
-	rubygem-oauth2>=1.4.4<2.0:net/rubygem-oauth2 \
+	rubygem-oauth2>=1.4.7<2.0:net/rubygem-oauth2 \
 	rubygem-health_check>=3.0<4:devel/rubygem-health_check \
 	rubygem-vmstat>=2.3.0<2.4.0:sysutils/rubygem-vmstat \
-	rubygem-sys-filesystem>=1.1.6<1.2.0:sysutils/rubygem-sys-filesystem \
+	rubygem-sys-filesystem>=1.1.9<1.2.0:sysutils/rubygem-sys-filesystem \
 	rubygem-net-ntp>0:net/rubygem-net-ntp \
 	rubygem-net-ssh>=6.0<7,2:security/rubygem-net-ssh \
 	rubygem-sshkey>=2.0<3.0:security/rubygem-sshkey \
 	rubygem-ed25519>=1.2<2.0:security/rubygem-ed25519 \
 	rubygem-bcrypt_pbkdf>=1.0<2.0:security/rubygem-bcrypt_pbkdf \
 	rubygem-spamcheck>=0.1.0<0.2:net/rubygem-spamcheck \
-	rubygem-gitaly>=14.0.0.pre.rc2<14.1.0:net/rubygem-gitaly \
+	rubygem-gitaly>=14.1.0.pre.rc3<14.2.0:net/rubygem-gitaly \
 	rubygem-kas-grpc>=0.0.2<0.1:net/rubygem-kas-grpc \
 	rubygem-grpc>=1.30.2<2:net/rubygem-grpc \
 	rubygem-google-protobuf>=3.17.1<3.18:devel/rubygem-google-protobuf \
-	rubygem-toml-rb10>=1.0.0<1.1.0:www/rubygem-toml-rb10 \
-	rubygem-flipper>=0.21.0<0.22:devel/rubygem-flipper \
+	rubygem-toml-rb>=2.0.1<3:www/rubygem-toml-rb \
+	rubygem-flipper021>=0.21.0<0.22:devel/rubygem-flipper021 \
 	rubygem-flipper-active_record-rails61>=0.21.0<0.22:databases/rubygem-flipper-active_record-rails61 \
 	rubygem-flipper-active_support_cache_store-rails61>=0.21.0<0.22:devel/rubygem-flipper-active_support_cache_store-rails61 \
 	rubygem-unleash>=0.1.5<0.2.0:devel/rubygem-unleash \
-	rubygem-gitlab-experiment>=0.5.4<0.6:devel/rubygem-gitlab-experiment \
+	rubygem-gitlab-experiment>=0.6.1<0.7:devel/rubygem-gitlab-experiment \
 	rubygem-lograge-rails61>=0.11.2<1.0:www/rubygem-lograge-rails61 \
 	rubygem-grape_logging>=1.7<2.0:devel/rubygem-grape_logging \
 	rubygem-gitlab-net-dns>=0.9.1<0.10:dns/rubygem-gitlab-net-dns \
@@ -269,7 +269,7 @@ USE_GITLAB=	yes
 GL_ACCOUNT?=	gitlab-org
 GL_PROJECT?=	gitlab-foss
 # Find the here: https://gitlab.com/gitlab-org/gitlab-foss/-/tags
-GL_COMMIT?=	bac4ee4a9e2bc845fd5c91240cccaa293cb4f847
+GL_COMMIT?=	b1a082345cee74a633bc8536e00b09fc5c425a60
 
 USERS=	git
 GROUPS=	git
@@ -296,6 +296,7 @@ do-install:
 	${FIND} ${WRKSRC} -name '*.gitkeep' -delete
 	${FIND} ${WRKSRC} -name '*.gitignore' -delete
 	${FIND} ${WRKSRC} -name "Gemfile.lock" -delete
+	${MV} ${WRKSRC}/config/initializers/relative_url.rb.sample ${WRKSRC}/config/initializers/relative_url.rb.example
 	# get files for workdir with: find . -name "*.example"
 	${MV} ${WRKSRC}/config/puma.rb.example ${WRKSRC}/config/puma.rb.sample
 	${MV} ${WRKSRC}/config/secrets.yml.example ${WRKSRC}/config/secrets.yml.sample
@@ -320,11 +321,81 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/${PORTNAME}/workhorse/changelogs/unreleased
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/www/${PORTNAME})
 
-# Execute this target to automatically generate the correct pkg-plist
-makeplist:
-	$(MAKE) clean patch
-	${RM} -R ${WRKSRC}/workhorse
-	php scripts/create-plist.php ${WRKSRC} > pkg-plist
-	$(MAKE) clean
+post-install:
+	${FIND} -s ${STAGEDIR}${WWWDIR} -not -type d | ${SORT} | \
+		${SED} -e 's#^${STAGEDIR}${PREFIX}/##' | \
+		${SED} -E -e '/sample$$/ s#^#@sample #; \
+		/secrets.yml.sample$$/ s#^@sample #@sample(git,www,0600) #; \
+		s#${WWWDIR_REL}/bin#@(git,,544) ${WWWDIR_REL}/bin#; \
+		/db\/schema.rb$$|gitlab.po$$|gitlab.pot$$|gitlab.po.time_stamp$$|locale\/index.js$$/ s#^#@(git,,) #;' >> ${TMPPLIST}
+	@${ECHO_CMD} "@owner git" >> ${TMPPLIST}
+	@${ECHO_CMD} "@group www" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(git,git) ${WWWDIR_REL}/" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${WWWDIR_REL}/app/assets/images/auth_buttons/" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${WWWDIR_REL}/app/assets/javascripts/locale/" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(git,git,554) ${WWWDIR_REL}/bin" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${WWWDIR_REL}/config" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,700) ${WWWDIR_REL}/builds" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${WWWDIR_REL}/lib/assets" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/bg" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/de" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/eo" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/es" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/fil_PH" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/fr" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/id_ID" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/it" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/ja" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/ko" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/nl_NL" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/pl_PL" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/pt_BR" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/ru" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/tr_TR" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/uk" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/zh_CN" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/zh_HK" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/locale/zh_TW" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,744) ${WWWDIR_REL}/log" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${WWWDIR_REL}/public" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${WWWDIR_REL}/public/assets" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,700) ${WWWDIR_REL}/public/uploads" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${WWWDIR_REL}/qa/qa/specs/features/api/2_plan" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${WWWDIR_REL}/qa/qa/specs/features/api/4_verify" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${WWWDIR_REL}/qa/qa/specs/features/api/5_package" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${WWWDIR_REL}/qa/qa/specs/features/api/6_release" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${WWWDIR_REL}/qa/qa/specs/features/api/7_configure" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${WWWDIR_REL}/qa/qa/specs/features/api/8_monitor" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${WWWDIR_REL}/qa/qa/specs/features/browser_ui/5_package" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${WWWDIR_REL}/spec/support/gitlab-git-test.git/refs/heads" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${WWWDIR_REL}/spec/support/gitlab-git-test.git/refs/tags" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,700) ${WWWDIR_REL}/shared" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,700) ${WWWDIR_REL}/shared/artifacts" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,700) ${WWWDIR_REL}/shared/artifacts/tmp" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,700) ${WWWDIR_REL}/shared/artifacts/tmp/cache" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,700) ${WWWDIR_REL}/shared/artifacts/tmp/uploads" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,700) ${WWWDIR_REL}/shared/artifacts/tmp/work" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,770) ${WWWDIR_REL}/shared/pages" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,700) ${WWWDIR_REL}/shared/tmp" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,700) ${WWWDIR_REL}/shared/lfs-objects" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,700) ${WWWDIR_REL}/shared/registry" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,700) ${WWWDIR_REL}/spec/javascripts/fixtures" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,770) ${WWWDIR_REL}/tmp" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,770) ${WWWDIR_REL}/tmp/backups" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,770) ${WWWDIR_REL}/tmp/cache" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,770) ${WWWDIR_REL}/tmp/feature_flags" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,770) ${WWWDIR_REL}/tmp/pids" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,770) ${WWWDIR_REL}/tmp/prometheus_multiproc_dir" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,770) ${WWWDIR_REL}/tmp/prometheus_multiproc_dir/puma" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,770) ${WWWDIR_REL}/tmp/prometheus_multiproc_dir/sidekiq" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,770) ${WWWDIR_REL}/tmp/prometheus_multiproc_dir/unicorn" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,770) ${WWWDIR_REL}/tmp/sessions" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,770) ${WWWDIR_REL}/tmp/sockets" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,770) ${WWWDIR_REL}/tmp/sockets/private" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,770) ${WWWDIR_REL}/vendor" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,770) ${WWWDIR_REL}/vendor/assets" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,770) ${WWWDIR_REL}/vendor/assets/stylesheets" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir(,,770) ${WWWDIR_REL}/workhorse/changelogs/unreleased" >> ${TMPPLIST}
 
 .include <bsd.port.mk>

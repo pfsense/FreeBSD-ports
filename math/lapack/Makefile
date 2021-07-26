@@ -2,7 +2,11 @@
 
 PORTNAME?=	lapack
 PORTVERSION=	3.10.0
+.if !(defined(BLAS_SLAVEPORT) || defined(CBLAS_SLAVEPORT) || defined(XLAPACK_SLAVEPORT) || defined(LAPACKE_SLAVEPORT))
+PORTREVISION=	1
+.else
 PORTREVISION?=	0	# Never remove this line, keep PORTREVISION?=0 in case.
+.endif
 CATEGORIES=	math
 MASTER_SITES=	https://github.com/Reference-LAPACK/lapack/archive/refs/tags/:src	\
 		http://www.netlib.org/lapack/:man	\
@@ -72,13 +76,12 @@ USES+=			python:3.6+,build,test
 CMAKE_ON+=		USE_OPTIMIZED_BLAS BUILD_TESTING
 CMAKE_ARGS+=		-DBLAS_LIBRARIES="${LOCALBASE}/lib/libblas.so"
 LIBS=			lapack
-PLIST_FILES+=		${MAN3L:S|^|man/man3/|:S|$|.gz|}
 PLIST_SUB+=		BLAS="@comment " CBLAS="@comment " LAPACK="" XLAPACK="@comment " LAPACKE="@comment "
 .endif
 
 .include <bsd.port.pre.mk>
 
-pre-configure:
+post-patch:
 	${SED} -Ee '\
 		s@^(FORTRAN|LOADER)([[:blank:]]*=)(.*)@\1\2 $${FC}@; \
 		s@^(OPTS[[:blank:]]*=)(.*)@\1 $${FFLAGS} $${EXTRAFLAGS}@; \
@@ -91,6 +94,8 @@ pre-configure:
 		s@^(LDFLAGS[[:blank:]]*=)(.*)@@; \
 		\@(BLAS|LAPACKE|RAN)LIB[[:blank:]]*=@d;' \
 			${WRKSRC}/make.inc.example > ${WRKSRC}/make.inc
+
+pre-configure:
 	${REINPLACE_CMD} -e 's@\./lapack_testing\.py@${S} &@' \
 		${WRKSRC}/Makefile
 	${FIND} ${WRKSRC} -name Makefile | ${XARGS}	\
@@ -122,7 +127,13 @@ post-build:
 	(cd ${BUILD_WRKSRC} && ${MAKE} -f TESTING/MATGEN/CMakeFiles/tmglib.dir/build.make build-static)
 .endif
 
-.include "${FILESDIR}/manpages"
+pre-su-install:
+.if !(defined(BLAS_SLAVEPORT) || defined(CBLAS_SLAVEPORT) || defined(XLAPACK_SLAVEPORT) || defined(LAPACKE_SLAVEPORT))
+	cd ${WRKDIR} && ${FIND} man/man3 -type f | ${GREP} -v Users_julie | \
+	tee ${WRKDIR}/manpages | ${SED} 's|$$|.gz|' >> ${TMPPLIST}
+	cd ${WRKDIR} && \
+	${XARGS} -J @ ${INSTALL_MAN} @ ${STAGEDIR}${MAN3PREFIX}/man/man3 < ${WRKDIR}/manpages
+.endif
 
 post-install:
 .if defined(BLAS_SLAVEPORT)
@@ -159,14 +170,6 @@ post-install:
 .else # Lapack
 	${INSTALL_DATA} ${BUILD_WRKSRC}/SRC/liblapack.a ${STAGEDIR}${PREFIX}/lib
 	${INSTALL_DATA} ${BUILD_WRKSRC}/TESTING/MATGEN/libtmglib.a ${STAGEDIR}${PREFIX}/lib
-	${MV} ${STAGEDIR}${PREFIX}/lib/libtmglib.so	\
-		${STAGEDIR}${PREFIX}/lib/libtmglib.so.${PORTVERSION}
-	${LN} -sf libtmglib.so.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib/libtmglib.so
-	${LN} -sf libtmglib.so.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib/libtmglib.so.${SVERSION}
-.endif
-.if !(defined(BLAS_SLAVEPORT) || defined(CBLAS_SLAVEPORT) || defined(XLAPACK_SLAVEPORT) || defined(LAPACKE_SLAVEPORT))
-	cd ${WRKDIR}/man ; ${ECHO_CMD} ${MAN3L:S|^|man3/|} \
-	| ${XARGS} -J @ ${INSTALL_MAN} @ ${STAGEDIR}${MAN3PREFIX}/man/man3
 .endif
 
 .include <bsd.port.post.mk>

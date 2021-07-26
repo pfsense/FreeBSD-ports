@@ -237,8 +237,8 @@ victoria-metrics:*:289:289::0:0:VictoriaMetrics user:/nonexistent:/usr/sbin/nolo
 _gmid:*:290:290::0:0:gmid daemon user:/var/empty:/usr/sbin/nologin
 pydio:*:291:291::0:0:pydio cells user:/var/pydio:/bin/sh
 sftpgo:*:292:292::0:0:SFTPGo user:/nonexistent:/usr/sbin/nologin
-# free: 293
-# free: 294
+biboumi:*:293:293::0:0:biboumi:/nonexistent:/usr/sbin/nologin
+krill:*:294:294::0:0:krill Pseudo User:/nonexistent:/usr/sbin/nologin
 # free: 295
 # free: 296
 # free: 297
@@ -301,7 +301,7 @@ _iodined:*:353:353::0:0:Iodine Daemon:/nonexistent:/usr/sbin/nologin
 jackett:*:354:354::0:0:Jackett Torznab Proxy Daemon:/nonexistent:/usr/sbin/nologin
 nzbhydra2:*:355:355::0:0:NZBHydra 2 Daemon:/nonexistent:/usr/sbin/nologin
 lidarr:*:356:356::0:0:Lidarr Daemon:/nonexistent:/usr/sbin/nologin
-# free: 357
+bazarr:*:357:357::0:0:Bazarr Daemon:/nonexistent:/usr/sbin/nologin
 # free: 358
 # free: 359
 v2ray:*:360:360::0:0:V2Ray Daemon:/nonexistent:/usr/sbin/nologin

@@ -1,6 +1,5 @@
 PORTNAME=	wlroots
-DISTVERSION=	0.14.0
-PORTREVISION=	1
+DISTVERSION=	0.14.1
 CATEGORIES=	x11-toolkits
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -38,7 +37,7 @@ OPTIONS_SUB=	yes
 
 NVIDIA_DESC=		EGLStreams support for DRM backend (experimental)
 NVIDIA_PATCH_SITES=	https://github.com/danvd/${GH_PROJECT}-eglstreams/commit/:nvidia
-NVIDIA_PATCHFILES=	b78146d76ab0.patch:-p1:nvidia # https://github.com/swaywm/wlroots/pull/2769
+NVIDIA_PATCHFILES=	d9acdb6b21ec.patch:-p1:nvidia # https://github.com/swaywm/wlroots/pull/2769
 NVIDIA_IMPLIES=		OPENGL
 .if make(makesum)
 .MAKEFLAGS:		WITH+=NVIDIA

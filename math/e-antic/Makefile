@@ -2,6 +2,7 @@
 
 PORTNAME=	e-antic
 DISTVERSION=	1.0.0-rc.13
+PORTREVISION=	2
 #MASTER_SITES=	https://www.labri.fr/perso/vdelecro/e-antic/
 CATEGORIES=	math
 

@@ -1,6 +1,6 @@
 PORTNAME=	nwg-launchers
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.4
+DISTVERSION=	0.5.0
 CATEGORIES=	x11
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -16,9 +16,16 @@ USE_GITHUB=	yes
 USE_GNOME=	gtkmm30
 GH_ACCOUNT=	nwg-piotr
 
+OPTIONS_DEFINE=	GLS
+OPTIONS_DEFAULT=GLS
+
+GLS_DESC=		Layer-shell support
+GLS_LIB_DEPENDS=	libgtk-layer-shell.so:x11-toolkits/gtk-layer-shell
+GLS_MESON_ENABLED=	layer-shell
+
 post-patch:
 # Respect PREFIX when looking for .desktop files
-	@${REINPLACE_CMD} 's,/usr/local,${PREFIX},' \
+	@${REINPLACE_CMD} 's,/usr/share,${DATADIR:H},' \
 		${WRKSRC}/common/nwg_tools.cc \
 		${WRKSRC}/grid/grid_tools.cc
 

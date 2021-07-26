@@ -268,7 +268,7 @@ MASTER_SITE_FESTIVAL_OGI+= \
 #
 # For the full list, see the Handbook:
 #
-#    http://www.FreeBSD.org/doc/en_US.ISO8859-1/books/handbook/mirrors-ftp.html
+#    https://docs.FreeBSD.org/en/books/handbook/mirrors/#mirrors-ftp
 #
 .if !defined(IGNORE_MASTER_SITE_FREEBSD_ORG)
 MASTER_SITE_FREEBSD_ORG+= \
@@ -786,7 +786,6 @@ MASTER_SITE_KDE+= \
 	http://www-ftp.lip6.fr/pub/X11/kde/%SUBDIR%/ \
 	https://ftp-stud.hs-esslingen.de/Mirrors/ftp.kde.org/pub/kde/%SUBDIR%/ \
 	ftp://ftp.cronyx.ru/pub/mirror/kde/%SUBDIR%/ \
-	http://ftp.twaren.net/Unix/X/KDE/%SUBDIR%/ \
 	ftp://ftp.fu-berlin.de/pub/unix/X11/gui/kde/%SUBDIR%/ \
 	ftp://sunsite.informatik.rwth-aachen.de/pub/Linux/kde/%SUBDIR%/ \
 	ftp://ftp.ntua.gr/pub/X11/kde/%SUBDIR%/ \
@@ -806,7 +805,7 @@ MASTER_SITE_KDE+= \
 	http://ftp.fi.muni.cz/pub/kde/%SUBDIR%/ \
 	ftp://ftp.funet.fi/pub/mirrors/ftp.kde.org/pub/kde/%SUBDIR%/ \
 	http://ftp.funet.fi/pub/mirrors/ftp.kde.org/pub/kde/%SUBDIR%/ \
-	http://kde.cs.nctu.edu.tw/%SUBDIR%/
+	https://kde.cs.nctu.edu.tw/ftp/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_LIBREOFFICE_DEV)

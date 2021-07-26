@@ -26,6 +26,7 @@
     SUBDIR += R-cran-stringi
     SUBDIR += R-cran-stringr
     SUBDIR += R-cran-utf8
+    SUBDIR += R-cran-vroom
     SUBDIR += R-cran-xml2
     SUBDIR += R-cran-xmlparsedata
     SUBDIR += R-cran-xtable
@@ -151,6 +152,7 @@
     SUBDIR += docbook2odf
     SUBDIR += docbookrx
     SUBDIR += docproj
+    SUBDIR += docproj-legacy
     SUBDIR += dom4j
     SUBDIR += domc
     SUBDIR += dsssl-docbook-modular
@@ -1294,6 +1296,7 @@
     SUBDIR += py-googletrans
     SUBDIR += py-grako
     SUBDIR += py-guess-language
+    SUBDIR += py-hashids
     SUBDIR += py-hexdump
     SUBDIR += py-hieroglyph
     SUBDIR += py-hjson
@@ -1368,6 +1371,12 @@
     SUBDIR += py-pyahocorasick
     SUBDIR += py-pyaml
     SUBDIR += py-pycountry
+    SUBDIR += py-pyexcel
+    SUBDIR += py-pyexcel-ezodf
+    SUBDIR += py-pyexcel-io
+    SUBDIR += py-pyexcel-ods3
+    SUBDIR += py-pyexcel-xls
+    SUBDIR += py-pyexcel-xlsx
     SUBDIR += py-pygccxml
     SUBDIR += py-pygments
     SUBDIR += py-pygments-25
@@ -1405,6 +1414,7 @@
     SUBDIR += py-recommonmark
     SUBDIR += py-regex
     SUBDIR += py-reno
+    SUBDIR += py-restructuredtext-lint
     SUBDIR += py-reverend
     SUBDIR += py-rich
     SUBDIR += py-rnc2rng
@@ -1458,6 +1468,7 @@
     SUBDIR += py-tinycss
     SUBDIR += py-tinycss2
     SUBDIR += py-toml
+    SUBDIR += py-tomli
     SUBDIR += py-tomlkit
     SUBDIR += py-toronado
     SUBDIR += py-towncrier

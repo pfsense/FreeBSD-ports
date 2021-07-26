@@ -1046,6 +1046,7 @@
     SUBDIR += swftools
     SUBDIR += sxiv
     SUBDIR += synaesthesia
+    SUBDIR += synfig
     SUBDIR += synfigstudio
     SUBDIR += tachyon
     SUBDIR += telak
@@ -1087,6 +1088,7 @@
     SUBDIR += vp
     SUBDIR += vpaint
     SUBDIR += vulkan-caps-viewer
+    SUBDIR += vulkan-extension-layer
     SUBDIR += vulkan-headers
     SUBDIR += vulkan-loader
     SUBDIR += vulkan-tools

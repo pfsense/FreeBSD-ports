@@ -6,7 +6,8 @@ PORTNAME=	u-boot
 PORTVERSION=	${UBOOT_VERSION}
 CATEGORIES=	sysutils
 PKGNAMESUFFIX?=	-${MODEL}
-MASTER_SITES=	ftp://ftp.denx.de/pub/u-boot/
+MASTER_SITES=	https://ftp.denx.de/pub/u-boot/ \
+		ftp://ftp.denx.de/pub/u-boot/
 DIST_SUBDIR=	u-boot
 
 MAINTAINER?=	uboot@FreeBSD.org
@@ -246,5 +247,13 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}/${INST}
 .endfor
 	${INSTALL_DATA} ${DESCR} ${STAGEDIR}/${INST}/README
+
+.include <bsd.port.options.mk>
+
+.if defined(FAMILY)
+.if ${FAMILY} == qemu && ${OPSYS} == FreeBSD && ${OSVERSION} <= 1200000
+BROKEN=		Base openssl too old
+.endif
+.endif
 
 .include <bsd.port.mk>

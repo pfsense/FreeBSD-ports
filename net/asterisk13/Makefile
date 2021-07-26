@@ -1,6 +1,5 @@
 PORTNAME=	asterisk
-PORTVERSION=	13.38.2
-PORTREVISION=	1
+PORTVERSION=	13.38.3
 CATEGORIES=	net
 MASTER_SITES=	https://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
 MASTER_SITE_SUBDIR=	asterisk/ \
@@ -18,8 +17,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 DEPRECATED=	Asterisk 13.x will reach EOL on 2021-10-24. Please migrate to net/asterisk18
 EXPIRATION_DATE=2021-10-24
-
-ONLY_FOR_ARCHS=	amd64 armv6 armv7 i386 powerpc powerpc64 powerpc64le sparc64
 
 LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
 		libjansson.so:devel/jansson

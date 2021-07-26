@@ -1,9 +1,9 @@
 PORTNAME=	keepassxc
-DISTVERSION=	2.6.4
+DISTVERSION=	2.6.6
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/keepassxreboot/keepassxc/releases/download/${DISTVERSION}/${PORTNAME}-${DISTVERSION}-src.tar.xz?dummy=/
 
-MAINTAINER=	melanhit@gmail.com
+MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	KeePass Cross-platform Community Edition
 
 LICENSE=	APACHE20 BSD3CLAUSE CC0-1.0 GPLv2 GPLv3 LGPL21 LGPL3 MIT \
@@ -20,8 +20,8 @@ LIB_DEPENDS=	libargon2.so:security/libargon2 \
 		libqrencode.so:graphics/libqrencode \
 		libsodium.so:security/libsodium
 
-USES=		cmake compiler:c++11-lang desktop-file-utils qt:5 readline \
-		shared-mime-info tar:xz xorg
+USES=		cmake compiler:c++11-lang desktop-file-utils pkgconfig qt:5 \
+		readline shared-mime-info tar:xz xorg
 USE_QT=		concurrent core dbus gui network svg widgets buildtools_build \
 		linguisttools_build qmake_build testlib_build
 USE_XORG=	x11
@@ -30,7 +30,7 @@ CMAKE_OFF=	WITH_XC_UPDATECHECK
 
 CONFLICTS_INSTALL=	keepassx-0.* keepassx2-* keepassx-*
 
-OPTIONS_DEFINE=		AUTOTYPE BROWSER KEESHARE NETWORKING YUBIKEY SSHAGENT TEST
+OPTIONS_DEFINE=		AUTOTYPE BROWSER KEESHARE NETWORKING SSHAGENT YUBIKEY TEST
 OPTIONS_DEFAULT=	AUTOTYPE BROWSER KEESHARE NETWORKING SSHAGENT YUBIKEY
 OPTIONS_SUB=		yes
 

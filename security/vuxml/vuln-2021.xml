@@ -1,3 +1,571 @@
+  <vuln vid="cc553d79-e1f0-4b94-89f2-bacad42ee826">
+    <topic>mosquitto -- NULL pointer dereference</topic>
+    <affects>
+      <package>
+	<name>mosquitto</name>
+	<range><ge>2.0.0</ge><lt>2.0.10</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Roger Light reports:</p>
+	<blockquote cite="https://github.com/eclipse/mosquitto/blob/d5ecd9f5aa98d42e7549eea09a71a23eef241f31/ChangeLog.txt">
+	  <p>If an authenticated client connected with MQTT v5 sent
+	  a malformed CONNACK message to the broker a NULL pointer
+	  dereference occurred, most likely resulting in a
+	  segfault.</p>
+	  <p>(Note: a CVE is referenced in the github commit but it
+	  appears to be for a python-bleach vulnerability so it is
+	  not included here.)</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://github.com/eclipse/mosquitto/blob/d5ecd9f5aa98d42e7549eea09a71a23eef241f31/ChangeLog.txt</url>
+    </references>
+    <dates>
+      <discovery>2021-04-10</discovery>
+      <entry>2021-07-24</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="92ad12b8-ec09-11eb-aef1-0897988a1c07">
+    <topic>pjsip -- Race condition in SSL socket server</topic>
+    <affects>
+      <package>
+	<name>pjsip</name>
+	<range><lt>2.11.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>pjsip reports:</p>
+	<blockquote cite="https://github.com/pjsip/pjproject/security/advisories">
+	  <p>There are a couple of issues found in the SSL socket:</p>
+	  <ul>
+	    <li>A race condition between callback and destroy, due to the accepted socket having no group lock.</li>
+	    <li>SSL socket parent/listener may get destroyed during handshake.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-32686</cvename>
+      <url>https://github.com/pjsip/pjproject/security/advisories/GHSA-cv8x-p47p-99wr</url>
+    </references>
+    <dates>
+      <discovery>2021-07-23</discovery>
+      <entry>2021-07-23</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="53fbffe6-ebf7-11eb-aef1-0897988a1c07">
+    <topic>asterisk -- pjproject/pjsip: crash when SSL socket destroyed during handshake</topic>
+    <affects>
+      <package>
+	<name>asterisk13</name>
+	<range><lt>13.38.3</lt></range>
+      </package>
+      <package>
+	<name>asterisk16</name>
+	<range><lt>16.19.1</lt></range>
+      </package>
+      <package>
+	<name>asterisk18</name>
+	<range><lt>18.5.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Asterisk project reports:</p>
+	<blockquote cite="https://www.asterisk.org/downloads/security-advisories">
+	  <p>Depending on the timing, it's possible for Asterisk to
+	  crash when using a TLS connection if the underlying socket
+	  parent/listener gets destroyed during the handshake.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-32686</cvename>
+      <url>https://downloads.asterisk.org/pub/security/AST-2021-009.html</url>
+    </references>
+    <dates>
+      <discovery>2021-05-05</discovery>
+      <entry>2021-07-23</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="fb3455be-ebf6-11eb-aef1-0897988a1c07">
+    <topic>asterisk -- Remote crash when using IAX2 channel driver</topic>
+    <affects>
+      <package>
+	<name>asterisk13</name>
+	<range><lt>13.38.3</lt></range>
+      </package>
+      <package>
+	<name>asterisk16</name>
+	<range><lt>16.19.1</lt></range>
+      </package>
+      <package>
+	<name>asterisk18</name>
+	<range><lt>18.5.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Asterisk project reports:</p>
+	<blockquote cite="https://www.asterisk.org/downloads/security-advisories">
+	  <p>If the IAX2 channel driver receives a packet that
+	  contains an unsupported media format it can cause a crash
+	  to occur in Asterisk.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-32558</cvename>
+      <url>https://downloads.asterisk.org/pub/security/AST-2021-008.html</url>
+    </references>
+    <dates>
+      <discovery>2021-04-13</discovery>
+      <entry>2021-07-23</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ffa364e1-ebf5-11eb-aef1-0897988a1c07">
+    <topic>asterisk -- Remote Crash Vulnerability in PJSIP channel driver</topic>
+    <affects>
+      <package>
+	<name>asterisk16</name>
+	<range><ge>16.17.0</ge><lt>16.19.1</lt></range>
+      </package>
+      <package>
+	<name>asterisk18</name>
+	<range><ge>18.3.0</ge><lt>18.5.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Asterisk project reports:</p>
+	<blockquote cite="https://www.asterisk.org/downloads/security-advisories">
+	  <p>When Asterisk receives a re-INVITE without SDP after
+	  having sent a BYE request a crash will occur. This occurs
+	  due to the Asterisk channel no longer being present while
+	  code assumes it is.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-31878</cvename>
+      <url>https://downloads.asterisk.org/pub/security/AST-2021-007.html</url>
+    </references>
+    <dates>
+      <discovery>2021-04-06</discovery>
+      <entry>2021-07-23</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="76487640-ea29-11eb-a686-3065ec8fd3ec">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>92.0.4515.107</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Chrome Releases reports:</p>
+	<blockquote cite="https://chromereleases.googleblog.com/2021/07/stable-channel-update-for-desktop_20.html">
+	  <p>This release contains 35 security fixes, including:</p>
+	  <ul>
+	    <li>][1210985] High CVE-2021-30565: Out of bounds write in Tab
+	      Groups. Reported by David Erceg on 2021-05-19</li>
+	    <li>[1202661] High CVE-2021-30566: Stack buffer overflow in
+	      Printing. Reported by Leecraso and Guang Gong of 360 Alpha Lab on
+	      2021-04-26</li>
+	    <li>[1211326] High CVE-2021-30567: Use after free in DevTools.
+	      Reported by DDV_UA on 2021-05-20</li>
+	    <li>[1219886] High CVE-2021-30568: Heap buffer overflow in WebGL.
+	      Reported by Yangkang (@dnpushme) of 360 ATA on 2021-06-15</li>
+	    <li>[1218707] High CVE-2021-30569: Use after free in sqlite.
+	      Reported by Chris Salls (@salls) of Makai Security on
+	      2021-06-11</li>
+	    <li>[1101897] High CVE-2021-30571: Insufficient policy enforcement
+	      in DevTools. Reported by David Erceg on 2020-07-03</li>
+	    <li>[1214234] High CVE-2021-30572: Use after free in Autofill.
+	      Reported by Weipeng Jiang (@Krace) from Codesafe Team of
+	      Legendsec at Qi'anxin Group on 2021-05-28</li>
+	    <li>[1216822] High CVE-2021-30573: Use after free in GPU. Reported
+	      by Security For Everyone Team - https://securityforeveryone.com on
+	      2021-06-06</li>
+	    <li>[1227315] High CVE-2021-30574: Use after free in protocol
+	      handling. Reported by Leecraso and Guang Gong of 360 Alpha Lab on
+	      2021-07-08</li>
+	    <li>[1213313] Medium CVE-2021-30575: Out of bounds read in Autofill.
+	      Reported by Leecraso and Guang Gong of 360 Alpha Lab on
+	      2021-05-26</li>
+	    <li>[1194896] Medium CVE-2021-30576: Use after free in DevTools.
+	      Reported by David Erceg on 2021-04-01</li>
+	    <li>[1204811] Medium CVE-2021-30577: Insufficient policy enforcement
+	      in Installer. Reported by Jan van der Put (REQON B.V) on
+	      2021-05-01</li>
+	    <li>[1201074] Medium CVE-2021-30578: Uninitialized Use in Media.
+	      Reported by Chaoyuan Peng  on 2021-04-21</li>
+	    <li>[1207277] Medium CVE-2021-30579: Use after free in UI framework.
+	      Reported by Weipeng Jiang (@Krace) from Codesafe Team of
+	      Legendsec at Qi'anxin Group on 2021-05-10</li>
+	    <li>[1189092] Medium CVE-2021-30580: Insufficient policy enforcement
+	      in Android intents. Reported by @retsew0x01 on 2021-03-17</li>
+	    <li>[1194431] Medium CVE-2021-30581: Use after free in DevTools.
+	      Reported by David Erceg on 2021-03-31</li>
+	    <li>[1205981] Medium CVE-2021-30582: Inappropriate implementation in
+	      Animation. Reported by George Liu  on 2021-05-05</li>
+	    <li>[1179290] Medium CVE-2021-30583: Insufficient policy enforcement
+	      in image handling on Windows. Reported by Muneaki Nishimura
+	      (nishimunea) on 2021-02-17</li>
+	    <li>[1213350] Medium CVE-2021-30584: Incorrect security UI in
+	      Downloads. Reported by @retsew0x01 on 2021-05-26</li>
+	    <li>[1023503] Medium CVE-2021-30585: Use after free in sensor
+	      handling. Reported by niarci on 2019-11-11</li>
+	    <li>[1201032] Medium CVE-2021-30586: Use after free in dialog box
+	      handling on Windows. Reported by kkomdal with kkwon and neodal on
+	      2021-04-21</li>
+	    <li>[1204347] Medium CVE-2021-30587: Inappropriate implementation in
+	      Compositing on Windows. Reported by Abdulrahman Alqabandi,
+	      Microsoft Browser Vulnerability Research on 2021-04-30</li>
+	    <li>[1195650] Low CVE-2021-30588: Type Confusion in V8. Reported by
+	      Jose Martinez (tr0y4) from VerSprite Inc. on 2021-04-04</li>
+	    <li>[1180510] Low CVE-2021-30589: Insufficient validation of
+	      untrusted input in Sharing. Reported by Kirtikumar Anandrao
+	      Ramchandani (@Kirtikumar_A_R) and Patrick Walker (@homesen) on
+	      2021-02-20</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-30565</cvename>
+      <cvename>CVE-2021-30566</cvename>
+      <cvename>CVE-2021-30567</cvename>
+      <cvename>CVE-2021-30568</cvename>
+      <cvename>CVE-2021-30569</cvename>
+      <cvename>CVE-2021-30571</cvename>
+      <cvename>CVE-2021-30572</cvename>
+      <cvename>CVE-2021-30573</cvename>
+      <cvename>CVE-2021-30574</cvename>
+      <cvename>CVE-2021-30575</cvename>
+      <cvename>CVE-2021-30576</cvename>
+      <cvename>CVE-2021-30577</cvename>
+      <cvename>CVE-2021-30578</cvename>
+      <cvename>CVE-2021-30579</cvename>
+      <cvename>CVE-2021-30580</cvename>
+      <cvename>CVE-2021-30581</cvename>
+      <cvename>CVE-2021-30582</cvename>
+      <cvename>CVE-2021-30583</cvename>
+      <cvename>CVE-2021-30584</cvename>
+      <cvename>CVE-2021-30585</cvename>
+      <cvename>CVE-2021-30586</cvename>
+      <cvename>CVE-2021-30587</cvename>
+      <cvename>CVE-2021-30588</cvename>
+      <cvename>CVE-2021-30589</cvename>
+      <url>https://chromereleases.googleblog.com/2021/07/stable-channel-update-for-desktop_20.html</url>
+    </references>
+    <dates>
+      <discovery>2021-07-20</discovery>
+      <entry>2021-07-21</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="aa646c01-ea0d-11eb-9b84-d4c9ef517024">
+    <topic>cURL -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>curl</name>
+	<range><lt>7.78.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The cURL project reports:</p>
+	<blockquote cite="https://curl.se/docs/vuln-7.77.0.html">
+	  <p>CURLOPT_SSLCERT mixup with Secure Transport (CVE-2021-22926)</p>
+	  <p>TELNET stack contents disclosure again (CVE-2021-22925)</p>
+	  <p>Bad connection reuse due to flawed path name checks (CVE-2021-92254)</p>
+	  <p>Metalink download sends credentials (CVE-2021-92253)</p>
+	  <p>Wrong content via metalink not discarded (CVE-2021-92252)</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-22922</cvename>
+      <cvename>CVE-2021-22923</cvename>
+      <cvename>CVE-2021-22924</cvename>
+      <cvename>CVE-2021-22925</cvename>
+      <cvename>CVE-2021-22926</cvename>
+      <url>https://curl.se/docs/vuln-7.77.0.html</url>
+    </references>
+    <dates>
+      <discovery>2021-07-21</discovery>
+      <entry>2021-07-21</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="38a4a043-e937-11eb-9b84-d4c9ef517024">
+    <topic>MySQL -- Multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>mysql57-server</name>
+	<range><lt>5.7.35</lt></range>
+      </package>
+      <package>
+	<name>mysql80-server</name>
+	<range><lt>8.0.26</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Oracle reports:</p>
+	<blockquote cite="https://www.oracle.com/security-alerts/cpujul2021.html">
+	  <p>This Critical Patch Update contains 41 new security patches for
+	    Oracle MySQL. 10 of these vulnerabilities may be remotely exploitable
+	    without authentication, i.e., may be exploited over a network without
+	    requiring user credentials.<br/>
+	    The highest CVSS v3.1 Base Score of vulnerabilities affecting Oracle
+	    MySQL is 8.8.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://www.oracle.com/security-alerts/cpujul2021.html</url>
+    </references>
+    <dates>
+      <discovery>2021-07-20</discovery>
+      <entry>2021-07-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="943d23b6-e65e-11eb-ad30-0800273f11ea">
+    <topic>gitea -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitea</name>
+	<range><lt>1.14.5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Gitea Team reports for release 1.14.5:</p>
+	<blockquote cite="https://blog.gitea.io/2021/07/gitea-1.14.5-is-released/">
+	  <ul>
+	    <li>Hide mirror passwords on repo settings page (#16022) (#16355)</li>
+	    <li>Update bluemonday to v1.0.15 (#16379) (#16380)</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://github.com/go-gitea/gitea/releases/tag/v1.14.5</url>
+      <freebsdpr>ports/257221</freebsdpr>
+    </references>
+    <dates>
+      <discovery>2021-05-16</discovery>
+      <entry>2021-07-18</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="1ba21ff1-e672-11eb-a686-3065ec8fd3ec">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>91.0.4472.164</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Chrome Releases reports:</p>
+	<blockquote cite="https://chromereleases.googleblog.com/2021/07/stable-channel-update-for-desktop.html">
+	  <p>This release contains 8 security fixes, including:</p>
+	  <ul>
+	    <li>[1219082] High CVE-2021-30559: Out of bounds write in ANGLE.
+	      Reported by Seong-Hwan Park (SeHwa) of SecunologyLab on
+	      2021-06-11</li>
+	    <li>[1214842] High CVE-2021-30541: Use after free in V8. Reported by
+	      Richard Wheeldon on 2021-05-31</li>
+	    <li>[1219209] High CVE-2021-30560: Use after free in Blink XSLT.
+	      Reported by Nick Wellnhofer on 2021-06-12</li>
+	    <li>[1219630] High CVE-2021-30561: Type Confusion in V8. Reported by
+	      Sergei Glazunov of Google Project Zero on 2021-06-14</li>
+	    <li>[1220078] High CVE-2021-30562: Use after free in WebSerial.
+	      Reported by Anonymous on 2021-06-15</li>
+	    <li>[1228407] High CVE-2021-30563: Type Confusion in V8. Reported by
+	      Anonymous on 2021-07-12</li>
+	    <li>[1221309] Medium CVE-2021-30564: Heap buffer overflow in WebXR.
+	      Reported by Ali Merchant, iQ3Connect VR Platform on
+	      2021-06-17</li>
+	  </ul>
+	  <p>Google is aware of reports that an exploit for CVE-2021-30563 exists in the wild.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-30541</cvename>
+      <cvename>CVE-2021-30559</cvename>
+      <cvename>CVE-2021-30560</cvename>
+      <cvename>CVE-2021-30561</cvename>
+      <cvename>CVE-2021-30562</cvename>
+      <cvename>CVE-2021-30563</cvename>
+      <cvename>CVE-2021-30564</cvename>
+      <url>https://chromereleases.googleblog.com/2021/07/stable-channel-update-for-desktop.html</url>
+    </references>
+    <dates>
+      <discovery>2021-07-15</discovery>
+      <entry>2021-07-16</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="7ed5779c-e4c7-11eb-91d7-08002728f74c">
+    <topic>Ruby -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>ruby26</name>
+	<range><lt>2.6.8,1</lt></range>
+      </package>
+      <package>
+	<name>ruby</name>
+	<range><lt>2.7.4,1</lt></range>
+      </package>
+      <package>
+	<name>ruby30</name>
+	<range><lt>3.0.2,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Ruby news:</p>
+	<blockquote cite="https://www.ruby-lang.org/en/news/2021/07/07/ruby-3-0-2-released/">
+	  <p>This release includes security fixes. Please check the topics below for details.</p>
+	  <p>CVE-2021-31810: Trusting FTP PASV responses vulnerability in Net::FTP</p>
+	  <p>CVE-2021-32066: A StartTLS stripping vulnerability in Net::IMAP</p>
+	  <p>CVE-2021-31799: A command injection vulnerability in RDoc</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-31799</cvename>
+      <cvename>CVE-2021-31810</cvename>
+      <cvename>CVE-2021-32066</cvename>
+      <url>https://www.ruby-lang.org/en/news/2021/07/07/ruby-2-6-8-released/</url>
+      <url>https://www.ruby-lang.org/en/news/2021/07/07/ruby-2-7-4-released/</url>
+      <url>https://www.ruby-lang.org/en/news/2021/07/07/ruby-3-0-2-released/</url>
+      <url>https://www.ruby-lang.org/en/news/2021/05/02/os-command-injection-in-rdoc/</url>
+      <url>https://www.ruby-lang.org/en/news/2021/07/07/starttls-stripping-in-net-imap/</url>
+      <url>https://www.ruby-lang.org/en/news/2021/07/07/trusting-pasv-responses-in-net-ftp/</url>
+    </references>
+    <dates>
+      <discovery>2021-07-07</discovery>
+      <entry>2021-07-14</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c365536d-e3cf-11eb-9d8d-b37b683944c2">
+    <topic>go -- crypto/tls: clients can panic when provided a certificate of the wrong type for the negotiated parameters</topic>
+    <affects>
+      <package>
+	<name>go</name>
+	<range><lt>1.16.6,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Go project reports:</p>
+	<blockquote cite="https://github.com/golang/go/issues/47143">
+		<p>crypto/tls clients can panic when provided a certificate of
+		 the wrong type for the negotiated parameters. net/http clients
+		 performing HTTPS requests are also affected. The panic can be
+		 triggered by an attacker in a privileged network position
+		 without access to the server certificate's private key, as
+		 long as a trusted ECDSA or Ed25519 certificate for the server
+		 exists (or can be issued), or the client is configured with
+		 Config.InsecureSkipVerify. Clients that disable all TLS_RSA
+		 cipher suites (that is, TLS 1.0–1.2 cipher suites without
+		 ECDHE), as well as TLS 1.3-only clients, are unaffected.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-34558</cvename>
+      <url>https://github.com/golang/go/issues/47143</url>
+    </references>
+    <dates>
+      <discovery>2021-07-07</discovery>
+      <entry>2021-07-12</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="9b1699ff-d84c-11eb-92d6-1b6ff3dfe4d3">
+    <topic>mantis -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>mantis-php73</name>
+	<name>mantis-php74</name>
+	<name>mantis-php80</name>
+	<range><lt>2.25.2,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Mantis 2.25.1 and 2.25.2 releases report:</p>
+	<blockquote cite="https://mantisbt.org/bugs/changelog_page.php?version_id=362">
+	  <p>Security and maintenance release, PHPMailer update to 6.5.0</p>
+	  <ul>
+	    <li>0028552: XSS in manage_custom_field_edit_page.php (CVE-2021-33557)</li>
+	    <li>0028821: Update PHPMailer to 6.5.0 (CVE-2021-3603, CVE-2020-36326)</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-33557</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=2021-33557</url>
+      <cvename>CVE-2021-3603</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=2021-3603</url>
+      <cvename>CVE-2020-36326</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=2020-36326</url>
+    </references>
+    <dates>
+      <discovery>2021-04-28</discovery>
+      <entry>2021-07-09</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="01974420-dfaf-11eb-ba49-001b217b3468">
+    <topic>Gitlab -- vulnerability</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<range><ge>14.0.0</ge><lt>14.0.4</lt></range>
+	<range><ge>13.12.0</ge><lt>13.12.8</lt></range>
+	<range><ge>13.11.0</ge><lt>13.11.7</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2021/07/07/critical-security-release-gitlab-14-0-4-released/">
+	  <p>Arbitrary file read via design feature</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://about.gitlab.com/releases/2021/07/07/critical-security-release-gitlab-14-0-4-released/</url>
+    </references>
+    <dates>
+      <discovery>2021-07-07</discovery>
+      <entry>2021-07-08</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="d49f86ab-d9c7-11eb-a200-00155d01f201">
     <topic>Exiv2 -- Multiple vulnerabilities</topic>
     <affects>

@@ -131,6 +131,7 @@
     SUBDIR += easytag
     SUBDIR += eawpats
     SUBDIR += eawplus
+    SUBDIR += ebumeter
     SUBDIR += ecasound
     SUBDIR += elisa
     SUBDIR += emms
@@ -327,7 +328,9 @@
     SUBDIR += jalv
     SUBDIR += jalv-select
     SUBDIR += jamulus
+    SUBDIR += jconvolver
     SUBDIR += jid3lib
+    SUBDIR += jmatconvol
     SUBDIR += juk
     SUBDIR += juke
     SUBDIR += julius
@@ -377,6 +380,7 @@
     SUBDIR += libinstpatch
     SUBDIR += libkcddb
     SUBDIR += libkcompactdisc
+    SUBDIR += libkeyfinder
     SUBDIR += liblastfm-qt5
     SUBDIR += liblo
     SUBDIR += liblscp
@@ -478,6 +482,7 @@
     SUBDIR += mixer.app
     SUBDIR += mixertui
     SUBDIR += mixxx
+    SUBDIR += mixxx22
     SUBDIR += mkcue
     SUBDIR += moc
     SUBDIR += modplug-tools
@@ -622,6 +627,7 @@
     SUBDIR += poly-lv2
     SUBDIR += polyphone
     SUBDIR += portaudio
+    SUBDIR += portmidi
     SUBDIR += praat
     SUBDIR += pragha
     SUBDIR += prelude-lv2
@@ -684,7 +690,6 @@
     SUBDIR += rhvoice-dictionary
     SUBDIR += rhythmbox
     SUBDIR += rioutil
-    SUBDIR += ripit
     SUBDIR += ripperx
     SUBDIR += rkr-lv2
     SUBDIR += rnnoise
@@ -869,9 +874,15 @@
     SUBDIR += ympd
     SUBDIR += yoshimi
     SUBDIR += zam-plugins-lv2
+    SUBDIR += zita-alsa-pcmi
+    SUBDIR += zita-at1
+    SUBDIR += zita-bls1
     SUBDIR += zita-convolver
+    SUBDIR += zita-dpl1
+    SUBDIR += zita-mu1
     SUBDIR += zita-njbridge
     SUBDIR += zita-resampler
+    SUBDIR += zita-rev1
     SUBDIR += zrythm
     SUBDIR += zynaddsubfx
 

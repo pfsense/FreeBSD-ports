@@ -1,7 +1,7 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
 
 PORTNAME=	mydumper
-PORTVERSION=	0.10.7
+DISTVERSION=	0.10.7-2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
@@ -23,6 +23,8 @@ PLIST_FILES=	sbin/mydumper sbin/myloader
 
 GH_ACCOUNT=	maxbube
 USE_GITHUB=	yes
+
+PORTSCOUT=	skipv:v0.10.7-2
 
 post-patch:
 	@${REINPLACE_CMD} -e '/link_libraries(mydumper/ s|)$$| -lm)|; s|-Werror||' ${WRKSRC}/CMakeLists.txt

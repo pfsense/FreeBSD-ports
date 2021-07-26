@@ -1,7 +1,6 @@
 PORTNAME=	xplr
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.14.3
-PORTREVISION=	1
+DISTVERSION=	0.14.4
 CATEGORIES=	misc
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -138,6 +137,8 @@ CARGO_CRATES=	ansi-to-tui-0.3.0 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
 		yaml-rust-0.4.5
 
+BINARY_ALIAS=	make=gmake
+
 PORTDOCS=	CODE_OF_CONDUCT.md README.md RELEASE.md
 _EXAMPLES=	${WRKSRC}/src/init.lua
 PORTEXAMPLES=	${_EXAMPLES:T}
@@ -175,4 +176,13 @@ post-install-EXAMPLES-on:
 		${INSTALL_DATA} ${_EXAMPLES} \
 		${STAGEDIR}${EXAMPLESDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+# XXX: getentropy(3) did not appear until FreeBSD 12, anything lower will
+# not compile, throwing an undefined reference to `getentropy'.  We can
+# safely remove this once FreeBSD 11 is EOL.
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200000
+EXTRA_PATCHES=	${PATCHDIR}/extra-cargo-crates_luajit-src-210.1.3+restyfe08842_luajit2_src_lj__prng.c
+.endif
+
+.include <bsd.port.post.mk>

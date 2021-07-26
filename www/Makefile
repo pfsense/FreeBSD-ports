@@ -329,6 +329,7 @@
     SUBDIR += mattermost-webapp
     SUBDIR += mediawiki131
     SUBDIR += mediawiki135
+    SUBDIR += mediawiki136
     SUBDIR += mergelog
     SUBDIR += mhonarc
     SUBDIR += micro_httpd
@@ -431,7 +432,6 @@
     SUBDIR += nextcloud
     SUBDIR += nextcloud-appointments
     SUBDIR += nextcloud-calendar
-    SUBDIR += nextcloud-circles
     SUBDIR += nextcloud-contacts
     SUBDIR += nextcloud-deck
     SUBDIR += nextcloud-forms
@@ -1059,6 +1059,7 @@
     SUBDIR += p5-Plack-Middleware-AutoRefresh
     SUBDIR += p5-Plack-Middleware-ConsoleLogger
     SUBDIR += p5-Plack-Middleware-CrossOrigin
+    SUBDIR += p5-Plack-Middleware-DBIx-DisconnectAll
     SUBDIR += p5-Plack-Middleware-Debug
     SUBDIR += p5-Plack-Middleware-Deflater
     SUBDIR += p5-Plack-Middleware-Expires
@@ -1449,6 +1450,20 @@
     SUBDIR += py-dj31-django-timezone-field
     SUBDIR += py-dj31-djangorestframework
     SUBDIR += py-dj31-drf-yasg
+    SUBDIR += py-dj32-django-auth-ldap
+    SUBDIR += py-dj32-django-cacheops
+    SUBDIR += py-dj32-django-cors-headers
+    SUBDIR += py-dj32-django-debug-toolbar
+    SUBDIR += py-dj32-django-filter
+    SUBDIR += py-dj32-django-js-asset
+    SUBDIR += py-dj32-django-mptt
+    SUBDIR += py-dj32-django-prometheus
+    SUBDIR += py-dj32-django-redis
+    SUBDIR += py-dj32-django-tables2
+    SUBDIR += py-dj32-django-taggit
+    SUBDIR += py-dj32-django-timezone-field
+    SUBDIR += py-dj32-djangorestframework
+    SUBDIR += py-dj32-drf-yasg
     SUBDIR += py-django
     SUBDIR += py-django-admin-rangefilter
     SUBDIR += py-django-advanced-filters
@@ -1494,6 +1509,7 @@
     SUBDIR += py-django-gravatar2
     SUBDIR += py-django-guardian
     SUBDIR += py-django-happenings-update
+    SUBDIR += py-django-hashid-field
     SUBDIR += py-django-haystack
     SUBDIR += py-django-hierarkey
     SUBDIR += py-django-hijack
@@ -1688,6 +1704,7 @@
     SUBDIR += py-protego
     SUBDIR += py-puppetboard
     SUBDIR += py-py-restclient
+    SUBDIR += py-pygsheets
     SUBDIR += py-pyjwt
     SUBDIR += py-pylsqpack
     SUBDIR += py-pyocclient
@@ -1918,6 +1935,7 @@
     SUBDIR += rubygem-hpricot
     SUBDIR += rubygem-html2haml
     SUBDIR += rubygem-http
+    SUBDIR += rubygem-http-accept
     SUBDIR += rubygem-http-cookie
     SUBDIR += rubygem-http-form_data
     SUBDIR += rubygem-http3
@@ -2108,7 +2126,6 @@
     SUBDIR += rubygem-tinyatom
     SUBDIR += rubygem-tinymce-rails
     SUBDIR += rubygem-toml-rb
-    SUBDIR += rubygem-toml-rb10
     SUBDIR += rubygem-totoridipjp
     SUBDIR += rubygem-tumblr_client
     SUBDIR += rubygem-turbolinks
@@ -2312,6 +2329,7 @@
     SUBDIR += wikicalc
     SUBDIR += wordpress
     SUBDIR += wpebackend-fdo
+    SUBDIR += writeas-cli
     SUBDIR += wsdlpull
     SUBDIR += wslay
     SUBDIR += wsmake
@@ -2329,6 +2347,7 @@
     SUBDIR += yanopaste
     SUBDIR += yarn
     SUBDIR += yarn-node14
+    SUBDIR += yarr
     SUBDIR += yaws
     SUBDIR += you-get
     SUBDIR += yourls
