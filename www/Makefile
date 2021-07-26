@@ -78,6 +78,7 @@
     SUBDIR += chpasswd
     SUBDIR += chrome-gnome-shell
     SUBDIR += chromium
+    SUBDIR += civetweb
     SUBDIR += ckeditor
     SUBDIR += cl-lml
     SUBDIR += cl-lml-sbcl
@@ -113,6 +114,7 @@
     SUBDIR += dokuwiki
     SUBDIR += dolibarr
     SUBDIR += domoticz
+    SUBDIR += dooble
     SUBDIR += drupal7
     SUBDIR += drupal7-wysiwyg
     SUBDIR += drupal8
@@ -285,6 +287,7 @@
     SUBDIR += lagrange
     SUBDIR += larbin
     SUBDIR += libapreq2
+    SUBDIR += libdatachannel
     SUBDIR += libdom
     SUBDIR += libecap
     SUBDIR += libepc
@@ -341,6 +344,7 @@
     SUBDIR += minio
     SUBDIR += minio-client
     SUBDIR += miniserve
+    SUBDIR += mirrorselect
     SUBDIR += mitmproxy
     SUBDIR += mknmz-wwwoffle
     SUBDIR += mnogosearch
@@ -411,6 +415,7 @@
     SUBDIR += mongrel2
     SUBDIR += monolith
     SUBDIR += moodle310
+    SUBDIR += moodle311
     SUBDIR += moodle39
     SUBDIR += morty
     SUBDIR += mozplugger
@@ -588,6 +593,7 @@
     SUBDIR += p5-CGI-SpeedyCGI
     SUBDIR += p5-CGI-Struct
     SUBDIR += p5-CGI-Thin
+    SUBDIR += p5-CGI-Tiny
     SUBDIR += p5-CGI-Untaint
     SUBDIR += p5-CGI-Untaint-date
     SUBDIR += p5-CGI-Untaint-email
@@ -1558,7 +1564,6 @@
     SUBDIR += py-django-webpack-loader
     SUBDIR += py-django-widget-tweaks
     SUBDIR += py-django22
-    SUBDIR += py-django30
     SUBDIR += py-django31
     SUBDIR += py-django32
     SUBDIR += py-django_compressor
@@ -1574,6 +1579,7 @@
     SUBDIR += py-enmerkar
     SUBDIR += py-fake-useragent
     SUBDIR += py-falcon
+    SUBDIR += py-fastapi
     SUBDIR += py-feedgenerator
     SUBDIR += py-flask
     SUBDIR += py-flask-admin
@@ -1683,6 +1689,7 @@
     SUBDIR += py-praw
     SUBDIR += py-prawcore
     SUBDIR += py-priority
+    SUBDIR += py-protego
     SUBDIR += py-puppetboard
     SUBDIR += py-py-restclient
     SUBDIR += py-pyjwt
@@ -1773,6 +1780,7 @@
     SUBDIR += py-wsaccel
     SUBDIR += py-wsgidav
     SUBDIR += py-yarl
+    SUBDIR += pydio-cells
     SUBDIR += qdecoder
     SUBDIR += qhttpengine
     SUBDIR += qt5-webchannel
@@ -1787,6 +1795,7 @@
     SUBDIR += radicale
     SUBDIR += rearx
     SUBDIR += redmine4
+    SUBDIR += redmine42
     SUBDIR += rejik
     SUBDIR += reportmagic
     SUBDIR += repos-style
@@ -1864,6 +1873,8 @@
     SUBDIR += rubygem-ethon
     SUBDIR += rubygem-eventmachine_httpserver
     SUBDIR += rubygem-faraday
+    SUBDIR += rubygem-faraday-em_http
+    SUBDIR += rubygem-faraday-em_synchrony
     SUBDIR += rubygem-faraday-net_http
     SUBDIR += rubygem-faraday-net_http_persistent
     SUBDIR += rubygem-faraday0
@@ -1910,6 +1921,7 @@
     SUBDIR += rubygem-http-cookie
     SUBDIR += rubygem-http-form_data
     SUBDIR += rubygem-http3
+    SUBDIR += rubygem-http4
     SUBDIR += rubygem-http_router
     SUBDIR += rubygem-httparty
     SUBDIR += rubygem-httpclient
@@ -1957,6 +1969,7 @@
     SUBDIR += rubygem-less
     SUBDIR += rubygem-lighthouse-api
     SUBDIR += rubygem-link_header
+    SUBDIR += rubygem-llhttp-ffi
     SUBDIR += rubygem-lograge
     SUBDIR += rubygem-lograge-rails5
     SUBDIR += rubygem-lograge-rails52
@@ -2156,6 +2169,7 @@
     SUBDIR += squidpurge
     SUBDIR += squidview
     SUBDIR += srg
+    SUBDIR += srt
     SUBDIR += stagit
     SUBDIR += subsonic-standalone
     SUBDIR += suphp
@@ -2292,6 +2306,7 @@
     SUBDIR += wordpress
     SUBDIR += wpebackend-fdo
     SUBDIR += wsdlpull
+    SUBDIR += wslay
     SUBDIR += wsmake
     SUBDIR += wt
     SUBDIR += wuzz
@@ -2299,6 +2314,7 @@
     SUBDIR += xapian-omega
     SUBDIR += xapian-omega12
     SUBDIR += xfce4-smartbookmark-plugin
+    SUBDIR += xh
     SUBDIR += xist
     SUBDIR += xoops
     SUBDIR += xsp

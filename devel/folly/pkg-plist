@@ -38,6 +38,7 @@ include/folly/File.h
 include/folly/FileUtil.h
 include/folly/Fingerprint.h
 include/folly/FixedString.h
+include/folly/FollyMemcpy.h
 include/folly/Format-inl.h
 include/folly/Format.h
 include/folly/FormatArg.h
@@ -505,6 +506,7 @@ include/folly/io/async/TimeoutManager.h
 include/folly/io/async/VirtualEventBase.h
 include/folly/io/async/WriteChainAsyncTransportWrapper.h
 include/folly/io/async/ssl/BasicTransportCertificate.h
+include/folly/io/async/ssl/OpenSSLTransportCertificate.h
 include/folly/io/async/ssl/OpenSSLUtils.h
 include/folly/io/async/ssl/SSLErrors.h
 include/folly/io/async/ssl/TLSDefinitions.h

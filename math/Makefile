@@ -77,6 +77,7 @@
     SUBDIR += R-cran-lme4
     SUBDIR += R-cran-lpSolve
     SUBDIR += R-cran-magic
+    SUBDIR += R-cran-maps
     SUBDIR += R-cran-matrixStats
     SUBDIR += R-cran-maxLik
     SUBDIR += R-cran-mcmc
@@ -117,6 +118,7 @@
     SUBDIR += R-cran-stabledist
     SUBDIR += R-cran-statmod
     SUBDIR += R-cran-survey
+    SUBDIR += R-cran-tensor
     SUBDIR += R-cran-truncnorm
     SUBDIR += R-cran-units
     SUBDIR += R-cran-uroot
@@ -164,6 +166,7 @@
     SUBDIR += blaze
     SUBDIR += blazeiterative
     SUBDIR += blis
+    SUBDIR += bliss
     SUBDIR += blocksolve95
     SUBDIR += bonmin
     SUBDIR += boolector
@@ -183,6 +186,7 @@
     SUBDIR += ceres-solver
     SUBDIR += cgal
     SUBDIR += cgl
+    SUBDIR += cgl-conic
     SUBDIR += cglm
     SUBDIR += chaco
     SUBDIR += chryzodus
@@ -209,12 +213,14 @@
     SUBDIR += coinmumps
     SUBDIR += coinutils
     SUBDIR += combblas
+    SUBDIR += conauto
     SUBDIR += concorde
     SUBDIR += convertall
     SUBDIR += coq
     SUBDIR += couenne
     SUBDIR += coxeter3
     SUBDIR += cppad
+    SUBDIR += creme
     SUBDIR += crlibm
     SUBDIR += cryptominisat
     SUBDIR += csdp
@@ -226,6 +232,7 @@
     SUBDIR += dbcsr
     SUBDIR += deal.ii
     SUBDIR += dieharder
+    SUBDIR += disco
     SUBDIR += djbfft
     SUBDIR += drgeo
     SUBDIR += dsdp
@@ -294,6 +301,7 @@
     SUBDIR += gambit
     SUBDIR += gap
     SUBDIR += gau2grid
+    SUBDIR += gecode
     SUBDIR += gemmlowp
     SUBDIR += geogebra
     SUBDIR += geogram
@@ -324,6 +332,7 @@
     SUBDIR += gp2c
     SUBDIR += grace
     SUBDIR += graphthing
+    SUBDIR += gravity
     SUBDIR += gretl
     SUBDIR += gri
     SUBDIR += gringo
@@ -560,6 +569,8 @@
     SUBDIR += or-tools
     SUBDIR += orpie
     SUBDIR += osi
+    SUBDIR += osi-conic
+    SUBDIR += osiipopt
     SUBDIR += osqp
     SUBDIR += p5-AI-DecisionTree
     SUBDIR += p5-AI-Genetic
@@ -965,6 +976,23 @@
     SUBDIR += sprng
     SUBDIR += stp
     SUBDIR += suitesparse
+    SUBDIR += suitesparse-amd
+    SUBDIR += suitesparse-btf
+    SUBDIR += suitesparse-camd
+    SUBDIR += suitesparse-ccolamd
+    SUBDIR += suitesparse-cholmod
+    SUBDIR += suitesparse-colamd
+    SUBDIR += suitesparse-config
+    SUBDIR += suitesparse-csparse
+    SUBDIR += suitesparse-cxsparse
+    SUBDIR += suitesparse-graphblas
+    SUBDIR += suitesparse-klu
+    SUBDIR += suitesparse-ldl
+    SUBDIR += suitesparse-mongoose
+    SUBDIR += suitesparse-rbio
+    SUBDIR += suitesparse-slip_lu
+    SUBDIR += suitesparse-spqr
+    SUBDIR += suitesparse-umfpack
     SUBDIR += sundials
     SUBDIR += superlu
     SUBDIR += symengine

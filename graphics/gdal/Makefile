@@ -1,7 +1,8 @@
 # Created by: Randall Hopper
 
 PORTNAME=	gdal
-PORTVERSION=	3.2.2
+PORTVERSION=	3.2.3
+PORTREVISION=	1
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://download.osgeo.org/gdal/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -61,7 +62,6 @@ CONFIGURE_ARGS=	--datadir=${PREFIX}/share \
 		${ICONV_CONFIGURE_ARG}
 GNU_CONFIGURE=	yes
 LDFLAGS+=	${ICONV_LIB}
-MAKE_JOBS_UNSAFE=	yes
 MAKEFILE=	GNUmakefile
 USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
@@ -106,8 +106,9 @@ ECW_CONFIGURE_WITH=	ecw
 ECW_LIB_DEPENDS=	libNCSEcw.so:graphics/libecwj2
 EXPAT_CONFIGURE_WITH=	expat
 EXPAT_LIB_DEPENDS=	libexpat.so:textproc/expat2
-EXR_CONFIGURE_ON=	--with-exr
-EXR_LIB_DEPENDS=	libOpenEXR.so:graphics/openexr libImath.so:math/Imath
+EXR_CONFIGURE_WITH=	exr
+EXR_LIB_DEPENDS=	libImath.so:math/Imath \
+			libOpenEXR.so:graphics/openexr
 EXR_CFLAGS=		-DInt64=uint64_t
 FREEXL_CONFIGURE_WITH=	freexl
 FREEXL_LIB_DEPENDS=	libfreexl.so:textproc/freexl
@@ -182,6 +183,6 @@ post-install:
 	cd ${WRKSRC}/ && ${INSTALL_DATA} ${HEADER_FILES} ${STAGEDIR}${PREFIX}/include/
 	${INSTALL_DATA} ${WRKSRC}/libgdal.a ${STAGEDIR}${PREFIX}/lib/
 	${INSTALL_DATA} ${WRKSRC}/GDALmake.opt ${STAGEDIR}${DATADIR}/
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgdal.so.${PORTVERSION}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgdal.so
 
 .include <bsd.port.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	vulkan-tools
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.177
+DISTVERSION=	1.2.180
 CATEGORIES=	graphics
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -25,7 +25,7 @@ OPTIONS_SLAVE=		DISPLAY
 OPTIONS_SUB=		yes
 
 WAYLAND_PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-WAYLAND_PATCHFILES=	ea2e75bea224.patch:-p1 # https://github.com/KhronosGroup/Vulkan-Tools/issues/469
+WAYLAND_PATCHFILES=	c6adbf0af27e.patch:-p1 # https://github.com/KhronosGroup/Vulkan-Tools/issues/469
 WAYLAND_BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 			wayland-protocols>0:graphics/wayland-protocols
 WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland

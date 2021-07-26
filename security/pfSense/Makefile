@@ -66,7 +66,7 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		sshguard>=0:security/sshguard \
 		strongswan>=0:security/strongswan \
 		uclcmd>=0:devel/uclcmd \
-		unbound112>0:dns/unbound112 \
+		unbound112<1.13.0:dns/unbound112 \
 		voucher>=0:sysutils/voucher \
 		wol>=0:net/wol \
 		wpa_supplicant>=0:security/wpa_supplicant \

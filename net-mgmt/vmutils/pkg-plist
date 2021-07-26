@@ -4,11 +4,13 @@ bin/vmauth
 bin/vmbackup
 bin/vmctl
 bin/vmrestore
+@sample etc/prometheus/prometheus.yml.sample
 %%PORTDOCS%%%%DOCSDIR%%/vmagent.md
 %%PORTDOCS%%%%DOCSDIR%%/vmagent.png
 %%PORTDOCS%%%%DOCSDIR%%/vmalert.md
 %%PORTDOCS%%%%DOCSDIR%%/vmauth.md
 %%PORTDOCS%%%%DOCSDIR%%/vmbackup.md
+%%PORTDOCS%%%%DOCSDIR%%/vmbackupmanager.md
 %%PORTDOCS%%%%DOCSDIR%%/vmctl.md
 %%PORTDOCS%%%%DOCSDIR%%/vmgateway-access-control.jpg
 %%PORTDOCS%%%%DOCSDIR%%/vmgateway-overview.jpeg

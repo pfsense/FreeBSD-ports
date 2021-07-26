@@ -1,19 +1,18 @@
 PORTNAME=	ansible
 DISTVERSION=	g20200803
+PORTREVISION?=	0
 PORTEPOCH=	1
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	-${_LIBRARY}
 
 MAINTAINER=	lcook@FreeBSD.org
-COMMENT=	Ansible module to load kernel modules or update /boot/loader.conf
+COMMENT?=	Ansible module to load kernel modules or update /boot/loader.conf
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ansible>0:sysutils/ansible@${PY_FLAVOR}
-
-USES=		python shebangfix
+USES=		ansible:module python shebangfix
 USE_GITHUB=	yes
 
 GH_ACCOUNT=	dlundgren
@@ -25,13 +24,12 @@ NO_ARCH=	yes
 NO_BUILD=	yes
 
 _LIBRARY?=	kld
-_ANSIBLE_MOD=	share/${PYTHON_PKGNAMEPREFIX}ansible/plugins/modules
 
-PLIST_FILES=	${_ANSIBLE_MOD}/${_LIBRARY}
+PLIST_FILES=	${ANSIBLE_MODULESDIR}/${_LIBRARY}
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/${_ANSIBLE_MOD}
+	${MKDIR} ${STAGEDIR}${ANSIBLE_MODULESDIR}
 	${INSTALL_SCRIPT} ${WRKSRC}/library/${_LIBRARY} \
-		${STAGEDIR}${PREFIX}/${_ANSIBLE_MOD}/${_LIBRARY}
+		${STAGEDIR}${ANSIBLE_MODULESDIR}/${_LIBRARY}
 
 .include <bsd.port.mk>

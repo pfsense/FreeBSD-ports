@@ -1,6 +1,7 @@
 PORTNAME=	solana
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.6.6
+DISTVERSION=	1.7.0
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_i386=	Fails on 32-bit systems: https://github.com/solana-labs/solana/issues/16811
 
-BUILD_DEPENDS=	llvm-config${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
+BUILD_DEPENDS=	llvm-config${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
 LIB_DEPENDS=	libhidapi.so:comms/hidapi
 
 USES=		cargo pkgconfig ssl
@@ -78,18 +79,19 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		bzip2-sys-0.1.9+1.0.8 \
 		cargo_metadata-0.12.0 \
 		cast-0.2.3 \
-		cc-1.0.49 \
+		cc-1.0.67 \
 		cexpr-0.4.0 \
 		cfg-if-0.1.10 \
 		cfg-if-1.0.0 \
 		chrono-0.4.19 \
-		chrono-humanize-0.1.1 \
+		chrono-humanize-0.2.1 \
 		clang-sys-0.29.3 \
 		clap-2.33.3 \
 		cloudabi-0.0.3 \
 		cloudabi-0.1.0 \
 		combine-3.8.1 \
 		console-0.11.3 \
+		console-0.14.1 \
 		const_fn-0.4.5 \
 		constant_time_eq-0.1.5 \
 		core-foundation-0.9.1 \
@@ -110,6 +112,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		crunchy-0.2.2 \
 		crypto-mac-0.7.0 \
 		crypto-mac-0.8.0 \
+		crypto-mac-0.9.1 \
 		crypto-mac-0.10.0 \
 		csv-1.1.3 \
 		csv-core-0.1.10 \
@@ -117,6 +120,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		curve25519-dalek-2.1.0 \
 		curve25519-dalek-3.0.0 \
 		dashmap-4.0.2 \
+		derivation-path-0.1.3 \
 		derivative-2.1.1 \
 		derive_more-0.99.11 \
 		dialoguer-0.6.2 \
@@ -133,6 +137,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		dtoa-0.4.5 \
 		ed25519-1.0.1 \
 		ed25519-dalek-1.0.1 \
+		ed25519-dalek-bip32-0.1.1 \
 		educe-0.4.13 \
 		either-1.5.3 \
 		encode_unicode-0.3.6 \
@@ -177,7 +182,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		gimli-0.21.0 \
 		glob-0.3.0 \
 		globset-0.4.5 \
-		goauth-0.9.0 \
+		goauth-0.10.0 \
 		goblin-0.3.0 \
 		h2-0.2.5 \
 		h2-0.3.0 \
@@ -191,6 +196,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		histogram-0.6.9 \
 		hmac-0.7.1 \
 		hmac-0.8.1 \
+		hmac-0.9.0 \
 		hmac-0.10.1 \
 		hmac-drbg-0.2.0 \
 		http-0.2.1 \
@@ -217,9 +223,6 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		ipnet-2.3.0 \
 		itertools-0.9.0 \
 		itoa-0.4.5 \
-		jemalloc-ctl-0.3.3 \
-		jemalloc-sys-0.3.2 \
-		jemallocator-0.3.2 \
 		jobserver-0.1.21 \
 		js-sys-0.3.47 \
 		jsonrpc-client-transports-17.0.0 \
@@ -296,8 +299,6 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		parking_lot_core-0.6.2 \
 		parking_lot_core-0.7.2 \
 		parking_lot_core-0.8.0 \
-		paste-0.1.16 \
-		paste-impl-0.1.16 \
 		pbkdf2-0.3.0 \
 		pbkdf2-0.4.0 \
 		pbkdf2-0.6.0 \
@@ -328,6 +329,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		prost-0.7.0 \
 		prost-derive-0.7.0 \
 		prost-types-0.7.0 \
+		qstring-0.7.2 \
 		quick-error-1.2.3 \
 		quote-0.6.13 \
 		quote-1.0.6 \
@@ -358,13 +360,13 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		redox_syscall-0.1.56 \
 		redox_users-0.3.4 \
 		reed-solomon-erasure-4.0.2 \
-		regex-1.3.9 \
+		regex-1.4.5 \
 		regex-automata-0.1.9 \
-		regex-syntax-0.6.18 \
+		regex-syntax-0.6.23 \
 		remove_dir_all-0.5.0 \
 		reqwest-0.11.2 \
 		retain_mut-0.1.2 \
-		ring-0.16.12 \
+		ring-0.16.20 \
 		rocksdb-0.15.0 \
 		rpassword-4.0.5 \
 		rust-argon2-0.7.0 \
@@ -388,7 +390,7 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		semver-parser-0.7.0 \
 		semver-parser-0.10.1 \
 		serde-1.0.122 \
-		serde_bytes-0.11.4 \
+		serde_bytes-0.11.5 \
 		serde_cbor-0.11.1 \
 		serde_derive-1.0.122 \
 		serde_json-1.0.62 \
@@ -409,14 +411,14 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		slab-0.4.2 \
 		smallvec-0.6.14 \
 		smallvec-1.6.1 \
-		smpl_jwt-0.6.0 \
+		smpl_jwt-0.6.1 \
 		socket2-0.3.17 \
 		solana-frozen-abi-1.6.4 \
 		solana-frozen-abi-macro-1.6.4 \
 		solana-logger-1.6.4 \
 		solana-program-1.6.4 \
 		solana-sdk-macro-1.6.4 \
-		solana_rbpf-0.2.7 \
+		solana_rbpf-0.2.11 \
 		spin-0.5.2 \
 		spl-associated-token-account-1.0.2 \
 		spl-memo-3.0.1 \
@@ -442,13 +444,12 @@ CARGO_CRATES=	Inflector-0.11.4 \
 		tarpc-plugins-0.9.0 \
 		tempfile-3.1.0 \
 		termcolor-1.1.0 \
-		terminal_size-0.1.12 \
+		terminal_size-0.1.16 \
 		termios-0.3.2 \
 		textwrap-0.11.0 \
 		thiserror-1.0.23 \
 		thiserror-impl-1.0.23 \
 		thread-scoped-1.0.2 \
-		thread_local-1.0.1 \
 		time-0.1.43 \
 		time-0.2.25 \
 		time-macros-0.1.0 \
@@ -556,10 +557,12 @@ XARCH=		${ARCH:S/amd64/x86_64/:tu}
 MAKE_ENV=	${XARCH}_UNKNOWN_FREEBSD_OPENSSL_INCLUDE_DIR=${OPENSSLINC} \
 		${XARCH}_UNKNOWN_FREEBSD_OPENSSL_LIB_DIR=${OPENSSLLIB}
 
-BINARY_ALIAS=	llvm-config=${PREFIX}/bin/llvm-config${LLVM_DEFAULT}
+LLVM_VERSION=	10
+
+BINARY_ALIAS=	llvm-config=${PREFIX}/bin/llvm-config${LLVM_VERSION}
 
 do-install:
-	for f in ${WRKDIR}/target/release/${PORTNAME}-*; do \
+	for f in ${WRKDIR}/target/release/${PORTNAME}*; do \
 		if [ -f $$f -a -x $$f ]; then \
 			${INSTALL_PROGRAM} $$f ${STAGEDIR}${PREFIX}/bin; \
 		fi \

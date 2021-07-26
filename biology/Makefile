@@ -164,6 +164,7 @@
     SUBDIR += seqan
     SUBDIR += seqan-apps
     SUBDIR += seqan1
+    SUBDIR += seqan3
     SUBDIR += seqio
     SUBDIR += seqkit
     SUBDIR += seqtk
@@ -178,12 +179,14 @@
     SUBDIR += subread
     SUBDIR += tRNAscan-SE
     SUBDIR += tabixpp
+    SUBDIR += taxonkit
     SUBDIR += treekin
     SUBDIR += treepuzzle
     SUBDIR += trimadap
     SUBDIR += trimmomatic
     SUBDIR += ucsc-userapps
     SUBDIR += ugene
+    SUBDIR += unikmer
     SUBDIR += vcf-split
     SUBDIR += vcf2hap
     SUBDIR += vcflib

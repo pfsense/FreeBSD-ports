@@ -1,5 +1,6 @@
 PORTNAME=	arrow
-DISTVERSION=	4.0.0
+DISTVERSION=	4.0.1
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://mirrors.advancedhosters.com/apache/${PORTNAME}/${PORTNAME}-${DISTVERSION}/ \
 		https://github.com/apache/orc/archive/rel/:orc
@@ -12,6 +13,8 @@ COMMENT=	Columnar in-memory analytics layer for big data
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/../LICENSE.txt
+
+BROKEN_FreeBSD_11=	The OpenSSL must be greater than or equal to 1.1.0
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs
 
@@ -167,6 +170,16 @@ OPTIONS_DEFAULT+=	${opt}
 .  endif
 .endfor
 
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == clang && ${OPSYS} == FreeBSD
+LLVM_VER=	10 # clang-11 crashes on FreeBSD 14: https://bugs.llvm.org/show_bug.cgi?id=50277
+
+BUILD_DEPENDS+=	clang${LLVM_VER}:devel/llvm${LLVM_VER}
+CC=		${LOCALBASE}/bin/clang${LLVM_VER}
+CXX=		${LOCALBASE}/bin/clang++${LLVM_VER}
+.endif
+
 pre-configure-PYTHON-on:
 	@${REINPLACE_CMD} -e ' \
 		s|arrow_python|arrow_python${PYTHON_SUFFIX}|g; \
@@ -219,4 +232,4 @@ do-test: # tests fail to compile: https://issues.apache.org/jira/browse/ARROW-12
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${ALL_TARGET} && \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} test
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -45,8 +45,7 @@
     SUBDIR += ansible-kld
     SUBDIR += ansible-sshjail
     SUBDIR += ansible-sysrc
-    SUBDIR += ansible27
-    SUBDIR += ansible28
+    SUBDIR += ansible2
     SUBDIR += anvil
     SUBDIR += apache-mesos
     SUBDIR += apachetop
@@ -125,6 +124,7 @@
     SUBDIR += boxbackup-devel
     SUBDIR += bpytop
     SUBDIR += brasero
+    SUBDIR += brename
     SUBDIR += bsd-splash-changer
     SUBDIR += bsdconfig
     SUBDIR += bsdcrashtar
@@ -174,6 +174,7 @@
     SUBDIR += cfengine317
     SUBDIR += chaoskube
     SUBDIR += checkrestart
+    SUBDIR += chezmoi
     SUBDIR += chgrep
     SUBDIR += choria
     SUBDIR += chyves
@@ -207,6 +208,7 @@
     SUBDIR += consul-replicate
     SUBDIR += consul_exporter
     SUBDIR += container-diff
+    SUBDIR += containerd
     SUBDIR += contractor
     SUBDIR += copytape
     SUBDIR += coreos-ct
@@ -227,6 +229,7 @@
     SUBDIR += ctop
     SUBDIR += currtime
     SUBDIR += cw
+    SUBDIR += czkawka
     SUBDIR += daa2iso
     SUBDIR += dae
     SUBDIR += daemonize
@@ -432,6 +435,7 @@
     SUBDIR += gconf-editor
     SUBDIR += gdisk
     SUBDIR += gdmap
+    SUBDIR += gdu
     SUBDIR += genisoimage
     SUBDIR += geomWatch
     SUBDIR += getdelta
@@ -558,6 +562,7 @@
     SUBDIR += k3b
     SUBDIR += k4dirstat
     SUBDIR += k8temp
+    SUBDIR += k9s
     SUBDIR += kbackup
     SUBDIR += kcron
     SUBDIR += kdeadmin
@@ -578,6 +583,7 @@
     SUBDIR += kshutdown
     SUBDIR += ksystemlog
     SUBDIR += kubectl
+    SUBDIR += kvmclock-kmod
     SUBDIR += lava
     SUBDIR += lbl-cf
     SUBDIR += lbl-hf
@@ -643,6 +649,7 @@
     SUBDIR += lxqt-admin
     SUBDIR += lxqt-config
     SUBDIR += lxqt-policykit
+    SUBDIR += lxqt-powermanagement
     SUBDIR += lxqt-qtplugin
     SUBDIR += lxsplit
     SUBDIR += lxtask
@@ -891,6 +898,7 @@
     SUBDIR += paicc
     SUBDIR += paladin
     SUBDIR += pam_mount
+    SUBDIR += pam_xdg
     SUBDIR += panicmail
     SUBDIR += parafly
     SUBDIR += parallel
@@ -989,6 +997,9 @@
     SUBDIR += pwol
     SUBDIR += pwsafe
     SUBDIR += pxattr
+    SUBDIR += pxp-agent
+    SUBDIR += py-ansible-base
+    SUBDIR += py-ansible-core
     SUBDIR += py-ansible-lint
     SUBDIR += py-ansible-runner
     SUBDIR += py-azure-cli
@@ -1214,6 +1225,7 @@
     SUBDIR += runit-faster
     SUBDIR += runj
     SUBDIR += runwhen
+    SUBDIR += rush
     SUBDIR += rw
     SUBDIR += s-tui
     SUBDIR += s6
@@ -1329,6 +1341,7 @@
     SUBDIR += terraform-switcher
     SUBDIR += terragrunt
     SUBDIR += testdisk
+    SUBDIR += tflint
     SUBDIR += thefish
     SUBDIR += timelimit
     SUBDIR += timemon

@@ -48,8 +48,8 @@ SUB_FILES=	pkg-message
 
 MAKE_JOBS_UNSAFE=	yes
 
-OPTIONS_DEFINE=		FUSE NLS
-OPTIONS_DEFAULT=	FUSE
+OPTIONS_DEFINE=		FUSE LDAP NLS
+OPTIONS_DEFAULT=	FUSE LDAP
 OPTIONS_EXCLUDE_DragonFly=	FUSE
 OPTIONS_SUB=		yes
 
@@ -57,6 +57,9 @@ FUSE_DESC=		Use file system in userspace
 
 FUSE_CONFIGURE_ENABLE=	fuse
 FUSE_LIB_DEPENDS=	libfuse.so:sysutils/fusefs-libs
+
+LDAP_CONFIGURE_ENABLE=	ldap
+LDAP_USE=		openldap=yes
 
 NLS_USES=		gettext
 

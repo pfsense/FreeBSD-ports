@@ -3,10 +3,10 @@
 PORTNAME=	synfig
 PORTVERSION=	1.2.2
 DISTVERSIONPREFIX=v
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	devel graphics multimedia
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Vector based 2D animation package
 
 LICENSE=	GPLv2+

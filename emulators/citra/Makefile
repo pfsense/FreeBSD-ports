@@ -1,5 +1,5 @@
 PORTNAME=	citra
-PORTVERSION=	s20210429
+PORTVERSION=	s20210516
 PORTREVISION?=	0
 CATEGORIES=	emulators
 
@@ -21,11 +21,11 @@ LIB_DEPENDS=	libboost_serialization.so:devel/boost-libs
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	citra-emu
-GH_TAGNAME=	edbd6dfe8
+GH_TAGNAME=	842031a2e
 GH_TUPLE=	citra-emu:ext-boost:36603a1:boost/externals/boost \
 		citra-emu:ext-libressl-portable:7d01cb0:libressl/externals/libressl \
 		citra-emu:ext-soundtouch:060181e:soundtouch/externals/soundtouch \
-		MerryMage:dynarmic:r3-209-g358cf6f0:dynarmic/externals/dynarmic \
+		MerryMage:dynarmic:r3-217-g707ae881:dynarmic/externals/dynarmic \
 		arsenm:sanitizers-cmake:aab6948:sanitizers_cmake/externals/cubeb/cmake/sanitizers-cmake \
 		arun11299:cpp-jwt:v1.1.1:cpp_jwt/externals/cpp-jwt \
 		benhoyt:inih:r52:inih/externals/inih/inih \
@@ -40,11 +40,10 @@ GH_TUPLE=	citra-emu:ext-boost:36603a1:boost/externals/boost \
 		weidai11:cryptopp:CRYPTOPP_7_0_0-23-gf320e7d9:cryptopp/externals/cryptopp/cryptopp \
 		wwylele:teakra:3e032a7:teakra/externals/teakra
 
-USES=		cmake compiler:c++17-lang localbase:ldflags sdl
+USES=		cmake:testing compiler:c++17-lang localbase:ldflags sdl
 USE_SDL=	sdl2
 CMAKE_ON=	USE_SYSTEM_BOOST
 LDFLAGS+=	-Wl,--as-needed # Qt5Network
-TEST_TARGET=	test
 
 OPTIONS_DEFINE=	ALSA FFMPEG PULSEAUDIO JACK SNDIO
 OPTIONS_DEFAULT=FFMPEG PULSEAUDIO JACK SNDIO

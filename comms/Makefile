@@ -132,6 +132,7 @@
     SUBDIR += predict
     SUBDIR += py-adafruit-ampy
     SUBDIR += py-esptool
+    SUBDIR += py-hid
     SUBDIR += py-hidapi
     SUBDIR += py-libimobiledevice
     SUBDIR += py-pyserial
@@ -150,6 +151,7 @@
     SUBDIR += qtel
     SUBDIR += redsea
     SUBDIR += remserial
+    SUBDIR += rtl-443
     SUBDIR += rtl-sdr
     SUBDIR += rubygem-callsign
     SUBDIR += rubygem-ruby-termios

@@ -2,7 +2,7 @@
 
 PORTNAME=	anki
 DISTVERSION=	2.1.35
-PORTREVISION=	8
+PORTREVISION=	9
 # Don't forget to update ${_MY_BUILDHASH}
 CATEGORIES=	games education python
 MASTER_SITES=	LOCAL/kai/:npmcache
@@ -359,7 +359,7 @@ _MY_BUILDHASH=	84dcaa86
 
 .include <bsd.port.pre.mk>
 
-.if ${PYTHON_REL} < 3800
+.if ${PYTHON_REL} < 30800
 _PY_SONAME=	.cpython-${PYTHON_SUFFIX}m
 .else
 _PY_SONAME=	${PYTHON_EXT_SUFFIX}

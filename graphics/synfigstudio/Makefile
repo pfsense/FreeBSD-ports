@@ -3,10 +3,10 @@
 PORTNAME=	synfigstudio
 PORTVERSION=	1.2.2
 DISTVERSIONPREFIX=v
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	graphics multimedia
 
-MAINTAINER=	woodsb02@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Vector-based 2D animation software package
 
 LICENSE=	GPLv2+

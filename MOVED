@@ -6113,7 +6113,6 @@ security/sudosh3||2014-07-01|Has expired: Funcition replaced by sudo -s
 security/sudosh||2014-07-01|Has expired: Funcition replaced by sudo -s
 security/sudosh2||2014-07-01|Has expired: Funcition replaced by sudo -s
 lang/pike76|lang/pike78|2014-07-01|Has expired: Outdated: Users should switch to lang/pike78
-editors/gummi||2014-07-01|Has expired: Builds fine but the program itself is unusable
 archivers/rpm|archivers/rpm4|2014-07-03|rpm3 is long EOLed, rpm4 is the default rpm archivers for most of linux distributions
 x11-clocks/wmitime||2014-07-04|Has expired
 x11/xorg-edit||2014-07-04|Has expired: Depends on older version of wxGTK
@@ -7262,7 +7261,6 @@ www/qupzilla|www/qupzilla-qt4|2015-01-18|Renamed to differentiate from www/qupzi
 devel/p5-perlbrew|devel/p5-App-perlbrew|2015-01-19|Rename to match upstream naming
 devel/actor-framework|devel/caf|2015-01-19|Rename to match upstream naming
 textproc/py-charade||2015-01-28|Charade was merged back to textproc/py-chardet
-audio/qmidinet||2015-01-28|Has expired: Broken for more than 6 months
 audio/wmauda||2015-01-28|Has expired: Broken for more than 6 months
 audio/x11amp||2015-01-28|Has expired: Broken for more than 6 months
 devel/p5-Log-Any-Adapter|devel/p5-Log-Any|2015-01-28|Has expired: devel/p5-Log-Any-Adapter merged into devel/p5-Log-Any by upstream
@@ -10157,7 +10155,6 @@ audio/deforaos-mixer||2018-06-07|Has expired: Broken for more than 6 months
 audio/gkrellmss2||2018-06-07|Has expired: Broken for more than 6 months
 audio/abcmidi||2018-06-07|Has expired: Broken for more than 6 months
 benchmarks/netpipe||2018-06-07|Has expired: Broken for more than 6 months
-science/orthanc||2018-06-07|Has expired: Broken for more than 3 months
 science/orthanc-dicomweb||2018-06-07|Removed, depends on expired science/orthanc
 science/orthanc-postgresql||2018-06-07|Removed, depends on expired science/orthanc
 science/orthanc-webviewer||2018-06-07|Removed, depends on expired science/orthanc
@@ -10753,7 +10750,6 @@ audio/xmms-faad||2018-12-21|Has expired: Uses obsolete glib12
 audio/xmms-scrobbler||2018-12-21|Has expired: Uses obsolete glib12
 audio/mcplay||2018-12-21|Has expired: Uses obsolete glib12
 audio/gmixer||2018-12-21|Has expired: Uses obsolete glib12
-audio/soundtracker||2018-12-21|Has expired: Uses obsolete glib12
 audio/xmms-sapplug||2018-12-21|Has expired: Uses obsolete glib12, use audio/penguinsap instead
 audio/rio500||2018-12-21|Has expired: Uses obsolete glib12
 audio/xmmsctrl||2018-12-21|Has expired: Uses obsolete glib12
@@ -15130,7 +15126,6 @@ net/kblog||2020-08-13|No longer shipped
 www/py-html|www/py-html3|2020-08-13|python3-compatible version is named html3
 audio/py-hsaudiotag|audio/py-hsaudiotag3k|2020-08-13|python3-compatible version is named hsaudiotag3k
 archivers/py-backports.lzma||2020-08-15|Has expired: Uses deprecated version of python
-archivers/py-bup||2020-08-15|Has expired: Uses deprecated version of python
 archivers/py-librtfcomp||2020-08-15|Has expired: Uses deprecated version of python
 audio/blop-lv2||2020-08-15|Has expired: Uses deprecated version of python
 audio/bs2b-lv2||2020-08-15|Has expired: Uses deprecated version of python
@@ -16327,3 +16322,25 @@ sysutils/policykit|sysutils/polkit|2021-05-01|Gnome2 component, no consumers lef
 databases/rubygem-gitlab-pg_query|databases/rubygem-pg_query|2021-05-03|Obsolete, please use databases/rubygem-pg_query
 devel/rubygem-licensee8|devel/rubygem-licensee|2021-05-03|Obsolete, please use devel/rubygem-licensee
 devel/rubygem-ruby-magic-static|devel/rubygem-ruby-magic|2021-05-03|Obsolete, please use devel/rubygem-ruby-magic
+devel/gecode|math/gecode|2021-05-04|Move to a proper category
+net-im/libqmatrixclient|net-im/libquotient|2021-05-08|Has expired: Use libQuotient (devel/libquotient) instead
+devel/electron11|devel/electron12|2021-05-12|VSCode update requires a newer major version
+dns/opendd||2021-05-15|Has expired: Abandonware
+www/py-django30|www/py-django31|2021-05-16|Has expired: Has expired: Extended support has expired on April 6th, 2021. Use www/py-django31 or www/py-django32 instead
+net-mgmt/unifi-devel|net-mgmt/unifi6|2021-05-16|Has expired: Use net-mgmt/unifi6 instead
+print/rubygem-pdf-core07|print/rubygem-pdf-core|2021-05-16|Obsoleted. Use print/rubygem-pdf-core instead
+security/bitwarden_rs|security/vaultwarden|2021-05-16|Project was renamed
+sysutils/kdiskmark|benchmarks/kdiskmark|2021-05-18|Moved to a more appropriate category
+sysutils/edk2@xen|sysutils/edk2@xen_x64|2021-05-18|Add Xen arch to the flavor name to be futur-proof
+devel/py-jupyter_core|devel/py-jupyter-core|2021-05-18|Rename to match upstream naming
+devel/sope4|devel/sope|2021-05-19|Obsolete, please use devel/sope
+sysutils/ansible27|sysutils/ansible|2021-05-21|Has expired: Upstream support ended; consider upgrading to sysutils/ansible
+sysutils/ansible28|sysutils/ansible|2021-05-21|Has expired: Upstream support ended; consider upgrading to sysutils/ansible
+devel/omnisharp-server||2021-05-23|Dead upstream, no depends in ports tree
+devel/py-jupyter_client|devel/py-jupyter-client|2021-05-26|Rename to match upstream naming
+textproc/gi-docgen|textproc/py-gi-docgen|2021-05-27|Follow standard python port conventions
+x11/phosh||2021-05-29|Incomplete
+multimedia/libav|multimedia/ffmpeg|2021-05-31|Has expired: Unmaintained upstream, use multimedia/ffmpeg instead
+devel/py-iterpipes||2021-06-06|Has expired: Unmaintained upstream, uses old Python
+devel/py-aspyct||2021-06-06|Has expired: Unmaintained upstream, uses old Python
+irc/oragono|irc/ergo|2021-06-08|Project renamed

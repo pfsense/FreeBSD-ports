@@ -1,5 +1,6 @@
 PORTNAME=	nn-insight
 DISTVERSION=	1.0.5
+PORTREVISION=	1
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -24,5 +25,7 @@ USE_QT=		core gui svg widgets buildtools_build qmake_build
 
 PLIST_FILES=	bin/nn-insight \
 		libexec/nn-insight/tf-lite-plugin.so
+
+PORTSCOUT=	limit:^.*[1-9]\. # prevent hashes
 
 .include <bsd.port.mk>

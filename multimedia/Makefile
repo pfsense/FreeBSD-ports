@@ -128,6 +128,7 @@
     SUBDIR += gtk-youtube-viewer
     SUBDIR += gxine
     SUBDIR += handbrake
+    SUBDIR += haruna
     SUBDIR += harvid
     SUBDIR += hypnotix
     SUBDIR += imagination
@@ -157,7 +158,6 @@
     SUBDIR += l-smash
     SUBDIR += libaacs
     SUBDIR += libass
-    SUBDIR += libav
     SUBDIR += libbdplus
     SUBDIR += libbluray
     SUBDIR += libcec

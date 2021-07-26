@@ -30,6 +30,7 @@
     SUBDIR += gtk-sharp30
     SUBDIR += gtk20
     SUBDIR += gtk30
+    SUBDIR += gtk40
     SUBDIR += gtkada
     SUBDIR += gtkada3
     SUBDIR += gtkd
@@ -66,6 +67,7 @@
     SUBDIR += libXaw
     SUBDIR += libXmu
     SUBDIR += libXt
+    SUBDIR += libadwaita
     SUBDIR += libdazzle
     SUBDIR += libgdiplus
     SUBDIR += libhandy
@@ -111,6 +113,7 @@
     SUBDIR += p5-Gtk2-PathButtonBar
     SUBDIR += p5-Gtk2-TrayIcon
     SUBDIR += p5-Gtk3
+    SUBDIR += p5-Gtk3-ImageView
     SUBDIR += p5-Gtk3-SimpleList
     SUBDIR += p5-Pango
     SUBDIR += p5-Prima
@@ -198,6 +201,7 @@
     SUBDIR += soqt
     SUBDIR += swt
     SUBDIR += tepl
+    SUBDIR += tepl6
     SUBDIR += termit
     SUBDIR += tix
     SUBDIR += tk-wrapper
@@ -226,5 +230,6 @@
     SUBDIR += xbae
     SUBDIR += xforms
     SUBDIR += xmhtml
+    SUBDIR += ztoolkit
 
 .include <bsd.port.subdir.mk>

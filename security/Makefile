@@ -51,7 +51,6 @@
     SUBDIR += belier
     SUBDIR += bfbtester
     SUBDIR += binwalk
-    SUBDIR += bitwarden_rs
     SUBDIR += boringssl
     SUBDIR += botan110
     SUBDIR += botan2
@@ -102,7 +101,9 @@
     SUBDIR += cracklib
     SUBDIR += crackpkcs12
     SUBDIR += create-cert
+    SUBDIR += crlfuzz
     SUBDIR += crowdsec
+    SUBDIR += crowdsec-firewall-bouncer
     SUBDIR += cryptlib
     SUBDIR += cryptopp
     SUBDIR += ct-submit
@@ -131,6 +132,7 @@
     SUBDIR += dsniff
     SUBDIR += dsvpn
     SUBDIR += duo
+    SUBDIR += duo_openvpn
     SUBDIR += easy-rsa
     SUBDIR += elixir-comeonin
     SUBDIR += elixir-comeonin_i18n
@@ -172,6 +174,7 @@
     SUBDIR += git-crypt
     SUBDIR += git-remote-gcrypt
     SUBDIR += git-secret
+    SUBDIR += gitjacker
     SUBDIR += gnome-keyring
     SUBDIR += gnome-keyring-sharp
     SUBDIR += gnome-ssh-askpass
@@ -188,6 +191,7 @@
     SUBDIR += govpn
     SUBDIR += gpa
     SUBDIR += gpg-gui
+    SUBDIR += gpg-tui
     SUBDIR += gpgdir
     SUBDIR += gpgme
     SUBDIR += gpgme-cpp
@@ -271,6 +275,7 @@
     SUBDIR += kripp
     SUBDIR += kstart
     SUBDIR += ktls_isa-l_crypto-kmod
+    SUBDIR += kuku
     SUBDIR += kwalletmanager
     SUBDIR += l0pht-watch
     SUBDIR += l0phtcrack
@@ -308,6 +313,7 @@
     SUBDIR += libpwstor
     SUBDIR += libressl
     SUBDIR += libressl-devel
+    SUBDIR += libreswan
     SUBDIR += libretls
     SUBDIR += libscep
     SUBDIR += libscrypt
@@ -395,11 +401,13 @@
     SUBDIR += openbsm
     SUBDIR += openca-tools-forked
     SUBDIR += openconnect
+    SUBDIR += openconnect-freebsd-daemon
     SUBDIR += openconnect-gui
     SUBDIR += opencryptoki
     SUBDIR += openct
     SUBDIR += openfortivpn
     SUBDIR += openiked
+    SUBDIR += openiked-portable
     SUBDIR += opensaml
     SUBDIR += opensc
     SUBDIR += openscep
@@ -1045,6 +1053,7 @@
     SUBDIR += rubygem-bcrypt_pbkdf
     SUBDIR += rubygem-bcrypt_pbkdf10
     SUBDIR += rubygem-cose
+    SUBDIR += rubygem-declarative_policy
     SUBDIR += rubygem-devise-two-factor
     SUBDIR += rubygem-devise-two-factor-rails5
     SUBDIR += rubygem-devise-two-factor-rails60
@@ -1242,6 +1251,7 @@
     SUBDIR += swatchdog
     SUBDIR += symbion-sslproxy
     SUBDIR += tailscale
+    SUBDIR += tang
     SUBDIR += tclsasl
     SUBDIR += tcpcrypt
     SUBDIR += teleport
@@ -1274,6 +1284,7 @@
     SUBDIR += unicornscan
     SUBDIR += vanguards-tor
     SUBDIR += vault
+    SUBDIR += vaultwarden
     SUBDIR += veracrypt
     SUBDIR += vigenere
     SUBDIR += vinetto

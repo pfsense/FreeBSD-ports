@@ -1,11 +1,11 @@
 # Created by: Kubilay Kocak <koobs@FreeBSD.org>
 
 PORTNAME=	python
-PORTVERSION=	${PYTHON_PORTVERSION}
+DISTVERSION=	${PYTHON_DISTVERSION}
 CATEGORIES=	lang python
-MASTER_SITES=	PYTHON/ftp/python/${PORTVERSION}
+MASTER_SITES=	PYTHON/ftp/python/${DISTVERSION}
 PKGNAMESUFFIX=	${PYTHON_SUFFIX}
-DISTNAME=	Python-${PORTVERSION}
+DISTNAME=	Python-${DISTVERSION}
 DIST_SUBDIR=	python
 
 MAINTAINER=	python@FreeBSD.org
@@ -13,19 +13,19 @@ COMMENT=	Interpreted object-oriented programming language
 
 LICENSE=	PSFL
 
-USES=		compiler:c11 cpe ncurses pathfix pkgconfig readline:port \
+USES=		compiler:c11 cpe ncurses pathfix pkgconfig readline \
 		shebangfix ssl tar:xz
 PATHFIX_MAKEFILEIN=	Makefile.pre.in
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-python_CMD=	${PREFIX}/bin/python${PYTHON_PORTVERSION:R}
+python_CMD=	${PREFIX}/bin/python${PYTHON_DISTVERSION:R}
 SHEBANG_FILES=	Lib/*.py Lib/*/*.py Lib/*/*/*.py Lib/*/*/*/*.py
 SHEBANG_FILES+=	Lib/test/ziptestdata/exe_with_z64 \
 		Lib/test/ziptestdata/exe_with_zip \
 		Lib/test/ziptestdata/header.sh
 
 # Duplicate python.mk variables. TODO: Let lang/python?? ports use python.mk bits.
-PYTHON_VER=		${PYTHON_PORTVERSION:R}
+PYTHON_VER=		${PYTHON_DISTVERSION:R}
 PYTHON_VERSION=		python${PYTHON_VER}
 PYTHON_SUFFIX=		${PYTHON_VER:S/.//g}
 
@@ -46,16 +46,17 @@ SUB_LIST=		PYTHON_SUFFIX=${PYTHON_SUFFIX}
 PLIST_SUB=		ABI=${ABIFLAGS} \
 			XY=${PYTHON_SUFFIX} \
 			XYDOT=${PYTHON_VER} \
-			XYZDOT=${PORTVERSION} \
+			XYZDOT=${DISTVERSION} \
 			OSMAJOR=${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}		# For plat-freebsd* in pkg-plist. https://bugs.python.org/issue19554
 
-OPTIONS_DEFINE=		DEBUG IPV6 LIBFFI NLS PYMALLOC
-OPTIONS_DEFAULT=	LIBFFI PYMALLOC
+OPTIONS_DEFINE=		DEBUG IPV6 LIBFFI LIBMPDEC NLS PYMALLOC
+OPTIONS_DEFAULT=	LIBFFI LIBMPDEC PYMALLOC
 OPTIONS_RADIO=		HASH
 OPTIONS_RADIO_HASH=	FNV SIPHASH
 OPTIONS_SUB=		yes
 
 LIBFFI_DESC=		Use libffi from ports instead of bundled version
+LIBMPDEC_DESC=		Use libmpdec from ports instead of bundled version
 NLS_DESC=		Enable gettext support for the locale module
 PYMALLOC_DESC=		Enable specialized mallocs
 
@@ -71,6 +72,9 @@ IPV6_CONFIGURE_ENABLE=	ipv6
 
 LIBFFI_CONFIGURE_ON=	--with-system-ffi
 LIBFFI_LIB_DEPENDS=	libffi.so:devel/libffi
+
+LIBMPDEC_CONFIGURE_ON=	--with-system-libmpdec
+LIBMPDEC_LIB_DEPENDS=	libmpdec.so:math/mpdecimal
 
 # Use CPPFLAGS over CFLAGS due to -I ordering, causing elementtree and pyexpat
 # to break in Python 2.7, or preprocessor complaints in Python >= 3.3

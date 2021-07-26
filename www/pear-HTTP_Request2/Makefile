@@ -1,11 +1,11 @@
 # Created by: Wen Heping <wenheping@gmail.com>
 
 PORTNAME=	HTTP_Request2
-PORTVERSION=	2.3.0
+PORTVERSION=	2.4.2
 PORTEPOCH=	1
 CATEGORIES=	www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PEAR classes providing an easy way to perform HTTP requests
 
 BUILD_DEPENDS=	${PEARDIR}/Net/URL2.php:net/pear-Net_URL2@${PHP_FLAVOR}
