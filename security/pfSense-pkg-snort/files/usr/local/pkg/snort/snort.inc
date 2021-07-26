@@ -2330,11 +2330,9 @@ function snort_get_auto_category_mods($categories, $sid_mods, $action, $log_resu
 	$matchcount = 0;
 
 	// Get a list of all possible categories by loading all rules files
-	foreach (array( VRT_FILE_PREFIX, ET_OPEN_FILE_PREFIX, ET_PRO_FILE_PREFIX, GPL_FILE_PREFIX, OPENAPPID_FILE_PREFIX ) as $prefix) {
-		$files = glob("{$snortdir}/rules/{$prefix}*.rules");
-		foreach ($files as $file)
-			$all_cats[] = basename($file);
-	}
+	$files = glob("{$snortdir}/rules/*.rules");
+	foreach ($files as $file)
+		$all_cats[] = basename($file);
 
 	// Walk the SID mod tokens and decode looking for rule
 	// category enable/disable changes.
@@ -3231,7 +3229,9 @@ function snort_create_rc() {
 	$snortlogdir = SNORTLOGDIR;
 	$snortbindir = SNORT_BINDIR;
 	$rcdir = RCFILEPREFIX;	
+	$no_enabled_interface = TRUE;
 
+	init_config_arr(array('installedpackages', 'snortglobal', 'rule'));
 	$snortconf = $config['installedpackages']['snortglobal']['rule'];
 
 	// If no interfaces are configured for Snort, exit
@@ -3249,6 +3249,7 @@ function snort_create_rc() {
 	// At least one interface is configured, so OK
 	$start_snort_iface_start = array();
 	$start_snort_iface_stop = array();
+	$no_enabled_interface = FALSE;
 
 	// Loop thru each configured interface and build
 	// the shell script.
@@ -3379,9 +3380,14 @@ esac
 
 EOD;
 
-	/* write out snort.sh */
-	@file_put_contents("{$rcdir}snort.sh", $snort_sh_text);
-	@chmod("{$rcdir}snort.sh", 0755);
+	/* write out snort.sh if enabled interfaces are present */
+	if (!$no_enabled_interface) {
+		// Write out the snort.sh script file
+		@file_put_contents("{$rcdir}snort.sh", $snort_sh_text);
+		@chmod("{$rcdir}snort.sh", 0755);
+	} else {
+		unlink_if_exists("{$rcdir}snort.sh");
+	}
 }
 
 function snort_prepare_rule_files($snortcfg, $snortcfgdir) {

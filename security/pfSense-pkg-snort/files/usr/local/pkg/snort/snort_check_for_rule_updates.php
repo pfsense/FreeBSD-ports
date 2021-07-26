@@ -443,6 +443,7 @@ $update_errors = false;
 
 /* Save current state (running/not running) for each enabled Snort interface */
 $active_interfaces = array();
+init_config_arr(array('installedpackages', 'snortglobal', 'rule'));
 foreach ($config['installedpackages']['snortglobal']['rule'] as $id => $value) {
 	$if_real = get_real_interface($value['interface']);
 

@@ -597,7 +597,7 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 		$updated_cfg = true;
 	}
 	if (empty($pconfig['tls_ja3_fingerprint'])) {
-		$pconfig['tls_ja3_fingerprint'] = "off";
+		$pconfig['tls_ja3_fingerprint'] = "auto";
 		$updated_cfg = true;
 	}
 
@@ -888,6 +888,15 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 	if (!isset($pconfig['ips_netmap_threads'])) {
 		$updated_cfg = true;
 		$pconfig['ips_netmap_threads'] = 'auto';
+	}
+
+	/**********************************************************/
+	/* Add new 'autofp-scheduler' parameter for the interface */
+	/* when using 'autofp" runmode.                           */
+	/**********************************************************/
+	if (!isset($pconfig['autofp_scheduler'])) {
+		$updated_cfg = true;
+		$pconfig['autofp_scheduler'] = 'hash';
 	}
 
 	// Save the new configuration data into the $config array pointer
