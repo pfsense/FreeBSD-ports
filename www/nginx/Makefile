@@ -193,12 +193,6 @@ STREAM_SSL_PREREAD_CONFIGURE_ON=	--with-stream_ssl_preread_module
 
 .include <bsd.port.pre.mk>
 
-# Fix build on armv6 with clang 6
-# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=225275
-.if ${ARCH} == "armv6"
-CFLAGS+=	-march=armv7-a
-.endif
-
 .if ${PORT_OPTIONS:MDSO}
 _addbasemod=	=dynamic
 _addextmod=	add-dynamic-module
