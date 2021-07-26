@@ -3,6 +3,7 @@
  * wg_install.inc
  *
  * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2021 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/theonemcdonald)
  * All rights reserved.
  *
@@ -27,9 +28,9 @@ require_once('unbound.inc');
 require_once('util.inc');
 
 // WireGuard includes
-require_once('wireguard/wg_api.inc');
-require_once('wireguard/wg_globals.inc');
-require_once('wireguard/wg_service.inc');
+require_once('wireguard/includes/wg_api.inc');
+require_once('wireguard/includes/wg_globals.inc');
+require_once('wireguard/includes/wg_service.inc');
 
 /*
  * This is the main install hook
@@ -40,11 +41,6 @@ function wg_install() {
 	$g['wireguard_installing'] = true;
 
 	update_status("\n  Upgrading any existing WireGuard XML configuration...");
-
-	// Things to potentially upgrade, these will be removed in future versions.
-	wg_upgrade_addresses();
-
-	wg_upgrade_allowedips();
 
 	update_status("done.\n  Installing WireGuard early shell commands...");
 
@@ -66,222 +62,11 @@ function wg_install() {
 	// Create the WireGuard service
 	wg_service_install();
 
+	update_status("done.\n  Applying WireGuard default settings as necessary...");
+
+	wg_defaults_install();
+
 	update_status("done.\n");
-
-}
-
-function wg_upgrade_allowedips() {
-	global $wgg;
-
-	// Read latest settings
-	wg_globals();
-
-	// Save a copy for manipulation
-	$peers = $wgg['peers'];
-
-	foreach ($peers as $peer_idx => $peer) {
-
-		if (is_string($peer['allowedips']) && !empty($peer['allowedips'])) {
-
-			unset($wgg['peers'][$peer_idx]['allowedips']);
-
-			$a_allowedips = explode(',', $peer['allowedips']);
-
-			$tmp_addrs = array();
-
-			foreach($a_allowedips as $a_index => $ip) {
-
-				$tmp_addrs['item'][$a_index]['addr'] 		= $ip;
-
-				$tmp_addrs['item'][$a_index]['descr'] 		= null;
-
-				$tmp_addrs['item'][$a_index]['peeraddr'] 	= null;
-
-			}
-
-			$wgg['peers'][$peer_idx]['allowedips'] = $tmp_addrs;
-
-		}
-
-	}
-
-	// Write the changes out to disk
-	write_config("[{$wgg['pkg_name']}] Upgraded peer allowed ips XML structure.");
-
-	// Read latest settings
-	wg_globals();
-
-	// Save a copy for manipulation
-	$peers = $wgg['peers'];
-
-	foreach ($peers as $peer_idx => $peer) {
-
-		if (is_array($peer['allowedips']['item']) && !is_array($peer['allowedips']['row'])) {
-
-			unset($wgg['peers'][$peer_idx]['allowedips']);
-
-			$tmp_addrs = array();
-
-			foreach ($peer['allowedips']['item'] as $a_index => $item) {
-
-				[$addr, $addr_mask] 				= explode('/', $item['addr']);
-
-				$tmp_addrs['row'][$a_index]['address'] 		= $addr;
-
-				$tmp_addrs['row'][$a_index]['mask'] 		= $addr_mask;
-
-				$tmp_addrs['row'][$a_index]['description'] 	= $item['descr'];
-
-			}
-
-			$wgg['peers'][$peer_idx]['allowedips'] = $tmp_addrs;
-
-		}
-
-	}
-	
-	// Write the changes out to disk
-	write_config("[{$wgg['pkg_name']}] Upgraded peer allowed ips XML structure.");
-
-	// Read latest settings
-	wg_globals();
-
-	// Save a copy for manipulation
-	$peers = $wgg['peers'];
-
-	foreach ($peers as $peer_idx => $peer) {
-
-		if (is_array($peer['allowedips']['row'])) {
-
-			$tmp_addrs = array();
-
-			foreach ($peer['allowedips']['row'] as $a_index => $item) {
-
-				$tmp_addrs['row'][$a_index]['address'] 	= $item['address'];
-
-				$tmp_addrs['row'][$a_index]['mask'] 	= $item['mask'];
-
-				$tmp_addrs['row'][$a_index]['descr'] 	= (!isset($item['descr'])) ? $item['description'] : $item['descr'];
-
-				unset($tmp_addrs['row'][$a_index]['description']);
-
-			}
-
-			$wgg['peers'][$peer_idx]['allowedips'] = $tmp_addrs;
-
-		}
-
-	}
-
-	// Write the changes out to disk
-	write_config("[{$wgg['pkg_name']}] Upgraded peer allowed ips XML structure.");
-
-}
-
-function wg_upgrade_addresses() {
-	global $wgg;
-
-	// Read latest settings
-	wg_globals();
-
-	// Save a copy for manipulation
-	$tunnels = $wgg['tunnels'];
-
-	foreach ($tunnels as $tun_idx => $tunnel) {
-
-		if (is_string($tunnel['addresses']) && !empty($tunnel['addresses'])) {
-
-			unset($wgg['tunnels'][$tun_idx]['addresses']);
-
-			$a_addresses = explode(',', $tunnel['addresses']);
-
-			$tmp_addrs = array();
-
-			foreach($a_addresses as $a_index=> $address) {
-
-				$tmp_addrs['item'][$a_index]['addr'] 	= $address;
-
-				$tmp_addrs['item'][$a_index]['descr'] 	= null;
-
-			}
-
-			$wgg['tunnels'][$tun_idx]['addresses'] = $tmp_addrs;
-
-		}
-	
-
-	}
-
-	// Write the changes out to disk
-	write_config("[{$wgg['pkg_name']}] Upgraded tunnel addresses XML structure.");
-
-	// Read latest settings
-	wg_globals();
-
-	// Save a copy for manipulation
-	$tunnels = $wgg['tunnels'];
-
-	foreach ($tunnels as $t_index => $tunnel) {
-
-		if (is_array($tunnel['addresses']['item']) && !is_array($tunnel['addresses']['row'])) {
-
-			unset($wgg['tunnels'][$t_index]['addresses']);
-
-			$tmp_addrs = array();
-
-			foreach ($tunnel['addresses']['item'] as $a_index => $item) {
-
-				[$addr, $addr_mask] 				= explode('/', $item['addr']);
-
-				$tmp_addrs['row'][$a_index]['address'] 		= $addr;
-
-				$tmp_addrs['row'][$a_index]['mask'] 		= $addr_mask;
-
-				$tmp_addrs['row'][$a_index]['description'] 	= $item['descr'];
-
-			}
-
-			$wgg['tunnels'][$t_index]['addresses'] = $tmp_addrs;
-
-		}
-
-	}
-
-	// Write the changes out to disk
-	write_config("[{$wgg['pkg_name']}] Upgraded tunnel addresses XML structure.");
-
-	// Read latest settings
-	wg_globals();
-
-	// Save a copy for manipulation
-	$tunnels = $wgg['tunnels'];
-
-	foreach ($tunnels as $tun_idx => $tunnel) {
-
-		if (is_array($tunnel['addresses']['row'])) {
-
-			$tmp_addrs = array();
-
-			foreach ($tunnel['addresses']['row'] as $a_index => $item) {
-
-				$tmp_addrs['row'][$a_index]['address'] 	= $item['address'];
-
-				$tmp_addrs['row'][$a_index]['mask'] 	= $item['mask'];
-
-				$tmp_addrs['row'][$a_index]['descr'] 	= (!isset($item['descr'])) ? $item['description'] : $item['descr'];
-
-				unset($tmp_addrs['row'][$a_index]['description']);
-
-			}
-
-			$wgg['tunnels'][$tun_idx]['addresses'] = $tmp_addrs;
-
-		}
-
-	}
-
-	// Write the changes out to disk
-	write_config("[{$wgg['pkg_name']}] Upgraded tunnel addresses XML structure.");
 
 }
 
@@ -363,14 +148,41 @@ function wg_delete_temp_files() {
 
 }
 
+/*
+ * This just ensures that there are defaults in the XML.
+ * The package should function correctly without these being set at all.
+ * This is just to make sure the XML is reflecting the running behavior.
+ */
+function wg_defaults_install() {
+	global $wgg;
+
+	// Read latest settings
+	wg_globals();
+
+	$wgg['config']['enable']			= wg_is_service_enabled() ? 'on' : 'off';
+
+	$wgg['config']['keep_conf']			= isset($wgg['config']['keep_conf']) ? $wgg['config']['keep_conf'] : 'yes';
+
+	$wgg['config']['resolve_interval']		= isset($wgg['config']['resolve_interval']) ? $wgg['config']['resolve_interval'] : $wgg['default_resolve_interval'];
+	
+	$wgg['config']['resolve_interval_track']	= isset($wgg['config']['resolve_interval_track']) ? $wgg['config']['resolve_interval_track'] : 'no';
+	
+	$wgg['config']['interface_group']		= isset($wgg['config']['interface_group']) ? $wgg['config']['interface_group'] : 'all';
+	
+	$wgg['config']['hide_secrets'] 			= isset($wgg['config']['hide_secrets']) ? $wgg['config']['hide_secrets'] : 'yes';
+	
+	wg_write_config('Applied package default settings as necessary.', false);
+
+}
+
 function wg_service_rcfile() {
 	global $wgg;
 
 	$start = $stop = array();
 
-	$start[] = "{$wgg['wg_daemon']} start";
+	$start[] 		= "{$wgg['wg_daemon']} start";
 
-	$stop[] = "{$wgg['wg_daemon']} stop";
+	$stop[] 		= "{$wgg['wg_daemon']} stop";
 
 	$rcfile['file'] 	= $wgg['service_name'];
 
@@ -406,45 +218,47 @@ function wg_service_deinstall($force_stop = false) {
 
 }
 
-function wg_destroy_tunnels() {
+function wg_destroy_tunnels(&$cmds = null) {
 	global $wgg;
 
-	$cmds = array();
-
-	// We only care about the ones that are actually running
-	$tunnels_to_destroy = wg_get_running_ifs();
+	// Assume this will be successful...
+	$res = true;
 
 	// Tear down interfaces
-	foreach ($tunnels_to_destroy as $tunnel) {
+	foreach (wg_get_running_ifs() as $tunnel) {
 
-		if ($res = wg_ifconfig_if_destroy($tunnel)) {
+		$res &= wg_ifconfig_if_destroy($tunnel, $cmds);
 		
-			$cmds[] = $res;
+	}
 
-		}
+	// Now attempt to unload the module if the above was successful
+	if ($res) {
+
+		$res &= wg_kld_loadunload(false, $cmds);
 
 	}
 
-	// Now unload the kernel module if it is still loaded
-	if ($ret_code == 0 && is_module_loaded($wgg['kmod'])) {
-
-		$kmod = $wgg['kmod'];
-
-		wg_escapeshellarg($kmod);
-
-		$ret_code |= mwexec("{$wgg['kldunload']} {$kmod}");
-
-	}
-
-	return $ret_code;
+	return $res;
 
 }
+
+function wg_listenport_alias_install() {
+	global $config, $wgg;
+
+	wg_globals();
+
+	// TODO ?
+
+}
+
 
 /*
  * This function creates earlyshellcmd entries in the config
  */
 function wg_earlyshellcmd_install() {
 	global $config, $wgg;
+
+	wg_globals();
 
 	wg_earlyshellcmd_deinstall();
 
@@ -481,7 +295,7 @@ function wg_earlyshellcmd_install() {
 
 	}
 
-	write_config("[{$wgg['pkg_name']}] earlyshellcmd(s) installed.");
+	wg_write_config('Installed earlyshellcmd(s).', false);
 
 }
 
@@ -490,6 +304,8 @@ function wg_earlyshellcmd_install() {
  */
 function wg_earlyshellcmd_deinstall() {
 	global $config, $wgg;
+
+	wg_globals();
 
 	init_config_arr(array('system', 'earlyshellcmd'));
 	
@@ -530,7 +346,7 @@ function wg_earlyshellcmd_deinstall() {
 
 	}
 
-	write_config("[{$wgg['pkg_name']}] earlyshellcmd(s) de-installed.");
+	wg_write_config('De-installed earlyshellcmd(s).', false);
 
 }
 
@@ -540,7 +356,17 @@ function wg_earlyshellcmd_deinstall() {
 function wg_ifgroup_install() {
 	global $config, $wgg;
 
+	wg_globals();
+
 	wg_ifgroup_deinstall();
+
+	if (isset($wgg['config']['interface_group'])
+	    && ($wgg['config']['interface_group'] == 'none')) {
+
+		// No point installing the interface group...
+		return;
+
+	}
 
 	init_config_arr(array('ifgroups', 'ifgroupentry'));
 
@@ -555,7 +381,7 @@ function wg_ifgroup_install() {
 
 	}
 
-	write_config("[{$wgg['pkg_name']}] Interface group ({$wgg['ifgroupentry']['ifname']}) installed.");
+	wg_write_config("Installed interface group ({$wgg['ifgroupentry']['ifname']}).", false);
 
 }
 
@@ -564,6 +390,8 @@ function wg_ifgroup_install() {
  */
 function wg_ifgroup_deinstall() {
 	global $config, $wgg;
+
+	wg_globals();
 
 	init_config_arr(array('ifgroups', 'ifgroupentry'));
 
@@ -581,7 +409,7 @@ function wg_ifgroup_deinstall() {
 
 	}
 
-	write_config("[{$wgg['pkg_name']}] Interface group ({$wgg['ifgroupentry']['ifname']}) de-installed.");
+	wg_write_config("De-installed interface group ({$wgg['ifgroupentry']['ifname']}).", false);
 
 }
 
@@ -590,6 +418,8 @@ function wg_ifgroup_deinstall() {
  */
 function wg_unbound_acl_deinstall() {
 	global $config, $wgg;
+
+	wg_globals();
 
 	init_config_arr(array('unbound', 'acls'));
 
@@ -607,7 +437,7 @@ function wg_unbound_acl_deinstall() {
 
 	}
 
-	write_config("[{$wgg['pkg_name']}] Unbound ACL group ({$wgg['unboundaclentry']['aclname']}) de-installed.");
+	wg_write_config("De-installed Unbound ACL group ({$wgg['unboundaclentry']['aclname']}).", false);
 
 }
 
@@ -616,6 +446,11 @@ function wg_unbound_acl_deinstall() {
  */
 function wg_unbound_acl_install() {
 	global $config, $wgg;
+
+	// Format tunnel description if one is configured
+	$tunDescr = fn($tunnel) => !empty($tunnel['descr']) ? " ({$tunnel['descr']})" : null;
+
+	wg_globals();
 
 	wg_unbound_acl_deinstall();
 
@@ -642,7 +477,7 @@ function wg_unbound_acl_install() {
 
 				$tmp_acls[$network_idx]['mask']		= $network['mask'];
 
-				$tmp_acls[$network_idx]['description']	= "{$network['tun']} ({$network['descr']})";
+				$tmp_acls[$network_idx]['description']	= "{$network['tun']}{$tunDescr($network['descr'])}";
 
 				$wgg['unboundaclentry']['row'] = $tmp_acls;
 
@@ -655,7 +490,7 @@ function wg_unbound_acl_install() {
 
 	}
 
-	write_config("[{$wgg['pkg_name']}] Unbound ACL group ({$wgg['unboundaclentry']['aclname']}) installed.");
+	wg_write_config("Installed Unbound ACL group ({$wgg['unboundaclentry']['aclname']}).", false);
 
 }
 

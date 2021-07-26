@@ -27,10 +27,10 @@ require_once('gwlb.inc');
 require_once('util.inc');
 
 // WireGuard includes
-require_once('wireguard/wg_api.inc');
-require_once('wireguard/wg_install.inc');
-require_once('wireguard/wg_service.inc');
-require_once('wireguard/wg_validate.inc');
+require_once('wireguard/includes/wg_api.inc');
+require_once('wireguard/includes/wg_install.inc');
+require_once('wireguard/includes/wg_service.inc');
+require_once('wireguard/includes/wg_validate.inc');
 
 global $wgg;
 
@@ -50,25 +50,21 @@ function wg_toggle_tunnel($tunnel_name) {
 
 	if ([$tun_idx, $tunnel, $is_new] = wg_tunnel_get_config_by_name($tunnel_name)) {
 
-		$enabled = ($tunnel['enabled'] == 'yes');
+		$is_enabled = (isset($tunnel['enabled']) && ($tunnel['enabled']) == 'yes');
 
-		if ($enabled && is_wg_tunnel_assigned($tunnel['name'])) {
+		// Toggle the tunnel state
+		$tunnel['enabled']	= $is_enabled ? 'no' : 'yes';
 
-			$wg_pfsense_if = wg_get_pfsense_interface_info($tunnel['name']);
-
-			$input_errors[] = "Cannot disable {$tunnel['name']} while it is assigned to {$wg_pfsense_if['descr']} ({$wg_pfsense_if['name']})";
-
-		}
+		$input_errors		= wg_validate_tunnel_toggle($tunnel);
 
 		if (empty($input_errors)) {
 
-			// Now we toggle the tunnel
-			$wgg['tunnels'][$tun_idx]['enabled'] = $enabled ? 'no' : 'yes';
+			$wgg['tunnels'][$tun_idx] = $tunnel;
 
-			$action_txt = $enabled ? 'disabled' : 'enabled';
+			$action_txt = $is_enabled ? 'Disabled' : 'Enabled';
 			
 			// Sync with configuration backend
-			write_config("[{$wgg['pkg_name']}] Tunnel {$tunnel['name']} {$action_txt}.");
+			wg_write_config("{$action_text} tunnel {$tunnel['name']}.", true);
 
 			// Resync the package
 			wg_resync();
@@ -103,18 +99,22 @@ function wg_toggle_peer($peer_idx) {
 
 	if ([$peer_idx, $peer, $is_new] = wg_peer_get_config($peer_idx)) {
 
-		$enabled = ($peer['enabled'] == 'yes');
+		$is_enabled = (isset($peer['enabled']) && ($peer['enabled']) == 'yes');
+
+		// Toggle the peer state
+		$peer['enabled']	= $is_enabled ? 'no' : 'yes';
+
+		$input_errors		= wg_validate_peer_toggle($peer);
 
 		// Boilerplate...
 		if (empty($input_errors)) {
 
-			// Toggle the peer
-			$wgg['peers'][$peer_idx]['enabled'] = $enabled ? 'no' : 'yes';
+			$wgg['peers'][$peer_idx] = $peer;
 
-			$action_text = $enabled ? 'disabled' : 'enabled';
+			$action_text = $is_enabled ? 'Disabled' : 'Enabled';
 
 			// Sync with configuration backend
-			write_config("[{$wgg['pkg_name']}] Peer {$peer_idx} {$action_text}.");
+			wg_write_config("{$action_text} peer {$peer['publickey']} on {$peer['tun']}.", true);
 
 			// Resync the package
 			wg_resync();
@@ -153,6 +153,8 @@ function wg_delete_peer($peer_idx) {
 
 	if ([$peer_idx, $peer, $is_new] = wg_peer_get_config($peer_idx)) {
 
+		$input_errors		= wg_validate_peer_delete($peer);
+
 		// Boilerplate...
 		if (empty($input_errors)) {
 
@@ -160,7 +162,7 @@ function wg_delete_peer($peer_idx) {
 			unset($wgg['peers'][$peer_idx]);
 
 			// Sync with configuration backend
-			write_config("[{$wgg['pkg_name']}] Peer {$peer_idx} deleted.");
+			wg_write_config("Deleted peer {$peer_idx} ({$peer['publickey']}).", true);
 
 			// Resync the package
 			wg_resync();
@@ -199,14 +201,7 @@ function wg_delete_tunnel($tunnel_name) {
 
 	if ([$tun_idx, $tunnel, $is_new] = wg_tunnel_get_config_by_name($tunnel_name)) {
 
-		// We can't delete assigned tunnels
-		if (is_wg_tunnel_assigned($tunnel['name'])) {
-
-			$wg_pfsense_if = wg_get_pfsense_interface_info($tunnel['name']);
-
-			$input_errors[] = "Cannot delete {$tunnel['name']} while it is assigned to {$wg_pfsense_if['descr']} ({$wg_pfsense_if['name']})";
-
-		}
+		$input_errors		= wg_validate_tunnel_delete($tunnel);
 
 		if (empty($input_errors)) {
 
@@ -214,7 +209,7 @@ function wg_delete_tunnel($tunnel_name) {
 			unset($wgg['tunnels'][$tun_idx]);
 
 			// Sync with configuration backend
-			write_config("[{$wgg['pkg_name']}] Tunnel {$tunnel['name']} deleted.");
+			wg_write_config("Deleted tunnel {$tunnel['name']}.", true);
 			
 			// Mark any peers as unassigned
 			wg_tunnel_unassign_peers($tunnel['name']);
@@ -233,6 +228,25 @@ function wg_delete_tunnel($tunnel_name) {
 	}
 
 	return array('input_errors' => $input_errors, 'changes' => $changes, 'tuns_to_sync' => $tuns_to_sync);
+
+}
+
+function wg_toggle_wireguard() {
+	global $wgg;
+
+	if (wg_is_service_enabled() && !wg_is_service_running()) {
+
+		return wg_service_fpm_start();
+
+	} elseif (!wg_is_service_enabled() && wg_is_service_running()) {
+
+		return wg_service_fpm_stop();
+
+	} else {
+
+		return false;
+
+	}
 
 }
 
@@ -256,7 +270,7 @@ function wg_tunnel_unassign_peers($tunnel_name) {
 	if ($changes) {
 
 		// Sync with configuration backend
-		write_config("[{$wgg['pkg_name']}] Tunnel {$tunnel_name} peers unassigned.");
+		wg_write_config("Unassigned tunnel {$tunnel_name} peers.", true);
 
 	}
 
@@ -280,10 +294,13 @@ function wg_peer_allowedips($post) {
 
 		if (!empty($row['address'])) {
 
+			// Transform entries into proper subnet start boundaries
+			$row['address'] = gen_subnet($row['address'], $row['address_subnet']);
+
 			$ret_array[] 	= array(
-						'address' 	=> $row['address'], 
-						'mask' 		=> $row['address_subnet'], 
-						'descr' 	=> $row['address_descr']);
+						'address'	=> $row['address'], 
+						'mask'		=> $row['address_subnet'], 
+						'descr'		=> $row['address_descr']);
 
 		}
 
@@ -355,6 +372,29 @@ function wg_parse_post_repeatables($post, $fields = null) {
 
 }
 
+function wg_destroy_rogue_peers($tunnel_name, &$cmds = null) {
+	global $wgg;
+
+	// Assume this will be successful...
+	$res = true;
+
+	$running_peers = wg_tunnel_get_peers_running_keys($tunnel_name);
+
+	foreach ((array) $running_peers as $key) {
+
+		// This will return false for both invalid and disabled peers...
+		if (!wg_peer_is_enabled($tunnel_name, $key)) {
+
+			$res &= wg_peer_set_remove($tunnel_name, $key, $cmds);
+
+		}
+
+	}
+
+	return $res;
+
+}
+
 /*
  * This resolves peer endpoint hostnames per tunnel and updates the kernel accordingly
  * This returns a DateTime object corresponding to the last update time
@@ -368,18 +408,14 @@ function wg_resolve_endpoints() {
 	// Do we have any peers?
 	if (isset($wgg['peers']) && is_array($wgg['peers'])) {
 
-		foreach ($wgg['peers'] as $peer) {
+		foreach ((array) $wgg['peers'] as $peer) {
 
-			if (!empty($peer['endpoint'])) {
+			// Strip port if empty
+			$peer['port'] = !empty($peer['port']) ? ":{$peer['port']}" : null;
 
-				// Strip port if empty
-				$peer['port'] = !empty($peer['port']) ? ":{$peer['port']}" : null;
+			$endpoint = "{$peer['endpoint']}{$peer['port']}";
 
-				$endpoint = "{$peer['endpoint']}{$peer['port']}";
-
-				wg_peer_set_endpoint($peer['tun'], $peer['publickey'], $endpoint);
-
-			}
+			wg_peer_set_endpoint($peer['tun'], $peer['publickey'], $endpoint);
 
 		}
 
@@ -403,7 +439,7 @@ function wg_should_reresolve_endpoints($last_update_time) {
 	try {
 
 		// Get the current timestamp
-		$current_time = (new DateTime)->getTimestamp();
+		$current_time = (new DateTimeImmutable)->getTimestamp();
 
 		// Calculate the time for the next update event
 		$time_to_update = $last_update_time->getTimestamp() + wg_get_endpoint_resolve_interval();
@@ -422,7 +458,7 @@ function wg_should_reresolve_endpoints($last_update_time) {
 
 /*
  * Gets the hostname resolve interval (in seconds)
- * Returns 0 if something is wrong with the configuration
+ * Returns package default if something is wrong with the configuration
  */
 function wg_get_endpoint_resolve_interval() {
 	global $config, $wgg;
@@ -438,21 +474,23 @@ function wg_get_endpoint_resolve_interval() {
 
 		}
 			
-		// The pfSense default interval
-		return 300;
+		// Package default is the same as pfSense default (300 seconds)
+		return $wgg['default_resolve_interval'];
 
-	}
-
-	// Looks like we are using our own value...
-	if (isset($wgg['config']['resolve_interval'])
-	    && is_numericint($wgg['config']['resolve_interval'])) {
+	} elseif (isset($wgg['config']['resolve_interval'])
+	          && is_numericint($wgg['config']['resolve_interval'])) {
 
 		return $wgg['config']['resolve_interval'];
 
+	} else {
+
+		// Something is wrong, so just return the package default...
+		return $wgg['default_resolve_interval'];
+
 	}
 
-	// Something is wrong, so just return the default...
-	return $wgg['default_resolve_interval'];
+	// Should never be here...
+	return 0;
 
 }
 
@@ -469,13 +507,17 @@ function wg_do_settings_post($post) {
 	// We need to save the "old config" to compare against later...
 	$pconfig = $old_config = $wgg['config'];
 
+	$pconfig['enable']			= (!empty($post['enable']) && $post['enable'] == 'yes') ? 'on' : 'off';
+
 	$pconfig['keep_conf'] 			= empty($post['keep_conf']) ? 'no' : $post['keep_conf'];
-					
-	$pconfig['hide_secrets']		= empty($post['hide_secrets']) ? 'no' : $post['hide_secrets'];
 
 	$pconfig['resolve_interval']		= empty($post['resolve_interval']) && ($post['resolve_interval'] !== '0') ? $wgg['default_resolve_interval'] : $post['resolve_interval'];
 
 	$pconfig['resolve_interval_track']	= empty($post['resolve_interval_track']) ? 'no' : $post['resolve_interval_track'];
+
+	$pconfig['interface_group']		= empty($post['interface_group']) ? 'all' : $post['interface_group'];
+	
+	$pconfig['hide_secrets']		= empty($post['hide_secrets']) ? 'no' : $post['hide_secrets'];
 
 	$input_errors = wg_validate_settings_post($pconfig);
 
@@ -484,7 +526,7 @@ function wg_do_settings_post($post) {
 		$wgg['config'] = $pconfig;
 
 		// Sync with configuration backend
-		write_config("[{$wgg['pkg_name']}] Package settings saved.");
+		wg_write_config('Saved package settings.', true);
 
 		// Resync the package
 		wg_resync();
@@ -548,7 +590,7 @@ function wg_do_peer_post($post) {
 		$wgg['peers'][$peer_idx] = $pconfig;
 
 		// Sync with configuration backend
-		write_config("[{$wgg['pkg_name']}] Peer {$pconfig['descr']} updated.");
+		wg_write_config("Updated peer {$peer_idx} ({$peer['publickey']}).", true);
 
 		// Resync the package
 		wg_resync();
@@ -619,7 +661,7 @@ function wg_do_tunnel_post($post) {
 		$wgg['tunnels'][$tun_idx] = $pconfig;
 
 		// Sync with configuration backend
-		write_config("[{$wgg['pkg_name']}] Tunnel {$pconfig['name']} updated.");
+		wg_write_config("Updated tunnel {$pconfig['name']}.", true);
 
 		// Resync the package
 		wg_resync();
@@ -695,7 +737,8 @@ function wg_apply_list_add($list, $entries) {
 function wg_destroy_rogue_tunnels(&$cmds = null) {
 	global $wgg;
 
-	$ret_code = 0;
+	// Assume this will be successful
+	$res = true;
 
 	$running_ifs = wg_get_running_ifs();
 
@@ -705,13 +748,11 @@ function wg_destroy_rogue_tunnels(&$cmds = null) {
 
 	foreach ($rogue_tunnels as $tunnel) {
 
-		$cmds[] = $res = wg_ifconfig_if_destroy($tunnel);
-
-		$ret_code = $res['ret_code'];
+		$res &= wg_ifconfig_if_destroy($tunnel, $cmds);
 
 	}
 
-	return ($ret_code == 0);
+	return $res;
 
 }
 
@@ -719,7 +760,7 @@ function wg_destroy_rogue_tunnels(&$cmds = null) {
  * This builds, rebuilds, or destroys tunnel interfaces
  * If $tunnel_names is null, this will apply to all configured tunnel interfaces
  */
-function wg_tunnel_sync($tunnel_names = null, $restart_services = false, $resolve_endpoints = true, $json = false) {
+function wg_tunnel_sync($tunnel_names, $restart_services = false, $resolve_endpoints = true, $json = false) {
 	global $wgg;
 
 	// Fetch and build the latest info
@@ -736,10 +777,8 @@ function wg_tunnel_sync($tunnel_names = null, $restart_services = false, $resolv
 	// This is only necessary if the sevice is running
 	if (wg_is_service_running()) {
 
-		$tunnel_names = (is_null($tunnel_names) || !is_array($tunnel_names)) ? wg_get_configured_ifs() : $tunnel_names;
-
 		// Sync each tunnel
-		foreach ($tunnel_names as $tunnel_name) {
+		foreach ((array) $tunnel_names as $tunnel_name) {
 
 			// Attempt to sync the tunnel
 			$tun_sync_status = wg_tunnel_sync_by_name($tunnel_name, false);
@@ -754,9 +793,15 @@ function wg_tunnel_sync($tunnel_names = null, $restart_services = false, $resolv
 					'errors' 	=> $tun_sync_status['errors'],
 					'config' 	=> $tun_sync_status['config']);
 
+			// We need to destroy any rogue peers too...
+			wg_destroy_rogue_peers($tunnel_name);
+
 		}
 		
-		// Reload the filter
+		// Reconfigure system routing
+		system_routing_configure();
+		
+		// Reconfigure pf packet filter
 		filter_configure();
 
 		// Handle any extra services that need restarting
@@ -826,7 +871,7 @@ function wg_tunnel_sync_by_name($tunnel_name, $json = false) {
 		'cmds'		=> $parsed_cmds['cmds'],
 		'config'	=> $tunnel);
 
-	return $json ? json_encode($res, JSON_PRETTY_PRINT) : $res;
+	return $json ? json_encode($res) : $res;
 
 }
 
@@ -880,12 +925,22 @@ function wg_resync() {
 		// Update Unbound ACL by recreating it
 		wg_unbound_acl_install();
 
-	}
-	
-	// We don't want active tunnels when the service isn't running
-	if (!wg_is_service_running() &&
-		is_module_loaded($wgg['kmod'])) {
+		// Update ListenPort Alias by recreating it
+		wg_listenport_alias_install();
 
+		// Just as a clarity check...
+		wg_defaults_install();
+
+	}
+
+	if (wg_is_service_running()) {
+
+		// Go ahead and resolve DNS when we call package resync
+		wg_resolve_endpoints();
+
+	} elseif (is_module_loaded($wgg['kmod'])) {
+
+		// We don't want active tunnels when the service isn't running
 		wg_destroy_tunnels();
 
 	}
@@ -974,60 +1029,6 @@ function wg_delete_config_files() {
 }
 
 /* 
- * Wrapper to sanitize many variables at once
- * Call as wg_htmlspecialchars($var1, $var2, ... $varX)
- * Vars can be a mix of strings and arrays
- */
-function wg_htmlspecialchars(&...$vars) {
-
-	foreach ($vars as &$var) {
-
-		if (isset($var) && is_array($var)) {
-
-			array_walk_recursive($var, function(&$x) {
-
-				$x = htmlspecialchars($x);
-
-			});
-
-			continue;
-
-		}
-
-		$var = htmlspecialchars($var);
-
-	}
-
-}
-
-/* 
- * Wrapper to sanitize many variables at once
- * Call as wg_escapeshellarg($var1, $var2, ... $varX)
- * Vars can be a mix of strings and arrays
- */
-function wg_escapeshellarg(&...$vars) {
-
-	foreach ($vars as &$var) {
-
-		if (isset($var) && is_array($var)) {
-
-			array_walk_recursive($var, function(&$x) {
-
-				$x = escapeshellarg($x);
-
-			});
-
-			continue;
-
-		}
-
-		$var = escapeshellarg($var);
-
-	}
-
-}
-
-/* 
  * Removes any configuration xml paths as defined by $wgg['xml_conf_tags']
  */
 function wg_remove_config_settings() {
@@ -1041,7 +1042,7 @@ function wg_remove_config_settings() {
 	}
 
 	// Now write out the new config to disk
-	write_config("[{$wgg['pkg_name']}] Package configuration removed");
+	wg_write_config('Removed package configuration and settings.', false);
 
 }
 
@@ -1051,99 +1052,51 @@ function wg_remove_config_settings() {
 function wg_make_tunnel_conf_file($tunnel, $include_endpoint = false) {
 	global $wgg;
 
-	$txt = "# This WireGuard config file has been created automatically. Do not edit!\n\n";
+	// Init a new wgconfig object
+	$wc = new wgconfig($tunnel['name'], true);
 
-	$txt .= "# Description: {$tunnel['descr']}\n";
+	$wc->set_path("{$wgg['conf_path']}/{$tunnel['name']}.conf");
 
-	// Process Interfaces section
-	$txt .= "[Interface]\n";
+	$wc->initialize_file("Description: {$tunnel['descr']}");
 
-	if (!empty($tunnel['privatekey'])) {
+	// Process interface PrivateKey
+	$key = wg_gen_publickey($tunnel['privatekey']);
 
-		$key = wg_gen_publickey($tunnel['privatekey']);
+	$wc->set_interface_attr('PrivateKey', $key['privkey_clamped']);
 
-		if (!$key['was_clamped']) {
+	// Process interface ListenPort
+	$wc->set_interface_attr('ListenPort', $tunnel['listenport']);
 
-			$txt .= "# The provided PrivateKey was not pre-clamped by the key generator.\n";
-
-			$txt .= "# PrivateKey = {$key['privkey']}\n";
-
-			$txt .= "# PublicKey = {$key['pubkey']}\n";
-
-		}
-
-		$txt .= "PrivateKey = {$key['privkey_clamped']}\n";
-
-	}
-
-	if (!empty($tunnel['listenport'])) {
-
-		$txt .= "ListenPort = {$tunnel['listenport']}\n";
-
-	}
-
-	$txt .= "\n";
-
-	// Process peers section
+	// Process peer sections
 	foreach (wg_tunnel_get_peers_config($tunnel['name']) as [$peer_idx, $peer, $is_new]) {
 
 		if (isset($peer['enabled']) && $peer['enabled'] == 'yes') {
 
-			$txt .= "# Peer: {$peer['descr']}\n";
+			// Process peer entry and PublicKey
+			$wc->add_peer($peer['publickey'], "Peer: {$peer['descr']}");
 
-			$txt .= "[Peer]\n";
+			// Process PresharedKey
+			$wc->set_peer_attr($peer['publickey'], 'PresharedKey', $peer['presharedkey']);
 
-			if (!empty($peer['publickey'])) {
+			// Process AllowedIPs
+			foreach ((array) $peer['allowedips']['row'] as $ip) {
 
-				$txt .= "PublicKey = {$peer['publickey']}\n";
-
-			}
-
-			if (!empty($peer['presharedkey'])) {
-
-				$txt .= "PresharedKey = {$peer['presharedkey']}\n";
+				$wc->add_peer_attr($peer['publickey'], 'AllowedIPs', "{$ip['address']}/{$ip['mask']}");
 
 			}
 
-			if (is_array($peer['allowedips']['row']) && count($peer['allowedips']['row']) > 0) {
+			// Process PersistentKeepalive
+			$keepalive = $peer['persistentkeepalive'];
 
-				$allowedips = implode(', ', array_map(fn($x) => "{$x['address']}/{$x['mask']}", $peer['allowedips']['row']));
+			$keepalive = (!empty($keepalive) && is_numericint($keepalive)) ? $keepalive : '0';
 
-				$txt .= "AllowedIPs = {$allowedips}\n";
-
-			}
-
-			if (!empty($peer['endpoint'])) {
-
-				$peer['endpoint'] = is_ipaddrv6($peer['endpoint']) ? "[{$peer['endpoint']}]" : $peer['endpoint'];
-
-				$peer['port'] = empty($peer['port']) ? $wgg['default_port'] : $peer['port'];
-
-				$comment = $include_endpoint ? null : '# ';
-
-				// NOTE: Endpoint needs to be commented out to avoid potential failures caused by DNS
-				$txt .= "{$comment}Endpoint = {$peer['endpoint']}:{$peer['port']}\n";
-
-			}
-
-			if (!empty($peer['persistentkeepalive'])) {
-
-				$txt .= "PersistentKeepalive = {$peer['persistentkeepalive']}\n";
-			}
-
-			$txt .= "\n";
+			$wc->set_peer_attr($peer['publickey'], 'PersistentKeepalive', $keepalive);
 
 		}
 
 	}
 
-	$conf_path = "{$wgg['conf_path']}/{$tunnel['name']}.conf";
-
-	$old_mask = umask(077);
-
-	file_put_contents($conf_path, $txt);
-
-	umask($old_mask);
+	$wc->write_file();
 
 }
 
@@ -1171,5 +1124,20 @@ function wg_download_tunnel($tunnel_name, $failure_redirect) {
 	header("Location: {$failure_redirect}");
 
 }
+
+function wg_autoloader($classname) {
+	global $wgg;
+
+	$path = "{$wgg['wg_classes']}/{$classname}.class.php";
+
+	if (file_exists($path)){
+
+		require_once($path);
+
+	}
+
+}
+
+spl_autoload_register('wg_autoloader');
 
 ?>
