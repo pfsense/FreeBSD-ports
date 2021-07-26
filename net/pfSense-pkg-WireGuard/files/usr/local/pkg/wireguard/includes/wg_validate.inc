@@ -22,13 +22,67 @@
 
 // pfSense includes 
 require_once('config.inc');
-require_once('pfsense-utils.inc');	// where_is_ipaddr_configured
-require_once('util.inc'); 		// is_subnet, is_port, is_hostname, is_ipaddr
+require_once('pfsense-utils.inc');
+require_once('util.inc');
 
 // WireGuard includes
-require_once('wireguard/wg_api.inc');
+require_once('wireguard/includes/wg_api.inc');
 
-wg_globals();
+function wg_validate_peer_toggle($peer) {
+
+	$input_errors = array();
+
+	// Boilerplate...
+
+	return $input_errors;
+
+}
+
+function wg_validate_peer_delete($peer) {
+
+	$input_errors = array();
+
+	// Boilerplate...
+
+	return $input_errors;
+	
+}
+
+function wg_validate_tunnel_delete($tunnel) {
+
+	$input_errors = array();
+
+	// We can't delete assigned tunnels
+	if (is_wg_tunnel_assigned($tunnel['name'])) {
+
+		$wg_pfsense_if = wg_get_pfsense_interface_info($tunnel['name']);
+
+		$input_errors[] = "Cannot delete {$tunnel['name']} while it is assigned to {$wg_pfsense_if['descr']} ({$wg_pfsense_if['name']})";
+
+	}
+
+	return $input_errors;
+
+}
+
+function wg_validate_tunnel_toggle($tunnel) {
+
+	$input_errors = array();
+
+	$is_enabled = (isset($tunnel['enabled']) && ($tunnel['enabled']) == 'yes');
+
+	if (!$is_enabled && is_wg_tunnel_assigned($tunnel['name'])) {
+
+		$wg_pfsense_if = wg_get_pfsense_interface_info($tunnel['name']);
+
+		$input_errors[] = "Cannot disable {$tunnel['name']} while it is assigned to {$wg_pfsense_if['descr']} ({$wg_pfsense_if['name']}).";
+
+	}
+
+	// Consumers expect an array
+	return $input_errors;
+
+}
 
 /*
  * Validate package settings
@@ -37,12 +91,20 @@ function wg_validate_settings_post($pconfig) {
 
 	$input_errors = array();
 
-	// Check dns ttl
-	$dns_ttl = $pconfig['dns_ttl'];
+	$enable = $pconfig['enable'];
 
-	if (!empty($dns_ttl) && !is_numericint($dns_ttl)) {
+	if (wg_is_wg_assigned() && (isset($enable) && (empty($enable) || ($enable == 'off')))) {
 
-		$input_errors[] = "Invalid endpoint DNS TTL interval ({$dns_ttl}).";
+		$input_errors[] = gettext('Cannot disable WireGuard when one or more tunnels is assigned to a pfSense interface.');
+	
+	}
+	
+	// Check endpoint hostname resolve interval
+	$resolve_interval = $pconfig['resolve_interval'];
+
+	if (!empty($resolve_interval) && !is_numericint($resolve_interval)) {
+
+		$input_errors[] = "Invalid endpoint hostname resolve interval ({$resolve_interval}).";
 
 	}
 
@@ -91,7 +153,7 @@ function wg_validate_tunnel_post($pconfig, $idx_from_post) {
 	// Assigned tunnels don't need these validation checks
 	if (!is_wg_tunnel_assigned($pconfig['name'])) {
 
-		foreach ($pconfig['addresses']['row'] as $address) {
+		foreach ((array) $pconfig['addresses']['row'] as $address) {
 
 			// Remove any accidental whitespace
 			$address['address'] = trim($address['address']);
@@ -195,7 +257,7 @@ function wg_validate_peer_post($pconfig, $posted_peer_idx) {
 	// Check allowed ips
 	if (!empty($pconfig['allowedips']['row']) && is_array($pconfig['allowedips']['row'])) {
 
-		foreach ($pconfig['allowedips']['row'] as $row) {
+		foreach ((array) $pconfig['allowedips']['row'] as $row) {
 
 			$row['address'] = trim($row['address']);
 

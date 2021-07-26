@@ -30,7 +30,7 @@
 	<name>wireguard</name>
 	<version>%%PKGVERSION%%</version>
 	<title>VPN/WireGuard</title>
-	<include_file>/usr/local/pkg/wireguard/wg.inc</include_file>
+	<include_file>/usr/local/pkg/wireguard/includes/wg.inc</include_file>
 	<menu>
 		<name>WireGuard</name>
 		<section>VPN</section>

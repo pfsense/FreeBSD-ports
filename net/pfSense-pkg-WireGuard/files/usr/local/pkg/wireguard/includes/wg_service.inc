@@ -29,7 +29,9 @@ require_once('services.inc');
 require_once('service-utils.inc');
 
 // WireGuard includes
-require_once('wireguard/wg.inc');
+require_once('wireguard/includes/wg.inc');
+
+global $wgg;
 
 if (isset($argv[1])) {
 
@@ -222,14 +224,16 @@ function wg_service_fpm_start() {
 function wg_service_cli_start($serialize = true) {
 	global $g, $wgg;
 
+	$s = fn($x) => $x;
+
 	// Set the process name
 	cli_set_process_title('WireGuard service');
 	
 	$ret_code = 0;
 
-	if (!wg_is_cli()) {
+	if (!wg_is_service_enabled()) {
 
-		$ret_code |= WG_ERROR_SVC_START;
+		$ret_code |= WG_ERROR_SVC_DISABLED;
 
 		wg_service_parse_errors($ret_code, $serialize);
 
@@ -247,26 +251,34 @@ function wg_service_cli_start($serialize = true) {
 
 	}
 
+	if (!wg_is_cli()) {
+
+		$ret_code |= WG_ERROR_SVC_START;
+
+		wg_service_parse_errors($ret_code, $serialize);
+
+		return $ret_code;
+
+	}
+
 	// Register the service environment and lock early to ensure singletons
 	wg_register_service_env(false);
 
 	if (platform_booting()) {
 
 		// Output during booting must be to STDERR for some reason
-		fwrite(STDERR, "Configuring WireGuard tunnels...");
+		fwrite(STDERR, gettext('Configuring WireGuard tunnels...'));
 
 		// Supresses ifconfig spew 
 		mute_kernel_msgs();
 
 	}
 
-	/*
-	 * Build all (i.e. null) the tunnels
-	 *
-	 * NOTE: Don't restart services, they will be restarted later...
-	 * NOTE: Don't resolve endpoints, they will be resolved later...
-	 */
-	$sync_status = wg_tunnel_sync(null, false, false);
+	// Get the tunnel interfaces to build
+	$ifs_to_build = wg_get_configured_ifs();
+
+	// Now build them...
+	$sync_status = wg_tunnel_sync($ifs_to_build, false, false);
 
 	if ($sync_status['ret_code'] <> 0 ) {
 
@@ -278,7 +290,7 @@ function wg_service_cli_start($serialize = true) {
 
 		unmute_kernel_msgs();
 
-		fwrite(STDERR, "done. \n");
+		fwrite(STDERR, "{$s(gettext('done.'))}\n");
 
 		return $ret_code;
 
@@ -344,7 +356,7 @@ function wg_service_cli_start($serialize = true) {
 
 	} else {
 
-		// Nowe we restart any additional services
+		// Now we restart any additional services
 		$ret_code = wg_restart_extra_services();
 
 		return $ret_code;
@@ -380,6 +392,8 @@ function wg_restart_extra_services() {
 function wg_service_daemon() {
 	global $wgg;
 
+	$esa = fn($s) => escapeshellarg($s);
+
 	// Re-register the service environment
 	wg_register_service_env(true);
 
@@ -387,15 +401,7 @@ function wg_service_daemon() {
 	wg_register_daemon_sig_handler();
 
 	// Attempt to load the kmod, required to run the service without any tunnels configured
-	if (!is_module_loaded($wgg['kmod'])) {
-
-		$kmod = $wgg['kmod'];
-
-		wg_escapeshellarg($kmod);
-
-		mwexec("{$wgg['kldload']} {$kmod}");
-
-	}
+	wg_kld_loadunload(true);
 
 	// Now we resolve endpoint hostnames here...
 	$last_update_time = wg_resolve_endpoints();
