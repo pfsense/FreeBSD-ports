@@ -33,9 +33,8 @@ require_once('guiconfig.inc');
 require_once('util.inc');
 
 // WireGuard includes
-require_once('wireguard/wg.inc');
-require_once('wireguard/wg_guiconfig.inc');
-require_once('wireguard/wg_service.inc');
+require_once('wireguard/includes/wg.inc');
+require_once('wireguard/includes/wg_guiconfig.inc');
 
 global $wgg;
 
@@ -109,7 +108,7 @@ $a_devices = wg_get_status();
 			<thead>
 				<th><?=gettext('Tunnel')?></th>
 				<th><?=gettext('Description')?></th>
-				<th><?=gettext('# Peers')?></th>
+				<th><?=gettext('Peers')?></th>
 				<th><?=gettext('Public Key')?></th>
 				<th><?=gettext('Address / Assignment')?></th>
 				<th><?=gettext('MTU')?></th>
@@ -126,7 +125,7 @@ if (!empty($a_devices)):
 				<tr class="tunnel-entry">
 					<td>
 						<?=wg_interface_status_icon($device['status'])?>
-						<a href="vpn_wg_tunnels_edit.php?tun=<?=htmlspecialchars($device_name)?>"><?=htmlspecialchars($device_name)?>
+						<a href="vpn_wg_tunnels_edit.php?tun=<?=htmlspecialchars($device_name)?>"><?=htmlspecialchars($device_name)?></a>
 					</td>
 					<td><?=htmlspecialchars(wg_truncate_pretty($device['config']['descr'], 16))?></td>
 					<td><?=count($device['peers'])?></td>
@@ -167,7 +166,7 @@ if (!empty($a_devices)):
 										<?=htmlspecialchars(wg_truncate_pretty($peer['public_key'], 16))?>
 									</td>
 									<td><?=htmlspecialchars($peer['endpoint'])?></td>
-									<td><?=wg_generate_peer_allowedips_popup_link(wg_get_peer_idx($peer['config']['publickey'], $peer['config']['tun']))?></td>
+									<td><?=wg_generate_peer_allowedips_popup_link(wg_peer_get_array_idx($peer['config']['publickey'], $peer['config']['tun']))?></td>
 									<td><?=htmlspecialchars(format_bytes($peer['transfer_rx']))?></td>
 									<td><?=htmlspecialchars(format_bytes($peer['transfer_tx']))?></td>
 								</tr>
@@ -230,14 +229,12 @@ endif;
 			</thead>
 			<tbody>
 <?php
-			$a_packages = wg_pkg_info();
-
-			foreach ($a_packages as $package):
+			foreach (wg_pkg_info() as ['name' => $name, 'version' => $version, 'comment' => $comment]):
 ?>
     				<tr>
-					<td><?=htmlspecialchars($package['name'])?></td>
-					<td><?=htmlspecialchars($package['version'])?></td>
-					<td><?=htmlspecialchars($package['comment'])?></td>
+					<td><?=htmlspecialchars($name)?></td>
+					<td><?=htmlspecialchars($version)?></td>
+					<td><?=htmlspecialchars($comment)?></td>
 
 				</tr>
 <?php
@@ -270,11 +267,7 @@ events.push(function() {
 //]]>
 </script>
 
-<?php 
-
+<?php
+include('wireguard/includes/wg_foot.inc');
 include('foot.inc');
-
-// Must be included last
-include('wireguard/wg_foot.inc');
-
 ?>
