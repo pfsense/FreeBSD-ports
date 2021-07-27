@@ -220,6 +220,7 @@
     SUBDIR += py-MDAnalysis
     SUBDIR += py-MDAnalysisTests
     SUBDIR += py-OpenFermion
+    SUBDIR += py-PubChemPy
     SUBDIR += py-PyFR
     SUBDIR += py-SimpleSpectral
     SUBDIR += py-abipy
@@ -231,6 +232,8 @@
     SUBDIR += py-chainer
     SUBDIR += py-chainer-chemistry
     SUBDIR += py-chempy
+    SUBDIR += py-cirq-core
+    SUBDIR += py-cirq-google
     SUBDIR += py-coards
     SUBDIR += py-dipy
     SUBDIR += py-dlib

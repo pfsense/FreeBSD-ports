@@ -669,6 +669,8 @@
     SUBDIR += py-tagpy
     SUBDIR += py-wavio
     SUBDIR += py-webrtcvad
+    SUBDIR += py-zita-audiotools
+    SUBDIR += py-zita-jacktools
     SUBDIR += qaudiosonar
     SUBDIR += qjackctl
     SUBDIR += qmidiarp
@@ -879,6 +881,7 @@
     SUBDIR += zita-bls1
     SUBDIR += zita-convolver
     SUBDIR += zita-dpl1
+    SUBDIR += zita-jclient
     SUBDIR += zita-mu1
     SUBDIR += zita-njbridge
     SUBDIR += zita-resampler
