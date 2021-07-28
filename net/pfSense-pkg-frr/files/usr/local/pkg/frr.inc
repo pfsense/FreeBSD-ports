@@ -560,12 +560,9 @@ function frr_setkey($restart_needed) {
 			$tmp['src'] = frr_get_neighbor_updatesource($neighbor['updatesource'], $neighbor['updatesource_type']);
 			/* If that fails, check if this neighbor is a member of a peer group, and if that group has one */
 			if (empty($tmp['src']) && !empty($neighbor['peergroup']) &&
-				!empty($peergroup)) {
-				if (!empty($peergroup['updatesource'])) {
-					/* Try to determine an update source from the group */
-					$tmp['src'] = frr_get_neighbor_updatesource($peergroup['updatesource'], $peergroup['updatesource_type']);
-					break;
-				}
+			    !empty($peergroup) && !empty($peergroup['updatesource'])) {
+				/* Try to determine an update source from the group */
+				$tmp['src'] = frr_get_neighbor_updatesource($peergroup['updatesource'], $peergroup['updatesource_type']);
 			}
 			/* If it is still empty, try to find it automatically based on the destination */
 			if (empty($tmp['src'])) {
