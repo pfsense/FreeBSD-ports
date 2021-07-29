@@ -184,7 +184,7 @@ pkg_with_pb() {
 }
 
 fetch_upgrade_packages() {
-	pkg_with_pb "upgrade -F" "Downloading upgrade packages"
+	pkg_with_pb "upgrade -F ${1}" "Downloading upgrade packages"
 
 	# Workaround for pkg bug https://github.com/freebsd/pkg/issues/1613
 	# *ALWAYS* download pkg itself to avoid being bitten by it again
@@ -575,6 +575,7 @@ pkg_upgrade() {
 	fi
 
 	export next_stage=$(_pkg annotate -q -S ${kernel_pkg} next_stage)
+	export force=$(_pkg annotate -q -S ${kernel_pkg} force)
 	export is_pkg_locked=$(_pkg annotate -q -S ${kernel_pkg} new_major)
 
 	if [ -n "${next_stage}" -a -n "${booting}" -a -n "${boot_stage}" ]; then
@@ -710,10 +711,19 @@ pkg_upgrade() {
 			fi
 		fi
 
+		local _pkg_set_version=$(cat ${pkg_set_version})
+		local _running_pkg_set_version=$(cat ${running_pkg_set_version})
+
+		local _force=""
+		if [ "${_pkg_set_version}" != "${_running_pkg_set_version}" ]
+		then
+			_force=" -f"
+		fi
+
 		if [ -z "${yes}" ]; then
 			# Show user which packages are going to be upgraded
-			_exec "pkg-static upgrade${dont_update} -nq" "" nomute \
-			    ignore_result do_not_exit
+			_exec "pkg-static upgrade${dont_update}${_force} -nq" \
+			    "" nomute ignore_result do_not_exit
 
 			_echo ""
 			_echo "**** WARNING ****"
@@ -757,7 +767,7 @@ pkg_upgrade() {
 		fi
 
 		# Download all upgrade packages first
-		fetch_upgrade_packages
+		fetch_upgrade_packages ${_force}
 
 		# Then lock it again
 		if [ -n "${NEW_MAJOR}" ]; then
@@ -848,6 +858,7 @@ pkg_upgrade() {
 		fi
 
 		_pkg annotate -q -M ${kernel_pkg} next_stage 2
+		_pkg annotate -q -M ${kernel_pkg} force 1
 		next_stage=2
 
 		do_reboot
@@ -902,13 +913,22 @@ pkg_upgrade() {
 				/etc/rc.php_ini_setup >/dev/null 2>&1
 			fi
 
-			_exec "pkg-static upgrade${dont_update}" \
+			local _force=""
+			if [ -n "${force}" ]; then
+				_force=" -f"
+				_pkg annotate -q -D ${kernel_pkg} force
+			fi
+
+			_exec "pkg-static upgrade${dont_update}${_force}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""
 
 			# Always make sure important packages are set as vital
 			set_vital_flag pkg ${kernel_pkg} ${product} \
 			    ${product}-rc ${product}-base ${uboot_pkg}
+
+			# Register that system is running latest pkg_set_version
+			cp -f ${pkg_set_version} ${_running_pkg_set_version}
 		fi
 
 		_pkg annotate -q -M ${kernel_pkg} next_stage 3
@@ -1433,6 +1453,16 @@ if [ -n "${force_ipv4}" ]; then
 	export IP_VERSION="4"
 elif [ -n "${force_ipv6}" ]; then
 	export IP_VERSION="6"
+fi
+
+# Flags used to determine if all packages must be reinstalled
+pkg_set_version="/usr/local/share/${product}/pkg_set_version"
+running_pkg_set_version="/usr/local/share/${product}/running_pkg_set_version"
+export pkg_set_version running_pkg_set_version
+
+# Initialize running pkg_set_version with zero first time
+if [ ! -f ${running_pkg_set_version} ]; then
+	echo 0 > ${running_pkg_set_version}
 fi
 
 # Force debug if /cf/conf/upgrade_debug is present

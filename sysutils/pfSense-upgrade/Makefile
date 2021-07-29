@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-upgrade
-PORTVERSION=	0.98
+PORTVERSION=	0.99
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -16,7 +16,11 @@ NO_MTREE=	yes
 NO_BUILD=	yes
 
 PLIST_FILES=	libexec/pfSense-upgrade \
-		sbin/pfSense-upgrade
+		sbin/pfSense-upgrade \
+		share/pfSense/pkg_set_version
+
+# Flag used to detect when we want to reinstall all packages during upgrade
+PFSENSE_PKG_SET_VERSION=	1
 
 .include <bsd.port.pre.mk>
 
@@ -31,9 +35,12 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/sbin
 	${MKDIR} ${STAGEDIR}${PREFIX}/libexec
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/pfSense
 	${INSTALL_SCRIPT} ${WRKSRC}/pfSense-upgrade \
 		${STAGEDIR}${PREFIX}/libexec
 	${INSTALL_SCRIPT} ${WRKSRC}/pfSense-upgrade.wrapper \
 		${STAGEDIR}${PREFIX}/sbin/pfSense-upgrade
+	${ECHO_CMD} ${PFSENSE_PKG_SET_VERSION} \
+		> ${STAGEDIR}${PREFIX}/share/pfSense/pkg_set_version
 
 .include <bsd.port.post.mk>
