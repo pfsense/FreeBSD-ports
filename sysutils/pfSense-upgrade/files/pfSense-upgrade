@@ -928,7 +928,7 @@ pkg_upgrade() {
 			    ${product}-rc ${product}-base ${uboot_pkg}
 
 			# Register that system is running latest pkg_set_version
-			cp -f ${pkg_set_version} ${_running_pkg_set_version}
+			cp -f ${pkg_set_version} ${running_pkg_set_version}
 		fi
 
 		_pkg annotate -q -M ${kernel_pkg} next_stage 3
