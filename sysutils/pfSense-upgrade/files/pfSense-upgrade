@@ -575,7 +575,6 @@ pkg_upgrade() {
 	fi
 
 	export next_stage=$(_pkg annotate -q -S ${kernel_pkg} next_stage)
-	export force=$(_pkg annotate -q -S ${kernel_pkg} force)
 	export is_pkg_locked=$(_pkg annotate -q -S ${kernel_pkg} new_major)
 
 	if [ -n "${next_stage}" -a -n "${booting}" -a -n "${boot_stage}" ]; then
@@ -858,7 +857,6 @@ pkg_upgrade() {
 		fi
 
 		_pkg annotate -q -M ${kernel_pkg} next_stage 2
-		_pkg annotate -q -M ${kernel_pkg} force 1
 		next_stage=2
 
 		do_reboot
@@ -881,6 +879,15 @@ pkg_upgrade() {
 			    && rm -f /usr/local/etc/strongswan.d
 			[ -L /usr/local/etc/strongswan.conf ] \
 			    && rm -f /usr/local/etc/strongswan.conf
+		fi
+
+		local _pkg_set_version=$(cat ${pkg_set_version})
+		local _running_pkg_set_version=$(cat ${running_pkg_set_version})
+
+		local _force=""
+		if [ "${_pkg_set_version}" != "${_running_pkg_set_version}" ]
+		then
+			_force=" -f"
 		fi
 
 		if upgrade_available; then
@@ -911,12 +918,6 @@ pkg_upgrade() {
 
 				# Make sure PHP setup is fine
 				/etc/rc.php_ini_setup >/dev/null 2>&1
-			fi
-
-			local _force=""
-			if [ -n "${force}" ]; then
-				_force=" -f"
-				_pkg annotate -q -D ${kernel_pkg} force
 			fi
 
 			_exec "pkg-static upgrade${dont_update}${_force}" \
