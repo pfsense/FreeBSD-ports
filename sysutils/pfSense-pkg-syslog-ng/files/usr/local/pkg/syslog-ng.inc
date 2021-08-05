@@ -452,4 +452,35 @@ function syslogng_build_cert($settings) {
 		file_put_contents(SYSLOGNG_DIR . "/ca.d/" . $ca_details['hash'] . ".0", $ca_content);
 	}
 }
+
+function syslogng_plugin_certificates($pluginparams) {
+	global $config;
+	$result = array();
+	init_config_arr(array('installedpackages', 'syslogng', 'config'));
+	$conf = $config['installedpackages']['syslogng']['config'][0];
+
+	if (($pluginparams['type'] == 'certificates') && !empty($conf) &&
+	    ($conf['enable'] == 'on') && ($conf['default_protocol'] == 'tls')) {
+		if (($pluginparams['event'] == 'used_ca') && !empty($conf['dca'])) {
+			$result['pkgname'] = "Syslog-ng";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $conf['dca'];
+			$item['usedby'] = 'TLS CA Certificate';
+			$result['certificatelist'][$cert][] = $item;
+		}
+
+		if (($pluginparams['event'] == 'used_certificates') && !empty($conf['certificate'])) {
+			$result['pkgname'] = "Syslog-ng";
+			$result['certificatelist'] = array();
+			$item = array();
+			$cert = $conf['certificate'];
+			$item['usedby'] = 'TLS Server Certificate';
+			$result['certificatelist'][$cert][] = $item;
+		}
+	}
+
+	return $result;
+}
+
 ?>
