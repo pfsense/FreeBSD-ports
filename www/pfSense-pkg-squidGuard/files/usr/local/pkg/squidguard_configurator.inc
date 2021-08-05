@@ -855,6 +855,7 @@ function sg_create_config() {
 	$sg_tag = new TSgTag;
 	$error_res = '';
 	$temp_str = '';
+	$squidstatus = "";
 
 	if(!is_array($squidguard_config) || empty($squidguard_config)) {
 		sg_addlog("sg_create_config", "Bad squidGuard config data.", SQUIDGUARD_ERROR);
@@ -1053,6 +1054,9 @@ function sg_create_config() {
 			if (($squidguard_config[F_ENABLELOG] == 'on') && $dst[F_LOG]) {
 				$sg_tag->items[] = "log " . SQUIDGUARD_LOGFILE;
 			}
+			if ($dst[F_NAME] == 'squidstatus') {
+				$squidstatus = "^squidstatus ";
+			}
 
 			$sgconf[] = "";
 			$sgconf[] = $sg_tag->tag_text();
@@ -1126,8 +1130,8 @@ function sg_create_config() {
 
 				# not allowing IP in URL
 				if ($acl[F_NOTALLOWINGIP]) {
-					$acl[F_DESTINATIONNAME]     = "^squidstatus !in-addr {$acl[F_DESTINATIONNAME]}";
-					$acl[F_OVERDESTINATIONNAME] = "^squidstatus !in-addr {$acl[F_OVERDESTINATIONNAME]}";
+					$acl[F_DESTINATIONNAME]     = $squidstatus . "!in-addr {$acl[F_DESTINATIONNAME]}";
+					$acl[F_OVERDESTINATIONNAME] = $squidstatus . "!in-addr {$acl[F_OVERDESTINATIONNAME]}";
 				}
 
 				# re-order acl pass (<white><!in-addr><deny><allow><all|none>)
@@ -1184,7 +1188,7 @@ function sg_create_config() {
 
 		# not allowing IP in URL
 		if ($def[F_NOTALLOWINGIP]) {
-			$def[F_DESTINATIONNAME] = "^squidstatus !in-addr " . $def[F_DESTINATIONNAME];
+			$def[F_DESTINATIONNAME] = $squidstatus . "!in-addr " . $def[F_DESTINATIONNAME];
 		}
 
 		# re-order acl pass (<allow><deny<all|none>)
