@@ -21,7 +21,7 @@ PLIST_FILES=	libexec/pfSense-upgrade \
 		share/pfSense/pkg_set_version
 
 # Flag used to detect when we want to reinstall all packages during upgrade
-PFSENSE_PKG_SET_VERSION=	1
+PFSENSE_PKG_SET_VERSION?=	1
 
 do-extract:
 	@${MKDIR} ${WRKSRC}
