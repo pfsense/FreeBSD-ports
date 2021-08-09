@@ -1463,7 +1463,7 @@ export pkg_set_version running_pkg_set_version
 
 # Initialize running pkg_set_version with zero first time
 if [ ! -f ${running_pkg_set_version} ]; then
-	echo 0 > ${running_pkg_set_version}
+	cp -f /etc/version ${running_pkg_set_version}
 fi
 
 # Force debug if /cf/conf/upgrade_debug is present
