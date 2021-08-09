@@ -710,12 +710,8 @@ pkg_upgrade() {
 			fi
 		fi
 
-		local _pkg_set_version=$(cat ${pkg_set_version})
-		local _running_pkg_set_version=$(cat ${running_pkg_set_version})
-
 		local _force=""
-		if [ "${_pkg_set_version}" != "${_running_pkg_set_version}" ]
-		then
+		if ! cmp -s ${pkg_set_version} ${running_pkg_set_version}; then
 			_force=" -f"
 		fi
 
@@ -881,12 +877,8 @@ pkg_upgrade() {
 			    && rm -f /usr/local/etc/strongswan.conf
 		fi
 
-		local _pkg_set_version=$(cat ${pkg_set_version})
-		local _running_pkg_set_version=$(cat ${running_pkg_set_version})
-
 		local _force=""
-		if [ "${_pkg_set_version}" != "${_running_pkg_set_version}" ]
-		then
+		if ! cmp -s ${pkg_set_version} ${running_pkg_set_version}; then
 			_force=" -f"
 		fi
 
