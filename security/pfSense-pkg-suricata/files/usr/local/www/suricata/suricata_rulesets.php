@@ -64,6 +64,9 @@ $etpro = $config['installedpackages']['suricata']['config'][0]['enable_etpro_rul
 $snortcommunitydownload = $config['installedpackages']['suricata']['config'][0]['snortcommunityrules'] == 'on' ? 'on' : 'off';
 $feodotrackerdownload = $config['installedpackages']['suricata']['config'][0]['enable_feodo_botnet_c2_rules'] == 'on' ? 'on' : 'off';
 $sslbldownload = $config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'] == 'on' ? 'on' : 'off';
+$enable_extra_rules = $config['installedpackages']['suricata']['config'][0]['enable_extra_rules'] == "on" ? 'on' : 'off';
+init_config_arr(array('installedpackages', 'suricata' ,'config', 0, 'extra_rules', 'rule'));
+$extra_rules = $config['installedpackages']['suricata']['config'][0]['extra_rules']['rule'];
 
 $no_emerging_files = false;
 $no_snort_files = false;
@@ -241,6 +244,12 @@ if (isset($_POST["save"])) {
 	/* Include the Snort rules only if enabled and no IPS policy is set */
 	if ($snortdownload == 'on' && empty($_POST['ips_policy_enable'])) {
 		$files = glob("{$suricata_rules_dir}" . VRT_FILE_PREFIX . "*.rules");
+		foreach ($files as $file)
+			$enabled_rulesets_array[] = basename($file);
+	}
+
+	if ($enable_extra_rules == 'on') {
+		$files = glob("{$suricata_rules_dir}" . EXTRARULE_FILE_PREFIX . "*.rules");
 		foreach ($files as $file)
 			$enabled_rulesets_array[] = basename($file);
 	}
@@ -808,6 +817,102 @@ else:
 				</tbody>
 			</table>
 		</div>
+<?php
+if (($enable_extra_rules == 'on') && !empty($extra_rules)) {
+?>
+		<div class="table-responsive col-sm-12">
+			<table class="table table-striped table-hover table-condensed">
+<?php
+foreach ($extra_rules as $exrule) {
+	$format = (substr($exrule['url'], strrpos($exrule['url'], 'rules')) == 'rules') ? ".rules" : ".tar.gz";
+	$rulesfilename = EXTRARULE_FILE_PREFIX . $exrule['name'] . $format;
+?>
+				<thead>
+					<tr>
+						<th><?=gettext("Enabled"); ?></th>
+						<th><?=gettext("Extra Ruleset: {$exrule['name']}");?></th>
+					</tr>
+				</thead>
+				<tbody>
+<?php
+				$extrarules = array();
+				if (empty($isrulesfolderempty)) {
+					$dh  = opendir("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/");
+				} else {
+					$dh  = opendir("{$suricata_rules_dir}");
+				}
+
+				while (false !== ($filename = readdir($dh))) {
+					$filename = basename($filename);
+					if (substr($filename, -5) != "rules") {
+						continue;
+					}
+					preg_match("/" . EXTRARULE_FILE_PREFIX . "([A-Za-z0-9_]+)/", $filename, $matches);
+					if ($exrule['name'] == $matches[1]) {
+						$extrarules[] = $filename;
+					}
+				}
+
+				sort($extrarules);
+				$i = count($extrarules);
+
+				// Walk the rules file names arrays and output the
+				// the file names and associated form controls in
+				// an HTML table.
+
+				for ($j = 0; $j < $i; $j++) {
+					echo "<tr>\n";
+					if (!empty($extrarules[$j])) {
+						$file = $extrarules[$j];
+						echo "<td>";
+						if(is_array($enabled_rulesets_array)) {
+							if(in_array($file, $enabled_rulesets_array) && !isset($cat_mods[$file]))
+								$CHECKED = " checked=\"checked\"";
+							else
+								$CHECKED = "";
+						} else
+							$CHECKED = "";
+
+						// If the rule category file is covered by a SID mgmt configuration,
+						// place an appropriate icon beside the category.
+						if (isset($cat_mods[$file])) {
+							// If the category is part of the enabled rulesets array,
+							// make sure we include a hidden field to reference it
+							// so we do not unset it during a post-back.
+							if (in_array($file, $enabled_rulesets_array))
+								echo "<input type='hidden' name='toenable[]' value='{$file}' />\n";
+							if ($cat_mods[$file] == 'enabled') {
+								$CHECKED = "enabled";
+								echo "	\n<i class=\"fa fa-adn text-success\" title=\"" . gettext('Auto-enabled by settings on SID Mgmt tab') . "\"></i>\n";
+							}
+							elseif ($cat_mods[$file] == 'disabled') {
+								echo "	\n<i class=\"fa fa-adn text-danger\" title=\"" . gettext('Auto-disabled by settings on SID Mgmt tab') . "\"></i>\n";
+							}
+						}
+						else {
+							echo "	\n<input type=\"checkbox\" name=\"toenable[]\" value=\"{$file}\" {$CHECKED} />\n";
+						}
+						echo "</td>\n";
+						echo "<td>\n";
+						if (empty($CHECKED))
+							echo "<a href='suricata_rules_edit.php?id={$id}&openruleset=" . urlencode($file) . "' target='_blank' rel='noopener noreferrer'>{$file}</a>\n";
+						else
+							echo "<a href='suricata_rules.php?id={$id}&openruleset=" . urlencode($file) . "'>{$file}</a>\n";
+						echo "</td>\n";
+					} else
+						echo "<td colspan='2'><br/></td>\n";
+					echo "</tr>\n";
+				}
+			?>
+				</tbody>
+<?php
+}
+?>
+			</table>
+		</div>
+<?php
+}
+?>
 	</div>
 </div>
 

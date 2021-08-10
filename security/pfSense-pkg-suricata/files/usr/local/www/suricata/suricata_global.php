@@ -63,6 +63,8 @@ else {
 	$pconfig['gplv2_custom_url'] = htmlentities($config['installedpackages']['suricata']['config'][0]['gplv2_custom_url']);
 	$pconfig['enable_feodo_botnet_c2_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_feodo_botnet_c2_rules'] == "on" ? 'on' : 'off';
 	$pconfig['enable_abuse_ssl_blacklist_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'] == "on" ? 'on' : 'off';
+	$pconfig['enable_extra_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_extra_rules'] == "on" ? 'on' : 'off';
+	$pconfig['extra_rules'] = $config['installedpackages']['suricata']['config'][0]['extra_rules'];
 }
 
 // Do input validation on parameters
@@ -98,6 +100,30 @@ if ($_POST['enable_snort_custom_url'] == "on" && empty(trim(html_entity_decode($
 if ($_POST['enable_gplv2_custom_url'] == "on" && empty(trim(html_entity_decode($_POST['gplv2_custom_url']))))
 		$input_errors[] = "'Use Custom Snort GPLv2 Rule download URL' is checked, but the Snort GPLv2 Custom URL field is blank!";
 
+if ($_POST['enable_extra_rules']) {
+	for ($x = 0; $x < 99; $x++) {
+		if (isset($_POST["name{$x}"]) && isset($_POST["url{$x}"])) { 
+			$name = trim($_POST["name{$x}"]);
+			$url = $_POST["url{$x}"];
+			if (preg_match("/[^A-Za-z0-9_]/", $name)) {
+				$input_errors[] = gettext("The rules name may only contain the
+				    characters A-Z, 0-9 and '-'.");
+			}
+			if (!is_URL($url) || ((substr($url, strrpos($url, 'rules')) != 'rules') &&
+			    (substr($url, strrpos($url, 'rules')) != 'rules.tar.gz'))) { 
+				$input_errors[] = sprintf(gettext('%s is not valid rules or tar.gz rules archive URL.'), htmlspecialchars($url));
+			}
+			$extra_rules['rule'][] = array(
+				'name' => $name,
+				'url' => $url,
+				'md5' => isset($_POST["md5{$x}"]) ? 'on' : 'off'
+			);
+			$enabled_extra_rules[] = $name;
+		}
+	}
+	$pconfig['extra_rules'] = $extra_rules;
+}
+
 /* if no errors move foward with save */
 if (!$input_errors) {
 	if ($_POST["save"]) {
@@ -114,6 +140,8 @@ if (!$input_errors) {
 		$config['installedpackages']['suricata']['config'][0]['enable_gplv2_custom_url'] = $_POST['enable_gplv2_custom_url'] ? 'on' : 'off';
 		$config['installedpackages']['suricata']['config'][0]['enable_feodo_botnet_c2_rules'] = $_POST['enable_feodo_botnet_c2_rules'] ? 'on' : 'off';
 		$config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'] = $_POST['enable_abuse_ssl_blacklist_rules'] ? 'on' : 'off';
+		$config['installedpackages']['suricata']['config'][0]['enable_extra_rules'] = $_POST['enable_extra_rules'] ? 'on' : 'off';
+		$config['installedpackages']['suricata']['config'][0]['extra_rules'] = $extra_rules;
 
 		// If any rule sets are being turned off, then remove them
 		// from the active rules section of each interface.  Start
@@ -136,6 +164,9 @@ if (!$input_errors) {
 		if ($config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'] == 'off')
 			$disabled_rules[] = "sslblacklist_tls_cert";
 
+		if (empty($enabled_extra_rules))
+			$disabled_rules[] = ET_PRO_FILE_PREFIX;
+
 		// Now walk all the configured interface rulesets and remove
 		// any matching the disabled ruleset prefixes.
 		if (is_array($config['installedpackages']['suricata']['rule'])) {
@@ -147,9 +178,19 @@ if (!$input_errors) {
 				}
 				$enabled_rules = explode("||", $iface['rulesets']);
 				foreach ($enabled_rules as $k => $v) {
-					foreach ($disabled_rules as $d)
-						if (strpos(trim($v), $d) !== false)
+					foreach ($disabled_rules as $d) {
+						if (strpos(trim($v), $d) !== false) { 
 							unset($enabled_rules[$k]);
+							continue;
+						} elseif (!empty($enabled_extra_rules)) {
+							foreach ($enabled_extra_rules as $exrule) {
+								if (strpos(trim($v), EXTRARULE_FILE_PREFIX . $exrule)) {
+									continue 2;
+								}
+							}
+							unset($enabled_rules[$k]);
+						}
+					}
 				}
 				$iface['rulesets'] = implode("||", $enabled_rules);
 			}
@@ -379,13 +420,83 @@ $group->add(new Form_Checkbox(
 ));
 $section->add($group);
 
-$section->addInput(new Form_Checkbox(
+$group = new Form_Group('Hide Deprecated Rules Categories');
+$group->add(new Form_Checkbox(
 	'hide_deprecated_rules',
 	'Hide Deprecated Rules Categories',
 	'Hide deprecated rules categories in the GUI and remove them from the configuration. Default is Not Checked.',
 	$pconfig['hide_deprecated_rules'] == 'on' ? true:false,
 	'on'
 ));
+$section->add($group);
+
+$section->addInput(new Form_Checkbox(
+	'enable_extra_rules',
+	'Download Extra Rules',
+	'Download Extra Rules',
+	$pconfig['enable_extra_rules'] == 'on' ? true:false,
+	'on'
+))->setHelp('Download extra rules file or tar.gz archive with rules. If "Check MD5" is set, the code will assume a matching filename exists at the same URL with an additional extension of ".md5".');
+
+$form->add($section);
+
+$section = new Form_Section('Extra rules');
+$section->addClass('extra_rules');
+
+if (!$pconfig['extra_rules']) {
+	$pconfig['extra_rules'] = array();
+	$pconfig['extra_rules']['rule']  = array(array('name' => '', 'url' => '', 'md5' => false));
+}
+
+$numrows = count($item) -1;
+$counter = 0;
+
+$numrows = count($pconfig['extra_rules']['rule']) -1;
+
+foreach ($pconfig['extra_rules']['rule'] as $rule) {
+	$group = new Form_Group(($counter == 0) ? 'Rule':null);
+	$group->addClass('repeatable');
+
+	$group->add(new Form_Input(
+		'name' . $counter,
+		'Name',
+		'text',
+		$rule['name']
+	))->setWidth(2)->setHelp($numrows == $counter ? 'Name':null);
+
+	$group->add(new Form_Input(
+		'url' . $counter,
+		'URL',
+		'text',
+		$rule['url']
+	))->setWidth(5)->setHelp($numrows == $counter ? 'URL':null);
+
+	$group->add(new Form_Checkbox(
+		'md5' . $counter,
+		'MD5',
+		null,
+		$rule['md5'] == 'on' ? true : false,
+	))->setHelp($numrows == $counter ? 'Check MD5':null);
+
+	$group->add(new Form_Button(
+		'deleterow' . $counter,
+		'Delete',
+		null,
+		'fa-trash'
+	))->addClass('btn-warning');
+
+	$section->add($group);
+
+	$counter++;
+}
+
+$section->addInput(new Form_Button(
+	'addrow',
+	'Add',
+	null,
+	'fa-plus'
+))->addClass('btn-success');
+
 $form->add($section);
 
 $section = new Form_Section('Rules Update Settings');
@@ -554,6 +665,11 @@ events.push(function(){
 		hideInput('maxmind_geoipdb_key', hide);
 	}
 
+	function show_extrarules() {
+		hide = !$('#enable_extra_rules').prop('checked');
+		hideClass('extra_rules', hide);
+	}
+
 	// ---------- Click checkbox handlers ---------------------------------------------------------
 	// When 'enable_vrt_rules' is clicked, toggle the Oinkmaster text control
 	$('#enable_vrt_rules').click(function() {
@@ -615,6 +731,11 @@ events.push(function(){
 		enable_geoip2_upd();
 	});
 
+	// When 'enable_extra_rules' is clicked, show 'extra_rules' list
+	$('#enable_extra_rules').click(function () {
+		show_extrarules();
+	});
+
 	// ---------- On initial page load ------------------------------------------------------------
 	enable_snort_vrt();
 	enable_et_rules();
@@ -623,6 +744,8 @@ events.push(function(){
 	enable_geoip2_upd();
 	enable_change_rules_upd($('#autoruleupdate').prop('selectedIndex'));
 	toggle_log_to_systemlog();
+	show_extrarules();
+	checkLastRow();
 
 });
 //]]>
