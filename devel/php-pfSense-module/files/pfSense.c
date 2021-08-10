@@ -1248,7 +1248,7 @@ table_show_value(zval *rarray, ipfw_table_value *v, uint32_t vmask)
 {
 	char abuf[INET6_ADDRSTRLEN + IF_NAMESIZE + 2];
 	struct sockaddr_in6 sa6;
-	uint32_t flag, i, l;
+	uint32_t flag, i;
 	struct in_addr a4;
 
 	/*
@@ -1263,8 +1263,6 @@ table_show_value(zval *rarray, ipfw_table_value *v, uint32_t vmask)
 	for (i = 1; i < (1 << 31); i *= 2) {
 		if ((flag = (vmask & i)) == 0)
 			continue;
-		l = 0;
-
 		switch (flag) {
 		case IPFW_VTYPE_TAG:
 			add_assoc_long(rarray, "tag", v->tag);
