@@ -907,7 +907,7 @@ table_get_info(ipfw_obj_header *oh, ipfw_xtable_info *i)
 static int
 get_mac_addr_mask(const char *p, uint8_t *addr, uint8_t *mask)
 {
-	int i;
+	int i, ret;
 	size_t l;
 	char *ap, *ptr, *optr;
 	struct ether_addr *mac;
@@ -919,14 +919,15 @@ get_mac_addr_mask(const char *p, uint8_t *addr, uint8_t *mask)
 		return (0);
 	}
 
+	ret = -1;
 	optr = ptr = strdup(p);
 	if ((ap = strsep(&ptr, "&/")) != NULL && *ap != 0) {
 		l = strlen(ap);
 		if (strspn(ap, macset) != l || (mac = ether_aton(ap)) == NULL)
-			return (-1);
+			goto out;
 		bcopy(mac, addr, ETHER_ADDR_LEN);
 	} else
-		return (-1);
+		goto out;
 
 	if (ptr != NULL) { /* we have mask? */
 		if (p[ptr - optr - 1] == '/') { /* mask len */
@@ -939,7 +940,7 @@ get_mac_addr_mask(const char *p, uint8_t *addr, uint8_t *mask)
 			l = strlen(ptr);
 			if (strspn(ptr, macset) != l ||
 			    (mac = ether_aton(ptr)) == NULL)
-				return (-1);
+				goto out;
 			bcopy(mac, mask, ETHER_ADDR_LEN);
 		}
 	} else { /* default mask: ff:ff:ff:ff:ff:ff */
@@ -949,9 +950,11 @@ get_mac_addr_mask(const char *p, uint8_t *addr, uint8_t *mask)
 	for (i = 0; i < ETHER_ADDR_LEN; i++)
 		addr[i] &= mask[i];
 
+	ret = 0;
+out:
 	free(optr);
 
-	return (0);
+	return (ret);
 }
 
 static int
