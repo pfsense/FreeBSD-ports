@@ -2,7 +2,7 @@
 
 PORTNAME=	snort
 PORTVERSION=	2.9.18
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://snort.org/downloads/snort/
 PATCH_DIST_STRIP=	-p1
@@ -40,7 +40,7 @@ OPTIONS_DEFINE=		IPV6 GRE HA NORMALIZER DOCS APPID \
 
 OPTIONS_GROUP=		ADDONS DEV
 OPTIONS_GROUP_ADDONS=	BARNYARD PULLEDPORK
-OPTIONS_GROUP_DEV=	DBGSNORT
+OPTIONS_GROUP_DEV=	DBGSNORT COREDUMPS
 OPTIONS_SUB=		yes
 OPTIONS_DEFAULT=	GRE NORMALIZER BARNYARD \
 			PERFPROFILE SOURCEFIRE PULLEDPORK
@@ -60,8 +60,10 @@ BARNYARD_DESC=		Depend on barnyard2 (supports also snortsam)
 PULLEDPORK_DESC=	Depend on pulledpork
 DEV_DESC=		Developer options
 DBGSNORT_DESC=		Enable debugging symbols+core dumps
+COREDUMPS_DESC=		Enable core dumps
 
-DBGSNORT_CONFIGURE_ENABLE=	corefiles debug
+COREDUMPS_CONFIGURE_ENABLE=	corefiles
+DBGSNORT_CONFIGURE_ENABLE=	debug
 DBGSNORT_MAKE_ENV=		DONTSTRIP="yes"
 GRE_CONFIGURE_ENABLE=		gre
 LRGPCAP_CONFIGURE_ENABLE=	large-pcap
@@ -78,6 +80,14 @@ PULLEDPORK_RUN_DEPENDS=	pulledpork.pl:security/pulledpork
 APPID_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
 APPID_CONFIGURE_ENV+=	luajit_CFLAGS="-I${LOCALBASE}/include/luajit-2.1" \
 			luajit_LIBS="-L${LOCALBASE}/lib -lluajit-5.1"
+
+# Disable SIMD on 32-bit arm. Snort has numerous arbitrarily misaligned memory
+# accesses and some of them cause faults. The kludge below combined with
+# patch-configure seems to work around it well enough.
+#
+# Note the change is more aggressive than it possibly needs to be reduce surprises.
+CFLAGS_armv6=	-mfpu=vfpv3
+CFLAGS_armv7=	-mfpu=vfpv3
 
 CONFIG_FILES=	classification.config gen-msg.map reference.config \
 		snort.conf threshold.conf unicode.map file_magic.conf attribute_table.dtd
