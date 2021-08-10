@@ -569,7 +569,7 @@ PHP_FUNCTION(pfSense_kill_srcstates)
 	struct pfioc_src_node_kill psnk;
 	struct addrinfo *res[2], *resp[2];
 	struct sockaddr last_src, last_dst;
-	int killed, sources, dests;
+	int killed, sources;
 	int ret_ga;
 
 	int dev;
@@ -583,7 +583,7 @@ PHP_FUNCTION(pfSense_kill_srcstates)
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
 		RETURN_NULL();
 
-	killed = sources = dests = 0;
+	killed = sources = 0;
 
 	memset(&psnk, 0, sizeof(psnk));
 	memset(&psnk.psnk_src.addr.v.a.mask, 0xff,
@@ -622,7 +622,6 @@ PHP_FUNCTION(pfSense_kill_srcstates)
 		}
 
 		if (ip2 != NULL) {
-			dests = 0;
 			memset(&psnk.psnk_dst.addr.v.a.mask, 0xff,
 			    sizeof(psnk.psnk_dst.addr.v.a.mask));
 			memset(&last_dst, 0xff, sizeof(last_dst));
@@ -644,8 +643,6 @@ PHP_FUNCTION(pfSense_kill_srcstates)
 				    sizeof(last_dst)) == 0)
 					continue;
 				last_dst = *(struct sockaddr *)resp[1]->ai_addr;
-
-				dests++;
 
 				if (psnk.psnk_af == AF_INET)
 					psnk.psnk_dst.addr.v.a.addr.v4 =
@@ -689,7 +686,7 @@ PHP_FUNCTION(pfSense_kill_states)
 	struct pfioc_state_kill psk;
 	struct addrinfo *res[2], *resp[2];
 	struct sockaddr last_src, last_dst;
-	int killed, sources, dests;
+	int killed, sources;
 	int ret_ga;
 
 	int dev;
@@ -703,7 +700,7 @@ PHP_FUNCTION(pfSense_kill_states)
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
 		RETURN_NULL();
 
-	killed = sources = dests = 0;
+	killed = sources = 0;
 
 	memset(&psk, 0, sizeof(psk));
 	memset(&psk.psk_src.addr.v.a.mask, 0xff,
@@ -758,7 +755,6 @@ PHP_FUNCTION(pfSense_kill_states)
 		}
 
 		if (ip2 != NULL && ip2_len > 0) {
-			dests = 0;
 			memset(&psk.psk_dst.addr.v.a.mask, 0xff,
 			    sizeof(psk.psk_dst.addr.v.a.mask));
 			memset(&last_dst, 0xff, sizeof(last_dst));
@@ -782,8 +778,6 @@ PHP_FUNCTION(pfSense_kill_states)
 				    sizeof(last_dst)) == 0)
 					continue;
 				last_dst = *(struct sockaddr *)resp[1]->ai_addr;
-
-				dests++;
 
 				if (psk.psk_af == AF_INET)
 					psk.psk_dst.addr.v.a.addr.v4 =
