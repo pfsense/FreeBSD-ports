@@ -47,6 +47,9 @@ $vrt_enabled = $config['installedpackages']['suricata']['config'][0]['enable_vrt
 $snortcommunityrules = $config['installedpackages']['suricata']['config'][0]['snortcommunityrules'] == 'on' ? 'on' : 'off';
 $feodotracker_rules = $config['installedpackages']['suricata']['config'][0]['enable_feodo_botnet_c2_rules'] == 'on' ? 'on' : 'off';
 $sslbl_rules = $config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'] == 'on' ? 'on' : 'off';
+$enable_extra_rules = $config['installedpackages']['suricata']['config'][0]['enable_extra_rules'] == "on" ? 'on' : 'off';
+init_config_arr(array('installedpackages', 'suricata' ,'config', 0, 'extra_rules', 'rule'));
+$extra_rules = $config['installedpackages']['suricata']['config'][0]['extra_rules']['rule'];
 
 /* Working directory for downloaded rules tarballs */
 $tmpfname = "{$g['tmp_path']}/suricata_rules_up";
@@ -310,8 +313,8 @@ function suricata_check_rule_md5($file_url, $file_dst, $desc = "") {
 		error_log("\tChecking {$desc} md5 file...\n", 3, SURICATA_RULES_UPD_LOGFILE);
 		// check md5 hash in new file against current file to see if new download is posted
 		if (file_exists("{$suricatadir}{$filename_md5}")) {
-			$md5_check_new = file_get_contents($file_dst);
-			$md5_check_old = file_get_contents("{$suricatadir}{$filename_md5}");
+			$md5_check_new = trim(file_get_contents($file_dst));
+			$md5_check_old = trim(file_get_contents("{$suricatadir}{$filename_md5}"));
 			if ($md5_check_new == $md5_check_old) {
 				suricata_update_status(gettext("{$desc} are up to date.") . "\n");
 				syslog(LOG_NOTICE, gettext("[Suricata] {$desc} are up to date..."));
@@ -590,6 +593,80 @@ if ($sslbl_rules == 'on') {
 	}
 }
 
+/*  Download any new Extra Rules */
+if (($enable_extra_rules == 'on') && !empty($extra_rules)) {
+	$extraupdated = 'off';
+	safe_mkdir("{$tmpfname}/extra");
+	$tmpextradir = "{$tmpfname}/extra";
+	$existing_extra_rules = array();
+	foreach ($extra_rules as $exrule) {
+		$format = (substr($exrule['url'], strrpos($exrule['url'], 'rules')) == 'rules') ? ".rules" : ".tar.gz";
+		$rulesfilename = EXTRARULE_FILE_PREFIX . $exrule['name'] . $format;
+		if (file_exists("{$suricatadir}{$rulesfilename}.md5")) {
+			$old_file_md5 = trim(file_get_contents("{$suricatadir}{$rulesfilename}.md5"));
+		} else {
+			$old_file_md5 = "0";
+		}
+
+		if (($exrule['md5'] == 'on') &&
+		    !suricata_check_rule_md5($exrule['url'] . '.md5', "{$tmpextradir}/{$rulesfilename}.md5", "Extra {$exrule['name']} rules")) {
+
+			continue;
+		}
+
+		suricata_update_status(gettext("Downloading Extra {$exrule['name']} rules file..."));
+		error_log(gettext("\tDownloading Extra {$exrule['name']} rules file...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		$rc = suricata_download_file_url($exrule['url'], "{$tmpextradir}/{$rulesfilename}");
+
+		// See if the download from the URL was successful
+		if ($rc === true) {
+			suricata_update_status(gettext(" done.") . "\n");
+			syslog(LOG_NOTICE, "[Suricata] Extra {$exrule['name']} rules file update downloaded successfully.");
+			error_log(gettext("\tDone downloading rules file.\n"),3, SURICATA_RULES_UPD_LOGFILE);
+
+			// See if file has changed from our previously downloaded version
+			if ($old_file_md5 == trim(md5_file("{$tmpextradir}/{$rulesfilename}"))) {
+				// File is unchanged from previous download, so no update required
+				suricata_update_status(gettext("Extra {$exrule['name']} rules are up to date.") . "\n");
+				syslog(LOG_NOTICE, gettext("[Suricata] Extra {$exrule['name']} rules are up to date..."));
+				error_log(gettext("\tExtra {$exrule['name']} rules are up to date.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+			} else {
+				file_put_contents("{$suricatadir}{$rulesfilename}.md5", trim(md5_file("{$tmpextradir}/{$rulesfilename}")));
+				suricata_update_status(gettext("Installing Extra {$exrule['name']} rules..."));
+				error_log(gettext("\tExtracting and installing {$exrule['name']} IP rules...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+				if ($format == '.rules') { 
+					@copy("{$tmpextradir}/{$rulesfilename}", "{$suricata_rules_dir}{$rulesfilename}");
+				} else {
+					safe_mkdir("{$tmpextradir}/{$exrule['name']}");
+					exec("/usr/bin/tar xzf {$tmpextradir}/{$rulesfilename} -C {$tmpextradir}/{$exrule['name']}/");
+					unlink_if_exists("{$suricata_rules_dir}" . EXTRARULE_FILE_PREFIX . $exrule['name'] . "-*.rules");
+					$files = suricata_listfiles("{$tmpextradir}/{$exrule['name']}");
+					foreach ($files as $file) {
+						$newfile = basename($file);
+						if (substr($newfile, -6) == ".rules") {
+							@copy($file, $suricata_rules_dir . EXTRARULE_FILE_PREFIX . $exrule['name'] . "-" . $newfile);
+						}
+					}
+				}
+
+				suricata_update_status(gettext("Extra {$exrule['name']} rules were updated.") . "\n");
+				syslog(LOG_NOTICE, gettext("[Suricata] Extra {$exrule['name']} rules were updated..."));
+				error_log(gettext("\tExtra {$exrule['name']} rules were updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+				$extraupdated = 'on';
+			}
+		} else {
+			suricata_update_status(gettext("Extra {$exrule['name']} rules file download failed!") . "\n");
+			syslog(LOG_ERR, gettext("[Suricata] ERROR: Extra {$exrule['name']} rules file download failed... server returned error '{$rc}'."));
+			error_log(gettext("\tERROR: Extra {$exrule['name']} rules file download failed. Remote server returned error {$rc}.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+			error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+			error_log(gettext("\tExtra {$exrule['name']} rules will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+			$update_errors = true;
+		}
+		$existing_extra_rules[] = $exrule['name'];
+	}
+	rmdir_recursive($tmpextradir);
+}
+
 /* Untar Emerging Threats rules file to tmp if downloaded */
 if ($emergingthreats == 'on') {
 	safe_mkdir("{$tmpfname}/emerging");
@@ -742,8 +819,23 @@ function suricata_apply_customizations($suricatacfg, $if_real) {
 	@copy("{$suricatadir}unicode.map", "{$suricatadir}suricata_{$suricatacfg['uuid']}_{$if_real}/unicode.map");
 }
 
+function suricata_listfiles($dir) {
+	$files = array();
+	foreach (scandir($dir) as $file) {
+		if (($file != '.') && ($file != '..')) {
+			$path = $dir . '/' . $file;
+			if (is_dir($path)) {
+				$files = array_merge($files, suricata_listfiles($path));
+			} else {
+				$files[] = $path;
+			}
+		}
+	}
+	return($files);
+}
+
 /* If we updated any rules, then refresh all the Suricata interfaces */
-if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules == 'on' || $feodotracker_rules == 'on' || $sslbl_rules == 'on') {
+if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules == 'on' || $feodotracker_rules == 'on' || $sslbl_rules == 'on' || $extraupdated == 'on') {
 
 	/* If we updated Snort or ET rules, rebuild the config and map files as nescessary */
 	if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules == 'on') {
