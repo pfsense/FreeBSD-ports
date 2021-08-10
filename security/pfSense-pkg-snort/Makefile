@@ -13,7 +13,7 @@ COMMENT=	pfSense package snort
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	snort>=2.9.18:security/snort
+RUN_DEPENDS=	snort>=2.9.18_1:security/snort
 
 NO_BUILD=	yes
 NO_MTREE=	yes
