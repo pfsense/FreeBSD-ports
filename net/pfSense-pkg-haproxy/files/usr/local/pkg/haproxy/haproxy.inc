@@ -1187,7 +1187,7 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 
 					$ca = $be['ssl-server-ca'];
 					$filename = "$configpath/ca_$ca.pem";
-					haproxy_write_certificate_crt($filename, $ca);
+					haproxy_write_certificate_fullchain($filename, $ca, false, false);
 					$cafile = " ca-file $filename";
 
 					$crl = $be['ssl-server-crl'];
