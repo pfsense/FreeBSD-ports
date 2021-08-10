@@ -37,6 +37,9 @@ $etpro = $config['installedpackages']['suricata']['config'][0]['enable_etpro_rul
 $snortcommunityrules = $config['installedpackages']['suricata']['config'][0]['snortcommunityrules'];
 $feodotracker_rules = $config['installedpackages']['suricata']['config'][0]['enable_feodo_botnet_c2_rules'];
 $sslbl_rules = $config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'];
+$enable_extra_rules = $config['installedpackages']['suricata']['config'][0]['enable_extra_rules'] == "on" ? 'on' : 'off';
+init_config_arr(array('installedpackages', 'suricata' ,'config', 0, 'extra_rules', 'rule'));
+$extra_rules = $config['installedpackages']['suricata']['config'][0]['extra_rules']['rule'];
 
 /* Get last update information if available */
 if (file_exists(SURICATADIR . "rulesupd_status")) {
@@ -166,6 +169,7 @@ if ($_REQUEST['updatemode']) {
 		unlink_if_exists("{$suricatadir}{$snort_rules_file}.md5");
 		unlink_if_exists("{$suricatadir}{$feodotracker_rules_filename}.md5");
 		unlink_if_exists("{$suricatadir}{$sslbl_rules_filename}.md5");
+		unlink_if_exists("{$suricatadir}" . EXTRARULE_FILE_PREFIX . "*.md5");
 	}
 
 	// Launch a background process to download the updates
@@ -294,6 +298,50 @@ include_once("head.inc");
 		</div>
 	</div>
 </div>
+<?php
+if (($enable_extra_rules == 'on') && !empty($extra_rules)) {
+?>
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("EXTRA RULE SET MD5 SIGNATURES")?></h2></div>
+	<div class="panel-body">
+		<div class="content table-responsive">
+			<table class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						<th><?=gettext("Rule Set Name");?></th>
+						<th><?=gettext("MD5 Signature Hash");?></th>
+						<th><?=gettext("MD5 Signature Date");?></th>
+					</tr>
+				</thead>
+				<tbody>
+<?php
+foreach ($extra_rules as $exrule) {
+	$format = (substr($exrule['url'], strrpos($exrule['url'], 'rules')) == 'rules') ? ".rules" : ".tar.gz";
+	$rulesfilename = EXTRARULE_FILE_PREFIX . $exrule['name'] . $format;
+	if (file_exists("{$suricatadir}{$rulesfilename}.md5")) {
+		$extra_sig_chk_local = trim(file_get_contents("{$suricatadir}{$rulesfilename}.md5"));
+		$extra_sig_date = date(DATE_RFC850, filemtime("{$suricatadir}{$rulesfilename}.md5"));
+	} else {
+		$extra_sig_chk_local = 'Not Downloaded';
+		$extra_sig_date = 'Not Downloaded';
+	}
+?>
+				<tr>
+					<td><?=$exrule['name'];?></td>
+					<td><?=$extra_sig_chk_local;?></td>
+					<td><?=gettext($extra_sig_date);?></td>
+				</tr>
+<?php
+}
+?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<?php
+}
+?>
 <div class="panel panel-default">
 	<div class="panel-heading"><h2 class="panel-title"><?=gettext("UPDATE YOUR RULE SET")?></h2></div>
 	<div class="panel-body">
@@ -303,7 +351,7 @@ include_once("head.inc");
 				<strong><?=gettext("Result:");?></strong> <?=$last_rule_upd_status?>
 			</p>
 			<p>
-				<?php if ($snortdownload != 'on' && $emergingthreats != 'on' && $etpro != 'on'): ?>
+				<?php if ($snortdownload != 'on' && $emergingthreats != 'on' && $etpro != 'on' && $enable_extra_rules != 'on'): ?>
 					<br/><button class="btn btn-primary" disabled>
 						<i class="fa fa-check icon-embed-btn"></i>
 						<?=gettext("Update"); ?>
