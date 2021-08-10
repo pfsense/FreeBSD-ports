@@ -2514,15 +2514,17 @@ PHP_FUNCTION(pfSense_ip_to_mac)
 			break;
 		}
 	}
-	free(buf);
 
-	if (found_entry == 0)
+	if (found_entry == 0) {
+		free(buf);
 		RETURN_NULL();
+	}
 
 	array_init(return_value);
 	bzero(outputbuf, sizeof outputbuf);
 	ether_ntoa_r((struct ether_addr *)LLADDR(sdl), outputbuf);
 	add_assoc_string(return_value, "macaddr", outputbuf);
+	free(buf);
 }
 
 PHP_FUNCTION(pfSense_getall_interface_addresses)
