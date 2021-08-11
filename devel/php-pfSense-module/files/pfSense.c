@@ -4114,6 +4114,7 @@ errormodem:
 
 PHP_FUNCTION(pfSense_get_os_hw_data) {
 	int mib[4], idata;
+	u_long ldata;
 	size_t len;
 	char *data;
 
@@ -4163,21 +4164,21 @@ PHP_FUNCTION(pfSense_get_os_hw_data) {
 
 	mib[0] = CTL_HW;
 	mib[1] = HW_PHYSMEM;
-	len = sizeof(idata);
-	if (!sysctl(mib, 2, &idata, &len, NULL, 0))
-		add_assoc_long(return_value, "physmem", idata);
+	len = sizeof(ldata);
+	if (!sysctl(mib, 2, &ldata, &len, NULL, 0))
+		add_assoc_long(return_value, "physmem", ldata);
 
 	mib[0] = CTL_HW;
 	mib[1] = HW_USERMEM;
-	len = sizeof(idata);
-	if (!sysctl(mib, 2, &idata, &len, NULL, 0))
-		add_assoc_long(return_value, "usermem", idata);
+	len = sizeof(ldata);
+	if (!sysctl(mib, 2, &ldata, &len, NULL, 0))
+		add_assoc_long(return_value, "usermem", ldata);
 
 	mib[0] = CTL_HW;
 	mib[1] = HW_REALMEM;
-	len = sizeof(idata);
-	if (!sysctl(mib, 2, &idata, &len, NULL, 0))
-		add_assoc_long(return_value, "realmem", idata);
+	len = sizeof(ldata);
+	if (!sysctl(mib, 2, &ldata, &len, NULL, 0))
+		add_assoc_long(return_value, "realmem", ldata);
 }
 
 PHP_FUNCTION(pfSense_get_os_kern_data) {
