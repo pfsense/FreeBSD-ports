@@ -134,8 +134,8 @@ function get_cpu_maxfrequency() {
 		$maxfreqs = explode("/", $cpufreqs[0]);
 		return $maxfreqs[0];
 	} else {
-		// sysctrl probably returned "unknown oid 'dev.cpu.0.freq_levels'", 
-		// see https://redmine.pfsense.org/issues/5739 
+		// sysctrl probably returned "unknown oid 'dev.cpu.0.freq_levels'",
+		// see https://redmine.pfsense.org/issues/5739
 		return false;
 	}
 }
@@ -148,8 +148,8 @@ function get_cpu_currentfrequency() {
 	if ($execRet === 0) {
 		return trim($curfreq[0]);
 	} else {
-		// sysctrl probably returned "unknown oid 'dev.cpu.0.freq'", 
-		// see https://redmine.pfsense.org/issues/5739 
+		// sysctrl probably returned "unknown oid 'dev.cpu.0.freq'",
+		// see https://redmine.pfsense.org/issues/5739
 		return false;
 	}
 }
@@ -465,7 +465,7 @@ function outputled_carp() {
 				 continue;
 			}
 			$status = get_carp_interface_status("_vip{$carp['uniqid']}");
-			
+
 			switch($status) {
 				case "MASTER":
 					return 1;
@@ -551,8 +551,8 @@ function build_interface_traffic_stats_list() {
 	$result = array();
 	$interfaceList = get_configured_interface_with_descr();
 
-	foreach($interfaceList as $key => $description) {	
-		
+	foreach($interfaceList as $key => $description) {
+
 		// get the interface stats (code from ifstats.php)
 		$interface      = $config['interfaces'][$key];
 		$interfaceName  = $interface['if'];
@@ -575,7 +575,7 @@ function build_interface_traffic_stats_list() {
 		$entry['in_bytes_today']    = $in_bytesToday;
 		$entry['out_bytes_today']   = $out_bytesToday;
 		$entry['total_bytes_today'] = $in_bytesToday + $out_bytesToday;
-		
+
 		$result[$interface['if']] = $entry;
 	}
 	return $result;
@@ -636,15 +636,15 @@ function calculate_interfaceBytesPerSecond_sinceLastChecked($interfaceName, $int
 function calculate_bytesToday($interfaceName, $interfaceStats, &$in_bytesToday, &$out_bytesToday) {
 
 	global $traffic_last_hour, $traffic_startOfDay_ifin, $traffic_startOfDay_ifout;
-	
+
 	$hourOfDay = getdate()['hours'];
-	
+
 	if (!isset($traffic_last_hour[$interfaceName]) || ($hourOfDay < $traffic_last_hour[$interfaceName])) {
 		$traffic_startOfDay_ifin[$interfaceName]  = (double)$interfaceStats['inbytes'];
-		$traffic_startOfDay_ifout[$interfaceName] = (double)$interfaceStats['outbytes'];	
+		$traffic_startOfDay_ifout[$interfaceName] = (double)$interfaceStats['outbytes'];
 	}
 	$traffic_last_hour[$interfaceName] = $hourOfDay;
-	
+
 	$in_bytesToday  = ((double)$interfaceStats['inbytes']  - $traffic_startOfDay_ifin[$interfaceName]);
 	$out_bytesToday = ((double)$interfaceStats['outbytes'] - $traffic_startOfDay_ifout[$interfaceName]);
 }
@@ -768,10 +768,10 @@ function get_top_interfaces_by_bps($interfaceTrafficList, $lcdpanel_width, $lcdp
 function get_top_interfaces_by_bytes_today($interfaceTrafficList, $lcdpanel_width) {
 
 	$result = array();
-	
+
 	if (count($interfaceTrafficList) < $lcdpanel_height) {
 		// All the interfaces will fit on the screen, so use the same sort order as
-		// the bytes_today screen and the bps screen, so that the interfaces stay in 
+		// the bytes_today screen and the bps screen, so that the interfaces stay in
 		// one place (much easier to read)
 		sort_interface_list_by_total_bytes($interfaceTrafficList);
 	} else {
@@ -798,21 +798,21 @@ function get_top_interfaces_by_total_bytes($interfaceTrafficList, $lcdpanel_widt
 
 
 function convert_bandwidth_to_shortform($bytes_string) {
-	// Shorten values from bandwidth_by_ip.php, which have the form 
+	// Shorten values from bandwidth_by_ip.php, which have the form
 	// "168.16k", "10.31k", "0.00".
 	// The unit is preserved, but decimal point is dropped for 10 or
 	// higher, and only 1 decimal place is kept for lower than 10.
 	// So "168.16k", "10.31k", "0.00" becomes "168k", "10k", "0"
-	
+
 	if ($bytes_string == "0.00") return "0";
-	
+
 	$decimalPos = strpos($bytes_string, '.');
 	if ($decimalPos == 1) {
 		// allow 1 decimal place
-		return substr($bytes_string, 0, 3) . substr($bytes_string, 4);	
+		return substr($bytes_string, 0, 3) . substr($bytes_string, 4);
 	} elseif ($decimalPos > 1) {
 		// remove the decimal places
-		return substr($bytes_string, 0, $decimalPos) . substr($bytes_string, $decimalPos + 3);	
+		return substr($bytes_string, 0, $decimalPos) . substr($bytes_string, $decimalPos + 3);
 	} else {
 		// Our format assumptions are wrong
 		return $bytes_string;
@@ -822,7 +822,7 @@ function convert_bandwidth_to_shortform($bytes_string) {
 function get_bandwidth_by_ip() {
 
 	global $config;
-	
+
 	$result = array();
 	$lcdproc_screens_config = $config['installedpackages']['lcdprocscreens']['config'][0];
 
@@ -831,11 +831,11 @@ function get_bandwidth_by_ip() {
 	$filter       = $lcdproc_screens_config['scr_traffic_by_address_filter'];
 	$hostipformat = $lcdproc_screens_config['scr_traffic_by_address_hostipformat'];
 
-	// ideally we would use /usr/local/www/bandwidth_by_ip.php, but it requires a 
+	// ideally we would use /usr/local/www/bandwidth_by_ip.php, but it requires a
 	// logged-in authenticated user session, so use a local copy instead that's outside
 	// the www directory and doesn't require an authenticated user session.
-	$output = shell_exec("/usr/local/bin/php-cgi -f /usr/local/pkg/lcdproc_bandwidth_by_ip.php if=$lan sort=$sort filter=$filter hostipformat=$hostipformat");	
-	
+	$output = shell_exec("/usr/local/bin/php-cgi -f /usr/local/pkg/lcdproc_bandwidth_by_ip.php if=$lan sort=$sort filter=$filter hostipformat=$hostipformat");
+
 	$hostLines = explode("|", $output);
 	foreach($hostLines as $hostLine) {
 		$hostData = explode(";", $hostLine);
@@ -851,7 +851,7 @@ function get_bandwidth_by_ip() {
 	if (count($result) === 0 && strlen($output) > 1) {
 		$result['error'] = $output;
 	}
-	
+
 	return $result;
 }
 
@@ -885,7 +885,7 @@ function build_interface($lcd) {
 
 	$lcd_cmds = array();
 	$lcd_cmds[] = "hello";
-	$lcd_cmds[] = "client_set name pfSense";
+	$lcd_cmds[] = "client_set name Kontrol";
 
 	/* setup pfsense control menu */
 	if (cmenu_enabled()) {
@@ -1102,7 +1102,7 @@ function loop_status($lcd) {
 	$lcdpanel_width = get_lcdpanel_width();
 	$lcdpanel_height = get_lcdpanel_height();
 	if (empty($g['product_name'])) {
-		$g['product_name'] = "pfSense";
+		$g['product_name'] = "Kontrol";
 	}
 
 	$refresh_frequency = get_lcdpanel_refresh_frequency();
@@ -1119,7 +1119,7 @@ function loop_status($lcd) {
 				if ($maxfreq === false || $maxfreq == 0) {
 					$lcd_summary_data .= "  N/A"; // powerd not available on all systems - https://redmine.pfsense.org/issues/5739
 				} else {
-					$lcd_summary_data .= sprintf(" %3d%%", get_cpu_currentfrequency() / $maxfreq * 100);				
+					$lcd_summary_data .= sprintf(" %3d%%", get_cpu_currentfrequency() / $maxfreq * 100);
 				}
 			}
 		} else {
@@ -1322,31 +1322,31 @@ function loop_status($lcd) {
 					$title = ($lcdpanel_width >= 20) ? "Host       IN / OUT" : "Host   IN / OUT";
 					$lcd_cmds[] = "widget_set $name title_wdgt 2 1 \"{$title}\"";
 					$lcd_cmds[] = "widget_set $name heart_wdgt 1 1 \"" . (($loopCounter & 1) == 0 ? "HEART_OPEN" : "HEART_FILLED") . "\""; // Indicate each time the list has been updated
-								
+
 					$traffic = get_bandwidth_by_ip();
 					$clearLinesFrom = 0;
-					
+
 					if (isset($traffic['error'])) {
 						if ($traffic['error'] === "no info") {
 							// not really an error - there's likely just no traffic
 						} else {
 							// traffic info not available, display the error message instead
 							$lcd_cmds[] = "widget_set $name descr_wdgt0 1 2 $lcdpanel_width 2 h 2 \"Error: {$traffic['error']}\"";
-							$lcd_cmds[] = "widget_set $name data_wdgt0 1 2 \"\"";							
+							$lcd_cmds[] = "widget_set $name data_wdgt0 1 2 \"\"";
 							$clearLinesFrom = 1;
-						}												
+						}
 					} else {
 						for($i = 0; $i < ($lcdpanel_height - 1) && $i < count($traffic); $i++) {
 							$speeds = $traffic[$i]['in/out'];
-							$left = $lcdpanel_width - strlen($speeds);							
-							$lcd_cmds[] = "widget_set $name data_wdgt{$i} " . ($left + 1) . " " . ($i + 2) . " \"{$speeds}\"";							
-							$lcd_cmds[] = "widget_set $name descr_wdgt{$i} 1 " . ($i + 2) . " " . ($left - 1) . " " . ($i + 2) . " h 2 \"{$traffic[$i]['name']}\"";						
+							$left = $lcdpanel_width - strlen($speeds);
+							$lcd_cmds[] = "widget_set $name data_wdgt{$i} " . ($left + 1) . " " . ($i + 2) . " \"{$speeds}\"";
+							$lcd_cmds[] = "widget_set $name descr_wdgt{$i} 1 " . ($i + 2) . " " . ($left - 1) . " " . ($i + 2) . " h 2 \"{$traffic[$i]['name']}\"";
 							$clearLinesFrom = $i + 1;
 						}
-					}		
+					}
 					for($i = $clearLinesFrom; $i < ($lcdpanel_height - 1); $i++) {
 						$lcd_cmds[] = "widget_set $name descr_wdgt{$i} 1 2 1 2 h 2 \"\"";
-						$lcd_cmds[] = "widget_set $name  data_wdgt{$i} 1 2         \"\"";							
+						$lcd_cmds[] = "widget_set $name  data_wdgt{$i} 1 2         \"\"";
 					}
 					$updateSummary = false;
 					break;
@@ -1365,7 +1365,7 @@ function loop_status($lcd) {
 			return;
 		}
 		if (($refresh_frequency * $widget_counter) > 5) {
-			// If LCD is waiting 10 seconds on each screen, for example, then we can update the data of 
+			// If LCD is waiting 10 seconds on each screen, for example, then we can update the data of
 			// of a screen while its being displayed.
 			sleep(5);
 		} else {
