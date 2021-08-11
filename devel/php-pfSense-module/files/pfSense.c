@@ -102,6 +102,7 @@ IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <strings.h>
 #include <termios.h>
 #include <unistd.h>
+#include <kenv.h>
 
 #define IS_EXT_MODULE
 
@@ -132,6 +133,7 @@ static zend_function_entry pfSense_functions[] = {
     PHP_FE(pfSense_get_pf_states, NULL)
     PHP_FE(pfSense_get_pf_stats, NULL)
     PHP_FE(pfSense_get_os_hw_data, NULL)
+    PHP_FE(pfSense_kenv_dump, NULL)
     PHP_FE(pfSense_get_os_kern_data, NULL)
     PHP_FE(pfSense_vlan_create, NULL)
     PHP_FE(pfSense_interface_rename, NULL)
@@ -4379,4 +4381,37 @@ PHP_FUNCTION(pfSense_ipsec_list_sa) {
 
 	vici_deinit();
 
+}
+
+PHP_FUNCTION(pfSense_kenv_dump) {
+	char *buf, *bp, *cp;
+	int size;
+
+	size = kenv(KENV_DUMP, NULL, NULL, 0);
+	if (size < 0)
+		return;
+	size += 1;
+	buf = malloc(size);
+	if (buf == NULL)
+		return;
+	if (kenv(KENV_DUMP, NULL, buf, size) < 0) {
+		free(buf);
+		return;
+	}
+
+	array_init(return_value);
+
+	/*
+	 * Stolen from bin/kenv
+	 */
+	for (bp = buf; *bp != '\0'; bp += strlen(bp) + 1) {
+		cp = strchr(bp, '=');
+		if (cp == NULL)
+			continue;
+		*cp++ = '\0';
+		add_assoc_string(return_value, bp, cp);
+		bp = cp;
+	}
+
+	free(buf);
 }
