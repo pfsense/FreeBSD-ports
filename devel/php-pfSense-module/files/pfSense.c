@@ -3651,7 +3651,6 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 
 				if (entries == 0) {
 					pfctl_free_states(&states);
-					close(dev);
 					RETURN_NULL();
 				}
 			} ZEND_HASH_FOREACH_END();
