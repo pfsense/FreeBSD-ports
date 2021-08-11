@@ -4,7 +4,9 @@ PORTNAME=	snort
 PORTVERSION=	2.9.18
 PORTREVISION=	1
 CATEGORIES=	security
-MASTER_SITES=	https://snort.org/downloads/snort/
+MASTER_SITES=	https://snort.org/downloads/snort/ \
+		https://snort.org/downloads/archive/snort/
+
 PATCH_DIST_STRIP=	-p1
 
 MAINTAINER=	dvl@FreeBSD.org
@@ -59,7 +61,7 @@ ADDONS_DESC=		Depend on 3rd party addons
 BARNYARD_DESC=		Depend on barnyard2 (supports also snortsam)
 PULLEDPORK_DESC=	Depend on pulledpork
 DEV_DESC=		Developer options
-DBGSNORT_DESC=		Enable debugging symbols+core dumps
+DBGSNORT_DESC=		Enable debugging symbols
 COREDUMPS_DESC=		Enable core dumps
 
 COREDUMPS_CONFIGURE_ENABLE=	corefiles
