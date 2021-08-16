@@ -93,7 +93,7 @@ elseif (!empty($pconfig['uuid'])) {
 else
 	$passlist_uuid = $a_passlist[$id]['uuid'];
 
-if ($_POST['save'] == "Save") {
+if ($_POST['save']) {
 	unset($input_errors);
 	$pconfig = array();
 	$p_list = array();
