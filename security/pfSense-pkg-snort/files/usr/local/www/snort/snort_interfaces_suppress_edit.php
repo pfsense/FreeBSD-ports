@@ -113,7 +113,7 @@ if ($_POST['save']) {
 		$s_list = array();
 		$s_list['name'] = $_POST['name'];
 		$s_list['uuid'] = uniqid();
-		$s_list['descr']  =  mb_convert_encoding($_POST['descr'],"HTML-ENTITIES","auto");
+		$s_list['descr'] = $_POST['descr'];
 		if ($_POST['suppresspassthru']) {
 			$s_list['suppresspassthru'] = str_replace("&#8203;", "", $s_list['suppresspassthru']);
 			$s_list['suppresspassthru'] = base64_encode(str_replace("\r\n", "\n", $_POST['suppresspassthru']));
