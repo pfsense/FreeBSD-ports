@@ -36,39 +36,10 @@ function frr_generate_config_ospf_areas() {
 	$auto_areas[$frr_ospfd_conf['defaultarea']]['area'] = $frr_ospfd_conf['defaultarea'];
 	$auto_areas[$frr_ospfd_conf['defaultarea']]['type'] = $frr_ospfd_conf['defaultareatype'];
 
-	/* Automatic Areas: Interfaces with Authentication */
-	init_config_arr(array('installedpackages', 'frrospfdinterfaces', 'config'));
-	foreach ($config['installedpackages']['frrospfdinterfaces']['config'] as $conf) {
-		$realif = get_real_interface($conf['interface']);
-		if (empty($realif)) {
-			continue;
-		}
-
-		/* Use default area if the interface area is empty */
-		$ifarea = (isset($conf['interfacearea']) && (strlen($conf['interfacearea']) > 0)) ? $conf['interfacearea'] : $frr_ospfd_conf['defaultarea'];
-
-		if (!isset($auto_areas[$ifarea]) || !is_array($auto_areas[$ifarea])) {
-			$auto_areas[$ifarea] = array();
-		}
-
-		/* If this interface wants authentication, define the area as needing authentication */
-		if (!empty($conf['password']) && in_array($conf['authtype'], array('digest', 'simple'))) {
-			$auto_areas[$ifarea]['area'] = $ifarea;
-			$auto_areas[$ifarea]['authtype'] = $conf['authtype'];
-		}
-	}
-
 	/* Load defined areas */
 	init_config_arr(array('installedpackages', 'frrospfdareas', 'config'));
 	foreach ($config['installedpackages']['frrospfdareas']['config'] as $conf) {
 		$defined_areas[$conf['area']] = $conf;
-
-		/* Check if an automatic area needs authentication that isn't set here. */
-		if (empty($defined_areas[$conf['area']]['authtype']) &&
-			array_key_exists($conf['area'], $auto_areas) &&
-			in_array($auto_areas[$conf['area']]['authtype'], array('digest', 'simple'))) {
-			$defined_areas[$conf['area']]['authtype'] = $auto_areas[$conf['area']]['authtype'];
-		}
 	}
 
 	/* Copy automatic areas over only if they do not have custom settings */
@@ -201,6 +172,7 @@ function frr_generate_config_ospf_interfaces() {
 					$frr_integrated_config['interfaces'][$realif] .= " ip ospf message-digest-key 1 md5 " . substr($conf['password'], 0, 16) . "\n";
 					break;
 				case "simple":
+					$frr_integrated_config['interfaces'][$realif] .= " ip ospf authentication\n";
 					$frr_integrated_config['interfaces'][$realif] .= " ip ospf authentication-key " . substr($conf['password'], 0, 8) . "\n";
 					break;
 				case "null":
