@@ -26,6 +26,6 @@ $priv_list['page-services-zabbix-proxy']['name'] = "WebCfg - Services: Zabbix Pr
 $priv_list['page-services-zabbix-proxy']['descr'] = "Allow access to Zabbix Proxy package GUI";
 
 $priv_list['page-services-zabbix-proxy']['match'] = array();
-$priv_list['page-services-zabbix-proxy']['match'][] = "pkg_edit.php?xml=zabbix-proxy.xml*";
+$priv_list['page-services-zabbix-proxy']['match'][] = "pkg_edit.php?xml=zabbixproxy.xml*";
 
 ?>
