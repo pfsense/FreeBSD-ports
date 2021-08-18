@@ -1,4 +1,4 @@
-pkg/zabbix-agent.xml
+pkg/zabbixagent.xml
 pkg/zabbix-agent.inc
 /etc/inc/priv/zabbix-agent.priv.inc
 %%DATADIR%%/info.xml

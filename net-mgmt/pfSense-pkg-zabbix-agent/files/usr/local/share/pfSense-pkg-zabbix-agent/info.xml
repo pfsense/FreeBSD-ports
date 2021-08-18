@@ -15,7 +15,7 @@
 			More info in &lt;a href=&quot;http://www.zabbix.com/life_cycle_and_release_policy.php&quot;&gt;Zabbix Life Cycle and Release Policy&lt;/a&gt;.]]></descr>
 		<website>http://www.zabbix.com/product.php</website>
 		<version>%%PKGVERSION%%</version>
-		<configurationfile>zabbix-agent.xml</configurationfile>
+		<configurationfile>zabbixagent.xml</configurationfile>
 		<logging>
 			<logfilename>zabbix-agent/zabbix_agentd.log</logfilename>
 		</logging>
