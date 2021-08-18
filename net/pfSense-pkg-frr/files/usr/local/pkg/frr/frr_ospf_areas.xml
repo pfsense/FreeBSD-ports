@@ -65,7 +65,7 @@
 		</tab>
 		<tab>
 			<text>Status</text>
-			<url>/status_frr.php</url>
+			<url>/status_frr.php?protocol=ospf</url>
 		</tab>
 	</tabs>
 	<adddeleteeditpagefields>
