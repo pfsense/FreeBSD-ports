@@ -168,7 +168,6 @@ display_top_tabs($tab_array);
 	<div class="panel-body">
 		<div class="table-responsive">
 			<table class="table table-hover table-condensed">
-			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 				<tbody>
 				<tr><td>
 					<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">
