@@ -485,8 +485,8 @@ display_top_tabs($tab_array, true);
 	if ($importalias) {
 
 		print('<form action="suricata_flow_stream.php" method="post" name="iform" id="iform" class="form-horizontal">');
-		print('<input type="hidden" name="eng_id" id="eng_id" value="<?=$eng_id?>"/>');
-		print('<input type="hidden" name="id" id="id" value="<?=$id?>"/>');
+		print('<input type="hidden" name="eng_id" id="eng_id" value="' . $eng_id . '"/>');
+		print('<input type="hidden" name="id" id="id" value="' . $id . '"/>');
 
 		if ($selectalias) {
 			print('<input type="hidden" name="eng_name" value="' . $eng_name . '"/>');
