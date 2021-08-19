@@ -93,7 +93,7 @@ elseif (!empty($pconfig['uuid'])) {
 else
 	$passlist_uuid = $a_passlist[$id]['uuid'];
 
-if ($_POST['save'] == "Save") {
+if ($_POST['save']) {
 	unset($input_errors);
 	$pconfig = array();
 	$p_list = array();
@@ -144,7 +144,7 @@ if ($_POST['save'] == "Save") {
 		$p_list['vips'] = $_POST['vips']? 'yes' : 'no';
 		$p_list['vpnips'] = $_POST['vpnips']? 'yes' : 'no';
 		$p_list['address']['item'] = $addrs;
-		$p_list['descr']  =  mb_convert_encoding($_POST['descr'],"HTML-ENTITIES","auto");
+		$p_list['descr'] = $_POST['descr'];
 
 		if (isset($id) && isset($a_passlist[$id])) {
 			$a_passlist[$id] = $p_list;
