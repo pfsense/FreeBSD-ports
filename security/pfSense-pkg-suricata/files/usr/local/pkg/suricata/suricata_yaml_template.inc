@@ -386,6 +386,10 @@ app-layer:
       enabled: {$sip_parser}
     snmp:
       enabled: {$snmp_parser}
+    http2:
+      enabled: {$http2_parser}
+    rfb:
+      enabled: {$rfb_parser}
 
 ###########################################################################
 # Configure libhtp.
