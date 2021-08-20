@@ -1104,10 +1104,15 @@ if ($config['installedpackages']['suricata']['config'][0]['log_to_systemlog'] ==
 else
 	$suricata_use_syslog = "no";
 
-if (!empty($config['installedpackages']['suricata']['config'][0]['log_to_systemlog']))
-	$suricata_use_syslog_facility = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog'];
+if (!empty($config['installedpackages']['suricata']['config'][0]['log_to_systemlog_facility']))
+	$suricata_use_syslog_facility = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog_facility'];
 else
 	$suricata_use_syslog_facility = "local1";
+
+if (!empty($config['installedpackages']['suricata']['config'][0]['log_to_systemlog_priority']))
+	$suricata_use_syslog_priority = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog_priority'];
+else
+	$suricata_use_syslog_priority = "notice";
 
 // Configure IPS operational mode
 if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffenders'] == 'on') {

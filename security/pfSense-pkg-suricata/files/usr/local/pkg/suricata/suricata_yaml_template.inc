@@ -258,6 +258,7 @@ logging:
   - syslog:
       enabled: {$suricata_use_syslog}
       facility: {$suricata_use_syslog_facility}
+      level: {$suricata_use_syslog_priority}
       format: "[%i] <%d> -- "
 
 # IPS Mode Configuration
