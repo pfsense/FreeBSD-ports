@@ -86,9 +86,9 @@ foreach ($interfaces as $if => $desc) {
 // Add a special "Unassigned" interface selection at end of list
 $interfaces["Unassigned"] = gettext("Unassigned");
 
-// See if interface is already configured, and use its values
+// See if interface is already configured, and use its $config values if set
 if (isset($id) && isset($a_rule[$id])) {
-	/* old options */
+	/* old options from config.xml */
 	$if_friendly = convert_friendly_interface_to_friendly_descr($a_rule[$id]['interface']);
 	$pconfig = $a_rule[$id];
 	if (!empty($pconfig['configpassthru']))
@@ -100,13 +100,16 @@ if (isset($id) && isset($a_rule[$id])) {
 		$pconfig['enable'] = "off";
 	}
 }
-
-// Must be a new interface, so try to pick next available physical interface to use
 elseif (isset($id) && !isset($a_rule[$id])) {
+    // Must be a new interface, so try to pick next available physical interface to use
 	$ifaces = get_configured_interface_list();
 	$ifrules = array();
+
+	// Populate the $ifrules array with all existing configured Suricata interfaces
 	foreach($a_rule as $r)
 		$ifrules[] = $r['interface'];
+
+	// Walk pfSense-configured interfaces, and take first one not already in our Suricata list
 	foreach ($ifaces as $i) {
 		if (!in_array($i, $ifrules)) {
 			$pconfig['interface'] = $i;
@@ -139,7 +142,7 @@ elseif (isset($id) && !isset($a_rule[$id])) {
 }
 
 // Get real interface where this Suricata instance runs
-$if_real = get_real_interface($a_rule[$id]['interface']);
+$if_real = get_real_interface($pconfig['interface']);
 
 // Set defaults for any empty key parameters
 if (empty($pconfig['blockoffendersip']))
@@ -298,7 +301,7 @@ if (empty($pconfig['intf_promisc_mode']))
 if (empty($pconfig['intf_snaplen']))
 	$pconfig['intf_snaplen'] = "1518";
 if (empty($pconfig['file_store_logdir']))
-	$pconfig['file_store_logdir'] = base64_encode("{$suricatalogdir}suricata_{$if_real}{$a_rule[$id]['uuid']}/filestore");
+	$pconfig['file_store_logdir'] = base64_encode("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/filestore");
 
 // See if creating a new interface by duplicating an existing one
 if (strcasecmp($action, 'dup') == 0) {
@@ -436,7 +439,9 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['tls_log_extended'] == "on") { $natent['tls_log_extended'] = 'on'; }else{ $natent['tls_log_extended'] = 'off'; }
 		if ($_POST['enable_pcap_log'] == "on") { $natent['enable_pcap_log'] = 'on'; }else{ $natent['enable_pcap_log'] = 'off'; }
 		if ($_POST['enable_file_store'] == "on") { $natent['enable_file_store'] = 'on'; }else{ $natent['enable_file_store'] = 'off'; }
-		if ($_POST['file_store_logdir']) $natent['file_store_logdir'] = base64_encode($_POST['file_store_logdir']);
+		if ($natent['enable_file_store'] == "on") {
+			if ($_POST['file_store_logdir']) { $natent['file_store_logdir'] = base64_encode($_POST['file_store_logdir']); }else{ $natent['file_store_logdir'] = $pconfig['file_store_logdir']; }
+		}
 		if ($_POST['enable_eve_log'] == "on") { $natent['enable_eve_log'] = 'on'; }else{ $natent['enable_eve_log'] = 'off'; }
 		if ($_POST['runmode']) $natent['runmode'] = $_POST['runmode']; else unset($natent['runmode']);
 		if ($_POST['autofp_scheduler']) $natent['autofp_scheduler'] = $_POST['autofp_scheduler']; else unset($natent['autofp_scheduler']);
@@ -773,14 +778,14 @@ $section->addInput(new Form_Select(
 	'Interface',
 	$pconfig['interface'],
 	$interfaces
-))->setHelp('Choose which interface this Suricata instance applies to. In most cases, you will want to use WAN here if this is the first Suricata-configured interface.');
+))->setHelp('Choose which interface this Suricata instance applies to. In most cases, you will want to choose LAN here if this is the first Suricata-configured interface.');
 
 $section->addInput(new Form_Input(
 	'descr',
 	'Description',
 	'text',
 	$pconfig['descr']
-))->setHelp('Enter a meaningful description here for your reference. The default is the interface name.');
+))->setHelp('Enter a meaningful description here for your reference. The default is the pfSense interface friendly description.');
 
 $form->add($section);
 
@@ -915,7 +920,7 @@ $section->addInput(new Form_Input(
 	'File Store Logging Directory',
 	'text',
 	base64_decode($pconfig['file_store_logdir'])
-))->setHelp('Enter directory path for saving the files extracted from application layer streams. Default path is "' . SURICATALOGDIR . 'suricata_' . $if_real . $a_rule[$id]['uuid'] . '/filestore".');
+))->setHelp('Enter directory path for saving the files extracted from application layer streams. When blank, the default path is a "filestore" sub-directory under the interface logging sub-directory in ' . SURICATALOGDIR . '.');
 
 $section->addInput(new Form_Checkbox(
 	'enable_pcap_log',
@@ -1722,11 +1727,12 @@ print($form);
 ?>
 
 <div class="infoblock">
-	<?=print_info_box('<strong>Note:</strong> Please save your settings before you attempt to start Suricata.', 'info')?>
+	<?=print_info_box('<strong>Note:</strong> Please save your settings before you attempt to start Suricata.', 'info');?>
 </div>
 
 <script type="text/javascript">
 //<![CDATA[
+
 events.push(function(){
 
 	function enable_blockoffenders() {
@@ -2216,6 +2222,11 @@ events.push(function(){
 		else {
 			hideSelect('autofp_scheduler', true);
 		}
+	});
+
+	$('#interface').on('change', function() {
+		$('#descr').val($('#interface').val().toUpperCase());
+		$('#file_store_logdir').val('');
 	});
 
 	// ---------- On initial page load ------------------------------------------------------------
