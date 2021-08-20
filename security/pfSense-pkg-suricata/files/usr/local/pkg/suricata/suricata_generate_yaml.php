@@ -512,18 +512,6 @@ if ($suricatacfg['eve_log_snmp'] == 'on') {
 	$eve_out_types .= "\n        - snmp";
 }
 
-if ($suricatacfg['eve_log_ftp'] == 'on') {
-	$eve_out_types .= "\n        - ftp";
-}
-
-if ($suricatacfg['eve_log_http2'] == 'on') {
-	$eve_out_types .= "\n        - http2";
-}
-
-if ($suricatacfg['eve_log_rfb'] == 'on') {
-	$eve_out_types .= "\n        - rfb";
-}
-
 // Disable MQTT Eve logging for now as it is a 6.x binary feature
 //if ($suricatacfg['eve_log_mqtt'] == 'on') {
 //	$eve_out_types .= "\n        - mqtt";
@@ -889,14 +877,6 @@ if (!empty($suricatacfg['dhcp_parser']))
 	$dhcp_parser = $suricatacfg['dhcp_parser'];
 else
 	$dhcp_parser = "yes";
-if (!empty($suricatacfg['http2_parser']))
-	$http2_parser = $suricatacfg['http2_parser'];
-else
-	$http2_parser = "yes";
-if (!empty($suricatacfg['rfb_parser']))
-	$rfb_parser = $suricatacfg['rfb_parser'];
-else
-	$rfb_parser = "yes";
 
 /* DNS Parser */
 if (!empty($suricatacfg['dns_parser_tcp']))
