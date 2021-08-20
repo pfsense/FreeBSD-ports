@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-suricata
 PORTVERSION=	6.0.0
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -121,6 +121,10 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/include/widget-suricata.inc \
 		${STAGEDIR}${PREFIX}/www/widgets/include
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_blocked.php \
+		${STAGEDIR}${PREFIX}/www/suricata
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_files.php \
+		${STAGEDIR}${PREFIX}/www/suricata
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_filecheck.php \
 		${STAGEDIR}${PREFIX}/www/suricata
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_passlist.php \
 		${STAGEDIR}${PREFIX}/www/suricata

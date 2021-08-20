@@ -819,21 +819,6 @@ function suricata_apply_customizations($suricatacfg, $if_real) {
 	@copy("{$suricatadir}unicode.map", "{$suricatadir}suricata_{$suricatacfg['uuid']}_{$if_real}/unicode.map");
 }
 
-function suricata_listfiles($dir) {
-	$files = array();
-	foreach (scandir($dir) as $file) {
-		if (($file != '.') && ($file != '..')) {
-			$path = $dir . '/' . $file;
-			if (is_dir($path)) {
-				$files = array_merge($files, suricata_listfiles($path));
-			} else {
-				$files[] = $path;
-			}
-		}
-	}
-	return($files);
-}
-
 /* If we updated any rules, then refresh all the Suricata interfaces */
 if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules == 'on' || $feodotracker_rules == 'on' || $sslbl_rules == 'on' || $extraupdated == 'on') {
 
