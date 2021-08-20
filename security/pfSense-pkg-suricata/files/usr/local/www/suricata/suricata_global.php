@@ -47,6 +47,7 @@ else {
 	$pconfig['live_swap_updates'] = $config['installedpackages']['suricata']['config'][0]['live_swap_updates'] == "on" ? 'on' : 'off';
 	$pconfig['log_to_systemlog'] = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog'] == "on" ? 'on' : 'off';
 	$pconfig['log_to_systemlog_facility'] = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog_facility'];
+	$pconfig['log_to_systemlog_priority'] = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog_priority'];
 	$pconfig['forcekeepsettings'] = $config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] == "on" ? 'on' : 'off';
 	$pconfig['snortcommunityrules'] = $config['installedpackages']['suricata']['config'][0]['snortcommunityrules'] == "on" ? 'on' : 'off';
 	$pconfig['snort_rules_file'] = htmlentities($config['installedpackages']['suricata']['config'][0]['snort_rules_file']);
@@ -73,6 +74,9 @@ if (empty($pconfig['autoruleupdatetime']))
 
 if (empty($pconfig['log_to_systemlog_facility']))
 	$pconfig['log_to_systemlog_facility'] = "local1";
+
+if (empty($pconfig['log_to_systemlog_priority']))
+	$pconfig['log_to_systemlog_priority'] = "notice";
 
 if ($_POST['autoruleupdatetime']) {
 	if (!preg_match('/^([01]?[0-9]|2[0-3]):?([0-5][0-9])$/', $_POST['autoruleupdatetime']))
@@ -224,6 +228,7 @@ if (!$input_errors) {
 		}
 		$config['installedpackages']['suricata']['config'][0]['log_to_systemlog'] = $_POST['log_to_systemlog'] ? 'on' : 'off';
 		$config['installedpackages']['suricata']['config'][0]['log_to_systemlog_facility'] = $_POST['log_to_systemlog_facility'];
+		$config['installedpackages']['suricata']['config'][0]['log_to_systemlog_priority'] = $_POST['log_to_systemlog_priority'];
 		$config['installedpackages']['suricata']['config'][0]['live_swap_updates'] = $_POST['live_swap_updates'] ? 'on' : 'off';
 		$config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] = $_POST['forcekeepsettings'] ? 'on' : 'off';
 
@@ -568,6 +573,14 @@ $section->addInput(new Form_Select(
 		'local1' => gettext('LOCAL1'), 'local2' => gettext('LOCAL2'), 'local3' => gettext('LOCAL3'), 'local4' => gettext('LOCAL4'),
 		'local5' => gettext('LOCAL5'), 'local6' => gettext('LOCAL6'), 'local7' => gettext('LOCAL7'))
 ))->setHelp('Select system log facility to use for reporting. Default is LOCAL1.');
+
+$section->addInput(new Form_Select(
+	'log_to_systemlog_priority',
+	'Log Priority',
+	$pconfig['log_to_systemlog_priority'],
+	array( "emerg" => "EMERG", "crit" => "CRIT", "alert" => "ALERT", "err" => "ERR", "warning" => "WARNING", "notice" => "NOTICE", "info" => "INFO" )
+))->setHelp('Select system log Priority (Level) to use for reporting. Default is NOTICE.');
+
 $section->addInput(new Form_Checkbox(
 	'forcekeepsettings',
 	'Keep Suricata Settings After Deinstall',
@@ -658,6 +671,7 @@ events.push(function(){
 	function toggle_log_to_systemlog() {
 		var hide = ! $('#log_to_systemlog').prop('checked');
 		hideInput('log_to_systemlog_facility', hide);
+		hideInput('log_to_systemlog_priority', hide);
 	}
 
 	function enable_geoip2_upd() {
