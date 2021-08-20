@@ -267,15 +267,6 @@ if (empty($pconfig['eve_log_snmp'])) {
 if (empty($pconfig['eve_log_mqtt'])) {
 	$pconfig['eve_log_mqtt'] = "on";
 }
-if (empty($pconfig['eve_log_ftp'])) {
-	$pconfig['eve_log_ftp'] = "on";
-}
-if (empty($pconfig['eve_log_http2'])) {
-	$pconfig['eve_log_http2'] = "on";
-}
-if (empty($pconfig['eve_log_rfb'])) {
-	$pconfig['eve_log_rfb'] = "on";
-}
 if (empty($pconfig['eve_log_http_extended']))
 	$pconfig['eve_log_http_extended'] = $pconfig['http_log_extended'];
 if (empty($pconfig['eve_log_tls_extended']))
@@ -505,9 +496,6 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['eve_log_netflow'] == "on") { $natent['eve_log_netflow'] = 'on'; }else{ $natent['eve_log_netflow'] = 'off'; }
 		if ($_POST['eve_log_snmp'] == "on") { $natent['eve_log_snmp'] = 'on'; }else{ $natent['eve_log_snmp'] = 'off'; }
 		if ($_POST['eve_log_mqtt'] == "on") { $natent['eve_log_mqtt'] = 'on'; }else{ $natent['eve_log_mqtt'] = 'off'; }
-		if ($_POST['eve_log_ftp'] == "on") { $natent['eve_log_ftp'] = 'on'; }else{ $natent['eve_log_ftp'] = 'off'; }
-		if ($_POST['eve_log_http2'] == "on") { $natent['eve_log_http2'] = 'on'; }else{ $natent['eve_log_http2'] = 'off'; }
-		if ($_POST['eve_log_rfb'] == "on") { $natent['eve_log_rfb'] = 'on'; }else{ $natent['eve_log_rfb'] = 'off'; }
 		if ($_POST['eve_log_stats_totals'] == "on") { $natent['eve_log_stats_totals'] = 'on'; }else{ $natent['eve_log_stats_totals'] = 'off'; }
 		if ($_POST['eve_log_stats_deltas'] == "on") { $natent['eve_log_stats_deltas'] = 'on'; }else{ $natent['eve_log_stats_deltas'] = 'off'; }
 		if ($_POST['eve_log_stats_threads'] == "on") { $natent['eve_log_stats_threads'] = 'on'; }else{ $natent['eve_log_stats_threads'] = 'off'; }
@@ -1132,22 +1120,6 @@ $section->add($group)->addClass('eve_log_anomaly_details');
 $group = new Form_Group('EVE Logged Traffic');
 
 $group->add(new Form_Checkbox(
-	'eve_log_dns',
-	'DNS',
-	'DNS',
-	$pconfig['eve_log_dns'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_ftp',
-	'FTP',
-	'FTP',
-	$pconfig['eve_log_ftp'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
 	'eve_log_http',
 	'HTTP',
 	'HTTP',
@@ -1156,70 +1128,10 @@ $group->add(new Form_Checkbox(
 ));
 
 $group->add(new Form_Checkbox(
-	'eve_log_http2',
-	'HTTP2',
-	'HTTP2',
-	$pconfig['eve_log_sip'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_ikev2',
-	'IKEv2',
-	'IKEv2',
-	$pconfig['eve_log_ikev2'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_krb5',
-	'Kerberos',
-	'Kerberos',
-	$pconfig['eve_log_krb5'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_nfs',
-	'NFS',
-	'NFS',
-	$pconfig['eve_log_nfs'] == 'on' ? true:false,
-	'on'
-));
-
-$section->add($group)->addClass('eve_log_info');
-
-$group = new Form_Group(false);
-
-$group->add(new Form_Checkbox(
-	'eve_log_rdp',
-	'RDP',
-	'RDP',
-	$pconfig['eve_log_rdp'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_rfb',
-	'RFB',
-	'RFB',
-	$pconfig['eve_log_rfb'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_sip',
-	'SIP',
-	'SIP',
-	$pconfig['eve_log_sip'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_smb',
-	'SMB',
-	'SMB',
-	$pconfig['eve_log_smb'] == 'on' ? true:false,
+	'eve_log_dns',
+	'DNS',
+	'DNS',
+	$pconfig['eve_log_dns'] == 'on' ? true:false,
 	'on'
 ));
 
@@ -1232,6 +1144,38 @@ $group->add(new Form_Checkbox(
 ));
 
 $group->add(new Form_Checkbox(
+	'eve_log_nfs',
+	'NFS',
+	'NFS',
+	$pconfig['eve_log_nfs'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_smb',
+	'SMB',
+	'SMB',
+	$pconfig['eve_log_smb'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_krb5',
+	'Kerberos',
+	'Kerberos',
+	$pconfig['eve_log_krb5'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_ikev2',
+	'IKEv2',
+	'IKEv2',
+	$pconfig['eve_log_ikev2'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
 	'eve_log_tftp',
 	'TFTP',
 	'TFTP',
@@ -1239,9 +1183,20 @@ $group->add(new Form_Checkbox(
 	'on'
 ));
 
-$group->add(new Form_StaticText(
-	null,
-	null
+$group->add(new Form_Checkbox(
+	'eve_log_rdp',
+	'RDP',
+	'RDP',
+	$pconfig['eve_log_rdp'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_sip',
+	'SIP',
+	'SIP',
+	$pconfig['eve_log_sip'] == 'on' ? true:false,
+	'on'
 ));
 
 $group->setHelp('Choose the traffic types to log via EVE JSON output.');
@@ -2037,9 +1992,6 @@ events.push(function(){
 		disableInput('eve_log_tftp', disable);
 		disableInput('eve_log_rdp', disable);
 		disableInput('eve_log_sip', disable);
-		disableInput('eve_log_ftp', disable);
-		disableInput('eve_log_http2', disable);
-		disableInput('eve_log_rfb', disable);
 		disableInput('eve_log_tls', disable);
 		disableInput('eve_log_files', disable);
 		disableInput('eve_log_dhcp', disable);
