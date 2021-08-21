@@ -1503,8 +1503,8 @@ $section->addInput(new Form_Input(
 	'Netmap Threads',
 	'text',
 	$pconfig['ips_netmap_threads']
-))->setHelp('Enter the number of netmap threads to use. Default is "auto". When set to a value matching the netmap TX/RX queues registered by the NIC, performance can be greatly increased. ' . 
-	    'The NIC hosting this interface registered ' . suricata_get_supported_netmap_queues($if_real) . ' queue(s) with the kernel.');
+))->setHelp('Enter the number of netmap threads to use. Default is "auto" and is recommended. When set to "auto", Suricata will query the system for the number of supported netmap queues, ' . 
+	    ' and it will use a matching number of netmap theads. The NIC hosting this interface registered ' . suricata_get_supported_netmap_queues($if_real) . ' queue(s) with the kernel.');
 
 $section->addInput(new Form_Checkbox(
 	'blockoffenderskill',
