@@ -2,7 +2,7 @@
 
 PORTNAME=	Kontrol-pkg-KontrolSquid
 PORTVERSION=	0.1.10
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	www
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -105,6 +105,8 @@ do-install:
 			${STAGEDIR}${PREFIX}/www
 	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/ad_transparent.php \
 			${STAGEDIR}${PREFIX}/www
+	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/login2.php \
+					${STAGEDIR}${PREFIX}/www
 	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/etc/smb4.conf \
 			${STAGEDIR}${PREFIX}/etc
 	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/etc/krb5.conf \
