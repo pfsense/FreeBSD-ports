@@ -375,6 +375,18 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 		$pconfig['eve_log_tls'] = "on";
 		$updated_cfg = true;
 	}
+	if (!isset($pconfig['eve_log_ftp'])) {
+		$pconfig['eve_log_ftp'] = "on";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_http2'])) {
+		$pconfig['eve_log_http2'] = "on";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_rfb'])) {
+		$pconfig['eve_log_rfb'] = "on";
+		$updated_cfg = true;
+	}
 	if (!isset($pconfig['eve_log_dhcp'])) {
 		$pconfig['eve_log_dhcp'] = "on";
 		$updated_cfg = true;
@@ -646,6 +658,14 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 	}
 	if (empty($pconfig['sip_parser'])) {
 		$pconfig['sip_parser'] = "yes";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['http2_parser'])) {
+		$pconfig['http2_parser'] = "yes";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['rfb_parser'])) {
+		$pconfig['rfb_parser'] = "yes";
 		$updated_cfg = true;
 	}
 
