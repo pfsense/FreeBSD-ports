@@ -100,6 +100,11 @@ if (isset($id) && isset($a_rule[$id])) {
 		$pconfig['enable'] = "off";
 	}
 }
+elseif (isset($_POST['interface']) && !isset($a_rule[$id])) {
+	// Saving first Suricata interface
+	$pconfig['interface'] = $_POST['interface'];
+	$if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
+}
 elseif (isset($id) && !isset($a_rule[$id])) {
     // Must be a new interface, so try to pick next available physical interface to use
 	$ifaces = get_configured_interface_list();
