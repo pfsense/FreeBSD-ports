@@ -1244,6 +1244,9 @@ $group->add(new Form_Checkbox(
 	'on'
 ));
 
+// The control below is a dummy placeholder to maintain Form Group spacing.
+// There must be the same number of Form Group controls on each row for
+// consistent spacing.
 $group->add(new Form_StaticText(
 	null,
 	null
@@ -1254,58 +1257,10 @@ $section->add($group)->addClass('eve_log_info');
 
 $group = new Form_Group('EVE Logged Info');
 $group->add(new Form_Checkbox(
-	'eve_log_tls',
-	'TLS Handshakes',
-	'TLS Handshakes',
-	$pconfig['eve_log_tls'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_ssh',
-	'SSH Handshakes',
-	'SSH Handshakes',
-	$pconfig['eve_log_ssh'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
 	'eve_log_dhcp',
 	'DHCP Messages',
 	'DHCP Messages',
 	$pconfig['eve_log_dhcp'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_files',
-	'Tracked Files',
-	'Tracked Files',
-	$pconfig['eve_log_files'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_stats',
-	'Perf Stats',
-	'Perf Stats',
-	$pconfig['eve_log_stats'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_flow',
-	'Flows',
-	'Flows',
-	$pconfig['eve_log_flow'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_netflow',
-	'Net Flows',
-	'Net Flows',
-	$pconfig['eve_log_netflow'] == 'on' ? true:false,
 	'on'
 ));
 
@@ -1318,10 +1273,10 @@ $group->add(new Form_Checkbox(
 ));
 
 $group->add(new Form_Checkbox(
-	'eve_log_snmp',
-	'SNMP',
-	'SNMP',
-	$pconfig['eve_log_snmp'] == 'on' ? true:false,
+	'eve_log_flow',
+	'Flows',
+	'Flows',
+	$pconfig['eve_log_flow'] == 'on' ? true:false,
 	'on'
 ));
 
@@ -1331,6 +1286,77 @@ $group->add(new Form_Checkbox(
 	'MQTT',
 	$pconfig['eve_log_mqtt'] == 'on' ? true:false,
 	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_netflow',
+	'Net Flows',
+	'Net Flows',
+	$pconfig['eve_log_netflow'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_stats',
+	'Perf Stats',
+	'Perf Stats',
+	$pconfig['eve_log_stats'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_snmp',
+	'SNMP',
+	'SNMP',
+	$pconfig['eve_log_snmp'] == 'on' ? true:false,
+	'on'
+));
+
+$section->add($group)->addClass('eve_log_info');
+$group = new Form_Group(false);
+
+$group->add(new Form_Checkbox(
+	'eve_log_ssh',
+	'SSH Handshakes',
+	'SSH Handshakes',
+	$pconfig['eve_log_ssh'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_tls',
+	'TLS Handshakes',
+	'TLS Handshakes',
+	$pconfig['eve_log_tls'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_files',
+	'Tracked Files',
+	'Tracked Files',
+	$pconfig['eve_log_files'] == 'on' ? true:false,
+	'on'
+));
+
+// The controls below are dummy placeholders to maintain Form Group spacing.
+// There must be the same number of Form Group controls on each row for
+// consistent spacing.
+$group->add(new Form_StaticText(
+	null,
+	null
+));
+$group->add(new Form_StaticText(
+	null,
+	null
+));
+$group->add(new Form_StaticText(
+	null,
+	null
+));
+$group->add(new Form_StaticText(
+	null,
+	null
 ));
 
 $group->setHelp('Choose the information to log via EVE JSON output.');
