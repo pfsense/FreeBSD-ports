@@ -46,6 +46,8 @@ else {
 	$pconfig['autoruleupdatetime'] = htmlentities($config['installedpackages']['suricata']['config'][0]['autoruleupdatetime']);
 	$pconfig['live_swap_updates'] = $config['installedpackages']['suricata']['config'][0]['live_swap_updates'] == "on" ? 'on' : 'off';
 	$pconfig['log_to_systemlog'] = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog'] == "on" ? 'on' : 'off';
+	$pconfig['update_notify'] = $config['installedpackages']['suricata']['config'][0]['update_notify'] == "on" ? 'on' : 'off';
+	$pconfig['rule_categories_notify'] = $config['installedpackages']['suricata']['config'][0]['rule_categories_notify'] == "on" ? 'on' : 'off';
 	$pconfig['log_to_systemlog_facility'] = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog_facility'];
 	$pconfig['log_to_systemlog_priority'] = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog_priority'];
 	$pconfig['forcekeepsettings'] = $config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] == "on" ? 'on' : 'off';
@@ -227,6 +229,8 @@ if (!$input_errors) {
 			$config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'] = str_pad(html_entity_decode($_POST['autoruleupdatetime']), 4, "0", STR_PAD_LEFT);
 		}
 		$config['installedpackages']['suricata']['config'][0]['log_to_systemlog'] = $_POST['log_to_systemlog'] ? 'on' : 'off';
+		$config['installedpackages']['suricata']['config'][0]['update_notify'] = $_POST['update_notify'] ? 'on' : 'off';
+		$config['installedpackages']['suricata']['config'][0]['rule_categories_notify'] = $_POST['rule_categories_notify'] ? 'on' : 'off';
 		$config['installedpackages']['suricata']['config'][0]['log_to_systemlog_facility'] = $_POST['log_to_systemlog_facility'];
 		$config['installedpackages']['suricata']['config'][0]['log_to_systemlog_priority'] = $_POST['log_to_systemlog_priority'];
 		$config['installedpackages']['suricata']['config'][0]['live_swap_updates'] = $_POST['live_swap_updates'] ? 'on' : 'off';
@@ -590,6 +594,33 @@ $section->addInput(new Form_Checkbox(
 	'on'
 ));
 $form->add($section);
+
+$section = new Form_Section('Notifications');
+
+$section->addInput(new Form_StaticText(
+	null,
+	'E-Mail/Telegram/Pushover notifications. Delivery settings are configured under System -> Advanced, ' .
+        'on the Notifications tab.',
+));
+
+$section->addInput(new Form_Checkbox(
+	'update_notify',
+	'Update',
+	'Rules, GeoIP and IQRisk update notifications.',
+	$pconfig['update_notify'] == 'on' ? true:false,
+	'off'
+));
+
+$section->addInput(new Form_Checkbox(
+	'rule_categories_notify',
+	'Rule Categories',
+	'Send notifications when new rule categories appear.',
+	$pconfig['rule_categories_notify'] == 'on' ? true:false,
+	'off'
+));
+
+$form->add($section);
+
 print $form;
 ?>
 </div>
