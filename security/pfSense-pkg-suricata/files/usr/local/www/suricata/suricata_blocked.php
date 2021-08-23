@@ -60,6 +60,32 @@ if (isset($_POST['resolve'])) {
 }
 # --- AJAX REVERSE DNS RESOLVE End ---
 
+# --- AJAX GEOIP CHECK Start ---
+if (isset($_POST['geoip'])) {
+	$ip = strtolower($_POST['geoip']);
+	if (is_ipaddr($ip)) {
+		$url = "https://api.hackertarget.com/geoip/?q={$ip}";
+		$conn = curl_init("https://api.hackertarget.com/geoip/?q={$ip}");
+		curl_setopt($conn, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($conn, CURLOPT_FRESH_CONNECT,  true);
+		curl_setopt($conn, CURLOPT_RETURNTRANSFER, 1);
+		set_curlproxy($conn);
+		$res = curl_exec($conn);
+		curl_close($conn);
+	} else {
+		$res = '';
+	}
+
+	if ($res && $res != $ip && !preg_match('/error/', $res))
+		$response = array('geoip_text' => $res);
+	else
+		$response = array('geoip_text' => gettext("Cannot check {$ip}"));
+
+	echo json_encode(str_replace("\\","\\\\", $response)); // single escape chars can break JSON decode
+	exit;
+}
+# --- AJAX GEOIP CHECK End ---
+
 if ($_POST['mode'] == 'todelete') {
 	$ip = "";
 	if ($_POST['ip'])
@@ -369,6 +395,12 @@ print($form);
 				$rdns_link = "";
 				$rdns_link .= "<i class=\"fa fa-search icon-pointer\" onclick=\"javascript:resolve_with_ajax('{$block_ip_str}');\" title=\"";
 				$rdns_link .= gettext("Resolve host via reverse DNS lookup") . "\" alt=\"Icon Reverse Resolve with DNS\"></i>";
+				/* Add GeoIP check icon */
+				if (!is_private_ip($block_ip_str) && (substr($block_ip_str, 0, 2) != 'fc') &&
+				    (substr($block_ip_str, 0, 2) != 'fd')) {
+					$rdns_link .= "&nbsp;&nbsp;<i class=\"fa fa-globe\" onclick=\"javascript:geoip_with_ajax('{$block_ip_str}');\" title=\"";
+					$rdns_link .= gettext("Check host GeoIP data") . "\" alt=\"Icon Check host GeoIP\"></i>";
+				}
 		?>
 				<tr class="text-nowrap">
 					<td><?=$counter;?></td>
@@ -425,6 +457,26 @@ function resolve_ip_callback(transport) {
 	var response = $.parseJSON(transport.responseText);
 	var msg = 'IP address "' + response.resolve_ip + '" resolves to\n';
 	alert(msg + 'host "' + htmlspecialchars(response.resolve_text) + '"');
+}
+
+function geoip_with_ajax(ip_to_check) {
+	var url = "/suricata/suricata_blocked.php";
+
+	$.ajax(
+		url,
+		{
+			type: 'post',
+			dataType: 'json',
+			data: {
+				geoip: ip_to_check,
+			      },
+			complete: geoip_callback
+		});
+}
+
+function geoip_callback(transport) {
+	var response = $.parseJSON(transport.responseText);
+	alert(htmlspecialchars(response.geoip_text));
 }
 
 // From http://stackoverflow.com/questions/5499078/fastest-method-to-escape-html-tags-as-html-entities
