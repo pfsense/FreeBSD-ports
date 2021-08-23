@@ -1,7 +1,6 @@
 PORTNAME=	azure-agent
 PORTVERSION=	2.2.54.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	sysutils
 
 PATCH_SITES=	https://github.com/Azure/WALinuxAgent/commit/
