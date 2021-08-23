@@ -277,6 +277,8 @@ elseif ($_POST['ResetAll']) {
 	$pconfig['rdp_parser'] = "yes";
 	$pconfig['sip_parser'] = "yes";
 	$pconfig['snmp_parser'] = "yes";
+	$pconfig['http2_parser'] = "yes";
+	$pconfig['rfb_parser'] = "yes";
 
 	/* Log a message at the top of the page to inform the user */
 	$savemsg = gettext("All flow and stream settings on this page have been reset to their defaults.  Click APPLY if you wish to keep these new settings.");
@@ -468,6 +470,8 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		$natent['rdp_parser'] = $_POST['rdp_parser'];
 		$natent['sip_parser'] = $_POST['sip_parser'];
 		$natent['snmp_parser'] = $_POST['snmp_parser'];
+		$natent['http2_parser'] = $_POST['http2_parser'];
+		$natent['rfb_parser'] = $_POST['rfb_parser'];
 
 		/**************************************************/
 		/* If we have a valid rule ID, save configuration */
@@ -717,6 +721,12 @@ if ($importalias) {
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for FTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
+		'http2_parser',
+		'HTTP2 Parser',
+		$pconfig['http2_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for HTTP2. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
 		'ikev2_parser',
 		'IKEv2 Parser',
 		$pconfig['ikev2_parser'],
@@ -753,6 +763,18 @@ if ($importalias) {
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for NTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
+		'rdp_parser',
+		'RDP Parser',
+		$pconfig['rdp_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for RDP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'rfb_parser',
+		'RFB Parser',
+		$pconfig['rfb_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for RFB. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
 		'smb_parser',
 		'SMB Parser',
 		$pconfig['smb_parser'],
@@ -770,12 +792,6 @@ if ($importalias) {
 		$pconfig['tftp_parser'],
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for TFTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
-	$section->addInput(new Form_Select(
-		'rdp_parser',
-		'RDP Parser',
-		$pconfig['rdp_parser'],
-		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
-	))->setHelp('Choose the parser/detection setting for RDP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
 		'sip_parser',
 		'SIP Parser',

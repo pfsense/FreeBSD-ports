@@ -118,7 +118,7 @@ if (!defined("ET_OPEN_FILE_PREFIX"))
 	define("ET_OPEN_FILE_PREFIX", "emerging-");
 if (!defined("ET_PRO_FILE_PREFIX"))
 	define("ET_PRO_FILE_PREFIX", "etpro-");
-if (!defined("EXTRARULES_FILE_PREFIX"))
+if (!defined("EXTRARULE_FILE_PREFIX"))
 	define("EXTRARULE_FILE_PREFIX", "extrarule-");
 if (!defined('SURICATA_ENFORCING_RULES_FILENAME'))
 	define('SURICATA_ENFORCING_RULES_FILENAME', 'suricata.rules');

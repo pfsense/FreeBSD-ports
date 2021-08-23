@@ -53,7 +53,7 @@ else {
 	$pconfig['forcekeepsettings'] = $config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] == "on" ? 'on' : 'off';
 	$pconfig['snortcommunityrules'] = $config['installedpackages']['suricata']['config'][0]['snortcommunityrules'] == "on" ? 'on' : 'off';
 	$pconfig['snort_rules_file'] = htmlentities($config['installedpackages']['suricata']['config'][0]['snort_rules_file']);
-	$pconfig['autogeoipupdate'] = $config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] == "off" ? 'off' : 'on';
+	$pconfig['autogeoipupdate'] = $config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] == "on" ? 'on' : 'off';
 	$pconfig['maxmind_geoipdb_key'] = htmlentities($config['installedpackages']['suricata']['config'][0]['maxmind_geoipdb_key']);
 	$pconfig['hide_deprecated_rules'] = $config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'] == "on" ? 'on' : 'off';
 	$pconfig['enable_etopen_custom_url'] = $config['installedpackages']['suricata']['config'][0]['enable_etopen_custom_url'] == "on" ? 'on' : 'off';
@@ -649,6 +649,7 @@ events.push(function(){
 	function enable_et_rules() {
 		var hide = $('#enable_etopen_rules').prop('checked');
 		$('#enable_etopen_custom_url').prop('disabled', !hide);
+		hideInput('etprocode', true);
 		if (hide && $('#enable_etopen_custom_url').prop('checked')) {
 			hideInput('etopen_custom_rule_url', false);
 		}
@@ -672,13 +673,14 @@ events.push(function(){
 		}
 		else {
 			hideInput('etpro_custom_rule_url', true);
-			hideInput('etprocode', false);
+			hideInput('etprocode', hide);
 
 		}
 		if (!hide && $('#enable_etopen_rules').prop('checked')) {
 			$('#enable_etopen_rules').prop('checked', false);
 			$('#enable_etopen_custom_url').prop('disabled', !hide);
 			hideInput('etopen_custom_rule_url', !hide);
+			hideInput('etprocode', false);
 		}
 	}
 

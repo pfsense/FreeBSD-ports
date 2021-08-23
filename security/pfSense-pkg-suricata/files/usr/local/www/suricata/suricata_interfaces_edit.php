@@ -86,9 +86,9 @@ foreach ($interfaces as $if => $desc) {
 // Add a special "Unassigned" interface selection at end of list
 $interfaces["Unassigned"] = gettext("Unassigned");
 
-// See if interface is already configured, and use its values
+// See if interface is already configured, and use its $config values if set
 if (isset($id) && isset($a_rule[$id])) {
-	/* old options */
+	/* old options from config.xml */
 	$if_friendly = convert_friendly_interface_to_friendly_descr($a_rule[$id]['interface']);
 	$pconfig = $a_rule[$id];
 	if (!empty($pconfig['configpassthru']))
@@ -100,13 +100,21 @@ if (isset($id) && isset($a_rule[$id])) {
 		$pconfig['enable'] = "off";
 	}
 }
-
-// Must be a new interface, so try to pick next available physical interface to use
+elseif (isset($_POST['interface']) && !isset($a_rule[$id])) {
+	// Saving first Suricata interface
+	$pconfig['interface'] = $_POST['interface'];
+	$if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
+}
 elseif (isset($id) && !isset($a_rule[$id])) {
+    // Must be a new interface, so try to pick next available physical interface to use
 	$ifaces = get_configured_interface_list();
 	$ifrules = array();
+
+	// Populate the $ifrules array with all existing configured Suricata interfaces
 	foreach($a_rule as $r)
 		$ifrules[] = $r['interface'];
+
+	// Walk pfSense-configured interfaces, and take first one not already in our Suricata list
 	foreach ($ifaces as $i) {
 		if (!in_array($i, $ifrules)) {
 			$pconfig['interface'] = $i;
@@ -139,7 +147,7 @@ elseif (isset($id) && !isset($a_rule[$id])) {
 }
 
 // Get real interface where this Suricata instance runs
-$if_real = get_real_interface($a_rule[$id]['interface']);
+$if_real = get_real_interface($pconfig['interface']);
 
 // Set defaults for any empty key parameters
 if (empty($pconfig['blockoffendersip']))
@@ -267,6 +275,15 @@ if (empty($pconfig['eve_log_snmp'])) {
 if (empty($pconfig['eve_log_mqtt'])) {
 	$pconfig['eve_log_mqtt'] = "on";
 }
+if (empty($pconfig['eve_log_ftp'])) {
+	$pconfig['eve_log_ftp'] = "on";
+}
+if (empty($pconfig['eve_log_http2'])) {
+	$pconfig['eve_log_http2'] = "on";
+}
+if (empty($pconfig['eve_log_rfb'])) {
+	$pconfig['eve_log_rfb'] = "on";
+}
 if (empty($pconfig['eve_log_http_extended']))
 	$pconfig['eve_log_http_extended'] = $pconfig['http_log_extended'];
 if (empty($pconfig['eve_log_tls_extended']))
@@ -298,7 +315,7 @@ if (empty($pconfig['intf_promisc_mode']))
 if (empty($pconfig['intf_snaplen']))
 	$pconfig['intf_snaplen'] = "1518";
 if (empty($pconfig['file_store_logdir']))
-	$pconfig['file_store_logdir'] = base64_encode("{$suricatalogdir}suricata_{$if_real}{$a_rule[$id]['uuid']}/filestore");
+	$pconfig['file_store_logdir'] = base64_encode("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/filestore");
 
 // See if creating a new interface by duplicating an existing one
 if (strcasecmp($action, 'dup') == 0) {
@@ -436,7 +453,9 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['tls_log_extended'] == "on") { $natent['tls_log_extended'] = 'on'; }else{ $natent['tls_log_extended'] = 'off'; }
 		if ($_POST['enable_pcap_log'] == "on") { $natent['enable_pcap_log'] = 'on'; }else{ $natent['enable_pcap_log'] = 'off'; }
 		if ($_POST['enable_file_store'] == "on") { $natent['enable_file_store'] = 'on'; }else{ $natent['enable_file_store'] = 'off'; }
-		if ($_POST['file_store_logdir']) $natent['file_store_logdir'] = base64_encode($_POST['file_store_logdir']);
+		if ($natent['enable_file_store'] == "on") {
+			if ($_POST['file_store_logdir']) { $natent['file_store_logdir'] = base64_encode($_POST['file_store_logdir']); }else{ $natent['file_store_logdir'] = $pconfig['file_store_logdir']; }
+		}
 		if ($_POST['enable_eve_log'] == "on") { $natent['enable_eve_log'] = 'on'; }else{ $natent['enable_eve_log'] = 'off'; }
 		if ($_POST['runmode']) $natent['runmode'] = $_POST['runmode']; else unset($natent['runmode']);
 		if ($_POST['autofp_scheduler']) $natent['autofp_scheduler'] = $_POST['autofp_scheduler']; else unset($natent['autofp_scheduler']);
@@ -496,6 +515,9 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['eve_log_netflow'] == "on") { $natent['eve_log_netflow'] = 'on'; }else{ $natent['eve_log_netflow'] = 'off'; }
 		if ($_POST['eve_log_snmp'] == "on") { $natent['eve_log_snmp'] = 'on'; }else{ $natent['eve_log_snmp'] = 'off'; }
 		if ($_POST['eve_log_mqtt'] == "on") { $natent['eve_log_mqtt'] = 'on'; }else{ $natent['eve_log_mqtt'] = 'off'; }
+		if ($_POST['eve_log_ftp'] == "on") { $natent['eve_log_ftp'] = 'on'; }else{ $natent['eve_log_ftp'] = 'off'; }
+		if ($_POST['eve_log_http2'] == "on") { $natent['eve_log_http2'] = 'on'; }else{ $natent['eve_log_http2'] = 'off'; }
+		if ($_POST['eve_log_rfb'] == "on") { $natent['eve_log_rfb'] = 'on'; }else{ $natent['eve_log_rfb'] = 'off'; }
 		if ($_POST['eve_log_stats_totals'] == "on") { $natent['eve_log_stats_totals'] = 'on'; }else{ $natent['eve_log_stats_totals'] = 'off'; }
 		if ($_POST['eve_log_stats_deltas'] == "on") { $natent['eve_log_stats_deltas'] = 'on'; }else{ $natent['eve_log_stats_deltas'] = 'off'; }
 		if ($_POST['eve_log_stats_threads'] == "on") { $natent['eve_log_stats_threads'] = 'on'; }else{ $natent['eve_log_stats_threads'] = 'off'; }
@@ -773,14 +795,14 @@ $section->addInput(new Form_Select(
 	'Interface',
 	$pconfig['interface'],
 	$interfaces
-))->setHelp('Choose which interface this Suricata instance applies to. In most cases, you will want to use WAN here if this is the first Suricata-configured interface.');
+))->setHelp('Choose which interface this Suricata instance applies to. In most cases, you will want to choose LAN here if this is the first Suricata-configured interface.');
 
 $section->addInput(new Form_Input(
 	'descr',
 	'Description',
 	'text',
 	$pconfig['descr']
-))->setHelp('Enter a meaningful description here for your reference. The default is the interface name.');
+))->setHelp('Enter a meaningful description here for your reference. The default is the pfSense interface friendly description.');
 
 $form->add($section);
 
@@ -915,7 +937,7 @@ $section->addInput(new Form_Input(
 	'File Store Logging Directory',
 	'text',
 	base64_decode($pconfig['file_store_logdir'])
-))->setHelp('Enter directory path for saving the files extracted from application layer streams. Default path is "' . SURICATALOGDIR . 'suricata_' . $if_real . $a_rule[$id]['uuid'] . '/filestore".');
+))->setHelp('Enter directory path for saving the files extracted from application layer streams. When blank, the default path is a "filestore" sub-directory under the interface logging sub-directory in ' . SURICATALOGDIR . '.');
 
 $section->addInput(new Form_Checkbox(
 	'enable_pcap_log',
@@ -1120,14 +1142,6 @@ $section->add($group)->addClass('eve_log_anomaly_details');
 $group = new Form_Group('EVE Logged Traffic');
 
 $group->add(new Form_Checkbox(
-	'eve_log_http',
-	'HTTP',
-	'HTTP',
-	$pconfig['eve_log_http'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
 	'eve_log_dns',
 	'DNS',
 	'DNS',
@@ -1136,34 +1150,26 @@ $group->add(new Form_Checkbox(
 ));
 
 $group->add(new Form_Checkbox(
-	'eve_log_smtp',
-	'SMTP',
-	'SMTP',
-	$pconfig['eve_log_smtp'] == 'on' ? true:false,
+	'eve_log_ftp',
+	'FTP',
+	'FTP',
+	$pconfig['eve_log_ftp'] == 'on' ? true:false,
 	'on'
 ));
 
 $group->add(new Form_Checkbox(
-	'eve_log_nfs',
-	'NFS',
-	'NFS',
-	$pconfig['eve_log_nfs'] == 'on' ? true:false,
+	'eve_log_http',
+	'HTTP',
+	'HTTP',
+	$pconfig['eve_log_http'] == 'on' ? true:false,
 	'on'
 ));
 
 $group->add(new Form_Checkbox(
-	'eve_log_smb',
-	'SMB',
-	'SMB',
-	$pconfig['eve_log_smb'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_krb5',
-	'Kerberos',
-	'Kerberos',
-	$pconfig['eve_log_krb5'] == 'on' ? true:false,
+	'eve_log_http2',
+	'HTTP2',
+	'HTTP2',
+	$pconfig['eve_log_sip'] == 'on' ? true:false,
 	'on'
 ));
 
@@ -1176,18 +1182,38 @@ $group->add(new Form_Checkbox(
 ));
 
 $group->add(new Form_Checkbox(
-	'eve_log_tftp',
-	'TFTP',
-	'TFTP',
-	$pconfig['eve_log_tftp'] == 'on' ? true:false,
+	'eve_log_krb5',
+	'Kerberos',
+	'Kerberos',
+	$pconfig['eve_log_krb5'] == 'on' ? true:false,
 	'on'
 ));
+
+$group->add(new Form_Checkbox(
+	'eve_log_nfs',
+	'NFS',
+	'NFS',
+	$pconfig['eve_log_nfs'] == 'on' ? true:false,
+	'on'
+));
+
+$section->add($group)->addClass('eve_log_info');
+
+$group = new Form_Group(false);
 
 $group->add(new Form_Checkbox(
 	'eve_log_rdp',
 	'RDP',
 	'RDP',
 	$pconfig['eve_log_rdp'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_rfb',
+	'RFB',
+	'RFB',
+	$pconfig['eve_log_rfb'] == 'on' ? true:false,
 	'on'
 ));
 
@@ -1199,63 +1225,47 @@ $group->add(new Form_Checkbox(
 	'on'
 ));
 
+$group->add(new Form_Checkbox(
+	'eve_log_smb',
+	'SMB',
+	'SMB',
+	$pconfig['eve_log_smb'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_smtp',
+	'SMTP',
+	'SMTP',
+	$pconfig['eve_log_smtp'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_tftp',
+	'TFTP',
+	'TFTP',
+	$pconfig['eve_log_tftp'] == 'on' ? true:false,
+	'on'
+));
+
+// The control below is a dummy placeholder to maintain Form Group spacing.
+// There must be the same number of Form Group controls on each row for
+// consistent spacing.
+$group->add(new Form_StaticText(
+	null,
+	null
+));
+
 $group->setHelp('Choose the traffic types to log via EVE JSON output.');
 $section->add($group)->addClass('eve_log_info');
 
 $group = new Form_Group('EVE Logged Info');
 $group->add(new Form_Checkbox(
-	'eve_log_tls',
-	'TLS Handshakes',
-	'TLS Handshakes',
-	$pconfig['eve_log_tls'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_ssh',
-	'SSH Handshakes',
-	'SSH Handshakes',
-	$pconfig['eve_log_ssh'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
 	'eve_log_dhcp',
 	'DHCP Messages',
 	'DHCP Messages',
 	$pconfig['eve_log_dhcp'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_files',
-	'Tracked Files',
-	'Tracked Files',
-	$pconfig['eve_log_files'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_stats',
-	'Perf Stats',
-	'Perf Stats',
-	$pconfig['eve_log_stats'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_flow',
-	'Flows',
-	'Flows',
-	$pconfig['eve_log_flow'] == 'on' ? true:false,
-	'on'
-));
-
-$group->add(new Form_Checkbox(
-	'eve_log_netflow',
-	'Net Flows',
-	'Net Flows',
-	$pconfig['eve_log_netflow'] == 'on' ? true:false,
 	'on'
 ));
 
@@ -1268,10 +1278,10 @@ $group->add(new Form_Checkbox(
 ));
 
 $group->add(new Form_Checkbox(
-	'eve_log_snmp',
-	'SNMP',
-	'SNMP',
-	$pconfig['eve_log_snmp'] == 'on' ? true:false,
+	'eve_log_flow',
+	'Flows',
+	'Flows',
+	$pconfig['eve_log_flow'] == 'on' ? true:false,
 	'on'
 ));
 
@@ -1281,6 +1291,77 @@ $group->add(new Form_Checkbox(
 	'MQTT',
 	$pconfig['eve_log_mqtt'] == 'on' ? true:false,
 	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_netflow',
+	'Net Flows',
+	'Net Flows',
+	$pconfig['eve_log_netflow'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_stats',
+	'Perf Stats',
+	'Perf Stats',
+	$pconfig['eve_log_stats'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_snmp',
+	'SNMP',
+	'SNMP',
+	$pconfig['eve_log_snmp'] == 'on' ? true:false,
+	'on'
+));
+
+$section->add($group)->addClass('eve_log_info');
+$group = new Form_Group(false);
+
+$group->add(new Form_Checkbox(
+	'eve_log_ssh',
+	'SSH Handshakes',
+	'SSH Handshakes',
+	$pconfig['eve_log_ssh'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_tls',
+	'TLS Handshakes',
+	'TLS Handshakes',
+	$pconfig['eve_log_tls'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_files',
+	'Tracked Files',
+	'Tracked Files',
+	$pconfig['eve_log_files'] == 'on' ? true:false,
+	'on'
+));
+
+// The controls below are dummy placeholders to maintain Form Group spacing.
+// There must be the same number of Form Group controls on each row for
+// consistent spacing.
+$group->add(new Form_StaticText(
+	null,
+	null
+));
+$group->add(new Form_StaticText(
+	null,
+	null
+));
+$group->add(new Form_StaticText(
+	null,
+	null
+));
+$group->add(new Form_StaticText(
+	null,
+	null
 ));
 
 $group->setHelp('Choose the information to log via EVE JSON output.');
@@ -1422,8 +1503,8 @@ $section->addInput(new Form_Input(
 	'Netmap Threads',
 	'text',
 	$pconfig['ips_netmap_threads']
-))->setHelp('Enter the number of netmap threads to use. Default is "auto". When set to a value matching the netmap TX/RX queues registered by the NIC, performance can be greatly increased. ' . 
-	    'The NIC hosting this interface registered ' . suricata_get_supported_netmap_queues($if_real) . ' queue(s) with the kernel.');
+))->setHelp('Enter the number of netmap threads to use. Default is "auto" and is recommended. When set to "auto", Suricata will query the system for the number of supported netmap queues, ' . 
+	    ' and it will use a matching number of netmap theads. The NIC hosting this interface registered ' . suricata_get_supported_netmap_queues($if_real) . ' queue(s) with the kernel.');
 
 $section->addInput(new Form_Checkbox(
 	'blockoffenderskill',
@@ -1722,11 +1803,12 @@ print($form);
 ?>
 
 <div class="infoblock">
-	<?=print_info_box('<strong>Note:</strong> Please save your settings before you attempt to start Suricata.', 'info')?>
+	<?=print_info_box('<strong>Note:</strong> Please save your settings before you attempt to start Suricata.', 'info');?>
 </div>
 
 <script type="text/javascript">
 //<![CDATA[
+
 events.push(function(){
 
 	function enable_blockoffenders() {
@@ -1992,6 +2074,9 @@ events.push(function(){
 		disableInput('eve_log_tftp', disable);
 		disableInput('eve_log_rdp', disable);
 		disableInput('eve_log_sip', disable);
+		disableInput('eve_log_ftp', disable);
+		disableInput('eve_log_http2', disable);
+		disableInput('eve_log_rfb', disable);
 		disableInput('eve_log_tls', disable);
 		disableInput('eve_log_files', disable);
 		disableInput('eve_log_dhcp', disable);
@@ -2216,6 +2301,11 @@ events.push(function(){
 		else {
 			hideSelect('autofp_scheduler', true);
 		}
+	});
+
+	$('#interface').on('change', function() {
+		$('#descr').val($('#interface').val().toUpperCase());
+		$('#file_store_logdir').val('');
 	});
 
 	// ---------- On initial page load ------------------------------------------------------------
