@@ -1,7 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
 
 PORTNAME=	nghttp3
-PORTVERSION=	0.1.0.g20210624
+PORTVERSION=	0.1.0.g20210731
 CATEGORIES=	www net
 PKGNAMEPREFIX=	lib
 
@@ -20,10 +20,10 @@ USE_CXXSTD=	c++17
 USE_LDCONFIG=	yes
 
 GH_ACCOUNT=	ngtcp2
-GH_TAGNAME=	bbc426e
+GH_TAGNAME=	6858c28
 USE_GITHUB=	yes
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|0.1.0-DEV|${PORTVERSION}|' ${WRKSRC}/configure.ac
+	@${REINPLACE_CMD} -e 's|%%PORTVERSION%%|${PORTVERSION}|' ${WRKSRC}/configure.ac
 
 .include <bsd.port.mk>

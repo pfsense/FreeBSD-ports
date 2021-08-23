@@ -114,8 +114,14 @@
     SUBDIR += fslsfonts
     SUBDIR += gbdfed
     SUBDIR += geminifonts
+    SUBDIR += genryu
+    SUBDIR += genseki
+    SUBDIR += gensen
     SUBDIR += gentium-basic
     SUBDIR += gentium-plus
+    SUBDIR += genwan
+    SUBDIR += genyo
+    SUBDIR += genyog
     SUBDIR += gnu-unifont
     SUBDIR += gnu-unifont-ttf
     SUBDIR += gofont-ttf

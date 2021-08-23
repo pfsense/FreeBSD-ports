@@ -1,7 +1,7 @@
 # Created by: Javier Martin Rueda <jmrueda@diatel.upm.es>
 
 PORTNAME=	moodle
-PORTVERSION=	3.9.8
+PORTVERSION=	3.9.9
 CATEGORIES=	www education
 MASTER_SITES=	SF/moodle/Moodle/stable39/
 PKGNAMESUFFIX=	${PKGORIGIN:T:S/moodle//}${PHP_PKGNAMESUFFIX}
@@ -16,7 +16,7 @@ CONFLICTS=	moodle310-3.10.[0-9]* moodle311-3.11.[0-9]*
 USES=		cpe php:flavors tar:tgz
 USE_PHP=	ctype curl dom fileinfo filter gd hash iconv intl json mbstring \
 		opcache openssl pcre session simplexml soap spl tokenizer \
-		xml xmlreader zip zlib
+		xml xmlreader xmlrpc zip zlib
 WRKSRC=		${WRKDIR}/moodle
 
 IGNORE_WITH_PHP=	80
@@ -40,12 +40,6 @@ SUB_LIST=	MOODLEDIR=${MOODLEDIR} \
 
 MOODLEDIR?=	www/moodle
 MOODLEDATADIR?=	moodledata
-
-.include <bsd.port.options.mk>
-
-.if ${FLAVOR} != php80
-USE_PHP+=       xmlrpc
-.endif
 
 pre-install:
 	@${ECHO_CMD} "@owner ${WWWOWN}" >> ${PLIST}

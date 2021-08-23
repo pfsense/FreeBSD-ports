@@ -1,7 +1,7 @@
 PORTNAME=	xwayland
 DISTVERSIONPREFIX=	xorg-server-
-DISTVERSION=	21.0.99.1-42
-DISTVERSIONSUFFIX=	-gf6f2f203b
+DISTVERSION=	21.0.99.1-66
+DISTVERSIONSUFFIX=	-g18d3131f9
 CATEGORIES=	x11-servers
 PKGNAMESUFFIX=	-devel
 
@@ -21,7 +21,8 @@ BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 		wayland-protocols>=1.18:graphics/wayland-protocols
 LIB_DEPENDS=	libdrm.so:graphics/libdrm \
 		libepoxy.so:graphics/libepoxy \
-		libwayland-client.so:graphics/wayland
+		libwayland-client.so:graphics/wayland \
+		libxcvt.so:x11/libxcvt
 RUN_DEPENDS=	xkbcomp:x11/xkbcomp \
 		xkeyboard-config>0:x11/xkeyboard-config
 

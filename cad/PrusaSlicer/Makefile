@@ -1,7 +1,7 @@
 PORTNAME=	PrusaSlicer
 DISTVERSIONPREFIX=version_
 DISTVERSION=	2.3.0
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	cad
 
 MAINTAINER=	teodorsigaev@gmail.com
@@ -9,6 +9,8 @@ COMMENT=	Slicing application for 3D printers
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		pending update to OneTBB-compatible version, see bug#255363
 
 LIB_DEPENDS=	libtbb.so:devel/tbb \
 		libboost_log.so:devel/boost-libs \

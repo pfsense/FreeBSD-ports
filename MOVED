@@ -8258,7 +8258,6 @@ devel/py-EnthoughtBase||2016-07-04|Has expired: Broken for more than 6 months
 devel/cl-uffi||2016-07-04|Has expired: Broken for more than 6 months
 devel/ruby-event-loop||2016-07-04|Has expired: Broken for more than 6 months
 devel/libqxt||2016-07-04|Has expired: Broken for more than 6 months
-devel/dasm||2016-07-04|Has expired: Broken for more than 6 months
 devel/libopendaap||2016-07-04|Has expired: Broken for more than 6 months
 devel/cl-uffi-sbcl||2016-07-04|Has expired: Depends on expiring devel/cl-uffi
 devel/cvs2p4||2016-07-04|Has expired: Broken for more than 6 months
@@ -10153,9 +10152,6 @@ audio/deforaos-mixer||2018-06-07|Has expired: Broken for more than 6 months
 audio/gkrellmss2||2018-06-07|Has expired: Broken for more than 6 months
 audio/abcmidi||2018-06-07|Has expired: Broken for more than 6 months
 benchmarks/netpipe||2018-06-07|Has expired: Broken for more than 6 months
-science/orthanc-dicomweb||2018-06-07|Removed, depends on expired science/orthanc
-science/orthanc-postgresql||2018-06-07|Removed, depends on expired science/orthanc
-science/orthanc-webviewer||2018-06-07|Removed, depends on expired science/orthanc
 graphics/libkface||2018-06-09|Has expired: No longer maintained upstream
 math/scilab-toolbox-sivp||2018-06-09|Has expired: Cannot build with newer opencv
 math/clipper|graphics/polyclipping|2018-06-11|Duplicate port
@@ -13659,7 +13655,6 @@ games/xtris||2020-01-10|Has expired: Broken for more than 3 months
 graphics/mapnik||2020-01-10|Has expired: Broken for more than 8 months
 lang/js_of_ocaml||2020-01-10|Has expired: Depends on broken and expiring devel/ocaml-deriving-ocsigen
 lang/rubinius||2020-01-10|Has expired: Broken for more than 7 months
-math/dynare||2020-01-10|Has expired: Broken for more than 9 months
 science/meep||2020-01-10|Has expired: Broken for more than 6 months
 sysutils/hfm||2020-01-10|Has expired: Broken for more than 4 months
 sysutils/u-boot-zedboard||2020-01-10|Has expired: Broken for more than 6 months
@@ -13857,7 +13852,6 @@ science/py-hcluster||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 science/py-pyteomics.biolccc||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 science/pycdf||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 security/blindelephant||2020-01-27|Has expired: Unmaintained, uses EOLed python27
-security/cfv||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 security/fsh||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 security/gcipher||2020-01-27|Has expired: Unmaintained, uses EOLed python27
 security/kedpm||2020-01-27|Has expired: Unmaintained, uses EOLed python27
@@ -14752,7 +14746,6 @@ russian/p5-cyrillic||2020-05-05|Has expired: Broken for more than 6 months
 russian/tidyup-mail||2020-05-05|Has expired: Broken for more than 6 months
 science/atom||2020-05-05|Has expired: Broken for more than 6 months
 science/esys-particle||2020-05-05|Has expired: Broken for more than 6 months
-science/openmx||2020-05-05|Has expired: Broken for more than 6 months
 science/p5-Geo-ReadGRIB||2020-05-05|Has expired: Broken for more than 6 months
 science/py-tensorflow-estimator||2020-05-05|Has expired: Broken for more than 6 months
 security/firewalk||2020-05-05|Has expired: Broken for more than 6 months
@@ -15109,7 +15102,6 @@ databases/postgresql94-server|databases/postgresql95-server|2020-07-24|Has expir
 databases/postgresql94-pltcl|databases/postgresql95-pltcl|2020-07-24|Has expired: PostgreSQL-9.4 has reached end-of-life
 databases/postgresql94-plperl|databases/postgresql95-plperl|2020-07-24|Has expired: PostgreSQL-9.4 has reached end-of-life
 net/dshell||2020-07-24|Uses deprecated version of python
-sysutils/openshift-install|sysutils/openshift-install45|2020-07-25|Duplicate port
 databases/sqliteodbc-sqlite2|databases/sqliteodbc|2020-07-27|Has expired: SQLite2 has stopped development in 2005, please move to SQLite3
 graphics/wayland-info|graphics/wayland-utils|2020-08-02|Project renamed
 devel/rubygem-grape11|devel/rubygem-grape|2020-08-03|Has expired: use devel/rubygem-grape instead
@@ -16472,3 +16464,12 @@ devel/rubygem-grape-entity07|devel/rubygem-grape-entity|2021-07-25|Obsolete, use
 net/rubygem-gitlab-fog-google|net/rubygem-fog-google|2021-07-25|Obsolete, use net/rubygem-fog-google
 devel/rubygem-gitlab-rdoc|devel/rubygem-rdoc|2021-07-25|Obsolete, use devel/rubygem-rdoc
 databases/rubygem-redis-namespace17|databases/rubygem-redis-namespace|2021-07-25|Obsolete, use databases/rubygem-redis-namespace
+multimedia/mlt|multimedia/mlt6|2021-07-30|Moved to a versioned directory to make place for future versions
+multimedia/mlt-qt5|multimedia/mlt6-qt5|2021-07-30|Moved to a versioned directory to make place for future versions
+multimedia/py-mlt|multimedia/py-mlt6|2021-07-30|Moved to a versioned directory to make place for future versions
+net/openldap24-sasl-client|net/openldap24-client|2021-08-01|SASL is always enabled for OpenLDAP
+textproc/py-python-language-server|textproc/py-python-lsp-server|2021-08-01|Has expired: Upstream forked and replaced by py-python-lsp-server
+games/ponscripter-sekai|games/ponscripter-07th-mod|2021-08-13|Switch to active fork
+sysutils/graid5||2021-08-21|Has expired: Module contains subtile errors and is obsolete by ZFS raidz. Consider migrating to ZFS.
+x11-wm/gcompmgr||2021-08-21|Has expired: Abandonware since 2005, using discontinued libraries
+irc/lostirc||2021-08-21|Has expired: Abandonware since 2005, dependens on discontinued libraries

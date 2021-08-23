@@ -5,6 +5,68 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20210823:
+  AFFECTS: users of mail/postfixadmin
+  AUTHOR: ports.maintainer@evilphi.com
+
+  The 3.2->3.3 upgrade requires generating a new setup password hash.
+  The normal post-upgrade visit to setup.php will walk you through the
+  steps.
+
+  For more information, see the "Version 3.3" section of the change log:
+  https://github.com/postfixadmin/postfixadmin/blob/postfixadmin-3.3.9/CHANGELOG.TXT
+
+20210818:
+  AFFECTS: users of databases/redis
+  AUTHOR: osa@FreeBSD.org
+
+  The databases/redis port has been updated to the recent stable release.
+  Users wanting to stay on v6.0 can replace databases/redis with
+  databases/redis6 with one of the following commands:
+
+  # pkg install databases/redis6
+    or
+  # portmaster -o databases/redis6 databases/redis
+    or
+  # portupgrade -o databases/redis6 databases/redis
+
+20210805:
+  AFFECTS: users of sysutils/beats7
+  AUTHOR: otis@FreeBSD.org
+
+  Beats may not be sending data to some distributions of Elasticsearch
+
+  In this release, Elastic is enabling a licensing change that was broadly
+  communicated earlier in 2021. This change would imply that 7.13 instances of
+  Beats would fail to connect to 7.10 or earlier open source distributions of
+  Elasticsearch and Kibana.
+
+  The most visible effect is that sysutils/beats7 users can expect
+  difficulities to send data to Elastic instances hosted in AWS.
+
+  For more information, see:
+  https://www.elastic.co/guide/en/beats/libbeat/current/breaking-changes-7.13.html
+
+20210801:
+  AFFECTS: users of OpenLDAP
+  AUTHOR: delphij@FreeBSD.org
+
+  SASL is now always enabled for OpenLDAP.
+
+  If you use portmaster:
+        portmaster -o net/openldap24-client openldap-sasl-client
+  If you use portupgrade:
+	portupgrade -fo net/openldap24-client openldap-sasl-client
+  If you use pkg with binary packages:
+        pkg set -o net/openldap24-sasl-client:net/openldap24-client
+
+20210730:
+  AFFECTS: users of multimedia/mlt, multimedia/mlt-qt and multimedia/py-mlt
+  AUTHOR:  kde@FreeBSD.org
+
+  multimedia/{py-,}mlt{-qt5,} has been moved to multimedia/{py-,}mlt6{-qt5,}
+  to make room for importin the next major version of the mlt framework.
+
 20210721:
   AFFECTS: users of x11/rxvt-unicode
   AUTHOR: thierry@FreeBSD.org

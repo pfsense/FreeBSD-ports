@@ -1,7 +1,7 @@
 # Created by: Doug Harple
 
 PORTNAME=	detox
-PORTVERSION=	1.4.3
+PORTVERSION=	1.4.5
 DISTVERSIONPREFIX=v
 CATEGORIES=	sysutils
 

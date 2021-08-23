@@ -21,9 +21,11 @@ USE_KDE=	attica auth archive bookmarks codecs completion config \
 		configwidgets coreaddons crash emoticons i18n iconthemes \
 		itemmodels itemviews init jobwidgets kdelibs4support kio \
 		newstuff parts pty service solid sonnet syntaxhighlighting \
-		texteditor textwidgets widgetsaddons xmlgui \
+		texteditor textwidgets widgetsaddons windowsystem xmlgui \
 		ecm_build
-USE_QT=		concurrent core dbus gui network printsupport svg widgets xml xmlpatterns \
+USE_QT=		concurrent core dbus declarative gui help location network \
+		printsupport sql svg webchannel webengine \
+		widgets xml xmlpatterns \
 		buildtools_build qmake_build testlib_build
 USE_LDCONFIG=	yes
 

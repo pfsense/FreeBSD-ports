@@ -3,7 +3,7 @@
 PORTNAME=	mpv
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.33.1
-PORTREVISION=	5
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio
 MASTER_SITES=	https://waf.io/:waf
@@ -32,7 +32,7 @@ BUILD_DEPENDS=	ffmpeg>=4.0.2,1:multimedia/ffmpeg
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 		libass.so:multimedia/libass
 
-USES=		compiler:c11 desktop-file-utils iconv jpeg localbase:ldflags \
+USES=		compiler:c11 cpe desktop-file-utils iconv jpeg localbase:ldflags \
 		pkgconfig python:build tar:bz2 waf
 USE_LDCONFIG=	yes
 

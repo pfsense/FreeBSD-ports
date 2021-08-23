@@ -17,6 +17,7 @@
     SUBDIR += alo-lv2
     SUBDIR += alsa-lib
     SUBDIR += alsa-plugins
+    SUBDIR += alsa-seq-server
     SUBDIR += alsa-sndio
     SUBDIR += alsa-utils
     SUBDIR += alure
@@ -346,6 +347,7 @@
     SUBDIR += lame
     SUBDIR += lash
     SUBDIR += lenticular-lv2
+    SUBDIR += lewton
     SUBDIR += liba52
     SUBDIR += libaacplus
     SUBDIR += libadplug
@@ -724,6 +726,7 @@
     SUBDIR += shairport-sync
     SUBDIR += sherlock-lv2
     SUBDIR += shntool
+    SUBDIR += shortwave
     SUBDIR += sidplay
     SUBDIR += sidplay2
     SUBDIR += sidplayer
@@ -886,6 +889,7 @@
     SUBDIR += zita-njbridge
     SUBDIR += zita-resampler
     SUBDIR += zita-rev1
+    SUBDIR += zplugins-lv2
     SUBDIR += zrythm
     SUBDIR += zynaddsubfx
 

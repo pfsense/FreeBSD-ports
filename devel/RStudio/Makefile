@@ -114,6 +114,7 @@ post-patch:
 pre-build:
 	@${CP} ${FILESDIR}/global-setenv.h ${WRKSRC}/src/cpp/desktop/
 	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/src/cpp/desktop/global-setenv.h
+	@${ECHO} "Current max open files (ulimit -n) setting is $$(ulimit -n)." # since build is likely to fail when it is lower than 4096
 
 post-install:
 	@(echo "#!/bin/sh"; \

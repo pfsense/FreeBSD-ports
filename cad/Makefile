@@ -6,6 +6,7 @@
     SUBDIR += admesh
     SUBDIR += adms
     SUBDIR += alliance
+    SUBDIR += appcsxcad
     SUBDIR += archimedes
     SUBDIR += astk-client
     SUBDIR += astk-serveur
@@ -18,6 +19,7 @@
     SUBDIR += cascade
     SUBDIR += cascade-compiler
     SUBDIR += chipvault
+    SUBDIR += csxcad
     SUBDIR += cura
     SUBDIR += cura-engine
     SUBDIR += digital
@@ -102,6 +104,7 @@
     SUBDIR += py-pyfda
     SUBDIR += python-gdsii
     SUBDIR += qcad
+    SUBDIR += qcsxcad
     SUBDIR += qelectrotech
     SUBDIR += qflow
     SUBDIR += qmls

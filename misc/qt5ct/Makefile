@@ -1,5 +1,5 @@
 PORTNAME=	qt5ct
-DISTVERSION=	1.2
+DISTVERSION=	1.3
 PORTREVISION=	1
 CATEGORIES=	misc
 MASTER_SITES=	SF/${PORTNAME}
@@ -12,8 +12,8 @@ LICENSE=	BSD2CLAUSE
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		cmake compiler:c++11-lang gettext-runtime gl gnome \
-		qt:5 tar:bz2 xorg
+USES=		cmake compiler:c++11-lang gettext-runtime gl gnome qt:5 \
+		tar:bz2 xorg
 USE_QT=		concurrent core dbus gui paths svg widgets \
 		buildtools_build linguisttools_build qmake_build
 USE_GL=		egl gl

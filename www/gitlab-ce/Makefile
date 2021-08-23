@@ -1,7 +1,7 @@
 # Created by: Torsten Zuehlsdorff <tz@FreeBSD.org>
 
 PORTNAME=	gitlab-ce
-PORTVERSION=	14.1.0
+PORTVERSION=	14.1.2
 PORTREVISION=	0
 CATEGORIES=	www devel
 
@@ -18,7 +18,7 @@ MY_DEPENDS=	git>=2.32.0:devel/git \
 	gitlab-agent>=14.1.0:net/gitlab-agent \
 	gitlab-elasticsearch-indexer>=2.12.0:textproc/gitlab-elasticsearch-indexer \
 	gitlab-pages>=1.40.0:www/gitlab-pages \
-	gitlab-shell>=13.19.0:devel/gitlab-shell \
+	gitlab-shell>=13.19.1:devel/gitlab-shell \
 	gitlab-workhorse>=${PORTVERSION}:www/gitlab-workhorse \
 	redis>=6.0.14:databases/redis \
 	yarn>=1.10.0:www/yarn \
@@ -266,10 +266,10 @@ USE_RUBY=	yes
 
 USE_RC_SUBR=	gitlab
 USE_GITLAB=	yes
-GL_ACCOUNT?=	gitlab-org
-GL_PROJECT?=	gitlab-foss
+GL_ACCOUNT=	gitlab-org
+GL_PROJECT=	gitlab-foss
 # Find the here: https://gitlab.com/gitlab-org/gitlab-foss/-/tags
-GL_COMMIT?=	b1a082345cee74a633bc8536e00b09fc5c425a60
+GL_COMMIT=	8c67b4991465e92dcd6752cc42e54a9c5cd9f0f2
 
 USERS=	git
 GROUPS=	git

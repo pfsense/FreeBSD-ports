@@ -1,5 +1,9 @@
-TIMESTAMP = 1617824048
-SHA256 (intel-intel-graphics-compiler-igc-1.0.7041_GH0.tar.gz) = 299494ff885c8f0452c250867586be937a1aff9d46e6ff61a954bfc1e3a3c406
-SIZE (intel-intel-graphics-compiler-igc-1.0.7041_GH0.tar.gz) = 7470694
-SHA256 (intel-vc-intrinsics-069ced1_GH0.tar.gz) = f64cae99ad5a7c31c7ee7403d139be2654b4c6b08e21dd8db3feef939463652f
-SIZE (intel-vc-intrinsics-069ced1_GH0.tar.gz) = 124312
+TIMESTAMP = 1628302083
+SHA256 (intel-intel-graphics-compiler-igc-1.0.8365_GH0.tar.gz) = bf5d1ac1a5acf55d6ee67895102702dbd275f9eb2afe4ebb4e38f1b9fd9ea8f4
+SIZE (intel-intel-graphics-compiler-igc-1.0.8365_GH0.tar.gz) = 7509633
+SHA256 (ef9a69ee4723.patch) = 28ac4a21ba517a651d234f8ce7b9d465c94ff7fc6b5024c143c7c0128aff9ee3
+SIZE (ef9a69ee4723.patch) = 1201
+SHA256 (8888a28132ac.patch) = e4851706d66f1e1d7d69673e361a270d0c1f0e48c1daa89b27a42db5fb63d9c7
+SIZE (8888a28132ac.patch) = 1162
+SHA256 (b926d2c2f490.patch) = 1c60ffddc2c4bc49013bfc9878c9923a2ef11879b50e5e8961ddf8e8c84df72a
+SIZE (b926d2c2f490.patch) = 4443

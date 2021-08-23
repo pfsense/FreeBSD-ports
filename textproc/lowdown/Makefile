@@ -1,5 +1,5 @@
 PORTNAME=	lowdown
-PORTVERSION=	0.8.5
+PORTVERSION=	0.8.6
 CATEGORIES=	textproc
 MASTER_SITES=	https://kristaps.bsd.lv/lowdown/snapshots/
 
@@ -13,6 +13,7 @@ LDFLAGS+=	-lmd
 MAKE_ARGS=	LDFLAGS="${LDFLAGS}" MANDIR=${PREFIX}/share/man
 
 HAS_CONFIGURE=	yes
+CONFIGURE_ARGS=	PREFIX="${PREFIX}"
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}

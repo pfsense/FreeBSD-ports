@@ -1,9 +1,10 @@
 # Created by: Jun Kuriyama <kuriyama@FreeBSD.org>
 
 PORTNAME=	magit
-PORTVERSION=	3.1.1
+PORTVERSION=	3.2.1
+DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	devel elisp
-MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${PORTVERSION}/
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	yasu@utahime.org
@@ -12,16 +13,15 @@ COMMENT=	Interface to Git for Emacs
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	dash.el${EMACS_PKGNAMESUFFIX}>=2.14.1:devel/dash.el@${EMACS_FLAVOR} \
-		ghub${EMACS_PKGNAMESUFFIX}>=3.0.0:devel/ghub@${EMACS_FLAVOR} \
-		transient${EMACS_PKGNAMESUFFIX}>=0:devel/transient@${EMACS_FLAVOR} \
-		with-editor${EMACS_PKGNAMESUFFIX}>=2.8.0:editors/with-editor@${EMACS_FLAVOR}
-RUN_DEPENDS=	dash.el${EMACS_PKGNAMESUFFIX}>=2.14.1:devel/dash.el@${EMACS_FLAVOR} \
-		ghub${EMACS_PKGNAMESUFFIX}>=3.0.0:devel/ghub@${EMACS_FLAVOR} \
-		transient${EMACS_PKGNAMESUFFIX}>=0:devel/transient@${EMACS_FLAVOR} \
-		with-editor${EMACS_PKGNAMESUFFIX}>=2.8.0:editors/with-editor@${EMACS_FLAVOR}
+BUILD_DEPENDS=	dash.el${EMACS_PKGNAMESUFFIX}>=2.18.1:devel/dash.el@${EMACS_FLAVOR} \
+		transient${EMACS_PKGNAMESUFFIX}>=0.3.6:devel/transient@${EMACS_FLAVOR} \
+		with-editor${EMACS_PKGNAMESUFFIX}>=3.0.4:editors/with-editor@${EMACS_FLAVOR}
+RUN_DEPENDS=	dash.el${EMACS_PKGNAMESUFFIX}>=2.18.1:devel/dash.el@${EMACS_FLAVOR} \
+		transient${EMACS_PKGNAMESUFFIX}>=0.3.6:devel/transient@${EMACS_FLAVOR} \
+		with-editor${EMACS_PKGNAMESUFFIX}>=3.0.4:editors/with-editor@${EMACS_FLAVOR}
 
 USES=		emacs gmake makeinfo
+USE_GITHUB=	yes
 
 MAKE_ENV+=	docdir=${DOCSDIR} \
 		infodir=${PREFIX}/${INFO_PATH} \

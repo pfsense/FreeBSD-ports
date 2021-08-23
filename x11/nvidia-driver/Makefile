@@ -14,9 +14,9 @@
 # ``make DISTVERSION=xxx.yy.zz -DNO_CHECKSUM'' should typically work.
 
 PORTNAME?=	nvidia-driver
-DISTVERSION?=	460.84
+DISTVERSION?=	470.63.01
 # Always try to set PORTREVISION as it can be overridden by the slave ports
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES=	x11
 MASTER_SITES=	NVIDIA/XFree86/FreeBSD-${ARCH_SUFX}/${DISTVERSION}
 DISTNAME=	NVIDIA-FreeBSD-${ARCH_SUFX}-${DISTVERSION}
@@ -32,7 +32,8 @@ LICENSE_FILE=	${WRKSRC}/doc/license.txt
 # obj/libEGL_nvidia.so.0 (see below)
 .if ${NVVERSION} >= 410.057
 PATCH_DEPENDS=	gsed:textproc/gsed
-BUILD_DEPENDS=	pkg-config:devel/pkgconf libglvnd>0:graphics/libglvnd
+BUILD_DEPENDS=	pkg-config:devel/pkgconf
+LIB_DEPENDS=	libOpenGL.so:graphics/libglvnd
 .endif
 
 USES=		kmod uidfix xorg
@@ -44,9 +45,13 @@ USE_LDCONFIG=	yes
 
 GLVND_JSON_PATH=	${PREFIX}/share/glvnd/egl_vendor.d
 WAYLAND_JSON_PATH=	${PREFIX}/share/egl/egl_external_platform.d
+VKICD_PATH=		${PREFIX}/share/vulkan/icd.d
+VKLAYERS_PATH=		${PREFIX}/share/vulkan/implicit_layer.d
 MAKE_ENV=	DEBUG_FLAGS=${DEBUG_FLAGS} \
 		EGL_GLVND_JSON_PATH=${STAGEDIR}${GLVND_JSON_PATH} \
-		EGL_WAYLAND_JSON_PATH=${STAGEDIR}${WAYLAND_JSON_PATH}
+		EGL_WAYLAND_JSON_PATH=${STAGEDIR}${WAYLAND_JSON_PATH} \
+		VKICD_PATH=${STAGEDIR}${VKICD_PATH} \
+		VKLAYERS_PATH=${STAGEDIR}${VKLAYERS_PATH}
 SUB_FILES=	pkg-message
 .if !defined(LIBGLDIR)
 SUB_FILES+=	nvidia.conf
@@ -82,8 +87,7 @@ EXTRA_PATCHES+=	${FILESDIR}/extra-patch-src_nvidia-modeset_nvidia-modeset-freebs
 SUB_PATCHES+=	extra-patch-src-nvidia_ctl.c \
 		extra-patch-src-nvidia_linux.c
 .else
-EXTRA_PATCHES+=	${FILESDIR}/460-patch-lib-libGLX_nvidia-Makefile \
-		${FILESDIR}/460-patch-src-nvidia-nvidia_ctl.c \
+EXTRA_PATCHES+=	${FILESDIR}/460-patch-src-nvidia-nvidia_ctl.c \
 		${FILESDIR}/460-patch-src-nvidia-nvidia_linux.c \
 		${FILESDIR}/460-patch-src_nvidia-modeset_nvidia-modeset-freebsd.c
 .endif

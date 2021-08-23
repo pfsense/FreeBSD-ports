@@ -1,3 +1,675 @@
+  <vuln vid="d3180f02-031e-11ec-875f-0800273f11ea">
+    <topic>gitea -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitea</name>
+	<range><lt>1.15.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Gitea Team reports for release 1.15.0:</p>
+	<blockquote cite="https://blog.gitea.io/2021/08/gitea-1.15.0-is-released/">
+	  <ul>
+	    <li>Encrypt LDAP bind password in db with SECRET_KEY (#15547)</li>
+	    <li>Remove random password in Dockerfiles (#15362)</li>
+	    <li>Upgrade to the latest version of golang-jwt and increase minimum go to 1.15 (#16590) (#16606)</li>
+	    <li>Correctly create of git-daemon-export-ok files (#16508) (#16514)</li>
+	    <li>Don't show private user's repo in explore view (#16550) (#16554)</li>
+	    <li>Update node tar dependency to 6.1.6 (#16622) (#16623)</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://github.com/go-gitea/gitea/releases/tag/v1.15.0</url>
+      <freebsdpr>ports/257994</freebsdpr>
+    </references>
+    <dates>
+      <discovery>2021-04-29</discovery>
+      <entry>2021-08-22</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="733afd81-01cf-11ec-aec9-0800273f11ea">
+    <topic>gitea -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>gitea</name>
+	<range><lt>1.14.6</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Gitea Team reports for release 1.14.6:</p>
+	<blockquote cite="https://blog.gitea.io/2021/08/gitea-1.14.6-is-released/">
+	  <ul>
+	    <li>Bump github.com/markbates/goth from v1.67.1 to v1.68.0 (#16538) (#16540)</li>
+	    <li>Switch to maintained JWT lib (#16532) (#16535)</li>
+	    <li>Upgrade to latest version of golang-jwt (as forked for 1.14) (#16590) (#16607)</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://github.com/go-gitea/gitea/releases/tag/v1.14.6</url>
+      <freebsdpr>ports/257973</freebsdpr>
+    </references>
+    <dates>
+      <discovery>2021-07-24</discovery>
+      <entry>2021-08-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="70e71a24-0151-11ec-bf0c-080027eedc6a">
+    <topic>bouncycastle15 -- bcrypt password checking vulnerability</topic>
+    <affects>
+      <package>
+	<name>bouncycastle15</name>
+	<range><lt>1.67</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Bouncy Castle team reports:</p>
+	<blockquote cite="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-28052">
+	  <p>
+	    The OpenBSDBCrypt.checkPassword utility method compared incorrect
+	    data when checking the password, allowing incorrect passwords to
+	    indicate they were matching with previously hashed ones that were
+	    different.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2020-28052</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-28052</url>
+    </references>
+    <dates>
+      <discovery>2020-11-02</discovery>
+      <entry>2021-08-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="89d5bca6-0150-11ec-bf0c-080027eedc6a">
+    <topic>bouncycastle15 -- EC math vulnerability</topic>
+    <affects>
+      <package>
+	<name>bouncycastle15</name>
+	<range><lt>1.66</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Bouncy Castle team reports::</p>
+	<blockquote cite="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-15522">
+	  <p>
+	    Bouncy Castle BC Java before 1.66 has a timing issue within the EC
+	    math library that can expose information about the private key when
+	    an attacker is able to observe timing information for the generation
+	    of multiple deterministic ECDSA signatures.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2020-15522</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-15522</url>
+    </references>
+    <dates>
+      <discovery>2020-07-04</discovery>
+      <entry>2021-08-20</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="f4c54b81-bcc8-11eb-a7a6-080027f515ea">
+    <topic>binutils -- excessive debug section size can cause excessive memory consumption in bfd's dwarf2.c read_section()</topic>
+    <affects>
+      <package>
+	<name>binutils</name>
+	<range><lt>2.33.1_5</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Hao Wang reports:</p>
+	<blockquote cite="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-3487">
+	  <p>
+	    There's a flaw in the BFD library of binutils in versions before 2.36.
+	    An attacker who supplies a crafted file to an application linked with BFD,
+	    and using the DWARF functionality, could cause an impact to system
+	    availability by way of excessive memory consumption.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-3487</cvename>
+      <url>https://sourceware.org/bugzilla/show_bug.cgi?id=26946</url>
+    </references>
+    <dates>
+      <discovery>2020-11-25</discovery>
+      <entry>2021-08-13</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="128deba6-ff56-11eb-8514-3065ec8fd3ec">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>92.0.4515.159</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Chrome Releases reports:</p>
+	<blockquote cite="https://chromereleases.googleblog.com/2021/08/stable-channel-update-for-desktop.html">
+	  <p>This release contains 9 security fixes, including:</p>
+	  <ul>
+	    <li>[1234764] High CVE-2021-30598: Type Confusion in V8. Reported by
+	      Manfred Paul on 2021-07-30</li>
+	    <li>[1234770] High CVE-2021-30599: Type Confusion in V8. Reported by
+	      Manfred Paul on 2021-07-30</li>
+	    <li>[1231134] High CVE-2021-30600: Use after free in Printing.
+	      Reported by Leecraso and Guang Gong of 360 Alpha Lab on
+	      2021-07-20</li>
+	    <li>[1234009] High CVE-2021-30601: Use after free in Extensions API.
+	      Reported by koocola(@alo_cook) and Nan Wang(@eternalsakura13) of
+	      360 Alpha Lab on 2021-07-28</li>
+	    <li>[1230767] High CVE-2021-30602: Use after free in WebRTC.
+	      Reported by Marcin Towalski of Cisco Talos on 2021-07-19</li>
+	    <li>[1233564] High CVE-2021-30603: Race in WebAudio. Reported by
+	      Sergei Glazunov of Google Project Zero on 2021-07-27</li>
+	    <li>[1234829] High CVE-2021-30604: Use after free in ANGLE. Reported
+	      by Seong-Hwan Park (SeHwa) of SecunologyLab on 2021-07-30</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-30598</cvename>
+      <cvename>CVE-2021-30599</cvename>
+      <cvename>CVE-2021-30600</cvename>
+      <cvename>CVE-2021-30601</cvename>
+      <cvename>CVE-2021-30602</cvename>
+      <cvename>CVE-2021-30603</cvename>
+      <cvename>CVE-2021-30604</cvename>
+      <url>https://chromereleases.googleblog.com/2021/08/stable-channel-update-for-desktop.html</url>
+    </references>
+    <dates>
+      <discovery>2021-08-16</discovery>
+      <entry>2021-08-17</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="e9200f8e-fd34-11eb-afb1-c85b76ce9b5a">
+    <topic>lynx -- SSL certificate validation error</topic>
+    <affects>
+      <package>
+	<name>ja-lynx</name>
+	<range><lt>2.8.10</lt></range>
+      </package>
+      <package>
+	<name>ja-lynx-current</name>
+	<range><lt>2.9.0d9</lt></range>
+      </package>
+      <package>
+	<name>lynx</name>
+	<range><lt>2.8.10</lt></range>
+      </package>
+      <package>
+	<name>lynx-current</name>
+	<range><lt>2.9.0d9</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Axel Beckert reports:</p>
+	<blockquote cite="https://lists.nongnu.org/archive/html/lynx-dev/2021-08/msg00002.html">
+	  <p>[...] I was able to capture the password given on the commandline in traffic
+of an TLS handshake using tcpdump and analysing it with Wireshark: [...]</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://lists.nongnu.org/archive/html/lynx-dev/2021-08/msg00002.html</url>
+    </references>
+    <dates>
+      <discovery>2021-08-07</discovery>
+      <entry>2021-08-14</entry>
+      <modified>2021-08-15</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="b471130b-fb86-11eb-87db-6cc21735f730">
+    <topic>PostgreSQL server -- Memory disclosure in certain queries</topic>
+    <affects>
+      <package>
+	<name>postgresql13-server</name>
+	<range><lt>13.4</lt></range>
+      </package>
+      <package>
+	<name>postgresql12-server</name>
+	<range><lt>12.8</lt></range>
+      </package>
+      <package>
+	<name>postgresql11-server</name>
+	<range><lt>11.13</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The PostgreSQL Project reports:</p>
+	<blockquote cite="https://www.postgresql.org/support/security/CVE-2021-3677/">
+	  <p>
+	   A purpose-crafted query can read arbitrary bytes of
+	   server memory. In the default configuration, any
+	   authenticated database user can complete this attack at
+	   will. The attack does not require the ability to create
+	   objects. If server settings include
+	   max_worker_processes=0, the known versions of this
+	   attack are infeasible. However, undiscovered variants of
+	   the attack may be independent of that setting.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-3677</cvename>
+      <url>https://www.postgresql.org/support/security/CVE-2021-3677/</url>
+    </references>
+    <dates>
+      <discovery>2021-08-12</discovery>
+      <entry>2021-08-12</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="e80073d7-f8ba-11eb-b141-589cfc007716">
+    <topic>xtrlock -- xtrlock does not block multitouch events</topic>
+    <affects>
+      <package>
+	<name>xtrlock</name>
+	<range><lt>2.12</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Debian reports:</p>
+	<blockquote cite="https://lists.debian.org/debian-lts-announce/2019/10/msg00019.html">
+	  <p>xtrlock did not block multitouch events so an attacker could still
+	  input and thus control various programs such as Chromium, etc. via
+	  so-called "multitouch" events including pan scrolling, "pinch and
+	  zoom" or even being able to provide regular mouse clicks by
+	  depressing the touchpad once and then clicking with a secondary
+	  finger.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2016-10894</cvename>
+      <url>https://lists.debian.org/debian-lts-announce/2019/10/msg00019.html</url>
+    </references>
+    <dates>
+      <discovery>2016-07-10</discovery>
+      <entry>2021-08-09</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="848bdd06-f93a-11eb-9f7d-206a8a720317">
+    <topic>x11/cde -- Local privilege escalation via CDE dtsession</topic>
+    <affects>
+      <package>
+	<name>cde</name>
+	<range><lt>2.4.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Marco Ivaldi (marco.ivaldi () mediaservice net) reports:</p>
+	<blockquote cite="https://seclists.org/bugtraq/2020/Jan/22">
+	  <p>A buffer overflow in the CheckMonitor() function in the Common
+	  Desktop Environment 2.3.1 and earlier and 1.6 and earlier,
+	  as distributed with Oracle Solaris 10 1/13 (Update 11) and
+	  earlier, allows local users to gain root privileges via a long
+	  palette name passed to dtsession in a malicious .Xdefaults
+	  file.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2020-2696</cvename>
+      <url>https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-2696</url>
+    </references>
+    <dates>
+      <discovery>2020-01-15</discovery>
+      <entry>2021-08-09</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="880552c4-f63f-11eb-9d56-7186043316e9">
+    <topic>go -- net/http: panic due to racy read of persistConn after handler panic</topic>
+    <affects>
+      <package>
+	<name>go</name>
+	<range><lt>1.16.7,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Go project reports:</p>
+	<blockquote cite="https://github.com/golang/go/issues/46866">
+	  <p>A net/http/httputil ReverseProxy can panic due to a race
+	  condition if its Handler aborts with ErrAbortHandler, for
+	  example due to an error in copying the response body. An
+	  attacker might be able to force the conditions leading to
+	  the race condition.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-36221</cvename>
+      <url>https://github.com/golang/go/issues/46866</url>
+    </references>
+    <dates>
+      <discovery>2021-06-21</discovery>
+      <entry>2021-08-05</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="1d651770-f4f5-11eb-ba49-001b217b3468">
+    <topic>Gitlab -- Gitlab</topic>
+    <affects>
+      <package>
+	<name>gitlab-ce</name>
+	<range><ge>14.1.0</ge><lt>14.1.2</lt></range>
+	<range><ge>14.0.0</ge><lt>14.0.7</lt></range>
+	<range><ge>0</ge><lt>13.12.9</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Gitlab reports:</p>
+	<blockquote cite="https://about.gitlab.com/releases/2021/08/03/security-release-gitlab-14-1-2-released/">
+	  <p>Stored XSS in Mermaid when viewing Markdown files</p>
+	  <p>Stored XSS in default branch name</p>
+	  <p>Perform Git actions with an impersonation token even if impersonation is disabled</p>
+	  <p>Tag and branch name confusion allows Developer to access protected CI variables</p>
+	  <p>New subscriptions generate OAuth tokens on an incorrect OAuth client application</p>
+	  <p>Ability to list and delete impersonation tokens for your own user</p>
+	  <p>Pipelines page is partially visible for users that have no right to see CI/CD</p>
+	  <p>Improper email validation on an invite URL</p>
+	  <p>Unauthorised user was able to add meta data upon issue creation</p>
+	  <p>Unauthorized user can trigger deployment to a protected environment</p>
+	  <p>Guest in private project can see CI/CD Analytics</p>
+	  <p>Guest users can create issues for Sentry errors and track their status</p>
+	  <p>Private user email disclosure via group invitation</p>
+	  <p>Projects are allowed to add members with email address domain that should be blocked by group settings</p>
+	  <p>Misleading username could lead to impersonation in using SSH Certificates</p>
+	  <p>Unauthorized user is able to access and view project vulnerability reports</p>
+	  <p>Denial of service in repository caused by malformed commit author</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-22237</cvename>
+      <cvename>CVE-2021-22236</cvename>
+      <cvename>CVE-2021-22239</cvename>
+      <url>https://about.gitlab.com/releases/2021/08/03/security-release-gitlab-14-1-2-released/</url>
+    </references>
+    <dates>
+      <discovery>2021-08-03</discovery>
+      <entry>2021-08-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="5ef14250-f47c-11eb-8f13-5b4de959822e">
+    <topic>Prosody -- Remote Information Disclosure</topic>
+    <affects>
+      <package>
+	<name>prosody</name>
+	<range><lt>0.11.10</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>A Prosody XMPP server advisory reports:</p>
+	<blockquote cite="https://prosody.im/security/advisory_20210722/">
+	<p>It was discovered that Prosody allows any entity to access the list of
+	admins, members, owners and banned entities of any federated XMPP group chat
+	of which they know the address.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-37601</cvename>
+      <url>https://prosody.im/security/advisory_20210722/</url>
+    </references>
+    <dates>
+      <discovery>2021-07-22</discovery>
+      <entry>2021-08-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="c3c6c4a3-f47d-11eb-b632-3065ec8fd3ec">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>92.0.4515.131</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Chrome Releases reports:</p>
+	<blockquote cite="https://chromereleases.googleblog.com/search/label/Stable%20updates">
+	  <p>This release contains 10 security fixes, including:</p>
+	  <ul>
+	    <li>[1227777] High CVE-2021-30590: Heap buffer overflow in
+	      Bookmarks. Reported by Leecraso and Guang Gong of 360 Alpha Lab on
+	      2021-07-09</li>
+	    <li>[1229298] High CVE-2021-30591: Use after free in File System
+	      API. Reported by SorryMybad (@S0rryMybad) of Kunlun Lab on
+	      2021-07-14</li>
+	    <li>[1209469] High CVE-2021-30592: Out of bounds write in Tab
+	      Groups. Reported by David Erceg on 2021-05-15</li>
+	    <li>[1209616] High CVE-2021-30593: Out of bounds read in Tab Strip.
+	      Reported by David Erceg on 2021-05-16</li>
+	    <li>[1218468] High CVE-2021-30594: Use after free in Page Info UI.
+	      Reported by raven (@raid_akame) on 2021-06-10</li>
+	    <li>[1214481] Medium CVE-2021-30596: Incorrect security UI in
+	      Navigation. Reported by Mohit Raj (shadow2639) on 2021-05-29</li>
+	    <li>[1232617] Medium CVE-2021-30597: Use after free in Browser UI.
+	      Reported by raven (@raid_akame) on 2021-07-24</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-30590</cvename>
+      <cvename>CVE-2021-30591</cvename>
+      <cvename>CVE-2021-30592</cvename>
+      <cvename>CVE-2021-30593</cvename>
+      <cvename>CVE-2021-30594</cvename>
+      <cvename>CVE-2021-30596</cvename>
+      <cvename>CVE-2021-30597</cvename>
+      <url>https://chromereleases.googleblog.com/search/label/Stable%20updates</url>
+    </references>
+    <dates>
+      <discovery>2021-08-02</discovery>
+      <entry>2021-08-03</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="b1aa54ae-74cb-42a0-b462-cbb6831c5c50">
+    <topic>RabbitMQ -- Denial of Service in AMQP1.0 plugin</topic>
+    <affects>
+      <package>
+	<name>rabbitmq</name>
+	<range><lt>3.8.16</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Pivotal.io reports:</p>
+	<blockquote cite="https://tanzu.vmware.com/security/cve-2021-22116">
+	<p>All versions prior to 3.8.16 are prone to a denial of
+	   service vulnerability due to improper input validation
+	   in AMQP 1.0 client connection endpoint.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2016-9877</cvename>
+      <url>https://tanzu.vmware.com/security/cve-2021-22116</url>
+      <url>https://github.com/rabbitmq/rabbitmq-server/releases/tag/v3.8.19</url>
+    </references>
+    <dates>
+      <discovery>2021-05-10</discovery>
+      <entry>2021-05-10</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d34bef0b-f312-11eb-b12b-fc4dd43e2b6a">
+    <topic>tomcat -- HTTP request smuggling in multiple versions</topic>
+    <affects>
+      <package>
+	<name>tomcat85</name>
+	<range><ge>8.5.0</ge><le>8.5.66</le></range>
+      </package>
+      <package>
+	<name>tomcat9</name>
+	<range><ge>9.0.0</ge><le>9.0.46</le></range>
+      </package>
+      <package>
+	<name>tomcat10</name>
+	<range><ge>10.0.0</ge><le>10.0.6</le></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Bahruz Jabiyev, Steven Sprecher and Kaan Onarlioglu of NEU seclab reports:</p>
+	<blockquote cite="https://tomcat.apache.org/security.html">
+	  <p>Apache Tomcat did not correctly parse the HTTP transfer-encoding request header in some circumstances leading to the possibility to request smuggling when used with a reverse proxy. Specifically: Tomcat incorrectly ignored the transfer-encoding header if the client declared it would only accept an HTTP/1.0 response; Tomcat honoured the identify encoding; and Tomcat did not ensure that, if present, the chunked encoding was the final encoding.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-33037</cvename>
+      <url>http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-33037</url>
+    </references>
+    <dates>
+      <discovery>2021-05-07</discovery>
+      <entry>2021-08-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="8b571fb2-f311-11eb-b12b-fc4dd43e2b6a">
+    <topic>tomcat -- JNDI Realm Authentication Weakness in multiple versions</topic>
+    <affects>
+      <package>
+	<name>tomcat7</name>
+	<range><ge>7.0.0</ge><le>7.0.108</le></range>
+      </package>
+      <package>
+	<name>tomcat85</name>
+	<range><ge>8.5.0</ge><le>8.5.65</le></range>
+      </package>
+      <package>
+	<name>tomcat9</name>
+	<range><ge>9.0.0</ge><le>9.0.45</le></range>
+      </package>
+      <package>
+	<name>tomcat10</name>
+	<range><ge>10.0.0</ge><le>10.0.5</le></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>ilja.farber reports:</p>
+	<blockquote cite="https://tomcat.apache.org/security.html">
+	  <p>Queries made by the JNDI Realm did not always correctly escape parameters. Parameter values could be sourced from user provided data (eg user names) as well as configuration data provided by an administrator.
+In limited circumstances it was possible for users to authenticate using variations of their user name and/or to bypass some of the protection provided by the LockOut Realm.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-30640</cvename>
+      <url>http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-30640</url>
+    </references>
+    <dates>
+      <discovery>2021-04-08</discovery>
+      <entry>2021-08-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="cc7c85d9-f30a-11eb-b12b-fc4dd43e2b6a">
+    <topic>tomcat -- Remote Denial of Service in multiple versions</topic>
+    <affects>
+      <package>
+	<name>tomcat85</name>
+	<range><eq>8.5.64</eq></range>
+      </package>
+      <package>
+	<name>tomcat9</name>
+	<range><eq>9.0.44</eq></range>
+      </package>
+      <package>
+	<name>tomcat10</name>
+	<range><ge>10.0.3</ge><le>10.0.4</le></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>rbeaudry reports:</p>
+	<blockquote cite="https://tomcat.apache.org/security.html">
+	  <p>A vulnerability in Apache Tomcat allows an attacker to remotely trigger a denial of service. An error introduced as part of a change to improve error handling during non-blocking I/O meant that the error flag associated with the Request object was not reset between requests. This meant that once a non-blocking I/O error occurred, all future requests handled by that request object would fail. Users were able to trigger non-blocking I/O errors, e.g. by dropping a connection, thereby creating the possibility of triggering a DoS.</p>
+	  <p>Applications that do not use non-blocking I/O are not exposed to this vulnerability. This issue affects Apache Tomcat 10.0.3 to 10.0.4; 9.0.44; 8.5.64.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-30639</cvename>
+      <url>http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-30639</url>
+    </references>
+    <dates>
+      <discovery>2021-03-24</discovery>
+      <entry>2021-08-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="cbfd1874-efea-11eb-8fe9-036bd763ff35">
+    <topic>fetchmail -- 6.4.19 and older denial of service or information disclosure</topic>
+    <affects>
+      <package>
+	<name>fetchmail</name>
+	<range><lt>6.3.9</lt></range>
+	<range><ge>6.3.17</ge><lt>6.4.20</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Matthias Andree reports:</p>
+	<blockquote cite="https://sourceforge.net/p/fetchmail/mailman/message/37327392/">
+	  <p>When a log message exceeds c. 2 kByte in size, for instance, with very long
+	  header contents, and depending on verbosity option, fetchmail can crash or
+	  misreport each first log message that requires a buffer reallocation.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2021-36386</cvename>
+      <cvename>CVE-2008-2711</cvename>
+      <url>https://sourceforge.net/p/fetchmail/mailman/message/37327392/</url>
+    </references>
+    <dates>
+      <discovery>2021-07-07</discovery>
+      <entry>2021-07-28</entry>
+      <modified>2021-08-03</modified>
+    </dates>
+  </vuln>
+
   <vuln vid="c561ce49-eabc-11eb-9c3f-0800270512f4">
     <topic>redis -- Integer overflow issues with BITFIELD command on 32-bit systems</topic>
     <affects>
@@ -390,6 +1062,18 @@
 	<name>mysql80-server</name>
 	<range><lt>8.0.26</lt></range>
       </package>
+      <package>
+	<name>mariadb103-server</name>
+	<range><lt>10.3.31</lt></range>
+      </package>
+      <package>
+	<name>mariadb104-server</name>
+	<range><lt>10.4.21</lt></range>
+      </package>
+      <package>
+	<name>mariadb105-server</name>
+	<range><lt>10.5.12</lt></range>
+      </package>
     </affects>
     <description>
       <body xmlns="http://www.w3.org/1999/xhtml">
@@ -401,15 +1085,55 @@
 	    requiring user credentials.<br/>
 	    The highest CVSS v3.1 Base Score of vulnerabilities affecting Oracle
 	    MySQL is 8.8.</p>
+	  <p>MariaDB is affected by CVE-2021-2372 and CVE-2021-2389 only.</p>
 	</blockquote>
       </body>
     </description>
     <references>
       <url>https://www.oracle.com/security-alerts/cpujul2021.html</url>
+      <cvename>CVE-2019-17543</cvename>
+      <cvename>CVE-2021-2339</cvename>
+      <cvename>CVE-2021-2340</cvename>
+      <cvename>CVE-2021-2342</cvename>
+      <cvename>CVE-2021-2352</cvename>
+      <cvename>CVE-2021-2354</cvename>
+      <cvename>CVE-2021-2356</cvename>
+      <cvename>CVE-2021-2357</cvename>
+      <cvename>CVE-2021-2367</cvename>
+      <cvename>CVE-2021-2370</cvename>
+      <cvename>CVE-2021-2372</cvename>
+      <cvename>CVE-2021-2374</cvename>
+      <cvename>CVE-2021-2383</cvename>
+      <cvename>CVE-2021-2384</cvename>
+      <cvename>CVE-2021-2385</cvename>
+      <cvename>CVE-2021-2387</cvename>
+      <cvename>CVE-2021-2389</cvename>
+      <cvename>CVE-2021-2390</cvename>
+      <cvename>CVE-2021-2399</cvename>
+      <cvename>CVE-2021-2402</cvename>
+      <cvename>CVE-2021-2410</cvename>
+      <cvename>CVE-2021-2411</cvename>
+      <cvename>CVE-2021-2412</cvename>
+      <cvename>CVE-2021-2417</cvename>
+      <cvename>CVE-2021-2418</cvename>
+      <cvename>CVE-2021-2422</cvename>
+      <cvename>CVE-2021-2424</cvename>
+      <cvename>CVE-2021-2425</cvename>
+      <cvename>CVE-2021-2426</cvename>
+      <cvename>CVE-2021-2427</cvename>
+      <cvename>CVE-2021-2429</cvename>
+      <cvename>CVE-2021-2437</cvename>
+      <cvename>CVE-2021-2440</cvename>
+      <cvename>CVE-2021-2441</cvename>
+      <cvename>CVE-2021-2444</cvename>
+      <cvename>CVE-2021-3450</cvename>
+      <cvename>CVE-2021-22884</cvename>
+      <cvename>CVE-2021-22901</cvename>
     </references>
     <dates>
       <discovery>2021-07-20</discovery>
       <entry>2021-07-20</entry>
+      <modified>2021-08-04</modified>
     </dates>
   </vuln>
 

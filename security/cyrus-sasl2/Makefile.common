@@ -21,7 +21,8 @@ CONFIGURE_ARGS+=--sysconfdir=${PREFIX}/etc \
 		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig \
 		--includedir=${PREFIX}/include \
 		--enable-static \
-		--with-rc4=openssl
+		--with-rc4=openssl \
+		--with-sphinx-build=no
 CONFIGURE_ARGS+=--disable-anon \
 		--disable-cram \
 		--disable-digest \
@@ -35,6 +36,7 @@ CONFIGURE_ARGS+=--disable-anon \
 		--disable-srp \
 		--with-dblib=none
 CONFIGURE_ARGS+=${CYRUS_CONFIGURE_ARGS}
+CONFIGURE_ENV=	CC_FOR_BUILD="${CC}"
 MAKE_ENV+=	INSTALL_STRIP_FLAG=${STRIP}
 
 DOCSDIR=	${PREFIX}/share/doc/cyrus-sasl2

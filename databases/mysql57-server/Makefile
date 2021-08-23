@@ -32,6 +32,7 @@ LIB_DEPENDS+=	libcurl.so:ftp/curl \
 
 CMAKE_BUILD_TYPE=	Release
 
+CFLAGS+=	-DNDEBUG
 CXXFLAGS+=	-DNDEBUG
 
 CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
@@ -162,17 +163,6 @@ CMAKE_ARGS+=		-DWITH_SSL=${OPENSSLBASE}
 
 .if ${CHOSEN_COMPILER_TYPE} == gcc
 CXXFLAGS+=	-fpermissive
-.endif
-
-# mysql57-server fails to compile with llvm11, which was imported to current in r364284
-# without a version increase (1300109 = r364274).
-# Until a proper fix is provided, simply use llvm from ports, which probably could be
-# a backport of amongst other tings:
-# https://github.com/mysql/mysql-server/commit/08f46b3c00ee70e7ed7825daeb91df2289f80f50
-.if ${CHOSEN_COMPILER_TYPE} == clang && ${OPSYS} == FreeBSD && ${OSVERSION} >= 1300109
-BUILD_DEPENDS+=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
-CC=		${LOCALBASE}/bin/clang${LLVM_DEFAULT}
-CXX=		${LOCALBASE}/bin/clang++${LLVM_DEFAULT}
 .endif
 
 .if ${ARCH} == powerpc

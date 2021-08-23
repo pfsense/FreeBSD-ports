@@ -221,6 +221,7 @@
     SUBDIR += guile-www
     SUBDIR += gurl
     SUBDIR += gwsocket
+    SUBDIR += h2c
     SUBDIR += h2o
     SUBDIR += h2o-devel
     SUBDIR += habari
@@ -260,6 +261,7 @@
     SUBDIR += ilias6
     SUBDIR += interchange
     SUBDIR += itop
+    SUBDIR += janus
     SUBDIR += jericho-html
     SUBDIR += jesred
     SUBDIR += jetty8
@@ -1893,7 +1895,9 @@
     SUBDIR += rubygem-faraday-net_http
     SUBDIR += rubygem-faraday-net_http_persistent
     SUBDIR += rubygem-faraday-patron
+    SUBDIR += rubygem-faraday-rack
     SUBDIR += rubygem-faraday0
+    SUBDIR += rubygem-faraday14
     SUBDIR += rubygem-faraday_middleware
     SUBDIR += rubygem-faraday_middleware0
     SUBDIR += rubygem-faye
@@ -2330,6 +2334,7 @@
     SUBDIR += wordpress
     SUBDIR += wpebackend-fdo
     SUBDIR += writeas-cli
+    SUBDIR += writefreely
     SUBDIR += wsdlpull
     SUBDIR += wslay
     SUBDIR += wsmake

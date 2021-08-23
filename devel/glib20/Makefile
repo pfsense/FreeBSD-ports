@@ -1,7 +1,7 @@
 # Created by: Vanilla I. Shu <vanilla@FreeBSD.org>
 
 PORTNAME=	glib
-DISTVERSION=	2.66.8
+DISTVERSION=	2.68.3
 PORTREVISION=	0
 PORTEPOCH=	2
 CATEGORIES=	devel
@@ -32,7 +32,7 @@ MESON_ARGS=	-Db_lundef=false \
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 PORTSCOUT=	limitw:1,even
 
-_LIBVERSION=	0.6600.8
+_LIBVERSION=	0.6800.3
 PLIST_SUB=	LIBVERSION=${_LIBVERSION}
 
 OPTIONS_DEFINE=	DEBUG FAM_ALTBACKEND MANPAGES NLS
@@ -56,10 +56,6 @@ MESON_ARGS+=	-Ddtrace=false
 MESON_ARGS+=	-Diconv=libc
 .else
 MESON_ARGS+=	-Diconv=external
-.endif
-
-.if ${ARCH} == powerpc64
-EXTRA_PATCHES=	${FILESDIR}/extra-arch-powerpc64
 .endif
 
 pre-configure-FAM_ALTBACKEND-on:

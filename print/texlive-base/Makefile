@@ -1,13 +1,13 @@
 PORTNAME=	texlive
 PORTVERSION=	20150521
-PORTREVISION=	69
+PORTREVISION=	70
 CATEGORIES=	print
 MASTER_SITES=	TEX_CTAN/systems/texlive/Source/
 PKGNAMESUFFIX=	-base
 DISTNAME=	${PORTNAME}-${DISTVERSION}-source
 DIST_SUBDIR=	TeX
 
-MAINTAINER=	freebsd-tex@FreeBSD.org
+MAINTAINER=	tex@FreeBSD.org
 COMMENT=	TeX Live Typesetting System, base binaries
 
 LIB_DEPENDS=	libicuio.so:devel/icu \
@@ -64,6 +64,8 @@ SHEBANG_FILES=	texk/texlive/linked_scripts/accfonts/mkt1font \
 	texk/texlive/linked_scripts/ulqda/ulqda.pl \
 	texk/texlive/linked_scripts/urlbst/urlbst \
 	texk/texlive/linked_scripts/yplan/yplan
+
+BINARY_ALIAS=	freetype-config=true
 
 # during build phase gnu configure is run a lot
 GNU_CONFIGURE=	yes
@@ -128,7 +130,7 @@ post-patch:
 	    tl_scripts/texconfig-sys.sh \
 	    linked_scripts/texlive/updmap-sys.sh
 	${REINPLACE_CMD} -e 's|/usr/bin/python -O|${python_CMD}|' \
-		${WRKSRC}/texk/texlive/linked_scripts/de-macro/de-macro \
+		${WRKSRC}/texk/texlive/linked_scripts/de-macro/de-macro
 
 post-install-fmtutil:
 	for D in ${TEXHASHDIRS}; do \

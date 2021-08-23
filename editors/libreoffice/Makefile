@@ -1,4 +1,4 @@
-PORTREVISION=	0
+PORTREVISION=	1
 
 .include "${.CURDIR}/Makefile.common"
 
@@ -77,6 +77,7 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libmythes-1.2.so:textproc/mythes \
 		libraptor2.so:textproc/raptor2 \
 		librdf.so:textproc/redland \
+		libZXing.so:textproc/zxing-cpp \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libxcb-icccm.so:x11/xcb-util-wm \
 		libserf-1.so:www/serf
@@ -91,7 +92,7 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 
 DISTFILES+=	f543e6e2d7275557a839a164941c0a86e5f2c3f2a0042bfc434c88c6dde9e140-opens___.ttf:ext
 DISTFILES+=	dtoa-20180411.tgz:src
-DISTFILES+=	skia-m88-59bafeeaa7de9eb753e3778c414e01dcf013dcd8.tar.xz:src
+DISTFILES+=	skia-m90-45c57e116ee0ce214bdf78405a4762722e4507d9.tar.xz:src
 
 NOT_FOR_ARCHS=		armv6 armv7
 NOT_FOR_ARCHS_REASON=	Unsupported host_cpu
@@ -117,7 +118,7 @@ USE_PERL5=	build
 USE_XORG=	ice sm x11 xaw xcb xext xinerama xrandr xrender
 
 OPTIONS_DEFINE=	COINMP CUPS DOCS GNOME GTK3 JAVA KF5 LTO MMEDIA PGSQL MARIADB QT5 SDK TEST WEBDAV
-OPTIONS_DEFAULT=	CUPS MMEDIA QT5
+OPTIONS_DEFAULT=	CUPS JAVA MMEDIA QT5
 
 .if !defined(DEFAULT_VERSIONS) || ! ${DEFAULT_VERSIONS:Mssl=*}
 # Blocked by net/qt5-network: cannot use QT5 with default OpenSSL
@@ -260,6 +261,7 @@ CONFIGURE_ARGS=	--disable-dependency-tracking \
 		--with-system-libxml \
 		--with-system-ucpp \
 		--with-system-zlib \
+		--with-system-zxing \
 		--with-vendor="FreeBSD ports" \
 		--without-fonts \
 		--without-myspell-dicts
@@ -272,7 +274,10 @@ CONFIGURE_ENV=	DMAKE=${LOCALBASE}/bin/dmake \
 		ICU_LIBS="`icu-config --ldflags`" \
 		PYTHON_CFLAGS="`${PYTHON_VERSION}-config --cflags`" \
 		PYTHON_LIBS="`${PYTHON_VERSION}-config --libs`" \
+		ZXING_CFLAGS=-I/usr/local/include/ZXing \
 		ac_cv_path_SED=${LOCALBASE}/bin/gsed
+
+CONFIGURE_SHELL=	${LOCALBASE}/bin/bash
 
 MAKE_ARGS+=	TMPDIR=${WRKDIR}
 MAKE_ENV+=	CXXFLAGS_WARN="${CXXFLAGS_WARN}"

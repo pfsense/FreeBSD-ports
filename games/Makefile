@@ -113,6 +113,7 @@
     SUBDIR += brickshooter
     SUBDIR += brikx
     SUBDIR += briquolo
+    SUBDIR += brogue
     SUBDIR += brumbrumrally
     SUBDIR += brutalchess
     SUBDIR += bs
@@ -485,6 +486,7 @@
     SUBDIR += libretro-beetle_pce_fast
     SUBDIR += libretro-beetle_pcfx
     SUBDIR += libretro-beetle_psx
+    SUBDIR += libretro-beetle_saturn
     SUBDIR += libretro-beetle_supergrafx
     SUBDIR += libretro-beetle_vb
     SUBDIR += libretro-beetle_wswan
@@ -498,6 +500,7 @@
     SUBDIR += libretro-fbneo
     SUBDIR += libretro-fceumm
     SUBDIR += libretro-fmsx
+    SUBDIR += libretro-freeintv
     SUBDIR += libretro-fuse
     SUBDIR += libretro-gambatte
     SUBDIR += libretro-genesis_plus_gx
@@ -755,7 +758,7 @@
     SUBDIR += pokerth
     SUBDIR += polyglot
     SUBDIR += pongix
-    SUBDIR += ponscripter-sekai
+    SUBDIR += ponscripter-07th-mod
     SUBDIR += popstar
     SUBDIR += pouetchess
     SUBDIR += powder
@@ -1007,6 +1010,7 @@
     SUBDIR += voadi
     SUBDIR += volleyball
     SUBDIR += vor
+    SUBDIR += vt100-art-and-animations
     SUBDIR += vultures-eye
     SUBDIR += vvvvvv
     SUBDIR += wanderer

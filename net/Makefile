@@ -276,6 +276,7 @@
     SUBDIR += ip6_int
     SUBDIR += ipdecap
     SUBDIR += ipgrab
+    SUBDIR += ipinfo-cli
     SUBDIR += ipsumdump
     SUBDIR += ipsvd
     SUBDIR += ipxe
@@ -292,6 +293,7 @@
     SUBDIR += jicmp
     SUBDIR += jicmp6
     SUBDIR += jose
+    SUBDIR += jotta-cli
     SUBDIR += jrdesktop
     SUBDIR += jsch
     SUBDIR += jumpgate
@@ -544,7 +546,6 @@
     SUBDIR += openbgpd
     SUBDIR += openbgpd6
     SUBDIR += openldap24-client
-    SUBDIR += openldap24-sasl-client
     SUBDIR += openldap24-server
     SUBDIR += openmdns
     SUBDIR += openmpi
@@ -1189,6 +1190,7 @@
     SUBDIR += rfbproxy
     SUBDIR += rinetd
     SUBDIR += ripe-whois
+    SUBDIR += rospo
     SUBDIR += routinator
     SUBDIR += rp-pppoe
     SUBDIR += rpki-client
@@ -1545,6 +1547,7 @@
     SUBDIR += webalizer-geodb
     SUBDIR += whois
     SUBDIR += widentd
+    SUBDIR += wifibox
     SUBDIR += wireguard
     SUBDIR += wireguard-go
     SUBDIR += wireguard-kmod

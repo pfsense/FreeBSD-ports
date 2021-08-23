@@ -23,6 +23,7 @@
     SUBDIR += gnustep-gui
     SUBDIR += granite
     SUBDIR += gstreamer1-plugins-gtk
+    SUBDIR += gstreamer1-plugins-gtk4
     SUBDIR += gstreamer1-plugins-pango
     SUBDIR += gtk-layer-shell
     SUBDIR += gtk-sharp-beans
@@ -69,6 +70,7 @@
     SUBDIR += libXt
     SUBDIR += libadwaita
     SUBDIR += libdazzle
+    SUBDIR += libdecor
     SUBDIR += libgdiplus
     SUBDIR += libhandy
     SUBDIR += libhandy0

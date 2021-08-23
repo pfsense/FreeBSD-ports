@@ -6,18 +6,6 @@ MODE="$2" # PRE-INSTALL, POST-INSTALL, DEINSTALL, POST-DEINSTALL
 
 case "$MODE" in
 POST-INSTALL)
-	# try to replace the e2fsck and its wrapper, fsck_ext2fs, 
-	# symbolic links by hard links if possible (pkg ships them as symlinks)
-	d1=${PKG_ROOTDIR}/sbin/ ;              dev1=$(stat -Lf %Xd "$d1")
-	d2=${PKG_ROOTDIR}${PKG_PREFIX}/sbin/ ; dev2=$(stat -Lf %Xd "$d2")
-	if [ "$dev1" = "$dev2" ] && [ "$(realpath "$d1")" != "$(realpath "$d2")" ]; then
-		for i in e2fsck fsck_ext2fs ; do
-			ln -fhP ${d1}${i} ${d2}${i}
-		done
-		for i in ext2 ext3 ext4 ; do
-			ln -fhP ${d2}e2fsck ${d2}fsck.$i
-		done
-	fi
 	#
 	# install configuration file and update config files from
 	# old "ext4dev" to current "ext4" name.
@@ -29,13 +17,16 @@ POST-INSTALL)
 		else
 			rc=0
 			grep -q ext4dev ${PKG_PREFIX}/etc/mke2fs.conf || rc=$?
+			# !!! the echo messages below deliberately contain spacing errors
+			# so that the file names can be double-clicked in a typical console
+			# window for copying and pasting without keen targeting with the mouse.
 			case $rc in
 			1) # ext4dev not found (old name)
 				cp -f -p ${PKG_PREFIX}/etc/mke2fs.conf.dist \
 					${PKG_PREFIX}/etc/mke2fs.conf.e2fsprogs-new
 				echo "==========================================================================="
 				echo "Warning: installing mke2fs.conf in ${PKG_PREFIX}/etc/mke2fs.conf.e2fsprogs-new"
-				echo "Check to see if you need to update your ${PKG_PREFIX}/etc/mke2fs.conf"
+				echo "Check to see if you need to update your ${PKG_PREFIX}/etc/mke2fs.conf ."
 				echo "==========================================================================="
 				;;
 			0) # ext4dev found (old name)
@@ -45,7 +36,7 @@ POST-INSTALL)
 					${PKG_PREFIX}/etc/mke2fs.conf
 				echo "==========================================================================="
 				echo "Your mke2fs.conf is too old.  Backing up old version in"
-				echo "${PKG_PREFIX}/etc/mke2fs.conf.e2fsprogs-old.  Please check to see"
+				echo "${PKG_PREFIX}/etc/mke2fs.conf.e2fsprogs-old .  Please check to see"
 				echo "if you have any local customizations that you wish to preserve."
 				echo "==========================================================================="
 				;;
@@ -59,23 +50,27 @@ POST-INSTALL)
 		cp -p   ${PKG_PREFIX}/etc/mke2fs.conf.dist \
 			${PKG_PREFIX}/etc/mke2fs.conf
 	fi
+
 	;;
 DEINSTALL)
+	# !!! the echo messages below deliberately contain spacing errors
+	# so that the file names can be double-clicked in a typical console
+	# window for copying and pasting without keen targeting with the mouse.
 	if cmp -s ${PKG_PREFIX}/etc/mke2fs.conf \
 		${PKG_PREFIX}/etc/mke2fs.conf.dist
 	then
 		rm -f ${PKG_PREFIX}/etc/mke2fs.conf
-	else
+	elif [ "_${PKG_UPGRADE-upgrade}" = _upgrade ] ; then
 		echo "If and only if you are deleting e2fsprogs forever,"
-		echo "remember to delete ${PKG_PREFIX}/etc/mke2fs.conf."
+		echo "remember to delete ${PKG_PREFIX}/etc/mke2fs.conf ."
 	fi
 	# e2fsck.conf is no longer part of the distribution, but still supported,
 	# => no pkg-list @sample line possible
 	#    and no reference e2fsck.conf.sample or e2fsck.conf.dist is available 
-	if test -f ${PKG_PREFIX}/etc/e2fsck.conf
+	if test -f ${PKG_PREFIX}/etc/e2fsck.conf -a "_${PKG_UPGRADE-upgrade}" = _upgrade
 	then
 		echo "If and only if you are deleting e2fsprogs forever,"
-		echo "remember to delete ${PKG_PREFIX}/etc/e2fsck.conf."
+		echo "remember to delete ${PKG_PREFIX}/etc/e2fsck.conf ."
 	fi
 	;;
 esac

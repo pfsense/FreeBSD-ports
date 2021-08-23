@@ -61,6 +61,7 @@
     SUBDIR += asmem
     SUBDIR += asmon
     SUBDIR += asusoled
+    SUBDIR += atf-fvp
     SUBDIR += atf-master
     SUBDIR += atf-rk3328
     SUBDIR += atf-rk3399
@@ -238,6 +239,7 @@
     SUBDIR += daemontools
     SUBDIR += daemontools-encore
     SUBDIR += daggy
+    SUBDIR += damager
     SUBDIR += dar
     SUBDIR += datadog-agent
     SUBDIR += datadog-integrations
@@ -312,6 +314,7 @@
     SUBDIR += dwatch-json
     SUBDIR += dwatch-pwsnoop
     SUBDIR += e2fsprogs
+    SUBDIR += e2tools
     SUBDIR += ebsnvme-id
     SUBDIR += ec2-scripts
     SUBDIR += eclat
@@ -429,6 +432,7 @@
     SUBDIR += fusefs-zip
     SUBDIR += fvcool
     SUBDIR += fwup
+    SUBDIR += g15daemon
     SUBDIR += gaffitter
     SUBDIR += ganglia-monitor-core
     SUBDIR += ganglia-webfrontend
@@ -471,7 +475,6 @@
     SUBDIR += gotop
     SUBDIR += gpart
     SUBDIR += graffer
-    SUBDIR += graid5
     SUBDIR += graveman
     SUBDIR += graylog
     SUBDIR += grub2-bhyve
@@ -576,6 +579,7 @@
     SUBDIR += kdf
     SUBDIR += kdialog
     SUBDIR += keyboard-daemon
+    SUBDIR += keyd
     SUBDIR += kf5-baloo
     SUBDIR += kf5-kwallet
     SUBDIR += kfloppy
@@ -806,9 +810,7 @@
     SUBDIR += openipmi
     SUBDIR += opensbi
     SUBDIR += openseachest
-    SUBDIR += openshift-install-devel
-    SUBDIR += openshift-install45
-    SUBDIR += openshift-install46
+    SUBDIR += openshift-install
     SUBDIR += openupsd
     SUBDIR += openzfs
     SUBDIR += openzfs-kmod
@@ -1367,6 +1369,7 @@
     SUBDIR += toybox
     SUBDIR += tracker
     SUBDIR += tracker-miners
+    SUBDIR += tracker3
     SUBDIR += tree
     SUBDIR += triton
     SUBDIR += trueos-libqt5
@@ -1584,6 +1587,7 @@
     SUBDIR += zrepl
     SUBDIR += zsd
     SUBDIR += zsm
+    SUBDIR += ztop
     SUBDIR += zxfer
 
 .include <bsd.port.subdir.mk>

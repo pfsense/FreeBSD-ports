@@ -2,13 +2,12 @@
 
 PORTNAME=	mesa-libs
 PORTVERSION=	${MESAVERSION}
+PORTREVISION=	2
 CATEGORIES=	graphics
 
 COMMENT=	OpenGL libraries that support GLX and EGL clients
 
-BROKEN_FreeBSD_11=	error: unknown type name 'Elf_Nhdr'
-
-BUILD_DEPENDS=	libglvnd>0:graphics/libglvnd
+LIB_DEPENDS=	libOpenGL.so:graphics/libglvnd
 
 OPTIONS_GROUP=			PLATFORM
 OPTIONS_GROUP_PLATFORM=		PLATFORM_X11 PLATFORM_WAYLAND

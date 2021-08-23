@@ -1,12 +1,12 @@
 # Created by: Eric van Gyzen <vangyzen@stat.duke.edu>
 
 PORTNAME=	libRmath
-DISTVERSION=	4.1.0
+DISTVERSION=	4.1.1
 CATEGORIES=	math lang
 MASTER_SITES=	CRAN/src/base/R-${PORTVERSION:C|\..*||}
 DISTNAME=	R-${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}
 
-MAINTAINER=	jrm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Standalone math library from R
 
 LICENSE=	GPLv2

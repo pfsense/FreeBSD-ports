@@ -1,7 +1,7 @@
 # Created by: Tom Judge <tj@FreeBSD.org>
 
 PORTNAME=	kibana
-PORTVERSION=	7.13.2
+PORTVERSION=	7.14.0
 DISTVERSIONSUFFIX=	-darwin-x86_64
 CATEGORIES=	textproc www
 MASTER_SITES=	https://artifacts.elastic.co/downloads/kibana/ \
@@ -38,7 +38,7 @@ SUB_LIST+=	PKGNAMESUFFIX=${PKGNAMESUFFIX} \
 
 #######################################################################
 # Set node-nan version here
-_NODE_NAN_VER=	2.14.2
+_NODE_NAN_VER=	2.15.0
 # Set node-re version here
 _NODE_RE2_VER=	1.16.0
 #######################################################################

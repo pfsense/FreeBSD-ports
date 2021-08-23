@@ -2,7 +2,7 @@
 
 PORTNAME=	ldapdiff
 PORTVERSION=	1.4.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net
 MASTER_SITES=	http://launchpadlibrarian.net/20391352/
 DISTNAME=	${PORTNAME}-${PORTVERSION}_src
@@ -12,7 +12,7 @@ COMMENT=	Utility for patching LDAP directories using LDIF files
 
 LICENSE=	GPLv3+
 
-USES=		iconv tar:tgz
+USES=		cpe iconv tar:tgz
 USE_OPENLDAP=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${LOCALBASE} \

@@ -1,5 +1,6 @@
 PORTNAME=	kitinerary
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	net kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -11,9 +12,11 @@ LIB_DEPENDS=	libphonenumber.so:devel/libphonenumber \
 		libpoppler.so:graphics/poppler \
 		libZXing.so:textproc/zxing-cpp
 
-USES=		compiler:c++11-lang cmake gettext gnome kde:5 pkgconfig qt:5 tar:xz
+USES=		compiler:c++11-lang cmake gettext gnome kde:5 pkgconfig qt:5 \
+		shared-mime-info ssl tar:xz
 USE_GNOME=	libxml2
-USE_KDE=	coreaddons ecm i18n
+USE_KDE=	archive coreaddons i18n \
+		ecm_build
 # Pim components
 USE_KDE+=	calendarcore contacts kpkpass mime
 USE_QT=		core declarative gui network \

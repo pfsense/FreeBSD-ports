@@ -20,6 +20,7 @@
     SUBDIR += deco
     SUBDIR += deutex
     SUBDIR += dpkg
+    SUBDIR += draco
     SUBDIR += dzip
     SUBDIR += engrampa
     SUBDIR += erlang-snappy
@@ -216,6 +217,7 @@
     SUBDIR += snzip
     SUBDIR += squsq
     SUBDIR += star
+    SUBDIR += streamvbyte
     SUBDIR += stuffit
     SUBDIR += szip
     SUBDIR += tar-stream-chunker
@@ -236,6 +238,7 @@
     SUBDIR += unmass
     SUBDIR += unrar
     SUBDIR += unrar-iconv
+    SUBDIR += unrpa
     SUBDIR += unshield
     SUBDIR += unzip
     SUBDIR += unzoo
@@ -243,6 +246,7 @@
     SUBDIR += urbackup-client
     SUBDIR += urbackup-server
     SUBDIR += v1541commander
+    SUBDIR += vbz-compression
     SUBDIR += xar
     SUBDIR += xarchive
     SUBDIR += xarchiver

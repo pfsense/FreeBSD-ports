@@ -1,6 +1,6 @@
 PORTNAME=	hunspell
 PORTVERSION=	20161207
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	german textproc
 MASTER_SITES=	https://www.j3e.de/ispell/igerman98/dict/ \
 		LOCAL/sunpoet/${PORTNAME}
@@ -25,22 +25,26 @@ USE_PERL5=	build
 
 ALL_TARGET=	hunspell-all
 NO_ARCH=	yes
-SHEBANG_FILES=	bin/*.pl
+SHEBANG_FILES=	bin/*.pl \
+		bin/conv_dict_de_CH
+SHEBANG_LANG=	sed
+sed_OLD_CMD=	/bin/sed
+sed_CMD=	${LOCALBASE}/bin/gsed
 
 BINARY_ALIAS=	sed=${LOCALBASE}/bin/gsed
 
-PLIST_FILES=	%%DATADIR%%/de_AT.aff \
-		%%DATADIR%%/de_AT.dic \
-		%%DATADIR%%/de_CH.aff \
-		%%DATADIR%%/de_CH.dic \
-		%%DATADIR%%/de_DE.aff \
-		%%DATADIR%%/de_DE.dic
+PLIST_FILES=	${DATADIR}/de_AT.aff \
+		${DATADIR}/de_AT.dic \
+		${DATADIR}/de_CH.aff \
+		${DATADIR}/de_CH.dic \
+		${DATADIR}/de_DE.aff \
+		${DATADIR}/de_DE.dic
 
 CHALIASES=	de_LI
 DEALIASES=	de_BE de_LU
 .for ALIAS in ${CHALIASES} ${DEALIASES}
-PLIST_FILES+=	%%DATADIR%%/${ALIAS}.aff \
-		%%DATADIR%%/${ALIAS}.dic
+PLIST_FILES+=	${DATADIR}/${ALIAS}.aff \
+		${DATADIR}/${ALIAS}.dic
 .endfor
 
 post-patch:

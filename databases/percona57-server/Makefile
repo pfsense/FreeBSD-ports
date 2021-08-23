@@ -1,7 +1,7 @@
 # Created by: Mark Felder <feld@FreeBSD.org>
 
 PORTNAME?=	percona
-DISTVERSION=	5.7.31-34
+DISTVERSION=	5.7.34-37
 PORTREVISION?=	0
 CATEGORIES=	databases
 MASTER_SITES=	http://www.percona.com/downloads/Percona-Server-5.7/Percona-Server-${DISTVERSION}/source/tarball/:percona \
@@ -18,6 +18,7 @@ LICENSE?=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 CPE_VENDOR=	percona
+CPE_PRODUCT=	percona_server
 
 LIB_DEPENDS=	libevent.so:devel/libevent \
 		liblz4.so:archivers/liblz4 \

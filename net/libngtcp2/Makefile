@@ -1,7 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
 
 PORTNAME=	ngtcp2
-PORTVERSION=	0.1.0.g20210624
+PORTVERSION=	0.1.0.g20210731
 CATEGORIES=	net
 PKGNAMEPREFIX=	lib
 
@@ -19,10 +19,10 @@ INSTALL_TARGET=	install-strip
 USE_CXXSTD=	c++17
 USE_LDCONFIG=	yes
 
-GH_TAGNAME=	f60c3fb
+GH_TAGNAME=	a14be4e
 USE_GITHUB=	yes
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|0.1.0-DEV|${PORTVERSION}|' ${WRKSRC}/configure.ac
+	@${REINPLACE_CMD} -e 's|%%PORTVERSION%%|${PORTVERSION}|' ${WRKSRC}/configure.ac
 
 .include <bsd.port.mk>

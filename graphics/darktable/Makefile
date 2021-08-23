@@ -1,8 +1,8 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
 
 PORTNAME=	darktable
-PORTVERSION=	3.4.1
-PORTREVISION=	7
+PORTVERSION=	3.6.0
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/darktable-org/${PORTNAME}/releases/download/release-${PORTVERSION:C/\.rc/rc/}/
 
@@ -23,6 +23,8 @@ LIB_DEPENDS=	libcolord-gtk.so:graphics/colord-gtk \
 		libcolord.so:graphics/colord \
 		libcurl.so:ftp/curl \
 		libexiv2.so:graphics/exiv2 \
+		libharfbuzz.so:print/harfbuzz \
+		libicui18n.so:devel/icu \
 		libjson-glib-1.0.so:devel/json-glib \
 		liblcms2.so:graphics/lcms2 \
 		liblensfun.so:graphics/lensfun \
@@ -31,8 +33,14 @@ LIB_DEPENDS=	libcolord-gtk.so:graphics/colord-gtk \
 		libsoup-2.4.so:devel/libsoup \
 		libtiff.so:graphics/tiff
 
-USES=		cmake compiler:c++14-lang desktop-file-utils gl gnome jpeg \
+# Fix build against cmake-3.21: the ninja generator in 3.21 suffers a
+# regression (see https://gitlab.kitware.com/cmake/cmake/-/issues/22487)
+# appending an invalid "-Wl,--no-as-needed" to the linker arguments for static
+# libraries.  Once this regression has been fixed upstream, this can be
+# switched back to USES=cmake, and LTO can be re-enabled.
+USES=		cmake:noninja compiler:c++14-lang desktop-file-utils gl gnome jpeg \
 		perl5 pkgconfig shebangfix sqlite tar:xz xorg
+OPTIONS_EXCLUDE=LTO
 USE_GL=		glu
 USE_GNOME=	cairo gtk30 intltool librsvg2 libxml2
 INSTALLS_ICONS=	yes
@@ -50,17 +58,21 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:C/\.rc/~rc/}
 
-OPTIONS_DEFINE=		DOCS GEO GPHOTO GRAPHMAGICK LIBAVIF LIBSECRET LTO LUA \
-			NLS OPENEXR OPENJPEG PRINT TOOLS WEBP
+OPTIONS_DEFINE=		DOCS GEO GPHOTO GMIC GRAPHMAGICK LIBAVIF LIBSECRET LTO \
+			LUA NLS OPENEXR OPENJPEG PRINT TOOLS WEBP
 OPTIONS_DEFAULT=	GEO GPHOTO LUA OPENEXR OPENJPEG PRINT WEBP
 OPTIONS_SUB=		yes
 
 GEO_DESC=		Support geotagging
+GMIC_DESC=		Support G'Mic-compressed LUT in lut3d
 LIBAVIF_DESC=		Support encoding and decoding .avif files
 LIBSECRET_DESC=		Support libsecret as password backend
 
 GEO_LIB_DEPENDS=	libosmgpsmap-1.0.so:x11-toolkits/osm-gps-map
 GEO_CMAKE_OFF=		-DUSE_MAP:BOOL=OFF
+
+GMIC_LIB_DEPENDS=	libgmic.so:graphics/gmic
+GMIC_CMAKE_OFF=		-DUSE_GMIC:BOOL=OFF
 
 GPHOTO_LIB_DEPENDS=	libgphoto2.so:graphics/libgphoto2
 GPHOTO_CMAKE_OFF=	-DUSE_CAMERA_SUPPORT:BOOL=OFF
@@ -117,7 +129,7 @@ PLIST_SUB+=	NO_OPENCL=""
 .include <bsd.port.pre.mk>
 
 .if ${CHOSEN_COMPILER_TYPE} == clang && ${OPSYS} == FreeBSD || ${ARCH} == "i386"
-LLVM_DEFAULT=	10
+LLVM_DEFAULT=	12
 BUILD_DEPENDS+=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 CC=		${LOCALBASE}/bin/clang${LLVM_DEFAULT}
 CPP=		${LOCALBASE}/bin/clang-cpp${LLVM_DEFAULT}

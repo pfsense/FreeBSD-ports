@@ -2,6 +2,7 @@
 
 PORTNAME=	gdal
 PORTVERSION=	3.3.1
+PORTREVISION=	2
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://download.osgeo.org/gdal/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -22,7 +23,7 @@ LIB_DEPENDS=	libgeotiff.so:graphics/libgeotiff \
 		libqhull.so.7:math/qhull \
 		libtiff.so:graphics/tiff
 
-OPTIONS_DEFINE=	ARMADILLO CFITSIO CHARLS CRYPTOPP CURL DEFLATE DODS ECW EXPAT EXR FREEXL GEOS GTA HDF5 HEIF JASPER KML LIBXML2 MYSQL NETCDF ODBC OPENJPEG PCRE PGSQL SFCGAL SPATIALITE SQLITE TILEDB WEBP XERCES ZSTD
+OPTIONS_DEFINE=	ARMADILLO CFITSIO CHARLS CRYPTOPP CURL DEFLATE DODS ECW EXPAT EXR FREEXL GEOS GTA HDF5 HEIF JASPER KML LERC LIBXML2 MYSQL NETCDF ODBC OPENJPEG PCRE PGSQL RASTERLITE2 SFCGAL SPATIALITE SQLITE TILEDB WEBP XERCES ZSTD
 OPTIONS_RADIO=	PDF
 OPTIONS_RADIO_PDF=	PODOFO POPPLER
 OPTIONS_DEFAULT=CURL EXPAT FREEXL GEOS JASPER LIBXML2 OPENJPEG PCRE PGSQL POPPLER WEBP ZSTD \
@@ -34,7 +35,9 @@ DEFLATE_DESC=	Faster deflate support via libdeflate library
 DODS_DESC=	DODS/OPeNDAP support
 EXR_DESC=	EXR support via OpenEXR library
 HEIF_DESC=	HEIF support via libheif library
+LERC_DESC=	LERC (Limited Error Raster Compression) support
 PCRE_DESC=	Regular expression support for SQLite
+RASTERLITE2_DESC=	RasterLite2 support
 TILEDB_DESC=	TileDB support
 
 USES=		compiler:c++14-lang gmake iconv jpeg localbase pkgconfig ssl tar:xz
@@ -127,6 +130,9 @@ JASPER_CONFIGURE_WITH=	jasper
 JASPER_LIB_DEPENDS=	libjasper.so:graphics/jasper
 KML_CONFIGURE_WITH=	libkml
 KML_LIB_DEPENDS=	libkmlbase.so:science/libkml
+LERC_CONFIGURE_OFF=	--with-lerc=no
+LERC_CONFIGURE_ON=	--with-lerc=${LOCALBASE}
+LERC_LIB_DEPENDS=	libLerc.so:graphics/lerc
 LIBXML2_CONFIGURE_OFF=	--with-xml2=no
 LIBXML2_CONFIGURE_ON=	--with-xml2=yes
 LIBXML2_LIB_DEPENDS=	libxml2.so:textproc/libxml2
@@ -148,6 +154,9 @@ PODOFO_CONFIGURE_WITH=	podofo
 PODOFO_LIB_DEPENDS=	libpodofo.so:graphics/podofo
 POPPLER_CONFIGURE_WITH=	poppler=${LOCALBASE}
 POPPLER_LIB_DEPENDS=	libpoppler.so:graphics/poppler
+RASTERLITE2_CONFIGURE_OFF=	--with-rasterlite2=no
+RASTERLITE2_CONFIGURE_ON=	--with-rasterlite2=${LOCALBASE}
+RASTERLITE2_LIB_DEPENDS=librasterlite2.so:graphics/librasterlite2
 SFCGAL_CONFIGURE_OFF=	--with-sfcgal=no
 SFCGAL_CONFIGURE_ON=	--with-sfcgal=${LOCALBASE}/bin/sfcgal-config
 SFCGAL_LIB_DEPENDS=	libSFCGAL.so:databases/sfcgal
@@ -176,6 +185,7 @@ post-patch:
 	@${RM} -r ${WRKSRC}/frmts/png/libpng/
 	@${RM} -r ${WRKSRC}/frmts/zlib/
 	@${RM} -r ${WRKSRC}/ogr/ogrsf_frmts/geojson/libjson/
+	@${RM} -r ${WRKSRC}/third_party/LercLib/
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d
