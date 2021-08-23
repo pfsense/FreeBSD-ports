@@ -173,6 +173,7 @@ $a_instance = &$config['installedpackages']['suricata']['rule'];
 $suricata_uuid = $a_instance[$instanceid]['uuid'];
 $if_real = get_real_interface($a_instance[$instanceid]['interface']);
 $suricatalogdir = SURICATALOGDIR;
+$suricatadir = SURICATADIR;
 
 // Load up the arrays of force-enabled and force-disabled SIDs
 $enablesid = suricata_load_sid_mods($a_instance[$instanceid]['rule_sid_on']);
@@ -251,6 +252,36 @@ if (isset($_POST['geoip'])) {
 	exit;
 }
 # --- AJAX GEOIP CHECK End ---
+
+# --- AJAX RULE LOOKUP Start ---
+if (isset($_POST['rulelookup'])) {
+	list($gid, $sid) = explode(':', $_POST['rulelookup']);
+	foreach (glob("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/*") as $rule) {
+		$fd = fopen($rule, "r");
+		$buf = "";
+		while (($buf = fgets($fd)) !== FALSE) {
+			$matches = array();
+			preg_match('/sid\:([0-9]+);/i', $buf, $matches);
+			if ($sid == $matches[1]) {
+				preg_match('/gid\:([0-9]+);/i', $buf, $matches);
+				if (($gid == $matches[1]) ||
+				    (empty($matches[1]) && ($gid == 1))) {
+					$res = $buf;
+					break 2;
+				}
+			}
+		}
+	}
+
+	if ($res)
+		$response = array('gidsid' => $_POST['rulelookup'], 'rule_text' => $res);
+	else
+		$response = array('gidsid' => $_POST['rulelookup'], 'rule_text' => gettext("Unable to find the rule"));
+
+	echo json_encode(str_replace("\\","\\\\", $response)); // single escape chars can break JSON decode
+	exit;
+}
+# --- AJAX RULE LOOKUP End ---
 
 # Check for persisted filtering of alerts log entries and populate
 # the required $filterfieldsarray when persisting filtered entries.
@@ -1217,7 +1248,10 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			$alert_dst_p = $fields['dport'];
 
 			/* SID */
-			$alert_sid_str = "{$fields['gid']}:{$fields['sid']}";
+			$alert_sid_str = '<a onclick="javascript:rulelookup_with_ajax(\'' .
+				    $fields['gid'] . ':' . $fields['sid'] . '\');" title="' .
+				    gettext("Show the rule") . '" style="cursor: pointer;" >' .
+		       		    $fields['gid'] . ':' . $fields['sid'] . '</a>';
 			if (!suricata_is_alert_globally_suppressed($supplist, $fields['gid'], $fields['sid'])) {
 				$sidsupplink = "<i class=\"fa fa-plus-square-o icon-pointer\" onClick=\"encRuleSig('{$fields['gid']}','{$fields['sid']}','','{$alert_descr}');$('#mode').val('addsuppress');$('#formalert').submit();\"";
 				$sidsupplink .= ' title="' . gettext("Add this alert to the Suppress List") . '"></i>';
@@ -1423,6 +1457,27 @@ function geoip_with_ajax(ip_to_check) {
 function geoip_callback(transport) {
 	var response = $.parseJSON(transport.responseText);
 	alert(htmlspecialchars(response.geoip_text));
+}
+
+function rulelookup_with_ajax(gidsid) {
+	var url = "/suricata/suricata_alerts.php";
+
+	$.ajax(
+		url,
+		{
+			type: 'post',
+			dataType: 'json',
+			data: {
+				rulelookup: gidsid,
+			      },
+			complete: rulelookup_callback
+		});
+}
+
+function rulelookup_callback(transport) {
+	var response = $.parseJSON(transport.responseText);
+	var msg = 'GID:SID ' + response.gidsid + ' rule:\n';
+	alert(msg + response.rule_text);
 }
 
 // From http://stackoverflow.com/questions/5499078/fastest-method-to-escape-html-tags-as-html-entities
