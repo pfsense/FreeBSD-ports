@@ -212,6 +212,9 @@ if (!is_numeric($anentries)) {
 if (isset($_POST['resolve'])) {
 	$ip = strtolower($_POST['resolve']);
 	$res = (is_ipaddr($ip) ? gethostbyaddr($ip) : '');
+	if (strpos($res, 'xn--') !== false) {
+		$res = idn_to_utf8($res);
+	}
 
 	if ($res && $res != $ip)
 		$response = array('resolve_ip' => $ip, 'resolve_text' => $res);
