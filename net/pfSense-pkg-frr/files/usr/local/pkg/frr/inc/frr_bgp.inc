@@ -265,9 +265,10 @@ function frr_bgp_generate_router() {
 		}
 
 		/* (Re)distribute */
-		foreach (array('connected', 'static', 'kernel', 'ospf', 'ospf6') as $redist) {
-			if (($ipfamily == 'ipv4' && $redist == 'ospf6') ||
-				($ipfamily == 'ipv6' && $redist == 'ospf')) {
+		foreach (array('connected', 'static', 'kernel', 'ospf', 'ospf6', 'rip') as $redist) {
+			if ((($ipfamily == 'ipv4') && ($redist == 'ospf6')) ||
+			    (($ipfamily == 'ipv6') && ($redist == 'ospf')) || 
+			    (($ipfamily == 'ipv6') && ($redist == 'rip'))) {
 					continue;
 				}
 

@@ -60,6 +60,12 @@
 		<url>/pkg_edit.php?xml=frr/frr_ospf6.xml</url>
 	</menu>
 	<menu>
+		<name>FRR RIP</name>
+		<section>Services</section>
+		<configfile>frr.xml</configfile>
+		<url>/pkg_edit.php?xml=frr/frr_rip.xml</url>
+	</menu>
+	<menu>
 		<name>FRR</name>
 		<section>Status</section>
 		<configfile>frr.xml</configfile>
@@ -104,6 +110,10 @@
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
 		</tab>
 		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
+		</tab>
+		<tab>
 			<text>Status</text>
 			<url>/status_frr.php</url>
 		</tab>
@@ -143,6 +153,12 @@
 		<rcfile>frr.sh</rcfile>
 		<executable>ospf6d</executable>
 		<description>FRR OSPF6 routing daemon</description>
+	</service>
+	<service>
+		<name>FRR ripd</name>
+		<rcfile>frr.sh</rcfile>
+		<executable>ripd</executable>
+		<description>FRR RIP routing daemon</description>
 	</service>
 	<service>
 		<name>FRR watchfrr</name>

@@ -329,6 +329,7 @@ function frr_generate_config_ospf() {
 		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($frr_ospfd_conf, 'redistributeconnectedsubnets', 'connected');
 		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($frr_ospfd_conf, 'redistributekernel', 'kernel');
 		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($frr_ospfd_conf, 'redistributebgp', 'bgp');
+		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($frr_ospfd_conf, 'redistributerip', 'rip');
 		$frr_integrated_config['ospfd'] .= frr_generate_config_ospf_redistribute($frr_ospfd_conf, 'redistributestatic', 'static');
 		if ($frr_ospfd_conf['redistributedefaultroute']) {
 			$frr_integrated_config['ospfd'] .= " default-information originate";

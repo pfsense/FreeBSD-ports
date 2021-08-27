@@ -60,6 +60,10 @@
 			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
 		</tab>
 		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
+		</tab>
+		<tab>
 			<text>Status</text>
 			<url>/status_frr.php?protocol=ospf6</url>
 		</tab>

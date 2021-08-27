@@ -33,7 +33,7 @@ global $frr_config_base;
 $frr_config_base = PKG_FRR_CONFIG_BASE;
 
 global $frr_daemons;
-$frr_daemons = array('zebra', 'staticd', 'bgpd', 'ospfd', 'ospf6d', 'bfdd');
+$frr_daemons = array('zebra', 'staticd', 'bgpd', 'ospfd', 'ospf6d', 'ripd', 'bfdd');
 
 global $frr_well_known_communities;
 $frr_well_known_communities = array("internet", "no-export", "no-advertise", "local-as");
@@ -55,6 +55,7 @@ require_once("frr/inc/frr_bfd.inc");
 require_once("frr/inc/frr_bgp.inc");
 require_once("frr/inc/frr_ospf.inc");
 require_once("frr/inc/frr_ospf6.inc");
+require_once("frr/inc/frr_rip.inc");
 
 /* Build a list of only CARP VIPs, formatted for use in a selection list */
 function frr_get_carp_list() {
@@ -290,7 +291,8 @@ function frr_generate_config_rcfile() {
 		'frrbfd' => array('bfdd'),
 		'frrbgp' => array('bgpd'),
 		'frrospfd' => array('ospfd'),
-		'frrospf6d' => array('ospf6d')
+		'frrospf6d' => array('ospf6d'),
+		'frrripd' => array('ripd')
 	);
 
 	/* Get FRR daemons enabled */
@@ -688,6 +690,9 @@ function frr_generate_config() {
 	/* OSPF6 Configuration */
 	frr_generate_config_ospf6();
 
+	/* RIP Configuration */
+	frr_generate_config_rip();
+
 	/* BFD Configuration */
 	frr_generate_config_bfd();
 
@@ -743,7 +748,7 @@ function frr_flatten_config_interfaces() {
 		$interfaces_config .= "interface {$interface}\n";
 		$interface_description = "";
 
-		foreach(array('ospfd', 'ospf6d') as $service) {
+		foreach(array('ospfd', 'ospf6d', 'ripd') as $service) {
 			if (empty($frr_integrated_config['interfaces_descr'][$interface][$service])) {
 				continue;
 			}
@@ -828,7 +833,7 @@ function frr_generate_config_integrated() {
 		}
 
 		frr_flatten_config_interfaces();
-		$conf_keys = array('staticd', 'interfaces', 'bgpd', 'rpki', 'ospfd', 'ospf6d', 'zebra', 'bfdd');
+		$conf_keys = array('staticd', 'interfaces', 'bgpd', 'rpki', 'ospfd', 'ospf6d', 'ripd', 'zebra', 'bfdd');
 		foreach ($conf_keys as $key) {
 			if (empty($frr_integrated_config[$key])) {
 				continue;

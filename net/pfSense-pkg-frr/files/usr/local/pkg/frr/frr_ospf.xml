@@ -64,6 +64,10 @@
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
 		</tab>
 		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
+		</tab>
+		<tab>
 			<text>Status</text>
 			<url>/status_frr.php?protocol=ospf</url>
 		</tab>
@@ -366,6 +370,55 @@
 			<description>
 				<![CDATA[
 				BGP routes are routes obtained from BGP neighbors.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>RIP Routes</fielddescr>
+			<fieldname>redistributerip</fieldname>
+			<description>Redistribute RIP</description>
+			<type>checkbox</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Metric</fielddescr>
+			<fieldname>redistributerip_metric</fieldname>
+			<description>Metric</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Metric Type</fielddescr>
+			<fieldname>redistributerip_metrictype</fieldname>
+			<description>Metric Type 1/2</description>
+			<type>input</type>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<fieldname>redistributerip_routemap</fieldname>
+			<description>Route Map</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Distribute List</fielddescr>
+			<fieldname>redistributerip_distlist</fieldname>
+			<description>Distribute List</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_accesslist_list(true, false)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				RIP routes are routes obtained from RIP neighbors.
 				]]>
 			</description>
 			<type>info</type>

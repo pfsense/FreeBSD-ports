@@ -72,6 +72,10 @@
 			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
 		</tab>
 		<tab>
+			<text>[RIP]</text>
+			<url>pkg_edit.php?xml=frr/frr_rip.xml</url>
+		</tab>
+		<tab>
 			<text>Status</text>
 			<url>/status_frr.php?protocol=bgp</url>
 		</tab>
@@ -301,6 +305,16 @@
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Redistribute RIP</fielddescr>
+			<fieldname>redistributerip</fieldname>
+			<description>Redistribute RIP routes to BGP Neighbors</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<combinefields>begin</combinefields>
 		</field>
 		<field>
 			<fielddescr>Networks to Distribute</fielddescr>

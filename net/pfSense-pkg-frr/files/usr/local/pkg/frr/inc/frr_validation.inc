@@ -773,3 +773,53 @@ function frr_bfd_profile_validate_input() {
 		frr_validate_intrange_input("Minimum TTL", $_POST['minimumttl'], 1, 254);
 	}
 }
+
+function frr_rip_validate_input() {
+	global $config, $input_errors;
+
+	for ($x = 0; $x < 99; $x++) {
+		if (isset($_POST["routevalue{$x}"]) && !empty($_POST["routevalue{$x}"]) &&
+		    !is_subnetv4($_POST["routevalue{$x}"])) {
+			$input_errors[] = "RIP Network must be an IPv4 subnet.";
+		} else {
+			break;
+		}
+	}
+
+	frr_validate_intrange_input("Connected Metric", $_POST['redistributeconnectedsubnets_metric'], 0, 16);
+	frr_validate_intrange_input("Kernel Metric", $_POST['redistributekernel_metric'], 0, 16);
+	frr_validate_intrange_input("BGP Metric", $_POST['redistributebgp_metric'], 0, 16);
+	frr_validate_intrange_input("BGP Metric", $_POST['redistributeospf_metric'], 0, 16);
+	frr_validate_intrange_input("Static Metric", $_POST['redistributestatic_metric'], 0, 16);
+	frr_validate_intrange_input("Default Route Metric", $_POST['redistributedefaultroute_metric'], 0, 16);
+}
+
+function frr_rip_interfaces_validate_input() {
+	global $config, $id, $input_errors;
+
+	if ($config['installedpackages']['frrripdinterfaces']['config']) {
+		foreach ($config['installedpackages']['frrripdinterfaces']['config'] as $index => $conf) {
+			if ($index == 0) {
+				continue;
+			}
+			if ($id != $index && $conf['interface'] == $_POST['interface']) {
+				$input_errors[] = "Interface {$_POST['interface']} is already configured.";
+			}
+		}
+	}
+	if (!empty($_POST['authtype']) && !in_array($_POST['authtype'], array('digest', 'simple', 'null'))) {
+		$input_errors[] = "Invalid authentication type.";
+	}
+	if (!empty($_POST['authtype']) && empty($_POST['password'])) {
+		$input_errors[] = "Please input a password.";
+	} elseif (!empty($_POST['authtype']) && (strlen($_POST['password']) > 16)) {
+		$input_errors[] = "Message Digest Password must be 16 characters or less.";
+	}
+}
+
+function frr_rip_neighbors_validate_input() {
+	global $config, $id, $input_errors;
+	if (!is_ipaddrv4($_POST['neighbor'])) {
+		$input_errors[] = "Neighbor must be a valid IPv4 address.";
+	}
+}

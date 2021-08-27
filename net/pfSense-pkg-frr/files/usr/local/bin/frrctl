@@ -200,6 +200,19 @@ bfd*)
 		daemon_command "show bfd peers counters"
 		;;
 	esac ;;
+rip*)
+	if [ "`pgrep ripd`" = "" ]; then
+		echo "ripd does not appear to be running"
+		exit 1
+	fi
+	case $2 in
+	rou*)
+		daemon_command "show ip rip"
+		;;
+	gen*)
+		daemon_command "show ip rip status"
+		;;
+	esac ;;
 cycleinterface)
 	daemon_command "config terminal" "interface $2" "shutdown"
 	sleep 1;
