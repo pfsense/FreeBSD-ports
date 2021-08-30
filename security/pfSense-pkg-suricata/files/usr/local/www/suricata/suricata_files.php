@@ -473,7 +473,7 @@ if ($filterlogentries && count($filterfieldsarray)) {
 
 /* make sure alert file exists */
 if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid}/eve.json")) {
-	exec("/usr/bin/grep filename {$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid}/eve.json | /usr/bin/tail -{$fnentries} > {$g['tmp_path']}/files_suricata{$suricata_uuid}");
+	exec("/usr/bin/grep filename {$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid}/eve.json | /usr/bin/tail -{$fnentries} -r > {$g['tmp_path']}/files_suricata{$suricata_uuid}");
 	if (file_exists("{$g['tmp_path']}/files_suricata{$suricata_uuid}")) {
 		$tmpblocked = array_flip(suricata_get_blocked_ips());
 		$counter = 0;
