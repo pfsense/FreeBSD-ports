@@ -21,6 +21,9 @@ SUB_LIST=	PORTNAME=${PORTNAME} \
 
 DATADIR=	${PREFIX}/share/pfSense
 
+# Flag used to detect when we want to reinstall all packages during upgrade
+PFSENSE_PKG_SET_VERSION?=	${DISTVERSION}
+
 .include <bsd.port.pre.mk>
 
 PFSENSE_REPOS?=	pfSense-repo pfSense-repo-devel
@@ -33,7 +36,8 @@ TMP_PLIST_FILES=${PFSENSE_REPOS_${ARCH}:C/$/.conf/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.abi/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.altabi/}
 PLIST_FILES=	${TMP_PLIST_FILES:C/^/%%DATADIR%%\/pkg\/repos\//} \
-		${DEFAULT_REPO}.default
+		${DEFAULT_REPO}.default \
+		${DATADIR}/next_pkg_set_version
 DEFAULT_ABI=	${OPSYS}:${OSREL:C/\..*//}:${ARCH}
 
 .if ${ARCH} == "aarch64"
@@ -121,5 +125,7 @@ do-install:
 		${ECHO_CMD} ${DEFAULT_ALTABI} > ${STAGEDIR}${DATADIR}/pkg/repos/${f}.altabi; \
 	fi
 .endfor
+	${ECHO_CMD} ${PFSENSE_PKG_SET_VERSION} \
+		> ${STAGEDIR}${DATADIR}/next_pkg_set_version
 
 .include <bsd.port.post.mk>
