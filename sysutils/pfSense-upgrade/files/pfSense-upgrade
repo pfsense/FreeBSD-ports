@@ -1449,7 +1449,7 @@ elif [ -n "${force_ipv6}" ]; then
 fi
 
 # Flags used to determine if all packages must be reinstalled
-pkg_set_version="/usr/local/share/${product}/next_pkg_set_version"
+pkg_set_version="/usr/local/share/${product}/pkg_set_version"
 running_pkg_set_version="/usr/local/share/${product}/running_pkg_set_version"
 export pkg_set_version running_pkg_set_version
 
