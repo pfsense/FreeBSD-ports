@@ -265,6 +265,7 @@ elseif ($_POST['ResetAll']) {
 	$pconfig['imap_parser'] = "detection-only";
 	$pconfig['ssh_parser'] = "yes";
 	$pconfig['ftp_parser'] = "yes";
+	$pconfig['ftp_data_parser'] = "on";
 	$pconfig['dcerpc_parser'] = "yes";
 	$pconfig['smb_parser'] = "yes";
 	$pconfig['msn_parser'] = "detection-only";
@@ -458,6 +459,7 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		$natent['imap_parser'] = $_POST['imap_parser'];
 		$natent['ssh_parser'] = $_POST['ssh_parser'];
 		$natent['ftp_parser'] = $_POST['ftp_parser'];
+		$natent['ftp_data_parser'] = $_POST['ftp_data_parser'];
 		$natent['dcerpc_parser'] = $_POST['dcerpc_parser'];
 		$natent['smb_parser'] = $_POST['smb_parser'];
 		$natent['msn_parser'] = $_POST['msn_parser'];
@@ -701,6 +703,22 @@ if ($importalias) {
 	));
 	print($section);
 
+	$section = new Form_Section('FTP App-Layer Parser Settings');
+	$section->addInput(new Form_Select(
+		'ftp_parser',
+		'FTP Parser',
+		$pconfig['ftp_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for FTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Checkbox(
+		'ftp_data_parser',
+		'FTP DATA parser',
+		'Suricata will process FTP DATA port transfers. This feature is needed to save FTP uploads/download when File Store feature is enabled.',
+		$pconfig['ftp_data_parser'] == 'on' ? true:false,
+		'on'
+	));
+	print($section);
+
 	$section = new Form_Section('Other App-Layer Parser Settings');
 	$section->addInput(new Form_Select(
 		'dcerpc_parser',
@@ -714,12 +732,6 @@ if ($importalias) {
 		$pconfig['dhcp_parser'],
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for DHCP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
-	$section->addInput(new Form_Select(
-		'ftp_parser',
-		'FTP Parser',
-		$pconfig['ftp_parser'],
-		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
-	))->setHelp('Choose the parser/detection setting for FTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
 		'http2_parser',
 		'HTTP2 Parser',
