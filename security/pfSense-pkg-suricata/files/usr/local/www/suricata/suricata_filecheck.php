@@ -39,6 +39,7 @@ foreach ($a_instance as $instance) {
 		foreach (suricata_listfiles(base64_decode($instance['file_store_logdir'])) as $path) {
 			if (basename($path) == $file_hash) {
 				$filepath = $path;
+				$filetype = exec('/usr/bin/file -b ' . escapeshellarg($path) . ' 2>/dev/null');
 				break 2;
 			}
 		}
@@ -158,6 +159,10 @@ $section->addInput(new Form_StaticText(
 ));
 
 if ($filepath) {
+	$section->addInput(new Form_StaticText(
+		'Type',
+		$filetype
+	));
 	$section->addInput(new Form_Button(
 		'download',
 		'Download',

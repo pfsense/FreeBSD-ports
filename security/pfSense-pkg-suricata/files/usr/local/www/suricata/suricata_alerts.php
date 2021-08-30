@@ -254,7 +254,7 @@ if (isset($_POST['geoip'])) {
 # --- AJAX GEOIP CHECK End ---
 
 # --- AJAX RULE LOOKUP Start ---
-if (isset($_POST['rulelookup'])) {
+if (isset($_POST['rulelookup2'])) {
 	list($gid, $sid) = explode(':', $_POST['rulelookup']);
 	foreach (glob("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/*") as $rule) {
 		$fd = fopen($rule, "r");
@@ -278,6 +278,35 @@ if (isset($_POST['rulelookup'])) {
 	else
 		$response = array('gidsid' => $_POST['rulelookup'], 'rule_text' => gettext("Unable to find the rule"));
 
+	echo json_encode(str_replace("\\","\\\\", $response)); // single escape chars can break JSON decode
+	exit;
+}
+# --- AJAX RULE LOOKUP End ---
+
+# --- AJAX RULE LOOKUP Start ---
+if ($_POST['action'] == 'loadRule') {
+	$currentruleset = '';
+	if (isset($_POST['gid']) && isset($_POST['sid'])) {
+		$gid = $_POST['gid'];
+		$sid = $_POST['sid'];
+		$rules = array_merge(glob(SURICATA_RULES_DIR . "/*.rules"), array("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/custom.rules", "{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/flowbit-required.rules"));
+		foreach ($rules as $rule) {
+			$rules_map = suricata_load_rules_map($rule);
+			if ($rules_map[$gid][$sid]['rule']) {
+				$rule_text = base64_encode($rules_map[$gid][$sid]['rule']);
+				$currentruleset = basename($rule);
+				break;
+			}
+		}
+	} else {
+		$rule_text = base64_encode(gettext('Invalid rule signature - no matching rule was found!'));
+	}
+	if (strpos($currentruleset, 'snort_') !== false) {
+		$rule_link = "https://www.snort.org/rule_docs/{$gid}-{$sid}";
+	} else {
+		$rule_link = '';
+	}	
+	$response = array('rule_text' => $rule_text, 'rule_link' => $rule_link, 'category' => $currentruleset);
 	echo json_encode(str_replace("\\","\\\\", $response)); // single escape chars can break JSON decode
 	exit;
 }
@@ -1248,8 +1277,8 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			$alert_dst_p = $fields['dport'];
 
 			/* SID */
-			$alert_sid_str = '<a onclick="javascript:rulelookup_with_ajax(\'' .
-				    $fields['gid'] . ':' . $fields['sid'] . '\');" title="' .
+			$alert_sid_str = '<a onclick="javascript:showRuleContents(\'' .
+				    $fields['gid'] . '\',\'' . $fields['sid'] . '\');" title="' .
 				    gettext("Show the rule") . '" style="cursor: pointer;" >' .
 		       		    $fields['gid'] . ':' . $fields['sid'] . '</a>';
 			if (!suricata_is_alert_globally_suppressed($supplist, $fields['gid'], $fields['sid'])) {
@@ -1372,7 +1401,22 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 	</div>
 <?php endif; ?>
 
-
+<?php
+// Create a Modal object to display text of user-clicked rules
+$form = new Form(FALSE);
+$modal = new Modal('View Rules Text', 'rulesviewer', 'large', 'Close');
+$modal->addInput(new Form_StaticText (
+	'Category',
+	'<div class="text-left" id="modal_rule_category"></div>'
+))->setHelp('<span id="modal_rule_link_text"></span><a id="modal_rule_link" target="_blank"></a>');
+$modal->addInput(new Form_Textarea (
+	'rulesviewer_text',
+	'Rule Text',
+	'...Loading...'
+))->removeClass('form-control')->addClass('row-fluid col-sm-10')->setAttribute('rows', '10')->setAttribute('wrap', 'soft');
+$form->add($modal);
+print($form);
+?>
 
 <script type="text/javascript">
 //<![CDATA[
@@ -1459,25 +1503,41 @@ function geoip_callback(transport) {
 	alert(htmlspecialchars(response.geoip_text));
 }
 
-function rulelookup_with_ajax(gidsid) {
-	var url = "/suricata/suricata_alerts.php";
+function showRuleContents(gid, sid) {
+		// Show the modal dialog with rule text
+		$('#rulesviewer_text').text("...Loading...");
+		$('#rulesviewer').modal('show');
+		$('#modal_rule_category').text("...Loading...");
+		$('#modal_rule_link_text').text('');
+		$('#modal_rule_link').attr('href', '');
+		$('#modal_rule_link').text('');
 
-	$.ajax(
-		url,
-		{
-			type: 'post',
-			dataType: 'json',
-			data: {
-				rulelookup: gidsid,
-			      },
-			complete: rulelookup_callback
-		});
+		$.ajax(
+			"<?=$_SERVER['SCRIPT_NAME'];?>",
+			{
+				type: 'post',
+				data: {
+					sid:         sid,
+					gid:         gid,
+					id:	     $('#id').val(),
+					openruleset: $('#selectbox').val(),
+					action:      'loadRule'
+				},
+				complete: loadComplete
+			}
+		);
 }
 
-function rulelookup_callback(transport) {
-	var response = $.parseJSON(transport.responseText);
-	var msg = 'GID:SID ' + response.gidsid + ' rule:\n';
-	alert(msg + response.rule_text);
+function loadComplete(req) {
+		var response = $.parseJSON(req.responseText);
+		$('#modal_rule_category').html(response.category);
+		$('#rulesviewer_text').text(atob(response.rule_text));
+		$('#rulesviewer_text').attr('readonly', true);
+		if (response.rule_link) {
+			$('#modal_rule_link_text').text('Snort Rule Doc: ');
+			$('#modal_rule_link').attr('href', response.rule_link);
+			$('#modal_rule_link').text(response.rule_link);
+		}
 }
 
 // From http://stackoverflow.com/questions/5499078/fastest-method-to-escape-html-tags-as-html-entities
