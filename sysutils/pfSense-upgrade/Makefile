@@ -17,7 +17,11 @@ NO_MTREE=	yes
 NO_BUILD=	yes
 
 PLIST_FILES=	libexec/pfSense-upgrade \
-		sbin/pfSense-upgrade
+		sbin/pfSense-upgrade \
+		share/pfSense/pkg_set_version
+
+# Flag used to detect when we want to reinstall all packages during upgrade
+PFSENSE_PKG_SET_VERSION?=	1
 
 do-extract:
 	@${MKDIR} ${WRKSRC}
@@ -31,5 +35,7 @@ do-install:
 		${STAGEDIR}${PREFIX}/libexec
 	${INSTALL_SCRIPT} ${WRKSRC}/pfSense-upgrade.wrapper \
 		${STAGEDIR}${PREFIX}/sbin/pfSense-upgrade
+	${ECHO_CMD} ${PFSENSE_PKG_SET_VERSION} \
+		> ${STAGEDIR}${PREFIX}/share/pfSense/pkg_set_version
 
 .include <bsd.port.mk>
