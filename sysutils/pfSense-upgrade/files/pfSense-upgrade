@@ -514,10 +514,10 @@ pkg_upgrade() {
 	if [ "${_model}" = "mvebu_armada-37xx" -o "${_model}" = "SG-2100" ]
 	then
 		_type=$(/usr/sbin/ofwdump -P model -R / 2>/dev/null)
-		if [ "${_type}" = "Netgate SG-1100" ]; then
-			SYSTEM="SG-1100"
-		elif [ "${_type}" = "Netgate SG-2100" ]; then
-			SYSTEM="SG-2100"
+		if [ "${_type}" == "Netgate SG-1100" -o "${_type}" == "Netgate 1100" ]; then
+			SYSTEM="1100"
+		elif [ "${_type}" = "Netgate SG-2100" -o "${_type}" == "Netgate 2100" ]; then
+			SYSTEM="2100"
 		fi
 	fi
 
@@ -533,25 +533,25 @@ pkg_upgrade() {
 		export uboot_bin=u-boot.img
 		export \
 		    uboot_update=/usr/local/share/u-boot/ufw/u-boot-update.sh
-	elif [ "${SYSTEM}" = "SG-1100" ] && \
-	    is_pkg_installed ${product}-u-boot-sg1100\*; then
+	elif [ "${SYSTEM}" = "1100" ] && \
+	    is_pkg_installed ${product}-u-boot-1100\*; then
 		export uboot_pkg=$(_pkg query %n $(_pkg info \
-		    ${product}-u-boot-sg1100\*))
+		    ${product}-u-boot-1100\*))
 		export \
-		    uboot_update=/usr/local/share/u-boot/sg1100/u-boot-update.sh
-	elif is_pkg_installed ${product}-u-boot-sg3100\*; then
+		    uboot_update=/usr/local/share/u-boot/1100/u-boot-update.sh
+	elif is_pkg_installed ${product}-u-boot-3100\*; then
 		export uboot_pkg=$(_pkg query %n $(_pkg info \
-		    ${product}-u-boot-sg3100\*))
+		    ${product}-u-boot-3100\*))
 		export uboot_mntp=/boot/u-boot
 		export uboot_bin=u-boot.bin
 		export \
-		    uboot_update=/usr/local/share/u-boot/sg3100/u-boot-update.sh
-	elif [ "${SYSTEM}" = "SG-2100" ] && \
-	    is_pkg_installed ${product}-u-boot-sg2100\*; then
+		    uboot_update=/usr/local/share/u-boot/3100/u-boot-update.sh
+	elif [ "${SYSTEM}" = "2100" ] && \
+	    is_pkg_installed ${product}-u-boot-2100\*; then
 		export uboot_pkg=$(_pkg query %n $(_pkg info \
-		    ${product}-u-boot-sg2100\*))
+		    ${product}-u-boot-2100\*))
 		export \
-		    uboot_update=/usr/local/share/u-boot/sg2100/u-boot-update.sh
+		    uboot_update=/usr/local/share/u-boot/2100/u-boot-update.sh
 	fi
 
 	if [ -n "${uboot_pkg}" -a -n "${uboot_mntp}" -a \
@@ -805,18 +805,18 @@ pkg_upgrade() {
 			if [ -n "${_restore_loaderconf}" ]; then
 				cp -fp /tmp/loader.conf.backup /boot/loader.conf
 			fi
-			if [ "${SYSTEM}" = "SG-1100" ]; then
+			if [ "${SYSTEM}" = "1100" ]; then
 				# Mount /boot/msdos and update the DTB in FAT
 				# slice.
 				mount /boot/msdos >/dev/null 2>&1
-				cp /boot/dtb/armada-3720-sg1100.dtb /boot/msdos
+				cp /boot/dtb/armada-3720-netgate-1100.dtb /boot/msdos
 				umount /boot/msdos >/dev/null 2>&1
 			fi
-			if [ "${SYSTEM}" = "SG-2100" ]; then
+			if [ "${SYSTEM}" = "2100" ]; then
 				# Mount /boot/msdos and update the DTB in FAT
 				# slice.
 				mount /boot/msdos >/dev/null 2>&1
-				cp /boot/dtb/armada-3720-sg2100.dtb /boot/msdos
+				cp /boot/dtb/armada-3720-netgate-2100.dtb /boot/msdos
 				umount /boot/msdos >/dev/null 2>&1
 			fi
 		fi
