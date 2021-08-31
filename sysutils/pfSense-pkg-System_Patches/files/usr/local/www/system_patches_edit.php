@@ -70,12 +70,15 @@ if ($_POST) {
 	$pconfig = $_POST;
 
 	/* input validation */
-	if (empty($_POST['location'])) {
+	if (empty($_POST['location']) && !is_uploaded_file($_FILES['ulfile']['tmp_name'])) {
 		$reqdfields = explode(" ", "patch");
 		$reqdfieldsn = array(gettext("Patch Contents"));
-	} else {
+	} elseif (!is_uploaded_file($_FILES['ulfile']['tmp_name'])) {
 		$reqdfields = explode(" ", "descr location");
 		$reqdfieldsn = array(gettext("Description"),gettext("URL/Commit ID"));
+	} else {
+		$reqdfields = explode(" ", "descr");
+		$reqdfieldsn = array(gettext("Description"));
 	}
 
 	do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
@@ -89,6 +92,14 @@ if ($_POST) {
 	if (!empty($_POST['basedir']) && (!file_exists($_POST['basedir']) || !is_dir($_POST['basedir']))) {
 		$input_errors[] = gettext("Base Directory must exist and be a directory!");
 	}
+	if (!empty($_FILES['ulfile']) && is_uploaded_file($_FILES['ulfile']['tmp_name'])) {
+		if ($_FILES['ulfile']['type'] != "text/x-patch") {
+			$input_errors[] = gettext("The uploaded file must be in unified diff format.");
+		}
+		if ($_FILES['ulfile']['size'] > 1048576) {
+			$input_errors[] = gettext("The uploaded file is too large.");
+		}
+	}
 
 	if (!$input_errors) {
 		$thispatch = array();
@@ -98,7 +109,10 @@ if ($_POST) {
 		if (!empty($_POST['patch'])) {
 			/* Strip DOS style carriage returns from textarea input */
 			$thispatch['patch'] = base64_encode(str_replace("\r", "", $_POST['patch']));
+		} elseif (!empty($_FILES['ulfile']) && is_uploaded_file($_FILES['ulfile']['tmp_name'])) {
+			$thispatch['patch'] = base64_encode(file_get_contents($_FILES['ulfile']['tmp_name']));
 		}
+
 		if (is_github_url($thispatch['location']) && ($_POST['pathstrip'] == 0)) {
 			$thispatch['pathstrip'] = 2;
 		} else {
@@ -146,6 +160,7 @@ if ($savemsg) {
 }
 
 $form = new Form();
+$form->setMultipartEncoding();
 
 $section = new Form_Section('Patch Details');
 
@@ -175,6 +190,12 @@ $patchtext->setAttribute("wrap", "off");
 $patchtext->setHelp('The contents of the patch. Paste a patch here, or enter a URL/commit ID above.');
 
 $section->addInput($patchtext);
+
+$section->addInput(new Form_Input(
+	'ulfile',
+	'Patch file upload',
+	'file',
+))->setHelp('Upload patch file');
 
 $form->add($section);
 

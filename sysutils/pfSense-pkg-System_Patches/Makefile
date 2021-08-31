@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-System_Patches
 PORTVERSION=	1.2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
