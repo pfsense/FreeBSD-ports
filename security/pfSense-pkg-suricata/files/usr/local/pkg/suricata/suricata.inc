@@ -575,7 +575,7 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 
 	$valresult = array();
 	foreach ($home_net as $vald) { 
-		if (empty($vald)) {
+		if (empty($vald) || !is_subnet($vald)) {
 			continue;
 		}
 		$vald = trim($vald);
