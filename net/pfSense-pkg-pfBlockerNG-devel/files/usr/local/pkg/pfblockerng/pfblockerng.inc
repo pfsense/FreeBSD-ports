@@ -265,6 +265,7 @@ function pfb_global() {
 	$pfb['iplocal']		= $config['interfaces']['lan']['ipaddr'];	// Lan IP address
 
 	$pfb['dnsbl']		= $pfb['dnsblconfig']['pfb_dnsbl'];		// Enabled state of DNSBL
+	$pfb['dnsbl_iface']     = $pfb['dnsblconfig']['dnsbl_interface']?: 'lo0'; // VIP Local Interface setting
 	$pfb['dnsbl_vip']	= $pfb['dnsblconfig']['pfb_dnsvip']	?: '';	// Virtual IP local address
 	$pfb['dnsbl_v6']	= $pfb['dnsblconfig']['pfb_dnsblv6']	?: '';	// Enable/Disable DNSBL IPv6
 	$pfb['dnsbl_port']	= $pfb['dnsblconfig']['pfb_dnsport'];		// Lighttpd web server http port setting
@@ -6194,8 +6195,7 @@ function sync_package_pfblockerng($cron='') {
 	$pfb['dnsbl_vip_base']	= $pfb['dnsblconfig']['pfb_dnsvip_base'];			// Virtual IP Carp advbase
 	$pfb['dnsbl_vip_skew']	= $pfb['dnsblconfig']['pfb_dnsvip_skew'];			// Virtual IP Carp skew
 	$pfb['dnsbl_vip_pass']	= $pfb['dnsblconfig']['pfb_dnsvip_pass'];			// Virtual IP Carp password (if required)
-	$pfb['dnsbl_iface']	= $pfb['dnsblconfig']['dnsbl_interface']?: 'lo0';		// VIP Local Interface setting
-	$pfb['dnsbl_ip']	= $pfb['dnsblconfig']['action']		?:  'Disabled';		// Enable/Disable IP blocking from DNSBL lists
+	$pfb['dnsbl_ip']	= $pfb['dnsblconfig']['action']		?: 'Disabled';		// Enable/Disable IP blocking from DNSBL lists
 	$pfb['dnsbl_rule']	= $pfb['dnsblconfig']['pfb_dnsbl_rule'] ?: 'Disabled';		// Auto create a Floating Pass Rule for other Lan subnets
 	$pfb['dnsbl_alexa_cnt']	= $pfb['dnsblconfig']['alexa_count']	?: '1000';		// TOP1M whitelist domain setting
 	$pfb['dnsbl_alexa_inc']	= $pfb['dnsblconfig']['alexa_inclusion']?: '';			// TOP1M TLDs inclusions for whitelisting
