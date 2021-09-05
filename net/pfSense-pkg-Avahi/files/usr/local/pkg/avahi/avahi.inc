@@ -28,6 +28,7 @@ require_once("service-utils.inc");
 define("AVAHI_CONFIG_FILE", "/usr/local/etc/avahi/avahi-daemon.conf");
 define("AVAHI_RCFILE", "/usr/local/etc/rc.d/avahi-daemon.sh");
 define("AVAHI_DAEMON", "/usr/local/sbin/avahi-daemon");
+define("AVAHI_SERVICES_DIR", "/usr/local/etc/avahi/services/");
 
 
 function avahi_write_config($avahi_config) {
@@ -79,6 +80,22 @@ function avahi_write_config($avahi_config) {
 			$filtering[] = $rule['destination'];
 		}
 		$txt .= "reflect-filters=" . implode(',', $filtering) . "\n";
+	}
+
+	if ($avahi_config['publishing'] == "yes") {
+		if (file_exists(AVAHI_SERVICES_DIR . "ssh.service.disabled")) {
+			rename(AVAHI_SERVICES_DIR . "ssh.service.disabled", AVAHI_SERVICES_DIR . "ssh.service");
+		}
+		if (file_exists(AVAHI_SERVICES_DIR . "sftp-ssh.service.disabled")) {
+			rename(AVAHI_SERVICES_DIR . "sftp-ssh.service.disabled", AVAHI_SERVICES_DIR . "sftp-ssh.service");
+		}
+	} else {
+		if (file_exists(AVAHI_SERVICES_DIR . "ssh.service")) {
+			rename(AVAHI_SERVICES_DIR . "ssh.service", AVAHI_SERVICES_DIR . "ssh.service.disabled");
+		}
+		if (file_exists(AVAHI_SERVICES_DIR . "sftp-ssh.service")) {
+			rename(AVAHI_SERVICES_DIR . "sftp-ssh.service", AVAHI_SERVICES_DIR . "sftp-ssh.service.disabled");
+		}
 	}
 
 	if (!file_put_contents(AVAHI_CONFIG_FILE, $txt)) {
