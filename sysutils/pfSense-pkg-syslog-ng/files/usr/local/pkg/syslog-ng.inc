@@ -179,11 +179,15 @@ function syslogng_merge_objects($objects1, $objects2) {
 }
 
 function syslogng_test_object_syntax($objects) {
-	rename("/usr/local/etc/syslog-ng.conf", "/usr/local/etc/syslog-ng.conf.backup");
+	if (file_exists("/usr/local/etc/syslog-ng.conf")) {
+		rename("/usr/local/etc/syslog-ng.conf", "/usr/local/etc/syslog-ng.conf.backup");
+	}
 	syslogng_build_conf($objects);
 	$errors = trim(shell_exec('/usr/local/sbin/syslog-ng --syntax-only 2>&1'));
 	rename("/usr/local/etc/syslog-ng.conf", "/usr/local/etc/syslog-ng.conf.tested");
-	rename("/usr/local/etc/syslog-ng.conf.backup", "/usr/local/etc/syslog-ng.conf");
+	if (file_exists("/usr/local/etc/syslog-ng.conf.backup")) {
+		rename("/usr/local/etc/syslog-ng.conf.backup", "/usr/local/etc/syslog-ng.conf");
+	}
 
 	return $errors;
 }
