@@ -242,6 +242,12 @@ function pfb_global() {
 	// Reload config.xml to get any recent changes
 	$config = parse_config(true);
 
+	init_config_arr(array('installedpackages', 'pfblockerng', 'config', 0));
+	init_config_arr(array('installedpackages', 'pfblockerngipsettings', 'config', 0));
+	init_config_arr(array('installedpackages', 'pfblockerngdnsblsettings', 'config', 0));
+	init_config_arr(array('installedpackages', 'pfblockerngblacklist'));
+	init_config_arr(array('installedpackages', 'pfblockerngglobal'));
+
 	// General variables
 	$pfb['config']		= $config['installedpackages']['pfblockerng']['config'][0];
 	$pfb['ipconfig']	= $config['installedpackages']['pfblockerngipsettings']['config'][0];
@@ -264,7 +270,13 @@ function pfb_global() {
 
 	$pfb['iplocal']		= $config['interfaces']['lan']['ipaddr'];	// Lan IP address
 
-	$pfb['dnsbl']		= $pfb['dnsblconfig']['pfb_dnsbl'];		// Enabled state of DNSBL
+	$pfb['dnsbl']		= $pfb['dnsblconfig']['pfb_dnsbl'];			// Enabled state of DNSBL
+	$pfb['dnsbl_vip_type']	= $pfb['dnsblconfig']['pfb_dnsvip_type'] ?: 'ipalias';	// Virtual IP type
+	$pfb['dnsbl_vip_vhid']	= $pfb['dnsblconfig']['pfb_dnsvip_vhid'];		// Virtual IP Carp VHID
+	$pfb['dnsbl_vip_base']	= $pfb['dnsblconfig']['pfb_dnsvip_base'];		// Virtual IP Carp advbase
+	$pfb['dnsbl_vip_skew']	= $pfb['dnsblconfig']['pfb_dnsvip_skew'];		// Virtual IP Carp skew
+	$pfb['dnsbl_vip_pass']	= $pfb['dnsblconfig']['pfb_dnsvip_pass'];		// Virtual IP Carp password (if required)
+	$pfb['dnsbl_iface']	= $pfb['dnsblconfig']['dnsbl_interface']?: 'lo0';	// VIP Local Interface setting
 	$pfb['dnsbl_vip']	= $pfb['dnsblconfig']['pfb_dnsvip']	?: '';	// Virtual IP local address
 	$pfb['dnsbl_v6']	= $pfb['dnsblconfig']['pfb_dnsblv6']	?: '';	// Enable/Disable DNSBL IPv6
 	$pfb['dnsbl_port']	= $pfb['dnsblconfig']['pfb_dnsport'];		// Lighttpd web server http port setting
@@ -624,6 +636,8 @@ function pfb_log_mgmt() {
 	global $g, $pfb;
 	pfb_global();
 
+	$chroot_folder = '/var/unbound';
+
 	foreach (array(	'log', 'errlog', 'extraslog', 'ip_blocklog', 'ip_permitlog', 'ip_matchlog',
 			'dnslog', 'dnsbl_parse_err', 'dnsreplylog', 'unilog') as $logtype) {
 
@@ -631,16 +645,29 @@ function pfb_log_mgmt() {
 		$logmax	= $pfb['config']['log_max_' . $logtype] ?: 20000;
 
 		if ($logmax != 'nolimit' && file_exists($pfb[$logtype])) {
-			$temp = tempnam("{$g['tmp_path']}/", 'pfb_log');
-			exec("/usr/bin/tail -n {$logmax} {$pfb[$logtype]} > {$temp}");
-
-			// Set DNSBL python logfile permissions
 			if ($logtype == 'dnslog' || $logtype == 'dnsreplylog' || $logtype == 'unilog') {
-				@chown($temp, 'unbound');
-				@chgrp($temp, 'unbound');
-			}
 
-			exec("/bin/mv -f {$temp} {$pfb[$logtype]}");
+				// Set DNSBL python logfile permissions using chroot folder
+				if (is_dir("{$chroot_folder}/var/log/pfblockerng")) {
+					$final_log_file = "{$chroot_folder}{$pfb[$logtype]}";
+					$temp = tempnam("{$chroot_folder}/var/log/pfblockerng", 'pfb_log_');
+				} else {
+					$final_log_file = $pfb[$logtype];
+					$temp = tempnam("{$g['tmp_path']}/", 'pfb_log_');
+				}
+
+				if (file_exists($final_log_file)) {
+					exec("/usr/bin/tail -n {$logmax} {$final_log_file} > {$temp}");
+					@chown($temp, 'unbound');
+					@chgrp($temp, 'unbound');
+					exec("/bin/mv -f {$temp} {$final_log_file}");
+				}
+			}
+			else {
+				$temp = tempnam("{$g['tmp_path']}/", 'pfb_log_');
+				exec("/usr/bin/tail -n {$logmax} {$pfb[$logtype]} > {$temp}");
+				exec("/bin/mv -f {$temp} {$pfb[$logtype]}");
+			}
 			unlink_if_exists($temp);
 		}
 	}
@@ -5228,23 +5255,32 @@ function pfb_daemon_dnsbl() {
 	if (($h_handle = @fopen('php://stdin', 'r')) !== FALSE) {
 		syslog(LOG_NOTICE, '[pfBlockerNG] DNSBL parser daemon started');
 
+		$chk_ver	= FALSE;
 		$lighty_47	= FALSE;
 		$lighty_58	= FALSE;
+		$lighty_59	= FALSE;
 		$checkpos	= 3; 	// Pre Lighttpd v1.4.47
 
 		while (!feof($h_handle)) {
 			$pfb_buffer = @fgets($h_handle);
 
-			if (!$lighty_58) {
+			if (!$chk_ver) {
 
 				// Lighttpd v1.4.58+ conditional error log with 'ssl.verifyclient.activate' to collect the domain name
-				if (!$lighty_47 &&
-				    (strpos($pfb_buffer, 'lighttpd/1.4.58') !== FALSE ||
-				    strpos($pfb_buffer, 'lighttpd/1.4.59') !== FALSE ||
+				if (!$lighty_47 && strpos($pfb_buffer, 'lighttpd/1.4.58') !== FALSE) {
+					$chk_ver	= TRUE;
+					$lighty_58	= TRUE;
+					continue;
+				}
+
+				// Lighttpd v1.4.59+ syntax changes to IP line
+                                elseif (!$lighty_47 &&
+				    (strpos($pfb_buffer, 'lighttpd/1.4.59') !== FALSE ||
 				    strpos($pfb_buffer, 'lighttpd/1.4.60') !== FALSE ||
 				    strpos($pfb_buffer, 'lighttpd/1.4.61') !== FALSE ||
 				    strpos($pfb_buffer, 'lighttpd/1.5') !== FALSE)) {
-					$lighty_58	= TRUE;
+					$chk_ver	= TRUE;
+					$lighty_59	= TRUE;
 					continue;
 				}
 
@@ -5254,17 +5290,24 @@ function pfb_daemon_dnsbl() {
 					$checkpos	= 1;
 					continue;
 				}
-
 			}
 
-			if ($lighty_58) {
+			if ($lighty_58 || $lighty_59) {
 
 				// Verify HTTP["remoteip"]
 				if (empty($src_ip)) {
-					if (strpos($pfb_buffer, '["re') !== FALSE) {
-						$src_ip = strstr($pfb_buffer, ') compare', TRUE);
-						$src_ip = ltrim(strstr($src_ip, '] (', FALSE), '] (');
-						$src_ip = (filter_var($src_ip, FILTER_VALIDATE_IP) !== FALSE) ? $src_ip : '';
+					if ($lighty_58) {
+						if (strpos($pfb_buffer, '["re') !== FALSE) {
+							$src_ip = strstr($pfb_buffer, ') compare', TRUE);
+							$src_ip = ltrim(strstr($src_ip, '] (', FALSE), '] (');
+							$src_ip = (filter_var($src_ip, FILTER_VALIDATE_IP) !== FALSE) ? $src_ip : '';
+						}
+					} else {
+						if (strpos($pfb_buffer, '["re') !== FALSE && strpos($pfb_buffer, ' compare to ') !== FALSE) {
+							$src_ip = strstr($pfb_buffer, ' compare to ', FALSE);
+							$src_ip = trim(ltrim($src_ip, ' compare to '));
+							$src_ip = (filter_var($src_ip, FILTER_VALIDATE_IP) !== FALSE) ? $src_ip : '';
+						}
 					}
 					continue;
 				}
@@ -6189,12 +6232,6 @@ function sync_package_pfblockerng($cron='') {
 	$pfb['ip_ph']		= $pfb['ipconfig']['ip_placeholder'] ?: '127.1.7.7';		// Placeholder IP Address
 
 	// DNSBL settings
-	$pfb['dnsbl_vip_type']	= $pfb['dnsblconfig']['pfb_dnsvip_type'] ?: 'ipalias';		// Virtual IP type
-	$pfb['dnsbl_vip_vhid']	= $pfb['dnsblconfig']['pfb_dnsvip_vhid'];			// Virtual IP Carp VHID
-	$pfb['dnsbl_vip_base']	= $pfb['dnsblconfig']['pfb_dnsvip_base'];			// Virtual IP Carp advbase
-	$pfb['dnsbl_vip_skew']	= $pfb['dnsblconfig']['pfb_dnsvip_skew'];			// Virtual IP Carp skew
-	$pfb['dnsbl_vip_pass']	= $pfb['dnsblconfig']['pfb_dnsvip_pass'];			// Virtual IP Carp password (if required)
-	$pfb['dnsbl_iface']	= $pfb['dnsblconfig']['dnsbl_interface']?: 'lo0';		// VIP Local Interface setting
 	$pfb['dnsbl_ip']	= $pfb['dnsblconfig']['action']		?:  'Disabled';		// Enable/Disable IP blocking from DNSBL lists
 	$pfb['dnsbl_rule']	= $pfb['dnsblconfig']['pfb_dnsbl_rule'] ?: 'Disabled';		// Auto create a Floating Pass Rule for other Lan subnets
 	$pfb['dnsbl_alexa_cnt']	= $pfb['dnsblconfig']['alexa_count']	?: '1000';		// TOP1M whitelist domain setting
@@ -9524,7 +9561,7 @@ function sync_package_pfblockerng($cron='') {
 		install_cron_job('pfblockerng.php cron', false);
 	}
 
-	if ($pfb['enable'] == 'on') {
+	if ($pfb['enable'] == 'on' && !empty($pfb['maxmind_key'])) {
 		// Define pfBlockerNG MaxMind CRON job
 		$pfb_gcmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php dcc >> {$pfb['extraslog']} 2>&1";
 		// MaxMind GeoIP CRON hour is randomized between 0-23 Hour to minimize effect on MaxMind website
@@ -9582,6 +9619,35 @@ function sync_package_pfblockerng($cron='') {
 	else {
 		// Clear any existing pfBlockerNG Blacklist CRON jobs
 		install_cron_job('pfblockerng.php bl', false);
+	}
+
+	// Define pfBlockerNG clear [ dnsbl and/or IP ] counter CRON job
+	if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && $pfb['config_global']) {
+		foreach (array( 'clearip', 'cleardnsbl') as $wtype) {
+			if (isset($pfb['config_global']['widget-' . $wtype]) &&
+			    $pfb['config_global']['widget-' . $wtype] != 'never') {
+
+				$pfb_cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$wtype} >/dev/null 2>&1";
+
+				$pfb_day = '*';
+				if ($pfb['wglobal']['widget-' . $wtype] == 'weekly') {
+					$pfb_day = '7';
+				}
+
+				if (!pfblockerng_cron_exists($pfb_cmd, '0', '0', '*', $pfb_day)) {
+					install_cron_job("pfblockerng.php {$wtype}", false);
+					install_cron_job($pfb_cmd, true, '0', '0', '*', '*', $pfb_day, 'root');
+				}
+			}
+			else {
+				install_cron_job("pfblockerng.php {$wtype}", false);
+			}
+		}
+	}
+	else {
+		// Clear any existing pfBlockerNG counter CRON job
+		install_cron_job("pfblockerng.php clearip", false);
+		install_cron_job("pfblockerng.php cleardnsbl", false);
 	}
 
 	#################################

@@ -528,6 +528,29 @@ if ($ufound) {
 	update_status(" no changes required ... done.\n");
 }
 
+// Move MaxMind Key to new configuration location
+update_status(" MaxMind License Key configuration setting...");
+$ufound = FALSE;
+
+if (is_array($config['installedpackages']['pfblockerng']['config'][0]) &&
+    !isset($config['installedpackages']['pfblockerngipsettings']['config'][0]['maxmind_key'])) {
+
+	$maxmind_config = &$config['installedpackages']['pfblockerng']['config'][0];
+	foreach (array('maxmind_key', 'maxmind_locale', 'database_cc') as $m_setting) {
+		if (isset($maxmind_config[$m_setting])) {
+			$ufound = TRUE;
+			$config['installedpackages']['pfblockerngipsettings']['config'][0][$m_setting] = $maxmind_config[$m_setting];
+			unset($maxmind_config[$m_setting]);
+		}
+	}
+}
+
+if ($ufound) {
+	update_status(" saving new changes ... done.\n");
+} else {
+	update_status(" no changes required ... done.\n");
+}
+
 unset($g['pfblockerng_install']);	// Remove 'Install flag'
 update_status("Upgrading... done\n\nCustom commands completed ... ");
 

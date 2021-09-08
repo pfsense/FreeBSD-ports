@@ -1519,6 +1519,13 @@
 			"cron":		"EveryDay",
 			"feeds": [
 				{
+					"feed":		"Abuse",
+					"website":	"https://threatfox.abuse.ch/",
+					"url":		"https://threatfox.abuse.ch/downloads/hostfile/",
+					"info":		"Feed of shared IOCs from the infosec community, may contain FPs",
+					"header":	"Abuse_ThreatFox"
+				},
+				{
 					"feed":		"The AntiSocial Engineer",
 					"website":	"https://theantisocialengineer.com/blacklist/",
 					"url":		"https://theantisocialengineer.com/AntiSocial_Blacklist_Community_V1.txt",
