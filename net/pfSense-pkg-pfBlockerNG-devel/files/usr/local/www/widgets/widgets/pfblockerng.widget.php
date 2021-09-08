@@ -97,7 +97,8 @@ if ($_POST) {
 
 		// Define pfBlockerNG clear [ dnsbl and/or IP ] counter CRON job
 		foreach (array( 'clearip', 'cleardnsbl') as $type) {
-			if ($pfb['wglobal']['widget-' . $type] != 'never') {
+			if (isset($pfb['wglobal']['widget-' . $type]) &&
+			    $pfb['wglobal']['widget-' . $type] != 'never') {
 
 				$pfb_cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type} >/dev/null 2>&1";
 
