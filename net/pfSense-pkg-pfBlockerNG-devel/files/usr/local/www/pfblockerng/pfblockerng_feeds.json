@@ -998,6 +998,7 @@
 					"header":	"EasyPrivacy"
 				},
 				{
+					"status":	"discontinued",
 					"feed":		"EasyList Adware Filter",
 					"website":	"https://easylist.to/",
 					"url":		"https://easylist-downloads.adblockplus.org/adwarefilters.tpl",
@@ -1645,6 +1646,7 @@
 					"header":	"Joewein_new"
 				},
 				{
+					"status":	"discontinued",
 					"feed":		"Joey Lane",
 					"website":	"https://github.com/joeylane/hosts",
 					"url":		"https://raw.githubusercontent.com/joeylane/hosts/master/hosts",
