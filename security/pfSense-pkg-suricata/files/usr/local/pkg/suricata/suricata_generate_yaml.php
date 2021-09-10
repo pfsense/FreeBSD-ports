@@ -848,6 +848,10 @@ if (!empty($suricatacfg['ftp_parser']))
 	$ftp_parser = $suricatacfg['ftp_parser'];
 else
 	$ftp_parser = "yes";
+if ($suricatacfg['ftp_data_parser'] == 'on')
+	$ftp_data_parser = "yes";
+else
+	$ftp_data_parser = "no";
 if (!empty($suricatacfg['ssh_parser']))
 	$ssh_parser = $suricatacfg['ssh_parser'];
 else

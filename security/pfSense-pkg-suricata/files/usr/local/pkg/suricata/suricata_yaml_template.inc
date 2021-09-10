@@ -333,6 +333,8 @@ app-layer:
           dp: {$dns_parser_udp_port}
     ftp:
       enabled: {$ftp_parser}
+    ftp-data:
+      enabled: {$ftp_data_parser}
     http:
       enabled: {$http_parser}
       memcap: {$http_parser_memcap}
