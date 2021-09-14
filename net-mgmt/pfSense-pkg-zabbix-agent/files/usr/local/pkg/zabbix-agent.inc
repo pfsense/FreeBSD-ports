@@ -357,7 +357,7 @@ function zabbix_agent_certca($type) {
 	return $c_arr;
 }
 
-function zabbix_agent_plugin_certificates($pluginparams) {
+function zabbixagent_plugin_certificates($pluginparams) {
 	global $config;
 	$result = array();
 	init_config_arr(array('installedpackages', 'zabbixagentlts', 'config'));

@@ -5,7 +5,7 @@
 	<copyright>
 <![CDATA[
 /*
- * syslog-ng.xml
+ * syslogng.xml
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
@@ -33,7 +33,7 @@
 		<name>Syslog-ng</name>
 		<tooltiptext>Setup Syslog-ng</tooltiptext>
 		<section>Services</section>
-		<url>/pkg_edit.php?xml=syslog-ng.xml&amp;id=0</url>
+		<url>/pkg_edit.php?xml=syslogng.xml&amp;id=0</url>
 	</menu>
 	<service>
 		<name>syslog-ng</name>
@@ -44,7 +44,7 @@
 	<tabs>
 		<tab>
 			<text>General</text>
-			<url>/pkg_edit.php?xml=syslog-ng.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=syslogng.xml&amp;id=0</url>
 			<active/>
 		</tab>
 		<tab>

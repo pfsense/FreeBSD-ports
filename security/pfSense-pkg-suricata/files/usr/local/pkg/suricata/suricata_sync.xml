@@ -52,6 +52,10 @@
 			<url>/suricata/suricata_blocked.php</url>
 		</tab>
 		<tab>
+			<text>Files</text>
+			<url>/suricata/suricata_files.php</url>
+		</tab>
+		<tab>
 			<text>Pass Lists</text>
 			<url>/suricata/suricata_passlist.php</url>
 		</tab>

@@ -26,6 +26,6 @@ $priv_list['page-services-zabbix-agent']['name'] = "WebCfg - Services: Zabbix Ag
 $priv_list['page-services-zabbix-agent']['descr'] = "Allow access to Zabbix Agent package GUI";
 
 $priv_list['page-services-zabbix-agent']['match'] = array();
-$priv_list['page-services-zabbix-agent']['match'][] = "pkg_edit.php?xml=zabbix-agent.xml*";
+$priv_list['page-services-zabbix-agent']['match'][] = "pkg_edit.php?xml=zabbixagent.xml*";
 
 ?>

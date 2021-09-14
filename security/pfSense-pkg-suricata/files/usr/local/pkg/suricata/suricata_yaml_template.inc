@@ -258,6 +258,7 @@ logging:
   - syslog:
       enabled: {$suricata_use_syslog}
       facility: {$suricata_use_syslog_facility}
+      level: {$suricata_use_syslog_priority}
       format: "[%i] <%d> -- "
 
 # IPS Mode Configuration
@@ -332,6 +333,8 @@ app-layer:
           dp: {$dns_parser_udp_port}
     ftp:
       enabled: {$ftp_parser}
+    ftp-data:
+      enabled: {$ftp_data_parser}
     http:
       enabled: {$http_parser}
       memcap: {$http_parser_memcap}
@@ -386,6 +389,12 @@ app-layer:
       enabled: {$sip_parser}
     snmp:
       enabled: {$snmp_parser}
+    http2:
+      enabled: {$http2_parser}
+    rfb:
+      enabled: {$rfb_parser}
+      detection-ports:
+        dp: 5900, 5901, 5902, 5903, 5904, 5905, 5906, 5907, 5908, 5909
 
 ###########################################################################
 # Configure libhtp.

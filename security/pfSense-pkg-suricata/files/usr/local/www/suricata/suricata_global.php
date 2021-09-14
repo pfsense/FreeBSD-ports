@@ -46,11 +46,14 @@ else {
 	$pconfig['autoruleupdatetime'] = htmlentities($config['installedpackages']['suricata']['config'][0]['autoruleupdatetime']);
 	$pconfig['live_swap_updates'] = $config['installedpackages']['suricata']['config'][0]['live_swap_updates'] == "on" ? 'on' : 'off';
 	$pconfig['log_to_systemlog'] = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog'] == "on" ? 'on' : 'off';
+	$pconfig['update_notify'] = $config['installedpackages']['suricata']['config'][0]['update_notify'] == "on" ? 'on' : 'off';
+	$pconfig['rule_categories_notify'] = $config['installedpackages']['suricata']['config'][0]['rule_categories_notify'] == "on" ? 'on' : 'off';
 	$pconfig['log_to_systemlog_facility'] = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog_facility'];
+	$pconfig['log_to_systemlog_priority'] = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog_priority'];
 	$pconfig['forcekeepsettings'] = $config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] == "on" ? 'on' : 'off';
 	$pconfig['snortcommunityrules'] = $config['installedpackages']['suricata']['config'][0]['snortcommunityrules'] == "on" ? 'on' : 'off';
 	$pconfig['snort_rules_file'] = htmlentities($config['installedpackages']['suricata']['config'][0]['snort_rules_file']);
-	$pconfig['autogeoipupdate'] = $config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] == "off" ? 'off' : 'on';
+	$pconfig['autogeoipupdate'] = $config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] == "on" ? 'on' : 'off';
 	$pconfig['maxmind_geoipdb_key'] = htmlentities($config['installedpackages']['suricata']['config'][0]['maxmind_geoipdb_key']);
 	$pconfig['hide_deprecated_rules'] = $config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'] == "on" ? 'on' : 'off';
 	$pconfig['enable_etopen_custom_url'] = $config['installedpackages']['suricata']['config'][0]['enable_etopen_custom_url'] == "on" ? 'on' : 'off';
@@ -63,6 +66,8 @@ else {
 	$pconfig['gplv2_custom_url'] = htmlentities($config['installedpackages']['suricata']['config'][0]['gplv2_custom_url']);
 	$pconfig['enable_feodo_botnet_c2_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_feodo_botnet_c2_rules'] == "on" ? 'on' : 'off';
 	$pconfig['enable_abuse_ssl_blacklist_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'] == "on" ? 'on' : 'off';
+	$pconfig['enable_extra_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_extra_rules'] == "on" ? 'on' : 'off';
+	$pconfig['extra_rules'] = $config['installedpackages']['suricata']['config'][0]['extra_rules'];
 }
 
 // Do input validation on parameters
@@ -71,6 +76,9 @@ if (empty($pconfig['autoruleupdatetime']))
 
 if (empty($pconfig['log_to_systemlog_facility']))
 	$pconfig['log_to_systemlog_facility'] = "local1";
+
+if (empty($pconfig['log_to_systemlog_priority']))
+	$pconfig['log_to_systemlog_priority'] = "notice";
 
 if ($_POST['autoruleupdatetime']) {
 	if (!preg_match('/^([01]?[0-9]|2[0-3]):?([0-5][0-9])$/', $_POST['autoruleupdatetime']))
@@ -98,6 +106,30 @@ if ($_POST['enable_snort_custom_url'] == "on" && empty(trim(html_entity_decode($
 if ($_POST['enable_gplv2_custom_url'] == "on" && empty(trim(html_entity_decode($_POST['gplv2_custom_url']))))
 		$input_errors[] = "'Use Custom Snort GPLv2 Rule download URL' is checked, but the Snort GPLv2 Custom URL field is blank!";
 
+if ($_POST['enable_extra_rules']) {
+	for ($x = 0; $x < 99; $x++) {
+		if (isset($_POST["name{$x}"]) && isset($_POST["url{$x}"])) { 
+			$name = trim($_POST["name{$x}"]);
+			$url = $_POST["url{$x}"];
+			if (preg_match("/[^A-Za-z0-9_]/", $name)) {
+				$input_errors[] = gettext("The rules name may only contain the
+				    characters A-Z, 0-9 and '-'.");
+			}
+			if (!is_URL($url) || ((substr($url, strrpos($url, 'rules')) != 'rules') &&
+			    (substr($url, strrpos($url, 'rules')) != 'rules.tar.gz'))) { 
+				$input_errors[] = sprintf(gettext('%s is not valid rules or tar.gz rules archive URL.'), htmlspecialchars($url));
+			}
+			$extra_rules['rule'][] = array(
+				'name' => $name,
+				'url' => $url,
+				'md5' => isset($_POST["md5{$x}"]) ? 'on' : 'off'
+			);
+			$enabled_extra_rules[] = $name;
+		}
+	}
+	$pconfig['extra_rules'] = $extra_rules;
+}
+
 /* if no errors move foward with save */
 if (!$input_errors) {
 	if ($_POST["save"]) {
@@ -114,6 +146,8 @@ if (!$input_errors) {
 		$config['installedpackages']['suricata']['config'][0]['enable_gplv2_custom_url'] = $_POST['enable_gplv2_custom_url'] ? 'on' : 'off';
 		$config['installedpackages']['suricata']['config'][0]['enable_feodo_botnet_c2_rules'] = $_POST['enable_feodo_botnet_c2_rules'] ? 'on' : 'off';
 		$config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'] = $_POST['enable_abuse_ssl_blacklist_rules'] ? 'on' : 'off';
+		$config['installedpackages']['suricata']['config'][0]['enable_extra_rules'] = $_POST['enable_extra_rules'] ? 'on' : 'off';
+		$config['installedpackages']['suricata']['config'][0]['extra_rules'] = $extra_rules;
 
 		// If any rule sets are being turned off, then remove them
 		// from the active rules section of each interface.  Start
@@ -136,6 +170,9 @@ if (!$input_errors) {
 		if ($config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'] == 'off')
 			$disabled_rules[] = "sslblacklist_tls_cert";
 
+		if (empty($enabled_extra_rules))
+			$disabled_rules[] = ET_PRO_FILE_PREFIX;
+
 		// Now walk all the configured interface rulesets and remove
 		// any matching the disabled ruleset prefixes.
 		if (is_array($config['installedpackages']['suricata']['rule'])) {
@@ -147,9 +184,19 @@ if (!$input_errors) {
 				}
 				$enabled_rules = explode("||", $iface['rulesets']);
 				foreach ($enabled_rules as $k => $v) {
-					foreach ($disabled_rules as $d)
-						if (strpos(trim($v), $d) !== false)
+					foreach ($disabled_rules as $d) {
+						if (strpos(trim($v), $d) !== false) { 
 							unset($enabled_rules[$k]);
+							continue;
+						} elseif (!empty($enabled_extra_rules)) {
+							foreach ($enabled_extra_rules as $exrule) {
+								if (strpos(trim($v), EXTRARULE_FILE_PREFIX . $exrule)) {
+									continue 2;
+								}
+							}
+							unset($enabled_rules[$k]);
+						}
+					}
 				}
 				$iface['rulesets'] = implode("||", $enabled_rules);
 			}
@@ -182,7 +229,10 @@ if (!$input_errors) {
 			$config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'] = str_pad(html_entity_decode($_POST['autoruleupdatetime']), 4, "0", STR_PAD_LEFT);
 		}
 		$config['installedpackages']['suricata']['config'][0]['log_to_systemlog'] = $_POST['log_to_systemlog'] ? 'on' : 'off';
+		$config['installedpackages']['suricata']['config'][0]['update_notify'] = $_POST['update_notify'] ? 'on' : 'off';
+		$config['installedpackages']['suricata']['config'][0]['rule_categories_notify'] = $_POST['rule_categories_notify'] ? 'on' : 'off';
 		$config['installedpackages']['suricata']['config'][0]['log_to_systemlog_facility'] = $_POST['log_to_systemlog_facility'];
+		$config['installedpackages']['suricata']['config'][0]['log_to_systemlog_priority'] = $_POST['log_to_systemlog_priority'];
 		$config['installedpackages']['suricata']['config'][0]['live_swap_updates'] = $_POST['live_swap_updates'] ? 'on' : 'off';
 		$config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] = $_POST['forcekeepsettings'] ? 'on' : 'off';
 
@@ -226,6 +276,7 @@ $tab_array[] = array(gettext("Global Settings"), true, "/suricata/suricata_globa
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php");
@@ -379,13 +430,83 @@ $group->add(new Form_Checkbox(
 ));
 $section->add($group);
 
-$section->addInput(new Form_Checkbox(
+$group = new Form_Group('Hide Deprecated Rules Categories');
+$group->add(new Form_Checkbox(
 	'hide_deprecated_rules',
 	'Hide Deprecated Rules Categories',
 	'Hide deprecated rules categories in the GUI and remove them from the configuration. Default is Not Checked.',
 	$pconfig['hide_deprecated_rules'] == 'on' ? true:false,
 	'on'
 ));
+$section->add($group);
+
+$section->addInput(new Form_Checkbox(
+	'enable_extra_rules',
+	'Download Extra Rules',
+	'Download Extra Rules',
+	$pconfig['enable_extra_rules'] == 'on' ? true:false,
+	'on'
+))->setHelp('Download extra rules file or tar.gz archive with rules. If "Check MD5" is set, the code will assume a matching filename exists at the same URL with an additional extension of ".md5".');
+
+$form->add($section);
+
+$section = new Form_Section('Extra rules');
+$section->addClass('extra_rules');
+
+if (!$pconfig['extra_rules']) {
+	$pconfig['extra_rules'] = array();
+	$pconfig['extra_rules']['rule']  = array(array('name' => '', 'url' => '', 'md5' => false));
+}
+
+$numrows = count($item) -1;
+$counter = 0;
+
+$numrows = count($pconfig['extra_rules']['rule']) -1;
+
+foreach ($pconfig['extra_rules']['rule'] as $rule) {
+	$group = new Form_Group(($counter == 0) ? 'Rule':null);
+	$group->addClass('repeatable');
+
+	$group->add(new Form_Input(
+		'name' . $counter,
+		'Name',
+		'text',
+		$rule['name']
+	))->setWidth(2)->setHelp($numrows == $counter ? 'Name':null);
+
+	$group->add(new Form_Input(
+		'url' . $counter,
+		'URL',
+		'text',
+		$rule['url']
+	))->setWidth(5)->setHelp($numrows == $counter ? 'URL':null);
+
+	$group->add(new Form_Checkbox(
+		'md5' . $counter,
+		'MD5',
+		null,
+		$rule['md5'] == 'on' ? true : false,
+	))->setHelp($numrows == $counter ? 'Check MD5':null);
+
+	$group->add(new Form_Button(
+		'deleterow' . $counter,
+		'Delete',
+		null,
+		'fa-trash'
+	))->addClass('btn-warning');
+
+	$section->add($group);
+
+	$counter++;
+}
+
+$section->addInput(new Form_Button(
+	'addrow',
+	'Add',
+	null,
+	'fa-plus'
+))->addClass('btn-success');
+
 $form->add($section);
 
 $section = new Form_Section('Rules Update Settings');
@@ -457,6 +578,14 @@ $section->addInput(new Form_Select(
 		'local1' => gettext('LOCAL1'), 'local2' => gettext('LOCAL2'), 'local3' => gettext('LOCAL3'), 'local4' => gettext('LOCAL4'),
 		'local5' => gettext('LOCAL5'), 'local6' => gettext('LOCAL6'), 'local7' => gettext('LOCAL7'))
 ))->setHelp('Select system log facility to use for reporting. Default is LOCAL1.');
+
+$section->addInput(new Form_Select(
+	'log_to_systemlog_priority',
+	'Log Priority',
+	$pconfig['log_to_systemlog_priority'],
+	array( "emerg" => "EMERG", "crit" => "CRIT", "alert" => "ALERT", "err" => "ERR", "warning" => "WARNING", "notice" => "NOTICE", "info" => "INFO" )
+))->setHelp('Select system log Priority (Level) to use for reporting. Default is NOTICE.');
+
 $section->addInput(new Form_Checkbox(
 	'forcekeepsettings',
 	'Keep Suricata Settings After Deinstall',
@@ -465,6 +594,33 @@ $section->addInput(new Form_Checkbox(
 	'on'
 ));
 $form->add($section);
+
+$section = new Form_Section('Notifications');
+
+$section->addInput(new Form_StaticText(
+	null,
+	'E-Mail/Telegram/Pushover notifications. Delivery settings are configured under System -> Advanced, ' .
+        'on the Notifications tab.',
+));
+
+$section->addInput(new Form_Checkbox(
+	'update_notify',
+	'Update',
+	'Rules, GeoIP and IQRisk update notifications.',
+	$pconfig['update_notify'] == 'on' ? true:false,
+	'off'
+));
+
+$section->addInput(new Form_Checkbox(
+	'rule_categories_notify',
+	'Rule Categories',
+	'Send notifications when new rule categories appear.',
+	$pconfig['rule_categories_notify'] == 'on' ? true:false,
+	'off'
+));
+
+$form->add($section);
+
 print $form;
 ?>
 </div>
@@ -493,6 +649,7 @@ events.push(function(){
 	function enable_et_rules() {
 		var hide = $('#enable_etopen_rules').prop('checked');
 		$('#enable_etopen_custom_url').prop('disabled', !hide);
+		hideInput('etprocode', true);
 		if (hide && $('#enable_etopen_custom_url').prop('checked')) {
 			hideInput('etopen_custom_rule_url', false);
 		}
@@ -516,13 +673,14 @@ events.push(function(){
 		}
 		else {
 			hideInput('etpro_custom_rule_url', true);
-			hideInput('etprocode', false);
+			hideInput('etprocode', hide);
 
 		}
 		if (!hide && $('#enable_etopen_rules').prop('checked')) {
 			$('#enable_etopen_rules').prop('checked', false);
 			$('#enable_etopen_custom_url').prop('disabled', !hide);
 			hideInput('etopen_custom_rule_url', !hide);
+			hideInput('etprocode', false);
 		}
 	}
 
@@ -547,11 +705,17 @@ events.push(function(){
 	function toggle_log_to_systemlog() {
 		var hide = ! $('#log_to_systemlog').prop('checked');
 		hideInput('log_to_systemlog_facility', hide);
+		hideInput('log_to_systemlog_priority', hide);
 	}
 
 	function enable_geoip2_upd() {
 		var hide = ! $('#autogeoipupdate').prop('checked');
 		hideInput('maxmind_geoipdb_key', hide);
+	}
+
+	function show_extrarules() {
+		hide = !$('#enable_extra_rules').prop('checked');
+		hideClass('extra_rules', hide);
 	}
 
 	// ---------- Click checkbox handlers ---------------------------------------------------------
@@ -615,6 +779,11 @@ events.push(function(){
 		enable_geoip2_upd();
 	});
 
+	// When 'enable_extra_rules' is clicked, show 'extra_rules' list
+	$('#enable_extra_rules').click(function () {
+		show_extrarules();
+	});
+
 	// ---------- On initial page load ------------------------------------------------------------
 	enable_snort_vrt();
 	enable_et_rules();
@@ -623,6 +792,8 @@ events.push(function(){
 	enable_geoip2_upd();
 	enable_change_rules_upd($('#autoruleupdate').prop('selectedIndex'));
 	toggle_log_to_systemlog();
+	show_extrarules();
+	checkLastRow();
 
 });
 //]]>

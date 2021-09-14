@@ -483,7 +483,7 @@ $section->addInput(new Form_Select(
 	$pconfig['dnsbl_mode'],
 	$dnsbl_modes
 ))->setHelp('Select the DNSBL mode.&emsp;'
-		. '<span id="dnsbl_python_beta" class="badge" title="This feature is in BETA">Python mode BETA</span><div class="infoblock">'
+		. '<div class="infoblock">'
 		. '<strong>Unbound Mode</strong>:<br />'
 		. '&emsp;&emsp;&emsp;&emsp;This mode will utilize Unbound local-zone/local-data entries for DNSBL (requires more memory).<br />'
 		. '<strong>Unbound Python Mode</strong>:<br />'
@@ -3117,11 +3117,9 @@ function enable_python() {
 	hideCheckbox('pfb_py_nolog', !python);
 
 	if (!python) {
-		$('#dnsbl_python_beta').hide();
 		$('.dnsbl_unbound_tld').show();
 		$('#tldwhitelist').attr('readonly', false).css('background-color', '#FAFAFA');
 	} else {
-		$('#dnsbl_python_beta').show();
 		$('.dnsbl_unbound_tld').hide();
 		$('#tldwhitelist').attr('readonly', true).css('background-color', '#DEDEDE');
 	}

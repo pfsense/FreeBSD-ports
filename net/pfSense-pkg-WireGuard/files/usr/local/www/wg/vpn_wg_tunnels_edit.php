@@ -32,8 +32,8 @@ require_once('functions.inc');
 require_once('guiconfig.inc');
 
 // WireGuard includes
-require_once('wireguard/wg.inc');
-require_once('wireguard/wg_guiconfig.inc');
+require_once('wireguard/includes/wg.inc');
+require_once('wireguard/includes/wg_guiconfig.inc');
 
 global $wgg;
 
@@ -48,7 +48,7 @@ if (isset($_REQUEST['tun'])) {
 
 	$tun = $_REQUEST['tun'];
 
-	$tun_idx = wg_get_tunnel_array_index($_REQUEST['tun']);
+	$tun_idx = wg_tunnel_get_array_idx($_REQUEST['tun']);
 
 }
 
@@ -186,6 +186,8 @@ if ($_POST) {
 
 }
 
+$s = fn($x) => $x;
+
 // Looks like we are editing an existing tunnel
 if (isset($tun_idx) && is_array($wgg['tunnels'][$tun_idx])) {
 
@@ -251,8 +253,8 @@ $form->addGlobal(new Form_Input(
 
 $tun_enable = new Form_Checkbox(
 	'enabled',
-	'Tunnel Enabled',
-	gettext('Enable'),
+	'Enable',
+	gettext('Enable Tunnel'),
 	$pconfig['enabled'] == 'yes'
 );
 
@@ -291,7 +293,8 @@ $section->addInput(new Form_Input(
 	'text',
 	$pconfig['listenport'],
 	['placeholder' => next_wg_port()]
-))->setHelp('Port used by this tunnel to communicate with peers.');
+))->addClass('trim')
+  ->setHelp('Port used by this tunnel to communicate with peers.');
 
 $group = new Form_Group('*Interface Keys');
 
@@ -300,14 +303,16 @@ $group->add(new Form_Input(
 	'Private Key',
 	wg_secret_input_type(),
 	$pconfig['privatekey']
-))->setHelp('Private key for this tunnel. (Required)');
+))->addClass('trim')
+  ->setHelp('Private key for this tunnel. (Required)');
 
 $group->add(new Form_Input(
 	'publickey',
 	'Public Key',
 	'text',
 	$pconfig['publickey']
-))->setHelp('Public key for this tunnel. (<a id="copypubkey" style="cursor: pointer;" data-success-text="Copied" data-timeout="3000">Copy</a>)')->setReadonly();
+))->addClass('trim')
+  ->setHelp('Public key for this tunnel. (<a id="copypubkey" style="cursor: pointer;" data-success-text="Copied" data-timeout="3000">Copy</a>)')->setReadonly();
 
 $group->add(new Form_Button(
 	'genkeys',
@@ -315,8 +320,8 @@ $group->add(new Form_Button(
 	null,
 	'fa-key'
 ))->addClass('btn-primary btn-sm')
-	->setHelp('New Keys')
-	->setWidth(1);
+  ->setHelp('New Keys')
+  ->setWidth(1);
 
 $section->add($group);
 
@@ -330,12 +335,12 @@ if (!is_wg_tunnel_assigned($pconfig['name'])) {
 
 	$section->addInput(new Form_StaticText(
 		'Assignment',
-		"<i class='fa fa-sitemap' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='../../interfaces_assign.php'>Interface Assignments</a>"
+		"<i class='fa fa-sitemap' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='/interfaces_assign.php'>Interface Assignments</a>"
 	));
 
 	$section->addInput(new Form_StaticText(
 		'Firewall Rules',
-		"<i class='fa fa-shield-alt' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='../../firewall_rules.php?if={$wgg['ifgroupentry']['ifname']}'>WireGuard Interface Group</a>"
+		"<i class='fa fa-shield-alt' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='/firewall_rules.php?if={$wgg['ifgroupentry']['ifname']}'>WireGuard Interface Group</a>"
 	));
 
 	$section->addInput(new Form_StaticText(
@@ -366,10 +371,10 @@ if (!is_wg_tunnel_assigned($pconfig['name'])) {
 			'Interface Address',
 			$item['address'],
 			'BOTH'
-		))->addClass('address')
-			->setHelp($counter == $last ? 'IPv4 or IPv6 address assigned to the tunnel interface.' : '')
-			->addMask("address_subnet{$counter}", $item['mask'])
-			->setWidth(4);
+		))->addClass('trim')
+		  ->setHelp($counter == $last ? 'IPv4 or IPv6 address assigned to the tunnel interface.' : '')
+		  ->addMask("address_subnet{$counter}", $item['mask'])
+		  ->setWidth(4);
 		
 		$group->add(new Form_Input(
 			"address_descr{$counter}",
@@ -377,7 +382,7 @@ if (!is_wg_tunnel_assigned($pconfig['name'])) {
 			'text',
 			$item['descr']
 		))->setHelp($counter == $last ? 'Description for administrative reference (not parsed).' : '')
-			->setWidth(4);
+		  ->setWidth(4);
 
 		$group->add(new Form_Button(
 			"deleterow{$counter}",
@@ -401,21 +406,19 @@ if (!is_wg_tunnel_assigned($pconfig['name'])) {
 
 	$wg_pfsense_if = wg_get_pfsense_interface_info($pconfig['name']);
 
-	wg_htmlspecialchars($wg_pfsense_if);
-
 	$section->addInput(new Form_StaticText(
 		'Assignment',
-		"<i class='fa fa-sitemap' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='../../interfaces_assign.php'>{$wg_pfsense_if['descr']} ({$wg_pfsense_if['name']})</a>"
+		"<i class='fa fa-sitemap' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='/interfaces_assign.php'>{$s(htmlspecialchars($wg_pfsense_if['descr']))} ({$s(htmlspecialchars($wg_pfsense_if['name']))})</a>"
 	));
 
 	$section->addInput(new Form_StaticText(
 		'Interface',
-		"<i class='fa fa-ethernet' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='../../interfaces.php?if={$wg_pfsense_if['name']}'>Interface Configuration</a>"
+		"<i class='fa fa-ethernet' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='/interfaces.php?if={$s(htmlspecialchars($wg_pfsense_if['name']))}'>{$s(gettext('Interface Configuration'))}</a>"
 	));
 
 	$section->addInput(new Form_StaticText(
 		'Firewall Rules',
-		"<i class='fa fa-shield-alt' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='../../firewall_rules.php?if={$wg_pfsense_if['name']}'>Firewall Configuration</a>"
+		"<i class='fa fa-shield-alt' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='/firewall_rules.php?if={$s(htmlspecialchars($wg_pfsense_if['name']))}'>{$s(gettext('Firewall Configuration'))}</a>"
 	));
 
 }
@@ -479,7 +482,7 @@ print($form);
 					<td><?=htmlspecialchars(wg_format_endpoint(false, $peer))?></td>
 					<td style="cursor: pointer;">
 						<a class="fa fa-pencil" title="<?=gettext('Edit Peer')?>" href="<?="vpn_wg_peers_edit.php?peer={$peer_idx}"?>"></a>
-						<?=wg_generate_toggle_icon_link($peer, 'Click to toggle enabled/disabled status', "?act=toggle&peer={$peer_idx}&tun={$tun}")?>
+						<?=wg_generate_toggle_icon_link(($peer['enabled'] == 'yes'), 'peer', "?act=toggle&peer={$peer_idx}&tun={$tun}")?>
 						<a class="fa fa-trash text-danger" title="<?=gettext('Delete Peer')?>" href="<?="?act=delete&peer={$peer_idx}&tun={$tun}"?>" usepost></a>
 					</td>
 				</tr>
@@ -537,6 +540,8 @@ events.push(function() {
 	// Supress "Delete" button if there are fewer than two rows
 	checkLastRow();
 
+	wgRegTrimHandler();
+
 	$('#copypubkey').click(function () {
 
 		var $this = $(this);
@@ -564,7 +569,7 @@ events.push(function() {
 
 	// Request a new public/private key pair
 	$('#genkeys').click(function(event) {
-		if ($('#privatekey').val().length == 0 || confirm("<?=$genKeyWarning?>")) {
+		if ($('#privatekey').val().length == 0 || confirm(<?=json_encode($genKeyWarning)?>)) {
 			ajaxRequest = $.ajax({
 				url: '/wg/vpn_wg_tunnels_edit.php',
 				type: 'post',
@@ -601,22 +606,11 @@ events.push(function() {
 		$(form).submit();
 	});
 
-	// Trim any whitespace from address input
-	$("#addresses").on("change", "input.address", function () {
-
-		$(this).val($(this).val().replace(/\s/g, ""));
-
-	});
-
 });
 //]]>
 </script>
 
-<?php 
-
+<?php
+include('wireguard/includes/wg_foot.inc');
 include('foot.inc');
-
-// Must be included last
-include('wireguard/wg_foot.inc');
-
 ?>

@@ -168,7 +168,7 @@ if ($_POST['save']) {
 		$p_list['vpnips'] = $_POST['vpnips']? 'yes' : 'no';
 
 		$p_list['address'] = $_POST['address'];
-		$p_list['descr']  =  mb_convert_encoding(str_replace("\r\n", "\n", $_POST['descr']),"HTML-ENTITIES","auto");
+		$p_list['descr']  =  str_replace("\r\n", "\n", $_POST['descr']);
 		$p_list['detail'] = $final_address_details;
 
 		if (isset($id) && $a_passlist[$id])
@@ -201,6 +201,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php");
 $tab_array[] = array(gettext("Pass Lists"), true, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$instanceid}");

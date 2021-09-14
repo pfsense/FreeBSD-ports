@@ -5,7 +5,7 @@
 	<copyright>
 	<![CDATA[
 /*
- * zabbix-proxy.xml
+ * zabbixproxy.xml
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
@@ -36,7 +36,7 @@
 	<menu>
 		<name>%%ZABBIXTITLE%%</name>
 		<section>Services</section>
-		<url>/pkg_edit.php?xml=zabbix-proxy.xml&amp;id=0</url>
+		<url>/pkg_edit.php?xml=zabbixproxy.xml&amp;id=0</url>
 	</menu>
 	<service>
 		<name>zabbix_proxy</name>
@@ -47,7 +47,7 @@
 	<tabs>
 		<tab>
 			<text>Proxy</text>
-			<url>/pkg_edit.php?xml=zabbix-proxy.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=zabbixproxy.xml&amp;id=0</url>
 			<active />
 		</tab>
 	</tabs>

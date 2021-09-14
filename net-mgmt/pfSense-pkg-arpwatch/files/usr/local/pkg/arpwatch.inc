@@ -240,11 +240,9 @@ if ((false !== $message) && ((false === strpos($message, ': Cron ')) ||
 	preg_match('/^Subject: (.*)$/m', $message, $subject);
 	init_config_arr(array('installedpackages', 'arpwatch', 'config', 0, 'row'));
 	foreach ($config['installedpackages']['arpwatch']['config'][0]['row'] as $sup) {
-		if (!empty($sup['mac'])) {
-			if (strpos($message, $sup['mac']) && (($sup['notification_type'] == 'all') ||
-			    ($sup['notification_type'] == $subject[1]))) {
-				return;
-			}
+		if (!empty($sup['mac']) && strpos($message, strtolower($sup['mac'])) &&
+		    (($sup['notification_type'] == 'all') || ($sup['notification_type'] == $subject[1]))) {
+			return;
 		}
 	}
 	$message = preg_replace('/^From: .*$/m', '', $message);

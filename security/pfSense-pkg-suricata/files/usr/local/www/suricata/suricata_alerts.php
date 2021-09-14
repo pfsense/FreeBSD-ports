@@ -173,6 +173,7 @@ $a_instance = &$config['installedpackages']['suricata']['rule'];
 $suricata_uuid = $a_instance[$instanceid]['uuid'];
 $if_real = get_real_interface($a_instance[$instanceid]['interface']);
 $suricatalogdir = SURICATALOGDIR;
+$suricatadir = SURICATADIR;
 
 // Load up the arrays of force-enabled and force-disabled SIDs
 $enablesid = suricata_load_sid_mods($a_instance[$instanceid]['rule_sid_on']);
@@ -212,6 +213,9 @@ if (!is_numeric($anentries)) {
 if (isset($_POST['resolve'])) {
 	$ip = strtolower($_POST['resolve']);
 	$res = (is_ipaddr($ip) ? gethostbyaddr($ip) : '');
+	if (strpos($res, 'xn--') !== false) {
+		$res = idn_to_utf8($res);
+	}
 
 	if ($res && $res != $ip)
 		$response = array('resolve_ip' => $ip, 'resolve_text' => $res);
@@ -222,6 +226,91 @@ if (isset($_POST['resolve'])) {
 	exit;
 }
 # --- AJAX REVERSE DNS RESOLVE End ---
+
+# --- AJAX GEOIP CHECK Start ---
+if (isset($_POST['geoip'])) {
+	$ip = strtolower($_POST['geoip']);
+	if (is_ipaddr($ip)) {
+		$url = "https://api.hackertarget.com/geoip/?q={$ip}";
+		$conn = curl_init("https://api.hackertarget.com/geoip/?q={$ip}");
+		curl_setopt($conn, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($conn, CURLOPT_FRESH_CONNECT,  true);
+		curl_setopt($conn, CURLOPT_RETURNTRANSFER, 1);
+		set_curlproxy($conn);
+		$res = curl_exec($conn);
+		curl_close($conn);
+	} else {
+		$res = '';
+	}
+
+	if ($res && $res != $ip && !preg_match('/error/', $res))
+		$response = array('geoip_text' => $res);
+	else
+		$response = array('geoip_text' => gettext("Cannot check {$ip}"));
+
+	echo json_encode(str_replace("\\","\\\\", $response)); // single escape chars can break JSON decode
+	exit;
+}
+# --- AJAX GEOIP CHECK End ---
+
+# --- AJAX RULE LOOKUP Start ---
+if (isset($_POST['rulelookup2'])) {
+	list($gid, $sid) = explode(':', $_POST['rulelookup']);
+	foreach (glob("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/*") as $rule) {
+		$fd = fopen($rule, "r");
+		$buf = "";
+		while (($buf = fgets($fd)) !== FALSE) {
+			$matches = array();
+			preg_match('/sid\:([0-9]+);/i', $buf, $matches);
+			if ($sid == $matches[1]) {
+				preg_match('/gid\:([0-9]+);/i', $buf, $matches);
+				if (($gid == $matches[1]) ||
+				    (empty($matches[1]) && ($gid == 1))) {
+					$res = $buf;
+					break 2;
+				}
+			}
+		}
+	}
+
+	if ($res)
+		$response = array('gidsid' => $_POST['rulelookup'], 'rule_text' => $res);
+	else
+		$response = array('gidsid' => $_POST['rulelookup'], 'rule_text' => gettext("Unable to find the rule"));
+
+	echo json_encode(str_replace("\\","\\\\", $response)); // single escape chars can break JSON decode
+	exit;
+}
+# --- AJAX RULE LOOKUP End ---
+
+# --- AJAX RULE LOOKUP Start ---
+if ($_POST['action'] == 'loadRule') {
+	$currentruleset = '';
+	if (isset($_POST['gid']) && isset($_POST['sid'])) {
+		$gid = $_POST['gid'];
+		$sid = $_POST['sid'];
+		$rules = array_merge(glob(SURICATA_RULES_DIR . "/*.rules"), array("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/custom.rules", "{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/flowbit-required.rules"));
+		foreach ($rules as $rule) {
+			$rules_map = suricata_load_rules_map($rule);
+			if ($rules_map[$gid][$sid]['rule']) {
+				$rule_text = base64_encode($rules_map[$gid][$sid]['rule']);
+				$currentruleset = basename($rule);
+				break;
+			}
+		}
+	} else {
+		$rule_text = base64_encode(gettext('Invalid rule signature - no matching rule was found!'));
+	}
+	if (strpos($currentruleset, 'snort_') !== false) {
+		$rule_link = "https://www.snort.org/rule_docs/{$gid}-{$sid}";
+	} else {
+		$rule_link = '';
+	}	
+	$response = array('rule_text' => $rule_text, 'rule_link' => $rule_link, 'category' => $currentruleset);
+	echo json_encode(str_replace("\\","\\\\", $response)); // single escape chars can break JSON decode
+	exit;
+}
+# --- AJAX RULE LOOKUP End ---
 
 # Check for persisted filtering of alerts log entries and populate
 # the required $filterfieldsarray when persisting filtered entries.
@@ -648,6 +737,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), true, "/suricata/suricata_alerts.php");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$instanceid}");
@@ -1113,6 +1203,13 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 				$alert_ip_src .= '<br /><i class="fa fa-search" onclick="javascript:resolve_with_ajax(\'' . $fields['src'] . '\');" title="';
 				$alert_ip_src .= gettext("Resolve host via reverse DNS lookup") . "\"  alt=\"Icon Reverse Resolve with DNS\" ";
 				$alert_ip_src .= " style=\"cursor: pointer;\"></i>";
+				/* Add GeoIP check icon */
+				if (!is_private_ip($fields['src']) && (substr($fields['src'], 0, 2) != 'fc') &&
+				    (substr($fields['src'], 0, 2) != 'fd')) {
+					$alert_ip_src .= '&nbsp;&nbsp;<i class="fa fa-globe" onclick="javascript:geoip_with_ajax(\'' . $fields['src'] . '\');" title="';
+					$alert_ip_src .= gettext("Check host GeoIP data") . "\"  alt=\"Icon Check host GeoIP\" ";
+					$alert_ip_src .= " style=\"cursor: pointer;\"></i>";
+				}
 				/* Add icons for auto-adding to Suppress List if appropriate */
 				if (!suricata_is_alert_globally_suppressed($supplist, $fields['gid'], $fields['sid']) &&
 				    !isset($supplist[$fields['gid']][$fields['sid']]['by_src'][$fields['src']])) {
@@ -1120,7 +1217,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 					$alert_ip_src .= " onClick=\"encRuleSig('{$fields['gid']}','{$fields['sid']}','{$fields['src']}','{$alert_descr}');$('#mode').val('addsuppress_srcip');$('#formalert').submit();\"></i>";
 				}
 				elseif (isset($supplist[$fields['gid']][$fields['sid']]['by_src'][$fields['src']])) {
-					$alert_ip_src .= '&nbsp;<i class="fa fa-info-circle" ';
+					$alert_ip_src .= '&nbsp;&nbsp;<i class="fa fa-info-circle" ';
 					$alert_ip_src .= 'title="' . gettext("This alert track by_src IP is already in the Suppress List") . '"></i>';
 				}
 				/* Add icon for auto-removing from Blocked Table if required */
@@ -1148,7 +1245,13 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 				$alert_ip_dst .= "<br /><i class=\"fa fa-search\" onclick=\"javascript:resolve_with_ajax('{$fields['dst']}');\" title=\"";
 				$alert_ip_dst .= gettext("Resolve host via reverse DNS lookup") . "\" alt=\"Icon Reverse Resolve with DNS\" ";
 				$alert_ip_dst .= " style=\"cursor: pointer;\"></i>";
-
+				/* Add GeoIP check icon */
+				if (!is_private_ip($fields['dst']) && (substr($fields['dst'], 0, 2) != 'fc') &&
+				    (substr($fields['dst'], 0, 2) != 'fd')) {
+					$alert_ip_dst .= '&nbsp;&nbsp;<i class="fa fa-globe" onclick="javascript:geoip_with_ajax(\'' . $fields['dst'] . '\');" title="';
+					$alert_ip_dst .= gettext("Check host GeoIP data") . "\"  alt=\"Icon Check host GeoIP\" ";
+					$alert_ip_dst .= " style=\"cursor: pointer;\"></i>";
+				}
 				/* Add icons for auto-adding to Suppress List if appropriate */
 				if (!suricata_is_alert_globally_suppressed($supplist, $fields['gid'], $fields['sid']) &&
 				    !isset($supplist[$fields['gid']][$fields['sid']]['by_dst'][$fields['dst']])) {
@@ -1174,7 +1277,10 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			$alert_dst_p = $fields['dport'];
 
 			/* SID */
-			$alert_sid_str = "{$fields['gid']}:{$fields['sid']}";
+			$alert_sid_str = '<a onclick="javascript:showRuleContents(\'' .
+				    $fields['gid'] . '\',\'' . $fields['sid'] . '\');" title="' .
+				    gettext("Show the rule") . '" style="cursor: pointer;" >' .
+		       		    $fields['gid'] . ':' . $fields['sid'] . '</a>';
 			if (!suricata_is_alert_globally_suppressed($supplist, $fields['gid'], $fields['sid'])) {
 				$sidsupplink = "<i class=\"fa fa-plus-square-o icon-pointer\" onClick=\"encRuleSig('{$fields['gid']}','{$fields['sid']}','','{$alert_descr}');$('#mode').val('addsuppress');$('#formalert').submit();\"";
 				$sidsupplink .= ' title="' . gettext("Add this alert to the Suppress List") . '"></i>';
@@ -1295,7 +1401,22 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 	</div>
 <?php endif; ?>
 
-
+<?php
+// Create a Modal object to display text of user-clicked rules
+$form = new Form(FALSE);
+$modal = new Modal('View Rules Text', 'rulesviewer', 'large', 'Close');
+$modal->addInput(new Form_StaticText (
+	'Category',
+	'<div class="text-left" id="modal_rule_category"></div>'
+))->setHelp('<span id="modal_rule_link_text"></span><a id="modal_rule_link" target="_blank"></a>');
+$modal->addInput(new Form_Textarea (
+	'rulesviewer_text',
+	'Rule Text',
+	'...Loading...'
+))->removeClass('form-control')->addClass('row-fluid col-sm-10')->setAttribute('rows', '10')->setAttribute('wrap', 'soft');
+$form->add($modal);
+print($form);
+?>
 
 <script type="text/javascript">
 //<![CDATA[
@@ -1360,6 +1481,63 @@ function resolve_ip_callback(transport) {
 	var response = $.parseJSON(transport.responseText);
 	var msg = 'IP address "' + response.resolve_ip + '" resolves to\n';
 	alert(msg + 'host "' + htmlspecialchars(response.resolve_text) + '"');
+}
+
+function geoip_with_ajax(ip_to_check) {
+	var url = "/suricata/suricata_alerts.php";
+
+	$.ajax(
+		url,
+		{
+			type: 'post',
+			dataType: 'json',
+			data: {
+				geoip: ip_to_check,
+			      },
+			complete: geoip_callback
+		});
+}
+
+function geoip_callback(transport) {
+	var response = $.parseJSON(transport.responseText);
+	alert(htmlspecialchars(response.geoip_text));
+}
+
+function showRuleContents(gid, sid) {
+		// Show the modal dialog with rule text
+		$('#rulesviewer_text').text("...Loading...");
+		$('#rulesviewer').modal('show');
+		$('#modal_rule_category').text("...Loading...");
+		$('#modal_rule_link_text').text('');
+		$('#modal_rule_link').attr('href', '');
+		$('#modal_rule_link').text('');
+
+		$.ajax(
+			"<?=$_SERVER['SCRIPT_NAME'];?>",
+			{
+				type: 'post',
+				data: {
+					sid:         sid,
+					gid:         gid,
+					id:	     $('#id').val(),
+					openruleset: $('#selectbox').val(),
+					action:      'loadRule'
+				},
+				complete: loadComplete
+			}
+		);
+}
+
+function loadComplete(req) {
+		var response = $.parseJSON(req.responseText);
+		$('#modal_rule_category').html(response.category);
+		$('#rulesviewer_text').text(atob(response.rule_text));
+		$('#rulesviewer_text').attr('readonly', true);
+		if (response.rule_link) {
+			$('#modal_rule_link_text').text('Snort Rule Doc: ');
+			$('#modal_rule_link').attr('href', response.rule_link);
+			$('#modal_rule_link').text(response.rule_link);
+		}
 }
 
 // From http://stackoverflow.com/questions/5499078/fastest-method-to-escape-html-tags-as-html-entities

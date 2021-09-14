@@ -1072,6 +1072,9 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 			/* DESCRIPTION */
 			$alert_class = $fields[11];
 
+			/* Snort database GID:SID link, see https://redmine.pfsense.org/issues/12221 */
+			$link_sid_str = "https://www.snort.org/rule_docs/{$fields[1]}-{$fields[2]}";
+
 			/* Write out a table row */
 ?>
 			<tr class="text-nowrap">
@@ -1084,7 +1087,7 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 				<td><?=$alert_src_p; ?></td>
 				<td style="word-wrap:break-word; white-space:normal"><?=$alert_ip_dst;?></td>
 				<td><?=$alert_dst_p; ?></td>
-				<td><?=$alert_sid_str; ?><br/><?=$sidsupplink; ?>&nbsp;&nbsp;<?=$sid_dsbl_link; ?>&nbsp;&nbsp;<?=$sid_action_link; ?></td>
+				<td><a target="_blank" href="<?=$link_sid_str; ?>"><?=$alert_sid_str; ?></a><br/><?=$sidsupplink; ?>&nbsp;&nbsp;<?=$sid_dsbl_link; ?>&nbsp;&nbsp;<?=$sid_action_link; ?></td>
 				<td style="word-wrap:break-word; white-space:normal"><?=$alert_descr; ?></td>
 			</tr>
 <?php

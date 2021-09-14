@@ -5,6 +5,11 @@
 		<website>http://www.balabit.com/network-security/syslog-ng/</website>
 		<descr><![CDATA[Syslog-ng syslog server. This service is not intended to replace the default pfSense syslog server but rather acts as an independent syslog server.]]></descr>
 		<version>%%PKGVERSION%%</version>
-		<configurationfile>syslog-ng.xml</configurationfile>
+		<configurationfile>syslogng.xml</configurationfile>
+		<plugins>
+			<item>
+				<type>plugin_certificates</type>
+			</item>
+		</plugins>
 	</package>
 </pfsensepkgs>

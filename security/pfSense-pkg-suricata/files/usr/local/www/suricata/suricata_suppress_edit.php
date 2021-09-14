@@ -101,7 +101,7 @@ if ($_POST['save']) {
 		$s_list = array();
 		$s_list['name'] = $_POST['name'];
 		$s_list['uuid'] = uniqid();
-		$s_list['descr']  =  mb_convert_encoding($_POST['descr'],"HTML-ENTITIES","auto");
+		$s_list['descr'] = $_POST['descr'];
 		if ($_POST['suppresspassthru']) {
 			$s_list['suppresspassthru'] = str_replace("&#8203;", "", $s_list['suppresspassthru']);
 			$s_list['suppresspassthru'] = base64_encode($_POST['suppresspassthru']);
@@ -133,6 +133,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), true, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php");

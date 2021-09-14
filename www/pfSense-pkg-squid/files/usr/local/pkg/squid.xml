@@ -205,7 +205,7 @@
 			<source><![CDATA[squid_get_interface_list(false, false, true)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
-			<default_value>lan</default_value>
+			<default_value>auto</default_value>
 		</field>
 		<field>
 			<fielddescr>Proxy Port</fielddescr>

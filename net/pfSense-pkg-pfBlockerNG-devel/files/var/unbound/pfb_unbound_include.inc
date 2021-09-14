@@ -186,7 +186,7 @@ function pfb_python_mount($python_mode, $verbose, $type_mount, $type_umount, $ty
 // Force Resolver path
 $unbound_chroot_path = '/var/unbound';
 
-$f1 = pfb_python_mount($python_mode, $verbose, 'nullfs', 'nullfs', 'ro', 'lib', "on {$unbound_chroot_path}/lib (nullfs, local, read-only)");
+$f1 = pfb_python_mount($python_mode, $verbose, 'nullfs', 'nullfs', 'ro', 'lib', "on {$unbound_chroot_path}/lib (nullfs");
 $f2 = pfb_python_mount($python_mode, $verbose, 'devfs devfs', 'devfs', '', 'dev', "devfs on {$unbound_chroot_path}/dev");
 $f3 = pfb_python_mount($python_mode, $verbose, 'nullfs', 'nullfs', 'rw', 'var/log/pfblockerng', "on {$unbound_chroot_path}/var/log/pfblockerng (nullfs");
 $f4 = pfb_python_mount($python_mode, $verbose, 'nullfs', 'nullfs', 'ro', 'usr/local/share/GeoIP', "on {$unbound_chroot_path}/usr/local/share/GeoIP (nullfs");

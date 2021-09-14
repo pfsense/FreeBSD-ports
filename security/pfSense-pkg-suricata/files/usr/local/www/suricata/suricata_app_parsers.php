@@ -265,6 +265,7 @@ elseif ($_POST['ResetAll']) {
 	$pconfig['imap_parser'] = "detection-only";
 	$pconfig['ssh_parser'] = "yes";
 	$pconfig['ftp_parser'] = "yes";
+	$pconfig['ftp_data_parser'] = "on";
 	$pconfig['dcerpc_parser'] = "yes";
 	$pconfig['smb_parser'] = "yes";
 	$pconfig['msn_parser'] = "detection-only";
@@ -277,6 +278,8 @@ elseif ($_POST['ResetAll']) {
 	$pconfig['rdp_parser'] = "yes";
 	$pconfig['sip_parser'] = "yes";
 	$pconfig['snmp_parser'] = "yes";
+	$pconfig['http2_parser'] = "yes";
+	$pconfig['rfb_parser'] = "yes";
 
 	/* Log a message at the top of the page to inform the user */
 	$savemsg = gettext("All flow and stream settings on this page have been reset to their defaults.  Click APPLY if you wish to keep these new settings.");
@@ -456,6 +459,7 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		$natent['imap_parser'] = $_POST['imap_parser'];
 		$natent['ssh_parser'] = $_POST['ssh_parser'];
 		$natent['ftp_parser'] = $_POST['ftp_parser'];
+		$natent['ftp_data_parser'] = $_POST['ftp_data_parser'];
 		$natent['dcerpc_parser'] = $_POST['dcerpc_parser'];
 		$natent['smb_parser'] = $_POST['smb_parser'];
 		$natent['msn_parser'] = $_POST['msn_parser'];
@@ -468,6 +472,8 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		$natent['rdp_parser'] = $_POST['rdp_parser'];
 		$natent['sip_parser'] = $_POST['sip_parser'];
 		$natent['snmp_parser'] = $_POST['snmp_parser'];
+		$natent['http2_parser'] = $_POST['http2_parser'];
+		$natent['rfb_parser'] = $_POST['rfb_parser'];
 
 		/**************************************************/
 		/* If we have a valid rule ID, save configuration */
@@ -515,6 +521,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php?instance={$id}");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
@@ -696,6 +703,22 @@ if ($importalias) {
 	));
 	print($section);
 
+	$section = new Form_Section('FTP App-Layer Parser Settings');
+	$section->addInput(new Form_Select(
+		'ftp_parser',
+		'FTP Parser',
+		$pconfig['ftp_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for FTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Checkbox(
+		'ftp_data_parser',
+		'FTP DATA parser',
+		'Suricata will process FTP DATA port transfers. This feature is needed to save FTP uploads/download when File Store feature is enabled.',
+		$pconfig['ftp_data_parser'] == 'on' ? true:false,
+		'on'
+	));
+	print($section);
+
 	$section = new Form_Section('Other App-Layer Parser Settings');
 	$section->addInput(new Form_Select(
 		'dcerpc_parser',
@@ -710,11 +733,11 @@ if ($importalias) {
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for DHCP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
-		'ftp_parser',
-		'FTP Parser',
-		$pconfig['ftp_parser'],
+		'http2_parser',
+		'HTTP2 Parser',
+		$pconfig['http2_parser'],
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
-	))->setHelp('Choose the parser/detection setting for FTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	))->setHelp('Choose the parser/detection setting for HTTP2. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
 		'ikev2_parser',
 		'IKEv2 Parser',
@@ -752,6 +775,18 @@ if ($importalias) {
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for NTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
+		'rdp_parser',
+		'RDP Parser',
+		$pconfig['rdp_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for RDP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'rfb_parser',
+		'RFB Parser',
+		$pconfig['rfb_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for RFB. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
 		'smb_parser',
 		'SMB Parser',
 		$pconfig['smb_parser'],
@@ -769,12 +804,6 @@ if ($importalias) {
 		$pconfig['tftp_parser'],
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for TFTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
-	$section->addInput(new Form_Select(
-		'rdp_parser',
-		'RDP Parser',
-		$pconfig['rdp_parser'],
-		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
-	))->setHelp('Choose the parser/detection setting for RDP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
 		'sip_parser',
 		'SIP Parser',

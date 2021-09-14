@@ -181,6 +181,7 @@ function netsnmp_resync() {
 	/* If the service isn't enabled, nothing to do. Stop the service and return. */
 	if ($nsettings['enable_snmpd'] != "on") {
 		stop_service('net-snmpd');
+		unlink_if_exists('/usr/local/etc/rc.d/net-snmpd.sh');
 		return;
 	}
 
@@ -677,6 +678,7 @@ function netsnmp_resync_snmptrapd() {
 	/* If snmptrapd is not enabled, then stop the service and do not write the config */
 	if ($nsettings['enable_snmptrapd'] != "on") {
 		stop_service('net-snmptrapd');
+		unlink_if_exists('/usr/local/etc/rc.d/net-snmptrapd.sh');
 		return;
 	}
 

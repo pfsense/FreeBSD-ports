@@ -2,7 +2,7 @@
 
 PORTNAME?=	pfSense-pkg-zabbix-agent
 PORTVERSION=	1.0.4
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -43,7 +43,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/zabbix-agent.xml \
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/zabbixagent.xml \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/zabbix-agent.inc \
 		${STAGEDIR}${PREFIX}/pkg
@@ -58,6 +58,6 @@ do-install:
 		-e "s|%%ZABBIXINTERNALNAME%%|${ZABBIXINTERNALNAME}|" \
 		${STAGEDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${PREFIX}/pkg/zabbix-agent.inc \
-		${STAGEDIR}${PREFIX}/pkg/zabbix-agent.xml
+		${STAGEDIR}${PREFIX}/pkg/zabbixagent.xml
 
 .include <bsd.port.mk>

@@ -575,7 +575,7 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 
 	$valresult = array();
 	foreach ($home_net as $vald) { 
-		if (empty($vald)) {
+		if (empty($vald) || !is_subnet($vald)) {
 			continue;
 		}
 		$vald = trim($vald);
@@ -4331,4 +4331,19 @@ function suricata_get_vpns_list() {
 	}
 
 	return $vpns;
+}
+
+function suricata_listfiles($dir) {
+	$files = array();
+	foreach (scandir($dir) as $file) {
+		if (($file != '.') && ($file != '..')) {
+			$path = $dir . '/' . $file;
+			if (is_dir($path)) {
+				$files = array_merge($files, suricata_listfiles($path));
+			} else {
+				$files[] = $path;
+			}
+		}
+	}
+	return($files);
 }

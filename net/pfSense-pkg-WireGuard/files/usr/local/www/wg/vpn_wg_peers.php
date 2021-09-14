@@ -32,8 +32,8 @@ require_once('functions.inc');
 require_once('guiconfig.inc');
 
 // WireGuard includes
-require_once('wireguard/wg.inc');
-require_once('wireguard/wg_guiconfig.inc');
+require_once('wireguard/includes/wg.inc');
+require_once('wireguard/includes/wg_guiconfig.inc');
 
 global $wgg;
 
@@ -177,7 +177,7 @@ if (is_array($wgg['peers']) && count($wgg['peers']) > 0):
 						<td><?=htmlspecialchars(wg_format_endpoint(false, $peer))?></td>
 						<td style="cursor: pointer;">
 							<a class="fa fa-pencil" title="<?=gettext('Edit Peer')?>" href="<?="vpn_wg_peers_edit.php?peer={$peer_idx}"?>"></a>
-							<?=wg_generate_toggle_icon_link($peer, 'Click to toggle enabled/disabled status', "?act=toggle&peer={$peer_idx}")?>
+							<?=wg_generate_toggle_icon_link(($peer['enabled'] == 'yes'), 'peer', "?act=toggle&peer={$peer_idx}")?>
 							<a class="fa fa-trash text-danger" title="<?=gettext('Delete Peer')?>" href="<?="?act=delete&peer={$peer_idx}"?>" usepost></a>
 						</td>
 					</tr>
@@ -209,19 +209,19 @@ endif;
 
 <script type="text/javascript">
 //<![CDATA[
+events.push(function() {
+
 	$('.pubkey').click(function () {
 
 		navigator.clipboard.writeText($(this).attr('title'));
 
 	});
+
+});
 //]]>
 </script>
 
-<?php 
-
+<?php
+include('wireguard/includes/wg_foot.inc');
 include('foot.inc');
-
-// Must be included last
-include('wireguard/wg_foot.inc');
-
 ?>

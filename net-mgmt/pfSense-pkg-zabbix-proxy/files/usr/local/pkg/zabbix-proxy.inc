@@ -336,7 +336,7 @@ function zabbix_proxy_certca($type) {
         return $c_arr;
 }
 
-function zabbix_proxy_plugin_certificates($pluginparams) {
+function zabbixproxy_plugin_certificates($pluginparams) {
 	global $config;
 	$result = array();
 	init_config_arr(array('installedpackages', 'zabbixproxylts', 'config'));

@@ -32,12 +32,10 @@ require_once('functions.inc');
 require_once('guiconfig.inc');
 
 // WireGuard includes
-require_once('wireguard/wg.inc');
-require_once('wireguard/wg_guiconfig.inc');
+require_once('wireguard/includes/wg.inc');
+require_once('wireguard/includes/wg_guiconfig.inc');
 
 global $wgg;
-
-wg_globals();
 
 $save_success = false;
 
@@ -81,7 +79,13 @@ if ($_POST) {
 
 				$pconfig = $res['pconfig'];
 
-				$save_success = (empty($input_errors) && $res['changes']);
+				if (empty($input_errors) && $res['changes']) {
+
+					wg_toggle_wireguard();
+
+					$save_success = true;
+
+				}
 
 				break;
 
@@ -98,15 +102,13 @@ if ($_POST) {
 
 }
 
-// Defaults for new installations
+$s = fn($x) => $x;
 
-$pconfig['keep_conf'] = isset($wgg['config']['keep_conf']) ? $wgg['config']['keep_conf'] : 'yes';
+// Just to make sure defaults are properly assigned if anything is missing
+wg_defaults_install();
 
-$pconfig['hide_secrets'] = isset($wgg['config']['hide_secrets']) ? $wgg['config']['hide_secrets'] : 'yes';
-
-$pconfig['resolve_interval'] = isset($wgg['config']['resolve_interval']) ? $wgg['config']['default_resolve_interval'] : $wgg['resolve_interval'];
-
-$pconfig['resolve_interval_track'] = isset($wgg['config']['resolve_interval_track']) ? $wgg['config']['resolve_interval_track'] : 'no';
+// Grab current configuration from the XML
+$pconfig = $wgg['config'];
 
 $shortcut_section = 'wireguard';
 
@@ -121,13 +123,13 @@ $tab_array[] = array(gettext('Status'), false, '/wg/status_wireguard.php');
 
 include('head.inc');
 
+wg_print_service_warning();
+
 if ($save_success) {
 
 	print_info_box(gettext('The changes have been applied successfully.'), 'success');
 	
 }
-
-wg_print_service_warning();
 
 if (isset($_POST['apply'])) {
 
@@ -147,49 +149,85 @@ display_top_tabs($tab_array);
 
 $form = new Form(false);
 
-$section = new Form_Section('General Settings');
+$section = new Form_Section(gettext('General Settings'));
+
+$wg_enable = new Form_Checkbox(
+	'enable',
+	gettext('Enable'),
+	gettext('Enable WireGuard'),
+	wg_is_service_enabled()
+);
+
+$wg_enable->setHelp("<span class=\"text-danger\">{$s(gettext('Note:'))} </span>
+		     {$s(gettext('WireGuard cannot be disabled when one or more tunnels is assigned to a pfSense interface.'))}");
+
+if (wg_is_wg_assigned()) {
+
+	$wg_enable->setDisabled();
+
+	// We still want to POST this field, make it a hidden field now
+	$form->addGlobal(new Form_Input(
+		'enable',
+		'',
+		'hidden',
+		(wg_is_service_enabled() ? 'yes' : 'no')
+	));
+
+}
+
+$section->addInput($wg_enable);
 
 $section->addInput(new Form_Checkbox(
 	'keep_conf',
-	'Keep Configuration',
+	gettext('Keep Configuration'),
 	gettext('Enable'),
 	$pconfig['keep_conf'] == 'yes'
-))->setHelp("<span class=\"text-danger\">Note: </span>
-		With 'Keep Configurations' enabled (default), all tunnel configurations and package settings will persist on install/de-install."
-);
+))->setHelp("<span class=\"text-danger\">{$s(gettext('Note:'))} </span>
+	     {$s(gettext("With 'Keep Configurations' enabled (default), all tunnel configurations and package settings will persist on install/de-install."))}");
 
-$group = new Form_Group('Endpoint Hostname Resolve Interval');
+$group = new Form_Group(gettext('Endpoint Hostname Resolve Interval'));
 
 $group->add(new Form_Input(
 	'resolve_interval',
-	'Endpoint Hostname Resolve Interval',
+	gettext('Endpoint Hostname Resolve Interval'),
 	'text',
 	wg_get_endpoint_resolve_interval(),
 	['placeholder' => wg_get_endpoint_resolve_interval()]
-))->setHelp("Interval (in seconds) for re-resolving endpoint host/domain names.<br />
-		<span class=\"text-danger\">Note: </span> The default is {$wgg['default_resolve_interval']} seconds (0 to disable).");
+))->addClass('trim')
+  ->setHelp("{$s(gettext('Interval (in seconds) for re-resolving endpoint host/domain names.'))}<br />
+	     <span class=\"text-danger\">{$s(gettext('Note:'))} </span> {$s(sprintf('The default is %s seconds (0 to disable).', $wgg['default_resolve_interval']))}");
 
 $group->add(new Form_Checkbox(
 	'resolve_interval_track',
 	null,
 	gettext('Track System Resolve Interval'),
 	($pconfig['resolve_interval_track'] == 'yes')
-))->setHelp("Tracks the system 'Aliases Hostnames Resolve Interval' setting.<br />
-		<span class=\"text-danger\">Note: </span> See System / Advanced / <a href=\"..\..\system_advanced_firewall.php\">Firewall & NAT</a>");
+))->setHelp("{$s(gettext("Tracks the system 'Aliases Hostnames Resolve Interval' setting."))}<br />
+	     <span class=\"text-danger\">{$s(gettext('Note:'))} </span> See System &gt; Advanced &gt; <a href=\"/system_advanced_firewall.php\">Firewall &amp; NAT</a>");
 
 $section->add($group);
 
+$interface_group_list = array('all' => gettext('All Tunnels'), 'unassigned' => gettext('Only Unassigned Tunnels'), 'none' => gettext('None'));
+
+$section->addInput($input = new Form_Select(
+	'interface_group',
+	gettext('Interface Group Membership'),
+	$pconfig['interface_group'],
+	$interface_group_list
+))->setHelp("{$s(gettext('Configures which WireGuard tunnels are members of the WireGuard interface group.'))}<br />
+	     <span class=\"text-danger\">{$s(gettext('Note:'))} </span> {$s(sprintf(gettext("Group firewall rules are evaluated before interface firewall rules. Default is '%s.'"), $interface_group_list['all']))}");
+
 $form->add($section);
 
-$section = new Form_Section('User Interface Settings');
+$section = new Form_Section(gettext('User Interface Settings'));
 
 $section->addInput(new Form_Checkbox(
 	'hide_secrets',
-	'Hide Secrets',
+	gettext('Hide Secrets'),
     	gettext('Enable'),
     	$pconfig['hide_secrets'] == 'yes'
-))->setHelp("<span class=\"text-danger\">Note: </span>
-		With 'Hide Secrets' enabled, all secrets (private and pre-shared keys) are hidden in the user interface.");
+))->setHelp("<span class=\"text-danger\">{$s(gettext('Note:'))} </span>
+		{$s(gettext("With 'Hide Secrets' enabled, all secrets (private and pre-shared keys) are hidden in the user interface."))}");
 
 $form->add($section);
 
@@ -214,6 +252,8 @@ print($form);
 <script type="text/javascript">
 //<![CDATA[
 events.push(function() {
+
+	wgRegTrimHandler();
 
 	// Save the form
 	$('#saveform').click(function () {
@@ -240,11 +280,7 @@ events.push(function() {
 //]]>
 </script>
 
-<?php 
-
+<?php
+include('wireguard/includes/wg_foot.inc');
 include('foot.inc');
-
-// Must be included last
-include('wireguard/wg_foot.inc');
-
 ?>

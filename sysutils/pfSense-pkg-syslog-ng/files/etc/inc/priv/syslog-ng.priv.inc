@@ -26,10 +26,10 @@ $priv_list['page-services-syslogng']['name'] = "WebCfg - Services: syslog-ng pac
 $priv_list['page-services-syslogng']['descr'] = "Allow access to syslog-ng package GUI";
 $priv_list['page-services-syslogng']['match'] = array();
 
-$priv_list['page-services-syslogng']['match'][] = "pkg.php?xml=syslog-ng.xml*";
+$priv_list['page-services-syslogng']['match'][] = "pkg.php?xml=syslogng.xml*";
 $priv_list['page-services-syslogng']['match'][] = "pkg.php?xml=syslog-ng_advanced.xml*";
 
-$priv_list['page-services-syslogng']['match'][] = "pkg_edit.php?xml=syslog-ng.xml*";
+$priv_list['page-services-syslogng']['match'][] = "pkg_edit.php?xml=syslogng.xml*";
 $priv_list['page-services-syslogng']['match'][] = "pkg_edit.php?xml=syslog-ng_advanced.xml*";
 
 $priv_list['page-services-syslogng']['match'][] = "syslog-ng_log_viewer.php*";

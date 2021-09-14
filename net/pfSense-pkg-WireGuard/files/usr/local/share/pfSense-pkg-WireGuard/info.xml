@@ -14,7 +14,7 @@
 				heavy development, but already it might be regarded as the&lt;br /&gt;
 				most secure, easiest to use, and simplest VPN solution in&lt;br /&gt;
 				the industry.]]></descr>
-		<pkginfolink>https://github.com/theonemcdonald/pfSense-pkg-WireGuard</pkginfolink>
+		<pkginfolink>https://github.com/pfsense/FreeBSD-ports/commits/devel/net/pfSense-pkg-WireGuard</pkginfolink>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>wireguard.xml</configurationfile>
 	</package>

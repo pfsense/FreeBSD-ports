@@ -5,7 +5,7 @@
 	<copyright>
 	<![CDATA[
 /*
- * zabbix-agent.xml
+ * zabbixagent.xml
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015-2021 Rubicon Communications, LLC (Netgate)
@@ -36,7 +36,7 @@
 	<menu>
 		<name>%%ZABBIXTITLE%%</name>
 		<section>Services</section>
-		<url>/pkg_edit.php?xml=zabbix-agent.xml&amp;id=0</url>
+		<url>/pkg_edit.php?xml=zabbixagent.xml&amp;id=0</url>
 	</menu>
 	<service>
 		<name>zabbix_agentd</name>
@@ -47,7 +47,7 @@
 	<tabs>
 		<tab>
 			<text>Agent</text>
-			<url>/pkg_edit.php?xml=zabbix-agent.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=zabbixagent.xml&amp;id=0</url>
 			<active />
 		</tab>
 	</tabs>

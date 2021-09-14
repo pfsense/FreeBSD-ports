@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2020 Bill Meeks
+ * Copyright (c) 2021 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -88,6 +88,7 @@ unlink_if_exists(SURICATA_RULES_DIR . VRT_FILE_PREFIX . "*.rules");
 unlink_if_exists(SURICATA_RULES_DIR . ET_OPEN_FILE_PREFIX . "*.rules");
 unlink_if_exists(SURICATA_RULES_DIR . ET_PRO_FILE_PREFIX . "*.rules");
 unlink_if_exists(SURICATA_RULES_DIR . GPL_FILE_PREFIX . "*.rules");
+unlink_if_exists(SURICATA_RULES_DIR . EXTRARULE_FILE_PREFIX . "*.rules");
 unlink_if_exists("/usr/local/share/suricata/GeoLite2/GeoLite2-Country.mmdb");
 rmdir_recursive("/usr/local/share/suricata/GeoLite2");
 

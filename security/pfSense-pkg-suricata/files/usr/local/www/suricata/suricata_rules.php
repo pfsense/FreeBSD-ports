@@ -269,11 +269,18 @@ if ($_POST['action'] == 'loadRule') {
 	if (isset($_POST['gid']) && isset($_POST['sid'])) {
 		$gid = $_POST['gid'];
 		$sid = $_POST['sid'];
-		print(base64_encode($rules_map[$gid][$sid]['rule']));
+		$rule_text = base64_encode($rules_map[$gid][$sid]['rule']);
 	}
 	else {
-		print(base64_encode(gettext('Invalid rule signature - no matching rule was found!')));
+		$rule_text = base64_encode(gettext('Invalid rule signature - no matching rule was found!'));
 	}
+	if (strpos($currentruleset, 'snort_') !== false) {
+		$rule_link = "https://www.snort.org/rule_docs/{$gid}-{$sid}";
+	} else {
+		$rule_link = "";
+	}	
+	$response = array('rule_text' => $rule_text, 'rule_link' => $rule_link);
+	echo json_encode(str_replace("\\","\\\\", $response)); // single escape chars can break JSON decode
 	exit;
 }
 
@@ -954,6 +961,7 @@ $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_glob
 $tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
 $tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
 $tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Files"), false, "/suricata/suricata_files.php?instance={$id}");
 $tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
 $tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
 $tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
@@ -1493,7 +1501,7 @@ $modal = new Modal('View Rules Text', 'rulesviewer', 'large', 'Close');
 $modal->addInput(new Form_StaticText (
 	'Category',
 	'<div class="text-left" id="modal_rule_category"></div>'
-));
+))->setHelp('<span id="modal_rule_link_text"></span><a id="modal_rule_link" target="_blank"></a>');
 $modal->addInput(new Form_Textarea (
 	'rulesviewer_text',
 	'Rule Text',
@@ -1557,8 +1565,14 @@ function showRuleContents(gid, sid) {
 }
 
 function loadComplete(req) {
-		$('#rulesviewer_text').text(atob(req.responseText));
+		var response = $.parseJSON(req.responseText);
+		$('#rulesviewer_text').text(atob(response.rule_text));
 		$('#rulesviewer_text').attr('readonly', true);
+		if (response.rule_link) {
+			$('#modal_rule_link_text').text('Snort Rule Doc: ');
+			$('#modal_rule_link').attr('href', response.rule_link);
+			$('#modal_rule_link').text(response.rule_link);
+		}
 }
 
 events.push(function() {

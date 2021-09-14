@@ -118,7 +118,7 @@ if [ ! -f "${mastercat}" ]; then touch "${mastercat}"; fi
 
 # Remove temp files before exiting.
 exitnow() {
-	rm -f /tmp/pfbtemp?_"${rvar}"
+	rm -f /tmp/pfbtemp*_"${rvar}"
 	exit
 }
 
@@ -839,7 +839,7 @@ reputation_depends() {
 	fi
 
 	# Clear variables and tempfiles
-	rm -f /tmp/pfbtemp?_"${rvar}"
+	exitnow
 	count=0; countb=0; countm=0; counts=0; countr=0
 }
 

@@ -512,10 +512,21 @@ if ($suricatacfg['eve_log_snmp'] == 'on') {
 	$eve_out_types .= "\n        - snmp";
 }
 
-// Disable MQTT Eve logging for now as it is a 6.x binary feature
-//if ($suricatacfg['eve_log_mqtt'] == 'on') {
-//	$eve_out_types .= "\n        - mqtt";
-//}
+if ($suricatacfg['eve_log_ftp'] == 'on') {
+	$eve_out_types .= "\n        - ftp";
+}
+
+if ($suricatacfg['eve_log_http2'] == 'on') {
+	$eve_out_types .= "\n        - http2";
+}
+
+if ($suricatacfg['eve_log_rfb'] == 'on') {
+	$eve_out_types .= "\n        - rfb";
+}
+
+if ($suricatacfg['eve_log_mqtt'] == 'on') {
+	$eve_out_types .= "\n        - mqtt";
+}
 
 if ($suricatacfg['eve_log_smtp'] == 'on') {
 	$eve_out_types .= "\n        - smtp:";
@@ -837,6 +848,10 @@ if (!empty($suricatacfg['ftp_parser']))
 	$ftp_parser = $suricatacfg['ftp_parser'];
 else
 	$ftp_parser = "yes";
+if ($suricatacfg['ftp_data_parser'] == 'on')
+	$ftp_data_parser = "yes";
+else
+	$ftp_data_parser = "no";
 if (!empty($suricatacfg['ssh_parser']))
 	$ssh_parser = $suricatacfg['ssh_parser'];
 else
@@ -877,6 +892,15 @@ if (!empty($suricatacfg['dhcp_parser']))
 	$dhcp_parser = $suricatacfg['dhcp_parser'];
 else
 	$dhcp_parser = "yes";
+
+if (!empty($suricatacfg['http2_parser']))
+	$http2_parser = $suricatacfg['http2_parser'];
+else
+	$http2_parser = "no";
+if (!empty($suricatacfg['rfb_parser']))
+	$rfb_parser = $suricatacfg['rfb_parser'];
+else
+	$rfb_parser = "yes";
 
 /* DNS Parser */
 if (!empty($suricatacfg['dns_parser_tcp']))
@@ -1084,10 +1108,15 @@ if ($config['installedpackages']['suricata']['config'][0]['log_to_systemlog'] ==
 else
 	$suricata_use_syslog = "no";
 
-if (!empty($config['installedpackages']['suricata']['config'][0]['log_to_systemlog']))
-	$suricata_use_syslog_facility = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog'];
+if (!empty($config['installedpackages']['suricata']['config'][0]['log_to_systemlog_facility']))
+	$suricata_use_syslog_facility = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog_facility'];
 else
 	$suricata_use_syslog_facility = "local1";
+
+if (!empty($config['installedpackages']['suricata']['config'][0]['log_to_systemlog_priority']))
+	$suricata_use_syslog_priority = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog_priority'];
+else
+	$suricata_use_syslog_priority = "notice";
 
 // Configure IPS operational mode
 if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffenders'] == 'on') {

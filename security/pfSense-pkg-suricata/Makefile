@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-suricata
-PORTVERSION=	6.0.0
-PORTREVISION=	12
+PORTVERSION=	6.0.3
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +13,7 @@ COMMENT=	pfSense package suricata
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	suricata>=5.0.6:security/suricata
+RUN_DEPENDS=	suricata>=6.0.3:security/suricata
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -121,6 +121,10 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/include/widget-suricata.inc \
 		${STAGEDIR}${PREFIX}/www/widgets/include
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_blocked.php \
+		${STAGEDIR}${PREFIX}/www/suricata
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_files.php \
+		${STAGEDIR}${PREFIX}/www/suricata
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_filecheck.php \
 		${STAGEDIR}${PREFIX}/www/suricata
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/suricata/suricata_passlist.php \
 		${STAGEDIR}${PREFIX}/www/suricata
