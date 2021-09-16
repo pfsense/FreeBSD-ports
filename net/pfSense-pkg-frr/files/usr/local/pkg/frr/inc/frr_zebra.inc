@@ -247,6 +247,11 @@ function frr_zebra_generate_accesslists($ipv4 = true, $ipv6 = true) {
 /* Generate BGP AS Path configuration lines */
 function frr_zebra_generate_aspaths() {
 	global $config, $frr_config_base;
+	/* Do not generate AS Path if BGP daemon is disabled */
+	if (!is_array($config['installedpackages']['frrbgp']['config']) ||
+	    empty($config['installedpackages']['frrbgp']['config'][0]['enable'])) {
+		return null;
+	}
 	/* Populate FRR AS Path Settings */
 	if (is_array($config['installedpackages']['frrbgpaspaths']['config'])) {
 		$frr_asp_conf = &$config['installedpackages']['frrbgpaspaths']['config'];
@@ -348,6 +353,11 @@ function frr_zebra_generate_prefixlists($ipv4 = true, $ipv6 = true) {
 /* Generate BGP Community List configuration lines */
 function frr_zebra_generate_communitylists() {
 	global $config, $frr_config_base, $frr_well_known_communities;
+	/* Do not generate Community List if BGP daemon is disabled */
+	if (!is_array($config['installedpackages']['frrbgp']['config']) ||
+	    empty($config['installedpackages']['frrbgp']['config'][0]['enable'])) {
+		return null;
+	}
 	/* Populate FRR Community List Settings */
 	if (is_array($config['installedpackages']['frrbgpcommunities']['config'])) {
 		$frr_cls_conf = &$config['installedpackages']['frrbgpcommunities']['config'];
