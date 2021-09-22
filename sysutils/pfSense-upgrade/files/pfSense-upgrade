@@ -508,6 +508,14 @@ pkg_upgrade() {
 	export kernel_pkg=$(_pkg query %n $(_pkg info \
 	    ${product}-kernel-\* | grep -v -- -debug-))
 
+	# Netgate 3100 kernel was renamed
+	if [ "${kernel_pkg}" = "pfSense-kernel-pfSense-SG-3100" ]; then
+		pkg_set_origin pfSense-kernel-pfSense-SG-3100 \
+		    pfSense-kernel-pfSense-3100
+
+		kernel_pkg="pfSense-kernel-pfSense-3100"
+	fi
+
 	local _model=$(/bin/kenv -q smbios.system.product 2>/dev/null)
 
 	SYSTEM=""
