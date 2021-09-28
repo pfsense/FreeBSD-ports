@@ -930,6 +930,9 @@ pkg_upgrade() {
 
 			# Register that system is running latest pkg_set_version
 			cp -f ${pkg_set_version} ${running_pkg_set_version}
+
+			# Cleanup possible crash report from PHP upgrade
+			rm -f /tmp/PHP_errors.log
 		fi
 
 		_pkg annotate -q -M ${kernel_pkg} next_stage 3
