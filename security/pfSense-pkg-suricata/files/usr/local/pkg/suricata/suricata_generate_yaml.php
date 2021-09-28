@@ -688,7 +688,7 @@ else
 if (!empty($suricatacfg['stream_memcap']))
 	$stream_memcap = $suricatacfg['stream_memcap'];
 else
-	$stream_memcap = "67108864";
+	$stream_memcap = "131217728";
 
 if (!empty($suricatacfg['stream_prealloc_sessions']))
 	$stream_prealloc_sessions = $suricatacfg['stream_prealloc_sessions'];
@@ -698,7 +698,7 @@ else
 if (!empty($suricatacfg['reassembly_memcap']))
 	$reassembly_memcap = $suricatacfg['reassembly_memcap'];
 else
-	$reassembly_memcap = "67108864";
+	$reassembly_memcap = "131217728";
 
 if (!empty($suricatacfg['reassembly_depth']) || $suricatacfg['reassembly_depth'] == '0')
 	$reassembly_depth = $suricatacfg['reassembly_depth'];
