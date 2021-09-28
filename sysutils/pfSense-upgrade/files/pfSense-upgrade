@@ -899,7 +899,7 @@ pkg_upgrade() {
 				_exec "pkg-static install -f pkg" \
 				    "Reinstalling pkg due to ABI change"
 
-				# Upgrade base packages using pkg-static
+				# Upgrade core packages
 				_exec "pkg-static upgrade -r ${product}-core" \
 				    "Upgrading necessary core packages"
 
@@ -918,9 +918,13 @@ pkg_upgrade() {
 
 				# Make sure PHP setup is fine
 				/etc/rc.php_ini_setup >/dev/null 2>&1
+			else
+				# Upgrade core packages
+				_exec "pkg-static upgrade -r ${product}-core" \
+				    "Upgrading necessary core packages"
 			fi
 
-			_exec "pkg-static upgrade${dont_update}${_force}" \
+			_exec "pkg-static upgrade${dont_update}${_force} -r ${product}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""
 
