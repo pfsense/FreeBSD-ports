@@ -924,6 +924,9 @@ pkg_upgrade() {
 				    "Upgrading necessary core packages"
 			fi
 
+			_exec "/etc/rc.d/ldconfig onestart" \
+			    "Updating ldconfig" mute ignore_result
+
 			_exec "pkg-static upgrade${dont_update}${_force} -r ${product}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""
