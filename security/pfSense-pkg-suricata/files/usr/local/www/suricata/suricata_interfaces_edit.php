@@ -437,6 +437,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		$natent['uuid'] = $pconfig['uuid'];
 
 		if ($_POST['descr']) $natent['descr'] =  htmlspecialchars($_POST['descr']); else $natent['descr'] = strtoupper($natent['interface']);
+		if ($_POST['enable_verbose_logging'] == "on") { $natent['enable_verbose_logging'] = 'on'; }else{ $natent['enable_verbose_logging'] = 'off'; }
 		if ($_POST['max_pcap_log_size']) $natent['max_pcap_log_size'] = $_POST['max_pcap_log_size']; else unset($natent['max_pcap_log_size']);
 		if ($_POST['max_pcap_log_files']) $natent['max_pcap_log_files'] = $_POST['max_pcap_log_files']; else unset($natent['max_pcap_log_files']);
 		if ($_POST['enable_stats_collection'] == "on") { $natent['enable_stats_collection'] = 'on'; }else{ $natent['enable_stats_collection'] = 'off'; }
@@ -610,9 +611,9 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['flow_icmp_emerg_new_timeout'] = '10';
 			$natent['flow_icmp_emerg_established_timeout'] = '100';
 
-			$natent['stream_memcap'] = '67108864';
+			$natent['stream_memcap'] = '131217728';
 			$natent['stream_prealloc_sessions'] = '32768';
-			$natent['reassembly_memcap'] = '67108864';
+			$natent['reassembly_memcap'] = '131217728';
 			$natent['reassembly_depth'] = '1048576';
 			$natent['reassembly_to_server_chunk'] = '2560';
 			$natent['reassembly_to_client_chunk'] = '2560';
@@ -960,6 +961,14 @@ $section->addInput(new Form_Input(
 	'text',
 	$pconfig['max_pcap_log_files']
 ))->setHelp('Enter maximum number of packet log files to maintain. Default is 1000. When the number of packet log files reaches the set limit, the oldest file will be overwritten.');
+
+$section->addInput(new Form_Checkbox(
+	'enable_verbose_logging',
+	'Enable Verbose Logging',
+	'Suricata will log additional information to the suricata.log file when starting up and shutting down. Default is Not Checked.',
+	$pconfig['enable_verbose_logging'] == 'on' ? true:false,
+	'on'
+));
 
 $form->add($section);
 
@@ -2001,6 +2010,7 @@ events.push(function(){
 		disableInput('alertsystemlog', disable);
 		disableInput('alertsystemlog_facility', disable);
 		disableInput('alertsystemlog_priority', disable);
+		disableInput('enable_verbose_logging', disable);
 		disableInput('blockoffenders', disable);
 		disableInput('ips_mode', disable);
 		disableInput('blockoffenderskill', disable);
