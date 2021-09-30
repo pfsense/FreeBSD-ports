@@ -86,7 +86,7 @@ if (file_exists("/tmp/coreupdatecomplete")) {
 	    'new version will take effect after reboot.');
 
 	$platform = system_identify_specific_platform();
-	if ($platform['name'] == 'Netgate-6100') {
+	if ($platform['name'] == '6100') {
 		$savemsg .= '<br/><br/>';
 		$savemsg .= gettext('Microcontroller updates on this platform ' .
 		    'require a power cycle to complete. Manually halt the ' .
