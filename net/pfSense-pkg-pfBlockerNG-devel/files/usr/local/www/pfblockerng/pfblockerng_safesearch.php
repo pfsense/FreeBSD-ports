@@ -42,8 +42,8 @@ if (isset($_POST['save'])) {
 		unset($input_errors);
 	}
 
-	if (isset($_POST['safesearch_doh']) && empty($_POST['safesearch_doh_list'])) {
-		$input_errors[] = "Warning: With DoH/DoT Blocking enabled, you must select atleast one List";
+	if (($_POST['safesearch_doh'] == 'Enable') && empty($_POST['safesearch_doh_list'])) {
+		$input_errors[] = "Warning: With DoH/DoT Blocking enabled, you must select at least one List";
 	}
 
 	if (!$input_errors) {
