@@ -530,7 +530,6 @@ pkg_upgrade() {
 	fi
 
 	# Rename uboot packages accordingly
-	set -x
 	local _ub_model
 	for _ub_model in 1100 2100 3100; do
 		if is_pkg_installed ${product}-u-boot-sg${_ub_model}; then
@@ -538,7 +537,6 @@ pkg_upgrade() {
 			    ${product}-u-boot-${_ub_model}
 		fi
 	done
-	set +x
 
 	# Detect if has u-boot package installed
 	unset uboot_bin
