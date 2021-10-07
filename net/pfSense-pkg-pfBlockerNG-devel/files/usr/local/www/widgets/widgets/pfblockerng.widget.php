@@ -606,7 +606,7 @@ function pfBlockerNG_get_header($mode='') {
 			$stats[$key][$type] = 0;
 			if ($type == 'DNSBL') {
 				if (isset($pfb['dnsbl_missing'])) {
-					$stats[$key][$type] = "<span title='*** SQLite database missing, Force Reload DNSBL to recover! ***'>Unknown</span>";
+					$stats[$key][$type] = "<span title='*** SQLite database 'pfb_py_dnsbl.sqlite' is missing, Force Reload DNSBL to recover! ***'>Unknown</span>";
 				} else {
 					$stats[$key][$type] = $pfb_table['stats']['DNSBL'];
 				}
