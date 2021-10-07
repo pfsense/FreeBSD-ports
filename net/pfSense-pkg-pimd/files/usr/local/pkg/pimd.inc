@@ -417,9 +417,15 @@ function pimd_generate_config() {
 		$conffile .= pimd_generate_config_rpaddress();
 
 		file_put_contents("{$pimd_config_base}/pimd.conf", $conffile);
+
+		pimd_generate_rcfile();
+	} else {
+		if (is_service_running("pimd")) {
+			stop_service("pimd");
+		}
+		unlink_if_exists("/usr/local/etc/rc.d/pimd.sh");
 	}
 
-	pimd_generate_rcfile();
 }
 
 function pimd_package_install() {
