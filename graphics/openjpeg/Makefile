@@ -25,4 +25,6 @@ PLIST_SUB=	PORTVERSION=${PORTVERSION} VER=${PORTVERSION:R}
 GH_ACCOUNT=	uclouvain
 USE_GITHUB=	yes
 
+CPE_VENDOR=	uclouvain
+
 .include <bsd.port.mk>

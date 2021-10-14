@@ -1,7 +1,7 @@
 # Created by: David Naylor <naylor.b.david@gmail.com>
 
 PORTNAME=	wine-mono
-DISTVERSION=	6.2.0
+DISTVERSION=	6.3.0
 DISTVERSIONSUFFIX=-x86
 CATEGORIES=	emulators
 MASTER_SITES=	http://dl.winehq.org/wine/wine-mono/${DISTVERSION}/
@@ -9,7 +9,7 @@ PKGNAMESUFFIX=	-devel
 EXTRACT_SUFX=	.msi
 EXTRACT_ONLY=
 
-MAINTAINER=	gerald@FreeBSD.org
+MAINTAINER=	damjan.jov@gmail.com
 COMMENT=	Mono .NET implementation for Wine development branch
 
 LICENSE=	MIT GPLv2 LGPL20

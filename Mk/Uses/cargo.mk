@@ -14,6 +14,8 @@ _INCLUDE_USES_CARGO_MK=	yes
 IGNORE+=	USES=cargo takes no arguments
 .endif
 
+.sinclude "${MASTERDIR}/Makefile.crates"
+
 # List of static dependencies.  The format is cratename-version.
 # CARGO_CRATES will be downloaded from MASTER_SITE_CRATESIO.
 CARGO_CRATES?=
@@ -58,7 +60,7 @@ DISTFILES+=	${CARGO_DIST_SUBDIR}/${_crate}${CARGO_CRATE_EXT}:_cargo_${_index}
 
 CARGO_BUILDDEP?=	yes
 .if ${CARGO_BUILDDEP:tl} == "yes"
-BUILD_DEPENDS+=	${RUST_DEFAULT}>=1.53.0:lang/${RUST_DEFAULT}
+BUILD_DEPENDS+=	${RUST_DEFAULT}>=1.55.0:lang/${RUST_DEFAULT}
 .endif
 
 # Location of cargo binary (default to lang/rust's Cargo binary)
@@ -66,6 +68,9 @@ CARGO_CARGO_BIN?=	${LOCALBASE}/bin/cargo
 
 # Location of the cargo output directory.
 CARGO_TARGET_DIR?=	${WRKDIR}/target
+
+# Default target platform (affects some RUSTFLAGS if passed)
+CARGO_BUILD_TARGET?=	${ARCH:S/amd64/x86_64/:S/i386/i686/}-unknown-${OPSYS:tl}
 
 # Environment for cargo
 #  - CARGO_HOME: local cache of the registry index
@@ -78,11 +83,13 @@ CARGO_TARGET_DIR?=	${WRKDIR}/target
 CARGO_ENV+= \
 	CARGO_HOME=${WRKDIR}/cargo-home \
 	CARGO_BUILD_JOBS=${MAKE_JOBS_NUMBER} \
+	CARGO_BUILD_TARGET=${CARGO_BUILD_TARGET} \
 	CARGO_TARGET_DIR=${CARGO_TARGET_DIR} \
+	CARGO_TARGET_${CARGO_BUILD_TARGET:S/-/_/g:tu}_LINKER="${CC}" \
 	RUST_BACKTRACE=1 \
 	RUSTC=${LOCALBASE}/bin/rustc \
 	RUSTDOC=${LOCALBASE}/bin/rustdoc \
-	RUSTFLAGS="${RUSTFLAGS} -C linker=${CC:Q} ${LDFLAGS:C/.+/-C link-arg=&/}"
+	RUSTFLAGS="${RUSTFLAGS} ${LDFLAGS:C/.+/-C link-arg=&/}"
 
 # Adjust -C target-cpu if -march/-mcpu is set by bsd.cpu.mk
 .if ${ARCH} == amd64 || ${ARCH} == i386
@@ -124,6 +131,14 @@ CARGO_TEST?=	yes
 # access the network during the build.
 CARGO_USE_GITHUB?=	no
 CARGO_USE_GITLAB?=	no
+
+# rustc stashes intermediary files in TMPDIR (default /tmp) which
+# might cause issues for users that for some reason space limit
+# their /tmp.  WRKDIR should have plenty of space.
+# Allow users and ports to still overwrite it.
+.if ${TMPDIR:U/tmp} == /tmp
+TMPDIR=		${WRKDIR}
+.endif
 
 # Manage crate features.
 .if !empty(CARGO_FEATURES:M--no-default-features)
@@ -339,7 +354,7 @@ cargo-crates: extract
 			--verbose; \
 	fi
 	@${SETENV} USE_GITHUB=${USE_GITHUB} USE_GITLAB=${USE_GITLAB} GL_SITE=${GL_SITE} \
-		${AWK} -f ${SCRIPTSDIR}/cargo-crates.awk ${CARGO_CARGOLOCK}
+		${AWK} -f ${SCRIPTSDIR}/split-url.awk -f ${SCRIPTSDIR}/cargo-crates.awk ${CARGO_CARGOLOCK}
 
 # cargo-crates-licenses will try to grab license information from
 # all downloaded crates.

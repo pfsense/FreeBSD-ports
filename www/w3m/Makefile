@@ -16,15 +16,17 @@ BROKEN_mips64=		fails to build: qemu: uncaught target signal 11 (Segmentation fa
 
 LIB_DEPENDS=	libgc.so:devel/boehm-gc
 
-USES=		iconv pkgconfig perl5 ssl
+USES=		cpe iconv pkgconfig perl5 ssl
 USE_GITHUB=	yes
+
+CPE_VENDOR=	w3m_project
 
 GH_ACCOUNT=	tats
 GH_PROJECT=	w3m
-GH_TAGNAME=	331e3f4
+GH_TAGNAME=	456ec66
 
 MAKE_JOBS_UNSAFE=	yes
-SNAPDATE=	20210424
+SNAPDATE=	20210905
 
 CONFLICTS?=	ja-w3m-0.5.* ja-w3m-img-0.5.* w3m-img-0.5.*
 GNU_CONFIGURE=	yes

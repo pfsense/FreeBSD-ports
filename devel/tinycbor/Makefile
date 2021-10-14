@@ -1,7 +1,7 @@
 # Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
 
 PORTNAME=	tinycbor
-PORTVERSION=	0.5.3
+PORTVERSION=	0.5.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -21,7 +21,6 @@ MAKE_ARGS=	SOVERSION=${PORTVERSION:R:R}
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 GH_ACCOUNT=	intel
-GH_PROJECT=	tinycbor
 USE_GITHUB=	yes
 
 do-configure:

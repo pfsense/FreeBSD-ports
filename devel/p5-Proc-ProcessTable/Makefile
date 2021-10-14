@@ -1,11 +1,12 @@
 # Created by: Michael Johnson <ahze@ahze.net>
 
 PORTNAME=	Proc-ProcessTable
-PORTVERSION=	0.59
+PORTVERSION=	0.63.4
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:JWB
 PKGNAMEPREFIX=	p5-
+DISTNAME=	${PORTNAME}-${PORTVERSION:R}${PORTVERSION:E}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl interface to the unix process table
@@ -18,7 +19,7 @@ USE_PERL5=	configure
 
 OPTIONS_DEFINE=	DOCS
 
-PORTSCOUT=	limit:^[0-9\.]*$$
+PORTSCOUT=	limit:^[0-9\.]*$$ skipv:0.611,0.612
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Proc/ProcessTable/ProcessTable.so

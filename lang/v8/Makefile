@@ -1,8 +1,8 @@
 # We follow the stable channel on https://omahaproxy.appspot.com/
-# https://chromium.googlesource.com/v8/v8/+/refs/heads/9.2-lkgr
+# https://chromium.googlesource.com/v8/v8/+/refs/heads/9.4-lkgr
 
 PORTNAME=	v8
-PORTVERSION=	9.2.230.22
+PORTVERSION=	9.4.146.21
 CATEGORIES=	lang
 MASTER_SITES=	LOCAL/sunpoet/v8/${PORTVERSION:R:R}
 DISTFILES=	build-${BUILD_REV}.tar.gz \
@@ -26,7 +26,7 @@ BUILD_DEPENDS=	binutils>=0:devel/binutils \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=0:devel/py-Jinja2@${PY_FLAVOR}
 LIB_DEPENDS=	libicudata.so:devel/icu
 
-USES=		cpe gnome ninja pkgconfig python:3.5+,build tar:xz
+USES=		compiler:c++17-lang cpe gnome ninja pkgconfig python:3.5+,build tar:xz
 USE_GNOME=	glib20
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
@@ -39,13 +39,13 @@ USE_GITHUB=	yes
 
 CPE_VENDOR=	google
 
-BUILD_REV=	4036cf1b17581f5668b487a25e252d56e0321a7f
-BUILDTOOLS_REV=	20b1d0fc13ebaa263a1248f08814f523a86e6bed
-CLANG_REV=	a38f01b956e091d5e698d2af484c81cd4e9a2a2d
-COMMON_REV=	d5bb24e5d9802c8c917fcaa4375d5239a586c168
-GOOGLETEST_REV=	23ef29555ef4789f555f1ba8c51b4c52975f0907
-ICU_REV=	f022e298b4f4a782486bb6d5ce6589c998b51fe2
-ZLIB_REV=	5b8d433953beb2a75a755ba321a3076b95f7cdb9
+BUILD_REV=	bbf7f0ed65548c4df862d2a2748e3a9b908a3217
+BUILDTOOLS_REV=	37dc929ecb351687006a61744b116cda601753d7
+CLANG_REV=	6a8e571efd68de48d226950d1e10cb8982e71496
+COMMON_REV=	3da1e2fcf66acd5c7194497b4285ac163f32e239
+GOOGLETEST_REV=	47f819c3ca54fb602f432904443e00a0a1fe2f42
+ICU_REV=	75e34bcccea0be165c31fdb278b3712c516c5876
+ZLIB_REV=	563140dd9c24f84bf40919196e9e7666d351cc0d
 
 # Run "gn args --list out/Release" for all variables.
 # Some parts don't have use_system_* flag, and can be turned on/off by using

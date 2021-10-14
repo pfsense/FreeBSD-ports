@@ -4,7 +4,7 @@ PORTNAME=	openjdk
 PORTVERSION=	${JDK_MAJOR_VERSION}.${JDK_UPDATE_VERSION}.${JDK_BUILD_NUMBER}.${BSD_JDK_VERSION}
 PORTEPOCH=	1
 CATEGORIES=	java devel
-MASTER_SITES=	APACHE/ant/binaries/:ant
+MASTER_SITES=	https://archive.apache.org/dist/ant/binaries/:ant
 DISTFILES=	${ANT_DISTFILE}${EXTRACT_SUFX}:ant
 
 MAINTAINER=	glewis@FreeBSD.org
@@ -15,12 +15,14 @@ LICENSE=	GPLv2
 BROKEN_FreeBSD_13=	does not link: duplicate symbol: fp_g_free
 BROKEN_FreeBSD_14=	does not link: duplicate symbol: fp_g_free
 
+CPE_VENDOR=	oracle
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	battleblow
 GH_PROJECT=	jdk7u
 GH_TAGNAME=	jdk${JDK_MAJOR_VERSION}u${JDK_UPDATE_VERSION}-b${JDK_BUILD_NUMBER}.${BSD_JDK_VERSION}
 
-USES=		compiler dos2unix iconv gmake
+USES=		compiler cpe dos2unix iconv gmake
 # Even when not building with X11 support, openjdk7 requires Xrender, X11, and
 # Xt headers.
 X11_BUILD_DEPENDS_OFF+=	${LOCALBASE}/libdata/pkgconfig/x11.pc:x11/libX11

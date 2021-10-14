@@ -101,14 +101,14 @@ PORTDOCS=	docs index.html interop/.buildinfo interop/* qemu-ga-ref.html qemu-ga-
 
 WITHOUT_CPU_CFLAGS=yes	#to avoid problems with register allocation
 CFLAGS:=	${CFLAGS:C/-fno-tree-vrp//}
-CFLAGS_amd64+=	-fPIC
+CFLAGS_amd64=	-fPIC
+CFLAGS_powerpc=	-D_CALL_SYSV
 CONFIGURE_ARGS=	--localstatedir=/var \
 		--extra-ldflags=-L\"${LOCALBASE}/lib\" --enable-debug \
 		--prefix=${PREFIX} --cc=${CC} --enable-netmap --enable-docs --disable-kvm \
 		--disable-linux-user --disable-linux-aio --disable-xen \
 		--enable-debug-info --python=${PYTHON_CMD} \
 		--extra-cflags=-I${WRKSRC}\ -I${LOCALBASE}/include\ -DPREFIX=\\\"\"${PREFIX}\\\"\"
-INSTALLS_ICONS=	yes
 
 .include <bsd.port.options.mk>
 
@@ -122,6 +122,7 @@ MAKE_ARGS+=	ARCH=x86_64
 
 .if ${ARCH} == "powerpc"
 MAKE_ARGS+=	ARCH=ppc
+USE_GCC=	yes
 .endif
 
 .if ${ARCH} == "powerpc64"

@@ -1,7 +1,7 @@
 # Created by: Oliver Lehmann <oliver@FreeBSD.org>
 
 PORTNAME=	mousepad
-PORTVERSION=	0.5.6
+PORTVERSION=	0.5.7
 CATEGORIES=	editors xfce
 MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
@@ -20,7 +20,6 @@ USE_GNOME=	cairo dconf gdkpixbuf2 glib20 gtk30 gtksourceview3 intltool
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 GLIB_SCHEMAS=	org.xfce.mousepad.gschema.xml

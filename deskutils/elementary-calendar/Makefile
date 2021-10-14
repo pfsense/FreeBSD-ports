@@ -1,5 +1,5 @@
 PORTNAME=	calendar
-DISTVERSION=	6.0.0
+DISTVERSION=	6.0.2
 CATEGORIES=	deskutils
 PKGNAMEPREFIX=	elementary-
 
@@ -25,11 +25,10 @@ LIB_DEPENDS=	libcanberra.so:audio/libcanberra \
 		libsoup-2.4.so:devel/libsoup
 RUN_DEPENDS=	consolekit2>0:sysutils/consolekit2
 
-USES=		desktop-file-utils gnome meson pkgconfig
+USES=		desktop-file-utils gettext gnome meson pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	elementary
 USE_GNOME=	glib20 gtk30 evolutiondataserver3
 GLIB_SCHEMAS=	io.elementary.calendar.gschema.xml
-INSTALLS_ICONS=	yes
 
 .include <bsd.port.mk>

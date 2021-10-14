@@ -14,6 +14,9 @@ COMMENT=	VoIP and video conferencing application
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=	Last release in 2013, not actively maintained
+EXPIRATION_DATE=	2021-12-31
+
 BUILD_DEPENDS=	boost-libs>=1.53:devel/boost-libs \
 		v4l_compat>=0:multimedia/v4l_compat \
 		gnome-icon-theme>=3.0.0:misc/gnome-icon-theme
@@ -26,7 +29,6 @@ USES=		compiler:c++11-lang cpe gettext gmake gnome libtool localbase \
 		pathfix pkgconfig tar:xz xorg
 USE_XORG=	xv
 USE_GNOME=	gtk20 intlhack libxml2
-INSTALLS_ICONS=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-I${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip

@@ -2,6 +2,7 @@
 
 PORTNAME=	wipe
 PORTVERSION=	2.3.1
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	SF
 
@@ -21,6 +22,7 @@ OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|@CFLAGS@|${CFLAGS}|' ${WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} -e 's|/usr/doc/wipe|${DOCSDIR}|' ${WRKSRC}/wipe.1
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin

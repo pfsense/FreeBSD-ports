@@ -15,7 +15,7 @@ bin/u2spewfoo
 include/snort/actions/actions.h
 include/snort/codecs/codec_module.h
 include/snort/control/control.h
-include/snort/daqs/daq_user.h
+include/snort/daq/daq_user.h
 include/snort/decompress/file_decomp.h
 include/snort/detection/detect.h
 include/snort/detection/detect_trace.h
@@ -131,6 +131,7 @@ include/snort/network_inspectors/appid/tp_appid_session_api.h
 include/snort/network_inspectors/appid/tp_appid_types.h
 include/snort/network_inspectors/packet_tracer/packet_tracer.h
 include/snort/network_inspectors/reputation/reputation_common.h
+include/snort/network_inspectors/rna/rna_cpe_os.h
 include/snort/network_inspectors/rna/rna_fingerprint.h
 include/snort/network_inspectors/rna/rna_fingerprint_smb.h
 include/snort/network_inspectors/rna/rna_fingerprint_tcp.h
@@ -186,6 +187,7 @@ include/snort/pub_sub/daq_message_event.h
 include/snort/pub_sub/data_decrypt_event.h
 include/snort/pub_sub/dcerpc_events.h
 include/snort/pub_sub/dhcp_events.h
+include/snort/pub_sub/efp_process_event.h
 include/snort/pub_sub/expect_events.h
 include/snort/pub_sub/finalize_packet_event.h
 include/snort/pub_sub/http_events.h
@@ -227,8 +229,8 @@ include/snort/utils/util.h
 include/snort/utils/util_cstring.h
 include/snort/utils/util_unfold.h
 include/snort/utils/util_utf.h
-lib/snort/daqs/daq_file.so
-lib/snort/daqs/daq_hext.so
+lib/snort/daq/daq_file.so
+lib/snort/daq/daq_hext.so
 libdata/pkgconfig/snort.pc
 %%PORTDOCS%%%%DOCSDIR%%/README.u2boat
 %%PORTDOCS%%%%DOCSDIR%%/active.txt
@@ -236,6 +238,7 @@ libdata/pkgconfig/snort.pc
 %%PORTDOCS%%%%DOCSDIR%%/appid.txt
 %%PORTDOCS%%%%DOCSDIR%%/binder.txt
 %%PORTDOCS%%%%DOCSDIR%%/building.txt
+%%PORTDOCS%%%%DOCSDIR%%/builtin_stubs.txt
 %%PORTDOCS%%%%DOCSDIR%%/byte_extract.txt
 %%PORTDOCS%%%%DOCSDIR%%/byte_jump.txt
 %%PORTDOCS%%%%DOCSDIR%%/byte_math.txt

@@ -1,7 +1,7 @@
 PORTNAME=	openturns
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.17
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,8 +9,6 @@ COMMENT=	Uncertainty treatment library
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
-
-BROKEN_FreeBSD_11=	SymbolicParserExprTk.cxx.o: file not recognized: File format not recognized
 
 BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
 		flex:textproc/flex \

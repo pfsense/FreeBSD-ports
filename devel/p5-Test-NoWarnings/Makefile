@@ -1,13 +1,12 @@
 # Created by: Alex Kapranoff <alex@kapranoff.ru>
 
 PORTNAME=	Test-NoWarnings
-PORTVERSION=	1.04
-PORTREVISION=	2
+PORTVERSION=	1.06
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Hide and store warnings while running test scripts
 
 LICENSE=	LGPL21

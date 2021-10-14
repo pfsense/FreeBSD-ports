@@ -1,9 +1,9 @@
 # Created by: Adam Weinberger <adamw@FreeBSD.org>
 
 PORTNAME=	devhelp
-PORTVERSION=	3.38.1
+PORTVERSION=	41.2
 CATEGORIES=	devel gnome
-MASTER_SITES=	GNOME
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -23,7 +23,6 @@ USES=		compiler:c++11-lib gettext gnome localbase meson pkgconfig \
 		python:3.3+,build tar:xz
 USE_GNOME=	cairo gtk30 introspection
 
-INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
 
 GLIB_SCHEMAS=	org.gnome.devhelp.gschema.xml \

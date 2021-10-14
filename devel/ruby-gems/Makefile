@@ -16,7 +16,7 @@ LICENSE_COMB=	dual
 LICENSE_FILE_MIT=	${WRKSRC}/MIT.txt
 LICENSE_FILE_RUBY=	${WRKSRC}/LICENSE.txt
 
-USES=		tar:tgz
+USES=		cpe tar:tgz
 USE_RUBY=	yes
 
 GEMS_BASE_DIR=	lib/ruby/gems/${RUBY_VER}
@@ -32,11 +32,14 @@ EXT_DIR=	${GEMS_BASE_DIR}/extensions
 GEMS_DIR=	${GEMS_BASE_DIR}/gems
 SPEC_DIR=	${GEMS_BASE_DIR}/specifications
 
-PLIST_SUB=	GEMS_DIR="${GEMS_DIR}" \
+PLIST_SUB=	CACHE_DIR="${CACHE_DIR}" \
 		DOC_DIR="${DOC_DIR}" \
-		CACHE_DIR="${CACHE_DIR}" \
-		SPEC_DIR="${SPEC_DIR}" \
-		EXT_DIR="${EXT_DIR}"
+		EXT_DIR="${EXT_DIR}" \
+		GEMS_DIR="${GEMS_DIR}" \
+		SPEC_DIR="${SPEC_DIR}"
+
+CPE_VENDOR=	rubygems
+CPE_PRODUCT=	rubygems
 
 OPTIONS_DEFINE=	DOCS
 

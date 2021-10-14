@@ -1,7 +1,7 @@
 # Created by: Devon H. O'Dell <devon.odell@gmail.com>
 
 PORTNAME=	go
-PORTVERSION?=	1.17
+PORTVERSION?=	1.17.2
 PORTREVISION?=	0
 PORTEPOCH?=	1
 CATEGORIES=	lang
@@ -11,7 +11,7 @@ MASTER_SITES?=	https://golang.org/dl/ \
 DISTFILES?=	go${PORTVERSION}.src.tar.gz \
 		go-${OPSYS:tl}-${GOARCH_${ARCH}}${GOARM_${ARCH}}-${BOOTSTRAP_TAG}.tar.xz:bootstrap
 
-MAINTAINER=	dmgk@FreeBSD.org
+MAINTAINER=	ygy@FreeBSD.org
 COMMENT?=	Go programming language
 
 LICENSE=	BSD3CLAUSE
@@ -30,7 +30,9 @@ RUN_DEPENDS_aarch64=	binutils>0:devel/binutils
 TEST_DEPENDS=	${TEST_DEPENDS_${ARCH}}
 TEST_DEPENDS_aarch64=	binutils>0:devel/binutils
 
-USES=		shebangfix
+USES=		cpe shebangfix
+
+CPE_VENDOR=	golang
 
 SHEBANG_FILES=	misc/wasm/go_js_wasm_exec \
 		src/net/http/cgi/testdata/test.cgi
@@ -62,12 +64,6 @@ GOARCH_i386=	386
 
 GOARM_armv6=	6
 GOARM_armv7=	7
-
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == aarch64 && ${OSVERSION} < 1200000
-IGNORE=		aarch64 support requires FreeBSD 12.0 or newer
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|^if ulimit -T|false \&\& &|' ${WRKSRC}/src/run.bash
@@ -124,4 +120,4 @@ makesum:
 	${RM} ${DISTINFO_FILE}.tmp
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

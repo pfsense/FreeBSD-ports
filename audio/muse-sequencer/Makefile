@@ -1,7 +1,7 @@
 PORTNAME=	muse-sequencer
 DISTVERSIONPREFIX=	muse_
 DISTVERSION=	3_1_1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -32,7 +32,6 @@ USE_QT=		core gui svg xml widgets buildtools_build linguisttools_build qmake_bui
 USE_GNOME=	atk atkmm cairo cairomm gdkpixbuf2 glib20 glibmm gtk20 gtkmm24 libsigc++20 pango pangomm
 USE_LDCONFIG=	yes
 
-INSTALLS_ICONS=	yes
 
 CMAKE_OFF=	ENABLE_ALSA ENABLE_DSSI
 

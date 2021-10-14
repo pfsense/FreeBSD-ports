@@ -1,9 +1,10 @@
 PORTNAME=	emacsql
 DISTVERSION=	3.0.0
+PORTREVISION=	1
 CATEGORIES=	databases elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	High-level Emacs Lisp RDBMS front-end
 
 LICENSE=	UNLICENSE

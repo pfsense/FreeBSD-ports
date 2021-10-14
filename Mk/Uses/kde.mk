@@ -75,16 +75,16 @@ _KDE_RELNAME=		KDE${_KDE_VERSION}
 
 # === VERSIONS OF THE DIFFERENT COMPONENTS =====================================
 # Current KDE desktop.
-KDE_PLASMA_VERSION?=		5.22.4
+KDE_PLASMA_VERSION?=		5.22.5
 KDE_PLASMA_BRANCH?=		stable
 
 # Current KDE frameworks.
-KDE_FRAMEWORKS_VERSION?=	5.85.0
+KDE_FRAMEWORKS_VERSION?=	5.86.0
 KDE_FRAMEWORKS_BRANCH?= 	stable
 
 # Current KDE applications.
-KDE_APPLICATIONS_VERSION?=	21.08.0
-KDE_APPLICATIONS_SHLIB_VER?=	5.18.0
+KDE_APPLICATIONS_VERSION?=	21.08.2
+KDE_APPLICATIONS_SHLIB_VER?=	5.18.2
 KDE_APPLICATIONS_BRANCH?=	stable
 
 # Extended KDE universe applications.
@@ -263,7 +263,7 @@ _USE_PLASMA_ALL=	activitymanagerd breeze breeze-gtk \
 			decoration discover drkonqi hotkeys \
 			infocenter kde-cli-tools kde-gtk-config \
 			kdeplasma-addons kgamma5 kmenuedit kscreen \
-			kscreenlocker ksshaskpass ksysguard kwallet-pam \
+			kscreenlocker ksshaskpass ksysguard ksystemstats kwallet-pam \
 			kwayland-integration kwin kwrited layer-shell-qt libkscreen \
 			libksysguard milou oxygen plasma-browser-integration \
 			plasma-desktop plasma-disks plasma-integration plasma-pa \
@@ -589,6 +589,9 @@ kde-ksshaskpass_PATH=		${KDE_PREFIX}/bin/ksshaskpass
 
 kde-ksysguard_PORT=		sysutils/plasma5-ksysguard
 kde-ksysguard_PATH=		${KDE_PREFIX}/bin/ksysguard
+
+kde-ksystemstats_PORT=		sysutils/plasma5-ksystemstats
+kde-ksystemstats_PATH=		${KDE_PREFIX}/bin/ksystemstats
 
 kde-kwallet-pam_PORT=		security/plasma5-kwallet-pam
 kde-kwallet-pam_PATH=		${KDE_PREFIX}/lib/pam_kwallet5.so

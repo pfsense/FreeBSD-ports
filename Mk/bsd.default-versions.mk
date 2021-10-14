@@ -33,7 +33,7 @@ ${_l:tu}_DEFAULT=	${lang:C/.*=//g}
 
 # Possible values: 2.4
 APACHE_DEFAULT?=	2.4
-# Possible values: 5, 6, 18
+# Possible values: 5, 18
 BDB_DEFAULT?=		5
 # Possible values: 2, 3
 COROSYNC_DEFAULT?=	2
@@ -60,8 +60,12 @@ GHOSTSCRIPT_DEFAULT?=	agpl
 IMAGEMAGICK_DEFAULT?=	7
 # Possible values: 7, 8, 11, 12, 13, 14, 15, 16
 JAVA_DEFAULT?=		8
-# Possible values: 2.0.12
-LAZARUS_DEFAULT?=	2.0.12
+# Possible values: 2.0.12, 2.3.0
+.if !defined(WANT_LAZARUS_DEVEL)
+LAZARUS_DEFAULT?=       2.0.12
+.else
+LAZARUS_DEFAULT?=       2.3.0
+.endif
 # Possible values: rust, legacy
 .if empty(ARCH:Naarch64:Narmv6:Narmv7:Namd64:Ni386:Npowerpc64:Npowerpc64le:Npowerpc)
 LIBRSVG2_DEFAULT?=	rust
@@ -70,7 +74,7 @@ LIBRSVG2_DEFAULT?=	legacy
 .endif
 # Possible values: c7
 LINUX_DEFAULT?=		c7
-# Possible values: 70, 80, 90, 10, 11, 12, -devel (to be used when non-base compiler is required)
+# Possible values: 70, 80, 90, 10, 11, 12, 13, -devel (to be used when non-base compiler is required)
 # Please give notice to the Graphics Team (x11@FreeBSD.org) in advance before
 # bumping the LLVM version.
 .if ${ARCH} == powerpc

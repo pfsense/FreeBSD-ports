@@ -1,7 +1,6 @@
 PORTNAME=	ksnip
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.9.0
-PORTREVISION=	1
+DISTVERSION=	1.9.1
 CATEGORIES=	graphics kde
 
 MAINTAINER=	kde@FreeBSD.org
@@ -15,7 +14,6 @@ LIB_DEPENDS=	libkColorPicker.so:graphics/kcolorpicker \
 
 USES=		cmake compiler:c++11-lang kde:5 qt:5 xorg
 USE_GITHUB=	yes
-GH_ACCOUNT=	ksnip
 USE_KDE=	ecm_build
 USE_QT=		concurrent core dbus gui network printsupport svg testlib \
 		widgets x11extras xml \

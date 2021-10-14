@@ -1,11 +1,11 @@
 # Created by: Holger Lamm <holger@eit.uni-kl.de>
 
 PORTNAME=	etherape
-PORTVERSION=	0.9.18
+PORTVERSION=	0.9.20
 CATEGORIES=	net-mgmt gnome
 MASTER_SITES=	SF
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Graphical network traffic monitor tool modeled after Etherman
 
 LICENSE=	GPLv2+

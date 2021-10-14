@@ -1,7 +1,7 @@
 # Created by: TAOKA Fumiyoshi
 
 PORTNAME=	h5py
-PORTVERSION=	3.3.0
+PORTVERSION=	3.4.0
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,7 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/licenses/license.txt
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cython>=0.29.15:lang/cython@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pkgconfig>=0:devel/py-pkgconfig@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pkgconfig>=0,1:devel/py-pkgconfig@${PY_FLAVOR} \
 		${RUN_DEPENDS}
 LIB_DEPENDS=	libhdf5.so:science/hdf5
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.14.5,1:math/py-numpy@${PY_FLAVOR}
@@ -31,7 +31,7 @@ RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cached-property>=0:devel/py-cached-property
 .endif
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/h5py/*.so
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

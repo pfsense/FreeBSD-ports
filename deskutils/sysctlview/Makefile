@@ -18,7 +18,6 @@ GL_COMMIT=	6ef5c821f66d92c2a1ca3fc964b511425dacd18e
 USE_GNOME=	atk atkmm cairo cairomm gdkpixbuf2 glib20 glibmm gtk30 gtkmm30 \
 		libsigc++20 pango pangomm
 
-INSTALLS_ICONS=	yes
 
 DESKTOP_ENTRIES=	"Sysctlview" \
 			"Show and set the kernel state" \
@@ -29,9 +28,6 @@ DESKTOP_ENTRIES=	"Sysctlview" \
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200019
-IGNORE=		needs oid_label member of struct sysctl_oid defined in sysctl.h which was first introduced in FreeBSD 12
-.endif
 .if ${OPSYS} != FreeBSD
 IGNORE=		not supported on anything but FreeBSD
 .endif

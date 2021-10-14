@@ -2,7 +2,7 @@
 
 PORTNAME=	glew
 PORTVERSION=	2.2.0
-PORTREVISION?=	1
+PORTREVISION?=	3
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
@@ -13,7 +13,7 @@ LICENSE=	MIT BSD3CLAUSE
 LICENSE_COMB=	dual
 
 USES=		gmake gl tar:tgz xorg
-USE_XORG?=	x11 xext xi xmu
+USE_XORG?=	x11
 USE_GL?=	gl glu
 USE_LDCONFIG=	yes
 

@@ -22,11 +22,7 @@ OPTIONS_SUB=	yes
 OPTIONS_DEFINE+=	SUID
 OPTIONS_RADIO=	CONF
 OPTIONS_RADIO_CONF=	DEVD UDEV
-OPTIONS_DEFAULT=	SUID
-OPTIONS_DEFAULT_FreeBSD_11=	DEVD
-OPTIONS_DEFAULT_FreeBSD_12=	UDEV
-OPTIONS_DEFAULT_FreeBSD_13=	UDEV
-OPTIONS_DEFAULT_FreeBSD_14=	UDEV
+OPTIONS_DEFAULT=	SUID UDEV
 OPTIONS_DEFAULT+=	${OPTIONS_DEFAULT_${OPSYS}_${OSREL:R}}
 
 SUID_DESC=	Install setuid wrapper to allow startx as non-root
@@ -67,6 +63,7 @@ CONFIGURE_ARGS+=--without-doxygen --without-xmlto --without-fop \
 		--with-fallback-input-driver=libinput
 INSTALL_TARGET=	install-strip
 CPE_VENDOR=	x.org
+CPE_PRODUCT=	xorg-server
 
 .if ${SLAVE_PORT} == "no" || ${PORTNAME} == "xephyr" || ${PORTNAME} == "xwayland"
 LIB_DEPENDS+=	libdrm.so:graphics/libdrm \

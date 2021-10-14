@@ -31,7 +31,7 @@ USES=		cpe
 USE_GITHUB=	yes
 GH_ACCOUNT=	Perl
 GH_PROJECT=	perl5
-GH_TAGNAME=	v5.35.1-99-g6cc408b0b0
+GH_TAGNAME=	v5.35.4-102-ge43d289c7c
 
 # Give a hint of where libperl.so can be found.
 USE_LDCONFIG=	${PREFIX}/${_ARCH_LIB}/CORE
@@ -46,7 +46,8 @@ TEST_ENV=	${MAKE_ENV} \
 
 HAS_CONFIGURE=		yes
 CONFIGURE_SCRIPT=	Configure
-CONFIGURE_ARGS=		-Darchlib=${PREFIX}/${_ARCH_LIB} \
+CONFIGURE_ARGS=		-Accflags='-DUSE_THREAD_SAFE_LOCALE' \
+			-Darchlib=${PREFIX}/${_ARCH_LIB} \
 			-Dcc="${CC}" \
 			-Dcf_by=${MAINTAINER:C,@.*,,} \
 			-Dcf_email=${MAINTAINER} \
@@ -196,10 +197,6 @@ _PERL5_DEFAULT_FILE=	/tmp/PERL5_DEFAULT
 # Get the default version, and possibly, overwrite it.
 .include <bsd.port.options.mk>
 .sinclude "${_PERL5_DEFAULT_FILE}"
-
-.if ${OSVERSION} >= 1200004
-CONFIGURE_ARGS+=	-Accflags='-DUSE_THREAD_SAFE_LOCALE'
-.endif
 
 # if this port is default due PERL5_DEFAULT
 # change PKGNAME to reflect this

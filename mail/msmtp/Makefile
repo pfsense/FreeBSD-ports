@@ -1,7 +1,7 @@
 # Created by: R.I.Pienaar <rip@devco.net>
 
 PORTNAME=	msmtp
-PORTVERSION=	1.8.15
+PORTVERSION=	1.8.16
 CATEGORIES=	mail
 MASTER_SITES=	https://marlam.de/msmtp/releases/
 
@@ -11,10 +11,11 @@ COMMENT=	SMTP plugin for MUAs
 LICENSE=	GPLv3
 
 GNU_CONFIGURE=	yes
-USES=		gmake makeinfo pkgconfig tar:xz
+USES=		cpe gmake makeinfo pkgconfig tar:xz
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-INFO=	msmtp
+INFO=		msmtp
+CPE_VENDOR=	marlam
 
 OPTIONS_DEFINE=	DOCS GSASL NLS IDN LIBSECRET MSMTPD MSMTPQ
 OPTIONS_RADIO=	TLS

@@ -1,6 +1,6 @@
 PORTNAME=	grafana
-DISTVERSION=	7.5.6
 DISTVERSIONPREFIX=	v
+DISTVERSION=	7.5.10
 CATEGORIES=	www
 MASTER_SITES+=	https://dl.grafana.com/oss/release/:public \
 		https://gitea.com/xorm/builder/archive/:builder \
@@ -22,7 +22,7 @@ ONLY_FOR_ARCHS=	aarch64 amd64 i386
 
 RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
 
-USES=		go:modules
+USES=		cpe go:modules
 
 USE_GITHUB=	yes
 GH_TUPLE=	\
@@ -220,7 +220,7 @@ SUB_LIST=	GRAFANA_USER=${GRAFANA_USER} \
 		GRAFANA_LOGDIR=${GRAFANA_LOGDIR} \
 		GRAFANA_PLUGINDIR=${GRAFANA_PLUGINDIR} \
 		GRAFANA_PROVISIONINGDIR=${GRAFANA_PROVISIONINGDIR} \
-		GRAFANA_BUILDHASH=3817b8b78f33fc1605dc
+		GRAFANA_BUILDHASH=0cd8deb042c68e8113e4
 
 GRAFANA_USER?=	grafana
 GRAFANA_GROUP?=	grafana

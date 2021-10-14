@@ -1,5 +1,5 @@
 PORTNAME=	steam-utils
-DISTVERSION=	20210616
+DISTVERSION=	20211006
 CATEGORIES=	games linux
 PKGNAMEPREFIX=	linux-
 
@@ -9,11 +9,12 @@ COMMENT=	Steam launcher for FreeBSD
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-IGNORE_FreeBSD_11=	not tested at all
 ONLY_FOR_ARCHS=	amd64
 
 RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss \
-		liberation-fonts-ttf>=0:x11-fonts/liberation-fonts-ttf
+		gtar:archivers/gtar \
+		liberation-fonts-ttf>=0:x11-fonts/liberation-fonts-ttf \
+		zenity:x11/zenity
 
 USES=		linux
 
@@ -30,6 +31,8 @@ MAKE_ARGS+=	PREFIX=${STAGEDIR}${PREFIX}
 ALL_TARGET=	build
 
 PORTSCOUT=	ignore:1
+
+SUB_FILES=	pkg-message
 
 .include <bsd.port.options.mk>
 

@@ -236,7 +236,7 @@ biboumi:*:293:
 krill:*:294:
 jottad:*:295:
 writefreely:*:296:
-# free: 297
+conduit:*:297:
 # free: 298
 owncast:*:299:
 backuppc:*:300:
@@ -795,7 +795,7 @@ cassandra:*:851:
 p0f:*:852:
 _geodns:*:853:
 ebusd:*:854:
-# free: 855
+opensearch:*:855:
 # free: 856
 # free: 857
 # free: 858
@@ -816,7 +816,7 @@ bitmark:*:872:
 bitmark-recorder:*:873:
 librespeed:*:874:
 # free: 875
-# free: 876
+_lms:*:876:
 gemserv:*:877:
 gerbera:*:878:
 _encrypted-dns:*:879:

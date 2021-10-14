@@ -1,10 +1,9 @@
 # Created by: FreeBSD GNOME Team <gnome@freebsd.org>
 
 PORTNAME=	lightsoff
-PORTVERSION=	3.38.0
-PORTREVISION=	2
+PORTVERSION=	40.0.1
 CATEGORIES=	games gnome
-MASTER_SITES=	GNOME
+MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -25,7 +24,6 @@ PORTSCOUT=	limitw:1,even
 USES=		gettext gl gmake gnome localbase meson \
 		pathfix pkgconfig sqlite tar:xz xorg
 USE_GNOME=	cairo gtk30 intlhack librsvg2 libxml2:build
-INSTALLS_ICONS=	yes
 USE_XORG=	x11 xcomposite xdamage xext xfixes xi xrandr
 USE_GL=		egl gl
 

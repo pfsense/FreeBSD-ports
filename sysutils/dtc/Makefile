@@ -13,16 +13,15 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libyaml.so:textproc/libyaml
 
-USES=		bison compiler:c11 gmake pkgconfig shebangfix
+USES=		bison compiler:c11 cpe gmake pkgconfig shebangfix
+CPE_VENDOR=	${PORTNAME}_project
+USE_GITHUB=	yes
+GH_ACCOUNT=	dgibson
 USE_LDCONFIG=	yes
 SHEBANG_FILES=	dtdiff
 
 TEST_TARGET=	check
 TEST_ENV=	STATSZ="stat -f %Uz"
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	dgibson
-GH_PROJECT=	dtc
 
 MAKE_ARGS+=	PREFIX=${PREFIX} NO_PYTHON=yes \
 		INSTALL_PROGRAM="${INSTALL_PROGRAM}" \

@@ -1,5 +1,5 @@
 PORTNAME=	fheroes2
-PORTVERSION=	0.9.6
+PORTVERSION=	0.9.8
 CATEGORIES=	games
 
 MAINTAINER=	pkubaj@FreeBSD.org
@@ -15,14 +15,15 @@ USES=		cmake gettext-tools iconv localbase:ldflags pkgconfig sdl \
 USE_GITHUB=	yes
 GH_ACCOUNT=	ihhub
 USE_SDL=	image2 mixer2 sdl2 ttf2
-SHEBANG_FILES=	script/demo/demo_unix.sh
+SHEBANG_FILES=	script/demo/download_demo_version.sh
 
 OPTIONS_DEFINE=	DOCS
 
-PLIST_FILES=	bin/${PORTNAME}
+PLIST_FILES=	bin/${PORTNAME} \
+		${DATADIR}/files/data/resurrection.h2d
 PORTDOCS=	LICENSE \
 		README.txt \
 		changelog.txt \
-		demo/demo_unix.sh
+		demo/download_demo_version.sh
 
 .include <bsd.port.mk>

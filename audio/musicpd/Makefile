@@ -1,5 +1,6 @@
 PORTNAME=	musicpd
-PORTVERSION=	0.22.10
+PORTVERSION=	0.22.11
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	https://www.musicpd.org/download/mpd/${PORTVERSION:R}/
 DISTNAME=	mpd-${PORTVERSION}
@@ -206,36 +207,9 @@ MPDGROUP?=	mpd
 USERS=	${MPDUSER}
 GROUPS=	${MPDGROUP}
 
-.include <bsd.port.pre.mk>
-
-# Note that since the build system switch to meson, mpd fails to link with
-# GNU ld 2.17 in base. Also, meson does not allow to set the linker via
-# environment variables yet.
-# For gcc-based platforms, gcc and ld from ports are used due to the c++14
-# requirement. For clang, we set the linker explicitly in meson.build.
-.if ${ARCH} == armv6
-#lld may use movt/movw, doesn't work on armv6
-BUILD_DEPENDS+=	${LOCALBASE}/bin/ld:devel/binutils
-MPD_CLANG_LD=	${LOCALBASE}/bin/ld
-.else
-MPD_CLANG_LD=	lld
-.endif
-
 post-patch:
-# Insert selected linker for clang
-	@${REINPLACE_CMD} -e 's|%%MPD_CLANG_LD%%|${MPD_CLANG_LD}|' \
-		${WRKSRC}/meson.build
-# Replace ~/ with /var/mpd/ and make musicpd run as mpd by default
-	@${REINPLACE_CMD} -e 's,^#\([^"]*"\)~/,\1/var/mpd/,g' \
-		-e 's,^#\(user[^"]*"\)nobody,\1${MPDUSER},g' \
-		${WRKSRC}/doc/mpdconf.example
-# Uncomment OSS audio output part from mpd.conf; dragons!
-	start=$$(expr $$(${SED} -n '/^#	type	*"oss"/=' \
-		${WRKSRC}/doc/mpdconf.example) - 1); \
-	 finish=$$(for n in $$(${JOT} 10 $$start); do \
-		     [ "$$(${SED} -n $${n}p ${WRKSRC}/doc/mpdconf.example)" = \
-				"#}" ] && ${ECHO_CMD} $$n || true; done); \
-	 ${REINPLACE_CMD} -e "$${start},$${finish}s,^#,," \
+# Make musicpd run as ${MPDUSER} by default
+	@${REINPLACE_CMD} -e 's|%%MPDUSER%%|${MPDUSER}|' \
 		${WRKSRC}/doc/mpdconf.example
 # Fix man pages for executable names
 	@${REINPLACE_CMD} \
@@ -255,15 +229,15 @@ post-patch:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/_build/mpd \
 		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
-.if ${PORT_OPTIONS:MMANPAGES}
-	${INSTALL_MAN} ${WRKSRC}/_build/doc/${PORTNAME}.1 \
-		${STAGEDIR}${PREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/_build/doc/${PORTNAME}.conf.5 \
-		${STAGEDIR}${PREFIX}/man/man5
-.endif
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}/
 	${INSTALL_DATA} ${WRKSRC}/doc/mpdconf.example \
 		${STAGEDIR}${PREFIX}/etc/${PORTNAME}.conf.sample
 
-.include <bsd.port.post.mk>
+do-install-MANPAGES-on:
+	${INSTALL_MAN} ${WRKSRC}/_build/doc/${PORTNAME}.1 \
+		${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/_build/doc/${PORTNAME}.conf.5 \
+		${STAGEDIR}${PREFIX}/man/man5
+
+.include <bsd.port.mk>

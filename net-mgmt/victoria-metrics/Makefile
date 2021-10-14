@@ -1,7 +1,7 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
 
 PORTNAME?=	victoria-metrics
-PORTVERSION=	1.64.1		# don't forget to update BUILDINFO_TAG
+PORTVERSION=	1.67.0		# don't forget to update BUILDINFO_TAG
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-mgmt
 
@@ -11,12 +11,10 @@ COMMENT?=	Fast, cost-effective, and scalable time series database
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
-
 USES=		gmake go:modules,no_targets
 USE_RC_SUBR?=	${PORTNAME}
 MAKE_ENV=	PKG_TAG=${DISTVERSIONPREFIX}${DISTVERSION} \
-		GOOS=${OPSYS:tl} BUILDINFO_TAG=a724229 \
+		GOOS=${OPSYS:tl} BUILDINFO_TAG=6058edb \
 		DATEINFO_TAG=${_GET_DATE:sh}
 ALL_TARGET=	${PORTNAME}-pure
 

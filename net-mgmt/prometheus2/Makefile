@@ -1,8 +1,7 @@
 PORTNAME=	prometheus
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.28.1
+DISTVERSION=	2.30.0
 CATEGORIES=	net-mgmt
-PORTREVISION=	1
 
 MAINTAINER=	dor.bsd@xm0.uk
 COMMENT=	Systems monitoring and alerting toolkit
@@ -10,14 +9,14 @@ COMMENT=	Systems monitoring and alerting toolkit
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gmake go:modules
+USES=		cpe gmake go:modules
 
 USE_GITHUB=	yes
 GH_TUPLE=	ports-assets:net-mgmt_prometheus2:${DISTVERSIONFULL}:assets
 USE_RC_SUBR=	prometheus
 
 GO_TARGET=	./cmd/prometheus ./cmd/promtool
-GO_BUILDFLAGS=	-v -ldflags "${LD_FLAG_STRING}" -tags netgo,builtinassets
+GO_BUILDFLAGS=	-a -v -ldflags "${LD_FLAG_STRING}" -tags netgo,builtinassets
 
 SUB_LIST+=	PROMETHEUS_CONSOLE_LIBRARIES_DIR=${PROMETHEUS_CONSOLE_LIBRARIES_DIR} \
 		PROMETHEUS_CONSOLES_DIR=${PROMETHEUS_CONSOLES_DIR} \

@@ -1,7 +1,7 @@
 # Created by: Andreas Klemm <andreas@klemm.gtn.com>
 
 PORTNAME=	crossfire-client
-PORTVERSION=	1.75.0
+PORTVERSION=	1.75.1
 CATEGORIES=	games
 MASTER_SITES=	SF/crossfire/${PORTNAME}/${PORTVERSION}
 
@@ -16,7 +16,6 @@ LIB_DEPENDS=	libcurl.so:ftp/curl
 
 USES=		cmake gnome perl5 pkgconfig sdl
 USE_GNOME=	gtk20
-INSTALLS_ICONS=	YES
 USE_PERL5=	build
 USE_SDL=	sdl image mixer
 

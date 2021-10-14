@@ -12,7 +12,7 @@
 MESAVERSION=	${MESABASEVERSION}${MESASUBVERSION:C/^(.)/.\1/}
 MESADISTVERSION=${MESABASEVERSION}${MESASUBVERSION:C/^(.)/-\1/}
 
-MESABASEVERSION=	21.1.5
+MESABASEVERSION=	21.1.8
 # if there is a subversion, don't include the '-' between 7.11-rc2.
 MESASUBVERSION=
 
@@ -80,10 +80,6 @@ PLIST=		${.CURDIR}/pkg-plist
 PKGHELP=	${.CURDIR}/pkg-help
 PKGINSTALL=	${.CURDIR}/pkg-install
 PKGDEINSTALL=	${.CURDIR}/pkg-deinstall
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200000
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src_util_build__id.c
-.endif
 
 .include <bsd.port.pre.mk>
 

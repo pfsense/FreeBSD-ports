@@ -1,13 +1,13 @@
 # Created by: Frederic Culot <culot@FreeBSD.org>
 
 PORTNAME=	Future
-PORTVERSION=	0.45
+PORTVERSION=	0.47
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:PEVANS
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Build objects representing outstanding operations
 
 LICENSE=	ART10 GPLv1+

@@ -15,13 +15,15 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libboost_regex.so:devel/boost-libs \
 		libsnappy.so:archivers/snappy
 
-USES=		cmake compiler:c++11-lang
+USES=		cmake compiler:c++11-lang cpe
 
 USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
 WRKSRC_SUBDIR=	lang/c++
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
+
+CPE_VENDOR=	apache
 
 GH_ACCOUNT=	apache
 USE_GITHUB=	yes

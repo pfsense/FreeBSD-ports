@@ -16,6 +16,9 @@ COMMENT=	High-level Python Web Framework
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=	Upgrade to Django 3.2+. Mainstream support ended (April 6, 2021). Extended support ends December 2021. See https://www.djangoproject.com/download/
+EXPIRATION_DATE=	2021-12-31
+
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytz>0:devel/py-pytz@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}asgiref>0:www/py-asgiref@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}sqlparse>=0:databases/py-sqlparse@${PY_FLAVOR}
@@ -33,8 +36,8 @@ PORTDOCS=	*
 SHEBANG_FILES=	django/bin/django-admin.py \
 		django/conf/project_template/manage.py-tpl
 
-CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}django111 ${PYTHON_PKGNAMEPREFIX}django22 \
-			${PYTHON_PKGNAMEPREFIX}django30 ${PYTHON_PKGNAMEPREFIX}django32
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}django22 \
+			${PYTHON_PKGNAMEPREFIX}django32
 
 CPE_VENDOR=	djangoproject
 

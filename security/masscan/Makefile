@@ -1,7 +1,7 @@
 # Created by: Chie Taguchi <taguchi.ch@gmail.com>
 
 PORTNAME=	masscan
-PORTVERSION=	1.0.4
+DISTVERSION=	1.3.2
 CATEGORIES=	security
 
 MAINTAINER=	taguchi.ch@gmail.com
@@ -12,16 +12,10 @@ LICENSE=	GPLv3
 USES=		gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	robertdavidgraham
-CFLAGS+=	-Wno-format
 MAKE_ARGS=	SYS=freebsd CC="${CC}" CFLAGS="${CFLAGS}"
+CFLAGS+=	-Wno-format
 
 PLIST_FILES=	bin/masscan man/man8/masscan.8.gz
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == powerpc64 || ${ARCH} == powerpc
-USE_GCC=	yes
-.endif
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/masscan ${STAGEDIR}${PREFIX}/bin

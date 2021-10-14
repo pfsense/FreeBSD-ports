@@ -2,7 +2,7 @@
 
 PORTNAME=	csound
 DISTVERSION=	6.15.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio lang
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,9 +17,11 @@ BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
 LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate \
 		libsndfile.so:audio/libsndfile
 
-USES=		alias bison cmake compiler:c++11-lib eigen:3 localbase ncurses python:build # is python needed: https://github.com/csound/csound/issues/1437 ?
+USES=		alias bison cmake compiler:c++11-lib cpe eigen:3 localbase ncurses python:build # is python needed: https://github.com/csound/csound/issues/1437 ?
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
+
+CPE_VENDOR=	csounds
 
 CFLAGS_powerpc=	-maltivec
 CFLAGS_powerpcspe=	-DPFFFT_SIMD_DISABLE
@@ -169,12 +171,6 @@ WIIMOTE_DESC=		Build the Wiimote opcodes
 WIIMOTE_CMAKE_BOOL=	BUILD_WIIMOTE_OPCODES
 WIIMOTE_BROKEN=		Need to port wiiuse: https://github.com/rpavlik/wiiuse
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "i386"
-BROKEN_FreeBSD_11=	libcsound64.so.6.0: undefined reference to `__atomic_store_8' / undefined reference to `__atomic_load_8'
-.endif
-
 post-patch:
 	@${REINPLACE_CMD} -e \
 		's|/usr/include/Python2.7|${PYTHON_INCLUDEDIR}| ; \
@@ -196,4 +192,4 @@ post-install:
 post-install-FLTK-on:
 	@${LN} -sf libCsoundAC.so.6.0 ${STAGEDIR}${PREFIX}/lib/libCsoundAC.so.6
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

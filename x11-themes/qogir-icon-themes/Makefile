@@ -1,7 +1,7 @@
 # Created by: Alexander Vereeken <Alexander88207@protonmail.com>
 
 PORTNAME=	qogir-icon-themes
-DISTVERSION=	2020-11-22
+DISTVERSION=	2021-07-14
 CATEGORIES=	x11-themes
 
 MAINTAINER=	Alexander88207@protonmail.com
@@ -15,16 +15,16 @@ BUILD_DEPENDS=	bash>0:shells/bash \
 
 USES=		shebangfix
 SHEBANG_FILES=	install.sh
-INSTALLS_ICONS=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	vinceliuice
 GH_PROJECT=	Qogir-icon-theme
 NO_ARCH=	yes
 NO_BUILD=	yes
+BINARY_ALIAS=	gtk-update-icon-cache=${TRUE}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons
-	${WRKSRC}/install.sh -d ${STAGEDIR}${PREFIX}/share/icons
+	${SETENV} PATH="${PATH}" ${WRKSRC}/install.sh -d ${STAGEDIR}${PREFIX}/share/icons
 
 .include <bsd.port.mk>

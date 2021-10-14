@@ -1,6 +1,6 @@
 PORTNAME=	hermes
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.8.1
+DISTVERSION=	0.9.0
 CATEGORIES=	lang
 PKGNAMESUFFIX=	-javascript-engine
 
@@ -14,8 +14,9 @@ LIB_DEPENDS=	libicui18n.so:devel/icu
 TEST_DEPENDS=	googletest>0:devel/googletest \
 		zip:archivers/zip
 
-USES=		cmake compiler:c++14-lang python:build readline
+USES=		cmake compiler:c++14-lang cpe python:build readline
 USE_LDCONFIG=	yes
+CPE_VENDOR=	facebook
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	facebook
@@ -23,12 +24,6 @@ GH_ACCOUNT=	facebook
 CMAKE_OFF=	HERMES_ENABLE_TEST_SUITE
 
 BINARY_ALIAS=	python=${PYTHON_CMD} python3=${PYTHON_CMD}
-
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1201518
-BROKEN=		needs pthread_getname_np from OSVERSION 1201518 or above
-.endif
 
 do-test: # some tests are known to fail: https://github.com/facebook/hermes/issues/347
 	@cd ${BUILD_WRKSRC} && \

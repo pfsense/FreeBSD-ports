@@ -1,7 +1,7 @@
 # Created by: Randall Hopper
 
 PORTNAME=	gdal
-PORTVERSION=	3.3.1
+PORTVERSION=	3.3.2
 PORTREVISION=	2
 CATEGORIES=	graphics geography
 MASTER_SITES=	https://download.osgeo.org/gdal/${PORTVERSION}/ \
@@ -40,7 +40,7 @@ PCRE_DESC=	Regular expression support for SQLite
 RASTERLITE2_DESC=	RasterLite2 support
 TILEDB_DESC=	TileDB support
 
-USES=		compiler:c++14-lang gmake iconv jpeg localbase pkgconfig ssl tar:xz
+USES=		compiler:c++14-lang cpe gmake iconv jpeg localbase pkgconfig ssl tar:xz
 
 CFLAGS+=	-fPIC
 CONFIGURE_ARGS=	--datadir=${PREFIX}/share \
@@ -72,6 +72,8 @@ USE_LDCONFIG=	yes
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 SLAVEDIRS=	graphics/p5-Geo-GDAL graphics/py-gdal
+
+CPE_VENDOR=	osgeo
 
 HEADER_FILES=	alg/gdalwarpkernel_opencl.h \
 		alg/gvgcpfit.h \

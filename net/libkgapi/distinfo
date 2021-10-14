@@ -1,3 +1,3 @@
-TIMESTAMP = 1628244253
-SHA256 (KDE/release-service/21.08.0/libkgapi-21.08.0.tar.xz) = 79b8834de9cebe68b8059042c775dc9446306919b63a31a082273fa0ca995e38
-SIZE (KDE/release-service/21.08.0/libkgapi-21.08.0.tar.xz) = 247660
+TIMESTAMP = 1633447501
+SHA256 (KDE/release-service/21.08.2/libkgapi-21.08.2.tar.xz) = 40e95815d7c84edc86748c1ea2dbcb1ca187448af2c9a76460f3e3b12352b68d
+SIZE (KDE/release-service/21.08.2/libkgapi-21.08.2.tar.xz) = 247628

@@ -1,8 +1,7 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
 
 PORTNAME=	orca
-PORTVERSION=	40.0
-PORTREVISION=	1
+PORTVERSION=	41.0
 CATEGORIES=	accessibility gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome3
@@ -31,7 +30,6 @@ NO_ARCH=	yes
 USES=		cpe gettext gmake gnome localbase pathfix pkgconfig \
 		python:3.4+ tar:xz
 USE_GNOME=	gtk30 pygobject3
-INSTALLS_ICONS=	yes
 GNU_CONFIGURE=	yes
 CPE_VENDOR=	gnome
 

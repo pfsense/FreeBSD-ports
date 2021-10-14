@@ -1,12 +1,12 @@
 # Created by: Cezary Morga <cm@therek.net>
 
 PORTNAME=	Devel-CheckOS
-PORTVERSION=	1.83
+PORTVERSION=	1.87
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Check currently running OS
 
 LICENSE=	ART10 GPLv2

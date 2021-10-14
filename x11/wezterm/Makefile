@@ -1,6 +1,6 @@
 PORTNAME=	wezterm
 DISTVERSION=	20210814-124438-54e29167
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	x11
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -39,6 +39,11 @@ PLIST_FILES=	bin/strip-ansi-escapes \
 		share/icons/hicolor/scalable/apps/org.wezfurlong.wezterm.svg \
 		share/metainfo/org.wezfurlong.wezterm.appdata.xml \
 		${NULL}
+
+.if exists(/usr/bin/tic)
+PKGMESSAGE=	${NONEXISTENT}
+PLIST_FILES+=	share/site-terminfo/${PORTNAME:C,^.,&/&,}
+.endif
 
 CARGO_CRATES=	addr2line-0.16.0 \
 		adler-1.0.2 \
@@ -541,12 +546,31 @@ CARGO_USE_GITHUB=	yes
 # XXX https://github.com/rust-lang/cargo/issues/4101
 CARGO_INSTALL_PATH=	${PLIST_FILES:Mbin/*:T}
 
+OPTIONS_DEFINE=	DOCS
+
+DOCS_BUILD_DEPENDS=	mdbook:textproc/mdbook \
+			mdbook-linkcheck:textproc/mdbook-linkcheck
+PORTDOCS=		html
+
 post-patch:
 # Extract (snapshot) version from the port instead of .tag file
 	@${ECHO_CMD} '${DISTVERSIONFULL}' >${WRKSRC}/.tag
 # lang/python3 cannot be used as a dependency
 	@${REINPLACE_CMD} -e 's/"python3"/"${PYTHON_CMD:T}"/' \
 		${WRKSRC}/cargo-crates/xcb-*/build.rs
+
+do-build-DOCS-on:
+# Build HTML documentation similar to ci/build-docs.sh
+	(cd ${WRKSRC} && ${PYTHON_CMD} ci/generate-docs.py)
+	mdbook build ${WRKSRC}/docs
+	${CP} ${WRKSRC}/assets/icon/terminal.png \
+		${WRKSRC}/gh_pages/html/favicon.png
+	${CP} ${WRKSRC}/assets/icon/${PORTNAME}-icon.svg \
+		${WRKSRC}/gh_pages/html/favicon.svg
+
+do-install-DOCS-on:
+	(cd ${WRKSRC}/gh_pages && ${COPYTREE_SHARE} \
+		"${PORTDOCS:Mhtml}" ${STAGEDIR}${DOCSDIR})
 
 post-install:
 # Install assets similar to ci/deploy.sh
@@ -556,5 +580,9 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/assets/${f:R}.${f:E} \
 		${STAGEDIR}${PREFIX}/${PLIST_FILES:M*.${f:E}}
 .endfor
+.if exists(/usr/bin/tic)
+	tic -x -o ${STAGEDIR}${PREFIX}/${PLIST_FILES:M*terminfo*:[1]:H:H} \
+		${WRKSRC}/termwiz/data/${PORTNAME}.terminfo
+.endif
 
 .include <bsd.port.mk>

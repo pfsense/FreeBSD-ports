@@ -1,7 +1,7 @@
 # Created by: Oliver Lehmann <oliver@FreeBSD.org>
 
 PORTNAME=	thunar
-DISTVERSION=	4.16.8
+DISTVERSION=	4.16.10
 CATEGORIES=	x11-fm xfce
 MASTER_SITES=	XFCE
 DIST_SUBDIR=	xfce4
@@ -17,17 +17,18 @@ LICENSE_FILE_LGPL20=	${WRKSRC}/COPYING.LIB
 LIB_DEPENDS=	libtumbler-1.so:deskutils/xfce4-tumbler
 RUN_DEPENDS=	pkexec:sysutils/polkit
 
-USES=		compiler:c11 desktop-file-utils gettext-tools gmake gnome \
+USES=		compiler:c11 cpe desktop-file-utils gettext-tools gmake gnome \
 		libtool pathfix perl5 pkgconfig tar:bzip2 xfce xorg
 USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 intltool
 USE_LDCONFIG=	yes
 USE_XFCE=	libexo
 USE_XORG=	ice sm x11
 
+CPE_VENDOR=	xfce
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-gio-unix \
 		--disable-gudev
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 PORTSCOUT=	limitw:1,even

@@ -1,5 +1,5 @@
 PORTNAME=	jenkins
-PORTVERSION=	2.307
+PORTVERSION=	2.316
 CATEGORIES=	devel java
 MASTER_SITES=	http://mirrors.jenkins.io/war/${PORTVERSION}/
 DISTNAME=	jenkins
@@ -13,7 +13,6 @@ COMMENT=	Open-source continuous integration server
 LICENSE=	MIT
 
 USES=		cpe
-CPE_VENDOR=	cloudbees
 USE_JAVA=	yes
 USE_RC_SUBR=	jenkins
 

@@ -34,6 +34,7 @@
     SUBDIR += freecad
     SUBDIR += freehdl
     SUBDIR += fritzing
+    SUBDIR += gds3d
     SUBDIR += gdsreader
     SUBDIR += gdt
     SUBDIR += geda
@@ -88,6 +89,7 @@
     SUBDIR += openroad
     SUBDIR += openscad
     SUBDIR += openscad-devel
+    SUBDIR += opentimer
     SUBDIR += openvsp
     SUBDIR += oregano
     SUBDIR += p5-GDS2

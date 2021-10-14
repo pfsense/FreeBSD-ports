@@ -1,8 +1,7 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
 
 PORTNAME=	mod_auth_mellon
-PORTVERSION=	0.17.0
-PORTREVISION=	1
+PORTVERSION=	0.18.0
 CATEGORIES=	www
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
 DISTVERSIONPREFIX=	v
@@ -21,7 +20,7 @@ USES=		apache:2.2+ autoreconf cpe gettext-runtime gnome libtool \
 USE_GNOME=	glib20
 USE_GITHUB=	yes
 GH_ACCOUNT=	latchset
-CPE_VENDOR=	${GH_ACCOUNT}
+CPE_VENDOR=	mod_auth_mellon_project
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	OPENSSL_CFLAGS="-I${OPENSSLINC}" OPENSSL_LIBS="-L${OPENSSLLIB} -lcrypto" \

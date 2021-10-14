@@ -7,7 +7,7 @@ CATEGORIES=	devel www pear
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde timezone library
 
-USES=	horde
+USES=		horde cpe
 USE_HORDE_RUN=	Horde_Date \
 		Horde_Icalendar \
 		Horde_Vfs

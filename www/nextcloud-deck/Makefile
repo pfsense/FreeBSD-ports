@@ -1,7 +1,7 @@
 # Created by: Bernard Spil <brnrd@freebsd.org>
 
 PORTNAME=	deck
-PORTVERSION=	1.5.0
+PORTVERSION=	1.5.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/nextcloud-releases/${PORTNAME}/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/
@@ -18,12 +18,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	nextcloud${PHP_PKGNAMESUFFIX}>=22:www/nextcloud@${PHP_FLAVOR}
 
-USES=		php:flavors
+USES=		cpe php:flavors
 NO_BUILD=	yes
 NO_ARCH=	yes
-
-NEXTCLOUD_USERNAME?=	${WWWOWN}
-NEXTCLOUD_GROUPNAME?=	${WWWGRP}
+CPE_VENDOR=	nextcloud
 
 WWWDIR=		${PREFIX}/www/nextcloud/apps-pkg/${PORTNAME}
 

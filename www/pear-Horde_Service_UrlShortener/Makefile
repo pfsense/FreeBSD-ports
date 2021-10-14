@@ -7,7 +7,7 @@ CATEGORIES=	www pear
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde URL shortening services interface
 
-USES=	horde
+USES=		horde cpe
 USE_HORDE_RUN=	Horde_Exception \
 		Horde_Http \
 		Horde_Url

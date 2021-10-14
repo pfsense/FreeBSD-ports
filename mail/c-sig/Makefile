@@ -2,11 +2,11 @@
 
 PORTNAME=	c-sig
 PORTVERSION=	3.8.0.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	mail elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Signature insertion tool for Emacs
 
 LICENSE=	GPLv2+

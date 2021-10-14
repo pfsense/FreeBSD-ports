@@ -1,11 +1,11 @@
 # Created by: Cyrille Lefevre <cyrille.lefevre@laposte.net>
 
 PORTNAME=	gzip
-PORTVERSION=	1.10
+PORTVERSION=	1.11
 CATEGORIES=	archivers
 MASTER_SITES=	GNU
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Compression utility designed to be a replacement for compress
 
 LICENSE=	GPLv3+

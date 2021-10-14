@@ -1,8 +1,7 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
 
 PORTNAME=	libsoup
-PORTVERSION=	2.72.0
-PORTREVISION=	4
+DISTVERSION=	2.74.0
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -18,11 +17,12 @@ LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 		libpsl.so:dns/libpsl
 RUN_DEPENDS=	glib-networking>=2.29.18:net/glib-networking
 
-USES=		gettext gnome localbase meson \
+USES=		cpe gettext gnome localbase meson \
 		pkgconfig python:3.6+,build sqlite ssl tar:xz
 USE_GNOME=	glib20 intlhack introspection:build \
 		libxml2
 USE_LDCONFIG=	yes
+CPE_VENDOR=	gnome
 
 OPTIONS_DEFINE=			SMB
 OPTIONS_SINGLE=			GSSAPI
@@ -58,7 +58,7 @@ MESON_ARGS=	-Dvapi=disabled \
 		-Dgnome=true \
 		-Dbrotli=disabled
 
-LIBVERSION=	1.11.0
+LIBVERSION=	1.11.1
 PLIST_SUB=	VERSION="2.4" LIBVERSION=${LIBVERSION}
 
 PORTSCOUT=	limitw:1,even

@@ -7,6 +7,7 @@
     SUBDIR += chatterino2
     SUBDIR += climm
     SUBDIR += coccinella
+    SUBDIR += conduit
     SUBDIR += convey
     SUBDIR += coyim
     SUBDIR += cutegram
@@ -144,6 +145,7 @@
     SUBDIR += scudcloud
     SUBDIR += sendxmpp
     SUBDIR += signal-cli
+    SUBDIR += signald
     SUBDIR += slack-term
     SUBDIR += spectral
     SUBDIR += ssh-chat

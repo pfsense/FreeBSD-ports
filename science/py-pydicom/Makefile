@@ -1,7 +1,7 @@
 # Created by: Wen Heping <wenheping@gmail.com>
 
 PORTNAME=	pydicom
-PORTVERSION=	2.2.0
+PORTVERSION=	2.2.2
 DISTVERSIONPREFIX=v
 CATEGORIES=	science python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,6 @@ LICENSE=	MIT
 
 USES=		python:3.6+ shebangfix
 USE_GITHUB=	yes
-GH_ACCOUNT=	pydicom
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

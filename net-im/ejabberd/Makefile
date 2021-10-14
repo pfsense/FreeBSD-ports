@@ -1,5 +1,6 @@
 PORTNAME=	ejabberd
 PORTVERSION=	21.07
+PORTREVISION=	1
 CATEGORIES=	net-im
 
 MAINTAINER=	ashish@FreeBSD.org
@@ -170,10 +171,6 @@ pre-everything::
 post-patch:
 	@${REINPLACE_CMD} -e 's,^convert,${LOCALBASE}/bin/convert,' ${WRKSRC}/tools/captcha.sh
 	@${REINPLACE_CMD} -e 's,%%PORTVERSION%%,${PORTVERSION},' ${WRKSRC}/configure.ac
-.if ${OSVERSION} < 1200000
-	# Disable LTO required by dependency, not available by default in < 12.x
-	@${REINPLACE_CMD} -e 's/$$FLTO_FLAG//' ${WRKSRC}/deps/jiffy/rebar.config
-.endif
 
 pre-configure:
 	cd ${WRKSRC} && ${SH} autogen.sh
@@ -198,5 +195,6 @@ post-install:
 		${STAGEDIR}${DATADIR}
 	@${CHMOD} +x ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/lib/eimp-${EIMP_VER}/priv/bin/eimp
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/lib/eimp-${EIMP_VER}/priv/bin/eimp
+	@cd ${WRKSRC}/sql && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/priv/sql
 
 .include <bsd.port.post.mk>

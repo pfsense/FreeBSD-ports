@@ -1,19 +1,21 @@
 # Created by: Steven Honson
 
 PORTNAME=	dnsmasq
-DISTVERSION=	2.86test7
+DISTVERSION=	2.86rc3
 # Leave the PORTREVISION in even if 0 to avoid accidental PORTEPOCH bumps:
 PORTREVISION=	0
-PORTEPOCH=	3 # attn - different between -devel and dnsmasq ports!
+PORTEPOCH=	4 # attn - different between -devel and dnsmasq ports!
 CATEGORIES=	dns
-#MASTER_SITES=	https://www.thekelleys.org.uk/dnsmasq/release-candidates/ \
+MASTER_SITES=	https://www.thekelleys.org.uk/dnsmasq/release-candidates/ \
 		LOCAL/mandree/
-MASTER_SITES=	https://www.thekelleys.org.uk/dnsmasq/test-releases/ \
-		LOCAL/mandree/
+#MASTER_SITES=	https://www.thekelleys.org.uk/dnsmasq/test-releases/ \
+#		LOCAL/mandree/
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	Lightweight DNS forwarder, DHCP, and TFTP server
+
+IGNORE=		please use dns/dnsmasq, which is newer
 
 LICENSE=	GPLv2
 

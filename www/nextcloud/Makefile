@@ -1,5 +1,5 @@
 PORTNAME=	nextcloud
-PORTVERSION=	22.1.0
+PORTVERSION=	22.2.0
 CATEGORIES=	www
 MASTER_SITES=	https://download.nextcloud.com/server/releases/
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
@@ -21,7 +21,7 @@ NEXTCLOUD_GROUPNAME?=	${WWWGRP}
 WRKSRC=		${WRKDIR}/${PORTNAME}
 NO_BUILD=	yes
 NO_ARCH=	yes
-SUB_FILES=	config.sample.php pkg-message plist.post
+SUB_FILES=	config.sample.php occ pkg-message plist.post
 SUB_LIST=	NEXTCLOUD_USERNAME=${NEXTCLOUD_USERNAME} \
 		NEXTCLOUD_GROUPNAME=${NEXTCLOUD_GROUPNAME}
 PLIST_SUB=	${SUB_LIST}
@@ -81,5 +81,6 @@ do-install:
 			-e '/^\.\/config\/config\.sample\.php/d' \
 			-e 's,^\.,${WWWDIR_REL},' >> ${TMPPLIST}
 	${CAT} ${WRKDIR}/plist.post >> ${TMPPLIST}
+	${INSTALL_SCRIPT} ${WRKDIR}/occ ${STAGEDIR}${LOCALBASE}/bin/occ
 
 .include <bsd.port.mk>

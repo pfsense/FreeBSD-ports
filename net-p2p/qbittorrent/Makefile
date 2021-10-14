@@ -1,7 +1,7 @@
 # Created by: Doug Barton <dougb@FreeBSD.org>
 
 PORTNAME=	qbittorrent
-DISTVERSION=	4.3.7
+DISTVERSION=	4.3.8
 CATEGORIES=	net-p2p
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -21,7 +21,7 @@ FLAVOR?=	${FLAVORS:[1]}
 nox_PKGNAMESUFFIX=	-nox
 nox_PLIST=		${MASTERDIR}/pkg-plist-nox
 
-USES=			compiler:c++14-lang pkgconfig qmake:no_env qt:5 ssl tar:xz
+USES=			compiler:c++14-lang cpe pkgconfig qmake:no_env qt:5 ssl tar:xz
 GNU_CONFIGURE=		yes
 USE_QT=			core network xml buildtools_build linguisttools_build qmake_build
 DESTDIRNAME=		INSTALL_ROOT

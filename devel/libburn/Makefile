@@ -1,11 +1,11 @@
 # Created by: J.R. Oldroyd <fbsd@opal.com>
 
 PORTNAME=	libburn
-PORTVERSION=	1.5.0
+PORTVERSION=	1.5.4
 CATEGORIES=	devel
 MASTER_SITES=	http://files.libburnia-project.org/releases/
 
-MAINTAINER=	ndowens@yahoo.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Libburnia library to read/write optical discs
 
 LICENSE=	GPLv2

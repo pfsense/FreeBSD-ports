@@ -1,9 +1,8 @@
 # Created by: Sergey Skvortsov <skv@protey.ru>
 
 PORTNAME=	redis
-PORTVERSION=	6.2.5
+PORTVERSION=	7.0.0.20211005
 CATEGORIES=	databases
-MASTER_SITES=	https://download.redis.io/releases/
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	osa@FreeBSD.org
@@ -13,6 +12,8 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES+=		compiler:c11 gmake
+USE_GITHUB=	yes
+GH_TUPLE=	redis:redis:897c7bd
 
 OPTIONS_DEFINE=	JEMALLOC TESTS TLS TRIB
 OPTIONS_RADIO=	EXTLUA
@@ -62,7 +63,7 @@ USE_GCC=	yes
 CFLAGS+=	-march=i586
 .endif
 
-.if defined(_addflags)
+.if defined(_ADDFLAGS)
 CFLAGS=		-fPIC
 LDFLAGS=	-Wl,-E
 .endif

@@ -1,22 +1,23 @@
 # Created by: jupengfei <jupengfei@gmail.com>
 
 PORTNAME=	Paranoid
-PORTVERSION=	2.07
+PORTVERSION=	2.08
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	culot@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Paranoia support for safer programs
 
-LICENSE=	ART10 GPLv1+
+LICENSE=	ART20 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Socket6>=0.23:net/p5-Socket6
 
-NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -1,7 +1,7 @@
 # Created by: Tomoyuki Sakurai <cherry@trombik.org>
 
 PORTNAME=	facter
-PORTVERSION=	4.2.3
+PORTVERSION=	4.2.5
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
@@ -17,6 +17,8 @@ RUN_DEPENDS=	rubygem-ffi>=1.0:devel/rubygem-ffi \
 
 USES=		gem
 USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 PLIST_FILES=	bin/facter ${GEMS_DIR}/facter
 

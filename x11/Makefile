@@ -41,6 +41,7 @@
     SUBDIR += conlecterm
     SUBDIR += controllermap
     SUBDIR += cool-retro-term
+    SUBDIR += coreterminal
     SUBDIR += deforaos-desktop
     SUBDIR += deforaos-keyboard
     SUBDIR += deforaos-libdesktop
@@ -57,6 +58,7 @@
     SUBDIR += dzen2
     SUBDIR += eaglemode
     SUBDIR += editres
+    SUBDIR += elementary-terminal
     SUBDIR += emprint
     SUBDIR += erun
     SUBDIR += eterm
@@ -318,6 +320,7 @@
     SUBDIR += screenkey
     SUBDIR += scripts
     SUBDIR += sddm
+    SUBDIR += sdwmbar
     SUBDIR += sessreg
     SUBDIR += setlayout
     SUBDIR += setxkbmap

@@ -1,7 +1,7 @@
 PORTNAME=	chicago95
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.1-70
-DISTVERSIONSUFFIX=	-gc97678a
+DISTVERSION=	2.0.1-81
+DISTVERSIONSUFFIX=	-gd1c86db
 CATEGORIES=	x11-themes
 
 MAINTAINER=	evgeniy@khramtsov.org
@@ -25,7 +25,6 @@ BACKGROUNDS_DESC=Install background theme(s)
 CURSORS_DESC=Install cursor theme(s)
 
 ICONS_USES=	gnome
-ICONS_VARS=	INSTALLS_ICONS=yes
 
 NAME=		${PORTNAME:S/c/C/}
 QT5CT=		share/qt5ct/colors

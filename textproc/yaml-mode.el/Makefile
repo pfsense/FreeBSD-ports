@@ -2,11 +2,11 @@
 
 PORTNAME=	yaml-mode.el
 PORTVERSION=	0.0.15
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Simple major mode to edit YAML file for Emacsen
 
 LICENSE=	GPLv2+

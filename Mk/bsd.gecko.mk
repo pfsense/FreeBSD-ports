@@ -79,7 +79,7 @@ BUNDLE_LIBS=	yes
 
 BUILD_DEPENDS+=	llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT} \
 				rust-cbindgen>=0.19.0:devel/rust-cbindgen \
-				${RUST_DEFAULT}>=1.53.0:lang/${RUST_DEFAULT} \
+				${RUST_DEFAULT}>=1.55.0:lang/${RUST_DEFAULT} \
 				node:www/node
 LIB_DEPENDS+=	libdrm.so:graphics/libdrm
 .if ${MOZILLA_VER:R:R} >= 85
@@ -248,11 +248,7 @@ MOZ_OPTIONS+=	--disable-libproxy
 .endif
 
 .if ${PORT_OPTIONS:MLTO}
-.if ${ARCH} == powerpc64le
-MOZ_OPTIONS+=	--enable-lto=thin
-.else
 MOZ_OPTIONS+=	--enable-lto=cross
-.endif
 .endif
 
 .if ${PORT_OPTIONS:MALSA}

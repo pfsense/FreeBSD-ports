@@ -1,5 +1,5 @@
 PORTNAME=	bolt
-PORTVERSION=	3.16.1
+PORTVERSION=	3.19.0
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
@@ -35,6 +35,8 @@ USE_RUBY=	yes
 
 ruby_OLD_CMD+=	/opt/puppetlabs/puppet/bin/ruby
 SHEBANG_FILES=	libexec/*
+
+NO_ARCH=	yes
 
 PLIST_FILES=	bin/bolt \
 		etc/bash_completion.d/bolt

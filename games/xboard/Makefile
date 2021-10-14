@@ -7,7 +7,7 @@ PORTEPOCH?=	0
 CATEGORIES?=	games
 MASTER_SITES?=	GNU
 
-MAINTAINER?=	ports@FreeBSD.org
+MAINTAINER?=	mbeis@xs4all.nl
 COMMENT?=	X frontend for Crafty, GNUChess, Chess Servers, or e-mail chess
 
 LICENSE?=	GPLv3
@@ -75,7 +75,6 @@ CFLAGS+=	-I${LOCALBASE}/include -fcommon
 LDFLAGS+=	-L${LOCALBASE}/lib
 INFO=		xboard
 USE_PERL5=	build
-INSTALLS_ICONS=	yes
 DATADIR?=	${PREFIX}/share/games/${PORTNAME}
 XBOARDCONF?=	${WRKSRC}/xboard.conf
 

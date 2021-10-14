@@ -8,7 +8,6 @@ COMMENT=	Distributed, transactional key-value store
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_FreeBSD_11=	requires newer OpenSSL
 ONLY_FOR_ARCHS=	aarch64 amd64
 ONLY_FOR_ARCHS_REASON=	not yet ported to anything else
 
@@ -19,7 +18,6 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 USES=		compiler:c++17-lang cmake mono:build python:build shebangfix ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	apple
-GH_PROJECT=	foundationdb
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	foundationdb
 

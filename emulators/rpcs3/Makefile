@@ -1,7 +1,7 @@
 PORTNAME=	rpcs3
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.17-12653 # git rev-list --count HEAD
-DISTVERSIONSUFFIX=	-g4953e7958
+DISTVERSION=	0.0.18-12895 # git rev-list --count HEAD
+DISTVERSIONSUFFIX=	-gab6c74b3c
 CATEGORIES=	emulators
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -16,6 +16,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpng.so:graphics/png \
 		libavcodec.so:multimedia/ffmpeg
 
+BROKEN_FreeBSD_12=	ld: error: undefined symbol: std::__1::__cxx_atomic_notify_one
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	requires int128 and SSE2
 
@@ -26,12 +27,12 @@ GH_TUPLE=	RPCS3:hidapi:hidapi-0.8.0-rc1-125-g01f601a:hidapi/3rdparty/hidapi/hida
 		Cyan4973:xxHash:v0.8.0:xxHash/3rdparty/xxHash \
 		FNA-XNA:FAudio:21.07:FAudio/3rdparty/FAudio \
 		asmjit:asmjit:723f585:asmjit/3rdparty/asmjit/asmjit \
-		google:flatbuffers:v1.11.0:flatbuffers/3rdparty/flatbuffers \
-		jbeder:yaml-cpp:yaml-cpp-0.6.3-30-g6a211f0:yamlcpp/3rdparty/yaml-cpp \
+		google:flatbuffers:v2.0.0:flatbuffers/3rdparty/flatbuffers \
+		jbeder:yaml-cpp:yaml-cpp-0.7.0-1-g0b67821:yamlcpp/3rdparty/yaml-cpp/yaml-cpp \
 		KhronosGroup:SPIRV-Headers:1.5.3.reservations1:spirv_headers/3rdparty/SPIRV/SPIRV-Headers \
 		KhronosGroup:SPIRV-Tools:v2020.4:spirv_tools/3rdparty/SPIRV/SPIRV-Tools \
 		KhronosGroup:glslang:11.5.0:glslang/3rdparty/glslang/glslang \
-		wolfSSL:wolfssl:v4.5.0-stable-80-g39b544860:wolfssl/3rdparty/wolfssl \
+		wolfSSL:wolfssl:v4.8.1-stable:wolfssl/3rdparty/wolfssl/wolfssl \
 		zeux:pugixml:v1.11.4:pugixml/3rdparty/pugixml
 
 USES=		cmake compiler:c++17-lang gl iconv:wchar_t localbase:ldflags \

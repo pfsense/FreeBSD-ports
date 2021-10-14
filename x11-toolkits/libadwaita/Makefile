@@ -1,29 +1,31 @@
 PORTNAME=	libadwaita
-PORTVERSION=	0.0.20210526
-PORTREVISION=	1
+PORTVERSION=	0.0.20210812
 CATEGORIES=	x11-toolkits
-MASTER_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/archive/${_COMMIT}
 
+# WARNING: ABI is unstable, often breaks Rust-based consumers e.g., solanum, authenticator.
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Building blocks for modern GNOME applications
 
-LICENSE=	LGPL21
+LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	sassc:textproc/sassc \
 		valac:lang/vala
+LIB_DEPENDS=	libfribidi.so:converters/fribidi \
+		libgraphene-1.0.so:graphics/graphene
 
-USES=		gnome meson ninja pkgconfig python:env
-USE_GNOME=	cairo gdkpixbuf2 gtk40
+USES=		gettext gnome meson ninja pkgconfig
+USE_GITLAB=	yes
+USE_GNOME=	cairo gdkpixbuf2 gtk40 introspection:build
+GL_SITE=	https://gitlab.gnome.org
+GL_ACCOUNT=	GNOME
+GL_COMMIT=	8442d6097b36c17e87582525ceab3ce3d5bccd48
 
 PORTSCOUT=	limit:1,even
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${_COMMIT}/
-
 OPTIONS_DEFINE=	DOCS
 
-DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gi-docgen>=0:textproc/py-gi-docgen
+DOCS_BUILD_DEPENDS=	gi-docgen:textproc/py-gi-docgen
 DOCS_MESON_TRUE=	gtk_doc
-
-_COMMIT=		7f61711633dfd067f4928df80afe6b14f16f886e/
 
 .include <bsd.port.mk>

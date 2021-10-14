@@ -152,6 +152,7 @@
     SUBDIR += sawfish-themes
     SUBDIR += sddm-freebsd-black-theme
     SUBDIR += sierra-gtk-themes
+    SUBDIR += skeuos-gtk-themes
     SUBDIR += slim-freebsd-black-theme
     SUBDIR += slim-freebsd-dark-theme
     SUBDIR += slim-freebsd-themes
@@ -162,5 +163,6 @@
     SUBDIR += xfce-icons-elementary
     SUBDIR += yaru-gtk-themes
     SUBDIR += yaru-icon-theme
+    SUBDIR += zuki-themes
 
 .include <bsd.port.subdir.mk>

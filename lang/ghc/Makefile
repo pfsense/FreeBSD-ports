@@ -23,7 +23,7 @@ USES=			autoreconf compiler:c11 gmake iconv:patch,translit \
 USE_LOCALE=		en_US.UTF-8
 USE_PERL5=		build
 GNU_CONFIGURE=		yes
-CONFIGURE_ENV=		CC=${CC} LD=${LD} PATH=${SLAVES_PREFIX}/bin:${PATH}
+CONFIGURE_ENV=		PATH=${SLAVES_PREFIX}/bin:${PATH}
 MAKE_ENV=		PATH=${SLAVES_PREFIX}/bin:${PATH}
 
 SUB_FILES=		build.mk
@@ -71,18 +71,20 @@ BOOT_SUB_LIST_OFF=	HSC2HS=${BOOT_HSC2HS}
 PROFILE_SUB_LIST=	WITH_PROFILE="YES"
 PROFILE_SUB_LIST_OFF=	WITH_PROFILE="NO"
 
-GHC_VERSION=		8.10.5
+GHC_VERSION=		8.10.7
 CABAL_VERSION=		3.2.1.0
 HSCOLOUR_VERSION=	1.24.4
 LLVM_VERSION=		10
 # LLVM version that bootstrap compiler uses
-BOOT_LLVM_VERSION=	90
+BOOT_LLVM_VERSION=	10
 
 PLIST_SUB=		GHC_VERSION=${GHC_VERSION} CABAL_VERSION=${CABAL_VERSION}
 
 PORTDOCS=		*
 
 .include <bsd.port.pre.mk>
+
+CONFIGURE_TARGET=	${GHC_ARCH}-portbld-${OPSYS:tl}
 
 # This version of ncurses is needed by bootstrap compiler
 .if ${OSVERSION} > 1300078 && empty(PORT_OPTIONS:MBOOT) && ${ARCH} != powerpc64
@@ -96,7 +98,7 @@ CONFIGURE_ARGS+=	--enable-dtrace=0
 .if defined(PPC_ABI) && ${PPC_ABI} == ELFv1
 BOOT_GHC_VERSION=      8.6.3
 .elif ${ARCH} == aarch64 || ${ARCH:Marmv*}
-BOOT_GHC_VERSION=	8.10.4
+BOOT_GHC_VERSION=	8.10.7
 .else
 BOOT_GHC_VERSION=	8.6.5
 .endif
@@ -130,39 +132,25 @@ _EXECUTABLES+=	${GHC_LIBDIR}/bin/ghc-iserv-dyn
 .if empty(PORT_OPTIONS:MBOOT)
 BOOTSTRAPS_SUFFIX?=		${BOOTSTRAPS_SUFFIX_${ARCH}}
 BOOTSTRAPS_SUFFIX_powerpc64?=	-${PPC_ABI:tl}
-.  if ${OSVERSION} < 1200000 && (${ARCH} == amd64 || ${ARCH} == i386)
-ELEVEN_SUFX=		11
-.  endif
-DISTFILES+=		ghc-${BOOT_GHC_VERSION}-boot-${ARCH}-freebsd${BOOTSTRAPS_SUFFIX}${ELEVEN_SUFX}${EXTRACT_SUFX}:boot
+DISTFILES+=		ghc-${BOOT_GHC_VERSION}-boot-${ARCH}-freebsd${BOOTSTRAPS_SUFFIX}${EXTRACT_SUFX}:boot
 .endif # MBOOT
 
 .if ${ARCH} == aarch64 || ${ARCH:Marmv*}
 # ghc-8.10.x on arm requires devel/llvm10
 # CONFIGURE_TARGET must to be the same as the llvm triple
 CONFIGURE_TARGET=	${ARCH}-unknown-freebsd${"${ARCH:Maarch64}" != "":?:-gnueabihf}
-EXTRA_PATCHES+=		${PATCHDIR}/extra-patch-aclocal.m4
+CONFIGURE_ARGS+=	--host=${CONFIGURE_TARGET}
 BUILD_DEPENDS+=		llc${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
 RUN_DEPENDS+=		llc${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
-CONFIGURE_ENV+=		LLC=llc${LLVM_VERSION} \
-			OPT=opt${LLVM_VERSION} \
-			CLANG=clang${LLVM_VERSION} \
-			CC=clang${LLVM_VERSION}
 
 # When GHC being compiled and GHC used for bootstrapping support different
 # LLVM versions, we have to pull in both. Luckily, this is relatively rare.
 .  if ${BOOT_LLVM_VERSION} != ${LLVM_VERSION}
 BUILD_DEPENDS+=		llc${BOOT_LLVM_VERSION}:devel/llvm${BOOT_LLVM_VERSION}
-CONFIGURE_ENV_BOOTSTRAP=LLC=llc${BOOT_LLVM_VERSION} \
-			OPT=opt${BOOT_LLVM_VERSION} \
-			CLANG=clang${BOOT_LLVM_VERSION} \
-			CC=clang${BOOT_LLVM_VERSION}
 .  endif
 .endif
 
 .if ${ARCH} == aarch64 || ${ARCH:Marmv*} || ${ARCH} == powerpc64
-.  if ${OSVERSION} < 1202000
-IGNORE=	lang/ghc requires at least FreeBSD 12.2-RELEASE
-.  endif
 .  ifdef QEMU_EMULATING
 IGNORE=	qemu-user-static isn't able to build lang/ghc, but it builds fine on a real hardware
 .  endif
@@ -186,11 +174,6 @@ SLAVES_PREFIX=		${WRKDIR}/slaves_prefix
 SLAVES_WRKDIRPREFIX=	${WRKDIR}/slaves_wrkdirprefix
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|%%CC%%|${CC}|; \
-		s|%%AR%%|${AR}|; \
-		s|%%LD%%|${LD}|' \
-		${WRKSRC}/libraries/Cabal/Cabal/Distribution/Simple/Program/Builtin.hs
-
 .if empty(PORT_OPTIONS:MBOOT)
 	@${REINPLACE_CMD} -e '/^mandir/d' ${BOOT_DIR}/mk/build.mk
 	@${REINPLACE_CMD} -e '/^infodir/d' ${BOOT_DIR}/mk/build.mk

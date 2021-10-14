@@ -25,12 +25,13 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libwayland-cursor.so:graphics/wayland \
 		libxkbcommon.so:x11/libxkbcommon
 
-USES=		compiler:c11 gettext-runtime gl gmake ncurses:port pkgconfig \
+USES=		compiler:c11 cpe gettext-runtime gl gmake ncurses:port pkgconfig \
 		python:3.5+ shebangfix terminfo xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	kovidgoyal
 USE_GL=		gl
 USE_XORG=	x11 xcb xcursor xi xinerama xrandr
+CPE_VENDOR=	kitty_project
 
 SHEBANG_FILES=	build-terminfo count-lines-of-code mypy-editor-integration \
 		update-on-ox update-on-ubuntu
@@ -38,11 +39,6 @@ SHEBANG_GLOB=	*.py
 
 TEST_ENV=	PATH="${STAGEDIR}${PREFIX}/bin:${PATH}"
 TEST_TARGET=	test
-
-.if exists(/usr/bin/ld.lld) && ${/usr/bin/ld:L:tA} != /usr/bin/ld.lld
-# --build-id isn't supported by old GNU ld.bfd in base
-LDFLAGS+=	-fuse-ld=lld
-.endif
 
 BINARY_ALIAS=	python3=${PYTHON_CMD} python=${PYTHON_CMD}
 

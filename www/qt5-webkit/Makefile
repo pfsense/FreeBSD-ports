@@ -6,10 +6,8 @@ MASTER_SITES=		https://github.com/qt${PORTNAME}/qt${PORTNAME}/releases/download/
 PKGNAMEPREFIX=		qt5-
 DISTNAME=		qt${PORTNAME}-${DISTVERSION}
 
-PATCH_SITES=		https://github.com/qt${PORTNAME}/qt${PORTNAME}/commit/ \
-			https://github.com/qtwebkit/qtwebkit/pull/1058/commits/:glib268
-PATCHFILES+=		78360c01c796b6260bf828bc9c8a0ef73c5132fd.patch:-p1 \
-			5b698ba3faffd4e198a45be9fe74f53307395e4b.patch:-p1:glib268
+PATCH_SITES=		https://github.com/qt${PORTNAME}/qt${PORTNAME}/commit/
+PATCHFILES+=		78360c01c796b6260bf828bc9c8a0ef73c5132fd.patch:-p1
 
 MAINTAINER=		kde@FreeBSD.org
 COMMENT=		QtWebKit with a more modern WebKit code base
@@ -28,7 +26,7 @@ USE_GNOME=		glib20 libxml2 libxslt
 USE_PERL5=		build
 USE_QT=			core declarative gui location network opengl printsupport \
 			sensors webchannel widgets \
-			buildtools_build qmake_build testlib_build
+			buildtools_build declarative-test_build qmake_build testlib_build
 USE_RUBY=		yes
 USE_XORG=		x11 xcomposite xrender
 

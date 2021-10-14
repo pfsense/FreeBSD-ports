@@ -35,9 +35,8 @@ RUN_DEPENDS=	${ZM_DEPENDS} \
 		p5-Data-Entropy>=0:security/p5-Data-Entropy \
 		zip:archivers/zip
 
-USES=		cmake:insource,noninja jpeg mysql perl5 php shebangfix ssl
+USES=		cmake:insource,noninja cpe jpeg mysql perl5 php shebangfix ssl
 USE_GITHUB=	yes
-GH_PROJECT=	zoneminder
 GH_TUPLE=	FriendsOfCake:crud:0bd63fb:crud/web/api/app/Plugin/Crud \
 		ZoneMinder:CakePHP-Enum-Behavior:ea90c0c:crud_plugin/web/api/app/Plugin/CakePHP-Enum-Behavior \
 		ZoneMinder:RtspServer:cd7fd49:rtsp_server/dep/RtspServer
@@ -88,7 +87,7 @@ CMAKE_ARGS+=	-DZM_PERL_MM_PARMS=INSTALLDIRS=site \
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} > 1200000
+.if ${OPSYS} == FreeBSD
     EXTRA_PATCHES=	${PATCHDIR}/extra-patch-CMakeLists.txt
 .endif
 

@@ -27,6 +27,8 @@ PORTDOCS=	CHANGES LICENSE
 GH_ACCOUNT=	uclouvain
 USE_GITHUB=	yes
 
+CPE_VENDOR=	uclouvain
+
 OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

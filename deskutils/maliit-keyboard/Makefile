@@ -1,5 +1,5 @@
 PORTNAME=	keyboard
-DISTVERSION=	2.0.0
+DISTVERSION=	2.1.0
 CATEGORIES=	deskutils kde
 PKGNAMEPREFIX=	maliit-
 
@@ -16,6 +16,7 @@ USES=		cmake gettext-runtime gnome pkgconfig qt:5
 USE_GITHUB=	yes
 GH_ACCOUNT=	maliit
 USE_GNOME=	glib20
+GLIB_SCHEMAS=	org.maliit.keyboard.maliit.gschema.xml
 USE_QT=		core dbus declarative gui multimedia network \
 		buildtools_build qmake_build
 CMAKE_OFF=	enable-tests

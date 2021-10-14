@@ -176,8 +176,6 @@ bin/grafana-server
 %%DATADIR%%/public/app/core/components/sidemenu/__snapshots__/BottomSection.test.tsx.snap
 %%DATADIR%%/public/app/core/components/sidemenu/__snapshots__/DropDownChild.test.tsx.snap
 %%DATADIR%%/public/app/core/components/sidemenu/__snapshots__/SideMenuDropDown.test.tsx.snap
-%%DATADIR%%/public/app/core/components/sidemenu/__snapshots__/TopSection.test.tsx.snap
-%%DATADIR%%/public/app/core/components/sidemenu/__snapshots__/TopSectionItem.test.tsx.snap
 %%DATADIR%%/public/app/core/components/sidemenu/utils.test.ts
 %%DATADIR%%/public/app/core/components/sidemenu/utils.ts
 %%DATADIR%%/public/app/core/components/sql_part/sql_part.ts
@@ -1423,6 +1421,7 @@ bin/grafana-server
 %%DATADIR%%/public/app/features/variables/state/setOptionFromUrl.test.ts
 %%DATADIR%%/public/app/features/variables/state/sharedReducer.test.ts
 %%DATADIR%%/public/app/features/variables/state/sharedReducer.ts
+%%DATADIR%%/public/app/features/variables/state/templateVarsChangedInUrl.test.ts
 %%DATADIR%%/public/app/features/variables/state/transactionReducer.test.ts
 %%DATADIR%%/public/app/features/variables/state/transactionReducer.ts
 %%DATADIR%%/public/app/features/variables/state/types.ts
@@ -1589,6 +1588,7 @@ bin/grafana-server
 %%DATADIR%%/public/app/plugins/datasource/elasticsearch/components/QueryEditor/BucketAggregationsEditor/SettingsEditor/FiltersSettingsEditor/state/reducer.ts
 %%DATADIR%%/public/app/plugins/datasource/elasticsearch/components/QueryEditor/BucketAggregationsEditor/SettingsEditor/FiltersSettingsEditor/state/types.ts
 %%DATADIR%%/public/app/plugins/datasource/elasticsearch/components/QueryEditor/BucketAggregationsEditor/SettingsEditor/FiltersSettingsEditor/utils.ts
+%%DATADIR%%/public/app/plugins/datasource/elasticsearch/components/QueryEditor/BucketAggregationsEditor/SettingsEditor/TermsSettingsEditor.test.tsx
 %%DATADIR%%/public/app/plugins/datasource/elasticsearch/components/QueryEditor/BucketAggregationsEditor/SettingsEditor/TermsSettingsEditor.tsx
 %%DATADIR%%/public/app/plugins/datasource/elasticsearch/components/QueryEditor/BucketAggregationsEditor/SettingsEditor/index.tsx
 %%DATADIR%%/public/app/plugins/datasource/elasticsearch/components/QueryEditor/BucketAggregationsEditor/SettingsEditor/useDescription.ts
@@ -1793,6 +1793,7 @@ bin/grafana-server
 %%DATADIR%%/public/app/plugins/datasource/grafana-azure-monitor-datasource/types/logAnalyticsMetadata.ts
 %%DATADIR%%/public/app/plugins/datasource/grafana-azure-monitor-datasource/types/query.ts
 %%DATADIR%%/public/app/plugins/datasource/grafana-azure-monitor-datasource/types/types.ts
+%%DATADIR%%/public/app/plugins/datasource/grafana-azure-monitor-datasource/utils/common.test.ts
 %%DATADIR%%/public/app/plugins/datasource/grafana-azure-monitor-datasource/utils/common.ts
 %%DATADIR%%/public/app/plugins/datasource/grafana-azure-monitor-datasource/utils/messageFromError.test.ts
 %%DATADIR%%/public/app/plugins/datasource/grafana-azure-monitor-datasource/utils/messageFromError.ts
@@ -2534,6 +2535,8 @@ bin/grafana-server
 %%DATADIR%%/public/app/polyfills/old-mediaquerylist.ts
 %%DATADIR%%/public/app/routes/GrafanaCtrl.ts
 %%DATADIR%%/public/app/routes/routes.tsx
+%%DATADIR%%/public/app/routes/utils.test.ts
+%%DATADIR%%/public/app/routes/utils.ts
 %%DATADIR%%/public/app/store/configureStore.ts
 %%DATADIR%%/public/app/store/store.ts
 %%DATADIR%%/public/app/types/accessControl.ts
@@ -4295,6 +4298,7 @@ bin/grafana-server
 %%DATADIR%%/public/img/plugins/appdynamics.svg
 %%DATADIR%%/public/img/plugins/datadog.png
 %%DATADIR%%/public/img/plugins/dynatrace.png
+%%DATADIR%%/public/img/plugins/honeycomb.png
 %%DATADIR%%/public/img/plugins/mongodb.svg
 %%DATADIR%%/public/img/plugins/newrelic.svg
 %%DATADIR%%/public/img/plugins/oracle.png

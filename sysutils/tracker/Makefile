@@ -25,13 +25,11 @@ USES=		compiler:c++11-lib gettext gnome localbase:ldflags meson \
 		pkgconfig python:3.4+,build sqlite tar:xz
 USE_GNOME=	glib20 introspection:build libxml2
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 MESON_ARGS=	-Ddocs=false \
 		-Dman=true \
 		-Dnetwork_manager=disabled \
 		-Dstemmer=disabled \
 		-Dbash_completion=true \
-		-Dbash_completion_dir=${PREFIX}/etc/bash_completion.d \
 		-Dsystemd_user_services=false
 GLIB_SCHEMAS=	org.freedesktop.Tracker.DB.gschema.xml \
 		org.freedesktop.Tracker.FTS.gschema.xml \
@@ -41,10 +39,5 @@ GLIB_SCHEMAS=	org.freedesktop.Tracker.DB.gschema.xml \
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 
 PLIST_SUB=	LIBVER=0.304.0
-
-# This can be removed after 11.x is no longer supported
-.if exists(/usr/bin/ld.lld) && (${/usr/bin/ld:L:tA} != /usr/bin/ld.lld)
-LDFLAGS+=      -fuse-ld=lld
-.endif
 
 .include <bsd.port.mk>

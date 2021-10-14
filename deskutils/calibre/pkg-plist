@@ -803,6 +803,7 @@ lib/calibre/calibre/gui2/dialogs/match_books_ui.py
 lib/calibre/calibre/gui2/dialogs/message_box.py
 lib/calibre/calibre/gui2/dialogs/metadata_bulk.py
 lib/calibre/calibre/gui2/dialogs/metadata_bulk_ui.py
+lib/calibre/calibre/gui2/dialogs/multisort.py
 lib/calibre/calibre/gui2/dialogs/opml.py
 lib/calibre/calibre/gui2/dialogs/password.py
 lib/calibre/calibre/gui2/dialogs/password_ui.py
@@ -1930,3 +1931,4 @@ share/icons/hicolor/64x64/mimetypes/gnome-mime-application-x-topaz-ebook.png
 share/icons/hicolor/64x64/mimetypes/gnome-mime-text-lrs.png
 share/icons/hicolor/64x64/mimetypes/text-lrs.png
 share/mime/packages/calibre-mimetypes.xml
+share/zsh/site-functions/_calibre

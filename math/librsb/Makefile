@@ -1,7 +1,8 @@
 # Created by: stephen@FreeBSD.org
 
 PORTNAME=	librsb
-PORTVERSION=	1.2.0.9
+PORTVERSION=	1.2.0.10
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	SF/librsb
 DISTNAME=	${PORTNAME}-${PORTVERSION:S/r/-rc/}
@@ -15,7 +16,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	gsed:textproc/gsed \
 		bash:shells/bash
 
-USES=		fortran compiler:openmp gmake shebangfix libtool
+USES=		fortran gmake shebangfix libtool
+USE_GCC=	yes
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	qtests
 GNU_CONFIGURE=	yes

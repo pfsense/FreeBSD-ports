@@ -1,5 +1,6 @@
 PORTNAME=	shortwave
 DISTVERSION=	2.0.1
+PORTREVISION=	4
 CATEGORIES=	audio
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -26,7 +27,6 @@ GL_TUPLE=	https://gitlab.freedesktop.org:gstreamer:gstreamer-rs:f00c57cd6f2a0912
 SHEBANG_FILES=	build-aux/meson/postinstall.py
 MAKE_ENV=	${CARGO_ENV}
 GLIB_SCHEMAS=	de.haeckerfelix.Shortwave.gschema.xml
-INSTALLS_ICONS=	yes
 
 CARGO_CRATES=	addr2line-0.14.1 \
 		adler-1.0.2 \
@@ -303,6 +303,11 @@ CARGO_GIT_SUBDIR=	gstreamer:gstreamer-audio:gstreamer-audio \
 CARGO_BUILD=	no
 CARGO_INSTALL=	no
 CARGO_TEST=	no
+
+OPTIONS_DEFINE=	PULSEAUDIO
+OPTIONS_DEFAULT=PULSEAUDIO
+
+PULSEAUDIO_USE=	GSTREAMER1=pulse
 
 pre-patch:
 # Chase gtk-rs -> gtk3-rs rename for USES=cargo patching

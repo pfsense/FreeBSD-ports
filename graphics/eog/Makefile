@@ -1,7 +1,7 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
 
 PORTNAME=	eog
-DISTVERSION=	40.3
+DISTVERSION=	41.0
 CATEGORIES=	graphics gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome3
@@ -26,7 +26,6 @@ USES=		compiler:c++11-lang desktop-file-utils gettext gnome jpeg \
 		xorg
 USE_GNOME=	cairo librsvg2 gtk30 gnomedesktop3 introspection
 USE_XORG=	x11
-INSTALLS_ICONS=	yes
 SHEBANG_FILES=	${WRKSRC}/meson_post_install.py
 
 MESON_ARGS=	-Dlibportal=false -Dlibexif=true

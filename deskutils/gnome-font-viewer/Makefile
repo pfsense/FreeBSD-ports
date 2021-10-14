@@ -1,7 +1,7 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
 
 PORTNAME=	gnome-font-viewer
-PORTVERSION=	40.0
+PORTVERSION=	41.0
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
@@ -23,7 +23,6 @@ PORTSCOUT=	limitw:1,even
 USES=		compiler:c11 desktop-file-utils gettext gnome localbase meson \
 		pkgconfig tar:xz
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 USE_GNOME=	cairo gnomedesktop3 gtk30
 
 .include <bsd.port.mk>

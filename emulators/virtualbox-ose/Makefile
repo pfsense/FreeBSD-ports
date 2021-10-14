@@ -2,6 +2,7 @@
 
 PORTNAME=	virtualbox-ose
 PORTVERSION=	6.1.26
+PORTREVISION=	3
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${PORTVERSION}/
 DISTFILES=	VirtualBox-${PORTVERSION}${EXTRACT_SUFX} ${GUESTADDITIONS}
@@ -57,7 +58,7 @@ OPTIONS_DEFINE=	AIO ALSA DBUS DEBUG GUESTADDITIONS MANUAL NLS OPUS PULSEAUDIO \
 OPTIONS_DEFAULT=	AIO DBUS QT5 UDPTUNNEL VNC WEBSERVICE X11
 # Since version 6.1.24 pulseaudio is broken at runtime, preventing
 # virtual machines from starting if configured to use it.
-OPTIONS_EXCLUDE=	PULSEAUDIO
+OPTIONS_EXCLUDE+=	PULSEAUDIO
 OPTIONS_SUB=	yes
 
 AIO_DESC=	Enable Asyncronous IO support (check pkg-message)
@@ -164,7 +165,6 @@ USE_GL=		gl glu
 USE_QT=		buildtools_build core dbus gui linguisttools_build opengl
 USE_QT+=	printsupport widgets x11extras
 USE_XORG=	xcb
-INSTALLS_ICONS=	yes
 VBOX_PROGS+=	VirtualBox VirtualBoxVM
 VBOX_UTILS+=	VBoxTestOGL
 VBOX_WITH_QT=	1
@@ -213,7 +213,7 @@ KMK_FLAGS+=	-j${MAKE_JOBS_NUMBER}
 # llvm10 in FreeBSD before r364284 miscompiles virtualbox 6.1 causing errors.
 # force llvm11 from ports
 .if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300109
-BUILD_DEPENDS+=	clang11:devel/llvm${VBOX_LLVM_VER}
+BUILD_DEPENDS+=	clang${VBOX_LLVM_VER}:devel/llvm${VBOX_LLVM_VER}
 CC=		${LOCALBASE}/bin/clang${VBOX_LLVM_VER}
 CXX=		${LOCALBASE}/bin/clang++${VBOX_LLVM_VER}
 VBOX_LLVM_VER?=	11

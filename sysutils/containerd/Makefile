@@ -1,6 +1,6 @@
 PORTNAME=	containerd
 DISTVERSIONPREFIX=v
-DISTVERSION=	1.5.5
+DISTVERSION=	1.5.7
 CATEGORIES=	sysutils
 
 MAINTAINER=	decke@FreeBSD.org
@@ -13,9 +13,7 @@ BUILD_DEPENDS=	bash:shells/bash \
 		go:lang/go
 
 USES=		cpe gmake
-
 USE_GITHUB=	yes
-GH_ACCOUNT=	containerd
 GH_SUBDIR=	src/github.com/containerd/containerd
 
 CPE_VENDOR=	linuxfoundation

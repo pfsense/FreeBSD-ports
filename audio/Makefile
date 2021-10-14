@@ -206,6 +206,7 @@
     SUBDIR += fpc-openal
     SUBDIR += freac
     SUBDIR += freealut
+    SUBDIR += freebsd-13-mixer
     SUBDIR += freedesktop-sound-theme
     SUBDIR += freepats
     SUBDIR += ft2play
@@ -235,6 +236,7 @@
     SUBDIR += gmusicbrowser
     SUBDIR += gnaural
     SUBDIR += gnome-music
+    SUBDIR += gnome-podcasts
     SUBDIR += gnormalize
     SUBDIR += gnuitar
     SUBDIR += gnupod
@@ -611,6 +613,7 @@
     SUBDIR += pd
     SUBDIR += pear-Text_Spell_Audio
     SUBDIR += penguinsap
+    SUBDIR += phaserotate-lv2
     SUBDIR += pianobar
     SUBDIR += pianobooster
     SUBDIR += pianod2
@@ -768,6 +771,7 @@
     SUBDIR += squash
     SUBDIR += squeezelite
     SUBDIR += sratom
+    SUBDIR += ssr-lv2
     SUBDIR += stegosaurus-lv2
     SUBDIR += stk
     SUBDIR += stmp

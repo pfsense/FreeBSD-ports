@@ -4,7 +4,7 @@ PORTEPOCH=	1
 CATEGORIES=	security
 MASTER_SITES=	https://www.clamav.net/downloads/production/
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Command line virus scanner written entirely in C
 
 LICENSE=	GPLv2
@@ -41,6 +41,8 @@ CFLAGS_i386=	-march=i486
 # This port has a problem with -pthread,
 # force to use -lthr until it's not fixed.
 LDFLAGS+=	-lthr
+
+CONFLICTS_INSTALL=	clamav-[0-9]*
 
 SUB_FILES=	pkg-deinstall
 SUB_LIST+=	CHMOD=${CHMOD} \

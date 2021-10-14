@@ -1,7 +1,7 @@
 # Created by: Andrew Pantyukhin <infofarmer@FreeBSD.org>
 
 PORTNAME=	aria2
-PORTVERSION=	1.35.0
+PORTVERSION=	1.36.0
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/aria2/aria2/releases/download/release-${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -12,7 +12,7 @@ COMMENT=	Yet another download tool
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler:c++11-lib libtool pathfix pkgconfig ssl tar:xz
+USES=		compiler:c++11-lib cpe libtool pathfix pkgconfig ssl tar:xz
 
 CONFIGURE_ARGS=	--disable-epoll \
 		--enable-bittorrent --enable-libaria2 --enable-metalink --enable-shared --enable-ssl --enable-threads=posix --enable-websocket \
@@ -31,6 +31,8 @@ USE_RC_SUBR=	aria2
 PORTDOCS=	*
 
 ARIA2_DISK_CACHE?=	16M
+
+CPE_VENDOR=	aria2_project
 
 OPTIONS_DEFINE=	CA_BUNDLE CARES DOCS LIBUV NLS SQLITE SSH2 STATIC
 OPTIONS_SINGLE=	XML

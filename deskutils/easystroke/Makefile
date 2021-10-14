@@ -10,7 +10,6 @@ COMMENT=	Gesture-recognition application for X11
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_FreeBSD_11_powerpc64=	fails to build on powerpc64 elfv1: handler.cc:560:27: call of overloaded 'abs(float&)' is ambiguous
 BROKEN_FreeBSD_12_powerpc64=	fails to build on powerpc64 elfv1: handler.cc:560:27: call of overloaded 'abs(float&)' is ambiguous
 
 BUILD_DEPENDS=	help2man:misc/help2man \
@@ -23,7 +22,6 @@ USES=		compiler:c++11-lang gettext gmake gnome pkgconfig xorg
 USE_GNOME=	gtkmm30
 USE_XORG=	x11 xext xfixes xi xtst
 USE_CXXSTD=	c++11
-INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes

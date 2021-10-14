@@ -117,6 +117,7 @@
     SUBDIR += beats6
     SUBDIR += beats7
     SUBDIR += bfs
+    SUBDIR += bhyve+
     SUBDIR += bhyve-firmware
     SUBDIR += bhyve-rc
     SUBDIR += biosfont
@@ -144,6 +145,7 @@
     SUBDIR += busybox
     SUBDIR += bvm
     SUBDIR += byobu
+    SUBDIR += calamares
     SUBDIR += catfish
     SUBDIR += cbsd
     SUBDIR += cbsd-mq-api
@@ -163,14 +165,10 @@
     SUBDIR += cfengine-devel
     SUBDIR += cfengine-masterfiles
     SUBDIR += cfengine-masterfiles-devel
-    SUBDIR += cfengine-masterfiles310
-    SUBDIR += cfengine-masterfiles311
     SUBDIR += cfengine-masterfiles315
     SUBDIR += cfengine-masterfiles316
     SUBDIR += cfengine-masterfiles317
     SUBDIR += cfengine-masterfiles318
-    SUBDIR += cfengine310
-    SUBDIR += cfengine311
     SUBDIR += cfengine315
     SUBDIR += cfengine316
     SUBDIR += cfengine317
@@ -219,6 +217,7 @@
     SUBDIR += cpdup
     SUBDIR += cpu-x
     SUBDIR += cpuburn
+    SUBDIR += cpufetch
     SUBDIR += cpuid
     SUBDIR += cpuid2cpuflags
     SUBDIR += cpulimit
@@ -339,6 +338,7 @@
     SUBDIR += exfat-utils
     SUBDIR += extipl
     SUBDIR += ezjail
+    SUBDIR += f2
     SUBDIR += f3
     SUBDIR += facter
     SUBDIR += fanout
@@ -429,6 +429,7 @@
     SUBDIR += fusefs-unionfs
     SUBDIR += fusefs-unreliablefs
     SUBDIR += fusefs-webdavfs
+    SUBDIR += fusefs-xfuse
     SUBDIR += fusefs-zip
     SUBDIR += fvcool
     SUBDIR += fwup
@@ -482,6 +483,7 @@
     SUBDIR += grub2-pcbsd
     SUBDIR += gsh
     SUBDIR += gsmartcontrol
+    SUBDIR += gstat-rs
     SUBDIR += gstopd
     SUBDIR += gstreamer1-plugins-cdio
     SUBDIR += gtk-imonc
@@ -589,6 +591,7 @@
     SUBDIR += kldfind
     SUBDIR += kldpatch
     SUBDIR += kops
+    SUBDIR += kpmcore
     SUBDIR += krename
     SUBDIR += kshutdown
     SUBDIR += ksystemlog
@@ -924,6 +927,7 @@
     SUBDIR += pciutils
     SUBDIR += pcpustat
     SUBDIR += pdixtract
+    SUBDIR += pdsh
     SUBDIR += pdumpfs
     SUBDIR += pear-Cache
     SUBDIR += pear-Cache_Lite
@@ -964,6 +968,7 @@
     SUBDIR += plasma5-kinfocenter
     SUBDIR += plasma5-kmenuedit
     SUBDIR += plasma5-ksysguard
+    SUBDIR += plasma5-ksystemstats
     SUBDIR += plasma5-libksysguard
     SUBDIR += plasma5-plasma-disks
     SUBDIR += plasma5-plasma-systemmonitor
@@ -1048,6 +1053,7 @@
     SUBDIR += py-ploy_ezjail
     SUBDIR += py-plumbum
     SUBDIR += py-power
+    SUBDIR += py-prometheus-zfs
     SUBDIR += py-psutil
     SUBDIR += py-psutil121
     SUBDIR += py-ptyprocess
@@ -1118,11 +1124,11 @@
     SUBDIR += retail
     SUBDIR += rex
     SUBDIR += rhc
-    SUBDIR += riak-cs
     SUBDIR += rinse
     SUBDIR += rmlint
     SUBDIR += rocr
     SUBDIR += roct
+    SUBDIR += root-tail
     SUBDIR += rovclock
     SUBDIR += rpi-firmware
     SUBDIR += rset
@@ -1273,7 +1279,6 @@
     SUBDIR += shim
     SUBDIR += shlock
     SUBDIR += shmcat
-    SUBDIR += showbeastie
     SUBDIR += shuf
     SUBDIR += siegfried
     SUBDIR += signon-kwallet-extension
@@ -1289,6 +1294,7 @@
     SUBDIR += smenu
     SUBDIR += smp_utils
     SUBDIR += snap
+    SUBDIR += snapraid
     SUBDIR += snmp_exporter
     SUBDIR += snooze
     SUBDIR += sockaddr
@@ -1304,7 +1310,6 @@
     SUBDIR += sshsudo
     SUBDIR += ssync
     SUBDIR += stalepid
-    SUBDIR += stanchion
     SUBDIR += stepsync
     SUBDIR += storcli
     SUBDIR += stow
@@ -1392,7 +1397,6 @@
     SUBDIR += u-boot-cubieboard
     SUBDIR += u-boot-cubieboard2
     SUBDIR += u-boot-cubox-hummingboard
-    SUBDIR += u-boot-duovero
     SUBDIR += u-boot-firefly-rk3399
     SUBDIR += u-boot-imx-serial-loader
     SUBDIR += u-boot-master
@@ -1514,6 +1518,7 @@
     SUBDIR += wmbluecpu
     SUBDIR += wmbsdbatt
     SUBDIR += wmcube
+    SUBDIR += wmcpuload
     SUBDIR += wmdiskmon
     SUBDIR += wmflame
     SUBDIR += wmmemfree

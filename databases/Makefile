@@ -202,7 +202,6 @@
     SUBDIR += mongodb42
     SUBDIR += mongodb42-tools
     SUBDIR += mongodb44
-    SUBDIR += mongodb49
     SUBDIR += mongodb50
     SUBDIR += mroonga
     SUBDIR += mtop
@@ -574,6 +573,7 @@
     SUBDIR += pg_citus
     SUBDIR += pg_dirtyread
     SUBDIR += pg_ed25519
+    SUBDIR += pg_filedump
     SUBDIR += pg_hashids
     SUBDIR += pg_partman
     SUBDIR += pg_qualstats
@@ -749,7 +749,9 @@
     SUBDIR += py-aioredis
     SUBDIR += py-aiosqlite
     SUBDIR += py-alembic
+    SUBDIR += py-alembic14
     SUBDIR += py-apsw
+    SUBDIR += py-asyncmy
     SUBDIR += py-asyncpg
     SUBDIR += py-berkeleydb
     SUBDIR += py-bsddb3
@@ -878,6 +880,7 @@
     SUBDIR += rubygem-activemodel52
     SUBDIR += rubygem-activemodel60
     SUBDIR += rubygem-activemodel61
+    SUBDIR += rubygem-activemodel613
     SUBDIR += rubygem-activerecord-explain-analyze
     SUBDIR += rubygem-activerecord-import
     SUBDIR += rubygem-activerecord-jdbc-adapter
@@ -889,6 +892,7 @@
     SUBDIR += rubygem-activerecord52
     SUBDIR += rubygem-activerecord60
     SUBDIR += rubygem-activerecord61
+    SUBDIR += rubygem-activerecord613
     SUBDIR += rubygem-after_commit_queue
     SUBDIR += rubygem-amalgalite
     SUBDIR += rubygem-arel

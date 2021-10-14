@@ -1,7 +1,7 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
 
 PORTNAME=	rehex
-PORTVERSION=	0.3.91
+PORTVERSION=	0.3.92
 CATEGORIES=	editors
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -15,17 +15,12 @@ LIB_DEPENDS=	libcapstone.so:devel/capstone4 \
 USES=		compiler:c++11-lang gmake gnome lua:53 pkgconfig
 USE_WX=		3.0+
 MAKE_ENV=	LUA_PKG="lua-${LUA_VER}" LUA="${LUA_CMD}"
-INSTALLS_ICONS=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	solemnwarning
 
 PORTDOCS=	CHANGES.txt
 
 OPTIONS_DEFINE=	DOCS
-
-post-patch:
-	@${REINPLACE_CMD} -e 's,OpenBSD,${OPSYS},' \
-		${WRKSRC}/include/portable_endian.h
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

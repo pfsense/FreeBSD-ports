@@ -1,5 +1,5 @@
 PORTNAME=	doas
-PORTVERSION=	6.3p5
+PORTVERSION=	6.3p6
 CATEGORIES=	security
 
 MAINTAINER=	jsmith@resonatingmedia.com
@@ -10,7 +10,10 @@ LICENSE_COMB=	multi
 LICENSE_FILE_BSD2CLAUSE=	${WRKSRC}/LICENSE
 LICENSE_FILE_ISCL=		${WRKSRC}/LICENSE
 
-USES=	gmake
+USES=		cpe gmake
+CPE_VENDOR=	doas_project
+CPE_VERSION=	${PORTVERSION:C/p.+//}
+CPE_UPDATE=	${PORTVERSION:C/[^p]*//}
 USE_GITHUB=	yes
 GH_ACCOUNT=	slicer69
 
@@ -20,10 +23,12 @@ BINMODE=	4755
 
 SUB_FILES=	pkg-message
 PLIST_FILES=	bin/doas \
+		bin/doasedit \
 		bin/vidoas \
 		etc/doas.conf.sample \
-		man/man5/doas.conf.5.gz \
 		man/man1/doas.1.gz \
+		man/man5/doas.conf.5.gz \
+		man/man8/doasedit.8.gz \
 		man/man8/vidoas.8.gz
 
 # These are upstream's default paths that are set for the GLOBAL_PATH variable
@@ -38,9 +43,11 @@ _GLOBAL_PATH?=	${LOCALBASE}/sbin:${LOCALBASE}/bin:/usr/sbin:/usr/bin:/sbin:/bin
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_SCRIPT} ${WRKSRC}/vidoas.final ${STAGEDIR}${PREFIX}/bin/vidoas
+	${INSTALL_SCRIPT} ${WRKSRC}/doasedit ${STAGEDIR}${PREFIX}/bin/doasedit
 	${INSTALL_MAN} ${WRKSRC}/doas.1.final ${STAGEDIR}${MAN1PREFIX}/man/man1/doas.1
 	${INSTALL_MAN} ${WRKSRC}/doas.conf.5.final ${STAGEDIR}${MAN5PREFIX}/man/man5/doas.conf.5
 	${INSTALL_MAN} ${WRKSRC}/vidoas.8.final ${STAGEDIR}${MAN5PREFIX}/man/man8/vidoas.8
+	${INSTALL_MAN} ${WRKSRC}/doasedit.8 ${STAGEDIR}${MAN5PREFIX}/man/man8/doasedit.8
 	${INSTALL_DATA} ${WRKSRC}/doas.conf.sample ${STAGEDIR}${PREFIX}/etc/doas.conf.sample
 
 .include <bsd.port.mk>

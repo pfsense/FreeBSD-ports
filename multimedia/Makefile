@@ -28,6 +28,7 @@
     SUBDIR += ccextractor
     SUBDIR += cclive
     SUBDIR += celluloid
+    SUBDIR += celluloid-devel
     SUBDIR += cheese
     SUBDIR += chilitags
     SUBDIR += cineencoder
@@ -231,6 +232,7 @@
     SUBDIR += minisatip
     SUBDIR += minitube
     SUBDIR += mjpegtools
+    SUBDIR += mjpg-streamer
     SUBDIR += mkclean
     SUBDIR += mkvalidator
     SUBDIR += mkvtoolnix
@@ -262,6 +264,7 @@
     SUBDIR += msopenh264
     SUBDIR += mswebrtc
     SUBDIR += musikcube
+    SUBDIR += musique
     SUBDIR += mxflib
     SUBDIR += mythtv
     SUBDIR += mythtv-frontend
@@ -367,7 +370,6 @@
     SUBDIR += smplayer
     SUBDIR += smplayer-skins
     SUBDIR += smplayer-themes
-    SUBDIR += sms1xxx-kmod
     SUBDIR += smtube
     SUBDIR += snapcast
     SUBDIR += snappy

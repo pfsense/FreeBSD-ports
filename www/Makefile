@@ -75,6 +75,7 @@
     SUBDIR += chpasswd
     SUBDIR += chrome-gnome-shell
     SUBDIR += chromium
+    SUBDIR += cinny
     SUBDIR += civetweb
     SUBDIR += ckeditor
     SUBDIR += cl-lml
@@ -120,7 +121,6 @@
     SUBDIR += e2guardian
     SUBDIR += edbrowse
     SUBDIR += eden
-    SUBDIR += efront
     SUBDIR += element-web
     SUBDIR += elgg
     SUBDIR += elinks
@@ -311,6 +311,7 @@
     SUBDIR += linux-opera
     SUBDIR += litmus
     SUBDIR += ljdeps
+    SUBDIR += llhttp
     SUBDIR += logswan
     SUBDIR += logtools
     SUBDIR += ls-qpack
@@ -467,6 +468,7 @@
     SUBDIR += oneshot
     SUBDIR += onionbalance
     SUBDIR += onionshare
+    SUBDIR += openarc
     SUBDIR += opencart
     SUBDIR += orangehrm
     SUBDIR += osrm-backend
@@ -1457,13 +1459,16 @@
     SUBDIR += py-dj32-django-cors-headers
     SUBDIR += py-dj32-django-debug-toolbar
     SUBDIR += py-dj32-django-filter
+    SUBDIR += py-dj32-django-graphiql-debug-toolbar
     SUBDIR += py-dj32-django-js-asset
+    SUBDIR += py-dj32-django-modelcluster
     SUBDIR += py-dj32-django-mptt
     SUBDIR += py-dj32-django-prometheus
     SUBDIR += py-dj32-django-redis
     SUBDIR += py-dj32-django-tables2
     SUBDIR += py-dj32-django-taggit
     SUBDIR += py-dj32-django-timezone-field
+    SUBDIR += py-dj32-django-treebeard
     SUBDIR += py-dj32-djangorestframework
     SUBDIR += py-dj32-drf-yasg
     SUBDIR += py-django
@@ -1508,6 +1513,7 @@
     SUBDIR += py-django-filter
     SUBDIR += py-django-formset-js-improved
     SUBDIR += py-django-formtools
+    SUBDIR += py-django-graphiql-debug-toolbar
     SUBDIR += py-django-gravatar2
     SUBDIR += py-django-guardian
     SUBDIR += py-django-happenings-update
@@ -1547,7 +1553,6 @@
     SUBDIR += py-django-redis
     SUBDIR += py-django-registration
     SUBDIR += py-django-registration-redux
-    SUBDIR += py-django-rest-swagger
     SUBDIR += py-django-reversion
     SUBDIR += py-django-reversion-compare
     SUBDIR += py-django-sekizai
@@ -1564,7 +1569,6 @@
     SUBDIR += py-django-tables2
     SUBDIR += py-django-tagging
     SUBDIR += py-django-taggit
-    SUBDIR += py-django-taggit-serializer
     SUBDIR += py-django-tastypie
     SUBDIR += py-django-templatetag-sugar
     SUBDIR += py-django-timezone-field
@@ -1631,6 +1635,7 @@
     SUBDIR += py-frozen-flask
     SUBDIR += py-gandi.cli
     SUBDIR += py-gevent-websocket
+    SUBDIR += py-ghp-import
     SUBDIR += py-google
     SUBDIR += py-google-api-core
     SUBDIR += py-google-api-python-client
@@ -1652,6 +1657,7 @@
     SUBDIR += py-grip
     SUBDIR += py-gunicorn
     SUBDIR += py-h2
+    SUBDIR += py-habanero
     SUBDIR += py-horizon
     SUBDIR += py-hpack
     SUBDIR += py-hstspreload
@@ -1707,7 +1713,7 @@
     SUBDIR += py-puppetboard
     SUBDIR += py-py-restclient
     SUBDIR += py-pygsheets
-    SUBDIR += py-pyjwt
+    SUBDIR += py-pyjwt1
     SUBDIR += py-pylsqpack
     SUBDIR += py-pyocclient
     SUBDIR += py-pyramid
@@ -1724,6 +1730,7 @@
     SUBDIR += py-qt5-webkit
     SUBDIR += py-qt5-webkitwidgets
     SUBDIR += py-qt5-websockets
+    SUBDIR += py-quilt3
     SUBDIR += py-rackspace-monitoring
     SUBDIR += py-recaptcha
     SUBDIR += py-requests
@@ -1831,12 +1838,14 @@
     SUBDIR += rubygem-actioncable52
     SUBDIR += rubygem-actioncable60
     SUBDIR += rubygem-actioncable61
+    SUBDIR += rubygem-actioncable613
     SUBDIR += rubygem-actionpack4
     SUBDIR += rubygem-actionpack5
     SUBDIR += rubygem-actionpack50
     SUBDIR += rubygem-actionpack52
     SUBDIR += rubygem-actionpack60
     SUBDIR += rubygem-actionpack61
+    SUBDIR += rubygem-actionpack613
     SUBDIR += rubygem-activeresource
     SUBDIR += rubygem-activeresource4
     SUBDIR += rubygem-acts-as-taggable-on
@@ -2000,6 +2009,7 @@
     SUBDIR += rubygem-lograge-rails52
     SUBDIR += rubygem-lograge-rails60
     SUBDIR += rubygem-lograge-rails61
+    SUBDIR += rubygem-lograge-rails613
     SUBDIR += rubygem-maruku
     SUBDIR += rubygem-mechanize
     SUBDIR += rubygem-merb-assets
@@ -2065,6 +2075,7 @@
     SUBDIR += rubygem-rails52
     SUBDIR += rubygem-rails60
     SUBDIR += rubygem-rails61
+    SUBDIR += rubygem-rails613
     SUBDIR += rubygem-rails_12factor
     SUBDIR += rubygem-rails_autolink
     SUBDIR += rubygem-rails_serve_static_assets
@@ -2075,6 +2086,7 @@
     SUBDIR += rubygem-railties52
     SUBDIR += rubygem-railties60
     SUBDIR += rubygem-railties61
+    SUBDIR += rubygem-railties613
     SUBDIR += rubygem-raindrops
     SUBDIR += rubygem-ramaze
     SUBDIR += rubygem-raphael-rails
@@ -2096,6 +2108,7 @@
     SUBDIR += rubygem-responders-rails52
     SUBDIR += rubygem-responders-rails60
     SUBDIR += rubygem-responders-rails61
+    SUBDIR += rubygem-responders-rails613
     SUBDIR += rubygem-rest-client
     SUBDIR += rubygem-rfacebook
     SUBDIR += rubygem-rfeedfinder
@@ -2189,7 +2202,6 @@
     SUBDIR += sqstat
     SUBDIR += squid
     SUBDIR += squid-devel
-    SUBDIR += squid3
     SUBDIR += squid_radius_auth
     SUBDIR += squidanalyzer
     SUBDIR += squidclamav
@@ -2275,6 +2287,7 @@
     SUBDIR += twiki-WysiwygPlugin
     SUBDIR += twms
     SUBDIR += typo3-10
+    SUBDIR += typo3-11
     SUBDIR += typo3-9
     SUBDIR += uchiwa
     SUBDIR += ufdbguard

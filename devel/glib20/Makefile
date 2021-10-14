@@ -1,8 +1,8 @@
 # Created by: Vanilla I. Shu <vanilla@FreeBSD.org>
 
 PORTNAME=	glib
-DISTVERSION=	2.68.3
-PORTREVISION=	0
+DISTVERSION=	2.70.0
+PORTREVISION=	1
 PORTEPOCH=	2
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libffi.so:devel/libffi \
 
 # iconv:wchar_t - our iconv in base doesn't support utf-8 -> wchar_t (boooo)
 # (wchar_t is used by glibmm, rawtherapee triggered this)
-USES=		compiler:c11 gettext gnome iconv:wchar_t localbase:ldflags \
+USES=		compiler:c11 cpe gettext gnome iconv:wchar_t localbase:ldflags \
 		meson perl5 pkgconfig python:3.6+ tar:xz
 USE_LDCONFIG=	yes
 USE_PERL5=	build
@@ -27,15 +27,17 @@ MESON_ARGS=	-Db_lundef=false \
 		-Ddefault_library=both \
 		-Dinstalled_tests=false \
 		-Dlibmount=disabled \
+		-Dlocalstatedir=/var \
 		-Dselinux=disabled \
 		-Dxattr=false
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 PORTSCOUT=	limitw:1,even
+CPE_VENDOR=	gnome
 
-_LIBVERSION=	0.6800.3
+_LIBVERSION=	0.7000.0
 PLIST_SUB=	LIBVERSION=${_LIBVERSION}
 
-OPTIONS_DEFINE=	DEBUG FAM_ALTBACKEND MANPAGES NLS
+OPTIONS_DEFINE=	DEBUG FAM_ALTBACKEND MANPAGES NLS TEST
 OPTIONS_DEFAULT=	MANPAGES
 OPTIONS_SUB=		yes
 
@@ -45,6 +47,9 @@ MANPAGES_BUILD_DEPENDS=	docbook-xml>4.1.2:textproc/docbook-xml \
 			docbook-xsl>0:textproc/docbook-xsl
 MANPAGES_USE=		GNOME=libxslt:build
 MANPAGES_MESON_TRUE=	man
+
+TEST_DEPENDS=		dbus-daemon:devel/dbus
+TEST_MESON_TRUE=	tests
 
 .include <bsd.port.pre.mk>
 

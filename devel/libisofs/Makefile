@@ -1,11 +1,11 @@
 # Created by: J.R. Oldroyd <fbsd@opal.com>
 
 PORTNAME=	libisofs
-PORTVERSION=	1.5.0
+PORTVERSION=	1.5.4
 CATEGORIES=	devel
 MASTER_SITES=	http://files.libburnia-project.org/releases/
 
-MAINTAINER=	ndowens@yahoo.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Libburnia ISO9660 filesystem creation library
 
 LICENSE=	GPLv2

@@ -1,11 +1,11 @@
 PORTNAME=	forge
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.1-14
-DISTVERSIONSUFFIX=	-g93c8005
+DISTVERSION=	0.2.1-35
+DISTVERSIONSUFFIX=	-g6738256
 CATEGORIES=	devel elisp
 PKGNAMESUFFIX=	-devel${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Work with Git forges from the comfort of Magit (Development Version)
 
 LICENSE=	GPLv3+
@@ -28,6 +28,8 @@ GH_ACCOUNT=	magit
 
 MAKE_ENV+=	INSTALL_INFO=install-info \
 		LOAD_PATH="${_LOAD_PATH}"
+# Parallel build fails if Emacs is built with native compilation enabled
+MAKE_JOBS_UNSAFE=	yes
 ALL_TARGET=	lisp info
 
 CONFLICTS=	forge-emacs*

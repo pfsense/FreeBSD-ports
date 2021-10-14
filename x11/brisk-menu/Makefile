@@ -23,17 +23,9 @@ GH_TUPLE=	getsolus:brisk-menu-translations:e1b55e3:translations/subprojects/tran
 
 USE_GNOME=	gtk30
 GLIB_SCHEMAS=	com.solus-project.brisk-menu.gschema.xml
-INSTALLS_ICONS=	yes
 USE_MATE=	menus panel
 USE_XORG=	x11
 
 MESON_ARGS=	--sysconfdir=${PREFIX}/etc
-
-.if exists(/usr/bin/ld.lld)
-LDFLAGS+=	-fuse-ld=lld
-.else
-USE_BINUTILS=	yes
-LDFLAGS+=	-B${LOCALBASE}/bin
-.endif
 
 .include <bsd.port.mk>

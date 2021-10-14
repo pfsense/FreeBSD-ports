@@ -1,5 +1,6 @@
 PORTNAME=	findomain
 DISTVERSION=	5.0.0
+PORTREVISION=	2
 CATEGORIES=	net security
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -258,6 +259,8 @@ CARGO_CRATES=	addr2line-0.16.0 \
 		yaml-rust-0.4.5
 CARGO_USE_GITHUB=	yes
 CARGO_GIT_SUBDIR=	dns_resolver:trust-dns-resolver:crates/resolver
+
+WRKSRC=		${WRKDIR}/Findomain-${DISTVERSION}
 
 PLIST_FILES=	bin/${PORTNAME} \
 		man/man1/${PORTNAME}.1.gz

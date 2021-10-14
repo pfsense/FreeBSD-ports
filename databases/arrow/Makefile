@@ -2,7 +2,7 @@ PORTNAME=	arrow
 DISTVERSION=	4.0.1
 PORTREVISION=	3
 CATEGORIES=	databases
-MASTER_SITES=	https://mirrors.advancedhosters.com/apache/${PORTNAME}/${PORTNAME}-${DISTVERSION}/ \
+MASTER_SITES=	APACHE/${PORTNAME}/${PORTNAME}-${DISTVERSION} \
 		https://github.com/apache/orc/archive/rel/:orc
 DISTNAME=	apache-${PORTNAME}-${DISTVERSION}
 DISTFILES=	apache-${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} release-1.6.6${EXTRACT_SUFX}:orc
@@ -13,8 +13,6 @@ COMMENT=	Columnar in-memory analytics layer for big data
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/../LICENSE.txt
-
-BROKEN_FreeBSD_11=	The OpenSSL must be greater than or equal to 1.1.0
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs
 

@@ -1,7 +1,7 @@
 # Created by: Ade Lovett <ade@FreeBSD.org>
 
 PORTNAME=	evolution
-DISTVERSION=	3.40.4
+DISTVERSION=	3.42.0
 CATEGORIES=	mail gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -42,14 +42,14 @@ RUN_DEPENDS=	highlight:textproc/highlight \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		compiler:c11 desktop-file-utils cmake gettext gnome \
+USES=		compiler:c11 cpe desktop-file-utils cmake gettext gnome \
 		iconv:wchar_t sqlite libarchive localbase pathfix pkgconfig \
 		tar:xz xorg
 USE_GNOME=	cairo evolutiondataserver3 gnomedesktop3 intltool
 GNU_CONFIGURE=	yes
 USE_XORG=	x11
-INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
+CPE_VENDOR=	gnome
 CMAKE_ARGS=	-DENABLE_TEXT_HIGHLIGHT=YES \
 		-DWITH_ENCHANT_VERSION=2 \
 		-DVERSION_COMMENT="FreeBSD GNOME Team"

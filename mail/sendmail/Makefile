@@ -69,17 +69,13 @@ SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 SASLAUTHD_RUN_DEPENDS=	saslauthd:security/cyrus-sasl2-saslauthd
 DANE_IMPLIES=	TLS
 LDAP_USE=	OPENLDAP=yes
-LDAP_PREVENTS=	DANE
+LDAP_IMPLIES=	DANE
 BDB_USES=	bdb
 GDBM_LIB_DEPENDS=	libgdbm.so:databases/gdbm
 GDBM_CONFIGURE_WITH=	compat
 SMTPUTF8_LIB_DEPENDS=	libidn2.so:dns/libidn2 libicui18n.so:devel/icu
 
 .include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200000
-PKGNAMESUFFIX?=	${TLS_SUFFIX}${SASL_SUFFIX}${LDAP_SUFFIX}${BDB_SUFFIX}${PKGNAMESUFFIX2}
-.endif
 
 .if ${PORT_OPTIONS:MSHMEM} && !defined(BUILDING_INDEX)
 IPCCHECK!=	ipcrm -q 0 2>&1 || true
@@ -147,7 +143,7 @@ SITE+=	${FILESDIR}/site.config.m4.smtputf8
 SITE+=	${FILESDIR}/site.config.m4.milter
 .endif
 .if ${PORT_OPTIONS:MGDBM}
-NO_PACKAGE=	GPLv3 license conflict
+LICENSE_PERMS=	dist-mirror dist-sell no-pkg-mirror no-pkg-sell auto-accept
 SITE+=	${FILESDIR}/site.config.m4.gdbm
 .endif
 
@@ -165,12 +161,6 @@ do-configure:
 .if ${PORT_OPTIONS:MGDBM}
 	@(if [ ! -e "${LOCALBASE}/lib/libgdbm_compat.so" ] ; then \
 	  ${ECHO_MSG} "===> option COMPAT is missing in databases/gdbm."; \
-	  ${FALSE}; \
-	  fi)
-.endif
-.if ${PORT_OPTIONS:MBLACKLISTD}
-	@(if [ ! -e "${DESTDIR}/usr/lib/libblacklist.so" ] ; then \
-	  ${ECHO_MSG} "===> libblacklist.so not found. Please update to FreeBSD 11"; \
 	  ${FALSE}; \
 	  fi)
 .endif

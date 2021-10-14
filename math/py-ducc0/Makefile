@@ -1,5 +1,5 @@
 PORTNAME=	ducc0
-DISTVERSION=	0.19.0
+DISTVERSION=	0.20.0
 CATEGORIES=	math
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,9 +10,8 @@ COMMENT=	Distinctly Useful Code Collection (DUCC)
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_FreeBSD_11=	ducc.o: file not recognized: File format not recognized
-
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pybind11>0:devel/py-pybind11@${PY_FLAVOR}
+RUN_DEPENDS=	${PYNUMPY}
 
 USES=		python:3.6+
 

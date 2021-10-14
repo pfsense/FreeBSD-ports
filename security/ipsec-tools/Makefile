@@ -16,7 +16,7 @@ COMMENT=	KAME racoon IKE daemon, ipsec-tools version
 
 LICENSE=	BSD3CLAUSE
 
-USES=		libtool tar:bzip2 ssl
+USES=		cpe libtool tar:bzip2 ssl
 
 CONFLICTS=	racoon-[0-9]*
 INSTALL_TARGET=	install-strip
@@ -100,7 +100,7 @@ post-install-DOCS-on:
 	${INSTALL_DATA} ${WRKSRC}/src/racoon/doc/* ${STAGEDIR}/${DOCSDIR}
 
 .if ${OPSYS} == FreeBSD
-.  if ${OSVERSION} >= 1200085 && ${SSL_DEFAULT} != openssl
+.  if ${SSL_DEFAULT} != openssl
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-ipsec-tools
 PLIST_FILES+=	include/racoon/openssl_compat.h
 .  endif

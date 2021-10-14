@@ -1,7 +1,7 @@
 # Created by: Gerrit Beine <tux@pinguru.net>
 
 PORTNAME=	mediawiki
-PORTVERSION=	1.36.1
+PORTVERSION=	1.36.2
 CATEGORIES=	www
 MASTER_SITES=	http://releases.wikimedia.org/mediawiki/${PORTVERSION:R}/
 PKGNAMESUFFIX=	136${PHP_PKGNAMESUFFIX}
@@ -13,7 +13,7 @@ LICENSE=	GPLv2
 
 CONFLICTS=	mediawiki13[1-5]-[0-9]*
 
-USES=		php:flavors shebangfix
+USES=		cpe php:flavors shebangfix
 SHEBANG_FILES=	maintenance/dev/*.sh \
 		maintenance/storage/make-blobs
 SHEBANG_LANG=	hhvm

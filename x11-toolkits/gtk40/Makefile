@@ -1,6 +1,5 @@
 PORTNAME=	gtk
-PORTVERSION=	4.3.2
-PORTREVISION=	1
+PORTVERSION=	4.4.0
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	4
@@ -30,7 +29,6 @@ USE_PERL5=	build
 USE_GNOME=	atk cairo gdkpixbuf2 introspection:build pango \
 		librsvg2:run
 LDFLAGS+=	-lexecinfo
-INSTALLS_ICONS=	yes
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 
@@ -42,11 +40,6 @@ GLIB_SCHEMAS=	org.gtk.Demo4.gschema.xml \
 		org.gtk.gtk4.Settings.Debug.gschema.xml \
 		org.gtk.gtk4.Settings.EmojiChooser.gschema.xml \
 		org.gtk.gtk4.Settings.FileChooser.gschema.xml
-
-.if exists(/usr/bin/ld.lld) && ${/usr/bin/ld:L:tA} != /usr/bin/ld.lld
-# undefined reference to symbol `g_module_symbol' (try adding -lgmodule-2.0)
-LDFLAGS+=	-fuse-ld=lld
-.endif
 
 OPTIONS_DEFINE=	CUPS COLORD DEBUG BROADWAY FFMPEG \
 		GSTREAMER VULKAN WAYLAND X11

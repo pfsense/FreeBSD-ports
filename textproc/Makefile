@@ -275,6 +275,7 @@
     SUBDIR += htmlc
     SUBDIR += htmldoc
     SUBDIR += htmlise
+    SUBDIR += htmlq
     SUBDIR += htmltolatex
     SUBDIR += humanzip
     SUBDIR += hunspell
@@ -432,6 +433,7 @@
     SUBDIR += makefaq
     SUBDIR += makepatch
     SUBDIR += man2html
+    SUBDIR += mantra
     SUBDIR += markdown
     SUBDIR += markdown-mode.el
     SUBDIR += markdownfmt
@@ -439,6 +441,7 @@
     SUBDIR += mathml-xsd
     SUBDIR += md4c
     SUBDIR += mdbook
+    SUBDIR += mdbook-linkcheck
     SUBDIR += mdocml
     SUBDIR += meld
     SUBDIR += metauml
@@ -482,6 +485,8 @@
     SUBDIR += odt2txt
     SUBDIR += openfts
     SUBDIR += openjade
+    SUBDIR += opensearch
+    SUBDIR += opensearch-dashboards
     SUBDIR += opensp
     SUBDIR += openvanilla-framework
     SUBDIR += or-aspell
@@ -1248,12 +1253,14 @@
     SUBDIR += py-arabic-reshaper
     SUBDIR += py-asciinema
     SUBDIR += py-asonic
+    SUBDIR += py-atoml
     SUBDIR += py-autopep8
     SUBDIR += py-awesome-slugify
     SUBDIR += py-bibtexparser
     SUBDIR += py-bracex
     SUBDIR += py-cchardet
     SUBDIR += py-chardet
+    SUBDIR += py-charset-normalizer
     SUBDIR += py-citeproc-py
     SUBDIR += py-citeproc-py-styles
     SUBDIR += py-cjkwrap
@@ -1288,6 +1295,7 @@
     SUBDIR += py-fastavro
     SUBDIR += py-feedparser
     SUBDIR += py-fingerprints
+    SUBDIR += py-fluent.syntax
     SUBDIR += py-ftfy
     SUBDIR += py-furo
     SUBDIR += py-gambit-elasticsearch
@@ -1331,6 +1339,7 @@
     SUBDIR += py-markdown-it-py
     SUBDIR += py-markdown-math
     SUBDIR += py-markdown2
+    SUBDIR += py-marko
     SUBDIR += py-markuppy
     SUBDIR += py-markups
     SUBDIR += py-markupsafe
@@ -1454,6 +1463,7 @@
     SUBDIR += py-sphinxcontrib-fulltoc
     SUBDIR += py-sphinxcontrib-htmlhelp
     SUBDIR += py-sphinxcontrib-httpdomain
+    SUBDIR += py-sphinxcontrib-issuetracker
     SUBDIR += py-sphinxcontrib-jsmath
     SUBDIR += py-sphinxcontrib-log-cabinet
     SUBDIR += py-sphinxcontrib-napoleon
@@ -1476,6 +1486,7 @@
     SUBDIR += py-tinycss2
     SUBDIR += py-toml
     SUBDIR += py-tomli
+    SUBDIR += py-tomli_w
     SUBDIR += py-tomlkit
     SUBDIR += py-toronado
     SUBDIR += py-towncrier
@@ -1560,10 +1571,12 @@
     SUBDIR += rubygem-actionpack-xml_parser1-rails4
     SUBDIR += rubygem-actiontext60
     SUBDIR += rubygem-actiontext61
+    SUBDIR += rubygem-actiontext613
     SUBDIR += rubygem-albino
     SUBDIR += rubygem-amatch
     SUBDIR += rubygem-asciidoctor
     SUBDIR += rubygem-asciidoctor-diagram
+    SUBDIR += rubygem-asciidoctor-epub3
     SUBDIR += rubygem-asciidoctor-include-ext
     SUBDIR += rubygem-asciidoctor-kroki
     SUBDIR += rubygem-asciidoctor-pdf
@@ -1624,6 +1637,7 @@
     SUBDIR += rubygem-ferret
     SUBDIR += rubygem-fog-xml
     SUBDIR += rubygem-gemoji
+    SUBDIR += rubygem-gepub
     SUBDIR += rubygem-github-linguist
     SUBDIR += rubygem-github-markup
     SUBDIR += rubygem-github-markup17
@@ -1709,7 +1723,6 @@
     SUBDIR += rubygem-reverse_markdown
     SUBDIR += rubygem-rexml
     SUBDIR += rubygem-ri_cal
-    SUBDIR += rubygem-rich
     SUBDIR += rubygem-rly
     SUBDIR += rubygem-rmmseg-cpp
     SUBDIR += rubygem-ronn
@@ -1738,6 +1751,7 @@
     SUBDIR += rubygem-sass-rails-rails52
     SUBDIR += rubygem-sass-rails-rails60
     SUBDIR += rubygem-sass-rails-rails61
+    SUBDIR += rubygem-sass-rails-rails613
     SUBDIR += rubygem-sass32
     SUBDIR += rubygem-sass34
     SUBDIR += rubygem-sassc
@@ -1747,6 +1761,7 @@
     SUBDIR += rubygem-sassc-rails-rails52
     SUBDIR += rubygem-sassc-rails-rails60
     SUBDIR += rubygem-sassc-rails-rails61
+    SUBDIR += rubygem-sassc-rails-rails613
     SUBDIR += rubygem-sassc22
     SUBDIR += rubygem-sax-machine
     SUBDIR += rubygem-scss_lint

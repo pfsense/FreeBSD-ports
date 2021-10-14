@@ -1,11 +1,11 @@
 PORTNAME=	magit
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.2.1-32
-DISTVERSIONSUFFIX=	-gde1dc8e7
+DISTVERSION=	3.2.1-76
+DISTVERSIONSUFFIX=	-gb4194014
 CATEGORIES=	devel elisp
 PKGNAMESUFFIX=	-devel${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Interface to Git for Emacs (Development Version)
 
 LICENSE=	GPLv3+
@@ -27,6 +27,8 @@ MAKE_ENV+=	docdir=${DOCSDIR} \
 		lispdir=${PREFIX}/${_ELISPDIR} \
 		LOAD_PATH="-L ${WRKSRC}/lisp -L ${PREFIX}/${EMACS_SITE_LISPDIR} -L ${PREFIX}/${EMACS_VERSION_SITE_LISPDIR} -L ${PREFIX}/${EMACS_VERSION_SITE_LISPDIR}/ghub" \
 		VERSION=${PORTVERSION}
+# Parallel build fails if Emacs is built with native compilation enabled
+MAKE_JOBS_UNSAFE=	yes
 
 CONFLICTS_INSTALL=	magit-emacs*
 

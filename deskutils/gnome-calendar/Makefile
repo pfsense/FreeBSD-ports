@@ -1,7 +1,7 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
 
 PORTNAME=	gnome-calendar
-PORTVERSION=	40.2
+PORTVERSION=	41.0
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
@@ -28,7 +28,6 @@ PORTSCOUT=	limitw:1,even
 USES=		compiler:c11 desktop-file-utils gettext gnome \
 		localbase:ldflags meson pkgconfig python:3.4+,build tar:xz
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 USE_GNOME=	cairo evolutiondataserver3 gtksourceview3
 BINARY_ALIAS=	python3=${PYTHON_VERSION}
 

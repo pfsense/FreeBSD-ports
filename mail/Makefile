@@ -221,6 +221,7 @@
     SUBDIR += meta1
     SUBDIR += metamail
     SUBDIR += mew
+    SUBDIR += mew-devel
     SUBDIR += milter-bogom
     SUBDIR += milter-callback
     SUBDIR += milter-greylist
@@ -261,7 +262,6 @@
     SUBDIR += opendkim
     SUBDIR += opendmarc
     SUBDIR += opensmtpd
-    SUBDIR += opensmtpd-devel
     SUBDIR += opensmtpd-extras
     SUBDIR += opensmtpd-extras-queue-ram
     SUBDIR += opensmtpd-extras-scheduler-ram
@@ -476,7 +476,6 @@
     SUBDIR += postfix-policyd-weight
     SUBDIR += postfix-postfwd
     SUBDIR += postfix-sasl
-    SUBDIR += postfix35
     SUBDIR += postfixadmin
     SUBDIR += postgrey
     SUBDIR += postsrsd
@@ -573,12 +572,14 @@
     SUBDIR += rss2email3
     SUBDIR += rubygem-actionmailbox60
     SUBDIR += rubygem-actionmailbox61
+    SUBDIR += rubygem-actionmailbox613
     SUBDIR += rubygem-actionmailer4
     SUBDIR += rubygem-actionmailer5
     SUBDIR += rubygem-actionmailer50
     SUBDIR += rubygem-actionmailer52
     SUBDIR += rubygem-actionmailer60
     SUBDIR += rubygem-actionmailer61
+    SUBDIR += rubygem-actionmailer613
     SUBDIR += rubygem-email_reply_parser
     SUBDIR += rubygem-email_reply_parser-discourse
     SUBDIR += rubygem-email_reply_trimmer

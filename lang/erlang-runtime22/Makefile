@@ -2,8 +2,8 @@
 
 PORTNAME=	erlang
 DISTVERSIONPREFIX=	OTP-
-DISTVERSION=	22.3.4.20
-PORTREVISION=	1
+DISTVERSION=	22.3.4.21
+PORTREVISION=	0
 # NB when bumping OTP versions also bump PORTREVISION in databases/couchdb3
 CATEGORIES=	lang parallel java
 PKGNAMESUFFIX=	-runtime22
@@ -16,12 +16,15 @@ LICENSE=	APACHE20
 
 BROKEN_sparc64=	Fails to build: error: fp_except undeclared
 
-USES=		autoreconf:build gmake ncurses perl5
+USES=		autoreconf:build cpe gmake ncurses perl5
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	erlang:otp,corba
 GH_PROJECT=	otp:otp corba:corba
 GH_TAGNAME=	4.5.2:corba
 USE_PERL5=	build
+
+CPE_VENDOR=	erlang
+CPE_PRODUCT=	erlang/otp
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-smp-support

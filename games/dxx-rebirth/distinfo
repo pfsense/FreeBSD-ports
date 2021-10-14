@@ -1,3 +1,5 @@
-TIMESTAMP = 1627430775
-SHA256 (dxx-rebirth_20210721-src.tar.xz) = 3b7828f9b73a1ff1f2cf0dca431776e08d0f97d8cf46a8575f4d32fb10fe63cc
-SIZE (dxx-rebirth_20210721-src.tar.xz) = 1342756
+TIMESTAMP = 1633092667
+SHA256 (dxx-rebirth_20210922-src.tar.xz) = e1492d96960fbd7fd0e3ba4e7e610258020067c080ac53490c997c03d1061f4d
+SIZE (dxx-rebirth_20210922-src.tar.xz) = 1351800
+SHA256 (b42ab2aa2ff1ae1ddf43b872a1d1b1a171590d5d.patch) = 05a8b9e895f20afe0da8eff5d7884a48baeec462e2a0c126fcf85ed1fec26896
+SIZE (b42ab2aa2ff1ae1ddf43b872a1d1b1a171590d5d.patch) = 714

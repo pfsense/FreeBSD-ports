@@ -1,7 +1,7 @@
 # Created by: Wen Heping <wenheping@gmail.com>
 
 PORTNAME=	liblouis
-PORTVERSION=	3.17.0
+PORTVERSION=	3.19.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -12,7 +12,7 @@ LICENSE=	LGPL3+
 
 BUILD_DEPENDS=	help2man:misc/help2man
 
-USES=		autoreconf gmake libtool pathfix shebangfix
+USES=		autoreconf cpe gmake libtool pathfix shebangfix
 SHEBANG_FILES=	tools/lou_maketable.d/substrings.pl
 USE_GITHUB=	yes
 GNU_CONFIGURE=	yes

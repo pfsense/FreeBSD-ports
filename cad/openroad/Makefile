@@ -39,6 +39,8 @@ BINARY_ALIAS=	python3=${PYTHON_CMD} tclsh=${TCLSH}
 PLIST_FILES=	bin/openroad \
 		bin/sta
 
+PORTSCOUT=	limit:^[0-9]\. # prevent 2021_*
+
 post-patch: # override the TCL version to be the same as USES=tcl sets
 	@${FIND} ${WRKSRC} -name FindTCL.cmake \
 		| ${XARGS} ${REINPLACE_CMD} -e ' \

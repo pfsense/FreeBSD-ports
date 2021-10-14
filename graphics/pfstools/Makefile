@@ -2,7 +2,7 @@
 
 PORTNAME=	pfstools
 DISTVERSION=	2.1.0
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
@@ -19,7 +19,7 @@ CONFLICTS=	pfstmo-1.* pfscalibration-1.*
 CFLAGS+=	-I${LOCALBASE}/include/Imath
 LDFLAGS+=	-lthr
 
-USES=		cmake tar:tgz dos2unix jpeg perl5
+USES=		cmake cpe tar:tgz dos2unix jpeg perl5
 USE_PERL5=	run
 USE_LDCONFIG=	yes
 
@@ -88,8 +88,6 @@ GLVIEW_USE=		GL=glut GL=gl,glu
 VIEW_CMAKE_BOOL=	WITH_QT
 VIEW_USES=		gl qt:5
 VIEW_USE=		GL=glut GL=gl,glu QT=core,gui,widgets,buildtools_build,qmake_build
-
-OPENMP_USES=		compiler:openmp
 
 .include <bsd.port.options.mk>
 

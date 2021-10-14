@@ -1,5 +1,6 @@
 PORTNAME=	arti
 DISTVERSION=	0.0.0.20210812
+PORTREVISION=	2
 CATEGORIES=	security
 
 MAINTAINER=	cs@FreeBSD.org
@@ -287,7 +288,7 @@ CARGO_CRATES=	adler-1.0.2 \
 PLIST_FILES=	bin/arti
 
 do-install:
-	${INSTALL_SCRIPT} ${WRKDIR}/target/release/arti ${STAGEDIR}${PREFIX}/bin/arti
+	${INSTALL_SCRIPT} ${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/*/arti ${STAGEDIR}${PREFIX}/bin/arti
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/arti

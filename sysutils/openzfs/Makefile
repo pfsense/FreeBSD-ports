@@ -1,5 +1,5 @@
 PORTNAME=	openzfs
-PORTVERSION=	2021073000
+PORTVERSION=	2021090800
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
@@ -13,7 +13,7 @@ BROKEN_riscv64=	fails to compile: btree_test.c:462:49: result of comparison of c
 
 RUN_DEPENDS=	openzfs-kmod>=0:sysutils/openzfs-kmod
 
-USES+=		autoreconf:build libtool gmake gettext-runtime python:3.3+,build shebangfix
+USES+=		autoreconf:build cpe libtool gmake gettext-runtime python:3.3+,build shebangfix
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX} --with-config="user"
@@ -24,13 +24,12 @@ TESTS_DESC=	Install the ZFS Test Suite
 OPTIONS_SUB=	yes
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	openzfs
 GH_PROJECT=	zfs
-GH_TAGNAME=	7eebcd2be
+GH_TAGNAME=	ab15b1fc0
 
 .include <bsd.port.pre.mk>
 
-.if (${OSVERSION} < 1200504) || (${OSVERSION} >= 1300000 && ${OSVERSION} < 1300013)
+.if ${OSVERSION} >= 1300000 && ${OSVERSION} < 1300013
 IGNORE=	needs FreeBSD 12/13 with AES-CCM support
 .endif
 

@@ -1,7 +1,6 @@
 PORTNAME=	grafana
-DISTVERSION=	8.1.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+DISTVERSION=	8.1.5
 CATEGORIES=	www
 MASTER_SITES+=	https://dl.grafana.com/oss/release/:public \
 		https://gitea.com/xorm/builder/archive/:builder \
@@ -23,12 +22,12 @@ ONLY_FOR_ARCHS=	aarch64 amd64 i386
 
 RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
 
-USES=		go:modules
+USES=		cpe go:modules
 
 USE_GITHUB=	yes
 
 USE_RC_SUBR=	grafana
-TAG=		62e720c
+TAG=		c725a42
 
 GO_TARGET=	./pkg/cmd/grafana-server \
 		./pkg/cmd/grafana-cli
@@ -41,7 +40,7 @@ SUB_LIST=	GRAFANA_USER=${GRAFANA_USER} \
 		GRAFANA_LOGDIR=${GRAFANA_LOGDIR} \
 		GRAFANA_PLUGINDIR=${GRAFANA_PLUGINDIR} \
 		GRAFANA_PROVISIONINGDIR=${GRAFANA_PROVISIONINGDIR} \
-		GRAFANA_BUILDHASH=d7cfb4e56c8be9229275
+		GRAFANA_BUILDHASH=4bfd7b0ee99616560b7a
 
 GRAFANA_USER?=	grafana
 GRAFANA_GROUP?=	grafana

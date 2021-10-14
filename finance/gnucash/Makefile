@@ -1,7 +1,7 @@
 #   $MCom: ports/finance/gnucash/Makefile,v 1.26 2008/12/31 03:25:18 mezz Exp $
 
 PORTNAME=	gnucash
-PORTVERSION=	4.6
+PORTVERSION=	4.8
 CATEGORIES=	finance gnome
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20%28stable%29/${PORTVERSION}
 
@@ -28,7 +28,7 @@ RUN_DEPENDS=	p5-libwww>=0:www/p5-libwww \
 		p5-Date-Manip>=0:devel/p5-Date-Manip \
 		p5-Finance-Quote>=0:finance/p5-Finance-Quote
 
-USES=		cmake:insource compiler:c++11-lib desktop-file-utils \
+USES=		cmake:insource compiler:c++11-lib cpe desktop-file-utils \
 		gettext-tools gnome libtool localbase perl5 pkgconfig \
 		shebangfix tar:bzip2 xorg
 USE_XORG=	x11
@@ -36,30 +36,30 @@ USE_CXXSTD=	c++11
 USE_GNOME=	cairo gtk30 intltool libxml2 libxslt
 USE_LDCONFIG=	yes
 
-INSTALLS_ICONS=	yes
 CMAKE_ARGS=	-DCOMPILE_GSCHEMAS=OFF \
 		-DENABLE_BINRELOC=OFF \
 		-DGNC_SHELL=/bin/sh
 SHEBANG_FILES=	common/gnc-test-env.pl
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
-GLIB_SCHEMAS=	org.gnucash.dialogs.business.gschema.xml \
-		org.gnucash.dialogs.checkprinting.gschema.xml \
-		org.gnucash.dialogs.commodities.gschema.xml \
-		org.gnucash.dialogs.export.csv.gschema.xml \
-		org.gnucash.dialogs.gschema.xml \
-		org.gnucash.dialogs.import.csv.gschema.xml \
-		org.gnucash.dialogs.import.generic.gschema.xml \
-		org.gnucash.dialogs.import.qif.gschema.xml \
-		org.gnucash.dialogs.reconcile.gschema.xml \
-		org.gnucash.dialogs.sxs.gschema.xml \
-		org.gnucash.dialogs.totd.gschema.xml \
-		org.gnucash.general.finance-quote.gschema.xml \
-		org.gnucash.gschema.xml \
-		org.gnucash.history.gschema.xml \
-		org.gnucash.warnings.gschema.xml \
-		org.gnucash.window.pages.account.tree.gschema.xml \
-		org.gnucash.window.pages.gschema.xml
+GLIB_SCHEMAS=	org.gnucash.GnuCash.deprecated.gschema.xml \
+		org.gnucash.GnuCash.dialogs.business.gschema.xml \
+		org.gnucash.GnuCash.dialogs.checkprinting.gschema.xml \
+		org.gnucash.GnuCash.dialogs.commodities.gschema.xml \
+		org.gnucash.GnuCash.dialogs.export.csv.gschema.xml \
+		org.gnucash.GnuCash.dialogs.gschema.xml \
+		org.gnucash.GnuCash.dialogs.import.csv.gschema.xml \
+		org.gnucash.GnuCash.dialogs.import.generic.gschema.xml \
+		org.gnucash.GnuCash.dialogs.import.qif.gschema.xml \
+		org.gnucash.GnuCash.dialogs.reconcile.gschema.xml \
+		org.gnucash.GnuCash.dialogs.sxs.gschema.xml \
+		org.gnucash.GnuCash.dialogs.totd.gschema.xml \
+		org.gnucash.GnuCash.general.finance-quote.gschema.xml \
+		org.gnucash.GnuCash.gschema.xml \
+		org.gnucash.GnuCash.history.gschema.xml \
+		org.gnucash.GnuCash.warnings.gschema.xml \
+		org.gnucash.GnuCash.window.pages.account.tree.gschema.xml \
+		org.gnucash.GnuCash.window.pages.gschema.xml
 
 OPTIONS_DEFINE=	AQBANKING DATABASE DOCS NLS OFX PYTHON
 OPTIONS_DEFAULT=	AQBANKING OFX
@@ -74,8 +74,8 @@ AQBANKING_LIB_DEPENDS=	libgwenhywfar.so:devel/gwenhywfar \
 			libgwengui-gtk3.so:devel/gwenhywfar-gtk3 \
 			libktoblzcheck.so:finance/ktoblzcheck \
 			libaqbanking.so:finance/aqbanking
-AQBANKING_VARS=		GLIB_SCHEMAS+="org.gnucash.dialogs.import.hbci.gschema.xml \
-			org.gnucash.dialogs.flicker.gschema.xml"
+AQBANKING_VARS=		GLIB_SCHEMAS+="org.gnucash.GnuCash.dialogs.flicker.gschema.xml \
+			org.gnucash.GnuCash.dialogs.import.hbci.gschema.xml"
 DATABASE_CMAKE_BOOL=	WITH_SQL
 DATABASE_BUILD_DEPENDS=	libdbi-drivers>=0:databases/libdbi-drivers
 DATABASE_LIB_DEPENDS=	libdbi.so:databases/libdbi
@@ -84,7 +84,7 @@ NLS_CMAKE_BOOL_OFF=	DISABLE_NLS
 NLS_USES=		gettext-runtime
 OFX_CMAKE_BOOL=		WITH_OFX
 OFX_LIB_DEPENDS=	libofx.so:finance/libofx
-OFX_VARS=		GLIB_SCHEMAS+=org.gnucash.dialogs.import.ofx.gschema.xml
+OFX_VARS=		GLIB_SCHEMAS+=org.gnucash.GnuCash.dialogs.import.ofx.gschema.xml
 PYTHON_CMAKE_BOOL=	WITH_PYTHON
 PYTHON_USES=		python:3.3+
 

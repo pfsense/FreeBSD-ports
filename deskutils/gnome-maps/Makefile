@@ -1,7 +1,7 @@
 # Created by: Gustau Perez <gustau.perez@gmail.com>
 
 PORTNAME=	gnome-maps
-DISTVERSION=	40.4
+DISTVERSION=	41.0
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
@@ -34,7 +34,6 @@ USE_GNOME=	cairo gtk30 intltool libxml2
 USE_GL=		egl
 USE_LDCONFIG=	yes
 USE_XORG=	x11 xcomposite xdamage xext xfixes xi xrandr
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 GLIB_SCHEMAS=	org.gnome.Maps.gschema.xml

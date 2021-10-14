@@ -7,7 +7,7 @@ CATEGORIES=	net www pear
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde library for managing an active Kolab session
 
-USES=	horde
+USES=		horde cpe
 USE_HORDE_RUN=	Horde_Exception
 
 # Optional but we want it

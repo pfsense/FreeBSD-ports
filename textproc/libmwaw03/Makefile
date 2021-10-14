@@ -1,5 +1,5 @@
 PORTNAME=	libmwaw
-PORTVERSION=	0.3.15
+PORTVERSION=	0.3.20
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 PKGNAMESUFFIX=	03
@@ -16,8 +16,10 @@ CONFIGURE_ARGS=	--disable-werror --without-docs
 CPPFLAGS+=	-I${LOCALBASE}/include
 
 GNU_CONFIGURE=	yes
-USES=		compiler:c++11-lib libtool pathfix pkgconfig tar:xz
+USES=		compiler:c++11-lib cpe libtool pathfix pkgconfig tar:xz
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
+
+CPE_VENDOR=	libmwaw_project
 
 .include <bsd.port.mk>

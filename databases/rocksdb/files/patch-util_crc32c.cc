@@ -1,6 +1,6 @@
---- util/crc32c.cc.orig	2020-12-01 23:49:39 UTC
+--- util/crc32c.cc.orig	2021-06-25 21:15:04 UTC
 +++ util/crc32c.cc
-@@ -463,6 +463,21 @@ static int arch_ppc_probe(void) {
+@@ -488,6 +488,21 @@ static int arch_ppc_probe(void) {
  
    return arch_ppc_crc32;
  }

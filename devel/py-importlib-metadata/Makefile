@@ -1,6 +1,5 @@
 PORTNAME=	importlib-metadata
-PORTVERSION=	3.3.0
-PORTREVISION=	1
+PORTVERSION=	4.7.1
 CATEGORIES=	devel
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,6 +16,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}zipp>=0.5:devel/py-zipp@${PY_FLAVOR}
 
 USES=		python:3.6+
 USE_PYTHON=	autoplist distutils
+
+NO_ARCH=	yes
 
 .include <bsd.port.pre.mk>
 

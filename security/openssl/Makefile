@@ -1,8 +1,7 @@
 # Created by: Dirk Froemberg <dirk@FreeBSD.org>
 
 PORTNAME=	openssl
-PORTVERSION=	1.1.1k
-PORTREVISION=	2
+PORTVERSION=	1.1.1l
 PORTEPOCH=	1
 CATEGORIES=	security devel
 MASTER_SITES=	https://www.openssl.org/source/ \
@@ -165,5 +164,9 @@ post-install-SHARED-on:
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/openssl
+
+post-install-MAN3-on:
+	( cd ${STAGEDIR}/${PREFIX} ; ${FIND} man/man3 man/man7 -not -type d ) | \
+		${SED} 's/$$/.gz/' >>${TMPPLIST}
 
 .include <bsd.port.post.mk>

@@ -1,5 +1,6 @@
 PORTNAME=	yt-dlp
-DISTVERSION=	2021.08.10
+DISTVERSION=	2021.09.25
+PORTREVISION=	1
 CATEGORIES=	www
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,7 +16,7 @@ PY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mutagen>0:audio/py-mutagen@${PY_FLAVOR} \
 BUILD_DEPENDS=	${PY_DEPENDS}
 RUN_DEPENDS=	${PY_DEPENDS}
 
-USES=		gmake python:3.6+ shebangfix
+USES=		gmake python:3.7+ shebangfix
 SHEBANG_GLOB=	devscripts/*.py
 
 USE_GITHUB=	yes
@@ -24,17 +25,16 @@ MAKE_ARGS=	PYTHON=${PYTHON_CMD}
 
 NO_ARCH=	yes
 
-OPTIONS_DEFINE=		FFMPEG MUTAGEN RTMPDUMP SYMLINK
+OPTIONS_DEFINE=		FFMPEG RTMPDUMP SYMLINK
 OPTIONS_DEFAULT=	FFMPEG RTMPDUMP
-OPTIONS_SUB=	yes
-
-MUTAGEN_DESC=	Thumbnail support via Mutagen
-RTMPDUMP_DESC=	Use rtmpdump to download rtmp video streams
-SYMLINK_DESC=	Install youtube-dl symbolic link for executable
+OPTIONS_SUB=		yes
 
 FFMPEG_RUN_DEPENDS=	ffprobe:multimedia/ffmpeg
-MUTAGEN_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mutagen>0:audio/py-mutagen@${PY_FLAVOR}
+
+RTMPDUMP_DESC=		Use rtmpdump to download rtmp video streams
 RTMPDUMP_RUN_DEPENDS=	rtmpdump:multimedia/rtmpdump
+
+SYMLINK_DESC=		Install youtube-dl symbolic link for executable
 SYMLINK_CONFLICTS=	youtube_dl
 
 post-install-SYMLINK-on:

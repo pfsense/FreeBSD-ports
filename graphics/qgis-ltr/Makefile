@@ -2,7 +2,7 @@
 
 PORTNAME=	qgis
 DISTVERSIONPREFIX=	final-
-DISTVERSION=	3_16_10
+DISTVERSION=	3_16_11
 CATEGORIES=	graphics geography
 PKGNAMESUFFIX=	-ltr
 
@@ -103,14 +103,13 @@ RUN_DEPENDS=	astyle:devel/astyle \
 		${PYTHON_PKGNAMEPREFIX}yaml>=5.3.1:devel/py-yaml@${PY_FLAVOR}
 
 ### Fortran is needed by numpy, GRASS, etc.
-USES=		bison cmake compiler:features cpe desktop-file-utils \
+USES=		bison cmake compiler:features desktop-file-utils \
 		fortran gl gmake gnome pgsql pyqt:5 python:3.7+ qca qt:5 \
 		shebangfix sqlite:3
 USE_GITHUB=	yes
 GH_PROJECT=	${PORTNAME:tu}
 USE_GL=		gl
 USE_GNOME=	libxml2
-INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
 USE_PYQT=	core gui location network positioning qml quick quickwidgets \
 		qscintilla2 pysip sip sql svg webkit_run webkitwidgets_run xml

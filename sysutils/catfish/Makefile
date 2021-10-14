@@ -1,7 +1,8 @@
 # Created by: jpaetzel@FreeBSD.org
 
 PORTNAME=	catfish
-PORTVERSION=	4.16.2
+PORTVERSION=	4.16.3
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
@@ -20,12 +21,13 @@ BUILD_DEPENDS=	\
 	${PYTHON_PKGNAMEPREFIX}python-distutils-extra>0:devel/py-python-distutils-extra@${PY_FLAVOR} \
 	${PYTHON_PKGNAMEPREFIX}pexpect>0:misc/py-pexpect@${PY_FLAVOR}
 
-USES=		desktop-file-utils gettext-tools gnome python:3.4+ tar:bz2
+USES=		cpe desktop-file-utils gettext-tools gnome python:3.4+ tar:bz2
 USE_PYTHON=	distutils noflavors
 USE_GNOME=	gtk30 intltool pygobject3
 
+CPE_VENDOR=	catfish_project
+
 NO_ARCH=	yes
-INSTALLS_ICONS=	yes
 
 PORTSCOUT=	limitw:1,even
 

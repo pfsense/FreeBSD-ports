@@ -2,7 +2,7 @@
 
 PORTNAME=	ffmpeg
 PORTVERSION=	4.4
-PORTREVISION=	3
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio net
 MASTER_SITES=	https://ffmpeg.org/releases/
@@ -34,7 +34,7 @@ NOPRECIOUSMAKEVARS=	yes # ARCH
 PORTSCOUT=	limit:^4\.
 
 # Option CHROMAPRINT disabled, it cannot work and people are baffled.
-OPTIONS_DEFINE=	ALSA AMR_NB AMR_WB AOM ARIBB24 ASM ASS BS2B CACA CDIO CELT \
+OPTIONS_DEFINE=	ALSA AMR_NB AMR_WB AOM ARIBB24 ASM ASS BS2B CACA CDIO \
 		CODEC2 DAV1D DAVS2 DC1394 DEBUG DOCS DRM FDK_AAC FLITE \
 		FONTCONFIG FREETYPE FREI0R FRIBIDI GLSLANG GME GSM ICONV ILBC \
 		JACK KLVANC KVAZAAR LADSPA LAME LENSFUN LIBBLURAY LIBRSVG2 \
@@ -49,6 +49,9 @@ OPTIONS_DEFINE=	ALSA AMR_NB AMR_WB AOM ARIBB24 ASM ASS BS2B CACA CDIO CELT \
 OPTIONS_DEFAULT=	AOM ASM ASS DAV1D DRM FONTCONFIG FREETYPE FREI0R GMP \
 			GNUTLS ICONV LAME LIBXML2 OPTIMIZED_CFLAGS OPUS RTCPU \
 			THEORA V4L VAAPI VDPAU VORBIS VPX X264 X265 XCB XVID
+
+# i386 is too register-starved for LTO (PR257124)
+OPTIONS_EXCLUDE_i386=	LTO
 
 .if !exists(${.CURDIR:H:H}/multimedia/aribb24)
 # https://git.ffmpeg.org/gitweb/ffmpeg.git/commitdiff/100bfac6d6ec
@@ -185,10 +188,6 @@ CACA_CONFIGURE_ENABLE=	libcaca
 CDIO_LIB_DEPENDS=	libcdio_paranoia.so:sysutils/libcdio-paranoia
 CDIO_CONFIGURE_ENABLE=	libcdio
 
-# celt
-CELT_LIB_DEPENDS=	libcelt0.so:audio/celt
-CELT_CONFIGURE_ENABLE=	libcelt
-
 # chromaprint
 CHROMAPRINT_BROKEN=		Dependency loop
 CHROMAPRINT_LIB_DEPENDS=	libchromaprint.so:audio/chromaprint
@@ -230,9 +229,6 @@ FDK_AAC_IMPLIES=	NONFREE
 # flite
 FLITE_LIB_DEPENDS=	libflite.so:audio/flite
 FLITE_CONFIGURE_ENABLE=	libflite
-.if exists(/usr/bin/ld.lld) && (${/usr/bin/ld:L:tA} != /usr/bin/ld.lld)
-FLITE_LDFLAGS=		-fuse-ld=lld
-.endif
 
 # fontconfig
 FONTCONFIG_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig
@@ -465,10 +461,6 @@ SRT_CONFIGURE_ENABLE=	libsrt
 # svt-av1
 SVTAV1_LIB_DEPENDS=	libSvtAv1Enc.so:multimedia/svt-av1
 SVTAV1_CONFIGURE_ON=	--enable-libsvtav1
-.if exists(/usr/bin/ld.lld) && (${/usr/bin/ld:L:tA} != /usr/bin/ld.lld)
-# https://github.com/OpenVisualCloud/SVT-AV1/issues/691
-SVTAV1_LDFLAGS=		-fuse-ld=lld
-.endif
 
 # svt-hevc
 SVTHEVC_LIB_DEPENDS=	libSvtHevcEnc.so:multimedia/svt-hevc
@@ -476,9 +468,6 @@ SVTHEVC_CONFIGURE_ON=	--enable-libsvthevc
 SVTHEVC_PATCH_SITES=	https://github.com/OpenVisualCloud/SVT-HEVC/raw/v1.5.0-3-g86b58f77/ffmpeg_plugin/:svthevc
 SVTHEVC_PATCHFILES=	0001-lavc-svt_hevc-add-libsvt-hevc-encoder-wrapper.patch:-p1:svthevc \
 			0002-doc-Add-libsvt_hevc-encoder-docs.patch:-p1:svthevc
-.if exists(/usr/bin/ld.lld) && (${/usr/bin/ld:L:tA} != /usr/bin/ld.lld)
-SVTHEVC_LDFLAGS=	-fuse-ld=lld
-.endif
 .if make(makesum)
 .MAKEFLAGS:		WITH+=SVTHEVC
 .endif
@@ -488,9 +477,6 @@ SVTVP9_LIB_DEPENDS=	libSvtVp9Enc.so:multimedia/svt-vp9
 SVTVP9_CONFIGURE_ON=	--enable-libsvtvp9
 SVTVP9_PATCH_SITES=	https://github.com/OpenVisualCloud/SVT-VP9/raw/v0.3.0-4-gabd5c59/ffmpeg_plugin/:svtvp9
 SVTVP9_PATCHFILES=	master-0001-Add-ability-for-ffmpeg-to-run-svt-vp9.patch:-p1:svtvp9
-.if exists(/usr/bin/ld.lld) && (${/usr/bin/ld:L:tA} != /usr/bin/ld.lld)
-SVTVP9_LDFLAGS=		-fuse-ld=lld
-.endif
 .if make(makesum)
 .MAKEFLAGS:		WITH+=SVTVP9
 .endif
@@ -623,6 +609,7 @@ CONFIGURE_ARGS+=--prefix="${PREFIX}" \
 		--datadir="${DATADIR}" \
 		--pkgconfigdir="${PREFIX}/libdata/pkgconfig" \
 		--disable-static \
+		--disable-libcelt \
 		--enable-shared \
 		--enable-pic \
 		--enable-gpl \

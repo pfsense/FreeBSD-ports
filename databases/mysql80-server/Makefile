@@ -1,8 +1,8 @@
 # Created by: Mahdi Mokhtari <mokhi64@gmail.com>
 
 PORTNAME?=		mysql
-PORTVERSION=		8.0.25
-PORTREVISION?=		2
+PORTVERSION=		8.0.26
+PORTREVISION?=		0
 CATEGORIES=		databases
 MASTER_SITES=		MYSQL/MySQL-8.0
 PKGNAMESUFFIX?=		80-server
@@ -18,6 +18,8 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}${DISTVERSIONSUFFIX}
 SLAVEDIRS=	databases/mysql80-client
 USES=		bison:build cmake:noninja compiler:c++17-lang cpe \
 		groff:run libedit localbase ncurses perl5 pkgconfig shebangfix ssl
+
+CPE_VENDOR=	oracle
 
 USE_CXXSTD=	c++14
 USE_PERL5=	run
@@ -178,22 +180,6 @@ FEDERATED_SUB_LIST_OFF+=	FEDER=""
 CMAKE_ARGS+=	-DDISABLE_PSI_MEMORY=1
 .endif
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
-SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
-.else
-SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
-.endif
-
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "i386" && ${OSVERSION} < 1200000
-# clang 7.x and 8.x do not build properly on 11i386
-CPP=		clang-cpp${LLVM_DEFAULT}
-CC=		clang${LLVM_DEFAULT}
-CXX=		clang++${LLVM_DEFAULT}
-BUILD_DEPENDS+=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
-.endif
-
 post-extract:
 	@${RM} -rv ${WRKSRC}/sql/sql_hints.yy.cc ${WRKSRC}/sql/sql_hints.yy.h
 
@@ -206,4 +192,4 @@ post-install:
 	${MKDIR} ${STAGEDIR}${MY_TMPDIR}
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

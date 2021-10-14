@@ -1,7 +1,7 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
 
 PORTNAME=	gnome-control-center
-PORTVERSION=	40.0
+PORTVERSION=	41.0
 CATEGORIES=	sysutils gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
@@ -48,7 +48,6 @@ USES=		compiler:c++11-lib gettext gnome localbase:ldflags meson \
 USE_GNOME=	cairo gnomedesktop3 libxml2 gsound
 USE_XORG=	x11 xi
 #USE_GSTREAMER1=	yes
-INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
 BINARY_ALIAS=	python3=${PYTHON_VERSION}
 
@@ -65,11 +64,6 @@ CHEESE_MESON_TRUE=	cheese
 
 WAYLAND_MESON_TRUE=	wayland
 WAYLAND_LIB_DEPENDS=	libgudev-1.0.so:devel/libgudev
-
-# This can be removed after 11.x is no longer supported
-.if exists(/usr/bin/ld.lld) && (${/usr/bin/ld:L:tA} != /usr/bin/ld.lld)
-LDFLAGS+=      -fuse-ld=lld
-.endif
 
 .include <bsd.port.pre.mk>
 

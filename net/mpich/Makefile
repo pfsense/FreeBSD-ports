@@ -1,6 +1,6 @@
 PORTNAME=	mpich
 PORTVERSION=	3.4.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net parallel
 MASTER_SITES=	https://www.mpich.org/static/downloads/${DISTVERSION}/
 
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libhwloc.so:devel/hwloc2	\
 		libepoll-shim.so:devel/libepoll-shim
 RUN_DEPENDS=	bash:shells/bash
 
-CONFLICTS=	lam-7.* mpd-[0-9]* mpiexec-0.* mpich2-[0-9]*
+CONFLICTS=	mpd-[0-9]* mpich2-[0-9]*
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USES=		compiler:c11 libtool perl5 pkgconfig

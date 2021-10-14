@@ -9,7 +9,7 @@ COMMENT=	Java Development Kit ${JDK_MAJOR_VERSION}
 
 LICENSE=	GPLv2
 
-ONLY_FOR_ARCHS=	amd64 i386 powerpc64 powerpc64le
+ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
 
 BUILD_DEPENDS=	zip:archivers/zip \
 		autoconf>0:devel/autoconf \
@@ -24,8 +24,10 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libpng.so:graphics/png
 RUN_DEPENDS=	javavm:java/javavmwrapper
 
-USES=		compiler:features gmake iconv jpeg pkgconfig xorg
+USES=		compiler:features cpe gmake iconv jpeg pkgconfig xorg
 USE_XORG=	x11 xext xi xrandr xrender xt xtst
+
+CPE_VENDOR=	oracle
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	battleblow
@@ -98,11 +100,6 @@ ALL_TARGET=		images
 JDK_BUILD_TYPE=		release
 
 .include <bsd.port.pre.mk>
-
-# Support aarch64 on FreeBSD 12 and up
-.if ${OSVERSION} >= 1200500
-ONLY_FOR_ARCHS+=aarch64
-.endif
 
 BOOTSTRAP_JDKS=	${LOCALBASE}/openjdk13 \
 		${LOCALBASE}/openjdk12

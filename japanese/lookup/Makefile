@@ -2,11 +2,11 @@
 
 PORTNAME=	lookup
 PORTVERSION=	1.99.96.20180209
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	japanese elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Emacs search interface for CD-ROM books, etc
 
 LICENSE=	GPLv2+

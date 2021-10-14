@@ -1,4 +1,4 @@
-PORTREVISION=	14
+PORTREVISION=	16
 
 .include "${.CURDIR}/Makefile.common"
 
@@ -118,11 +118,6 @@ USES=		autoreconf:build bison compiler:c++14-lang cpe desktop-file-utils \
 OPTIONS_DEFINE=	COINMP CUPS DOCS GNOME GTK3 I18N JAVA KF5 MMEDIA PGSQL QT5 SDK TEST WEBDAV
 OPTIONS_DEFAULT=	CUPS MMEDIA QT5
 
-.if !defined(DEFAULT_VERSIONS) || ! ${DEFAULT_VERSIONS:Mssl=*}
-# Blocked by net/qt5-network: cannot use QT5 with default OpenSSL
-OPTIONS_EXCLUDE_FreeBSD_11+=	QT5
-.endif
-
 COINMP_DESC=	Enable CoinMP (deprecated) math solver
 GTK3_DESC=	GTK+ 3 GUI toolkit support (incomplete visual style)
 I18N_DESC=	Build i18n resources
@@ -151,8 +146,7 @@ GNOME_LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 GNOME_USE=	GNOME=dconf
 
 GTK3_CONFIGURE_ENABLE=	gtk3
-GTK3_USE=	GNOME=gtk30,gtk-update-icon-cache
-GTK3_VARS=	POST_PLIST=add-plist-gnome
+GTK3_USE=	GNOME=gtk30
 
 I18N_CONFIGURE_WITH=	lang=ALL
 I18N_DISTFILES=		${PORTNAME}-dictionaries-${LOVERSION}${EXTRACT_SUFX} \
@@ -325,13 +319,6 @@ post-install-SDK-on:
 .for subdir in include share share/doc share/idl
 	@cd ${STAGEDIR}${PREFIX} && \
 	${FIND} -s ${subdir}/libreoffice -not -type d >> ${TMPPLIST}
-.endfor
-
-add-plist-gnome:
-.for subdir in gnome hicolor locolor
-	@${ECHO_CMD} "@rmtry share/icons/${subdir}/icon-theme.cache" >> ${TMPPLIST}
-	@${ECHO_CMD} "@postexec ${LOCALBASE}/bin/gtk-update-icon-cache -q -f %D/share/icons/${subdir} 2>/dev/null || ${TRUE}" >> ${TMPPLIST}
-	@${ECHO_CMD} "@postunexec ${LOCALBASE}/bin/gtk-update-icon-cache -q -f %D/share/icons/${subdir} 2>/dev/null || ${TRUE}" >> ${TMPPLIST}
 .endfor
 
 .include <bsd.port.post.mk>

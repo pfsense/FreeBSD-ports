@@ -2,12 +2,12 @@
 
 PORTNAME=	logcheck
 PORTVERSION=	1.3.23
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	DEBIAN_POOL
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Auditing tool for system logs on Unix boxes
 
 LICENSE=	GPLv2+

@@ -1,12 +1,13 @@
 # Created by: erich@FreeBSD.org
 
-PORTNAME?=	gimp-app
-PORTVERSION=	2.10.24
-PORTREVISION=	11
+PORTNAME?=	gimp
+PORTVERSION=	2.10.28
+PORTREVISION=	1
 PORTEPOCH?=	1
 CATEGORIES?=	graphics gnome
 MASTER_SITES=	GIMP/gimp/v${PORTVERSION:R}
-DISTNAME=	gimp-${PORTVERSION}
+PKGNAMESUFFIX=	-app
+#DISTNAME=	gimp-${PORTVERSION}
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNU Image Manipulation Program
@@ -50,7 +51,6 @@ USES+=		compiler:c++14-lang cpe gettext gmake gnome jpeg libtool \
 USE_XORG=	ice sm x11 xcursor xext xfixes xmu xpm xt
 USE_GNOME+=	cairo gtk20 intltool librsvg2
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 .if !defined(XAUTHORITY)
@@ -73,8 +73,8 @@ CONFIGURE_ARGS?=--with-html-dir=${PREFIX}/share/doc/gimp \
 		--enable-default-binary
 CONFIGURE_ENV=	GIMP_THREAD_LIBS=-lpthread
 LIBS+=		-lexecinfo -lm
+CPE_VENDOR=	gimp
 CPE_PRODUCT=	gimp
-CPE_VENDOR=	gnu
 
 SHEBANG_FILES=	plug-ins/pygimp/plug-ins/*.py
 

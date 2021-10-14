@@ -1,7 +1,7 @@
 PORTNAME=	cassandra
 DISTVERSION=	4.0-beta2
 CATEGORIES=	databases java
-MASTER_SITES=	APACHE/cassandra/${DISTVERSION}:apache \
+MASTER_SITES=	https://archive.apache.org/dist/${PORTNAME}/${DISTVERSION}/:apache \
 		https://repo1.maven.org/maven2/com/github/luben/zstd-jni/1.4.5-4/:maven \
 		LOCAL/mikael:repo
 PKGNAMESUFFIX=	4
@@ -21,11 +21,12 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 RUN_DEPENDS=	snappyjava>=0:archivers/snappy-java \
 		netty>0:java/netty
 
-USES=		python:3.7+
+USES=		cpe python:3.7+
 USE_JAVA=	yes
 USE_ANT=	yes
 USE_RC_SUBR=	cassandra
 TEST_TARGET=	test
+CPE_VENDOR=	apache
 
 CONFLICTS=	cassandra3
 

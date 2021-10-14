@@ -2,7 +2,7 @@ PORTNAME=	abstreet
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.9-49
 DISTVERSIONSUFFIX=	-g74aca40c0
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	LOCAL/yuri:data
 DISTFILES=	${PORTNAME}-data-${DISTVERSION}.tgz:data # updated by the update-data target
@@ -474,7 +474,7 @@ update-data: configure
 		${ECHO} "Please upload the file ${DISTDIR}/${PORTNAME}-data-${DISTVERSION}.tgz"
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKDIR}/target/release/game ${STAGEDIR}${PREFIX}/bin/${PORTNAME}-game
+	${INSTALL_PROGRAM} ${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/*/game ${STAGEDIR}${PREFIX}/bin/${PORTNAME}-game
 	cd ${WRKSRC}/data && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}
 	cd ${WRKDIR}/data && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}
 

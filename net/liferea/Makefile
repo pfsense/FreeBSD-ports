@@ -18,7 +18,7 @@ LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
 RUN_DEPENDS=	gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas \
 		${PYTHON_PKGNAMEPREFIX}libpeas>=0:devel/py-libpeas@${PY_FLAVOR}
 
-USES=		compiler:c++11-lang desktop-file-utils gettext \
+USES=		compiler:c++11-lang cpe desktop-file-utils gettext \
 		gmake gnome libtool localbase \
 		pathfix pkgconfig python:3.4+ sqlite tar:bzip2
 USE_GNOME=	cairo dconf:run gtk30 intltool introspection \
@@ -34,6 +34,5 @@ CONFIGURE_ARGS=	--enable-introspection
 MAKE_ENV+= WEBKIT_DISABLE_COMPOSITING_MODE=1
 
 GLIB_SCHEMAS=	net.sf.liferea.gschema.xml
-INSTALLS_ICONS=	yes
 
 .include <bsd.port.mk>

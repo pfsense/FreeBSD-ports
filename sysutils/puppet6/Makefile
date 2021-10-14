@@ -1,5 +1,5 @@
 PORTNAME=	puppet
-PORTVERSION=	6.23.0
+PORTVERSION=	6.25.0
 CATEGORIES=	sysutils
 PKGNAMESUFFIX=	6
 
@@ -25,7 +25,6 @@ RUN_DEPENDS=	rubygem-concurrent-ruby>=1.0:devel/rubygem-concurrent-ruby \
 		rubygem-ruby-augeas>=0:textproc/rubygem-ruby-augeas
 
 USES=		cpe
-CPE_VENDOR=	puppetlabs
 USE_GITHUB=	yes
 GH_ACCOUNT=	puppetlabs
 

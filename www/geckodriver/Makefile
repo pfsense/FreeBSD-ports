@@ -1,6 +1,6 @@
 PORTNAME=	geckodriver
 DISTVERSION=	0.26.0
-PORTREVISION=	16
+PORTREVISION=	18
 CATEGORIES=	www
 MASTER_SITES=	https://hg.mozilla.org/mozilla-central/archive/${DISTNAME}.zip/testing/geckodriver/?dummy=/
 DISTNAME=	e9783a644016aa9b317887076618425586730d73
@@ -12,7 +12,9 @@ COMMENT=	Proxy for using WebDriver clients with Gecko-based browsers
 
 LICENSE=	MPL20
 
-USES=		cargo
+USES=		cargo cpe
+
+CPE_VENDOR=	mozilla
 
 WRKSRC=		${WRKDIR}/mozilla-central-${DISTNAME}/testing/geckodriver
 

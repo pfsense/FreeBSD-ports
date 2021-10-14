@@ -2,7 +2,7 @@ PORTNAME=	pdf-tools
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.90-84
 DISTVERSIONSUFFIX=	-g5f77dae
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	print elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
@@ -12,7 +12,6 @@ COMMENT=	Emacs support library for PDF files
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_FreeBSD_11_powerpc64=	fails to configure on powerpc64 elfv1: cannot find necessary poppler-private header (see README.org)
 BROKEN_FreeBSD_12_powerpc64=	fails to configure on powerpc64 elfv1: cannot find necessary poppler-private header (see README.org)
 
 BUILD_DEPENDS=	cask${EMACS_PKGNAMESUFFIX}>0:devel/cask@${EMACS_FLAVOR} \

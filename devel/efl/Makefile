@@ -2,7 +2,7 @@
 
 PORTNAME=	efl
 DISTVERSION=	1.25.1
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	devel enlightenment
 MASTER_SITES=	http://download.enlightenment.org/rel/libs/${PORTNAME}/
 DIST_SUBDIR=	enlightenment
@@ -41,7 +41,6 @@ MESON_ARGS=	-Dsystemd=false -Deeze=false
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-INSTALLS_ICONS=	yes
 
 PLIST_SUB=	BRANCHVERSION=${PORTVERSION:R} PORTVERSION=${PORTVERSION}
 

@@ -10,13 +10,16 @@ COMMENT=	Collect unifi controller data
 
 LICENSE=	MIT
 
+BROKEN=		Unfetchable due to upstream name change
+DEPRECATED=	Now called unpoller by upstream
+EXPIRATION_DATE=2021-12-31
+
 USES=		go:modules
 
 USERS=	unifi-poller
 GROUPS=	unifi-poller
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	unifi-poller
 GH_TUPLE=	\
 		BurntSushi:toml:v0.3.1:burntsushi_toml/vendor/github.com/BurntSushi/toml \
 		beorn7:perks:v1.0.1:beorn7_perks/vendor/github.com/beorn7/perks \
@@ -49,6 +52,7 @@ GH_TUPLE=	\
 		unifi-poller:webserver:b4db5feaea83:unifi_poller_webserver/vendor/github.com/unifi-poller/webserver
 
 OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 post-build:

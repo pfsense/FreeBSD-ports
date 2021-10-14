@@ -277,6 +277,7 @@
     SUBDIR += pandorafms_server
     SUBDIR += percona-monitoring-plugins
     SUBDIR += pftabled
+    SUBDIR += php-fpm_exporter
     SUBDIR += php73-snmp
     SUBDIR += php74-snmp
     SUBDIR += php80-snmp
@@ -307,6 +308,7 @@
     SUBDIR += py-napalm
     SUBDIR += py-napalm-logs
     SUBDIR += py-ncclient
+    SUBDIR += py-netbox-plugin-extensions
     SUBDIR += py-nxapi-plumbing
     SUBDIR += py-opn-cli
     SUBDIR += py-pdagent
@@ -403,11 +405,6 @@
     SUBDIR += zabbix5-java
     SUBDIR += zabbix5-proxy
     SUBDIR += zabbix5-server
-    SUBDIR += zabbix52-agent
-    SUBDIR += zabbix52-frontend
-    SUBDIR += zabbix52-java
-    SUBDIR += zabbix52-proxy
-    SUBDIR += zabbix52-server
     SUBDIR += zabbix54-agent
     SUBDIR += zabbix54-frontend
     SUBDIR += zabbix54-java

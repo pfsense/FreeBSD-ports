@@ -1,6 +1,6 @@
 PORTNAME=	wangle
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2021.08.02.00
+DISTVERSION=	2021.10.04.00
 CATEGORIES=	net
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -19,10 +19,11 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libglog.so:devel/glog \
 		libsodium.so:security/libsodium
 
-USES=		cmake compiler:c++17-lang ssl
+USES=		cmake compiler:c++17-lang cpe ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	facebook
 USE_LDCONFIG=	yes
+CPE_VENDOR=	facebook
 
 WRKSRC_SUBDIR=	${PORTNAME}
 

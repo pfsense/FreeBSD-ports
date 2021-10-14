@@ -3,7 +3,7 @@
 PORTNAME=	mypaint
 DISTVERSIONPREFIX=v
 DISTVERSION=	2.0.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 
 PATCH_SITES=	https://github.com/garynthompson/${PORTNAME}/commit/
@@ -28,22 +28,16 @@ RUN_DEPENDS=	mypaint-brushes2>0:graphics/mypaint-brushes2 \
 
 USES=		compiler:c++11-lib desktop-file-utils gettext gnome localbase \
 		pkgconfig python:3.6+ tar:xz
-
 USE_GITHUB=	yes
-GH_ACCOUNT=	mypaint
-
 USE_GNOME=	gtk30 pygobject3 cairo librsvg2:run
 USE_PYTHON=	distutils py3kplist noflavors
 PYDISTUTILS_BUILD_TARGET=	build build_ext
 CFLAGS+=	${CFLAGS_${CHOSEN_COMPILER_TYPE}}
 CFLAGS_gcc=	-std=c99
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	OPENMP
 OPTIONS_DEFAULT_amd64=	OPENMP
-
-OPENMP_USES=			compiler:openmp
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/mypaint/lib/_mypaintlib*.so

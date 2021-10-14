@@ -1,10 +1,9 @@
 PORTNAME=	dxirc
-PORTVERSION=	1.30.0
-PORTREVISION=	3
+PORTVERSION=	1.40.0
 CATEGORIES=	irc
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	arch_dvx@users.sourceforge.net
+MAINTAINER=	archdvx@dxsolutions.org
 COMMENT=	Simple IRC client
 
 LICENSE=	GPLv3+
@@ -12,7 +11,6 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		cmake compiler:c++11-lang gnome pkgconfig xorg
 USE_XORG=	ice sm x11 xext
-INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=		NLS LUA ENCHANT NOTIFY
 OPTIONS_SINGLE=		GUI
@@ -42,6 +40,5 @@ NOTIFY_RUN_DEPENDS=	notify-send:devel/libnotify
 QT5_USES=	qt:5
 QT5_USE=		QT=core,gui,multimedia,network,widgets \
 			QT=buildtools_build,qmake_build
-QT5_CMAKE_ON=		-DQT5:BOOL=ON
 
 .include <bsd.port.mk>

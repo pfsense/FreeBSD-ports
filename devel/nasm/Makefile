@@ -15,10 +15,12 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_func_strspn=yes
-USES=		compiler:c11 tar:xz gmake perl5
+USES=		compiler:c11 cpe tar:xz gmake perl5
 USE_PERL5=	build
 MAKE_ARGS+=	INSTALLROOT=${STAGEDIR}
 INSTALL_TARGET=	install #needed for RDOFF_INSTALL_TARGET
+CPE_VENDOR=	nasm
+CPE_PRODUCT=	netwide_assembler
 
 OPTIONS_DEFINE=	RDOFF DOCS
 OPTIONS_SUB=	yes

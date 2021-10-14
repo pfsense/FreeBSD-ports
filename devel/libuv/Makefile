@@ -2,7 +2,7 @@
 
 PORTNAME=	libuv
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.41.0
+DISTVERSION=	1.42.0
 CATEGORIES=	devel
 MASTER_SITES=	https://dist.libuv.org/dist/v${DISTVERSION}/
 
@@ -14,7 +14,7 @@ LICENSE_NAME=	NODE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		autoreconf libtool pathfix pkgconfig
+USES=		autoreconf cpe libtool pathfix pkgconfig
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip

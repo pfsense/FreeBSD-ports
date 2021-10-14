@@ -1,7 +1,7 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
 
 PORTNAME=	harfbuzz
-DISTVERSION=	2.9.0
+DISTVERSION=	3.0.0
 PORTREVISION?=	0
 CATEGORIES=	print
 MASTER_SITES=	https://github.com/harfbuzz/harfbuzz/releases/download/${DISTVERSION}/
@@ -15,16 +15,17 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libgraphite2.so:graphics/graphite2
 
-USES=		compiler:c++11-lib gnome meson \
+USES=		compiler:c++11-lib cpe gnome meson \
 		pkgconfig python:build shebangfix tar:xz
 USE_GNOME=	glib20 introspection:build
 USE_LDCONFIG=	yes
 SHEBANG_GLOB=	*.py
+CPE_VENDOR=	harfbuzz_project
 
 MESON_ARGS=	-Dglib=enabled -Dgobject=enabled -Dgraphite=enabled \
 		-Dfreetype=enabled -Dbenchmark=disabled
 
-PLIST_SUB+=	LIBVER=0.20900.0
+PLIST_SUB+=	LIBVER=0.30000.0
 
 HARFBUZZ_SLAVE?=	no
 

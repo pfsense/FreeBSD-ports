@@ -56,8 +56,6 @@
     SUBDIR += erlang-doc
     SUBDIR += erlang-java
     SUBDIR += erlang-man
-    SUBDIR += erlang-riak
-    SUBDIR += erlang-runtime20
     SUBDIR += erlang-runtime21
     SUBDIR += erlang-runtime22
     SUBDIR += erlang-runtime23
@@ -98,7 +96,6 @@
     SUBDIR += gcc12-devel
     SUBDIR += gcc48
     SUBDIR += gcc6-aux
-    SUBDIR += gcc7
     SUBDIR += gcc8
     SUBDIR += gcc9
     SUBDIR += gcc9-devel
@@ -142,6 +139,7 @@
     SUBDIR += itcl4
     SUBDIR += janet
     SUBDIR += jimtcl
+    SUBDIR += jpm
     SUBDIR += jruby
     SUBDIR += jython
     SUBDIR += kawa
@@ -366,5 +364,6 @@
     SUBDIR += yorick
     SUBDIR += ypsilon
     SUBDIR += zig
+    SUBDIR += zig-devel
 
 .include <bsd.port.subdir.mk>

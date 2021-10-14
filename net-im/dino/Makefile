@@ -1,6 +1,6 @@
 PORTNAME=		dino
 DISTVERSIONPREFIX=	v
-DISTVERSION=		0.2.1
+DISTVERSION=		0.2.2
 CATEGORIES=		net-im
 
 MAINTAINER=		ashish@FreeBSD.org
@@ -30,7 +30,6 @@ HAS_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
 LDFLAGS+=	-Wl,--export-dynamic
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 
 USE_GNOME=	cairo gdkpixbuf2 glib20 gnomeprefix gtk30 intlhack
 

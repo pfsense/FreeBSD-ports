@@ -1,8 +1,7 @@
 # Created by: Henry Hu <henry.hu.sh@gmail.com>
 
 PORTNAME=	tg_owt
-PORTVERSION=	0.0.20210718
-PORTREVISION=	1
+PORTVERSION=	0.0.20210915
 CATEGORIES=	net-im
 
 MAINTAINER=	henry.hu.sh@gmail.com
@@ -27,8 +26,7 @@ USES=		cmake pkgconfig xorg
 USE_XORG=	x11 xcomposite xdamage xrender xrandr
 USE_GITHUB=	yes
 GH_ACCOUNT=	desktop-app
-GH_PROJECT=	tg_owt
-GH_TAGNAME=	91d836d
+GH_TAGNAME=	575fb17
 # libyuv cloned from https://chromium.googlesource.com/libyuv/libyuv
 GH_TUPLE=	webmproject:libvpx:5b63f0f:libvpx/src/third_party/libvpx/source/libvpx \
 		HenryHu:libyuv:ad89006:libyuv/src/third_party/libyuv
@@ -37,11 +35,5 @@ CMAKE_OFF=	BUILD_SHARED_LIBS
 
 # Disable DCHECKs, otherwise video calls will crash.
 CXXFLAGS+=	-DNDEBUG
-
-.include <bsd.port.options.mk>
-
-.if ${SSL_DEFAULT} == "base" && ${OPSYS} == FreeBSD && ${OSVERSION} < 1200085
-BROKEN=		This port requires OpenSSL 1.1.0. Try DEFAULT_VERSIONS+=ssl=[openssl|libressl*]
-.endif
 
 .include <bsd.port.mk>

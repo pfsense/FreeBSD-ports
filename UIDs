@@ -241,7 +241,7 @@ biboumi:*:293:293::0:0:biboumi:/nonexistent:/usr/sbin/nologin
 krill:*:294:294::0:0:krill Pseudo User:/nonexistent:/usr/sbin/nologin
 jottad:*:295:295::0:0:Jotta Cloud Daemon:/nonexisten:/usr/sbin/nologin
 writefreely:*:296:296::0:0:WriteFreely daemon:/var/db/writefreely:/usr/sbin/nologin
-# free: 297
+conduit:*:297:297::0:0:Conduit daemon:/var/db/conduit:/usr/sbin/nologin
 # free: 298
 owncast:*:299:299::0:0:& daemon:/nonexistent:/usr/sbin/nologin
 backuppc:*:300:300::0:0:BackupPC pseudo-user:/nonexistent:/usr/sbin/nologin
@@ -800,7 +800,7 @@ cassandra:*:851:851::0:0:Cassandra DB Daemon User:/var/db/cassandra:/usr/sbin/no
 p0f:*:852:852::0:0:p0f unprivileged user:/var/empty:/usr/sbin/nologin
 _geodns:*:853:853::0:0:GeoDNS User:/var/empty:/usr/sbin/nologin
 ebusd:*:854:854::0:0:eBUS Daemon user:/nonexistent:/usr/sbin/nologin
-# free: 855
+opensearch:*:855:855::0:0:opensearch user:/nonexistent:/usr/sbin/nologin
 # free: 856
 # free: 857
 # free: 858
@@ -821,7 +821,7 @@ bitmark:*:872:872::0:0:Bitmark Property System:/var/lib/bitmarkd:/usr/sbin/nolog
 bitmark-recorder:*:873:873::0:0:Bitmark Property Recorder:/var/lib/recorderd:/usr/sbin/nologin
 librespeed:*:874:874::0:0:LibreSpeed user:/nonexistent:/usr/sbin/nologin
 # free: 875
-# free: 876
+_lms:*:876:876::0:0:Lightweight Music Server user:/nonexistent:/usr/sbin/nologin
 gemserv:*:877:877::0:0:gemserv user:/nonexistent:/usr/sbin/nologin
 gerbera:*:878:878::0:0:Gerbera DLNA Media Server:/nonexistent:/usr/sbin/nologin
 _encrypted-dns:*:879:879::0:0:encrypted-dns user:/var/empty:/usr/sbin/nologin

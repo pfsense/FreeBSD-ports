@@ -18,7 +18,9 @@ LICENSE_NAME=	Qualcomm BSD-style license
 LICENSE_FILE=	${WRKSRC}/License.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		compiler:features
+USES=		compiler:features cpe
+
+CPE_VENDOR=	qualcomm
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	OS_DEFS="-DSETPROCTITLE ${OS_DEFS}"
@@ -122,7 +124,7 @@ CONFIGURE_ARGS+=	--with-openssl=${OPENSSLBASE}
 .endif
 
 # openssl-1.1.1 no longer has SSLv2 support
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200085
+.if ${OPSYS} == FreeBSD
 CFLAGS+=		-DOPENSSL_NO_SSL2
 CONFIGURE_ARGS+=	CFLAGS="${CFLAGS}"
 .endif

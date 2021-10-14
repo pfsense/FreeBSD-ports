@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/license.txt
 LICENSE_NAME=	UnRAR license
 LICENSE_PERMS=	auto-accept dist-mirror pkg-mirror
 
-USES+=		compiler:c++11-lang
+USES+=		compiler:c++11-lang cpe
 
 LDFLAGS+=	-lpthread
 MAKE_ARGS=	CXX="${CXX}" CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}" STRIP="${STRIP_CMD}"
@@ -28,6 +28,8 @@ PLIST_FILES=	bin/unrar
 SLAVEDIRS=	archivers/unrar-iconv
 
 CONFLICTS_INSTALL?=	unrar-iconv
+
+CPE_VENDOR=	rarlab
 
 OPTIONS_DEFINE=	OPENSSL_AES
 OPTIONS_DEFAULT=OPENSSL_AES

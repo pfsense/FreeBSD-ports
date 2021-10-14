@@ -14,12 +14,9 @@ LIB_DEPENDS=	liblxi.so:misc/liblxi
 
 USES=		autoreconf libtool localbase lua:52 pkgconfig readline
 USE_GITHUB=	yes
-GH_ACCOUNT=	lxi-tools
-
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static \
 		--with-bash-completion-dir=${PREFIX}/etc/bash_completion.d
-CFLAGS+=	-D_WITH_GETLINE # enable getline(3) prototype
 
 PORTDOCS=	README
 

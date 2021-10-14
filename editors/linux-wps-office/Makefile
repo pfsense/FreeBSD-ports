@@ -18,8 +18,7 @@ ONLY_FOR_ARCHS= amd64
 
 CONFLICTS_INSTALL=	linux-wps-office-zh_CN
 
-USES=		desktop-file-utils linux shebangfix
-INSTALLS_ICONS=	yes
+USES=		desktop-file-utils gnome linux shebangfix
 USE_LINUX=	png pulseaudio-libs xorglibs
 
 SHEBANG_FILES= 	usr/bin/et \

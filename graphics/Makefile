@@ -43,6 +43,7 @@
     SUBDIR += acidwarp
     SUBDIR += acidwarp-sdl
     SUBDIR += agg
+    SUBDIR += airsaned
     SUBDIR += akira
     SUBDIR += alembic
     SUBDIR += aloadimage
@@ -144,7 +145,6 @@
     SUBDIR += drawpile
     SUBDIR += drm-current-kmod
     SUBDIR += drm-devel-kmod
-    SUBDIR += drm-fbsd11.2-kmod
     SUBDIR += drm-fbsd12.0-kmod
     SUBDIR += drm-fbsd13-kmod
     SUBDIR += drm-kmod
@@ -457,6 +457,7 @@
     SUBDIR += libgphoto2
     SUBDIR += libgxps
     SUBDIR += libheif
+    SUBDIR += libimagequant
     SUBDIR += libimg
     SUBDIR += libiptcdata
     SUBDIR += libjpeg-turbo
@@ -569,6 +570,7 @@
     SUBDIR += nomacs
     SUBDIR += nplot
     SUBDIR += npretty
+    SUBDIR += nsxiv
     SUBDIR += nurbs++
     SUBDIR += nvidia-texture-tools
     SUBDIR += ocaml-images
@@ -939,6 +941,7 @@
     SUBDIR += quat-gui
     SUBDIR += quesa
     SUBDIR += quesoglc
+    SUBDIR += quickqanava
     SUBDIR += qvge
     SUBDIR += radiance
     SUBDIR += radius-engine
@@ -957,6 +960,7 @@
     SUBDIR += rigsofrods-caelum
     SUBDIR += rigsofrods-pagedgeometry
     SUBDIR += ristretto
+    SUBDIR += rlottie
     SUBDIR += ruby-gd
     SUBDIR += rubygem-cairo
     SUBDIR += rubygem-captcha
@@ -1002,6 +1006,7 @@
     SUBDIR += sage
     SUBDIR += sam2p
     SUBDIR += sampleicc
+    SUBDIR += sane-airscan
     SUBDIR += sane-backends
     SUBDIR += sane-epkowa
     SUBDIR += scale2x

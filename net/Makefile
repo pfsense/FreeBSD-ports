@@ -126,11 +126,13 @@
     SUBDIR += dictd
     SUBDIR += dimes
     SUBDIR += dpdk
+    SUBDIR += dpdk-20.11
     SUBDIR += dpinger
     SUBDIR += drawterm
     SUBDIR += drive
     SUBDIR += dropbox-api-command
     SUBDIR += dropbox-uploader
+    SUBDIR += dshell
     SUBDIR += dtcp
     SUBDIR += dtcpclient
     SUBDIR += dual-dhclient
@@ -300,10 +302,10 @@
     SUBDIR += jwhois
     SUBDIR += k6
     SUBDIR += kafka
-    SUBDIR += kafkacat
     SUBDIR += kalarmcal
     SUBDIR += kamailio
     SUBDIR += kcalutils
+    SUBDIR += kcat
     SUBDIR += kdenetwork
     SUBDIR += kdenetwork-filesharing
     SUBDIR += kea
@@ -547,6 +549,8 @@
     SUBDIR += openbgpd6
     SUBDIR += openldap24-client
     SUBDIR += openldap24-server
+    SUBDIR += openldap25-client
+    SUBDIR += openldap25-server
     SUBDIR += openmdns
     SUBDIR += openmpi
     SUBDIR += openmpi3
@@ -555,6 +559,7 @@
     SUBDIR += openpgm
     SUBDIR += openradius
     SUBDIR += openrsync
+    SUBDIR += opensips31
     SUBDIR += openslp
     SUBDIR += opentracker
     SUBDIR += openvswitch
@@ -1073,6 +1078,7 @@
     SUBDIR += py-pynamecheap
     SUBDIR += py-pynmsg
     SUBDIR += py-pynsq
+    SUBDIR += py-pypacker
     SUBDIR += py-pypcap
     SUBDIR += py-pyroute2
     SUBDIR += py-pyroute2.core
@@ -1197,6 +1203,7 @@
     SUBDIR += rscsi
     SUBDIR += rsocket-cpp
     SUBDIR += rsplib
+    SUBDIR += rssguard
     SUBDIR += rsync
     SUBDIR += rsync-bpc
     SUBDIR += rtg
@@ -1205,6 +1212,7 @@
     SUBDIR += rubygem-activestorage52
     SUBDIR += rubygem-activestorage60
     SUBDIR += rubygem-activestorage61
+    SUBDIR += rubygem-activestorage613
     SUBDIR += rubygem-amazon-ec2
     SUBDIR += rubygem-amq-protocol
     SUBDIR += rubygem-amqp
@@ -1377,6 +1385,7 @@
     SUBDIR += rubygem-xmlrpc
     SUBDIR += rude
     SUBDIR += ryu
+    SUBDIR += s5cmd
     SUBDIR += sacc
     SUBDIR += samba412
     SUBDIR += samba413
@@ -1489,6 +1498,7 @@
     SUBDIR += tintin++
     SUBDIR += tiny-network-utilities
     SUBDIR += tinyfugue
+    SUBDIR += tinyfugue-devel
     SUBDIR += tinyldap
     SUBDIR += tn5250
     SUBDIR += toonel

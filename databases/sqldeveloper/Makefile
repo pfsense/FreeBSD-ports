@@ -1,5 +1,5 @@
 PORTNAME=	sqldeveloper
-DISTVERSION=	20.4.1.407.0006
+DISTVERSION=	21.2.1.204.1703
 DISTVERSIONSUFFIX=	-no-jre
 CATEGORIES=	databases java
 # https://www.oracle.com/tools/downloads/sqldev-downloads.html
@@ -16,7 +16,6 @@ LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror
 RUN_DEPENDS=	bash:shells/bash
 
 USES=		gnome zip
-INSTALLS_ICONS=	yes
 USE_JAVA=	yes
 JAVA_VERSION=	11+
 
@@ -61,7 +60,7 @@ do-install:
 	${ECHO_MSG} " [ DONE ]"
 
 .for d in configuration dataminer dropins equinox \
-    external ide javavm jdbc jdev jlib jviews module modules \
+    external ide javavm jdbc jdev jlib jviews modules \
     netbeans orakafka rdbms sleepycat sqldeveloper sqlj svnkit
 	${ECHO_MSG} -n ">> Installing data directory '${d}'..."
 	cd ${WRKSRC} && ${FIND} ${d} -type d \

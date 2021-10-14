@@ -1,7 +1,7 @@
 PORTNAME=	librespot
 PORTVERSION=	0.2.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	multimedia
 
 MAINTAINER=	driesm.michiels@gmail.com
@@ -44,8 +44,6 @@ TREMOR_LIB_DEPENDS=	libvorbisidec.so:audio/libtremor
 TREMOR_VARS=		CARGO_FEATURES+=with-tremor
 VORBIS_LIB_DEPENDS=	libvorbisfile.so:audio/libvorbis
 VORBIS_VARS=		CARGO_FEATURES+=with-vorbis
-
-.include "Makefile.crates"
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/librespot

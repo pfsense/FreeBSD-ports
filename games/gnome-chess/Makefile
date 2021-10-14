@@ -1,7 +1,7 @@
 # Created by: FreeBSD GNOME Team <gnome@freebsd.org>
 
 PORTNAME=	gnome-chess
-PORTVERSION=	40.1
+PORTVERSION=	41.0
 CATEGORIES=	games gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome3
@@ -21,7 +21,6 @@ PORTSCOUT=	limitw:1,even
 USES=		desktop-file-utils gettext gl gnome localbase meson pkgconfig \
 		python:3.6+,build tar:xz
 USE_GNOME=	cairo gtk40 librsvg2 libxml2:build
-INSTALLS_ICONS=	yes
 USE_GL=		egl gl
 BINARY_ALIAS=	python3=${PYTHON_VERSION}
 

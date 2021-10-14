@@ -5,6 +5,230 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20211012:
+  AFFECTS: users of devel/git
+  AUTHOR: garga@FreeBSD.org
+
+  devel/git port was split into multiple sub-ports that depend on devel/git
+  and install additional files:
+
+  - devel/git-cvs - CVS related scripts and man pages
+  - devel/git-gui - GUI related scripts and man pages
+  - devel/git-p4  - Perforce related scripts and man pages
+  - devel/git-svn - Subversion related scripts and man pages
+
+  Due to these changes, CVS, GUI, PERFORCE, and SUBVERSION options
+  as well as gui and svn flavors were removed from the port.
+
+20211010:
+  AFFECTS: users of gtk2 flavored devel/geany*
+  AUTHOR: madpilot@FreeBSD.org
+
+  Upstream dropped support for gtk2. Due to this the ports are now
+  unflavored, installing only with gtk3 support.
+
+  If you are already using the default gtk3 flavor will get the new
+  version with a simple "pkg upgrade".
+
+  To upgrade when using the gtk2 flavors you need to use "pkg install"
+  to install the new unflavored gtk3 packages, pkg will automatically
+  uninstall the old gtk2 flavors.
+
+  If using ports, you will need to uninstall all geany packages and
+  its plugins and reinstall from an updated ports tree.
+
+  The "geany-plugin-multiterm" plugin was only available as a gtk2
+  flavor when installing the gtk2 flavor of geany and has not been
+  ported to gtk3, so has been removed from the tree, so the
+  geany-plugin-multiterm-gtk2 package should be removed from the system.
+
+20211007:
+  AFFECTS: user of security/clamav
+  AUTHOR: yasu@FreeBSD.org
+
+  Upstream changed end-of-life policy and introduced long time support
+  (LTS) feature release.
+
+  * LTS feature release will be identified approximately every two
+    years and supported for at least three years from the initial
+    publication date of that LTS feature version.
+  * Regular (non-LTS) feature releases will be supported for at least
+    four months from the initial publication date of the next feature
+    release or until the feature release after that is published.
+
+  According to it new port security/clamav-lts is added for users who
+  want to use LTS version of ClamAV.
+
+  Users wanting to switch to LTS version can replace security/clamav
+  with security/clamav-lts with one of following commands.
+
+  If you use pkg with binary packages:
+    # pkg set -o security/clamav:security/clamav-lts
+    # pkg upgrade
+  If you use portmaster:
+    # portmaster -o security/clamav-lts security/clamav
+  If you use portupgrade:
+    # portupgrade -o security/clamav-lts security/clamav
+
+20211006:
+AFFECTS: users of misc/freebsd-doc-*
+AUTHOR: blackend@FreeBSD.org
+
+The misc/freebsd-doc-* ports have been updated to the new doc toolchain,
+and use a somewhat different arrangement of directories and symlinks,
+which pkg 1.17 does not handle well.
+
+Users are encouraged to delete the misc/freebsd-doc-* ports, then
+reinstall the new ones without using the pkg upgrade facility.
+
+20211006:
+  AFFECTS: users of net/kafkacat
+  AUTHOR: sergey@akhmatov.ru
+
+  kafkacat has been renamed to kcat upstream.
+  So switch to net/kcat instead.
+
+20211004:
+  AFFECTS: users of net-mgmt/netbox
+  AUTHOR: kai@FreeBSD.org
+
+  /!\ WARNING /!\
+
+  The NetBox 3.0 release contains major changes, so at least items 1.), 2.)
+  and 3.) must be checked before proceeding with the upgrade!
+
+  /!\ WARNING /!\
+
+  1. Please ensure that your local installation of net-mgmt/netbox is at
+     the 2.11 release before attemping to upgrade to NetBox 3.0 or later.
+
+  2. Please also note that the previously deprecated secrets functionality
+     has been removed with NetBox 3.0.  This means, all of the secrets still
+     remain in the database once upgraded, only the secrets functionality on
+     the part of NetBox is no longer given.
+
+     In order to continue to be able to access the stored secrets as usual
+     (and then possibly migrate them to another solution, e.g.
+     security/vault), please install the security/py-netbox-secretstore port
+     once NetBox has been upgraded to 3.x and follow its installation
+     instructions how to enable the plugin.
+
+  3. If plugins are used, they should be temporarily deactivated to avoid
+     disruptions during the upgrade process.
+
+  4. Please also check the pkg-message and the changelogs for further info.
+
+20211004:
+  AFFECTS: users of www/py-pyjwt
+  AUTHOR: rhurlin@FreeBSD.org
+
+  To make it possible to easily import py-pyjwt v2.x the current port was
+  moved to a versioned directory.
+
+  If you use portmaster:
+        portmaster -o www/py-pyjwt1 www/py-pyjwt
+  If you use portupgrade:
+        portupgrade -fo www/py-pyjwt1 www/py-pyjwt
+  If you use pkg with binary packages:
+        pkg set -o www/py-pyjwt:www/py-pyjwt1
+
+20210912:
+  AFFECTS: x11-wm/cage, x11-wm/hikari, x11-wm/labwc, x11-wm/sway, x11-wm/wayfire
+  AUTHOR: jbeich@FreeBSD.org
+
+  SUID option has been removed in favor of seatd-launch(1) which doesn't
+  require special handling in every consumer and doesn't bypass group
+  permissions. If you've already enabled seatd service or use consolekit2
+  then nothing changes. Otherwise,
+
+    $ sway
+    00:00:00.001 [ERROR] [wlr] [libseat] [libseat/libseat.c:83] No backend was able to open a seat
+    00:00:00.001 [ERROR] [wlr] [backend/session/session.c:84] Unable to create seat: Function not implemented
+    00:00:00.001 [ERROR] [wlr] [backend/session/session.c:218] Failed to load session backend
+    00:00:00.001 [ERROR] [wlr] [backend/backend.c:353] Failed to start a DRM session
+    00:00:00.001 [ERROR] [sway/server.c:53] Unable to create backend
+
+  can be fixed by
+
+    $ ck-launch-session sway
+
+  or
+
+    $ seatd-launch sway
+
+  or
+
+    # sysrc seatd_enable=YES
+    # service seatd start
+    $ sway
+
+  Replace "sway" with your compositor e.g., "cage", "hikari", "labwc", "wayfire".
+
+20210907:
+  AFFECTS: consumers of math/eigen[23]
+  AUTHOR: adridg@FreeBSD.org
+
+  math/eigen2 has been marked deprecated. There do not seem to be any
+  consumers in FreeBSD ports.
+
+  math/eigen3 has had its options re-vamped. The default options previously
+  pulled in multiple useless library dependencies. The options also forced
+  a specific BLAS implementation. The new options depend only on the
+  default BLAS (whatever USES=blaslapack picks), but this can be turned
+  off. The previous multiple useless libraries -- which are not useless
+  when running the tests in Eigen -- are now hidden behind the default-off
+  TEST option.
+
+  Users of a carefully-tuned Eigen build should re-evaluate the options
+  available.
+
+20210902:
+  AFFECTS: users of editors/vim
+  AUTHOR: adamw@FreeBSD.org
+
+  The vim ports have been completely reworked to take advantage of flavors.
+
+  The biggest change is that the `vim' package is now console-only. If
+  you want the GTk3 GUI, you'll need to install the `vim-gtk3' package
+  instead. All the GUI toolkits have their own package now: vim-gtk3,
+  vim-gtk2, -athena, -motif, and -x11. The vim-tiny package still exists.
+
+  Also: only python3 bindings are included now. There are very few plugins
+  written in Perl or Ruby, so there really wasn't a need to bundle those
+  languages with Vim. They still exist as OPTIONS, so you can still enable
+  them if you'd like. Also, support for py27 has been dropped.
+
+20210901:
+  AFFECTS: users of audio/ampache
+  AUTHOR: crees@FreeBSD.org
+
+  With the upgrade to Ampache 5.0.0, the root Ampache folder has changed
+  to %%WWWDIR%%/ampache/public.  Please update your web server aliases,
+  for example if you use Apache, then in httpd.conf make sure the lines
+  look like this:
+
+  Alias /ampache /usr/local/www/ampache/public
+
+  <Directory "/usr/local/www/ampache/public">
+
+  If you have customised your .htaccess files to allow for a different
+  alias, you'll need to move them to the new location after upgrading:
+
+  # sh -c 'cd /usr/local/www/ampache && for f in */.htaccess; do mv $f public/$f; done'
+
+  More upgrade notes can be found on Github:
+
+  https://github.com/ampache/ampache/releases/tag/5.0.0
+
+20210823:
+  AFFECTS: users of mail/mu
+  AUTHOR: hrs@FreeBSD.org
+
+  mail/mu now uses XDG Base Directory Specification for the default
+  locations for various files.  The mu database now lives under
+  ~/.cache/mu rather than ~/.mu by default.  After upgrading,
+  move the contents under ~/.mu to ~/.cache/mu.
+
 20210823:
   AFFECTS: users of mail/postfixadmin
   AUTHOR: ports.maintainer@evilphi.com
@@ -42,7 +266,7 @@ you update your ports collection, before attempting any port upgrades.
   Elasticsearch and Kibana.
 
   The most visible effect is that sysutils/beats7 users can expect
-  difficulities to send data to Elastic instances hosted in AWS.
+  difficulties to send data to Elastic instances hosted in AWS.
 
   For more information, see:
   https://www.elastic.co/guide/en/beats/libbeat/current/breaking-changes-7.13.html
@@ -119,7 +343,7 @@ you update your ports collection, before attempting any port upgrades.
   The openhab v3 port has been committed. Upstream has removed the
   version from the name, as such the FreeBSD port follows in all places
   (start script name, directory names, ...).
-  Users are encuraged to migrate from misc/openhab2 to misc/openhab.
+  Users are encouraged to migrate from misc/openhab2 to misc/openhab.
 
   No automatic config migration is available Both versions can be
   installed in parallel, but an users has to take care to not run

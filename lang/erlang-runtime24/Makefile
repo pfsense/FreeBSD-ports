@@ -1,6 +1,6 @@
 PORTNAME=	erlang
 DISTVERSIONPREFIX=	OTP-
-DISTVERSION=	24.0.4
+DISTVERSION=	24.1.2
 PORTREVISION=	0
 CATEGORIES=	lang parallel java
 PKGNAMESUFFIX=	-runtime24
@@ -13,7 +13,9 @@ LICENSE=	APACHE20
 
 BROKEN_sparc64=	Fails to build: error: fp_except undeclared
 
-USES=		autoreconf:build gmake ncurses perl5
+USES=		cpe gmake ncurses perl5
+CPE_VENDOR=	erlang
+CPE_PRODUCT=	erlang/otp
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	erlang:otp,corba
 GH_PROJECT=	otp:otp corba:corba
@@ -35,8 +37,9 @@ WRKSRC=		${WRKSRC_otp}
 
 ERLANG_LIB=	${PORTNAME}${PORTVERSION:C/\..*//}
 
-OPTIONS_DEFINE=		CHUNKS CORBA DTRACE JAVA ODBC OPENSSL SCTP SHARING WX
-OPTIONS_DEFAULT=	CHUNKS CORBA DTRACE OPENSSL SCTP SHARING
+OPTIONS_DEFINE=		CHUNKS CORBA DTRACE JAVA KQUEUE ODBC OPENSSL SCTP \
+			SHARING WX
+OPTIONS_DEFAULT=	CHUNKS CORBA DTRACE KQUEUE OPENSSL SCTP SHARING
 
 .if !exists(/usr/sbin/dtrace)
 OPTIONS_EXCLUDE+=	DTRACE
@@ -51,8 +54,9 @@ OPTIONS_EXCLUDE_armv7=	DTRACE
 OPTIONS_EXCLUDE_i386=	DTRACE
 OPTIONS_EXCLUDE_riscv64=	DTRACE
 
-CHUNKS_DESC=	Enable in-line documentation in erlang console
+CHUNKS_DESC=	Enable in-line documentation in Erlang console
 CORBA_DESC=	Enable Corba support
+KQUEUE_DESC=	Enable Kernel Poll (kqueue) support
 SCTP_DESC=	Enable SCTP support
 SHARING_DESC=	Enable term copy-and-share support
 WX_DESC=	Enable WX application
@@ -68,9 +72,12 @@ DTRACE_VARS=			STRIP=""
 JAVA_CONFIGURE_WITH=		javac
 JAVA_CONFIGURE_ENV=		ac_cv_prog_JAVAC="${JAVAC}"
 JAVA_VARS=			USE_JAVA=yes
+KQUEUE_CONFIGURE_ENABLE=	kernel-poll
 ODBC_LIB_DEPENDS=		libodbc.so:databases/unixODBC
-ODBC_CONFIGURE_WITH=		odbc
 ODBC_USES=			localbase
+ODBC_CONFIGURE_WITH=		odbc
+ODBC_CFLAGS=			-I/usr/local/include
+ODBC_LDFLAGS=			-L/usr/local/lib
 OPENSSL_USES=			ssl
 OPENSSL_CONFIGURE_WITH=		ssl=${OPENSSLBASE}
 SCTP_CONFIGURE_ENABLE=		sctp
@@ -94,9 +101,6 @@ MAKE_ARGS+=	ARCH=x86
 .if ${ARCH} == armv6 || ${ARCH} == armv7
 MAKE_ARGS+=	ARCH=arm
 .endif
-
-pre-configure:
-	@cd ${WRKSRC} && ./otp_build autoconf
 
 pre-configure-WX-off:
 	echo "disabled by port options" > ${WRKSRC}/lib/debugger/SKIP

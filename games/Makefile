@@ -18,6 +18,7 @@
     SUBDIR += OpenDiablo2
     SUBDIR += OpenLara
     SUBDIR += OpenTomb
+    SUBDIR += SRB2
     SUBDIR += abbayedesmorts
     SUBDIR += abe
     SUBDIR += abstreet
@@ -64,6 +65,7 @@
     SUBDIR += atr3d
     SUBDIR += atris
     SUBDIR += atris-sounds
+    SUBDIR += augustus
     SUBDIR += auralquiz
     SUBDIR += automuteus
     SUBDIR += avanor
@@ -302,6 +304,7 @@
     SUBDIR += gbrainy
     SUBDIR += gcompris-qt
     SUBDIR += gemdropx
+    SUBDIR += gemrb
     SUBDIR += genact
     SUBDIR += gigalomania
     SUBDIR += gillo
@@ -771,6 +774,7 @@
     SUBDIR += puckman
     SUBDIR += pushover
     SUBDIR += pvpgn
+    SUBDIR += py-2048-py
     SUBDIR += py-cbeams
     SUBDIR += py-discord.py
     SUBDIR += py-fife
@@ -854,6 +858,7 @@
     SUBDIR += rubygem-fortune_gem
     SUBDIR += rubygem-lolcat
     SUBDIR += rubygem-vimgolf
+    SUBDIR += runelite
     SUBDIR += sampsvr
     SUBDIR += sarien
     SUBDIR += sauerbraten
@@ -1028,6 +1033,7 @@
     SUBDIR += wolfpack
     SUBDIR += wop
     SUBDIR += wordplay
+    SUBDIR += wordsearch
     SUBDIR += wordwarvi
     SUBDIR += worldofpadman
     SUBDIR += wtf

@@ -8,7 +8,7 @@ CATEGORIES=	comms hamradio
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT?=	General purpose ham radio voice services
 
-LICENSE=	GPLv2
+LICENSE?=	GPLv2
 
 LIB_DEPENDS?=	libgsm.so:audio/gsm \
 		libspeex.so:audio/speex \
@@ -69,8 +69,7 @@ post-patch:
 		${WRKSRC}/src/doc/man/svxlink.conf.5 \
 		${WRKSRC}/src/svxlink/svxlink/svxlink.conf.in
 	@${REINPLACE_CMD} -e 's|/usr/lib|${PREFIX}/lib|' \
-		${WRKSRC}/src/doc/man/svxlink.conf.5 \
-		${WRKSRC}/src/svxlink/svxlink/svxlink.conf.in
+		${WRKSRC}/src/doc/man/svxlink.conf.5
 post-patch-OSS-on:
 	@${GREP} -lr alsa:default ${WRKSRC} | ${GREP} -v .bak | ${GREP} -v .orig | ${XARGS} \
 		${REINPLACE_CMD} -e 's|alsa:default|oss:/dev/dsp|'

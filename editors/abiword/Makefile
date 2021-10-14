@@ -1,8 +1,7 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
 
 PORTNAME=	abiword
-PORTVERSION=	3.0.4
-PORTREVISION=	1
+PORTVERSION=	3.0.5
 CATEGORIES=	editors
 MASTER_SITES=	http://www.abisource.com/downloads/abiword/${PORTVERSION}/source/
 DIST_SUBDIR=	AbiWord
@@ -21,7 +20,7 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libgoffice-0.10.so:devel/goffice
 RUN_DEPENDS=	${LOCALBASE}/share/fonts/dejavu/DejaVuSerif.ttf:x11-fonts/dejavu
 
-USES=		compiler:c++11-lang desktop-file-utils gmake gnome iconv jpeg \
+USES=		compiler:c++11-lang cpe desktop-file-utils gmake gnome iconv jpeg \
 		libtool pathfix pkgconfig
 USE_GNOME=	libxml2 gtk30 librsvg2 libxslt
 GNU_CONFIGURE=	yes
@@ -30,8 +29,8 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--without-gnomevfs --enable-plugins="${ABIWORD_PLUGINS}" \
 		--enable-shared="yes" --enable-static="no"
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
+CPE_VENDOR=	abisource
 
 PLIST_SUB+=	ABIVERSION=3.0
 

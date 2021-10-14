@@ -1,6 +1,5 @@
 PORTNAME=	profanity
-PORTVERSION=	0.10.0
-PORTREVISION=	1
+PORTVERSION=	0.11.0
 CATEGORIES=	net-im
 
 MAINTAINER=	arved@FreeBSD.org
@@ -25,7 +24,6 @@ USES=		ncurses pkgconfig ssl python readline autoreconf libtool gnome
 USE_GNOME=	glib20
 USE_GITHUB=	yes
 GH_ACCOUNT=	profanity-im
-GH_PROJECT=	profanity
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-otr --enable-python-plugins --enable-c-plugins \

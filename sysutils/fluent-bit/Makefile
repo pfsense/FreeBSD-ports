@@ -2,7 +2,7 @@
 
 PORTNAME=	fluent-bit
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.3
+DISTVERSION=	1.8.8
 CATEGORIES=	sysutils
 
 MAINTAINER=	girgen@FreeBSD.org
@@ -39,10 +39,6 @@ PGSQL_CMAKE_OFF=	-DFLB_OUT_PGSQL=Off
 USE_RC_SUBR=	${PORTNAME}
 
 .include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1200000
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-lib_luajit__src__lj_prng.c
-.endif
 
 .if ${ARCH:Mpowerpc64*}
 CMAKE_ARGS+=	-DFLB_LUAJIT:BOOL=OFF

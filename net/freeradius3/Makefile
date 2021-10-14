@@ -1,8 +1,7 @@
 # Created by: Ryan Steinmetz <zi@FreeBSD.org>
 
 PORTNAME=	freeradius
-DISTVERSION=	3.0.23
-PORTREVISION=	1
+DISTVERSION=	3.0.25
 CATEGORIES=	net
 MASTER_SITES=	ftp://ftp.freeradius.org/pub/freeradius/%SUBDIR%/ \
 		ftp://ftp.ntua.gr/pub/net/radius/freeradius/%SUBDIR%/ \
@@ -33,7 +32,7 @@ KRB5_CONFIG?=	/usr/bin/krb5-config --libs
 CONFLICTS_INSTALL=	gnu-radius-[0-9].* openradius-[0-9].* radiusd-cistron-[0-9].* \
 		freeradius-mysql-[0-9].* freeradius-[^3].*
 
-USES=		gmake readline shebangfix ssl tar:bzip2
+USES=		cpe gmake readline shebangfix ssl tar:bzip2
 USE_RC_SUBR=	radiusd
 
 SHEBANG_FILES=	src/modules/rlm_counter/rad_counter scripts/sql/radsqlrelay \

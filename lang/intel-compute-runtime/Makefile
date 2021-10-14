@@ -1,10 +1,11 @@
 PORTNAME=	compute-runtime
-DISTVERSION=	21.33.20678
+DISTVERSION=	21.40.21182
 CATEGORIES=	lang
 PKGNAMEPREFIX=	intel-
+PKGNAMESUFFIX=	-${FLAVOR}
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	4a926516c3ea.patch:-p1 # https://github.com/intel/compute-runtime/pull/361
+PATCHFILES+=	aa5a39a2db79.patch:-p1 # https://github.com/intel/compute-runtime/pull/361
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	OpenCL implementation for Intel HD 5000 (Gen8) or newer
@@ -12,11 +13,15 @@ COMMENT=	OpenCL implementation for Intel HD 5000 (Gen8) or newer
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	Only Intel GPUs on x86 are supported
 
-LIB_DEPENDS=	libigc.so:devel/intel-graphics-compiler \
+LIB_DEPENDS=	libigc.so:devel/intel-graphics-compiler@${FLAVOR} \
 		libigdgmm.so:multimedia/gmmlib
+
+FLAVORS=	${12 11:L:S/^/llvm/}
+
+CONFLICTS_INSTALL=	${PORTNAME}-*
 
 USES=		cmake compiler:c++17-lang localbase:ldflags pkgconfig
 USE_GITHUB=	yes
@@ -31,17 +36,15 @@ PLIST_FILES=	bin/ocloc \
 		lib/libocloc.so \
 		${NULL}
 
-OPTIONS_DEFINE=	VAAPI
-OPTIONS_DEFAULT=VAAPI
-OPTIONS_DEFINE_amd64=	L0
-OPTIONS_DEFAULT_amd64=	L0
+OPTIONS_DEFINE=	L0 VAAPI
+OPTIONS_DEFAULT=L0 VAAPI
 
 L0_DESC=		oneAPI Level Zero support
 L0_BUILD_DEPENDS=	level-zero>=1.0:devel/level-zero
 L0_CMAKE_BOOL=		BUILD_WITH_L0
 L0_CMAKE_ON=		-DNEO_VERSION_BUILD:STRING="0"
 L0_PLIST_FILES=		lib/libze_intel_gpu.so.1 \
-			lib/libze_intel_gpu.so.1.1.0
+			lib/libze_intel_gpu.so.1.2.0
 
 VAAPI_BUILD_DEPENDS=	${LOCALBASE}/include/va/va.h:multimedia/libva
 VAAPI_CMAKE_BOOL_OFF=	DISABLE_LIBVA

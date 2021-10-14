@@ -1,10 +1,11 @@
 PORTNAME=	ghub
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.5.3
+PORTREVISION=	1
 CATEGORIES=	devel elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	yasu@utahime.org
+MAINTAINER=	yasu@FreeBSD.org
 COMMENT=	Minuscule client library for the Github API
 
 LICENSE=	GPLv3+

@@ -1,11 +1,8 @@
 PORTNAME=	seatd
-DISTVERSION=	0.5.0
-PORTREVISION=	2
+DISTVERSION=	0.6.2
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	https://git.sr.ht/~kennylevinsen/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
-
-PATCH_SITES=	https://git.sr.ht/~kennylevinsen/${PORTNAME}/commit/
-PATCHFILES+=	5ad91ae9dad2.patch:-p1 # client: enable cr_pid on FreeBSD >= 12.3
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Minimal seat management daemon and universal library
@@ -13,34 +10,36 @@ COMMENT=	Minimal seat management daemon and universal library
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		compiler:c11 meson pkgconfig
+USES=		compiler:c11 cpe meson pkgconfig
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	${PORTNAME}
+CPE_VENDOR=	${PORTNAME}_project
+SUB_FILES=	pkg-message
 PLIST_FILES=	bin/${PORTNAME} \
+		"@(,video,4750) bin/${PORTNAME}-launch" \
 		include/libseat.h \
 		lib/libseat.so \
 		lib/libseat.so.1 \
 		libdata/pkgconfig/libseat.pc
 
-OPTIONS_DEFINE=	BASU MANPAGES SUID
-OPTIONS_DEFAULT=BASU MANPAGES SUID
+OPTIONS_DEFINE=	BASU MANPAGES
+OPTIONS_DEFAULT=BASU MANPAGES
+OPTIONS_SUB=	yes
 
 # https://lists.sr.ht/~kennylevinsen/seatd-devel/%3CQHZRRQ.73ZI29COPK131%40unrelenting.technology%3E
 BASU_DESC=		ConsoleKit2 support via basu (experimental)
 BASU_PATCH_SITES=	https://github.com/DankBSD/${PORTNAME}/commit/:ck2
-BASU_PATCHFILES=	7bfae6ecb3bb.patch:-p1:ck2 a7f1269a883b.patch:-p1:ck2
+BASU_PATCHFILES=	c35529dd761d.patch:-p1:ck2 76ccbf3617da.patch:-p1:ck2
 BASU_LIB_DEPENDS=	libbasu.so:devel/basu
 BASU_USES=		localbase # https://github.com/emersion/basu/issues/36
-BASU_MESON_ENABLED=	consolekit2
+BASU_MESON_ENABLED=	libseat-consolekit2
 .if make(makesum)
 .MAKEFLAGS:		WITH+=BASU
 .endif
 
 MANPAGES_BUILD_DEPENDS=	scdoc:textproc/scdoc
 MANPAGES_MESON_ENABLED=	man-pages
-MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz
-
-SUID_DESC=		Fall back to builtin server when running as root
-SUID_MESON_ENABLED=	builtin
+MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz \
+			man/man1/${PORTNAME}-launch.1.gz
 
 .include <bsd.port.mk>

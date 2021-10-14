@@ -1,8 +1,7 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
 
 PORTNAME=	webkit
-DISTVERSION=	2.30.5
-PORTREVISION=	2
+DISTVERSION=	2.34.0
 CATEGORIES=	www
 MASTER_SITES=	https://webkitgtk.org/releases/
 PKGNAMESUFFIX=	2-gtk3
@@ -36,7 +35,7 @@ LIB_DEPENDS=	libenchant-2.so:textproc/enchant2 \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		bison cmake compiler:c++14-lang gettext gl gnome gperf \
+USES=		bison cmake compiler:c++14-lang cpe gettext gl gnome gperf \
 		jpeg localbase:ldflags perl5 pkgconfig python:build \
 		sqlite tar:xz xorg
 USE_GNOME=	cairo gdkpixbuf2 gtk30 introspection:build libxml2 libxslt
@@ -47,6 +46,9 @@ USE_RUBY=	yes
 RUBY_NO_RUN_DEPENDS=	yes
 USE_XORG=	x11 xcomposite xdamage xext xrender xt ice
 
+CPE_VENDOR=	webkitgtk
+CPE_PRODUCT=	webkitgtk
+
 BINARY_ALIAS=		python=${PYTHON_CMD}
 CXXFLAGS+=		-DFIXED_EXECUTABLE_MEMORY_POOL_SIZE_IN_MB=32
 CXXFLAGS_powerpc=	-DENABLE_YARR_JIT=0
@@ -54,17 +56,16 @@ CXXFLAGS_powerpc64=	-DENABLE_YARR_JIT=0
 CMAKE_ARGS=		-DPORT=GTK
 CMAKE_OFF=		USE_LD_GOLD ${CMAKE_OFF_${ARCH}:U} \
 			ENABLE_GLES2 \
-			USE_SYSTEMD
+			USE_SYSTEMD \
+			ENABLE_GAMEPAD
 CMAKE_ON=		ENABLE_MINIBROWSER \
-			USE_SYSTEM_MALLOC
+			USE_SYSTEM_MALLOC \
+			USE_SOUP2
 CMAKE_OFF_armv6=	ENABLE_JIT
 CMAKE_OFF_armv7=	ENABLE_JIT
 CMAKE_OFF_powerpc=	ENABLE_JIT
 CMAKE_OFF_powerpc64=	ENABLE_JIT
-CONFIGURE_ENV=		XDG_CACHE_HOME=${WRKDIR}
 INSTALL_TARGET=		install
-
-BROWSER_PLUGINS_DIR?=	${LOCALBASE}/lib/browser_plugins/symlinks/webkit-gtk3
 
 OPTIONS_DEFINE=		DEBUG GEOIP GSTREAMER WAYLAND
 OPTIONS_DEFAULT=	GEOIP GSTREAMER WAYLAND
@@ -88,6 +89,8 @@ GEOIP_CMAKE_BOOL=	ENABLE_GEOLOCATION
 GEOIP_BUILD_DEPENDS=	geoclue>=2.4.3:net/geoclue
 GEOIP_RUN_DEPENDS=	geoclue>=2.4.3:net/geoclue
 
+GSTREAMER_EXTRA_PATCHES_OFF=	${PATCHDIR}/extra-patch-revert-7c0f13f37ec5 \
+				${PATCHDIR}/extra-patch-guard-video
 GSTREAMER_USE=		GSTREAMER1=bad,gl
 GSTREAMER_CMAKE_BOOL=	ENABLE_VIDEO ENABLE_WEB_AUDIO
 
@@ -95,10 +98,6 @@ WAYLAND_CMAKE_BOOL=	ENABLE_WAYLAND_TARGET
 WAYLAND_LIB_DEPENDS=	libwayland-egl.so:graphics/wayland \
 			libwpe-1.0.so:www/libwpe \
 			libWPEBackend-fdo-1.0.so:www/wpebackend-fdo
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|/usr/lib/browser/plugins|${BROWSER_PLUGINS_DIR}|' \
-		${WRKSRC}/Source/WebKit/Shared/Plugins/unix/PluginSearchPath.cpp
 
 pre-configure:
 # .if !exists() evaluates too early before cairo has a chance to be installed

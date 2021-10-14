@@ -1,6 +1,6 @@
 PORTNAME=	siril
 DISTVERSION=	0.99.10.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	astro graphics
 MASTER_SITES=	https://free-astro.org/download/
 
@@ -36,8 +36,6 @@ USES=		compiler:c++11-lang desktop-file-utils gettext \
 USE_GNOME=	atk cairo gdkpixbuf2 gtk30 intltool pango
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
-
-INSTALLS_ICONS=	yes
 
 BINARY_ALIAS=	git=false
 

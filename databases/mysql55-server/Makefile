@@ -13,9 +13,11 @@ COMMENT?=	Multithreaded SQL database (server)
 LICENSE=	GPLv2
 
 SLAVEDIRS=	databases/mysql55-client
-USES=		cmake:insource,noninja readline shebangfix
+USES=		cmake:insource,noninja cpe readline shebangfix
 CXXFLAGS+=	${CPPFLAGS}
 NO_OPTIONS_SORT=yes
+
+CPE_VENDOR=	oracle
 
 OPTIONS_DEFINE=	SSL FASTMTX
 OPTIONS_DEFAULT=SSL
@@ -55,12 +57,6 @@ USE_CXXSTD=     gnu++11
 .else
 USES+=          compiler:c++11-lang
 USE_CXXSTD=     gnu++98
-.endif
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200057
-SUB_LIST+=	LEGACY_LIMITS="@comment " MODERN_LIMITS=""
-.else
-SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MSSL}

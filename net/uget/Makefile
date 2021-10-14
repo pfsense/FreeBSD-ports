@@ -6,7 +6,7 @@ PORTREVISION=	4
 CATEGORIES=	net
 MASTER_SITES=	SF/urlget/${PORTNAME}%20%28stable%29/${PORTVERSION}
 
-MAINTAINER=	ndowens@yahoo.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight and full-featured graphical download manager
 
 LICENSE=	LGPL21+
@@ -18,7 +18,6 @@ RUN_DEPENDS=	aria2c:www/aria2
 USES=		compiler:c11 gettext-tools gmake gnome pkgconfig
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20 gtk30 intltool cairo
-INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 
 # Avoid warning, with redefinition of typedef (C11 feature)

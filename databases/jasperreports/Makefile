@@ -10,6 +10,9 @@ DISTFILES=	${PORTNAME}-${PORTVERSION}.jar ${PORTNAME}-applet-${PORTVERSION}.jar
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Powerful open source Java reporting tool
 
+DEPRECATED=	Unsupported by upstream, released in 2013
+EXPIRATION_DATE=2022-03-31
+
 RUN_DEPENDS=	${JAVALIBDIR}/itext.jar:devel/itext			\
 		${JAVALIBDIR}/xalan.jar:textproc/xalan-j		\
 		${JAVALIBDIR}/crimson.jar:textproc/crimson		\
@@ -18,6 +21,9 @@ RUN_DEPENDS=	${JAVALIBDIR}/itext.jar:devel/itext			\
 		${LOCALBASE}/share/java/batik/lib/batik-all.jar:graphics/batik	\
 		${JAVALIBDIR}/commons-beanutils.jar:java/apache-commons-beanutils\
 		${JAVALIBDIR}/commons-digester.jar:textproc/apache-commons-digester
+
+USES=		cpe
+CPE_VENDOR=	jaspersoft
 
 OPTIONS_DEFINE=	MYSQL PGSQL HSQLDB
 OPTIONS_DEFAULT=MYSQL PGSQL

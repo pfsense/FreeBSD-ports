@@ -1,6 +1,6 @@
 PORTNAME=	blender
 DISTVERSION=	2.83.15
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	graphics multimedia
 MASTER_SITES=	http://download.blender.org/source/ \
 		http://mirror.cs.umn.edu/blender.org/source/ \
@@ -28,7 +28,6 @@ USES=		cmake compiler:c++14-lang gl gnome jpeg python:3.7 shebangfix \
 USE_XORG=	x11 xext xfixes xmu xrender
 USE_GL=		gl glu glew
 
-INSTALLS_ICONS=	yes
 CMAKE_OFF=	WITH_IMAGE_OPENJPEG WITH_PYTHON_INSTALL \
 		WITH_PYTHON_INSTALL_NUMPY WITH_INSTALL_PORTABLE \
 		WITH_CYCLES_LOGGING
@@ -42,10 +41,6 @@ CFLAGS+=	${CFLAGS_${CHOSEN_COMPILER_TYPE}}
 CFLAGS_gcc=	-Wno-float-conversion
 CFLAGS_i386=	-march=i586
 CXXFLAGS_i386=	-march=i586
-# Use LLVM linker where available
-.if exists(/usr/bin/ld.lld) && (${/usr/bin/ld:L:tA} != /usr/bin/ld.lld)
-LDFLAGS+=	-fuse-ld=lld
-.endif
 
 # prevent conflict with other blender versions
 DATADIR=	${PREFIX}/share/${PORTNAME}${PKGNAMESUFFIX}

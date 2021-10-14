@@ -1,7 +1,7 @@
 # Created by: Carey Jones <mcj@acquiesce.org>
 
 PORTNAME=	mpg123
-PORTVERSION=	1.28.2
+PORTVERSION=	1.29.0
 CATEGORIES=	audio
 MASTER_SITES=	SF \
 		https://www.mpg123.de/download/
@@ -11,7 +11,7 @@ COMMENT=	Command-line player for MPEG Layer 1, 2, and 3 audio files
 
 LICENSE=	LGPL21
 
-USES=		tar:bzip2 libtool localbase pathfix
+USES=		cpe tar:bzip2 libtool localbase pathfix
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

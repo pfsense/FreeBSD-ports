@@ -1,7 +1,10 @@
 PORTNAME=	opencv
 DISTVERSION=	4.5.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics
+
+PATCH_SITES=    https://github.com/opencv/opencv/commit/
+PATCHFILES=     998406d20e93aa36b26fd56506f3ea8a82b43c24.patch:-p1 \
 
 MAINTAINER=	tcberner@FreeBSD.org
 COMMENT=	Open Source Computer Vision library
@@ -15,7 +18,7 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
 		libhdf5.so:science/hdf5
 
-USES=		cmake compiler:c++14-lang localbase:ldflags pkgconfig
+USES=		cmake compiler:c++14-lang cpe localbase:ldflags pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	WeChatCV:wechat
 GH_PROJECT=	opencv_contrib:contrib \

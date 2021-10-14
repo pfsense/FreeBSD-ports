@@ -1,9 +1,10 @@
 PORTNAME=	consul-template
-PORTVERSION=	0.25.2
+PORTVERSION=	0.27.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc
 
 MAINTAINER=	swills@FreeBSD.org
+# co-maintainer: brd
 COMMENT=	Generic template rendering and notifications with Consul
 
 LICENSE=	MPL20
@@ -42,6 +43,7 @@ GH_TUPLE=	hashicorp:${PORTNAME}:${DISTVERSIONPREFIX}${PORTVERSION}:DEFAULT/src/g
 		hashicorp:serf:v0.9.4:hashicorp_serf/vendor/github.com/hashicorp/serf \
 		hashicorp:vault:0dc007d98cc8:hashicorp_vault_sdk/vendor/github.com/hashicorp/vault \
 		hashicorp:vault:746c0b111519:hashicorp_vault_api \
+		imdario:mergo:v0.3.12:imdario_mergo/vendor/github.com/imdario/mergo \
 		mattn:go-colorable:v0.1.7:mattn_go_colorable/vendor/github.com/mattn/go-colorable \
 		mattn:go-isatty:v0.0.12:mattn_go_isatty/vendor/github.com/mattn/go-isatty \
 		mattn:go-shellwords:v1.0.10:mattn_go_shellwords/vendor/github.com/mattn/go-shellwords \

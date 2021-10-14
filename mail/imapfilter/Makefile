@@ -10,11 +10,11 @@ COMMENT=	IMAP mail filtering utility
 
 LICENSE=	MIT
 
-BROKEN_FreeBSD_11=Requires openssl111 to build
-
 LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 
-USES=		lua ssl
+USES=		cpe lua ssl
+
+CPE_VENDOR=	imapfilter_project
 
 CPPFLAGS+=	-I${LOCALBASE}/include -I${LUA_INCDIR}
 LDFLAGS+=	-L${LOCALBASE}/lib -L${LUA_LIBDIR}
