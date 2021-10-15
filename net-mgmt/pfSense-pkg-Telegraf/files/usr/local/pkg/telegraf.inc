@@ -82,7 +82,7 @@ function telegraf_resync_config() {
 	fielddrop = ["time_*"]
 
 [[inputs.disk]]
-	ignore_fs = ["tmpfs", "devtmpfs"]
+	ignore_fs = ["tmpfs", "devtmpfs", "devfs"]
 
 [[inputs.diskio]]
 
