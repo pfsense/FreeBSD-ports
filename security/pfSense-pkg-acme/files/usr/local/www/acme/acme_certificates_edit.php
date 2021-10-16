@@ -385,6 +385,13 @@ $section->addInput(new \Form_Checkbox(
 	$pconfig['ocspstaple']
 ))->setHelp('Do not enable this option unless the software using the certificate also supports OCSP stapling.');
 
+$section->addInput(new \Form_Input(
+	'preferredchain',
+	'Preferred Chain',
+	'text',
+	$pconfig['preferredchain']
+))->setHelp('If the ACME CA provides multiple cert chains, select this one (a case-insensitive substring match is made).');
+
 $section->addInput(new \Form_StaticText(
 	'Domain SAN list', 
 	"List all domain names that should be included in the certificate here, and how to validate ownership by use of a webroot or dns challenge<br/>"
