@@ -688,7 +688,7 @@ else
 if (!empty($suricatacfg['stream_memcap']))
 	$stream_memcap = $suricatacfg['stream_memcap'];
 else
-	$stream_memcap = "67108864";
+	$stream_memcap = "131217728";
 
 if (!empty($suricatacfg['stream_prealloc_sessions']))
 	$stream_prealloc_sessions = $suricatacfg['stream_prealloc_sessions'];
@@ -698,7 +698,7 @@ else
 if (!empty($suricatacfg['reassembly_memcap']))
 	$reassembly_memcap = $suricatacfg['reassembly_memcap'];
 else
-	$reassembly_memcap = "67108864";
+	$reassembly_memcap = "131217728";
 
 if (!empty($suricatacfg['reassembly_depth']) || $suricatacfg['reassembly_depth'] == '0')
 	$reassembly_depth = $suricatacfg['reassembly_depth'];
@@ -1126,6 +1126,16 @@ if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffender
 		$netmap_threads_param = $suricatacfg['ips_netmap_threads'];
 	}
 
+	$if_netmap = $if_real;
+
+	// For VLAN interfaces, need to actually run Suricata
+	// on the parent interface, so override interface name.
+	if (interface_is_vlan($if_real)) {
+		$intf_list = get_parent_interface($if_real);
+		$if_netmap = $intf_list[0];
+		syslog(LOG_WARNING, "[suricata] WARNING: interface '{$if_real}' is a VLAN, so configuring Suricata to run on the parent interface, '{$if_netmap}', instead.");
+	}
+
 	// Note -- Netmap promiscuous mode logic is backwards from pcap
 	$netmap_intf_promisc_mode = $intf_promisc_mode == 'yes' ? 'no' : 'yes';
 	$suricata_ips_mode = <<<EOD
@@ -1136,10 +1146,14 @@ netmap:
    copy-mode: ips
    disable-promisc: {$netmap_intf_promisc_mode}
    checksum-checks: auto
- - interface: {$if_real}
-   copy-iface: {$if_real}^
- - interface: {$if_real}^
-   copy-iface: {$if_real}
+ - interface: {$if_netmap}
+   threads: {$netmap_threads_param}
+   copy-mode: ips
+   copy-iface: {$if_netmap}^
+ - interface: {$if_netmap}^
+   threads: {$netmap_threads_param}
+   copy-mode: ips
+   copy-iface: {$if_netmap}
 EOD;
 }
 else {

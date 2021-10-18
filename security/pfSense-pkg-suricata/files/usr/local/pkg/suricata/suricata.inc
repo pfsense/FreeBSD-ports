@@ -91,8 +91,9 @@ function suricata_start($suricatacfg, $if_real) {
 		// Truncate suricata.log file for this interface.
 		file_put_contents("{$suricatalogdir}/suricata.log", '');
 		$run_mode = $suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffenders'] == 'on' ? '--netmap' : '-i ' . $if_real;
+		$verbose_logging = $suricatacfg['enable_verbose_logging'] == 'on' ? "-vv" : "";
 		syslog(LOG_NOTICE, "[Suricata] Suricata START for {$suricatacfg['descr']}({$if_real})...");
-		mwexec_bg("{$suricatabindir}suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml --pidfile {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
+		mwexec_bg("{$suricatabindir}suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml --pidfile {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid {$verbose_logging}");
 	} else {
 		return;
 	}
@@ -3612,6 +3613,7 @@ function suricata_create_rc() {
 		$no_enabled_interface = FALSE;
 		$suricata_uuid = $value['uuid'];
 		$run_mode = $value['ips_mode'] == 'ips_mode_inline' && $value['blockoffenders'] == 'on' ? '--netmap' : '-i ' . $if_real;
+		$verbose_logging = $value['enable_verbose_logging'] == 'on' ? "-vv" : "";
 
 		$start_suricata_iface_start[] = <<<EOE
 
@@ -3625,7 +3627,7 @@ function suricata_create_rc() {
 	if [ -z \$pid ]; then
 		/bin/cp /dev/null {$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/suricata.log
 		/usr/bin/logger -p daemon.info -i -t SuricataStartup "Suricata START for {$value['descr']}({$suricata_uuid}_{$if_real})..."
-		{$suricatabindir}suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml --pidfile {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid > /dev/null 2>&1
+		{$suricatabindir}suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml --pidfile {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid {$verbose_logging} > /dev/null 2>&1
 	fi
 
 	sleep 1
