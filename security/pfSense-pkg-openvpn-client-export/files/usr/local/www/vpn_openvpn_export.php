@@ -64,14 +64,17 @@ foreach ($a_server as $server) {
 	if (stripos($server['mode'], "server") === false) {
 		continue;
 	}
-	if (function_exists('cert_build_list')) {
-		$ecdsagood = array_keys(cert_build_list('cert', 'OpenVPN'));
-	} else {
-		$ecdsagood = array();
-		foreach ($a_cert as $cindex => $cert) {
+	init_config_arr(array('cert'));
+	$ecdsagood = array();
+	foreach ($config['cert'] as $cert) {
+		if (!empty($cert['prv']) && function_exists('cert_check_pkey_compatibility') &&
+		    !cert_check_pkey_compatibility($cert['prv'], 'OpenVPN')) {
+			continue;
+		} else {
 			$ecdsagood[] = $cert['refid'];
 		}
 	}
+
 	if (($server['mode'] == "server_tls_user") && ($server['authmode'] == "Local Database")) {
 		foreach ($a_user as $uindex => $user) {
 			if (!is_array($user['cert'])) {
@@ -251,6 +254,14 @@ if (!empty($act)) {
 		} else {
 			$password = $cfg['pass'];
 		}
+	}
+	if (($srvcfg['mode'] == "server_tls_user") && ($settings['authmode'] == "Local Database")) {
+		$cert = $user['cert'][$crtid];
+	} else {
+		$cert = $config['cert'][$crtid];
+	}
+	if (!$usepkcs11 && !$usetoken && empty($cert['prv'])) { 
+		$input_errors[] = "A private key cannot be empty if PKCS#11 or Microsoft Certificate Storage is not used.";
 	}
 
 	$proxy = "";

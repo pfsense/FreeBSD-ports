@@ -74,16 +74,20 @@ function openvpn_client_pem_to_pk12($outpath, $outpass, $crtpath, $keypath, $cap
 	$eoutpath = escapeshellarg($outpath);
 	$eoutpass = escapeshellarg($outpass);
 	$ecrtpath = escapeshellarg($crtpath);
-	$ekeypath = escapeshellarg($keypath);
+	if ($keypath) {
+		$key = '-inkey ' . escapeshellarg($keypath);
+	} else {
+		$key = '-nokeys';
+	}
 	if ($capath) {
 		$ecapath = escapeshellarg($capath);
-		exec("/usr/bin/openssl pkcs12 -export -in {$ecrtpath} -inkey {$ekeypath} -certfile {$ecapath} -out {$eoutpath} -passout pass:{$eoutpass}");
+		exec("/usr/bin/openssl pkcs12 -export -in {$ecrtpath} {$key} -certfile {$ecapath} -out {$eoutpath} -passout pass:{$eoutpass}");
 	} else {
-		exec("/usr/bin/openssl pkcs12 -export -in {$ecrtpath} -inkey {$ekeypath} -out {$eoutpath} -passout pass:{$eoutpass}");
+		exec("/usr/bin/openssl pkcs12 -export -in {$ecrtpath} {$key} -out {$eoutpath} -passout pass:{$eoutpass}");
 	}
 
 	unlink($crtpath);
-	unlink($keypath);
+	unlink_if_exists($keypath);
 	if ($capath) {
 		unlink($capath);
 	}
@@ -449,8 +453,10 @@ EOF;
 			if ($settings['mode'] != "server_user" && !$usepkcs11) {
 				$crtfile = "{$tempdir}/{$prefix}-cert.crt";
 				file_put_contents($crtfile, base64_decode($cert['crt']));
-				$keyfile = "{$tempdir}/{$prefix}.key";
-				file_put_contents($keyfile, base64_decode($cert['prv']));
+				if (!empty($cert['prv'])) {
+					$keyfile = "{$tempdir}/{$prefix}.key";
+					file_put_contents($keyfile, base64_decode($cert['prv']));
+				}
 
 				// convert to pkcs12 format
 				$p12file = "{$tempdir}/{$prefix}.p12";
@@ -643,8 +649,10 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 	if ($settings['mode'] != "server_user" && !$usepkcs11) {
 		$crtfile = "{$tempdir}/config/{$prefix}-{$user['name']}.crt";
 		file_put_contents($crtfile, base64_decode($cert['crt']));
-		$keyfile = "{$tempdir}/config/{$prefix}-{$user['name']}.key";
-		file_put_contents($keyfile, base64_decode($cert['prv']));
+		if (!empty($cert['prv'])) {
+			$keyfile = "{$tempdir}/config/{$prefix}-{$user['name']}.key";
+			file_put_contents($keyfile, base64_decode($cert['prv']));
+		}
 		// convert to pkcs12 format
 		$p12file = "{$tempdir}/config/{$prefix}.p12";
 		if ($usetoken) {
