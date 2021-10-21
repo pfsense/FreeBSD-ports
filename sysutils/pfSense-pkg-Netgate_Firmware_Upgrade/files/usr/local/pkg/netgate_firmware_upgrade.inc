@@ -22,6 +22,31 @@
 require_once("globals.inc");
 require_once("system.inc");
 
+function check_update($current, $new) {
+
+	# Do not update if we are missing any information.
+	if (!isset($current) || !isset($new) ||
+	    !isset($current['version']) || !isset($new['version']) ||
+	    !isset($new['platform'])) {
+		return false;
+	}
+
+	if ($new['platform'] != "6100") {
+		return ($current['version'] == $new['version']);
+	}
+
+	if (strlen($current['version']) != 18 ||
+	    strlen($new['version']) != 18 ||
+	    strpos($current['version'], 't-uc-') != 11 ||
+	    strpos($new['version'], 't-uc-') != 11) {
+		return false;
+	}
+	$curver = str_replace(array(".", "t-uc-"), "", $current['version']);
+	$newver = str_replace(array(".", "t-uc-"), "", $new['version']);
+
+	return (intval($newver) > intval($curver));
+}
+
 function get_firmware_model() {
 	$specplatform = system_identify_specific_platform();
 
@@ -60,7 +85,10 @@ function get_firmware_details($firmware) {
 	if (preg_match('/^(CORDOBA)-([\d.]{11}\w-uc-\d*)/', $firmware,
 	    $matches)) {
 
-		return(array('model' => $matches[1], 'version' => $matches[2]));
+		$details['platform'] = get_firmware_model();
+		$details['model'] = $matches[1];
+		$details['version'] = $matches[2];
+		return $details;
 	}
 
 	if (!preg_match('/^ADI_(RCC|RCCVE|DFF2|PLCC)-([\d.]{11})/',
@@ -72,6 +100,7 @@ function get_firmware_details($firmware) {
 		return $details;
 	}
 
+	$details['platform'] = get_firmware_model();
 	$details['model'] = $matches[1];
 	$details['version'] = $matches[2];
 

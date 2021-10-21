@@ -31,8 +31,10 @@ if [ ! -f "${rom_path}" ]; then
 fi
 
 image=$(basename ${rom_path})
-version="${image%-uc-*}"
-cur_version=$(kenv -q smbios.bios.version 2>/dev/null)
+version=$(echo ${image} | cut -d- -f2- | tr -d '[.|\-|a-z|A-Z]')
+cur_version=$(kenv -q smbios.bios.version 2>/dev/null | cut -d- -f2- | tr -d '[.|a-z|A-Z]')
+uc_cur_ver=$(sysctl -n dev.cordbuc.0.version 2> /dev/null)
+cur_version=${cur_version}${uc_cur_ver}
 product=$(kenv -q smbios.system.product 2>/dev/null)
 base_dir=$(dirname $(realpath $0))
 
@@ -96,7 +98,7 @@ if [ "${product}" != "6100" ]; then
 	echo "Unsupported device ${product}.  exiting."
 	exit 1
 fi
-if [ "${cur_version}" = "${version}" ]; then
+if [ "${cur_version}" -ge "${version}" ]; then
 	echo "BlinkBoot is already at the latest version.  exiting."
 	exit 0
 fi
