@@ -130,7 +130,7 @@ if (empty($input_errors) && !file_exists("/tmp/coreupdatecomplete") &&
 			$new['version']
 		));
 
-		if ($new['version'] != $current['version']) {
+		if (check_update($current, $new)) {
 			$section->addInput(new Form_Button(
 				'upgrade',
 				'Upgrade and Reboot',
