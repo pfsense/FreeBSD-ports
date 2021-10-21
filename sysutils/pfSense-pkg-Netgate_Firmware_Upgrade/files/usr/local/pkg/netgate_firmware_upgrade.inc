@@ -26,6 +26,10 @@ function get_firmware_model() {
 	$specplatform = system_identify_specific_platform();
 
 	switch($specplatform['name']) {
+	case '6100':
+	case '7100':
+		return $specplatform['name'];
+		break;
 	case 'RCC-DFF':
 	case 'SG-2220':
 		return 'DFF2';
@@ -38,12 +42,6 @@ function get_firmware_model() {
 		break;
 	case 'RCC':
 		return 'RCC';
-		break;
-	case 'PLCC-B':
-		return 'PLCC';
-		break;
-	case 'Netgate-6100':
-		return 'CORDOBA';
 		break;
 	default:
 		return '';
@@ -93,11 +91,11 @@ function get_new_firmware_details() {
 	$firmware_path = "%%DATADIR%%/roms/";
 
 	$rom_names = array(
+	    '6100' => '%%BLINKBOOT_NETGATE_6100%%',
+	    '7100' => '%%COREBOOT_PLCCB_ROM%%',
 	    'RCC' => '%%COREBOOT_RCC_ROM%%',
 	    'RCCVE' => '%%COREBOOT_RCCVE_ROM%%',
 	    'DFF2' => '%%COREBOOT_DFF2_ROM%%',
-	    'PLCC' => '%%COREBOOT_PLCCB_ROM%%',
-	    'CORDOBA' => '%%BLINKBOOT_NETGATE_6100%%',
 	);
 
 	$model = get_firmware_model();
@@ -121,10 +119,10 @@ function upgrade_firmware($firmware, &$output) {
 	putenv("PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:" .
 	    "/usr/local/sbin");
 
-	if ($firmware['model'] == 'CORDOBA') {
+	if ($firmware['model'] == '6100') {
 		$_gc = exec("/usr/local/sbin/blinkboot-upgrade.sh " .
 		    $firmware['rom_path'] . ' 2>&1', $output, $rc);
-	} elseif ($firmware['model'] == 'PLCC') {
+	} elseif ($firmware['model'] == '7100') {
 		$_gc = exec("/usr/local/sbin/adi_smbios_util -w -u " .
 		    $firmware['rom_path'] . ' 2>&1', $output, $rc);
 	} else {
