@@ -31,7 +31,7 @@ function check_update($current, $new) {
 		return false;
 	}
 
-	if ($new['platform'] != "6100") {
+	if ($new['platform'] != "CORDOBA") {
 		return ($current['version'] == $new['version']);
 	}
 
