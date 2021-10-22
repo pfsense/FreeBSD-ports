@@ -373,9 +373,9 @@ $group->addClass('basic');
 $group->add(new Form_Checkbox(
 	'email',
 	'E-Mail',
-	'Enable E-Mail notifications',
+	'Enable notifications',
 	$pconfig['email']
-))->sethelp('E-Mail delivery settings are configured under System -> Advanced, on the Notifications tab.');
+))->sethelp('E-Mail/Telegram/Pushover delivery settings are configured under System -> Advanced, on the Notifications tab.');
 $section->add($group);
 
 $form->add($section);
