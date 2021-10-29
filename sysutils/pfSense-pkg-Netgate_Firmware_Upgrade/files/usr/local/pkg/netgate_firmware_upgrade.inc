@@ -31,18 +31,27 @@ function check_update($current, $new) {
 		return false;
 	}
 
-	if ($new['platform'] != "6100") {
+	if ($new['platform'] == "4100") {
+		if (strlen($current['version']) != 21 ||
+		    strlen($new['version']) != 21 ||
+		    strpos($current['version'], '-2Ct-uc-') != 11 ||
+		    strpos($new['version'], '-2Ct-uc-') != 11) {
+			return false;
+		}
+		$curver = str_replace(array(".", "-2Ct-uc-"), "", $current['version']);
+		$newver = str_replace(array(".", "-2Ct-uc-"), "", $new['version']);
+	else if ($new['platform'] == "6100") {
+		if (strlen($current['version']) != 18 ||
+		    strlen($new['version']) != 18 ||
+		    strpos($current['version'], 't-uc-') != 11 ||
+		    strpos($new['version'], 't-uc-') != 11) {
+			return false;
+		}
+		$curver = str_replace(array(".", "t-uc-"), "", $current['version']);
+		$newver = str_replace(array(".", "t-uc-"), "", $new['version']);
+	} else {
 		return ($current['version'] == $new['version']);
 	}
-
-	if (strlen($current['version']) != 18 ||
-	    strlen($new['version']) != 18 ||
-	    strpos($current['version'], 't-uc-') != 11 ||
-	    strpos($new['version'], 't-uc-') != 11) {
-		return false;
-	}
-	$curver = str_replace(array(".", "t-uc-"), "", $current['version']);
-	$newver = str_replace(array(".", "t-uc-"), "", $new['version']);
 
 	return (intval($newver) > intval($curver));
 }
@@ -51,6 +60,7 @@ function get_firmware_model() {
 	$specplatform = system_identify_specific_platform();
 
 	switch($specplatform['name']) {
+	case '4100':
 	case '6100':
 	case '7100':
 		return $specplatform['name'];
@@ -120,6 +130,7 @@ function get_new_firmware_details() {
 	$firmware_path = "%%DATADIR%%/roms/";
 
 	$rom_names = array(
+	    '4100' => '%%BLINKBOOT_NETGATE_4100%%',
 	    '6100' => '%%BLINKBOOT_NETGATE_6100%%',
 	    '7100' => '%%COREBOOT_PLCCB_ROM%%',
 	    'RCC' => '%%COREBOOT_RCC_ROM%%',
@@ -148,7 +159,7 @@ function upgrade_firmware($firmware, &$output) {
 	putenv("PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:" .
 	    "/usr/local/sbin");
 
-	if ($firmware['model'] == '6100') {
+	if ($firmware['model'] == '4100' || $firmware['model'] == '6100') {
 		$_gc = exec("/usr/local/sbin/blinkboot-upgrade.sh " .
 		    $firmware['rom_path'] . ' 2>&1', $output, $rc);
 	} elseif ($firmware['model'] == '7100') {
