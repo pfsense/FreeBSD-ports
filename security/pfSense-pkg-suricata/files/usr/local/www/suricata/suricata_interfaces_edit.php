@@ -32,7 +32,7 @@ $suricatadir = SURICATADIR;
 $suricatalogdir = SURICATALOGDIR;
 
 // Define an array of native-mode netmap compatible NIC drivers
-$netmapifs = array('cc', 'cxl', 'cxgbe', 'em', 'igb', 'em', 'lem', 'ix', 'ixgbe', 'ixl', 're', 'vtnet');
+$netmapifs = array('cc', 'cxl', 'cxgbe', 'em', 'igb', 'lem', 'ix', 'ixgbe', 'ixl', 're', 'vtnet');
 if (pfs_version_compare(false, 2.4, $g['product_version'])) {
 	/* add FreeBSD 12 iflib(4) supported devices */
 	$netmapifs = array_merge($netmapifs, array('ena', 'ice', 'bnxt', 'vmx'));
