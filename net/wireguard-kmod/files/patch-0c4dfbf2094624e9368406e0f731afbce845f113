@@ -1,0 +1,50 @@
+From 0c4dfbf2094624e9368406e0f731afbce845f113 Mon Sep 17 00:00:00 2001
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date: Fri, 29 Oct 2021 16:20:16 +0200
+Subject: if_wg: protect in6_mask2len with INET6
+
+In the process, just don't do v6 allowedips if there's no INET6 support.
+
+Reported-by: Yi <yu@boenyc.us>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+---
+ src/if_wg.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/src/if_wg.c b/src/if_wg.c
+index 649235639abd..b06546d8fa60 100644
+--- if_wg.c
++++ if_wg.c
+@@ -572,6 +572,7 @@ wg_aip_add(struct wg_softc *sc, struct wg_peer *peer, sa_family_t af, const void
+ 		aip->a_addr.ip &= aip->a_mask.ip;
+ 		aip->a_addr.length = aip->a_mask.length = offsetof(struct aip_addr, in) + sizeof(struct in_addr);
+ 		break;
++#ifdef INET6
+ 	case AF_INET6:
+ 		if (cidr > 128) cidr = 128;
+ 		root = sc->sc_aip6;
+@@ -581,6 +582,7 @@ wg_aip_add(struct wg_softc *sc, struct wg_peer *peer, sa_family_t af, const void
+ 			aip->a_addr.ip6[i] &= aip->a_mask.ip6[i];
+ 		aip->a_addr.length = aip->a_mask.length = offsetof(struct aip_addr, in6) + sizeof(struct in6_addr);
+ 		break;
++#endif
+ 	default:
+ 		free(aip, M_WG);
+ 		return (EAFNOSUPPORT);
+@@ -2554,10 +2556,13 @@ wgc_get(struct wg_softc *sc, struct wg_data_io *wgd)
+ 					if (aip->a_af == AF_INET) {
+ 						nvlist_add_binary(nvl_aip, "ipv4", &aip->a_addr.in, sizeof(aip->a_addr.in));
+ 						nvlist_add_number(nvl_aip, "cidr", bitcount32(aip->a_mask.ip));
+-					} else if (aip->a_af == AF_INET6) {
++					}
++#ifdef INET6
++					else if (aip->a_af == AF_INET6) {
+ 						nvlist_add_binary(nvl_aip, "ipv6", &aip->a_addr.in6, sizeof(aip->a_addr.in6));
+ 						nvlist_add_number(nvl_aip, "cidr", in6_mask2len(&aip->a_mask.in6, NULL));
+ 					}
++#endif
+ 				}
+ 				nvlist_add_nvlist_array(nvl_peer, "allowed-ips", (const nvlist_t *const *)nvl_aips, aip_count);
+ 			err_aip:
+-- 
+cgit v1.2.3-11-g984f
