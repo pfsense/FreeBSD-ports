@@ -40,7 +40,7 @@ function check_update($current, $new) {
 		}
 		$curver = str_replace(array(".", "-2Ct-uc-"), "", $current['version']);
 		$newver = str_replace(array(".", "-2Ct-uc-"), "", $new['version']);
-	else if ($new['platform'] == "6100") {
+	} elseif ($new['platform'] == "6100") {
 		if (strlen($current['version']) != 18 ||
 		    strlen($new['version']) != 18 ||
 		    strpos($current['version'], 't-uc-') != 11 ||
