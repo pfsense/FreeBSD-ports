@@ -1,0 +1,43 @@
+From 93bd2b17d6e798afebf6c7b81a9bb2d676ac3bb6 Mon Sep 17 00:00:00 2001
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date: Tue, 26 Oct 2021 11:18:16 +0200
+Subject: if_wg: bump keepalive timers unconditionally on send
+
+The keepalive timers -- both persistent and mandatory -- are part of the
+internal state machine, which needs to be cranked whether or not the
+packet was actually sent. A packet might be dropped by the network. Or
+the packet might be dropped by the local network stack. The latter case
+gives a hint -- which is useful for the data_sent event -- but is
+harmful to consider for the keepalive state machine. So, crank those
+timers before even calling wg_send.
+
+Incidentally, doing it this way matches exactly what Linux's send.c's
+wg_packet_create_data_done and Go's send.go's RoutineSequentialSender do
+too.
+
+Suggested-by: Kyle Evans <kevans@freebsd.org>
+Reported-by: Ryan Roosa <ryanroosa@gmail.com>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+---
+ src/if_wg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/if_wg.c b/src/if_wg.c
+index 11b8394b9f7d..649235639abd 100644
+--- if_wg.c
++++ if_wg.c
+@@ -1676,10 +1676,10 @@ wg_deliver_out(struct wg_peer *peer)
+ 
+ 		len = m->m_pkthdr.len;
+ 
++		wg_timers_event_any_authenticated_packet_traversal(peer);
++		wg_timers_event_any_authenticated_packet_sent(peer);
+ 		rc = wg_send(sc, &endpoint, m);
+ 		if (rc == 0) {
+-			wg_timers_event_any_authenticated_packet_traversal(peer);
+-			wg_timers_event_any_authenticated_packet_sent(peer);
+ 			if (len > (sizeof(struct wg_pkt_data) + NOISE_AUTHTAG_LEN))
+ 				wg_timers_event_data_sent(peer);
+ 			counter_u64_add(peer->p_tx_bytes, len);
+-- 
+cgit v1.2.3-11-g984f
