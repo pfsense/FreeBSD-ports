@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-repo
-DISTVERSION=	21.05.2
+DISTVERSION=	21.05.3
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
