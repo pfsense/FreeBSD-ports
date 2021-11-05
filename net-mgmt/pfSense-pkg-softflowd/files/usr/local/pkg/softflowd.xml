@@ -123,6 +123,12 @@
 			<required/>
 		</field>
 		<field>
+			<fielddescr>Birectional Flow</fielddescr>
+			<fieldname>biflows</fieldname>
+			<description>Use bidirectional flows. Only possible with IPFIX</description>
+			<type>checkbox</type>
+		</field>
+		<field>
 			<fielddescr>Flow Tracking Level</fielddescr>
 			<fieldname>flowtracking</fieldname>
 			<description>
