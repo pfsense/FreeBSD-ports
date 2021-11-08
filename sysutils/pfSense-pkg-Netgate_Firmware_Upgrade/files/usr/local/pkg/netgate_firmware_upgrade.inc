@@ -31,18 +31,27 @@ function check_update($current, $new) {
 		return false;
 	}
 
-	if ($new['platform'] != "CORDOBA") {
+	if ($new['platform'] != "CORDOBA2C") {
+		if (strlen($current['version']) != 21 ||
+		    strlen($new['version']) != 21 ||
+		    strpos($current['version'], '-2Ct-uc-') != 11 ||
+		    strpos($new['version'], '-2Ct-uc-') != 11) {
+			return false;
+		}
+		$curver = str_replace(array(".", "-2Ct-uc-"), "", $current['version']);
+		$newver = str_replace(array(".", "-2Ct-uc-"), "", $new['version']);
+	} elseif ($new['platform'] != "CORDOBA") {
+		if (strlen($current['version']) != 18 ||
+		    strlen($new['version']) != 18 ||
+		    strpos($current['version'], 't-uc-') != 11 ||
+		    strpos($new['version'], 't-uc-') != 11) {
+			return false;
+		}
+		$curver = str_replace(array(".", "t-uc-"), "", $current['version']);
+		$newver = str_replace(array(".", "t-uc-"), "", $new['version']);
+	} else {
 		return ($current['version'] == $new['version']);
 	}
-
-	if (strlen($current['version']) != 18 ||
-	    strlen($new['version']) != 18 ||
-	    strpos($current['version'], 't-uc-') != 11 ||
-	    strpos($new['version'], 't-uc-') != 11) {
-		return false;
-	}
-	$curver = str_replace(array(".", "t-uc-"), "", $current['version']);
-	$newver = str_replace(array(".", "t-uc-"), "", $new['version']);
 
 	return (intval($newver) > intval($curver));
 }
@@ -66,6 +75,9 @@ function get_firmware_model() {
 		break;
 	case 'PLCC-B':
 		return 'PLCC';
+		break;
+	case 'Netgate-4100':
+		return 'CORDOBA2C';
 		break;
 	case 'Netgate-6100':
 		return 'CORDOBA';
@@ -127,6 +139,7 @@ function get_new_firmware_details() {
 	    'DFF2' => '%%COREBOOT_DFF2_ROM%%',
 	    'PLCC' => '%%COREBOOT_PLCCB_ROM%%',
 	    'CORDOBA' => '%%BLINKBOOT_NETGATE_6100%%',
+	    'CORDOBA2C' => '%%BLINKBOOT_NETGATE_4100%%',
 	);
 
 	$model = get_firmware_model();
@@ -150,7 +163,7 @@ function upgrade_firmware($firmware, &$output) {
 	putenv("PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:" .
 	    "/usr/local/sbin");
 
-	if ($firmware['model'] == 'CORDOBA') {
+	if ($firmware['model'] == 'CORDOBA' || $firmware['model'] == 'CORDOBA2C') {
 		$_gc = exec("/usr/local/sbin/blinkboot-upgrade.sh " .
 		    $firmware['rom_path'] . ' 2>&1', $output, $rc);
 	} elseif ($firmware['model'] == 'PLCC') {

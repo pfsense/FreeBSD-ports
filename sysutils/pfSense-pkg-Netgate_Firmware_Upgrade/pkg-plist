@@ -8,6 +8,7 @@ sbin/blinkboot-upgrade.sh
 sbin/cbfstool
 sbin/dmistore
 %%DATADIR%%/info.xml
+%%DATADIR%%/roms/%%BLINKBOOT_NETGATE_4100%%
 %%DATADIR%%/roms/%%BLINKBOOT_NETGATE_6100%%
 %%DATADIR%%/roms/%%COREBOOT_DFF2_ROM%%
 %%DATADIR%%/roms/%%COREBOOT_PLCCB_ROM%%

@@ -31,8 +31,8 @@ if [ ! -f "${rom_path}" ]; then
 fi
 
 image=$(basename ${rom_path})
-version=$(echo ${image} | cut -d- -f2- | tr -d '[.|\-|a-z|A-Z]')
-cur_version=$(kenv -q smbios.bios.version 2>/dev/null | cut -d- -f2- | tr -d '[.|a-z|A-Z]')
+version=$(echo ${image} | cut -d- -f2- | sed 's/-2Ct-uc/t-uc/' | tr -d '[.|\-|a-z|A-Z]')
+cur_version=$(kenv -q smbios.bios.version 2>/dev/null | cut -d- -f2- | sed 's/-2Ct/t/' | tr -d '[.|a-z|A-Z]')
 uc_cur_ver=$(sysctl -n dev.cordbuc.0.version 2> /dev/null)
 cur_version=${cur_version}${uc_cur_ver}
 product=$(kenv -q smbios.system.product 2>/dev/null)
@@ -94,7 +94,7 @@ check_efi_partition() {
 	sysctl kern.geom.conftxt | grep "${_disk}p${_part}" | awk '{ if ($11 == "efi" && $13 == "GPT") { print "ok" }}'
 }
 
-if [ "${product}" != "6100" ]; then
+if [ "${product}" != "4100" -a "${product}" != "6100" ]; then
 	echo "Unsupported device ${product}.  exiting."
 	exit 1
 fi
