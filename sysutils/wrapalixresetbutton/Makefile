@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	wrapalixresetbutton
-PORTVERSION=	0.0.8
+PORTVERSION=	0.0.9
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# none
@@ -18,6 +18,7 @@ PLIST_FILES=	sbin/wrapresetbtn \
 		sbin/RCC-DFFresetbtn \
 		sbin/SG-5100resetbtn \
 		sbin/SG-5100led \
+		sbin/4100resetbtn \
 		sbin/6100resetbtn
 
 ONLY_FOR_ARCHS=	amd64
@@ -45,5 +46,6 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/SG-5100resetbtn ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_PROGRAM} ${WRKSRC}/SG-5100led ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_PROGRAM} ${WRKSRC}/6100resetbtn ${STAGEDIR}${PREFIX}/sbin
+	${LN} ${STAGEDIR}${PREFIX}/sbin/6100resetbtn ${STAGEDIR}${PREFIX}/sbin/4100resetbtn
 
 .include <bsd.port.mk>
