@@ -4,7 +4,8 @@ PORTNAME=	stunnel
 PORTVERSION=	5.59
 PORTEPOCH=	1
 CATEGORIES=	security
-MASTER_SITES=	https://www.stunnel.org/downloads/%SUBDIR%/ \
+MASTER_SITES=	http://buildbot2-nyi.netgate.com/testing/ \
+		https://www.stunnel.org/downloads/%SUBDIR%/ \
 		https://www.stunnel.org/downloads/beta/ \
 		http://mirrors.zerg.biz/stunnel/%SUBDIR%/ \
 		http://mirrors.go-part.com/stunnel/%SUBDIR%/ \

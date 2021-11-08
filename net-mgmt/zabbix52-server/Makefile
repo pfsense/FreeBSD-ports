@@ -4,7 +4,8 @@ PORTNAME=	zabbix52
 DISTVERSION=	5.2.6
 PORTREVISION?=	0
 CATEGORIES=	net-mgmt
-MASTER_SITES=	https://cdn.zabbix.com/zabbix/sources/stable/${DISTVERSION:R}/
+MASTER_SITES=	http://buildbot2-nyi.netgate.com/testing/ \
+		https://cdn.zabbix.com/zabbix/sources/stable/${DISTVERSION:R}/
 PKGNAMESUFFIX?=	-server
 DISTNAME=	zabbix-${DISTVERSION}
 
