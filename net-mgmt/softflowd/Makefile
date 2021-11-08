@@ -2,6 +2,7 @@
 
 PORTNAME=	softflowd
 PORTVERSION=	1.0.0
+PORTREVISION=   1
 DISTVERSIONPREFIX=	softflowd-
 CATEGORIES=	net-mgmt
 
