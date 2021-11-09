@@ -50,7 +50,7 @@ function check_update($current, $new) {
 		$curver = str_replace(array(".", "t-uc-"), "", $current['version']);
 		$newver = str_replace(array(".", "t-uc-"), "", $new['version']);
 	} else {
-		return ($current['version'] == $new['version']);
+		return ($current['version'] != $new['version']);
 	}
 
 	return (intval($newver) > intval($curver));
