@@ -297,7 +297,11 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 
 	/***********************************************************/
 	/* The default is to build a HOME_NET variable unless      */
-	/* '$passlist' is set to 'true' when calling.             */
+	/* '$passlist' is set to 'true' when calling.              */
+	/*                                                         */
+	/* When '$whitelist' is TRUE, a Pass List is built.        */
+	/* When '$externalist' is TRUE, the EXTERNAL_NET variable  */
+	/* is built.                                               */
 	/***********************************************************/
 
 	global $config, $g, $aliastable, $filterdns;
@@ -337,8 +341,33 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 		$wandns = $list['wandnsips'];
 		$vips = $list['vips'];
 		$vpns = $list['vpnips'];
-		if (!empty($list['address']) && is_alias($list['address'])) {
-			$home_net = explode(" ", trim(filter_expand_alias($list['address'])));
+
+		// Process any custom IPs or aliases defined for the list.
+		// We allow dynamically updated aliases only for a Pass
+		// List. So for Pass Lists, we test for null strings from
+		// filter_expand_alias() and assume the passed alias is a
+		// FQDN or other dynamically updated alias.
+		if (is_array($list['address']['item']) && count($list['address']['item']) > 0) {
+			foreach ($list['address']['item'] as $addr) {
+				if (!$passlist) {
+					if (is_alias($addr) && (alias_get_type($addr) == "host" || alias_get_type($addr) == "network")) {
+						$home_net = array_merge($home_net, explode(" ", trim(filter_expand_alias($addr))));
+					} elseif (is_ipaddr($addr) || is_subnet($addr)) {
+						$home_net[] = $addr;
+					}
+				} elseif ($passlist) {
+					if (is_alias($addr) && (alias_get_type($addr) == "host" || alias_get_type($addr) == "network")) {
+						$tmp = trim(filter_expand_alias($addr));
+						if (strlen($tmp) > 0) {
+							$home_net = array_merge($home_net, explode(" ", $tmp));
+						} elseif (!in_array($addr, $home_net)) {
+							$home_net[] = $addr;
+						}
+					} elseif (is_ipaddr($addr) || is_subnet($addr)) {
+						$home_net[] = $addr;
+					}
+				}
+			}
 		}
 	}
 
@@ -574,9 +603,10 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 		}
 	}
 
+	// Validate the HOME_NET entries
 	$valresult = array();
 	foreach ($home_net as $vald) { 
-		if (empty($vald) || (!is_subnet($vald) && !is_ipaddr($vald))) {
+		if (empty($vald) || (!is_subnet($vald) && !is_ipaddr($vald) && !is_alias($vald))) {
 			continue;
 		}
 		$vald = trim($vald);
