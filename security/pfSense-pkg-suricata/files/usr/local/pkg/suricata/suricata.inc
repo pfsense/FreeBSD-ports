@@ -299,7 +299,7 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 	/* The default is to build a HOME_NET variable unless      */
 	/* '$passlist' is set to 'true' when calling.              */
 	/*                                                         */
-	/* When '$whitelist' is TRUE, a Pass List is built.        */
+	/* When '$passlist' is TRUE, a Pass List is built.         */
 	/* When '$externalist' is TRUE, the EXTERNAL_NET variable  */
 	/* is built.                                               */
 	/***********************************************************/
