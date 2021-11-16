@@ -94,9 +94,19 @@ function is_netgate_hw() {
 function get_firmware_details($firmware) {
 	$details = array();
 
+	# Netgate 6100
 	if (preg_match('/^(CORDOBA)-([\d.]{11}\w-uc-\d*)/', $firmware,
 	    $matches)) {
 
+		$details['platform'] = get_firmware_model();
+		$details['model'] = $matches[1];
+		$details['version'] = $matches[2];
+		return $details;
+	}
+
+	# Netgate 4100
+	if (preg_match('/^(CORDOBA)-([\d.]{11}-\w{3}-uc-\d*)/', $firmware,
+	    $matches)) {
 		$details['platform'] = get_firmware_model();
 		$details['model'] = $matches[1];
 		$details['version'] = $matches[2];
