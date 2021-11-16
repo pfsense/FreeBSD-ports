@@ -31,7 +31,7 @@ function check_update($current, $new) {
 		return false;
 	}
 
-	if ($new['platform'] != "CORDOBA2C") {
+	if ($new['platform'] == "CORDOBA2C") {
 		if (strlen($current['version']) != 21 ||
 		    strlen($new['version']) != 21 ||
 		    strpos($current['version'], '-2Ct-uc-') != 11 ||
@@ -40,7 +40,7 @@ function check_update($current, $new) {
 		}
 		$curver = str_replace(array(".", "-2Ct-uc-"), "", $current['version']);
 		$newver = str_replace(array(".", "-2Ct-uc-"), "", $new['version']);
-	} elseif ($new['platform'] != "CORDOBA") {
+	} elseif ($new['platform'] == "CORDOBA") {
 		if (strlen($current['version']) != 18 ||
 		    strlen($new['version']) != 18 ||
 		    strpos($current['version'], 't-uc-') != 11 ||
