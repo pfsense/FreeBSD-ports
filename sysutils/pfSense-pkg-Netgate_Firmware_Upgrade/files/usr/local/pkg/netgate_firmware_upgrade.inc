@@ -27,11 +27,11 @@ function check_update($current, $new) {
 	# Do not update if we are missing any information.
 	if (!isset($current) || !isset($new) ||
 	    !isset($current['version']) || !isset($new['version']) ||
-	    !isset($new['platform'])) {
+	    !isset($new['model'])) {
 		return false;
 	}
 
-	if ($new['platform'] == "CORDOBA2C") {
+	if ($new['model'] == "CORDOBA2C") {
 		if (strlen($current['version']) != 21 ||
 		    strlen($new['version']) != 21 ||
 		    strpos($current['version'], '-2Ct-uc-') != 11 ||
@@ -40,7 +40,7 @@ function check_update($current, $new) {
 		}
 		$curver = str_replace(array(".", "-2Ct-uc-"), "", $current['version']);
 		$newver = str_replace(array(".", "-2Ct-uc-"), "", $new['version']);
-	} elseif ($new['platform'] == "CORDOBA") {
+	} elseif ($new['model'] == "CORDOBA") {
 		if (strlen($current['version']) != 18 ||
 		    strlen($new['version']) != 18 ||
 		    strpos($current['version'], 't-uc-') != 11 ||
@@ -96,35 +96,27 @@ function get_firmware_details($firmware) {
 
 	# Netgate 6100
 	if (preg_match('/^(CORDOBA)-([\d.]{11}\w-uc-\d*)/', $firmware,
-	    $matches)) {
-
-		$details['platform'] = get_firmware_model();
-		$details['model'] = $matches[1];
+	    $matches) && isset($matches[2])) {
+		$details['model'] = get_firmware_model();
 		$details['version'] = $matches[2];
 		return $details;
 	}
 
 	# Netgate 4100
 	if (preg_match('/^(CORDOBA)-([\d.]{11}-\w{3}-uc-\d*)/', $firmware,
-	    $matches)) {
-		$details['platform'] = get_firmware_model();
-		$details['model'] = $matches[1];
+	    $matches) && isset($matches[2])) {
+		$details['model'] = get_firmware_model();
 		$details['version'] = $matches[2];
 		return $details;
 	}
 
+	# Silicom/ADI
 	if (!preg_match('/^ADI_(RCC|RCCVE|DFF2|PLCC)-([\d.]{11})/',
-	    $firmware, $matches)) {
+	    $firmware, $matches) && isset($matches[2])) {
+		$details['model'] = get_firmware_model();
+		$details['version'] = $matches[2];
 		return $details;
 	}
-
-	if (!isset($matches[2])) {
-		return $details;
-	}
-
-	$details['platform'] = get_firmware_model();
-	$details['model'] = $matches[1];
-	$details['version'] = $matches[2];
 
 	return $details;
 }
