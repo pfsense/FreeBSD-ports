@@ -116,7 +116,7 @@ if (file_exists("/tmp/coreupdatecomplete")) {
 }
 
 if (empty($input_errors) && !file_exists("/tmp/coreupdatecomplete") &&
-    ($new['version'] != $current['version'])) {
+    check_update($current, $new)) {
 	print_info_box(gettext("WARNING: This operation requires a reboot."),
 	    'warning', false);
 }
