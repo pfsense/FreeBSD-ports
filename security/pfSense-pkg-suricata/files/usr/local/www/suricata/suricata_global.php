@@ -116,7 +116,7 @@ if ($_POST['enable_extra_rules']) {
 				    characters A-Z, 0-9 and '-'.");
 			}
 			if (!is_URL($url) || ((substr($url, strrpos($url, 'rules')) != 'rules') &&
-			    (substr($url, strrpos($url, 'rules')) != 'rules.tar.gz'))) { 
+			    !preg_match('/.+\.tar\.gz$/', $url))) { 
 				$input_errors[] = sprintf(gettext('%s is not valid rules or tar.gz rules archive URL.'), htmlspecialchars($url));
 			}
 			$extra_rules['rule'][] = array(
