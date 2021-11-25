@@ -102,6 +102,27 @@ function get_uptime_stats() {
 	return($status);
 }
 
+/* Returns CPU temperature if available from the system */
+function get_cpu_temperature() {
+	$temp_out = "";
+	$execRet = "";
+	exec("/sbin/sysctl -n dev.cpu.0.temperature", $temp_out, $execRet);
+	if ($execRet === 0) {
+		$cputemperature = trim($temp_out[0]);
+		return $cputemperature;
+	} else {
+		exec("/sbin/sysctl -n hw.acpi.thermal.tz0.temperature", $temp_out, $execRet);
+	}
+
+	if ($execRet === 0) {
+		$cputemperature = trim($temp_out[0]);
+		return $cputemperature;
+	} else {
+		// sysctl probably returned "unknown oid" 
+		return 'CPU Temp N/A';
+	}
+}
+
 function get_loadavg_stats() {
 	exec("/usr/bin/uptime", $output, $ret);
 
@@ -1024,6 +1045,15 @@ function build_interface($lcd) {
 						$lcd_cmds[] = "widget_add $name text_wdgt scroller";
 						$lcd_cmds[] = "widget_set $name title_wdgt 1 1 \"+ CPU Frequency\"";
 						break;
+					case "scr_cputemperature":
+						$lcd_cmds[] = "screen_add $name";
+						$lcd_cmds[] = "screen_set $name heartbeat off";
+						$lcd_cmds[] = "screen_set $name name $name";
+						$lcd_cmds[] = "screen_set $name duration $refresh_frequency";
+						$lcd_cmds[] = "widget_add $name title_wdgt string";
+						$lcd_cmds[] = "widget_add $name text_wdgt scroller";
+						$lcd_cmds[] = "widget_set $name title_wdgt 1 1 \"+ CPU Temperature\"";
+						break;
 					case "scr_traffic":
 						$lcd_cmds[] = "screen_add $name";
 						$lcd_cmds[] = "screen_set $name heartbeat off";
@@ -1240,6 +1270,10 @@ function loop_status($lcd) {
 				case "scr_cpufrequency":
 					$cpufreq = get_cpufrequency();
 					$lcd_cmds[] = "widget_set $name text_wdgt 1 2 $lcdpanel_width 2 h 4 \"{$cpufreq}\"";
+					break;
+				case "scr_cputemperature":
+					$cputemperature = get_cpu_temperature();
+					$lcd_cmds[] = "widget_set $name text_wdgt 1 2 $lcdpanel_width 2 h 4 \"{$cputemperature}\"";
 					break;
 				case "scr_traffic":
 					if ($interfaceTrafficList == null) $interfaceTrafficList = build_interface_traffic_stats_list(); // We only want build_interface_traffic_stats_list() to be called once per loop, and only if it's needed
