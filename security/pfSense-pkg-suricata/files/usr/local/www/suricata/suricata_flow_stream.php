@@ -253,7 +253,7 @@ elseif ($_POST['ResetAll']) {
 
 	// The default 'stream_memcap' value must be calculated as follows:
 	// 216 * prealloc_sessions * number of threads = memory use in bytes
-	// 64 MB is a decent all-around default, but some setups need more.
+	// 128 MB is a decent all-around default, but some setups need more.
 	$pconfig['stream_prealloc_sessions'] = '32768';
 	$pconfig['stream_memcap'] = '131217728';
 	$pconfig['reassembly_memcap'] = '131217728';
@@ -263,6 +263,8 @@ elseif ($_POST['ResetAll']) {
 	$pconfig['enable_midstream_sessions'] = 'off';
 	$pconfig['enable_async_sessions'] = 'off';
 	$pconfig['max_synack_queued'] = '5';
+	$pconfig['stream_bypass'] = "no";
+	$pconfig['stream_drop_invalid'] = "no";
 
 	/* Log a message at the top of the page to inform the user */
 	$savemsg = gettext("All flow and stream settings have been reset to their defaults.  Click APPLY to save the changes.");
@@ -307,6 +309,8 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		if ($_POST['stream_prealloc_sessions'] != "") { $natent['stream_prealloc_sessions'] = $_POST['stream_prealloc_sessions']; }else{ $natent['stream_prealloc_sessions'] = "32768"; }
 		if ($_POST['enable_midstream_sessions'] == "on") { $natent['enable_midstream_sessions'] = 'on'; }else{ $natent['enable_midstream_sessions'] = 'off'; }
 		if ($_POST['enable_async_sessions'] == "on") { $natent['enable_async_sessions'] = 'on'; }else{ $natent['enable_async_sessions'] = 'off'; }
+		if ($_POST['stream_bypass'] == "yes") { $natent['stream_bypass'] = 'yes'; }else{ $natent['stream_bypass'] = 'no'; }
+		if ($_POST['stream_drop_invalid'] == "yes") { $natent['stream_drop_invalid'] = 'yes'; }else{ $natent['stream_drop_invalid'] = 'no'; }
 		if ($_POST['reassembly_memcap'] != "") { $natent['reassembly_memcap'] = $_POST['reassembly_memcap']; }else{ $natent['reassembly_memcap'] = "131217728"; }
 		if ($_POST['reassembly_depth'] != "") { $natent['reassembly_depth'] = $_POST['reassembly_depth']; }else{ $natent['reassembly_depth'] = "1048576"; }
 		if ($_POST['reassembly_to_server_chunk'] != "") { $natent['reassembly_to_server_chunk'] = $_POST['reassembly_to_server_chunk']; }else{ $natent['reassembly_to_server_chunk'] = "2560"; }
@@ -775,6 +779,20 @@ $section->addInput(new Form_Checkbox(
 	'Suricata will track asynchronous one-sided streams. Default is Not Checked.',
 	$pconfig['enable_async_sessions'] == 'on' ? true:false,
 	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'stream_bypass',
+	'Bypass Packets',
+	'Suricata will bypass packets when stream reassembly depth (configured below) is reached. Default is Not Checked.',
+	$pconfig['stream_bypass'] == 'yes' ? true:false,
+	'yes'
+));
+$section->addInput(new Form_Checkbox(
+	'stream_drop_invalid',
+	'Drop Invalid Packets',
+	'When using Inline mode, Suricata will drop packets that are invalid with regards to streaming engine. Default is Not Checked.',
+	$pconfig['stream_drop_invalid'] == 'yes' ? true:false,
+	'yes'
 ));
 $section->addInput(new Form_Input(
 	'reassembly_memcap',

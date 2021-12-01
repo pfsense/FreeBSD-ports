@@ -224,6 +224,8 @@ stream:
   midstream: {$stream_enable_midstream}
   async-oneside: {$stream_enable_async}
   max-synack-queued: {$max_synack_queued}
+  bypass: {$stream_bypass_enable}
+  drop-invalid: {$stream_drop_invalid_enable}
   reassembly:
     memcap: {$reassembly_memcap}
     depth: {$reassembly_depth}
