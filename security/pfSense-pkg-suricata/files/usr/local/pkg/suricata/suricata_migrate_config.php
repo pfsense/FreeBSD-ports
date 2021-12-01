@@ -717,6 +717,14 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 		$pconfig['max_synack_queued'] = "5";
 		$updated_cfg = true;
 	}
+	if (!isset($pconfig['stream_bypass'])) {
+		$pconfig['stream_bypass'] = "no";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['stream_drop_invalid'])) {
+		$pconfig['stream_drop_invalid'] = "no";
+		$updated_cfg = true;
+	}
 
 	/**********************************************************/
 	/* Create new interface IPS mode setting if not set       */

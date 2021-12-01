@@ -620,6 +620,8 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['max_synack_queued'] = '5';
 			$natent['enable_midstream_sessions'] = 'off';
 			$natent['enable_async_sessions'] = 'off';
+			$natent['stream_bypass'] = "no";
+			$natent['stream_drop_invalid'] = "no";
 			$natent['delayed_detect'] = 'off';
 			$natent['intf_promisc_mode'] = 'on';
 			$natent['intf_snaplen'] = '1518';

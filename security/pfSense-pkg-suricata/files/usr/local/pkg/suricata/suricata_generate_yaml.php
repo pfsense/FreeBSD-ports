@@ -730,6 +730,16 @@ if ($suricatacfg['enable_async_sessions'] == 'on')
 else
 	$stream_enable_async = "false";
 
+if ($suricatacfg['stream_bypass'] == 'yes' || $suricatacfg['tls_encrypt_handling'] == 'bypass')
+	$stream_bypass_enable = "yes";
+else
+	$stream_bypass_enable = "no";
+
+if ($suricatacfg['stream_drop_invalid'] == 'yes')
+	$stream_drop_invalid_enable = "yes";
+else
+	$stream_drop_invalid_enable = "no";
+
 // Add the OS-specific host policies if configured, otherwise
 // just set default to BSD for all networks.
 $host_os_policy = "";
@@ -1023,6 +1033,12 @@ else {
 }
 if (!empty($suricatacfg['tls_encrypt_handling'])) {
 	$tls_encrypt_handling = $suricatacfg['tls_encrypt_handling'];
+
+	// If TLS encryption bypass is enabled, then stream bypass
+	// must also be forced to "yes" for bypass to happen.
+	if ($tls_encrypt_handling == "bypass") {
+		$stream_bypass_enable = "yes";
+	}
 }
 else {
 	$tls_encrypt_handling = "default";
