@@ -546,7 +546,7 @@ if (($_POST['mode'] == 'addsuppress_srcip' || $_POST['mode'] == 'addsuppress_dst
 				$suppress = "suppress gen_id {$_POST['gen_id']}, sig_id {$_POST['sidid']}\n";
 			else
 				$suppress = "#{$_POST['descr']}\nsuppress gen_id {$_POST['gen_id']}, sig_id {$_POST['sidid']}\n";
-			$success = gettext("An entry for 'suppress gen_id {$_POST['gen_id']}, sig_id {$_POST['sidid']}' has been added to the Suppress List.");
+			$success = gettext("An entry for 'suppress gen_id {$_POST['gen_id']}, sig_id {$_POST['sidid']}' has been added to the Suppress List.  Suricata is 'live-reloading' the new rules list.  Please wait at least 15 secs for the process to complete before toggling additional rule actions.");
 			break;
 		case "by_src":
 		case "by_dst":
@@ -556,7 +556,7 @@ if (($_POST['mode'] == 'addsuppress_srcip' || $_POST['mode'] == 'addsuppress_dst
 					$suppress = "suppress gen_id {$_POST['gen_id']}, sig_id {$_POST['sidid']}, track {$method}, ip {$_POST['ip']}\n";
 				else
 					$suppress = "#{$_POST['descr']}\nsuppress gen_id {$_POST['gen_id']}, sig_id {$_POST['sidid']}, track {$method}, ip {$_POST['ip']}\n";
-				$success = gettext("An entry for 'suppress gen_id {$_POST['gen_id']}, sig_id {$_POST['sidid']}, track {$method}, ip {$_POST['ip']}' has been added to the Suppress List.");
+				$success = gettext("An entry for 'suppress gen_id {$_POST['gen_id']}, sig_id {$_POST['sidid']}, track {$method}, ip {$_POST['ip']}' has been added to the Suppress List.  Suricata is 'live-reloading' the new rules list.  Please wait at least 15 secs for the process to complete before toggling additional rule actions.");
 			}
 			else {
 				header("Location: /suricata/suricata_alerts.php");
@@ -571,6 +571,12 @@ if (($_POST['mode'] == 'addsuppress_srcip' || $_POST['mode'] == 'addsuppress_dst
 	/* Add the new entry to the Suppress List and signal Suricata to reload config */
 	if (suricata_add_supplist_entry($suppress)) {
 		suricata_reload_config($a_instance[$instanceid]);
+		foreach ($a_instance as $insid => $insconf) {
+			if (($insid != $instanceid) &&
+			    ($a_instance[$instanceid]['suppresslistname'] == $insconf['suppresslistname'])) {
+				suricata_reload_config($a_instance[$insid]);
+			}
+		}
 		$savemsg = $success;
 
 		// Sync to configured CARP slaves if any are enabled
