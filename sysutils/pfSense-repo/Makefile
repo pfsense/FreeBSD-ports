@@ -26,10 +26,12 @@ PFSENSE_PKG_SET_VERSION?=	${DISTVERSION}
 
 .include <bsd.port.pre.mk>
 
+MIRROR_TYPE?=	srv
 PFSENSE_REPOS?=	pfSense-repo pfSense-repo-devel
 PFSENSE_REPOS_${ARCH}?=	${PFSENSE_REPOS}
 PFSENSE_DEFAULT_REPO?=	pfSense-repo-devel
 PFSENSE_DEFAULT_REPO_${ARCH}?=	${PFSENSE_DEFAULT_REPO}
+SIGNATURE_TYPE?=	fingerprints
 DEFAULT_REPO=	${DATADIR}/pkg/repos/${PFSENSE_DEFAULT_REPO_${ARCH}}.conf
 TMP_PLIST_FILES=${PFSENSE_REPOS_${ARCH}:C/$/.conf/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.descr/} \
@@ -86,6 +88,7 @@ do-build:
 	@${REINPLACE_CMD} -i '' \
 		-e "s,%%ARCH%%,${ARCH},g" \
 		-e "s,%%ARCH_OLD%%,${ARCH_OLD},g" \
+		-e "s/%%MIRROR_TYPE%%/${MIRROR_TYPE}/" \
 		-e "s,%%PKG_REPO_BRANCH_DEVEL%%,${PKG_REPO_BRANCH_DEVEL},g" \
 		-e "s,%%PKG_REPO_BRANCH_RELEASE%%,${PKG_REPO_BRANCH_RELEASE},g" \
 		-e "s,%%PKG_REPO_SERVER_DEVEL%%,${PKG_REPO_SERVER_DEVEL},g" \
@@ -93,6 +96,7 @@ do-build:
 		-e "s,%%POUDRIERE_PORTS_NAME%%,${POUDRIERE_PORTS_NAME},g" \
 		-e "s,%%PRODUCT_NAME%%,${PRODUCT_NAME},g" \
 		-e "s,%%REPO_BRANCH_PREFIX%%,${REPO_BRANCH_PREFIX},g" \
+		-e "s,%%SIGNATURE_TYPE%%,${SIGNATURE_TYPE},g" \
 		${WRKSRC}/${f}.conf
 	@if [ -f ${WRKSRC}/${f}.abi ]; then \
 		${REINPLACE_CMD} -i '' \
