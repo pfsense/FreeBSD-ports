@@ -1,5 +1,5 @@
 PORTNAME=	biostar-tools
-PORTVERSION=	1.9.0
+PORTVERSION=	1.10.1
 CATEGORIES=	biology python
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -34,7 +34,6 @@ RUN_DEPENDS=	wget>0:ftp/wget \
 		seqtk>0:biology/seqtk \
 		datamash>0:textproc/datamash \
 		bcftools>0:biology/bcftools \
-		sra-tools>0:biology/sra-tools \
 		subread>0:biology/subread \
 		hisat2>0:biology/hisat2 \
 		trimmomatic>0:biology/trimmomatic \
@@ -62,9 +61,18 @@ RUN_DEPENDS=	wget>0:ftp/wget \
 		sam2pairwise>0:biology/sam2pairwise \
 		kallisto>0:biology/kallisto \
 		bamutil>0:biology/bamutil \
-		${PYTHON_PKGNAMEPREFIX}deepTools>0:biology/py-deeptools@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}deepTools>0:biology/py-deeptools@${PY_FLAVOR} \
+		igv>0:biology/igv \
+		gffread>0:biology/gffread
 
 USES=		metaport python
+
+.include <bsd.port.pre.mk>
+
+# Allow pkg build on non-amd64 systems until sra-tools supports them
+.if ${ARCH} == amd64
+RUN_DEPENDS+=	sra-tools>0:biology/sra-tools
+.endif
 
 SUB_FILES=	biostar-shell
 PLIST_FILES=	bin/biostar-shell
@@ -73,4 +81,4 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_SCRIPT} ${WRKDIR}/biostar-shell ${STAGEDIR}${PREFIX}/bin
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

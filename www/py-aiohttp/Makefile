@@ -30,7 +30,8 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=3.8.2:devel/py-pytest@${PY_FLAVOR} 
 # to be ported	${PYTHON_PKGNAMEPREFIX}brotlypy>0:archivers/py-brotlipy@${PY_FLAVOR}
 # to be ported	${PYTHON_PKGNAMEPREFIX}trustme>0:security/py-trustme@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		cpe python:3.6+
+CPE_VENDOR=	${PORTNAME}_project
 USE_PYTHON=	autoplist distutils cython
 
 .include <bsd.port.pre.mk>
@@ -40,7 +41,10 @@ RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}idna_ssl>=1.0:dns/py-idna_ssl@${PY_FLAVOR}
 .endif
 
 pre-configure:
-	@${TOUCH} ${WRKSRC}/aiohttp/*.pyx
+.for file in _frozenlist _helpers _http_parser _http_writer _websocket
+	@${RM} ${WRKSRC}/aiohttp/${file}.c
+	@cd ${WRKSRC} && cython-${PYTHON_VER} -3 -o aiohttp/${file}.c aiohttp/${file}.pyx -I aiohttp
+.endfor
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/aiohttp/*.so

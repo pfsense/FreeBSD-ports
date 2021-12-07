@@ -11,7 +11,7 @@ MASTER_SITES=	http://www.chillispot.info/download/ \
 MAINTAINER=	venture37@geeklan.co.uk
 COMMENT=	Wireless LAN Access Point Controller
 
-CONFLICTS=	coovachilli-[0-9]*
+CONFLICTS=	coovachilli
 
 USES=		compiler:nestedfct shebangfix
 SHEBANG_FILES=	doc/hotspotlogin.cgi
@@ -20,9 +20,9 @@ CONFIGURE_ARGS=-sysconfdir=${PREFIX}/etc
 USE_RC_SUBR=	chillispot
 SUB_FILES=	pkg-message installguide.txt
 
-OPTIONS_DEFINE=	APACHE RADIUS
-OPTIONS_SINGLE=	RADIUS
-OPTIONS_SINGLE_RADIUS= FREERADIUS OPENRADIUS
+OPTIONS_DEFINE=		APACHE RADIUS
+OPTIONS_SINGLE=		RADIUS
+OPTIONS_SINGLE_RADIUS=	FREERADIUS OPENRADIUS
 
 FREERADIUS_DESC=depend on FreeRADIUS
 OPENRADIUS_DESC=depend on OpenRADIUS

@@ -12,7 +12,8 @@ COMMENT=	Foomatic wrapper scripts
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf ghostscript perl5 pkgconfig
+USES=		autoreconf cpe ghostscript perl5 pkgconfig
+CPE_VENDOR=	linuxfoundation
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_path_A2PS=${LOCALBASE}/bin/a2ps \
 		ac_cv_path_CUPS=${LOCALBASE}/libexec/cups \
@@ -29,7 +30,7 @@ CONFIGURE_ENV=	ac_cv_path_A2PS=${LOCALBASE}/bin/a2ps \
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-CONFLICTS=	cups-filters-[0-9]*
+CONFLICTS=	cups-filters
 
 OPTIONS_DEFINE=		A2PS CUPS_IMAGE DBUS MPAGE
 OPTIONS_DEFAULT=	A2PS CUPS_IMAGE DBUS ENSCRIPT_A4 MPAGE

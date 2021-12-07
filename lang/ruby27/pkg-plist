@@ -32,9 +32,9 @@ include/ruby-%%RUBY_VER%%/ruby/thread_native.h
 include/ruby-%%RUBY_VER%%/ruby/util.h
 include/ruby-%%RUBY_VER%%/ruby/version.h
 include/ruby-%%RUBY_VER%%/ruby/vm.h
-lib/lib%%RUBY_NAME%%-static.a
-lib/lib%%RUBY_NAME%%.so
-lib/lib%%RUBY_NAME%%.so.%%RUBY_SHLIBVER%%
+lib/libruby%%RUBY_SHLIBVER%%-static.a
+lib/libruby%%RUBY_SHLIBVER%%.so
+lib/libruby%%RUBY_SHLIBVER%%.so.%%RUBY_SHLIBVER%%
 %%RUBY_LIBDIR%%/English.rb
 %%RUBY_LIBDIR%%/abbrev.rb
 %%RUBY_ARCHLIBDIR%%/bigdecimal.so
@@ -967,7 +967,7 @@ libdata/pkgconfig/ruby-%%RUBY_VER%%.pc
 %%IF_DEFAULT%%man/man1/erb.1.gz
 man/man1/erb%%RUBY_SUFFIX%%.1.gz
 %%IF_DEFAULT%%man/man1/ruby.1.gz
-man/man1/%%RUBY_NAME%%.1.gz
+man/man1/ruby%%RUBY_SUFFIX%%.1.gz
 %%DOCS%%%%RUBY_DOCDIR%%/COPYING
 %%DOCS%%%%RUBY_DOCDIR%%/COPYING.ja
 %%DOCS%%%%RUBY_DOCDIR%%/ChangeLog

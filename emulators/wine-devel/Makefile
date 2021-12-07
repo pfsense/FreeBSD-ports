@@ -1,16 +1,16 @@
 # Created by: Gerald Pfeifer <gerald@FreeBSD.org>
 
 PORTNAME=	wine
-DISTVERSION=	6.19
+DISTVERSION=	6.23
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/Source \
 		http://mirrors.ibiblio.org/wine/source/6.x/
-PKGNAMESUFFIX?=	-devel
+PKGNAMESUFFIX=	-devel
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER?=	damjan.jov@gmail.com
-COMMENT?=	Microsoft Windows compatibility environment
+MAINTAINER=	damjan.jov@gmail.com
+COMMENT=	Microsoft Windows compatibility environment
 
 LICENSE=	LGPL21 LGPL3
 LICENSE_COMB=	dual
@@ -29,7 +29,7 @@ USE_SDL=	sdl2
 
 CPE_VENDOR=	winehq
 
-CONFLICTS_INSTALL=	wine-[0-9]* i386-wine-[0-9]* i386-wine-devel-[0-9]*
+CONFLICTS_INSTALL=	wine
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--verbose \
@@ -37,27 +37,30 @@ CONFIGURE_ARGS+=--verbose \
 		--disable-tests \
 		--without-alsa \
 		--without-capi \
+		--without-coreaudio \
 		--without-dbus \
 		--without-gettext --without-gettextpo \
 		--without-gphoto \
-		--without-gsm \
 		--without-gstreamer \
+		--without-hal \
 		--without-inotify \
-		--without-jxrlib \
 		--without-krb5 \
 		--without-mingw \
+		--without-netapi \
 		--without-opencl \
 		--without-osmesa \
 		--with-oss \
+		--with-pcap \
+		--with-pthread \
 		--without-pulse \
+		--without-quicktime \
 		--without-sane \
 		--with-sdl \
-		--without-tiff \
 		--without-udev \
 		--without-unwind \
 		--without-usb
 CONFIGURE_ENV=	CPPBIN="${CPP}" FLEX="${LOCALBASE}/bin/flex"
-WINELIBDIR?=	${PREFIX}/lib
+WINELIBDIR=	${PREFIX}/lib
 .if !defined(USE_LDCONFIG32)
 USE_LDCONFIG=	${WINELIBDIR} ${WINELIBDIR}/wine
 .endif
@@ -68,12 +71,11 @@ SUB_FILES=	pkg-message
 
 PORTDATA=	wine.inf
 
-OPTIONS_DEFINE=	CUPS DOCS DOSBOX GNUTLS LDAP LIBXSLT MPG123 OPENAL STAGING V4L WINEMAKER X11 GECKO MONO
+OPTIONS_DEFINE=	CUPS DOCS DOSBOX GNUTLS LDAP OPENAL STAGING V4L WINEMAKER X11 GECKO MONO
 OPTIONS_DEFAULT=GNUTLS OPENAL X11
 OPTIONS_SUB=	yes
 
 DOSBOX_DESC=	Use DOSBox to run MS-DOS programs
-LIBXSLT_DESC=	Use libxslt (only used by msxml3.dll)
 STAGING_DESC=	Include Wine Staging patchset (experimental&unsupported)
 WINEMAKER_DESC=	Fully support winemaker (requires Perl)
 GECKO_DESC=	Bundle Gecko MSI package for Wine
@@ -92,13 +94,7 @@ GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 LDAP_CONFIGURE_WITH=	ldap
 LDAP_USE=		OPENLDAP=yes
 
-LIBXSLT_CONFIGURE_WITH=	xslt
-LIBXSLT_LIB_DEPENDS=	libxslt.so:textproc/libxslt
-
 MONO_RUN_DEPENDS=	wine-mono-devel>0:emulators/wine-mono-devel
-
-MPG123_CONFIGURE_WITH=	mpg123
-MPG123_LIB_DEPENDS=	libmpg123.so:audio/mpg123
 
 OPENAL_CONFIGURE_WITH=	openal
 OPENAL_USES=		openal
@@ -108,7 +104,8 @@ STAGING_DIST=		v${DISTVERSION}.tar.gz
 STAGING_DISTFILES=	${STAGING_DIST}:staging
 STAGING_EXTRACT_DEPENDS=	bash:shells/bash \
 				git:devel/git \
-				autoconf>0:devel/autoconf
+				autoconf>0:devel/autoconf \
+				gawk:lang/gawk
 STAGING_LIB_DEPENDS=	libtxc_dxtn.so:graphics/s2tc
 
 V4L_CONFIGURE_WITH=	v4l2
@@ -117,32 +114,24 @@ V4L_LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
 
 WINEMAKER_RUN_DEPENDS=	p5-XML-LibXML>0:textproc/p5-XML-LibXML
 
-X11_CONFIGURE_WITH=	x cms fontconfig freetype jpeg opengl png vkd3d xinerama xinput2 xrandr xrender
-X11_USES=		gl jpeg xorg
+X11_CONFIGURE_WITH=	x fontconfig freetype opengl vkd3d xinerama xinput2 xrandr xrender
+X11_USES=		gl xorg
 X11_USE=		GL=glu XORG=x11,xext,xcomposite,xcursor,xi,xinerama,xrandr,xrender
 X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libfreetype.so:print/freetype2 \
-			liblcms2.so:graphics/lcms2 \
-			libpng.so:graphics/png \
 			libvulkan.so:graphics/vulkan-loader \
 			libvkd3d.so:graphics/vkd3d
 
-# Include this only if it has not been already included by the
-# i386-wine-devel slave port.
-.ifndef WINE_SLAVE_BUILD
 .include <bsd.port.pre.mk>
-.endif
 
 .if ${ARCH} == amd64
 # Wine is composed of three parts:
-#  - wine (aka this port) is the 32-bit component and runs 32-bit programs (on FreeBSD/i386)
-#  - wine64 (aka this part of this port) is the 64-bit component and runs 64-bit programs
-#    (on FreeBSD/amd64)
-#  - wow64 (a subset of emulators/i386-wine-devel) is a part of the 64-bit component that runs
-#    32-bit programs (on FreeBSD/amd64)
-# We also currently have:
-#  - "wine32" (aka emulators/i386-wine-devel) is the 32-bit component and runs 32-bit programs
-#    (on FreeBSD/amd64).  This will be superseded by wow64.
+#  - wine (aka this port on FreeBSD/i386) is the 32-bit component
+#       and runs 32-bit programs.
+#  - wine64 (aka this part of this port on FreeBSD/amd64) is the
+#       64-bit component and runs 64-bit programs.
+#  - wow64 (aka this port built on FreeBSD/i386) is a part of the
+#       64-bit component [wine64] that runs 32-bit programs on FreeBSD/amd64.
 
 # --libdir is required since Wine defaults to "${PREFIX}/lib64" on amd64.
 CONFIGURE_ARGS+=	--enable-win64 --libdir=${PREFIX}/lib
@@ -159,6 +148,7 @@ PLIST_SUB+=		WINE32="" WINE64="@comment " WINEARCH="i386"
 
 post-extract-STAGING-on: fix-shebang
 	cd ${WRKSRC} && ${TAR} xf ${DISTDIR}/${STAGING_DIST} --strip-components 1
+	cd ${WRKSRC} && ${PATCH} -p0 < ${PATCHDIR}/extra-gitapply
 	cd ${WRKSRC} && bash ./patches/patchinstall.sh --backend=patch DESTDIR=${WRKSRC} --all
 
 pre-build:
@@ -191,6 +181,4 @@ check-wine-devel-vs-staging:
 	  fi \
 	done
 
-.ifndef WINE_SLAVE_BUILD
 .include <bsd.port.post.mk>
-.endif

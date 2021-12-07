@@ -1,5 +1,5 @@
 PORTNAME=	ox
-PORTVERSION=	2.14.5
+PORTVERSION=	2.14.6
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
@@ -9,7 +9,8 @@ COMMENT=	Speed-optimized XML parser and object serializer for Ruby
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gem
+USES=		cpe gem
+CPE_VENDOR=	${PORTNAME}_project
 USE_RUBY=	yes
 
 .include <bsd.port.mk>

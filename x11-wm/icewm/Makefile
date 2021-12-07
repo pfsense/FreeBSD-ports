@@ -1,7 +1,7 @@
 # Created by: Yukihiro Nakai <Nakai@Mlab.t.u-tokyo.ac.jp>
 
 PORTNAME=	icewm
-PORTVERSION=	2.8.0
+PORTVERSION=	2.9.1
 CATEGORIES=	x11-wm
 MASTER_SITES=	https://github.com/ice-wm/icewm/releases/download/${PORTVERSION}/
 
@@ -61,8 +61,8 @@ post-extract:
 .endfor
 
 post-patch:
-	@${REINPLACE_CMD} -e '/Battery%d/s,snprintf(buf,char buf[20]; &,' \
-		${WRKSRC}/src/aapm.cc
+	@${REINPLACE_CMD} -e '/#include <unistd/ { x; s,^,#include\
+		<sys/wait.h>,; G; }' ${WRKSRC}/src/akeyboard.cc
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

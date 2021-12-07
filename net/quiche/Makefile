@@ -1,5 +1,6 @@
 PORTNAME=	quiche
 PORTVERSION=	0.9.0
+PORTREVISION=	2
 CATEGORIES=	net
 
 MAINTAINER=	junho.choi@gmail.com

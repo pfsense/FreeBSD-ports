@@ -2,7 +2,7 @@
 
 PORTNAME=	inkscape
 DISTVERSION=	1.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	graphics gnome
 MASTER_SITES=	https://inkscape.org/gallery/item/26932/
 
@@ -53,7 +53,6 @@ USE_XORG=	sm ice x11 xext
 USE_LDCONFIG=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}_2021-05-24_c4e8f9ed74
-
 
 SHEBANG_FILES=	share/extensions/*.py share/extensions/genpofiles.sh \
 		share/templates/*.py man/fix-roff-punct

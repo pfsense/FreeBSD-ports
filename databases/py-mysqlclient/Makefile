@@ -1,5 +1,5 @@
 PORTNAME=	mysqlclient
-DISTVERSION=	2.0.3
+DISTVERSION=	2.1.0
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +15,7 @@ USE_PYTHON=	autoplist concurrent distutils
 
 PORTDOCS=	*
 
-CONFLICTS=	py*-MySQLdb-[0-9]* py*-MySQLdb5[0-9]-[0-9]* py*-MySQLdb
+CONFLICTS=	py*-MySQLdb py*-MySQLdb5[0-9] py*-MySQLdb
 
 OPTIONS_DEFINE=		DOCS
 

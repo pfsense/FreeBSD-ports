@@ -20,12 +20,12 @@ OPTIONS_DEFINE=	DOCS
 CONFLICTS=	fwbuilder-[234].* fwbuilder-devel-[234].* \
 		libfwbuilder-[234].* libfwbuilder-devel-[234].*
 .else
-CONFLICTS=	fwbuilder-[234].* fwbuilder-devel-* \
-		libfwbuilder-[234].* libfwbuilder-devel-*
+CONFLICTS=	fwbuilder-[234].* fwbuilder-devel \
+		libfwbuilder-[234].* libfwbuilder-devel
 .endif
 
 USES=		autoreconf:build gmake libtool qmake:no_configure qt:5 ssl
-USE_GITHUB=     yes
+USE_GITHUB=	yes
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 USE_QT=		buildtools gui \
 		linguist_build \

@@ -23,6 +23,7 @@
 %%DATADIR%%/common/annotations/de.xml
 %%DATADIR%%/common/annotations/de_CH.xml
 %%DATADIR%%/common/annotations/doi.xml
+%%DATADIR%%/common/annotations/dsb.xml
 %%DATADIR%%/common/annotations/el.xml
 %%DATADIR%%/common/annotations/en.xml
 %%DATADIR%%/common/annotations/en_001.xml
@@ -47,9 +48,11 @@
 %%DATADIR%%/common/annotations/gl.xml
 %%DATADIR%%/common/annotations/gu.xml
 %%DATADIR%%/common/annotations/ha.xml
+%%DATADIR%%/common/annotations/ha_NE.xml
 %%DATADIR%%/common/annotations/he.xml
 %%DATADIR%%/common/annotations/hi.xml
 %%DATADIR%%/common/annotations/hr.xml
+%%DATADIR%%/common/annotations/hsb.xml
 %%DATADIR%%/common/annotations/hu.xml
 %%DATADIR%%/common/annotations/hy.xml
 %%DATADIR%%/common/annotations/ia.xml
@@ -103,6 +106,7 @@
 %%DATADIR%%/common/annotations/rw.xml
 %%DATADIR%%/common/annotations/sa.xml
 %%DATADIR%%/common/annotations/sat.xml
+%%DATADIR%%/common/annotations/sc.xml
 %%DATADIR%%/common/annotations/sd.xml
 %%DATADIR%%/common/annotations/si.xml
 %%DATADIR%%/common/annotations/sk.xml
@@ -165,6 +169,7 @@
 %%DATADIR%%/common/annotationsDerived/de.xml
 %%DATADIR%%/common/annotationsDerived/de_CH.xml
 %%DATADIR%%/common/annotationsDerived/doi.xml
+%%DATADIR%%/common/annotationsDerived/dsb.xml
 %%DATADIR%%/common/annotationsDerived/el.xml
 %%DATADIR%%/common/annotationsDerived/en.xml
 %%DATADIR%%/common/annotationsDerived/en_001.xml
@@ -192,6 +197,7 @@
 %%DATADIR%%/common/annotationsDerived/he.xml
 %%DATADIR%%/common/annotationsDerived/hi.xml
 %%DATADIR%%/common/annotationsDerived/hr.xml
+%%DATADIR%%/common/annotationsDerived/hsb.xml
 %%DATADIR%%/common/annotationsDerived/hu.xml
 %%DATADIR%%/common/annotationsDerived/hy.xml
 %%DATADIR%%/common/annotationsDerived/ia.xml
@@ -241,6 +247,7 @@
 %%DATADIR%%/common/annotationsDerived/ru.xml
 %%DATADIR%%/common/annotationsDerived/sa.xml
 %%DATADIR%%/common/annotationsDerived/sat.xml
+%%DATADIR%%/common/annotationsDerived/sc.xml
 %%DATADIR%%/common/annotationsDerived/sd.xml
 %%DATADIR%%/common/annotationsDerived/si.xml
 %%DATADIR%%/common/annotationsDerived/sk.xml
@@ -260,6 +267,7 @@
 %%DATADIR%%/common/annotationsDerived/te.xml
 %%DATADIR%%/common/annotationsDerived/tg.xml
 %%DATADIR%%/common/annotationsDerived/th.xml
+%%DATADIR%%/common/annotationsDerived/ti.xml
 %%DATADIR%%/common/annotationsDerived/tk.xml
 %%DATADIR%%/common/annotationsDerived/to.xml
 %%DATADIR%%/common/annotationsDerived/tr.xml
@@ -456,6 +464,7 @@
 %%DATADIR%%/common/casing/sah.xml
 %%DATADIR%%/common/casing/saq.xml
 %%DATADIR%%/common/casing/sbp.xml
+%%DATADIR%%/common/casing/sc.xml
 %%DATADIR%%/common/casing/se.xml
 %%DATADIR%%/common/casing/seh.xml
 %%DATADIR%%/common/casing/ses.xml
@@ -691,6 +700,7 @@
 %%DATADIR%%/common/main/bas_CM.xml
 %%DATADIR%%/common/main/be.xml
 %%DATADIR%%/common/main/be_BY.xml
+%%DATADIR%%/common/main/be_TARASK.xml
 %%DATADIR%%/common/main/bem.xml
 %%DATADIR%%/common/main/bem_ZM.xml
 %%DATADIR%%/common/main/bez.xml
@@ -1072,6 +1082,8 @@
 %%DATADIR%%/common/main/kde_TZ.xml
 %%DATADIR%%/common/main/kea.xml
 %%DATADIR%%/common/main/kea_CV.xml
+%%DATADIR%%/common/main/kgp.xml
+%%DATADIR%%/common/main/kgp_BR.xml
 %%DATADIR%%/common/main/khq.xml
 %%DATADIR%%/common/main/khq_ML.xml
 %%DATADIR%%/common/main/ki.xml
@@ -1278,6 +1290,8 @@
 %%DATADIR%%/common/main/sat_Olck_IN.xml
 %%DATADIR%%/common/main/sbp.xml
 %%DATADIR%%/common/main/sbp_TZ.xml
+%%DATADIR%%/common/main/sc.xml
+%%DATADIR%%/common/main/sc_IT.xml
 %%DATADIR%%/common/main/sd.xml
 %%DATADIR%%/common/main/sd_Arab.xml
 %%DATADIR%%/common/main/sd_Arab_PK.xml
@@ -1408,6 +1422,10 @@
 %%DATADIR%%/common/main/yo.xml
 %%DATADIR%%/common/main/yo_BJ.xml
 %%DATADIR%%/common/main/yo_NG.xml
+%%DATADIR%%/common/main/yrl.xml
+%%DATADIR%%/common/main/yrl_BR.xml
+%%DATADIR%%/common/main/yrl_CO.xml
+%%DATADIR%%/common/main/yrl_VE.xml
 %%DATADIR%%/common/main/yue.xml
 %%DATADIR%%/common/main/yue_Hans.xml
 %%DATADIR%%/common/main/yue_Hans_CN.xml

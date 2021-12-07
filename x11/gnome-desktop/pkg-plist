@@ -13,7 +13,7 @@ include/gnome-desktop-3.0/libgnome-desktop/gnome-xkb-info.h
 lib/girepository-1.0/GnomeDesktop-3.0.typelib
 lib/libgnome-desktop-3.so
 lib/libgnome-desktop-3.so.19
-lib/libgnome-desktop-3.so.19.1.6
+lib/libgnome-desktop-3.so.19.1.7
 libdata/pkgconfig/gnome-desktop-3.0.pc
 libexec/gnome-desktop-debug/gnome-rr-debug
 libexec/gnome-desktop-debug/test-desktop-thumbnail
@@ -146,6 +146,7 @@ share/locale/is/LC_MESSAGES/gnome-desktop-3.0.mo
 share/locale/it/LC_MESSAGES/gnome-desktop-3.0.mo
 share/locale/ja/LC_MESSAGES/gnome-desktop-3.0.mo
 share/locale/ka/LC_MESSAGES/gnome-desktop-3.0.mo
+share/locale/kab/LC_MESSAGES/gnome-desktop-3.0.mo
 share/locale/kg/LC_MESSAGES/gnome-desktop-3.0.mo
 share/locale/kk/LC_MESSAGES/gnome-desktop-3.0.mo
 share/locale/km/LC_MESSAGES/gnome-desktop-3.0.mo

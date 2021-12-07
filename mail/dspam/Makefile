@@ -98,7 +98,7 @@ STRIP=
 
 PKGMESSAGE=	${WRKSRC}/README.FreeBSD
 
-CONFLICTS=	dspam-devel-[0-9]*
+CONFLICTS=	dspam-devel
 
 SIGNATURE_LIFE?=	15
 
@@ -164,7 +164,6 @@ _SED_SCRIPT=	-e 's,%%DOCSDIR%%,${DOCSDIR},g' \
 		-e 's,%%PORTNAME%%,${PORTNAME},g' \
 		-e 's,%%_VAR_DIR%%,${_VAR_DIR},g' \
 		-e '/^%%FreeBSD/D'
-
 
 .if ${PORT_OPTIONS:MSYSLOG}
 CONFIGURE_ARGS+=	--enable-syslog

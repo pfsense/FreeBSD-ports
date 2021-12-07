@@ -2,14 +2,14 @@ PORTNAME=	ponyc
 DISTVERSION=	0.33.2
 CATEGORIES=	lang
 
-MAINTAINER=	greg@unrelenting.technology
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Pony language compiler
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=		aarch64 amd64
-ONLY_FOR_ARCHS_REASON=	Undefined reference to __atomic_compare_exchange_8
+ONLY_FOR_ARCHS_REASON=	undefined reference to __atomic_compare_exchange_8
 
 BUILD_DEPENDS=	llvm-link${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
 

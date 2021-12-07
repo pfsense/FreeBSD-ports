@@ -2,6 +2,7 @@
 
 PORTNAME=	amule
 PORTVERSION=	2.3.3
+PORTREVISION=	3
 CATEGORIES=	net-p2p
 MASTER_SITES=	SF/${PORTNAME}/aMule/${PORTVERSION}
 DISTNAME=	aMule-${PORTVERSION}
@@ -14,12 +15,10 @@ LICENSE_FILE_GPLv2+ =	${WRKSRC}/docs/COPYING
 
 LIB_DEPENDS=	libcryptopp.so:security/cryptopp
 
-CONFLICTS=	amule-devel-[0-9]*
-
 USES=		bison compiler:c++11-lang cpe desktop-file-utils gmake \
 		localbase:ldflags perl5 pkgconfig shebangfix tar:xz
 USE_PERL5=	build
-USE_WX=		2.8
+USE_WX=		3.0
 WX_CONF_ARGS=	absolute
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-denoise-level=0
@@ -31,6 +30,8 @@ CXXFLAGS+=	`pkgconf --cflags-only-other libcryptopp`
 LDFLAGS+=	-lpthread
 
 SHEBANG_FILES=	src/utils/scripts/*.pl src/utils/xas/*.pl src/libs/ec/*.pl
+
+CONFLICTS_INSTALL=	amule-devel
 
 OPTIONS_DEFINE=	ALC ALCC AMULECMD AMULEDAEMON AMULEGUI BOOST CAS DEBUG \
 	DOCS ED2K FILEVIEW MMAP MONOLITHIC NLS UPNP WEBSERVER WXCAS XAS
@@ -51,7 +52,7 @@ OPTIONS_DEFAULT=ALC ALCC AMULECMD AMULEDAEMON AMULEGUI CAS ED2K \
 
 OPTIONS_SUB=	yes
 
-DEBUG_CONFIGURE_ON=	--enable-debug
+DEBUG_CONFIGURE_OFF=	--disable-debug
 
 NLS_USES=	gettext
 NLS_CONFIGURE_OFF=	--disable-nls
@@ -87,7 +88,7 @@ UPNP_LIB_DEPENDS=	libupnp.so:devel/upnp
 UPNP_CONFIGURE_OFF=	--disable-upnp
 
 WEBSERVER_CONFIGURE_ON=	--enable-webserver
-WEBSERVER_LIB_DEPENDS=  libpng.so:graphics/png
+WEBSERVER_LIB_DEPENDS=	libpng.so:graphics/png
 WEBSERVER_USES=		readline
 
 WXCAS_CONFIGURE_ON=	--enable-wxcas
@@ -96,6 +97,12 @@ XAS_CONFIGURE_ON=	--enable-xas
 XAS_USE=	PERL5+=run
 
 .include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MAMULEGUI} || ${PORT_OPTIONS:MMONOLITHIC}
+PLIST_SUB+=	AMULESKIN=""
+.else
+PLIST_SUB+=	AMULESKIN="@comment "
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's/test.*-print-file-name.*`/true/' \

@@ -2,6 +2,7 @@
 
 PORTNAME=	bouncycastle
 PORTVERSION=	1.69
+PORTREVISION=	2
 CATEGORIES=	java security
 MASTER_SITES=	http://www.bouncycastle.org/download/ \
 		http://polydistortion.net/bc/download/
@@ -11,35 +12,41 @@ DISTNAME=	crypto-${DVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cleanroom build of Java Cryptography Extensions
 
-LICENSE=	MIT
+# APACHE20 is used by pg/src/main/java/org/bouncycastle/apache/bzip2/*.
+LICENSE=	APACHE20 MIT
+LICENSE_COMB=	multi
+LICENSE_FILE_MIT=	${WRKSRC}/LICENSE.html
 
-BUILD_DEPENDS=	${JAVALIBDIR}/mail.jar:java/javamail \
-		${JAVALIBDIR}/junit.jar:java/junit
+BUILD_DEPENDS=	${JAVALIBDIR}/junit.jar:java/junit \
+		${JAVALIBDIR}/mail.jar:java/javamail
 RUN_DEPENDS=	${JAVALIBDIR}/mail.jar:java/javamail
 
-OPTIONS_DEFINE=	DOCS ZIPSRC
-OPTIONS_DEFAULT=	ZIPSRC
-OPTIONS_SUB=	yes
-ZIPSRC_DESC=	Install bundled ZIP source files
-CONFLICTS_INSTALL=	bouncycastle-1.4*
-DVERSION=	${PORTVERSION:S/.//}
-NO_ARCH=	yes
-CPE_PRODUCT=	legion-of-the-bouncy-castle-java-crytography-api
-CPE_VENDOR=	${PORTNAME}
-USE_JAVA=	yes
 USES=		cpe
+CPE_VENDOR=	${PORTNAME}
+CPE_PRODUCT=	legion-of-the-bouncy-castle-java-crytography-api
+USE_ANT=	yes
+USE_JAVA=	yes
+
+MAKE_ARGS=	-f \
+		ant/jdk${JDKNVERSION}+.xml
+MAKE_ENV=	ANT_INCLUDE_SHARED_JARS=YES
+ALL_TARGET=	build-provider build
+
+CONFLICTS_INSTALL=	bouncycastle-1.4*
+
+NO_ARCH=	yes
+
+OPTIONS_DEFINE=		DOCS ZIPSRC
+OPTIONS_DEFAULT=	ZIPSRC
+OPTIONS_SUB=		yes
+
+ZIPSRC_DESC=		Install bundled ZIP source files
+ZIPSRC_ALL_TARGET=	zip-src
+
+ARTIFACTSDIR=	${WRKSRC}/build/artifacts/jdk${JDKMVERSION}
+DVERSION=	${PORTVERSION:S/.//}
 JDKMVERSION=	1.5
 JDKNVERSION=	15
-USE_ANT=	yes
-MAKE_ENV=	ANT_INCLUDE_SHARED_JARS=YES
-MAKE_ARGS=	-f ant/jdk${JDKNVERSION}+.xml
-ALL_TARGET=	build-provider build zip-src
-
-JARS_SRC=	bcmail bcpkix bcprov bcpg
-JARS_DOCS=	${JARS_SRC} bctest bctls
-JARS=		${JARS_DOCS} bcprov-ext
-
-PORTDOCS=	*
 
 .include <bsd.port.options.mk>
 
@@ -49,27 +56,38 @@ EXTRA_PATCHES+=	${FILESDIR}/armv6-patch-bc+-build.xml
 .endif
 
 do-install:
-.for jar in ${JARS}
-	${INSTALL_DATA} ${WRKSRC}/build/artifacts/jdk${JDKMVERSION}/jars/${jar}-jdk${JDKNVERSION}on-${DVERSION}.jar \
-	      ${STAGEDIR}${JAVAJARDIR}/${jar}.jar
-.endfor
+	for src in $$(${FIND} ${ARTIFACTSDIR}/jars -name "*-jdk${JDKNVERSION}on-${DVERSION}.jar"); do \
+		dst="$${src##*/}"; \
+		dst="$${dst%%-jdk*}.jar"; \
+		${INSTALL_DATA} "$$src" "${STAGEDIR}/${JAVAJARDIR}/$${dst}"; \
+	done
+# Install the bundlded version of bcprov.jar because we need a signed JAR.
+# See bfca5d2c6e01d757f1f37c141c22645c2835104b for details.
 	${INSTALL_DATA} ${WRKSRC}/jars/bcprov-jdk${JDKNVERSION}on-${DVERSION}.jar \
 		${STAGEDIR}${JAVAJARDIR}/bcprov.jar
-.if ${PORT_OPTIONS:MZIPSRC}
-	@${MKDIR} ${STAGEDIR}${DATADIR}
-.for jar in ${JARS_SRC}
-	${INSTALL_DATA} ${WRKSRC}/build/artifacts/jdk${JDKMVERSION}/${jar}-jdk${JDKNVERSION}on-${DVERSION}/src.zip \
-	      ${STAGEDIR}${DATADIR}/${jar}-src.zip
-.endfor
-.endif
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/*.html ${STAGEDIR}${DOCSDIR}
-.for jar in ${JARS_DOCS}
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}/${jar}
-	@cd ${WRKSRC}/build/artifacts/jdk${JDKMVERSION}/${jar}-jdk${JDKNVERSION}on-${DVERSION}/docs/ && \
-		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}/${jar}
-.endfor
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}/docs
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} docs "${STAGEDIR}${DOCSDIR}")
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}/tls/docs
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} tls/docs "${STAGEDIR}${DOCSDIR}")
+# Skip the lcrypto documentation since that JAR is not installed.
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	for src in $$(${FIND} ${ARTIFACTSDIR} -type d -name "docs"); do \
+		dst="$${src%%-jdk*}"; \
+		dst="$${dst##*/}"; \
+		case $${dst} in lcrypto) continue;; esac; \
+		(cd $${src} && ${COPYTREE_SHARE} . "${STAGEDIR}${DOCSDIR}/$${dst}"); \
+	done
+
+do-install-ZIPSRC-on:
+	@${MKDIR} ${STAGEDIR}${DATADIR}
+	for src in $$(${FIND} ${ARTIFACTSDIR} -name "src.zip"); do \
+		dst="$${src%%-jdk*}"; \
+		dst="$${dst##*/}-src.zip"; \
+		${INSTALL_DATA} "$$src" "${STAGEDIR}/${DATADIR}/$${dst}"; \
+	done
 
 .include <bsd.port.mk>

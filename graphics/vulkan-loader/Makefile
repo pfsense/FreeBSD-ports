@@ -1,6 +1,6 @@
 PORTNAME=	vulkan-loader
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.195
+DISTVERSION=	1.2.201
 CATEGORIES=	graphics devel
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -10,7 +10,7 @@ LICENSE=	APACHE20
 
 BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers
 
-USES=		cmake compiler:${ARCH:Mi386:C/.+/gcc-/}c++11-lib pkgconfig python:3.4+,build
+USES=		alias cmake compiler:c++11-lib pkgconfig python:3.4+,build
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_ACCOUNT=	KhronosGroup
@@ -35,12 +35,14 @@ XLIB_USE=		XORG=x11,xrandr
 XLIB_CMAKE_BOOL=	BUILD_WSI_XLIB_SUPPORT
 
 post-patch:
-# _XOPEN_SOURCE enforces X/Open-compliance but alloca isn't there
-	@${REINPLACE_CMD} '/_XOPEN_SOURCE/d' ${WRKSRC}/loader/CMakeLists.txt
 # Extract (snapshot) version from the port
 	@${REINPLACE_CMD} -e '/find_.*Git/d' \
 		-e '/BRANCH/s/--unknown--/main/' \
 		-e '/TAG/s/--unknown--/${DISTVERSIONFULL}/' \
 		${WRKSRC}/CMakeLists.txt
+# https://bugs.llvm.org/show_bug.cgi?id=47348
+	@if [ "${CHOSEN_COMPILER_TYPE}-${ARCH}-${_OSRELEASE:C/.*-//}" = "clang-i386-CURRENT" ]; then \
+		${ECHO} "disabled" >${WRKSRC}/loader/asm_test_x86.S; \
+	fi
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 
 PORTNAME=	geeqie
 PORTVERSION=	1.6
-PORTREVISION=	11
+PORTREVISION=	14
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.geeqie.org/
 
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libpng.so:graphics/png
 RUN_DEPENDS=	bash:shells/bash
 
-CONFLICTS=	geeqie-devel-[0-9]*
+CONFLICTS=	geeqie-devel
 
 USES=		autoreconf compiler:c++11-lang gettext gmake gnome jpeg \
 		localbase pkgconfig desktop-file-utils tar:xz lua:53 shebangfix

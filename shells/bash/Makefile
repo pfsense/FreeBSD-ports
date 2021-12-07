@@ -1,7 +1,7 @@
 # Created by: Oliver Eikemeier
 
 PORTNAME=		bash
-PATCHLEVEL=		8
+PATCHLEVEL=		12
 PORTVERSION=		5.1.${PATCHLEVEL:S/^0//g}
 PORTREVISION?=		0
 CATEGORIES=		shells
@@ -58,9 +58,9 @@ CONFIGURE_ARGS+=	--without-bash-malloc \
 MAKE_ARGS+=	TERMCAP_LIB=-ltinfow
 
 .if empty(PKGNAMESUFFIX)
-CONFLICTS+=	bash-static-[0-9]*
+CONFLICTS+=	bash-static
 .else
-CONFLICTS+=	bash-[0-9]*
+CONFLICTS+=	bash
 .endif
 CONFLICTS+=	bashc
 

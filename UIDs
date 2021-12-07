@@ -242,10 +242,10 @@ krill:*:294:294::0:0:krill Pseudo User:/nonexistent:/usr/sbin/nologin
 jottad:*:295:295::0:0:Jotta Cloud Daemon:/nonexisten:/usr/sbin/nologin
 writefreely:*:296:296::0:0:WriteFreely daemon:/var/db/writefreely:/usr/sbin/nologin
 conduit:*:297:297::0:0:Conduit daemon:/var/db/conduit:/usr/sbin/nologin
-# free: 298
+neolink:*:298:298::0:0:& daemon:/nonexistent:/usr/sbin/nologin
 owncast:*:299:299::0:0:& daemon:/nonexistent:/usr/sbin/nologin
 backuppc:*:300:300::0:0:BackupPC pseudo-user:/nonexistent:/usr/sbin/nologin
-# free: 301
+openvpn:*:301:301::0:0:OpenVPN pseudo-user:/nonexistent:/usr/sbin/nologin
 netdata:*:302:302::0:0:NetData Daemon:/var/cache/netdata:/usr/sbin/nologin
 # free: 303
 # free: 304
@@ -302,7 +302,7 @@ jackett:*:354:354::0:0:Jackett Torznab Proxy Daemon:/nonexistent:/usr/sbin/nolog
 nzbhydra2:*:355:355::0:0:NZBHydra 2 Daemon:/nonexistent:/usr/sbin/nologin
 lidarr:*:356:356::0:0:Lidarr Daemon:/nonexistent:/usr/sbin/nologin
 bazarr:*:357:357::0:0:Bazarr Daemon:/nonexistent:/usr/sbin/nologin
-# free: 358
+autoscan:*:358:358::0:0:Autoscan Daemon:/nonexistent:/usr/sbin/nologin
 # free: 359
 v2ray:*:360:360::0:0:V2Ray Daemon:/nonexistent:/usr/sbin/nologin
 httptunnel:*:361:361::0:0:httptunnel Daemon:/nonexistent:/usr/sbin/nologin
@@ -820,7 +820,7 @@ archiva:*:871:871::0:0:Apache Archiva Daemon:/nonexistent:/usr/sbin/nologin
 bitmark:*:872:872::0:0:Bitmark Property System:/var/lib/bitmarkd:/usr/sbin/nologin
 bitmark-recorder:*:873:873::0:0:Bitmark Property Recorder:/var/lib/recorderd:/usr/sbin/nologin
 librespeed:*:874:874::0:0:LibreSpeed user:/nonexistent:/usr/sbin/nologin
-# free: 875
+cfssl:*:875:875::0:0:cfssl user:/nonexistent:/usr/sbin/nologin
 _lms:*:876:876::0:0:Lightweight Music Server user:/nonexistent:/usr/sbin/nologin
 gemserv:*:877:877::0:0:gemserv user:/nonexistent:/usr/sbin/nologin
 gerbera:*:878:878::0:0:Gerbera DLNA Media Server:/nonexistent:/usr/sbin/nologin

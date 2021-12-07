@@ -11,6 +11,7 @@
     SUBDIR += bcftools
     SUBDIR += bedtools
     SUBDIR += bfc
+    SUBDIR += bio-mocha
     SUBDIR += bioawk
     SUBDIR += biococoa
     SUBDIR += biolibc
@@ -57,6 +58,7 @@
     SUBDIR += gemma
     SUBDIR += generand
     SUBDIR += gff2ps
+    SUBDIR += gffread
     SUBDIR += gmap
     SUBDIR += gperiodic
     SUBDIR += graphlan
@@ -76,6 +78,7 @@
     SUBDIR += kallisto
     SUBDIR += lamarc
     SUBDIR += libbigwig
+    SUBDIR += libgff
     SUBDIR += libgtextutils
     SUBDIR += libneurosim
     SUBDIR += libnuml
@@ -138,7 +141,6 @@
     SUBDIR += psi88
     SUBDIR += py-Genesis-PyAPI
     SUBDIR += py-PySCeS
-    SUBDIR += py-pybigwig
     SUBDIR += py-biom-format
     SUBDIR += py-biopython
     SUBDIR += py-bx-python
@@ -162,6 +164,7 @@
     SUBDIR += py-orange3-single-cell
     SUBDIR += py-pandas-charm
     SUBDIR += py-py2bit
+    SUBDIR += py-pybigwig
     SUBDIR += py-pyfaidx
     SUBDIR += py-pysam
     SUBDIR += py-python-libsbml

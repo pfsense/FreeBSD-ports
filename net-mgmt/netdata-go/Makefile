@@ -1,9 +1,9 @@
 PORTNAME=	netdata-go
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.30.0
+DISTVERSION=	0.31.0
 CATEGORIES=	net-mgmt
 
-MAINTAINER=	driesm.michiels@gmail.com
+MAINTAINER=	driesm@FreeBSD.org
 COMMENT=	External netdata collection plugin written in Go
 
 LICENSE=	GPLv3

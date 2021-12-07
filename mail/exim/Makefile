@@ -2,7 +2,7 @@
 
 PORTNAME=	exim
 PORTVERSION?=	${EXIM_VERSION}
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES=	mail
 MASTER_SITES=	EXIM:exim
 MASTER_SITE_SUBDIR=	/exim4/:exim \
@@ -283,10 +283,10 @@ SEDLIST+=	-e 's,^\# (DISABLE_DNSSEC=),\1,'
 .endif
 
 .if ${PORT_OPTIONS:MDMARC}
-SEDLIST+= -e 's,XX_DMARC_LIBS_XX,-L${LOCALBASE}/lib -lopendmarc,' \
+SEDLIST+=	-e 's,XX_DMARC_LIBS_XX,-L${LOCALBASE}/lib -lopendmarc,' \
 		-e 's,^\# (SUPPORT_DMARC=),\1,'
 .else
-SEDLIST+= -e 's,XX_DMARC_LIBS_XX,,'
+SEDLIST+=	-e 's,XX_DMARC_LIBS_XX,,'
 .endif
 
 .if ${PORT_OPTIONS:MWISHLIST}

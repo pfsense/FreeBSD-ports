@@ -1,7 +1,8 @@
 # Created by: Thierry Thomas <thierry@pompo.net>
 
 PORTNAME=	CLDR
-PORTVERSION=	39.0
+PORTVERSION=	40.0
+PORTREVISION=	1
 CATEGORIES=	textproc
 MASTER_SITES=	https://unicode.org/Public/cldr/${PORTVERSION:R}/:src	\
 		http://www.unicode.org/:lic

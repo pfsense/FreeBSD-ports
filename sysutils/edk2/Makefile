@@ -8,13 +8,14 @@ COMMENT=	EDK2 Firmware for ${FLAVOR}
 LICENSE=	BSD3CLAUSE
 
 ONLY_FOR_ARCHS=		aarch64 amd64
-ONLY_FOR_ARCHS_REASON=	This port only provides firmware for aarch64 and amd64 machine
+ONLY_FOR_ARCHS_REASON=	only provides firmware for aarch64 and amd64
 
 PKGNAMESUFFIX=	-${FLAVOR:C/_/-/g}
 FLAVORS=	macchiatobin fvp rpi3 rpi4 xen_x64
 FLAVOR?=	macchiatobin
 
-USES=	gmake python:3.7+,build
+USES=	cpe gmake python:3.7+,build
+CPE_VENDOR=	tianocore
 USE_GCC=	yes:build
 
 BUILD_DEPENDS+=	dtc>=1.4.1:sysutils/dtc \
@@ -82,6 +83,8 @@ PLAT_FILENAME=	RPI_EFI.fd
 .endif
 
 .if ${FLAVOR} == xen_x64
+ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS_REASON=	Do not compile on hardware other than amd64
 PLAT=		xen
 PLAT_ARCH=	X64
 PLAT_TARGET=	RELEASE
@@ -101,7 +104,9 @@ MAKE_ENV+=	WORKSPACE=${WRKDIR} \
 		PYTHON_COMMAND=python3 \
 		PYTHONHASHSEED=1
 
-.if ${PLAT_ARCH} == AARCH64
+.include <bsd.port.pre.mk>
+
+.if ${PLAT_ARCH} == AARCH64 && ${ARCH} != aarch64
 BUILD_DEPENDS+=	aarch64-none-elf-gcc:devel/aarch64-none-elf-gcc
 MAKE_ENV+=	GCC5_AARCH64_PREFIX=aarch64-none-elf-
 .endif
@@ -128,4 +133,4 @@ do-install:
 	${MKDIR} ${STAGEDIR}/${PREFIX}/share/${PORTNAME}-${PLAT}/
 	${INSTALL_DATA} ${WRKDIR}/Build/${PLAT_RESULT} ${STAGEDIR}/${PREFIX}/share/${PORTNAME}-${PLAT}/${PLAT_FILENAME}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

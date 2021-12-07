@@ -1,7 +1,7 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
 
 PORTNAME=	aisleriot
-DISTVERSION=	3.22.18
+DISTVERSION=	3.22.19
 CATEGORIES=	games gnome
 MASTER_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/archive/${PORTVERSION}/
 DIST_SUBDIR=	gnome3
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libguile-2.2.so:lang/guile2 \
 		libcanberra-gtk3.so:audio/libcanberra-gtk3 \
 		libgc-threaded.so:devel/boehm-gc-threaded
 
-CONFLICTS_INSTALL=	sol-[0-9]*
+CONFLICTS_INSTALL=	sol
 PORTSCOUT=	limitw:1,even
 
 USES=		desktop-file-utils gettext meson gnome pkgconfig \
@@ -33,6 +33,5 @@ SHEBANG_FILES=	data/icons/meson_updateiconcache.py \
 		src/meson_gconf.py
 
 GLIB_SCHEMAS=	org.gnome.Patience.WindowState.gschema.xml
-
 
 .include <bsd.port.mk>

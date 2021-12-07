@@ -16,9 +16,9 @@ COMMENT=		MIT implementation of RFC 4120 network authentication service
 
 LICENSE=		MIT
 
-CONFLICTS=		heimdal-[0-9]* srp-[0-9]* krb5-11[3-6]-[0-9]* \
-			krb5-1.[0-9]* krb5-devel-*
-CONFLICTS_BUILD=	boringssl-*
+CONFLICTS=		heimdal srp krb5-11[3-6] \
+			krb5-1.[0-9]* krb5-devel
+CONFLICTS_BUILD=	boringssl
 
 KERBEROSV_URL=		http://web.mit.edu/kerberos/
 USES=			compiler:c++11-lang cpe gmake gettext-runtime \

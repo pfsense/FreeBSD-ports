@@ -2,6 +2,9 @@ PORTNAME=	mate-applet-appmenu
 DISTVERSION=	0.7.6
 CATEGORIES=	x11
 
+PATCH_SITES=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
+PATCHFILES+=	442bcebcc00e.patch:-p1 # meson >= 0.60
+
 MAINTAINER=	ericbsd@FreeBSD.org
 COMMENT=	Application Menu plugin for mate-panel
 
@@ -23,7 +26,7 @@ MESON_ARGS=	-Dvalapanel=disabled \
 		-Dregistrar=disabled \
 		-Dappmenu-gtk-module=disabled
 
-USE_MATE= 	panel
+USE_MATE=	panel
 USE_GNOME=	gtk30 glib20 gtk20 gdkpixbuf2
 GLIB_SCHEMAS=	org.valapanel.appmenu.gschema.xml
 

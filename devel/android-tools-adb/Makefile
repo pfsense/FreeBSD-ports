@@ -4,7 +4,7 @@ DISTVERSION?=	29.0.6
 PORTREVISION?=	1
 CATEGORIES=	devel comms
 
-MAINTAINER=	nc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Android debug bridge command line tool
 
 LICENSE=	APACHE20
@@ -12,7 +12,7 @@ LICENSE=	APACHE20
 USE_GITHUB=	yes
 GH_TUPLE=	aosp-mirror:platform_system_core:${DISTVERSIONFULL}
 
-CONFLICTS_INSTALL?=	${PORTNAME}-devel-*
+CONFLICTS_INSTALL?=	${PORTNAME}-devel
 
 USES=		compiler:c++17-lang pkgconfig ssl uidfix
 BUILD_WRKSRC=	${WRKSRC}/adb

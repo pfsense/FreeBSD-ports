@@ -1,7 +1,7 @@
 # Created by: Hugo Saro <hugo@barafranca.com>
 
 PORTNAME=	haproxy
-DISTVERSION=	2.3.14
+DISTVERSION=	2.3.16
 CATEGORIES=	net www
 PKGNAMESUFFIX=	23
 MASTER_SITES=	http://www.haproxy.org/download/2.3/src/
@@ -12,7 +12,7 @@ COMMENT=	Reliable, high performance TCP/HTTP load balancer
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-CONFLICTS_INSTALL=	haproxy-[0-9]* haproxy17-[0-9]* haproxy18-[0-9]* haproxy19-[0-9]* haproxy20-[0-9]* haproxy21-[0-9]*
+CONFLICTS_INSTALL=	haproxy haproxy17 haproxy18 haproxy19 haproxy20 haproxy21
 
 USES=		compiler:c++11-lang cpe gmake
 USE_RC_SUBR=	haproxy

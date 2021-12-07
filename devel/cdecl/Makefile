@@ -1,7 +1,7 @@
 # Created by: David O'Brien (obrien@NUXI.com)
 
 PORTNAME=	cdecl
-PORTVERSION=	11.2
+PORTVERSION=	11.6
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	devel
 
@@ -14,7 +14,7 @@ BUILD_DEPENDS=	flex:textproc/flex
 
 USES=		autoreconf bison ncurses readline
 
-CONFLICTS=	cutils-[0-9]*
+CONFLICTS=	cutils
 
 USE_GITHUB=	yes
 

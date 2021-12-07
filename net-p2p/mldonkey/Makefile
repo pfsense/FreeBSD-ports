@@ -14,7 +14,7 @@ COMMENT?=	Multi-protocol peer-to-peer client written in OCaml
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/Copying.txt
 
-CONFLICTS=	mldonkey{-{core,gui},}-devel-[0-9]*
+CONFLICTS=	mldonkey{-{core,gui},}-devel
 
 USES=		compiler:c++11-lang cpe gmake iconv pkgconfig tar:bzip2
 USE_OCAML=	yes
@@ -94,7 +94,7 @@ ALL_TARGET+=	\
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH:Mpowerpc*}
+.if ${ARCH:Mpowerpc64*}
 USE_GCC=	yes
 .endif
 

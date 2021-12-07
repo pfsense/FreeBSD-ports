@@ -36,6 +36,7 @@
     SUBDIR += assh
     SUBDIR += authenticator
     SUBDIR += autossh
+    SUBDIR += aws-c-auth
     SUBDIR += aws-c-cal
     SUBDIR += aws-iam-authenticator
     SUBDIR += aws-vault
@@ -336,6 +337,7 @@
     SUBDIR += libu2f-host
     SUBDIR += libuecc
     SUBDIR += libwhisker
+    SUBDIR += libxcrypt
     SUBDIR += libyubikey
     SUBDIR += libzrtpcppcore
     SUBDIR += linux-bitwarden-cli
@@ -899,6 +901,7 @@
     SUBDIR += py-dfdatetime
     SUBDIR += py-dfvfs
     SUBDIR += py-dfwinreg
+    SUBDIR += py-django-auth-kerberos
     SUBDIR += py-docker-pycreds
     SUBDIR += py-ecdsa
     SUBDIR += py-ed25519ll
@@ -1020,6 +1023,7 @@
     SUBDIR += py-vici
     SUBDIR += py-virustotal-api
     SUBDIR += py-volatility3
+    SUBDIR += py-vpn-slice
     SUBDIR += py-vulndb
     SUBDIR += py-webauthn
     SUBDIR += py-xkcdpass
@@ -1075,7 +1079,6 @@
     SUBDIR += rubygem-devise-two-factor-rails5
     SUBDIR += rubygem-devise-two-factor-rails60
     SUBDIR += rubygem-devise-two-factor-rails61
-    SUBDIR += rubygem-devise-two-factor-rails613
     SUBDIR += rubygem-devise-two-factor30-rails52
     SUBDIR += rubygem-devise-two-factor30-rails60
     SUBDIR += rubygem-devise_pam_authenticatable2
@@ -1123,6 +1126,7 @@
     SUBDIR += rubygem-omniauth-bitbucket
     SUBDIR += rubygem-omniauth-cas
     SUBDIR += rubygem-omniauth-cas3
+    SUBDIR += rubygem-omniauth-dingtalk-oauth2
     SUBDIR += rubygem-omniauth-gitlab
     SUBDIR += rubygem-omniauth-jwt
     SUBDIR += rubygem-omniauth-multipassword
@@ -1227,6 +1231,7 @@
     SUBDIR += snort3
     SUBDIR += snortsam
     SUBDIR += snortsnarf
+    SUBDIR += snowflake-tor
     SUBDIR += snuffleupagus
     SUBDIR += softether
     SUBDIR += softether-devel
@@ -1350,6 +1355,7 @@
     SUBDIR += yubikey-manager-qt
     SUBDIR += yubikey-personalization-gui
     SUBDIR += yubioath-desktop
+    SUBDIR += zaproxy
     SUBDIR += zebedee
     SUBDIR += zeek
     SUBDIR += zeronet

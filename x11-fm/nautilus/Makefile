@@ -1,7 +1,7 @@
 # Created by: ade, archie
 
 PORTNAME=	nautilus
-PORTVERSION=	41.0
+PORTVERSION=	41.1
 CATEGORIES=	x11-fm gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
@@ -27,8 +27,8 @@ USE_GNOME=	cairo gdkpixbuf2 gnomedesktop3
 USE_GSTREAMER1=	yes
 USE_LDCONFIG=	yes
 USE_XORG=	x11
-MESON_ARGS=	-Denable-packagekit=false \
-		-Denable-selinux=false
+MESON_ARGS=	-Dpackagekit=false \
+		-Dselinux=false
 BINARY_ALIAS=	python3=${PYTHON_VERSION}
 CPE_VENDOR=	gnome
 

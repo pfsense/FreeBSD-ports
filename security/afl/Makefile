@@ -13,10 +13,13 @@ COMMENT=	Fast instrumented fuzzer
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/docs/COPYING
 
+DEPRECATED=	Abandoned upstream, no new release since 2017. Please consider using security/afl++ instead
+EXPIRATION_DATE=2022-03-31
+
 # In theory afl supports other architectures with the LLVM plugin.
 # It has to be compiled with AFL_NO_X86=1 in that case.
 ONLY_FOR_ARCHS=	amd64 i386
-ONLY_FOR_ARCHS_REASON=	Uses binary instrumentation
+ONLY_FOR_ARCHS_REASON=	uses binary instrumentation
 
 USES=		gmake tar:tgz
 

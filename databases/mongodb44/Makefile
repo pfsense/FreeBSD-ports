@@ -1,6 +1,6 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	4.4.8
+DISTVERSION=	4.4.10
 CATEGORIES=	databases net
 MASTER_SITES=	https://fastdl.mongodb.org/src/ \
 		http://fastdl.mongodb.org/src/
@@ -17,7 +17,7 @@ LICENSE_FILE_SSPLv1=	${WRKSRC}/LICENSE-Community.txt
 LICENSE_PERMS_SSPLv1=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64le
-ONLY_FOR_ARCHS_REASON=	Only ported to amd64, aarch64 and powerpc64le on FreeBSD. Upstream supports arm64, ppc64le, s390x and x86-64.
+ONLY_FOR_ARCHS_REASON=	only ported to amd64, aarch64, and powerpc64le on FreeBSD; upstream supports arm64, ppc64le, s390x, and x86-64
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cheetah3>0:devel/py-cheetah3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}yaml>=3.11:devel/py-yaml@${PY_FLAVOR} \
@@ -30,9 +30,9 @@ LIB_DEPENDS=	libpcre.so:devel/pcre \
 USES=		compiler:c++17-lang cpe python:3.5+,build scons
 USE_RC_SUBR=	mongod
 
-PORTSCOUT=     limit:^4\.4\.
+PORTSCOUT=	limit:^4\.4\.
 
-CONFLICTS_INSTALL=	mongodb36 mongodb4[02]
+CONFLICTS_INSTALL=	mongodb36 mongodb4[02] mongodb50
 
 OPTIONS_DEFINE=	LTO SASL SSL
 OPTIONS_DEFAULT=LTO SASL SSL

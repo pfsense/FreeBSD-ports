@@ -1,6 +1,6 @@
 PORTNAME=	spectral
 PORTVERSION=	817
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net-im
 
 MAINTAINER=	adridg@FreeBSD.org
@@ -30,7 +30,6 @@ DISTFILES=	${PORTNAME}-${PORTVERSION}.tar.bz2:spectral \
 MASTER_SITES=	https://gitlab.com/spectral-im/spectral/-/archive/${PORTVERSION}/:spectral \
 		https://github.com/oKcerG/${SFPMNAME}/archive/:sfpm \
 		https://github.com/quotient-im/${QUOTNAME}/archive/:quot
-
 
 post-extract:
 	${RMDIR} ${WRKSRC}/include/${SFPMNAME} ${WRKSRC}/include/${QUOTNAME}

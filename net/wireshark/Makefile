@@ -1,7 +1,8 @@
 # Created by: Bill Fumerola <billf@chc-chimes.com>
 
 PORTNAME?=	wireshark
-PORTVERSION=	3.4.9
+PORTVERSION=	3.6.0
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://www.wireshark.org/download/src/ \
 		http://ftp.uni-kl.de/pub/wireshark/src/ \
@@ -19,7 +20,7 @@ COMMENT?=	Powerful network analyzer/capture tool
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS_INSTALL?=	wireshark-lite-[0-9]* tshark-[0-9]* tshark-lite-[0-9]*
+CONFLICTS_INSTALL?=	wireshark-lite tshark tshark-lite
 
 DATADIR_NAME=	wireshark
 DATADIR=	${PREFIX}/share/${DATADIR_NAME}
@@ -31,18 +32,20 @@ USE_PERL5=	build
 USE_GNOME=	glib20 libxml2
 USE_LDCONFIG=	yes
 
+BUILD_DEPENDS=	asciidoctor:textproc/rubygem-asciidoctor
 LIB_DEPENDS+=	libgpg-error.so:security/libgpg-error \
 		libgcrypt.so:security/libgcrypt \
 		liblz4.so:archivers/liblz4 \
 		libnghttp2.so:www/libnghttp2 \
 		libsnappy.so:archivers/snappy \
-		libcares.so:dns/c-ares
+		libcares.so:dns/c-ares \
+		libzstd.so:archivers/zstd
 
 #CFLAGS+=	-funit-at-a-time
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 
 .for x in capinfos editcap mergecap rawshark text2pcap dftest randpkt \
-    reordercap captype randpktdump udpdump sharkd
+    reordercap captype randpktdump udpdump sharkd etwdump
 .if defined(LITE)
 PKGNAMESUFFIX=		-lite
 PLIST_SUB+=		${x:tu}="@comment $x not installed" \

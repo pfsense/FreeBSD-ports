@@ -18,9 +18,10 @@ RUN_DEPENDS=	tcllib>=1.2:devel/tcllib \
 OPTIONS_DEFINE=	DOCS EXAMPLES IPV6 SOUND TDOM TKCON TKTRAY TLS
 OPTIONS_DEFAULT=	TLS
 
-CONFLICTS=	tkabber-devel-[0-9]*
+CONFLICTS=	tkabber-devel
 
-USES=		shebangfix tar:xz
+USES=		cpe shebangfix tar:xz
+CPE_VENDOR=	${PORTNAME}_project
 SHEBANG_FILES=	contrib/extract-translations/extract.tcl
 
 IPV6_USES=	tk:86+

@@ -41,11 +41,13 @@
     SUBDIR += crystal
     SUBDIR += csharp-mode.el
     SUBDIR += cython
+    SUBDIR += cython-devel
     SUBDIR += dlang-tools
     SUBDIR += dlv
     SUBDIR += duktape
     SUBDIR += duktape-lib
     SUBDIR += ecl
+    SUBDIR += eisl
     SUBDIR += elixir
     SUBDIR += elixir-devel
     SUBDIR += elixir-mode.el
@@ -169,6 +171,7 @@
     SUBDIR += lua53
     SUBDIR += lua54
     SUBDIR += luajit
+    SUBDIR += luajit-devel
     SUBDIR += luajit-openresty
     SUBDIR += malbolge
     SUBDIR += maude
@@ -283,6 +286,7 @@
     SUBDIR += python27
     SUBDIR += python3
     SUBDIR += python310
+    SUBDIR += python311
     SUBDIR += python36
     SUBDIR += python37
     SUBDIR += python38
@@ -356,6 +360,7 @@
     SUBDIR += urweb
     SUBDIR += v
     SUBDIR += v8
+    SUBDIR += v8-beta
     SUBDIR += vala
     SUBDIR += visualworks
     SUBDIR += voc

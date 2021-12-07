@@ -18,7 +18,7 @@ _INCLUDE_BSD_DEFAULT_VERSIONS_MK=	yes
 LOCALBASE?=	/usr/local
 
 .for lang in APACHE BDB COROSYNC EMACS FIREBIRD FORTRAN FPC GCC GHOSTSCRIPT GL \
-	IMAGEMAGICK JAVA LAZARUS LIBRSVG2 LINUX LLVM LUA MYSQL NINJA PERL5 \
+	IMAGEMAGICK JAVA LAZARUS LIBRSVG2 LINUX LLVM LUA MYSQL NINJA NODEJS PERL5 \
 	PGSQL PHP PYTHON PYTHON2 PYTHON3 RUBY RUST SAMBA SSL TCLTK VARNISH
 .if defined(${lang}_DEFAULT)
 ERROR+=	"The variable ${lang}_DEFAULT is set and it should only be defined through DEFAULT_VERSIONS+=${lang:tl}=${${lang}_DEFAULT} in /etc/make.conf"
@@ -105,11 +105,11 @@ _PERL5_FROM_BIN!=	${LOCALBASE}/bin/perl -e 'printf "%vd\n", $$^V;'
 _EXPORTED_VARS+=	_PERL5_FROM_BIN
 PERL5_DEFAULT:=		${_PERL5_FROM_BIN:R}
 .endif
-# Possible values: 9.6, 10, 11, 12, 13
-PGSQL_DEFAULT?=		12
+# Possible values: 9.6, 10, 11, 12, 13, 14
+PGSQL_DEFAULT?=		13
 # Possible values: 7.3, 7.4, 8.0
 PHP_DEFAULT?=		7.4
-# Possible values: 2.7, 3.6, 3.7, 3.8, 3.9, 3.10
+# Possible values: 2.7, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11
 PYTHON_DEFAULT?=	3.8
 # Possible values: 2.7
 PYTHON2_DEFAULT?=	2.7
@@ -162,5 +162,8 @@ TCLTK_DEFAULT?=		8.6
 
 # Possible values: 4, 6
 VARNISH_DEFAULT?=	4
+
+# Possible value: 10, 14, 16, 17, lts, current
+NODEJS_DEFAULT?=    lts
 
 .endif

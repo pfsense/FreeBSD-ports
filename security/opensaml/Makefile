@@ -1,8 +1,7 @@
 # Created by: Janos Mohacsi
 
 PORTNAME=	opensaml
-PORTVERSION=	3.2.0
-PORTREVISION=	1
+PORTVERSION=	3.2.1
 CATEGORIES=	security
 MASTER_SITES=	http://shibboleth.net/downloads/c++-opensaml/${PORTVERSION}/
 
@@ -18,7 +17,8 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--disable-doxygen-doc --disable-dependency-tracking
-USES=		gmake libtool pkgconfig tar:bzip2 ssl
+USES=		cpe gmake libtool pkgconfig tar:bzip2 ssl
+CPE_VENDOR=	shibboleth
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	DOCS

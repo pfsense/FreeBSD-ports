@@ -1,7 +1,7 @@
 # Created by: Ashish SHUKLA <ashish@FreeBSD.org>
 
 PORTNAME=	chez-scheme
-PORTVERSION=	9.5.2
+PORTVERSION=	9.5.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	lang
 MASTER_SITES=	http://distfiles.pirateparty.in/ashish/:boot \
@@ -17,22 +17,24 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid
+LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
+		libossp-uuid.so:misc/ossp-uuid
 
 USES=		gmake iconv:lib ncurses
 USE_GITHUB=	yes
 GH_ACCOUNT=	cisco
 GH_PROJECT=	ChezScheme
-GH_TUPLE=	nanopass:nanopass-framework-scheme:v1.9:nanopass/nanopass \
+GH_TUPLE=	nanopass:nanopass-framework-scheme:v1.9.1:nanopass/nanopass \
 		madler:zlib:v1.2.11:zlib/zlib \
-		dybvig:stex:v1.2.1:stex/stex
+		dybvig:stex:v1.2.2:stex/stex \
+		lz4:lz4:3d67671:lz4/lz4
 
 OPTIONS_DEFAULT=	X11
 OPTIONS_DEFINE=	X11
 
 HAS_CONFIGURE=	yes
 ALL_TARGET=	build
-CONFLICTS_INSTALL=	petite-chez-[0-9]*
+CONFLICTS_INSTALL=	petite-chez
 STRIP_FILES=	bin/petite bin/${PORTNAME} bin/${PORTNAME}-script
 CHEZ_LIBDIR=lib/csv${PORTVERSION}
 CFLAGS+=	-I${LOCALBASE}/include

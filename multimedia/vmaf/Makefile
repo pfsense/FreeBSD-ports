@@ -1,6 +1,7 @@
 PORTNAME=	vmaf
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2.1
+DISTVERSION=	2.3.0
+PORTREVISION=	2
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -12,7 +13,8 @@ LICENSE_NAME=	BSD-2-Clause Plus Patent License
 LICENSE_FILE=	${WRKSRC:H}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BUILD_DEPENDS=	${BUILD_DEPENDS_${ARCH}}
+BUILD_DEPENDS=	xxd:editors/vim \
+		${BUILD_DEPENDS_${ARCH}}
 BUILD_DEPENDS_amd64=	nasm:devel/nasm
 BUILD_DEPENDS_i386=	nasm:devel/nasm
 
@@ -21,5 +23,10 @@ USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_ACCOUNT=	Netflix
 WRKSRC_SUBDIR=	lib${PORTNAME}
+
+post-install:
+# For legacy API consumers e.g., aom, x265
+	(cd ${WRKSRC:H} && ${COPYTREE_SHARE} "model" \
+		${STAGEDIR}${DATADIR:H} "-name *.json")
 
 .include <bsd.port.mk>

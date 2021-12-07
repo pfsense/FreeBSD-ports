@@ -1,8 +1,7 @@
 # Created by: Bernhard Froehlich <decke@bluelife.at>
 
 PORTNAME=	virtualbox-ose
-PORTVERSION=	6.1.26
-PORTREVISION=	3
+PORTVERSION=	6.1.30
 CATEGORIES=	emulators
 MASTER_SITES=	https://download.virtualbox.org/virtualbox/${PORTVERSION}/
 DISTFILES=	VirtualBox-${PORTVERSION}${EXTRACT_SUFX} ${GUESTADDITIONS}
@@ -36,9 +35,9 @@ CONFIGURE_ARGS=	--disable-java --passive-mesa
 CONFIGURE_ARGS+=	--with-gcc="${CC}" --with-g++="${CXX}"
 
 CONFLICTS_INSTALL=	virtualbox-ose-additions-* \
-			virtualbox-ose-devel-[0-9]* \
-			virtualbox-ose-legacy-[0-9]* \
-			virtualbox-ose-lite-[0-9]*
+			virtualbox-ose-devel \
+			virtualbox-ose-legacy \
+			virtualbox-ose-lite
 
 VBOXUSER?=	vboxusers
 VBOXWSUSER?=	vboxusers
@@ -115,10 +114,10 @@ USE_RC_SUBR=	vboxheadless vboxwatchdog
 .include <bsd.port.options.mk>
 
 .if ${SLAVE_PORT} == no
-CONFLICTS_INSTALL+=	virtualbox-ose-nox11-[0-9]*
+CONFLICTS_INSTALL+=	virtualbox-ose-nox11
 OPTIONS_DEFAULT+=	PYTHON
 .else
-CONFLICTS_INSTALL+=	virtualbox-ose-[0-9]*
+CONFLICTS_INSTALL+=	virtualbox-ose
 .endif
 
 .if ${ARCH} == "amd64"

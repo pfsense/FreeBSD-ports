@@ -1,7 +1,7 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
 
 PORTNAME=	rssguard
-PORTVERSION=	4.0.1
+PORTVERSION=	4.0.4
 CATEGORIES=	net www
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -17,7 +17,9 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	martinrotter
 
 OPTIONS_DEFINE=	WEBENGINE
-OPTIONS_DEFAULT=	WEBENGINE
+OPTIONS_DEFAULT_aarch64=	WEBENGINE
+OPTIONS_DEFAULT_amd64=	WEBENGINE
+OPTIONS_DEFAULT_i386=	WEBENGINE
 
 WEBENGINE_DESC=	Use QtWebEngine module for internal web browser
 WEBENGINE_USE=	QT=location,printsupport,webchannel,webengine
@@ -36,3 +38,5 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/librssguard.so
 
 .include <bsd.port.mk>
+
+PATCH_ARGS+=	-l

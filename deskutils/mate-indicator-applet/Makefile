@@ -17,14 +17,13 @@ BUILD_DEPENDS=	libindicator>=12.10.1:devel/libindicator
 RUN_DEPENDS=	mate-applets>=1.22.0:x11/mate-applets \
 		libindicator>=12.10.1:devel/libindicator
 
-
 PORTSCOUT=	limitw:1,even
 
 USES=		compiler:c11 gettext gmake gnome libtool localbase mate \
  		pkgconfig tar:xz
 USE_CSTD=	c11
 
-USE_MATE= 	panel
+USE_MATE=	panel
 USE_GNOME=	gtk30
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

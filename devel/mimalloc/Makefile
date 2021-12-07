@@ -2,8 +2,7 @@
 
 PORTNAME=	mimalloc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.2
-PORTREVISION=	1
+DISTVERSION=	2.0.3
 CATEGORIES=	devel
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -19,8 +18,6 @@ USE_LDCONFIG=	yes
 
 CMAKE_ON=	MI_INSTALL_TOPLEVEL
 TEST_TARGET=	test
-
-LDFLAGS_powerpc=	-latomic
 
 # ci pipeline creates transient tags
 PORTSCOUT=	ignore:1

@@ -2,7 +2,7 @@
 
 PORTNAME=	binutils
 PORTVERSION=	2.37
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH?=	1
 CATEGORIES?=	devel
 MASTER_SITES=	SOURCEWARE/binutils/releases
@@ -37,7 +37,7 @@ MAKE_ARGS+=	LIBDL=""
 MAKE_ENV+=	ac_cv_func_sbrk=0
 TEST_TARGET=	check
 
-CONFLICTS=	libbfd-[0-9]*
+CONFLICTS=	libbfd
 
 OPTIONS_DEFINE=	NLS RELRO STATIC
 OPTIONS_SUB=	yes
@@ -113,6 +113,11 @@ CXXFLAGS+=	-Wno-c++11-narrowing
 PLIST_SUB+=	GOLD=""
 .else
 PLIST_SUB+=	GOLD="@comment "
+.endif
+
+.if (${FLAVOR} == native && ${OPSYS} == FreeBSD) || \
+    (${FLAVOR} != native && ${BUTARGET:M*freebsd*})
+CONFIGURE_ARGS+=	--enable-new-dtags
 .endif
 
 .if ${ARCH} == amd64

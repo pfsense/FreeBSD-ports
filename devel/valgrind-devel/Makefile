@@ -1,12 +1,10 @@
 # Created by: Simon Barner <barner@gmx.de>
 
 PORTNAME=	valgrind
-PORTVERSION=	3.18.0.g20210323
+PORTVERSION=	3.19.0.g20211113
 DISTVERSIONPREFIX=	freebsd-
-PORTREVISION=	0
 PORTEPOCH=	1
 CATEGORIES=	devel
-MASTER_SITES=	https://valgrind.org/
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	pjfloyd@wanadoo.fr
@@ -17,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-USES=		pathfix pkgconfig gmake perl5 shebangfix autoreconf
+USES=		cpe pathfix pkgconfig gmake perl5 shebangfix autoreconf
 USE_PERL5=	build
 
 GNU_CONFIGURE=	yes
@@ -25,12 +23,12 @@ SHEBANG_FILES=	callgrind/callgrind_annotate.in callgrind/callgrind_control.in
 SSP_UNSAFE=	yes
 LIB32_PATH?=	/usr/lib32/libc.so
 
-CONFLICTS=	valgrind-[0-9]*
+CONFLICTS=	valgrind
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	paulfloyd
 GH_PROJECT=	freebsd_valgrind
-GH_TAGNAME=	bd87bbc
+GH_TAGNAME=	6983bfb
 
 CONFIGURE_ENV+=	ac_cv_path_PERL=${PERL}
 

@@ -1,7 +1,7 @@
 # Created by: Gabor Kovesdan <gabor@FreeBSD.org>
 
 PORTNAME=	grep
-PORTVERSION=	3.6
+PORTVERSION=	3.7
 CATEGORIES=	textproc
 MASTER_SITES=	GNU
 PKGNAMEPREFIX=	gnu
@@ -11,7 +11,7 @@ COMMENT=	GNU version of popular pattern matching utility
 
 LICENSE=	GPLv3+
 
-CONFLICTS=	bsd-grep-[0-9]*
+CONFLICTS=	bsd-grep
 
 USES=		charsetfix cpe tar:xz
 GNU_CONFIGURE=	yes

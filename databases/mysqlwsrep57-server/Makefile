@@ -1,9 +1,9 @@
 # Created by: Vasil Dimov <vd@FreeBSD.org>
 
 PORTNAME=	mysqlwsrep
-PORTVERSION?=	5.7.34
+PORTVERSION?=	5.7.35
 DISTVERSIONPREFIX?=	wsrep_
-DISTVERSIONSUFFIX?=	-25.26
+DISTVERSIONSUFFIX?=	-25.27
 CATEGORIES=	databases
 MASTER_SITES+=	SF/boost/boost/1.59.0:boost
 PKGNAMESUFFIX=	57-server
@@ -84,11 +84,11 @@ PLIST_SUB=	MY_DBDIR=${MY_DBDIR} \
 		MY_SECDIR=${MY_SECDIR} \
 		MY_TMPDIR=${MY_TMPDIR}
 
-CONFLICTS_INSTALL=	mariadb*-server-* \
-			mysql[0-9]*-server-* \
-			mysqlwsrep56*-server-* \
-			mysqlwsrep[1-489]*-server-* \
-			percona*-server-*
+CONFLICTS_INSTALL=	mariadb*-server \
+			mysql[0-9]*-server \
+			mysqlwsrep56*-server \
+			mysqlwsrep[1-489]*-server \
+			percona*-server
 
 USE_RC_SUBR=	mysql-server
 

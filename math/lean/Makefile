@@ -1,6 +1,6 @@
 PORTNAME=	lean
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.33.0
+DISTVERSION=	3.35.1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,6 +12,7 @@ LICENSE_FILE=	${WRKSRC}/../LICENSE
 LIB_DEPENDS=	libgmp.so:math/gmp
 
 USES=		cmake compiler:c++11-lang
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	leanprover-community
 

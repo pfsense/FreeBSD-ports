@@ -11,7 +11,7 @@ DIST_SUBDIR=	freepascal
 MAINTAINER?=	acm@FreeBSD.org
 COMMENT?=	Portable Delphi-like IDE for the FreePascal compiler (GTK2)
 
-CONFLICTS?=	${PORTNAME}-qt5-*
+CONFLICTS?=	${PORTNAME}-qt5
 
 BUILD_DEPENDS?=	${LOCALBASE}/bin/as:devel/binutils \
 		fpcres:lang/fpc-utils
@@ -148,7 +148,6 @@ do-install:
 		${FIND} * -type d -exec ${MKDIR} "${STAGEDIR}${EXAMPLESDIR}/{}" \; && \
 			${FIND} * -type f -exec ${INSTALL_DATA} {} "${STAGEDIR}${EXAMPLESDIR}/{}" \;
 	@${LN} -s ${EXAMPLESDIR} ${STAGEDIR}${DATADIR}/examples
-
 
 .for RESO in 128 16 256 32 48 64
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${RESO}x${RESO}/apps

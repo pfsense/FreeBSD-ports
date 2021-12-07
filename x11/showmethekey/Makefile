@@ -1,6 +1,6 @@
 PORTNAME=	showmethekey
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.6
+DISTVERSION=	1.5.0
 CATEGORIES=	x11
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -8,6 +8,7 @@ COMMENT=	Show keys you typed on screen
 
 LICENSE=	APACHE20
 
+BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto
 LIB_DEPENDS=	libjson-glib-1.0.so:devel/json-glib \
 		libevdev.so:devel/libevdev \
 		libudev.so:devel/libudev-devd \

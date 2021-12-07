@@ -1,7 +1,7 @@
 # Created by: dpejesh@yahoo.com
 
 PORTNAME=	resource-agents
-PORTVERSION=	4.8.0
+PORTVERSION=	4.9.0
 DISTVERSIONPREFIX=v
 CATEGORIES=	net-mgmt
 
@@ -25,7 +25,7 @@ CONFIGURE_ARGS=	--disable-fatal-warnings --with-version=${PORTVERSION} \
 		PACKAGE_STRING="${PORTNAME} ${PORTVERSION}" \
 		PACKAGE_VERSION="${PORTVERSION}"
 
-CONFLICTS=	heartbeat-[0-9]*
+CONFLICTS=	heartbeat
 
 SHEBANG_LANG=	sh
 sh_OLD_CMD=	/bin/sh

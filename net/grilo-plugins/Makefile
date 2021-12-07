@@ -1,7 +1,7 @@
 # Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
 
 PORTNAME=	grilo-plugins
-PORTVERSION=	0.3.12
+PORTVERSION=	0.3.14
 CATEGORIES=	net
 MASTER_SITES=	GNOME
 
@@ -42,4 +42,12 @@ DMAP_DESC=			DMAP (DAAP, DPAP & DACP) support with libdmapsharing
 DMAP_MESON_YES=			enable-dmap
 DMAP_LIB_DEPENDS=		libdmapsharing-3.0.so:net/libdmapsharing
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PORT_OPTIONS:MTRACKER}
+PLIST_SUB+= TRACKER="@comment "
+.else
+PLIST_SUB+= TRACKER=""
+.endif
+
+.include <bsd.port.post.mk>

@@ -1,7 +1,7 @@
 # Created by: KIMURA Yasuhiro <yasu@utahime.org>
 
 PORTNAME=	git-modes
-DISTVERSION=	1.3.1
+DISTVERSION=	1.4.0
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	devel elisp
@@ -18,8 +18,6 @@ RUN_DEPENDS=	git:devel/git
 USES=		emacs gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	magit
-
-ALL_TARGET=	lisp
 
 NO_ARCH=	yes
 

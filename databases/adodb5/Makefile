@@ -1,7 +1,7 @@
 # Created by: mm@FreeBSD.org
 
 PORTNAME=	adodb
-PORTVERSION=	5.21.2
+PORTVERSION=	5.21.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases www
 PKGNAMESUFFIX=	5${PHP_PKGNAMESUFFIX}
@@ -12,7 +12,8 @@ COMMENT=	Database library for PHP
 LICENSE=	BSD3CLAUSE LGPL21+
 LICENSE_COMB=	dual
 
-USES=		php:flavors
+USES=		cpe php:flavors
+CPE_VENDOR=	${PORTNAME}_project
 USE_PHP=	pcre
 
 USE_GITHUB=	yes

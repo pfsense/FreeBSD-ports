@@ -1,6 +1,6 @@
 PORTNAME=	mpich
 PORTVERSION=	3.4.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net parallel
 MASTER_SITES=	https://www.mpich.org/static/downloads/${DISTVERSION}/
 
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libhwloc.so:devel/hwloc2	\
 		libepoll-shim.so:devel/libepoll-shim
 RUN_DEPENDS=	bash:shells/bash
 
-CONFLICTS=	mpd-[0-9]* mpich2-[0-9]*
+CONFLICTS=	mpd mpich2
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USES=		compiler:c11 libtool perl5 pkgconfig
@@ -55,9 +55,7 @@ DHYDRA_DESC=	Make hydra the default process manager
 
 L0_DESC=		oneAPI Level Zero support
 L0_LIB_DEPENDS=		libze_loader.so:devel/level-zero
-L0_CPPFLAGS=		-DZE_IPC_MEMORY_FLAG_TBD=ZE_IPC_MEMORY_FLAG_BIAS_CACHED # 1.4.1
-L0_CONFIGURE_ENV_OFF=	ac_cv_header_level_zero_ze_api_h=no \
-			ac_cv_lib_ze_loader_zeInit=no
+L0_CONFIGURE_OFF=	--without-ze
 
 CONFIGURE_ARGS=	--enable-fast="" --with-hwloc-prefix=${LOCALBASE} \
 		--with-libfabric=${LOCALBASE} \

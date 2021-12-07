@@ -1,7 +1,7 @@
 PORTNAME=	ponscripter
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2.0_test-5
-DISTVERSIONSUFFIX=	-g14d0cb1
+DISTVERSION=	2.2.0_test-13
+DISTVERSIONSUFFIX=	-gcc7ab36
 CATEGORIES=	games
 PKGNAMESUFFIX=	-${GH_ACCOUNT}
 
@@ -17,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libsmpeg2.so:multimedia/smpeg2 \
 		libfreetype.so:print/freetype2
 
-CONFLICTS=	ponscripter-[0-9]* # doesn't exist yet
+CONFLICTS=	ponscripter # doesn't exist yet
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	07th-mod

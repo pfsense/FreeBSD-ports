@@ -1,8 +1,7 @@
 PORTNAME=	openjdk
 DISTVERSIONPREFIX=	jdk-
-DISTVERSION=	${JDK_MAJOR_VERSION}+${JDK_BUILD_NUMBER}-${BSD_JDK_VERSION}
+DISTVERSION=	${JDK_MAJOR_VERSION}.${JDK_MINOR_VERSION}.${JDK_PATCH_VERSION}+${JDK_BUILD_NUMBER}-${BSD_JDK_VERSION}
 CATEGORIES=	java devel
-PORTREVISION=	1
 PKGNAMESUFFIX?=	${JDK_MAJOR_VERSION}
 
 MAINTAINER=	java@FreeBSD.org
@@ -34,7 +33,7 @@ CPE_VENDOR=	oracle
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	battleblow
-GH_PROJECT=	jdk17
+GH_PROJECT=	jdk17u
 
 NO_CCACHE=	yes
 
@@ -58,8 +57,8 @@ NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	17
 JDK_MINOR_VERSION=	0
-JDK_PATCH_VERSION=	0
-JDK_BUILD_NUMBER=	35
+JDK_PATCH_VERSION=	1
+JDK_BUILD_NUMBER=	12
 BSD_JDK_VERSION=	1
 
 JDK_BUG_URL=	https://bugs.freebsd.org/bugzilla/enter_bug.cgi?product=Ports%20%26%20Packages&component=Individual%20Port(s)&short_desc=java/${PORTNAME}${JDK_MAJOR_VERSION}%3A%20
@@ -105,8 +104,11 @@ JDK_BUILD_TYPE=		release
 
 .include <bsd.port.pre.mk>
 
-BOOTSTRAP_JDKS=	${LOCALBASE}/openjdk17 \
-		${LOCALBASE}/openjdk16
+BOOTSTRAP_JDKS=	${LOCALBASE}/openjdk17
+.if ${ARCH} == aarch64 || ${ARCH} == amd64
+BOOTSTRAP_JDKS+=	${LOCALBASE}/bootstrap-openjdk17
+.endif
+BOOTSTRAP_JDKS+=	${LOCALBASE}/openjdk16
 
 # do we have valid native jdk installed?
 .for BJDK in ${BOOTSTRAP_JDKS}
@@ -117,8 +119,13 @@ BOOTSTRAPJDKDIR=	${BJDK}
 
 # if no valid jdk found, set dependency
 .if !defined(BOOTSTRAPJDKDIR)
+.  if ${ARCH} == aarch64 || ${ARCH} == amd64
+BOOTSTRAPJDKDIR?=	${LOCALBASE}/bootstrap-openjdk17
+BUILD_DEPENDS+=		${BOOTSTRAPJDKDIR}/bin/javac:java/bootstrap-openjdk17
+.  else
 BOOTSTRAPJDKDIR?=	${LOCALBASE}/openjdk16
 BUILD_DEPENDS+=		${BOOTSTRAPJDKDIR}/bin/javac:java/openjdk16
+.  endif
 .endif
 
 JDK_BUILD_JVM=	server
@@ -133,6 +140,9 @@ CONFIGURE_ARGS+=	--with-extra-ldflags="-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFA
 			--with-extra-cxxflags="-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT}"
 .else
 MAKE_ENV+=	USE_CLANG=true
+.if ${COMPILER_VERSION} >= 130
+CONFIGURE_ARGS+=	--with-extra-cflags="-Wno-unused-but-set-parameter"
+.endif
 .endif
 
 .if ${ARCH} == aarch64 || ${ARCH:Mpowerpc64*}
@@ -163,8 +173,6 @@ post-patch:
 		-e 's|%%ICONV_LDFLAGS%%|${ICONV_LDFLAGS}|' \
 		-e 's|%%ICONV_LIBS%%|${ICONV_LIBS}|' \
 		${WRKSRC}/make/autoconf/libraries.m4
-	${MV} ${WRKSRC}/src/hotspot/os_cpu/bsd_ppc/bytes_bsd_ppc.inline.hpp \
-		${WRKSRC}/src/hotspot/os_cpu/bsd_ppc/bytes_bsd_ppc.hpp
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${INSTALLDIR}

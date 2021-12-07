@@ -1,6 +1,6 @@
 PORTNAME=	gitaly
-DISTVERSION=	14.3.2
-PORTREVISION=	2
+DISTVERSION=	14.5.2
+PORTREVISION=	0
 CATEGORIES=	devel
 
 MAINTAINER=	mfechner@FreeBSD.org
@@ -9,23 +9,27 @@ COMMENT=	Smart reverse proxy for GitLab
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+# Make sure the following patch is included:
+# https://gitlab.com/gitlab-org/gitaly/-/merge_requests/4108
+# it fixes segfaults reported here: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=259848
+
 # define dependencies that are required for build and run under MY_DEPENDS
-MY_DEPENDS=	git>=2.32.0:devel/git \
+MY_DEPENDS=	git>=2.33.0:devel/git \
 		rubygem-bundler>=2.1.4:sysutils/rubygem-bundler \
-		rubygem-rugged>=1.1<2:devel/rubygem-rugged \
+		rubygem-rugged>=1.2<2:devel/rubygem-rugged \
 		rubygem-github-linguist>=7.12.1<8:textproc/rubygem-github-linguist \
 		rubygem-gitlab-markup>=1.7.1<1.8.0:textproc/rubygem-gitlab-markup \
-		rubygem-activesupport613>=6.1.3.2<6.1.4:devel/rubygem-activesupport613 \
+		rubygem-activesupport61>=6.1.4.1<6.1.4.2:devel/rubygem-activesupport61 \
 		rubygem-rdoc>=6.3.2<7.0:devel/rubygem-rdoc \
 		rubygem-gitlab-gollum-lib>=4.2.7.10.gitlab.1<4.2.8:www/rubygem-gitlab-gollum-lib \
 		rubygem-gitlab-gollum-rugged_adapter>=0.4.4.4.gitlab.1<0.4.5.0:www/rubygem-gitlab-gollum-rugged_adapter \
-		rubygem-grpc>=1.30.2<2:net/rubygem-grpc \
+		rubygem-grpc142>=1.42.0.pre1<2:net/rubygem-grpc142 \
 		rubygem-sentry-raven>=3.0<4:devel/rubygem-sentry-raven \
 		rubygem-faraday>=1.0.1<2:www/rubygem-faraday \
 		rubygem-rbtrace>=0.4.14:devel/rubygem-rbtrace \
-		rubygem-gitlab-labkit>=0.21<0.22:devel/rubygem-gitlab-labkit \
+		rubygem-gitlab-labkit>=0.21.1<0.22:devel/rubygem-gitlab-labkit \
 		rubygem-licensee>=9.14.1<9.15:devel/rubygem-licensee \
-		rubygem-google-protobuf317>=3.17.3<3.18:devel/rubygem-google-protobuf317
+		rubygem-google-protobuf>=3.19.0<3.20:devel/rubygem-google-protobuf
 BUILD_DEPENDS=	gem:devel/ruby-gems \
 		bash>0:shells/bash \
 		${MY_DEPENDS}
@@ -45,12 +49,12 @@ MAKE_ENV+=	${GO_ENV}
 USE_GITLAB=	yes
 GL_ACCOUNT=	gitlab-org
 # Find this here: https://gitlab.com/gitlab-org/gitaly/-/tags
-GL_COMMIT=	52407ecfce7fc39b4f5f6db15cc6cb4e9a8c1f60
+GL_COMMIT=	5d5df6138d9bc6b93503ee529a5b099ea8e5e839
 
 # for go dependencies
 USE_GITHUB=	nodefault
 # generated with: make gomod-vendor
-# 137dd
+# 138dd
 GH_TUPLE=	\
 		Azure:azure-pipeline-go:v0.2.3:azure_azure_pipeline_go/vendor/github.com/Azure/azure-pipeline-go \
 		Azure:azure-storage-blob-go:v0.13.0:azure_azure_storage_blob_go/vendor/github.com/Azure/azure-storage-blob-go \
@@ -108,7 +112,7 @@ GH_TUPLE=	\
 		golang:oauth2:81ed05c6b58c:golang_oauth2/vendor/golang.org/x/oauth2 \
 		golang:protobuf:v1.5.2:golang_protobuf/vendor/github.com/golang/protobuf \
 		golang:sync:036812b2e83c:golang_sync/vendor/golang.org/x/sync \
-		golang:sys:0981d6026fa6:golang_sys/vendor/golang.org/x/sys \
+		golang:sys:4dd72447c267:golang_sys/vendor/golang.org/x/sys \
 		golang:text:v0.3.6:golang_text/vendor/golang.org/x/text \
 		golang:time:f8bda1e9f3ba:golang_time/vendor/golang.org/x/time \
 		golang:tools:v0.1.0:golang_tools/vendor/golang.org/x/tools \
@@ -143,7 +147,7 @@ GH_TUPLE=	\
 		kelseyhightower:envconfig:v1.3.0:kelseyhightower_envconfig/vendor/github.com/kelseyhightower/envconfig \
 		kevinburke:ssh_config:4977a11b4351:kevinburke_ssh_config/vendor/github.com/kevinburke/ssh_config \
 		lib:pq:v1.10.1:lib_pq/vendor/github.com/lib/pq \
-		libgit2:git2go:v31.4.12:libgit2_git2go_v31/vendor/github.com/libgit2/git2go/v31 \
+		libgit2:git2go:v32.0.5:libgit2_git2go_v32/vendor/github.com/libgit2/git2go/v32 \
 		lightstep:lightstep-tracer-common:a8dfcb80d3a7:lightstep_lightstep_tracer_common_gogo/vendor/github.com/lightstep/lightstep-tracer-common \
 		lightstep:lightstep-tracer-go:v0.24.0:lightstep_lightstep_tracer_go/vendor/github.com/lightstep/lightstep-tracer-go \
 		mattn:go-ieproxy:v0.0.1:mattn_go_ieproxy/vendor/github.com/mattn/go-ieproxy \
@@ -177,7 +181,6 @@ GH_TUPLE=	\
 		shurcooL:sanitized_anchor_name:v1.0.0:shurcool_sanitized_anchor_name/vendor/github.com/shurcooL/sanitized_anchor_name \
 		sirupsen:logrus:v1.8.1:sirupsen_logrus/vendor/github.com/sirupsen/logrus \
 		ssgelm:cookiejarparser:v1.0.1:ssgelm_cookiejarparser/vendor/github.com/ssgelm/cookiejarparser \
-		stretchr:objx:v0.2.0:stretchr_objx/vendor/github.com/stretchr/objx \
 		stretchr:testify:v1.7.0:stretchr_testify/vendor/github.com/stretchr/testify \
 		tinylib:msgp:v1.1.2:tinylib_msgp/vendor/github.com/tinylib/msgp \
 		uber-go:atomic:v1.7.0:uber_go_atomic/vendor/go.uber.org/atomic \
@@ -227,3 +230,4 @@ post-install:
 		s#${DATADIR_REL}/bin#@(,,555) ${DATADIR_REL}/bin#; ' >> ${TMPPLIST}
 
 .include <bsd.port.mk>
+

@@ -1,8 +1,6 @@
-# Created by: Piotr Kubaj <pkubaj@anongoth.pl>
-
 PORTNAME=	openrct2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.4.1
+DISTVERSION=	0.3.5.1
 CATEGORIES=	games
 
 MAINTAINER=	pkubaj@FreeBSD.org
@@ -30,7 +28,7 @@ USES=		cmake compiler:c++17-lang desktop-file-utils gnome gl iconv \
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenRCT2
 GH_PROJECT=	OpenRCT2
-GH_TUPLE=	OpenRCT2:objects:v1.2.1:objects \
+GH_TUPLE=	OpenRCT2:objects:v1.2.2:objects \
 		OpenRCT2:title-sequences:v0.1.2c:title_sequences
 USE_GL=		gl
 USE_LDCONFIG=	yes
@@ -44,7 +42,6 @@ PORTDATA=	*
 PORTDOCS=	changelog.txt contributors.md licence.txt openrct2.d.ts \
 		readme.txt scripting.md
 
-
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
@@ -53,8 +50,8 @@ post-patch:
 
 post-install:
 	(cd ${WRKSRC_title_sequences}; \
-		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/title)
+		${COPYTREE_SHARE}/title . ${STAGEDIR}${DATADIR}/title)
 	(cd ${WRKSRC_objects}; \
-		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/object)
+		${COPYTREE_SHARE}/objects . ${STAGEDIR}${DATADIR}/object)
 
 .include <bsd.port.mk>

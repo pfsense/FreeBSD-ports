@@ -2,7 +2,7 @@
 
 PORTNAME=	muse
 PORTVERSION=	3.20
-PORTREVISION=	18
+PORTREVISION=	19
 CATEGORIES=	textproc elisp
 MASTER_SITES=	http://download.gna.org/muse-el/ \
 		LOCAL/dryice \
@@ -22,6 +22,12 @@ PORTDOCS=	AUTHORS ChangeLog ChangeLog.1 ChangeLog.2 ChangeLog.3 NEWS \
 		README scripts COPYING
 
 OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${FLAVOR:Ufull:Mfull}
+PKGNAMESUFFIX=	-emacs
+.endif
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${LISPDIR}/contrib

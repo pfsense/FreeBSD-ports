@@ -1,7 +1,7 @@
 # Created by: Eric Anholt
 
 PORTNAME=	git
-DISTVERSION=	2.33.0
+DISTVERSION=	2.34.1
 CATEGORIES=	devel
 MASTER_SITES=	KERNEL_ORG/software/scm/git
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -33,8 +33,7 @@ tiny_DESCR=			${.CURDIR}/pkg-descr-tiny
 tiny_PKGNAMESUFFIX=		-tiny
 .endif
 
-USES=		autoreconf gmake iconv shebangfix tar:xz
-
+USES=		autoreconf cpe gmake iconv shebangfix tar:xz
 CPE_VENDOR=	git-scm
 
 .if ${SUBPORT} == core

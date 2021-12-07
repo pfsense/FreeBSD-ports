@@ -1,7 +1,7 @@
 # Created by: Gea-Suan Lin <gslin@gslin.org>
 
 PORTNAME=	composer
-DISTVERSION=	2.1.8
+DISTVERSION=	2.1.14
 CATEGORIES=	devel
 MASTER_SITES=	https://getcomposer.org/download/${DISTVERSION}/
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
@@ -17,10 +17,11 @@ LICENSE=	MIT
 
 RUN_DEPENDS=	ca_root_nss>0:security/ca_root_nss
 
-USES=		php:flavors
+USES=		cpe php:flavors
+CPE_VENDOR=	getcomposer
 USE_PHP=	ctype filter intl json mbstring openssl phar
 
-CONFLICTS_INSTALL=	php*-composer-*
+CONFLICTS_INSTALL=	php*-composer
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -28,6 +29,12 @@ NO_WRKSUBDIR=	yes
 
 PLIST_FILES=	bin/composer \
 		bin/composer.phar
+
+OPTIONS_DEFINE=		CURL
+OPTIONS_DEFAULT=	CURL
+
+CURL_DESC=	Install the cURL extension for faster downloads
+CURL_USE=	PHP=curl
 
 do-extract:
 	${MKDIR} ${WRKSRC}/

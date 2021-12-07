@@ -1,7 +1,7 @@
 PORTNAME=	xen
 PKGNAMESUFFIX=	-tools
 PORTVERSION=	4.15.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils emulators
 MASTER_SITES=	http://downloads.xenproject.org/release/xen/${PORTVERSION}/
 
@@ -31,7 +31,7 @@ SPICE_BUILD_DEPENDS=	spice-protocol>=0.12.10:devel/spice-protocol
 SPICE_LIB_DEPENDS=	libspice-server.so:devel/libspice-server
 
 ONLY_FOR_ARCHS=	amd64
-ONLY_FOR_ARCHS_REASON=	"not yet ported to anything other than amd64"
+ONLY_FOR_ARCHS_REASON=	not yet ported to anything other than amd64
 
 USES=		cpe gettext gmake gnome libtool localbase:ldflags perl5 \
 		pkgconfig python:3.6+ shebangfix iconv bison
@@ -58,6 +58,9 @@ ALL_TARGET=		tools
 DOCS_ALL_TARGET=	docs
 INSTALL_TARGET=		install-tools
 DOCS_INSTALL_TARGET=	install-docs
+
+# Fix pv shim build with clang 13.0.0
+EXTRA_PATCHES+=	${PATCHDIR}/0001-efi-fix-alignment-of-function-parameters-in-compat-m.patch:-p1
 
 .include <bsd.port.options.mk>
 

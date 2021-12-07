@@ -1,7 +1,7 @@
 # Created by: gahr
 
 PORTNAME=	seed7
-DISTVERSION=	05_20210807
+DISTVERSION=	05_20211114
 PORTREVISION=	0
 CATEGORIES=	lang
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTNAME}/
@@ -24,7 +24,7 @@ USES=		mysql:client ncurses pgsql sqlite tar:tgz xorg
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-USE_XORG=	x11
+USE_XORG=	x11 xrender
 WANT_PGSQL=	client
 
 WRKSRC=		${WRKDIR}/${PORTNAME}/src

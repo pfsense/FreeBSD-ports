@@ -1,5 +1,5 @@
 PORTNAME=	php73
-DISTVERSION=	7.3.31
+DISTVERSION=	7.3.33
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
@@ -59,7 +59,7 @@ MYSQLND_DESC=	Build with MySQL Native Driver
 LINKTHR_DESC=	Link thread lib (for threaded extensions)
 ZTS_DESC=	Force Zend Thread Safety (ZTS) build
 
-CONFLICTS=	php74-* php80-*
+CONFLICTS=	php74 php80
 
 DESTDIRNAME=	INSTALL_ROOT
 

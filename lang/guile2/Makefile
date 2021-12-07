@@ -24,7 +24,7 @@ USE_LDCONFIG=	yes
 
 CPE_VENDOR=	gnu
 
-CONFLICTS_INSTALL=	guile-[0-9]*
+CONFLICTS_INSTALL=	guile
 
 MAKE_JOBS_UNSAFE=	yes
 
@@ -59,6 +59,7 @@ post-patch:
 		${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|-i -e|-i.bak -e|' \
 		${WRKSRC}/libguile/Makefile.in
+	@${RM} -r ${WRKSRC}/prebuilt/32-bit-big-endian
 
 post-patch-THREADS-on:
 	@${REINPLACE_CMD} -e 's|bdw-gc|bdw-gc-threaded|g' ${WRKSRC}/configure

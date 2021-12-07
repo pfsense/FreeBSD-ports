@@ -1,5 +1,5 @@
 PORTNAME=	lxqt-archiver
-PORTVERSION=	0.4.0
+PORTVERSION=	0.5.0
 CATEGORIES=	archivers
 MASTER_SITES=	LXQT
 
@@ -19,6 +19,6 @@ USE_GNOME=	glib20
 USE_QT=		buildtools_build qmake_build core dbus gui linguisttools \
 		network printsupport svg widgets x11extras
 USE_LXQT=	buildtools lxqt
-USE_XORG= 	xcb
+USE_XORG=	xcb
 
 .include <bsd.port.mk>

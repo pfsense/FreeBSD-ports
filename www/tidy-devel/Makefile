@@ -15,7 +15,8 @@ COMMENT?=	Utility to clean up and pretty print HTML/XHTML/XML
 
 BUILD_DEPENDS=	xsltproc:textproc/libxslt
 
-USES=		tar:bzip2
+USES=		cpe tar:bzip2
+CPE_VENDOR=	htacg
 
 SLAVEDIRS=	www/tidy-lib
 WRKSRC=		${WRKDIR}/${PORTNAME}
@@ -25,7 +26,7 @@ MAKE_JOBS_UNSAFE=	yes
 USES+=		gmake
 PLIST_SUB=	SHLIB="@comment " NSHLIB=""
 MAKE_ARGS+=	PREFIX=${STAGEDIR}${PREFIX}
-CONFLICTS=	tidy-20000804* tidy-lib-[0-9]*
+CONFLICTS=	tidy-20000804* tidy-lib
 .else
 USES+=		autoreconf libtool
 USE_LDCONFIG=	yes

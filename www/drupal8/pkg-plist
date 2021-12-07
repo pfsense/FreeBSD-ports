@@ -63,7 +63,7 @@
 %%WWWDIR%%/core/assets/vendor/backbone/backbone.js
 %%WWWDIR%%/core/assets/vendor/ckeditor/CHANGES.md
 %%WWWDIR%%/core/assets/vendor/ckeditor/LICENSE.md
-%%WWWDIR%%/core/assets/vendor/ckeditor/bender-runner.config.json
+%%WWWDIR%%/core/assets/vendor/ckeditor/SECURITY.md
 %%WWWDIR%%/core/assets/vendor/ckeditor/build-config.js
 %%WWWDIR%%/core/assets/vendor/ckeditor/ckeditor.js
 %%WWWDIR%%/core/assets/vendor/ckeditor/lang/_translationstatus.txt
@@ -16174,6 +16174,7 @@
 %%WWWDIR%%/vendor/composer/installers/src/Composer/Installers/OsclassInstaller.php
 %%WWWDIR%%/vendor/composer/installers/src/Composer/Installers/OxidInstaller.php
 %%WWWDIR%%/vendor/composer/installers/src/Composer/Installers/PPIInstaller.php
+%%WWWDIR%%/vendor/composer/installers/src/Composer/Installers/PantheonInstaller.php
 %%WWWDIR%%/vendor/composer/installers/src/Composer/Installers/PhiftyInstaller.php
 %%WWWDIR%%/vendor/composer/installers/src/Composer/Installers/PhpBBInstaller.php
 %%WWWDIR%%/vendor/composer/installers/src/Composer/Installers/PimcoreInstaller.php

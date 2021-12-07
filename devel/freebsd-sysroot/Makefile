@@ -1,5 +1,5 @@
 PORTNAME=	freebsd-sysroot
-DISTVERSION=	a2021-09-14
+DISTVERSION=	a2021-11-09
 CATEGORIES=	devel
 MASTER_SITES=	LOCAL/tobik:${FLAVOR} \
 		${_SYSROOT_DIST:@f@https://download.freebsd.org/ftp/$f?dummy=/:${FLAVOR}@}
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKDIR}/COPYRIGHT
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 FLAVORS=	aarch64 amd64 armv6 armv7 i386 powerpc64_elfv1 powerpc64_elfv2 \
-		powerpc64le powerpc
+		powerpc64le powerpc riscv64
 FLAVOR?=	${FLAVORS:[1]}
 
 powerpc64_elfv1_BUILD_DEPENDS=	powerpc64-gcc9>0:devel/freebsd-gcc9@powerpc64
@@ -34,8 +34,8 @@ EXTRACT_AFTER_ARGS=	-C${STAGEDIR}${_SYSROOT} --no-same-permissions \
 NO_ARCH=	yes
 NO_BUILD=	yes
 NO_MTREE=	yes
-SUB_FILES=	${exists(${FILESDIR}/${FLAVOR}-cc.in):?${FLAVOR}-cc:} \
-		${exists(${FILESDIR}/${FLAVOR}-c++.in):?${FLAVOR}-c++:} c++ cc
+SUB_FILES=	${exists(${FILESDIR}/${FLAVOR}-c++.in):?${FLAVOR}-c++:} \
+		${exists(${FILESDIR}/${FLAVOR}-cc.in):?${FLAVOR}-cc:} c++ cc
 SUB_LIST=	FREEBSD_SYSROOT="${_SYSROOT}" \
 		FREEBSD_SYSROOT_CC="${CC}" \
 		FREEBSD_SYSROOT_CC_ELFV1="$$(${ECHO_CMD} ${LOCALBASE}/bin/powerpc64-unknown-${OPSYS:tl}*[0-9]-gcc9)" \
@@ -52,6 +52,7 @@ _SYSROOT_VER=				${_SYSROOT_VER_${FLAVOR}:U12.2-RELEASE}
 _SYSROOT_VER_powerpc64_elfv2=		13.0-RELEASE
 _SYSROOT_VER_powerpc64le=		13.0-RELEASE
 _SYSROOT_VER_powerpc=			13.0-RELEASE
+_SYSROOT_VER_riscv64=			13.0-RELEASE
 _SYSROOT_DIST=				${_SYSROOT_DIST_${FLAVOR}}
 _SYSROOT_DIST_aarch64=			releases/arm64/${_SYSROOT_VER}/base.txz
 _SYSROOT_DIST_armv6=			releases/arm/${FLAVOR}/ISO-IMAGES/${_SYSROOT_VER:S/-/ /:[1]}/FreeBSD-${_SYSROOT_VER}-arm-armv6-RPI-B.img.xz
@@ -63,6 +64,7 @@ _SYSROOT_DIST_powerpc64_elfv1=		releases/powerpc/powerpc64/${_SYSROOT_VER}/base.
 _SYSROOT_DIST_powerpc64_elfv2=		releases/powerpc/powerpc64/${_SYSROOT_VER}/base.txz
 _SYSROOT_DIST_powerpc64le=		releases/powerpc/powerpc64le/${_SYSROOT_VER}/base.txz
 _SYSROOT_DIST_powerpc=			releases/powerpc/powerpc/${_SYSROOT_VER}/base.txz
+_SYSROOT_DIST_riscv64=			releases/riscv/riscv64/${_SYSROOT_VER}/base.txz
 _SYSROOT_INCLUDE=			COPYRIGHT lib/* usr/include/* usr/lib/* \
 					usr/libdata/* \
 					${_SYSROOT_INCLUDE_${FLAVOR}}
@@ -87,8 +89,18 @@ _SYSROOT_LLVM_TRIPLE_armv7=		armv7-unknown-freebsd12.2-gnueabihf
 _SYSROOT_LLVM_TRIPLE_powerpc=		powerpc-unknown-freebsd13.0 # secure-plt
 
 .if make(distclean) || make(makesum)
-.MAKEFLAGS:	MASTER_SITES="${FLAVORS:@_flavor@${:!${SETENV} FLAVOR=${_flavor} ${MAKE} -VMASTER_SITES!}@:O:u:q}" # PR 249537
+MASTER_SITES:=	${FLAVORS:O:@_flavor@${:!${SETENV} FLAVOR=${_flavor} ${MAKE} -VMASTER_SITES!}@}
 DISTFILES:=	${FLAVORS:O:@_flavor@${:!${SETENV} FLAVOR=${_flavor} ${MAKE} -V'DISTFILES'!}@}
+.endif
+
+# to be removed if the port ever switched to base.txz for armv*
+.if ${FLAVOR:Marmv*}
+BROKEN_mips=	little-endian UFS fails to be read on big-endian architectures
+BROKEN_mips64=	little-endian UFS fails to be read on big-endian architectures
+BROKEN_powerpc=	little-endian UFS fails to be read on big-endian architectures
+BROKEN_powerpcspe=	little-endian UFS fails to be read on big-endian architectures
+BROKEN_powerpc64=	little-endian UFS fails to be read on big-endian architectures
+BROKEN_sparc64=	little-endian UFS fails to be read on big-endian architectures
 .endif
 
 .include <bsd.port.pre.mk>

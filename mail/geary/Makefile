@@ -2,6 +2,7 @@
 
 PORTNAME=	geary
 PORTVERSION=	40.0
+PORTREVISION=	1
 CATEGORIES=	mail gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
@@ -35,8 +36,9 @@ LIB_DEPENDS=	libappstream-glib.so:devel/appstream-glib \
 		libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
 		libytnef.so:converters/ytnef
 
-USES=		compiler:c11 desktop-file-utils gettext gnome meson pkgconfig \
+USES=		compiler:c11 cpe desktop-file-utils gettext gnome meson pkgconfig \
 		python:3.5+,build shebangfix sqlite tar:xz
+CPE_VENDOR=	gnome
 USE_GNOME=	cairo gsound gtk30 libxml2
 GLIB_SCHEMAS=	org.gnome.Geary.gschema.xml
 USE_LDCONFIG=	yes

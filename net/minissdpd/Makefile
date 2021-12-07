@@ -1,7 +1,7 @@
 # Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
 
 PORTNAME=	minissdpd
-PORTVERSION=	1.5.20200928
+PORTVERSION=	1.5.20211105
 CATEGORIES=	net
 MASTER_SITES=	http://miniupnp.free.fr/files/ \
 		LOCAL/ehaupt
@@ -11,12 +11,14 @@ COMMENT=	UPnP IGD discovery speed enhancer
 
 LICENSE=	BSD3CLAUSE
 
-USES=		gmake
+USES=		cpe gmake
+CPE_VENDOR=	miniupnp_project
 USE_RC_SUBR=	minissdpd
 
 CFLAGS+=	-D_GNU_SOURCE
 
-PLIST_FILES=	sbin/minissdpd man/man8/minissdpd.8.gz
+PLIST_FILES=	man/man8/minissdpd.8.gz \
+		sbin/minissdpd
 
 post-extract:
 	@${MV} ${WRKSRC}/${PORTNAME}.1 ${WRKSRC}/${PORTNAME}.8

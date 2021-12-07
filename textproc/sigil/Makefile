@@ -1,7 +1,7 @@
 # Created by: Jonathan Chen <jonc@chen.org.nz>
 
 PORTNAME=	sigil
-PORTVERSION=	1.7.0
+PORTVERSION=	1.8.0
 CATEGORIES=	textproc
 
 MAINTAINER=	jonc@chen.org.nz
@@ -19,8 +19,9 @@ LIB_DEPENDS=	libminizip.so:archivers/minizip \
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dulwich>=0.15.0:devel/dulwich@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR}
 
-USES=		cmake compiler:c++11-lib desktop-file-utils \
+USES=		cmake compiler:c++11-lib cpe desktop-file-utils \
 		pkgconfig python:3.4+ qt:5 shebangfix
+CPE_VENDOR=	${PORTNAME}-ebook
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Sigil-Ebook

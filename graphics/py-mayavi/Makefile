@@ -1,7 +1,7 @@
 # Created by: Vladimir Chukharev
 
 PORTNAME=	mayavi
-DISTVERSION=	4.7.3
+DISTVERSION=	4.7.4
 CATEGORIES=	graphics science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}

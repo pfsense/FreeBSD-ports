@@ -2,7 +2,7 @@
 
 PORTNAME=	fluent-bit
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.8
+DISTVERSION=	1.8.10
 CATEGORIES=	sysutils
 
 MAINTAINER=	girgen@FreeBSD.org
@@ -43,6 +43,7 @@ USE_RC_SUBR=	${PORTNAME}
 .if ${ARCH:Mpowerpc64*}
 CMAKE_ARGS+=	-DFLB_LUAJIT:BOOL=OFF
 .elif ${ARCH} == powerpc
+LDFLAGS+=	-latomic
 USES+=		compiler:gcc-c++11-lib
 .else
 USES+=		compiler:c11

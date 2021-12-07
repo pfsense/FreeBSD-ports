@@ -1,6 +1,6 @@
 PORTNAME=	texlive
 PORTVERSION=	20150521
-PORTREVISION=	73
+PORTREVISION=	75
 CATEGORIES=	print
 MASTER_SITES=	TEX_CTAN/systems/texlive/Source/
 PKGNAMESUFFIX=	-base
@@ -70,7 +70,7 @@ BINARY_ALIAS=	freetype-config=true
 
 # during build phase gnu configure is run a lot
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS= --disable-native-texlive-build \
+CONFIGURE_ARGS=	--disable-native-texlive-build \
 		--disable-web-progs \
 		--disable-psutils \
 		--enable-shared \

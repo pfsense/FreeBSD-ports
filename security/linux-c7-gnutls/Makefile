@@ -8,12 +8,13 @@ CATEGORIES=	security linux
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	GNU Transport Layer Security library (Linux CentOS ${LINUX_DIST_VER})
 
-USES=		linux:c7
+USES=		cpe linux:c7
+CPE_VENDOR=	gnu
 USE_LDCONFIG=	yes
 USE_LINUX=	libtasn1 nettle p11-kit trousers
 USE_LINUX_RPM=	yes
 
-CONFLICTS=	linux-c6-${PORTNAME}-[0-9]*
+CONFLICTS=	linux-c6-${PORTNAME}
 DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
 
 OPTIONS_DEFINE=	DOCS NLS

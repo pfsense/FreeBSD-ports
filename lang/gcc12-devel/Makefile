@@ -1,13 +1,13 @@
 # Created by: Gerald Pfeifer <gerald@FreeBSD.org>
 
 PORTNAME=	gcc
-PORTVERSION=	12.0.0.s20211003
+PORTVERSION=	12.0.0.s20211128
 CATEGORIES=	lang
 MASTER_SITES=	GCC/snapshots/${DIST_VERSION}
 PKGNAMESUFFIX=	${SUFFIX}-devel
 DISTNAME=	gcc-${DIST_VERSION}
 
-MAINTAINER=	gerald@FreeBSD.org
+MAINTAINER=	toolchain@FreeBSD.org
 COMMENT=	GNU Compiler Collection 12
 
 LICENSE=	GPLv3 GPLv3RLE
@@ -69,7 +69,7 @@ CONFIGURE_ARGS+=	--with-abi=elfv2
 . endif
 USE_GCC=	yes
 
-.elif ${ARCH} == powerpc64le
+.elif ${ARCH} == powerpc64le || ${ARCH} == powerpc
 USE_GCC=	yes
 .endif
 

@@ -2,6 +2,7 @@
 
 PORTNAME=	epiphany
 PORTVERSION=	41.0
+PORTREVISION=	1
 CATEGORIES=	www gnome
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
 DIST_SUBDIR=	gnome
@@ -45,7 +46,6 @@ USE_GNOME=	cairo gnomedesktop3 intlhack libwnck3 libxml2 libxslt
 USE_XORG=	x11
 USE_LDCONFIG=	yes
 MESON_ARGS=	-Db_lundef=false \
-		-Ddistributor_name="GNOME Web by the FreeBSD GNOME Project" \
 		-Dunit_tests=disabled
 GLIB_SCHEMAS=	org.gnome.Epiphany.enums.xml \
 		org.gnome.epiphany.gschema.xml

@@ -8178,7 +8178,6 @@ security/easypg||2016-05-22|Has expired: Included into emacs since 2.3
 misc/kdehier4||2016-05-25|Not used since 2014
 devel/maven-ant-tasks||2016-05-27|Use Maven directly
 graphics/py-imaging|graphics/py-pillow|2016-05-28|Has expired: Unmaintained upstream; use graphics/py-pillow
-databases/py-psycopg|databases/py-psycopg2|2016-05-29|Has expired: This port is obsoleted by databases/py-psycopg2
 security/py-clamav|security/py-pyclamd|2016-05-30|Has expired: Not updated since 2008 by upstream and abandoned in favor of pyClamd (security/py-pyclamd)
 graphics/ruby-gdal||2016-05-31|Has expired: disabled by upstream (https://trac.osgeo.org/gdal/changeset/28756)
 net/omcmd||2016-06-01|Has expired: Unfetchable and depends on expired net/isc-dhcp41-server
@@ -14909,7 +14908,6 @@ sysutils/livecd||2020-05-05|Has expired: Broken for more than 6 months
 deskutils/osynctool||2020-05-06|Abandonware, website disappeared
 devel/libopensync||2020-05-06|Abandonware, website disappeared
 deskutils/libopensync-plugin-vformat-devel||2020-05-06|Abandonware, website disappeared
-devel/py-ipykernel|devel/py-ipykernel5|2020-05-07|Has expired: Old version, use devel/py-ipykernel5 instead
 sysutils/rundeck|sysutils/rundeck2|2020-05-07|Rename to avoid confusion with sysutils/rundeck3
 math/darknet|misc/darknet|2020-05-07|DarkNet is a machine learning project, not a math project
 www/rubygem-activeresource5|www/rubygem-activeresource|2020-05-08|Remove PKGNAMESUFFIX 3 years and 4 months after rubygem-activeresource removal
@@ -15590,7 +15588,6 @@ devel/pccts|devel/antlr|2020-11-01|Has expired: abandonedware, superseded by dev
 devel/gitg0|devel/gitg|2020-11-01|Has expired: ancient version of gitg not maintained
 devel/py-twext||2020-11-03|Has expired: Uses deprecated version of python
 databases/py-sqlparse020|databases/py-sqlparse|2020-11-03|Dependency of removed www/calendarserver
-devel/nimble|lang/nim|2020-11-06|Integrated in lang/nim
 net-im/zephyr||2020-11-07|Has expired: Broken for more than 6 months
 net/samba410|net/samba412|2020-11-08|Has expired: yes
 audio/xfce4-mixer|audio/xfce4-pulseaudio-plugin|2020-11-08|Unsupported upstream since 2015. Try using audio/xfce4-pulseaudio-plugin
@@ -15651,7 +15648,7 @@ net-mgmt/zabbix44-frontend|net-mgmt/zabbix5-frontend|2020-12-01|Has expired: End
 net-mgmt/zabbix44-java|net-mgmt/zabbix5-java|2020-12-01|Has expired: End of Life
 net-mgmt/zabbix44-proxy|net-mgmt/zabbix5-proxy|2020-12-01|Has expired: End of Life
 net-mgmt/zabbix44-server|net-mgmt/zabbix5-server|2020-12-01|Has expired: End of Life
-print/jabref||2020-12-01|Has expired: depends on expiring java/openjfx8-devel
+print/jabref|print/linux-jabref|2020-12-01|Has expired: depends on expiring java/openjfx8-devel, use print/linux-jabref
 science/datawarrior||2020-12-01|Has expired: depends on expiring java/openjfx8-devel
 www/rubygem-dashing||2020-12-03|Has expired: Unmaintained by upstream, use www/rubygem-smashing instead
 www/rubygem-redmine_acts_as_taggable_on||2020-12-03|Has expired: Unmaintained by upstream
@@ -16199,7 +16196,6 @@ x11/xgrab||2021-04-07|Has expired: Unmaintained and dead upstream, does not buil
 x11/xbanner||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
 x11/bricons||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
 x11/xmon||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
-games/cavezofphear||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
 astro/saoimage||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
 audio/ksmp3play||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
 audio/jamin||2021-04-07|Has expired: Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
@@ -16543,3 +16539,77 @@ devel/geany-plugin-vc@gtk2|devel/geany-plugin-vc|2021-10-10|Project dropped GTK2
 devel/geany-plugin-vimode@gtk2|devel/geany-plugin-vimode|2021-10-10|Project dropped GTK2 support
 devel/geany-plugin-workbench@gtk2|devel/geany-plugin-workbench|2021-10-10|Project dropped GTK2 support
 devel/geany-plugin-xmlsnippets@gtk2|devel/geany-plugin-xmlsnippets|2021-10-10|Project dropped GTK2 support
+net-mgmt/unifi5|net-mgmt/unifi6|2021-10-16|Has expired: Use net-mgmt/unifi6 instead
+databases/rubygem-activemodel613|databases/rubygem-activemodel61|2021-10-22|Removed: Use databases/rubygem-activemodel61 instead
+databases/rubygem-activerecord613|databases/rubygem-activerecord61|2021-10-22|Removed: Use databases/rubygem-activerecord61 instead
+devel/rubygem-actionview613|devel/rubygem-actionview61|2021-10-22|Removed: Use devel/rubygem-actionview61 instead
+devel/rubygem-activejob613|devel/rubygem-activejob61|2021-10-22|Removed: Use devel/rubygem-activejob61 instead
+devel/rubygem-activesupport613|devel/rubygem-activesupport61|2021-10-22|Removed: Use devel/rubygem-activesupport61 instead
+devel/rubygem-devise-rails613|devel/rubygem-devise-rails61|2021-10-22|Removed: Use devel/rubygem-devise-rails61 instead
+devel/rubygem-devise47-rails613|devel/rubygem-devise47-rails61|2021-10-22|Removed: Use devel/rubygem-devise47-rails61 instead
+devel/rubygem-gettext_i18n_rails_js-rails613|devel/rubygem-gettext_i18n_rails_js-rails61|2021-10-22|Removed: Use devel/rubygem-gettext_i18n_rails_js-rails61 instead
+devel/rubygem-peek-rails613|devel/rubygem-peek-rails61|2021-10-22|Removed: Use devel/rubygem-peek-rails61 instead
+devel/rubygem-rails-i18n-rails613|devel/rubygem-rails-i18n-rails61|2021-10-22|Removed: Use devel/rubygem-rails-i18n-rails61 instead
+devel/rubygem-web-console-rails613|devel/rubygem-web-console-rails61|2021-10-22|Removed: Use devel/rubygem-web-console-rails61 instead
+devel/rubygem-webpacker-rails613|devel/rubygem-webpacker-rails61|2021-10-22|Removed: Use devel/rubygem-webpacker-rails61 instead
+mail/rubygem-actionmailbox613|mail/rubygem-actionmailbox61|2021-10-22|Removed: Use mail/rubygem-actionmailbox61 instead
+mail/rubygem-actionmailer613|mail/rubygem-actionmailer61|2021-10-22|Removed: Use mail/rubygem-actionmailer61 instead
+net/rubygem-activestorage613|net/rubygem-activestorage61|2021-10-22|Removed: Use net/rubygem-activestorage61 instead
+security/rubygem-devise-two-factor-rails613|security/rubygem-devise-two-factor-rails61|2021-10-22|Removed: Use security/rubygem-devise-two-factor-rails61 instead
+textproc/rubygem-actiontext613|textproc/rubygem-actiontext61|2021-10-22|Removed: Use textproc/rubygem-actiontext61 instead
+textproc/rubygem-sass-rails-rails613|textproc/rubygem-sass-rails-rails61|2021-10-22|Removed: Use textproc/rubygem-sass-rails-rails61 instead
+textproc/rubygem-sassc-rails-rails613|textproc/rubygem-sassc-rails-rails61|2021-10-22|Removed: Use textproc/rubygem-sassc-rails-rails61 instead
+www/rubygem-actioncable613|www/rubygem-actioncable61|2021-10-22|Removed: Use www/rubygem-actioncable61 instead
+www/rubygem-actionpack613|www/rubygem-actionpack61|2021-10-22|Removed: Use www/rubygem-actionpack61 instead
+www/rubygem-lograge-rails613|www/rubygem-lograge-rails61|2021-10-22|Removed: Use www/rubygem-lograge-rails61 instead
+www/rubygem-rails613|www/rubygem-rails61|2021-10-22|Removed: Use www/rubygem-rails61 instead
+www/rubygem-railties613|www/rubygem-railties61|2021-10-22|Removed: Use www/rubygem-railties61 instead
+www/rubygem-responders-rails613|www/rubygem-responders-rails61|2021-10-22|Removed: Use www/rubygem-responders-rails61 instead
+net/asterisk13|net/asterisk18|2021-10-24|Has expired: Asterisk 13.x will reach EOL on 2021-10-24. Please migrate to net/asterisk18
+textproc/py-tomli_w|textproc/py-tomli-w|2021-10-25|Rename to match upstream naming
+devel/rubygem-chef-provisioning||2021-10-25|Chef Provisioning is EoL'd on August 31, 2019
+devel/rubygem-grit||2021-10-25|Deprecated by upstream. Unmaintained since January 29, 2014
+graphics/rubygem-goocanvas||2021-10-25|Deprecated by upstream. Unmaintained since October 12, 2014
+sysutils/rubygem-chef15|sysutils/rubygem-chef|2021-10-25|Chef Infra Client 15 and under is EoL'd on April 30, 2021
+sysutils/rubygem-chef-config15|sysutils/rubygem-chef-config|2021-10-25|Chef Infra Client 15 and under is EoL'd on April 30, 2021
+sysutils/rubygem-chef-dk||2021-10-25|ChefDK is EoL'd on December 31, 2020
+sysutils/rubygem-chef-utils15|sysutils/rubygem-chef-utils|2021-10-25|Chef Infra Client 15 and under is EoL'd on April 30, 2021
+sysutils/rubygem-ohai15|sysutils/rubygem-ohai|2021-10-25|Chef Infra Client 15 and under is EoL'd on April 30, 2021
+www/rubygem-kensa||2021-10-25|Kensa is deprecated in favor of the addons-admin Heroku CLI plugin since December 14, 2018
+textproc/rubygem-compass||2021-10-25|Compass is no longer supported since August 4, 2016
+textproc/rubygem-compass-core||2021-10-25|Compass is no longer supported since August 4, 2016
+textproc/rubygem-compass-import-once||2021-10-25|Compass is no longer supported since August 4, 2016
+textproc/rubygem-compass-blueprint||2021-10-25|Depend on unsupported textproc/rubygem-compass
+emulators/vpcs||2021-10-27|Has expired: Upstream unmaintained
+devel/google-gdata||2021-10-27|Has expired: Google is no longer using GoogleData APIs
+net/irrd-legacy|net/irrd|2021-10-27|Has expired: Use net/irrd
+mail/postfix-ldap-sasl|mail/postfix@ldap|2021-10-28|Converted to flavor
+mail/postfix-sasl|mail/postfix@sasl|2021-10-28|Converted to flavor
+mail/postfix-current-sasl|mail/postfix-current@sasl|2021-10-28|Converted to flavor
+databases/mysqlsniffer||2021-10-30|Has expired: Development discontinued upstream, doesn't build on recent FreeBSD
+emulators/advancemenu||2021-10-31|Has expired: Heavily outdated and unmaintained
+emulators/qemu31|emulators/qemu|2021-10-31|Has expired: Use emulators/qemu or emulators/qemu-devel
+games/super_methane_brothers||2021-10-31|Removed, depnds on expired devel/clanlib
+emulators/advancemess||2021-10-31|Removed, depends on expired emulators/advancemame
+emulators/advancemame||2021-10-31|Has expired: Heavily outdated and unmaintained
+devel/clanlib||2021-10-31|Has expired: Upstream no longer maintained
+astro/boinc-setiathome||2021-11-03|No longer giving out work units
+astro/boinc-astropulse||2021-11-04|boinc-setiathome removed, no longer needed
+multimedia/celluloid-devel|multimedia/celluloid|2021-11-05|Out of date: use multimedia/celluloid for now
+devel/zmusic|audio/zmusic|2021-11-10|Category change
+emulators/i386-wine-devel||2021-11-16|Removed: obsolete, emulators/wine-devel provides i386 support
+emulators/qemu52|emulators/qemu5|2021-11-16|Has expired
+emulators/i386-wine||2021-11-19|Removed: obsolete, emulators/wine provides i386 support
+net-im/twitmail||2021-11-19|Not functional anymore
+sysutils/cfengine315||2021-11-21|Has expired: Expire one year after cfengine 3.17.0 released
+sysutils/cfengine-masterfiles315||2021-11-21|Has expired: Expire one year after cfengine 3.17.0 released
+games/linux-unigine-heaven|benchmarks/linux-unigine-heaven|2021-11-21|Moved to a more appropriate category
+games/linux-unigine-valley|benchmarks/linux-unigine-valley|2021-11-21|Moved to a more appropriate category
+devel/electron12|devel/electron13|2021-11-24|VSCode update requires a newer major version
+mail/gmime24-sharp||2021-11-30|Has expired: Use mail/gmime26 or mail/gmime30
+mail/gmime24||2021-11-30|Has expired: Use mail/gmime26 or mail/gmime30
+sysutils/bareos17-client|sysutils/bareos18-client|2021-12-05|Has expired: Deprecated, no new release since 2020
+sysutils/bareos17-client-static||2021-12-05|Has expired: Deprecated, no new release since 2020
+sysutils/bareos17-server|sysutils/bareos18-server|2021-12-05|Has expired: Deprecated, no new release since 2020
+www/bareos17-webui|www/bareos18-webui|2021-12-05|Has expired: Deprecated, no new release since 2020
+math/eigen2||2021-12-07|Has expired: No longer available upstream, no consumers in ports

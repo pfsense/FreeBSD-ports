@@ -12,6 +12,7 @@
     SUBDIR += atomicparsley
     SUBDIR += audacious
     SUBDIR += audacious-plugins
+    SUBDIR += av1an
     SUBDIR += avidemux
     SUBDIR += avidemux-cli
     SUBDIR += avidemux-plugins
@@ -28,7 +29,6 @@
     SUBDIR += ccextractor
     SUBDIR += cclive
     SUBDIR += celluloid
-    SUBDIR += celluloid-devel
     SUBDIR += cheese
     SUBDIR += chilitags
     SUBDIR += cineencoder
@@ -132,6 +132,7 @@
     SUBDIR += handbrake
     SUBDIR += haruna
     SUBDIR += harvid
+    SUBDIR += helvum
     SUBDIR += hypnotix
     SUBDIR += imagination
     SUBDIR += intel-media-sdk
@@ -270,6 +271,7 @@
     SUBDIR += mythtv-frontend
     SUBDIR += naludump
     SUBDIR += navidrome
+    SUBDIR += neolink
     SUBDIR += nordlicht
     SUBDIR += nostt
     SUBDIR += obs-audio-spectralizer
@@ -286,6 +288,7 @@
     SUBDIR += ogmtools
     SUBDIR += olive
     SUBDIR += omxplayer
+    SUBDIR += onevpl
     SUBDIR += openh264
     SUBDIR += openshot
     SUBDIR += opentoonz
@@ -341,6 +344,7 @@
     SUBDIR += py-tvnamer
     SUBDIR += qmmp-plugin-pack-qt5
     SUBDIR += qmmp-qt5
+    SUBDIR += qpwgraph
     SUBDIR += qt-faststart
     SUBDIR += qt5-multimedia
     SUBDIR += quodlibet

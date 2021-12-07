@@ -1,14 +1,14 @@
 PORTNAME=	fmtconv
-PORTVERSION=	r25
+PORTVERSION=	r28
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	vapoursynth-
 
 MAINTAINER=	jbeich@FreeBSD.org
-COMMENT=	Format conversion tools for Vapoursynth and Avisyth+
+COMMENT=	Format conversion tools for Vapoursynth and Avisynth+
 
 LICENSE=	WTFPL
 
-BROKEN_powerpc64=	fails to compile on powerpc64: \#error
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	EleonoreMizo

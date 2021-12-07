@@ -1,7 +1,7 @@
 # Created by: Hendrik Scholz <hendrik@scholz.net>
 
 PORTNAME=	totem
-PORTVERSION=	3.38.1
+PORTVERSION=	3.38.2
 CATEGORIES=	multimedia gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
@@ -48,15 +48,6 @@ GLIB_SCHEMAS=	org.gnome.totem.enums.xml \
 		org.gnome.totem.gschema.xml \
 		org.gnome.totem.plugins.opensubtitles.gschema.xml \
 		org.gnome.totem.plugins.pythonconsole.gschema.xml
-
-# There is an upstream issue in meson which makes the build of totem
-# fail when using vala, due to badly created targets.
-# https://gitlab.gnome.org/GNOME/totem/issues/272
-# https://bugzilla.gnome.org/show_bug.cgi?id=786248
-# https://github.com/mesonbuild/meson/issues/1994
-# Until upstream fixes this, remove vala support from totem.
-MESON_ARGS=	-Denable-vala=no
-PLIST_SUB+=	VALA="@comment "
 
 .include <bsd.port.options.mk>
 

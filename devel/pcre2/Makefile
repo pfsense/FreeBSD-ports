@@ -1,9 +1,8 @@
 # Created by: Mark Felder <feld@FreeBSD.org>
 
 PORTNAME=	pcre2
-PORTVERSION=	10.37
+PORTVERSION=	10.39
 CATEGORIES=	devel
-MASTER_SITES=	SF/pcre/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	krion@FreeBSD.org
 COMMENT=	Perl Compatible Regular Expressions library, version 2
@@ -12,9 +11,13 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
 USES=		autoreconf cpe libtool pkgconfig
-USE_LDCONFIG=	yes
-
 CPE_VENDOR=	pcre
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	PhilipHazel
+GH_TAGNAME=	35fee41
+
+USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-pcre2-16 \

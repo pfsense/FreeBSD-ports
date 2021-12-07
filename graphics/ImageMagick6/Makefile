@@ -27,7 +27,7 @@ MASTER_SITES=	https://www.imagemagick.org/download/ \
 		ftp://ftp.fifi.org/pub/ImageMagick/
 PKGNAMESUFFIX=	6
 
-MAINTAINER=	kwm@FreeBSD.org
+MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Image processing tools (legacy version)
 
 LICENSE=	APACHE20
@@ -176,7 +176,7 @@ X11_CONFIGURE_WITH=	x
 X11_USES=		xorg
 X11_USE=		xorg=ice,sm,x11,xext,xt
 X11_VARS=		CONFLICTS_INSTALL+="ImageMagick-nox11-6* ImageMagick6-nox11-6*" \
-			CONFLICTS+=display-[0-9]*
+			CONFLICTS+=display
 X11_VARS_OFF=		CONFLICTS_INSTALL+="ImageMagick-6* ImageMagick6-6*" \
 			PKGNAMESUFFIX=6-nox11
 

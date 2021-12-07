@@ -1,6 +1,6 @@
 PORTNAME=	llvm
 DISTVERSION=	13.0.0
-PORTREVISION=	0
+PORTREVISION=	3
 CATEGORIES=	devel lang
 MASTER_SITES=	https://github.com/llvm/llvm-project/releases/download/llvmorg-${DISTVERSION:S/rc/-rc/}/ \
 		https://${PRE_}releases.llvm.org/${LLVM_RELEASE}/${RCDIR}
@@ -82,7 +82,7 @@ CMAKE_ARGS+=	-DLLVM_ENABLE_TERMINFO=OFF
 CFLAGS+=	-DNDEBUG
 CXXFLAGS+=	-DNDEBUG
 
-OPTIONS_DEFINE=	BE_AMDGPU CLANG DOCS EXTRAS FLANG LIT LLD LLDB MLIR PYCLANG
+OPTIONS_DEFINE=	BE_AMDGPU BE_WASM CLANG DOCS EXTRAS FLANG LIT LLD LLDB MLIR PYCLANG
 OPTIONS_DEFINE_aarch64=	OPENMP
 OPTIONS_DEFINE_amd64=	COMPILER_RT GOLD OPENMP
 OPTIONS_DEFINE_i386=	COMPILER_RT OPENMP
@@ -90,7 +90,7 @@ OPTIONS_DEFINE_powerpc=	GOLD
 OPTIONS_DEFINE_powerpc64=	GOLD OPENMP
 OPTIONS_DEFINE_powerpc64le=	GOLD OPENMP
 OPTIONS_DEFINE_riscv64=	OPENMP
-OPTIONS_DEFAULT=	BE_AMDGPU BE_STANDARD CLANG EXTRAS FLANG LIT LLD LLDB MLIR PYCLANG
+OPTIONS_DEFAULT=	BE_AMDGPU BE_STANDARD BE_WASM CLANG EXTRAS FLANG LIT LLD LLDB MLIR PYCLANG
 OPTIONS_DEFAULT_aarch64=	OPENMP
 OPTIONS_DEFAULT_amd64=	COMPILER_RT GOLD OPENMP
 OPTIONS_DEFAULT_i386=	COMPILER_RT OPENMP
@@ -114,6 +114,7 @@ BE_FREEBSD_CMAKE_ON=	-DLLVM_TARGETS_TO_BUILD="${FREEBSD_BACKENDS:ts;}"
 BE_NATIVE_DESC=		Backend(s) for this architecture (${_NATIVE_BACKENDS})
 BE_NATIVE_CMAKE_ON=	-DLLVM_TARGETS_TO_BUILD="${NATIVE_BACKENDS:ts;}"
 BE_STANDARD_DESC=	All non-experimental backends
+BE_WASM_DESC=		WebAssembly backend (required by firefox via wasi)
 .for BE in FREEBSD NATIVE STANDARD
 BE_${BE}_PLIST_FILES=	${_BE_LIBS_${BE}:O:S/$/.a/:S|^|${LLVM_DIR}/lib/libLLVM|}
 .endfor
@@ -139,7 +140,7 @@ COMPILER_RT_PLIST_FILES=${_COMPILER_RT_LIBS:S|^|${_CRTLIBDIR}/|} \
 			${_COMPILER_RT_BLACKLISTS:S|^|${_CRTBLDIR}/|}
 DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx-markdown-tables>=0:textproc/py-sphinx-markdown-tables@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}recommonmark>=0.0.20180530:textproc/py-recommonmark@${PY_FLAVOR}
-DOCS_CONFLICTS_BUILD=	commonmark-cmark-*
+DOCS_CONFLICTS_BUILD=	commonmark-cmark
 DOCS_PORTDOCS=		llvm
 DOCS_CMAKE_ON=		-DLLVM_ENABLE_SPHINX=ON \
 			-DSPHINX_EXECUTABLE=${LOCALBASE}/bin/sphinx-build-${PYTHON_VER} \
@@ -175,10 +176,10 @@ MLIR_DESC=		Multi-Level Intermediate Representation
 OPENMP_DESC=		Install libomp, the LLVM OpenMP runtime library
 OPENMP_CMAKE_ON=	-DLIBOMPTARGET_BUILD_AMDGCN_BCLIB=OFF
 OPENMP_PORTDOCS=	openmp
-PYCLANG_DESC=	Install python bindings to libclang
+PYCLANG_DESC=		Install python bindings to libclang
 PYCLANG_IMPLIES=	CLANG
-PYCLANG_VARS=	_USES_PYTHON=python:3.6+
-PYCLANG_CMAKE_ON= -DCLANG_PYTHON_BINDINGS_VERSIONS=${PYTHON_VER}
+PYCLANG_VARS=		_USES_PYTHON=python:3.6+
+PYCLANG_CMAKE_ON=	-DCLANG_PYTHON_BINDINGS_VERSIONS=${PYTHON_VER}
 
 .if defined(WITH_DEBUG)
 CMAKE_BUILD_TYPE=	RelWithDebInfo
@@ -376,6 +377,10 @@ NATIVE_BACKENDS=	${_NATIVE_BACKENDS}
 FREEBSD_BACKENDS+=	AMDGPU
 NATIVE_BACKENDS+=	AMDGPU
 .endif
+.if ${PORT_OPTIONS:MBE_WASM}
+FREEBSD_BACKENDS+=	WebAssembly
+NATIVE_BACKENDS+=	WebAssembly
+.endif
 STANDARD_BACKENDS=	${_FREEBSD_BACKENDS} AMDGPU AVR BPF Hexagon Lanai \
 			MSP430 NVPTX SystemZ WebAssembly XCore
 _BE_LIBS_COMMON=	CodeGen Desc Info
@@ -385,7 +390,7 @@ _BE_LIBS_AMDGPU=	AsmParser Disassembler Utils
 _BE_LIBS_BACKWARDS_AMDGPU=MCACustomBehaviour
 _BE_LIBS_ARM=		AsmParser Disassembler Utils
 _BE_LIBS_AVR=		AsmParser Disassembler
-_BE_LIBS_BPF=		AsmParser Disassembler 
+_BE_LIBS_BPF=		AsmParser Disassembler
 _BE_LIBS_Hexagon=	AsmParser Disassembler
 _BE_LIBS_Lanai=		AsmParser Disassembler
 _BE_LIBS_MSP430=	AsmParser Disassembler
@@ -412,7 +417,7 @@ BE_PATTERN=${_BE_LIBS_STANDARD:O:S/$/.a/:ts|}
 _CRTLIBDIR=	${LLVM_DIR}/lib/clang/${LLVM_RELEASE}/lib/freebsd
 _CRTBLDIR=	${LLVM_DIR}/lib/clang/${LLVM_RELEASE}/share
 _COMPILER_RT_BLACKLISTS=	cfi_ignorelist.txt
-_COMPILER_RT_LIBS_i386= \
+_COMPILER_RT_LIBS_i386=	\
 	libclang_rt.asan-i386.a \
 	libclang_rt.asan-i386.so \
 	libclang_rt.asan-preinit-i386.a \
@@ -432,7 +437,7 @@ _COMPILER_RT_LIBS_i386= \
 .if ${ARCH} == "amd64"
 _COMPILER_RT_BLACKLISTS+=	asan_ignorelist.txt
 _COMPILER_RT_BLACKLISTS+=	msan_ignorelist.txt
-_COMPILER_RT_LIBS= \
+_COMPILER_RT_LIBS=	\
 	libclang_rt.asan-preinit-x86_64.a \
 	libclang_rt.asan-x86_64.a \
 	libclang_rt.asan-x86_64.a.syms \
@@ -490,7 +495,7 @@ MAKE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
 # Comment out plist entries for unsupported options.
 .for opt in ${_ALL_OPTIONS}
 .if !${OPTIONS_DEFINE:M${opt}}
-PLIST_SUB+=     ${opt}="@comment "
+PLIST_SUB+=	${opt}="@comment "
 .endif
 .endfor
 
@@ -537,6 +542,9 @@ post-install-DOCS-on:
 .if ! ${PORT_OPTIONS:MLIT}
 	${RM} ${STAGEDIR}${LLVM_PREFIX}/share/man/man1/lit.1
 	${RM} ${STAGEDIR}${LLVM_PREFIX}/share/man/man1/FileCheck.1
+.endif
+.if ! ${PORT_OPTIONS:MMLIR}
+	${RM} ${STAGEDIR}${LLVM_PREFIX}/share/man/man1/mlir-tblgen.1
 .endif
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/share/man/man1/
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/share/man/

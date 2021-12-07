@@ -2,26 +2,15 @@
 
 PORTNAME=	mpv
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.33.1
-PORTREVISION=	8
+DISTVERSION=	0.34.0
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio
 MASTER_SITES=	https://waf.io/:waf
 DISTFILES=	${WAF_RELEASE}${EXTRACT_SUFX}:waf
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCH_SITES+=	LOCAL/jbeich/${PORTNAME}_patches # backup
-PATCHFILES+=	1bb2665e3d09.patch:-p1 59c32a04b04d.patch:-p1 62fb374349e0.patch:-p1
-PATCHFILES+=	24525e4ef9ba.patch:-p1 4dd5fdc0876e.patch:-p1 4d80314c5c88.patch:-p1
-PATCHFILES+=	1b2e5137e04b.patch:-p1 # https://github.com/mpv-player/mpv/pull/8312
-PATCHFILES+=	3f006eced47b.patch:-p1 # required for #7268
-PATCHFILES+=	dbf0fd7d60fa.patch:-p1 # https://github.com/mpv-player/mpv/pull/7268
-PATCHFILES+=	dbbf4a415de7.patch:-p1 # https://github.com/mpv-player/mpv/pull/7268
-PATCHFILES+=	03b9f8e32362.patch:-p1 # https://github.com/mpv-player/mpv/issues/8913
-PATCHFILES+=	747b1520012e.patch:-p1 # https://github.com/mpv-player/mpv/pull/9033
-PATCHFILES+=	968faef86723.patch:-p1 # libplacebo 3.104
-PATCHFILES+=	7c4465cefb27.patch:-p1 # libplacebo 3.104
-PATCHFILES+=	cc4ada655aae.patch:-p1 # https://github.com/mpv-player/mpv/pull/9209
+PATCHFILES+=	b030cfe05f58.patch:-p1 # https://github.com/mpv-player/mpv/pull/9440
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Free and open-source general-purpose video player
@@ -58,11 +47,13 @@ CONFIGURE_ARGS=	--docdir="${EXAMPLESDIR}" \
 
 OPTIONS_DEFINE=		ARCHIVE DOCS LCMS2 LUAJIT MANPAGES MUJS TEST UCHARDET EXAMPLES ZIMG
 OPTIONS_DEFAULT=	ARCHIVE DVDNAV MANPAGES OPENGL UCHARDET \
-			V4L VAAPI VDPAU VULKAN WAYLAND X11 YTDL
+			V4L VAAPI VDPAU VULKAN WAYLAND X11 YTDLP
 OPTIONS_GROUP=		IN VO AO
-OPTIONS_GROUP_IN=	CDIO DVDNAV LIBBLURAY V4L YTDL
+OPTIONS_GROUP_IN=	CDIO DVDNAV LIBBLURAY V4L
 OPTIONS_GROUP_VO=	CACA OPENGL SIXEL VAAPI VDPAU VULKAN WAYLAND X11
 OPTIONS_GROUP_AO=	ALSA JACK OPENAL PULSEAUDIO SDL
+OPTIONS_RADIO=		YOUTUBE
+OPTIONS_RADIO_YOUTUBE=	YTDL YTDLP
 OPTIONS_SUB=		yes
 
 DVDNAV_DESC=		DVD menu navigation
@@ -71,6 +62,7 @@ MUJS_DESC=		Use MuJS for Javascript language support
 SIXEL_DESC=		Sixel graphics support
 UCHARDET_DESC=		Guess subtitle encoding via uchardet
 VULKAN_DESC=		Vulkan output support
+YTDLP_DESC=		Install yt-dlp (youtube-dl fork)
 YTDL_DESC=		Install youtube-dl
 ZIMG_DESC=		High quality software scaling via "z" library
 IN_DESC=		Input
@@ -107,7 +99,7 @@ LIBBLURAY_CONFIGURE_ON=		--enable-libbluray
 LIBBLURAY_CONFIGURE_OFF=	--disable-libbluray
 
 LUAJIT_LIB_DEPENDS=		libluajit-5.1.so:lang/luajit
-LUAJIT_USES_OFF=		lua
+LUAJIT_USES_OFF=		lua:51-52
 LUAJIT_CONFIGURE_ON=		--lua=luajit
 LUAJIT_CONFIGURE_OFF=		--lua=${LUA_VER_STR}fbsd
 
@@ -167,6 +159,8 @@ WAYLAND_IMPLIES=		OPENGL
 X11_USES=			gnome xorg
 X11_USE=			XORG=x11,xext,xinerama,xorgproto,xrandr,xscrnsaver,xv,xxf86vm
 X11_CONFIGURE_OFF=		--disable-x11
+
+YTDLP_RUN_DEPENDS=		yt-dlp:www/yt-dlp
 
 YTDL_RUN_DEPENDS=		youtube-dl:www/youtube_dl
 

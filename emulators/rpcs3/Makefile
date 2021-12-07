@@ -1,14 +1,15 @@
 PORTNAME=	rpcs3
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.18-12895 # git rev-list --count HEAD
-DISTVERSIONSUFFIX=	-gab6c74b3c
+DISTVERSION=	0.0.19-13086 # git rev-list --count HEAD
+DISTVERSIONSUFFIX=	-ga4ad0a946
 CATEGORIES=	emulators
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	PS3 emulator/debugger
 
-LICENSE=	APACHE20 GPLv2 MIT ZLIB
+LICENSE=	APACHE20 ISCL GPLv2 MIT ZLIB
 LICENSE_COMB=	multi
+LICENSE_FILE_ISCL=	${WRKSRC_cubeb}/LICENSE
 LICENSE_FILE_MIT=	${WRKSRC_pugixml}/LICENSE.md
 LICENSE_FILE_ZLIB=	${WRKSRC_asmjit}/LICENSE.md
 
@@ -16,39 +17,38 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpng.so:graphics/png \
 		libavcodec.so:multimedia/ffmpeg
 
-BROKEN_FreeBSD_12=	ld: error: undefined symbol: std::__1::__cxx_atomic_notify_one
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	requires int128 and SSE2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	RPCS3
 GH_TUPLE=	RPCS3:hidapi:hidapi-0.8.0-rc1-125-g01f601a:hidapi/3rdparty/hidapi/hidapi \
-		RPCS3:llvm-mirror:5836324d6443:llvm/llvm \
-		Cyan4973:xxHash:v0.8.0:xxHash/3rdparty/xxHash \
-		FNA-XNA:FAudio:21.07:FAudio/3rdparty/FAudio \
+		RPCS3:llvm-mirror:318b8fe37466:llvm/llvm \
+		Cyan4973:xxHash:v0.8.1:xxHash/3rdparty/xxHash \
 		asmjit:asmjit:723f585:asmjit/3rdparty/asmjit/asmjit \
 		google:flatbuffers:v2.0.0:flatbuffers/3rdparty/flatbuffers \
 		jbeder:yaml-cpp:yaml-cpp-0.7.0-1-g0b67821:yamlcpp/3rdparty/yaml-cpp/yaml-cpp \
 		KhronosGroup:SPIRV-Headers:1.5.3.reservations1:spirv_headers/3rdparty/SPIRV/SPIRV-Headers \
 		KhronosGroup:SPIRV-Tools:v2020.4:spirv_tools/3rdparty/SPIRV/SPIRV-Tools \
-		KhronosGroup:glslang:11.5.0:glslang/3rdparty/glslang/glslang \
+		KhronosGroup:glslang:11.7.1:glslang/3rdparty/glslang/glslang \
+		kinetiknz:cubeb:cubeb-0.2-1341-gdcc5cb5:cubeb/3rdparty/cubeb/cubeb \
 		wolfSSL:wolfssl:v4.8.1-stable:wolfssl/3rdparty/wolfssl/wolfssl \
 		zeux:pugixml:v1.11.4:pugixml/3rdparty/pugixml
 
 USES=		cmake compiler:c++17-lang gl iconv:wchar_t localbase:ldflags \
 		openal:soft pkgconfig python:3.4+,build qt:5 xorg
 USE_GL=		gl glew
-USE_QT=		qmake_build buildtools_build core concurrent dbus gui widgets
+USE_QT=		qmake_build buildtools_build core concurrent dbus gui multimedia svg widgets
 USE_XORG=	x11
 CMAKE_ON=	CMAKE_SKIP_RPATH USE_SYSTEM_CURL USE_SYSTEM_FFMPEG USE_SYSTEM_LIBPNG
+CMAKE_ON+=	BUNDLE_SPEEX # only used by cubeb tests
 CMAKE_OFF=	USE_NATIVE_INSTRUCTIONS USE_PRECOMPILED_HEADERS
 LDFLAGS+=	-Wl,--as-needed # GLU
 
-OPTIONS_DEFINE=	ALSA EVDEV FAUDIO PULSEAUDIO VULKAN
-OPTIONS_DEFAULT=EVDEV FAUDIO VULKAN
+OPTIONS_DEFINE=	ALSA EVDEV FAUDIO PULSEAUDIO JACK SNDIO VULKAN
+OPTIONS_DEFAULT=EVDEV FAUDIO PULSEAUDIO JACK SNDIO VULKAN
 
-ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
-ALSA_RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-plugins
+ALSA_BUILD_DEPENDS=	alsa-lib>0:audio/alsa-lib
 ALSA_CMAKE_BOOL=	USE_ALSA
 
 EVDEV_DESC=		libevdev-based joystick support
@@ -60,8 +60,14 @@ FAUDIO_DESC=		FAudio audio support
 FAUDIO_LIB_DEPENDS=	libFAudio.so:audio/faudio
 FAUDIO_CMAKE_BOOL=	USE_FAUDIO USE_SYSTEM_FAUDIO
 
-PULSEAUDIO_LIB_DEPENDS=	libpulse-simple.so:audio/pulseaudio
+JACK_BUILD_DEPENDS=	jackit>0:audio/jack
+JACK_CMAKE_BOOL=	USE_JACK
+
+PULSEAUDIO_BUILD_DEPENDS=pulseaudio>0:audio/pulseaudio
 PULSEAUDIO_CMAKE_BOOL=	USE_PULSE
+
+SNDIO_BUILD_DEPENDS=	sndio>0:audio/sndio
+SNDIO_CMAKE_BOOL=	USE_SNDIO
 
 VULKAN_DESC=		Vulkan renderer
 VULKAN_BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers
@@ -74,11 +80,21 @@ post-patch:
 		-e '/GIT_VERSION/s/local_build/${GH_TAGNAME:C/[^-]*-//}/' \
 		${WRKSRC}/${PORTNAME}/git-version.cmake
 
+post-install:
+.if exists(/usr/bin/elfctl)
+. if 0
+	elfctl -e +noaslr ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+. else
+# FreeBSD 12.2 lacks https://cgit.freebsd.org/src/commit/?id=f56d7f838f5b
+	elfctl -e +aslr ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+. endif
+.endif
+
 .include <bsd.port.pre.mk>
 
 # Ignore Mk/bsd.default-versions.mk but respect make.conf(5)
 .if !defined(DEFAULT_VERSIONS) || ! ${DEFAULT_VERSIONS:Mllvm*}
-LLVM_DEFAULT=	12 # bump if not latest release
+LLVM_DEFAULT=	13 # bump if not latest release
 .endif
 BUILD_DEPENDS+=	clang++${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 USES:=		${USES:Ncompiler*}
@@ -86,12 +102,16 @@ CC=		clang${LLVM_DEFAULT}
 CXX=		clang++${LLVM_DEFAULT}
 CPP=		clang-cpp${LLVM_DEFAULT}
 
-# XXX Drop after FreeBSD 12.2 EOL
-.if make(makesum) || (!exists(/usr/include/c++/v1/__bits) && exists(/usr/lib/libc++.so))
-MASTER_SITES+=	https://github.com/llvm/llvm-project/releases/download/llvmorg-${LLVM_VER}/:libcxx
-DISTFILES+=	libcxx-${LLVM_VER}.src.tar.xz:libcxx
-CXXFLAGS+=	-nostdinc++ -D_LIBCPP_HAS_NO_VENDOR_AVAILABILITY_ANNOTATIONS -isystem${WRKDIR}/libcxx-${LLVM_VER}.src/include
-LLVM_VER=	12.0.0
-.endif
+# XXX Drop after FreeBSD 12.3 EOL
+GH_TUPLE+=	llvm:llvm-project:llvmorg-13.0.1-rc1:libcxx
+CXXFLAGS+=	-nostdinc++ -isystem${WRKDIR}/libcxx_prefix/include/c++/v1
+LDFLAGS+=	-nostdlib++ -L${WRKDIR}/libcxx_prefix/lib -l:libc++.a -lcxxrt
+
+pre-configure:	bundled-libcxx
+bundled-libcxx:
+	@${SETENV} ${CONFIGURE_ENV} ${CMAKE_BIN} ${CMAKE_ARGS:M*Ninja*} \
+		-DCMAKE_INSTALL_PREFIX:PATH=${WRKDIR}/libcxx_prefix \
+		-B ${WRKDIR}/libcxx_build -S ${WRKSRC_libcxx}/libcxx
+	@${DO_MAKE_BUILD:NDESTDIR*} install -C ${WRKDIR}/libcxx_build
 
 .include <bsd.port.post.mk>

@@ -1,7 +1,7 @@
 # Created by: Mahdi Mokhtari <mokhi64@gmail.com>
 
 PORTNAME?=	mysql
-PORTVERSION=	5.7.35
+PORTVERSION=	5.7.36
 PORTREVISION?=	0
 CATEGORIES=	databases
 MASTER_SITES=	MYSQL/MySQL-5.7
@@ -87,11 +87,11 @@ OPTIONS_SUB=		YES
 .if !defined(CLIENT_ONLY)
 USES+=		mysql:57
 
-CONFLICTS_INSTALL=	mysql5[0-68-9]-server-* \
-			mysql[0-46-9][0-9]-server-* \
-			mysqlwsrep* \
-			mariadb[0-9][0-9]-server-* \
-			percona[0-9][0-9]-server-*
+CONFLICTS_INSTALL=	mysql5[0-68-9]-server \
+			mysql[0-46-9][0-9]-server \
+			mysqlwsrep*-server \
+			mariadb[0-9][0-9]-server \
+			percona[0-9][0-9]-server
 
 USE_RC_SUBR=	mysql-server
 

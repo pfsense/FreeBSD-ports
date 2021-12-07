@@ -1,17 +1,16 @@
 # Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
 
 PORTNAME=	xreader
-PORTVERSION=	3.0.2
-PORTREVISION=	4
+PORTVERSION=	3.2.1
 CATEGORIES=	print gnome
 DIST_SUBDIR=	gnome
 
-MAINTAINER=	danfe@FreeBSD.org
+MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Multi-format document reader
 
 LICENSE=	GPLv2+
 
-PORTSCOUT=	limit:^[0-9.]+$$	# ignore master.mint* tags
+PORTSCOUT=	limit:^[0-9.]+$$	# ignore non-numeric tags
 
 BUILD_DEPENDS=	intltool-merge:textproc/intltool \
 		itstool:textproc/itstool
@@ -26,7 +25,6 @@ USE_XORG=	ice sm x11
 GLIB_SCHEMAS=	org.x.reader.gschema.xml
 
 MATHJAX_DIR=	${LOCALBASE}/www/MathJax
-MESON_ARGS=	-Dtests=false
 
 OPTIONS_DEFINE=	DBUS DJVU DVI EPUB HELP KEYRING PDF PS T1LIB TIFF XPS
 OPTIONS_DEFAULT=	DBUS DJVU HELP KEYRING PDF TIFF XPS

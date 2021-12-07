@@ -1,7 +1,7 @@
 # Created by: Kenneth Vestergaard Schmidt <kvs@pil.dk>
 
 PORTNAME=	emacs
-DISTVERSION=	29.0.50.20211001
+DISTVERSION=	29.0.50.20211205
 PORTEPOCH=	2
 CATEGORIES=	editors
 PKGNAMESUFFIX=	-devel
@@ -25,7 +25,7 @@ USES=		autoreconf:build cpe gmake localbase:ldflags ncurses pkgconfig
 CPE_VENDOR=	gnu
 USE_GITHUB=	yes
 GH_ACCOUNT=	emacs-mirror
-GH_TAGNAME=	30bbb57
+GH_TAGNAME=	2d0e1e5
 
 .if ${FLAVOR:U} != nox
 USES+=		desktop-file-utils gnome xorg
@@ -54,6 +54,7 @@ CONFIGURE_ARGS+=	--with-sound=no \
 			--without-rsvg \
 			--without-tiff \
 			--without-toolkit-scroll-bars \
+			--without-webp \
 			--without-x \
 			--without-xim \
 			--without-xpm \
@@ -86,9 +87,9 @@ OPTIONS_DEFINE=			ACL DBUS GCONF GNUTLS GSETTINGS HARFBUZZ JSON \
 OPTIONS_DEFAULT=		ACL CAIRO DBUS GIF GNUTLS GSETTINGS GTK3 \
 				HARFBUZZ JPEG JSON KQUEUE LCMS2 M17N MAILUTILS \
 				MODULES OSS OTF PNG SCROLLBARS SOURCES SVG \
-				THREADS TIFF XFT XIM XML XPM
+				THREADS TIFF WEBP XFT XIM XML XPM
 OPTIONS_GROUP=			GRAPHICS
-OPTIONS_GROUP_GRAPHICS=		CAIRO GIF JPEG MAGICK PNG SVG TIFF XPM
+OPTIONS_GROUP_GRAPHICS=		CAIRO GIF JPEG MAGICK PNG SVG TIFF WEBP XPM
 OPTIONS_RADIO=			FILENOTIFY SOUND X11TOOLKIT
 OPTIONS_RADIO_FILENOTIFY=	GFILE KQUEUE
 OPTIONS_RADIO_SOUND=		ALSA OSS
@@ -96,8 +97,8 @@ OPTIONS_RADIO_X11TOOLKIT=	GTK2 GTK3 XAW XAW3D
 .if ${FLAVOR:U} == nox
 OPTIONS_EXCLUDE=		ALSA CAIRO DBUS GCONF GFILE GIF GSETTINGS GTK2 \
 				GTK3 HARFBUZZ JPEG LCMS2 M17N MAGICK OSS OTF \
-				PNG SCROLLBARS SVG TIFF XAW XAW3D XFT XIM XPM \
-				XWIDGETS
+				PNG SCROLLBARS SVG TIFF WEBP XAW XAW3D XFT XIM \
+				XPM XWIDGETS
 .endif
 OPTIONS_SUB=			YES
 
@@ -185,6 +186,8 @@ SVG_CONFIGURE_WITH=		rsvg
 THREADS_CONFIGURE_WITH=		threads
 TIFF_LIB_DEPENDS=		libtiff.so:graphics/tiff
 TIFF_CONFIGURE_WITH=		tiff
+WEBP_LIB_DEPENDS=		libwebp.so:graphics/webp
+WEBP_CONFIGURE_WITH=		webp
 XAW3D_LIB_DEPENDS=		libXaw3d.so:x11-toolkits/Xaw3d
 XAW3D_CONFIGURE_ON=		--with-x-toolkit=athena
 XAW_USE=			XORG=xaw
@@ -206,18 +209,18 @@ XWIDGETS_LIB_DEPENDS=		libsoup-2.4.so:devel/libsoup \
 				libwebkit2gtk-4.0.so:www/webkit2-gtk3
 XWIDGETS_USE=			XORG=xcomposite
 XWIDGETS_CONFIGURE_WITH=	xwidgets
-
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNATIVECOMP} && !defined(_GCC_PORT_CHOSEN)
 _GCC_PORT!=	${BSDMAKE} -V_GCC_PORT USE_GCC=11+ _GCC_PORT_CHOSEN=yes
 .endif
 
-.if ${ARCH} == powerpc64le
+.if ${ARCH:Mpowerpc64*}
 USE_GCC=	yes
 .endif
 
-.if !${PORT_OPTIONS:MGTK2} && !${PORT_OPTIONS:MGTK3} && !${PORT_OPTIONS:MXAW} && !${PORT_OPTIONS:MXAW3D}
+.if !${PORT_OPTIONS:MGTK2} && !${PORT_OPTIONS:MGTK3} && !${PORT_OPTIONS:MXAW} && \
+	!${PORT_OPTIONS:MXAW3D}
 CONFIGURE_ARGS+=	--with-x-toolkit=no
 .endif
 
@@ -238,6 +241,7 @@ pre-configure:
 
 post-install:
 	@${RM} -r ${STAGEDIR}${PREFIX}/lib/systemd
+	@(cd ${STAGEDIR}${PREFIX} && ${FIND} libexec/emacs/${DISTVERSION:R}/${CONFIGURE_TARGET}/ -name emacs-*.pdmp >> ${TMPPLIST})
 
 post-install-MAILUTILS-on:
 	${LN} -sf ${PREFIX}/bin/movemail \

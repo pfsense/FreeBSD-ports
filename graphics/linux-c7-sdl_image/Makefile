@@ -13,12 +13,13 @@ COMMENT=	Simple library to load images as SDL interfaces (Linux CentOS ${LINUX_D
 
 ONLY_FOR_ARCHS=	amd64
 
-USES=		linux:c7
+USES=		cpe linux:c7
+CPE_VENDOR=	libsdl
 USE_LDCONFIG=	yes
 USE_LINUX=	jpeg png sdl12 tiff
 USE_LINUX_RPM=	yes
 
-CONFLICTS=	linux-c6-${PORTNAME}-[0-9]*
+CONFLICTS=	linux-c6-${PORTNAME}
 DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
 DOCSDIR=	${PREFIX}/usr/share/doc/SDL_image-${PORTVERSION}
 

@@ -48,6 +48,7 @@
     SUBDIR += deforaos-locker
     SUBDIR += deforaos-panel
     SUBDIR += deskmenu
+    SUBDIR += disman
     SUBDIR += dmenu
     SUBDIR += dmenu-wayland
     SUBDIR += docker-tray
@@ -122,6 +123,7 @@
     SUBDIR += kb2mb2
     SUBDIR += kde-baseapps
     SUBDIR += kde5
+    SUBDIR += kdisplay
     SUBDIR += keybinder
     SUBDIR += keybinder-gtk3
     SUBDIR += keyboardcast

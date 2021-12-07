@@ -119,6 +119,7 @@
     SUBDIR += R-cran-statmod
     SUBDIR += R-cran-survey
     SUBDIR += R-cran-tensor
+    SUBDIR += R-cran-terra
     SUBDIR += R-cran-truncnorm
     SUBDIR += R-cran-units
     SUBDIR += R-cran-uroot
@@ -263,7 +264,6 @@
     SUBDIR += eclib
     SUBDIR += ecos
     SUBDIR += edenmath
-    SUBDIR += eigen2
     SUBDIR += eigen3
     SUBDIR += eispack
     SUBDIR += elemental
@@ -279,6 +279,7 @@
     SUBDIR += facile
     SUBDIR += faiss
     SUBDIR += fann
+    SUBDIR += fastops
     SUBDIR += fcl
     SUBDIR += fcl05
     SUBDIR += fflas-ffpack
@@ -396,6 +397,7 @@
     SUBDIR += libRmath
     SUBDIR += libbraiding
     SUBDIR += libccd
+    SUBDIR += libdivide
     SUBDIR += libflame
     SUBDIR += libhomfly
     SUBDIR += libmesh
@@ -775,6 +777,7 @@
     SUBDIR += poly2tri
     SUBDIR += polylib
     SUBDIR += polymake
+    SUBDIR += primecount
     SUBDIR += primegen
     SUBDIR += primesieve
     SUBDIR += primme
@@ -857,6 +860,7 @@
     SUBDIR += py-mpmath
     SUBDIR += py-munkres
     SUBDIR += py-munkres10
+    SUBDIR += py-ndindex
     SUBDIR += py-networkx
     SUBDIR += py-nevergrad
     SUBDIR += py-numexpr
@@ -1072,9 +1076,13 @@
     SUBDIR += xplot
     SUBDIR += xspread
     SUBDIR += xtensor
+    SUBDIR += xtensor-blas
+    SUBDIR += xtensor-io
+    SUBDIR += xtensor-python
     SUBDIR += yacas
     SUBDIR += yices
     SUBDIR += z3
+    SUBDIR += zarray
     SUBDIR += zegrapher
     SUBDIR += zimpl
     SUBDIR += zn_poly

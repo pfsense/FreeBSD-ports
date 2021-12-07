@@ -1,8 +1,8 @@
 PORTNAME=	bfs
-DISTVERSION=	2.2.1
+DISTVERSION=	2.3
 CATEGORIES=	sysutils
 
-MAINTAINER=	driesm.michiels@gmail.com
+MAINTAINER=	driesm@FreeBSD.org
 COMMENT=	Breadth-first version of the UNIX find command
 
 LICENSE=	BSD0CLAUSE

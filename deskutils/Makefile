@@ -18,6 +18,7 @@
     SUBDIR += bijiben
     SUBDIR += birdtray
     SUBDIR += bitcollider
+    SUBDIR += bookworm
     SUBDIR += cairo-dock
     SUBDIR += cairo-dock-plugins
     SUBDIR += caja-extensions
@@ -127,6 +128,7 @@
     SUBDIR += just
     SUBDIR += kaddressbook
     SUBDIR += kalarm
+    SUBDIR += kalendar
     SUBDIR += kcharselect
     SUBDIR += kchmviewer
     SUBDIR += kdeconnect-kde
@@ -243,6 +245,7 @@
     SUBDIR += thinkingrock
     SUBDIR += timewarrior
     SUBDIR += todo
+    SUBDIR += todour
     SUBDIR += toolboxkit
     SUBDIR += tpb
     SUBDIR += treeline

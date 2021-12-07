@@ -1,6 +1,6 @@
-TIMESTAMP = 1626095273
-SHA256 (cbsd-cbsd-mq-api-0.1_GH0.tar.gz) = 235ad0b64e171afb53daf05d457d59cbe526e7857a6e6cb1b59ee9a37e82baf3
-SIZE (cbsd-cbsd-mq-api-0.1_GH0.tar.gz) = 10330
+TIMESTAMP = 1638458854
+SHA256 (cbsd-cbsd-mq-api-0.3_GH0.tar.gz) = eb562d965a2b5ab555e8352cd3302b7cc097d85afd31018c469b0e1aff99f11c
+SIZE (cbsd-cbsd-mq-api-0.3_GH0.tar.gz) = 12084
 SHA256 (beanstalkd-go-beanstalk-3bed00be7a17_GH0.tar.gz) = 4efb9667cadd4945ec54ccc3caa824ab7fb06f75f8b234c1899c4664dc718bb7
 SIZE (beanstalkd-go-beanstalk-3bed00be7a17_GH0.tar.gz) = 8063
 SHA256 (gorilla-mux-d07530f46e1e_GH0.tar.gz) = 398bd970e01d161642951f30fe285fce29564444c7f7776f8dddb271411882d0

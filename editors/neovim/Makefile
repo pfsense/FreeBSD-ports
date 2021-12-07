@@ -2,7 +2,8 @@
 
 PORTNAME=	neovim
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.1
+DISTVERSION=	0.6.0
+PORTREVISION=	1
 CATEGORIES=	editors
 
 MAINTAINER=	adamw@FreeBSD.org
@@ -40,20 +41,18 @@ PORTDATA=	runtime
 
 OPTIONS_DEFINE=	LUAJIT NLS PYNVIM
 OPTIONS_DEFAULT=LUAJIT
-OPTIONS_EXCLUDE_aarch64=LUAJIT
-OPTIONS_EXCLUDE_mips64=	LUAJIT
-OPTIONS_EXCLUDE_powerpc=LUAJIT
-OPTIONS_EXCLUDE_riscv=	LUAJIT
-OPTIONS_EXCLUDE_riscv64=LUAJIT
-OPTIONS_EXCLUDE_sparc64=LUAJIT
+OPTIONS_EXCLUDE_aarch64=	LUAJIT
+OPTIONS_EXCLUDE_mips64=		LUAJIT
+OPTIONS_EXCLUDE_riscv64=	LUAJIT
+OPTIONS_EXCLUDE_sparc64=	LUAJIT
 OPTIONS_SUB=	yes
 
-LUAJIT_DESC=	Use LuaJIT for faster Lua code
+LUAJIT_DESC=	Use LuaJIT for faster Lua code (recommended)
 PYNVIM_DESC=	Enable support for plugins written in python
 
 LUAJIT_CMAKE_OFF=	-DPREFER_LUA:BOOL="ON"
 LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
-LUAJIT_USES=		lua:build
+LUAJIT_USES=		lua:52,build
 LUAJIT_USES_OFF=	lua:52
 NLS_CMAKE_BOOL=		ENABLE_LIBINTL
 NLS_USES=		gettext
@@ -64,6 +63,9 @@ PYNVIM_USES=		python:run
 
 .if ${ARCH:Mpowerpc64*}
 LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
+.endif
+
+.if ${ARCH} == powerpc64
 USES+=		compiler:gcc-c++11-lib
 .endif
 

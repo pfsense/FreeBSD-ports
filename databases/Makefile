@@ -32,6 +32,7 @@
     SUBDIR += cassandra3
     SUBDIR += cassandra4
     SUBDIR += casstcl
+    SUBDIR += caterva
     SUBDIR += cayley
     SUBDIR += cdb
     SUBDIR += cego
@@ -121,6 +122,7 @@
     SUBDIR += jasperreports
     SUBDIR += jdb
     SUBDIR += jdbc-oracle11g
+    SUBDIR += jetbrains-datagrip
     SUBDIR += jlog
     SUBDIR += jrobin
     SUBDIR += jrrd
@@ -228,7 +230,6 @@
     SUBDIR += mysqldump-secure
     SUBDIR += mysqlreport
     SUBDIR += mysqlsla
-    SUBDIR += mysqlsniffer
     SUBDIR += mysqltcl
     SUBDIR += mysqltuner
     SUBDIR += mysqlwsrep56-server
@@ -672,6 +673,7 @@
     SUBDIR += postgresql-relay
     SUBDIR += postgresql-repmgr
     SUBDIR += postgresql-rum
+    SUBDIR += postgresql-semver
     SUBDIR += postgresql-tds_fdw
     SUBDIR += postgresql-zhparser
     SUBDIR += postgresql10-client
@@ -757,6 +759,7 @@
     SUBDIR += py-bsddb3
     SUBDIR += py-carbon
     SUBDIR += py-cassandra-driver
+    SUBDIR += py-caterva
     SUBDIR += py-couchdb
     SUBDIR += py-dbf
     SUBDIR += py-dbutils
@@ -796,6 +799,9 @@
     SUBDIR += py-pony
     SUBDIR += py-postgresql
     SUBDIR += py-psycogreen
+    SUBDIR += py-psycopg
+    SUBDIR += py-psycopg-c
+    SUBDIR += py-psycopg-pool
     SUBDIR += py-psycopg2
     SUBDIR += py-psycopg2cffi
     SUBDIR += py-pum
@@ -880,7 +886,6 @@
     SUBDIR += rubygem-activemodel52
     SUBDIR += rubygem-activemodel60
     SUBDIR += rubygem-activemodel61
-    SUBDIR += rubygem-activemodel613
     SUBDIR += rubygem-activerecord-explain-analyze
     SUBDIR += rubygem-activerecord-import
     SUBDIR += rubygem-activerecord-jdbc-adapter
@@ -892,7 +897,6 @@
     SUBDIR += rubygem-activerecord52
     SUBDIR += rubygem-activerecord60
     SUBDIR += rubygem-activerecord61
-    SUBDIR += rubygem-activerecord613
     SUBDIR += rubygem-after_commit_queue
     SUBDIR += rubygem-amalgalite
     SUBDIR += rubygem-arel
@@ -980,6 +984,7 @@
     SUBDIR += rubygem-redis-actionpack-rails61
     SUBDIR += rubygem-redis-namespace
     SUBDIR += rubygem-redis-namespace16
+    SUBDIR += rubygem-redis44
     SUBDIR += rubygem-sdbm
     SUBDIR += rubygem-seed-fu
     SUBDIR += rubygem-sqlite3
@@ -1026,6 +1031,8 @@
     SUBDIR += tile38
     SUBDIR += tiledb
     SUBDIR += timescaledb
+    SUBDIR += timescaledb-backup
+    SUBDIR += timescaledb-tune
     SUBDIR += tinycdb
     SUBDIR += tokyocabinet
     SUBDIR += tokyotyrant
@@ -1049,5 +1056,6 @@
     SUBDIR += xtrabackup
     SUBDIR += xtrabackup8
     SUBDIR += zabbix3-libzbxpgsql
+    SUBDIR += zodb
 
 .include <bsd.port.subdir.mk>

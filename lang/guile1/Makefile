@@ -16,10 +16,11 @@ LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libgmp.so:math/gmp
 
-USES=		autoreconf gmake libtool makeinfo ncurses pathfix
+USES=		autoreconf cpe gmake libtool makeinfo ncurses pathfix
+CPE_VENDOR=	gnu
 USE_LDCONFIG=	yes
 
-CONFLICTS_INSTALL=	guile2-[0-9]* guile-[0-9]*
+CONFLICTS_INSTALL=	guile2 guile
 
 GNU_CONFIGURE=	yes
 CFLAGS+=	-fwrapv

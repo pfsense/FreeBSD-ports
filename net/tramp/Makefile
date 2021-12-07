@@ -2,7 +2,7 @@
 
 PORTNAME=	tramp
 PORTVERSION=	2.3.0
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	net elisp
 MASTER_SITES=	GNU
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
@@ -12,6 +12,10 @@ COMMENT=	Transparent remote file access tool for Emacs
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Not updated in 5 years and now part of Emacs
+EXPIRATION_DATE=	2022-01-01
+BROKEN=		plist issues with gvfs detection
 
 USES=		cpe emacs gmake makeinfo
 

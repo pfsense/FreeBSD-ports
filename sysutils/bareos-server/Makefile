@@ -1,7 +1,7 @@
 PORTNAME=	bareos
 DISTVERSIONPREFIX=	Release/
-DISTVERSION=	20.0.2
-PORTREVISION?=	1
+DISTVERSION=	20.0.3
+PORTREVISION?=	0
 CATEGORIES?=	sysutils
 PKGNAMEPREFIX?=	#
 PKGNAMESUFFIX?=	-server
@@ -12,7 +12,7 @@ COMMENT?=	Backup archiving recovery open sourced (server)
 LICENSE=	AGPLv3 LGPL3
 LICENSE_COMB=	multi
 
-CONFLICTS?=	bacula19*-server bacula18*-server-* bareos17-server-*
+CONFLICTS?=	bareos19-server bareos18-server bareos17-server
 
 LIB_DEPENDS+=	liblzo2.so:archivers/lzo2 \
 		libjansson.so:devel/jansson
@@ -44,13 +44,13 @@ NDMP_DESC=		Enable build of NDMP support
 SCSICRYPTO_DESC=	Build LTO AME crypto plugin
 
 .if ${PKGNAMESUFFIX} == "-server"
-OPTIONS_GROUP=  BACKENDS
-OPTIONS_GROUP_BACKENDS= CEPHFS GFAPI RADOS
+OPTIONS_GROUP=	BACKENDS
+OPTIONS_GROUP_BACKENDS=	CEPHFS GFAPI RADOS
 OPTIONS_DEFINE=		MTX PYTHON LMDB NDMP NLS SCSICRYPTO
 OPTIONS_DEFAULT+=	LMDB PGSQL SCSICRYPTO
 OPTIONS_SINGLE_DATABASE=	SQLITE3 MYSQL PGSQL
 OPTIONS_SINGLE+=		DATABASE
-BACKENDS_DESC= 		Storage backends
+BACKENDS_DESC=		Storage backends
 DATABASE_DESC=		Database support
 CEPHFS_DESC=	CEPHFS backend support
 GFAPI_DESC=	GFAPI backend support

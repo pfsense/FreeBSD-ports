@@ -1,5 +1,5 @@
 PORTNAME=	vtk
-DISTVERSION=	9.0.3
+DISTVERSION=	9.1.0
 PORTREVISION=	1
 CATEGORIES=	math graphics
 MASTER_SITES=	https://vtk.org/files/release/${VTK_SHORT_VER}/
@@ -11,23 +11,29 @@ COMMENT=	Visualization toolkit
 
 LICENSE=	BSD3CLAUSE
 
-LIB_DEPENDS=	libtiff.so:graphics/tiff \
-		libpng.so:graphics/png \
+LIB_DEPENDS=	\
+		libexpat.so:textproc/expat2 \
 		libfreetype.so:print/freetype2 \
-		libexpat.so:textproc/expat2
+		libhdf5.so:science/hdf5 \
+		libnetcdf.so:science/netcdf \
+		libpng.so:graphics/png \
+		libtiff.so:graphics/tiff
 
 USES=		alias cmake compiler:c++11-lang gl jpeg localbase xorg
 USE_LDCONFIG=	${PREFIX}/lib/vtk-${VTK_SHORT_VER}
-USE_XORG=	ice x11 xt xext sm
+USE_XORG=	ice x11 xt xext sm xcursor xfixes xrender
 
 CMAKE_ON=	BUILD_SHARED_LIBS \
-		VTK_INSTALL_NO_DOCUMENTATION VTK_USE_SYSTEM_EXPAT VTK_USE_SYSTEM_TIFF \
-		VTK_USE_SYSTEM_PNG VTK_USE_SYSTEM_JPEG VTK_USE_SYSTEM_FREETYPE VTK_USE_SYSTEM_ZLIB \
+		VTK_INSTALL_NO_DOCUMENTATION \
 		Module_vtkTestingCore Module_vtkTestingRendering
+.for m in expat freetype hdf5 jpeg netcdf png tiff zlib
+CMAKE_ON+=	VTK_MODULE_USE_EXTERNAL_VTK_${m}
+.endfor
 CMAKE_ARGS=	-DVTK_INSTALL_LIBRARY_DIR=lib/vtk-${VTK_SHORT_VER} \
 		-DVTK_INSTALL_ARCHIVE_DIR=lib/vtk-${VTK_SHORT_VER} \
 		-DVTK_INSTALL_QT_DIR=/${QT_LIBDIR_REL}/plugins/designer \
 		-DSTAGEDIR=${STAGEDIR}
+		# all build options are documented here: https://gitlab.kitware.com/vtk/vtk/blob/master/Documentation/dev/build.md
 
 VTK_SHORT_VER=	${PORTVERSION:R}
 
@@ -59,11 +65,11 @@ $w_DESC=	$w wrapping
 
 PYTHON_USES=		python:3.6+
 PYTHON_CMAKE_BOOL=	VTK_WRAP_PYTHON
-PYTHON_CMAKE_ON=	-DVTK_PYTHON_VERSION=${PYTHON_MAJOR_VER}
+PYTHON_CMAKE_ON=	-DVTK_PYTHON_VERSION=${PYTHON_MAJOR_VER} -DPython3_EXECUTABLE=${PYTHON_CMD}
 PYTHON_VARS=		SUB_FILES=PKG-INFO SUB_LIST=PORTVERSION=${PORTVERSION}
 
 QT5_USES=		qt:5
-QT5_USE=		QT=core,gui,sql,uiplugin,widgets,x11extras,qmake_build,buildtools_build
+QT5_USE=		QT=core,declarative,gui,network,opengl,sql,uiplugin,widgets,x11extras,qmake_build,buildtools_build
 QT5_CMAKE_ON=		-DCMAKE_PREFIX_PATH:STRING=${LOCALBASE}/lib/qt5 \
 			-DVTK_GROUP_ENABLE_Qt:STRING=YES \
 			-DVTK_MODULE_ENABLE_VTK_GUISupportQt:STRING=YES
@@ -100,13 +106,6 @@ DOCS_CMAKE_BOOL=	BUILD_DOCUMENTATION
 DOCS_BUILD_DEPENDS=	doxygen:devel/doxygen
 
 EXAMPLES_CMAKE_BOOL=	BUILD_EXAMPLES
-
-# Mangling so that it will build when science/netcdf is installed.
-post-patch:
-	@${MV} ${WRKSRC}/ThirdParty/netcdf/vtknetcdf/include/netcdf.h \
-		${WRKSRC}/ThirdParty/netcdf/vtknetcdf/include/xxxnetcdf.h
-	@${FIND} ${WRKSRC}/ThirdParty/netcdf -type f | ${XARGS} ${REINPLACE_CMD} \
-		-E 's/[[:<:]]netcdf\.h[[:>:]]/xxxnetcdf.h/'
 
 .include <bsd.port.options.mk>
 

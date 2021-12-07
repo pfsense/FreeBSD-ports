@@ -64,16 +64,27 @@ PORTSTOP=	yes
 
 .include <bsd.port.subdir.mk>
 
-index:
-	@rm -f ${INDEXDIR}/${INDEXFILE}
-	@cd ${.CURDIR} && ${MAKE} ${INDEXDIR}/${INDEXFILE}
+index: 	${INDEXDIR}/${INDEXFILE}
 
-fetchindex: ${INDEXDIR}/${INDEXFILE}.bz2
-	@bunzip2 < ${INDEXDIR}/${INDEXFILE}.bz2 > ${INDEXDIR}/${INDEXFILE} && \
-	chmod a+r ${INDEXDIR}/${INDEXFILE} && ${RM} ${INDEXDIR}/${INDEXFILE}.bz2
+INDEX_COMPRESSION_FORMAT?=	xz
 
-${INDEXDIR}/${INDEXFILE}.bz2: .PHONY
-	${FETCHINDEX} ${INDEXDIR}/${INDEXFILE}.bz2 ${MASTER_SITE_INDEX}${INDEXFILE}.bz2
+.if ${INDEX_COMPRESSION_FORMAT} != xz && \
+	${INDEX_COMPRESSION_FORMAT} != bz2 && ${INDEX_COMPRESSION_FORMAT} != zst
+.error "Invalid compression format: ${INDEX_COMPRESSION_FORMAT}, expecting xz, bz2 or zst"
+.endif
+
+fetchindex: ${INDEXDIR}/${INDEXFILE}.${INDEX_COMPRESSION_FORMAT}
+	@if bsdcat < ${INDEXDIR}/${INDEXFILE}.${INDEX_COMPRESSION_FORMAT} > ${INDEXDIR}/${INDEXFILE}.tmp ; then \
+		chmod a+r ${INDEXDIR}/${INDEXFILE}.tmp; \
+		${MV} ${INDEXDIR}/${INDEXFILE}.tmp ${INDEXDIR}/${INDEXFILE}; \
+		${RM} ${INDEXDIR}/${INDEXFILE}.${INDEX_COMPRESSION_FORMAT} \
+	else ; \
+		${RM} ${INDEXDIR}/${INDEXFILE}.tmp ; \
+	fi
+
+${INDEXDIR}/${INDEXFILE}.${INDEX_COMPRESSION_FORMAT}: .PHONY
+	${FETCHINDEX} ${INDEXDIR}/${INDEXFILE}.${INDEX_COMPRESSION_FORMAT} \
+		${MASTER_SITE_INDEX}${INDEXFILE}.${INDEX_COMPRESSION_FORMAT}
 
 MASTER_SITE_INDEX?=	https://www.FreeBSD.org/ports/
 SETENV?=	/usr/bin/env
@@ -110,7 +121,7 @@ MAKE_INDEX=	/usr/libexec/make_index /dev/stdin
 MAKE_INDEX=	perl ${.CURDIR}/Tools/make_index
 .endif
 
-${INDEXDIR}/${INDEXFILE}:
+${INDEXDIR}/${INDEXFILE}: .PHONY
 	@${INDEX_ECHO_1ST} "Generating ${INDEXFILE} - please wait.."; \
 	if [ "${INDEX_PRISTINE}" != "" ]; then \
 		export LOCALBASE=/nonexistentlocal; \

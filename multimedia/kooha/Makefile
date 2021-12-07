@@ -1,10 +1,11 @@
 PORTNAME=	kooha
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.0
+DISTVERSION=	2.0.1
+PORTREVISION=	2
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
-COMMENT=	Elegantly record your screen (development snapshot)
+COMMENT=	Elegantly record your screen
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING

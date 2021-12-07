@@ -8,13 +8,14 @@ PORTEPOCH=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	go-
 
-MAINTAINER=	cs@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Protocol Buffers for Go with Gadgets
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go
+USES=		cpe go
+CPE_VENDOR=	golang
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	gogo

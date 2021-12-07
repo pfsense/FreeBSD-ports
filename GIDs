@@ -237,10 +237,10 @@ krill:*:294:
 jottad:*:295:
 writefreely:*:296:
 conduit:*:297:
-# free: 298
+neolink:*:298:
 owncast:*:299:
 backuppc:*:300:
-# free: 301
+openvpn:*:301:
 netdata:*:302:
 # free: 303
 # free: 304
@@ -297,7 +297,7 @@ jackett:*:354:
 nzbhydra2:*:355:
 lidarr:*:356:
 bazarr:*:357:
-# free: 358
+autoscan:*:358:
 # free: 359
 v2ray:*:360:
 httptunnel:*:361:
@@ -815,7 +815,7 @@ opensearch:*:855:
 bitmark:*:872:
 bitmark-recorder:*:873:
 librespeed:*:874:
-# free: 875
+cfssl:*:875:
 _lms:*:876:
 gemserv:*:877:
 gerbera:*:878:

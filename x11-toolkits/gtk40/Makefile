@@ -1,5 +1,5 @@
 PORTNAME=	gtk
-PORTVERSION=	4.4.0
+PORTVERSION=	4.4.1
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	4
@@ -22,8 +22,9 @@ LIB_DEPENDS=	libepoxy.so:graphics/libepoxy \
 RUN_DEPENDS=	hicolor-icon-theme>=0:misc/hicolor-icon-theme \
 		adwaita-icon-theme>=0:x11-themes/adwaita-icon-theme
 
-USES=		compiler:c11 gettext gnome localbase meson ninja \
+USES=		compiler:c11 cpe gettext gnome localbase meson ninja \
 		pathfix perl5 python:3.7+ pkgconfig tar:xz
+CPE_VENDOR=	gnome
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 USE_GNOME=	atk cairo gdkpixbuf2 introspection:build pango \
@@ -32,7 +33,7 @@ LDFLAGS+=	-lexecinfo
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 
-LIBVERSION=	0.2404.23
+LIBVERSION=	1.400.1
 PLIST_SUB+=	LIBVERSION=${LIBVERSION}
 
 GLIB_SCHEMAS=	org.gtk.Demo4.gschema.xml \

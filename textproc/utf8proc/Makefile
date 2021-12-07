@@ -3,6 +3,7 @@
 PORTNAME=	utf8proc
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.6.1
+PORTREVISION=	1
 CATEGORIES=	textproc devel
 
 MAINTAINER=	hrs@FreeBSD.org
@@ -11,7 +12,7 @@ COMMENT=	UTF-8 processing library
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-USES=		gmake perl5
+USES=		gmake
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	JuliaStrings
@@ -19,7 +20,7 @@ USE_LDCONFIG=	yes
 
 MAKE_ARGS=	prefix=${PREFIX}
 
-CONFLICTS=	libutf8proc-[0-9]*
+CONFLICTS=	libutf8proc
 
 PLIST_FILES=	include/utf8proc.h \
 		lib/libutf8proc.a \

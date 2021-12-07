@@ -1,10 +1,10 @@
 PORTNAME=	opencv
 DISTVERSION=	4.5.3
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics
 
-PATCH_SITES=    https://github.com/opencv/opencv/commit/
-PATCHFILES=     998406d20e93aa36b26fd56506f3ea8a82b43c24.patch:-p1 \
+PATCH_SITES=	https://github.com/opencv/opencv/commit/
+PATCHFILES=	998406d20e93aa36b26fd56506f3ea8a82b43c24.patch:-p1
 
 MAINTAINER=	tcberner@FreeBSD.org
 COMMENT=	Open Source Computer Vision library
@@ -38,7 +38,8 @@ GH_TAGNAME=	v0.1.1f:ade \
 CMAKE_ON=	OPENCV_GENERATE_PKGCONFIG
 CMAKE_OFF=	OPENCV_GENERATE_SETUPVARS \
 		BUILD_opencv_python2 \
-		BUILD_TESTS
+		BUILD_TESTS \
+		WITH_TESSERACT
 CMAKE_ARGS=	-DOPENCV_EXTRA_MODULES_PATH="${WRKSRC}/contrib/modules"
 
 DATADIR=	${PREFIX}/share/${PORTNAME}4
@@ -114,7 +115,7 @@ TBB_LIB_DEPENDS=	libtbb.so:devel/tbb
 
 VTK_DESC=		Include VTK library support (build opencv_viz module)
 VTK_CMAKE_BOOL=		WITH_VTK
-VTK_LIB_DEPENDS=	libvtkCommonCore-9.0.so:math/vtk9
+VTK_LIB_DEPENDS=	libvtkCommonCore-9.1.so:math/vtk9
 ###
 
 # IMAGE group options (GPHOTO2 JPEG OPENEXR PNG TIFF)

@@ -1,7 +1,7 @@
 # Created by: Janos.Mohacsi@bsd.hu
 
 PORTNAME=	bozohttpd
-PORTVERSION=	20201014
+PORTVERSION=	20210227
 CATEGORIES=	www
 MASTER_SITES=	http://www.eterna.com.au/bozohttpd/ \
 		NETBSD

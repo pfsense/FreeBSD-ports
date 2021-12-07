@@ -1,14 +1,12 @@
 # Created by: Ade Lovett <ade@FreeBSD.org>
 
 PORTNAME=	librsvg
-PORTVERSION=	2.52.0
+PORTVERSION=	2.52.4
+PORTREVISION=	1
 CATEGORIES=	graphics gnome
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	2-rust
 DIST_SUBDIR=	gnome2
-
-PATCH_SITES=	https://gitlab.gnome.org/GNOME/librsvg/-/commit/
-PATCHFILES=	92df18a3faf80c1d6d35899d9a5d22c74adfb8f8.patch:-p1
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Library for parsing and rendering SVG vector-graphic files
@@ -22,7 +20,8 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libharfbuzz.so:print/harfbuzz \
 		libpng.so:graphics/png
 
-USES=		compiler:c11 gettext gmake gnome libtool pkgconfig tar:xz
+USES=		compiler:c11 cpe gettext gmake gnome libtool pkgconfig tar:xz
+CPE_VENDOR=	gnome
 USE_GNOME=	cairo gdkpixbuf2 gnomeprefix libxml2 pango introspection:build
 USE_LDCONFIG=	yes
 

@@ -1,11 +1,8 @@
 PORTNAME=	compute-runtime
-DISTVERSION=	21.40.21182
+DISTVERSION=	21.48.21782
 CATEGORIES=	lang
 PKGNAMEPREFIX=	intel-
 PKGNAMESUFFIX=	-${FLAVOR}
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	aa5a39a2db79.patch:-p1 # https://github.com/intel/compute-runtime/pull/361
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	OpenCL implementation for Intel HD 5000 (Gen8) or newer
@@ -14,7 +11,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
 ONLY_FOR_ARCHS=	amd64
-ONLY_FOR_ARCHS_REASON=	Only Intel GPUs on x86 are supported
+ONLY_FOR_ARCHS_REASON=	only Intel GPUs on x86 are supported
 
 LIB_DEPENDS=	libigc.so:devel/intel-graphics-compiler@${FLAVOR} \
 		libigdgmm.so:multimedia/gmmlib

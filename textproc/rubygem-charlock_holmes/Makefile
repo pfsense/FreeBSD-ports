@@ -1,10 +1,10 @@
 PORTNAME=	charlock_holmes
 DISTVERSION=	0.7.7
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Gems for character encoding detection
 
 LICENSE=	MIT

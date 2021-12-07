@@ -1,13 +1,8 @@
 PORTNAME=	puppetboard
-PORTVERSION=	3.1.0
+PORTVERSION=	3.3.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	www python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-
-PATCHFILES=	a9b1903bf0fd71c8d2c0d100396646856ff8fbe4.patch
-PATCH_SITES=	https://github.com/voxpupuli/puppetboard/commit/
-PATCH_DIST_STRIP=-p1
 
 MAINTAINER=	puppet@FreeBSD.org
 COMMENT=	Web interface to PuppetDB
@@ -27,7 +22,7 @@ USES=		python:3.6+
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist distutils
 
-CONFLICTS_INSTALL=puppetboard02-* puppetboard03-*
+CONFLICTS_INSTALL=puppetboard02 puppetboard03
 
 GH_ACCOUNT=	voxpupuli
 PLIST_FILES=	"@sample etc/puppetboard/settings.py.sample"

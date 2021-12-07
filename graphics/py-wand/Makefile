@@ -1,11 +1,12 @@
 PORTNAME=	Wand
 PORTVERSION=	0.6.7
+PORTREVISION=	1
 CATEGORIES=	graphics python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	python@FreeBSD.org
-COMMENT=	MagickWand Python binding
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Ctypes-based simple MagickWand API binding for Python
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

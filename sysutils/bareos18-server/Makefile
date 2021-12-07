@@ -1,6 +1,6 @@
 PORTNAME=	bareos
 DISTVERSIONPREFIX=	Release/
-DISTVERSION=	18.2.11
+DISTVERSION=	18.2.12
 PORTREVISION?=	0
 CATEGORIES?=	sysutils
 PKGNAMEPREFIX?=	#
@@ -12,7 +12,7 @@ COMMENT?=	Backup archiving recovery open sourced (server)
 LICENSE=	AGPLv3 LGPL3
 LICENSE_COMB=	multi
 
-CONFLICTS?=	bacula17*-server-* bareos16-server-* bareos-server-*
+CONFLICTS?=	bareos17-server bareos16-server bareos-server
 
 LIB_DEPENDS+=	liblzo2.so:archivers/lzo2 \
 		libjansson.so:devel/jansson

@@ -1,7 +1,6 @@
-
 PORTNAME=	veracrypt
 PORTVERSION=	1.24
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME:S/v/V/:S/c/C/}%20${PORTVERSION}-Update7/
 DISTNAME=	${PORTNAME:S/v/V/:S/c/C/}_${PORTVERSION}-Update7_Source
@@ -14,7 +13,8 @@ RUN_DEPENDS=	${LOCALBASE}/bin/sudo:security/sudo
 
 LICENSE_FILE=	${DOCSDIR}/LICENSE
 
-USES=		compiler:c++11-lang desktop-file-utils fuse gmake iconv pkgconfig tar:bz2
+USES=		compiler:c++11-lang cpe desktop-file-utils fuse gmake iconv pkgconfig tar:bz2
+CPE_VENDOR=	idrix
 USE_WX=		3.0+
 NO_WRKSUBDIR=	yes
 BUILD_WRKSRC=	${WRKSRC}/src

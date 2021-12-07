@@ -1,7 +1,7 @@
 # Created by: Mark Felder <feld@FreeBSD.org>
 
 PORTNAME?=	percona
-DISTVERSION=	5.7.34-37
+DISTVERSION=	5.7.35-38
 PORTREVISION?=	0
 CATEGORIES=	databases
 MASTER_SITES=	http://www.percona.com/downloads/Percona-Server-5.7/Percona-Server-${DISTVERSION}/source/tarball/:percona \
@@ -106,10 +106,10 @@ TOKUDB_EXTRA_PATCHES=${PATCHDIR}/extrapatch-tokudb
 
 USES+=mysql:57p
 
-CONFLICTS_INSTALL=	mysql*-server-* \
-			mysqlwsrep* \
-			mariadb*-server-* \
-			percona5[0-68-9]-server-*
+CONFLICTS_INSTALL=	mysql*-server \
+			mysqlwsrep*-server \
+			mariadb*-server \
+			percona5[0-68-9]-server
 
 USE_RC_SUBR=	mysql-server
 

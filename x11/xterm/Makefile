@@ -1,7 +1,7 @@
 # Created by: krion
 
 PORTNAME=	xterm
-PORTVERSION=	369
+PORTVERSION=	370
 CATEGORIES=	x11
 MASTER_SITES=	ftp://ftp.invisible-island.net/xterm/:src1 \
 		https://invisible-mirror.net/archives/xterm/:src1 \
@@ -27,7 +27,7 @@ CONFIGURE_ARGS+=	--enable-narrowproto \
 
 CPPFLAGS+=	-DPIXMAP_ROOTDIR=${LOCALBASE}/share/pixmaps
 
-CONFLICTS=	x11iraf-[0-9]*
+CONFLICTS=	x11iraf
 
 OPTIONS_DEFINE=		256COLOR DABBREV DECTERM GNOME LOGGING LUIT PCRE2 REGIS \
 			SCRNDUMP SIXEL TOOLBAR WCHAR XINERAMA

@@ -1,5 +1,3 @@
-TIMESTAMP = 1633082129
-SHA256 (gnome2/librsvg-2.52.0.tar.xz) = bd821fb3e16494b61f5185addd23b726b064f203122b3ab4b3d5d7a44e6bf393
-SIZE (gnome2/librsvg-2.52.0.tar.xz) = 23196792
-SHA256 (gnome2/92df18a3faf80c1d6d35899d9a5d22c74adfb8f8.patch) = 0fcdd9f890b93e0128bd2fd948ffbffdaa7fe888ba4ce066e14e4cc50d5444f4
-SIZE (gnome2/92df18a3faf80c1d6d35899d9a5d22c74adfb8f8.patch) = 10895
+TIMESTAMP = 1636771825
+SHA256 (gnome2/librsvg-2.52.4.tar.xz) = 660ec8836a3a91587bc9384920132d4c38d1d1718c67fe160c5213fe4dec2928
+SIZE (gnome2/librsvg-2.52.4.tar.xz) = 23287420

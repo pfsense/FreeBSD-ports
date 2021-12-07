@@ -19,9 +19,10 @@ LIB_DEPENDS=	libproxy.so:net/libproxy \
 		libfreetype.so:print/freetype2
 RUN_DEPENDS=	${LOCALBASE}/share/xml/iso-codes/iso_639.xml:misc/iso-codes
 
-USES=		compiler:c++11-lang desktop-file-utils gettext-tools gnome \
+USES=		compiler:c++11-lang cpe desktop-file-utils gettext-tools gnome \
 		libtool localbase meson ninja pkgconfig python:3.5+ shebangfix \
 		ssl xorg
+CPE_VENDOR=	${PORTNAME}_project
 USE_GNOME=	cairo gtk20 intltool libxml2
 USE_XORG=	x11
 USE_GITHUB=	yes
@@ -59,7 +60,7 @@ FISHLIM_MESON_TRUE=	with-fishlim
 LUA_MESON_ON=		-Dwith-lua=lua-${LUA_VER}
 LUA_MESON_OFF=		-Dwith-lua=false
 LUA_USES=		lua
-LUA_USE=		GCC=any
+LUA_USE=		GCC=yes
 PERL_MESON_TRUE=	with-perl
 PERL_USES=		perl5
 TEXTFE_MESON_TRUE=	text-frontend

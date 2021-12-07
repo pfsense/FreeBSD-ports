@@ -6,6 +6,9 @@ CATEGORIES=	lang gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
 
+PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/
+PATCHFILES+=	59bbb5e4795d.patch:-p1 # https://gitlab.gnome.org/GNOME/gjs/-/merge_requests/694
+
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNOME Javascript binding
 
@@ -29,6 +32,5 @@ USE_LDCONFIG=	yes
 
 CONFIGURE_ENV=	PYTHONDONTWRITEBYTECODE=1
 MAKE_ENV=	PYTHONDONTWRITEBYTECODE=1
-
 
 .include <bsd.port.mk>

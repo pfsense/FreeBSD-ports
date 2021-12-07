@@ -3,7 +3,7 @@
 PORTNAME=	osg
 PORTVERSION=	3.6.5
 DISTVERSIONPREFIX=	OpenSceneGraph-
-PORTREVISION=	30
+PORTREVISION=	32
 CATEGORIES=	graphics
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -21,7 +21,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	openscenegraph
 GH_PROJECT=	OpenSceneGraph
 
-CONFLICTS_INSTALL=osg34-[0-9]*
+CONFLICTS_INSTALL=osg34
 
 USES=		alias cmake compiler:c11 jpeg gl pkgconfig xorg
 USE_GL=		gl

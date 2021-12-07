@@ -3,6 +3,7 @@
     SUBDIR += 6cord
     SUBDIR += beebeep
     SUBDIR += biboumi
+    SUBDIR += cawbird
     SUBDIR += centerim
     SUBDIR += chatterino2
     SUBDIR += climm
@@ -180,7 +181,6 @@
     SUBDIR += toxins
     SUBDIR += tut
     SUBDIR += twirssi
-    SUBDIR += twitmail
     SUBDIR += uTox
     SUBDIR += vqcc-gtk
     SUBDIR += xmpp-client

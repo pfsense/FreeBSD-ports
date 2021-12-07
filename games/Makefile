@@ -14,11 +14,13 @@
     SUBDIR += DDNet
     SUBDIR += HeroesOfMightAndMagic
     SUBDIR += KnightCap
+    SUBDIR += LibreMines
     SUBDIR += NBlood
     SUBDIR += OpenDiablo2
     SUBDIR += OpenLara
     SUBDIR += OpenTomb
     SUBDIR += SRB2
+    SUBDIR += SpaceCadetPinball
     SUBDIR += abbayedesmorts
     SUBDIR += abe
     SUBDIR += abstreet
@@ -138,6 +140,7 @@
     SUBDIR += cataclysm-dda-tiles
     SUBDIR += catesc
     SUBDIR += cave9
+    SUBDIR += cavezofphear
     SUBDIR += cdogs-sdl
     SUBDIR += cgoban
     SUBDIR += chapping
@@ -566,8 +569,6 @@
     SUBDIR += linux-ssamtfe
     SUBDIR += linux-ssamtse
     SUBDIR += linux-steam-utils
-    SUBDIR += linux-unigine-heaven
-    SUBDIR += linux-unigine-valley
     SUBDIR += linux-unrealgold
     SUBDIR += linux-ut
     SUBDIR += linux-ut2003-demo
@@ -927,7 +928,6 @@
     SUBDIR += stratagus
     SUBDIR += stuntrally
     SUBDIR += sudsol
-    SUBDIR += super_methane_brothers
     SUBDIR += supertux
     SUBDIR += supertux2
     SUBDIR += supertuxkart

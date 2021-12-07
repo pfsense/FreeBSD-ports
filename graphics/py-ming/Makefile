@@ -19,7 +19,7 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libming.so:graphics/ming \
 		libpng.so:graphics/png
 
-USES=		autoreconf cpe libtool localbase:ldflags pkgconfig python:3.6+
+USES=		autoreconf cpe libtool localbase:ldflags pkgconfig python:3.6-3.9
 USE_PYTHON=	autoplist concurrent distutils
 
 CONFIGURE_ARGS=	--enable-python
@@ -42,6 +42,6 @@ post-patch:
 	@${LN} -fs ${LOCALBASE}/include/ming ${WRKSRC}/src
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_mingc*.so
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 .include <bsd.port.mk>

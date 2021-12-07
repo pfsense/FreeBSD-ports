@@ -12,7 +12,7 @@ LICENSE=		GPLv3
 
 IGNORE_NONTHREAD_PYTHON=needs port lang/python${PYTHON_SUFFIX} to be build with THREADS support
 
-CONFLICTS_INSTALL=	tdb1-*
+#CONFLICTS_INSTALL=	tdb1
 
 #FLAVORS=		default nopython debug
 #nopython_PKGNAMESUFFIX=	-nopython
@@ -52,7 +52,6 @@ PLIST_FILES+=		include/tdb.h \
 			lib/libtdb.so \
 			lib/libtdb.so.1 \
 			${PKGCONFIGDIR}/tdb.pc
-
 
 .if defined(NO_PYTHON)
 USES+=			python:build,test

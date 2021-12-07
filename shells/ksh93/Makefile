@@ -33,8 +33,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	att
 GH_PROJECT=	ast
 
-KSH_CONFLICTS=		pdksh-*
-KSH93_CONFLICTS=	ksh93-devel-* ast-ksh-*
+KSH_CONFLICTS=		pdksh
+KSH93_CONFLICTS=	ksh2020 ksh93-devel ast-ksh
 
 OPTIONS_DEFAULT=	KSH93 EXAMPLES
 OPTIONS_DEFINE=		EXAMPLES STATIC
@@ -47,7 +47,7 @@ CFLAGS+=	-DMAP_TYPE
 LDFLAGS+=	-lm
 MAKE_ENV=	CCFLAGS="-Wno-unused-value -Wno-parentheses -Wno-logical-op-parentheses" CFLAGS="${CFLAGS}"
 
-STATIC_MAKE_ENV=     LDFLAGS+=-static
+STATIC_MAKE_ENV=	LDFLAGS+=-static
 
 KSH_PLIST_SUB=		93=""
 KSH93_PLIST_SUB=	93="93"

@@ -1,12 +1,12 @@
 PORTNAME=	clamav
-PORTVERSION=	0.103.3
+PORTVERSION=	0.103.4
 PORTEPOCH=	1
 CATEGORIES=	security
 MASTER_SITES=	https://www.clamav.net/downloads/production/
 PKGNAMESUFFIX=	-lts
 
 MAINTAINER=	yasu@FreeBSD.org
-COMMENT=	Command line virus scanner written entirely in C
+COMMENT=	Open-source (GPL) anti-virus engine (LTS Feature Release)
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -35,7 +35,7 @@ CFLAGS_i386=	-march=i486
 # force to use -lthr until it's not fixed.
 LDFLAGS+=	-lthr
 
-CONFLICTS_INSTALL=	clamav-[0-9]*
+CONFLICTS_INSTALL=	clamav
 
 SUB_FILES=	pkg-deinstall
 SUB_LIST+=	CHMOD=${CHMOD} \

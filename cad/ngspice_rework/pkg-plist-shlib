@@ -1,0 +1,17 @@
+libdata/pkgconfig/ngspice.pc
+lib/libngspice.so
+lib/libngspice.so.0
+lib/libngspice.so.0.0.1
+lib/ngspice/analog.cm
+lib/ngspice/digital.cm
+lib/ngspice/spice2poly.cm
+lib/ngspice/table.cm
+lib/ngspice/xtradev.cm
+lib/ngspice/xtraevt.cm
+include/ngspice/sharedspice.h
+share/ngspice/scripts/ciderinit
+share/ngspice/scripts/devaxis
+share/ngspice/scripts/devload
+share/ngspice/scripts/setplot
+share/ngspice/scripts/spectrum
+share/ngspice/scripts/spinit

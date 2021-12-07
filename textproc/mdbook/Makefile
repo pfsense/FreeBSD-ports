@@ -1,6 +1,7 @@
 PORTNAME=	mdbook
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.4.13
+PORTREVISION=	2
 CATEGORIES=	textproc
 
 MAINTAINER=	0mp@FreeBSD.org
@@ -9,7 +10,8 @@ COMMENT=	Create book from Markdown files (like GitBook but implemented in Rust)
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cargo
+USES=		cargo cpe
+CPE_VENDOR=	rust-lang
 USE_GITHUB=	yes
 GH_ACCOUNT=	rust-lang
 GH_PROJECT=	mdBook

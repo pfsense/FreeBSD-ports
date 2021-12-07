@@ -1,5 +1,5 @@
 PORTNAME=		sogo
-PORTVERSION=		5.2.0
+PORTVERSION=		5.3.0
 CATEGORIES=		www gnustep
 MASTER_SITES=		http://www.sogo.nu/files/downloads/SOGo/Sources/
 DISTNAME=		SOGo-${PORTVERSION}
@@ -39,14 +39,15 @@ SAML2_CONFIGURE_ON=	--enable-saml2
 
 USERS=			sogod
 GROUPS=			sogod
-USES=			gettext-runtime gnustep objc pkgconfig shebangfix ssl
+USES=			cpe gettext-runtime gnustep objc pkgconfig shebangfix ssl
+CPE_VENDOR=		inverse
 USE_GNUSTEP=		base build
 USE_LDCONFIG=		${GNUSTEP_LOCAL_LIBRARIES}/sogo
 
 SHEBANG_LANG=		python
 SHEBANG_FILES=		${WRKSRC}/SoObjects/SOGo/gen-saml2-exceptions.py
 
-CONFLICTS?=		sogo[2-4]-activesync-[0-9]* sogo[2-4]-[0-9]*
+CONFLICTS?=		sogo[2-4]-activesync sogo[2-4]
 
 USE_RC_SUBR=		sogod
 

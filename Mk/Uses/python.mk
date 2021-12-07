@@ -248,7 +248,7 @@ _INCLUDE_USES_PYTHON_MK=	yes
 # What Python version and what Python interpreters are currently supported?
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-_PYTHON_VERSIONS=		3.8 3.9 3.7 3.6 3.10 2.7 # preferred first
+_PYTHON_VERSIONS=		3.8 3.9 3.7 3.6 3.10 3.11 2.7 # preferred first
 _PYTHON_PORTBRANCH=		3.8		# ${_PYTHON_VERSIONS:[1]}
 _PYTHON_BASECMD=		${LOCALBASE}/bin/python
 _PYTHON_RELPORTDIR=		lang/python
@@ -515,12 +515,18 @@ _PYTHONPKGLIST=	${WRKDIR}/.PLIST.pymodtmp
 # - it uses USE_PYTHON=distutils
 #
 
+.if ${PYTHON_REL} >= 31100
+_CYTHON_DEP=	cython-${PYTHON_VER}:lang/cython-devel@${PY_FLAVOR}
+.else
+_CYTHON_DEP=	cython-${PYTHON_VER}:lang/cython@${PY_FLAVOR}
+.endif
+
 .if defined(_PYTHON_FEATURE_CYTHON)
-BUILD_DEPENDS+=	cython-${PYTHON_VER}:lang/cython@${PY_FLAVOR}
+BUILD_DEPENDS+=	${_CYTHON_DEP}
 .endif
 
 .if defined(_PYTHON_FEATURE_CYTHON_RUN)
-RUN_DEPENDS+=	cython-${PYTHON_VER}:lang/cython@${PY_FLAVOR}
+RUN_DEPENDS+=	${_CYTHON_DEP}
 .endif
 
 .if defined(_PYTHON_FEATURE_CONCURRENT)
@@ -646,7 +652,7 @@ CMAKE_ARGS+=	-DPython_ADDITIONAL_VERSIONS=${PYTHON_VER}
 
 # Python 3rd-party modules
 PYGAME=		${PYTHON_PKGNAMEPREFIX}game>0:devel/py-game@${PY_FLAVOR}
-PYNUMPY=	${PYTHON_PKGNAMEPREFIX}numpy>=1.16,1<1.20,1:math/py-numpy@${PY_FLAVOR}
+PYNUMPY=	${PYTHON_PKGNAMEPREFIX}numpy>=1.16,1<1.21,1:math/py-numpy@${PY_FLAVOR}
 
 # Common Python modules that can be needed but only for some versions of Python.
 .if ${PYTHON_REL} < 30500

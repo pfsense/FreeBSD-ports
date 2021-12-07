@@ -1,10 +1,11 @@
 PORTNAME=	yuzu
-PORTVERSION=	s20211013
+PORTVERSION=	s20211203
 PORTREVISION?=	0
 CATEGORIES=	emulators
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	0acf96796cae.patch:-p1 # https://github.com/yuzu-emu/yuzu/pull/6598 mainline-merge
+PATCHFILES+=	6904f055db88.patch:-p1 # https://github.com/yuzu-emu/yuzu/pull/6598 mainline-merge
+PATCHFILES+=	e919bea9c84e.patch:-p1 # https://github.com/yuzu-emu/yuzu/pull/7346 mainline-merge
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Nintendo Switch emulator/debugger
@@ -33,7 +34,7 @@ LIB_DEPENDS=	liblz4.so:archivers/liblz4 \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	yuzu-emu
-GH_TAGNAME=	894b483a0
+GH_TAGNAME=	a2fb5a13b
 GH_TUPLE=	yuzu-emu:mbedtls:v2.16.9-115-g8c88150ca:mbedtls/externals/mbedtls \
 		KhronosGroup:SPIRV-Headers:1.5.4.raytracing.fixed-32-ga3fdfe8:SPIRV_Headers/externals/sirit/externals/SPIRV-Headers \
 		KhronosGroup:Vulkan-Headers:v1.2.180:Vulkan_Headers/externals/Vulkan-Headers \
@@ -44,7 +45,7 @@ GH_TUPLE=	yuzu-emu:mbedtls:v2.16.9-115-g8c88150ca:mbedtls/externals/mbedtls \
 		citra-emu:ext-soundtouch:060181e:soundtouch/externals/soundtouch \
 		fmtlib:fmt:8.0.0:fmt/externals/fmt \
 		herumi:xbyak:v5.96:xbyak/externals/xbyak \
-		kinetiknz:cubeb:cubeb-0.2-1298-g8d53747:cubeb/externals/cubeb \
+		kinetiknz:cubeb:cubeb-0.2-1341-gdcc5cb5:cubeb/externals/cubeb \
 		yhirose:cpp-httplib:v0.9.0-5-g9648f95:cpp_httplib/externals/cpp-httplib
 
 USES=		cmake:testing compiler:c++17-lang localbase:ldflags sdl ssl

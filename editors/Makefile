@@ -190,6 +190,7 @@
     SUBDIR += libreoffice6
     SUBDIR += linux-bcompare
     SUBDIR += linux-sublime
+    SUBDIR += linux-sublime-text4
     SUBDIR += linux-sublime3
     SUBDIR += linux-wps-office
     SUBDIR += madedit
@@ -243,7 +244,6 @@
     SUBDIR += sly-quicklisp
     SUBDIR += ssed
     SUBDIR += sted
-    SUBDIR += sublime-text4
     SUBDIR += tamago
     SUBDIR += tea
     SUBDIR += teco

@@ -12,14 +12,15 @@ DISTNAME=	coova-chilli-${PORTVERSION}
 MAINTAINER=	venture37@geeklan.co.uk
 COMMENT=	Access controller for wired & wireless clients
 
-CONFLICTS=	chillispot-[0-9]*
+CONFLICTS=	chillispot
 #if __FreeBSD__ >= 10.0
 #IGNORE=	Does not work correctly, awaiting new release upstream with fixes integrated.
 #endif
 
 CONFIGURE_ARGS=-localstatedir=/var
 GNU_CONFIGURE=	yes
-USES=		perl5 libtool
+USES=		cpe perl5 libtool
+CPE_VENDOR=	${PORTNAME}_project
 USE_PERL5=	build
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	coovachilli

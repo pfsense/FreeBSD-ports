@@ -2,7 +2,7 @@
 # to upload them to ~/public_distfiles on freefall in preparation
 # for the next lang/rust update.
 PORTNAME=	rust
-PORTVERSION=	1.55.0
+PORTVERSION=	1.57.0
 CATEGORIES=	lang
 MASTER_SITES=	https://static.rust-lang.org/dist/
 PKGNAMEPREFIX=	${FLAVOR:S/_/-/g}-
@@ -19,7 +19,7 @@ LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
 
 ONLY_FOR_ARCHS=	amd64
-ONLY_FOR_ARCHS_REASON=	untested on other archs
+ONLY_FOR_ARCHS_REASON=	untested on other architectures
 
 BUILD_DEPENDS=	${FLAVOR:S/_/-/g}-freebsd-sysroot>=a2021.09.14:devel/freebsd-sysroot@${FLAVOR} \
 		cmake:devel/cmake \
@@ -30,7 +30,8 @@ FLAVORS=	aarch64 amd64 armv6 armv7 i386 powerpc64_elfv1 powerpc64_elfv2 \
 		powerpc64le powerpc
 FLAVOR?=	${FLAVORS:[1]}
 
-USES=		ninja:build perl5 python:3.6+,build tar:xz
+USES=		cpe ninja:build perl5 python:3.6+,build tar:xz
+CPE_VENDOR=	${PORTNAME}-lang
 .if ${FLAVOR} == powerpc64_elfv1
 USE_GCC=	9:build
 .endif
@@ -95,6 +96,7 @@ do-configure:
 		${SH} ${SCRIPTSDIR}/rust-compat11-canary.sh
 	@${ECHO_CMD} 'changelog-seen=2' > ${WRKSRC}/config.toml
 	@${ECHO_CMD} '[build]' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'build-dir="${WRKDIR}/_build"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'vendor=true' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'extended=false' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'python="${PYTHON_CMD}"' >> ${WRKSRC}/config.toml
@@ -123,9 +125,9 @@ do-configure:
 .endif
 # https://github.com/rust-lang/rust/pull/72696#issuecomment-641517185
 	@${ECHO_CMD} 'ldflags="-lz"' >> ${WRKSRC}/config.toml
-# we need to make sure to always build llvm with X86 support to get a
+# we need to make sure to always build llvm with host arch support to get a
 # host compiler that can build the host->target compiler
-	@${ECHO_CMD} 'targets="${_RUST_LLVM_TARGET};X86"' >> ${WRKSRC}/config.toml
+	@${ECHO_CMD} 'targets="${_RUST_LLVM_TARGET};${_RUST_LLVM_TARGET_${ARCH}}"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} '[target.${_RUST_TARGET}]' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'cc="${LOCALBASE}/freebsd-sysroot/${FLAVOR:S/_/-/g}/bin/cc"' >> ${WRKSRC}/config.toml
 	@${ECHO_CMD} 'cxx="${LOCALBASE}/freebsd-sysroot/${FLAVOR:S/_/-/g}/bin/c++"' >> ${WRKSRC}/config.toml
@@ -150,7 +152,7 @@ do-build:
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/rust-bootstrap/${FLAVOR}
-	${INSTALL_DATA} ${WRKSRC}/build/dist/*-${_RUST_ARCH_${FLAVOR}:U${FLAVOR}}-unknown-${OPSYS:tl}${EXTRACT_SUFX} \
+	${INSTALL_DATA} ${WRKDIR}/_build/dist/*-${_RUST_ARCH_${FLAVOR}:U${FLAVOR}}-unknown-${OPSYS:tl}${EXTRACT_SUFX} \
 		${STAGEDIR}${PREFIX}/rust-bootstrap/${FLAVOR}
 .if ${FLAVOR:Mpowerpc64_*}
 	@cd ${STAGEDIR}${PREFIX}/rust-bootstrap/${FLAVOR} && for f in *${EXTRACT_SUFX}; do \

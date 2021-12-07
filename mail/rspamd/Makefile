@@ -1,5 +1,5 @@
 PORTNAME=	rspamd
-PORTVERSION=	3.0
+PORTVERSION=	3.1
 CATEGORIES=	mail
 
 MAINTAINER=	vsevolod@FreeBSD.org
@@ -79,8 +79,12 @@ LUAJIT_CMAKE_OFF=	-DENABLE_LUAJIT=OFF
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH:Mpowerpc*}
+.if ${ARCH:Mpowerpc64*}
 LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit-openresty
+.endif
+
+.if ${ARCH} == powerpc64
+CMAKE_ARGS+=		-DENABLE_LTO:BOOL=OFF
 .endif
 
 post-install:

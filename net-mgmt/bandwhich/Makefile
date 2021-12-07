@@ -1,6 +1,6 @@
 PORTNAME=	bandwhich
 DISTVERSION=	0.20.0
-PORTREVISION=	8
+PORTREVISION=	11
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	petteri.valkonen@iki.fi
@@ -14,7 +14,6 @@ USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	imsnif
 
-GH_TUPLE=	tailhook:resolv-conf:83c0f25ebcb0615550488692c5213ca1ae4acd8f:resolvconf
 CARGO_CRATES=	adler-0.2.3 \
 		adler32-1.2.0 \
 		aho-corasick-0.7.6 \
@@ -104,7 +103,7 @@ CARGO_CRATES=	adler-0.2.3 \
 		libc-0.2.76 \
 		libflate-1.0.2 \
 		libflate_lz77-1.0.0 \
-		linked-hash-map-0.5.2 \
+		linked-hash-map-0.5.4 \
 		lock_api-0.3.4 \
 		log-0.3.9 \
 		log-0.4.8 \
@@ -257,8 +256,8 @@ CARGO_CRATES=	adler-0.2.3 \
 		winreg-0.6.2 \
 		ws2_32-sys-0.2.1 \
 		yaml-rust-0.4.3 \
-		zip-0.5.6
-CARGO_USE_GITHUB=	yes
+		zip-0.5.6 \
+		resolv-conf@git+https://github.com/tailhook/resolv-conf?rev=83c0f25ebcb0615550488692c5213ca1ae4acd8f\#83c0f25ebcb0615550488692c5213ca1ae4acd8f
 
 PLIST_FILES=	bin/bandwhich \
 		man/man1/bandwhich.1.gz

@@ -1,8 +1,7 @@
 PORTNAME=	hwloc
-PORTVERSION=	2.4.1
+DISTVERSION=	2.5.0
 CATEGORIES=	devel
-MASTER_SITES=	https://download.open-mpi.org/release/hwloc/v${PORTVERSION:R}/ \
-		http://icl.cs.utk.edu/open-mpi/software/hwloc/v${PORTVERSION:R}/downloads/
+MASTER_SITES=	https://download.open-mpi.org/release/hwloc/v${PORTVERSION:R}/
 PKGNAMESUFFIX=	2
 
 MAINTAINER=	phd_kimberlite@yahoo.co.jp
@@ -16,7 +15,7 @@ LIB_DEPENDS=	libpciaccess.so:devel/libpciaccess
 USES=		iconv libtool gnome pathfix pkgconfig tar:bzip2
 USE_GNOME=	libxml2
 
-CONFLICTS_INSTALL=	hwloc-[0-9]*
+CONFLICTS_INSTALL=	hwloc
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-static \
@@ -30,7 +29,8 @@ USE_LDCONFIG=	yes
 
 PORTDOCS=	*
 
-OPTIONS_DEFINE=	CAIRO DEBUG DOCS
+OPTIONS_DEFINE=	CAIRO DEBUG DOCS L0
+OPTIONS_DEFAULT=L0
 OPTIONS_SUB=	yes
 
 CAIRO_CONFIGURE_OFF=	--disable-cairo --without-x
@@ -40,6 +40,10 @@ CAIRO_USES=		xorg
 CAIRO_USE=		XORG=x11
 
 DEBUG_CONFIGURE_ENABLE=	debug # 'lstopo -' prints a lot of debug details when debug is enabled, this is separate from WITH_DEBUG=yes
+
+L0_DESC=		oneAPI Level Zero device discovery
+L0_LIB_DEPENDS=		libze_loader.so:devel/level-zero
+L0_CONFIGURE_ENABLE=	levelzero
 
 .include <bsd.port.pre.mk>
 

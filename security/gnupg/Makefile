@@ -1,9 +1,10 @@
 PORTNAME=	gnupg
 PORTVERSION=	2.3.3
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	GNUPG
 
-MAINTAINER=	adamw@FreeBSD.org
+MAINTAINER=	adridg@FreeBSD.org
 COMMENT=	Complete and free PGP implementation
 
 LICENSE=	GPLv3 LGPL3
@@ -20,7 +21,7 @@ RUN_DEPENDS=	pinentry:security/pinentry
 
 USES=		compiler:c11 cpe gmake iconv makeinfo pkgconfig readline sqlite tar:bzip2
 
-CONFLICTS=	gnupg-2.0.* dirmngr-[0-9]*
+CONFLICTS=	gnupg-2.0.* dirmngr
 CPE_VENDOR=	gnupg
 
 CONFIGURE_ARGS=	--disable-ntbtls --enable-gpg-is-gpg2 --enable-symcryptrun

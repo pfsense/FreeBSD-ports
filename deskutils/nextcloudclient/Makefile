@@ -1,7 +1,7 @@
 # Created by: Mathieu Arnold
 
 PORTNAME=	nextcloudclient
-PORTVERSION=	3.3.5
+PORTVERSION=	3.3.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	deskutils
 
@@ -29,7 +29,6 @@ CMAKE_ARGS=	-DBUILD_UPDATER:BOOL=OFF \
 		-DWITH_STACK_PROTECTOR:BOOL=OFF
 USE_LDCONFIG=	yes
 
-DEBUG=		yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	nextcloud
 GH_PROJECT=	desktop

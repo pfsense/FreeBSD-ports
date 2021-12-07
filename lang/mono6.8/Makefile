@@ -2,6 +2,7 @@
 
 PORTNAME=	mono
 PORTVERSION=	6.8.0.123
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	https://download.mono-project.com/sources/mono/
 PKGNAMESUFFIX=	6.8
@@ -25,7 +26,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>=0:graphics/py-pillow@${PY_FLAVOR} \
 		zip>=0:archivers/zip
 
 CONFLICTS_BUILD=	brotli
-CONFLICTS_INSTALL=	czmq-3* mono5.10 mono6.8
+CONFLICTS_INSTALL=	czmq-3* mono5.10 mono5.20
 
 USES=	autoreconf bison compiler:c11 cpe gmake iconv libtool \
 	pathfix perl5 python:3.6+ shebangfix tar:xz
@@ -35,15 +36,17 @@ CONFIGURE_SCRIPT=	autogen.sh
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
-SHEBANG_FILES=  scripts/mono-package-runtime scripts/mono-heapviz mono/mini/genmdesc.py \
-	mono/tests/test_lldb.py mono/tests/gc-descriptors/gen-descriptor-tests.py \
-	scripts/mono-find-provides.in scripts/mono-find-requires.in
-BINARY_ALIAS=   python=${PYTHON_CMD}
+SHEBANG_FILES=	mono/mini/genmdesc.py \
+		mono/tests/gc-descriptors/gen-descriptor-tests.py \
+		mono/tests/test_lldb.py scripts/mono-find-provides.in \
+		scripts/mono-find-requires.in scripts/mono-heapviz \
+		scripts/mono-package-runtime
+BINARY_ALIAS=	python=${PYTHON_CMD}
 
-CONFIGURE_ARGS_aarch64= --with-csc=mcs
-CONFIGURE_ARGS= ${CONFIGURE_ARGS_${ARCH}} --disable-dtrace
+CONFIGURE_ARGS_aarch64=	--with-csc=mcs
+CONFIGURE_ARGS=	${CONFIGURE_ARGS_${ARCH}} --disable-dtrace
 # Do not remove - this is needed to work around automake's lack of hinting
-CONFIGURE_ENV+= ac_cv_header_sys_inotify_h=yes
+CONFIGURE_ENV+=	ac_cv_header_sys_inotify_h=yes
 
 MAKE_ENV=	MONO_SHARED_DIR="${WRKDIR}" \
 		INSTALL_STRIP_FLAG="${STRIP}"
@@ -68,12 +71,12 @@ OPTIONS_SUB=	yes
 BIGARRAY_DESC=	Enable allocating arrays greater than Int32.MaxValue
 BIGARRAY_CONFIGURE_ENABLE=	big-arrays
 
-MONOLITE_DESC=          Use monolite to bootstrap mcs (otherwise use installed mcs)
-MONOLITE_DISTFILES=     monolite-linux-${MONOLITE_VERSION}-latest.tar.gz:monolite
-MONOLITE_MASTER_SITES=  http://download.mono-project.com/monolite/:monolite
+MONOLITE_DESC=		Use monolite to bootstrap mcs (otherwise use installed mcs)
+MONOLITE_DISTFILES=	monolite-linux-${MONOLITE_VERSION}-latest.tar.gz:monolite
+MONOLITE_MASTER_SITES=	http://download.mono-project.com/monolite/:monolite
 # DO NOT ALTER OR REMOVE. DANGER, CASE-SENSITIVE!
 # monolite 2020-01-13 @ 1798d23b
-MONOLITE_VERSION=       1798d23b-3dbc-4161-b3f4-6bb00134ee4e
+MONOLITE_VERSION=	1798d23b-3dbc-4161-b3f4-6bb00134ee4e
 
 MONODEV_DESC=	Build for Mono development (disables crash privacy)
 MONODEV_CONFIGURE_ON=	--enable-icall-symbol-map --enable-icall-export --with-crash_privacy=no
@@ -101,7 +104,7 @@ X11_RUN_DEPENDS=	pango>0:x11-toolkits/pango \
 .include <bsd.port.options.mk>
 
 .if ${ARCH:Mpowerpc*}
-PLIST+= ${.CURDIR}/pkg-plist.powerpc
+PLIST+=		${.CURDIR}/pkg-plist.powerpc
 .endif
 
 .include <bsd.port.pre.mk>

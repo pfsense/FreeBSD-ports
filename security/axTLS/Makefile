@@ -11,6 +11,9 @@ COMMENT=	SSL/TLS client/server library implementation
 
 LICENSE=	BSD3CLAUSE
 
+DEPRECATED=	Very outdated and abandoned, current version in tree was released in 2013 and last by upstream in 2019
+EXPIRATION_DATE=2022-03-31
+
 OPTIONS_DEFINE=	COMPAT_OPENSSL HTTPD TLSWRAP X509 PERL DOCS DEBUG TEST
 OPTIONS_SINGLE=	MODE PROT
 OPTIONS_SINGLE_MODE=	SERVER_ONLY CERT_VERIFICATION ENABLE_CLIENT \
@@ -37,7 +40,8 @@ PROT_HIGH_DESC=		Use the strongest cipher(s) at the cost of speed
 CONFIG_SUB=	PREFIX=\"${PREFIX}\" WWWDIR=\"${WWWDIR}\" \
 		HTTP_PORT=${WITH_HTTP_PORT} SSL_PORT=${WITH_SSL_PORT}
 NO_OPTIONS_SORT=yes
-USES=		gmake
+USES=		cpe gmake
+CPE_VENDOR=	${PORTNAME:tl}_project
 USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 STAGE=		${WRKSRC}/_stage

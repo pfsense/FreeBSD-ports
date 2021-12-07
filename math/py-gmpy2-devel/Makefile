@@ -11,7 +11,8 @@ PKGNAMESUFFIX=	-devel
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	GMP, MPFR, and MPC interface to Python - devel version
 
-LICENSE=	GPLv3
+LICENSE=	LGPL3+
+LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpc.so:math/mpc \
@@ -21,7 +22,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	aleaxit
 GH_PROJECT=	gmpy
 
-USES=		localbase python:3.7+
+USES=		localbase python:3.7-3.9
 USE_PYTHON=	distutils
 
 CONFLICTS=	${PYTHON_PKGNAMEPREFIX}gmpy2-2.0*
@@ -34,10 +35,10 @@ PORTDOCS=		*
 PLIST_SUB=	VER=${DISTVERSION}
 
 do-build-DOCS-on:
-	(cd ${WRKSRC}/docs && ${GMAKE} html)
+	(cd ${WRKSRC}/docs && ${GMAKE} SPHINXBUILD=sphinx-build-${PYTHON_VER} html)
 
-post-build-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${CP} -R ${WRKSRC}/docs/_build/html/* ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

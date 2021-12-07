@@ -2,6 +2,7 @@
 
 PORTNAME=	darktable
 PORTVERSION=	3.6.1
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/darktable-org/${PORTNAME}/releases/download/release-${PORTVERSION:C/\.rc/rc/}/
 
@@ -116,7 +117,7 @@ WEBP_CMAKE_OFF=		-DUSE_WEBP:BOOL=OFF
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == powerpc64le
+.if ${ARCH} == aarch64 || ${ARCH} == powerpc64le
 CMAKE_ARGS+=	-DUSE_OPENCL:BOOL=OFF
 CXXFLAGS+=	-DGDK_DISABLE_DEPRECATED
 PLIST_SUB+=	NO_OPENCL="@comment "

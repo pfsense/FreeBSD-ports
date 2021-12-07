@@ -7,7 +7,7 @@ bin/rdoc%%RUBY_SUFFIX%%
 %%IF_DEFAULT%%bin/ri
 bin/ri%%RUBY_SUFFIX%%
 %%IF_DEFAULT%%bin/ruby
-bin/%%RUBY_NAME%%
+bin/ruby%%RUBY_SUFFIX%%
 include/ruby-%%RUBY_VER%%/%%RUBY_ARCH%%/rb_mjit_min_header-%%RUBY_VERSION%%.h
 include/ruby-%%RUBY_VER%%/%%RUBY_ARCH%%/ruby/config.h
 include/ruby-%%RUBY_VER%%/ruby.h
@@ -36,9 +36,9 @@ include/ruby-%%RUBY_VER%%/ruby/thread_native.h
 include/ruby-%%RUBY_VER%%/ruby/util.h
 include/ruby-%%RUBY_VER%%/ruby/version.h
 include/ruby-%%RUBY_VER%%/ruby/vm.h
-lib/lib%%RUBY_NAME%%-static.a
-lib/lib%%RUBY_NAME%%.so
-lib/lib%%RUBY_NAME%%.so.%%RUBY_SHLIBVER%%
+lib/libruby%%RUBY_SHLIBVER%%-static.a
+lib/libruby%%RUBY_SHLIBVER%%.so
+lib/libruby%%RUBY_SHLIBVER%%.so.%%RUBY_SHLIBVER%%
 %%RUBY_LIBDIR%%/English.rb
 %%RUBY_LIBDIR%%/abbrev.rb
 %%RUBY_ARCHLIBDIR%%/bigdecimal.so
@@ -901,7 +901,7 @@ man/man1/irb%%RUBY_SUFFIX%%.1.gz
 %%IF_DEFAULT%%man/man1/ri.1.gz
 man/man1/ri%%RUBY_SUFFIX%%.1.gz
 %%IF_DEFAULT%%man/man1/ruby.1.gz
-man/man1/%%RUBY_NAME%%.1.gz
+man/man1/ruby%%RUBY_SUFFIX%%.1.gz
 %%DOCS%%%%RUBY_DOCDIR%%/COPYING
 %%DOCS%%%%RUBY_DOCDIR%%/COPYING.ja
 %%DOCS%%%%RUBY_DOCDIR%%/ChangeLog

@@ -2,7 +2,7 @@
 
 PORTNAME=	openssh
 DISTVERSION=	8.8p1
-PORTREVISION=	0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	security
 MASTER_SITES=	OPENBSD/OpenSSH/portable
@@ -16,7 +16,7 @@ LICENSE_NAME=	OpenSSH Licenses
 LICENSE_FILE=	${WRKSRC}/LICENCE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-CONFLICTS?=		openssh-3.* ssh-1.* ssh2-3.* openssh-portable-devel-*
+CONFLICTS?=		openssh-3.* ssh-1.* ssh2-3.* openssh-portable-devel
 
 USES=			alias autoreconf compiler:c11 cpe localbase ncurses \
 			pkgconfig ssl
@@ -89,8 +89,6 @@ BSM_CONFIGURE_ON=	--with-audit=bsm
 FIDO_U2F_LIB_DEPENDS=	libfido2.so:security/libfido2
 FIDO_U2F_CONFIGURE_ON=	--with-security-key-builtin
 FIDO_U2F_CONFIGURE_OFF=	--disable-security-key
-# Until https://reviews.freebsd.org/D27289 is committed
-FIDO_U2F_EXTRA_PATCHES=	${FILESDIR}/extra-patch-libfido2-configure.ac
 
 BLACKLISTD_EXTRA_PATCHES=	${FILESDIR}/extra-patch-blacklistd
 

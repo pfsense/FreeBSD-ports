@@ -19,10 +19,10 @@ USE_PYTHON=	autoplist concurrent cython distutils
 
 post-patch:
 # Clean up bundled libraries
-	@${RM} -fr ${WRKSRC}/pyreadr/libs/
-	@${RM} -fr ${WRKSRC}/win_libs/
+	@${RM} -r ${WRKSRC}/pyreadr/libs/
+	@${RM} -r ${WRKSRC}/win_libs/
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pyreadr/librdata${PYTHON_EXT_SUFFIX}.so
+	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 .include <bsd.port.mk>

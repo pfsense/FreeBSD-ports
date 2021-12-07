@@ -1,8 +1,8 @@
 PORTNAME=	profanity
-PORTVERSION=	0.11.0
+PORTVERSION=	0.11.1
 CATEGORIES=	net-im
 
-MAINTAINER=	arved@FreeBSD.org
+MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Console based XMPP client
 
 LICENSE=	GPLv3+
@@ -20,7 +20,8 @@ LIB_DEPENDS=	libmesode.so:net-im/libmesode \
 		libsignal-protocol-c.so:net/libsignal-protocol-c \
 		libsqlite3.so:databases/sqlite3
 
-USES=		ncurses pkgconfig ssl python readline autoreconf libtool gnome
+USES=		cpe ncurses pkgconfig ssl python readline autoreconf libtool gnome
+CPE_VENDOR=	${PORTNAME}_project
 USE_GNOME=	glib20
 USE_GITHUB=	yes
 GH_ACCOUNT=	profanity-im

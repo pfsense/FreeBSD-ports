@@ -1,6 +1,6 @@
 PORTNAME=	miniserve
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.17.0
+DISTVERSION=	0.18.0
 PORTREVISION=	1
 CATEGORIES=	www
 
@@ -14,7 +14,6 @@ LICENSE_FILE_MIT=	${WRKSRC}/LICENSE
 USES=		cargo ssl:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	svenstaro
-GH_TUPLE=	svenstaro:mime_guess:ac76840e14bc6f2f7cbbb347052ec7e4de7e3043:mime_guess
 CARGO_CRATES=	actix-codec-0.4.0 \
 		actix-files-0.6.0-beta.6 \
 		actix-http-3.0.0-beta.9 \
@@ -36,10 +35,10 @@ CARGO_CRATES=	actix-codec-0.4.0 \
 		alphanumeric-sort-1.4.3 \
 		ansi_term-0.11.0 \
 		ansi_term-0.12.1 \
-		anyhow-1.0.43 \
+		anyhow-1.0.44 \
 		askama_escape-0.10.1 \
-		assert_cmd-2.0.0 \
-		assert_fs-1.0.4 \
+		assert_cmd-2.0.2 \
+		assert_fs-1.0.6 \
 		atty-0.2.14 \
 		autocfg-1.0.1 \
 		base-x-0.2.8 \
@@ -65,9 +64,9 @@ CARGO_CRATES=	actix-codec-0.4.0 \
 		chrono-0.4.19 \
 		chrono-humanize-0.2.1 \
 		clap-2.33.3 \
-		clap-3.0.0-beta.4 \
-		clap_derive-3.0.0-beta.4 \
-		clap_generate-3.0.0-beta.4 \
+		clap-3.0.0-beta.5 \
+		clap_derive-3.0.0-beta.5 \
+		clap_generate-3.0.0-beta.5 \
 		codemap-0.1.3 \
 		const_fn-0.4.8 \
 		convert_case-0.4.0 \
@@ -107,14 +106,14 @@ CARGO_CRATES=	actix-codec-0.4.0 \
 		getrandom-0.2.3 \
 		globset-0.4.8 \
 		globwalk-0.8.1 \
-		grass-0.10.7 \
+		grass-0.10.8 \
 		h2-0.3.4 \
 		hashbrown-0.11.2 \
 		heck-0.3.3 \
 		hermit-abi-0.1.19 \
 		hex-0.4.3 \
 		html5ever-0.25.1 \
-		http-0.2.4 \
+		http-0.2.5 \
 		http-body-0.4.3 \
 		http-range-0.1.4 \
 		httparse-1.5.1 \
@@ -144,9 +143,9 @@ CARGO_CRATES=	actix-codec-0.4.0 \
 		markup5ever-0.10.1 \
 		markup5ever_rcdom-0.1.0 \
 		matches-0.1.9 \
-		maud-0.22.2 \
-		maud_htmlescape-0.17.0 \
-		maud_macros-0.22.2 \
+		maud-0.22.3 \
+		maud_htmlescape-0.17.1 \
+		maud_macros-0.22.3 \
 		memchr-2.4.1 \
 		mime-0.3.16 \
 		miniz_oxide-0.4.4 \
@@ -163,7 +162,7 @@ CARGO_CRATES=	actix-codec-0.4.0 \
 		num_cpus-1.13.0 \
 		once_cell-1.8.0 \
 		opaque-debug-0.3.0 \
-		os_str_bytes-3.1.0 \
+		os_str_bytes-4.2.0 \
 		output_vt100-0.1.2 \
 		parking_lot-0.11.2 \
 		parking_lot_core-0.8.5 \
@@ -186,10 +185,10 @@ CARGO_CRATES=	actix-codec-0.4.0 \
 		port_check-0.1.5 \
 		ppv-lite86-0.2.10 \
 		precomputed-hash-0.1.1 \
-		predicates-2.0.2 \
+		predicates-2.0.3 \
 		predicates-core-1.0.2 \
 		predicates-tree-1.0.3 \
-		pretty_assertions-0.7.2 \
+		pretty_assertions-1.0.0 \
 		proc-macro-error-1.0.4 \
 		proc-macro-error-attr-1.0.4 \
 		proc-macro-hack-0.5.19 \
@@ -211,7 +210,7 @@ CARGO_CRATES=	actix-codec-0.4.0 \
 		regex-automata-0.1.10 \
 		regex-syntax-0.6.25 \
 		remove_dir_all-0.5.3 \
-		reqwest-0.11.4 \
+		reqwest-0.11.6 \
 		ring-0.16.20 \
 		rle-decode-fast-1.0.1 \
 		rstest-0.11.0 \
@@ -235,13 +234,13 @@ CARGO_CRATES=	actix-codec-0.4.0 \
 		serde_urlencoded-0.7.0 \
 		sha-1-0.9.8 \
 		sha1-0.6.0 \
-		sha2-0.9.6 \
+		sha2-0.9.8 \
 		signal-hook-registry-1.4.0 \
-		simplelog-0.10.0 \
+		simplelog-0.10.2 \
 		siphasher-0.3.7 \
 		slab-0.4.4 \
 		smallvec-1.6.1 \
-		socket2-0.4.1 \
+		socket2-0.4.2 \
 		spin-0.5.2 \
 		standback-0.2.17 \
 		stdweb-0.4.20 \
@@ -252,8 +251,8 @@ CARGO_CRATES=	actix-codec-0.4.0 \
 		string_cache_codegen-0.5.1 \
 		strsim-0.8.0 \
 		strsim-0.10.0 \
-		strum-0.21.0 \
-		strum_macros-0.21.1 \
+		strum-0.22.0 \
+		strum_macros-0.22.0 \
 		syn-1.0.76 \
 		tar-0.4.37 \
 		tempfile-3.2.0 \
@@ -262,8 +261,8 @@ CARGO_CRATES=	actix-codec-0.4.0 \
 		terminal_size-0.1.17 \
 		textwrap-0.11.0 \
 		textwrap-0.14.2 \
-		thiserror-1.0.28 \
-		thiserror-impl-1.0.28 \
+		thiserror-1.0.30 \
+		thiserror-impl-1.0.30 \
 		thread_local-1.1.3 \
 		time-0.1.43 \
 		time-0.2.27 \
@@ -320,8 +319,8 @@ CARGO_CRATES=	actix-codec-0.4.0 \
 		zip-0.5.13 \
 		zstd-0.7.0+zstd.1.4.9 \
 		zstd-safe-3.1.0+zstd.1.4.9 \
-		zstd-sys-1.5.0+zstd.1.4.9
-CARGO_USE_GITHUB=	yes
+		zstd-sys-1.5.0+zstd.1.4.9 \
+		mime_guess@git+https://github.com/svenstaro/mime_guess.git\#ac76840e14bc6f2f7cbbb347052ec7e4de7e3043
 
 PLIST_FILES=	bin/miniserve
 PORTDOCS=	README.md

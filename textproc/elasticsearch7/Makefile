@@ -1,7 +1,7 @@
 # Created by: Tom Judge <tj@FreeBSD.org>
 
 PORTNAME=	elasticsearch
-PORTVERSION=	7.14.0
+PORTVERSION=	7.15.2
 CATEGORIES=	textproc java devel
 MASTER_SITES=	https://artifacts.elastic.co/downloads/${PORTNAME}/
 PKGNAMESUFFIX=	7
@@ -18,7 +18,7 @@ RUN_DEPENDS=	bash>0:shells/bash \
 
 USES=		cpe shebangfix
 USE_JAVA=	yes
-JAVA_VERSION=	8+
+JAVA_VERSION=	11+
 USE_RC_SUBR=	${PORTNAME}
 
 SHEBANG_FILES=	bin/elasticsearch bin/elasticsearch-certgen \
@@ -32,7 +32,7 @@ SHEBANG_FILES=	bin/elasticsearch bin/elasticsearch-certgen \
 		bin/elasticsearch-users bin/x-pack-env bin/x-pack-security-env \
 		bin/x-pack-watcher-env
 
-CONFLICTS=	elasticsearch[56]-[0-9]*
+CONFLICTS=	elasticsearch[56]
 
 NO_ARCH=	yes
 NO_BUILD=	yes

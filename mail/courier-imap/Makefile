@@ -22,7 +22,7 @@ USES=		compiler:c++11-lang gmake localbase:ldflags perl5 pkgconfig ssl \
 USE_RC_SUBR=	courier-imap-imapd courier-imap-imapd-ssl \
 		courier-imap-pop3d courier-imap-pop3d-ssl
 
-CONFLICTS=	courier-[0-9]* imap-uw-[0-9]* panda-imap-[0-9]*
+CONFLICTS=	courier imap-uw panda-imap
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	REHASH=${SCRIPTDIR}/c_rehash
@@ -39,7 +39,7 @@ SUB_LIST=	CONFDIR=${CONFDIR}
 # WITH_SYSLOG_FACILITY:         The syslogfacility to use
 #
 
-OPTIONS_DEFINE= GDBM GNUTLS INOTIFY TRASHQUOTA IPV6
+OPTIONS_DEFINE=	GDBM GNUTLS INOTIFY IPV6 TRASHQUOTA
 
 GNUTLS_DESC=	Use GnuTLS instead of OpenSSL (Enables SNI)
 INOTIFY_DESC=	Inotify support for IDLE command

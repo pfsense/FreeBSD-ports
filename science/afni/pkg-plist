@@ -79,6 +79,7 @@ bin/3dDegreeCentrality
 bin/3dDespike
 bin/3dDetrend
 bin/3dECM
+bin/3dEduProg
 bin/3dEigsToDT
 bin/3dEmpty
 bin/3dEntropy
@@ -989,6 +990,7 @@ lib/afni/plug_zeropad.so
 %%DATADIR%%/funstuff/face_gangchen.jpg
 %%DATADIR%%/funstuff/face_gaudi.jpg
 %%DATADIR%%/funstuff/face_gaurav.jpg
+%%DATADIR%%/funstuff/face_genius.jpg
 %%DATADIR%%/funstuff/face_gganis.jpg
 %%DATADIR%%/funstuff/face_ggiulietti.jpg
 %%DATADIR%%/funstuff/face_ginnie.jpg

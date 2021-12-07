@@ -1,7 +1,7 @@
 # Created by: Martin Wilke <miwi@FreeBSD.org>
 
 PORTNAME=	ristretto
-PORTVERSION=	0.12.0
+PORTVERSION=	0.12.1
 CATEGORIES=	graphics xfce
 MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
@@ -27,6 +27,6 @@ OPTIONS_DEFINE=		NLS
 OPTIONS_SUB=		yes
 
 NLS_USES=		gettext-runtime
-NLS_CONFIGURE_ENABLE=   nls
+NLS_CONFIGURE_ENABLE=	nls
 
 .include <bsd.port.mk>
