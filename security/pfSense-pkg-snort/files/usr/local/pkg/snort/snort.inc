@@ -582,10 +582,17 @@ function snort_start($snortcfg, $if_real, $background=FALSE) {
 
 		// Adjust the interface specification and DAQ type according to operating mode
 		if ($snortcfg['ips_mode'] == "ips_mode_inline" && $snortcfg['blockoffenders7'] == "on") {
-			$iface = $if_real . "^:" . $if_real;
-			$daq_type = "-Q --daq netmap";
-		}
-		else {
+			// For VLAN interfaces, need to actually run Snort
+			// on the parent interface, so override interface name.
+			if (interface_is_vlan($if_real)) {
+				$intf_list = get_parent_interface($if_real);
+				$iface = $intf_list[0] . "^:" . $intf_list[0];
+				syslog(LOG_WARNING, "[Snort] WARNING: interface '{$if_real}' is a VLAN, so configuring Snort to run on the parent interface, '{$intf_list[0]}', instead.");
+			} else {
+				$iface = $if_real . "^:" . $if_real;
+				$daq_type = "-Q --daq netmap";
+			}
+		} else {
 			$iface = $if_real;
 			$daq_type = "--daq pcap --daq-mode passive --treat-drop-as-alert";
 		}
@@ -3271,10 +3278,16 @@ function snort_create_rc() {
 
 		// Adjust the interface specification and DAQ type according to operating mode
 		if ($value['ips_mode'] == "ips_mode_inline" && $value['blockoffenders7'] == "on") {
-			$iface = $if_real . "^:" . $if_real;
-			$daq_type = "-Q --daq netmap";
-		}
-		else {
+			// For VLAN interfaces, need to actually run Snort
+			// on the parent interface, so override interface name.
+			if (interface_is_vlan($if_real)) {
+				$intf_list = get_parent_interface($if_real);
+				$iface = $intf_list[0] . "^:" . $intf_list[0];
+			} else {
+				$iface = $if_real . "^:" . $if_real;
+				$daq_type = "-Q --daq netmap";
+			}
+		} else {
 			$iface = $if_real;
 			$daq_type = "--daq pcap --daq-mode passive --treat-drop-as-alert";
 		}
