@@ -47,7 +47,7 @@ if (!defined("SNORT_BIN_VERSION")) {
 		define("SNORT_BIN_VERSION", $matches[0]);
 	}
 	else {
-		define("SNORT_BIN_VERSION", "2.9.18");
+		define("SNORT_BIN_VERSION", "2.9.19");
 	}
 }
 
