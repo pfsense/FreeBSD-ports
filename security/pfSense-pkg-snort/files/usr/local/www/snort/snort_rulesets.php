@@ -635,7 +635,7 @@ if ($snortdownload == "on") {
 					<?php endif; ?>
 					<?php if ($openappid_rulesdownload == 'on' && !$no_openappid_files): ?>
 						<th><?=gettext("Enable"); ?></th>
-						<th><?=gettext('Ruleset: Snort OPENAPPI Rules');?></th>
+						<th><?=gettext('Ruleset: Snort OPENAPPID Rules');?></th>
 						<?php else: ?>
 						<th colspan="4"><?=gettext("Snort OPENAPPID rules {$msg_snort}"); ?></th>
 					<?php endif; ?>
