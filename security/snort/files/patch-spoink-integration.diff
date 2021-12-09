@@ -1,6 +1,6 @@
-diff -ruN ./snort-2.9.17.orig/src/output-plugins/Makefile.am ./snort-2.9.17/src/output-plugins/Makefile.am
---- ./snort-2.9.17.orig/src/output-plugins/Makefile.am	2020-10-16 01:02:01.000000000 -0400
-+++ ./src/output-plugins/Makefile.am	2020-08-26 18:33:45.000000000 -0400
+diff -ruN ./snort-2.9.19.orig/src/output-plugins/Makefile.am ./snort-2.9.19/src/output-plugins/Makefile.am
+--- ./snort-2.9.19.orig/src/output-plugins/Makefile.am	2021-10-20 07:04:33.000000000 -0400
++++ ./src/output-plugins/Makefile.am	2021-12-08 15:15:29.000000000 -0500
 @@ -13,7 +13,8 @@
  spo_unified2.c spo_unified2.h \
  spo_log_ascii.c spo_log_ascii.h \
@@ -11,9 +11,9 @@ diff -ruN ./snort-2.9.17.orig/src/output-plugins/Makefile.am ./snort-2.9.17/src/
  
  if BUILD_BUFFER_DUMP
  libspo_a_SOURCES += \
-diff -ruN ./snort-2.9.17.orig/src/output-plugins/Makefile.in ./snort-2.9.17/src/output-plugins/Makefile.in
---- ./snort-2.9.17.orig/src/output-plugins/Makefile.in	2020-10-30 04:17:51.000000000 -0400
-+++ ./src/output-plugins/Makefile.in	2020-08-26 18:36:17.000000000 -0400
+diff -ruN ./snort-2.9.19.orig/src/output-plugins/Makefile.in ./snort-2.9.19/src/output-plugins/Makefile.in
+--- ./snort-2.9.19.orig/src/output-plugins/Makefile.in	2021-11-11 03:42:11.000000000 -0500
++++ ./src/output-plugins/Makefile.in	2021-12-08 15:18:27.000000000 -0500
 @@ -116,7 +116,8 @@
  	spo_log_tcpdump.c spo_log_tcpdump.h spo_unified2.c \
  	spo_unified2.h spo_log_ascii.c spo_log_ascii.h \
@@ -40,10 +40,10 @@ diff -ruN ./snort-2.9.17.orig/src/output-plugins/Makefile.in ./snort-2.9.17/src/
  	$(am__append_1)
  all: all-am
  
-diff -ruN ./snort-2.9.17.orig/src/output-plugins/spo_pf.c ./snort-2.9.17/src/output-plugins/spo_pf.c
---- ./snort-2.9.17.orig/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/output-plugins/spo_pf.c	2021-02-06 18:25:24.000000000 -0500
-@@ -0,0 +1,810 @@
+diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.c ./snort-2.9.19/src/output-plugins/spo_pf.c
+--- ./snort-2.9.19.orig/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
++++ ./src/output-plugins/spo_pf.c	2021-11-11 16:44:23.000000000 -0500
+@@ -0,0 +1,811 @@
 +/*
 +* Copyright (c) 2021  Bill Meeks
 +* Copyright (c) 2012  Ermal Luci
@@ -643,23 +643,24 @@ diff -ruN ./snort-2.9.17.orig/src/output-plugins/spo_pf.c ./snort-2.9.17/src/out
 +static int
 +s2c_parse_line(char buf[WLMAX], FILE* wfile)
 +{
-+	static char     next_ch = '\n';
++    static char     next_ch = '\n';
 +    int             i = 0;
 +
-+	if (feof(wfile))
++    if (feof(wfile))
 +        return (0);
 +
-+	do {
-+		next_ch = fgetc(wfile);
-+		if (i < WLMAX)
-+	        buf[i++] = next_ch;
-+	} while (!feof(wfile) && next_ch != '\n');
-+	if (i >= WLMAX)
-+		return (-1);
++    do  {
++        next_ch = fgetc(wfile);
++        if (i < WLMAX)
++            buf[i++] = next_ch;
++        } while (!feof(wfile) && next_ch != '\n');
 +
-+	buf[--i] = '\0';
++        if (i >= WLMAX)
++            return (-1);
 +
-+	return (1);
++        buf[--i] = '\0';
++
++        return (1);
 +}
 +
 +static int
@@ -695,11 +696,11 @@ diff -ruN ./snort-2.9.17.orig/src/output-plugins/spo_pf.c ./snort-2.9.17/src/out
 +			// Not an IP, so see if a pf table alias name
 +			if (s2c_pf_intbl(dev, cad, 0)) {
 +				ipw->spo_wltype = SPO_WLTYPE_ALIAS;
-+		                strlcpy(ipw->spo_alias_tblname, cad, PF_TABLE_NAME_SIZE); 
++                strlcpy(ipw->spo_alias_tblname, cad, PF_TABLE_NAME_SIZE); 
 +				LIST_INSERT_HEAD(head, ipw, elem);
 +				continue;		
 +			} // else we don't know what the entry is
-+			ErrorMessage("Parameter %s supplied in the Pass List is neither a valid IP address nor an existing pf alias table, skipping this entry.", cad);
++			ErrorMessage("Parameter %s supplied in the Pass List neither a valid IP address nor an existing pf alias table, skipping this entry.", cad);
 +			free(ipw);
 +			continue;
 +		} else // Current line in file exceeded WLMAX length limit
@@ -751,7 +752,7 @@ diff -ruN ./snort-2.9.17.orig/src/output-plugins/spo_pf.c ./snort-2.9.17/src/out
 +                    io.pfrio_size   = 1; 
 +                    if (ioctl(data->fd, DIOCRTSTADDRS, &io)) {
 +                        // The IP lookup in pf failed. See if due to deleted alias table name.
-+			if (s2c_pf_intbl(data->fd, &aux2->spo_alias_tblname, 0) == 0) {
++                        if (s2c_pf_intbl(data->fd, &aux2->spo_alias_tblname, 0) == 0) {
 +                            LIST_REMOVE(aux2, elem);
 +                            free(aux2);
 +                            ErrorMessage("s2c_pf_block() => ioctl() DIOCRTSTADDRS: %s. Failed testing for IP %s in alias %s from Pass List. The alias appears to have been deleted, so removing it from the active Pass List.\n", strerror(errno), inet_ntoax(ip), &aux2->spo_alias_tblname);
@@ -854,8 +855,8 @@ diff -ruN ./snort-2.9.17.orig/src/output-plugins/spo_pf.c ./snort-2.9.17/src/out
 +		return (0);
 +	}
 +}
-diff -ruN ./snort-2.9.17.orig/src/output-plugins/spo_pf.h ./snort-2.9.17/src/output-plugins/spo_pf.h
---- ./snort-2.9.17.orig/src/output-plugins/spo_pf.h	1969-12-31 19:00:00.000000000 -0500
+diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_pf.h ./snort-2.9.19/src/output-plugins/spo_pf.h
+--- ./snort-2.9.19.orig/src/output-plugins/spo_pf.h	1969-12-31 19:00:00.000000000 -0500
 +++ ./src/output-plugins/spo_pf.h	2021-02-05 23:08:01.000000000 -0500
 @@ -0,0 +1,42 @@
 +/*
@@ -900,9 +901,9 @@ diff -ruN ./snort-2.9.17.orig/src/output-plugins/spo_pf.h ./snort-2.9.17/src/out
 +void AlertPfSetup(void);
 +
 +#endif 
-diff -ruN ./snort-2.9.17.orig/src/plugbase.c ./snort-2.9.17/src/plugbase.c
---- ./snort-2.9.17.orig/src/plugbase.c	2020-10-16 01:02:01.000000000 -0400
-+++ ./src/plugbase.c	2020-08-26 18:38:22.000000000 -0400
+diff -ruN ./snort-2.9.19.orig/src/plugbase.c ./snort-2.9.19/src/plugbase.c
+--- ./snort-2.9.19.orig/src/plugbase.c	2021-10-20 07:04:33.000000000 -0400
++++ ./src/plugbase.c	2021-12-08 15:20:45.000000000 -0500
 @@ -124,6 +124,7 @@
  #include "output-plugins/spo_log_null.h"
  #include "output-plugins/spo_log_ascii.h"
