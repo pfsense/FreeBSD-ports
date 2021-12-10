@@ -301,13 +301,13 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
 		if (is_array($list['address']['item']) && count($list['address']['item']) > 0) {
 			foreach ($list['address']['item'] as $addr) {
 				if (!$whitelist) {
-					if (is_alias($addr)) {
+					if (is_alias($addr) && (alias_get_type($addr) == "host" || alias_get_type($addr) == "network")) {
 						$home_net = array_merge($home_net, explode(" ", trim(filter_expand_alias($addr))));
 					} elseif (is_ipaddr($addr) || is_subnet($addr)) {
 						$home_net[] = $addr;
 					}
 				} elseif ($whitelist) {
-					if (is_alias($addr)) {
+					if (is_alias($addr) && (alias_get_type($addr) == "host" || alias_get_type($addr) == "network")) {
 						$tmp = trim(filter_expand_alias($addr));
 						if ($tmp <> "") {
 							$home_net = array_merge($home_net, explode(" ", $tmp));
@@ -513,13 +513,16 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
 		}
 	}
 
+	// Validate the HOME_NET entries
 	$valresult = array();
 	foreach ($home_net as $vald) { 
-		if (empty($vald))
+		if (empty($vald) || (!is_subnet($vald) && !is_ipaddr($vald) && !is_alias($vald))) {
 			continue;
+		}
 		$vald = trim($vald);
-		if (empty($valresult[$vald]))
+		if (empty($valresult[$vald])) {
 			$valresult[$vald] = $vald;
+		}
 	}
 
 	/* Release memory no longer required */
