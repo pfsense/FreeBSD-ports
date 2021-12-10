@@ -9,7 +9,7 @@
 #include <pcap/pcap.h>
 
 #include <net/pfvar.h>
-#include <net/if_pflog.h>
+#include "if_pflog.h"
 
 #include <netinet/ip.h>
 
