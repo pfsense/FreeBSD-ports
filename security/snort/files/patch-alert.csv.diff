@@ -1,6 +1,6 @@
-diff -ruN ./snort-2.9.16.1.orig/src/output-plugins/spo_csv.c ./snort-2.9.16.1/src/output-plugins/spo_csv.c
---- ./snort-2.9.16.1.orig/src/output-plugins/spo_csv.c	2020-07-10 07:28:24.000000000 -0400
-+++ ./src/output-plugins/spo_csv.c	2020-08-26 18:28:51.000000000 -0400
+diff -ruN ./snort-2.9.19.orig/src/output-plugins/spo_csv.c ./snort-2.9.19/src/output-plugins/spo_csv.c
+--- ./snort-2.9.19.orig/src/output-plugins/spo_csv.c	2021-10-20 07:04:33.000000000 -0400
++++ ./src/output-plugins/spo_csv.c	2021-12-08 15:10:43.000000000 -0500
 @@ -66,10 +66,11 @@
  
  #include "snort.h"
@@ -27,12 +27,10 @@ diff -ruN ./snort-2.9.16.1.orig/src/output-plugins/spo_csv.c ./snort-2.9.16.1/sr
  
  /* list of function prototypes for this preprocessor */
  static void AlertCSVInit(struct _SnortConfig *, char *);
-@@ -497,6 +504,39 @@
-             {
-                 CreateTCPFlagString(p, tcpFlags);
+@@ -499,6 +506,38 @@
                  TextLog_Print(log, "%s", tcpFlags);
-+            }
-+        }
+             }
+         }
 +        else if (!strcasecmp("classification",type))
 +        {
 +            if (otn_tmp != NULL)
@@ -62,8 +60,14 @@ diff -ruN ./snort-2.9.16.1.orig/src/output-plugins/spo_csv.c ./snort-2.9.16.1/sr
 +            {
 +                if (dispos > ACTIVE_DROP)
 +                    dispos = ACTIVE_DROP;
-+
 +                TextLog_Print(log, "%s", s_dispos[dispos]);
-             }
-         }
++            }
++        }
  
+         if (num < numargs - 1)
+             TextLog_Putc(log, ',');
+@@ -507,4 +546,3 @@
+     TextLog_NewLine(log);
+     TextLog_Flush(log);
+ }
+-
