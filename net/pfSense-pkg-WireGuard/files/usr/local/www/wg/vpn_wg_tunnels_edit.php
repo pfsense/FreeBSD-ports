@@ -37,173 +37,121 @@ require_once('wireguard/includes/wg_guiconfig.inc');
 
 global $wgg;
 
+// Initialize $wgg state
 wg_globals();
 
-$pconfig = array();
+$pconfig = [];
 
 // Always assume we are creating a new tunnel
 $is_new = true;
 
 if (isset($_REQUEST['tun'])) {
-
 	$tun = $_REQUEST['tun'];
-
 	$tun_idx = wg_tunnel_get_array_idx($_REQUEST['tun']);
-
 }
 
 if ($_POST) {
-
 	if (isset($_POST['apply'])) {
-
 		$ret_code = 0;
 
 		if (is_subsystem_dirty($wgg['subsystems']['wg'])) {
-
 			if (wg_is_service_running()) {
-
 				$tunnels_to_apply = wg_apply_list_get('tunnels');
-
 				$sync_status = wg_tunnel_sync($tunnels_to_apply, true, true);
-
 				$ret_code |= $sync_status['ret_code'];
-
 			}
 
 			if ($ret_code == 0) {
-
 				clear_subsystem_dirty($wgg['subsystems']['wg']);
-
 			}
-
 		}
-
 	}
 
 	if (isset($_POST['act'])) {
-
 		switch ($_POST['act']) {
-
 			case 'save':
-
 				$res = wg_do_tunnel_post($_POST);
-			
 				$input_errors = $res['input_errors'];
-		
 				$pconfig = $res['pconfig'];
 		
 				if (empty($input_errors)) {
-
 					if (wg_is_service_running() && $res['changes']) {
-
 						// Everything looks good so far, so mark the subsystem dirty
 						mark_subsystem_dirty($wgg['subsystems']['wg']);
 
 						// Add tunnel to the list to apply
 						wg_apply_list_add('tunnels', $res['tuns_to_sync']);
-
 					}
 		
 					// Save was successful
 					header('Location: /wg/vpn_wg_tunnels.php');
-		
 				}
 
 				break;
 
 			case 'genkeys':
-
 				// Process ajax call requesting new key pair
 				print(wg_gen_keypair(true));
-
 				exit;
-
 				break;
 
 			case 'genpubkey':
-
 				// Process ajax call calculating the public key from a private key
 				print(wg_gen_publickey($_POST['privatekey'], true));
-
 				exit;
-
 				break;
 
 			default:
-
 				// Shouldn't be here, so bail out.
 				header('Location: /wg/vpn_wg_tunnels.php');
-
 				break;
-
 		}
-
 	}
 
 	if (isset($_POST['peer'])) {
-
 		$peer_idx = $_POST['peer'];
-
 		switch ($_POST['act']) {
-
 			case 'toggle':
-
 				$res = wg_toggle_peer($peer_idx);
-
 				break;
 
 			case 'delete':
-				
 				$res = wg_delete_peer($peer_idx);
-
 				break;
 
 			default:
-				
 				// Shouldn't be here, so bail out.
 				header('Location: /wg/vpn_wg_tunnels.php');
-
 				break;
-				
 		}
 
 		$input_errors = $res['input_errors'];
 
 		if (empty($input_errors)) {
-
 			if (wg_is_service_running() && $res['changes']) {
-
 				mark_subsystem_dirty($wgg['subsystems']['wg']);
 
 				// Add tunnel to the list to apply
 				wg_apply_list_add('tunnels', $res['tuns_to_sync']);
-
 			}
-
 		}
-
 	}
-
 }
 
+// A dirty string hack
 $s = fn($x) => $x;
 
 // Looks like we are editing an existing tunnel
 if (isset($tun_idx) && is_array($wgg['tunnels'][$tun_idx])) {
-
 	$pconfig = &$wgg['tunnels'][$tun_idx];
 
 	// Supress warning and allow peers to be added via the 'Add Peer' link
 	$is_new = false;
-
 // Looks like we are creating a new tunnel
 } else {
-
 	// Default to enabled
 	$pconfig['enabled'] = 'yes';
-
 	$pconfig['name'] = next_wg_if();
-
 }
 
 // Save the MTU settings prior to re(saving)
@@ -225,17 +173,13 @@ include("head.inc");
 wg_print_service_warning();
 
 if (isset($_POST['apply'])) {
-
 	print_apply_result_box($ret_code);
-
 }
 
 wg_print_config_apply_box();
 
 if (!empty($input_errors)) {
-
 	print_input_errors($input_errors);
-
 }
 
 display_top_tabs($tab_array);
@@ -262,9 +206,7 @@ $tun_enable->setHelp('<span class="text-danger">Note: </span>Tunnel must be <b>e
 
 // Disable the tunnel enabled button if interface is assigned in pfSense
 if (is_wg_tunnel_assigned($pconfig['name'])) {
-
 	$tun_enable->setDisabled();
-
 	$tun_enable->setHelp('<span class="text-danger">Note: </span>Tunnel cannot be <b>disabled</b> when assigned to a pfSense interface.');
 
 	// We still want to POST this field, make it a hidden field now
@@ -274,7 +216,6 @@ if (is_wg_tunnel_assigned($pconfig['name'])) {
 		'hidden',
 		'yes'
 	));
-
 }
 
 $section->addInput($tun_enable);
@@ -292,7 +233,7 @@ $section->addInput(new Form_Input(
 	'*Listen Port',
 	'text',
 	$pconfig['listenport'],
-	['placeholder' => next_wg_port()]
+	['placeholder' => next_wg_port(), 'autocomplete' => 'new-password']
 ))->addClass('trim')
   ->setHelp('Port used by this tunnel to communicate with peers.');
 
@@ -302,7 +243,8 @@ $group->add(new Form_Input(
 	'privatekey',
 	'Private Key',
 	wg_secret_input_type(),
-	$pconfig['privatekey']
+	$pconfig['privatekey'],
+	['autocomplete' => 'new-password']
 ))->addClass('trim')
   ->setHelp('Private key for this tunnel. (Required)');
 
@@ -332,7 +274,6 @@ $section = new Form_Section("Interface Configuration ({$pconfig['name']})");
 $section->setAttribute('id', 'addresses');
 
 if (!is_wg_tunnel_assigned($pconfig['name'])) {
-
 	$section->addInput(new Form_StaticText(
 		'Assignment',
 		"<i class='fa fa-sitemap' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='/interfaces_assign.php'>Interface Assignments</a>"
@@ -350,20 +291,17 @@ if (!is_wg_tunnel_assigned($pconfig['name'])) {
 
 	// Init the addresses array if necessary
 	if (!is_array($pconfig['addresses']['row']) || empty($pconfig['addresses']['row'])) {
-
 		wg_init_config_arr($pconfig, array('addresses', 'row', 0));
 
 		// Hack to ensure empty lists default to /128 mask
 		$pconfig['addresses']['row'][0]['mask'] = '128';
-
 	}
 
 	$last = count($pconfig['addresses']['row']) - 1;
 
 	foreach ($pconfig['addresses']['row'] as $counter => $item) {
-	
 		$group = new Form_Group($counter == 0 ? 'Interface Addresses' : '');
-	
+
 		$group->addClass('repeatable');
 
 		$group->add(new Form_IpAddress(
@@ -391,8 +329,7 @@ if (!is_wg_tunnel_assigned($pconfig['name'])) {
 			'fa-trash'
 		))->addClass('btn-warning btn-sm');
 	
-		$section->add($group);	
-
+		$section->add($group);
 	}
 
 	$section->addInput(new Form_Button(
@@ -401,9 +338,7 @@ if (!is_wg_tunnel_assigned($pconfig['name'])) {
 		null,
 		'fa-plus'
 	))->addClass('btn-success btn-sm addbtn');
-
 } else {
-
 	$wg_pfsense_if = wg_get_pfsense_interface_info($pconfig['name']);
 
 	$section->addInput(new Form_StaticText(
@@ -420,7 +355,6 @@ if (!is_wg_tunnel_assigned($pconfig['name'])) {
 		'Firewall Rules',
 		"<i class='fa fa-shield-alt' style='vertical-align: middle;'></i><a style='padding-left: 3px' href='/firewall_rules.php?if={$s(htmlspecialchars($wg_pfsense_if['name']))}'>{$s(gettext('Firewall Configuration'))}</a>"
 	));
-
 }
 
 $form->add($section);
@@ -469,7 +403,6 @@ print($form);
 			<tbody>
 <?php
 	if (!$is_new):
-
 		foreach (wg_tunnel_get_peers_config($pconfig['name']) as [$peer_idx, $peer, $is_new]):
 ?>
 				<tr ondblclick="document.location='<?="vpn_wg_peers_edit.php?peer={$peer_idx}"?>';" class="<?=wg_peer_status_class($peer)?>">
@@ -489,7 +422,6 @@ print($form);
 
 <?php
 		endforeach;
-
 	else:
 ?>
 				<tr>
@@ -536,32 +468,32 @@ endif;
 <script type="text/javascript">
 //<![CDATA[
 events.push(function() {
-
 	// Supress "Delete" button if there are fewer than two rows
 	checkLastRow();
 
 	wgRegTrimHandler();
 
 	$('#copypubkey').click(function () {
-
 		var $this = $(this);
-
 		var originalText = $this.text();
 
-		// The 'modern' way...
-		navigator.clipboard.writeText($('#publickey').val());
-		
+		try {
+			// The 'modern' way, this only works with https
+			navigator.clipboard.writeText($('#publickey').val());
+		} catch {
+			console.warn("Failed to copy text using navigator.clipboard, falling back to commands");
+			$('#publickey').select();
+			document.execCommand("copy");
+		}
+
 		$this.text($this.attr('data-success-text'));
 
 		setTimeout(function() {
-
 			$this.text(originalText);
-
 		}, $this.attr('data-timeout'));
 
 		// Prevents the browser from scrolling
 		return false;
-
 	});
 
 	// These are action buttons, not submit buttons

@@ -40,8 +40,6 @@ function wg_install() {
 
 	$g['wireguard_installing'] = true;
 
-	update_status("\n  Upgrading any existing WireGuard XML configuration...");
-
 	update_status("done.\n  Installing WireGuard early shell commands...");
 
 	// Installs the WireGuard earlyshellcmds
@@ -67,7 +65,6 @@ function wg_install() {
 	wg_defaults_install();
 
 	update_status("done.\n");
-
 }
 
 /*
@@ -95,16 +92,12 @@ function wg_deinstall() {
 
 	// Only delete WireGuard configuration if keep_conf is explicitly 'no'
 	if (isset($wgg['config']['keep_conf']) && $wgg['config']['keep_conf'] == 'no') {
-
 		update_status("done.\n  Removing WireGuard configuration settings...");
 
 		// Removes WireGuard configuration
 		wg_remove_config_settings();
-
 	} else {
-
 		update_status("done.\n  Keeping WireGuard configuration settings...");
-
 	}
 
 	update_status("done.\n  Removing WireGuard Unbound access list...");
@@ -123,7 +116,6 @@ function wg_deinstall() {
 	wg_service_deinstall(true);
 
 	update_status("done.\n");
-
 }
 
 function wg_delete_temp_files() {
@@ -134,18 +126,13 @@ function wg_delete_temp_files() {
 
 	// This nukes any lingering .apply files
 	foreach ($wgg['applylist'] as $path) {
-
 		unlink_if_exists($path);
-
 	}
 
 	// Package is uninstalling, so clear lingering dirty status too...
 	foreach ($wgg['subsystems'] as $subsystem) {
-
 		clear_subsystem_dirty($subsystem);
-
 	}
-
 }
 
 /*
@@ -170,9 +157,10 @@ function wg_defaults_install() {
 	$wgg['config']['interface_group']		= isset($wgg['config']['interface_group']) ? $wgg['config']['interface_group'] : 'all';
 	
 	$wgg['config']['hide_secrets'] 			= isset($wgg['config']['hide_secrets']) ? $wgg['config']['hide_secrets'] : 'yes';
+
+	$wgg['config']['hide_peers'] 			= isset($wgg['config']['hide_peers']) ? $wgg['config']['hide_peers'] : 'yes';
 	
 	wg_write_config('Applied package default settings as necessary.', false);
-
 }
 
 function wg_service_rcfile() {
@@ -191,7 +179,6 @@ function wg_service_rcfile() {
 	$rcfile['stop'] 	= implode("\n\t", $stop);
 
 	write_rcfile($rcfile);
-
 }
 
 function wg_service_install() {
@@ -202,20 +189,16 @@ function wg_service_install() {
 	wg_service_deinstall();
 
 	link($wgg['php'], $wgg['php_wg']);
-
 }
 
 function wg_service_deinstall($force_stop = false) {
 	global $wgg;
-	
+
 	if ($force_stop) {
-
 		wg_service_fpm_stop();
-
 	}
 
 	unlink_if_exists($wgg['php_wg']);
-
 }
 
 function wg_destroy_tunnels(&$cmds = null) {
@@ -226,20 +209,15 @@ function wg_destroy_tunnels(&$cmds = null) {
 
 	// Tear down interfaces
 	foreach (wg_get_running_ifs() as $tunnel) {
-
 		$res &= wg_ifconfig_if_destroy($tunnel, $cmds);
-		
 	}
 
 	// Now attempt to unload the module if the above was successful
 	if ($res) {
-
 		$res &= wg_kld_loadunload(false, $cmds);
-
 	}
 
 	return $res;
-
 }
 
 function wg_listenport_alias_install() {
@@ -248,9 +226,7 @@ function wg_listenport_alias_install() {
 	wg_globals();
 
 	// TODO ?
-
 }
-
 
 /*
  * This function creates earlyshellcmd entries in the config
@@ -273,30 +249,23 @@ function wg_earlyshellcmd_install() {
 	$shellcmd_pkg_cmds = array_map(fn($x) => $x['cmd'], $a_shellcmdsettings);
 
 	foreach ($wgg['shellcmdentries'] as $shellcmd) {
-
 		// Need to escape slashes from the path
 		$escaped_cmd = preg_quote($shellcmd['cmd'], '/');
 
 		// Install the earlyshellcmd
 		if (!preg_grep("/{$escaped_cmd}/", $a_earlyshellcmd)) {
-
 			// Put our entry at the top of the list
 			array_unshift($a_earlyshellcmd, $shellcmd['cmd']);
-
 		}
 
 		// Update the shellcmd package too
 		if (!preg_grep("/{$escaped_cmd}/", $shellcmd_pkg_cmds)) {
-
 			// Put our entry at the top of the list
 			array_unshift($a_shellcmdsettings, $shellcmd);
-
 		}
-
 	}
 
 	wg_write_config('Installed earlyshellcmd(s).', false);
-
 }
 
 /*
@@ -318,36 +287,25 @@ function wg_earlyshellcmd_deinstall() {
 	$shellcmd_pkg_cmds = array_map(fn($x) => $x['cmd'], $a_shellcmdsettings);
 
 	foreach ($wgg['shellcmdentries'] as $shellcmd) {
-
 		// Need to escape slashes from the path
 		$escaped_cmd = preg_quote($shellcmd['cmd'], '/');
 
 		// Deinstall the earlyshellcmd
 		if ($cmds = preg_grep("/{$escaped_cmd}/", $a_earlyshellcmd)) {
-
 			foreach ($cmds as $cmd_idx => $cmd) {
-
 				unset($a_earlyshellcmd[$cmd_idx]);
-
 			}
-
 		}
 
 		// Update the shellcmd package too
 		if ($cmds = preg_grep("/{$escaped_cmd}/", $shellcmd_pkg_cmds)) {
-
 			foreach ($cmds as $cmd_idx => $cmd) {
-
 				unset($a_shellcmdsettings[$cmd_idx]);
-
 			}
-
 		}
-
 	}
 
 	wg_write_config('De-installed earlyshellcmd(s).', false);
-
 }
 
 /*
@@ -362,10 +320,8 @@ function wg_ifgroup_install() {
 
 	if (isset($wgg['config']['interface_group'])
 	    && ($wgg['config']['interface_group'] == 'none')) {
-
 		// No point installing the interface group...
 		return;
-
 	}
 
 	init_config_arr(array('ifgroups', 'ifgroupentry'));
@@ -375,14 +331,11 @@ function wg_ifgroup_install() {
 	$ifgroup_names = array_map(fn($x) => $x['ifname'], $a_ifgroups);
 
 	if (!preg_grep("/{$wgg['ifgroupentry']['ifname']}/", $ifgroup_names)) {
-
 		// Put our entry at the top of the list
 		array_unshift($a_ifgroups, $wgg['ifgroupentry']);
-
 	}
 
 	wg_write_config("Installed interface group ({$wgg['ifgroupentry']['ifname']}).", false);
-
 }
 
 /*
@@ -400,17 +353,12 @@ function wg_ifgroup_deinstall() {
 	$ifgroup_names = array_map(fn($x) => $x['ifname'], $a_ifgroups);
 
 	if ($groups = preg_grep("/{$wgg['ifgroupentry']['ifname']}/", $ifgroup_names)) {
-
 		foreach ($groups as $group_idx => $group) {
-
 			unset($a_ifgroups[$group_idx]);
-
 		}
-
 	}
 
 	wg_write_config("De-installed interface group ({$wgg['ifgroupentry']['ifname']}).", false);
-
 }
 
 /*
@@ -428,17 +376,12 @@ function wg_unbound_acl_deinstall() {
 	$a_unbound_acls_names = array_map(fn($x) => $x['aclname'], $a_unbound_acls);
 
 	if ($acls = preg_grep("/{$wgg['unboundaclentry']['aclname']}/", $a_unbound_acls_names)) {
-
 		foreach ($acls as $acl_idx => $acl) {
-
 			unset($a_unbound_acls[$acl_idx]);
-
 		}
-
 	}
 
 	wg_write_config("De-installed Unbound ACL group ({$wgg['unboundaclentry']['aclname']}).", false);
-
 }
 
 /*
@@ -464,15 +407,12 @@ function wg_unbound_acl_install() {
 
 	// Only need to create the ACL if we actually have tunnel networks to add
 	if (!empty($tun_networks) && is_array($tun_networks)) {
-
 		if (!preg_grep("/{$wgg['unboundaclentry']['aclname']}/", $a_unbound_acls_names)) {
-
 			$wgg['unboundaclentry']['aclid'] = unbound_get_next_id();
 
 			$tmp_acls = array();
 
 			foreach ($tun_networks as $network_idx => $network) {
-
 				$tmp_acls[$network_idx]['acl_network'] 	= $network['network'];
 
 				$tmp_acls[$network_idx]['mask']		= $network['mask'];
@@ -480,19 +420,14 @@ function wg_unbound_acl_install() {
 				$tmp_acls[$network_idx]['description']	= "{$network['tun']}{$tunDescr($network['descr'])}";
 
 				$wgg['unboundaclentry']['row'] = $tmp_acls;
-
 			}
 
 			// Put our entry at the top of the list
 			array_unshift($a_unbound_acls, $wgg['unboundaclentry']);
-
 		}
-
 	}
 
 	wg_write_config("Installed Unbound ACL group ({$wgg['unboundaclentry']['aclname']}).", false);
-
 }
-
 
 ?>

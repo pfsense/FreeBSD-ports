@@ -38,36 +38,25 @@ require_once('wireguard/includes/wg_guiconfig.inc');
 
 global $wgg;
 
+// Initialize $wgg state
 wg_globals();
 
 if ($_POST) {
-
 	if (isset($_POST['apply'])) {
-
 		$ret_code = 0;
 
 		if (is_subsystem_dirty($wgg['subsystems']['wg'])) {
-
 			if (wg_is_service_running()) {
-
 				$tunnels_to_apply = wg_apply_list_get('tunnels');
-
 				$sync_status = wg_tunnel_sync($tunnels_to_apply, true, true);
-
 				$ret_code |= $sync_status['ret_code'];
-
 			}
 
 			if ($ret_code == 0) {
-
 				clear_subsystem_dirty($wgg['subsystems']['wg']);
-
 			}
-
 		}
-
 	}
-
 }
 
 $shortcut_section = "wireguard";
@@ -86,9 +75,7 @@ include("head.inc");
 wg_print_service_warning();
 
 if (isset($_POST['apply'])) {
-
 	print_apply_result_box($ret_code);
-
 }
 
 wg_print_config_apply_box();
@@ -97,20 +84,25 @@ display_top_tabs($tab_array);
 
 $a_devices = wg_get_status();
 
+$peers_hidden = wg_status_peers_hidden();
 ?>
+
+<?php if ($peers_hidden): ?>
+<style> tr[class^='treegrid-parent-'] { display: none; } </style>
+<?php endif; ?>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h2 class="panel-title"><?=gettext('WireGuard Status')?></h2>
 	</div>
 	<div class="table-responsive panel-body">
-		<table class="table table-hover table-striped table-condensed" style="overflow-x: visible;">
+		<table class="table table-hover table-striped table-condensed tree" style="overflow-x: visible;">
 			<thead>
 				<th><?=gettext('Tunnel')?></th>
 				<th><?=gettext('Description')?></th>
 				<th><?=gettext('Peers')?></th>
 				<th><?=gettext('Public Key')?></th>
-				<th><?=gettext('Address / Assignment')?></th>
+				<th><?=gettext('Address')?> / <?=gettext('Assignment')?></th>
 				<th><?=gettext('MTU')?></th>
 				<th><?=gettext('Listen Port')?></th>
 				<th><?=gettext('RX')?></th>
@@ -119,10 +111,9 @@ $a_devices = wg_get_status();
 			<tbody>
 <?php
 if (!empty($a_devices)):
-
 	foreach ($a_devices as $device_name => $device):
 ?>
-				<tr class="tunnel-entry">
+				<tr class="<?="treegrid-{$device_name}"?>">
 					<td>
 						<?=wg_interface_status_icon($device['status'])?>
 						<a href="vpn_wg_tunnels_edit.php?tun=<?=htmlspecialchars($device_name)?>"><?=htmlspecialchars($device_name)?></a>
@@ -138,14 +129,15 @@ if (!empty($a_devices)):
 					<td><?=htmlspecialchars(format_bytes($device['transfer_rx']))?></td>
 					<td><?=htmlspecialchars(format_bytes($device['transfer_tx']))?></td>
 				</tr>
-				<tr class="peer-entries">
-					<td colspan="9">
+				<tr class="<?="treegrid-parent-{$device_name}"?>">
+					<td style="font-weight: bold;"><?=gettext('Peers')?></td>
+					<td colspan="8" class="contains-table">
 						<table class="table table-hover table-condensed">
 							<thead>
-								<th><?=gettext('Peer')?></th>
+								<th><?=gettext('Description')?></th>
 								<th><?=gettext('Latest Handshake')?></th>
 								<th><?=gettext('Public Key')?></th>
-								<th><?=htmlspecialchars(wg_format_endpoint(true))?></th>
+								<th><?=gettext('Endpoint')?></th>
 								<th><?=gettext('Allowed IPs')?></th>
 								<th><?=gettext('RX')?></th>
 								<th><?=gettext('TX')?></th>
@@ -153,7 +145,6 @@ if (!empty($a_devices)):
 							<tbody>
 <?php
 		if (count($device['peers']) > 0):
-
 			foreach($device['peers'] as $peer):
 ?>
 								<tr>
@@ -187,7 +178,6 @@ if (!empty($a_devices)):
 				</tr>
 <?php
 	endforeach;
-
 elseif (empty($wgg['tunnels'])):
 ?>
 				<tr>
@@ -206,13 +196,6 @@ endif;
 		</table>
     	</div>
 </div>
-
-<nav class="action-buttons">
-	<a href="#" class="btn btn-info btn-sm" id="showpeers">
-		<i class="fa fa-info icon-embed-btn"></i>
-		<?=gettext("Show Peers")?>
-	</a>
-</nav>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -249,20 +232,11 @@ endif;
 <script type="text/javascript">
 //<![CDATA[
 events.push(function() {
-	var peershidden = true;
-
-	hideClass('peer-entries', peershidden);
-
-	// Toggle peer visibility
-	$('#showpeers').click(function () {
-		peershidden = !peershidden;
-		hideClass('peer-entries', peershidden);
+	$('.tree').treegrid({
+		expanderExpandedClass: 'fa fa fa-chevron-down',
+		expanderCollapsedClass: 'fa fa fa-chevron-right',
+		initialState: (<?=json_encode($peers_hidden)?> ? 'collapsed' : 'expanded')
 	});
-
-	$('.tunnel-entry').click(function () {
-		$(this).next().toggle();
-	});
-
 });
 //]]>
 </script>

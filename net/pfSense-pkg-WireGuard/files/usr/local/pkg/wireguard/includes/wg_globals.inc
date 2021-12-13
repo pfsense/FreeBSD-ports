@@ -112,7 +112,7 @@ $wgg = array(
 	'default_mtu'				=> 1420,
 	'default_port'				=> 51820,
 	'default_resolve_interval'		=> 300,
-	'default_widget_activity_threshold'	=> 180,
+	'default_widget_activity_threshold'	=> 120,
 	'default_widget_refresh_interval'	=> 1,
 	'max_port'				=> 65535,
 	'max_tunnels'				=> 32768
@@ -144,88 +144,60 @@ $wgg['shellcmdentries']		= array(
 						'description' => 'WireGuard earlyshellcmd (DO NOT EDIT/DELETE!)'));
 
 function &array_get_value(array &$array, $parents) {
-
 	$ref = &$array;
 
 	foreach ((array) $parents as $parent) {
-
 		if (is_array($ref) && array_key_exists($parent, $ref)) {
-
 			$ref = &$ref[$parent];
-
 		} else {
-
 			return null;
-
 		}
-
 	}
 
 	return $ref;
-
 }
 
 function array_set_value(array &$array, $parents, $value) {
-
 	$ref = &$array;
 
 	foreach ((array) $parents as $parent) {
+		if (isset($ref) && !is_array($ref)) {
+			$ref = array();
+		}
 
-	if (isset($ref) && !is_array($ref)) {
-
-		$ref = array();
-
-	}
-
-	$ref = &$ref[$parent];
-
+		$ref = &$ref[$parent];
 	}
 
 	$ref = $value;
-
 }
 
 function array_unset_value(&$array, $parents) {
-
 	$key = array_shift($parents);
 
 	if (empty($parents)) {
-
 		unset($array[$key]);
-
 	} else {
-
 		array_unset_value($array[$key], $parents);
-
 	}
-
 }
 
 /*
  * This is a generalized implementation of init_config_arr
  */
 function wg_init_config_arr(&$a_config, $keys) {
-
 	$c = &$a_config;
 
 	if (!is_array($keys)) {
-
 		return null;
-
 	}
 
 	foreach ($keys as $k) {
-
 		if (!is_array($c[$k])) {
-
 			$c[$k] = array();
-
 		}
 
 		$c = &$c[$k];
-
 	}
-	
 }
 
 /*
@@ -243,7 +215,6 @@ function wg_write_config($desc = 'unknown', $do_acb = false, $backup = true, $wr
 	$desc = "[{$wgg['pkg_name']}] {$descACB($desc, $do_acb)}";
 
 	return write_config($desc, $backup, $write_config_only);
-
 }
 
 /*
@@ -261,17 +232,11 @@ function wg_globals() {
 				'tunnels' => array_merge($wgg['xml_path'], array('tunnels', 'item')),
 				'peers' => array_merge($wgg['xml_path'], array('peers', 'item')));
 
-
 	// Need to initialize these config paths as arrays and then assign by reference to $wgg
 	foreach ($conf_paths as $key => $path) {
-
 		wg_init_config_arr($config, $path);
-
 		$wgg[$key] = &array_get_value($config, $path);
-
 	}
-
-
 }
 
 // Call this often to read the latest configuration information

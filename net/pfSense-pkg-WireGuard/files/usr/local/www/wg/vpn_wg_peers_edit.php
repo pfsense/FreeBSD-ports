@@ -37,81 +37,59 @@ require_once('wireguard/includes/wg_guiconfig.inc');
 
 global $wgg;
 
-$pconfig = array();
-
+// Initialize $wgg state
 wg_globals();
 
+$pconfig = [];
+
 if (isset($_REQUEST['tun'])) {
-
 	$tun_name = $_REQUEST['tun'];
-
 }
 
 if (isset($_REQUEST['peer']) && is_numericint($_REQUEST['peer'])) {
-
 	$peer_idx = $_REQUEST['peer'];
-
 }
 
 // All form save logic is in wireguard/wg.inc
 if ($_POST) {
-
 	switch ($_POST['act']) {
-
 		case 'save':
-
 			$res = wg_do_peer_post($_POST);
-		
 			$input_errors = $res['input_errors'];
-	
 			$pconfig = $res['pconfig'];
 	
 			if (empty($input_errors)) {
-
 				if (wg_is_service_running() && $res['changes']) {
-
 					// Everything looks good so far, so mark the subsystem dirty
 					mark_subsystem_dirty($wgg['subsystems']['wg']);
 
 					// Add tunnel to the list to apply
 					wg_apply_list_add('tunnels', $res['tuns_to_sync']);
-
 				}
 
 				// Save was successful
 				header('Location: /wg/vpn_wg_peers.php');
-	
 			}
 			
 			break;
 
 		case 'genpsk':
-
 			// Process ajax call requesting new pre-shared key
 			print(wg_gen_psk());
-
 			exit;
-
 			break;
 
 		default:
-
 			// Shouldn't be here, so bail out.
 			header('Location: /wg/vpn_wg_peers.php');
-
 			break;
-
 	}
-
 }
 
 if (isset($peer_idx) && is_array($wgg['peers'][$peer_idx])) {
-
 	// Looks like we are editing an existing peer
 	$pconfig = &$wgg['peers'][$peer_idx];
-
 } else {
-
 	// Default to enabled
 	$pconfig['enabled'] = 'yes';
 
@@ -120,7 +98,6 @@ if (isset($peer_idx) && is_array($wgg['peers'][$peer_idx])) {
 
 	// Default to a dynamic tunnel, so hide the endpoint form group
 	$is_dynamic = true;
-
 }
 
 $shortcut_section = "wireguard";
@@ -139,9 +116,7 @@ include("head.inc");
 wg_print_service_warning();
 
 if (!empty($input_errors)) {
-
 	print_input_errors($input_errors);
-
 }
 
 display_top_tabs($tab_array);
@@ -228,7 +203,7 @@ $section->addInput(new Form_Input(
 	'*Public Key',
 	'text',
 	$pconfig['publickey'],
-	['placeholder' => 'Public Key']
+	['placeholder' => 'Public Key', 'autocomplete' => 'new-password']
 ))->addClass('trim')
   ->setHelp('WireGuard public key for this peer.');
 
@@ -238,7 +213,8 @@ $group->add(new Form_Input(
 	'presharedkey',
 	'Pre-shared Key',
 	wg_secret_input_type(),
-	$pconfig['presharedkey']
+	$pconfig['presharedkey'],
+	['autocomplete' => 'new-password']
 ))->addClass('trim')
   ->setHelp('Optional pre-shared key for this tunnel. (<a id="copypsk" style="cursor: pointer;" data-success-text="Copied" data-timeout="3000">Copy</a>)');
 
@@ -274,7 +250,6 @@ if (!is_array($pconfig['allowedips']['row']) || empty($pconfig['allowedips']['ro
 $last = count($pconfig['allowedips']['row']) - 1;
 
 foreach ($pconfig['allowedips']['row'] as $counter => $item) {
-
 	$group = new Form_Group($counter == 0 ? 'Allowed IPs' : null);
 
 	$group->addClass('repeatable');
@@ -305,7 +280,6 @@ foreach ($pconfig['allowedips']['row'] as $counter => $item) {
 	))->addClass('btn-warning btn-sm');
 
 	$section->add($group);
-
 }
 
 $section->addInput(new Form_Button(
@@ -340,16 +314,13 @@ print($form);
 <script type="text/javascript">
 //<![CDATA[
 events.push(function() {
-
 	// Supress "Delete" button if there are fewer than two rows
 	checkLastRow();
 
 	wgRegTrimHandler();
 
 	$('#copypsk').click(function () {
-
 		var $this = $(this);
-
 		var originalText = $this.text();
 
 		// The 'modern' way...
@@ -358,14 +329,11 @@ events.push(function() {
 		$this.text($this.attr('data-success-text'));
 
 		setTimeout(function() {
-
 			$this.text(originalText);
-
 		}, $this.attr('data-timeout'));
 
 		// Prevents the browser from scrolling
 		return false;
-
 	});
 
 	// These are action buttons, not submit buttons
@@ -389,25 +357,18 @@ events.push(function() {
 
 	// Save the form
 	$('#saveform').click(function () {
-
 		$(form).submit();
-
 	});
 
 	$('#dynamic').click(function () {
-
 		updateDynamicSection(this.checked);
-
 	});
 
 	function updateDynamicSection(hide) {
-
 		hideClass('endpoint', hide);
-
 	}
 
 	updateDynamicSection($('#dynamic').prop('checked'));
-
 });
 //]]>
 </script>

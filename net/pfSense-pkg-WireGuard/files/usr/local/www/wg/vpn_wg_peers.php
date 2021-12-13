@@ -37,80 +37,55 @@ require_once('wireguard/includes/wg_guiconfig.inc');
 
 global $wgg;
 
+// Initialize $wgg state
 wg_globals();
 
 if ($_POST) {
-
 	if (isset($_POST['apply'])) {
-
 		$ret_code = 0;
 
 		if (is_subsystem_dirty($wgg['subsystems']['wg'])) {
-
 			if (wg_is_service_running()) {
-
 				$tunnels_to_apply = wg_apply_list_get('tunnels');
-
 				$sync_status = wg_tunnel_sync($tunnels_to_apply, true, true);
-
 				$ret_code |= $sync_status['ret_code'];
-
 			}
 
 			if ($ret_code == 0) {
-
 				clear_subsystem_dirty($wgg['subsystems']['wg']);
-
 			}
-
 		}
-
 	}
 
 	if (isset($_POST['peer'])) {
-
 		$peer_idx = $_POST['peer'];
 
 		switch ($_POST['act']) {
-
 			case 'toggle':
-
 				$res = wg_toggle_peer($peer_idx);
-
 				break;
 
 			case 'delete':
-				
 				$res = wg_delete_peer($peer_idx);
-
 				break;
 
 			default:
-				
 				// Shouldn't be here, so bail out.
 				header('Location: /wg/vpn_wg_peers.php');
-
 				break;
-				
 		}
 
 		$input_errors = $res['input_errors'];
 
 		if (empty($input_errors)) {
-
 			if (wg_is_service_running() && $res['changes']) {
-
 				mark_subsystem_dirty($wgg['subsystems']['wg']);
 
 				// Add tunnel to the list to apply
 				wg_apply_list_add('tunnels', $res['tuns_to_sync']);
-
 			}
-
 		}
-
 	}
-
 }
 
 $shortcut_section = 'wireguard';
@@ -169,7 +144,7 @@ if (is_array($wgg['peers']) && count($wgg['peers']) > 0):
 ?>
 					<tr ondblclick="document.location='<?="vpn_wg_peers_edit.php?peer={$peer_idx}"?>';" class="<?=wg_peer_status_class($peer)?>">
 						<td><?=htmlspecialchars(wg_truncate_pretty($peer['descr'], 16))?></td>
-						<td class="pubkey" title="<?=htmlspecialchars($peer['publickey'])?>">
+						<td style="cursor: pointer;" class="pubkey" title="<?=htmlspecialchars($peer['publickey'])?>">
 							<?=htmlspecialchars(wg_truncate_pretty($peer['publickey'], 16))?>
 						</td>
 						<td><?=htmlspecialchars($peer['tun'])?></td>
@@ -213,7 +188,28 @@ events.push(function() {
 
 	$('.pubkey').click(function () {
 
-		navigator.clipboard.writeText($(this).attr('title'));
+		var publicKey = $(this).attr('title');
+
+		try {
+			// The 'modern' way...
+			navigator.clipboard.writeText(publicKey);
+		} catch {
+			console.warn("Failed to copy text using navigator.clipboard, falling back to commands");
+
+			// Convert the TD contents to an input with pub key
+			var pubKeyInput = $('<input/>', {val: publicKey});
+			var oldText = $(this).text();
+
+			// Add to DOM
+			$(this).html(pubKeyInput);
+
+			// copy
+			pubKeyInput.select();
+			document.execCommand("copy");
+
+			// revert back to just text
+			$(this).html(oldText);
+		}
 
 	});
 
