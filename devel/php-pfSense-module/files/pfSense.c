@@ -3509,6 +3509,7 @@ PHP_FUNCTION(pfSense_get_interface_stats)
 PHP_FUNCTION(pfSense_get_pf_rules) {
 	int dev;
 	struct pfioc_rule pr;
+	struct pfctl_rule r;
 	uint32_t mnr, nr;
 
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
@@ -3525,23 +3526,23 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 	for (nr = 0; nr < mnr; ++nr) {
 		zval array;
 
-		pr.nr = nr;
-		if (ioctl(dev, DIOCGETRULE, &pr)) {
+		if (pfctl_get_rule(dev, nr, pr.ticket, pr.anchor, pr.action,
+		    &r, pr.anchor_call)) {
 			add_assoc_string(return_value, "error", strerror(errno));
 			break;
 		}
 
 		array_init(&array);
-		add_assoc_long(&array, "id", (long)pr.rule.nr);
-		add_assoc_long(&array, "tracker", (long)pr.rule.cuid);
-		add_assoc_string(&array, "label", pr.rule.label);
-		add_assoc_double(&array, "evaluations", (double)pr.rule.evaluations);
-		add_assoc_double(&array, "packets", (double)(pr.rule.packets[0] + pr.rule.packets[1]));
-		add_assoc_double(&array, "bytes", (double)(pr.rule.bytes[0] + pr.rule.bytes[1]));
-		add_assoc_double(&array, "states", (double)pr.rule.u_states_cur);
-		add_assoc_long(&array, "pid", (long)pr.rule.cpid);
-		add_assoc_double(&array, "state creations", (double)pr.rule.u_states_tot);
-		add_index_zval(return_value, pr.rule.nr, &array);
+		add_assoc_long(&array, "id", (long)r.nr);
+		add_assoc_long(&array, "tracker", (long)r.ridentifier);
+		add_assoc_string(&array, "label", r.label[0]);
+		add_assoc_double(&array, "evaluations", (double)r.evaluations);
+		add_assoc_double(&array, "packets", (double)(r.packets[0] + r.packets[1]));
+		add_assoc_double(&array, "bytes", (double)(r.bytes[0] + r.bytes[1]));
+		add_assoc_double(&array, "states", (double)r.states_cur);
+		add_assoc_long(&array, "pid", (long)r.cpid);
+		add_assoc_double(&array, "state creations", (double)r.states_tot);
+		add_index_zval(return_value, r.nr, &array);
 	}
 	close(dev);
 }
