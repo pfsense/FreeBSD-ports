@@ -138,7 +138,7 @@ $id = $_POST['id'];
 $act = $_POST['act'];
 
 global $simplefields;
-$simplefields = array('server','useaddr','useaddr_hostname','verifyservercn','blockoutsidedns','legacy','randomlocalport',
+$simplefields = array('server','useaddr','useaddr_hostname','verifyservercn','blockoutsidedns','legacy','bindmode',
 	'usepkcs11','pkcs11providers',
 	'usetoken','usepass',
 	'useproxy','useproxytype','proxyaddr','proxyport', 'silent','useproxypass','proxyuser');
@@ -227,7 +227,7 @@ if (!empty($act)) {
 	$blockoutsidedns = $_POST['blockoutsidedns'];
 	$legacy = $_POST['legacy'];
 	$silent = $_POST['silent'];
-	$randomlocalport = $_POST['randomlocalport'];
+	$bindmode = $_POST['bindmode'];
 	$usetoken = $_POST['usetoken'];
 	if ($usetoken && (substr($act, 0, 10) == "confinline")) {
 		$input_errors[] = "Microsoft Certificate Storage cannot be used with an Inline configuration.";
@@ -330,12 +330,12 @@ if (!empty($act)) {
 				$exp_name = urlencode($exp_name . "-config.ovpn");
 				$expformat = "baseconf";
 		}
-		$exp_path = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $nokeys, $proxy, $expformat, $password, false, false, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
+		$exp_path = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, $nokeys, $proxy, $expformat, $password, false, false, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
 	}
 
 	if ($act == "visc") {
 		$exp_name = urlencode($exp_name . "-Viscosity.visc.zip");
-		$exp_path = viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $password, $proxy, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
+		$exp_path = viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, $password, $proxy, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
 	}
 
 	if (substr($act, 0, 4) == "inst") {
@@ -360,7 +360,7 @@ if (!empty($act)) {
 		}
 
 		$exp_name = urlencode($exp_name);
-		$exp_path = openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $password, $proxy, $advancedoptions, substr($act, 5), $usepkcs11, $pkcs11providers, $pkcs11id, $silent);
+		$exp_path = openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, $password, $proxy, $advancedoptions, substr($act, 5), $usepkcs11, $pkcs11providers, $pkcs11id, $silent);
 	}
 
 	/* pfSense 2.5.0 with OpenVPN 2.5.0 has ciphers not compatible with
@@ -504,12 +504,15 @@ $section->addInput(new Form_Checkbox(
 	$cfg['silent']
 ))->setHelp("Create a silent Windows Installer for unattended deploy. Since this installer is not signed, you may need special software to deploy it correctly.");
 
-$section->addInput(new Form_Checkbox(
-	'randomlocalport',
-	'Use Random Local Port',
-	'Use a random local source port (lport) for traffic from the client. Without this set, two clients may not run concurrently.',
-	$cfg['randomlocalport']
-));
+$section->addInput(new Form_Select(
+	'bindmode',
+	'Bind Mode',
+	$cfg['bindmode'],
+	array(
+		"nobind" => "Do not bind to the local port",
+		"lport0" => "Use a random local source port",
+		"bind" => "Bind to the default OpenVPN port")
+))->setHelp("If OpenVPN client binds to the default OpenVPN port (1194), two clients may not run concurrently.");
 
 $form->add($section);
 
@@ -776,10 +779,10 @@ function download_begin(act, i, j) {
 	if (document.getElementById("silent").checked) {
 		silent = 1;
 	}
-	var randomlocalport = 0;
-	if (document.getElementById("randomlocalport").checked) {
-		randomlocalport = 1;
-	}
+
+	var bindmode = 0;
+	bindmode = document.getElementById("bindmode").value;
+
 	var usetoken = 0;
 	if (document.getElementById("usetoken").checked) {
 		usetoken = 1;
@@ -873,7 +876,7 @@ function download_begin(act, i, j) {
 	exportform.appendChild(make_form_variable("blockoutsidedns", blockoutsidedns));
 	exportform.appendChild(make_form_variable("legacy", legacy));
 	exportform.appendChild(make_form_variable("silent", silent));
-	exportform.appendChild(make_form_variable("randomlocalport", randomlocalport));
+	exportform.appendChild(make_form_variable("bindmode", bindmode));
 	exportform.appendChild(make_form_variable("usetoken", usetoken));
 	exportform.appendChild(make_form_variable("usepkcs11", usepkcs11));
 	exportform.appendChild(make_form_variable("pkcs11providers", pkcs11providers));

@@ -155,7 +155,7 @@ function openvpn_client_export_validate_config($srvid, $usrid, $crtid) {
 	return array($settings, $server_cert, $server_ca, $servercn, $user, $cert, $nokeys);
 }
 
-function openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $nokeys = false, $proxy, $expformat = "baseconf", $outpass = "", $skiptls = false, $doslines = false, $advancedoptions = "", $usepkcs11, $pkcs11providers, $pkcs11id) {
+function openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, $nokeys = false, $proxy, $expformat = "baseconf", $outpass = "", $skiptls = false, $doslines = false, $advancedoptions = "", $usepkcs11, $pkcs11providers, $pkcs11id) {
 	global $input_errors, $g, $legacy_incompatible_ciphers;
 
 	$validconfig = openvpn_client_export_validate_config($srvid, $usrid, $crtid);
@@ -253,8 +253,12 @@ EOF;
 
 	/* Use a random local port, otherwise two clients will conflict if they run at the same time.
 		May not be supported on older clients (Released before May 2010) */
-	if (($randomlocalport != 0) && (substr($expformat, 0, 7) != "yealink") && ($expformat != "snom")) {
-		$conf .= "lport 0{$nl}";
+	if ((substr($expformat, 0, 7) != "yealink") && ($expformat != "snom")) {
+		if ($bindmode == 'nobind') {
+			$conf .= "nobind{$nl}";
+		} elseif ($bindmode == 'lport0') {
+			$conf .= "lport 0{$nl}";
+		}
 	}
 
 	/* This line can cause problems with auth-only setups and also with Yealink/Snom phones
@@ -554,7 +558,7 @@ EOF;
 	}
 }
 
-function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $outpass, $proxy, $advancedoptions, $openvpn_version = "x64-msi", $usepkcs11, $pkcs11providers, $pkcs11id, $silent) {
+function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, $outpass, $proxy, $advancedoptions, $openvpn_version = "x64-msi", $usepkcs11, $pkcs11providers, $pkcs11id, $silent) {
 	global $g, $input_errors, $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_version, $legacy_openvpn_version_rev;
 
 	switch ($openvpn_version) {
@@ -620,7 +624,7 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 		$pwdfle .= "{$proxy['password']}\r\n";
 		file_put_contents("{$confdir}/{$proxy['passwdfile']}", $pwdfle);
 	}
-	$conf = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $nokeys, $proxy, "", "baseconf", false, true, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
+	$conf = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, $nokeys, $proxy, "", "baseconf", false, true, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
 	if (!$conf) {
 		$input_errors[] = "Could not create a config to export.";
 		return false;
@@ -689,7 +693,7 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 	return $outfile;
 }
 
-function viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $outpass, $proxy, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id) {
+function viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, $outpass, $proxy, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id) {
 	global $g;
 
 	$uniq = uniqid();
@@ -718,7 +722,7 @@ function viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $usead
 		file_put_contents("{$tempdir}/{$proxy['passwdfile']}", $pwdfle);
 	}
 
-	$conf = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, true, $proxy, "baseconf", $outpass, true, true, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
+	$conf = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $bindmode, $usetoken, true, $proxy, "baseconf", $outpass, true, true, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
 	if (!$conf) {
 		return false;
 	}
@@ -1094,5 +1098,40 @@ function openvpn_client_export_find_hostname($interface) {
 				return $ddns['host'] . ((in_array($ddns['type'], $dyndns_split_domain_types)) ? '.' . $ddns['domainname'] : '');
 			}
 		}
+	}
+}
+
+function openvpn_client_export_install_command() {
+	global $config;
+
+	init_config_arr(array('installedpackages', 'vpn_openvpn_export', 'config', 0));
+	if (is_array($config['installedpackages']['vpn_openvpn_export']['config'][0]['defaultsettings']) &&
+	    isset($config['installedpackages']['vpn_openvpn_export']['config'][0]['defaultsettings']['randomlocalport'])) {
+		if ($config['installedpackages']['vpn_openvpn_export']['config'][0]['defaultsettings']['randomlocalport'] == 'yes') {
+			$config['installedpackages']['vpn_openvpn_export']['config'][0]['defaultsettings']['bindmode'] = 'lport0';
+		} else {
+			$config['installedpackages']['vpn_openvpn_export']['config'][0]['defaultsettings']['bindmode'] = 'bind';
+		}
+		unset($config['installedpackages']['vpn_openvpn_export']['config'][0]['defaultsettings']['randomlocalport']);
+		$config_changed = true;
+	}
+
+	if (is_array($config['installedpackages']['vpn_openvpn_export']['config'][0]['serverconfig']) &&
+	    !empty($config['installedpackages']['vpn_openvpn_export']['config'][0]['serverconfig'])) {
+		foreach ($config['installedpackages']['vpn_openvpn_export']['config'][0]['serverconfig'] as & $srvconf) {
+			if (isset($srvconf['randomlocalport'])) {
+				if ($srvconf['randomlocalport'] == 'yes') {
+					$srvconf['bindmode'] = 'lport0';
+				} else {
+					$srvconf['bindmode'] = 'bind';
+				}
+				unset($srvconf['randomlocalport']);
+				$config_changed = true;
+			}
+		}
+	}
+
+	if ($config_changed) {
+		write_config("[OpenVPN Client Export] Package configuration updated.");
 	}
 }

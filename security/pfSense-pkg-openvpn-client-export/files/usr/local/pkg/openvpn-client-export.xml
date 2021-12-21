@@ -41,4 +41,7 @@
 			<url>/vpn_openvpn_export_shared.php</url>
 		</tab>
 	</tabs>
+	<custom_php_install_command>
+		openvpn_client_export_install_command();
+	</custom_php_install_command>
 </packagegui>
