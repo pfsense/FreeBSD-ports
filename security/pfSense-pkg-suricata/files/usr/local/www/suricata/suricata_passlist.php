@@ -145,7 +145,7 @@ display_top_tabs($tab_array, true);
 					<tr>
 						<th>&nbsp;</th>
 						<th>List Name</th>
-						<th>Assigned Alias</th>
+						<th>Assigned</th>
 						<th>Description</th>
 						<th>Actions</th>
 					</tr>
@@ -159,14 +159,9 @@ display_top_tabs($tab_array, true);
 					<td>
 						<?=htmlspecialchars($list['name'])?>
 					</td>
-					<?php if (!empty($list['address'])) : ?>
-					<td title="<?=filter_expand_alias($list['address'])?>">
-						<?=gettext($list['address'])?>
-					</td>
-					<?php else : ?>
 					<td>
+						<?php suricata_is_passlist_used($list['name']) ? print(gettext("Yes")) : print(gettext("No"));?>
 					</td>
-					<?php endif; ?>
 					<td>
 						<?=htmlspecialchars($list['descr'])?>
 					</td>

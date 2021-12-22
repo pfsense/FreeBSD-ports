@@ -32,7 +32,7 @@ $suricatadir = SURICATADIR;
 $suricatalogdir = SURICATALOGDIR;
 
 // Define an array of native-mode netmap compatible NIC drivers
-$netmapifs = array('cc', 'cxl', 'cxgbe', 'em', 'igb', 'em', 'lem', 'ix', 'ixgbe', 'ixl', 're', 'vtnet');
+$netmapifs = array('cc', 'cxl', 'cxgbe', 'em', 'igb', 'lem', 'ix', 'ixgbe', 'ixl', 're', 'vtnet');
 if (pfs_version_compare(false, 2.4, $g['product_version'])) {
 	/* add FreeBSD 12 iflib(4) supported devices */
 	$netmapifs = array_merge($netmapifs, array('ena', 'ice', 'bnxt', 'vmx'));
@@ -620,6 +620,8 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['max_synack_queued'] = '5';
 			$natent['enable_midstream_sessions'] = 'off';
 			$natent['enable_async_sessions'] = 'off';
+			$natent['stream_bypass'] = "no";
+			$natent['stream_drop_invalid'] = "no";
 			$natent['delayed_detect'] = 'off';
 			$natent['intf_promisc_mode'] = 'on';
 			$natent['intf_snaplen'] = '1518';
@@ -1178,7 +1180,7 @@ $group->add(new Form_Checkbox(
 	'eve_log_http2',
 	'HTTP2',
 	'HTTP2',
-	$pconfig['eve_log_sip'] == 'on' ? true:false,
+	$pconfig['eve_log_http2'] == 'on' ? true:false,
 	'on'
 ));
 
