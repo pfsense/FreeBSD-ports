@@ -3,7 +3,7 @@
  * snort_httpinspect_engine.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2018-2021 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2018-2022 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2021 Bill Meeks
  * All rights reserved.
  *
