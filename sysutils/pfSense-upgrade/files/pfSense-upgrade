@@ -294,6 +294,19 @@ abi_setup() {
 	echo "ABI=${ABI}" > /usr/local/etc/pkg.conf
 	echo "ALTABI=${ALTABI}" >> /usr/local/etc/pkg.conf
 
+	AUTH_CA="/etc/ssl/netgate-ca.pem"
+	AUTH_CERT="/etc/ssl/pfSense-repo-custom.cert"
+	AUTH_KEY="/etc/ssl/pfSense-repo-custom.key"
+	if [ -f "${AUTH_CA}" -a -f "${AUTH_CERT}" -a -f "${AUTH_KEY}" ]; then
+		cat << EOF >> /usr/local/etc/pkg.conf
+PKG_ENV {
+	SSL_CA_CERT_FILE=${AUTH_CA}
+	SSL_CLIENT_CERT_FILE=${AUTH_CERT}
+	SSL_CLIENT_KEY_FILE=${AUTH_KEY}
+}
+EOF
+	fi
+
 	# XXX Replace it by a function that detect thoth hardware
 	if [ "${arch}" = "aarch64" ]; then
 		cat << EOF >> /usr/local/etc/pkg.conf
