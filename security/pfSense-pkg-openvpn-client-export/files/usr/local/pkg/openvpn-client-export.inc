@@ -672,19 +672,20 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 
 	$tokenarg = ($usetoken) ? ' /Import' : '';
 	if ($silent) {
-		$silentarg = ($installer_parts['extension'] == 'exe') ? ' /S' : ' /qn';
+		$silentargexe = ' /S';
+		$silentargmsi = ' /qn';
 	} else {
 		$silentarg = '';
 	}
 
 	if ($installer_parts['extension'] == 'exe') {
-		$procchain .= "RunProgram=\"openvpn-install.exe{$silentarg}\"\n";
+		$procchain .= "RunProgram=\"openvpn-install.exe{$silentargexe}\"\n";
 	} else {
 		/* Have to use RunProgram not ExecuteFile since ExecuteFile won't chain with RunProgram */
-		$procchain .= "RunProgram=\"msiexec.exe /i openvpn-install.msi {$silentarg} /norestart\"\n";
+		$procchain .= "RunProgram=\"msiexec.exe /i openvpn-install.msi{$silentargmsi} /norestart\"\n";
 	}
 
-	$procchain .= "RunProgram=\"openvpn-postinstall.exe{$silentarg}{$tokenarg}\"\n";
+	$procchain .= "RunProgram=\"openvpn-postinstall.exe{$silentargexe}{$tokenarg}\"\n";
 
 	$procchain .= ';!@InstallEnd@!' . "\n";
 	file_put_contents("{$tempdir}/7zipConfig",$procchain);

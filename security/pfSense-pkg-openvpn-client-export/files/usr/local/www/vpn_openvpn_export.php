@@ -513,7 +513,7 @@ $section->addInput(new Form_Checkbox(
 	'Silent Installer',
 	'Create Windows installer for unattended deploy.',
 	$cfg['silent']
-))->setHelp("Create a silent Windows Installer for unattended deploy. Since this installer is not signed, you may need special software to deploy it correctly.");
+))->setHelp("Create a silent Windows installer for unattended deploy; installer must be run with elevated permissions. Since this installer is not signed, you may need special software to deploy it correctly.");
 
 $section->addInput(new Form_Select(
 	'bindmode',
