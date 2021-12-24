@@ -31,7 +31,7 @@
 	<tabs>
 		<tab>
 			<text>General</text>
-			<url>/pkg_edit.php?xml=net-snmp.xml</url>
+			<url>/pkg_edit.php?xml=netsnmp.xml</url>
 		</tab>
 		<tab>
 			<text>Host Information</text>

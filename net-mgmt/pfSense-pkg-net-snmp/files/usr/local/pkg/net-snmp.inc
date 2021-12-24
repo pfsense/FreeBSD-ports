@@ -1449,3 +1449,56 @@ function netsnmp_validate_netsnmptrapdforwards($post, &$input_errors) {
 		$i++;
 	}
 }
+
+function netsnmp_plugin_certificates($pluginparams) {
+	global $config;
+	$result = array();
+	init_config_arr(array('installedpackages', 'netsnmp', 'config'));
+	$conf = $config['installedpackages']['netsnmp']['config'][0];
+
+	if (($pluginparams['type'] == 'certificates') && !empty($conf) &&
+	    ($conf['enable_snmpd'] == 'on')) {
+		init_config_arr(array('installedpackages', 'netsnmp', 'config', 0, 'row'));
+		$rowconf = $config['installedpackages']['netsnmp']['config'][0]['row'];
+		foreach ($rowconf as $rconf) {
+			if (strstr($rconf['transport'], 'tls')) {
+				$tls = true;
+				break;
+			}
+		}
+		if (!$tls) {
+			return $result;
+		}
+
+		$result['pkgname'] = "SNMP (NET-SNMP)";
+		$result['certificatelist'] = array();
+
+		if (($pluginparams['event'] == 'used_ca') && !empty($conf['ca_cert'])) {
+			$item = array();
+			$cert = $conf['ca_cert'];
+			$item['usedby'] = 'DTLS CA Certificate';
+			$result['certificatelist'][$cert][] = $item;
+		}
+
+		if (($pluginparams['event'] == 'used_certificates')) {
+			if (!empty($conf['server_cert'])) {
+				$item = array();
+				$cert = $conf['server_cert'];
+				$item['usedby'] = 'DTLS Server Certificate';
+				$result['certificatelist'][$cert][] = $item;
+			}
+			init_config_arr(array('installedpackages', 'netsnmpusers', 'config'));
+			$usersconf = $config['installedpackages']['netsnmpusers']['config'][0];
+			foreach ($usersconf as $user) {
+				if (!empty($user['user_cert'])) {
+					$item = array();
+					$cert = $user['user_cert'];
+					$item['usedby'] = 'DTLS User Certificate';
+					$result['certificatelist'][$cert][] = $item;
+				}
+			}
+		}
+	}
+
+	return $result;
+}

@@ -5,7 +5,7 @@
 	<copyright>
 	<![CDATA[
 /*
- * net-snmp.xml
+ * netsnmp.xml
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2017-2021 Rubicon Communications, LLC (Netgate)
@@ -32,7 +32,7 @@
 		<name>SNMP (NET-SNMP)</name>
 		<tooltiptext>Modify the NET-SNMP Daemon Settings</tooltiptext>
 		<section>Services</section>
-		<url>/pkg_edit.php?xml=net-snmp.xml</url>
+		<url>/pkg_edit.php?xml=netsnmp.xml</url>
 	</menu>
 	<menu>
 		<name>SNMP Trap Daemon (NET-SNMP)</name>
@@ -55,7 +55,7 @@
 	<tabs>
 		<tab>
 			<text>General</text>
-			<url>/pkg_edit.php?xml=net-snmp.xml</url>
+			<url>/pkg_edit.php?xml=netsnmp.xml</url>
 			<active/>
 		</tab>
 		<tab>

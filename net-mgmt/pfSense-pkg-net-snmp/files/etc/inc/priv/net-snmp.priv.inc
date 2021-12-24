@@ -26,7 +26,7 @@ $priv_list['page-services-net-snmp']['name'] = "WebCfg - Services: NET-SNMP pack
 $priv_list['page-services-net-snmp']['descr'] = "Allow access to NET-SNMP package GUI";
 
 $priv_list['page-services-net-snmp']['match'] = array();
-$priv_list['page-services-net-snmp']['match'][] = "pkg*.php?xml=net-snmp.xml*";
+$priv_list['page-services-net-snmp']['match'][] = "pkg*.php?xml=netsnmp.xml*";
 $priv_list['page-services-net-snmp']['match'][] = "pkg*.php?xml=net-snmp_communities.xml*";
 $priv_list['page-services-net-snmp']['match'][] = "pkg*.php?xml=net-snmp_hostinfo.xml*";
 $priv_list['page-services-net-snmp']['match'][] = "pkg*.php?xml=net-snmp_trapgen.xml*";
