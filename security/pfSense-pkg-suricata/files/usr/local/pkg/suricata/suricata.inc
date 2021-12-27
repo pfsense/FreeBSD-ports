@@ -34,6 +34,7 @@ require_once("filter.inc");
 require_once("notices.inc");
 require_once("util.inc");
 require_once("xmlrpc_client.inc");
+require_once("openvpn.inc");
 require("/usr/local/pkg/suricata/suricata_defs.inc");
 
 global $g, $config;
@@ -4308,25 +4309,53 @@ function suricata_get_vpns_list() {
 					if (!isset($settings['disable'])) {
 						$remote_networks = explode(',', $settings['remote_network']);
 						foreach ($remote_networks as $remote_network) {
-							if (is_subnetv4($remote_network)) {
+							if (function_exists('openvpn_gen_tunnel_network')) {
+								$vpns_arr[] = implode('/', openvpn_gen_tunnel_network($remote_network));
+							} elseif (is_subnetv4($remote_network)) {
 								$vpns_arr[] = $remote_network;
 							}
 						}
-						if (is_subnetv4($settings['tunnel_network'])) {
+						if (function_exists('openvpn_gen_tunnel_network')) {
+							$vpns_arr[] = implode('/', openvpn_gen_tunnel_network($settings['tunnel_network']));
+						} elseif (is_subnetv4($settings['tunnel_network'])) {
 							$vpns_arr[] = $settings['tunnel_network'];
 						}
 						if (isset($settings['remote_networkv6'])) {
 							$remote_networks = explode(',', $settings['remote_networkv6']);
 							foreach ($remote_networks as $remote_network) {
-								if (is_subnetv6($remote_network)) {
+								if (function_exists('openvpn_gen_tunnel_network')) {
+									$vpns_arr[] = implode('/', openvpn_gen_tunnel_network($remote_network));
+								} elseif (is_subnetv6($remote_network)) {
 									$vpns_arr[] = text_to_compressed_ip6($remote_network);
 								}
 							}
-							if (is_subnetv6($settings['tunnel_networkv6'])) {
+							if (function_exists('openvpn_gen_tunnel_network')) {
+								$vpns_arr[] = implode('/', openvpn_gen_tunnel_network($settings['tunnel_networkv6']));
+							} elseif (is_subnetv6($settings['tunnel_networkv6'])) {
 								$vpns_arr[] = text_to_compressed_ip6($settings['tunnel_networkv6']);
 							}
 						}
 					}
+				}
+			}
+		}
+	}
+	// OpenVPN CSO
+	init_config_arr(array('openvpn', 'openvpn-csc'));
+	foreach ($config['openvpn']['openvpn-csc'] as $ovpnent) {
+		if (is_array($ovpnent) && !isset($ovpnent['disable'])) {
+			if (!empty($ovpnent['tunnel_network'])) {
+				if (function_exists('openvpn_gen_tunnel_network')) {
+					$vpns_arr[] = implode('/', openvpn_gen_tunnel_network($ovpnent['tunnel_network']));
+				} else {
+					$vpns_arr[] = $settings['tunnel_network'];
+				}
+			}
+			if (!empty($ovpnent['tunnel_networkv6'])) {
+				if (function_exists('openvpn_gen_tunnel_network')) {
+					$vpns_arr[] = implode('/', openvpn_gen_tunnel_network($ovpnent['tunnel_networkv6']));
+				} else {
+					$vpns_arr[] = $settings['tunnel_networkv6'];
 				}
 			}
 		}
