@@ -1180,7 +1180,7 @@ $group->add(new Form_Checkbox(
 	'eve_log_http2',
 	'HTTP2',
 	'HTTP2',
-	$pconfig['eve_log_sip'] == 'on' ? true:false,
+	$pconfig['eve_log_http2'] == 'on' ? true:false,
 	'on'
 ));
 

@@ -302,6 +302,30 @@ foreach ($config['installedpackages']['suricata']['rule'] as &$r) {
 	}
 
 	/***********************************************************/
+	/* Add the new 'dhcp-events.rules' file to the rulesets.    */
+	/***********************************************************/
+	if (strpos($pconfig['rulesets'], "dhcp-events.rules") === FALSE) {
+		$pconfig['rulesets'] = rtrim($pconfig['rulesets'], "||") . "||dhcp-events.rules";	
+		$updated_cfg = true;
+	}
+
+	/***********************************************************/
+	/* Add the new 'http2-events.rules' file to the rulesets.    */
+	/***********************************************************/
+	if (strpos($pconfig['rulesets'], "http2-events.rules") === FALSE) {
+		$pconfig['rulesets'] = rtrim($pconfig['rulesets'], "||") . "||http2-events.rules";	
+		$updated_cfg = true;
+	}
+
+	/***********************************************************/
+	/* Add the new 'mqtt-events.rules' file to the rulesets.    */
+	/***********************************************************/
+	if (strpos($pconfig['rulesets'], "mqtt-events.rules") === FALSE) {
+		$pconfig['rulesets'] = rtrim($pconfig['rulesets'], "||") . "||mqtt-events.rules";	
+		$updated_cfg = true;
+	}
+
+	/***********************************************************/
 	/* Add new run mode value and default it to 'autofp'.      */
 	/***********************************************************/
 	if (empty($pconfig['runmode'])) {
