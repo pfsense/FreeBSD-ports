@@ -171,7 +171,7 @@ if (!$input_errors) {
 			$disabled_rules[] = "sslblacklist_tls_cert";
 
 		if (empty($enabled_extra_rules))
-			$disabled_rules[] = ET_PRO_FILE_PREFIX;
+			$disabled_rules[] = EXTRARULE_FILE_PREFIX;
 
 		// Now walk all the configured interface rulesets and remove
 		// any matching the disabled ruleset prefixes.
@@ -191,10 +191,10 @@ if (!$input_errors) {
 						} elseif (!empty($enabled_extra_rules)) {
 							foreach ($enabled_extra_rules as $exrule) {
 								if (strpos(trim($v), EXTRARULE_FILE_PREFIX . $exrule)) {
+									unset($enabled_rules[$k]);
 									continue 2;
 								}
 							}
-							unset($enabled_rules[$k]);
 						}
 					}
 				}
