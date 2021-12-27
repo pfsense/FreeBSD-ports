@@ -363,7 +363,11 @@ include_once("head.inc"); ?>
 					<td id="frd<?=$nnats?>"
 					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
 <?php
+					if ($no_rules) {
+						echo '<span class=\'text-danger\'>' . $natend_friendly . '</span>';
+					} else {
 						echo $natend_friendly;
+					}
 ?>
 					</td>
 
