@@ -122,6 +122,11 @@ if ($savemsg) {
 					<td><a target="_blank" href="https://opentip.kaspersky.com/<?=$file_hash;?>/">
 						<?=gettext("Kaspersky Threat Intelligence Portal");?></a></td>
 				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>	
+					<td><a target="_blank" href="https://beta.virusbay.io/sample/browse?q=<?=$file_hash;?>">
+						<?=gettext("VirusBay");?></a></td>
+				</tr>
 			</tbody>
 		</table>
 	</div>
