@@ -2973,6 +2973,22 @@ if (!$pfb['filterlogentries']) {
 }
 $section->add($group);
 
+$chart_events = array(	'24' => '24 Hrs (~1 Day)',
+			'48' => '48 Hrs (~2 Days)',
+			'72' => '72 Hrs (~3 Days)',
+			'96' => '96 Hrs (~4 Days)',
+			'120' => '120 Hrs (~5 Days)',
+			'144' => '144 Hrs (~6 Days)',
+			'168' => '168 Hrs (~1 week)',
+			'336' => '336 Hrs (~2 weeks)',
+			'672' => '672 Hrs (~1 Month)',
+			'1344' => '1344 Hrs (~2 Months)',
+			'2016' => '2016 Hrs (~3 Months)',
+			'2688' => '2688 Hrs (~4 Months)',
+			'4032' => '4032 Hrs (~6 Months)',
+			'8064' => '8064 Hrs (~1 Year)',
+			'max' => 'Unlimited' );
+
 if ($pfb['dnsbl'] == 'on') {
 	$group = new Form_Group(NULL);
 	$group->add(new Form_Select(
@@ -3193,22 +3209,6 @@ if ($pfb['dnsbl'] == 'on') {
 		  ->setAttribute('size', 16);
 		$section->add($group);
 	}
-
-	$chart_events = array(	'24' => '24 Hrs (~1 Day)',
-				'48' => '48 Hrs (~2 Days)',
-				'72' => '72 Hrs (~3 Days)',
-				'96' => '96 Hrs (~4 Days)',
-				'120' => '120 Hrs (~5 Days)',
-				'144' => '144 Hrs (~6 Days)',
-				'168' => '168 Hrs (~1 week)',
-				'336' => '336 Hrs (~2 weeks)',
-				'672' => '672 Hrs (~1 Month)',
-				'1344' => '1344 Hrs (~2 Months)',
-				'2016' => '2016 Hrs (~3 Months)',
-				'2688' => '2688 Hrs (~4 Months)',
-				'4032' => '4032 Hrs (~6 Months)',
-				'8064' => '8064 Hrs (~1 Year)',
-				'max' => 'Unlimited' );
 
 	$group = new Form_Group('Event Timeline Options');
 	$group->add(new Form_Select(
