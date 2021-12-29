@@ -995,7 +995,13 @@ var port_array  = <?= json_encode(get_alias_list(array("port", "url_ports", "url
 var address_array = <?= json_encode(get_alias_list(array("host", "network", "openvpn", "urltable"))) ?>;
 
 events.push(function() {
-
+	$('form').submit(function(event){
+		// disable all elements that dont have a value to avoid posting them as it could be sending
+		// more than 5000 variables which is the php default max for less than 100 san's which acme does support
+		// p.s. the jquery .find(['value'='']) would not find newly added empty items) so we use .filter(...)
+		$(this).find(':input').filter(function() { return !this.value }).attr("disabled", "disabled")
+		return true;
+	});
 
 <?php
 	// On gui descriptions when a closetype has been selected..
