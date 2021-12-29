@@ -810,9 +810,18 @@ function frr_generate_config_integrated() {
 		if ($frr_conf['logging']) {
 			$integratedconffile .= "log syslog\n";
 		}
-		/* SNMP AgentX Support*/
+		/* SNMP AgentX Support */
 		if ($frr_conf['enablesnmpagentx']) {
 			$integratedconffile .= "agentx\n";
+		}
+		/* Nethop Tracking */
+		if (isset($frr_conf['nht'])) {
+			if (($frr_conf['nht'] == 'ipv4') || ($frr_conf['nht'] == 'both')) {
+				$integratedconffile .= "ip nht resolve-via-default\n";
+			}
+			if (($frr_conf['nht'] == 'ipv6') || ($frr_conf['nht'] == 'both')) {
+				$integratedconffile .= "ipv6 nht resolve-via-default\n";
+			}
 		}
 
 		/* FRR Services */

@@ -315,6 +315,23 @@
 			</rowhelper>
 		</field>
 		<field>
+			<name>Next hop Tracking</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Resolve via default route</fielddescr>
+			<fieldname>nht</fieldname>
+			<description>By default, next hop tracking does not resolve next hops via the default route. Allowing this behavior can be useful, for example, so BGP can peer across the default route.</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>Default (none)</name><value>none</value></option>
+				<option><name>IPv4</name><value>ipv4</value></option>
+				<option><name>IPv6</name><value>ipv6</value></option>
+				<option><name>IPv4+IPv6</name><value>both</value></option>
+			</options>
+		</field>
+		<field>
 			<name>Force Service Restart</name>
 			<type>listtopic</type>
 		</field>
