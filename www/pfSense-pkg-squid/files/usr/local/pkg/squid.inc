@@ -2795,3 +2795,57 @@ function squid_plugin_carp($pluginparams) {
 		filter_configure();
 	}
 }
+
+function squid_plugin_certificates($pluginparams) {
+	global $config;
+	$result = array('pkgname' => 'Squid', 'certificatelist' => array());
+	init_config_arr(array('installedpackages', 'squid', 'config'));
+	$squidconf = $config['installedpackages']['squid']['config'][0];
+	init_config_arr(array('installedpackages', 'squidreversegeneral', 'config'));
+	$squidrevconf = $config['installedpackages']['squidreversegeneral']['config'][0];
+
+	if (($pluginparams['type'] == 'certificates') && !empty($squidconf) &&
+	    ($squidconf['enable_squid'] == 'on')) {
+	    	// CA
+		if (($pluginparams['event'] == 'used_ca') && !empty($squidconf['extraca'])) {
+			$item = array();
+			$cert = $squidconf['extraca'];
+			$item['usedby'] = 'Extra Trusted CA';
+			$result['certificatelist'][$cert][] = $item;
+		}
+		if (($pluginparams['event'] == 'used_ca') && !empty($squidconf['dca']) &&
+		    ($squidconf['ssl_proxy'] == 'on')) {
+			$item = array();
+			$cert = $squidconf['dca'];
+			$item['usedby'] = 'HTTPS/SSL Interception CA';
+			$result['certificatelist'][$cert][] = $item;
+		}
+		if (($pluginparams['event'] == 'used_ca') && !empty($squidrevconf['reverse_ssl_clientca']) &&
+		    ($squidrevconf['reverse_https'] == 'on')) {
+			$item = array();
+			$cert = $squidrevconf['reverse_ssl_clientca'];
+			$item['usedby'] = 'Client Certificate CA';
+			$result['certificatelist'][$cert][] = $item;
+		}
+
+		// Cert
+		if (($pluginparams['event'] == 'used_certificates') && !empty($squidrevconf['reverse_ssl_cert']) &&
+		    ($squidrevconf['reverse_https'] == 'on')) {
+			$item = array();
+			$cert = $squidrevconf['reverse_ssl_cert'];
+			$item['usedby'] = 'Reverse SSL Certificate';
+			$result['certificatelist'][$cert][] = $item;
+		}
+
+		// CRL
+		if (($pluginparams['event'] == 'used_crl') && !empty($squidrevconf['reverse_ssl_clientcrl']) &&
+		    ($squidrevconf['reverse_https'] == 'on')) {
+			$item = array();
+			$cert = $squidrevconf['reverse_ssl_clientcrl'];
+			$item['usedby'] = 'Client Certificate Revocation List';
+			$result['certificatelist'][$cert][] = $item;
+		}
+	}
+
+	return $result;
+}
