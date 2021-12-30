@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-frr
 PORTVERSION=	1.1.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -79,6 +79,12 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/frr
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_bfd_profiles.xml \
 		${STAGEDIR}${PREFIX}/pkg/frr
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_rip.xml \
+		${STAGEDIR}${PREFIX}/pkg/frr
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_rip_interfaces.xml \
+		${STAGEDIR}${PREFIX}/pkg/frr
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/frr_rip_neighbors.xml \
+		${STAGEDIR}${PREFIX}/pkg/frr
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/inc/frr_ospf6.inc \
 		${STAGEDIR}${PREFIX}/pkg/frr/inc
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/inc/frr_ospf.inc \
@@ -90,6 +96,8 @@ do-install:
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/inc/frr_validation.inc \
 		${STAGEDIR}${PREFIX}/pkg/frr/inc
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/inc/frr_zebra.inc \
+		${STAGEDIR}${PREFIX}/pkg/frr/inc
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/frr/inc/frr_rip.inc \
 		${STAGEDIR}${PREFIX}/pkg/frr/inc
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/www/status_frr.php \
 		${STAGEDIR}${PREFIX}/www
