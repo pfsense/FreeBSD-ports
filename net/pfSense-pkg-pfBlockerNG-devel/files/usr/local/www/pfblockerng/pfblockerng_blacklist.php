@@ -383,10 +383,10 @@ foreach ($blacklist_types as $type => $setting) {
 		$category_lang = $info[$pconfig['blacklist_lang']][1] ?: $info['EN'][1];
 
 		$selected = FALSE;
-		if ($_POST['enableall'][$blacklist]) {
+		if ($_POST['enableall'][$type]) {
 			$selected = TRUE; 
 		}
-		elseif ($_POST['disableall'][$blacklist]) {
+		elseif ($_POST['disableall'][$type]) {
 			$selected = FALSE;
 		}
 		elseif (in_array($category, $pconfig['blacklist_' . $type])) {
