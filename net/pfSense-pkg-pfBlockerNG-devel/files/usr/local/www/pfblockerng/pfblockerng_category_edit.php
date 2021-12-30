@@ -797,7 +797,7 @@ foreach ($rowdata[$rowid] as $tags) {
 		$failed_bg = '';
 		if ($folder && file_exists("{$folder}/{$row['header']}{$suffix}.fail")) {
 			$failed_bg = 'background-color: #FFFF00;';
-			$failed = "<span style=\"background-color: #FFFF00; border-style: groove;\">&emsp;Failed download(s) highlighted in yellow.&emsp;</span>";
+			$failed = "<span style=\"color: black; background-color: #FFFF00; border-style: groove;\">&emsp;Failed download(s) highlighted in yellow.&emsp;</span>";
 		}
 
 		$group->add(new Form_Input(
