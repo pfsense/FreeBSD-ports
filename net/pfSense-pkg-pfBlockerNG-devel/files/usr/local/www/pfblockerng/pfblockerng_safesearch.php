@@ -151,6 +151,8 @@ $section->addInput(new Form_Select(
 	'1dot1dot1dot1.cloudflare-dns.com' => 'CloudFlare 1dot [1dot1dot1dot1.cloudflare-dns.com]',
 	'dns.google' => 'Google [dns.google]',
 	'doh.dns.apple.com' => 'Apple [doh.dns.apple.com]',
+	'mask.icloud.com' => 'Apple iCloud Private Relay [mask.icloud.com]',
+	'mask-h2.icloud.com' => 'Apple iCloud Private Relay [mask-h2.icloud.com]',
 	'doh.opendns.com' => 'OpenDNS [doh.opendns.com]',
 	'doh.familyshield.opendns.com' => 'OpenDNS Family [doh.familyshield.opendns.com]',
 	'dns.quad9.net' => 'Quad9 [dns.quad9.net]',
@@ -239,7 +241,7 @@ $section->addInput(new Form_Select(
 	TRUE
 ))->setHelp('Select the DoH/DoT blocking DNS Servers')
   ->setAttribute('style', 'width: auto')
-  ->setAttribute('size', 88);
+  ->setAttribute('size', 95);
 
 $form->add($section);
 print($form);
