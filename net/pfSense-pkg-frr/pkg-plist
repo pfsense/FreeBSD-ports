@@ -30,7 +30,7 @@ pkg/frr/frr_bfd_profiles.xml
 pkg/frr/frr_bgp_rpki_cache_servers.xml
 pkg/frr/frr_rip.xml
 pkg/frr/frr_rip_interfaces.xml
-pkg/frr/frr_rip_neighbours.xml
+pkg/frr/frr_rip_neighbors.xml
 bin/frrctl
 %%DATADIR%%/info.xml
 /etc/inc/priv/frr.priv.inc
