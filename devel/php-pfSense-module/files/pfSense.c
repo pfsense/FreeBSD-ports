@@ -3645,8 +3645,8 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 							found = 1;
 						}
 					} else if (filter_rl) {
-						if (ntohl(s->rule) != -1 &&
-						    (long)ntohl(s->rule) == Z_LVAL_P(val2)) {
+						if (s->rule != -1 &&
+						    s->rule == Z_LVAL_P(val2)) {
 							found = 1;
 						}
 					}
