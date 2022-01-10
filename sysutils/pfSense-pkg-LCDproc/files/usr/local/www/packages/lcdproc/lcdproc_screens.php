@@ -45,6 +45,7 @@ if (!isset($pconfig['scr_interfaces']))                      $pconfig['scr_inter
 if (!isset($pconfig['scr_mbuf']))                            $pconfig['scr_mbuf']                            = false;
 if (!isset($pconfig['scr_cpufrequency']))                    $pconfig['scr_cpufrequency']                    = false;
 if (!isset($pconfig['scr_cputemperature']))                  $pconfig['scr_cputemperature']                  = false;
+if (!isset($pconfig['scr_cputemperature_unit']))             $pconfig['scr_cputemperature_unit']             = 'c';
 if (!isset($pconfig['scr_traffic']))                         $pconfig['scr_traffic']                         = false;
 if (!isset($pconfig['scr_traffic_interface']))               $pconfig['scr_traffic_interface']               = '';
 if (!isset($pconfig['scr_top_interfaces_by_bps']))           $pconfig['scr_top_interfaces_by_bps']           = false;
@@ -81,6 +82,7 @@ if ($_POST) {
 		$lcdproc_screens_config['scr_mbuf']                            = $pconfig['scr_mbuf'];
 		$lcdproc_screens_config['scr_cpufrequency']                    = $pconfig['scr_cpufrequency'];
 		$lcdproc_screens_config['scr_cputemperature']                  = $pconfig['scr_cputemperature'];
+		$lcdproc_screens_config['scr_cputemperature_unit']             = $pconfig['scr_cputemperature_unit'];
 		$lcdproc_screens_config['scr_traffic']                         = $pconfig['scr_traffic'];
 		$lcdproc_screens_config['scr_traffic_interface']               = $pconfig['scr_traffic_interface'];
 		$lcdproc_screens_config['scr_top_interfaces_by_bps']           = $pconfig['scr_top_interfaces_by_bps'];
@@ -222,7 +224,9 @@ $section->addInput(
 		$pconfig['scr_cpufrequency'] // checkbox initial value
 	)
 );
-$section->addInput(
+$group = new Form_Group('CPU Temperature');
+
+$group->add(
 	new Form_Checkbox(
 		'scr_cputemperature', // checkbox name (id)
 		'CPU Temperature', // checkbox label
@@ -230,6 +234,17 @@ $section->addInput(
 		$pconfig['scr_cputemperature'] // checkbox initial value
 	)
 );
+$group->add(
+	new Form_Select(
+		'scr_cputemperature_unit',
+		'',
+		$pconfig['scr_cputemperature_unit'],
+		array (
+			'c'	=> gettext('Celsius'),
+			'f'	=> gettext('Fahrenheit')
+	)
+))->setHelp('Unit of temperature');
+$section->add($group);
 
 $group = new Form_Group('Traffic of interface');
 

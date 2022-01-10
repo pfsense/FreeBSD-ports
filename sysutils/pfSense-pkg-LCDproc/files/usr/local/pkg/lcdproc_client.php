@@ -29,7 +29,7 @@ require_once("system.inc");
 require_once("includes/functions.inc.php");
 
 /* Calculates non-idle CPU time and returns as a percentage */
-function lcdproc_cpu_usage() {
+function get_cpu_stats() {
 	$duration = 250000;
 	$diff = array('user', 'nice', 'sys', 'intr', 'idle');
 	$cpuTicks = array_combine($diff, explode(" ", shell_exec('/sbin/sysctl -n kern.cp_time')));
@@ -67,21 +67,26 @@ function get_uptime_stats() {
 	return($status);
 }
 
-/* Returns CPU temperature if available from the system */
+// Returns CPU temperature if available from the system 
 function get_cpu_temperature() {
-	$temp_out = "";
-	$execRet = "";
-	exec("/sbin/sysctl -n dev.cpu.0.temperature", $temp_out, $execRet);
-	if ($execRet === 0) {
-		$cputemperature = trim($temp_out[0]);
-		return $cputemperature;
-	} else {
-		exec("/sbin/sysctl -n hw.acpi.thermal.tz0.temperature", $temp_out, $execRet);
-	}
+	global $config;
+	$lcdproc_screens_config = $config['installedpackages']['lcdprocscreens']['config'][0];
+	$unit = $lcdproc_screens_config['scr_cputemperature_unit'];
 
-	if ($execRet === 0) {
-		$cputemperature = trim($temp_out[0]);
-		return $cputemperature;
+	$temp_out = "";
+	$temp_out = get_temp(); // Use function from includes/functions.inc.php
+	if ($temp_out !== "") {
+		switch ($unit) {
+			case "c":
+				return $temp_out . "C";
+				break;
+			case "f":
+				$cputemperature = ($temp_out * 1.8) + 32;
+				return $cputemperature . "F";
+				break;
+			default:
+				break;
+		}
 	} else {
 		// sysctl probably returned "unknown oid" 
 		return 'CPU Temp N/A';
@@ -1092,7 +1097,7 @@ function loop_status($lcd) {
 		/* prepare the summary data */
 		if ($lcdpanel_height >= "4") {
 			$summary_states = explode("/", get_pfstate());
-			$lcd_summary_data = sprintf("%02d%% %02d%% %6d", lcdproc_cpu_usage(), mem_usage(), $summary_states[0]);
+			$lcd_summary_data = sprintf("%02d%% %02d%% %6d", get_cpu_stats(), mem_usage(), $summary_states[0]);
 			if ($lcdpanel_width > "16") {
 				/* Include the CPU frequency as a percentage */
 				$maxfreq = get_cpu_maxfrequency();
@@ -1136,7 +1141,7 @@ function loop_status($lcd) {
 					$led_output_value = $led_output_value + pow(2, 5);
 			}
 			/* LED 3: CPU Usage */
-			if (lcdproc_cpu_usage() > 50) {
+			if (get_cpu_stats() > 50) {
 				$led_output_value = $led_output_value + pow(2, 6);
 			} else {
 				$led_output_value = $led_output_value + pow(2, 2);
@@ -1185,7 +1190,7 @@ function loop_status($lcd) {
 					$lcd_cmds[] = "widget_set $name text_wdgt 1 2 $lcdpanel_width 2 h 4 \"{$hostname}\"";
 					break;
 				case "scr_system":
-					$processor = lcdproc_cpu_usage();
+					$processor = get_cpu_stats();
 					$memory = mem_usage();
 					$lcd_cmds[] = "widget_set $name text_wdgt 1 2 $lcdpanel_width 2 h 4 \"CPU {$processor}%, Mem {$memory}%\"";
 					break;
