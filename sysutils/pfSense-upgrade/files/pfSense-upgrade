@@ -253,6 +253,15 @@ unset_vital_flag() {
 	done
 }
 
+repo_is_plus_upgrade() {
+	pkg_repo_conf_path=$(read_xml_tag.sh string system/pkg_repo_conf_path)
+
+	if [ -n "$(echo $pkg_repo_conf_path | grep ${product}-repo-custom)" ]; then
+		return 0
+	fi
+	return 1
+}
+
 abi_setup() {
 	local _freebsd_version=$(uname -r)
 	local _pkg_repo_conf="/usr/local/etc/pkg/repos/${product}.conf"
@@ -297,7 +306,8 @@ abi_setup() {
 	AUTH_CA="/etc/ssl/netgate-ca.pem"
 	AUTH_CERT="/etc/ssl/pfSense-repo-custom.cert"
 	AUTH_KEY="/etc/ssl/pfSense-repo-custom.key"
-	if [ -f "${AUTH_CA}" -a -f "${AUTH_CERT}" -a -f "${AUTH_KEY}" ]; then
+	if repo_is_plus_upgrade -a -f "${AUTH_CA}" -a -f "${AUTH_CERT}" -a \
+	     -f "${AUTH_KEY}" ; then
 		cat << EOF >> /usr/local/etc/pkg.conf
 PKG_ENV {
 	SSL_CA_CERT_FILE=${AUTH_CA}
