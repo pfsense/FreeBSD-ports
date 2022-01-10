@@ -314,7 +314,6 @@
 			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
-			<combinefields>begin</combinefields>
 		</field>
 		<field>
 			<fielddescr>Networks to Distribute</fielddescr>
