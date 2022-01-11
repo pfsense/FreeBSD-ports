@@ -253,6 +253,13 @@ unset_vital_flag() {
 	done
 }
 
+is_ce() {
+	if [ "${product_label}" == "pfSense" ]; then
+		return 0
+	fi
+	return 1
+}
+
 repo_is_plus_upgrade() {
 	pkg_repo_conf_path=$(read_xml_tag.sh string system/pkg_repo_conf_path)
 
@@ -465,8 +472,10 @@ pkg_upgrade_repo() {
 	esac
 
 	cp /usr/local/etc/pkg/repos/${product}.conf /tmp/${product}.conf.copy
-	_exec "pkg-static upgrade${dont_update}${_force} ${_repo_pkg}" \
-	    "Upgrading ${_repo_pkg}" mute
+	if !(is_ce && repo_is_plus_upgrade) ; then
+		_exec "pkg-static upgrade${dont_update}${_force} ${_repo_pkg}" \
+		    "Upgrading ${_repo_pkg}" mute
+	fi
 	abi_setup
 	# If conf differs, for an update
 	if ! cmp -s /usr/local/etc/pkg/repos/${product}.conf \
@@ -1354,6 +1363,7 @@ export FETCH_TIMEOUT=5
 export FETCH_RETRY=2
 
 export product=$(php -n /usr/local/sbin/read_global_var product_name pfSense)
+export product_label=$(php -n /usr/local/sbin/read_global_var product_label pfSense)
 export pkg_prefix=$(php -n /usr/local/sbin/read_global_var pkg_prefix \
     pfSense-pkg-)
 export platform=$(cat /etc/platform)
