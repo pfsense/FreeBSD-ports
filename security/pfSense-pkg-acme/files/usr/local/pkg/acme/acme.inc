@@ -1590,6 +1590,7 @@ function & get_certificate($name) {
 			$acmesh->dnssleep = $certificate['dnssleep'];
 			$acmesh->challengealias = $certificate['challengealias'];
 			$acmesh->ocspstaple = $certificate['ocspstaple'];
+			$acmesh->debug = $certificate['debug'];
 			$result = $acmesh->signCertificate($action, $accountkey, $certificatepsk, $domainstosign, $envvariables);
 		}
 		return $result;
