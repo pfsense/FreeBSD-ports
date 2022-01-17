@@ -2753,6 +2753,13 @@ function pfb_stop_start_unbound($type) {
 			break;
 		}
 	}
+	// if it still hasn't responded to the TERM, KILL it
+	if (is_process_running('unbound')) {
+		pfb_logger("\nUnbound does not respond to the TERM signal, killing..", 1);
+		sigkillbypid("{$g['varrun_path']}/unbound.pid", 'KILL');
+		sleep(1);
+		pfb_logger('.', 1);
+	}
 
 	// Add/Remove additional python mounts
 	if (file_exists('/var/unbound/pfb_unbound_include.inc')) {

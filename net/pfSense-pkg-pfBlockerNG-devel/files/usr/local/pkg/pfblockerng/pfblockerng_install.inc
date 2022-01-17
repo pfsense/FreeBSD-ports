@@ -416,7 +416,7 @@ if (file_exists('/var/db/pfblockerng/dnsbl_info') &&
 unlink_if_exists('/var/db/pfblockerng/dnsbl_info');
 
 // Move dnsbl_levent.sqlite -> /var/unbound folder
-$u_found = FALSE;
+$ufound = FALSE;
 if (file_exists('/var/db/pfblockerng/dnsbl_levent.sqlite') && !file_exists($pfb['dnsbl_resolver'])) {
 	$ufound = TRUE;
 	@copy('/var/db/pfblockerng/dnsbl_levent.sqlite', $pfb['dnsbl_resolver']);
