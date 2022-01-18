@@ -386,16 +386,16 @@ if ($_POST) {
 	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name'])) {
 		$input_errors[] = "The field 'Name' contains invalid characters.";
 	}
-	if ($_POST['checkinter'] !== "" && !is_numeric($_POST['checkinter'])) {
+	if (!empty($_POST['checkinter']) && !is_numeric($_POST['checkinter'])) {
 		$input_errors[] = "The field 'Check frequency' value is not a number.";
 	}
-	if ($_POST['connection_timeout'] !== "" && !is_numeric($_POST['connection_timeout'])) {
+	if (!empty($_POST['connection_timeout']) && !is_numeric($_POST['connection_timeout'])) {
 		$input_errors[] = "The field 'Connection timeout' value is not a number.";
 	}
-	if ($_POST['server_timeout'] !== "" && !is_numeric($_POST['server_timeout'])) {
+	if (!empty($_POST['server_timeout']) && !is_numeric($_POST['server_timeout'])) {
 		$input_errors[] = "The field 'Server timeout' value is not a number.";
 	}
-	if ($_POST['retries'] !== "" && !is_numeric($_POST['retries'])) {
+	if (!empty($_POST['retries']) && !is_numeric($_POST['retries'])) {
 		$input_errors[] = "The field 'Retries' value is not a number.";
 	}
 	// the colon ":" is invalid in the username, other than that pretty much any character can be used.
@@ -453,7 +453,7 @@ if ($_POST) {
 
 	$a_errorfiles = $errorfileslist->haproxy_htmllist_get_values();
 
-	if ($_POST['strict_transport_security'] !== "" && !is_numeric($_POST['strict_transport_security'])) {
+	if (!empty($_POST['strict_transport_security']) && !is_numeric($_POST['strict_transport_security'])) {
 		$input_errors[] = "The field 'Strict-Transport-Security' is not empty or a number.";
 	}
 
