@@ -359,7 +359,7 @@ if ($_POST) {
 			}
 		}
 
-		if ($_POST['client_timeout'] !== "" && !is_numeric($_POST['client_timeout'])) {
+		if (!empty($_POST['client_timeout']) && !is_numeric($_POST['client_timeout'])) {
 			$input_errors[] = sprintf(gettext("The value '%s' in field 'Client timeout' is not a number."), htmlspecialchars($_POST['client_timeout']));
 		}
 	}
