@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Telegraf
 PORTVERSION=	0.9
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
