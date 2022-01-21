@@ -260,7 +260,7 @@ if (!empty($act)) {
 	} else {
 		$cert = $config['cert'][$crtid];
 	}
-	if (!$usepkcs11 && !$usetoken && empty($cert['prv'])) { 
+	if (($srvcfg['mode'] != "server_user") && !$usepkcs11 && !$usetoken && empty($cert['prv'])) {
 		$input_errors[] = "A private key cannot be empty if PKCS#11 or Microsoft Certificate Storage is not used.";
 	}
 
