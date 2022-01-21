@@ -30,7 +30,4 @@ $message .= implode(' ', array_slice($argv, 1));
 
 send_smtp_message($message, $subject);
 
-notify_all_remote($subject . " - " . $message);
-
-?>
-
+@notify_all_remote($subject . " - " . $message);
