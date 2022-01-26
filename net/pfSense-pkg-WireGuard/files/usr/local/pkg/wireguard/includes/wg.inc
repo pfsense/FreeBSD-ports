@@ -1103,6 +1103,8 @@ function wg_make_tunnel_conf_file($tunnel, $include_endpoint = false) {
 function wg_download_tunnel($tunnel_name, $failure_redirect) {
 	global $wgg;
 
+	$tunnel_name = basename(trim($tunnel_name));
+
 	// Fetch and build the latest info
 	wg_resync();
 

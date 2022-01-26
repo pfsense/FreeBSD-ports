@@ -73,35 +73,42 @@ if ($_POST) {
 
 		$tun_name = $_POST['tun'];
 
-		switch ($_POST['act']) {
+		/* Check if the submitted tunnel exists
+		 * https://redmine.pfsense.org/issues/12731
+		 */
+		$tun_found = false;
+		if (is_array($wgg['tunnels']) && count($wgg['tunnels']) > 0) {
+			foreach ($wgg['tunnels'] as $tunnel) {
+				if ($tunnel['name'] == $tun_name) {
+					$tun_found = true;
+					break;
+				}
+			}
+		}
 
-			case 'download':
-
-				wg_download_tunnel($tun_name, '/wg/vpn_wg_tunnels.php');
-
-				exit();
-
-				break;
-
-			case 'toggle':
-				
-				$res = wg_toggle_tunnel($tun_name);
-				
-				break;
-
-			case 'delete':
-
-				$res = wg_delete_tunnel($tun_name);
-
-				break;
-
-			default:
-
-				// Shouldn't be here, so bail out.
-				header('Location: /wg/vpn_wg_tunnels.php');
-
-				break;
-
+		if ($tun_found) {
+			switch ($_POST['act']) {
+				case 'download':
+					wg_download_tunnel($tun_name, '/wg/vpn_wg_tunnels.php');
+					exit();
+					break;
+				case 'toggle':
+					$res = wg_toggle_tunnel($tun_name);
+					break;
+				case 'delete':
+					$res = wg_delete_tunnel($tun_name);
+					break;
+				default:
+					// Shouldn't be here, so bail out.
+					header('Location: /wg/vpn_wg_tunnels.php');
+					break;
+			}
+			$input_errors = $res['input_errors'];
+		} else {
+			/* User submitted a tunnel that does not exist, so bail.
+			 * https://redmine.pfsense.org/issues/12731
+			 */
+			$input_errors = array(gettext("The requested tunnel does not exist."));
 		}
 
 		$input_errors = $res['input_errors'];
