@@ -189,6 +189,19 @@ function squid_gen_extra_ca() {
 
 	unlink_if_exists("{$capath}/*.0");
 
+	/* add Trust Store CAs, see https://redmine.pfsense.org/issues/12738 */
+	init_config_arr(array('ca'));
+	foreach ($config['ca'] as $ca) {
+		/* If the entry is invalid or is not trusted, skip it. */
+		if (!is_array($ca) ||
+		    empty($ca['crt']) ||
+		    !isset($ca['trust']) ||
+		    ($ca['trust'] != "enabled")) {
+			continue;
+		}
+		ca_setup_capath($ca, $capath);
+	}
+
 	if (is_array($config['installedpackages']['squid']['config']) &&
 	    !empty($config['installedpackages']['squid']['config'][0]['extraca'])) {
 		$extraca = $config['installedpackages']['squid']['config'][0]['extraca'];
@@ -196,17 +209,7 @@ function squid_gen_extra_ca() {
 			$param = array('caref' => $extraca);
 			$cas = ca_chain_array($param);
 			foreach ($cas as $ca) {
-				if (function_exists('ca_setup_capath')) {
-					ca_setup_capath($ca, $capath);
-				} else {
-					$cert_contents = base64_decode($ca['crt']);
-					$cert_details = openssl_x509_parse($cert_contents);
-					$ca_filename = "{$capath}/{$cert_details['hash']}.0";
-					file_put_contents($ca_filename, $cert_contents);
-					chmod($ca_filename, 0644);
-					chown($ca_filename, 'root');
-					chgrp($ca_filename, 'wheel');
-				}
+				ca_setup_capath($ca, $capath);
 			}
 		}
 	}
