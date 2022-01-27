@@ -561,14 +561,14 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 	// If the user chose to include WAN DNS servers, then do so.
 	if ($wandns == 'yes') {
 		// Add DNS server for WAN interface to Pass List
-		$dns_servers = get_dns_servers();
+		$dns_servers = get_dns_nameservers(false, true);
 		foreach ($dns_servers as $dns) {
 			if (is_ipaddrv4($dns)) {
 				$dns .= "/32";
-			} elseif (is_ipaddrv6($dns)) {
+			} else {
 				$dns .= "/128";
 			}
-			if ($dns && !in_array($dns, $home_net)) {
+			if (!in_array($dns, $home_net)) {
 				$home_net[] = $dns;
 			}
 		}
@@ -577,12 +577,16 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 	// If the user chose to include Virtual IPs, then do so.
 	if($vips == 'yes') {
 		// iterate all vips and add to passlist
+		init_config_arr(array('virtualip', 'vip'));
 		if (is_array($config['virtualip']) && is_array($config['virtualip']['vip'])) {
 			foreach($config['virtualip']['vip'] as $vip) {
-				if ($vip['subnet']) {
-					if (!in_array("{$vip['subnet']}/{$vip['subnet_bits']}", $home_net)) {
-						$home_net[] = "{$vip['subnet']}/{$vip['subnet_bits']}";
-					}
+				if (is_ipaddrv4($vip['subnet'])) {
+					$ip = gen_subnet($vip['subnet'], $vip['subnet_bits']) . "/{$vip['subnet_bits']}";
+				} else {
+					$ip = gen_subnetv6($vip['subnet'], $vip['subnet_bits']) . "/{$vip['subnet_bits']}";
+				}
+				if (!in_array($ip, $home_net)) {
+					$home_net[] = $ip;
 				}
 			}
 		}

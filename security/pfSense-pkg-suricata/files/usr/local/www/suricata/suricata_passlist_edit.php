@@ -256,8 +256,8 @@ $section->addInput(new Form_Checkbox(
 ));
 $section->addInput(new Form_Checkbox(
 	'vips',
-	'Virtual IP Addresses',
-	'Add Virtual IP Addresses to the list. Default is Checked.',
+	'Virtual IP Networks',
+	'Add Virtual IP Networks to the list. Default is Checked.',
 	$pconfig['vips'] == 'yes' ? true:false,
 	'yes'
 ));
