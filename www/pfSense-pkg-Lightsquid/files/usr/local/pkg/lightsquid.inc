@@ -439,13 +439,10 @@ function lightsquid_setup_cron($active=false) {
 
 	if ($active && $cron_schedule) {
 		$on = false;
+		$update_cron = true;
+		$lightsquid_cron_entry = false;
 		$opt = array("*", "*", "*", "*", "*", "root");
-		// remove old cronjobs first ...
-		log_error("[lightsquid] Removing old cronjobs...");
-		install_cron_job($lightsquid_parser_today, false);
-		install_cron_job($lightsquid_parser_yesterday, false);
-		// ... and configure updated cronjobs if needed
-		switch($cron_schedule) {
+		switch ($cron_schedule) {
 			case 'lhp_none': $on = false; break;
 			case 'lhp_10m':  $on = true; $opt[0]= "*/10"; break;
 			case 'lhp_20m':  $on = true; $opt[0]= "*/20"; break;
@@ -461,7 +458,24 @@ function lightsquid_setup_cron($active=false) {
 			case 'lhp_12h':  $on = true; $opt[0]= "0"; $opt[1]= "*/12"; break;
 			case 'lhp_24h':  $on = true; $opt[0]= "45"; $opt[1]= "23";   break; // daily at 23:45
 		}
-		if ($on) {
+		init_config_arr(array('cron', 'item'));
+		foreach ($config['cron']['item'] as $item) {
+			if ($item['command'] == $lightsquid_parser_today) {
+				if (($item['minute'] == $opt[0]) && ($item['hour'] == $opt[1])) {
+					$update_cron = false;
+				}
+				$lightsquid_cron_entry = true;
+				break;
+			}
+		}
+		if ((!$on && $lightsquid_cron_entry) || $update_cron) {
+			// remove old cronjobs first ...
+			log_error("[lightsquid] Removing old cronjobs...");
+			install_cron_job($lightsquid_parser_today, false);
+			install_cron_job($lightsquid_parser_yesterday, false);
+		}
+		// ... and configure updated cronjobs if needed
+		if ($on && $update_cron) {
 			log_error("[lightsquid] Updating cronjobs...");
 			install_cron_job($lightsquid_parser_today, $on, $opt[0], $opt[1], $opt[2], $opt[3], $opt[4], $opt[5]);
 			// fix possible data lost with 00:00 script start - rescan yesterday
