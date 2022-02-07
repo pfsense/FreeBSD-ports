@@ -698,6 +698,7 @@ function frr_zebra_generate_staticroutes() {
 /* Generate a convenience list of accept filters */
 function frr_zebra_generate_acceptfilters() {
 	global $config, $frr_config_base;
+	$seq = 10;
 
 	/* Check OSPF Interfaces for automatic accept filters */
 	if (is_array($config['installedpackages']['frrospfdinterfaces']['config'])) {
@@ -708,15 +709,16 @@ function frr_zebra_generate_acceptfilters() {
 			}
 			if (!empty($conf['acceptfilter']) && is_ipaddrv4($subnet) && is_numericint($interface_subnet)) {
 				$noaccept = $noaccept ?: "";
-				$noaccept .= "ip prefix-list ACCEPTFILTER deny {$subnet}/{$interface_subnet}\n";
-				$noaccept .= "ip prefix-list ACCEPTFILTER deny {$interface_ip}/32\n";
+				$noaccept .= "ip prefix-list ACCEPTFILTER seq {$seq} deny {$subnet}/{$interface_subnet}\n";
+				$seq += 10;
+				$noaccept .= "ip prefix-list ACCEPTFILTER seq {$seq} deny {$interface_ip}/32\n";
+				$seq += 10;
 			}
 		}
 	}
 
 	/* Check FRR configuration network list for accept filter entries */
 	if (is_array($config['installedpackages']['frr']['config'][0]['row'])) {
-		$seq = 10;
 		foreach ($config['installedpackages']['frr']['config'][0]['row'] as $redistr) {
 			if (isset($redistr['acceptfilter'])) {
 				$noaccept = $noaccept ?: "";
