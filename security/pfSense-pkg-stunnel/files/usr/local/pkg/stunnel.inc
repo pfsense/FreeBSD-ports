@@ -34,69 +34,93 @@ define('STUNNEL_CHROOTDIR', '/var/tmp/stunnel');
 function stunnel_save() {
 	global $config;
 
-	stunnel_make_directories();
-	$fout = fopen(STUNNEL_ETCDIR . "/stunnel.conf", "w");
-	fwrite($fout, "cert = " . STUNNEL_ETCDIR . "/stunnel.pem \n");
-	fwrite($fout, "chroot = " . STUNNEL_CHROOTDIR . " \n");
-	fwrite($fout, "setuid = stunnel \n");
-	fwrite($fout, "setgid = stunnel \n");
 	init_config_arr(array('installedpackages', 'stunnel', 'config'));
+	$stunnelconfig = &$config['installedpackages']['stunnel']['config'];
+	$stunnel_conf = STUNNEL_ETCDIR . "/stunnel.conf";
 
-	$pconfig = &$config['installedpackages']['stunnel']['config'];
+	if (is_array($stunnelconfig) && !empty($stunnelconfig)) {
+		stunnel_make_directories();
+		stunnel_rcfile();
+	} else {
+		if (isvalidproc("stunnel")) {
+			killbyname("stunnel");
+		}
+		rmdir_recursive(STUNNEL_ETCDIR);
+		rmdir_recursive(STUNNEL_CHROOTDIR);
+		unlink_if_exists("/usr/local/etc/rc.d/stunnel.sh");
+		return;
+	}
+
+	$conf = "cert = " . STUNNEL_ETCDIR . "/stunnel.pem \n";
+	$conf .= "chroot = " . STUNNEL_CHROOTDIR . " \n";
+	$conf .= "setuid = stunnel \n";
+	$conf .= "setgid = stunnel \n";
 
 	// Keep array of in-use certificates so we can clean up after ourselves.
 	$in_use_certs = array();
 	$in_use_certs[] = 'stunnel.pem';
 
-	foreach ($pconfig as $num => $pkgconfig) {
-		fwrite($fout, "\n[" . $pkgconfig['description'] . "]\n");
+	foreach ($stunnelconfig as $num => $pkgconfig) {
+		$conf .= "\n[" . $pkgconfig['description'] . "]\n";
 		if ($pkgconfig['client']) {
-			fwrite($fout, "client = yes" . "\n");
+			$conf .= "client = yes" . "\n";
 		}
 		if ($pkgconfig['certificate'] &&
 		    $pkgconfig['certificate'] != 'default') {
 			$cert = lookup_cert($pkgconfig['certificate']);
+			$cert_details = openssl_x509_parse(base64_decode($cert['crt']));
+			$replace_cert = true;
 			if ($cert != false) {
-				file_put_contents(STUNNEL_ETCDIR .
-				    "/{$pkgconfig['certificate']}.pem",
-				    trim(base64_decode($cert['prv'])) . "\n" .
-				    trim(base64_decode($cert['crt'])) . "\n" .
-				    ca_chain($cert));
-				fwrite($fout, "cert = " . STUNNEL_ETCDIR .
-				    "/{$pkgconfig['certificate']}.pem\n");
-				chmod(STUNNEL_ETCDIR .
-				    "/{$pkgconfig['certificate']}.pem", 0600);
-				$in_use_certs[] = $pkgconfig['certificate'] .
-				    ".pem";
-				$pconfig[$num]['certname'] = $cert['descr'];
+				$certpath = STUNNEL_ETCDIR .  "/{$pkgconfig['certificate']}.pem";
+				if (file_exists($certpath)) {
+					$oldcert_details = openssl_x509_parse(file_get_contents($certpath));
+					if ($cert_details['hash'] == $oldcert_details['hash']) {
+						$replace_cert = false;
+					}
+				}
+				if ($replace_cert) {
+					file_put_contents(STUNNEL_ETCDIR .
+					    "/{$pkgconfig['certificate']}.pem",
+					    trim(base64_decode($cert['prv'])) . "\n" .
+					    trim(base64_decode($cert['crt'])) . "\n" .
+					    ca_chain($cert));
+					chmod(STUNNEL_ETCDIR . "/{$pkgconfig['certificate']}.pem", 0600);
+				}
+				$conf .= "cert = " . STUNNEL_ETCDIR .  "/{$pkgconfig['certificate']}.pem\n";
+				$in_use_certs[] = $pkgconfig['certificate'] . ".pem";
+				$stunnelconfig[$num]['certname'] = $cert['descr'];
 			}
 		} else {
 			stunnel_make_default_cert();
 		}
 
 		if ($pkgconfig['sourceip']) {
-			fwrite($fout,
-			    "local = " . $pkgconfig['sourceip'] . "\n");
+			$conf .= "local = " . $pkgconfig['sourceip'] . "\n";
 		}
 
-		fwrite($fout, "accept = " . ($pkgconfig['localip']
-		    ? $pkgconfig['localip'] . ":" : "") .
-		    $pkgconfig['localport'] . "\n");
-		fwrite($fout, "connect = " . $pkgconfig['redirectip'] . ":" .
-		    $pkgconfig['redirectport'] . "\n");
-		fwrite($fout, "debug = " . $pkgconfig['loglevel'] . "\n");
+		$conf .= "accept = " . ($pkgconfig['localip'] ? $pkgconfig['localip'] . ":" : "") . $pkgconfig['localport'] . "\n";
+		$conf .= "connect = " . $pkgconfig['redirectip'] . ":" . $pkgconfig['redirectport'] . "\n";
+		$conf .= "debug = " . $pkgconfig['loglevel'] . "\n";
 		if ($pkgconfig['timeoutclose'] != "") {
-			fwrite($fout, "TIMEOUTclose = " .
-			    $pkgconfig['timeoutclose'] . "\n");
+			$conf .= "TIMEOUTclose = " . $pkgconfig['timeoutclose'] . "\n";
 		}
 		if ($pkgconfig['protocol']) {
-			fwrite($fout, "protocol = {$pkgconfig['protocol']}\n");
+			$conf .= "protocol = {$pkgconfig['protocol']}\n";
 		}
-		fwrite($fout, base64_decode($pkgconfig['custom_options']) .
-		    "\n");
+		$conf .= base64_decode($pkgconfig['custom_options']) . "\n";
 	}
-	fclose($fout);
-	write_config('stunnel configuration changed');
+
+	if (file_exists($stunnel_conf)) {
+		$oldconf = file_get_contents($stunnel_conf);
+	} else {
+		$oldconf = '';
+	}
+
+	if ($conf != $oldconf) {
+		file_put_contents($stunnel_conf, $conf);
+		write_config('stunnel configuration changed');
+		stunnel_sync_config();
+	}
 
 	// Clean up certs that are no longer in use.
 	foreach (glob(STUNNEL_ETCDIR . "/*.pem") as $file) {
@@ -105,9 +129,7 @@ function stunnel_save() {
 		}
 	}
 
-	stunnel_rcfile();
 	restart_service("stunnel");
-	stunnel_sync_config();
 }
 
 function stunnel_make_directories() {
@@ -170,19 +192,16 @@ function stunnel_rcfile() {
 	$_rcfile['start'] = STUNNEL_LOCALBASE . "/bin/stunnel " .
 	    STUNNEL_ETCDIR . "/stunnel.conf \n\t";
 	$_rcfile['stop'] = "/usr/bin/killall stunnel \n\t";
-	write_rcfile($_rcfile);
+	if (!file_exists("/usr/local/etc/rc.d/stunnel.sh")) {
+		write_rcfile($_rcfile);
+	}
 	unlink_if_exists("/usr/local/etc/rc.d/stunnel");
 }
 
-function stunnel_install() {
-	stunnel_make_directories();
-	stunnel_make_default_cert();
-	stunnel_rcfile();
-}
-
 function stunnel_deinstall() {
-	rmdir_recursive("/var/tmp/stunnel");
+	rmdir_recursive(STUNNEL_CHROOTDIR);
 	rmdir_recursive(STUNNEL_ETCDIR);
+	unlink_if_exists("/usr/local/etc/rc.d/stunnel.sh");
 }
 
 function stunnel_sync_config() {

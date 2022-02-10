@@ -100,7 +100,11 @@
 			<field>
 			<fielddescr>Protocol</fielddescr>
 			<fieldname>protocol</fieldname>
-			<description>Select a specific application protocol (https://www.stunnel.org/static/stunnel.html#protocol-PROTO)</description>
+			<description>
+				<![CDATA[
+				Select a specific application protocol (<a href="https://www.stunnel.org/static/stunnel.html#protocol-PROTO" target="_blank">https://www.stunnel.org/static/stunnel.html#protocol-PROTO</a>)
+				]]>
+			</description>
 			<type>input</type>
 		</field>
 		<field>
@@ -160,7 +164,11 @@
 			<fielddescr>Custom Options</fielddescr>
 			<fieldname>custom_options</fieldname>
 			<type>textarea</type>
-			<description>Custom service level options (https://www.stunnel.org/static/stunnel.html#SERVICE-LEVEL-OPTIONS)</description>
+			<description>
+				<![CDATA[
+				Custom service level options (<a href="https://www.stunnel.org/static/stunnel.html#SERVICE-LEVEL-OPTIONS" target="_blank">https://www.stunnel.org/static/stunnel.html#SERVICE-LEVEL-OPTIONS</a>)
+				]]>
+			</description>
 			<encoding>base64</encoding>
 		</field>
 	</fields>
@@ -175,9 +183,6 @@
 	<custom_delete_php_command>
 		stunnel_save();
 	</custom_delete_php_command>
-	<custom_php_install_command>
-		stunnel_install();
-	</custom_php_install_command>
 	<custom_php_deinstall_command>
 		stunnel_deinstall();
 	</custom_php_deinstall_command>
