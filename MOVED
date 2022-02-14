@@ -16475,6 +16475,8 @@ net-mgmt/zabbix52-frontend||2021-09-19|Has expired: Unsupported by upstream
 net-mgmt/zabbix52-java||2021-09-19|Has expired: Unsupported by upstream
 net-mgmt/zabbix52-proxy||2021-09-19|Has expired: Unsupported by upstream
 net-mgmt/zabbix52-server||2021-09-19|Has expired: Unsupported by upstream
+net-mgmt/pfSense-pkg-zabbix-agent52||2021-09-19|Has expired: Unsupported by upstream
+net-mgmt/pfSense-pkg-zabbix-proxy52||2021-09-19|Has expired: Unsupported by upstream
 sysutils/roottail|sysutils/root-tail|2021-09-26|Renamed to match upstream
 devel/py-pyyaml-env-tag|devel/py-pyyaml_env_tag|2021-09-28|Renamed to match upstream naming
 mail/opensmtpd-devel|mail/opensmtpd|2021-09-28|Has expired: move to offical releases
