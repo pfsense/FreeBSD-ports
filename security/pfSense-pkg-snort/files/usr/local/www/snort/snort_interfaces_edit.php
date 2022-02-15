@@ -32,7 +32,7 @@ $snortlogdir = SNORTLOGDIR;
 $netmapifs = array('cc', 'cxl', 'cxgbe', 'em', 'igb', 'em', 'lem', 'ix', 'ixgbe', 'ixl', 're', 'vtnet');
 if (pfs_version_compare(false, 2.4, $g['product_version'])) {
 	/* add FreeBSD 12 iflib(4) supported devices */
-	$netmapifs = array_merge($netmapifs, array('ena', 'ice', 'bnxt', 'vmx'));
+	$netmapifs = array_merge($netmapifs, array('ena', 'ice', 'igc', 'bnxt', 'vmx'));
 	sort($netmapifs);
 }
 
