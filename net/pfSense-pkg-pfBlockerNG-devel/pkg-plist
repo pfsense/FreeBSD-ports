@@ -11,6 +11,9 @@ pkg/pfblockerng/pfblockerng_extra.inc
 pkg/pfblockerng/pfblockerng_install.inc
 pkg/pfblockerng/shallalist_global_usage
 pkg/pfblockerng/ut1_global_usage
+pkg/pfblockerng/pfb_unbound.py
+pkg/pfblockerng/pfb_unbound_include.inc
+pkg/pfblockerng/pfb_py_hsts.txt
 www/pfblockerng/pfBlockerNG.js
 www/pfblockerng/pfblockerng.php
 www/pfblockerng/pfblockerng_asn.txt
@@ -38,6 +41,3 @@ www/wizards/pfblockerng_wizard.inc
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
 @dir /etc/inc
-/var/unbound/pfb_unbound.py
-/var/unbound/pfb_unbound_include.inc
-/var/unbound/pfb_py_hsts.txt
