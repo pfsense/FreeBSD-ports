@@ -434,6 +434,13 @@ if (file_exists('/var/db/pfblockerng/dnsbl.sqlite') && !file_exists($pfb['dnsbl_
 }
 unlink_if_exists('/var/db/pfblockerng/dnsbl.sqlite');
 
+// Update unbound python files
+if ($pfb['dnsbl_mode'] == 'dnsbl_python') {
+	@copy("/usr/local/pkg/pfblockerng/pfb_unbound.py", $g['unbound_chroot_path']);
+	@copy("/usr/local/pkg/pfblockerng/pfb_unbound_include.inc", $g['unbound_chroot_path']);
+	@copy("/usr/local/pkg/pfblockerng/pfb_py_hsts.txt", $g['unbound_chroot_path']);
+}
+
 if ($ufound) {
 	$final = pfb_stop_start_unbound('');
 }

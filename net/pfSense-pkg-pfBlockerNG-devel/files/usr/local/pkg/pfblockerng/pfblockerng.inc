@@ -488,6 +488,11 @@ function pfb_dnsbl_service() {
 	# Start DNSBL Resolver queries Daemon
 	if [ "\${unbound_mode}" == 'dnsbl_unbound' ]; then
 		/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblockerng.inc queries &
+	elif [ ! -e '/var/unbound/pfb_unbound.py' ]; then
+		cp /usr/local/pkg/pfblockerng/pfb_unbound.py /var/unbound/pfb_unbound.py
+		cp /usr/local/pkg/pfblockerng/pfb_unbound_include.inc /var/unbound/pfb_unbound_include.inc
+		cp /usr/local/pkg/pfblockerng/pfb_py_hsts.txt /var/unbound/pfb_py_hsts.txt
+		/usr/local/sbin/pfSctl -c 'service reload dns'
 	fi
 
 EOF;
@@ -1704,7 +1709,7 @@ function pfb_create_dnsbl($mode) {
 
 // Define DNSBL Unbound include settings (config.xml)
 function pfb_unbound_dnsbl($mode) {
-	global $config, $pfb;
+	global $g, $config, $pfb;
 	pfb_global();
 
 	// Reload config.xml to get any recent changes
@@ -1873,6 +1878,22 @@ function pfb_unbound_dnsbl($mode) {
 			$u_update = TRUE;
 			$u_msg .= "  Added DNSBL Unbound Python mode script\n";
 			$conf[] = "\npython:\npython-script: pfb_unbound.py\n";
+		}
+
+		if ($mode == 'enabled' && $pfb['dnsbl_mode'] == 'dnsbl_python') {
+			if (!file_exists("{$g['unbound_chroot_path']}/pfb_unbound.py")) {
+				@copy("/usr/local/pkg/pfblockerng/pfb_unbound.py", "{$g['unbound_chroot_path']}/pfb_unbound.py");
+			}
+			if (!file_exists("{$g['unbound_chroot_path']}/pfb_unbound_include.inc")) {
+				@copy("/usr/local/pkg/pfblockerng/pfb_unbound_include.inc", "{$g['unbound_chroot_path']}/pfb_unbound_include.inc");
+			}
+			if (!file_exists("{$g['unbound_chroot_path']}/pfb_py_hsts.txt")) {
+				@copy("/usr/local/pkg/pfblockerng/pfb_py_hsts.txt", "{$g['unbound_chroot_path']}/pfb_py_hsts.txt");
+			}
+		} else {
+			unlink_if_exists("{$g['unbound_chroot_path']}/pfb_unbound.py");
+			unlink_if_exists("{$g['unbound_chroot_path']}/pfb_unbound_include.inc");
+			unlink_if_exists("{$g['unbound_chroot_path']}/pfb_py_hsts.txt");
 		}
 
 		// Save changes to unbound.conf
@@ -6186,6 +6207,17 @@ function sync_package_pfblockerng($cron='') {
 		if ($pfb['dnsbl'] == 'on') {
 			pfb_create_dnsbl('enabled');
 		}
+		if ($pfb['dnsbl_mode'] == 'dnsbl_python') {
+			if (!file_exists("{$g['unbound_chroot_path']}/pfb_unbound.py")) {
+				@copy("/usr/local/pkg/pfblockerng/pfb_unbound.py", "{$g['unbound_chroot_path']}/pfb_unbound.py");
+			}
+			if (!file_exists("{$g['unbound_chroot_path']}/pfb_unbound_include.inc")) {
+				@copy("/usr/local/pkg/pfblockerng/pfb_unbound_include.inc", "{$g['unbound_chroot_path']}/pfb_unbound_include.inc");
+			}
+			if (!file_exists("{$g['unbound_chroot_path']}/pfb_py_hsts.txt")) {
+				@copy("/usr/local/pkg/pfblockerng/pfb_py_hsts.txt", "{$g['unbound_chroot_path']}/pfb_py_hsts.txt");
+			}
+		}
 		$log = 'Sync terminated during boot process.';
 		pfb_logger("\n{$log}\nUPDATE PROCESS ENDED [ NOW ]\n", 1);
 		log_error("[pfBlockerNG] {$log}");
@@ -9707,7 +9739,7 @@ function sync_package_pfblockerng($cron='') {
 // Function to De-Install pfBlockerNG
 function pfblockerng_php_pre_deinstall_command() {
 	require_once('config.inc');
-	global $config, $pfb;
+	global $g, $config, $pfb;
 
 	// Set these two variables to disable pfBlockerNG on de-install
 	$pfb['save'] = $pfb['install'] = TRUE;
@@ -9769,6 +9801,10 @@ function pfblockerng_php_pre_deinstall_command() {
 	unlink_if_exists("{$pfb['dnsbl_cache']}");
 	unlink_if_exists("/var/tmp/unbound_cache");
 	unlink_if_exists("{$pfb['ip_cache']}");
+
+	unlink_if_exists("{$g['unbound_chroot_path']}/pfb_unbound.py");
+	unlink_if_exists("{$g['unbound_chroot_path']}/pfb_unbound_include.inc");
+	unlink_if_exists("{$g['unbound_chroot_path']}/pfb_py_hsts.txt");
 
 	// Remove incorrect xml setting
 	if (isset($config['installedpackages']['pfblockerngantartica'])) {
