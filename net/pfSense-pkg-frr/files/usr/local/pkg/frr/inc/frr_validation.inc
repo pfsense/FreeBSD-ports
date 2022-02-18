@@ -243,9 +243,9 @@ function frr_global_prefixes_validate_input() {
 		$input_errors[] = "Prefix List name may only contain the characters a-z, A-Z, 0-9, '-', '_' and '.'";
 	}
 
-	/* Do not allow a name of: ACCEPTFILTER */
-	if ($_POST['name'] == 'ACCEPTFILTER') {
-		$input_errors[] = "Prefix List name 'ACCEPTFILTER' is not allowed.";
+	/* Do not allow a name of: ACCEPTFILTER and ACCEPTFILTER6 */
+	if (($_POST['name'] == 'ACCEPTFILTER') || ($_POST['name'] == 'ACCEPTFILTER6')) {
+		$input_errors[] = "Prefix List name 'ACCEPTFILTER' and 'ACCEPTFILTER6' is not allowed.";
 	}
 
 	foreach ($_POST as $key => $value) {
