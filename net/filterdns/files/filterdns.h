@@ -74,6 +74,7 @@ struct action {
 	int flags;
 	int type;
 	char *tablename;
+	char *anchor;
 	int pipe;
 	char *cmd;
 	char *hostname;
@@ -86,8 +87,8 @@ TAILQ_HEAD(action_list, action) action_list;
 
 int parse_config(char *);
 const char *action_to_string(int);
-struct action *action_add(int, const char *, const char *, int, const char *,
-    int *);
+struct action *action_add(int, const char *, const char *, const char *,
+    int, const char *, int *);
 struct thread_host *host_add(struct action *);
 struct _addr_entry *addr_add(struct addr_list *, const char *,
     struct sockaddr *, uint32_t);

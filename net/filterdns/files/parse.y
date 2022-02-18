@@ -72,7 +72,7 @@ typedef struct {
 %token	<v.number>	NUMBER
 %type	<v.number>	ftype
 %type	<v.number>	pipe
-%type	<v.string>	command
+%type	<v.string>	anchor command
 
 %%
 
@@ -82,7 +82,7 @@ grammar		: /* empty */
 		| grammar error '\n' { errors++; }
 		;
 
-dnsrule		: ftype STRING STRING pipe command {
+dnsrule		: ftype STRING STRING anchor pipe command {
 			int eexist;
 			struct action *act = NULL;
 			struct thread_host *thr = NULL;
@@ -91,12 +91,16 @@ dnsrule		: ftype STRING STRING pipe command {
 				yyerror("Wrong configuration parameters");
 				YYERROR;
 			}
-			act = action_add($1, $2, $3, $4, $5, &eexist);
+			if ($1 != PF_TYPE && $4 != NULL) {
+				yyerror("Anchors are only supported for pf");
+				YYERROR;
+			}
+			act = action_add($1, $2, $3, $4, $5, $6, &eexist);
 			free($2);
 			if ($3)
 				free($3);
-			if ($5)
-				free($5);
+			if ($6)
+				free($6);
 			if (eexist != 0) {
 				yyerror("filterdns: duplicate configuration entry found");
 				free($2);
@@ -123,7 +127,7 @@ dnsrule		: ftype STRING STRING pipe command {
 				yyerror("Hostname and Command are mandatory on CMD type directive");
 				YYERROR;
 			}
-			act = action_add(CMD_TYPE, $2, NULL, 0, $3, &eexist);
+			act = action_add(CMD_TYPE, $2, NULL, NULL, 0, $3, &eexist);
 			free($2);
 			free($3);
 			if (eexist != 0) {
@@ -143,6 +147,10 @@ dnsrule		: ftype STRING STRING pipe command {
 				YYERROR;
 			}
 		}
+		;
+
+anchor		: { }
+		| STRING { $$ = $1; }
 		;
 
 ftype		: IPFW { $$ = IPFW_TYPE; }

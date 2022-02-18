@@ -87,11 +87,14 @@ check_action(void *arg)
 		pthread_cond_wait(&act->cond, &act->mtx);
 		if (debug >= 6)
 			syslog(LOG_WARNING,
-			    "\tAwaking from the sleep for type: %s %s%s%shostname: %s",
+			    "\tAwaking from the sleep for type: %s %s%s%s%s%s%shostname: %s",
 			    action_to_string(act->type),
 			    (act->tablename != NULL ? "table: " : ""),
 			    (act->tablename != NULL ? act->tablename : ""),
 			    (act->tablename != NULL ? " " : ""),
+			    (act->anchor != NULL ? "anchor: " : ""),
+			    (act->anchor != NULL ? act->anchor : ""),
+			    (act->anchor != NULL ? " " : ""),
 			    act->hostname);
 
 		pthread_rwlock_rdlock(&main_lock);
@@ -124,9 +127,9 @@ check_action(void *arg)
 				error = table_update(act);
 				if (debug >= 4)
 					syslog(LOG_WARNING,
-					    "\tUpdated %s table %s host: %s error: %d",
+					    "\tUpdated %s table %s anchor %s host: %s error: %d",
 					    action_to_string(act->type),
-					    act->tablename, act->hostname,
+					    act->tablename, act->anchor, act->hostname,
 					    error);
 			}
 		}
@@ -160,11 +163,14 @@ action_create(struct action *act, pthread_attr_t *attr)
 	act->flags = ACT_FORCE;
 	if (debug > 3)
 		syslog(LOG_INFO,
-		    "Creating a new thread for action type: %s %s%s%shostname: %s",
+		    "Creating a new thread for action type: %s %s%s%s%s%s%shostname: %s",
 		    action_to_string(act->type),
 		    (act->tablename != NULL ? "table: " : ""),
 		    (act->tablename != NULL ? act->tablename : ""),
 		    (act->tablename != NULL ? " " : ""),
+		    (act->anchor != NULL ? "anchor: " : ""),
+		    (act->anchor != NULL ? act->anchor : ""),
+		    (act->anchor != NULL ? " " : ""),
 		    act->hostname);
 
 	if (pthread_cond_init(&act->cond, NULL) != 0 ||
@@ -182,8 +188,8 @@ action_create(struct action *act, pthread_attr_t *attr)
 }
 
 struct action *
-action_add(int type, const char *hostname, const char *tablename, int pipe,
-    const char *cmd, int *eexist)
+action_add(int type, const char *hostname, const char *tablename,
+    const char *anchor, int pipe, const char *cmd, int *eexist)
 {
 	char *buf, tmp[16];
 	struct action *search, *act;
@@ -197,6 +203,13 @@ action_add(int type, const char *hostname, const char *tablename, int pipe,
 		if (search->tablename != NULL && tablename != NULL &&
 		    (strlen(search->tablename) != strlen(tablename) ||
 		    strcmp(search->tablename, tablename) != 0))
+			continue;
+		if ((search->anchor != NULL && anchor == NULL) ||
+		    (search->anchor == NULL && anchor != NULL))
+			continue;
+		if (search->anchor != NULL && anchor != NULL &&
+		    (strlen(search->anchor) != strlen(anchor) ||
+		    strcmp(search->anchor, anchor) != 0))
 			continue;
 		if ((search->cmd != NULL && cmd == NULL) ||
 		    (search->cmd == NULL && cmd != NULL))
@@ -229,6 +242,8 @@ action_add(int type, const char *hostname, const char *tablename, int pipe,
 		act->cmd = strdup(cmd);
 	if (tablename != NULL)
 		act->tablename = strdup(tablename);
+	if (anchor != NULL)
+		act->anchor = strdup(anchor);
 	TAILQ_INSERT_TAIL(&action_list, act, next_list);
 
 	buf = calloc(1, _BUF_SIZE);
@@ -237,6 +252,10 @@ action_add(int type, const char *hostname, const char *tablename, int pipe,
 	if (tablename != NULL) {
 		strlcat(buf, " table: ", _BUF_SIZE);
 		strlcat(buf, tablename, _BUF_SIZE);
+	}
+	if (anchor != NULL) {
+		strlcat(buf, " anchor: ", _BUF_SIZE);
+		strlcat(buf, anchor, _BUF_SIZE);
 	}
 	if (type == IPFW_TYPE && pipe > 0) {
 		strlcat(buf, " pipe: ", _BUF_SIZE);
@@ -263,11 +282,14 @@ action_del(struct action *act, struct action_list *actlist)
 {
 	if (debug >= 4)
 		syslog(LOG_INFO,
-		    "Cleaning up action type: %s %s%s%shostname: %s",
+		    "Cleaning up action type: %s %s%s%s%s%s%shostname: %s",
 		    action_to_string(act->type),
 		    (act->tablename != NULL ? "table: " : ""),
 		    (act->tablename != NULL ? act->tablename : ""),
 		    (act->tablename != NULL ? " " : ""),
+			(act->anchor != NULL ? "anchor: " : ""),
+			(act->anchor != NULL ? act->anchor : ""),
+			(act->anchor != NULL ? " " : ""),
 		    act->hostname);
 	host_del(act);
 	TAILQ_REMOVE(actlist, act, next_list);
@@ -277,6 +299,8 @@ action_del(struct action *act, struct action_list *actlist)
 		free(act->hostname);
 	if (act->tablename != NULL)
 		free(act->tablename);
+	if (act->anchor != NULL)
+		free(act->anchor);
 	if (act->cmd != NULL)
 		free(act->cmd);
 	free(act);
@@ -730,6 +754,13 @@ merge_config(void *arg __unused) {
 				if (tmpact->tablename != NULL && act->tablename != NULL &&
 				    (strlen(tmpact->tablename) != strlen(act->tablename) ||
 				     strcmp(tmpact->tablename, act->tablename) != 0))
+					continue;
+				if ((tmpact->anchor == NULL && act->anchor != NULL) ||
+				    (tmpact->anchor != NULL && act->anchor == NULL))
+					continue;
+				if (tmpact->anchor != NULL && act->anchor != NULL &&
+				    (strlen(tmpact->anchor) != strlen(act->anchor) ||
+				     strcmp(tmpact->anchor, act->anchor) != 0))
 					continue;
 
 				/* Remove the new copy and use the existing entry. */

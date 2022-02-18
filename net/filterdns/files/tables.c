@@ -120,21 +120,21 @@ table_update(struct action *act)
 				    buffer, sizeof(buffer));
 			if (add > 0 && error == EEXIST)
 				syslog(LOG_WARNING,
-				    "\t\t%s %s address, table: %s host: %s address: %s",
+				    "\t\t%s %s address, table: %s anchor: %s host: %s address: %s",
 				    "Already exist",
-				    action_to_string(act->type), act->tablename,
+				    action_to_string(act->type), act->tablename, act->anchor,
 				    act->hostname, buffer);
 			else if (error != 0)
 				syslog(LOG_WARNING,
-				    "\t\t%s %s address, table: %s host: %s address: %s error: %d",
+				    "\t\t%s %s address, table: %s anchor: %s host: %s address: %s error: %d",
 				    ((add > 0) ? "FAILED to add" : "FAILED to remove"),
-				    action_to_string(act->type), act->tablename,
+				    action_to_string(act->type), act->tablename, act->anchor,
 				    act->hostname, buffer, error);
 			else
 				syslog(LOG_WARNING,
-				    "\t\t%s %s address, table: %s host: %s address: %s",
+				    "\t\t%s %s address, table: %s anchor: %s host: %s address: %s",
 				    ((add > 0) ? "Added" : "Removed"),
-				    action_to_string(act->type), act->tablename,
+				    action_to_string(act->type), act->tablename, act->anchor,
 				    act->hostname, buffer);
 		}
 	}
@@ -345,7 +345,7 @@ set_ipmask(struct in6_addr *h, int b)
 }
 
 static int
-pf_table_create(int dev, const char *tablename)
+pf_table_create(int dev, const char *anchor, const char *tablename)
 {
 	struct pfioc_table io;
 	struct pfr_table table;
@@ -358,6 +358,16 @@ pf_table_create(int dev, const char *tablename)
 			    __func__, tablename);
 		return (-1);
 	}
+	if (anchor != NULL) {
+		if (strlcpy(table.pfrt_anchor, anchor,
+		    sizeof(table.pfrt_anchor)) >= sizeof(table.pfrt_anchor)) {
+			if (debug >= 1)
+				syslog(LOG_WARNING, "%s: could not set anchor: %s",
+				    __func__, anchor);
+			return (-1);
+		}
+	}
+
 	table.pfrt_flags |= PFR_TFLAG_PERSIST;
 
 	memset(&io, 0, sizeof(io));
@@ -391,6 +401,15 @@ pf_tableentry(struct action *act, struct sockaddr *addr, int action)
 			    __func__, act->tablename);
 		return (-1);
 	}
+	if (act->anchor != NULL) {
+		if (strlcpy(table.pfrt_anchor, act->anchor,
+			sizeof(table.pfrt_anchor)) >= sizeof(table.pfrt_anchor)) {
+			if (debug >= 1)
+				syslog(LOG_WARNING, "%s: could not set anchor: %s",
+					__func__, act->anchor);
+			return (-1);
+		}
+	}
 
 	bzero(&pfaddr, sizeof(pfaddr));
 	if (addr->sa_family == AF_INET) {
@@ -423,7 +442,7 @@ pf_tableentry(struct action *act, struct sockaddr *addr, int action)
 
 		if (ACTION_IS_ADD(action)) {
 			/* Create the Table if it does not exist. */
-			error = pf_table_create(dev, act->tablename);
+			error = pf_table_create(dev, act->anchor, act->tablename);
 			if (error != 0)
 				continue;
 		}
