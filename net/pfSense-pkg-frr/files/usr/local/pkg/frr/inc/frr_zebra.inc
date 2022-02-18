@@ -634,7 +634,8 @@ function frr_zebra_generate_nullroutes() {
 	/* Check FRR configuration network list for null route entries */
 	foreach ($config['installedpackages']['frr']['config'][0]['row'] as $redistr) {
 		if (isset($redistr['nullroute']) && is_subnet($redistr['routevalue'])) {
-			$nullroutes .= "ip route {$redistr['routevalue']} Null0\n";
+			$ipproto = is_subnetv4($redistr['routevalue']) ? 'ip' : 'ipv6';
+			$nullroutes .= "{$ipproto} route {$redistr['routevalue']} Null0\n";
 		}
 	}
 	if (!empty($nullroutes)) {
@@ -684,7 +685,8 @@ function frr_zebra_generate_staticroutes() {
 					continue 2;
 			}
 			if (!empty($target)) {
-				$staticroutes .= "ip route {$redistr['routevalue']} {$target}\n";
+				$ipproto = is_subnetv4($redistr['routevalue']) ? 'ip' : 'ipv6';
+				$staticroutes .= "{$ipproto} route {$redistr['routevalue']} {$target}\n";
 			}
 		}
 	}
