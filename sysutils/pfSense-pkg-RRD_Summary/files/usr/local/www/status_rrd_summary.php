@@ -24,9 +24,9 @@ require_once("guiconfig.inc");
 $unitlist = array("MiB" => 2, "GiB" => 3, "TiB" => 4, "PiB" => 5);
 
 // validate interface
-$iflist = get_configured_interface_list();
+$iflist = get_configured_interface_with_descr();
 $interface = filter_input(INPUT_POST, "interface", FILTER_SANITIZE_STRING);
-$interface = in_array($interface, $iflist) ? $interface : "wan";
+$interface = array_key_exists($interface, $iflist) ? $interface : "wan";
 
 // get rrd bounds for interface
 $rrd = "{$interface}-traffic.rrd";
@@ -93,7 +93,7 @@ function print_rrd_summary($rrd, $units, $startyear, $startday) {
 			$data = fetch_rrd_summary($rrd, "epoch+{$start}s", "epoch+{$end}s", $units, 24*60*60);
 			?>
 				<tr>
-					<td><?=date("Y-m-d", $start); ?> to <?=date("m-d-Y", $end); ?></td>
+					<td><?=date("Y-m-d", $start); ?> to <?=date("Y-m-d", $end); ?></td>
 					<td><?=sprintf("%0.2f %s", $data["total_in"], $u[$units]); ?></td>
 					<td><?=sprintf("%0.2f %s", $data["total_out"], $u[$units]); ?></td>
 					<td><?=sprintf("%0.2f %s", $data["total_in"] + $data["total_out"], $u[$units]); ?></td>
@@ -112,8 +112,8 @@ $form = new Form(false);
 $section = new Form_Section('Select RRD Parameters');
 
 $if_options = array();
-foreach ($iflist as $i) {
-	$if_options[$i] = $i;
+foreach ($iflist as $i => $ifdesc) {
+	$if_options[$i] = $ifdesc . " (" . $i . ") ";
 }
 
 $section->addInput(new Form_Select(
