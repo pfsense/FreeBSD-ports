@@ -21,12 +21,14 @@
 require_once("globals.inc");
 require_once("util.inc");
 require_once("pfsense-utils.inc");
+require_once("patches/manifest.inc");
 
-global $git_root_url, $patch_suffix, $patch_dir, $patch_cmd;
-$git_root_url = "https://github.com/pfsense/pfsense/commit/";
-$patch_suffix = ".patch";
-$patch_dir = "/var/patches";
-$patch_cmd = "/usr/bin/patch";
+global $git_root_url, $patch_suffix, $patch_dir, $patch_cmd, $recommended_patches;
+$git_root_url = 'https://github.com/pfsense/pfsense/commit/';
+$patch_suffix = '.patch';
+$patch_dir = '/var/patches/';
+$rec_patch_dir = '/usr/local/pkg/patches/';
+$patch_cmd = '/usr/bin/patch';
 
 function patch_package_install() {
 	patch_add_shellcmd();
@@ -37,23 +39,49 @@ function patch_package_deinstall() {
 }
 
 function patch_commit($patch, $action, $test=false, $fulldetail=false) {
-	global $patch_dir, $patch_cmd, $patch_suffix;
-	$directory = empty($patch['basedir']) ? "/" : $patch['basedir'];
-	$filename = '-i ' . $patch_dir . '/' . $patch['uniqid'] . $patch_suffix;
+	global $patch_dir, $rec_patch_dir, $patch_cmd, $patch_suffix;
+	/* Check if this is a recommended patch so the test does not need to be repeated each time */
+	$is_recommended = array_key_exists('versions', $patch);
+
+	$directory = escapeshellarg(empty($patch['basedir']) ? "/" : $patch['basedir']);
+
+	/* If this is a recommended patch, pull it from the default location */
+	$pdir = $is_recommended ? $rec_patch_dir : $patch_dir;
+	$filename = '-i ' . escapeshellarg($pdir . basename($patch['uniqid']) . $patch_suffix);
+
 	$check = ($test) ? "--check" : "";
 	$force = ($action == "revert") ? "-f" : "-t";
 	$direction = ($action == "revert") ? "--reverse" : "--forward";
 	$whitespace = isset($patch['ignorewhitespace']) ? "--ignore-whitespace" : "";
-	$pathstrip = '-p' . $patch['pathstrip'];
+	$pathstrip = ' --strip ' . escapeshellarg($patch['pathstrip']);
 	$full_patch_command = "{$patch_cmd} --directory={$directory} {$force} {$pathstrip} {$filename} {$check} {$direction} {$whitespace}";
-	patch_write($patch);
+
+	/* Recommended patches do not need rewritten, they are always present on the filesystem. */
+	if (!$is_recommended) {
+		patch_write($patch);
+	}
+
 	if (!$fulldetail) {
 		$output = (mwexec($full_patch_command, true) == 0);
 	} else {
 		$output = $full_patch_command . "\n\n" . shell_exec($full_patch_command . ' 2>&1');
 	}
-	patch_erase($patch);
+
+	if (!$is_recommended) {
+		patch_erase($patch);
+	}
 	return $output;
+}
+
+/* Locate and return a recommended patch by ID */
+function get_recommended_patch($uniqid) {
+	global $recommended_patches;
+	foreach ($recommended_patches as $rp) {
+		if ($rp['uniqid'] == $uniqid) {
+			return $rp;
+		}
+	}
+	return array();
 }
 
 /* Attempt to apply a patch */
@@ -117,7 +145,7 @@ function patch_write($patch) {
 		return false;
 	} else {
 		$text = base64_decode($patch['patch']);
-		$filename = $patch_dir . '/' . $patch['uniqid'] . $patch_suffix;
+		$filename = $patch_dir . $patch['uniqid'] . $patch_suffix;
 		return (file_put_contents($filename, $text) > 0);
 	}
 }
@@ -127,7 +155,7 @@ function patch_erase($patch) {
 	if (!file_exists($patch_dir)) {
 		return true;
 	}
-	$filename = $patch_dir . '/' . $patch['uniqid'] . $patch_suffix;
+	$filename = $patch_dir . $patch['uniqid'] . $patch_suffix;
 	return @unlink($filename);
 }
 
@@ -164,19 +192,7 @@ function is_github_url($url) {
 function bootup_apply_patches() {
 	global $config;
 
-	if (!is_array($config['installedpackages'])) {
-		$config['installedpackages'] = array();
-	}
-
-	if (!is_array($config['installedpackages']['patches'])) {
-		$config['installedpackages']['patches'] = array();
-	}
-
-	if (!isset($config['installedpackages']['patches']['item']) ||
-	    !is_array($config['installedpackages']['patches']['item'])) {
-		$config['installedpackages']['patches']['item'] = array();
-	}
-
+	init_config_arr(array('installedpackages', 'patches', 'item'));
 	$a_patches = &$config['installedpackages']['patches']['item'];
 
 	foreach ($a_patches as $id => $patch) {
@@ -184,7 +200,7 @@ function bootup_apply_patches() {
 		   only attempt to apply if it can be applied;
 		   and	if it can be reverted it is presumably already applied, so skip it. */
 		if (isset($patch['autoapply']) && patch_test_apply($patch) && !patch_test_revert($patch)) {
-			$descr = patch_descr($id);
+			$descr = patch_descr($patch);
 			$savemsg = patch_apply($patch) ? gettext("Patch autoapplied successfully") : gettext("Patch could NOT be autoapplied");
 			patchlog($savemsg . $descr);
 		}
@@ -194,10 +210,9 @@ function bootup_apply_patches() {
 function patch_add_shellcmd() {
 	global $config;
 
-	if (!isset($config['system']['earlyshellcmd']) || !is_array($config['system']['earlyshellcmd'])) {
-	    $config['system']['earlyshellcmd'] = array();
-	}
+	init_config_arr(array('system', 'earlyshellcmd'));
 	$a_earlyshellcmd = &$config['system']['earlyshellcmd'];
+
 	$found = false;
 	foreach ($a_earlyshellcmd as $idx => $cmd) {
 		if (stristr($cmd, "apply_patches.php")) {
@@ -213,10 +228,10 @@ function patch_add_shellcmd() {
 
 function patch_remove_shellcmd() {
 	global $config;
-	if (!isset($config['system']['earlyshellcmd']) || !is_array($config['system']['earlyshellcmd'])) {
-	    $config['system']['earlyshellcmd'] = array();
-	}
+
+	init_config_arr(array('system', 'earlyshellcmd'));
 	$a_earlyshellcmd = &$config['system']['earlyshellcmd'];
+
 	$removed = 0;
 	foreach ($a_earlyshellcmd as $idx => $cmd) {
 		if (stristr($cmd, "apply_patches.php")) {
@@ -233,15 +248,15 @@ function patchlog($msg) {
 	syslog(LOG_WARNING, gettext("System Patches: {$msg}"));
 }
 
-function patch_descr($id) {
+function patch_descr($patch) {
 	global $config;
-	$a_patches = &$config['installedpackages']['patches']['item'];
-	if (!isset($a_patches[$id])) {
-		return null;
+
+	if (!isset($patch) || empty($patch)) {
+		return "";
 	}
-	$descr = " (" . gettext("ID") . ": {$a_patches[$id]['uniqid']}";
-	if (isset($a_patches[$id]['descr'])) {
-		$descr .= ", " . gettext("DESCR") . ": {$a_patches[$id]['descr']}";
+	$descr = " (" . gettext("ID") . ": {$patch['uniqid']}";
+	if (isset($patch['descr'])) {
+		$descr .= ", " . gettext("DESCR") . ": {$patch['descr']}";
 	}
 	$descr .= ")";
 	return $descr;
