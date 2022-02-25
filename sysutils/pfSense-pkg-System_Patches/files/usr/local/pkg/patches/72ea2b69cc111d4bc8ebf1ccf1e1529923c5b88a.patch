@@ -1,0 +1,268 @@
+diff --git a/src/etc/inc/syslog.inc b/src/etc/inc/syslog.inc
+index c907a3c859..0d50edca0f 100644
+--- a/src/etc/inc/syslog.inc
++++ b/src/etc/inc/syslog.inc
+@@ -26,6 +26,7 @@
+  */
+ 
+ require_once('config.inc');
++require_once('util.inc');
+ 
+ global $buffer_rules_rdr, $buffer_rules_normal;
+ $buffer_rules_rdr = array();
+@@ -869,12 +870,6 @@ function conv_log_filter($logfile, $nentries, $tail = 500, $filtertext = "", $fi
+ 	return ($reverse) ? $filterlog : array_reverse($filterlog);
+ }
+ 
+-function escape_filter_regex($filtertext) {
+-	/* If the caller (user) has not already put a backslash before a slash, to escape it in the regex, */
+-	/* then this will do it. Take out any "\/" already there, then turn all ordinary "/" into "\/".    */
+-	return str_replace('/', '\/', str_replace('\/', '/', $filtertext));
+-}
+-
+ function match_filter_line($flent, $filtertext = "") {
+ 	if (!$filtertext) {
+ 		return true;
+diff --git a/src/etc/inc/util.inc b/src/etc/inc/util.inc
+index 7ff1da9bbc..ec0ea342c6 100644
+--- a/src/etc/inc/util.inc
++++ b/src/etc/inc/util.inc
+@@ -3773,4 +3773,60 @@ function is_interface_ipaddrv6($interface) {
+ 	return false;
+ }
+ 
++function escape_filter_regex($filtertext) {
++	/* If the caller (user) has not already put a backslash before a slash, to escape it in the regex, */
++	/* then this will do it. Take out any "\/" already there, then turn all ordinary "/" into "\/".    */
++	return str_replace('/', '\/', str_replace('\/', '/', $filtertext));
++}
++
++/*
++ * Check if a given pattern has the same number of two different unescaped
++ * characters.
++ * For example, it can ensure a pattern has balanced sets of parentheses,
++ * braces, and brackets.
++ */
++function is_pattern_balanced_char($pattern, $open, $close) {
++	/* First remove escaped versions */
++	$pattern = str_replace('\\' . $open, '', $pattern);
++	$pattern = str_replace('\\' . $close, '', $pattern);
++	/* Check if the counts of both characters match in the target pattern */
++	return (substr_count($pattern, $open) == substr_count($pattern, $close));
++}
++
++/*
++ * Check if a pattern contains balanced sets of parentheses, braces, and
++ * brackets.
++ */
++function is_pattern_balanced($pattern) {
++	if (is_pattern_balanced_char($pattern, '(', ')') &&
++	    is_pattern_balanced_char($pattern, '{', '}') &&
++	    is_pattern_balanced_char($pattern, '[', ']')) {
++		/* Balanced if all are true */
++		return true;
++	}
++	return false;
++}
++
++function cleanup_regex_pattern($filtertext) {
++	/* Cleanup filter to prevent backreferences. */
++	$filtertext = escape_filter_regex($filtertext);
++
++	/* Remove \<digit>+ backreferences
++	 * To match \ it must be escaped as \\\\ in PHP for preg_replace() */
++	$filtertext = preg_replace('/\\\\\\d+/', '', $filtertext);
++
++	/* Check for unbalanced parentheses, braces, and brackets which
++	 * may be an error or attempt to circumvent protections.
++	 * Also discard any pattern that attempts problematic duplication
++	 * methods. */
++	if (!is_pattern_balanced($filtertext) ||
++	    (substr_count($filtertext, ')*') > 0) ||
++	    (substr_count($filtertext, ')+') > 0) ||
++	    (substr_count($filtertext, '{') > 0)) {
++		return '';
++	}
++
++	return $filtertext;
++}
++
+ ?>
+diff --git a/src/usr/local/www/diag_routes.php b/src/usr/local/www/diag_routes.php
+index 40eff33b43..409343046c 100644
+--- a/src/usr/local/www/diag_routes.php
++++ b/src/usr/local/www/diag_routes.php
+@@ -32,11 +32,14 @@
+ $limit = '100';
+ $filter = '';
+ 
+-if (isset($_REQUEST['isAjax'])) {
++/* Keep above the AJAX code so it gets CSRF protection */
++require_once('guiconfig.inc');
++
++if (isset($_POST['isAjax'])) {
+ 	require_once('auth_check.inc');
+ 
+ 	$netstat = "/usr/bin/netstat -rW";
+-	if (isset($_REQUEST['IPv6'])) {
++	if (isset($_POST['IPv6'])) {
+ 		$netstat .= " -f inet6";
+ 		echo "IPv6\n";
+ 	} else {
+@@ -44,26 +47,29 @@ if (isset($_REQUEST['isAjax'])) {
+ 		echo "IPv4\n";
+ 
+ 	}
+-	if (!isset($_REQUEST['resolve'])) {
++	if (!isset($_POST['resolve'])) {
+ 		$netstat .= " -n";
+ 	}
+ 
+-	if (!empty($_REQUEST['filter'])) {
+-		$netstat .= " | /usr/bin/sed -e " . escapeshellarg("1,3d; 5,\$ { /" . htmlspecialchars($_REQUEST['filter']) . "/!d; };");
+-	} else {
+-		$netstat .= " | /usr/bin/sed -e '1,3d'";
++	$netstat .= " | /usr/bin/tail -n +5";
++
++	/* Ensure the user-supplied filter is sane */
++	$filtertext = cleanup_regex_pattern($_POST['filter']);
++	if (!empty($filtertext)) {
++		/* Place filter after "--" (bare double-dash) so grep knows not
++		 * to interpret the filter as command line parameters.
++		 */
++		$netstat .= " | /usr/bin/egrep -- " . escapeshellarg($filtertext);
+ 	}
+ 
+-	if (is_numeric($_REQUEST['limit']) && $_REQUEST['limit'] > 0) {
+-		$_REQUEST['limit']++;  // Account for the header line
+-		$netstat .= " | /usr/bin/head -n {$_REQUEST['limit']}";
++	if (is_numeric($_POST['limit']) && $_POST['limit'] > 0) {
++		$netstat .= " | /usr/bin/head -n " . escapeshellarg($_POST['limit']);
+ 	}
+ 
+ 	echo htmlspecialchars_decode(shell_exec($netstat));
+ 
+ 	exit;
+ }
+-require_once('guiconfig.inc');
+ 
+ $pgtitle = array(gettext("Diagnostics"), gettext("Routes"));
+ $shortcut_section = "routing";
+@@ -99,8 +105,8 @@ $section->addInput(new Form_Input(
+ 	'filter',
+ 	'Filter',
+ 	'text',
+-	$host
+-))->setHelp('Use a regular expression to filter the tables.');
++	null
++))->setHelp('Use a regular expression to filter the tables. Invalid or potentially dangerous patterns will be ignored.');
+ 
+ $form->add($section);
+ 
+@@ -132,7 +138,6 @@ function update_routes_callback(html) {
+ 	var tbody = '';
+ 	var field = '';
+ 	var tr_class = '';
+-	var thead = '<tr>';
+ 
+ 	for (var i = 0; i < responseTextArr.length; i++) {
+ 
+@@ -140,11 +145,7 @@ function update_routes_callback(html) {
+ 			continue;
+ 		}
+ 
+-		if (i == 0) {
+-			var tmp = '';
+-		} else {
+-			var tmp = '<tr>';
+-		}
++		var tmp = '<tr>';
+ 
+ 		var j = 0;
+ 		var entry = responseTextArr[i].split(" ");
+@@ -152,23 +153,14 @@ function update_routes_callback(html) {
+ 			if (entry[k] == "") {
+ 				continue;
+ 			}
+-			if (i == 0) {
+-				tmp += '<th>' + entry[k] + '<\/th>';
+-			} else {
+-				tmp += '<td>' + entry[k] + '<\/td>';
+-			}
++			tmp += '<td>' + entry[k] + '<\/td>';
+ 			j++;
+ 		}
+ 
+-		if (i == 0) {
+-			thead += tmp;
+-		} else {
+-			tmp += '<td><\/td>'
+-			tbody += tmp;
+-		}
++		tmp += '<td><\/td>'
++		tbody += tmp;
+ 	}
+ 
+-	$('#' + section + ' > thead').html(thead);
+ 	$('#' + section + ' > tbody').html(tbody);
+ }
+ 
+@@ -178,7 +170,7 @@ function update_all_routes() {
+ }
+ 
+ events.push(function() {
+-	setInterval('update_all_routes()', 5000);
++	setInterval('update_all_routes()', 15000);
+ 	update_all_routes();
+ 
+ 	$(document.forms[0]).on('submit', function(e) {
+@@ -193,15 +185,21 @@ events.push(function() {
+ <div class="panel panel-default">
+ 	<div class="panel-heading"><h2 class="panel-title"><?=gettext("IPv4 Routes")?></h2></div>
+ 	<div class="panel panel-body">
+-		<table class="table table-striped table-hover table-condensed sortable-theme-bootstrap" id="IPv4">
++		<table class="table table-striped table-hover table-condensed sortable-theme-bootstrap" id="IPv4" data-sortable>
+ 		<thead>
+ 			<tr>
+-				<th><!-- filled by xhr --></th>
++				<th><?= gettext('Destination') ?></th>
++				<th><?= gettext('Gateway') ?></th>
++				<th><?= gettext('Flags') ?></th>
++				<th><?= gettext('Uses') ?></th>
++				<th><?= gettext('MTU') ?></th>
++				<th><?= gettext('Interface') ?></th>
++				<th><?= gettext('Expire') ?></th>
+ 			</tr>
+ 		</thead>
+ 		<tbody>
+ 			<tr>
+-				<td><?=gettext("Gathering data, please wait...")?></td>
++				<td colspan="7"><?=gettext("Gathering data, please wait...")?></td>
+ 			</tr>
+ 		</tbody>
+ 		</table>
+@@ -211,15 +209,21 @@ events.push(function() {
+ <div class="panel panel-default">
+ 	<div class="panel-heading"><h2 class="panel-title"><?=gettext("IPv6 Routes")?></h2></div>
+ 	<div class="panel panel-body">
+-		<table class="table table-striped table-hover table-condensed sortable-theme-bootstrap" id="IPv6">
++		<table class="table table-striped table-hover table-condensed sortable-theme-bootstrap" id="IPv6" data-sortable>
+ 		<thead>
+ 			<tr>
+-				<th><!-- filled by xhr --></th>
++				<th><?= gettext('Destination') ?></th>
++				<th><?= gettext('Gateway') ?></th>
++				<th><?= gettext('Flags') ?></th>
++				<th><?= gettext('Uses') ?></th>
++				<th><?= gettext('MTU') ?></th>
++				<th><?= gettext('Interface') ?></th>
++				<th><?= gettext('Expire') ?></th>
+ 			</tr>
+ 		</thead>
+ 		<tbody>
+ 			<tr>
+-				<td><?=gettext("Gathering data, please wait...")?></td>
++				<td colspan="7"><?=gettext("Gathering data, please wait...")?></td>
+ 			</tr>
+ 		</tbody>
+ 		</table>

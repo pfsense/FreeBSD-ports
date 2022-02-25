@@ -36,49 +36,86 @@ require_once('classes/Form.class.php');
 init_config_arr(array('installedpackages', 'patches', 'item'));
 $a_patches = &$config['installedpackages']['patches']['item'];
 
+list($thisversion, $thisversiontype) = explode('-', $g['product_version'], 2);
+
 /* if a custom message has been passed along, lets process it */
 if ($_POST['savemsg']) {
 	$savemsg = $_POST['savemsg'];
 }
 
-if ($_POST) {
-	$pconfig = $_POST;
-	if ($_POST['apply']) {
-		write_config(gettext("System: Patches: applied a patch."));
-	}
+if ($_POST && $_POST['apply']) {
+	write_config(gettext("System: Patches: applied a patch."));
 }
 
-if ($a_patches[$_POST['id']]) {
-	$savemsg = gettext("Patch ");
-	$descr = patch_descr($_POST['id']);
+if ((($_POST['type'] == 'custom') && ($a_patches[$_POST['id']])) ||
+    (($_POST['type'] == 'recommended') && !empty(get_recommended_patch($_POST['id'])))) {
+	$savemsg = "";
+
+	if ($_POST['type'] == 'custom') {
+		$thispatch = $a_patches[$_POST['id']];
+	} else {
+		$thispatch = get_recommended_patch($_POST['id']);
+	}
+	$descr = patch_descr($thispatch);
+
 	switch ($_POST['act']) {
 		case 'fetch':
-			$savemsg .= patch_fetch($a_patches[$_POST['id']]) ? gettext("fetched successfully") : gettext("fetch failed");
+			if ($_POST['type'] == 'recommended') {
+				break;
+			}
+			$savemsg .= patch_fetch($thispatch) ? gettext("Patch fetched successfully") : gettext("fetch failed");
 			patchlog($savemsg . $descr);
 			break;
-		case 'test':
-			$savemsg .= patch_test_apply($a_patches[$_POST['id']]) ? gettext("can be applied cleanly") : gettext("can NOT be applied cleanly");
-			$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;fulltest=apply\" usepost>" . gettext("detail") . "</a>)";
-			$savemsg .= empty($savemsg) ? "" : "<br/>";
-			$savemsg .= patch_test_revert($a_patches[$_POST['id']]) ? gettext("Patch can be reverted cleanly") : gettext("Patch can NOT be reverted cleanly");
-			$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;fulltest=revert\" usepost>" . gettext("detail") . "</a>)";
+		case 'debug':
+			if (patch_test_apply($thispatch)) {
+				$savemsg .= gettext("Patch can apply cleanly");
+				$resulticon = ' <i class="fa fa-check"></i>';
+			} else {
+				$savemsg .= gettext("Patch does not apply cleanly");
+				$resulticon = ' <i class="fa fa-times"></i>';
+			}
+			$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;type={$_POST['type']}&amp;act=debug&amp;fulldebug=apply\" usepost>" . gettext("detail") . "</a>)";
+			$savemsg .= $resulticon;
+			$savemsg .= "<br/>";
+			if (patch_test_revert($thispatch)) {
+				$savemsg .= gettext("Patch can revert cleanly");
+				$resulticon = ' <i class="fa fa-check"></i>';
+			} else {
+				$savemsg .= gettext("Patch does not revert cleanly");
+				$resulticon = ' <i class="fa fa-times"></i>';
+			}
+			$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;type={$_POST['type']}&amp;act=debug&amp;fulldebug=revert\" usepost>" . gettext("detail") . "</a>)";
+			$savemsg .= $resulticon;
+
+			if ($_POST['fulldebug']) {
+				if ($_POST['fulldebug'] == "apply") {
+					$fulldetail = patch_test_apply($thispatch, true);
+				} elseif ($_POST['fulldebug'] == "revert") {
+					$fulldetail = patch_test_revert($thispatch, true);
+				}
+			}
 			break;
 		case 'apply':
-			$savemsg .= patch_apply($a_patches[$_POST['id']]) ? gettext("applied successfully") : gettext("could NOT be applied");
+			$savemsg .= patch_apply($thispatch) ? gettext("Patch applied successfully") : gettext("Patch could NOT be applied");
 			patchlog($savemsg . $descr);
 			break;
 		case 'revert':
-			$savemsg .= patch_revert($a_patches[$_POST['id']]) ? gettext("reverted successfully") : gettext("could NOT be reverted!");
+			$savemsg .= patch_revert($thispatch) ? gettext("Patch reverted successfully") : gettext("Patch could NOT be reverted!");
 			patchlog($savemsg . $descr);
 			break;
+		case 'view':
+			if ($_POST['type'] == 'recommended') {
+				$patchfile = $rec_patch_dir . basename($thispatch['uniqid']) . $patch_suffix;
+				if (file_exists($patchfile)) {
+					$fulldetail = file_get_contents($patchfile);
+				}
+			} else {
+				if (!empty($thispatch['patch'])) {
+					$fulldetail = base64_decode($thispatch['patch']);
+				}
+			}
+			break;
 		default:
-	}
-	if ($_POST['fulltest']) {
-		if ($_POST['fulltest'] == "apply") {
-			$fulldetail = patch_test_apply($a_patches[$_POST['id']], true);
-		} elseif ($_POST['fulltest'] == "revert") {
-			$fulldetail = patch_test_revert($a_patches[$_POST['id']], true);
-		}
 	}
 }
 
@@ -161,43 +198,45 @@ if ($savemsg) {
 <form name="mainform" method="post">
 	<?php if (!empty($fulldetail)): ?>
 	<div class="panel panel-default">
-		<div class="panel-heading"><h2 class="panel-title"><?=gettext('Patch Test Output')?> <?= htmlspecialchars($_POST['fulltest']) ?></h2></div>
+		<div class="panel-heading"><h2 class="panel-title">
+		<?php if ($_POST['act'] == "view"): ?>
+			<?= gettext('View') ?> <?= ucwords(htmlspecialchars($_POST['type'])) ?> <?= gettext('Patch') ?>
+		<?php else: ?>
+			<?= gettext('Patch Debug Output')?>: <?= ucwords(htmlspecialchars($_POST['fulldebug'])) ?>
+		<?php endif; ?>
+		</h2></div>
 		<div class="panel-body table-responsive">
-			<pre><?=$fulldetail; ?></pre>
+			<pre><?= htmlentities($fulldetail); ?></pre>
 			<a href="system_patches.php">Close</a><br/><br/>
 		</div>
 	</div>
 	<?php endif; ?>
 	<div class="panel panel-default">
-		<div class="panel-heading"><h2 class="panel-title"><?=gettext('System Patches')?></h2></div>
+		<div class="panel-heading"><h2 class="panel-title"><?=gettext('Custom System Patches')?></h2></div>
 		<div class="panel-body table-responsive">
 			<table class="table table-striped table-hover">
 				<thead>
 					<tr>
 						<th width="5%">&nbsp;</th>
-						<th width="65%"><?=gettext("Description")?></th>
+						<th width="60%"><?=gettext("Description")?></th>
 						<th width="5%"><?=gettext("Fetch")?></th>
-						<th width="5%"><?=gettext("Test")?></th>
 						<th width="5%"><?=gettext("Apply")?></th>
 						<th width="5%"><?=gettext("Revert")?></th>
+						<th width="5%"><?=gettext("View")?></th>
+						<th width="5%"><?=gettext("Debug")?></th>
 						<th width="5%"><?=gettext("Auto Apply")?></th>
 						<th width="5%"><?=gettext("Actions")?></th>
 					</tr>
 				</thead>
 				<tbody class="patchentries">
-
-
 <?php
-$npatches = $i = 0;
+$i = 0;
 foreach ($a_patches as $thispatch):
 	$can_apply = patch_test_apply($thispatch);
 	$can_revert = patch_test_revert($thispatch);
-
 ?>
 
-	<tr valign="top" id="fr<?=$npatches?>">
-
-		<tr id="fr<?=$i?>" id="frd<?=$i?>" ondblclick="document.location='system_patches_edit.php?id=<?= $i ?>'">
+	<tr id="fr<?=$i?>" id="frd<?=$i?>" ondblclick="document.location='system_patches_edit.php?id=<?= $i ?>'">
 		<td>
 			<input type="checkbox" id="frc<?=$i?>" name="patch[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" />
 			<a class="fa fa-anchor" id="Xmove_<?=$i?>" title="<?=gettext("Move checked entries to here")?>"></a>
@@ -206,30 +245,41 @@ foreach ($a_patches as $thispatch):
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 			<?=$thispatch['descr']?>
 		</td>
+
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 		<?php if (empty($thispatch['patch'])): ?>
-			<a href="system_patches.php?id=<?=$i?>&amp;act=fetch" class="btn btn-sm btn-primary" usepost><i class="fa fa-download"></i> <?=gettext("Fetch"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=fetch" class="btn btn-sm btn-primary" usepost><i class="fa fa-download"></i> <?=gettext("Fetch"); ?></a>
 		<?php elseif (!empty($thispatch['location'])): ?>
-			<a href="system_patches.php?id=<?=$i?>&amp;act=fetch" class="btn btn-sm btn-primary" usepost><i class="fa fa-refresh"></i> <?=gettext("Re-Fetch"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=fetch" class="btn btn-sm btn-primary" usepost><i class="fa fa-refresh"></i> <?=gettext("Re-Fetch"); ?></a>
 		<?php endif; ?>
 		</td>
-		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
-		<?php if (!empty($thispatch['patch'])): ?>
-			<a href="system_patches.php?id=<?=$i?>&amp;act=test" class="btn btn-sm btn-primary" usepost><i class="fa fa-check"></i> <?=gettext("Test"); ?></a>
-		<?php endif; ?>
-		</td>
+
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 		<?php if ($can_apply): ?>
-			<a href="system_patches.php?id=<?=$i?>&amp;act=apply" class="btn btn-sm btn-primary" usepost><i class="fa fa-plus-circle"></i> <?=gettext("Apply"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=apply" class="btn btn-sm btn-primary" usepost><i class="fa fa-plus-circle"></i> <?=gettext("Apply"); ?></a>
 		<?php endif; ?>
 		</td>
+
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 		<?php if ($can_revert): ?>
-			<a href="system_patches.php?id=<?=$i?>&amp;act=revert" class="btn btn-sm btn-primary" usepost><i class="fa fa-minus-circle"></i> <?=gettext("Revert"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=revert" class="btn btn-sm btn-primary" usepost><i class="fa fa-minus-circle"></i> <?=gettext("Revert"); ?></a>
 		<?php endif; ?>
 		</td>
+
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
-			<?= isset($thispatch['autoapply']) ? "Yes" : "No" ?>
+		<?php if (!empty($thispatch['patch'])): ?>
+			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=view" class="btn btn-sm btn-primary" usepost><i class="fa fa-list-alt"></i> <?=gettext("View"); ?></a>
+		<?php endif; ?>
+		</td>
+
+		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
+		<?php if (!empty($thispatch['patch'])): ?>
+			<a href="system_patches.php?id=<?=$i?>&amp;type=custom&amp;act=debug" class="btn btn-sm btn-primary" usepost><i class="fa fa-bug"></i> <?=gettext("Debug"); ?></a>
+		<?php endif; ?>
+		</td>
+
+		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
+			<i class="fa fa-<?= isset($thispatch['autoapply']) ? "check" : "times" ?>" title="<?= isset($thispatch['autoapply']) ? "Yes" : "No" ?>"></i>
 		</td>
 
 		<td style="cursor: pointer;">
@@ -241,7 +291,6 @@ foreach ($a_patches as $thispatch):
 	</tr>
 <?php
 	$i++;
-	$npatches++;
 endforeach;
 ?>
 				</tbody>
@@ -260,13 +309,106 @@ endforeach;
 		</button>
 <?php endif; ?>
 	</nav>
+
+	<div class="panel panel-default">
+		<div class="panel-heading"><h2 class="panel-title">
+			<?= gettext('Recommended System Patches for') ?>
+			<?= $g['product_label_html'] ?>
+			<?= gettext('software version') ?>
+			<?= $thisversion ?>
+		</h2></div>
+		<div class="panel-body table-responsive">
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th width="60%"><?=gettext("Description")?></th>
+						<th width="10%"><?=gettext("Apply")?></th>
+						<th width="10%"><?=gettext("Revert")?></th>
+						<th width="10%"><?=gettext("View")?></th>
+						<th width="10%"><?=gettext("Debug")?></th>
+					</tr>
+				</thead>
+				<tbody class="rpatchentries">
+<?php
+$num_rpatches=0;
+foreach ($recommended_patches as $rpatch):
+	if (!in_array($thisversion, $rpatch['versions'])) {
+		/* This patch is not relevant to the running version, skip it */
+		continue;
+	} else {
+		/* Patch is relevant, increase the count of relevant patches. */
+		$num_rpatches++;
+	}
+	$can_apply = patch_test_apply($rpatch);
+	$can_revert = patch_test_revert($rpatch);
+	$linklist = array();
+	if (!empty($rpatch['links'])) {
+		foreach($rpatch['links'] as $link) {
+			$linktext = !empty($link['text']) ? $link['text'] : gettext("More Info");
+			if (!empty($link['url'])) {
+				$linktext = "<a href=\"{$link['url']}\">{$linktext}</a>";
+			}
+			$linklist[] = $linktext;
+		}
+	}
+	$linkhtml = implode(', ', $linklist);
+?>
+	<tr>
+		<td>
+			<?=$rpatch['descr']?>
+		<?php if (!empty($linkhtml)) : ?>
+			(<?= $linkhtml ?>)
+		<?php endif; ?>
+		</td>
+
+		<td>
+		<?php if ($can_apply): ?>
+			<a href="system_patches.php?id=<?=$rpatch['uniqid']?>&amp;type=recommended&amp;act=apply" class="btn btn-sm btn-primary" usepost><i class="fa fa-plus-circle"></i> <?=gettext("Apply"); ?></a>
+		<?php endif; ?>
+		</td>
+
+		<td>
+		<?php if ($can_revert): ?>
+			<a href="system_patches.php?id=<?=$rpatch['uniqid']?>&amp;type=recommended&amp;act=revert" class="btn btn-sm btn-primary" usepost><i class="fa fa-minus-circle"></i> <?=gettext("Revert"); ?></a>
+		<?php endif; ?>
+		</td>
+
+		<td>
+			<a href="system_patches.php?id=<?=$rpatch['uniqid']?>&amp;type=recommended&amp;act=view" class="btn btn-sm btn-primary" usepost><i class="fa fa-list-alt"></i> <?=gettext("View"); ?></a>
+		</td>
+
+		<td>
+			<a href="system_patches.php?id=<?=$rpatch['uniqid']?>&amp;type=recommended&amp;act=debug" class="btn btn-sm btn-primary" usepost><i class="fa fa-bug"></i> <?=gettext("Debug"); ?></a>
+		</td>
+	</tr>
+<?php
+endforeach;
+?>
+<?php if ($num_rpatches == 0): ?>
+	<tr>
+		<td colspan="5">
+			<?= gettext("No recommended patches for this version.") ?>
+		</td>
+	</tr>
+<?php endif; ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </form>
 
 <div id="infoblock">
 	<?=print_info_box('<strong>' . gettext("Note:") . '</strong><br />' .
-	gettext("Each patch is tested and the appropriate action is shown. If neither 'Apply' or 'Revert' shows up, the patch cannot be used (check the pathstrip and whitespace options).") .
+	gettext("The package tests each patch and displays the appropriate action. If a patch does not show either 'Apply' or 'Revert', the package cannot use the patch. Check the pathstrip and whitespace options.") .
 	"<br/><br/>" .
-	gettext("Use the 'Test' link to see if a patch can be applied or reverted. Patches may be reordered so that higher patches apply later than lower patches."), 'info'); ?>
+	gettext("It is normal for a patch to only work one way. At a given state of the system a patch will normally either apply cleanly or revert cleanly, but not both.") .
+	"<br/><br/>" .
+	gettext("Use the 'Debug' option for details on whether or not the package can apply or revert a given patch.") .
+	"<br/><br/>" .
+	gettext("Auto-Apply applies patches in the order shown in the custom patches table. Reorder patches as needed so the package can apply patches in the intended order.") .
+	"<br/><br/>" .
+	gettext("After upgrading, do not revert a patch if the changes from the patch were included in the upgrade. This will remove the changes, which is unlikely to be helpful."), 'info');
+	?>
 </div>
 
 <script type="text/javascript">
