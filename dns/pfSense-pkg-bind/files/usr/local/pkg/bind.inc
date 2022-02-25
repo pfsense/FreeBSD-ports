@@ -35,7 +35,7 @@ require_once("notices.inc");
 require_once("xmlrpc_client.inc");
 
 define('BIND_LOCALBASE', '/usr/local');
-define('CHROOT_LOCALBASE', '/cf/named');
+define('CHROOT_LOCALBASE', '/var/etc/named');
 
 function bind_zone_validate($post, &$input_errors) {
 
