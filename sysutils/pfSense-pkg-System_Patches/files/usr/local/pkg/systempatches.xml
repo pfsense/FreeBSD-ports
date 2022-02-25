@@ -25,7 +25,7 @@
  */
 	]]>
 	</copyright>
-	<description>System Patches applies patches supplied by the user to the firewall.</description>
+	<description>System Patches applies patches to the firewall.</description>
 	<name>System Patches</name>
 	<title>System: Patches</title>
 	<include_file>/usr/local/pkg/patches.inc</include_file>

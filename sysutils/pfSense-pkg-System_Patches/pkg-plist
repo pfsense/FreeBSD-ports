@@ -3,4 +3,15 @@ www/system_patches.php
 www/system_patches_edit.php
 bin/apply_patches.php
 pkg/patches.inc
+pkg/patches/manifest.inc
+pkg/patches/12827workaround.patch
+pkg/patches/4612721800a1b25bb1fb2d4d7c4ceea6f44f208e.patch
+pkg/patches/72ea2b69cc111d4bc8ebf1ccf1e1529923c5b88a.patch
+pkg/patches/78ce96a9af3b2ab5159ef6623078bfc4b15f8a89.patch
+pkg/patches/8ddf2b5a999772754080825f07acf9b6326f1f04.patch
+pkg/patches/a9bdbd97984ff2ddefbceb2fe062fbe3a1c42d88.patch
+pkg/patches/afcc0e9c97c1993ae6b95f886665fcb4375d26c7.patch
+pkg/patches/b5360f49fb3c1fdc36ebf13c20b68d4ff1e15fe6.patch
+pkg/patches/bf21f67bbe2d1694ad1ad72728623dded9ace426.patch
+pkg/patches/c416f6fab10f149b15a352dfb609f86a98f6103d.patch
 %%DATADIR%%/info.xml
