@@ -38,6 +38,20 @@ $recommended_patches = [
   'ignorewhitespace' => true,
 ],
 [
+  'uniqid' => '3b50f7656967fbb4daa869a7ae6d18bc5ab6eec3',
+  'versions' => ['2.6.0', '22.01', '2.7.0', '22.05'],
+  'descr' => 'Add UPnP NAT Anchors to fix outbound NAT for multiple consoles.',
+  'links' => [
+      [ 'text' => 'Redmine #7727',
+         'url' => 'https://redmine.pfsense.org/issues/7727#note-75', ],
+      [ 'text' => 'Forum Thread',
+         'url' => 'https://forum.netgate.com/topic/169837/upnp-fix-for-multiple-clients-consoles-playing-the-same-game', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
   'uniqid' => '12827workaround',
   'versions' => ['2.6.0', '22.01', '2.7.0', '22.05'],
   'descr' => 'Disable pf counter data preservation to temporarily work around latency when reloading large rulesets',

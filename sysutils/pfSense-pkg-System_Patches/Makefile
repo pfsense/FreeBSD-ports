@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-System_Patches
 PORTVERSION=	2.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -41,6 +41,8 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/patches/manifest.inc \
 		${STAGEDIR}${PREFIX}/pkg/patches
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/patches/12827workaround.patch \
+		${STAGEDIR}${PREFIX}/pkg/patches
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/patches/3b50f7656967fbb4daa869a7ae6d18bc5ab6eec3.patch \
 		${STAGEDIR}${PREFIX}/pkg/patches
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/patches/4612721800a1b25bb1fb2d4d7c4ceea6f44f208e.patch \
 		${STAGEDIR}${PREFIX}/pkg/patches
