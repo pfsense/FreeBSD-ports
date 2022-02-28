@@ -217,7 +217,7 @@
 					<fielddescr>Source</fielddescr>
 					<fieldname>url</fieldname>
 					<type>input</type>
-					<width>5</width>
+					<width>3</width>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Header/Label</fielddescr>
