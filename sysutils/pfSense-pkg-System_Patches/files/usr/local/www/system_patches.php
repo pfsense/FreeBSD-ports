@@ -35,6 +35,7 @@ require_once('classes/Form.class.php');
 
 init_config_arr(array('installedpackages', 'patches', 'item'));
 $a_patches = &$config['installedpackages']['patches']['item'];
+$savemsgtype = 'success';
 
 list($thisversion, $thisversiontype) = explode('-', $g['product_version'], 2);
 
@@ -63,11 +64,18 @@ if ((($_POST['type'] == 'custom') && ($a_patches[$_POST['id']])) ||
 			if ($_POST['type'] == 'recommended') {
 				break;
 			}
-			$savemsg .= patch_fetch($thispatch) ? gettext("Patch fetched successfully") : gettext("fetch failed");
+			if (patch_fetch($thispatch)) {
+				$savemsg .= gettext("Patch fetched successfully");
+			} else {
+				$savemsgtype = 'danger';
+				$savemsg .= gettext("Patch fetch failed");
+			}
 			patchlog($savemsg . $descr);
 			break;
 		case 'debug':
-			if (patch_test_apply($thispatch)) {
+			$can_apply = patch_test_apply($thispatch);
+			$can_revert = patch_test_revert($thispatch);
+			if ($can_apply) {
 				$savemsg .= gettext("Patch can apply cleanly");
 				$resulticon = ' <i class="fa fa-check"></i>';
 			} else {
@@ -77,7 +85,7 @@ if ((($_POST['type'] == 'custom') && ($a_patches[$_POST['id']])) ||
 			$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;type={$_POST['type']}&amp;act=debug&amp;fulldebug=apply\" usepost>" . gettext("detail") . "</a>)";
 			$savemsg .= $resulticon;
 			$savemsg .= "<br/>";
-			if (patch_test_revert($thispatch)) {
+			if ($can_revert) {
 				$savemsg .= gettext("Patch can revert cleanly");
 				$resulticon = ' <i class="fa fa-check"></i>';
 			} else {
@@ -86,6 +94,28 @@ if ((($_POST['type'] == 'custom') && ($a_patches[$_POST['id']])) ||
 			}
 			$savemsg .= " (<a href=\"system_patches.php?id={$_POST['id']}&amp;type={$_POST['type']}&amp;act=debug&amp;fulldebug=revert\" usepost>" . gettext("detail") . "</a>)";
 			$savemsg .= $resulticon;
+			$savemsg .= "<br/><br/>";
+			$savemsg .= gettext("Debug Result: ");
+			if (!$can_apply && !$can_revert) {
+				$savemsgtype = 'danger';
+				$savemsg .= gettext("Fail") . "<br/><br/>";
+				$savemsg .= gettext("This patch does not apply or revert cleanly.");
+				$savemsg .= "<br/>";
+				$savemsg .= gettext("The patch settings may be incorrect, the patch content may not be relevant to this version, " .
+						"or the patch may depend upon another separate patch which must be applied first.");
+			} elseif ($can_apply && $can_revert) {
+				$savemsgtype = 'warning';
+				$savemsg .= gettext("Warning") . "<br/><br/>";
+				$savemsg .= gettext("This patch can both apply and revert cleanly. ");
+				$savemsg .= "<br/>";
+				$savemsg .= gettext("Typically this indicates that a simple patch has already been applied once, applying it again is unnecessary.");
+			} elseif ($can_apply && !$can_revert) {
+				$savemsg .= gettext("OK") . "<br/><br/>";
+				$savemsg .= gettext("This patch is normal and has not yet been applied.");
+			} elseif (!$can_apply && $can_revert) {
+				$savemsg .= gettext("OK") . "<br/><br/>";
+				$savemsg .= gettext("This patch is normal and has already been applied. The patch can be reverted if its changes are no longer required.");
+			}
 
 			if ($_POST['fulldebug']) {
 				if ($_POST['fulldebug'] == "apply") {
@@ -96,11 +126,21 @@ if ((($_POST['type'] == 'custom') && ($a_patches[$_POST['id']])) ||
 			}
 			break;
 		case 'apply':
-			$savemsg .= patch_apply($thispatch) ? gettext("Patch applied successfully") : gettext("Patch could NOT be applied");
+			if (patch_apply($thispatch)) {
+				$savemsg .= gettext("Patch applied successfully");
+			} else {
+				$savemsgtype = 'danger';
+				$savemsg .= gettext("Patch could NOT be applied");
+			}
 			patchlog($savemsg . $descr);
 			break;
 		case 'revert':
-			$savemsg .= patch_revert($thispatch) ? gettext("Patch reverted successfully") : gettext("Patch could NOT be reverted!");
+			if (patch_revert($thispatch)) {
+				$savemsg .= gettext("Patch reverted successfully");
+			} else {
+				$savemsgtype = 'danger';
+				$savemsg .= gettext("Patch could NOT be reverted!");
+			}
 			patchlog($savemsg . $descr);
 			break;
 		case 'view':
@@ -190,7 +230,7 @@ $pgtitle = array(gettext("System"), gettext("Patches"));
 include("head.inc");
 
 if ($savemsg) {
-	print_info_box($savemsg, 'success');
+	print_info_box($savemsg, $savemsgtype);
 }
 ?>
 <? print_info_box(gettext("This page allows adding patches, either from the official code repository or pasted in from e-mail or other sources. <br />Use with caution!"), 'warning'); ?>
