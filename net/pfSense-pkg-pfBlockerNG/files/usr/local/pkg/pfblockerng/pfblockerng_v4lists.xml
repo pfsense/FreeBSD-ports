@@ -207,6 +207,12 @@
 					</options>
 					<default_value>Enabled</default_value>
 				</rowhelperfield>
+                                <rowhelperfield>
+                                        <fielddescr>cURL Interface</fielddescr>
+                                        <fieldname>srcint</fieldname>
+                                        <type>input</type>
+                                        <width>2</width>
+                                </rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Source</fielddescr>
 					<fieldname>url</fieldname>

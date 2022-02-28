@@ -1744,7 +1744,7 @@ function find_reported_header($ip, $pfbfolder, $exclude=FALSE) {
 
 
 // Function to download feeds
-function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $logtype, $vtype, $timeout=300) {
+function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $logtype, $vtype, $timeout=300, $srcint=FALSE) {
 	global $pfb;
 	$http_status = '';
 	$elog = ">> {$pfb['log']} 2>&1";
@@ -1801,6 +1801,9 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 				curl_setopt($ch, CURLOPT_FILE, $fhandle);	// Add $fhandle setting to cURL
 				curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);	// Set cURL download timeout
 				curl_setopt($ch, CURLOPT_ENCODING, 'gzip');	// Request 'gzip' encoding from server if available
+				if ($srcint) {
+					curl_setopt($ch, CURLOPT_INTERFACE, $srcint);
+				}
 
 				// Attempt 3 Downloads before failing.
 				for ($retries = 1; $retries <= 3; $retries++) {
@@ -4262,8 +4265,14 @@ function sync_package_pfblockerng($cron='') {
 									}
 								} else {
 									// Download list
+									if (!empty($row['srcint'])) {
+										$srcint = $row['srcint'];
+										pfb_logger("\nUsing interface: {$row['srcint']} to download: {$row['header']}\n", 1);
+									} else {
+										$srcint = FALSE;
+									}
 									if (!pfb_download($row['url'], $file_dwn, $pflex, $header, $row['format'],
-										1, $list['vtype'])) {
+										1, $list['vtype'], '', $srcint)) {
 
 										// Determine reason for download failure
 										pfb_download_failure($alias, $header, $pfbfolder, $list['vtype'], $row['url']);
