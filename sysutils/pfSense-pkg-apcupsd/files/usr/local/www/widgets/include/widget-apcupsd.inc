@@ -21,6 +21,6 @@
 
 //set variable for custom title
 $apcupsd_title = gettext("Apcupsd");
-$apcupsd_title_link = "apcupsd.widget.php";
+$apcupsd_title_link = "apcupsd_status.php";
 $apcupsd_allow_multiple_widget_copies = false;
 ?>
