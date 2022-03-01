@@ -101,8 +101,11 @@ class acme_sh {
 		);
 		$process = proc_open($command, $descriptorspec, $pipes, null, $env);
 		if (is_resource($process)) {
-			echo stream_get_contents($pipes[1]);
-			echo stream_get_contents($pipes[2]);
+			/* This must only output on debug or else it breaks account key creation output. */
+			if ($this->debug) {
+				echo stream_get_contents($pipes[1]);
+				echo stream_get_contents($pipes[2]);
+			}
 			fclose($pipes[0]);
 			fclose($pipes[1]);
 			fclose($pipes[2]);
@@ -117,11 +120,11 @@ class acme_sh {
 	}
 	
 	function init($ca, $name, $email) {
-		$conf = "ACME_DIRECTORY='{$ca}/directory'\nACCOUNT_EMAIL='{$email}'\n";
-		$cahost = parse_url($ca, PHP_URL_HOST);
+		$conf = "ACME_DIRECTORY='{$ca}'\nACCOUNT_EMAIL='{$email}'\n";
+		$cadir = parse_url($ca, PHP_URL_HOST) . parse_url($ca, PHP_URL_PATH);
 		$acmeconf = "/tmp/acme/{$name}/";
 		$this->acmeconf = $acmeconf;
-		$this->path_account = "$acmeconf/ca/$cahost";
+		$this->path_account = "{$acmeconf}/ca/{$cadir}";
 		safe_mkdir($this->path_account);
 		$this->accountconfig = "{$this->acmeconf}accountconf.conf";
 		file_put_contents("{$this->accountconfig}", $conf);
@@ -142,6 +145,7 @@ class acme_sh {
 	
 	function registeraccount($key) {
 		file_put_contents("{$this->path_account}/account.key", $key);
+		$this->debug = false;
 		$result = $this->execacmesh(""
 				. " --home " . escapeshellarg($this->acmeconf)
 				. " --registeraccount"
