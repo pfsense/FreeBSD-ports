@@ -2075,10 +2075,10 @@ EOD;
 EOD;
 	$varsqlconfauthcounters = <<<EOD
 
-	dailycounter
-	monthlycounter
-	noresetcounter
-	expire_on_login
+	-dailycounter
+	-monthlycounter
+	-noresetcounter
+	-expire_on_login
 
 EOD;
 	} else {
