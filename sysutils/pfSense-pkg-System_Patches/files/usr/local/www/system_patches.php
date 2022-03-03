@@ -52,10 +52,10 @@ if ((($_POST['type'] == 'custom') && ($a_patches[$_POST['id']])) ||
     (($_POST['type'] == 'recommended') && !empty(get_recommended_patch($_POST['id'])))) {
 	$savemsg = "";
 
-	if ($_POST['type'] == 'custom') {
-		$thispatch = $a_patches[$_POST['id']];
-	} else {
+	if ($_POST['type'] == 'recommended') {
 		$thispatch = get_recommended_patch($_POST['id']);
+	} else {
+		$thispatch = & $a_patches[$_POST['id']];
 	}
 	$descr = patch_descr($thispatch);
 
@@ -108,7 +108,7 @@ if ((($_POST['type'] == 'custom') && ($a_patches[$_POST['id']])) ||
 				$savemsg .= gettext("Warning") . "<br/><br/>";
 				$savemsg .= gettext("This patch can both apply and revert cleanly. ");
 				$savemsg .= "<br/>";
-				$savemsg .= gettext("Typically this indicates that a simple patch has already been applied once, applying it again is unnecessary.");
+				$savemsg .= gettext("Typically this indicates that a simple patch has either already been applied once (applying it again is unnecessary) or that it only removes code (Applying is OK, reverting has no effect).");
 			} elseif ($can_apply && !$can_revert) {
 				$savemsg .= gettext("OK") . "<br/><br/>";
 				$savemsg .= gettext("This patch is normal and has not yet been applied.");
@@ -158,6 +158,7 @@ if ((($_POST['type'] == 'custom') && ($a_patches[$_POST['id']])) ||
 		default:
 	}
 }
+unset($thispatch);
 
 $need_save = false;
 if (isset($_POST['del'])) {

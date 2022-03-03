@@ -1,0 +1,37 @@
+diff --git a/src/usr/local/sbin/pfSense-led.sh b/src/usr/local/sbin/pfSense-led.sh
+index 8e245bac15a4f64070ae9f6ba78614b531ac85f1..d46beaf0bcabad6fa4c7d21e9b3d09a38ae3dd5f 100755
+--- a/src/usr/local/sbin/pfSense-led.sh
++++ b/src/usr/local/sbin/pfSense-led.sh
+@@ -170,27 +170,27 @@ SG2100_GPIODEV=2
+ #
+ 5100_led_booting() {
+ 	# Booting (red)
+-	/usr/local/sbin/SG-5100led 1 >/dev/null 2>&1
++	/usr/local/sbin/5100led 1 >/dev/null 2>&1
+ }
+ 
+ 5100_led_ready() {
+ 	# Boot finished (green)
+-	/usr/local/sbin/SG-5100led 3 >/dev/null 2>&1
++	/usr/local/sbin/5100led 3 >/dev/null 2>&1
+ }
+ 
+ 5100_led_update() {
+ 	# updates, green flashing
+-	/usr/local/sbin/SG-5100led 4 >/dev/null 2>&1
++	/usr/local/sbin/5100led 4 >/dev/null 2>&1
+ }
+ 
+ 5100_led_update_off() {
+ 	# No updates, green
+-	/usr/local/sbin/SG-5100led 3 >/dev/null 2>&1
++	/usr/local/sbin/5100led 3 >/dev/null 2>&1
+ }
+ 
+ 5100_led_updating() {
+ 	# Upgrade running during boot (LED blinking red)
+-	/usr/local/sbin/SG-5100led 2 >/dev/null 2>&1
++	/usr/local/sbin/5100led 2 >/dev/null 2>&1
+ }
+ 
+ #
