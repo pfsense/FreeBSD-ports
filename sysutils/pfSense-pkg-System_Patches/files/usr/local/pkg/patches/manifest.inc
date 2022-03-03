@@ -27,7 +27,7 @@ global $recommended_patches;
 $recommended_patches = [
 [
   'uniqid' => '8ddf2b5a999772754080825f07acf9b6326f1f04',
-  'versions' => ['2.6.0', '22.01', '2.7.0', '22.05'],
+  'versions' => ['2.6.0', '22.01'],
   'descr' => 'Add user preference to choose password hash algorithm',
   'links' => [
       [ 'text' => 'Redmine #12855',
@@ -39,7 +39,7 @@ $recommended_patches = [
 ],
 [
   'uniqid' => '3b50f7656967fbb4daa869a7ae6d18bc5ab6eec3',
-  'versions' => ['2.6.0', '22.01', '2.7.0', '22.05'],
+  'versions' => ['2.6.0', '22.01'],
   'descr' => 'Add UPnP NAT Anchors to fix outbound NAT for multiple consoles.',
   'links' => [
       [ 'text' => 'Redmine #7727',
@@ -64,8 +64,20 @@ $recommended_patches = [
   'ignorewhitespace' => true,
 ],
 [
-  'uniqid' => '4612721800a1b25bb1fb2d4d7c4ceea6f44f208e',
+  'uniqid' => 'fd30b9eda98900eb5f1a0c37d600ef4deaf582ad',
   'versions' => ['2.6.0', '22.01', '2.7.0', '22.05'],
+  'descr' => 'Fix Captive Portal handling of non-TCP traffic after login',
+  'links' => [
+      [ 'text' => 'Redmine #12834',
+         'url' => 'https://redmine.pfsense.org/issues/12834', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '4612721800a1b25bb1fb2d4d7c4ceea6f44f208e',
+  'versions' => ['2.6.0', '22.01'],
   'descr' => 'Fix Namecheap Dynamic DNS response processing',
   'links' => [
       [ 'text' => 'Redmine #12816',
@@ -77,11 +89,34 @@ $recommended_patches = [
 ],
 [
   'uniqid' => 'b5360f49fb3c1fdc36ebf13c20b68d4ff1e15fe6',
-  'versions' => ['2.6.0', '22.01', '2.7.0', '22.05'],
+  'versions' => ['2.6.0', '22.01'],
   'descr' => 'Fix Google Domains Dynamic DNS response processing',
   'links' => [
       [ 'text' => 'Redmine #12754',
          'url' => 'https://redmine.pfsense.org/issues/12754', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => '3ade222beb2cae2c0681ed69d4e5a0c82c6303f9',
+  'versions' => ['2.6.0', '22.01'],
+  'descr' => 'Fix OpenVPN dashboard widget client termination',
+  'links' => [
+      [ 'text' => 'Redmine #12817',
+         'url' => 'https://redmine.pfsense.org/issues/12817', ],
+  ],
+  'basedir' => '/',
+  'pathstrip' => 2,
+  'ignorewhitespace' => true,
+],
+[
+  'uniqid' => 'b2fce958b8a2e80754b49eb3d17795757df6a76c',
+  'versions' => ['22.01', '22.05'],
+  'descr' => 'Fix Netgate 5100 status LED',
+  'links' => [
+      [ 'text' => 'NG 7538' ],
   ],
   'basedir' => '/',
   'pathstrip' => 2,
