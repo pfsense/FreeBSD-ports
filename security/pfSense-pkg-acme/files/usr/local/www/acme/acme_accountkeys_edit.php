@@ -49,11 +49,7 @@ if (!is_array($config['installedpackages']['acme']['accountkeys']['item'])) {
 }
 $a_accountkeys = &$config['installedpackages']['acme']['accountkeys']['item'];
 
-if (isset($_POST['id'])) {
-	$id = $_POST['id'];
-} else {
-	$id = $_GET['id'];
-}
+$id = $_REQUEST['id'];
 
 if (isset($_GET['dup'])) {
 	$id = $_GET['dup'];

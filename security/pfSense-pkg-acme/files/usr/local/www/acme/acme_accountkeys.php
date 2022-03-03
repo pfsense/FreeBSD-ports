@@ -98,8 +98,8 @@ if ($_POST) {
 	}
 }
 
-if ($_GET['act'] == "del") {
-	$id = $_GET['id'];
+if ($_POST['act'] == "del") {
+	$id = $_POST['id'];
 	$id = get_accountkey_id($id);
 	if (isset($a_accountkeys[$id])) {
 		if (!$input_errors) {
@@ -175,14 +175,14 @@ display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 				<?=htmlspecialchars($accountkey['acmeserver']);?>
 			  </td>
 			  <td class="action-icons">
-				<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$accountname?>" name="move_<?=$accountname?>" value="move_<?=$accountname?>"></button>
-				<a href="acme_accountkeys_edit.php?id=<?=$accountname;?>">
+				<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=urlencode($accountname)?>" name="move_<?=urlencode($accountname)?>" value="move_<?=urlencode($accountname)?>"></button>
+				<a href="acme_accountkeys_edit.php?id=<?=urlencode($accountname);?>">
 					<?=acmeicon("edit", gettext("edit"))?>
 				</a>
-				<a href="acme_accountkeys.php?act=del&amp;id=<?=$accountname;?>" onclick="return confirm('Do you really want to delete this entry?')">
+				<a href="acme_accountkeys.php?act=del&amp;id=<?=$accountname;?>" usepost>
 					<?=acmeicon("delete", gettext("delete"))?>
 				</a>
-				<a href="acme_accountkeys_edit.php?dup=<?=$accountname;?>">
+				<a href="acme_accountkeys_edit.php?dup=<?=urlencode($accountname);?>">
 					<?=acmeicon("clone", gettext("clone"))?>
 				</a>
 			  </td>
