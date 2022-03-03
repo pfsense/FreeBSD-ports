@@ -20,6 +20,7 @@
  * limitations under the License.
  */
 
+require_once('util.inc');
 require_once('guiconfig.inc');
 require_once('globals.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
@@ -407,6 +408,7 @@ if ($_POST && isset($_POST['save'])) {
 			$config['installedpackages'][$conf_type]['config'][$rowid]['agateway_out']	= $_POST['agateway_out']	?: 'default';
 
 			$config['installedpackages'][$conf_type]['config'][$rowid]['suppression_cidr']	= $_POST['suppression_cidr']	?: 'Disabled';
+			$config['installedpackages'][$conf_type]['config'][$rowid]['srcint']		= $_POST['srcint']		?: '';
 			$config['installedpackages'][$conf_type]['config'][$rowid]['whois_convert']	= $_POST['whois_convert']	?: '';
 		}
 		else {
@@ -528,6 +530,7 @@ else {
 		$pconfig['agateway_out']	= $rowdata[$rowid]['agateway_out'];
 
 		$pconfig['suppression_cidr']	= $rowdata[$rowid]['suppression_cidr'];
+		$pconfig['srcint']		= $rowdata[$rowid]['srcint'];
 
 		$pconfig['whois_convert']	= $rowdata[$rowid]['whois_convert'];
 	}
@@ -1211,7 +1214,47 @@ if ($gtype == 'ipv4' || $gtype == 'ipv6') {
 				. '(Excluding the Custom List IP addresses)<br />Default: <strong>Disabled</strong> (No CIDR limit)')
 		  ->setAttribute('style', 'width: auto');
 
+		$interfaces_list = get_interface_list();
+		$src_interfaces = array('lo0' => 'Localhost');
+		foreach($interfaces_list as $key => $value) {
+			$src_interfaces = array_merge(array($key => strtoupper($interfaces_list[$key]['friendly'])), $src_interfaces);
+		}
+		$src_interfaces = array_merge(array('' => 'any'), $src_interfaces);
+		$section->addInput(new Form_Select(
+			'srcint',
+			'cURL Interface',
+			$pconfig['srcint'],
+			$src_interfaces
+		))->setHelp('Use this interface when downloadling lists. This option sets <code>CURLOPT_INTERFACE</code> to the value selected above.')
+		  ->setAttribute('style', 'width: auto');
+
 		$form->add($section);
+	}
+
+	if ($gtype == 'ipv6') {
+
+		// Print Advanced Tunables section
+		$section = new Form_Section('Advanced Tuneables', 'advancedtunable', COLLAPSIBLE|SEC_CLOSED);
+                $section->addInput(new Form_StaticText(
+                        NULL,
+                        'These are \'Advanced\' settings and are typically best left at Default settings!')
+                );
+
+                $interfaces_list = get_interface_list();
+                $src_interfaces = array('lo0' => 'Localhost');
+                foreach($interfaces_list as $key => $value) {
+                        $src_interfaces = array_merge(array($key => strtoupper($interfaces_list[$key]['friendly'])), $src_interfaces);
+                }
+		$src_interfaces = array_merge(array('' => 'any'), $src_interfaces);
+                $section->addInput(new Form_Select(
+                        'srcint',
+                        'cURL Interface',
+                        $pconfig['srcint'],
+                        $src_interfaces
+                ))->setHelp('Use this interface when downloadling lists. This option sets <code>CURLOPT_INTERFACE</code> to the value selected above.')
+                  ->setAttribute('style', 'width: auto');     
+
+                $form->add($section);
 	}
 }
 else {
