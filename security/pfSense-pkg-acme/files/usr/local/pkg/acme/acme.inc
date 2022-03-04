@@ -503,7 +503,7 @@ $acme_domain_validation_method['dns_cpanel'] = array('name' => "DNS-cPanel",
 		'cPanel_Apitoken' => array('name' => "cpanel_apitoken", 'columnheader' => "Token", 'type' => "textbox",
 			'description' => "cPanel API token"
 		),
-		'cPanel_Hostname' => array('name' => "cPanel_Hostname", 'columnheader' => "URL", 'type' => "textbox",
+		'cPanel_Hostname' => array('name' => "cpanel_hostname", 'columnheader' => "URL", 'type' => "textbox",
 			'description' => "URL to cPanel instance"
 		),
 	));
