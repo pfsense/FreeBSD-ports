@@ -109,15 +109,7 @@ function patch_fetch(& $patch) {
 	global $g;
 	$url = patch_fixup_url($patch['location']);
 	$temp_filename = tempnam("{$g['tmp_path']}/", "system_patches");
-	/*
-	 * Backwards compatibility with older 2.1.x pfSense versions
-	 * that did not contain download_file() function in pfsense-utils.inc
-	 */
-	if (!function_exists("download_file")) {
-		download_file_with_progress_bar($url, $temp_filename);
-	} else {
-		download_file($url, $temp_filename);
-	}
+	download_file($url, $temp_filename);
 	$text = @file_get_contents($temp_filename);
 	@unlink($temp_filename);
 	if (empty($text)) {
